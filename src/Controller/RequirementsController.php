@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RequirementsController extends AbstractController
 {
+    const APP_NAME = " | webLVS Das webbasierte Lagerverwaltungssystem";
     const APP_VERSION ="Enterprise Version";
     const APP_VERSION_NUMBER ="1.1.0";
     const APP_COPYRIGHT ="© 2019 Softdev-Nord | Rene Irrgang";
@@ -15,6 +16,7 @@ class RequirementsController extends AbstractController
     {
         $coreInfo =
             [
+                'appName' => self::APP_NAME,
                 'appVersion' => self::APP_VERSION,
                 'appVersionNumber' => self::APP_VERSION_NUMBER,
                 'appCopyright' => self::APP_COPYRIGHT,
