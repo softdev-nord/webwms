@@ -4,44 +4,13 @@
 
 {% block body %}
     {{ include('header.html.twig') }}
+    {{ include('submenu.html.twig') }}
     {% if app.user %}
         <div class="mb-3">
             You are logged in as {{ app.user.username }},
             <a href="{{ path('app_logout') }}">Logout</a>
         </div>
     {% endif %}
-    <!-- Beginn Sub-Navigation -->
-    <div class="subMenu-webLVS fixed-top">
-        <div class="iconMenu-webLVS-page">{{ page }}</div>
-        <div class="subMenu-webLVS-wrapper" id="subMenu-webLVS-wrapper">
-            <a href="{{ path('app_logout') }}" data-toggle="tooltip" data-placement="top" id="abmelden" title="Abmelden">
-                <div style="display: inline-block"><i class="iconMenu-webLVS mdi mdi-power-standby"></i></div>
-            </a>
-            <a href="{{ path('homepage') }}" data-toggle="tooltip" data-placement="top" id="startseite" title="Startseite">
-                <div style="display: inline-block"><i class="iconMenu-webLVS mdi mdi-warehouse"></i></div>
-            </a>
-            <a href="bestellung.php" data-toggle="tooltip" data-placement="top" id="bestellungen" title="Bestellungen">
-                <div style="display: inline-block;"><i class="iconMenu-webLVS mdi mdi-file-document-box-search"></i></div>
-            </a>
-            <a href="bestellung_anlegen.php" data-toggle="tooltip" data-placement="top" id="bestellung_anlegen" title="Bestellung anlegen">
-                <div style="display: inline-block;"><i class="iconMenu-webLVS mdi mdi-file-document-box-plus"></i></div>
-            </a>
-            <a href="auftrag.php" data-toggle="tooltip" data-placement="top" id="auftraege" title="Aufträge">
-                <div style="display: inline-block"><i class="iconMenu-webLVS mdi mdi-file-document-box-search-outline"></i></div>
-            </a>
-            <a href="auftrag_anlegen.php" data-toggle="tooltip" data-placement="top" id="auftrag_anlegen" title="Auftrag anlegen">
-                <div style="display: inline-block"><i class="iconMenu-webLVS mdi mdi-file-document-box-plus-outline"></i></div>
-            </a>
-            <a href="auftrag.php" data-toggle="tooltip" data-placement="top" id="auftraege" title="Aufträge">
-                <div style="display: none"><i class="iconMenu-webLVS mdi mdi-forklift" style="transform: scaleX(-1);"></i></div>
-            </a>
-            <a href="auftrag.php" data-toggle="tooltip" data-placement="top" id="auftraege" title="Aufträge">
-                <div style="display: none; transform: scaleX(-1);"><i class="iconMenu-webLVS mdi mdi-forklift" style=""></i></div>
-            </a>
-        </div>
-        <div class="iconMenu-webLVS-version">webLVS {{ appVersionNumber }} {{ appVersion }}</div>
-    </div>
-    <!-- Ende Sub-Navigation -->
     <!-- Beginn Seite -->
 
     <div class="text-center">

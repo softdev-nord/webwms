@@ -78,7 +78,7 @@
                         <ul class="dropdown-menu">
                             <li class="dropdown-submenu"><a href="#">Artikel</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="artikel.php">Übersicht Artikel</a></li>
+                                    <li><a href="{{ path('article') }}">Übersicht Artikel</a></li>
                                     <li><a href="artikel_anlegen.php">Artikel Anlegen</a></li>
                                     <li><a href="#">Sachmerkmale zuordnen</a></li>
                                 </ul>
@@ -194,8 +194,8 @@
                     <div class="text-center">
                         <img src="assets/images/webWMS_logo.png" style="width: 30%; margin-bottom: -20px;" alt="" >
                         <p style="text-align: center; margin-top: 30px; margin-bottom: 50px; font-size: 20px;">Das webbasierte Lagerverwaltungssystem</p>
-                        <p style="margin-bottom: 5px;"><?php echo $version?></p>
-                        <p style="margin-bottom: 25px;"><?php echo $version_number?></p>
+                        <p style="margin-bottom: 5px;">{{ appVersion }}</p>
+                        <p style="margin-bottom: 25px;">{{ appVersionNumber }}</p>
                         <p style="margin-bottom: 30px;"><?php echo $copyright?></p>
                         <p style="margin-bottom: 10px;">Lizenziert für:</p>
                         <p><?php echo $lizenz?></p>

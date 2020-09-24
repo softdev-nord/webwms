@@ -2,7 +2,7 @@
 	"list": [
 		{
 			"label": "Übersicht Artikel",
-			"value": "artikel.php"
+			"value": "/artikel"
 		},
 		{
 			"label": "Artikel anlegen",

@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Controller\RequirementsController as Requirements;
+use App\Controller\Requirements as Requirements;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomepageController extends AbstractController
+class Homepage extends AbstractController
 {
     /**
      * @Route("/homepage", name="homepage")

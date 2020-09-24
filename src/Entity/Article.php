@@ -18,11 +18,6 @@ class Article
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $art_id;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $art_nr;
@@ -70,18 +65,6 @@ class Article
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getArtId(): ?int
-    {
-        return $this->art_id;
-    }
-
-    public function setArtId(int $art_id): self
-    {
-        $this->art_id = $art_id;
-
-        return $this;
     }
 
     public function getArtNr(): ?string
