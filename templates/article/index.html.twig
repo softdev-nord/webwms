@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {{ include('header.html.twig') }}
+    {{ include('submenu.html.twig') }}
+<!-- Beginn Artikel-Übersicht -->
+<div class="wrapper-form">
+    <div class="wrapper-form-content">
+        <div class="card">
+            <div class="card-content">
+                <!-- Beginn Tabelle Artikel -->
+                <table id="Table" class="table-hover display compact cell-border">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="text-align: center">Artikel-Nr</th>
+                        <th scope="col" style="text-align: center">Bezeichnung</th>
+                        <th scope="col" style="text-align: center">Kategorie</th>
+                        <th scope="col" style="text-align: center">Gewicht in Kg</th>
+                        <th scope="col" style="text-align: center">EAN-Code</th>
+                        <th scope="col" style="text-align: center">Einheit</th>
+                        <th scope="col" style="text-align: center">Tiefe (mm)</th>
+                        <th scope="col" style="text-align: center">Breite (mm)</th>
+                        <th scope="col" style="text-align: center">Höhe (mm)</th>
+                        <th scope="col" style="text-align: center">Bestand</th>
+                    </tr>
+                    </thead>
+                    <tbody id="myTable">
+                    <tr>
+                        {% for article in article %}
+                        <td style="text-align: center">{{ article.artNr }}</td>
+                        <td style="text-align:left;">{{ article.artName }}</td>
+                        <td>{{ article.artKat }}</td>
+                        <td style="text-align: center">{{ article.artGew }}</td>
+                        <td style="text-align: center">{{ article.artEan }}</td>
+                        <td style="text-align: center">{{ article.artEinh }}</td>
+                        <td style="text-align: center">{{ article.artTiefe }}</td>
+                        <td style="text-align: center">{{ article.artBreite }}</td>
+                        <td style="text-align: center">{{ article.artHoehe }}</td>
+                        <td style="text-align: center"><?php if(is_null($artdsatz["SUM(lbw.lbw_menge)"])) {
+            echo 0;
+        } else echo number_format($artdsatz["SUM(lbw.lbw_menge)"], 0, ',', '.') ?></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Ende Tabelle Artikel -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ende Artikel-Übersicht -->
+{% endblock %}
