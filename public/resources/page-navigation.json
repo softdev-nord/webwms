@@ -1,0 +1,64 @@
+{
+	"list": [
+		{
+			"label": "Übersicht Artikel",
+			"value": "artikel.php"
+		},
+		{
+			"label": "Artikel anlegen",
+			"value": "artikel_anlegen.php"
+		},
+		{
+			"label": "Übersicht Bestellungen",
+			"value": "bestellung.php"
+		},
+		{
+			"label": "Bestellung anlegen",
+			"value": "bestellung_anlegen.php"
+		},
+		{
+			"label": "Übersicht Auftrag",
+			"value": "auftrag.php"
+		},
+		{
+			"label": "Auftrag anlegen",
+			"value": "auftrag_anlegen.php"
+		},
+		{
+			"label": "Übersicht Benutzer",
+			"value": "benutzer.php"
+		},
+		{
+			"label": "Benutzer anlegen",
+			"value": "benutzer_anlegen.php"
+		},
+		{
+			"label": "Lagerbelegung",
+			"value": "lagerbelegung.php"
+		},
+		{
+			"label": "Lagerbewegungen",
+			"value": "lagerbewegung.php"
+		},
+		{
+			"label": "Lagerlayout",
+			"value": "lagerlayout.php"
+		},
+		{
+			"label": "Lagerplatz",
+			"value": "lagerplatz.php"
+		},
+		{
+			"label": "Lagerzonen",
+			"value": "lagerzone.php"
+		},
+		{
+			"label": "Übersicht Lieferanten",
+			"value": "lieferanten.php"
+		},
+		{
+			"label": "Lieferanten anlegen",
+			"value": "lieferanten_anlegen.php"
+		}
+	]
+}
