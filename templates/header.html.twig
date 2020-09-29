@@ -1,5 +1,7 @@
 {# templates/header.html.twig #}
 
+{% extends 'base.html.twig' %}
+
 {% block header %}
 <!-- Beginn Navigation -->
     <nav class="navbar navbar-default navbar-expand-sm navbar-fixed-top" role="navigation">
@@ -54,7 +56,7 @@
                             aria-expanded="false">Bestellungen
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="bestellung.php">Übersicht Bestellungen</a></li>
+                            <li><a href="{{ path('orders') }}">Übersicht Bestellungen</a></li>
                             <li><a href="bestellung_anlegen.php">Bestellung anlegen</a></li>
                             <li><a href="#">Bestellung ändern/stornieren</a></li>
                         </ul>

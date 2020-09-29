@@ -5,3 +5,15 @@
 article:
     path: /artikel
     controller: App\Controller\Article::index
+
+orders:
+    path: /bestellungen
+    controller: App\Controller\Order::index
+
+orders_ajax:
+    path: /orders_ajax
+    controller: App\Controller\Order::getAllOrders
+
+order_pos_ajax:
+    path: /order_pos_ajax
+    controller: App\Controller\Order::getAllOrderPos

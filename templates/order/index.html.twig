@@ -1,0 +1,64 @@
+{% block copyright %}
+    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
+    --                                                                                                              --
+    --                      webLVS (c) Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                       --
+    --                                                                                                              --
+    -----------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE------------------------------------*/
+{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {{ include('header.html.twig') }}
+    {{ include('submenu.html.twig') }}
+    {{ dump() }}
+
+<!-- Beginn Übersicht Bestellungen -->
+<div class="wrapper-form">
+    <div class="wrapper-form-content">
+        <div class="card">
+            <div class="card-content">
+                <!-- Beginn Tabelle Bestellungen -->
+                <table id="bstTable" class="table-hover display compact cell-border">
+                    <thead>
+                    <tr>
+                        <th>Bestellungs-Nr</th>
+                        <th>Bestellungs Referenz</th>
+                        <th>Lieferanten-Nr</th>
+                        <th>Lieferanten-Name</th>
+                        <th>Bestellungsdatum</th>
+                        <th>Benutzer</th>
+                    </thead>
+                </table>
+                <!-- Ende Tabelle Bestellungen -->
+            </div>
+        </div>
+        <br><br>
+        <div class="card">
+            <div class="card-content">
+                <!-- Tabelle Bestellungspositionen -->
+                <table id="posTable" class="display compact">
+                    <thead>
+                    <tr>
+                        <th width="5%">Bestellungs-Nr</th>
+                        <th width="5%">Artikel-Nr</th>
+                        <th width="25%">Artikelname</th>
+                        <th width="5%">Menge</th>
+                        <th width="5%">Geliefert</th>
+                        <th width="5%">Offen</th>
+                    </thead>
+                </table>
+                <!-- Ende Tabelle Bestellungspositionen -->
+                <br><br>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ende Übersicht Bestellungen -->
+{% endblock %}
+
+{% block javascripts %}
+    <script src="assets/js/customJS/bstTable.js"></script>
+{% endblock %}
