@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace WebWMS\Controller;
 
-use App\Controller\Requirements as Requirements;
-use App\Repository\ArticleRepository;
+use WebWMS\Controller\Requirements as Requirements;
+use WebWMS\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,7 +23,7 @@ class Article extends AbstractController
 
     public function getAllArticle()
     {
-        $articles = $this->getDoctrine()->getRepository(\App\Entity\Article::class)->findAll();
+        $articles = $this->getDoctrine()->getRepository(\WebWMS\Entity\Article::class)->findAll();
 
         if (!$articles) {
             throw $this->createNotFoundException(

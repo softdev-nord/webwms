@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace WebWMS\Entity;
 
-use App\Repository\SupplierRepository;
+use WebWMS\Repository\SupplierRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

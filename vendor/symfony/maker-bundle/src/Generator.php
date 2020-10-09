@@ -102,17 +102,17 @@ class Generator
      *
      * Examples:
      *
-     *      // App\Entity\FeaturedProduct
+     *      // WebWMS\Entity\FeaturedProduct
      *      $gen->createClassNameDetails('FeaturedProduct', 'Entity');
      *      $gen->createClassNameDetails('featured product', 'Entity');
      *
-     *      // App\Controller\FooController
+     *      // WebWMS\Controller\FooController
      *      $gen->createClassNameDetails('foo', 'Controller', 'Controller');
      *
-     *      // App\Controller\Admin\FooController
+     *      // WebWMS\Controller\Admin\FooController
      *      $gen->createClassNameDetails('Foo\\Admin', 'Controller', 'Controller');
      *
-     *      // App\Controller\Security\Voter\CoolController
+     *      // WebWMS\Controller\Security\Voter\CoolController
      *      $gen->createClassNameDetails('Cool', 'Security\Voter', 'Voter');
      *
      *      // Full class names can also be passed. Imagine the user has an autoload
@@ -121,7 +121,7 @@ class Generator
      *      $gen->createClassNameDetails('Cool\\Stuff\\Balloon', 'Controller', 'Controller');
      *
      * @param string $name            The short "name" that will be turned into the class name
-     * @param string $namespacePrefix Recommended namespace where this class should live, but *without* the "App\\" part
+     * @param string $namespacePrefix Recommended namespace where this class should live, but *without* the "WebWMS\\" part
      * @param string $suffix          Optional suffix to guarantee is on the end of the class
      */
     public function createClassNameDetails(string $name, string $namespacePrefix, string $suffix = '', string $validationErrorMessage = ''): ClassNameDetails

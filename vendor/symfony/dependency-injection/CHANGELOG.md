@@ -100,9 +100,9 @@ CHANGELOG
    Before:
 
    ```php
-   namespace App\Controller;
+   namespace WebWMS\Controller;
 
-   use App\Mailer;
+   use WebWMS\Mailer;
 
    class DefaultController
    {
@@ -115,7 +115,7 @@ CHANGELOG
    ```
    ```yml
    services:
-       App\Controller\DefaultController:
+       WebWMS\Controller\DefaultController:
            autowire: true
    ```
 
@@ -126,14 +126,14 @@ CHANGELOG
    ```
    ```yml
    services:
-       App\Controller\DefaultController:
+       WebWMS\Controller\DefaultController:
            autowire: true
 
        # or
-       # App\Controller\DefaultController:
-       #     arguments: { $mailer: "@App\Mailer" }
+       # WebWMS\Controller\DefaultController:
+       #     arguments: { $mailer: "@WebWMS\Mailer" }
 
-       App\Mailer:
+       WebWMS\Mailer:
            autowire: true
     ```
  * removed autowiring services based on the types they implement

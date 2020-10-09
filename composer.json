@@ -61,14 +61,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
-            "webWMS\\": "src/"
+            "WebWMS\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/",
-            "webWMS\\Tests\\": "tests/"
+            "WebWMS\\Tests\\": "tests/"
         }
     },
     "replace": {

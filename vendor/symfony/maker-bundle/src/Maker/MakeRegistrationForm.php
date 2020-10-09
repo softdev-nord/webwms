@@ -107,7 +107,7 @@ final class MakeRegistrationForm extends AbstractMaker
             $userClass = $interactiveSecurityHelper->guessUserClass(
                 $io,
                 $providersData,
-                'Enter the User class that you want to create during registration (e.g. <fg=yellow>App\\Entity\\User</>)'
+                'Enter the User class that you want to create during registration (e.g. <fg=yellow>WebWMS\\Entity\\User</>)'
             )
         );
         $io->text(sprintf('Creating a registration form for <info>%s</info>', $userClass));

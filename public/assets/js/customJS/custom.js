@@ -52,6 +52,8 @@ $(function autocompleteMenu(){
 //DataTables
 $(function(){
 	$('#Table').dataTable({
+		"paging": false,
+		"searching": false,
 		"pagingType": "full_numbers",
 		"pageLength": 10,
 		"lengthChange": false,
@@ -91,7 +93,7 @@ $(function(){
 			}
 		]
 	});
-	$('#TablePos').DataTable({
+	$('#TablePos').dataTable({
 		"paging": false,
         "ordering": false,
         "info":     false,

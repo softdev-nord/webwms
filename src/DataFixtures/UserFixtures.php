@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DataFixtures;
+namespace WebWMS\DataFixtures;
 
-use App\Entity\User;
+use WebWMS\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;

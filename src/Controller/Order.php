@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace WebWMS\Controller;
 
-use App\Controller\Requirements as Requirements;
-use App\Entity\Order AS Orders;
-use App\Entity\OrderPos;
+use WebWMS\Controller\Requirements as Requirements;
+use WebWMS\Entity\Order AS Orders;
+use WebWMS\Entity\OrderPos;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +23,7 @@ class Order extends AbstractController
     }
 
     /**
-     * @Route("/bestellungen/ajax", name="orders_ajax")
+     * @Route("/oders_ajax", name="orders_ajax")
      */
     public function getAllOrders()
     {
@@ -31,7 +31,7 @@ class Order extends AbstractController
     }
 
     /**
-     * @Route("/bestellungen/positionen/ajax", name="order_pos_ajax")
+     * @Route("/order_pos_ajax", name="order_pos_ajax")
      */
     public function getAllOrderPos()
     {

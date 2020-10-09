@@ -153,7 +153,7 @@
 * Properly extend `AbstractController` and use core `@Route` annotation
   in `make:crud` - #246 thanks to @royklutman 
 
-* Fixed a bug when a class name contained the namespace `App\` - #243
+* Fixed a bug when a class name contained the namespace `WebWMS\` - #243
   thanks to @gmanen
 
 * Fix bug with `make:entity` when generating inside a sub-directory - #245
@@ -185,7 +185,7 @@
 1.5
 ===
 
-* Before 1.5, the `App\` namespace prefix was always assumed so that
+* Before 1.5, the `WebWMS\` namespace prefix was always assumed so that
   when you type a short class name, it is converted into a full class
   name with this prefix. Now, this is configurable #173 thanks to @upyx
 

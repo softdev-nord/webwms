@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace WebWMS\Entity;
 
-use App\Repository\OrderRepository;
+use WebWMS\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,6 +42,11 @@ class Order
      * @ORM\Column(type="date", nullable=true)
      */
     private $bst_bst_dat;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $bst_id;
 
     public function getId(): ?int
     {
@@ -104,6 +109,18 @@ class Order
     public function setBstBstDat(?\DateTimeInterface $bst_bst_dat): self
     {
         $this->bst_bst_dat = $bst_bst_dat;
+
+        return $this;
+    }
+
+    public function getBstId(): ?int
+    {
+        return $this->bst_id;
+    }
+
+    public function setBstId(int $bst_id): self
+    {
+        $this->bst_id = $bst_id;
 
         return $this;
     }

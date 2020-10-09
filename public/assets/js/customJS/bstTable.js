@@ -3,9 +3,8 @@ $(function() {
     var bstTable = $('#bstTable').DataTable( {
         // Ajax-Anfrage via PHP (Json)
         ajax: {
-            url:      '/bestellungen/ajax',
-            type:       'GET',
-            dataType:   'json',
+            'url':'/orders_ajax',
+            'dataSrc': ''
         },
         // Seitenlänge max. 10 Einträge
         pageLength: 10,
@@ -31,18 +30,17 @@ $(function() {
                 }
             }
         ],
-    });
+    } );
     // JS Funktion Ajax Daten für Bestellungspositionen
     var posTable = $('#posTable').DataTable( {
         "searching": false,
-        "paging": false,
         "info": false,
         "language": {
             "url": "./resources/dataTable.German.json",
         },
         // Ajax-Anfrage via PHP (Json)
         ajax: {
-            url:'/bestellungen/positionen/ajax',
+            'url':'/order_pos_ajax',
 
             // Es werden nur die Daten in der Positions-Tabelle geladen,
             // die mit der ID in der Bestellungs-Tabelle übereinstimmen.

@@ -55,10 +55,10 @@ The <info>%command.name%</info> command imports mapping information
 from an existing database:
 
 Generate annotation mappings into the src/ directory using App as the namespace:
-<info>php %command.full_name% App\\\Entity annotation --path=src/Entity</info>
+<info>php %command.full_name% WebWMS\\\Entity annotation --path=src/Entity</info>
 
 Generate xml mappings into the config/doctrine/ directory using App as the namespace:
-<info>php %command.full_name% App\\\Entity xml --path=config/doctrine</info>
+<info>php %command.full_name% WebWMS\\\Entity xml --path=config/doctrine</info>
 
 Generate XML mappings into a bundle:
 <info>php %command.full_name% "MyCustomBundle" xml</info>

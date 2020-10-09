@@ -735,8 +735,8 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('auto_mapping')
                             ->info('A collection of namespaces for which auto-mapping will be enabled by default, or null to opt-in with the EnableAutoMapping constraint.')
                             ->example([
-                                'App\\Entity\\' => [],
-                                'App\\WithSpecificLoaders\\' => ['validator.property_info_loader'],
+                                'WebWMS\\Entity\\' => [],
+                                'WebWMS\\WithSpecificLoaders\\' => ['validator.property_info_loader'],
                             ])
                             ->useAttributeAsKey('namespace')
                             ->normalizeKeys(false)

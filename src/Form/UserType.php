@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form;
+namespace WebWMS\Form;
 
-use App\Entity\User;
+use WebWMS\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;

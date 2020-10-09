@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace WebWMS\Repository;
 
-use App\Entity\StockRotation;
+use WebWMS\Entity\StockRotation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

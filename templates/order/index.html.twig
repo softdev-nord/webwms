@@ -11,9 +11,9 @@
 {% block title %}{{ page }}{{ appName }}{% endblock %}
 
 {% block body %}
+
     {{ include('header.html.twig') }}
     {{ include('submenu.html.twig') }}
-    {{ dump() }}
 
 <!-- Beginn Übersicht Bestellungen -->
 <div class="wrapper-form">
@@ -57,8 +57,7 @@
     </div>
 </div>
 <!-- Ende Übersicht Bestellungen -->
-{% endblock %}
-
-{% block javascripts %}
-    <script src="assets/js/customJS/bstTable.js"></script>
+    {% block javascripts %}
+        <script src="assets/js/customJS/bstTable.js"></script>
+    {% endblock %}
 {% endblock %}

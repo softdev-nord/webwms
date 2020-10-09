@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace WebWMS\Repository;
 
-use App\Entity\Article;
+use WebWMS\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

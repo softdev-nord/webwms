@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace WebWMS\Entity;
 
-use App\Repository\StockRotationRepository;
+use WebWMS\Repository\StockRotationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

@@ -114,7 +114,7 @@ class MakeResetPassword extends AbstractMaker
             $userClass = $interactiveSecurityHelper->guessUserClass(
                 $io,
                 $providersData,
-                'What is the User entity that should be used with the "forgotten password" feature? (e.g. <fg=yellow>App\\Entity\\User</>)'
+                'What is the User entity that should be used with the "forgotten password" feature? (e.g. <fg=yellow>WebWMS\\Entity\\User</>)'
             )
         );
 

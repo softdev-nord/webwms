@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace WebWMS\Entity;
 
-use App\Repository\ArticleRepository;
+use WebWMS\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

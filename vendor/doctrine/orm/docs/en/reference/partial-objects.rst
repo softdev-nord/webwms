@@ -66,7 +66,7 @@ keyword as follows:
 .. code-block:: php
 
     <?php
-    $q = $em->createQuery("select partial u.{id,name} from MyApp\Domain\User u");
+    $q = $em->createQuery("select partial u.{id,name} from MyWebWMS\Domain\User u");
 
 You can also get a partial reference instead of a proxy reference by
 calling:
@@ -74,7 +74,7 @@ calling:
 .. code-block:: php
 
     <?php
-    $reference = $em->getPartialReference('MyApp\Domain\User', 1);
+    $reference = $em->getPartialReference('MyWebWMS\Domain\User', 1);
 
 Partial references are objects with only the identifiers set as they
 are passed to the second argument of the ``getPartialReference()`` method.

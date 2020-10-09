@@ -1,6 +1,24 @@
 {# templates/header.html.twig #}
 
-{% extends 'base.html.twig' %}
+{% block javascripts %}
+    <script type="text/javascript" src="assets/js/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="assets/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="assets/js/dataTables.buttons.js"></script>
+    <script type="text/javascript" src="assets/js/dataTables.select.js"></script>
+    <script type="text/javascript" src="assets/js/moment.WithLocales.js"></script>
+    <script type="text/javascript" src="assets/js/dataTables.sum.js"></script>
+    <script type="text/javascript" src="assets/js/jszip.js"></script>
+    <script type="text/javascript" src="assets/js/pdfmake.js"></script>
+    <script type="text/javascript" src="assets/js/vfs_fonts.js"></script>
+    <script type="text/javascript" src="assets/js/buttons.html5.js"></script>
+    <script type="text/javascript" src="assets/js/buttons.print.js"></script>
+
+    <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+
+    <script type="text/javascript" src="assets/js/customJS/custom.js"></script>
+    <script type="text/javascript" src="assets/jBox/dist/jBox.all.js"></script>
+{% endblock %}
 
 {% block header %}
 <!-- Beginn Navigation -->

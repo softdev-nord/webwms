@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Repository;
+namespace WebWMS\Repository;
 
-use App\Entity\Article;
-use App\Entity\Order;
-use App\Entity\OrderPos;
-use App\Entity\StockRotation;
-use App\Entity\Supplier;
-use App\Entity\User;
+use WebWMS\Entity\Article;
+use WebWMS\Entity\Order;
+use WebWMS\Entity\OrderPos;
+use WebWMS\Entity\StockRotation;
+use WebWMS\Entity\Supplier;
+use WebWMS\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,27 +28,48 @@ class OrderPosRepository extends ServiceEntityRepository
     /**
      * Get all Order positions for Ajax-Request
      * @return JsonResponse
+     * @throws \Doctrine\DBAL\DBALException
      */
-    public function getAllOrderPos()
+    /*public function getAllOrderPos()
     {
         $qb = $this->createQueryBuilder('pos')
             ->select('pos.bst_id', 'bst.bst_nr', 'art.art_nr',
-                'art.art_name'/*, 'SUM(lbw.lbw_menge)'*/)
+                'art.art_name', 'pos.bst_pos_menge', 'SUM(lbw.lbw_menge) as lbw_menge')
             ->innerJoin(Order::class,
                 'bst',
-                'pos.bst_id = bst.id')
+                'pos.bst_id = bst.bst.id')
             ->innerJoin(Article::class,
                 'art',
                 'pos.art_id = art.id')
-            /*->leftJoin(StockRotation::class,
+            ->innerJoin(StockRotation::class,
                 'lbw',
-                'pos.id = lbw.bst_pos_id')*/
-            ->groupBy('pos.id')
-            ->orderBy('pos.id')
+                'pos.id = lbw.bst_pos_id')
+            ->groupBy('lbw.bst_pos_id')
+            ->orderBy('lbw.bst_pos_id')
             ->getQuery();
 
         $data = $qb->getArrayResult();
 
         return new JsonResponse($data);
+    }*/
+
+    public function getAllOrderPos()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "SELECT pos.bst_id, bst.bst_nr, art.art_nr, art.art_name, pos.bst_pos_menge, SUM(lbw.lbw_menge) AS lbw_menge
+				FROM order_pos AS pos
+					INNER JOIN orders AS bst
+				ON pos.bst_id = bst.bst_id
+					INNER JOIN article AS art 
+				ON pos.art_id = art.id
+					LEFT OUTER JOIN stock_rotation AS lbw 
+				ON pos.id = lbw.bst_pos_id
+				GROUP BY pos.id ORDER BY pos.id;";
+
+        $data = $conn->fetchAll($sql);
+
+        return new JsonResponse($data);
+
     }
 }

@@ -353,8 +353,8 @@ class MainConfiguration implements ConfigurationInterface
             ->children()
                 ->arrayNode('encoders')
                     ->example([
-                        'App\Entity\User1' => 'auto',
-                        'App\Entity\User2' => [
+                        'WebWMS\Entity\User1' => 'auto',
+                        'WebWMS\Entity\User2' => [
                             'algorithm' => 'auto',
                             'time_cost' => 8,
                             'cost' => 13,

@@ -490,9 +490,9 @@ function info ( api )
 	var cells   = api.cells( { selected: true } ).flatten().length;
 
 	var add = function ( el, name, num ) {
-		el.append( $('<span class="select-item" style="margin-left: 5px; color: coral;"/>').append( api.i18n(
+		el.append( $('<span class="select-item"/>').append( api.i18n(
 			'select.'+name+'s',
-			{ _: '%d '+name+'s selected', 0: '', 1: '1 '+name+' selected '},
+			{ _: '%d '+name+'s selected', 0: '', 1: '1 '+name+' selected' },
 			num
 		) ) );
 	};

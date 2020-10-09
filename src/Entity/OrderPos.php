@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace WebWMS\Entity;
 
-use App\Repository\OrderPosRepository;
+use WebWMS\Repository\OrderPosRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

@@ -87,7 +87,7 @@ final class MakerTestEnvironment
         $replacements = [
             [
                 'filename' => 'composer.json',
-                'find' => '"App\\\\": "src/"',
+                'find' => '"WebWMS\\\\": "src/"',
                 'replace' => '"'.$rootNamespace.'\\\\": "src/"',
             ],
             [
@@ -97,22 +97,22 @@ final class MakerTestEnvironment
             ],
             [
                 'filename' => 'bin/console',
-                'find' => 'use App\\Kernel',
+                'find' => 'use WebWMS\\Kernel',
                 'replace' => 'use '.$rootNamespace.'\\Kernel',
             ],
             [
                 'filename' => 'public/index.php',
-                'find' => 'use App\\Kernel',
+                'find' => 'use WebWMS\\Kernel',
                 'replace' => 'use '.$rootNamespace.'\\Kernel',
             ],
             [
                 'filename' => 'config/services.yaml',
-                'find' => 'App\\',
+                'find' => 'WebWMS\\',
                 'replace' => $rootNamespace.'\\',
             ],
             [
                 'filename' => '.env.test',
-                'find' => 'KERNEL_CLASS=\'App\Kernel\'',
+                'find' => 'KERNEL_CLASS=\'WebWMS\Kernel\'',
                 'replace' => 'KERNEL_CLASS=\''.$rootNamespace.'\Kernel\'',
             ],
         ];
@@ -352,9 +352,9 @@ final class MakerTestEnvironment
             [
                 // ugly way to autoload Maker & any other vendor libs needed in the command
                 'filename' => 'composer.json',
-                'find' => '"App\\\Tests\\\": "tests/"',
+                'find' => '"WebWMS\\\Tests\\\": "tests/"',
                 'replace' => sprintf(
-                    '"App\\\Tests\\\": "tests/",'."\n".'            "Symfony\\\Bundle\\\MakerBundle\\\": "%s/src/",'."\n".'            "PhpParser\\\": "%s/vendor/nikic/php-parser/lib/PhpParser/"',
+                    '"WebWMS\\\Tests\\\": "tests/",'."\n".'            "Symfony\\\Bundle\\\MakerBundle\\\": "%s/src/",'."\n".'            "PhpParser\\\": "%s/vendor/nikic/php-parser/lib/PhpParser/"',
                     // escape \ for Windows
                     $rootPath,
                     $rootPath
