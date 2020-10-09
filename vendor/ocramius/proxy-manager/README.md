@@ -41,9 +41,9 @@ Here's how you build a lazy loadable object with ProxyManager using a *Virtual P
 $factory = new \ProxyManager\Factory\LazyLoadingValueHolderFactory();
 
 $proxy = $factory->createProxy(
-    \MyApp\HeavyComplexObject::class,
+    \MyWebWMS\HeavyComplexObject::class,
     function (& $wrappedObject, $proxy, $method, $parameters, & $initializer) {
-        $wrappedObject = new \MyApp\HeavyComplexObject(); // instantiation logic here
+        $wrappedObject = new \MyWebWMS\HeavyComplexObject(); // instantiation logic here
         $initializer   = null; // turning off further lazy initialization
     }
 );

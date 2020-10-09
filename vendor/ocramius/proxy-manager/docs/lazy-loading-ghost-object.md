@@ -106,8 +106,8 @@ $initializer = function (
     $initializer   = null; // disable initialization
 
     // load data and modify the object here
-    $properties["\0MyApp\\Customer\0name"]    = 'Agent';
-    $properties["\0MyApp\\Customer\0surname"] = 'Smith'; 
+    $properties["\0MyWebWMS\\Customer\0name"]    = 'Agent';
+    $properties["\0MyWebWMS\\Customer\0surname"] = 'Smith'; 
     
     // you may also call methods on the object, but remember that
     // the constructor was not called yet:
@@ -116,7 +116,7 @@ $initializer = function (
     return true; // confirm that initialization occurred correctly
 };
 
-$ghostObject = $factory->createProxy(\MyApp\Customer::class, $initializer);
+$ghostObject = $factory->createProxy(\MyWebWMS\Customer::class, $initializer);
 ```
 
 You can now use your object as before:
@@ -373,16 +373,16 @@ $initializer = function (
     $initializer = null;
 
     // note that `getId` won't initialize our proxy here
-    $properties["\0MyApp\\User\0username"]     = $db->fetchField('users', 'username', $ghostObject->getId();
-    $properties["\0MyApp\\User\0passwordHash"] = $db->fetchField('users', 'passwordHash', $ghostObject->getId();
-    $properties["\0MyApp\\User\0email"]        = $db->fetchField('users', 'email', $ghostObject->getId();
-    $properties["\0MyApp\\User\0address"]      = $db->fetchField('users', 'address', $ghostObject->getId();
+    $properties["\0MyWebWMS\\User\0username"]     = $db->fetchField('users', 'username', $ghostObject->getId();
+    $properties["\0MyWebWMS\\User\0passwordHash"] = $db->fetchField('users', 'passwordHash', $ghostObject->getId();
+    $properties["\0MyWebWMS\\User\0email"]        = $db->fetchField('users', 'email', $ghostObject->getId();
+    $properties["\0MyWebWMS\\User\0address"]      = $db->fetchField('users', 'address', $ghostObject->getId();
 
     return true;
 };
 $proxyOptions = [
     'skippedProperties' => [
-        "\0MyApp\\User\0id",
+        "\0MyWebWMS\\User\0id",
     ],
 ];
 

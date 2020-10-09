@@ -26,7 +26,7 @@ class <?= $class_name ?> implements NormalizerInterface<?= $cacheable_interface 
 
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof \App\Entity\BlogPost;
+        return $data instanceof \WebWMS\Entity\BlogPost;
     }
 <?php if ($cacheable_interface): ?>
 

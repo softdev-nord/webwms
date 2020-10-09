@@ -11,7 +11,7 @@ $ composer require symfony/routing
 ```
 
 ```php
-use App\Controller\BlogController;
+use WebWMS\Controller\BlogController;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
@@ -28,7 +28,7 @@ $context = new RequestContext();
 $matcher = new UrlMatcher($routes, $context);
 $parameters = $matcher->match('/blog/lorem-ipsum');
 // $parameters = [
-//     '_controller' => 'App\Controller\BlogController',
+//     '_controller' => 'WebWMS\Controller\BlogController',
 //     'slug' => 'lorem-ipsum',
 //     '_route' => 'blog_show'
 // ]

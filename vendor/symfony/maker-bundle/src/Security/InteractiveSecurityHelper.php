@@ -92,7 +92,7 @@ authenticators will be ignored, and can be blank.',
         }
 
         $userClass = $io->ask(
-            $questionText ?? 'Enter the User class that you want to authenticate (e.g. <fg=yellow>App\\Entity\\User</>)',
+            $questionText ?? 'Enter the User class that you want to authenticate (e.g. <fg=yellow>WebWMS\\Entity\\User</>)',
             $this->guessUserClassDefault(),
             [Validator::class, 'classIsUserInterface']
         );
@@ -102,12 +102,12 @@ authenticators will be ignored, and can be blank.',
 
     private function guessUserClassDefault(): string
     {
-        if (class_exists('App\\Entity\\User') && isset(class_implements('App\\Entity\\User')[UserInterface::class])) {
-            return 'App\\Entity\\User';
+        if (class_exists('WebWMS\\Entity\\User') && isset(class_implements('WebWMS\\Entity\\User')[UserInterface::class])) {
+            return 'WebWMS\\Entity\\User';
         }
 
-        if (class_exists('App\\Security\\User') && isset(class_implements('App\\Security\\User')[UserInterface::class])) {
-            return 'App\\Security\\User';
+        if (class_exists('WebWMS\\Security\\User') && isset(class_implements('WebWMS\\Security\\User')[UserInterface::class])) {
+            return 'WebWMS\\Security\\User';
         }
 
         return '';

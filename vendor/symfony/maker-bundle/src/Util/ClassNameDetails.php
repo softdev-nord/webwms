@@ -42,8 +42,8 @@ final class ClassNameDetails
      * Returns the original class name the user entered (after
      * being cleaned up).
      *
-     * For example, assuming the namespace is App\Entity:
-     *      App\Entity\Admin\User => Admin\User
+     * For example, assuming the namespace is WebWMS\Entity:
+     *      WebWMS\Entity\Admin\User => Admin\User
      */
     public function getRelativeName(): string
     {

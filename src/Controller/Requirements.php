@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 

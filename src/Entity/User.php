@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace WebWMS\Entity;
 
-use App\Repository\UserRepository;
+use WebWMS\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 

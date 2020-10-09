@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace WebWMS\Controller;
 
-use App\Controller\Requirements as Requirements;
+use WebWMS\Controller\Requirements as Requirements;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 

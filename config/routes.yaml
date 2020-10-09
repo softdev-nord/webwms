@@ -1,7 +1,19 @@
 #index:
 #    path: /
-#    controller: App\Controller\DefaultController::index
+#    controller: WebWMS\Controller\DefaultController::index
 
 article:
     path: /artikel
-    controller: App\Controller\Article::index
+    controller: WebWMS\Controller\Article::index
+
+orders:
+    path: /bestellungen
+    controller: WebWMS\Controller\Order::index
+
+orders_ajax:
+    path: /orders_ajax
+    controller: WebWMS\Controller\Order::getAllOrders
+
+order_pos_ajax:
+    path: /order_pos_ajax
+    controller: WebWMS\Controller\Order::getAllOrderPos

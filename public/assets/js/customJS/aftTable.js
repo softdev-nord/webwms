@@ -1,6 +1,6 @@
 // JS Funktion Ajax Daten für Übersicht Aufträge
 $(function() {
-	var aftTable = $('#aftTable').DataTable( {
+	var aftTable = $('#aftTable').dataTable( {
 		"lengthChange": false,
 		// Ajax-Anfrage via PHP (Json)
 		ajax: {
@@ -34,7 +34,7 @@ $(function() {
         ],
 	} );
 	// JS Funktion Ajax Daten für Auftragspositionen
-	var posTable = $('#posTable').DataTable( {
+	var posTable = $('#posTable').dataTable( {
 		"searching": false,
 		"lengthChange": false,
 		"info": false,

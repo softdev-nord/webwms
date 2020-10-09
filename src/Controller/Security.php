@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Controller;
+namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
-use App\Controller\Requirements as Requirements;
+use WebWMS\Controller\Requirements as Requirements;
 use Doctrine;
 
 class Security extends AbstractController

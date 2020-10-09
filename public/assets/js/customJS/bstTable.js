@@ -3,7 +3,7 @@ $(function() {
     var bstTable = $('#bstTable').DataTable( {
         // Ajax-Anfrage via PHP (Json)
         ajax: {
-            'url':'../ajax/bestellung.ajax.php',
+            'url':'/orders_ajax',
             'dataSrc': ''
         },
         // Seitenlänge max. 10 Einträge
@@ -21,7 +21,7 @@ $(function() {
             { "data": "lief_nr" },
             { "data": "lief_name" },
             { "data": "bst_bst_dat" },
-            { "data": "ben_log_name" }
+            { "data": "username" }
         ],
         "columnDefs": [
             { targets : [4], render:function ( data ) {
@@ -34,14 +34,13 @@ $(function() {
     // JS Funktion Ajax Daten für Bestellungspositionen
     var posTable = $('#posTable').DataTable( {
         "searching": false,
-        "paging": false,
         "info": false,
         "language": {
             "url": "./resources/dataTable.German.json",
         },
         // Ajax-Anfrage via PHP (Json)
         ajax: {
-            url:'../ajax/bestellungPos.ajax.php',
+            'url':'/order_pos_ajax',
 
             // Es werden nur die Daten in der Positions-Tabelle geladen,
             // die mit der ID in der Bestellungs-Tabelle übereinstimmen.

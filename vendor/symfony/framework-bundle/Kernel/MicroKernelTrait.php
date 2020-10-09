@@ -39,7 +39,7 @@ trait MicroKernelTrait
      *     $routes->import($this->getProjectDir().'/config/*.{yaml,php}');
      *     $routes
      *         ->add('admin_dashboard', '/admin')
-     *         ->controller('App\Controller\AdminController::dashboard')
+     *         ->controller('WebWMS\Controller\AdminController::dashboard')
      *     ;
      */
     //abstract protected function configureRoutes(RoutingConfigurator $routes): void;

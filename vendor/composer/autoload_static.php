@@ -152,8 +152,8 @@ class ComposerStaticInitcaaf58900e9d7dabc67ba3c0711a8695
         ),
         'A' => 
         array (
-            'App\\Tests\\' => 10,
-            'App\\' => 4,
+            'WebWMS\\Tests\\' => 10,
+            'WebWMS\\' => 4,
         ),
     );
 
@@ -555,11 +555,11 @@ class ComposerStaticInitcaaf58900e9d7dabc67ba3c0711a8695
         array (
             0 => __DIR__ . '/..' . '/doctrine/doctrine-bundle',
         ),
-        'App\\Tests\\' => 
+        'WebWMS\\Tests\\' =>
         array (
             0 => __DIR__ . '/../..' . '/tests',
         ),
-        'App\\' => 
+        'WebWMS\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
@@ -576,15 +576,15 @@ class ComposerStaticInitcaaf58900e9d7dabc67ba3c0711a8695
     );
 
     public static $classMap = array (
-        'App\\Controller\\Homepage' => __DIR__ . '/../..' . '/src/Controller/Homepage.php',
-        'App\\Controller\\Requirements' => __DIR__ . '/../..' . '/src/Controller/Requirements.php',
-        'App\\Controller\\Security' => __DIR__ . '/../..' . '/src/Controller/Security.php',
-        'App\\DataFixtures\\UserFixtures' => __DIR__ . '/../..' . '/src/DataFixtures/UserFixtures.php',
-        'App\\Entity\\User' => __DIR__ . '/../..' . '/src/Entity/User.php',
-        'App\\Form\\UserType' => __DIR__ . '/../..' . '/src/Form/UserType.php',
-        'App\\Kernel' => __DIR__ . '/../..' . '/src/Kernel.php',
-        'App\\Repository\\UserRepository' => __DIR__ . '/../..' . '/src/Repository/UserRepository.php',
-        'App\\Security\\LoginFormAuthenticator' => __DIR__ . '/../..' . '/src/Security/LoginFormAuthenticator.php',
+        'WebWMS\\Controller\\Homepage' => __DIR__ . '/../..' . '/src/Controller/Homepage.php',
+        'WebWMS\\Controller\\Requirements' => __DIR__ . '/../..' . '/src/Controller/Requirements.php',
+        'WebWMS\\Controller\\Security' => __DIR__ . '/../..' . '/src/Controller/Security.php',
+        'WebWMS\\DataFixtures\\UserFixtures' => __DIR__ . '/../..' . '/src/DataFixtures/UserFixtures.php',
+        'WebWMS\\Entity\\User' => __DIR__ . '/../..' . '/src/Entity/User.php',
+        'WebWMS\\Form\\UserType' => __DIR__ . '/../..' . '/src/Form/UserType.php',
+        'WebWMS\\Kernel' => __DIR__ . '/../..' . '/src/Kernel.php',
+        'WebWMS\\Repository\\UserRepository' => __DIR__ . '/../..' . '/src/Repository/UserRepository.php',
+        'WebWMS\\Security\\LoginFormAuthenticator' => __DIR__ . '/../..' . '/src/Security/LoginFormAuthenticator.php',
         'Collator' => __DIR__ . '/..' . '/symfony/intl/Resources/stubs/Collator.php',
         'Doctrine\\Bundle\\DoctrineBundle\\Command\\CreateDatabaseDoctrineCommand' => __DIR__ . '/..' . '/doctrine/doctrine-bundle/Command/CreateDatabaseDoctrineCommand.php',
         'Doctrine\\Bundle\\DoctrineBundle\\Command\\DoctrineCommand' => __DIR__ . '/..' . '/doctrine/doctrine-bundle/Command/DoctrineCommand.php',

@@ -45,14 +45,14 @@ application:
     doctrine_migrations:
         # List of namespace/path pairs to search for migrations, at least one required
         migrations_paths:
-            'App\Migrations': 'src/App'
-            'AnotherApp\Migrations': '/path/to/other/migrations'
+            'WebWMS\Migrations': 'src/App'
+            'AnotherWebWMS\Migrations': '/path/to/other/migrations'
             'SomeBundle\Migrations': '@SomeBundle/Migrations'
 
         # List of additional migration classes to be loaded, optional
         migrations:
-            - 'App\Migrations\Version123'
-            - 'App\Migrations\Version123'
+            - 'WebWMS\Migrations\Version123'
+            - 'WebWMS\Migrations\Version123'
 
         # Connection to use for the migrations
         connection: default
@@ -221,7 +221,7 @@ You can skip single migrations by explicitly adding them to the ``migration_vers
 
 .. code-block:: terminal
 
-    $ php bin/console doctrine:migrations:version 'App\Migrations\Version123' --add
+    $ php bin/console doctrine:migrations:version 'WebWMS\Migrations\Version123' --add
 
 .. tip::
 
@@ -247,7 +247,7 @@ for Doctrine's ORM:
     .. code-block:: php-annotations
 
         // src/Entity/User.php
-        namespace App\Entity;
+        namespace WebWMS\Entity;
 
         use Doctrine\ORM\Mapping as ORM;
 
@@ -272,7 +272,7 @@ for Doctrine's ORM:
     .. code-block:: yaml
 
         # config/doctrine/User.orm.yml
-        App\Entity\User:
+        WebWMS\Entity\User:
             type: entity
             table: user
             id:
@@ -293,7 +293,7 @@ for Doctrine's ORM:
               xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                             http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-            <entity name="App\Entity\User" table="user">
+            <entity name="WebWMS\Entity\User" table="user">
                 <id name="id" type="integer" column="id">
                     <generator strategy="AUTO"/>
                 </id>

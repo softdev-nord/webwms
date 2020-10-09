@@ -9,8 +9,8 @@ This can be the name of an entity like <info>User</info>
 
 <info>php %command.full_name% UserType User</info>
 
-You can also specify a fully qualified name to another class like <info>\App\Dto\UserData</info>.
+You can also specify a fully qualified name to another class like <info>\WebWMS\Dto\UserData</info>.
 Slashes must be escaped in the argument.
 
-<info>php %command.full_name% UserType \\App\\Dto\\UserData</info>
+<info>php %command.full_name% UserType \\WebWMS\\Dto\\UserData</info>
 
