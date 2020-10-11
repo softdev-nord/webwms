@@ -1,0 +1,65 @@
+{% block copyright %}
+    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
+    --                                                                                                              --
+    --                      webLVS (c) Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                       --
+    --                                                                                                              --
+    -----------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE------------------------------------*/
+{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+
+    {{ include('header.html.twig') }}
+    {{ include('submenu.html.twig') }}
+
+    <!-- Beginn Übersicht Aufträge -->
+    <div class="wrapper-form">
+        <div class="wrapper-form-content">
+            <div class="card">
+                <div class="card-content">
+                    <!-- Beginn Tabelle Aufträge -->
+                    <table id="aftTable" class="table-hover display compact cell-border">
+                        <thead>
+                        <tr>
+                            <th>Auftrags-Nr</th>
+                            <th>Auftrags Referenz</th>
+                            <th>Kunden-Nr</th>
+                            <th>Kunden-Name</th>
+                            <th>Auftragsdatum</th>
+                            <th>Bestelldatum</th>
+                            <th>Benutzer</th>
+                        </thead>
+                    </table>
+                    <!-- Ende Tabelle Aufträge -->
+                </div>
+            </div>
+            <br><br>
+            <div class="card">
+                <div class="card-content">
+                    <!-- Beginn Tabelle Auftragspositionen -->
+                    <table id="posTable" class="table-hover display compact cell-border">
+                        <thead>
+                        <tr>
+                            <th width="5%">Auftrags-Nr</th>
+                            <th width="5%">Artikel-Nr</th>
+                            <th width="25%">Artikelname</th>
+                            <th width="5%">Menge</th>
+                            <th width="5%">Geliefert</th>
+                            <th width="5%">Offen</th>
+                        </thead>
+                    </table>
+                    <!-- Ende Tabelle Auftragspositionen -->
+                    <br><br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% block javascripts %}
+        <!-- JavaScript für Auftragsübersicht -->
+        <script src="assets/js/customJS/aftTable.js"></script>
+    {% endblock %}
+{% endblock %}

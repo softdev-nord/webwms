@@ -1,6 +1,7 @@
 // JS Funktion Ajax Daten für Übersicht Bestellungen
 $(function() {
     var bstTable = $('#bstTable').DataTable( {
+        "lengthChange": false,
         // Ajax-Anfrage via PHP (Json)
         ajax: {
             'url':'/orders_ajax',
@@ -33,6 +34,7 @@ $(function() {
     } );
     // JS Funktion Ajax Daten für Bestellungspositionen
     var posTable = $('#posTable').DataTable( {
+        "lengthChange": false,
         "searching": false,
         "info": false,
         "language": {

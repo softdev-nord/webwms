@@ -1,10 +1,10 @@
 // JS Funktion Ajax Daten für Übersicht Aufträge
 $(function() {
-	var aftTable = $('#aftTable').dataTable( {
+	var aftTable = $('#aftTable').DataTable( {
 		"lengthChange": false,
 		// Ajax-Anfrage via PHP (Json)
 		ajax: {
-			'url':'../ajax/auftrag.ajax.php',
+			'url':'/customer_order_ajax',
 			'dataSrc': ''
 		},
 		// Seitenlänge max. 10 Einträge
@@ -17,13 +17,13 @@ $(function() {
 			style: 'single'
 		},
 		columns: [
-			{ "data": "aft_nr" },
-			{ "data": "aft_ref" },
-			{ "data": "kd_nr" },
-			{ "data": "kd_name" },
-			{ "data": "aft_aft_dat" },
-			{ "data": "aft_bst_dat" },
-			{ "data": "ben_log_name" }
+			{ "data": "customer_order_nr" },
+			{ "data": "customer_order_reference" },
+			{ "data": "customer_nr" },
+			{ "data": "customer_name" },
+			{ "data": "customer_order_date" },
+			{ "data": "customer_order_order_date" },
+			{ "data": "username" }
 		],
         "columnDefs": [
             { targets : [4,5], render:function ( data ) {
@@ -34,7 +34,7 @@ $(function() {
         ],
 	} );
 	// JS Funktion Ajax Daten für Auftragspositionen
-	var posTable = $('#posTable').dataTable( {
+	var posTable = $('#posTable').DataTable( {
 		"searching": false,
 		"lengthChange": false,
 		"info": false,
@@ -43,7 +43,7 @@ $(function() {
 		},
 		// Ajax-Anfrage via PHP (Json)
 		ajax: {
-			url:'../ajax/auftragPos.ajax.php',
+			'url':'/customer_order_pos_ajax',
 
 			// Es werden nur die Daten in der Positions-Tabelle geladen,
 			// die mit der ID in der Auftrags-Tabelle übereinstimmen.
@@ -52,10 +52,10 @@ $(function() {
 				var rows = [];
 
 				if ( selected.any() ) {
-					var aft_id = selected.data().aft_id;
+					var customer_order_id = selected.data().customer_order_id;
 					for (i=0; i < data.length; i++) {
 						var row = data[i];
-						if (row.aft_id === aft_id) {
+						if (row.customer_order_id === customer_order_id) {
 							rows.push(row);
 						}
 					}
@@ -66,10 +66,10 @@ $(function() {
 		// Seitenlänge max. 5 Einträge
 		pageLength: 5,
 		columns: [
-			{"data": "aft_nr"},
+			{"data": "customer_order_nr"},
 			{"data": "art_nr"},
 			{"data": "art_name"},
-			{"data": "aft_pos_menge"},
+			{"data": "customer_order_pos_quantity"},
 			{"data": "lbw_menge",
 				render:function ( data, type, row ) {
 					if (row["lbw_menge"] != null){
@@ -84,9 +84,9 @@ $(function() {
 				render:function ( data, type, row ) {
 					if (row["lbw_menge"] != null){
 						//console.log(row);
-						return parseInt(row["aft_pos_menge"]) + parseInt(row["lbw_menge"]);
+						return parseInt(row["customer_order_pos_quantity"]) + parseInt(row["lbw_menge"]);
 					}else{
-						return row["aft_pos_menge"];
+						return row["customer_order_pos_quantity"];
 					}
 				},
 			}

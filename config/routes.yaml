@@ -10,6 +10,10 @@ orders:
     path: /bestellungen
     controller: WebWMS\Controller\Order::index
 
+customer_orders:
+    path: /auftrag
+    controller: WebWMS\Controller\CustomerOrder::index
+
 orders_ajax:
     path: /orders_ajax
     controller: WebWMS\Controller\Order::getAllOrders
@@ -17,3 +21,11 @@ orders_ajax:
 order_pos_ajax:
     path: /order_pos_ajax
     controller: WebWMS\Controller\Order::getAllOrderPos
+
+customer_order_ajax:
+    path: /customer_order_ajax
+    controller: WebWMS\Controller\CustomerOrder::getAllCustomerOrders
+
+customer_order_pos_ajax:
+    path: /customer_order_pos_ajax
+    controller: WebWMS\Controller\CustomerOrder::getAllCustomerOrdersPos
