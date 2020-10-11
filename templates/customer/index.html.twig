@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {{ include('header.html.twig') }}
+    {{ include('submenu.html.twig') }}
+    <!-- Beginn Übersicht Kunden -->
+    <div class="wrapper-form">
+        <div class="wrapper-form-content">
+            <div class="card">
+                <div class="card-content">
+                    <!-- Beginn Tabelle Kunden -->
+                    <table id="Table" class="table-hover display compact cell-border">
+                        <thead>
+                        <tr>
+                            <th scope="col">Kunden-Nr</th>
+                            <th scope="col">Kunden-Name</th>
+                            <th scope="col">Anschrift Zusatz</th>
+                            <th scope="col">Straße</th>
+                            <th scope="col">Haus-Nr</th>
+                            <th scope="col">Land</th>
+                            <th scope="col">PLZ</th>
+                            <th scope="col">Ort</th>
+                        </tr>
+                        </thead>
+                        <tbody id="myTable">
+                        <tr>
+                            {% for customer in customer %}
+                            <td>{{ customer.customerNr }}</td>
+                            <td>{{ customer.customerName }}</td>
+                            <td>{{ customer.customerAddressAddition }}</td>
+                            <td>{{ customer.customerAddressStreet }}</td>
+                            <td>{{ customer.customerAddressStreetNr }}</td>
+                            <td>{{ customer.customerCountryCode }}</td>
+                            <td>{{ customer.customerZipCode }}</td>
+                            <td>{{ customer.customerCity }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <!-- Beginn Tabelle Kunden -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ende Übersicht Kunden -->
+{% endblock %}

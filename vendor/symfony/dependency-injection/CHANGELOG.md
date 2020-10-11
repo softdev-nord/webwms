@@ -20,7 +20,6 @@ CHANGELOG
  * allowed loading and dumping tags with an attribute named "name"
  * deprecated `Definition::getDeprecationMessage()`, use `Definition::getDeprecation()` instead
  * deprecated `Alias::getDeprecationMessage()`, use `Alias::getDeprecation()` instead
- * deprecated PHP-DSL's `inline()` function, use `service()` instead
  * added support of PHP8 static return type for withers
  * added `AliasDeprecatedPublicServicesPass` to deprecate public services to private
 
@@ -100,9 +99,9 @@ CHANGELOG
    Before:
 
    ```php
-   namespace WebWMS\Controller;
+   namespace App\Controller;
 
-   use WebWMS\Mailer;
+   use App\Mailer;
 
    class DefaultController
    {
@@ -115,7 +114,7 @@ CHANGELOG
    ```
    ```yml
    services:
-       WebWMS\Controller\DefaultController:
+       App\Controller\DefaultController:
            autowire: true
    ```
 
@@ -126,14 +125,14 @@ CHANGELOG
    ```
    ```yml
    services:
-       WebWMS\Controller\DefaultController:
+       App\Controller\DefaultController:
            autowire: true
 
        # or
-       # WebWMS\Controller\DefaultController:
-       #     arguments: { $mailer: "@WebWMS\Mailer" }
+       # App\Controller\DefaultController:
+       #     arguments: { $mailer: "@App\Mailer" }
 
-       WebWMS\Mailer:
+       App\Mailer:
            autowire: true
     ```
  * removed autowiring services based on the types they implement

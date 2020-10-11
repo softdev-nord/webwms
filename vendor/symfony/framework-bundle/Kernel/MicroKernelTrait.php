@@ -39,7 +39,7 @@ trait MicroKernelTrait
      *     $routes->import($this->getProjectDir().'/config/*.{yaml,php}');
      *     $routes
      *         ->add('admin_dashboard', '/admin')
-     *         ->controller('WebWMS\Controller\AdminController::dashboard')
+     *         ->controller('App\Controller\AdminController::dashboard')
      *     ;
      */
     //abstract protected function configureRoutes(RoutingConfigurator $routes): void;
@@ -152,7 +152,7 @@ trait MicroKernelTrait
     {
         $file = (new \ReflectionObject($this))->getFileName();
         /* @var RoutingPhpFileLoader $kernelLoader */
-        $kernelLoader = $loader->getResolver()->resolve($file);
+        $kernelLoader = $loader->getResolver()->resolve($file, 'php');
         $kernelLoader->setCurrentDir(\dirname($file));
         $collection = new RouteCollection();
 
