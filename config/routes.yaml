@@ -6,6 +6,10 @@ article:
     path: /artikel
     controller: WebWMS\Controller\Article::index
 
+article_ajax:
+    path: /article_ajax
+    controller: WebWMS\Controller\Article::getAllArticles
+
 orders:
     path: /bestellungen
     controller: WebWMS\Controller\Order::index
@@ -29,3 +33,11 @@ customer_order_ajax:
 customer_order_pos_ajax:
     path: /customer_order_pos_ajax
     controller: WebWMS\Controller\CustomerOrder::getAllCustomerOrdersPos
+
+stock_location:
+    path: /stock_location
+    controller: WebWMS\Controller\Stock::stockLocations
+
+stock_rotation_ajax:
+    path: /stock_rotation_ajax
+    controller: WebWMS\Controller\Stock::getAllStockRotations
