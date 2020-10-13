@@ -3,27 +3,18 @@
 namespace WebWMS\Controller;
 
 use WebWMS\Controller\Requirements as Requirements;
-use WebWMS\Repository\ArticleRepository;
+use WebWMS\Entity\Article AS Articles;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\DBAL;
 
 class Article extends AbstractController
 {
     /**
-     * @var DBAL\Connection
+     * @Route("/article_ajax", name="article_ajax")
      */
-    private $db;
-
-    public function __construct(DBAL\Connection $db)
+    public function getAllArticles()
     {
-        $this->db = $db;
-    }
-
-    public function getAllArticle()
-    {
-        $articles = $this->getDoctrine()->getRepository(\WebWMS\Entity\Article::class)->findAll();
+        $articles = $this->getDoctrine()->getRepository(Articles::class)->getAllArticlesWithJoin();
 
         if (!$articles) {
             throw $this->createNotFoundException(
@@ -44,7 +35,7 @@ class Article extends AbstractController
             'appVersion' => Requirements::APP_VERSION,
             'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
             'page' => 'Artikelübersicht',
-            'article' => $this->getAllArticle(),
+            'article' => $this->getAllArticles(),
         ]);
     }
 }

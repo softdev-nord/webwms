@@ -20,7 +20,7 @@ class StockRotation
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $lpz_id;
+    private $stock_location_id;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -30,53 +30,57 @@ class StockRotation
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $ben_id;
+    private $usr_id;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $aft_pos_id;
+    private $customer_order_id;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $bst_pos_id;
+    private $supplier_order_id;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $ba_id;
+    private $movement_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $lbw_menge;
+    private $pos_quantity;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $lbw_zu_datum;
+    private $access_date;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $lbw_ab_datum;
+    private $dispatch_date;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getLpzId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getStockLocationId()
     {
-        return $this->lpz_id;
+        return $this->stock_location_id;
     }
 
-    public function setLpzId(int $lpz_id): self
+    /**
+     * @param mixed $stock_location_id
+     */
+    public function setStockLocationId($stock_location_id): void
     {
-        $this->lpz_id = $lpz_id;
-
-        return $this;
+        $this->stock_location_id = $stock_location_id;
     }
 
     public function getArtId(): ?int
@@ -91,87 +95,115 @@ class StockRotation
         return $this;
     }
 
-    public function getBenId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getUsrId()
     {
-        return $this->ben_id;
+        return $this->usr_id;
     }
 
-    public function setBenId(int $ben_id): self
+    /**
+     * @param mixed $usr_id
+     */
+    public function setUsrId($usr_id): void
     {
-        $this->ben_id = $ben_id;
-
-        return $this;
+        $this->usr_id = $usr_id;
     }
 
-    public function getAftPosId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getCustomerOrderId()
     {
-        return $this->aft_pos_id;
+        return $this->customer_order_id;
     }
 
-    public function setAftPosId(int $aft_pos_id): self
+    /**
+     * @param mixed $customer_order_id
+     */
+    public function setCustomerOrderId($customer_order_id): void
     {
-        $this->aft_pos_id = $aft_pos_id;
-
-        return $this;
+        $this->customer_order_id = $customer_order_id;
     }
 
-    public function getBstPosId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getSupplierOrderId()
     {
-        return $this->bst_pos_id;
+        return $this->supplier_order_id;
     }
 
-    public function setBstPosId(int $bst_pos_id): self
+    /**
+     * @param mixed $supplier_order_id
+     */
+    public function setSupplierOrderId($supplier_order_id): void
     {
-        $this->bst_pos_id = $bst_pos_id;
-
-        return $this;
+        $this->supplier_order_id = $supplier_order_id;
     }
 
-    public function getBaId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getMovementId()
     {
-        return $this->ba_id;
+        return $this->movement_id;
     }
 
-    public function setBaId(int $ba_id): self
+    /**
+     * @param mixed $movement_id
+     */
+    public function setMovementId($movement_id): void
     {
-        $this->ba_id = $ba_id;
-
-        return $this;
+        $this->movement_id = $movement_id;
     }
 
-    public function getLbwMenge(): ?int
+    /**
+     * @return mixed
+     */
+    public function getPosQuantity()
     {
-        return $this->lbw_menge;
+        return $this->pos_quantity;
     }
 
-    public function setLbwMenge(int $lbw_menge): self
+    /**
+     * @param mixed $pos_quantity
+     */
+    public function setPosQuantity($pos_quantity): void
     {
-        $this->lbw_menge = $lbw_menge;
-
-        return $this;
+        $this->pos_quantity = $pos_quantity;
     }
 
-    public function getLbwZuDatum(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getAccessDate(): ?\DateTimeInterface
     {
-        return $this->lbw_zu_datum;
+        return $this->access_date;
     }
 
-    public function setLbwZuDatum(?\DateTimeInterface $lbw_zu_datum): self
+    /**
+     * @param mixed $access_date
+     */
+    public function setAccessDate(?\DateTimeInterface $access_date): void
     {
-        $this->lbw_zu_datum = $lbw_zu_datum;
-
-        return $this;
+        $this->access_date = $access_date;
     }
 
-    public function getLbwAbDatum(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getDispatchDate(): ?\DateTimeInterface
     {
-        return $this->lbw_ab_datum;
+        return $this->dispatch_date;
     }
 
-    public function setLbwAbDatum(?\DateTimeInterface $lbw_ab_datum): self
+    /**
+     * @param mixed $dispatch_date
+     */
+    public function setDispatchDate(?\DateTimeInterface $dispatch_date): void
     {
-        $this->lbw_ab_datum = $lbw_ab_datum;
-
-        return $this;
+        $this->dispatch_date = $dispatch_date;
     }
 }

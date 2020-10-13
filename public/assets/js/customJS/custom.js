@@ -100,6 +100,7 @@ $(function(){
 		}
 	}); 
 });
+
 // SubMenu Tooltip
 $(document).ready(function() {
 	new jBox('Tooltip', {
@@ -175,3 +176,80 @@ $(document).ready(function() {
 	});
 });
 
+// JS Funktion Ajax Daten für Übersicht Lagerbewegungen
+$(function() {
+	var strTable = $('#strTable').DataTable({
+		"lengthChange": false,
+		// Ajax-Anfrage via PHP (Json)
+		ajax: {
+			'url': '/stock_rotation_ajax',
+			'dataSrc': ''
+		},
+		// Seitenlänge max. 10 Einträge
+		pageLength: 10,
+		"language": {
+			"url": "./resources/dataTable.German.json"
+		},
+		// Initialisierung der DataTables Select-Erweiterung
+		select: {
+			style: 'single'
+		},
+		columns: [
+			{"data": "id"},
+			{"data": "bm_short"},
+			{"data": "bm_desc"},
+			{"data": "stock_location"},
+			{"data": "stock_location_desc"},
+			{"data": "art_nr"},
+			{"data": "art_name"},
+			{"data": "pos_quantity"},
+			{"data": "username"},
+			{"data": "access_date"},
+			{"data": "dispatch_date"}
+		],
+		"columnDefs": [
+			{
+				targets: [10], render: function (data) {
+					moment.locale("de");
+					return moment(data).format("L");
+				}
+			}
+		],
+	});
+})
+
+// JS Funktion Ajax Daten für Übersicht Lagerbewegungen
+$(function() {
+	var artTable = $('#artTable').DataTable({
+		"lengthChange": false,
+		// Ajax-Anfrage via PHP (Json)
+		ajax: {
+			'url': '/article_ajax',
+			'dataSrc': ''
+		},
+		// Seitenlänge max. 10 Einträge
+		pageLength: 10,
+		"language": {
+			"url": "./resources/dataTable.German.json"
+		},
+		// Initialisierung der DataTables Select-Erweiterung
+		select: {
+			style: 'single'
+		},
+		columns: [
+			{"data": "art_nr"},
+			{"data": "art_name"},
+			{"data": "art_kat"},
+			{"data": "art_gew"},
+			{"data": "art_ean"},
+			{"data": "art_einh"},
+			{"data": "art_tiefe"},
+			{"data": "art_breite"},
+			{"data": "art_hoehe"},
+			{
+				"data": "lbw_menge",
+			 	"defaultContent": 0
+			}
+		],
+	});
+})

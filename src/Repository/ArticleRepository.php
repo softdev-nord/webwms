@@ -2,6 +2,7 @@
 
 namespace WebWMS\Repository;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,32 +20,22 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    // /**
-    //  * @return Article[] Returns an array of Article objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getAllArticlesWithJoin()
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $conn = $this->getEntityManager()->getConnection();
 
-    /*
-    public function findOneBySomeField($value): ?Article
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $sql = "SELECT art.art_nr, art.art_name, art.art_kat, art.art_gew, 
+                art.art_ean, art.art_einh, art.art_tiefe, art.art_breite, 
+                art.art_hoehe, SUM(lbw.pos_quantity) AS lbw_menge
+                FROM stock_rotation AS lbw
+                RIGHT OUTER JOIN stock_location AS lpz
+                    ON lbw.stock_location_id = lpz.id
+                RIGHT OUTER JOIN article AS art
+                    ON lbw.art_id = art.id
+                GROUP BY art.id;";
+
+        $data = $conn->fetchAll($sql);
+
+        return new JsonResponse($data);
     }
-    */
 }
