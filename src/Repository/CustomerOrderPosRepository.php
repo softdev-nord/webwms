@@ -34,14 +34,14 @@ class CustomerOrderPosRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = "SELECT cop.customer_order_id, co.customer_order_nr, art.art_nr,
-                    art.art_name, cop.customer_order_pos_quantity, lbw.lbw_menge AS lbw_menge
+                    art.art_name, cop.customer_order_pos_quantity, lbw.pos_quantity AS lbw_menge
                 FROM customer_order_pos AS cop
                 INNER JOIN customer_orders AS co
                     ON cop.customer_order_id = co.customer_order_id
                 INNER JOIN article AS art
                     ON cop.article_id = art.id
                 LEFT OUTER JOIN stock_rotation lbw
-                    ON cop.id = lbw.aft_pos_id
+                    ON cop.id = lbw.customer_order_id
                 ORDER BY cop.id;";
 
         $data = $conn->fetchAll($sql);

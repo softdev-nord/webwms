@@ -208,6 +208,7 @@ $(function() {
 			{"data": "dispatch_date"}
 		],
 		"columnDefs": [
+			{ className: 'text-center', targets: "_all" },
 			{
 				targets: [10], render: function (data) {
 					moment.locale("de");
@@ -218,7 +219,7 @@ $(function() {
 	});
 })
 
-// JS Funktion Ajax Daten für Übersicht Lagerbewegungen
+// JS Funktion Ajax Daten für Übersicht Artikel
 $(function() {
 	var artTable = $('#artTable').DataTable({
 		"lengthChange": false,
@@ -250,6 +251,48 @@ $(function() {
 				"data": "lbw_menge",
 			 	"defaultContent": 0
 			}
+		],
+		columnDefs: [
+			{ className: 'text-center', targets: "_all" },
+		],
+	});
+})
+
+// JS Funktion Ajax Daten für Übersicht Lagerbelegung
+$(function() {
+	var artTable = $('#stoTable').DataTable({
+		"lengthChange": false,
+		// Ajax-Anfrage via PHP (Json)
+		ajax: {
+			'url': '/stock_occupancy_ajax',
+			'dataSrc': ''
+		},
+		// Seitenlänge max. 15 Einträge
+		pageLength: 15,
+		"language": {
+			"url": "./resources/dataTable.German.json"
+		},
+		// Initialisierung der DataTables Select-Erweiterung
+		select: {
+			style: 'single'
+		},
+		columns: [
+			{"data": "koordinate"},
+			{"data": "ln"},
+			{"data": "fb"},
+			{"data": "sp"},
+			{"data": "tf"},
+			{"data": "lagereinheit"},
+			{"data": "art_nr"},
+			{"data": "bezeichnung"},
+			{"data": "trans_ein"},
+			{"data": "trans_aus"},
+			{"data": "lp_bestand"},
+			{"data": "letzter_zugang"},
+			{"data": "letzter_abgang"},
+		],
+		columnDefs: [
+			{ className: 'text-center', targets: "_all" },
 		],
 	});
 })

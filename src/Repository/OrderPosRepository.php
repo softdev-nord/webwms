@@ -57,14 +57,14 @@ class OrderPosRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = "SELECT pos.bst_id, bst.bst_nr, art.art_nr, art.art_name, pos.bst_pos_menge, SUM(lbw.lbw_menge) AS lbw_menge
+        $sql = "SELECT pos.bst_id, bst.bst_nr, art.art_nr, art.art_name, pos.bst_pos_menge, SUM(lbw.pos_quantity) AS lbw_menge
 				FROM order_pos AS pos
 					INNER JOIN orders AS bst
 				ON pos.bst_id = bst.bst_id
 					INNER JOIN article AS art 
 				ON pos.art_id = art.id
 					LEFT OUTER JOIN stock_rotation AS lbw 
-				ON pos.id = lbw.bst_pos_id
+				ON pos.id = lbw.customer_order_id
 				GROUP BY pos.id ORDER BY pos.id;";
 
         $data = $conn->fetchAll($sql);
