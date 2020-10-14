@@ -85,7 +85,7 @@
                             aria-expanded="false">Aufträge
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="auftrag.php">Übersicht Aufträge</a></li>
+                            <li><a href="{{ path('customer_orders') }}">Übersicht Aufträge</a></li>
                             <li><a href="auftrag_anlegen.php">Auftrag anlegen</a></li>
                             <li><a href="#">Auftrag ändern/stornieren</a></li>
                         </ul>
@@ -105,7 +105,7 @@
                             </li>
                             <li class="dropdown-submenu"><a href="#">Lager</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="lagerplatz.php">Übersicht Lagerplätze</a></li>
+                                    <li><a href="{{ path('stock_location') }}">Übersicht Lagerplätze</a></li>
                                     <li><a href="lagerlayout.php">Lagerlayout</a></li>
                                     <li><a href="lagerzone.php">Lagerzonen</a></li>
                                     <li><a href="lager_anlegen.php">Lager anlegen</a></li>
@@ -113,7 +113,7 @@
                             </li>
                             <li class="dropdown-submenu"><a href="#">Kunden</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="kunden.php">Übersicht Kunden</a></li>
+                                    <li><a href="{{ path('customer') }}">Übersicht Kunden</a></li>
                                     <li><a href="kunden_anlegen.php">Kunden Anlegen</a></li>
                                 </ul>
                             </li>
@@ -151,9 +151,9 @@
                             aria-expanded="false">Auswertungen
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="lagerbewegung.php">Lagerbewegungen</a></li>
+                            <li><a href="{{ path('stock_rotation') }}">Lagerbewegungen</a></li>
                             <li><a href="#">Lagergeld berechunen</a></li>
-                            <li><a href="lagerbelegung.php">Lagerbelegung</a></li>
+                            <li><a href="{{ path('stock_occupancy') }}">Lagerbelegung</a></li>
                         </ul>
                     </li>
                     <li class="dropdown"><a href="#" class="dropdown-toggle"

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {{ include('header.html.twig') }}
+    {{ include('submenu.html.twig') }}
+    <!-- Beginn Übersicht Lagerbewegungen -->
+    <div class="wrapper-form">
+        <div class="wrapper-form-content">
+            <div class="card">
+                <div class="card-content">
+                    <!-- Beginn Tabelle Lagerbewegung -->
+                    <table id="strTable" class="table table-sm table-hover cell-border">
+                        <thead>
+                            <tr>
+                                <th scope="col">LBW ID</th>
+                                <th scope="col">BA ID</th>
+                                <th scope="col">Buchungsart</th>
+                                <th scope="col">Lagerplatz</th>
+                                <th scope="col">Lagersystem</th>
+                                <th scope="col">Artikel-Nr</th>
+                                <th scope="col">Bezeichnung</th>
+                                <th scope="col">Menge</th>
+                                <th scope="col">Benutzer</th>
+                                <th scope="col">Zugangsdatum</th>
+                                <th scope="col">Abgangsdatum</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <!-- Ende Tabelle Lagerbewegung -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ende Übersicht Lagerbewegungen -->
+{% endblock %}

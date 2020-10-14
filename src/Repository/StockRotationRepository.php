@@ -2,6 +2,7 @@
 
 namespace WebWMS\Repository;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\StockRotation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,32 +20,30 @@ class StockRotationRepository extends ServiceEntityRepository
         parent::__construct($registry, StockRotation::class);
     }
 
-    // /**
-    //  * @return StockRotation[] Returns an array of StockRotation objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Get all Customer Orders for Ajax-Request
+     * @return JsonResponse
+     */
+    public function getAllStockRotationsWithJoin()
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $conn = $this->getEntityManager()->getConnection();
 
-    /*
-    public function findOneBySomeField($value): ?StockRotation
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $sql = "SELECT str.id, bm.bm_short, bm.bm_desc,
+                    CONCAT(stl.stock_location_ln, '-', stl.stock_location_fb, '-', stl.stock_location_sp, '-', stl.stock_location_tf) AS stock_location,
+                    stl.stock_location_desc, art.art_nr, art.art_name, str.pos_quantity, usr.username, str.access_date, str.dispatch_date
+                FROM stock_rotation AS str
+                INNER JOIN stock_location AS stl
+                    ON stl.id = str.stock_location_id
+                INNER JOIN article AS art
+                    ON art.id = str.art_id
+                INNER JOIN user AS usr
+                    ON usr.id = str.usr_id
+                INNER JOIN booking_method AS bm
+                    ON bm.id = str.movement_id
+                GROUP BY str.id;";
+
+        $data = $conn->fetchAll($sql);
+
+        return new JsonResponse($data);
     }
-    */
 }

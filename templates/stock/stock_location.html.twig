@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {{ include('header.html.twig') }}
+    {{ include('submenu.html.twig') }}
+    <!-- Beginn Übersicht Lagerplätze -->
+    <div class="wrapper-form">
+        <div class="wrapper-form-content">
+            <div class="card">
+                <div class="card-content">
+                    <!-- Beginn Tabelle Lagerplätze -->
+                    <table id="Table" class="table-hover display compact cell-border">
+                        <thead style="text-align: center;">
+                        <tr>
+                            <th style="text-align: center" scope="col" >LPZ ID</th>
+                            <th style="text-align: center" scope="col">Lagernummer</th>
+                            <th style="text-align: center" scope="col">Fachboden</th>
+                            <th style="text-align: center" scope="col">Stellplatz</th>
+                            <th style="text-align: center" scope="col">Tiefe</th>
+                            <th style="text-align: center" scope="col">Bezeichnung</th>
+                            <th style="text-align: center" scope="col">Breite (mm)</th>
+                            <th style="text-align: center" scope="col">Tiefe (mm)</th>
+                            <th style="text-align: center" scope="col">Höhe (mm)</th>
+                        </thead>
+                        <tbody id="myTable" style="text-align: center;">
+                        <tr>
+                            {% for stockLocation in stockLocation %}
+                            <td>{{ stockLocation.id }}</td>
+                            <td>{{ stockLocation.stockLocationLn }}</td>
+                            <td>{{ stockLocation.stockLocationFb }}</td>
+                            <td>{{ stockLocation.stockLocationSp }}</td>
+                            <td>{{ stockLocation.stockLocationTf }}</td>
+                            <td>{{ stockLocation.stockLocationDesc }}</td>
+                            <td>{{ stockLocation.stockLocationWidth }}</td>
+                            <td>{{ stockLocation.stockLocationDepth }}</td>
+                            <td>{{ stockLocation.stockLocationHeight }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <!-- Ende Tabelle Lagerplätze -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ende Übersicht Lagerplätze -->
+{% endblock %}

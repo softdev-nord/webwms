@@ -735,8 +735,8 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('auto_mapping')
                             ->info('A collection of namespaces for which auto-mapping will be enabled by default, or null to opt-in with the EnableAutoMapping constraint.')
                             ->example([
-                                'WebWMS\\Entity\\' => [],
-                                'WebWMS\\WithSpecificLoaders\\' => ['validator.property_info_loader'],
+                                'App\\Entity\\' => [],
+                                'App\\WithSpecificLoaders\\' => ['validator.property_info_loader'],
                             ])
                             ->useAttributeAsKey('namespace')
                             ->normalizeKeys(false)
@@ -1197,7 +1197,7 @@ class Configuration implements ConfigurationInterface
                                                         return $middleware;
                                                     }
                                                     if (1 < \count($middleware)) {
-                                                        throw new \InvalidArgumentException(sprintf('Invalid middleware at path "framework.messenger": a map with a single factory id as key and its arguments as value was expected, %s given.', json_encode($middleware)));
+                                                        throw new \InvalidArgumentException('Invalid middleware at path "framework.messenger": a map with a single factory id as key and its arguments as value was expected, '.json_encode($middleware).' given.');
                                                     }
 
                                                     return [
