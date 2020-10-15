@@ -6,47 +6,47 @@
 		},
 		{
 			"label": "Artikel anlegen",
-			"value": "artikel_anlegen.php"
+			"value": "/artikel_anlegen"
 		},
 		{
 			"label": "Übersicht Bestellungen",
-			"value": "bestellung.php"
+			"value": "/bestellungen"
 		},
 		{
 			"label": "Bestellung anlegen",
-			"value": "bestellung_anlegen.php"
+			"value": "/bestellung_anlegen"
 		},
 		{
 			"label": "Übersicht Auftrag",
-			"value": "auftrag.php"
+			"value": "/auftrag"
 		},
 		{
 			"label": "Auftrag anlegen",
-			"value": "auftrag_anlegen.php"
+			"value": "/auftrag_anlegen"
 		},
 		{
 			"label": "Übersicht Benutzer",
-			"value": "benutzer.php"
+			"value": "/benutzer"
 		},
 		{
 			"label": "Benutzer anlegen",
-			"value": "benutzer_anlegen.php"
+			"value": "/benutzer_anlegen"
 		},
 		{
 			"label": "Lagerbelegung",
-			"value": "lagerbelegung.php"
+			"value": "/lagerbelegung"
 		},
 		{
 			"label": "Lagerbewegungen",
-			"value": "lagerbewegung.php"
+			"value": "/lagerbewegung"
 		},
 		{
 			"label": "Lagerlayout",
-			"value": "lagerlayout.php"
+			"value": "/lagerlayout"
 		},
 		{
 			"label": "Lagerplatz",
-			"value": "lagerplatz.php"
+			"value": "/lagerplatz"
 		},
 		{
 			"label": "Lagerzonen",
@@ -54,11 +54,11 @@
 		},
 		{
 			"label": "Übersicht Lieferanten",
-			"value": "lieferanten.php"
+			"value": "/lieferanten"
 		},
 		{
 			"label": "Lieferanten anlegen",
-			"value": "lieferanten_anlegen.php"
+			"value": "/lieferanten_anlegen"
 		}
 	]
 }
