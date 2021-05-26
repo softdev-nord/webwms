@@ -2,10 +2,10 @@
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\CustomerOrder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use WebWMS\Entity\CustomerOrder;
 
 /**
  * @method CustomerOrder|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,7 +21,8 @@ class CustomerOrderRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get all Customer Orders for Ajax-Request
+     * Get all Customer Orders for Ajax-Request.
+     *
      * @return JsonResponse
      */
     public function getAllCustomerOrders()
@@ -43,7 +44,7 @@ class CustomerOrderRepository extends ServiceEntityRepository
 
         $result = $stmt->fetchAll(\PDO::FETCH_COLUMN);*/
 
-         $sql = "SELECT co.customer_order_id, co.customer_order_nr, co.customer_order_reference,
+        $sql = 'SELECT co.customer_order_id, co.customer_order_nr, co.customer_order_reference,
                      cu.customer_nr, cu.customer_name, co.customer_order_date,
                      co.customer_order_order_date, usr.username
                  FROM customer_orders AS co
@@ -53,9 +54,9 @@ class CustomerOrderRepository extends ServiceEntityRepository
                      ON cu.customer_id = co.customer_id
                  INNER JOIN user AS usr
                      ON usr.id = co.usr_id
-                 GROUP BY co_pos.customer_order_id;";
+                 GROUP BY co_pos.customer_order_id;';
 
-         $data = $conn->fetchAll($sql);
+        $data = $conn->fetchAll($sql);
 
         return new JsonResponse($data);
     }

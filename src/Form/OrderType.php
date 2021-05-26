@@ -2,10 +2,10 @@
 
 namespace WebWMS\Form;
 
-use WebWMS\Entity\Order;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use WebWMS\Entity\Order;
 
 class OrderType extends AbstractType
 {

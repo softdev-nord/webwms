@@ -2,9 +2,9 @@
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\TransportRequest;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\TransportRequest;
 
 /**
  * @method TransportRequest|null find($id, $lockMode = null, $lockVersion = null)

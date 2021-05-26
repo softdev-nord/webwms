@@ -2,9 +2,9 @@
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\StockZoneLayout;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\StockZoneLayout;
 
 /**
  * @method StockZoneLayout|null find($id, $lockMode = null, $lockVersion = null)

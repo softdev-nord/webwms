@@ -2,9 +2,9 @@
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\Supplier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\Supplier;
 
 /**
  * @method Supplier|null find($id, $lockMode = null, $lockVersion = null)

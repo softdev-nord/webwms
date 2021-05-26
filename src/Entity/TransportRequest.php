@@ -2,8 +2,8 @@
 
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\TransportRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\TransportRequestRepository;
 
 /**
  * @ORM\Entity(repositoryClass=TransportRequestRepository::class)

@@ -2,8 +2,8 @@
 
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\ArticleRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)

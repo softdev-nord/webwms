@@ -2,9 +2,9 @@
 
 namespace WebWMS\Controller;
 
-use WebWMS\Controller\Requirements as Requirements;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Controller\Requirements as Requirements;
 
 class Homepage extends AbstractController
 {

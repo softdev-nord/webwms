@@ -2,8 +2,8 @@
 
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\SupplierRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\SupplierRepository;
 
 /**
  * @ORM\Entity(repositoryClass=SupplierRepository::class)

@@ -2,12 +2,12 @@
 
 namespace WebWMS\Form;
 
-use WebWMS\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use WebWMS\Entity\User;
 
 class UserType extends AbstractType
 {
@@ -18,7 +18,7 @@ class UserType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Confirm Password']
+                'second_options' => ['label' => 'Confirm Password'],
             ])
         ;
     }

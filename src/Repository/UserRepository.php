@@ -2,12 +2,12 @@
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use WebWMS\Entity\User;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)

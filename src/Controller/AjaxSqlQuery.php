@@ -2,9 +2,9 @@
 
 namespace WebWMS\Controller;
 
-use WebWMS\Controller\Requirements as Requirements;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\DBAL\Connection;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use WebWMS\Controller\Requirements as Requirements;
 
 class AjaxSqlQuery extends AbstractController
 {
@@ -21,8 +21,8 @@ class AjaxSqlQuery extends AbstractController
     // Abfrage aller Artikel
     public function getArticle()
     {
-        $numOfBoxArt = ! empty($_GET['numOfBoxArt']) ? $_GET['numOfBoxArt'] : '';
-        $name = ! empty($_GET['art_nr']) ? strtolower(trim($_GET['art_nr'])) : '';
+        $numOfBoxArt = !empty($_GET['numOfBoxArt']) ? $_GET['numOfBoxArt'] : '';
+        $name = !empty($_GET['art_nr']) ? strtolower(trim($_GET['art_nr'])) : '';
 
         $boxName = 'art_nr';
 
@@ -42,28 +42,26 @@ class AjaxSqlQuery extends AbstractController
         }
 
         $data = [];
-        if ( ! empty($_GET['name_art']))
-        {
+        if (!empty($_GET['name_art'])) {
             $name = strtolower(trim($_GET['name_art']));
 
-            $sql = "SELECT art_nr, art_name, art_id, art_ean, art_kat FROM artikel where LOWER($boxName) LIKE '" . $name . "%'";
+            $sql = "SELECT art_nr, art_name, art_id, art_ean, art_kat FROM artikel where LOWER($boxName) LIKE '".$name."%'";
             $this->connection->query($sql);
-            while ($row = $this->connection->fetchAssoc($sql))
-            {
-                $name = $row['art_nr'] . '|' . $row['art_name'] . '|' . $row['art_id'] . '|' . $row['art_ean'] . '|' . $row['art_kat'];
+            while ($row = $this->connection->fetchAssoc($sql)) {
+                $name = $row['art_nr'].'|'.$row['art_name'].'|'.$row['art_id'].'|'.$row['art_ean'].'|'.$row['art_kat'];
                 array_push($data, $name);
             }
         }
+
         return json_encode($data);
     }
-
 
     // Abfrage aller Aufträge
     public function getAllAftQuery()
     {
         $data = [];
 
-        $sql = "SELECT aft.aft_id, aft.aft_nr, aft.aft_ref, kd.kd_nr, kd.kd_name, aft.aft_aft_dat, 
+        $sql = 'SELECT aft.aft_id, aft.aft_nr, aft.aft_ref, kd.kd_nr, kd.kd_name, aft.aft_aft_dat, 
 				aft.aft_bst_dat, ben.ben_log_name
 				FROM wa_auftrag AS aft
 					INNER JOIN wa_aft_pos AS pos
@@ -72,27 +70,26 @@ class AjaxSqlQuery extends AbstractController
 				ON kd.kd_id = aft.kd_id
 					INNER JOIN benutzer AS ben 
 				ON aft.ben_id = ben.ben_id
-				GROUP BY pos.aft_id;";
+				GROUP BY pos.aft_id;';
 
         $this->connection->query($sql);
 
-        while ($row = $this->connection->fetchAssoc($sql))
-        {
+        while ($row = $this->connection->fetchAssoc($sql)) {
             $name =
                 [
-                    'aft_nr'			=>		$row['aft_nr'],
-                    'aft_ref'			=>		$row['aft_ref'],
-                    'kd_nr'				=>		$row['kd_nr'],
-                    'kd_name'			=>		$row['kd_name'],
-                    'aft_aft_dat'		=>		$row['aft_aft_dat'],
-                    'aft_bst_dat'		=>		$row['aft_bst_dat'],
-                    'ben_log_name'		=>		$row['ben_log_name'],
-                    'aft_id'			=>		$row['aft_id'],
+                    'aft_nr' => $row['aft_nr'],
+                    'aft_ref' => $row['aft_ref'],
+                    'kd_nr' => $row['kd_nr'],
+                    'kd_name' => $row['kd_name'],
+                    'aft_aft_dat' => $row['aft_aft_dat'],
+                    'aft_bst_dat' => $row['aft_bst_dat'],
+                    'ben_log_name' => $row['ben_log_name'],
+                    'aft_id' => $row['aft_id'],
                 ];
             array_push($data, $name);
         }
-        return json_encode($data);
 
+        return json_encode($data);
     }
 
     // Abfrage aller Auftragspositionen
@@ -100,7 +97,7 @@ class AjaxSqlQuery extends AbstractController
     {
         $data = [];
 
-        $sql = "SELECT pos.aft_id, aft.aft_nr, art.art_nr, art.art_name, pos.aft_pos_menge, lbw.lbw_menge
+        $sql = 'SELECT pos.aft_id, aft.aft_nr, art.art_nr, art.art_name, pos.aft_pos_menge, lbw.lbw_menge
 				FROM wa_aft_pos AS pos
 					INNER JOIN wa_auftrag AS aft
 				ON pos.aft_id = aft.aft_id
@@ -108,23 +105,23 @@ class AjaxSqlQuery extends AbstractController
 				ON pos.art_id = art.art_id
 					LEFT OUTER JOIN lagerbewegung lbw 
 				ON pos.aft_pos_id = lbw.aft_pos_id
-				ORDER BY  pos.aft_pos_id;";
+				ORDER BY  pos.aft_pos_id;';
 
         $this->connection->query($sql);
 
-        while ($row = $this->connection->fetchAssoc($sql))
-        {
+        while ($row = $this->connection->fetchAssoc($sql)) {
             $name =
                 [
-                    'aft_nr'			=>		$row['aft_nr'],
-                    'art_nr'			=>		$row['art_nr'],
-                    'art_name'			=>		$row['art_name'],
-                    'aft_pos_menge'		=>		$row['aft_pos_menge'],
-                    'lbw_menge'			=>		$row['lbw_menge'],
-                    'aft_id'			=>		$row['aft_id'],
+                    'aft_nr' => $row['aft_nr'],
+                    'art_nr' => $row['art_nr'],
+                    'art_name' => $row['art_name'],
+                    'aft_pos_menge' => $row['aft_pos_menge'],
+                    'lbw_menge' => $row['lbw_menge'],
+                    'aft_id' => $row['aft_id'],
                 ];
             array_push($data, $name);
         }
+
         return json_encode($data);
     }
 
@@ -133,7 +130,7 @@ class AjaxSqlQuery extends AbstractController
     {
         $data = [];
 
-        $sql = "SELECT bst.bst_id, bst.bst_nr, bst.bst_ref, lief.lief_nr, lief.lief_name, 
+        $sql = 'SELECT bst.bst_id, bst.bst_nr, bst.bst_ref, lief.lief_nr, lief.lief_name, 
 				bst.bst_bst_dat, ben.ben_log_name
 				FROM we_bestellung AS bst
 					INNER JOIN we_bst_pos AS pos
@@ -142,23 +139,23 @@ class AjaxSqlQuery extends AbstractController
 				ON lief.lief_id = bst.lief_id
 					INNER JOIN benutzer AS ben 
 				ON bst.ben_id = ben.ben_id
-				GROUP BY pos.bst_id;";
+				GROUP BY pos.bst_id;';
 
         $this->connection->query($sql);
 
-        while ($row = $this->connection->fetchAssoc($sql))
-        {
+        while ($row = $this->connection->fetchAssoc($sql)) {
             $name =
-                [   'bst_nr'			=>		$row['bst_nr'],
-                    'bst_ref'			=>		$row['bst_ref'],
-                    'lief_nr'			=>		$row['lief_nr'],
-                    'lief_name'			=>		$row['lief_name'],
-                    'bst_bst_dat'		=>		$row['bst_bst_dat'],
-                    'ben_log_name'		=>		$row['ben_log_name'],
-                    'bst_id'			=>		$row['bst_id'],
+                ['bst_nr' => $row['bst_nr'],
+                    'bst_ref' => $row['bst_ref'],
+                    'lief_nr' => $row['lief_nr'],
+                    'lief_name' => $row['lief_name'],
+                    'bst_bst_dat' => $row['bst_bst_dat'],
+                    'ben_log_name' => $row['ben_log_name'],
+                    'bst_id' => $row['bst_id'],
                 ];
             array_push($data, $name);
         }
+
         return json_encode($data);
     }
 
@@ -167,7 +164,7 @@ class AjaxSqlQuery extends AbstractController
     {
         $data = [];
 
-        $sql = "SELECT pos.bst_id, bst.bst_nr, art.art_nr, art.art_name, pos.bst_pos_menge, SUM(lbw.lbw_menge)
+        $sql = 'SELECT pos.bst_id, bst.bst_nr, art.art_nr, art.art_name, pos.bst_pos_menge, SUM(lbw.lbw_menge)
 				FROM we_bst_pos AS pos
 					INNER JOIN we_bestellung AS bst
 				ON pos.bst_id = bst.bst_id
@@ -175,23 +172,23 @@ class AjaxSqlQuery extends AbstractController
 				ON pos.art_id = art.art_id
 					LEFT OUTER JOIN lagerbewegung lbw 
 				ON pos.bst_pos_id = lbw.bst_pos_id
-				GROUP BY pos.bst_pos_id ORDER BY  pos.bst_pos_id;";
+				GROUP BY pos.bst_pos_id ORDER BY  pos.bst_pos_id;';
 
         $this->connection->query($sql);
 
-        while ($row = $this->connection->fetchAssoc($sql))
-        {
+        while ($row = $this->connection->fetchAssoc($sql)) {
             $name =
                 [
-                    'bst_nr'			=>		$row['bst_nr'],
-                    'art_nr'			=>		$row['art_nr'],
-                    'art_name'			=>		$row['art_name'],
-                    'bst_pos_menge'		=>		$row['bst_pos_menge'],
-                    'lbw_menge'			=>		$row['SUM(lbw.lbw_menge)'],
-                    'bst_id'			=>		$row['bst_id'],
+                    'bst_nr' => $row['bst_nr'],
+                    'art_nr' => $row['art_nr'],
+                    'art_name' => $row['art_name'],
+                    'bst_pos_menge' => $row['bst_pos_menge'],
+                    'lbw_menge' => $row['SUM(lbw.lbw_menge)'],
+                    'bst_id' => $row['bst_id'],
                 ];
             array_push($data, $name);
         }
+
         return json_encode($data);
     }
 
@@ -203,8 +200,7 @@ class AjaxSqlQuery extends AbstractController
 
         $boxName = 'kd_nr';
 
-        switch ($numOfBoxKd)
-        {
+        switch ($numOfBoxKd) {
             case 1:
                 $boxName = 'kd_name';
                 break;
@@ -231,21 +227,19 @@ class AjaxSqlQuery extends AbstractController
                 break;
         }
 
-        $data = array();
-        if (!empty($_GET['name_kd']))
-        {
+        $data = [];
+        if (!empty($_GET['name_kd'])) {
             $nameKd = strtolower(trim($_GET['name_kd']));
             //$this->db->connectDB->set_charset("utf8mb4");
-            $sqlKd = "SELECT kd_nr, kd_name, kd_ans_zu, kd_str, kd_hnr, kd_land_krz, kd_plz, kd_ort, kd_id FROM kunde where LOWER($boxName) LIKE '" . $nameKd . "%'";
+            $sqlKd = "SELECT kd_nr, kd_name, kd_ans_zu, kd_str, kd_hnr, kd_land_krz, kd_plz, kd_ort, kd_id FROM kunde where LOWER($boxName) LIKE '".$nameKd."%'";
             $resultKd = $this->connection->query($sqlKd);
-            while ($rowKd = $this->connection->fetchAssoc($resultKd))
-            {
-                $nameKd = $rowKd['kd_nr'] . '|'. $rowKd['kd_name'] . '|' . $rowKd['kd_ans_zu'] . '|' . $rowKd['kd_str'] . '|' . $rowKd['kd_hnr'] . '|' . $rowKd['kd_land_krz'] . '|' . $rowKd['kd_plz'] . '|' . $rowKd['kd_ort'] . '|' . $rowKd['kd_id'];
+            while ($rowKd = $this->connection->fetchAssoc($resultKd)) {
+                $nameKd = $rowKd['kd_nr'].'|'.$rowKd['kd_name'].'|'.$rowKd['kd_ans_zu'].'|'.$rowKd['kd_str'].'|'.$rowKd['kd_hnr'].'|'.$rowKd['kd_land_krz'].'|'.$rowKd['kd_plz'].'|'.$rowKd['kd_ort'].'|'.$rowKd['kd_id'];
                 array_push($data, $nameKd);
             }
         }
-        return json_encode($data);
 
+        return json_encode($data);
     }
 
     // Abfrage aller Lieferanten
@@ -256,8 +250,7 @@ class AjaxSqlQuery extends AbstractController
 
         $boxName = 'lief_nr';
 
-        switch ($numOfBoxLief)
-        {
+        switch ($numOfBoxLief) {
             case 1:
                 $boxName = 'lief_name';
                 break;
@@ -284,19 +277,18 @@ class AjaxSqlQuery extends AbstractController
                 break;
         }
 
-        $data = array();
-        if (!empty($_GET['name_lief']))
-        {
+        $data = [];
+        if (!empty($_GET['name_lief'])) {
             $nameLief = strtolower(trim($_GET['name_lief']));
             //$this->db->connectDB->set_charset("utf8mb4");
-            $sqlLief = "SELECT lief_nr, lief_name, lief_ans_zu, lief_str, lief_hnr, lief_land_krz, lief_plz, lief_ort, lief_id FROM lieferant where LOWER($boxName) LIKE '" . $nameLief . "%'";
+            $sqlLief = "SELECT lief_nr, lief_name, lief_ans_zu, lief_str, lief_hnr, lief_land_krz, lief_plz, lief_ort, lief_id FROM lieferant where LOWER($boxName) LIKE '".$nameLief."%'";
             $resultLief = $this->connection->query($sqlLief);
-            while ($rowLief = $this->connection->fetchAssoc($resultLief))
-            {
-                $nameLief = $rowLief['lief_nr'] . '|'. $rowLief['lief_name'] . '|' . $rowLief['lief_ans_zu'] . '|' . $rowLief['lief_str'] . '|' . $rowLief['lief_hnr'] . '|' . $rowLief['lief_land_krz'] . '|' . $rowLief['lief_plz'] . '|' . $rowLief['lief_ort'] . '|' . $rowLief['lief_id'];
+            while ($rowLief = $this->connection->fetchAssoc($resultLief)) {
+                $nameLief = $rowLief['lief_nr'].'|'.$rowLief['lief_name'].'|'.$rowLief['lief_ans_zu'].'|'.$rowLief['lief_str'].'|'.$rowLief['lief_hnr'].'|'.$rowLief['lief_land_krz'].'|'.$rowLief['lief_plz'].'|'.$rowLief['lief_ort'].'|'.$rowLief['lief_id'];
                 array_push($data, $nameLief);
             }
         }
+
         return json_encode($data);
     }
 

@@ -2,13 +2,13 @@
 
 namespace WebWMS\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Order;
 use WebWMS\Entity\OrderPos;
 use WebWMS\Entity\Supplier;
 use WebWMS\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @method Order|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,7 +24,8 @@ class OrderRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get all Orders for Ajax-Request
+     * Get all Orders for Ajax-Request.
+     *
      * @return JsonResponse
      */
     /*public function getAllOrders()
@@ -51,14 +52,15 @@ class OrderRepository extends ServiceEntityRepository
     }*/
 
     /**
-     * Get all Orders for Ajax-Request
+     * Get all Orders for Ajax-Request.
+     *
      * @return JsonResponse
      */
     public function getAllOrders()
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = "SELECT bst.bst_id, bst.bst_nr, bst.bst_ref, lief.lief_nr, lief.lief_name, 
+        $sql = 'SELECT bst.bst_id, bst.bst_nr, bst.bst_ref, lief.lief_nr, lief.lief_name, 
 				bst.bst_bst_dat, usr.username
 				FROM orders AS bst
 					INNER JOIN order_pos AS pos
@@ -67,10 +69,9 @@ class OrderRepository extends ServiceEntityRepository
 				ON lief.id = bst.lief_id
 					INNER JOIN user AS usr 
 				ON bst.ben_id = usr.id
-				GROUP BY pos.bst_id";
+				GROUP BY pos.bst_id';
 
         $data = $conn->fetchAll($sql);
-
 
         return new JsonResponse($data);
     }

@@ -2,8 +2,8 @@
 
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\CustomerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\CustomerRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CustomerRepository::class)

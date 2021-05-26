@@ -2,12 +2,10 @@
 
 namespace WebWMS\Repository;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Controller\AjaxSqlQuery;
-use WebWMS\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use WebWMS\Entity\Article;
 
 /**
  * @method Article|null find($id, $lockMode = null, $lockVersion = null)
@@ -26,7 +24,7 @@ class ArticleRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = "SELECT art.art_nr, art.art_name, art.art_kat, art.art_gew, 
+        $sql = 'SELECT art.art_nr, art.art_name, art.art_kat, art.art_gew, 
                 art.art_ean, art.art_einh, art.art_tiefe, art.art_breite, 
                 art.art_hoehe, SUM(lbw.pos_quantity) AS lbw_menge
                 FROM stock_rotation AS lbw
@@ -34,7 +32,7 @@ class ArticleRepository extends ServiceEntityRepository
                     ON lbw.stock_location_id = lpz.id
                 RIGHT OUTER JOIN article AS art
                     ON lbw.art_id = art.id
-                GROUP BY art.id;";
+                GROUP BY art.id;';
 
         $data = $conn->fetchAll($sql);
 
@@ -43,14 +41,15 @@ class ArticleRepository extends ServiceEntityRepository
 
     /**
      * @return JsonResponse
+     *
      * @throws \Doctrine\DBAL\DBALException
      */
     public function getArticle()
     {
         $connection = $this->getEntityManager()->getConnection();
 
-        $numOfBoxArt = ! empty($_GET['numOfBoxArt']) ? $_GET['numOfBoxArt'] : '';
-        $name = ! empty($_GET['art_nr']) ? strtolower(trim($_GET['art_nr'])) : '';
+        $numOfBoxArt = !empty($_GET['numOfBoxArt']) ? $_GET['numOfBoxArt'] : '';
+        $name = !empty($_GET['art_nr']) ? strtolower(trim($_GET['art_nr'])) : '';
 
         $boxName = 'art_nr';
 
@@ -70,16 +69,14 @@ class ArticleRepository extends ServiceEntityRepository
         }
 
         $data = [];
-        if ( !empty($_GET['name_art']))
-        {
+        if (!empty($_GET['name_art'])) {
             $name = strtolower(trim($_GET['name_art']));
 
-            $sqlArt = "SELECT art_nr, art_name, id, art_ean, art_kat FROM article where LOWER($boxName) LIKE '" . $name . "%'";
+            $sqlArt = "SELECT art_nr, art_name, id, art_ean, art_kat FROM article where LOWER($boxName) LIKE '".$name."%'";
             $stmt = $connection->query($sqlArt);
 
-            while ($row = $stmt->fetch())
-            {
-                $name = $row['art_nr'] . '|' . $row['art_name'] . '|' . $row['id'] . '|' . $row['art_ean'] . '|' . $row['art_kat'];
+            while ($row = $stmt->fetch()) {
+                $name = $row['art_nr'].'|'.$row['art_name'].'|'.$row['id'].'|'.$row['art_ean'].'|'.$row['art_kat'];
                 array_push($data, $name);
             }
         }

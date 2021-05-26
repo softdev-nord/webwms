@@ -2,10 +2,10 @@
 
 namespace WebWMS\Repository;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\Customer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use WebWMS\Entity\Customer;
 
 /**
  * @method Customer|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,8 +21,10 @@ class CustomerRepository extends ServiceEntityRepository
     }
 
     // Abfrage aller Kunden
+
     /**
      * @return JsonResponse
+     *
      * @throws \Doctrine\DBAL\DBALException
      */
     public function getCustomers()
@@ -34,8 +36,7 @@ class CustomerRepository extends ServiceEntityRepository
 
         $boxName = 'customer_nr';
 
-        switch ($numOfBoxKd)
-        {
+        switch ($numOfBoxKd) {
             case 1:
                 $boxName = 'customer_name';
                 break;
@@ -63,22 +64,20 @@ class CustomerRepository extends ServiceEntityRepository
         }
 
         $data = [];
-        if (isset($_GET['name_kd']))
-        {
+        if (isset($_GET['name_kd'])) {
             $nameKd = strtolower(trim($_GET['name_kd']));
 
             $sqlKd = "SELECT customer_nr, customer_name, customer_address_addition, 
                         customer_address_street, customer_address_street_nr, customer_country_code, 
-                        customer_zip_code, customer_city, id FROM customer WHERE LOWER($boxName) LIKE '" . $nameKd . "%'";
+                        customer_zip_code, customer_city, id FROM customer WHERE LOWER($boxName) LIKE '".$nameKd."%'";
             $stmt = $connection->query($sqlKd);
 
-            while ($rowKd = $stmt->fetch())
-            {
-                $nameKd = $rowKd['customer_nr'] . '|'. $rowKd['customer_name'] . '|' . $rowKd['customer_address_addition'] . '|' . $rowKd['customer_address_street'] . '|' . $rowKd['customer_address_street_nr'] . '|' . $rowKd['customer_country_code'] . '|' . $rowKd['customer_zip_code'] . '|' . $rowKd['customer_city'] . '|' . $rowKd['id'];
+            while ($rowKd = $stmt->fetch()) {
+                $nameKd = $rowKd['customer_nr'].'|'.$rowKd['customer_name'].'|'.$rowKd['customer_address_addition'].'|'.$rowKd['customer_address_street'].'|'.$rowKd['customer_address_street_nr'].'|'.$rowKd['customer_country_code'].'|'.$rowKd['customer_zip_code'].'|'.$rowKd['customer_city'].'|'.$rowKd['id'];
                 array_push($data, $nameKd);
             }
         }
-        return new JsonResponse($data);
 
+        return new JsonResponse($data);
     }
 }

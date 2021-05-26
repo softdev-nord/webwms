@@ -2,13 +2,12 @@
 
 namespace WebWMS\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Controller\Requirements as Requirements;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Repository\StockLocationRepository;
 use WebWMS\Repository\StockRotationRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 class Stock extends AbstractController
 {
@@ -22,13 +21,10 @@ class Stock extends AbstractController
      */
     private $stockRotationRepository;
 
-
-
     public function __construct(
         StockLocationRepository $stockLocationRepository,
         StockRotationRepository $stockRotationRepository
-    )
-    {
+    ) {
         $this->stockLocationRepository = $stockLocationRepository;
         $this->stockRotationRepository = $stockRotationRepository;
     }
@@ -41,9 +37,7 @@ class Stock extends AbstractController
         $stockLocation = $this->stockLocationRepository->findAll();
 
         if (!$stockLocation) {
-            throw $this->createNotFoundException(
-                'Keine Lagerorte gefunden'
-            );
+            throw $this->createNotFoundException('Keine Lagerorte gefunden');
         }
 
         return $stockLocation;
@@ -57,9 +51,7 @@ class Stock extends AbstractController
         $stockRotations = $this->stockRotationRepository->getAllStockRotationsWithJoin();
 
         if (!$stockRotations) {
-            throw $this->createNotFoundException(
-                'Keine Lagerbewegungen gefunden'
-            );
+            throw $this->createNotFoundException('Keine Lagerbewegungen gefunden');
         }
 
         return $stockRotations;
@@ -110,11 +102,8 @@ class Stock extends AbstractController
 
         $data = $conn->fetchAll($sql);
 
-
         return new JsonResponse($data);
     }
-
-
 
     /**
      * @Route("/lagerplatz", name="stock_location")

@@ -12,18 +12,18 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20200924111245 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE supplier (id INT AUTO_INCREMENT NOT NULL, lief_nr INT NOT NULL, lief_name VARCHAR(255) NOT NULL, lief_ans_zu VARCHAR(255) DEFAULT NULL, lief_str VARCHAR(255) NOT NULL, lief_hnr VARCHAR(10) NOT NULL, lief_land_krz VARCHAR(10) NOT NULL, lief_plz VARCHAR(10) NOT NULL, lief_ort VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE supplier');

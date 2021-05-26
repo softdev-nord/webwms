@@ -2,10 +2,9 @@
 
 namespace WebWMS\Repository;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockLocation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\StockLocation;
 
 /**
  * @method StockLocation|null find($id, $lockMode = null, $lockVersion = null)

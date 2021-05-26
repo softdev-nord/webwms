@@ -2,23 +2,23 @@
 
 namespace WebWMS\Controller;
 
+use Doctrine;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Controller\Requirements as Requirements;
-use Doctrine;
 
 class Security extends AbstractController
 {
     /**
-     * @var Request $request
+     * @var Request
      */
     private $request;
 
     /**
-     * @var Requirements $requirements
+     * @var Requirements
      */
     private $requirements;
 
@@ -29,8 +29,6 @@ class Security extends AbstractController
 
     /**
      * @Route("/", name="app_login")
-     * @param AuthenticationUtils $authenticationUtils
-     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -66,7 +64,7 @@ class Security extends AbstractController
                 'appVersion' => Requirements::APP_VERSION,
                 'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
                 'appCopyright' => Requirements::APP_COPYRIGHT,
-                'appLizenz' => Requirements::APP_LIZENZ
+                'appLizenz' => Requirements::APP_LIZENZ,
             ]
         );
     }

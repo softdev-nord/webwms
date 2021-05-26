@@ -3,16 +3,16 @@
 namespace WebWMS\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Controller\Requirements as Requirements;
-use WebWMS\Entity\CustomerOrder AS CustomerOrders;
-use WebWMS\Entity\CustomerOrderPos;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
-use WebWMS\Form\CustomerOrderType;
+use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Entity\Article;
+use WebWMS\Entity\CustomerOrder as CustomerOrders;
+use WebWMS\Entity\CustomerOrderPos;
+use WebWMS\Form\CustomerOrderType;
 
 class CustomerOrder extends AbstractController
 {
@@ -43,7 +43,7 @@ class CustomerOrder extends AbstractController
             'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
             'page' => 'Übersicht Aufträge',
             'customer_order' => $this->getAllCustomerOrders(),
-            'customer_order_pos' => $this->getAllCustomerOrdersPos()
+            'customer_order_pos' => $this->getAllCustomerOrdersPos(),
         ]);
     }
 
@@ -80,11 +80,9 @@ class CustomerOrder extends AbstractController
         ]);
     }*/
 
-
     /**
      * @Route("/auftrag_anlegen", name="new_customer_order")
-     * @param EntityManagerInterface $em
-     * @param Request $request
+     *
      * @return RedirectResponse|Response
      */
     public function addNewCustomerOrder(EntityManagerInterface $em, Request $request)
@@ -95,7 +93,6 @@ class CustomerOrder extends AbstractController
         $form->handleRequest($request);
         //dd($form->getData());
         if ($form->isSubmitted() && $form->isValid()) {
-
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             error_reporting(E_ALL);
@@ -112,7 +109,7 @@ class CustomerOrder extends AbstractController
             $customerOrder->setCustomerOrderNr($data['customer_order[customer_order_nr]']);
             $customerOrder->setCustomerOrderOrderDate($data['customer_order[customer_order_order_date]']);
             $customerOrder->setCustomerOrderReference($data['customer_order[customer_order_reference]']);*/
-            $customerOrder->setUsrId((int)$this->getUser());
+            $customerOrder->setUsrId((int) $this->getUser());
 
             //$em = $this->getDoctrine()->getManager();
 
@@ -125,6 +122,7 @@ class CustomerOrder extends AbstractController
 
             return $this->redirectToRoute('new_customer_order');
         }
+
         return $this->render('customer_order/add_customer_order.html.twig', [
             'appName' => Requirements::APP_NAME,
             'appVersion' => Requirements::APP_VERSION,
@@ -132,7 +130,7 @@ class CustomerOrder extends AbstractController
             'page' => 'Auftrag anlegen',
             'article' => $this->getAllArticleAjax(),
             'lastId' => $this->getLastCustomerOrderId()[0],
-            'customerForm' => $form->createView()
+            'customerForm' => $form->createView(),
         ]);
     }
 
@@ -145,12 +143,14 @@ class CustomerOrder extends AbstractController
     }
 
     /**
-     * Get last customer order id
+     * Get last customer order id.
+     *
      * @return object[]
      */
-    public function getLastCustomerOrderId() {
-        $customerOrderRepository =$this->getDoctrine()->getRepository(CustomerOrders::class);
+    public function getLastCustomerOrderId()
+    {
+        $customerOrderRepository = $this->getDoctrine()->getRepository(CustomerOrders::class);
 
-        return $customerOrderRepository->findBy(array(),array('customer_order_id'=>'DESC'),1,0);
+        return $customerOrderRepository->findBy([], ['customer_order_id' => 'DESC'], 1, 0);
     }
 }

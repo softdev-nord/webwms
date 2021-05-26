@@ -2,8 +2,8 @@
 
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\StockZoneLayoutRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\StockZoneLayoutRepository;
 
 /**
  * @ORM\Entity(repositoryClass=StockZoneLayoutRepository::class)

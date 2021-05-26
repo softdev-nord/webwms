@@ -2,14 +2,11 @@
 
 namespace WebWMS\Controller;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Controller\Requirements as Requirements;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Controller\Requirements as Requirements;
+use WebWMS\Entity\Customer as Customers;
 use WebWMS\Repository\CustomerRepository;
-use WebWMS\Entity\Customer AS Customers;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 class Customer extends AbstractController
 {
@@ -28,9 +25,7 @@ class Customer extends AbstractController
         $customers = $this->customerRepository->findAll();
 
         if (!$customers) {
-            throw $this->createNotFoundException(
-                'Keine Kunden gefunden'
-            );
+            throw $this->createNotFoundException('Keine Kunden gefunden');
         }
 
         return $customers;
@@ -38,6 +33,7 @@ class Customer extends AbstractController
 
     /**
      * @Route("/order_customer_ajax", name="order_customer_ajax")
+     *
      * @throws \Doctrine\DBAL\DBALException
      */
     public function getAllCustomersAjax()
@@ -74,6 +70,4 @@ class Customer extends AbstractController
             'customer' => $this->getAllCustomers(),
         ]);
     }
-
-
 }
