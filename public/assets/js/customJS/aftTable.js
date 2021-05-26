@@ -26,6 +26,7 @@ $(function() {
 			{ "data": "username" }
 		],
         "columnDefs": [
+			{ className: 'text-center', targets: [0, 2, 4, 5, 6] },
             { targets : [4,5], render:function ( data ) {
                 moment.locale("de");
                     return moment(data).format("L");
@@ -90,7 +91,10 @@ $(function() {
 					}
 				},
 			}
-		]
+		],
+		columnDefs: [
+			{ className: 'text-center', targets: [0, 1, 3, 4, 5] },
+		],
 	} );
 
 // Bei Auswahl einer Zeile in der Auftrags-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.

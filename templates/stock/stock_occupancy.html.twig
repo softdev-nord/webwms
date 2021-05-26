@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {{ include('header.html.twig') }}
+    {{ include('submenu.html.twig') }}
+    <!-- Beginn Übersicht Lagerbelegungen -->
+    <div class="wrapper-form">
+        <div class="wrapper-form-content">
+            <div class="card">
+                <div class="card-content">
+                    <!-- Beginn Tabelle Lagerbelegung -->
+                    <table id="stoTable" class="table table-striped table-bordered table-hover compact">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center" scope="col">Koordinate</th>
+                            <th style="text-align: center" scope="col">LagerNr</th>
+                            <th style="text-align: center" scope="col">FB</th>
+                            <th style="text-align: center" scope="col">SP</th>
+                            <th style="text-align: center" scope="col">TF</th>
+                            <th style="text-align: center" scope="col">Lagereinheit</th>
+                            <th style="text-align: center" scope="col">Artikel-Nr</th>
+                            <th style="text-align: center" scope="col">Bezeichnung</th>
+                            <th style="text-align: center" scope="col">Zugang</th>
+                            <th style="text-align: center" scope="col">Abgang</th>
+                            <th style="text-align: center" scope="col">LP Bestand</th>
+                            <th style="text-align: center" scope="col">Letzter Zugang</th>
+                            <th style="text-align: center" scope="col">Letzter Abgang</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <!-- Ende Tabelle Lagerbelegung -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ende Übersicht Lagerbelegungen -->
+{% endblock %}

@@ -2,8 +2,8 @@
 
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\StockLocationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\StockLocationRepository;
 
 /**
  * @ORM\Entity(repositoryClass=StockLocationRepository::class)

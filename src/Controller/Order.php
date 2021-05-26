@@ -2,13 +2,12 @@
 
 namespace WebWMS\Controller;
 
-use WebWMS\Controller\Requirements as Requirements;
-use WebWMS\Entity\Order AS Orders;
-use WebWMS\Entity\OrderPos;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Controller\Requirements as Requirements;
+use WebWMS\Entity\Order as Orders;
+use WebWMS\Entity\OrderPos;
 
 class Order extends AbstractController
 {
@@ -49,7 +48,7 @@ class Order extends AbstractController
             'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
             'page' => 'Übersicht Bestellungen',
             'orders' => $this->getAllOrders(),
-            'order_pos' => $this->getAllOrderPos()
+            'order_pos' => $this->getAllOrderPos(),
         ]);
     }
 }

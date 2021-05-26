@@ -2,10 +2,10 @@
 
 namespace WebWMS\Repository;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockRotation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use WebWMS\Entity\StockRotation;
 
 /**
  * @method StockRotation|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,7 +21,8 @@ class StockRotationRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get all Customer Orders for Ajax-Request
+     * Get all Customer Orders for Ajax-Request.
+     *
      * @return JsonResponse
      */
     public function getAllStockRotationsWithJoin()

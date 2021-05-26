@@ -2,10 +2,10 @@
 
 namespace WebWMS\Controller;
 
-use WebWMS\Controller\Requirements as Requirements;
-use WebWMS\Entity\Article AS Articles;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Controller\Requirements as Requirements;
+use WebWMS\Entity\Article as Articles;
 
 class Article extends AbstractController
 {
@@ -17,9 +17,7 @@ class Article extends AbstractController
         $articles = $this->getDoctrine()->getRepository(Articles::class)->getAllArticlesWithJoin();
 
         if (!$articles) {
-            throw $this->createNotFoundException(
-                'Keine Artikel gefunden'
-            );
+            throw $this->createNotFoundException('Keine Artikel gefunden');
         }
 
         return $articles;

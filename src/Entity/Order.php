@@ -2,8 +2,8 @@
 
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\OrderRepository;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)

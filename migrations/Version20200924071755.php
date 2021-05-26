@@ -12,18 +12,18 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20200924071755 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE article (id INT AUTO_INCREMENT NOT NULL, art_nr VARCHAR(255) NOT NULL, art_name VARCHAR(255) NOT NULL, art_kat VARCHAR(255) NOT NULL, art_gew NUMERIC(10, 2) NOT NULL, art_ean VARCHAR(15) NOT NULL, art_einh VARCHAR(10) NOT NULL, art_tiefe NUMERIC(6, 2) NOT NULL, art_breite NUMERIC(6, 2) NOT NULL, art_hoehe NUMERIC(6, 2) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE article');

@@ -1,0 +1,279 @@
+{% block copyright %}
+    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
+    --                                                                                                              --
+    --                      webLVS (c) Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                       --
+    --                                                                                                              --
+    -----------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE------------------------------------*/
+{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+
+    {{ include('header.html.twig') }}
+    {{ include('submenu.html.twig') }}
+
+    {% block content_body %}
+        {{ form_start(customerForm) }}
+        <div class="wrapper-form">
+        <div class="wrapper-form-content">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-8">
+                                    <label for="inputKunde">Kunden suchen</label>
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_nr" name="inputKdNr" id="customer_nr_1" placeholder="Über Kunden-Nr suchen"></br></br>
+                                </div>
+                                <div class="form-group col-md-8">
+                                    <label for="inputKunde">Kunde</label>
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_name" name="inputKdName" id="customer_name_1" placeholder="Über Kunden-Namen suchen">
+                                    {{ form_row(customerForm.customer_id) }}
+                                </div>
+                                <div class="form-group col-md-8">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_address_addition" name="inputKdAnsZu" id="customer_address_addition_1" placeholder="Anschrift Zusatz">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_address_street" name="inputKdStr" id="customer_address_street_1" placeholder="Straße">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_address_street_nr" name="inputKdHnr" id="customer_address_street_nr_1" placeholder="Haus-Nr">
+                                </div>
+                                <div class="form-group col-md-4"></div>
+                                <div class="form-group col-md-1">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_country_code" name="inputKdLandKrz" id="customer_country_code_1" placeholder="Land">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_zip_code" name="inputKdPlz" id="customer_zip_code_1" placeholder="PLZ">
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_city" name="inputKdOrt" id="customer_city_1" placeholder="Ort">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-6">
+                                    {{ form_row(customerForm.customer_order_nr, {'value' : "VLS-01-#{lastId.customerOrderId +1}"}) }}
+                                    {{ form_row(customerForm.customer_order_id, {'value' : lastId.customerOrderId}) }}
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{ form_row(customerForm.customer_order_reference) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-4">
+                                    {{ form_row(customerForm.customer_order_order_date) }}
+                                </div>
+                                <div class="form-group col-md-2"></div>
+                                <div class="form-group col-md-4">
+                                    {{ form_row(customerForm.customer_order_date, {'value' : "now"|date("d.m.Y")}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-4">
+                                    <label for="inputBstDat">Bearbeiter</label>
+                                    <input class="form-control" type="text" placeholder="{{ app.user.firstname }} {{ app.user.lastname }}" readonly="" style="background-color: transparent;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12"></div>
+                        <div class="form-group col-md-12">
+                            {% for message in app.flashes('success') %}
+                                <div class="alert alert-success">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group col-md-12"></div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table id="autocomplete_table" class="table table-hover">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th width="1%" style="text-align:center;">#</th>
+                                        <th width="15%"scope="col">Artikel-Nr</th>
+                                        <th width="35%" style="text-align:center;">Artikel Bezeichnung</th>
+                                        <th width="10%" style="text-align:center;">Menge</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody style="background-color: #F7F7F7;">
+                                    <tr id="row_1">
+                                        <th id="delete_1" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
+                                        <td>
+                                            <input id="art_nr_1" type="text" data-type="art_nr" name="inputArtNr[]" class="form-control autocomplete_items" autocomplete="off">
+                                            <input id="id_1" type="hidden" data-type="id" name="inputArtId[]" class="form-control autocomplete_items" autocomplete="off">
+                                        </td>
+                                        <td>
+                                            <input id="art_name_1" type="text" data-type="art_name" name="inputArtName[]" class="form-control autocomplete_items" autocomplete="off">
+                                        </td>
+                                        <td>
+                                            <input id="aft_pos_menge_1" type="text" data-type="aft_pos_menge" name="inputAftPosMenge[]" class="form-control autocomplete_items" autocomplete="off">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="btn-container">
+                                <input id="addNewButton" class="btn btn-success btn-sm" value="Neue Position">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-left: auto; margin-right: auto;">
+                        <br><button type="submit" name="customer_order" value="Auftrag anlegen" class="btn btn-secondary btn-lg btn-block" aria-label="Center">Auftrag anlegen</button><br><br>
+                    </div>
+                </div>
+        </div>
+    </div
+        {{ form_end(customerForm) }}
+    {% endblock %}
+
+    <!-- Beginn Auftrag anlegen -->
+    {#<div class="wrapper-form">
+        <div class="wrapper-form-content">
+            <form name="" action="{{ path('new_customer_order') }}" method="post">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-8">
+                                    <label for="inputKunde">Kunden suchen</label>
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_nr" name="inputKdNr" id="customer_nr_1" placeholder="Über Kunden-Nr suchen"></br></br>
+                                </div>
+                                <div class="form-group col-md-8">
+                                    <label for="inputLager">Kunde</label>
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_name" name="inputKdName" id="customer_name_1" placeholder="Über Kunden-Namen suchen">
+                                    <input type="hidden" class="form-control autocomplete_customers" data-type="id" name="customer_order[customer_id]" id="id_1">
+                                </div>
+                                <div class="form-group col-md-8">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_address_addition" name="inputKdAnsZu" id="customer_address_addition_1" placeholder="Anschrift Zusatz">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_address_street" name="inputKdStr" id="customer_address_street_1" placeholder="Straße">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_address_street_nr" name="inputKdHnr" id="customer_address_street_nr_1" placeholder="Haus-Nr">
+                                </div>
+                                <div class="form-group col-md-4"></div>
+                                <div class="form-group col-md-1">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_country_code" name="inputKdLandKrz" id="customer_country_code_1" placeholder="Land">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_zip_code" name="inputKdPlz" id="customer_zip_code_1" placeholder="PLZ">
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <input type="text" class="form-control autocomplete_customers" data-type="customer_city" name="inputKdOrt" id="customer_city_1" placeholder="Ort">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-6">
+                                    <label for="inputAftNr">Auftrags-Nr</label>
+                                    <input type="text" class="form-control" id="aft_nr_1" placeholder="Auftrags-Nr" name="customer_order[customer_order_nr]" value="VLS-01-{{ lastId.customerOrderId +1}}">
+                                    <input type="hidden" class="inputAftNr"  data-type="aft_id" id="aft_id_1" name="customer_order[customer_order_id]" value="">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputAftRef">Auftrags-Referenz</label>
+                                    <input type="text" class="form-control" id="aft_ref" placeholder="Auftrags-Referenz" name="customer_order[customer_order_reference]" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-4">
+                                    <label for="inputBstDat">Bestelldatum</label>
+                                    <input type="text" class="form-control" id="inputBstDat" placeholder="Bestelldatum" name="customer_order[customer_order_order_date]" value="" autocomplete="off">
+                                </div>
+                                <div class="form-group col-md-2"></div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputAftDat">Auftragsdatum</label>
+                                    <input type="text" class="form-control" id="inputAftDat" placeholder="Auftragsdatum"  name="customer_order[customer_order_date]" value="{{ "now"|date("d.m.Y") }}" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-4">
+                                    <label for="inputBstDat">Bearbeiter</label>
+                                    <input class="form-control" type="text" placeholder="{{ app.user.firstname }} {{ app.user.lastname }}" readonly="" style="background-color: transparent;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12"></div>
+                        <div class="form-group col-md-12">
+                            {% for message in app.flashes('success') %}
+                                <div class="alert alert-success">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group col-md-12"></div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table id="autocomplete_table" class="table table-hover">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th width="1%" style="text-align:center;">#</th>
+                                        <th width="15%"scope="col">Artikel-Nr</th>
+                                        <th width="35%" style="text-align:center;">Artikel Bezeichnung</th>
+                                        <th width="10%" style="text-align:center;">Menge</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody style="background-color: #F7F7F7;">
+                                    <tr id="row_1">
+                                        <th id="delete_1" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
+                                        <td>
+                                            <input type="text" data-type="art_nr" name="inputArtNr[]" id="art_nr_1" class="form-control autocomplete_items" autocomplete="off">
+                                            <input type="hidden" data-type="id" name="inputArtId[]" id="id_1" class="form-control autocomplete_items" autocomplete="off">
+                                        </td>
+                                        <td>
+                                            <input type="text" data-type="art_name" name="inputArtName[]" id="art_name_1" class="form-control autocomplete_items" autocomplete="off">
+                                        </td>
+                                        <td>
+                                            <input type="text" data-type="aft_pos_menge" name="inputAftPosMenge[]" id="aft_pos_menge_1" class="form-control autocomplete_items" autocomplete="off">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="btn-container">
+                                <input id="addNewButton" class="btn btn-success btn-sm" value="Neue Position">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-left: auto; margin-right: auto;">
+                        <br><button type="submit" name="auftrag_anlegen" value="Auftrag anlegen" class="btn btn-secondary btn-lg btn-block" aria-label="Center">Auftrag anlegen</button><br><br>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>#}
+    <!-- Ende Auftrag anlegen -->
+
+
+    {% block javascripts %}
+        <!-- JavaScript für Auftrag anlegen -->
+        <script src="assets/js/customJS/customersAutofill.js"></script>
+        <script src="assets/js/customJS/itemsAftAutofill.js"></script>
+        <script>
+            var aftId = {{ lastId.customerOrderId }};
+
+            function getAftId (){
+                document.querySelector(".inputAftNr").value = aftId;
+                console.log(aftId)
+            }
+            window.addEventListener("load", function () {
+                getAftId()
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

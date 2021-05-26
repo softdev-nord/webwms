@@ -86,7 +86,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ path('customer_orders') }}">Übersicht Aufträge</a></li>
-                            <li><a href="auftrag_anlegen.php">Auftrag anlegen</a></li>
+                            <li><a href="{{ path('new_customer_order') }}">Auftrag anlegen</a></li>
                             <li><a href="#">Auftrag ändern/stornieren</a></li>
                         </ul>
                     </li>
@@ -151,20 +151,22 @@
                             aria-expanded="false">Auswertungen
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="lagerbewegung.php">Lagerbewegungen</a></li>
+                            <li><a href="{{ path('stock_rotation') }}">Lagerbewegungen</a></li>
                             <li><a href="#">Lagergeld berechunen</a></li>
-                            <li><a href="lagerbelegung.php">Lagerbelegung</a></li>
+                            <li><a href="{{ path('stock_occupancy') }}">Lagerbelegung</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle"
-                    data-toggle="dropdown" role="button" aria-haspopup="true"
-                    aria-expanded="false">Inventur</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Inventur starten</a></li>
-                            <li><a href="#">Inventur buchen</a></li>
-                            <li><a href="#">Inventur abschließen</a></li>
-                        </ul>
-                    </li>
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <li class="dropdown"><a href="#" class="dropdown-toggle"
+                        data-toggle="dropdown" role="button" aria-haspopup="true"
+                        aria-expanded="false">Inventur</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Inventur starten</a></li>
+                                <li><a href="#">Inventur buchen</a></li>
+                                <li><a href="#">Inventur abschließen</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
                     <li class="dropdown"><a href="#" class="dropdown-toggle"
                     data-toggle="dropdown" role="button" aria-haspopup="true"
                     aria-expanded="false">Hilfe</a>
@@ -188,7 +190,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#">Passwort ändern</a></li>
                             <li><a href="benutzer_anlegen.php">Neuer Benutzer</a></li>
-                            <li><a href="abmelden.php">Abmelden</a></li>
+                            <li><a href="{{ path('app_logout') }}">Abmelden</a></li>
                         </ul>
                     </li>
                 </ul>

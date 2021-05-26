@@ -2,8 +2,9 @@
 
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\CustomerOrderRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Type;
+use WebWMS\Repository\CustomerOrderRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CustomerOrderRepository::class)
@@ -63,6 +64,9 @@ class CustomerOrder
         return $this->usr_id;
     }
 
+    /**
+     * @return $this
+     */
     public function setUsrId(int $usr_id): self
     {
         $this->usr_id = $usr_id;
@@ -75,6 +79,9 @@ class CustomerOrder
         return $this->customer_id;
     }
 
+    /**
+     * @return $this
+     */
     public function setCustomerId(int $customer_id): self
     {
         $this->customer_id = $customer_id;
@@ -87,6 +94,9 @@ class CustomerOrder
         return $this->customer_order_id;
     }
 
+    /**
+     * @return $this
+     */
     public function setCustomerOrderId(int $customer_order_id): self
     {
         $this->customer_order_id = $customer_order_id;
@@ -99,6 +109,9 @@ class CustomerOrder
         return $this->customer_order_nr;
     }
 
+    /**
+     * @return $this
+     */
     public function setCustomerOrderNr(string $customer_order_nr): self
     {
         $this->customer_order_nr = $customer_order_nr;
@@ -111,6 +124,9 @@ class CustomerOrder
         return $this->customer_order_reference;
     }
 
+    /**
+     * @return $this
+     */
     public function setCustomerOrderReference(?string $customer_order_reference): self
     {
         $this->customer_order_reference = $customer_order_reference;
@@ -118,11 +134,14 @@ class CustomerOrder
         return $this;
     }
 
-    public function getBstBstDat(): ?\DateTimeInterface
+    public function getCustomerOrderDate(): ?\DateTimeInterface
     {
         return $this->customer_order_date;
     }
 
+    /**
+     * @return $this
+     */
     public function setCustomerOrderDate(?\DateTimeInterface $customer_order_date): self
     {
         $this->customer_order_date = $customer_order_date;
@@ -130,19 +149,18 @@ class CustomerOrder
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCustomerOrderOrderDate()
+    public function getCustomerOrderOrderDate(): ?\DateTimeInterface
     {
         return $this->customer_order_order_date;
     }
 
     /**
-     * @param mixed $customer_order_order_date
+     * @return CustomerOrder
      */
-    public function setCustomerOrderOrderDate($customer_order_order_date): void
+    public function setCustomerOrderOrderDate(?\DateTimeInterface $customer_order_order_date): self
     {
         $this->customer_order_order_date = $customer_order_order_date;
+
+        return $this;
     }
 }

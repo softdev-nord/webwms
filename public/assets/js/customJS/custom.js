@@ -11,9 +11,9 @@ $(function(){
 
 // Datepicker für Auftrag anlegen
 $( function() {
-	$("#inputBstDat")
+	$("#customer_order_customer_order_order_date")
 		.datepicker({ dateFormat: "dd.mm.yy" }).val();
-	$("#inputAftDat")
+	$("#customer_order_customer_order_date")
 		.datepicker({ dateFormat: "dd.mm.yy" }).val();
 
 });
@@ -119,6 +119,66 @@ $(document).ready(function() {
 		closeOnMouseleave: true,
 		animation: 'zoomIn',
 		theme: 'TooltipBorder',
+		attach: '#startseite',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Startseite'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#lieferanten',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Lieferanten'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#lieferanten_anlegen',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Lieferanten anlegen'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#kunden',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Kunden'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#kunden_anlegen',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Kunden anlegen'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
 		attach: '#bestellungen',
 		position: {
 			x: 'center',
@@ -167,12 +227,24 @@ $(document).ready(function() {
 		closeOnMouseleave: true,
 		animation: 'zoomIn',
 		theme: 'TooltipBorder',
-		attach: '#startseite',
+		attach: '#transporteingang',
 		position: {
 			x: 'center',
 			y: 'bottom'
 		},
-		content: 'Startseite'
+		content: 'Transporteingang'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#transportausgang',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Transportausgang'
 	});
 });
 
@@ -208,6 +280,7 @@ $(function() {
 			{"data": "dispatch_date"}
 		],
 		"columnDefs": [
+			{ className: 'text-center', targets: "_all" },
 			{
 				targets: [10], render: function (data) {
 					moment.locale("de");
@@ -218,7 +291,7 @@ $(function() {
 	});
 })
 
-// JS Funktion Ajax Daten für Übersicht Lagerbewegungen
+// JS Funktion Ajax Daten für Übersicht Artikel
 $(function() {
 	var artTable = $('#artTable').DataTable({
 		"lengthChange": false,
@@ -250,6 +323,48 @@ $(function() {
 				"data": "lbw_menge",
 			 	"defaultContent": 0
 			}
+		],
+		columnDefs: [
+			{ className: 'text-center', targets: "_all" },
+		],
+	});
+})
+
+// JS Funktion Ajax Daten für Übersicht Lagerbelegung
+$(function() {
+	var artTable = $('#stoTable').DataTable({
+		"lengthChange": false,
+		// Ajax-Anfrage via PHP (Json)
+		ajax: {
+			'url': '/stock_occupancy_ajax',
+			'dataSrc': ''
+		},
+		// Seitenlänge max. 15 Einträge
+		pageLength: 15,
+		"language": {
+			"url": "./resources/dataTable.German.json"
+		},
+		// Initialisierung der DataTables Select-Erweiterung
+		select: {
+			style: 'single'
+		},
+		columns: [
+			{"data": "koordinate"},
+			{"data": "ln"},
+			{"data": "fb"},
+			{"data": "sp"},
+			{"data": "tf"},
+			{"data": "lagereinheit"},
+			{"data": "art_nr"},
+			{"data": "bezeichnung"},
+			{"data": "trans_ein"},
+			{"data": "trans_aus"},
+			{"data": "lp_bestand"},
+			{"data": "letzter_zugang"},
+			{"data": "letzter_abgang"},
+		],
+		columnDefs: [
+			{ className: 'text-center', targets: "_all" },
 		],
 	});
 })
