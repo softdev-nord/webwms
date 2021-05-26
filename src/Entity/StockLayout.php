@@ -40,6 +40,11 @@ class StockLayout
     /**
      * @ORM\Column(type="integer")
      */
+    private $stock_level3;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $stock_level4;
 
     /**
@@ -106,6 +111,18 @@ class StockLayout
     public function setStockLevel2(int $stock_level2): self
     {
         $this->stock_level2 = $stock_level2;
+
+        return $this;
+    }
+
+    public function getStockLevel3(): ?int
+    {
+        return $this->stock_level3;
+    }
+
+    public function setStockLevel3(int $stock_level3): self
+    {
+        $this->stock_level3 = $stock_level3;
 
         return $this;
     }

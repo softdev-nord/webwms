@@ -11,7 +11,7 @@ var itemsAddNewRow = (function(){
 		html += '<th id="delete_'+rowcount+'" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>';
 		html += '<td>';
 		html += '<input type="text" data-type="art_nr" name="inputArtNr" id="art_nr_'+rowcount+'" class="form-control autocomplete_txt" autocomplete="off">';
-		html += '<input type="hidden" data-type="art_id" name="inputArtId" id="art_id_'+rowcount+'" class="form-control autocomplete_txt" autocomplete="off">';
+		html += '<input type="hidden" data-type="id" name="inputArtId" id="art_id_'+rowcount+'" class="form-control autocomplete_txt" autocomplete="off">';
 		html += '</td>';
 		html += '<td>';
 		html += '<input type="text" data-type="art_name" name="inputArtName" id="art_name_'+rowcount+'" class="form-control autocomplete_txt" autocomplete="off">';
@@ -33,7 +33,7 @@ var itemsAddNewRow = (function(){
 			case 'art_name':
 				numOfBoxArt = 1;
 				break;
-			case 'art_id':
+			case 'id':
 				numOfBoxArt = 2;
 				break;
 			default:
@@ -55,9 +55,9 @@ var itemsAddNewRow = (function(){
 		$(this).autocomplete({
 			source: function( data, cb ) {
 				$.ajax({
-					url:'../ajax/artikel.ajax.php',
+					'url':'/article_order_ajax',
 					method: 'GET',
-					dataType: 'json',
+					'dataType': 'json',
 					data: {
 						name_art:  data.term,
 						numOfBoxArt: numOfBoxArt
@@ -95,7 +95,7 @@ var itemsAddNewRow = (function(){
 
 				$('#art_nr_'+numOfRow).val(resArr[0]);
 				$('#art_name_'+numOfRow).val(resArr[1]);
-				$('#art_id_'+numOfRow).val(resArr[2]);
+				$('#id_'+numOfRow).val(resArr[2]);
 			}
 		});
 	}

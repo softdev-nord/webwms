@@ -4,31 +4,31 @@ var customersAutofill = (function(){
 	function getNumOfBoxKd(type){
 		var numOfBoxKd;
 		switch (type) {
-			case 'kd_nr':
+			case 'customer_nr':
 				numOfBoxKd = 0;
 				break;
-			case 'kd_name':
+			case 'customer_name':
 				numOfBoxKd = 1;
 				break;
-			case 'kd_ans_zu':
+			case 'customer_address_addition':
 				numOfBoxKd = 2;
 				break;
-			case 'kd_str':
+			case 'customer_address_street':
 				numOfBoxKd = 3;
 				break;
-			case 'kd_hnr':
+			case 'customer_address_street_nr':
 				numOfBoxKd = 4;
 				break;
-			case 'kd_land_krz':
+			case 'customer_country_code':
 				numOfBoxKd = 5;
 				break;
-			case 'kd_plz':
+			case 'customer_zip_code':
 				numOfBoxKd = 6;
 				break;
-			case 'kd_ort':
+			case 'customer_city':
 				numOfBoxKd = 7;
 				break;
-			case 'kd_id':
+			case 'id':
 				numOfBoxKd = 8;
 				break;
 			default:
@@ -49,9 +49,9 @@ var customersAutofill = (function(){
 		$(this).autocomplete({
 			source: function( data, cb ) {
 				$.ajax({
-					url:'../ajax/kunden.ajax.php',
-					method: 'GET',
-					dataType: 'json',
+					'url':'/order_customer_ajax',
+					'method': 'GET',
+					//dataType: 'json',
 					data: {
 						name_kd: data.term,
 						numOfBoxKd: numOfBoxKd
@@ -86,15 +86,15 @@ var customersAutofill = (function(){
 				//Splittung des resArrKd Arrays
 				resArrKd = ui.item.data.split("|");
 
-				$('#kd_nr_1').val(resArrKd[0]);
-				$('#kd_name_1').val(resArrKd[1]);
-				$('#kd_ans_zu_1').val(resArrKd[2]);
-				$('#kd_str_1').val(resArrKd[3]);
-				$('#kd_hnr_1').val(resArrKd[4]);
-				$('#kd_land_krz_1').val(resArrKd[5]);
-				$('#kd_plz_1').val(resArrKd[6]);
-				$('#kd_ort_1').val(resArrKd[7]);
-				$('#kd_id_1').val(resArrKd[8]);
+				$('#customer_nr_1').val(resArrKd[0]);
+				$('#customer_name_1').val(resArrKd[1]);
+				$('#customer_address_addition_1').val(resArrKd[2]);
+				$('#customer_address_street_1').val(resArrKd[3]);
+				$('#customer_address_street_nr_1').val(resArrKd[4]);
+				$('#customer_country_code_1').val(resArrKd[5]);
+				$('#customer_zip_code_1').val(resArrKd[6]);
+				$('#customer_city_1').val(resArrKd[7]);
+				$('#customer_order_customer_id').val(resArrKd[8]);
 			}
 		});
 	}

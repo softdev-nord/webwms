@@ -11,9 +11,9 @@ $(function(){
 
 // Datepicker für Auftrag anlegen
 $( function() {
-	$("#inputBstDat")
+	$("#customer_order_customer_order_order_date")
 		.datepicker({ dateFormat: "dd.mm.yy" }).val();
-	$("#inputAftDat")
+	$("#customer_order_customer_order_date")
 		.datepicker({ dateFormat: "dd.mm.yy" }).val();
 
 });
@@ -119,6 +119,66 @@ $(document).ready(function() {
 		closeOnMouseleave: true,
 		animation: 'zoomIn',
 		theme: 'TooltipBorder',
+		attach: '#startseite',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Startseite'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#lieferanten',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Lieferanten'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#lieferanten_anlegen',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Lieferanten anlegen'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#kunden',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Kunden'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#kunden_anlegen',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Kunden anlegen'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
 		attach: '#bestellungen',
 		position: {
 			x: 'center',
@@ -167,12 +227,24 @@ $(document).ready(function() {
 		closeOnMouseleave: true,
 		animation: 'zoomIn',
 		theme: 'TooltipBorder',
-		attach: '#startseite',
+		attach: '#transporteingang',
 		position: {
 			x: 'center',
 			y: 'bottom'
 		},
-		content: 'Startseite'
+		content: 'Transporteingang'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#transportausgang',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Transportausgang'
 	});
 });
 

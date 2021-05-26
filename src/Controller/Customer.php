@@ -2,10 +2,14 @@
 
 namespace WebWMS\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Controller\Requirements as Requirements;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Repository\CustomerRepository;
+use WebWMS\Entity\Customer AS Customers;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 class Customer extends AbstractController
 {
@@ -33,16 +37,43 @@ class Customer extends AbstractController
     }
 
     /**
+     * @Route("/order_customer_ajax", name="order_customer_ajax")
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getAllCustomersAjax()
+    {
+        return $this->getDoctrine()->getRepository(Customers::class)->getCustomers();
+    }
+
+    /**
      * @Route("/kunden", name="customer")
      */
-    public function index()
+    public function index(): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('customer/index.html.twig', [
             'appName' => Requirements::APP_NAME,
             'appVersion' => Requirements::APP_VERSION,
             'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
             'page' => 'Kundenübersicht',
+            'data' => $this->getAllCustomersAjax(),
             'customer' => $this->getAllCustomers(),
         ]);
     }
+
+    /**
+     * @Route("/kunden_anlegen", name="create_customer")
+     */
+    public function createCustomer(): \Symfony\Component\HttpFoundation\Response
+    {
+        return $this->render('customer/index.html.twig', [
+            'appName' => Requirements::APP_NAME,
+            'appVersion' => Requirements::APP_VERSION,
+            'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
+            'page' => 'Kundenübersicht',
+            'data' => $this->getAllCustomersAjax(),
+            'customer' => $this->getAllCustomers(),
+        ]);
+    }
+
+
 }

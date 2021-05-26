@@ -3,9 +3,6 @@
 namespace WebWMS\Repository;
 
 use WebWMS\Entity\CustomerOrder;
-use WebWMS\Entity\CustomerOrderPos;
-use WebWMS\Entity\Supplier;
-use WebWMS\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,19 +28,34 @@ class CustomerOrderRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = "SELECT aft.customer_order_id, aft.customer_order_nr, aft.customer_order_reference,
-                    kd.customer_nr, kd.customer_name, aft.customer_order_date,
-                    aft.customer_order_order_date, usr.username
-                FROM customer_orders AS aft
-                INNER JOIN customer_order_pos AS pos
-                    ON pos.customer_order_id = aft.customer_order_id
-                INNER JOIN customer AS kd
-                    ON kd.customer_id = aft.customer_id
-                INNER JOIN user AS usr
-                    ON usr.id = aft.usr_id
-                GROUP BY pos.customer_order_id;";
+        $queryBuilder = $conn->createQueryBuilder();
 
-        $data = $conn->fetchAll($sql);
+        /*$queryBuilder->select(['co.customer_order_id', 'co.customer_order_nr', 'co.customer_order_reference',
+            'cu.customer_nr', 'cu.customer_name', 'co.customer_order_date',
+            'co.customer_order_order_date', 'usr.username'])
+            ->from('customer_orders', 'co')
+            ->innerJoin('co', 'customer_order_pos', 'co_pos', 'co_pos.customer_order_id = co.customer_order_id')
+            ->innerJoin('co', 'customer', 'cu', 'cu.customer_id = co.customer_id')
+            ->innerJoin('co', 'user', 'usr', 'usr.id = co.usr_id')
+            ->groupBy('co_pos.customer_order_id');
+
+        $stmt = $queryBuilder->execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_COLUMN);*/
+
+         $sql = "SELECT co.customer_order_id, co.customer_order_nr, co.customer_order_reference,
+                     cu.customer_nr, cu.customer_name, co.customer_order_date,
+                     co.customer_order_order_date, usr.username
+                 FROM customer_orders AS co
+                 INNER JOIN customer_order_pos AS co_pos
+                     ON co_pos.customer_order_id = co.customer_order_id
+                 INNER JOIN customer AS cu
+                     ON cu.customer_id = co.customer_id
+                 INNER JOIN user AS usr
+                     ON usr.id = co.usr_id
+                 GROUP BY co_pos.customer_order_id;";
+
+         $data = $conn->fetchAll($sql);
 
         return new JsonResponse($data);
     }

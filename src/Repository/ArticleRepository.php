@@ -3,6 +3,8 @@
 namespace WebWMS\Repository;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Controller\AjaxSqlQuery;
 use WebWMS\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -35,6 +37,52 @@ class ArticleRepository extends ServiceEntityRepository
                 GROUP BY art.id;";
 
         $data = $conn->fetchAll($sql);
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @return JsonResponse
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getArticle()
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        $numOfBoxArt = ! empty($_GET['numOfBoxArt']) ? $_GET['numOfBoxArt'] : '';
+        $name = ! empty($_GET['art_nr']) ? strtolower(trim($_GET['art_nr'])) : '';
+
+        $boxName = 'art_nr';
+
+        switch ($numOfBoxArt) {
+            case 1:
+                $boxName = 'art_name';
+                break;
+            case 2:
+                $boxName = 'id';
+                break;
+            case 3:
+                $boxName = 'art_ean';
+                break;
+            case 4:
+                $boxName = 'art_kat';
+                break;
+        }
+
+        $data = [];
+        if ( !empty($_GET['name_art']))
+        {
+            $name = strtolower(trim($_GET['name_art']));
+
+            $sqlArt = "SELECT art_nr, art_name, id, art_ean, art_kat FROM article where LOWER($boxName) LIKE '" . $name . "%'";
+            $stmt = $connection->query($sqlArt);
+
+            while ($row = $stmt->fetch())
+            {
+                $name = $row['art_nr'] . '|' . $row['art_name'] . '|' . $row['id'] . '|' . $row['art_ean'] . '|' . $row['art_kat'];
+                array_push($data, $name);
+            }
+        }
 
         return new JsonResponse($data);
     }

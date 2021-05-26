@@ -28,7 +28,6 @@ class OrderPosRepository extends ServiceEntityRepository
     /**
      * Get all Order positions for Ajax-Request
      * @return JsonResponse
-     * @throws \Doctrine\DBAL\DBALException
      */
     /*public function getAllOrderPos()
     {
@@ -53,6 +52,9 @@ class OrderPosRepository extends ServiceEntityRepository
         return new JsonResponse($data);
     }*/
 
+    /**
+     * @return JsonResponse
+     */
     public function getAllOrderPos()
     {
         $conn = $this->getEntityManager()->getConnection();

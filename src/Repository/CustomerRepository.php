@@ -2,6 +2,7 @@
 
 namespace WebWMS\Repository;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Customer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,45 +20,65 @@ class CustomerRepository extends ServiceEntityRepository
         parent::__construct($registry, Customer::class);
     }
 
-    public function getAllCustomers()
+    // Abfrage aller Kunden
+    /**
+     * @return JsonResponse
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getCustomers()
     {
-        $customers = $this->getDoctrine()->getRepository(\WebWMS\Entity\Customer::class)->findAll();
+        $connection = $this->getEntityManager()->getConnection();
 
-        if (!$customers) {
-            throw $this->createNotFoundException(
-                'Keine Kunden gefunden'
-            );
+        $numOfBoxKd = !empty($_GET['numOfBoxKd']) ? $_GET['numOfBoxKd'] : '';
+        $nameKd = !empty($_GET['customer_nr']) ? strtolower(trim($_GET['customer_nr'])) : '';
+
+        $boxName = 'customer_nr';
+
+        switch ($numOfBoxKd)
+        {
+            case 1:
+                $boxName = 'customer_name';
+                break;
+            case 2:
+                $boxName = 'customer_address_addition';
+                break;
+            case 3:
+                $boxName = 'customer_address_street';
+                break;
+            case 4:
+                $boxName = 'customer_address_street_nr';
+                break;
+            case 5:
+                $boxName = 'customer_country_code';
+                break;
+            case 6:
+                $boxName = 'customer_zip_code';
+                break;
+            case 7:
+                $boxName = 'customer_city';
+                break;
+            case 8:
+                $boxName = 'id';
+                break;
         }
 
-        return $customers;
-    }
+        $data = [];
+        if (isset($_GET['name_kd']))
+        {
+            $nameKd = strtolower(trim($_GET['name_kd']));
 
-    // /**
-    //  * @return Customer[] Returns an array of Customer objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+            $sqlKd = "SELECT customer_nr, customer_name, customer_address_addition, 
+                        customer_address_street, customer_address_street_nr, customer_country_code, 
+                        customer_zip_code, customer_city, id FROM customer WHERE LOWER($boxName) LIKE '" . $nameKd . "%'";
+            $stmt = $connection->query($sqlKd);
 
-    /*
-    public function findOneBySomeField($value): ?Customer
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            while ($rowKd = $stmt->fetch())
+            {
+                $nameKd = $rowKd['customer_nr'] . '|'. $rowKd['customer_name'] . '|' . $rowKd['customer_address_addition'] . '|' . $rowKd['customer_address_street'] . '|' . $rowKd['customer_address_street_nr'] . '|' . $rowKd['customer_country_code'] . '|' . $rowKd['customer_zip_code'] . '|' . $rowKd['customer_city'] . '|' . $rowKd['id'];
+                array_push($data, $nameKd);
+            }
+        }
+        return new JsonResponse($data);
+
     }
-    */
 }
