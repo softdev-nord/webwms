@@ -1,12 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\Supplier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\Supplier;
 
 /**
+ * @package:    WebWMS\Repository
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        SupplierRepository
+ *
  * @method Supplier|null find($id, $lockMode = null, $lockVersion = null)
  * @method Supplier|null findOneBy(array $criteria, array $orderBy = null)
  * @method Supplier[]    findAll()
@@ -18,33 +25,4 @@ class SupplierRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Supplier::class);
     }
-
-    // /**
-    //  * @return Supplier[] Returns an array of Supplier objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Supplier
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

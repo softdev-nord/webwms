@@ -1,12 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\BookingMethod;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\BookingMethod;
 
 /**
+ * @package:    WebWMS\Repository
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        BookingMethodRepository
+ *
  * @method BookingMethod|null find($id, $lockMode = null, $lockVersion = null)
  * @method BookingMethod|null findOneBy(array $criteria, array $orderBy = null)
  * @method BookingMethod[]    findAll()
@@ -18,33 +25,4 @@ class BookingMethodRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, BookingMethod::class);
     }
-
-    // /**
-    //  * @return BookingMethod[] Returns an array of BookingMethod objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?BookingMethod
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

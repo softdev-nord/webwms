@@ -1,48 +1,130 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Controller;
 
-use WebWMS\Controller\Requirements as Requirements;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Repository\CustomerRepository;
+use WebWMS\Controller\Requirements as Requirements;
+use WebWMS\Form\CustomerType;
+use WebWMS\Services\CustomerService;
 
+/**
+ * @package:    WebWMS\Controller
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        Customer
+ */
 class Customer extends AbstractController
 {
-    /**
-     * @var CustomerRepository
-     */
-    private $customerRepository;
+    /** @var CustomerService */
+    private $customerService;
 
-    public function __construct(CustomerRepository $customerRepository)
-    {
-        $this->customerRepository = $customerRepository;
+    /** @var Requirements */
+    private $requirements;
+
+    public function __construct(
+        CustomerService $customerService,
+        Requirements $requirements
+    ) {
+        $this->customerService = $customerService;
+        $this->requirements = $requirements;
     }
 
-    public function getAllCustomers()
+    public function getAllCustomers(): array
     {
-        $customers = $this->customerRepository->findAll();
+        return $this->customerService->getAllCustomers();
+    }
 
-        if (!$customers) {
-            throw $this->createNotFoundException(
-                'Keine Kunden gefunden'
-            );
+    /**
+     * @Route("/order_customer_ajax", name="order_customer_ajax")
+     */
+    public function getAllCustomersAjax(): JsonResponse
+    {
+        return $this->customerService->getAllCustomersAjax();
+    }
+
+    /**
+     * @Route("/kunden_anlegen", name="add_customer")
+     *
+     * @return RedirectResponse|Response
+     */
+    public function addNewCustomer(Request $request)
+    {
+        //$params = $request->request->all();
+        //dd($params['customer']['customer_name']);
+
+        $form = $this->createForm(CustomerType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->customerService->addNewCustomer($request);
+            $this->addFlash('success', 'Der Kunde wurde erfolgreich angelegt.');
+
+            return $this->redirectToRoute('create_customer');
         }
 
-        return $customers;
+        return $this->render('customer/add_customer.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Kunden anlegen',
+                'lastId' => $this->getLastCustomer()[0],
+                'addCustomerForm' => $form->createView(),
+            ]
+        );
+    }
+
+    /**
+     * Get last customer
+     */
+    public function getLastCustomer(): array
+    {
+        return $this->customerService->getLastCustomer();
     }
 
     /**
      * @Route("/kunden", name="customer")
      */
-    public function index()
+    public function index(): Response
     {
-        return $this->render('customer/index.html.twig', [
-            'appName' => Requirements::APP_NAME,
-            'appVersion' => Requirements::APP_VERSION,
-            'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
-            'page' => 'Kundenübersicht',
-            'customer' => $this->getAllCustomers(),
-        ]);
+        return $this->render('customer/index.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Kundenübersicht',
+                'data' => $this->getAllCustomersAjax(),
+                'customer' => $this->getAllCustomers(),
+            ]
+        );
+    }
+
+    /**
+     * @Route("/kunden_anlegen", name="create_customer")
+     */
+    public function createCustomer(): Response
+    {
+        return $this->render('customer/index.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Kundenübersicht',
+                'data' => $this->getAllCustomersAjax(),
+                'customer' => $this->getAllCustomers(),
+            ]
+        );
     }
 }

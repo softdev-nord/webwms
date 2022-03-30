@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\DataFixtures;
 
-use WebWMS\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
+use WebWMS\Entity\User;
 
 class UserFixtures extends Fixture
 {
@@ -20,9 +21,6 @@ class UserFixtures extends Fixture
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    /**
-     * @param ObjectManager $manager
-     */
     public function load(ObjectManager $manager)
     {
         // Create our user and set details
@@ -33,11 +31,10 @@ class UserFixtures extends Fixture
 
         $plainPassword = 'Apolda8801!#';
         $userAdmin->setPassword(
-            $this->passwordEncoder->encodePassword($userAdmin,$plainPassword)
+            $this->passwordEncoder->encodePassword($userAdmin, $plainPassword)
         );
 
-        //$roles = 'ROLE_SUPER_ADMIN';
-        $userAdmin->setRoles((array)'ROLE_SUPER_ADMIN');
+        $userAdmin->setRoles((array) 'ROLE_SUPER_ADMIN');
 
         $manager->persist($userAdmin);
         $manager->flush();

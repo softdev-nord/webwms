@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\BookingMethodRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\BookingMethodRepository;
 
 /**
  * @ORM\Entity(repositoryClass=BookingMethodRepository::class)

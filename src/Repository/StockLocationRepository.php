@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Repository;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockLocation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\StockLocation;
 
 /**
+ * @package:    WebWMS\Repository
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        StockLocationRepository
+ *
  * @method StockLocation|null find($id, $lockMode = null, $lockVersion = null)
  * @method StockLocation|null findOneBy(array $criteria, array $orderBy = null)
  * @method StockLocation[]    findAll()

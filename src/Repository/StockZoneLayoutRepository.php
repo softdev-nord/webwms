@@ -1,12 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\StockZoneLayout;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\StockZoneLayout;
 
 /**
+ * @package:    WebWMS\Repository
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        StockZoneLayoutRepository
+ *
  * @method StockZoneLayout|null find($id, $lockMode = null, $lockVersion = null)
  * @method StockZoneLayout|null findOneBy(array $criteria, array $orderBy = null)
  * @method StockZoneLayout[]    findAll()
@@ -18,33 +25,4 @@ class StockZoneLayoutRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, StockZoneLayout::class);
     }
-
-    // /**
-    //  * @return StockZoneLayout[] Returns an array of StockZoneLayout objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?StockZoneLayout
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

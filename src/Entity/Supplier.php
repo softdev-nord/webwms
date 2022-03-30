@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\SupplierRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\SupplierRepository;
 
 /**
  * @ORM\Entity(repositoryClass=SupplierRepository::class)
@@ -20,141 +22,218 @@ class Supplier
     /**
      * @ORM\Column(type="integer")
      */
-    private $lief_nr;
+    private $supplier_id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $supplier_nr;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $lief_name;
+    private $supplier_name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $lief_ans_zu;
+    private $supplier_address_addition;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $lief_str;
+    private $supplier_address_street;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $lief_hnr;
+    private $supplier_address_street_nr;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $lief_land_krz;
+    private $supplier_address_country_code;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $lief_plz;
+    private $supplier_address_zipcode;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $lief_ort;
+    private $supplier_address_city;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getLiefNr(): ?int
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
     {
-        return $this->lief_nr;
+        $this->id = $id;
     }
 
-    public function setLiefNr(int $lief_nr): self
+    /**
+     * @return mixed
+     */
+    public function getSupplierId()
     {
-        $this->lief_nr = $lief_nr;
-
-        return $this;
+        return $this->supplier_id;
     }
 
-    public function getLiefName(): ?string
+    /**
+     * @param mixed $supplier_id
+     */
+    public function setSupplierId($supplier_id): void
     {
-        return $this->lief_name;
+        $this->supplier_id = $supplier_id;
     }
 
-    public function setLiefName(string $lief_name): self
+    /**
+     * @return mixed
+     */
+    public function getSupplierNr()
     {
-        $this->lief_name = $lief_name;
-
-        return $this;
+        return $this->supplier_nr;
     }
 
-    public function getLiefAnsZu(): ?string
+    /**
+     * @param mixed $supplier_nr
+     */
+    public function setSupplierNr($supplier_nr): void
     {
-        return $this->lief_ans_zu;
+        $this->supplier_nr = $supplier_nr;
     }
 
-    public function setLiefAnsZu(?string $lief_ans_zu): self
+    /**
+     * @return mixed
+     */
+    public function getSupplierName()
     {
-        $this->lief_ans_zu = $lief_ans_zu;
-
-        return $this;
+        return $this->supplier_name;
     }
 
-    public function getLiefStr(): ?string
+    /**
+     * @param mixed $supplier_name
+     */
+    public function setSupplierName($supplier_name): void
     {
-        return $this->lief_str;
+        $this->supplier_name = $supplier_name;
     }
 
-    public function setLiefStr(string $lief_str): self
+    /**
+     * @return mixed
+     */
+    public function getSupplierAddressAddition()
     {
-        $this->lief_str = $lief_str;
-
-        return $this;
+        return $this->supplier_address_addition;
     }
 
-    public function getLiefHnr(): ?string
+    /**
+     * @param mixed $supplier_address_addition
+     */
+    public function setSupplierAddressAddition($supplier_address_addition): void
     {
-        return $this->lief_hnr;
+        $this->supplier_address_addition = $supplier_address_addition;
     }
 
-    public function setLiefHnr(string $lief_hnr): self
+    /**
+     * @return mixed
+     */
+    public function getSupplierAddressStreet()
     {
-        $this->lief_hnr = $lief_hnr;
-
-        return $this;
+        return $this->supplier_address_street;
     }
 
-    public function getLiefLandKrz(): ?string
+    /**
+     * @param mixed $supplier_address_street
+     */
+    public function setSupplierAddressStreet($supplier_address_street): void
     {
-        return $this->lief_land_krz;
+        $this->supplier_address_street = $supplier_address_street;
     }
 
-    public function setLiefLandKrz(string $lief_land_krz): self
+    /**
+     * @return mixed
+     */
+    public function getSupplierAddressStreetNr()
     {
-        $this->lief_land_krz = $lief_land_krz;
-
-        return $this;
+        return $this->supplier_address_street_nr;
     }
 
-    public function getLiefPlz(): ?string
+    /**
+     * @param mixed $supplier_address_street_nr
+     */
+    public function setSupplierAddressStreetNr($supplier_address_street_nr): void
     {
-        return $this->lief_plz;
+        $this->supplier_address_street_nr = $supplier_address_street_nr;
     }
 
-    public function setLiefPlz(string $lief_plz): self
+    /**
+     * @return mixed
+     */
+    public function getSupplierAddressCountryCode()
     {
-        $this->lief_plz = $lief_plz;
-
-        return $this;
+        return $this->supplier_address_country_code;
     }
 
-    public function getLiefOrt(): ?string
+    /**
+     * @param mixed $supplier_address_country_code
+     */
+    public function setSupplierAddressCountryCode($supplier_address_country_code): void
     {
-        return $this->lief_ort;
+        $this->supplier_address_country_code = $supplier_address_country_code;
     }
 
-    public function setLiefOrt(string $lief_ort): self
+    /**
+     * @return mixed
+     */
+    public function getSupplierAddressZipcode()
     {
-        $this->lief_ort = $lief_ort;
-
-        return $this;
+        return $this->supplier_address_zipcode;
     }
+
+    /**
+     * @param mixed $supplier_address_zipcode
+     */
+    public function setSupplierAddressZipcode($supplier_address_zipcode): void
+    {
+        $this->supplier_address_zipcode = $supplier_address_zipcode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSupplierAddressCity()
+    {
+        return $this->supplier_address_city;
+    }
+
+    /**
+     * @param mixed $supplier_address_city
+     */
+    public function setSupplierAddressCity($supplier_address_city): void
+    {
+        $this->supplier_address_city = $supplier_address_city;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'supplier_id' => $this->supplier_id,
+            'supplier_nr' => $this->supplier_nr,
+            'supplier_name' => $this->supplier_name,
+            'supplier_address_addition' => $this->supplier_address_addition,
+            'supplier_address_street' => $this->supplier_address_street,
+            'supplier_address_street_nr' => $this->supplier_address_street_nr,
+            'supplier_address_country_code' => $this->supplier_address_country_code,
+            'supplier_address_zipcode' => $this->supplier_address_zipcode,
+            'supplier_address_city' => $this->supplier_address_city,
+        ];
+    }
+
 }

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\CustomerOrderPosRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\CustomerOrderPosRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CustomerOrderPosRepository::class)

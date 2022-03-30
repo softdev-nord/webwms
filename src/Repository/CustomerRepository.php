@@ -1,12 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\Customer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\Customer;
 
 /**
+ * @package:    WebWMS\Repository
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        CustomerRepository
+ *
  * @method Customer|null find($id, $lockMode = null, $lockVersion = null)
  * @method Customer|null findOneBy(array $criteria, array $orderBy = null)
  * @method Customer[]    findAll()
@@ -18,46 +25,4 @@ class CustomerRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Customer::class);
     }
-
-    public function getAllCustomers()
-    {
-        $customers = $this->getDoctrine()->getRepository(\WebWMS\Entity\Customer::class)->findAll();
-
-        if (!$customers) {
-            throw $this->createNotFoundException(
-                'Keine Kunden gefunden'
-            );
-        }
-
-        return $customers;
-    }
-
-    // /**
-    //  * @return Customer[] Returns an array of Customer objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Customer
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

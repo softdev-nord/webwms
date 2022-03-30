@@ -20,56 +20,70 @@ class OrderPos
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $bst_id;
+    private $order_id;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $art_id;
+    private $article_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $bst_pos_menge;
+    private $order_pos_quantity;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBstId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getOrderId()
     {
-        return $this->bst_id;
+        return $this->order_id;
     }
 
-    public function setBstId(?int $bst_id): self
+    /**
+     * @param mixed $order_id
+     */
+    public function setOrderId($order_id): void
     {
-        $this->bst_id = $bst_id;
-
-        return $this;
+        $this->order_id = $order_id;
     }
 
-    public function getArtId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getArticleId()
     {
-        return $this->art_id;
+        return $this->article_id;
     }
 
-    public function setArtId(?int $art_id): self
+    /**
+     * @param mixed $article_id
+     */
+    public function setArticleId($article_id): void
     {
-        $this->art_id = $art_id;
-
-        return $this;
+        $this->article_id = $article_id;
     }
 
-    public function getBstPosMenge(): ?int
+    /**
+     * @return mixed
+     */
+    public function getOrderPosQuantity()
     {
-        return $this->bst_pos_menge;
+        return $this->order_pos_quantity;
     }
 
-    public function setBstPosMenge(int $bst_pos_menge): self
+    /**
+     * @param mixed $order_pos_quantity
+     */
+    public function setOrderPosQuantity($order_pos_quantity): void
     {
-        $this->bst_pos_menge = $bst_pos_menge;
-
-        return $this;
+        $this->order_pos_quantity = $order_pos_quantity;
     }
+
+
 }

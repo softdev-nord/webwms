@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use WebWMS\Repository\UserRepository;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -143,10 +145,10 @@ class User implements UserInterface
 
     public function serialize()
     {
-        # causes infinite nesting
-        # return $this->serialize(array($this->id, $this->username, $this->password));
+        // causes infinite nesting
+        // return $this->serialize(array($this->id, $this->username, $this->password));
 
-        # the fix
-        return serialize(array($this->id, $this->username, $this->password));
+        // the fix
+        return serialize([$this->id, $this->username, $this->password]);
     }
 }
