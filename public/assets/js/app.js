@@ -12,3 +12,5 @@
 @import("bootstrap")
 @import("dataTables.sum")
 @import("../jBox/dist/jBox.all")
+@import("jquery.webWMS.Core")
+@import("customJS/custom")

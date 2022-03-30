@@ -11,12 +11,21 @@ $(function(){
 
 // Datepicker für Auftrag anlegen
 $( function() {
-	$("#inputBstDat")
+	$("#customer_order_customer_order_order_date")
 		.datepicker({ dateFormat: "dd.mm.yy" }).val();
-	$("#inputAftDat")
+	$("#customer_order_customer_order_date")
 		.datepicker({ dateFormat: "dd.mm.yy" }).val();
 
 });
+
+// Datepicker für Bestellung anlegen
+$( function() {
+	$("#order_order_order_date")
+		.datepicker({ dateFormat: "dd.mm.yy" }).val();
+	$("#order_order_date")
+		.datepicker({ dateFormat: "dd.mm.yy" }).val();
+});
+
 $( function(){
 	$.datepicker.setDefaults($.datepicker.regional["de"]);
 });
@@ -119,6 +128,66 @@ $(document).ready(function() {
 		closeOnMouseleave: true,
 		animation: 'zoomIn',
 		theme: 'TooltipBorder',
+		attach: '#startseite',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Startseite'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#lieferanten',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Lieferanten'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#lieferanten_anlegen',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Lieferanten anlegen'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#kunden',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Kunden'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#kunden_anlegen',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Kunden anlegen'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
 		attach: '#bestellungen',
 		position: {
 			x: 'center',
@@ -167,12 +236,24 @@ $(document).ready(function() {
 		closeOnMouseleave: true,
 		animation: 'zoomIn',
 		theme: 'TooltipBorder',
-		attach: '#startseite',
+		attach: '#transporteingang',
 		position: {
 			x: 'center',
 			y: 'bottom'
 		},
-		content: 'Startseite'
+		content: 'Transporteingang'
+	});
+
+	new jBox('Tooltip', {
+		closeOnMouseleave: true,
+		animation: 'zoomIn',
+		theme: 'TooltipBorder',
+		attach: '#transportausgang',
+		position: {
+			x: 'center',
+			y: 'bottom'
+		},
+		content: 'Transportausgang'
 	});
 });
 
@@ -200,8 +281,8 @@ $(function() {
 			{"data": "bm_desc"},
 			{"data": "stock_location"},
 			{"data": "stock_location_desc"},
-			{"data": "art_nr"},
-			{"data": "art_name"},
+			{"data": "article_nr"},
+			{"data": "article_name"},
 			{"data": "pos_quantity"},
 			{"data": "username"},
 			{"data": "access_date"},
@@ -216,12 +297,44 @@ $(function() {
 				}
 			}
 		],
+		dom: 'Bfrtip',
+		buttons: [
+			{
+				extend:    'copyHtml5',
+				text:      'Kopieren',
+				title:     'Export',
+				titleAttr: 'Copy'
+			},
+			{
+				extend:    'excelHtml5',
+				text:      'Excel',
+				title:     'Export',
+				titleAttr: 'Excel'
+			},
+			{
+				extend:    'csvHtml5',
+				text:      'CSV',
+				title:     'Export',
+				titleAttr: 'CSV'
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      'PDF',
+				title:     'Export',
+				titleAttr: 'PDF'
+			},
+			{
+				extend: 'print',
+				text: 'Drucken',
+				autoPrint: false
+			}
+		]
 	});
 })
 
 // JS Funktion Ajax Daten für Übersicht Artikel
 $(function() {
-	var artTable = $('#artTable').DataTable({
+	const artTable = $('#artTable').DataTable({
 		"lengthChange": false,
 		// Ajax-Anfrage via PHP (Json)
 		ajax: {
@@ -238,29 +351,95 @@ $(function() {
 			style: 'single'
 		},
 		columns: [
-			{"data": "art_nr"},
-			{"data": "art_name"},
-			{"data": "art_kat"},
-			{"data": "art_gew"},
-			{"data": "art_ean"},
-			{"data": "art_einh"},
-			{"data": "art_tiefe"},
-			{"data": "art_breite"},
-			{"data": "art_hoehe"},
+			{"data": "article_nr"},
+			{"data": "article_name"},
+			{"data": "article_category"},
+			{"data": "article_weight"},
+			{"data": "article_ean"},
+			{"data": "article_unit"},
+			{"data": "article_depth"},
+			{"data": "article_width"},
+			{"data": "article_height"},
 			{
 				"data": "lbw_menge",
-			 	"defaultContent": 0
+				"defaultContent": 0
 			}
 		],
 		columnDefs: [
-			{ className: 'text-center', targets: "_all" },
+			{className: 'text-center', targets: "_all"},
 		],
+		dom: 'Bfrtip',
+		buttons: [
+			{
+				extend:    'copyHtml5',
+				text:      'Kopieren',
+				title:     'Export',
+				titleAttr: 'Copy'
+			},
+			{
+				extend:    'excelHtml5',
+				text:      'Excel',
+				title:     'Export',
+				titleAttr: 'Excel'
+			},
+			{
+				extend:    'csvHtml5',
+				text:      'CSV',
+				title:     'Export',
+				titleAttr: 'CSV'
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      'PDF',
+				title:     'Export',
+				titleAttr: 'PDF'
+			},
+			{
+				extend: 'print',
+				text: 'Drucken',
+				autoPrint: false
+			}
+		]
+	});
+	$(document).contextmenu({
+		delegate: ".dataTable td",
+		menu: [
+			{title: "Filter", cmd: "filter", uiIcon: "ui-icon-volume-off ui-icon-filter"},
+			{title: "Remove filter", cmd: "nofilter", uiIcon: "ui-icon-volume-off ui-icon-filter"}
+		],
+		select: function(event, ui) {
+			const celltext = ui.target.text();
+			const colvindex = ui.target.parent().children().index(ui.target);
+			const colindex = $('table thead tr th:eq(' + colvindex + ')').data('column-index');
+			switch(ui.cmd){
+				case "filter":
+					artTable
+						.column( colindex )
+						.search( '^' + celltext + '$', true )
+						.draw();
+					break;
+				case "nofilter":
+					artTable
+						.search('')
+						.columns().search('')
+						.draw();
+					break;
+			}
+		},
+		beforeOpen: function(event, ui) {
+			const $menu = ui.menu,
+				$target = ui.target,
+				extraData = ui.extraData;
+			ui.menu.zIndex(9999);
+		}
 	});
 })
 
+
+
 // JS Funktion Ajax Daten für Übersicht Lagerbelegung
 $(function() {
-	var artTable = $('#stoTable').DataTable({
+	const artTable = $('#stoTable').DataTable({
 		"lengthChange": false,
 		// Ajax-Anfrage via PHP (Json)
 		ajax: {
@@ -292,7 +471,7 @@ $(function() {
 			{"data": "letzter_abgang"},
 		],
 		columnDefs: [
-			{ className: 'text-center', targets: "_all" },
+			{className: 'text-center', targets: "_all"},
 		],
 	});
 })

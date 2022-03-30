@@ -58,10 +58,10 @@ table.dataTable thead .sorting_desc_disabled {
   background-image: url("");
 }
 table.dataTable tbody tr {
-  background-color: #ffffff;
+  background-color: transparent;
 }
 table.dataTable tbody tr.selected {
-  background-color: #c9c9c9;
+  background-color: #585858;
 }
 table.dataTable tbody th,
 table.dataTable tbody td {
@@ -183,7 +183,7 @@ table.dataTable.compact tfoot td {
 }
 table.dataTable.compact tbody th,
 table.dataTable.compact tbody td {
-  padding: 4px;
+  padding: 7px 4px 0 4px;
 }
 table.dataTable th.dt-left,
 table.dataTable td.dt-left {
@@ -307,21 +307,22 @@ table.dataTable td {
   border-radius: 2px;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-  color: #858796 !important;
-  border: 1px solid #979797;
-  background-color: white;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #dcdcdc));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, white 0%, #dcdcdc 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -moz-linear-gradient(top, white 0%, #dcdcdc 100%);
-  /* FF3.6+ */
-  background: -ms-linear-gradient(top, white 0%, #dcdcdc 100%);
-  /* IE10+ */
-  background: -o-linear-gradient(top, white 0%, #dcdcdc 100%);
-  /* Opera 11.10+ */
-  background: linear-gradient(to bottom, white 0%, #dcdcdc 100%);
-  /* W3C */
+  display: inline-block;
+  height: 25px;
+  font-size: 16px;
+  line-height: 20px;
+  min-width: 1.5em;
+  padding: 0.2em 0.6em;
+  margin-left: 2px;
+  border-radius: 4px;
+  border: 1px solid #2e3436;
+  background: #3b4245;
+  color: #c7cbcc;
+  -webkit-box-shadow: inset 0 1px 0 #393f42, 0 1px 0 rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 #393f42, 0 1px 0 rgba(255, 255, 255, 0.16);
+  -webkit-transition: box-shadow 180ms, border 180ms;
+  -moz-transition: box-shadow 180ms, border 180ms;
+  transition: box-shadow 180ms, border 180ms;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
   cursor: default;
@@ -331,21 +332,22 @@ table.dataTable td {
   box-shadow: none;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-  color: white !important;
-  border: 1px solid #111;
-  background-color: #585858;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-  /* FF3.6+ */
-  background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-  /* IE10+ */
-  background: -o-linear-gradient(top, #585858 0%, #111 100%);
-  /* Opera 11.10+ */
-  background: linear-gradient(to bottom, #585858 0%, #111 100%);
-  /* W3C */
+  display: inline-block;
+  height: 25px;
+  font-size: 16px;
+  line-height: 20px;
+  min-width: 1.5em;
+  padding: 0.2em 0.6em;
+  margin-left: 2px;
+  border-radius: 4px;
+  border: 1px solid #2e3436;
+  background: #3b4245;
+  color: #c7cbcc;
+  -webkit-box-shadow: inset 0 1px 0 #393f42, 0 1px 0 rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 #393f42, 0 1px 0 rgba(255, 255, 255, 0.16);
+  -webkit-transition: box-shadow 180ms, border 180ms;
+  -moz-transition: box-shadow 180ms, border 180ms;
+  transition: box-shadow 180ms, border 180ms;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button:active {
   outline: none;

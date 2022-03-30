@@ -1,77 +1,76 @@
+const customersAutofill = (function () {
 
-var customersAutofill = (function(){
-
-	function getNumOfBoxKd(type){
-		var numOfBoxKd;
+	function getNumOfBoxCustomer(type) {
+		let numOfBoxCustomer;
 		switch (type) {
-			case 'kd_nr':
-				numOfBoxKd = 0;
+			case 'customer_nr':
+				numOfBoxCustomer = 0;
 				break;
-			case 'kd_name':
-				numOfBoxKd = 1;
+			case 'customer_name':
+				numOfBoxCustomer = 1;
 				break;
-			case 'kd_ans_zu':
-				numOfBoxKd = 2;
+			case 'customer_address_addition':
+				numOfBoxCustomer = 2;
 				break;
-			case 'kd_str':
-				numOfBoxKd = 3;
+			case 'customer_address_street':
+				numOfBoxCustomer = 3;
 				break;
-			case 'kd_hnr':
-				numOfBoxKd = 4;
+			case 'customer_address_street_nr':
+				numOfBoxCustomer = 4;
 				break;
-			case 'kd_land_krz':
-				numOfBoxKd = 5;
+			case 'customer_country_code':
+				numOfBoxCustomer = 5;
 				break;
-			case 'kd_plz':
-				numOfBoxKd = 6;
+			case 'customer_zip_code':
+				numOfBoxCustomer = 6;
 				break;
-			case 'kd_ort':
-				numOfBoxKd = 7;
+			case 'customer_city':
+				numOfBoxCustomer = 7;
 				break;
-			case 'kd_id':
-				numOfBoxKd = 8;
+			case 'customer_id':
+				numOfBoxCustomer = 8;
 				break;
 			default:
 				break;
 		}
-		return numOfBoxKd;
+		return numOfBoxCustomer;
 	}
+
 	// Handling der eingegebenen Daten
 	function autocompleteHandleKd() {
-		var type, numOfBoxKd;
+		let type, numOfBoxCustomer;
 		type = $(this).data('type');
-		numOfBoxKd = getNumOfBoxKd(type);
+		numOfBoxCustomer = getNumOfBoxCustomer(type);
 
-		if(typeof numOfBoxKd === 'undefined') {
+		if (typeof numOfBoxCustomer === 'undefined') {
 			return false;
 		}
-		// Autocomplete Ajax Datenübertragung in dem Datenformat JSON
+
 		$(this).autocomplete({
-			source: function( data, cb ) {
+			source: function (data, cb) {
 				$.ajax({
-					url:'../ajax/kunden.ajax.php',
+					url: '/order_customer_ajax',
 					method: 'GET',
-					dataType: 'json',
 					data: {
-						name_kd: data.term,
-						numOfBoxKd: numOfBoxKd
+						name_customer: data.term,
+						numOfBoxCustomer: numOfBoxCustomer
 					},
-					success: function(res){
-						var result;
+					success: function (res) {
+						let result;
 						result = [
 							{
-								label: 'Keine Ergebnisse für '+data.term,
+								label: 'Keine Ergebnisse für ' + data.term,
 								value: ''
 							}
 						];
 
 						if (res.length) {
-							result = $.map(res, function(obj){
-								var arr = obj.split("|");
+							result = $.map(res, function (obj) {
+								const arr = obj.split("|");
 								return {
-									label: arr[numOfBoxKd],
-									value: arr[numOfBoxKd],
-									data : obj
+									label: arr[numOfBoxCustomer],
+									value: arr[numOfBoxCustomer],
+									data: obj
 								};
 							});
 						}
@@ -81,20 +80,20 @@ var customersAutofill = (function(){
 			},
 			autoFocus: true,
 			minLength: 1,
-			select: function( event, ui ) {
-				var resArrKd;
+			select: function (event, ui) {
+				let resArrCustomer;
 				//Splittung des resArrKd Arrays
-				resArrKd = ui.item.data.split("|");
+				resArrCustomer = ui.item.data.split("|");
 
-				$('#kd_nr_1').val(resArrKd[0]);
-				$('#kd_name_1').val(resArrKd[1]);
-				$('#kd_ans_zu_1').val(resArrKd[2]);
-				$('#kd_str_1').val(resArrKd[3]);
-				$('#kd_hnr_1').val(resArrKd[4]);
-				$('#kd_land_krz_1').val(resArrKd[5]);
-				$('#kd_plz_1').val(resArrKd[6]);
-				$('#kd_ort_1').val(resArrKd[7]);
-				$('#kd_id_1').val(resArrKd[8]);
+				$('#customer_nr_1').val(resArrCustomer[0]);
+				$('#customer_name_1').val(resArrCustomer[1]);
+				$('#customer_address_addition_1').val(resArrCustomer[2]);
+				$('#customer_address_street_1').val(resArrCustomer[3]);
+				$('#customer_address_street_nr_1').val(resArrCustomer[4]);
+				$('#customer_country_code_1').val(resArrCustomer[5]);
+				$('#customer_zip_code_1').val(resArrCustomer[6]);
+				$('#customer_city_1').val(resArrCustomer[7]);
+				$('#customer_order_customer_id').val(resArrCustomer[8]);
 			}
 		});
 	}
@@ -102,12 +101,14 @@ var customersAutofill = (function(){
 	// Funktion Events registrieren
 	function registerEventKd() {
 		//Registrierung der Autocomplete events
-		$(document).on('focus','.autocomplete_customers', autocompleteHandleKd);
+		$(document).on('focus', '.autocomplete_customers', autocompleteHandleKd);
 	}
+
 	// Events iniziieren
 	function init() {
 		registerEventKd();
 	}
+
 	return {
 		init: init
 	};
