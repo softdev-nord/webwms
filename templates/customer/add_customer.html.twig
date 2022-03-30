@@ -1,0 +1,84 @@
+{% block copyright %}
+    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
+    --                                                                                                              --
+    --                webLVS (c) SoftDev Nord Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                --
+    --                                                                                                              --
+    ------------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE-----------------------------------*/
+{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {{ include('header.html.twig') }}
+    {{ include('submenu.html.twig') }}
+    <!-- Beginn Kunde anlegen -->
+    <div class="wrapper-form-content create-form" style="width: 900px;">
+        <div class="card">
+        {{ form_start(addCustomerForm) }}
+        <p class="hint-text">Hier können Sie einen neuen Kunden anlegen</p>
+        <div class="form-group">
+            <label for="text" class="control-label col-xs-4">Kunden-Nr</label>
+            <div class="col-xs-8" style="margin-bottom: 5px;">
+                {{ form_row(addCustomerForm.customer_nr, {'value' : "#{lastId.customerNr +1}"}) }}
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="text" class="control-label col-xs-4">Kunden-Name</label>
+            <div class="col-xs-8" style="margin-bottom: 5px;">
+                {{ form_row(addCustomerForm.customer_name) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="text" class="control-label col-xs-4">Anschrift Zusatz</label>
+            <div class="col-xs-8" style="margin-bottom: 5px;">
+                {{ form_row(addCustomerForm.customer_address_addition) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="text" class="control-label col-xs-4">Straße</label>
+            <div class="col-xs-8" style="margin-bottom: 5px;">
+                {{ form_row(addCustomerForm.customer_address_street) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="text" class="control-label col-xs-4">Haus-Nr</label>
+            <div class="col-xs-8" style="margin-bottom: 5px;">
+                {{ form_row(addCustomerForm.customer_address_street_nr) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="text" class="control-label col-xs-4">Land</label>
+            <div class="col-xs-8" style="margin-bottom: 5px;">
+                {{ form_row(addCustomerForm.customer_country_code) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="text" class="control-label col-xs-4">Postleitzahl</label>
+            <div class="col-xs-8" style="margin-bottom: 5px;">
+                {{ form_row(addCustomerForm.customer_zip_code) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="text" class="control-label col-xs-4">Ort</label>
+            <div class="col-xs-8" style="margin-bottom: 5px;">
+                {{ form_row(addCustomerForm.customer_city) }}
+            </div>
+        </div>
+            <div class="form-group col-md-12">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        <div class="text-center">
+            {{ form_widget(addCustomerForm.add_customer) }}
+        </div>
+        {{ form_end(addCustomerForm) }}
+        </div>
+    </div>
+    <!-- Ende Kunden anlegen -->
+{% endblock %}

@@ -1,23 +1,24 @@
 {# templates/header.html.twig #}
 
 {% block javascripts %}
-    <script type="text/javascript" src="assets/js/jquery-3.4.1.js"></script>
-    <script type="text/javascript" src="assets/js/jquery-ui.js"></script>
-    <script type="text/javascript" src="assets/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="assets/js/dataTables.buttons.js"></script>
-    <script type="text/javascript" src="assets/js/dataTables.select.js"></script>
-    <script type="text/javascript" src="assets/js/moment.WithLocales.js"></script>
-    <script type="text/javascript" src="assets/js/dataTables.sum.js"></script>
-    <script type="text/javascript" src="assets/js/jszip.js"></script>
-    <script type="text/javascript" src="assets/js/pdfmake.js"></script>
-    <script type="text/javascript" src="assets/js/vfs_fonts.js"></script>
-    <script type="text/javascript" src="assets/js/buttons.html5.js"></script>
-    <script type="text/javascript" src="assets/js/buttons.print.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/jquery-3.4.1.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/jquery-ui.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/jquery.dataTables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/dataTables.buttons.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/dataTables.select.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/moment.WithLocales.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/dataTables.sum.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/jszip.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/pdfmake.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/vfs_fonts.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/buttons.html5.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/buttons.print.js') }}"></script>
 
-    <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/bootstrap.js') }}"></script>
 
-    <script type="text/javascript" src="assets/js/customJS/custom.js"></script>
-    <script type="text/javascript" src="assets/jBox/dist/jBox.all.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/customJS/custom.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/jquery.webWMS.Core.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/jBox/dist/jBox.all.js') }}"></script>
 {% endblock %}
 
 {% block header %}
@@ -36,7 +37,7 @@
             </div>
             <div class="navbar-default navbar-collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown">
+                    <li class="first dropdown">
                         <a href="#" class="dropdown-toggle"
                             data-toggle="dropdown" role="button" aria-haspopup="true"
                             aria-expanded="false">Logistik
@@ -75,7 +76,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ path('orders') }}">Übersicht Bestellungen</a></li>
-                            <li><a href="bestellung_anlegen.php">Bestellung anlegen</a></li>
+                            <li><a href="{{ path('new_order') }}">Bestellung anlegen</a></li>
                             <li><a href="#">Bestellung ändern/stornieren</a></li>
                         </ul>
                     </li>
@@ -86,7 +87,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ path('customer_orders') }}">Übersicht Aufträge</a></li>
-                            <li><a href="auftrag_anlegen.php">Auftrag anlegen</a></li>
+                            <li><a href="{{ path('new_customer_order') }}">Auftrag anlegen</a></li>
                             <li><a href="#">Auftrag ändern/stornieren</a></li>
                         </ul>
                     </li>
@@ -99,8 +100,12 @@
                             <li class="dropdown-submenu"><a href="#">Artikel</a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ path('article') }}">Übersicht Artikel</a></li>
-                                    <li><a href="artikel_anlegen.php">Artikel Anlegen</a></li>
-                                    <li><a href="#">Sachmerkmale zuordnen</a></li>
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                        <li><a href="artikel_anlegen.php">Artikel Anlegen</a></li>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                        <li><a href="#">Sachmerkmale zuordnen</a></li>
+                                    {% endif %}
                                 </ul>
                             </li>
                             <li class="dropdown-submenu"><a href="#">Lager</a>
@@ -108,35 +113,43 @@
                                     <li><a href="{{ path('stock_location') }}">Übersicht Lagerplätze</a></li>
                                     <li><a href="lagerlayout.php">Lagerlayout</a></li>
                                     <li><a href="lagerzone.php">Lagerzonen</a></li>
-                                    <li><a href="lager_anlegen.php">Lager anlegen</a></li>
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                        <li><a href="lager_anlegen.php">Lager anlegen</a></li>
+                                    {% endif %}
                                 </ul>
                             </li>
                             <li class="dropdown-submenu"><a href="#">Kunden</a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ path('customer') }}">Übersicht Kunden</a></li>
-                                    <li><a href="kunden_anlegen.php">Kunden Anlegen</a></li>
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                        <li><a href="{{ path('add_customer') }}">Kunden Anlegen</a></li>
+                                    {% endif %}
                                 </ul>
                             </li>
                             <li class="dropdown-submenu"><a href="#">Lieferanten</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="lieferanten.php">Übersicht Lieferanten</a></li>
-                                    <li><a href="lieferanten_anlegen.php">Lieferanten Anlegen</a></li>
+                                    <li><a href="{{ path('supplier') }}">Übersicht Lieferanten</a></li>
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                        <li><a href="{{ path('add_supplier') }}">Lieferanten Anlegen</a></li>
+                                    {% endif %}
                                 </ul>
                             </li>
                             <li><a href="#">Ladehilfsmittel</a></li>
                             <li><a href="#">Klasse</a></li>
-                            <li class="dropdown-submenu"><a href="#">Benutzerverwaltung</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="benutzer.php">Übersicht Benutzer</a></li>
-                                    <li><a href="benutzer_anlegen.php">Benutzer anlegen</a></li>
-                                </ul>
-                            </li>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <li class="dropdown-submenu"><a href="#">Benutzerverwaltung</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="benutzer.php">Übersicht Benutzer</a></li>
+                                        <li><a href="benutzer_anlegen.php">Benutzer anlegen</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
                             <li><a href="#">Lieferant</a></li>
                         </ul>
                     </li>
-                    <!-- <li class="dropdown"><a href="#" class="dropdown-toggle"
-                         data-toggle="dropdown" role="button" aria-haspopup="true"
-                         aria-expanded="false">Bearbeiten</a>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle"
+                        data-toggle="dropdown" role="button" aria-haspopup="true"
+                        aria-expanded="false">Bearbeiten</a>
                         <ul class="dropdown-menu">
                             <li><a href="#">Aktuelles Fenster drucken</a></li>
                             <li><a href="#">TA abschließen</a></li>
@@ -144,7 +157,7 @@
                             <li><a href="#">Beleg drucken</a></li>
                             <li><a href="#">Bestellung drucken</a></li>
                         </ul>
-                    </li> -->
+                    </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle"
                             data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -156,16 +169,27 @@
                             <li><a href="{{ path('stock_occupancy') }}">Lagerbelegung</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle"
-                    data-toggle="dropdown" role="button" aria-haspopup="true"
-                    aria-expanded="false">Inventur</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Inventur starten</a></li>
-                            <li><a href="#">Inventur buchen</a></li>
-                            <li><a href="#">Inventur abschließen</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle"
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <li class="dropdown"><a href="#" class="dropdown-toggle"
+                        data-toggle="dropdown" role="button" aria-haspopup="true"
+                        aria-expanded="false">Inventur</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('stock_inventory_start') }}">Inventur starten</a></li>
+                                <li><a href="#">Inventur buchen</a></li>
+                                <li><a href="#">Inventur abschließen</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <li class="dropdown"><a href="#" class="dropdown-toggle"
+                            data-toggle="dropdown" role="button" aria-haspopup="true"
+                            aria-expanded="false">Administration</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/einstellungen">Einstellungen</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <li class="last dropdown"><a href="#" class="dropdown-toggle"
                     data-toggle="dropdown" role="button" aria-haspopup="true"
                     aria-expanded="false">Hilfe</a>
                         <ul class="dropdown-menu">
@@ -179,7 +203,7 @@
                         "form-control" placeholder="Menüpunkt suchen.."></div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
+                    <li class="right-nav dropdown">
                         <a href="#" class="dropdown-toggle"
                             data-toggle="dropdown" role="button" aria-haspopup="true"
                             aria-expanded="false"><i class="header-icon mdi mdi-account-lock"></i>
@@ -188,7 +212,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#">Passwort ändern</a></li>
                             <li><a href="benutzer_anlegen.php">Neuer Benutzer</a></li>
-                            <li><a href="abmelden.php">Abmelden</a></li>
+                            <li><a href="{{ path('app_logout') }}">Abmelden</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -216,9 +240,9 @@
                         <p style="text-align: center; margin-top: 30px; margin-bottom: 50px; font-size: 20px;">Das webbasierte Lagerverwaltungssystem</p>
                         <p style="margin-bottom: 5px;">{{ appVersion }}</p>
                         <p style="margin-bottom: 25px;">{{ appVersionNumber }}</p>
-                        <p style="margin-bottom: 30px;"><?php echo $copyright?></p>
+                        <p style="margin-bottom: 30px;">{{ appCopyright }}</p>
                         <p style="margin-bottom: 10px;">Lizenziert für:</p>
-                        <p><?php echo $lizenz?></p>
+                        <p>{{ appLizenz }}</p>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">

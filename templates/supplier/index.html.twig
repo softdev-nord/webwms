@@ -13,17 +13,17 @@
 {% block body %}
     {{ include('header.html.twig') }}
     {{ include('submenu.html.twig') }}
-    <!-- Beginn Übersicht Kunden -->
+    <!-- Beginn Übersicht Lieferanten -->
     <div class="wrapper-form">
         <div class="wrapper-form-content">
             <div class="card">
                 <div class="card-content">
-                    <!-- Beginn Tabelle Kunden -->
+                    <!-- Beginn Tabelle Lieferanten -->
                     <table id="Table" class="table table-striped table-bordered table-hover compact">
                         <thead>
                         <tr>
-                            <th scope="col">Kunden-Nr</th>
-                            <th scope="col">Kunden-Name</th>
+                            <th scope="col">Lieferanten-Nr</th>
+                            <th scope="col">Lieferanten-Name</th>
                             <th scope="col">Anschrift Zusatz</th>
                             <th scope="col">Straße</th>
                             <th scope="col">Haus-Nr</th>
@@ -34,15 +34,15 @@
                         </thead>
                         <tbody id="myTable">
                         <tr>
-                            {% for customer in customer %}
-                            <td>{{ customer.customerNr }}</td>
-                            <td>{{ customer.customerName }}</td>
-                            <td>{{ customer.customerAddressAddition }}</td>
-                            <td>{{ customer.customerAddressStreet }}</td>
-                            <td>{{ customer.customerAddressStreetNr }}</td>
-                            <td>{{ customer.customerCountryCode }}</td>
-                            <td>{{ customer.customerZipCode }}</td>
-                            <td>{{ customer.customerCity }}</td>
+                            {% for supplier in supplier %}
+                            <td>{{ supplier.supplierNr }}</td>
+                            <td>{{ supplier.supplierName }}</td>
+                            <td>{{ supplier.supplierAddressAddition }}</td>
+                            <td>{{ supplier.supplierAddressStreet }}</td>
+                            <td>{{ supplier.supplierAddressStreetNr }}</td>
+                            <td>{{ supplier.supplierAddressCountryCode }}</td>
+                            <td>{{ supplier.supplierAddressZipCode }}</td>
+                            <td>{{ supplier.supplierAddressCity }}</td>
                         </tr>
                         {% endfor %}
                         </tbody>

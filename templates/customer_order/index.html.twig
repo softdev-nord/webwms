@@ -1,9 +1,9 @@
 {% block copyright %}
     /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
     --                                                                                                              --
-    --                      webLVS (c) Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                       --
+    --                webLVS (c) SoftDev Nord Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                --
     --                                                                                                              --
-    -----------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE------------------------------------*/
+    ------------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE-----------------------------------*/
 {% endblock %}
 
 {% extends 'base.html.twig' %}
@@ -25,12 +25,13 @@
                         <thead>
                         <tr>
                             <th>Auftrags-Nr</th>
-                            <th>Auftrags Referenz</th>
                             <th>Kunden-Nr</th>
                             <th>Kunden-Name</th>
+                            <th>Auftrags Referenz</th>
                             <th>Auftragsdatum</th>
                             <th>Bestelldatum</th>
                             <th>Benutzer</th>
+                            <th style="text-align: center"></th>
                         </thead>
                     </table>
                     <!-- Ende Tabelle Aufträge -->
@@ -58,7 +59,37 @@
 
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     {% block javascripts %}
+        <script>
+            $(document).ready(function(){
+                $(".editor-edit").click(function(){
+                    $("#myModal").modal();
+                });
+            });
+        </script>
+
         <!-- JavaScript für Auftragsübersicht -->
         <script src="assets/js/customJS/aftTable.js"></script>
     {% endblock %}
