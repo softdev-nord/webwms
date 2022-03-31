@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -101,6 +103,11 @@ class TransportHistory
      * @ORM\Column(type="string", length=10)
      */
     private $booking_method;
+
+    /**
+     * @ORM\Column(type="integer", length=11)
+     */
+    private $doc_id;
 
     /**
      * @ORM\Column(type="string", length=25)
@@ -364,6 +371,16 @@ class TransportHistory
         $this->booking_method = $booking_method;
 
         return $this;
+    }
+
+    public function getDocId()
+    {
+        return $this->doc_id;
+    }
+
+    public function setDocId($doc_id): void
+    {
+        $this->doc_id = $doc_id;
     }
 
     public function getOrderNr(): ?string

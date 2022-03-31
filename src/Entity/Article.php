@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\ArticleRepository;
 
 /**
+ * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  */
 class Article
@@ -20,158 +23,196 @@ class Article
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $art_nr;
+    private $article_nr;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $art_name;
+    private $article_name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $art_kat;
+    private $article_category;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $art_gew;
+    private $article_weight;
 
     /**
      * @ORM\Column(type="string", length=15)
      */
-    private $art_ean;
+    private $article_ean;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $art_einh;
+    private $article_unit;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private $art_tiefe;
+    private $article_depth;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private $art_breite;
+    private $article_width;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private $art_hoehe;
+    private $article_height;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getArtNr(): ?string
+    /**
+     * @return mixed
+     */
+    public function getArticleNr()
     {
-        return $this->art_nr;
+        return $this->article_nr;
     }
 
-    public function setArtNr(string $art_nr): self
+    /**
+     * @param mixed $article_nr
+     */
+    public function setArticleNr($article_nr): void
     {
-        $this->art_nr = $art_nr;
-
-        return $this;
+        $this->article_nr = $article_nr;
     }
 
-    public function getArtName(): ?string
+    /**
+     * @return mixed
+     */
+    public function getArticleName()
     {
-        return $this->art_name;
+        return $this->article_name;
     }
 
-    public function setArtName(string $art_name): self
+    /**
+     * @param mixed $article_name
+     */
+    public function setArticleName($article_name): void
     {
-        $this->art_name = $art_name;
-
-        return $this;
+        $this->article_name = $article_name;
     }
 
-    public function getArtKat(): ?string
+    /**
+     * @return mixed
+     */
+    public function getArticleCategory()
     {
-        return $this->art_kat;
+        return $this->article_category;
     }
 
-    public function setArtKat(string $art_kat): self
+    /**
+     * @param mixed $article_category
+     */
+    public function setArticleCategory($article_category): void
     {
-        $this->art_kat = $art_kat;
-
-        return $this;
+        $this->article_category = $article_category;
     }
 
-    public function getArtGew(): ?string
+    /**
+     * @return mixed
+     */
+    public function getArticleWeight()
     {
-        return $this->art_gew;
+        return $this->article_weight;
     }
 
-    public function setArtGew(string $art_gew): self
+    /**
+     * @param mixed $article_weight
+     */
+    public function setArticleWeight($article_weight): void
     {
-        $this->art_gew = $art_gew;
-
-        return $this;
+        $this->article_weight = $article_weight;
     }
 
-    public function getArtEan(): ?string
+    /**
+     * @return mixed
+     */
+    public function getArticleEan()
     {
-        return $this->art_ean;
+        return $this->article_ean;
     }
 
-    public function setArtEan(string $art_ean): self
+    /**
+     * @param mixed $article_ean
+     */
+    public function setArticleEan($article_ean): void
     {
-        $this->art_ean = $art_ean;
-
-        return $this;
+        $this->article_ean = $article_ean;
     }
 
-    public function getArtEinh(): ?string
+    /**
+     * @return mixed
+     */
+    public function getArticleUnit()
     {
-        return $this->art_einh;
+        return $this->article_unit;
     }
 
-    public function setArtEinh(string $art_einh): self
+    /**
+     * @param mixed $article_unit
+     */
+    public function setArticleUnit($article_unit): void
     {
-        $this->art_einh = $art_einh;
-
-        return $this;
+        $this->article_unit = $article_unit;
     }
 
-    public function getArtTiefe(): ?string
+    /**
+     * @return mixed
+     */
+    public function getArticleDepth()
     {
-        return $this->art_tiefe;
+        return $this->article_depth;
     }
 
-    public function setArtTiefe(string $art_tiefe): self
+    /**
+     * @param mixed $article_depth
+     */
+    public function setArticleDepth($article_depth): void
     {
-        $this->art_tiefe = $art_tiefe;
-
-        return $this;
+        $this->article_depth = $article_depth;
     }
 
-    public function getArtBreite(): ?string
+    /**
+     * @return mixed
+     */
+    public function getArticleWidth()
     {
-        return $this->art_breite;
+        return $this->article_width;
     }
 
-    public function setArtBreite(string $art_breite): self
+    /**
+     * @param mixed $article_width
+     */
+    public function setArticleWidth($article_width): void
     {
-        $this->art_breite = $art_breite;
-
-        return $this;
+        $this->article_width = $article_width;
     }
 
-    public function getArtHoehe(): ?string
+    /**
+     * @return mixed
+     */
+    public function getArticleHeight()
     {
-        return $this->art_hoehe;
+        return $this->article_height;
     }
 
-    public function setArtHoehe(string $art_hoehe): self
+    /**
+     * @param mixed $article_height
+     */
+    public function setArticleHeight($article_height): void
     {
-        $this->art_hoehe = $art_hoehe;
-
-        return $this;
+        $this->article_height = $article_height;
     }
+
+
 }

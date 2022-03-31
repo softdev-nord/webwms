@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +14,7 @@ class Customer
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -173,5 +175,20 @@ class Customer
         $this->customer_city = $customer_city;
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'customer_id' => $this->customer_id,
+            'customer_nr' => $this->customer_nr,
+            'customer_name' => $this->customer_name,
+            'customer_address_addition' => $this->customer_address_addition,
+            'customer_address_street' => $this->customer_address_street,
+            'customer_address_street_nr' => $this->customer_address_street_nr,
+            'customer_country_code' => $this->customer_country_code,
+            'customer_zip_code' => $this->customer_zip_code,
+            'customer_city' => $this->customer_city,
+        ];
     }
 }

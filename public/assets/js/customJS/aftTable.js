@@ -1,10 +1,10 @@
 // JS Funktion Ajax Daten für Übersicht Aufträge
 $(function() {
-	var aftTable = $('#aftTable').DataTable( {
+	const aftTable = $('#aftTable').DataTable({
 		"lengthChange": false,
 		// Ajax-Anfrage via PHP (Json)
 		ajax: {
-			'url':'/customer_order_ajax',
+			'url': '/customer_order_ajax',
 			'dataSrc': ''
 		},
 		// Seitenlänge max. 10 Einträge
@@ -17,25 +17,33 @@ $(function() {
 			style: 'single'
 		},
 		columns: [
-			{ "data": "customer_order_nr" },
-			{ "data": "customer_order_reference" },
-			{ "data": "customer_nr" },
-			{ "data": "customer_name" },
-			{ "data": "customer_order_date" },
-			{ "data": "customer_order_order_date" },
-			{ "data": "username" }
+			{"data": "customer_order_nr"},
+			{"data": "customer_nr"},
+			{"data": "customer_name"},
+			{"data": "customer_order_reference"},
+			{"data": "customer_order_date"},
+			{"data": "customer_order_order_date"},
+			{"data": "username"},
+			{
+				"data": null,
+				"rowId": 'staffId',
+				"className": "editor-edit text-center",
+				"defaultContent": '<i class="mdi mdi-square-edit-outline"/>',
+				"orderable": false
+			}
 		],
-        "columnDefs": [
-			{ className: 'text-center', targets: [0, 2, 4, 5, 6] },
-            { targets : [4,5], render:function ( data ) {
-                moment.locale("de");
-                    return moment(data).format("L");
-                }
-            }
-        ],
-	} );
+		"columnDefs": [
+			{className: 'text-center', targets: [0, 1, 4, 5, 6]},
+			{
+				targets: [4, 5], render: function (data) {
+					moment.locale("de");
+					return moment(data).format("L");
+				}
+			}
+		],
+	});
 	// JS Funktion Ajax Daten für Auftragspositionen
-	var posTable = $('#posTable').DataTable( {
+	const posTable = $('#posTable').DataTable({
 		"searching": false,
 		"lengthChange": false,
 		"info": false,
@@ -44,17 +52,17 @@ $(function() {
 		},
 		// Ajax-Anfrage via PHP (Json)
 		ajax: {
-			'url':'/customer_order_pos_ajax',
+			'url': '/customer_order_pos_ajax',
 
 			// Es werden nur die Daten in der Positions-Tabelle geladen,
 			// die mit der ID in der Auftrags-Tabelle übereinstimmen.
 			dataSrc: function (data) {
-				var selected = aftTable.row( { selected: true } );
-				var rows = [];
+				const selected = aftTable.row({selected: true});
+				const rows = [];
 
-				if ( selected.any() ) {
-					var customer_order_id = selected.data().customer_order_id;
-					for (i=0; i < data.length; i++) {
+				if (selected.any()) {
+					const customer_order_id = selected.data().customer_order_id;
+					for (i = 0; i < data.length; i++) {
 						var row = data[i];
 						if (row.customer_order_id === customer_order_id) {
 							rows.push(row);
@@ -67,35 +75,37 @@ $(function() {
 		// Seitenlänge max. 5 Einträge
 		pageLength: 5,
 		columns: [
-			{"data": "customer_order_nr"},
-			{"data": "art_nr"},
-			{"data": "art_name"},
+			{"data": "order_nr"},
+			{"data": "article_nr"},
+			{"data": "article_name"},
 			{"data": "customer_order_pos_quantity"},
-			{"data": "lbw_menge",
-				render:function ( data, type, row ) {
-					if (row["lbw_menge"] != null){
-                        console.log(row);
+			{
+				"data": "lbw_menge",
+				render: function (data, type, row) {
+					if (row["lbw_menge"] != null) {
+						console.log(row);
 						return row["lbw_menge"];
-					}else{
-						return "0";
+					} else {
+						return "0.000";
 					}
 				},
 			},
-			{"data": "lbw_menge",
-				render:function ( data, type, row ) {
-					if (row["lbw_menge"] != null){
+			{
+				"data": "lbw_menge",
+				render: function (data, type, row) {
+					if (row["lbw_menge"] != null) {
 						//console.log(row);
-						return parseInt(row["customer_order_pos_quantity"]) + parseInt(row["lbw_menge"]);
-					}else{
+						return parseInt(row["customer_order_pos_quantity"]) - parseInt(row["lbw_menge"]);
+					} else {
 						return row["customer_order_pos_quantity"];
 					}
 				},
 			}
 		],
 		columnDefs: [
-			{ className: 'text-center', targets: [0, 1, 3, 4, 5] },
+			{className: 'text-center', targets: [0, 1, 3, 4, 5]},
 		],
-	} );
+	});
 
 // Bei Auswahl einer Zeile in der Auftrags-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.
 	aftTable.on( 'select', function () {
@@ -108,5 +118,10 @@ $(function() {
 		//aftTable.rows().deselect();
 		posTable.ajax.reload();
 	} );
+
+	// Edit record
+	$(document).on('click', '.editor-edit', function () {
+		$('#exampleModal').modal();
+	});
 
 } );

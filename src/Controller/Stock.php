@@ -1,149 +1,164 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Controller;
 
+use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
-use WebWMS\Repository\StockLocationRepository;
-use WebWMS\Repository\StockRotationRepository;
+use WebWMS\Entity\StockLocation;
+use WebWMS\Form\StockLocationType;
+use WebWMS\Services\StockService;
 
+/**
+ * @package:    WebWMS\Controller
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        Stock
+ */
 class Stock extends AbstractController
 {
-    /**
-     * @var StockLocationRepository
-     */
-    private $stockLocationRepository;
+    /** @var StockService */
+    private $stockService;
 
-    /**
-     * @var StockRotationRepository
-     */
-    private $stockRotationRepository;
+    /** @var Requirements */
+    private $requirements;
 
     public function __construct(
-        StockLocationRepository $stockLocationRepository,
-        StockRotationRepository $stockRotationRepository
+        StockService $stockService,
+        Requirements $requirements
     ) {
-        $this->stockLocationRepository = $stockLocationRepository;
-        $this->stockRotationRepository = $stockRotationRepository;
+        $this->stockService = $stockService;
+        $this->requirements = $requirements;
     }
 
     /**
-     * @return \WebWMS\Entity\StockLocation[]
+     * @return StockLocation[]
      */
-    public function getAllStockLocations()
+    public function getAllStockLocations(): array
     {
-        $stockLocation = $this->stockLocationRepository->findAll();
-
-        if (!$stockLocation) {
-            throw $this->createNotFoundException('Keine Lagerorte gefunden');
-        }
-
-        return $stockLocation;
+        return $this->stockService->getAllStockLocations();
     }
 
     /**
      * @Route("/stock_rotation_ajax", name="stock_rotation")
+     * @throws Exception
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
-    public function getAllStockRotations()
+    public function getAllStockRotations(): JsonResponse
     {
-        $stockRotations = $this->stockRotationRepository->getAllStockRotationsWithJoin();
-
-        if (!$stockRotations) {
-            throw $this->createNotFoundException('Keine Lagerbewegungen gefunden');
-        }
-
-        return $stockRotations;
+        return $this->stockService->getAllStockRotationsWithJoin();
     }
 
     /**
      * @Route("/stock_occupancy_ajax", name="stock_occupancy_ajax")
      */
-    public function getAllStockOccupancy()
+    public function getAllStockOccupancy(): JsonResponse
     {
-        $conn = $this->getDoctrine()->getConnection();
+        return $this->stockService->getAllStockOccupancy();
+    }
 
-        $sql = "SELECT
-                tph.id AS id,
-                tph.stock_coordinate AS koordinate,
-                tph.stock_nr AS ln,
-                tph.stock_level1 AS fb,
-                tph.stock_level2 AS sp,
-                tph.stock_level3 AS tf,
-                tph.su_id AS lagereinheit,
-                tph.art_nr AS art_nr,
-                art.art_name AS bezeichnung,
-                if(ta.tr_typ = 1, (SELECT SUM(tr_quantity) FROM transport_request WHERE tr_typ = 1 AND stock_coordinate = if(tph.stock_coordinate = ta.stock_coordinate, ta.stock_coordinate, tph.stock_coordinate)), 0.000) AS trans_ein,
-                if(ta.tr_typ = 2, (SELECT SUM(tr_quantity) FROM (SELECT (SUM(IF(transport_history.tr_typ = '1', transport_history.tr_quantity, 0.000))) - (SUM(IF(transport_history.tr_typ = '2', transport_history.tr_quantity, 0.000))) FROM transport_history GROUP BY transport_history.stock_coordinate) AS lp_bestand,transport_request WHERE tr_typ = 2 AND stock_coordinate = if(tph.stock_coordinate = ta.stock_coordinate, ta.stock_coordinate, tph.stock_coordinate)), 0.000) AS trans_aus,
--- (SELECT if(tph.koordinate = ta.koordinate, (SELECT SUM(menge) FROM transportauftrag WHERE ta_typ = '2' AND ta.koordinate = tph.koordinate ), 0.000)) AS trans_aus,
---    SUM(if(tph.tr_typ = '1' AND tph.stock_coordinate = ta.stock_coordinate, tph.tr_quantity, 0.000) - if(tph.tr_typ = '2' AND tph.stock_coordinate = ta.stock_coordinate, tph.tr_quantity, 0.000)) AS lp_bestand, -- Ergebnis aktueller Bestand x Einträge in Tabelle transportauftrag ?
---                 (SELECT SUM((SELECT IF(tph.tr_typ = '1', tph.tr_quantity, 0.000)) - (SELECT IF(tph.tr_typ = '2', tph.tr_quantity, 0.000))) FROM transport_history GROUP BY stock_coordinate LIMIT 1) AS lp_bestand,
---                (SELECT SUM(IF(tph.tr_typ = '1', tph.tr_quantity, 0.000)) - SUM(IF(tph.tr_typ = '2', tph.tr_quantity, 0.000)) FROM transport_history GROUP BY tph.stock_coordinate ORDER BY tph.stock_coordinate) AS lp_bestand,
-                /*(SELECT ( 
-                        SELECT SUM(IF(tr_typ = '1', tr_quantity, 0.000)) FROM transport_history GROUP BY tph.stock_coordinate LIMIT 1
-                        )
-                        -
-                        (
-                        SELECT SUM(IF(tr_typ = '2', tr_quantity, 0.000)) FROM transport_history GROUP BY tph.stock_coordinate LIMIT 1
-                        )
-                ) AS lp_bestand,*/
-                (SELECT (SUM(IF(transport_history.tr_typ = '1', transport_history.tr_quantity, 0.000))) - (SUM(IF(transport_history.tr_typ = '2', transport_history.tr_quantity, 0.000))) FROM transport_history GROUP BY transport_history.stock_coordinate LIMIT 1) AS lp_bestand,
--- (SELECT SUM(if(tph.tr_typ = '1', tph.tr_quantity, 0.000) - if(tph.tr_typ = '2', tph.tr_quantity, 0.000)) FROM transport_history WHERE stock_coordinate = if(tph.koordinate = ta.koordinate, tph.koordinate, ta.koordinate)) AS lp_bestand,
-                (SELECT tph.tr_access FROM transport_history WHERE tph.tr_typ = '1' AND tph.stock_coordinate = if(tph.stock_coordinate = ta.stock_coordinate, ta.stock_coordinate, tph.stock_coordinate) ORDER BY id DESC LIMIT 1) AS letzter_zugang,
-                (SELECT tph.tr_dispatch FROM transport_history WHERE tph.tr_typ = '2' AND tph.stock_coordinate = if(tph.stock_coordinate = ta.stock_coordinate, ta.stock_coordinate, tph.stock_coordinate) ORDER BY id DESC LIMIT 1) AS letzter_abgang
-                FROM transport_history AS tph
-                    LEFT JOIN transport_request AS ta
-                        ON tph.stock_coordinate = ta.stock_coordinate
-                    INNER JOIN article AS art
-                        ON tph.art_nr = art.art_nr
-                GROUP BY tph.stock_coordinate
-                ORDER BY tph.stock_coordinate";
+    public function addNewStockRotation(Request $request)
+    {
+        $form = $this->createForm(StockLocationType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
 
-        $data = $conn->fetchAll($sql);
+            $this->stockService->setStockRotation($data);
+            $this->addFlash('success', 'Der Auftrag und die Position(en) wurden erfolgreich angelegt.');
 
-        return new JsonResponse($data);
+            return $this->redirectToRoute('new_customer_order');
+        }
+
+        return $this->render('customer_order/add_customer_order.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Lagerplatz anlegen',
+                'setStockRotationForm' => $form->createView(),
+            ]
+        );
+    }
+
+    public function generateStockCoordinate(array $stockLocation): string
+    {
+        return $stockLocation['stock_location_ln'] .
+               $stockLocation['stock_location_fb'] .
+               $stockLocation['stock_location_sp'] .
+               $stockLocation['stock_location_tf'];
+
+    }
+
+    public function getFreeStockLocation()
+    {
+        // TODO: Implement logic
+    }
+
+    public function getFiFo()
+    {
+        // TODO: Implement logic
     }
 
     /**
      * @Route("/lagerplatz", name="stock_location")
      */
-    public function stockLocations()
+    public function stockLocations(): Response
     {
-        return $this->render('stock/stock_location.html.twig', [
-            'appName' => Requirements::APP_NAME,
-            'appVersion' => Requirements::APP_VERSION,
-            'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
-            'page' => 'Lagerplätze',
-            'stockLocation' => $this->getAllStockLocations(),
-        ]);
+        return $this->render('stock/stock_location.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Lagerplätze',
+                'stockLocation' => $this->getAllStockLocations(),
+            ]
+        );
     }
 
     /**
      * @Route("/lagerbewegung", name="stock_rotation")
+     * @throws Exception
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
-    public function stockRotations()
+    public function stockRotations(): Response
     {
-        return $this->render('stock/stock_rotation.html.twig', [
-            'appName' => Requirements::APP_NAME,
-            'appVersion' => Requirements::APP_VERSION,
-            'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
-            'page' => 'Lagerbewegungen',
-            'stockRotation' => $this->getAllStockRotations(),
-        ]);
+        return $this->render('stock/stock_rotation.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Lagerbewegungen',
+                'stockRotation' => $this->getAllStockRotations(),
+            ]
+        );
     }
 
     /**
      * @Route("/lagerbelegung", name="stock_occupancy")
      */
-    public function stockOccupancy()
+    public function stockOccupancy(): Response
     {
-        return $this->render('stock/stock_occupancy.html.twig', [
-            'appName' => Requirements::APP_NAME,
-            'appVersion' => Requirements::APP_VERSION,
-            'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
-            'page' => 'Lagerbelegungen',
-            'stockOccupancy' => $this->getAllStockOccupancy(),
-        ]);
+        return $this->render('stock/stock_occupancy.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'page' => 'Lagerbelegungen',
+                'stockOccupancy' => $this->getAllStockOccupancy(),
+            ]
+        );
     }
 }

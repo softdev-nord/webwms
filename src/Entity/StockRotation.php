@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -175,33 +177,21 @@ class StockRotation
         $this->pos_quantity = $pos_quantity;
     }
 
-    /**
-     * @return mixed
-     */
     public function getAccessDate(): ?\DateTimeInterface
     {
         return $this->access_date;
     }
 
-    /**
-     * @param mixed $access_date
-     */
     public function setAccessDate(?\DateTimeInterface $access_date): void
     {
         $this->access_date = $access_date;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDispatchDate(): ?\DateTimeInterface
     {
         return $this->dispatch_date;
     }
 
-    /**
-     * @param mixed $dispatch_date
-     */
     public function setDispatchDate(?\DateTimeInterface $dispatch_date): void
     {
         $this->dispatch_date = $dispatch_date;

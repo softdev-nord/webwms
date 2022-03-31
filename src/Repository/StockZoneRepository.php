@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -7,6 +9,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use WebWMS\Entity\StockZone;
 
 /**
+ * @package:    WebWMS\Repository
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        StockZoneRepository
+ *
  * @method StockZone|null find($id, $lockMode = null, $lockVersion = null)
  * @method StockZone|null findOneBy(array $criteria, array $orderBy = null)
  * @method StockZone[]    findAll()
@@ -18,33 +25,4 @@ class StockZoneRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, StockZone::class);
     }
-
-    // /**
-    //  * @return StockZone[] Returns an array of StockZone objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?StockZone
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -8,6 +10,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\CustomerOrderPos;
 
+/**
+ * @package:    WebWMS\Form
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        CustomerOrderPosType
+ */
 class CustomerOrderPosType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

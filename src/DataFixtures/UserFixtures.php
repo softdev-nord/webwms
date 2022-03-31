@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -32,7 +34,6 @@ class UserFixtures extends Fixture
             $this->passwordEncoder->encodePassword($userAdmin, $plainPassword)
         );
 
-        //$roles = 'ROLE_SUPER_ADMIN';
         $userAdmin->setRoles((array) 'ROLE_SUPER_ADMIN');
 
         $manager->persist($userAdmin);

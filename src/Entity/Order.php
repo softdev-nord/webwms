@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -21,107 +23,160 @@ class Order
     /**
      * @ORM\Column(type="integer")
      */
-    private $ben_id;
+    private $order_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $lief_id;
+    private $usr_id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $supplier_id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $bst_nr;
+    private $order_nr;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $bst_ref;
+    private $order_reference;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $bst_bst_dat;
+    private $order_date;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $bst_id;
+    private $order_order_date;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBenId(): ?int
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
     {
-        return $this->ben_id;
+        $this->id = $id;
     }
 
-    public function setBenId(int $ben_id): self
+    /**
+     * @return mixed
+     */
+    public function getOrderId()
     {
-        $this->ben_id = $ben_id;
-
-        return $this;
+        return $this->order_id;
     }
 
-    public function getLiefId(): ?int
+    /**
+     * @param mixed $order_id
+     */
+    public function setOrderId($order_id): void
     {
-        return $this->lief_id;
+        $this->order_id = $order_id;
     }
 
-    public function setLiefId(int $lief_id): self
+    /**
+     * @return mixed
+     */
+    public function getUsrId()
     {
-        $this->lief_id = $lief_id;
-
-        return $this;
+        return $this->usr_id;
     }
 
-    public function getBstNr(): ?string
+    /**
+     * @param mixed $usr_id
+     */
+    public function setUsrId($usr_id): void
     {
-        return $this->bst_nr;
+        $this->usr_id = $usr_id;
     }
 
-    public function setBstNr(string $bst_nr): self
+    /**
+     * @return mixed
+     */
+    public function getSupplierId()
     {
-        $this->bst_nr = $bst_nr;
-
-        return $this;
+        return $this->supplier_id;
     }
 
-    public function getBstRef(): ?string
+    /**
+     * @param mixed $supplier_id
+     */
+    public function setSupplierId($supplier_id): void
     {
-        return $this->bst_ref;
+        $this->supplier_id = $supplier_id;
     }
 
-    public function setBstRef(?string $bst_ref): self
+    /**
+     * @return mixed
+     */
+    public function getOrderNr()
     {
-        $this->bst_ref = $bst_ref;
-
-        return $this;
+        return $this->order_nr;
     }
 
-    public function getBstBstDat(): ?\DateTimeInterface
+    /**
+     * @param mixed $order_nr
+     */
+    public function setOrderNr($order_nr): void
     {
-        return $this->bst_bst_dat;
+        $this->order_nr = $order_nr;
     }
 
-    public function setBstBstDat(?\DateTimeInterface $bst_bst_dat): self
+    /**
+     * @return mixed
+     */
+    public function getOrderReference()
     {
-        $this->bst_bst_dat = $bst_bst_dat;
-
-        return $this;
+        return $this->order_reference;
     }
 
-    public function getBstId(): ?int
+    /**
+     * @param mixed $order_reference
+     */
+    public function setOrderReference($order_reference): void
     {
-        return $this->bst_id;
+        $this->order_reference = $order_reference;
     }
 
-    public function setBstId(int $bst_id): self
+    /**
+     * @return mixed
+     */
+    public function getOrderDate()
     {
-        $this->bst_id = $bst_id;
+        return $this->order_date;
+    }
 
-        return $this;
+    /**
+     * @param mixed $order_date
+     */
+    public function setOrderDate($order_date): void
+    {
+        $this->order_date = $order_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrderOrderDate()
+    {
+        return $this->order_order_date;
+    }
+
+    /**
+     * @param mixed $order_order_date
+     */
+    public function setOrderOrderDate($order_order_date): void
+    {
+        $this->order_order_date = $order_order_date;
     }
 }

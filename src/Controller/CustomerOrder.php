@@ -1,84 +1,86 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Controller;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
-use WebWMS\Entity\Article;
 use WebWMS\Entity\CustomerOrder as CustomerOrders;
-use WebWMS\Entity\CustomerOrderPos;
 use WebWMS\Form\CustomerOrderType;
+use WebWMS\Services\ArticleService;
+use WebWMS\Services\CustomerOrderService;
 
+/**
+ * Class        CustomerOrder
+ * @package:    WebWMS\Controller
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ */
 class CustomerOrder extends AbstractController
 {
+    /** @var ArticleService */
+    private $articleService;
+
+    /** @var CustomerOrderService */
+    private $customerOrderService;
+
+    /** @var Requirements */
+    private $requirements;
+
+    public function __construct(
+        ArticleService $articleService,
+        CustomerOrderService $customerOrderService,
+        Requirements $requirements
+    ) {
+        $this->articleService = $articleService;
+        $this->customerOrderService = $customerOrderService;
+        $this->requirements = $requirements;
+    }
+
     /**
      * @Route("/customer_order_ajax", name="customer_order_ajax")
      */
-    public function getAllCustomerOrders()
+    public function getAllCustomerOrders(): JsonResponse
     {
-        return $this->getDoctrine()->getRepository(CustomerOrders::class)->getAllCustomerOrders();
+        return $this->customerOrderService->getAllCustomerOrders();
     }
 
     /**
      * @Route("/customer_order_pos_ajax", name="customer_order_pos_ajax")
+     * @throws Exception
      */
-    public function getAllCustomerOrdersPos()
+    public function getAllCustomerOrdersPos(): JsonResponse
     {
-        return $this->getDoctrine()->getRepository(CustomerOrderPos::class)->getAllCustomerOrderPos();
+        return $this->customerOrderService->getAllCustomerOrderPos();
     }
 
     /**
      * @Route("/auftrag", name="customer_orders")
+     * @throws Exception
      */
     public function index(): Response
     {
-        return $this->render('customer_order/index.html.twig', [
-            'appName' => Requirements::APP_NAME,
-            'appVersion' => Requirements::APP_VERSION,
-            'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
-            'page' => 'Übersicht Aufträge',
-            'customer_order' => $this->getAllCustomerOrders(),
-            'customer_order_pos' => $this->getAllCustomerOrdersPos(),
-        ]);
+        return $this->render('customer_order/index.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Übersicht Aufträge',
+                'customer_order' => $this->getAllCustomerOrders(),
+                'customer_order_pos' => $this->getAllCustomerOrdersPos(),
+            ]
+        );
     }
-
-    /*public function addNewCustomerOrder(Request $request) {
-
-        $customerOrder = new CustomerOrders();
-
-        $form = $this->createFormBuilder($customerOrder)
-            ->add('customer_order_nr', TextType::class)
-            ->add('customer_order_reference', TextType::class)
-            ->add('Save',SubmitType::class,[
-                'attr' => [
-                    'class' => 'btn btn-secondary btn-lg btn-block'
-                ]
-            ])
-            ->getForm();
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($customerOrder);
-            $em->flush();
-            return new Response('Customer Order added successfuly');
-        }
-
-        return $this->render('customer_order/add_customer_order.html.twig', [
-            'appName' => Requirements::APP_NAME,
-            'appVersion' => Requirements::APP_VERSION,
-            'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
-            'page' => 'Auftrag anlegen',
-            'article' => $this->getAllArticleAjax(),
-            'lastId' => $this->getLastInsertId()[0],
-            'form' => $form->createView()
-        ]);
-    }*/
 
     /**
      * @Route("/auftrag_anlegen", name="new_customer_order")
@@ -93,9 +95,6 @@ class CustomerOrder extends AbstractController
         $form->handleRequest($request);
         //dd($form->getData());
         if ($form->isSubmitted() && $form->isValid()) {
-            ini_set('display_errors', 1);
-            ini_set('display_startup_errors', 1);
-            error_reporting(E_ALL);
 
             /** @var CustomerOrders $customerOrder */
             $customerOrder = $form->getData();
@@ -123,23 +122,25 @@ class CustomerOrder extends AbstractController
             return $this->redirectToRoute('new_customer_order');
         }
 
-        return $this->render('customer_order/add_customer_order.html.twig', [
-            'appName' => Requirements::APP_NAME,
-            'appVersion' => Requirements::APP_VERSION,
-            'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
-            'page' => 'Auftrag anlegen',
-            'article' => $this->getAllArticleAjax(),
-            'lastId' => $this->getLastCustomerOrderId()[0],
-            'customerForm' => $form->createView(),
-        ]);
+        return $this->render('customer_order/add_customer_order.html.twig',
+            [
+                'appName' => Requirements::APP_NAME,
+                'appVersion' => Requirements::APP_VERSION,
+                'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
+                'page' => 'Auftrag anlegen',
+                'article' => $this->getAllArticleAjax(),
+                'lastId' => $this->getLastCustomerOrderId()[0],
+                'customerForm' => $form->createView(),
+            ]
+        );
     }
 
     /**
      * @Route("/article_order_ajax", name="article_order_ajax")
      */
-    public function getAllArticleAjax()
+    public function getAllArticleAjax(): JsonResponse
     {
-        return $this->getDoctrine()->getRepository(Article::class)->getArticle();
+        return $this->articleService->getArticle();
     }
 
     /**
@@ -147,10 +148,8 @@ class CustomerOrder extends AbstractController
      *
      * @return object[]
      */
-    public function getLastCustomerOrderId()
+    public function getLastCustomerOrderId(): array
     {
-        $customerOrderRepository = $this->getDoctrine()->getRepository(CustomerOrders::class);
-
-        return $customerOrderRepository->findBy([], ['customer_order_id' => 'DESC'], 1, 0);
+        return $this->customerOrderService->getLastCustomerOrderId();
     }
 }

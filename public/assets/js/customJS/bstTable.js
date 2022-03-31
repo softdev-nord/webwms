@@ -1,10 +1,10 @@
 // JS Funktion Ajax Daten für Übersicht Bestellungen
 $(function() {
-    var bstTable = $('#bstTable').DataTable( {
+    const bstTable = $('#bstTable').DataTable({
         "lengthChange": false,
         // Ajax-Anfrage via PHP (Json)
         ajax: {
-            'url':'/orders_ajax',
+            'url': '/orders_ajax',
             'dataSrc': ''
         },
         // Seitenlänge max. 10 Einträge
@@ -17,24 +17,25 @@ $(function() {
             style: 'single'
         },
         columns: [
-            { "data": "bst_nr" },
-            { "data": "bst_ref" },
-            { "data": "lief_nr" },
-            { "data": "lief_name" },
-            { "data": "bst_bst_dat" },
-            { "data": "username" }
+            {"data": "order_nr"},
+            {"data": "order_reference"},
+            {"data": "supplier_nr"},
+            {"data": "supplier_name"},
+            {"data": "order_order_date"},
+            {"data": "username"}
         ],
         "columnDefs": [
-            { className: 'text-center', targets: [0, 2, 4, 5] },
-            { targets : [4], render:function ( data ) {
+            {className: 'text-center', targets: [0, 2, 4, 5]},
+            {
+                targets: [4], render: function (data) {
                     moment.locale("de");
                     return moment(data).format("L");
                 }
             }
         ],
-    } );
+    });
     // JS Funktion Ajax Daten für Bestellungspositionen
-    var posTable = $('#posTable').DataTable( {
+    const posTable = $('#posTable').DataTable({
         "lengthChange": false,
         "searching": false,
         "info": false,
@@ -43,19 +44,19 @@ $(function() {
         },
         // Ajax-Anfrage via PHP (Json)
         ajax: {
-            'url':'/order_pos_ajax',
+            'url': '/order_pos_ajax',
 
             // Es werden nur die Daten in der Positions-Tabelle geladen,
             // die mit der ID in der Bestellungs-Tabelle übereinstimmen.
             dataSrc: function (data) {
-                var selected = bstTable.row( { selected: true } );
-                var rows = [];
+                const selected = bstTable.row({selected: true});
+                const rows = [];
 
-                if ( selected.any() ) {
-                    var bst_id = selected.data().bst_id;
-                    for (i=0; i < data.length; i++) {
+                if (selected.any()) {
+                    const order_id = selected.data().order_id;
+                    for (i = 0; i < data.length; i++) {
                         var row = data[i];
-                        if (row.bst_id === bst_id) {
+                        if (row.order_id === order_id) {
                             rows.push(row);
                         }
                     }
@@ -66,35 +67,37 @@ $(function() {
         // Seitenlänge max. 5 Einträge
         pageLength: 5,
         columns: [
-            {"data": "bst_nr"},
-            {"data": "art_nr"},
-            {"data": "art_name"},
-            {"data": "bst_pos_menge"},
-            {"data": "lbw_menge",
-                render:function ( data, type, row ) {
-                    if (row["lbw_menge"] != null){
+            {"data": "order_nr"},
+            {"data": "article_nr"},
+            {"data": "article_name"},
+            {"data": "order_pos_quantity"},
+            {
+                "data": "lbw_menge",
+                render: function (data, type, row) {
+                    if (row["lbw_menge"] != null) {
                         console.log(row);
                         return row["lbw_menge"];
-                    }else{
-                        return "0";
+                    } else {
+                        return "0.000";
                     }
                 },
             },
-            {"data": null,
-                render:function ( data, type, row ) {
-                    if (row["lbw_menge"] != null){
+            {
+                "data": null,
+                render: function (data, type, row) {
+                    if (row["lbw_menge"] != null) {
                         console.log(row);
-                        return parseInt(row["bst_pos_menge"]) - parseInt(row["lbw_menge"]);
-                    }else{
-                        return row["bst_pos_menge"];
+                        return parseInt(row["order_pos_quantity"]) - parseInt(row["lbw_menge"]);
+                    } else {
+                        return row["order_pos_quantity"];
                     }
                 },
             }
         ],
         columnDefs: [
-            { className: 'text-center', targets: [0 ,1, 3, 4, 5] },
+            {className: 'text-center', targets: [0, 1, 3, 4, 5]},
         ],
-    } );
+    });
 
 // Durch Auswahl einer Zeile in der Bestellungs-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.
     bstTable.on( 'click', function () {

@@ -1,77 +1,75 @@
-
-var suppliersAutofill = (function(){
+const suppliersAutofill = (function () {
 //
-	function getNumOfBoxLief(type){
-		var numOfBoxLief;
+	function getNumOfBoxSupplier(type) {
+		let numOfBoxSupplier;
 		switch (type) {
-			case 'lief_nr':
-				numOfBoxLief = 0;
+			case 'supplier_nr':
+				numOfBoxSupplier = 0;
 				break;
-			case 'lief_name':
-				numOfBoxLief = 1;
+			case 'supplier_name':
+				numOfBoxSupplier = 1;
 				break;
-			case 'lief_ans_zu':
-				numOfBoxLief = 2;
+			case 'supplier_address_addition':
+				numOfBoxSupplier = 2;
 				break;
-			case 'lief_str':
-				numOfBoxLief = 3;
+			case 'supplier_address_street':
+				numOfBoxSupplier = 3;
 				break;
-			case 'lief_hnr':
-				numOfBoxLief = 4;
+			case 'supplier_address_street_nr':
+				numOfBoxSupplier = 4;
 				break;
-			case 'lief_land_krz':
-				numOfBoxLief = 5;
+			case 'supplier_country_code':
+				numOfBoxSupplier = 5;
 				break;
-			case 'lief_plz':
-				numOfBoxLief = 6;
+			case 'supplier_zip_code':
+				numOfBoxSupplier = 6;
 				break;
-			case 'lief_ort':
-				numOfBoxLief = 7;
+			case 'supplier_city':
+				numOfBoxSupplier = 7;
 				break;
-			case 'lief_id':
-				numOfBoxLief = 8;
+			case 'supplier_id':
+				numOfBoxSupplier = 8;
 				break;
 			default:
 				break;
 		}
-		return numOfBoxLief;
+		return numOfBoxSupplier;
 	}
 
 	function autocompleteHandleLief() {
-		var type, numOfBoxLief;
+		let type, numOfBoxSupplier;
 		type = $(this).data('type');
-		numOfBoxLief = getNumOfBoxLief(type);
+		numOfBoxSupplier = getNumOfBoxSupplier(type);
 
-		if(typeof numOfBoxLief === 'undefined') {
+		if (typeof numOfBoxSupplier === 'undefined') {
 			return false;
 		}
 
 		$(this).autocomplete({
-			source: function( data, cb ) {
+			source: function (data, cb) {
 				$.ajax({
-					url:'../ajax/lieferanten.ajax.php',
+					url: '/order_supplier_ajax',
 					method: 'GET',
-					dataType: 'json',
 					data: {
-						name_lief: data.term,
-						numOfBoxLief: numOfBoxLief
+						name_supplier: data.term,
+						numOfBoxSupplier: numOfBoxSupplier
 					},
-					success: function(res){
-						var result;
+					success: function (res) {
+						let result;
 						result = [
 							{
-								label: 'Keine Ergebnisse für '+data.term,
+								label: 'Keine Ergebnisse für ' + data.term,
 								value: ''
 							}
 						];
 
 						if (res.length) {
-							result = $.map(res, function(obj){
-								var arr = obj.split("|");
+							result = $.map(res, function (obj) {
+								const arr = obj.split("|");
 								return {
-									label: arr[numOfBoxLief],
-									value: arr[numOfBoxLief],
-									data : obj
+									label: arr[numOfBoxSupplier],
+									value: arr[numOfBoxSupplier],
+									data: obj
 								};
 							});
 						}
@@ -81,20 +79,20 @@ var suppliersAutofill = (function(){
 			},
 			autoFocus: true,
 			minLength: 1,
-			select: function( event, ui ) {
-				var resArrLief;
+			select: function (event, ui) {
+				let resArraySupplier;
 
-				resArrLief = ui.item.data.split("|");
+				resArraySupplier = ui.item.data.split("|");
 
-				$('#lief_nr_1').val(resArrLief[0]);
-				$('#lief_name_1').val(resArrLief[1]);
-				$('#lief_ans_zu_1').val(resArrLief[2]);
-				$('#lief_str_1').val(resArrLief[3]);
-				$('#lief_hnr_1').val(resArrLief[4]);
-				$('#lief_land_krz_1').val(resArrLief[5]);
-				$('#lief_plz_1').val(resArrLief[6]);
-				$('#lief_ort_1').val(resArrLief[7]);
-				$('#lief_id_1').val(resArrLief[8]);
+				$('#supplier_nr_1').val(resArraySupplier[0]);
+				$('#supplier_name_1').val(resArraySupplier[1]);
+				$('#supplier_address_addition_1').val(resArraySupplier[2]);
+				$('#supplier_address_street_1').val(resArraySupplier[3]);
+				$('#supplier_address_street_nr_1').val(resArraySupplier[4]);
+				$('#supplier_country_code_1').val(resArraySupplier[5]);
+				$('#supplier_zip_code_1').val(resArraySupplier[6]);
+				$('#supplier_city_1').val(resArraySupplier[7]);
+				$('#supplier_id_1').val(resArraySupplier[8]);
 			}
 		});
 	}
@@ -102,8 +100,9 @@ var suppliersAutofill = (function(){
 // Events registrieren
 	function registerEventLief() {
 		//register autocomplete events
-		$(document).on('focus','.autocomplete_suppliers', autocompleteHandleLief);
+		$(document).on('focus', '.autocomplete_suppliers', autocompleteHandleLief);
 	}
+
 // Events iniziieren
 	function init() {
 		registerEventLief();

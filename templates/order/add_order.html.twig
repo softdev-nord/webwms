@@ -1,0 +1,154 @@
+{% block copyright %}
+    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
+    --                                                                                                              --
+    --                webLVS (c) SoftDev Nord Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                --
+    --                                                                                                              --
+    ------------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE-----------------------------------*/
+{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+
+    {{ include('header.html.twig') }}
+    {{ include('submenu.html.twig') }}
+
+    {% block content_body %}
+        {{ form_start(orderForm) }}
+        <div class="wrapper-form">
+        <div class="wrapper-form-content">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-8">
+                                    <label for="inputSupplier">Lieferanten suchen</label>
+                                    <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_nr" name="inputSupplierNr" id="supplier_nr_1" placeholder="Über Lieferanten-Nr suchen"></br></br>
+                                </div>
+                                <div class="form-group col-md-8">
+                                    <label for="inputSupplier">Lieferant</label>
+                                    <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_name" name="inputSupplierName" id="supplier_name_1" placeholder="Über Lieferanten-Namen suchen">
+                                    {{ form_row(orderForm.supplier_id) }}
+                                </div>
+                                <div class="form-group col-md-8">
+                                    <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_address_addition" name="inputSupplierAddition" id="supplier_address_addition_1" placeholder="Anschrift Zusatz">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_address_street" name="inputSupplierStreet" id="supplier_address_street_1" placeholder="Straße">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_address_street_nr" name="inputSupplierStreetNr" id="supplier_address_street_nr_1" placeholder="Haus-Nr">
+                                </div>
+                                <div class="form-group col-md-4"></div>
+                                <div class="form-group col-md-1">
+                                    <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_country_code" name="inputSupplierCountryCode" id="supplier_country_code_1" placeholder="Land">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_zip_code" name="inputSupplierZipCode" id="supplier_zip_code_1" placeholder="PLZ">
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_city" name="inputSupplierCity" id="supplier_city_1" placeholder="Ort">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-6">
+                                    {{ form_row(orderForm.order_nr, {'value' : "EBE-01-#{lastId.orderId +1}"}) }}
+                                    {{ form_row(orderForm.order_id, {'value' : lastId.orderId}) }}
+                                </div>
+                                <div class="form-group col-md-6">
+                                    {{ form_row(orderForm.order_reference) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-4">
+                                    {{ form_row(orderForm.order_date) }}
+                                </div>
+                                <div class="form-group col-md-2"></div>
+                                <div class="form-group col-md-4">
+                                    {{ form_row(orderForm.order_order_date, {'value' : "now"|date("d.m.Y")}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-6">
+                            <div class="form-row col-md-12">
+                                <div class="form-group col-md-4">
+                                    <label for="inputOrderDat">Bearbeiter</label>
+                                    <input class="form-control" type="text" placeholder="{{ app.user.firstname }} {{ app.user.lastname }}" readonly="" style="background-color: transparent;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12"></div>
+                        <div class="form-group col-md-12">
+                            {% for message in app.flashes('success') %}
+                                <div class="alert alert-success">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group col-md-12"></div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table id="autocomplete_table" class="table table-hover">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th width="1%" style="text-align:center;">#</th>
+                                        <th width="15%" scope="col">Artikel-Nr</th>
+                                        <th width="35%" style="text-align:center;">Artikel Bezeichnung</th>
+                                        <th width="10%" style="text-align:center;">Menge</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr id="row_1">
+                                        <th id="delete_1" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
+                                        <td>
+                                            <input id="art_nr_1" type="text" data-type="art_nr" name="inputArtNr[]" class="form-control autocomplete_items" autocomplete="off">
+                                            <input id="id_1" type="hidden" data-type="id" name="inputArtId[]" class="form-control autocomplete_items" autocomplete="off">
+                                        </td>
+                                        <td>
+                                            <input id="art_name_1" type="text" data-type="art_name" name="inputArtName[]" class="form-control autocomplete_items" autocomplete="off">
+                                        </td>
+                                        <td>
+                                            <input id="order_pos_quantity_1" type="text" data-type="order_pos_quantity" name="inputOrderPosQuantity[]" class="form-control autocomplete_items" autocomplete="off">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="btn-container">
+                                <input id="addNewButton" class="btn btn-primary btn-sm" value="Neue Position">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-left: auto; margin-right: auto;">
+                        <br><button type="submit" name="customer_order" value="Bestellung anlegen" class="btn btn-secondary btn-lg" aria-label="Center">Bestellung anlegen</button><br><br>
+                    </div>
+                </div>
+        </div>
+    </div
+        {{ form_end(orderForm) }}
+    {% endblock %}
+
+    {% block javascripts %}
+        <!-- JavaScript für Bestellung anlegen -->
+        <script src="assets/js/customJS/suppliersAutofill.js"></script>
+        <script src="assets/js/customJS/itemsBstAutofill.js"></script>
+        <script>
+            const orderId = {{ lastId.orderId }};
+
+            function getOrderId (){
+                document.querySelector(".inputOrderNr").value = orderId;
+                console.log(orderId)
+            }
+            window.addEventListener("load", function () {
+                getOrderId();
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

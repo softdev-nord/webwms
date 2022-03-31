@@ -1,9 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use WebWMS\Services\RequirementsService;
 
+/**
+ * @package:    WebWMS\Controller
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        Requirements
+ */
 class Requirements extends AbstractController
 {
     const APP_NAME = ' | webLVS Das webbasierte Lagerverwaltungssystem';
@@ -12,18 +21,40 @@ class Requirements extends AbstractController
     const APP_COPYRIGHT = '© 2019 Softdev-Nord | Rene Irrgang';
     const APP_LIZENZ = 'Demo Spedition<br>Demoweg 500<br>21698 Harsefeld';
 
-    public function coreInfo()
-    {
-        $coreInfo =
-            [
-                'appName' => self::APP_NAME,
-                'appVersion' => self::APP_VERSION,
-                'appVersionNumber' => self::APP_VERSION_NUMBER,
-                'appCopyright' => self::APP_COPYRIGHT,
-                'appLizenz' => self::APP_LIZENZ,
-            ];
+    /** @var RequirementsService */
+    private $requirementsService;
 
-        return $coreInfo;
+    private $appName;
+    private $appVersion;
+    private $appVersionNumber;
+    private $appCopyright;
+    private $appLizenz;
+
+    public function __construct(
+        string $appName,
+        string $appVersion,
+        string $appVersionNumber,
+        string $appCopyright,
+        string $appLizenz,
+        RequirementsService $requirementsService
+    ) {
+        $this->appName = $appName;
+        $this->appVersion = $appVersion;
+        $this->appVersionNumber = $appVersionNumber;
+        $this->appLizenz = $appLizenz;
+        $this->appCopyright = $appCopyright;
+        $this->requirementsService = $requirementsService;
+    }
+
+    public function coreInfo(): array
+    {
+        return [
+            'appName' => $this->getAppName(),
+            'appVersion' => $this->getAppVersion(),
+            'appVersionNumber' => $this->getAppVersionNumber(),
+            'appCopyright' => $this->getAppCopyright(),
+            'appLizenz' => $this->getAppLizenz(),
+        ];
     }
 
     /**
@@ -50,7 +81,7 @@ class Requirements extends AbstractController
      *
      * @return string
      */
-    public function encodeSize($bytes)
+    public function encodeSize(float $bytes): string
     {
         $types = ['B', 'KB', 'MB', 'GB', 'TB'];
         for ($i = 0; $bytes >= 1024 && $i < (count($types) - 1); $bytes /= 1024, $i++);
@@ -79,8 +110,46 @@ class Requirements extends AbstractController
 
     public function getServerVersion()
     {
-        $mySqlVersion = $this->getDoctrine()->getConnection()->getWrappedConnection()->getServerVersion();
+        return $this->requirementsService->getServerVersion();
+    }
 
-        return $mySqlVersion;
+    /**
+     * @return string
+     */
+    public function getAppName(): string
+    {
+        return $this->appName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppVersion(): string
+    {
+        return $this->appVersion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppVersionNumber(): string
+    {
+        return $this->appVersionNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppCopyright(): string
+    {
+        return $this->appCopyright;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppLizenz(): string
+    {
+        return $this->appLizenz;
     }
 }

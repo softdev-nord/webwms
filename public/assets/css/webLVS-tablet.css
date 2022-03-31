@@ -256,7 +256,7 @@
 
     .table .thead-dark th {
         color: #fff;
-        background-color: #5a5c69;
-        border-color: #6c6e7e;
+        background: none;
+        border-radius: 4px;
     }
 }
