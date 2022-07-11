@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,18 +22,10 @@ use WebWMS\Service\Stock\StockLocationService;
  */
 class StockLocation extends AbstractController
 {
-    /** @var StockLocationService */
-    private $stockLocationService;
-
-    /** @var Requirements */
-    private $requirements;
-
     public function __construct(
-        StockLocationService $stockLocationService,
-        Requirements $requirements
+        private StockLocationService $stockLocationService,
+        private Requirements $requirements
     ) {
-        $this->stockLocationService = $stockLocationService;
-        $this->requirements = $requirements;
     }
 
     /**
@@ -46,7 +39,7 @@ class StockLocation extends AbstractController
     /**
      * @Route("/lagerplatz_anlegen", name="add_stock_location")
      */
-    public function addNewStockLocation(Request $request)
+    public function addNewStockLocation(Request $request): RedirectResponse|Response
     {
         $form = $this->createForm(StockLocationType::class);
         $form->handleRequest($request);
@@ -57,7 +50,8 @@ class StockLocation extends AbstractController
             return $this->redirectToRoute('add_stock_location');
         }
 
-        return $this->render('stock/add_new_stock_location.html.twig',
+        return $this->render(
+            'stock/add_new_stock_location.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
@@ -84,7 +78,8 @@ class StockLocation extends AbstractController
      */
     public function stockLocations(): Response
     {
-        return $this->render('stock/stock_location.html.twig',
+        return $this->render(
+            'stock/stock_location.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),

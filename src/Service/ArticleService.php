@@ -26,8 +26,7 @@ class ArticleService
         private ManagerRegistry $doctrine,
         private ArticleRepository $articleRepository,
         private ArticleDataHandler $articleDataHandler
-    )
-    {
+    ) {
     }
 
     public function getArticleRepository(): ArticleRepository

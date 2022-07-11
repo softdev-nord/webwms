@@ -20,8 +20,7 @@ class CustomerService
 {
     public function __construct(
         private CustomerDataHandler $customerDataHandler
-    )
-    {
+    ) {
     }
 
     public function getAllCustomers(): array

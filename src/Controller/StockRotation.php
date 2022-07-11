@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
-use WebWMS\Service\Stock\StockLayoutService;
 use WebWMS\Service\Stock\StockRotationService;
 
 /**
@@ -19,18 +18,10 @@ use WebWMS\Service\Stock\StockRotationService;
  */
 class StockRotation extends AbstractController
 {
-    /** @var StockRotationService */
-    private $stockRotationService;
-
-    /** @var Requirements */
-    private $requirements;
-
     public function __construct(
-        StockRotationService $stockRotationService,
-        Requirements $requirements
+        private StockRotationService $stockRotationService,
+        private Requirements $requirements
     ) {
-        $this->stockRotationService = $stockRotationService;
-        $this->requirements = $requirements;
     }
 
     /**
@@ -50,7 +41,8 @@ class StockRotation extends AbstractController
      */
     public function stockRotations(): Response
     {
-        return $this->render('stock/stock_rotation.html.twig',
+        return $this->render(
+            'stock/stock_rotation.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),

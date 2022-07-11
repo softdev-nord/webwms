@@ -6,11 +6,10 @@ namespace WebWMS\Service;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\Supplier;
+use WebWMS\Exception\NotFoundException;
 use WebWMS\Repository\SupplierRepository;
 
 /**
@@ -24,8 +23,7 @@ class SupplierService
     public function __construct(
         private EntityManagerInterface $entityManager,
         private SupplierRepository $supplierRepository
-    )
-    {
+    ) {
     }
 
     public function getSupplierApi(int $supplierId): ?Supplier
@@ -33,7 +31,9 @@ class SupplierService
         $supplier = $this->entityManager->getRepository(Supplier::class)->findById($supplierId);
 
         if (!$supplier) {
-            throw new EntityNotFoundException('Supplier with id '.$supplierId.' does not exist!');
+            throw new NotFoundException(
+                'Supplier with id '.$supplierId.' does not exist!'
+            );
         }
 
         return $supplier;
@@ -103,24 +103,25 @@ class SupplierService
         $supplier = $this->supplierRepository->findById($supplierId);
 
         if (!$supplier) {
-            throw new EntityNotFoundException('Supplier with id '.$supplierId.' does not exist!');
+            throw new NotFoundException(
+                'Supplier with id '.$supplierId.' does not exist!'
+            );
         } else {
             $this->supplierRepository->delete($supplier);
         }
     }
 
-    /**
-     * @throws EntityNotFoundException
-     */
     public function getAllSuppliers(): array
     {
-        $customers = $this->entityManager->getRepository(Supplier::class)->findAll();
+        $suppliers = $this->entityManager->getRepository(Supplier::class)->findAll();
 
-        if (!$customers) {
-            throw new EntityNotFoundException('Keine Lieferanten gefunden');
+        if (!$suppliers) {
+            throw new NotFoundException(
+                'Keine Lieferanten gefunden'
+            );
         }
 
-        return $customers;
+        return $suppliers;
     }
 
     /**
@@ -225,10 +226,5 @@ class SupplierService
     {
         return $this->entityManager->getRepository(Supplier::class)
             ->findBy([], ['supplier_nr' => 'DESC'], 1, 0);
-    }
-
-    protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException
-    {
-        return new NotFoundHttpException($message, $previous);
     }
 }

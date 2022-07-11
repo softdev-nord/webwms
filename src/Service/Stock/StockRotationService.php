@@ -19,8 +19,7 @@ class StockRotationService
 {
     public function __construct(
         private EntityManagerInterface $entityManager
-    )
-    {
+    ) {
     }
 
     public function getAllStockRotations(): array

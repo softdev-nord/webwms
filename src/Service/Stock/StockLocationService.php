@@ -18,16 +18,10 @@ use WebWMS\Exception\NotFoundException;
 class StockLocationService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private NotFoundException $notFoundException
-    )
-    {
+        private EntityManagerInterface $entityManager
+    ) {
     }
 
-    /**
-     * @return StockLocation[]
-     * @throws NotFoundException
-     */
     public function getAllStockLocations(): array
     {
         $stockLocation = $this->entityManager
@@ -42,11 +36,6 @@ class StockLocationService
         return $stockLocation;
     }
 
-    /**
-     * @param $coordinate
-     * @return array
-     * @throws NotFoundException
-     */
     public function getSockLocationDetailsById($coordinate): array
     {
         $stockLocation = $this->entityManager
@@ -62,9 +51,6 @@ class StockLocationService
         return (array) $stockLocation;
     }
 
-    /**
-     * @throws Exception
-     */
     public function getAllStockLocationsForSelect(): array
     {
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
@@ -163,24 +149,20 @@ class StockLocationService
         return $stockLocations;
     }
 
-    /**
-     * @throws EntityNotFoundException
-     */
     public function getAllStockLocationsAjax(): array
     {
         $stockLocation = $this->entityManager
             ->getRepository(StockLocation::class)->findAll();
 
         if (!$stockLocation) {
-            throw new EntityNotFoundException('Keine Lagerorte gefunden');
+            throw new NotFoundException(
+                'Keine Lagerorte gefunden'
+            );
         }
 
         return $stockLocation;
     }
 
-    /**
-     * @throws NotFoundException
-     */
     public function getFreeStockLocations(): array
     {
         return $this->getAllStockLocations();

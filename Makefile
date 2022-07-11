@@ -1,4 +1,4 @@
-APP_CONTAINER_NAME = "webWMS-php7.4"
+APP_CONTAINER_NAME = "webWMS-php8.1"
 DB_CONTAINER_NAME = "webWMS-MariaDB10.5"
 
 help: ## Display this help
@@ -67,8 +67,8 @@ var-dump-check: ## Find var_dump, dd, etc.
 ######################################################################
 ######################## Code Style Check ############################
 ######################################################################
-php-cs: ## run code style check (phpcs)
+php-cs: ## run code style check
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots';
 
-phpcs-fix: ## run code style fix (phpcbf)
+phpcs-fix: ## run code style fix
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --using-cache=no -vvv --show-progress=dots';

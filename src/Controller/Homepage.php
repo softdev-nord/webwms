@@ -17,13 +17,9 @@ use WebWMS\Controller\Requirements as Requirements;
  */
 class Homepage extends AbstractController
 {
-    /** @var Requirements */
-    private $requirements;
-
     public function __construct(
-        Requirements $requirements
+        private Requirements $requirements
     ) {
-        $this->requirements = $requirements;
     }
 
     /**
@@ -35,7 +31,8 @@ class Homepage extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('homepage/index.html.twig',
+        return $this->render(
+            'homepage/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),

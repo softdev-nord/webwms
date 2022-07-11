@@ -6,10 +6,9 @@ namespace WebWMS\Service;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\SupplierOrder as Orders;
+use WebWMS\Exception\NotFoundException;
 use WebWMS\Repository\SupplierOrderRepository;
 
 /**
@@ -23,8 +22,7 @@ class SupplierOrderService
     public function __construct(
         private EntityManagerInterface $entityManager,
         private SupplierOrderRepository $supplierOrderRepository
-    )
-    {
+    ) {
     }
 
     public function getSupplierOrderApi(int $supplierOrderId): ?Orders
@@ -32,7 +30,9 @@ class SupplierOrderService
         $order = $this->supplierOrderRepository->findById($supplierOrderId);
 
         if (!$order) {
-            throw new EntityNotFoundException('Supplier order with id '.$supplierOrderId.' does not exist!');
+            throw new NotFoundException(
+                'Supplier order with id '.$supplierOrderId.' does not exist!'
+            );
         }
 
         return $order;
@@ -96,7 +96,9 @@ class SupplierOrderService
         $supplierOrder = $this->supplierOrderRepository->findById($supplierOrderId);
 
         if (!$supplierOrder) {
-            throw new EntityNotFoundException('Supplier order with id '.$supplierOrderId.' does not exist!');
+            throw new NotFoundException(
+                'Supplier order with id '.$supplierOrderId.' does not exist!'
+            );
         } else {
             $this->supplierOrderRepository->delete($supplierOrder);
         }
@@ -162,10 +164,5 @@ class SupplierOrderService
         $customerOrderRepository = $this->entityManager->getRepository(Orders::class);
 
         return $customerOrderRepository->findBy([], ['supplier_order_id' => 'DESC'], 1, 0);
-    }
-
-    protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException
-    {
-        return new NotFoundHttpException($message, $previous);
     }
 }

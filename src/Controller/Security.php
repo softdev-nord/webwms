@@ -6,7 +6,6 @@ namespace WebWMS\Controller;
 
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -20,16 +19,9 @@ use WebWMS\Controller\Requirements as Requirements;
  */
 class Security extends AbstractController
 {
-    /** @var Request */
-    private $request;
-
-    /** @var Requirements */
-    private $requirements;
-
     public function __construct(
-        Requirements $requirements
+        private Requirements $requirements
     ) {
-        $this->requirements = $requirements;
     }
 
     /**
@@ -56,7 +48,8 @@ class Security extends AbstractController
 
         //return $this->redirectToRoute('target_path');
 
-        return $this->render('security/login.html.twig',
+        return $this->render(
+            'security/login.html.twig',
             [
                 'last_username' => $lastUsername,
                 'error' => $error,

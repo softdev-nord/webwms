@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,23 +26,11 @@ use WebWMS\Service\SupplierOrderService;
  */
 class SupplierOrder extends AbstractController
 {
-    /** @var ArticleService */
-    private $articleService;
-
-    /** @var SupplierOrderService */
-    private $supplierOrderService;
-
-    /** @var Requirements */
-    private $requirements;
-
     public function __construct(
-        ArticleService $articleService,
-        SupplierOrderService $supplierOrderService,
-        Requirements $requirements
+        private ArticleService $articleService,
+        private SupplierOrderService $supplierOrderService,
+        private Requirements $requirements
     ) {
-        $this->articleService = $articleService;
-        $this->supplierOrderService = $supplierOrderService;
-        $this->requirements = $requirements;
     }
 
     /**
@@ -52,7 +42,8 @@ class SupplierOrder extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('supplier_order/index.html.twig',
+        return $this->render(
+            'supplier_order/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
@@ -68,6 +59,7 @@ class SupplierOrder extends AbstractController
 
     /**
      * @Route("/supplier_oders_ajax", name="supplier_orders_ajax")
+     * @throws Exception
      */
     public function getAllOrders(): JsonResponse
     {
@@ -76,6 +68,7 @@ class SupplierOrder extends AbstractController
 
     /**
      * @Route("/supplier_order_pos_ajax", name="supplier_order_pos_ajax")
+     * @throws Exception
      */
     public function getAllOrderPos(): JsonResponse
     {
@@ -85,7 +78,7 @@ class SupplierOrder extends AbstractController
     /**
      * @Route("/bestellung_anlegen", name="new_supplier_order")
      */
-    public function addNewOrder(EntityManagerInterface $em, Request $request)
+    public function addNewOrder(EntityManagerInterface $em, Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -124,7 +117,8 @@ class SupplierOrder extends AbstractController
             return $this->redirectToRoute('new_supplier_order');
         }
 
-        return $this->render('supplier_order/add_supplier_order.html.twig',
+        return $this->render(
+            'supplier_order/add_supplier_order.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
