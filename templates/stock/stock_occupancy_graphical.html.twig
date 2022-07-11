@@ -56,7 +56,7 @@
                                                                 {% set stockSystem = sog.system %}
 
                                                                 {% if stockSystem == 'Pal Regal' or stockSystem == 'Durchlaufregal' %}
-                                                                    <table class="table table-striped table-bordered compact" style="width: auto; margin: auto">
+                                                                    <table id="stockLocationTable" class="table table-striped table-bordered compact" style="width: auto; margin: auto">
                                                                         <thead class="table-header">
                                                                             <tr>
                                                                                 <th style="text-align: center; width: 10%" scope="col">Fachboden</th>
@@ -94,7 +94,7 @@
                                                                         </tbody>
                                                                     </table>
                                                                 {% else %}
-                                                                    <table class="table table-striped table-bordered compact" style="width: auto; margin: auto">
+                                                                    <table id="stockLocationTable" class="table table-striped table-bordered compact" style="width: auto; margin: auto">
                                                                         <thead class="table-header">
                                                                         <tr>
                                                                             <th style="text-align: center; width: 10%" scope="col">Stellplatz</th>
@@ -154,17 +154,6 @@
 
     {% block javascripts %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockGraphicalOverview.js') }}"></script>
-        <script>
-            $(document).on('click','a#stockCoordinate',function(event) {
-                const $el = $(event.currentTarget)
-                console.log($el.attr('data-target'));
-
-                var desc = 'Lagerplatz Details ';
-                var stockComplete = $el.attr('data-ln-komplett');
-                $(".modal-title").html(desc + stockComplete);
-                $('#showStockDetails').modal('show');
-            });
-        </script>
     {% endblock %}
 
 {% endblock %}
