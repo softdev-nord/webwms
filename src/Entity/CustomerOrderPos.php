@@ -4,15 +4,25 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Components\Entity\ModelEntity;
 use WebWMS\Repository\CustomerOrderPosRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CustomerOrderPosRepository::class)
  * @ORM\Table(name="`customer_order_pos`")
  */
-class CustomerOrderPos
+class CustomerOrderPos extends ModelEntity
 {
+    /**
+     * @var \WebWMS\Entity\CustomerOrder
+     *
+     * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\CustomerOrder", inversedBy="details")
+     * @ORM\JoinColumn(name="customer_order_id", referencedColumnName="id")
+     */
+    protected $customer_orders;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -21,7 +31,7 @@ class CustomerOrderPos
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="customer_order_id", type="integer", nullable=true)
      */
     private $customer_order_id;
 
@@ -34,6 +44,11 @@ class CustomerOrderPos
      * @ORM\Column(type="integer")
      */
     private $customer_order_pos_quantity;
+
+    public function __construct()
+    {
+        $this->customer_orders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -74,5 +89,15 @@ class CustomerOrderPos
         $this->customer_order_pos_quantity = $customer_order_pos_quantity;
 
         return $this;
+    }
+
+    public function getCustomerOrders(): CustomerOrder
+    {
+        return $this->customer_orders;
+    }
+
+    public function setCustomerOrders(CustomerOrder $customer_orders): void
+    {
+        $this->customer_orders = $customer_orders;
     }
 }

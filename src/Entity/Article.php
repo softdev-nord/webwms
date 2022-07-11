@@ -18,7 +18,7 @@ class Article
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $article_id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -65,9 +65,20 @@ class Article
      */
     private $article_height;
 
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getArticleId()
     {
-        return $this->id;
+        return $this->article_id;
+    }
+
+    /**
+     * @param mixed $article_id
+     */
+    public function setArticleId($article_id): void
+    {
+        $this->article_id = $article_id;
     }
 
     /**
@@ -213,6 +224,4 @@ class Article
     {
         $this->article_height = $article_height;
     }
-
-
 }

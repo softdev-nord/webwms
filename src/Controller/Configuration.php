@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use WebWMS\Services\ConfigurationService;
+use WebWMS\Service\ConfigurationService;
 
 /**
  * @package:    WebWMS\Controller

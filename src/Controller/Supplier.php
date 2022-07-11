@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Form\SupplierType;
-use WebWMS\Services\SupplierService;
+use WebWMS\Service\SupplierService;
 
 /**
  * @package:    WebWMS\Controller
@@ -44,6 +44,7 @@ class Supplier extends AbstractController
 
     /**
      * @Route("/order_supplier_ajax", name="order_supplier_ajax")
+     *
      * @throws Exception
      */
     public function getAllSuppliersAjax(): JsonResponse
@@ -53,10 +54,15 @@ class Supplier extends AbstractController
 
     /**
      * @Route("/lieferanten", name="supplier")
+     *
      * @throws Exception
      */
     public function index(): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('supplier/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
@@ -78,6 +84,10 @@ class Supplier extends AbstractController
      */
     public function addNewSupplier(Request $request)
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $form = $this->createForm(SupplierType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -102,7 +112,7 @@ class Supplier extends AbstractController
     }
 
     /**
-     * Get last supplier
+     * Get last supplier.
      */
     public function getLastSupplier(): array
     {

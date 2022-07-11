@@ -65,3 +65,13 @@ services:
                 event: sonata.admin.event.configure.menu.sidebar,
                 method: addMenuItems
             }
+
+    webwms.form.type.task:
+        class: WebWMS\Form\EditArticleType
+        public: true
+        arguments: [ "@security.authorization_checker" ]
+        tags:
+            - { name: form.type }
+
+    WebWMS\Bundles\DashboardBundle\Controller\DashboardController:
+        public: true

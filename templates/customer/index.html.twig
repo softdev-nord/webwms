@@ -11,46 +11,52 @@
 {% block title %}{{ page }}{{ appName }}{% endblock %}
 
 {% block body %}
-    {{ include('header.html.twig') }}
-    {{ include('submenu.html.twig') }}
-    <!-- Beginn Übersicht Kunden -->
-    <div class="wrapper-form">
+    {% block webwms_header %}
+        {{ include('header.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_submenu %}
+        {{ include('submenu.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_customer_overview %}
+    <div id="webWMS-customer-overview" class="wrapper-form">
         <div class="wrapper-form-content">
             <div class="card">
                 <div class="card-content">
-                    <!-- Beginn Tabelle Kunden -->
-                    <table id="Table" class="table table-striped table-bordered table-hover compact">
-                        <thead>
-                        <tr>
-                            <th scope="col">Kunden-Nr</th>
-                            <th scope="col">Kunden-Name</th>
-                            <th scope="col">Anschrift Zusatz</th>
-                            <th scope="col">Straße</th>
-                            <th scope="col">Haus-Nr</th>
-                            <th scope="col">Land</th>
-                            <th scope="col">PLZ</th>
-                            <th scope="col">Ort</th>
-                        </tr>
-                        </thead>
-                        <tbody id="myTable">
-                        <tr>
-                            {% for customer in customer %}
-                            <td>{{ customer.customerNr }}</td>
-                            <td>{{ customer.customerName }}</td>
-                            <td>{{ customer.customerAddressAddition }}</td>
-                            <td>{{ customer.customerAddressStreet }}</td>
-                            <td>{{ customer.customerAddressStreetNr }}</td>
-                            <td>{{ customer.customerCountryCode }}</td>
-                            <td>{{ customer.customerZipCode }}</td>
-                            <td>{{ customer.customerCity }}</td>
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    <!-- Beginn Tabelle Kunden -->
+                    {% block webwms_customer_overview_table %}
+                        <table id="Table" class="table table-striped table-bordered table-hover compact">
+                            <thead>
+                            <tr>
+                                <th scope="col">Kunden-Nr</th>
+                                <th scope="col">Kunden-Name</th>
+                                <th scope="col">Anschrift Zusatz</th>
+                                <th scope="col">Straße</th>
+                                <th scope="col">Haus-Nr</th>
+                                <th scope="col">Land</th>
+                                <th scope="col">PLZ</th>
+                                <th scope="col">Ort</th>
+                            </tr>
+                            </thead>
+                            <tbody id="myTable">
+                            <tr>
+                                {% for customer in customer %}
+                                <td>{{ customer.customerNr }}</td>
+                                <td>{{ customer.customerName }}</td>
+                                <td>{{ customer.customerAddressAddition }}</td>
+                                <td>{{ customer.customerAddressStreet }}</td>
+                                <td>{{ customer.customerAddressStreetNr }}</td>
+                                <td>{{ customer.customerCountryCode }}</td>
+                                <td>{{ customer.customerZipCode }}</td>
+                                <td>{{ customer.customerCity }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endblock %}
                 </div>
             </div>
         </div>
     </div>
-    <!-- Ende Übersicht Kunden -->
+    {% endblock %}
 {% endblock %}

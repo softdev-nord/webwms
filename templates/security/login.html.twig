@@ -13,73 +13,73 @@
 {% endblock %}
 
 {% block body %}
-<body>
-<!-- Beginn Login-Formular -->
-<div class="content-webLVS">
-    <div class="signup-form">
-        <form class="form-horizontal" role="form" method="post">
-        {% if error %}
-            <div class="alert alert-danger">
-                {{ error.messageKey|trans(error.messageData, 'security') }}
+
+    {% block webwms_login_form %}
+        <div class="content-webLVS">
+            <div class="signup-form">
+                <form class="form-horizontal" role="form" method="post">
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %} {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.username }},
+                        <a href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+                <p><img src="assets/images/webWMS_logo.png" class="logo-webLVS" alt="" ></p>
+                <h4>Das webbasierte Lagerverwaltungssystem</h4><br>
+                <div class="form-group">
+                    <input
+                        type="text"
+                        value="{{ last_username }}"
+                        name="username"
+                        id="inputUsername"
+                        class="form-control"
+                        placeholder="Benutzername"
+                        required
+                        autofocus
+                    />
+                </div>
+                <div class="form-group">
+                    <input
+                        type="password"
+                        name="password"
+                        id="inputPassword"
+                        class="form-control"
+                        placeholder="Passwort"
+                        required
+                    />
+                </div>
+                <input
+                        type="hidden"
+                        name="_csrf_token"
+                        value="{{ csrf_token('authenticate') }}"
+                />
+                <input type="hidden" name="_target_path" value="{{ path('homepage') }}" />
+                <div class="form-group">
+                    <button type="submit" name="anmelden" class="btn btn-secondary btn-lg">Anmelden</button>
+                </div>
+                <div class="signup-form-text-info">
+                    &copy; 2019-{{ "now"|date("Y") }} <a href="https://softdev-nord.de"> Softdev Nord Rene Irrgang </a><br>
+                    webLVS &reg; {{ appVersionNumber }} {{ appVersion }}
+                </div>
+                <div>
+                    <i class="brands-webLVS mdi mdi-language-php"></i>
+                    <i class="brands-webLVS mdi mdi-language-html5"></i>
+                    <i class="brands-webLVS mdi mdi-language-css3"></i>
+                    <i class="brands-webLVS mdi mdi-language-javascript"></i>
+                </div>
+                <div class="signup-form-text-software">
+                    Webserver:   {{ webServer }} <br>
+                    Server IP-Adresse: {{ serverIp }} <br>
+                    Server Name: {{ serverName }} <br>
+                    Freier Speicherplatz: {{ freeDiskSpace }} <br>
+                    MySQL Version: {{ mySqlVersion }}
+                </div>
+                </form>
             </div>
-        {% endif %} {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.username }},
-                <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
-        <p><img src="assets/images/webWMS_logo.png" class="logo-webLVS" alt="" ></p>
-        <h4>Das webbasierte Lagerverwaltungssystem</h4><br>
-        <div class="form-group">
-            <input
-                type="text"
-                value="{{ last_username }}"
-                name="username"
-                id="inputUsername"
-                class="form-control"
-                placeholder="Benutzername"
-                required
-                autofocus
-            />
         </div>
-        <div class="form-group">
-            <input
-                type="password"
-                name="password"
-                id="inputPassword"
-                class="form-control"
-                placeholder="Passwort"
-                required
-            />
-        </div>
-        <input
-                type="hidden"
-                name="_csrf_token"
-                value="{{ csrf_token('authenticate') }}"
-        />
-        <input type="hidden" name="_target_path" value="{{ path('homepage') }}" />
-        <div class="form-group">
-            <button type="submit" name="anmelden" class="btn btn-secondary btn-lg">Anmelden</button>
-        </div>
-        <div class="signup-form-text-info">
-            &copy; 2019-{{ "now"|date("Y") }} <a href="https://softdev-nord.de"> Softdev Nord Rene Irrgang </a><br>
-            webLVS &reg; {{ appVersionNumber }} {{ appVersion }}
-        </div>
-        <div>
-            <i class="brands-webLVS mdi mdi-language-php"></i>
-            <i class="brands-webLVS mdi mdi-language-html5"></i>
-            <i class="brands-webLVS mdi mdi-language-css3"></i>
-            <i class="brands-webLVS mdi mdi-language-javascript"></i>
-        </div>
-        <div class="signup-form-text-software">
-            Webserver:   {{ webServer }} <br>
-            Server IP-Adresse: {{ serverIp }} <br>
-            Server Name: {{ serverName }} <br>
-            Freier Speicherplatz: {{ freeDiskSpace }} <br>
-            MySQL Version: {{ mySqlVersion }}
-        </div>
-        </form>
-    </div>
-</div>
-<!-- Ende Login-Formular -->
+    {% endblock %}
 {% endblock %}

@@ -1,7 +1,7 @@
 {# templates/header.html.twig #}
 
 {% block javascripts %}
-    <script type="text/javascript" src="{{ asset('assets/js/jquery-3.4.1.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/jquery-3.6.0.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/jquery-ui.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/jquery.dataTables.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/dataTables.buttons.js') }}"></script>
@@ -13,17 +13,14 @@
     <script type="text/javascript" src="{{ asset('assets/js/vfs_fonts.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/buttons.html5.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/buttons.print.js') }}"></script>
-
     <script type="text/javascript" src="{{ asset('assets/js/bootstrap.js') }}"></script>
-
-    <script type="text/javascript" src="{{ asset('assets/js/customJS/custom.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/custom.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/jquery.webWMS.Core.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/jBox/dist/jBox.all.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/jBox/dist/jBox.js') }}"></script>
 {% endblock %}
 
-{% block header %}
-<!-- Beginn Navigation -->
-    <nav class="navbar navbar-default navbar-expand-sm navbar-fixed-top" role="navigation">
+{% block webwms_header_navigation %}
+    <nav id="webWMS-header" class="navbar navbar-default navbar-expand-sm navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle"
@@ -31,7 +28,7 @@
                         aria-expanded="false"><span class="sr-only">Toggle navigation</span>
                 </button>
                 <a class="navbar-brand"
-                    href="{{ path('homepage') }}"><img src="assets/images/webWMS_logo.png"
+                    href="{{ path('homepage') }}"><img src="{{ asset('assets/images/webWMS_logo.png') }}"
                     width="95" style="margin-top:-3px;" alt="">
                 </a>
             </div>
@@ -76,7 +73,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ path('orders') }}">Übersicht Bestellungen</a></li>
-                            <li><a href="{{ path('new_order') }}">Bestellung anlegen</a></li>
+                            <li><a href="{{ path('new_supplier_order') }}">Bestellung anlegen</a></li>
                             <li><a href="#">Bestellung ändern/stornieren</a></li>
                         </ul>
                     </li>
@@ -101,7 +98,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ path('article') }}">Übersicht Artikel</a></li>
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                        <li><a href="artikel_anlegen.php">Artikel Anlegen</a></li>
+                                        <li><a href="{{ path('add_article') }}">Artikel Anlegen</a></li>
                                     {% endif %}
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                                         <li><a href="#">Sachmerkmale zuordnen</a></li>
@@ -111,10 +108,10 @@
                             <li class="dropdown-submenu"><a href="#">Lager</a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ path('stock_location') }}">Übersicht Lagerplätze</a></li>
-                                    <li><a href="lagerlayout.php">Lagerlayout</a></li>
+                                    <li><a href="{{ path('stock_layout') }}">Lagerlayout</a></li>
                                     <li><a href="lagerzone.php">Lagerzonen</a></li>
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                        <li><a href="lager_anlegen.php">Lager anlegen</a></li>
+                                        <li><a href="{{ path('add_stock_location') }}">Lager anlegen</a></li>
                                     {% endif %}
                                 </ul>
                             </li>
@@ -167,6 +164,7 @@
                             <li><a href="{{ path('stock_rotation') }}">Lagerbewegungen</a></li>
                             <li><a href="#">Lagergeld berechunen</a></li>
                             <li><a href="{{ path('stock_occupancy') }}">Lagerbelegung</a></li>
+                            <li><a href="{{ path('stock_occupancy_graphical') }}">Grafische Lagerbelegung</a></li>
                         </ul>
                     </li>
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
@@ -195,6 +193,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="../doku_weblvs/index.php" target="_blank" >Hilfe </a></li>
                             <li><a href="#aboutwebLVS" data-toggle="modal" data-target="#aboutwebLVS">Über</a></li>
+                            <li><a href="{{ path('app.swagger_ui') }}" target="_blank" >API Dokumentation</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -219,11 +218,9 @@
             </div>
         </div>
     </nav>
-<!-- Ende Navigation -->
-{% endblock header %}
+{% endblock %}
 
-{% block about_modal %}
-<!-- Beginn Über webLVS Bootstrap Modal -->
+{% block webwms_about_modal %}
     <div class="modal" id="aboutwebLVS" tabindex="-1" role="dialog" aria-labelledby="aboutwebLVS"
          aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-notify modal-success" role="document">
@@ -236,7 +233,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
-                        <img src="assets/images/webWMS_logo.png" style="width: 30%; margin-bottom: -20px;" alt="" >
+                        <img src="{{ asset('assets/images/webWMS_logo.png') }}" style="width: 30%; margin-bottom: -20px;" alt="" >
                         <p style="text-align: center; margin-top: 30px; margin-bottom: 50px; font-size: 20px;">Das webbasierte Lagerverwaltungssystem</p>
                         <p style="margin-bottom: 5px;">{{ appVersion }}</p>
                         <p style="margin-bottom: 25px;">{{ appVersionNumber }}</p>
@@ -250,5 +247,4 @@
             </div>
         </div>
     </div>
-<!-- Ende Über webLVS Bootstrap Modal-->
-{% endblock about_modal %}
+{% endblock %}

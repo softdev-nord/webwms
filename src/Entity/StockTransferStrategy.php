@@ -2,8 +2,8 @@
 
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\StockTransferStrategyRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\StockTransferStrategyRepository;
 
 /**
  * @ORM\Entity(repositoryClass=StockTransferStrategyRepository::class)

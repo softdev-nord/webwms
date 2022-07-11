@@ -2,9 +2,9 @@
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\Configuration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\Configuration;
 
 /**
  * @method Configuration|null find($id, $lockMode = null, $lockVersion = null)

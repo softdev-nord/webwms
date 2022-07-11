@@ -14,15 +14,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Entity\CustomerOrder as CustomerOrders;
+use WebWMS\Form\CustomerOrderPosType;
 use WebWMS\Form\CustomerOrderType;
-use WebWMS\Services\ArticleService;
-use WebWMS\Services\CustomerOrderService;
+use WebWMS\Service\ArticleService;
+use WebWMS\Service\CustomerOrderService;
 
 /**
- * Class        CustomerOrder
  * @package:    WebWMS\Controller
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        CustomerOrder
  */
 class CustomerOrder extends AbstractController
 {
@@ -55,6 +56,7 @@ class CustomerOrder extends AbstractController
 
     /**
      * @Route("/customer_order_pos_ajax", name="customer_order_pos_ajax")
+     *
      * @throws Exception
      */
     public function getAllCustomerOrdersPos(): JsonResponse
@@ -64,10 +66,15 @@ class CustomerOrder extends AbstractController
 
     /**
      * @Route("/auftrag", name="customer_orders")
+     *
      * @throws Exception
      */
     public function index(): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('customer_order/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
@@ -89,13 +96,27 @@ class CustomerOrder extends AbstractController
      */
     public function addNewCustomerOrder(EntityManagerInterface $em, Request $request)
     {
-        //dd($request);
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+        //dd($request->request->all());
+
+        $customerOrderForm = $this->createForm(CustomerOrderType::class);
+
+        //dd($customerOrderForm->getData());
+        //$customerOrderForm->getData();
+
+        //$customerOrderForm = $this->createForm(CustomerOrderType::class, $request->get('customer_order_pos'));
+
+        $customerOrder = new CustomerOrders();
+        $customerOrderPosForm = $this->createForm(CustomerOrderPosType::class);
+
+        //dd($customerOrderForm);
 
         $form = $this->createForm(CustomerOrderType::class);
         $form->handleRequest($request);
         //dd($form->getData());
         if ($form->isSubmitted() && $form->isValid()) {
-
             /** @var CustomerOrders $customerOrder */
             $customerOrder = $form->getData();
             //dd($customerOrder);
@@ -122,15 +143,38 @@ class CustomerOrder extends AbstractController
             return $this->redirectToRoute('new_customer_order');
         }
 
-        return $this->render('customer_order/add_customer_order.html.twig',
+        /*return $this->render(
+            'customer_order/add_customer_order.html.twig',
             [
-                'appName' => Requirements::APP_NAME,
-                'appVersion' => Requirements::APP_VERSION,
-                'appVersionNumber' => Requirements::APP_VERSION_NUMBER,
+                'forms' => \array_map(
+                    function($form) {
+                        return $form->createView();
+                    },
+                    $forms
+                ),
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Auftrag anlegen',
                 'article' => $this->getAllArticleAjax(),
                 'lastId' => $this->getLastCustomerOrderId()[0],
-                'customerForm' => $form->createView(),
+            ]
+        );*/
+
+        return $this->render('customer_order/add_customer_order.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Auftrag anlegen',
+                'article' => $this->getAllArticleAjax(),
+                'lastId' => $this->getLastCustomerOrderId()[0],
+                'customerForm' => $customerOrderForm->createView(),
+                'customerOrderPosForm' => $customerOrderPosForm->createView(),
             ]
         );
     }

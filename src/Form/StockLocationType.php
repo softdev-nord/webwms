@@ -2,10 +2,13 @@
 
 namespace WebWMS\Form;
 
-use WebWMS\Entity\StockLocation;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use WebWMS\Entity\StockLocation;
 
 /**
  * @package:    WebWMS\Form
@@ -18,14 +21,73 @@ class StockLocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('stock_location_ln')
-            ->add('stock_location_fb')
-            ->add('stock_location_sp')
-            ->add('stock_location_tf')
-            ->add('stock_location_desc')
-            ->add('stock_location_width')
-            ->add('stock_location_depth')
-            ->add('stock_location_height')
+            ->add('stock_location_ln', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'data-type' => 'stock_location_ln',
+                ],
+            ])
+            ->add('stock_location_fb', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'data-type' => 'stock_location_fb',
+                ],
+            ])
+            ->add('stock_location_sp', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'data-type' => 'stock_location_sp',
+                ],
+            ])
+            ->add('stock_location_tf', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'data-type' => 'stock_location_tf',
+                ],
+            ])
+            ->add('stock_location_desc', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'data-type' => 'stock_location_desc',
+                ],
+            ])
+            ->add('stock_location_width', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'data-type' => 'stock_location_width',
+                ],
+            ])
+            ->add('stock_location_depth', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'data-type' => 'stock_location_depth',
+                ],
+            ])
+            ->add('stock_location_height', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'data-type' => 'stock_location_height',
+                ],
+            ])
+            ->add('stock_location_check', CheckboxType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+            ])
+            ->add('add_stock_location', SubmitType::class, [
+                'label' => 'Lagerplatz anlegen',
+                'attr' => [
+                    'class' => 'btn btn-secondary btn-lg',
+                ],
+            ])
         ;
     }
 

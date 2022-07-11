@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use WebWMS\Services\RequirementsService;
+use WebWMS\Service\RequirementsService;
 
 /**
  * @package:    WebWMS\Controller
@@ -76,10 +76,6 @@ class Requirements extends AbstractController
 
     /**
      * Encode byte size format.
-     *
-     * @param float $bytes
-     *
-     * @return string
      */
     public function encodeSize(float $bytes): string
     {
@@ -113,41 +109,26 @@ class Requirements extends AbstractController
         return $this->requirementsService->getServerVersion();
     }
 
-    /**
-     * @return string
-     */
     public function getAppName(): string
     {
         return $this->appName;
     }
 
-    /**
-     * @return string
-     */
     public function getAppVersion(): string
     {
         return $this->appVersion;
     }
 
-    /**
-     * @return string
-     */
     public function getAppVersionNumber(): string
     {
         return $this->appVersionNumber;
     }
 
-    /**
-     * @return string
-     */
     public function getAppCopyright(): string
     {
         return $this->appCopyright;
     }
 
-    /**
-     * @return string
-     */
     public function getAppLizenz(): string
     {
         return $this->appLizenz;

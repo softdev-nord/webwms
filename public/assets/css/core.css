@@ -255,8 +255,8 @@ th {
 }
 @font-face {
   font-family: "Glyphicons Halflings";
-  src: url("../fonts/glyphicons-halflings-regular.eot");
-  src: url("../fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("../fonts/glyphicons-halflings-regular.woff") format("woff"), url("../fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
+  src: url("../../fonts/glyphicons-halflings-regular.eot");
+  src: url("../../fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../../fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("../../fonts/glyphicons-halflings-regular.woff") format("woff"), url("../../fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("../../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
 .glyphicon {
   position: relative;
@@ -1324,7 +1324,12 @@ mark,
   text-transform: capitalize;
 }
 .text-muted {
-  color: #7a8288;
+  color: #c7cbcc;
+  text-shadow:
+    rgba(16, 16, 16, 0.4) 1px 10px 6px,
+    rgba(16, 16, 16, 0.2) 1px 14px 10px,
+    rgba(16, 16, 16, 0.2) 1px 18px 35px,
+    rgba(16, 16, 16, 0.4) 1px 22px 65px;
 }
 .text-primary {
   color: #7a8288;
@@ -1598,6 +1603,11 @@ pre code {
 .row {
   margin-right: -15px;
   margin-left: -15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 .row-no-gutters {
   margin-right: 0;
@@ -4973,22 +4983,49 @@ a.label:focus {
 .label-danger[href]:focus {
   background-color: #e9322d;
 }
-.badge {
+.badge-occupancy {
   display: inline-block;
-  min-width: 10px;
-  padding: 3px 7px;
-  font-size: 12px;
+  width: 30px;
+  height: 30px;
+  font-size: 21px;
   font-weight: bold;
-  line-height: 1;
-  color: #ffffff;
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: #7a8288;
-  border-radius: 10px;
+  background-repeat: no-repeat;
+  float: right;
+  border: 1px solid #2e3436;
+  color: #c7cbcc;
+  background-color: #414a50;
+  background-image: -webkit-linear-gradient(top, #475158 2%, #373e44 98%);
+  background-image: linear-gradient(to bottom,#475158 2%, #373e44 98%);
+  -webkit-box-shadow: inset 0 1px 0 #636367, inset 0 -1px 0 #353c41, 0 2px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 1px 0 #636367, inset 0 -1px 0 #353c41, 0 2px 3px rgba(0, 0, 0, 0.08);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.08);
 }
 .badge:empty {
   display: none;
+}
+.badge {
+  display: inline-block;
+  min-width: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  border-radius: 10px;
+  background-repeat: no-repeat;
+  float: right;
+  border: 1px solid #2e3436;
+  color: #c7cbcc;
+  background-color: #414a50;
+  background-image: -webkit-linear-gradient(top, #475158 2%, #373e44 98%);
+  background-image: linear-gradient(to bottom,#475158 2%, #373e44 98%);
+  -webkit-box-shadow: inset 0 1px 0 #636367, inset 0 -1px 0 #353c41, 0 2px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 1px 0 #636367, inset 0 -1px 0 #353c41, 0 2px 3px rgba(0, 0, 0, 0.08);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.08);
 }
 .btn .badge {
   position: relative;
@@ -5094,6 +5131,9 @@ a.thumbnail.active {
   border: 1px solid transparent;
   border-radius: 4px;
 }
+.form-article--error {
+  display: none;
+}
 .alert h4 {
   margin-top: 0;
   color: inherit;
@@ -5120,6 +5160,7 @@ a.thumbnail.active {
   color: inherit;
 }
 .alert-success {
+  display: none;
   color: #ffffff;
   background-color: #62c462;
   border-color: #62bd4f;
@@ -5982,6 +6023,7 @@ button.close {
   left: 0;
   z-index: 1040;
   background-color: #000000;
+  opacity: 0.5;
 }
 .modal-backdrop.fade {
   filter: alpha(opacity=0);
@@ -7284,7 +7326,7 @@ a.thumbnail.active {
   -webkit-box-flex: 1;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
-  padding: 1.25rem;
+  padding: 5px 20px 30px 20px;
 }
 
 .card-title {
@@ -7487,4 +7529,10 @@ a.thumbnail.active {
     display: inline-block;
     width: 100%;
   }
+}
+
+.align-items-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

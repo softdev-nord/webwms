@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,33 +29,41 @@ class CustomerOrderType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'inputAftNr',
-                    'id' => 'aft_nr_1',
-                    'data-type' => 'aft_id_1',
+                    'id' => 'customer_order_id',
+                    'data-type' => 'customer_order_id',
                 ],
             ])
             ->add('customer_id', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control autocomplete_customers',
-                    'id' => 'id_1',
-                    'data-type' => 'id',
+                    'id' => 'customer_id',
+                    'data-type' => 'customer_id',
+                ],
+            ])
+            ->add('usr_id', HiddenType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control autocomplete_customers',
+                    'id' => 'usr_id',
+                    'data-type' => 'usr_id',
                 ],
             ])
             ->add('customer_order_nr', TextType::class, [
                 'label' => 'Auftrags-Nr',
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'aft_nr_1',
-                    'data-type' => 'aft_nr_1',
+                    'id' => 'customer_order_nr',
+                    'data-type' => 'customer_order_nr',
                     'style' => 'background-color: transparent',
-                    'disabled' => true,
+                    'readonly' => true,
                 ],
             ])
             ->add('customer_order_reference', TextType::class, [
                 'label' => 'Auftrags-Referenz',
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'aft_ref',
+                    'id' => 'customer_order_reference',
                     'placeholder' => 'Auftrags-Referenz',
                 ],
             ])
@@ -78,7 +88,18 @@ class CustomerOrderType extends AbstractType
                     'placeholder' => 'Bestelldatum',
                 ],
             ])
+            ->add('add_customer_order', SubmitType::class, [
+                'label' => 'Auftrag anlegen',
+                'attr' => [
+                    'class' => 'btn btn-secondary btn-lg',
+                ],
+            ])
         ;
+
+        $builder
+            ->add('details', CollectionType::class, [
+                'entry_type' => CustomerOrderPosType::class,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

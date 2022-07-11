@@ -2,11 +2,11 @@
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\StockTransferStrategy;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\StockTransferStrategy;
 
 /**
  * @method StockTransferStrategy|null find($id, $lockMode = null, $lockVersion = null)

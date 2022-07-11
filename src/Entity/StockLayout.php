@@ -165,12 +165,12 @@ class StockLayout
         return $this;
     }
 
-    public function getStockLongDescription(): ?int
+    public function getStockLongDescription(): ?string
     {
         return $this->stock_long_description;
     }
 
-    public function setStockLongDescription(int $stock_long_description): self
+    public function setStockLongDescription(string $stock_long_description): self
     {
         $this->stock_long_description = $stock_long_description;
 

@@ -1,0 +1,11 @@
+nelmio_api_doc:
+    models: { use_jms: false }
+    documentation:
+        info:
+            title: webWMS API
+            description: An API for fetching, adding, adapting and deleting resources.
+            version: 1.0.0
+    areas: # Include everything available at /api except the doc APIs.
+        default:
+            path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc

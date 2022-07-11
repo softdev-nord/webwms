@@ -11,8 +11,11 @@
 {% block title %}{{ page }}{{ appName }}{% endblock %}
 
 {% block body %}
-    {{ include('header.html.twig') }}
-    {{ include('submenu.html.twig') }}
+    {% block webwms_header %}
+        {{ include('header.html.twig') }}
+        {{ include('submenu.html.twig') }}
+    {% endblock %}
+
     {% if app.user %}
         <div class="mb-3">
             You are logged in as {{ app.user.username }},

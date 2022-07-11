@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
-use Doctrine;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,6 +76,7 @@ class Security extends AbstractController
 
     /**
      * @Route("/logout", name="app_logout", methods={"GET"})
+     *
      * @throws Exception
      */
     public function logout()

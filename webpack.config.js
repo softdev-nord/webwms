@@ -1,4 +1,68 @@
 const Encore = require('@symfony/webpack-encore');
+const webpack = require('webpack');
+
+module.exports = {
+    entry: [
+        // entry bits
+    ],
+    output: {
+        // output bits
+    },
+    module: {
+        rules: [
+            // any other rules
+            {
+                // Exposes jQuery for use outside Webpack build
+                test: require.resolve('jquery'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'jQuery'
+                },{
+                    loader: 'expose-loader',
+                    options: '$'
+                }]
+            }
+        ]
+    },
+    plugins: [
+         new webpack.ProvidePlugin({
+         $: "jquery",
+         jQuery: "jquery",
+         "window.jQuery": "jquery",
+     })
+     ]
+}
+
+// module.exports = {
+//     externals: {
+//         jquery: $
+//     },
+//     // expose jquery's $ for imports
+//     resolve: {
+//         alias: {
+//             'jquery': path.join(__dirname, '/node_modules/jquery/dist/jquery.min.js')
+//         }
+//     },
+//     module: {
+//         rules: [{
+//             test: require.resolve('jquery'),
+//             use: [{
+//                 loader: 'expose-loader',
+//                 options: 'jQuery'
+//             },{
+//                 loader: 'expose-loader',
+//                 options: '$'
+//             }]
+//         }]
+//     },
+//     plugins: [
+//         new webpack.ProvidePlugin({
+//         $: "jquery",
+//         jQuery: "jquery",
+//         "window.jQuery": "jquery",
+//     })
+//     ]
+// }
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -20,7 +84,7 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/app.js')
+    .addEntry('webWms', './assets/app.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

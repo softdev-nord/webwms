@@ -10,10 +10,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
 
 /**
- * Class        Homepage
  * @package:    WebWMS\Controller
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class       Homepage
  */
 class Homepage extends AbstractController
 {
@@ -31,6 +31,10 @@ class Homepage extends AbstractController
      */
     public function index(): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('homepage/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),

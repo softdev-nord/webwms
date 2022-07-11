@@ -1,0 +1,1 @@
+*/5 * * * * /var/backup/mysql/backup-database.sh

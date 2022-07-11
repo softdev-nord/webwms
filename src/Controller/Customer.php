@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Form\CustomerType;
-use WebWMS\Services\CustomerService;
+use WebWMS\Service\CustomerService;
 
 /**
  * @package:    WebWMS\Controller
@@ -56,8 +56,9 @@ class Customer extends AbstractController
      */
     public function addNewCustomer(Request $request)
     {
-        //$params = $request->request->all();
-        //dd($params['customer']['customer_name']);
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
 
         $form = $this->createForm(CustomerType::class);
         $form->handleRequest($request);
@@ -82,9 +83,6 @@ class Customer extends AbstractController
         );
     }
 
-    /**
-     * Get last customer
-     */
     public function getLastCustomer(): array
     {
         return $this->customerService->getLastCustomer();
@@ -95,6 +93,10 @@ class Customer extends AbstractController
      */
     public function index(): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('customer/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
@@ -114,6 +116,10 @@ class Customer extends AbstractController
      */
     public function createCustomer(): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('customer/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),

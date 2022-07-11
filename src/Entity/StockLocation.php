@@ -40,6 +40,12 @@ class StockLocation
     private $stock_location_tf;
 
     /**
+     * @ORM\Column(type="integer")
+     * * @ORM\OneToMany(targetEntity="\WebWMS\Entity\StockRotation", mappedBy="stock_location_coordinate")
+     */
+    private $stock_location_coordinate;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $stock_location_desc;
@@ -110,6 +116,22 @@ class StockLocation
         $this->stock_location_tf = $stock_location_tf;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStockLocationCoordinate()
+    {
+        return $this->stock_location_coordinate;
+    }
+
+    /**
+     * @param mixed $stock_location_coordinate
+     */
+    public function setStockLocationCoordinate($stock_location_coordinate): void
+    {
+        $this->stock_location_coordinate = $stock_location_coordinate;
     }
 
     public function getStockLocationDesc(): ?string

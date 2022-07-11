@@ -10,21 +10,21 @@ article_ajax:
     path: /article_ajax
     controller: WebWMS\Controller\Article::getAllArticles
 
-orders:
+supplier_oders:
     path: /bestellungen
-    controller: WebWMS\Controller\Order::index
+    controller: WebWMS\Controller\SupplierOrder::index
 
 customer_orders:
     path: /auftrag
     controller: WebWMS\Controller\CustomerOrder::index
 
-orders_ajax:
-    path: /orders_ajax
-    controller: WebWMS\Controller\Order::getAllOrders
+supplier_oders_ajax:
+    path: /supplier_orders_ajax
+    controller: WebWMS\Controller\SupplierOrder::getAllOrders
 
-order_pos_ajax:
-    path: /order_pos_ajax
-    controller: WebWMS\Controller\Order::getAllOrderPos
+supplier_oders_pos_ajax:
+    path: /supplier_oders_pos_ajax
+    controller: WebWMS\Controller\SupplierOrder::getAllOrderPos
 
 customer_order_ajax:
     path: /customer_order_ajax
@@ -34,13 +34,9 @@ customer_order_pos_ajax:
     path: /customer_order_pos_ajax
     controller: WebWMS\Controller\CustomerOrder::getAllCustomerOrdersPos
 
-stock_location:
-    path: /stock_location
-    controller: WebWMS\Controller\Stock::stockLocations
-
-stock_rotation_ajax:
-    path: /stock_rotation_ajax
-    controller: WebWMS\Controller\Stock::getAllStockRotations
+show_stock_location_details:
+    path: /show_stock_location_details
+    controller: WebWMS\Controller\Stock::getSockLocationDetailsById
 
 stock_inventory_start:
     path: /inventur_starten
@@ -54,3 +50,8 @@ _sonata_admin:
     resource: .
     type: sonata_admin
     prefix: /einstellungen
+
+dashboard_bundle:
+    # loads routes from the YAML or XML files found in some bundle directory
+    resource: '@DashboardBundle/Resources/config'
+    type:     directory

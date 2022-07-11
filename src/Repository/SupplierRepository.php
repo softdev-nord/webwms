@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use WebWMS\Entity\Supplier;
 
@@ -21,8 +22,34 @@ use WebWMS\Entity\Supplier;
  */
 class SupplierRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ManagerRegistry $registry
+    ) {
+        $this->entityManager = $entityManager;
         parent::__construct($registry, Supplier::class);
+    }
+
+    /**
+     * @return Supplier
+     */
+    public function findById(int $supplierId): ?Supplier
+    {
+        return self::find($supplierId);
+    }
+
+    public function save(Supplier $supplier): void
+    {
+        $this->entityManager->persist($supplier);
+        $this->entityManager->flush();
+    }
+
+    public function delete(Supplier $supplier): void
+    {
+        $this->entityManager->remove($supplier);
+        $this->entityManager->flush();
     }
 }

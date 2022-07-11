@@ -11,74 +11,80 @@
 {% block title %}{{ page }}{{ appName }}{% endblock %}
 
 {% block body %}
-    {{ include('header.html.twig') }}
-    {{ include('submenu.html.twig') }}
-    <!-- Beginn Lieferant anlegen -->
-    <div class="wrapper-form-content create-form" style="width: 900px;">
-        <div class="card">
-        {{ form_start(addSupplierForm) }}
-        <p class="hint-text">Hier können Sie einen neuen Lieferanten anlegen</p>
-        <div class="form-group">
-            <label for="text" class="control-label col-xs-4">Lieferanten-Nr</label>
-            <div class="col-xs-8" style="margin-bottom: 5px;">
-                {{ form_row(addSupplierForm.supplier_nr, {'value' : "#{lastId.supplierNr +1}"}) }}
+    {% block webwms_header %}
+        {{ include('header.html.twig') }}
+    {% endblock %}
 
+    {% block webwms_submenu %}
+        {{ include('submenu.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_add_new_supplier %}
+        <div id="webWMS-add-new-supplier" class="wrapper-form-content create-form" style="width: 900px;">
+            <div class="card">
+            {{ form_start(addSupplierForm) }}
+            <p class="hint-text">Hier können Sie einen neuen Lieferanten anlegen</p>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Lieferanten-Nr</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(addSupplierForm.supplier_nr, {'value' : "#{lastId.supplierNr +1}"}) }}
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Lieferanten-Name</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(addSupplierForm.supplier_name) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Anschrift Zusatz</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(addSupplierForm.supplier_address_addition) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Straße</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(addSupplierForm.supplier_address_street) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Haus-Nr</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(addSupplierForm.supplier_address_street_nr) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Land</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(addSupplierForm.supplier_address_country_code) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Postleitzahl</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(addSupplierForm.supplier_address_zipcode) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Ort</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(addSupplierForm.supplier_address_city) }}
+                </div>
+            </div>
+                <div class="form-group col-md-12">
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            <div class="text-center">
+                {{ form_widget(addSupplierForm.add_supplier) }}
+            </div>
+            {{ form_end(addSupplierForm) }}
             </div>
         </div>
-        <div class="form-group">
-            <label for="text" class="control-label col-xs-4">Lieferanten-Name</label>
-            <div class="col-xs-8" style="margin-bottom: 5px;">
-                {{ form_row(addSupplierForm.supplier_name) }}
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="text" class="control-label col-xs-4">Anschrift Zusatz</label>
-            <div class="col-xs-8" style="margin-bottom: 5px;">
-                {{ form_row(addSupplierForm.supplier_address_addition) }}
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="text" class="control-label col-xs-4">Straße</label>
-            <div class="col-xs-8" style="margin-bottom: 5px;">
-                {{ form_row(addSupplierForm.supplier_address_street) }}
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="text" class="control-label col-xs-4">Haus-Nr</label>
-            <div class="col-xs-8" style="margin-bottom: 5px;">
-                {{ form_row(addSupplierForm.supplier_address_street_nr) }}
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="text" class="control-label col-xs-4">Land</label>
-            <div class="col-xs-8" style="margin-bottom: 5px;">
-                {{ form_row(addSupplierForm.supplier_address_country_code) }}
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="text" class="control-label col-xs-4">Postleitzahl</label>
-            <div class="col-xs-8" style="margin-bottom: 5px;">
-                {{ form_row(addSupplierForm.supplier_address_zipcode) }}
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="text" class="control-label col-xs-4">Ort</label>
-            <div class="col-xs-8" style="margin-bottom: 5px;">
-                {{ form_row(addSupplierForm.supplier_address_city) }}
-            </div>
-        </div>
-            <div class="form-group col-md-12">
-                {% for message in app.flashes('success') %}
-                    <div class="alert alert-success">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        <div class="text-center">
-            {{ form_widget(addSupplierForm.add_supplier) }}
-        </div>
-        {{ form_end(addSupplierForm) }}
-        </div>
-    </div>
-    <!-- Ende Lieferant anlegen -->
+    {% endblock %}
 {% endblock %}

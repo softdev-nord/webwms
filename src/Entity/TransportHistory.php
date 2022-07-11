@@ -42,7 +42,7 @@ class TransportHistory
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $art_nr;
+    private $article_nr;
 
     /**
      * @ORM\Column(type="decimal", precision=11, scale=3)
@@ -219,12 +219,12 @@ class TransportHistory
 
     public function getArtNr(): ?string
     {
-        return $this->art_nr;
+        return $this->article_nr;
     }
 
-    public function setArtNr(string $art_nr): self
+    public function setArtNr(string $article_nr): self
     {
-        $this->art_nr = $art_nr;
+        $this->article_nr = $article_nr;
 
         return $this;
     }

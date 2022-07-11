@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\SupplierRepository;
 
@@ -63,6 +64,22 @@ class Supplier
      * @ORM\Column(type="string", length=255)
      */
     private $supplier_address_city;
+
+    /**
+     * INVERSE SIDE
+     * The customer_orders property is the inverse side of the association between customer and customer orders.
+     * The association is joined over the customer id field and the userID field of the customer order.
+     *
+     * @var ArrayCollection<\WebWMS\Entity\Supplier>
+     *
+     * @ORM\OneToMany(targetEntity="WebWMS\Entity\SupplierOrder", mappedBy="supplier")
+     */
+    protected $supplier_orders;
+
+    public function __construct()
+    {
+        $this->supplier_orders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -236,4 +253,33 @@ class Supplier
         ];
     }
 
+    /**
+     * Returns an array collection of WebWMS\Entity\SupplierOrder model instances, which
+     * contains all data about the a single supplier order. The association is defined over
+     * the Supplier.supplier_orders property (INVERSE SIDE) and the SupplierOrder.supplier (OWNING SIDE) property.
+     * The order data is joined over the supplier_orders.supplier_id field.
+     *
+     * @return ArrayCollection<\WebWMS\Entity\SupplierOrder>
+     */
+    public function getSupplierOrders()
+    {
+        return $this->supplier_orders;
+    }
+
+    /**
+     * Setter function for the orders association property which contains many instances of the WebWMS\Entity\SupplierOrder model which
+     * contains all data about the a single supplier order. The association is defined over
+     * the Supplier.orders property (INVERSE SIDE) and the SupplierOrder.supplier (OWNING SIDE) property.
+     * The order data is joined over the supplier_orders.supplier_id field.
+     *
+     * @param ArrayCollection<\WebWMS\Entity\SupplierOrder>|null $supplier_orders
+     *
+     * @return Supplier
+     */
+    public function setSupplierOrders($supplier_orders)
+    {
+        $this->supplier_orders = $supplier_orders;
+
+        return $this;
+    }
 }

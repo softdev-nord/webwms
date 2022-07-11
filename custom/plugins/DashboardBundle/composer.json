@@ -1,0 +1,29 @@
+{
+  "name": "webwms/dashboard",
+  "description": "Dashboard Bundle",
+  "version": "1.0.0",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "SoftDev Nord, Rene Irrgang"
+    }
+  ],
+  "extra": {
+    "webwms-plugin-class": "WebWMS\\DashboardBundle\\DashboardBundle",
+    "copyright": "(c) SoftDev Nord",
+    "label": {
+      "de-DE": "Dashboard Plugin",
+      "en-GB": "Dashboard plugin"
+    },
+    "description": {
+      "de-DE": "Dashboard plugin für WebWMS",
+      "en-GB": "Dashboard plugin for WebWMS"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "WebWMS\\DashboardBundle\\": ""
+    }
+  }
+}

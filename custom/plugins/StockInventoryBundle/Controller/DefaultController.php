@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Bundles\StockInventoryBundle\Controller;
 
-use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

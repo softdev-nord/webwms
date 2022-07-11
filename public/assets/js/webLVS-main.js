@@ -1,1 +1,1 @@
-@import("customJS/custom.js")
+@import("webWmsCoreJs/custom.js")

@@ -1,0 +1,100 @@
+{% block copyright %}
+    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
+    --                                                                                                              --
+    --                webLVS (c) SoftDev Nord Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                --
+    --                                                                                                              --
+    ------------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE-----------------------------------*/
+{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {% block webwms_header %}
+        {{ include('header.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_submenu %}
+        {{ include('submenu.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_edit_article %}
+    <div id="webWMS-edit-article" class="wrapper-form">
+        <div class="wrapper-form-content">
+            <div class="card">
+                <div class="card-content">
+                    {% block webwms_edit_article_form %}
+                        <div class="card">
+                            {{ form_start(editArticleForm) }}
+
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editArticleForm.article_nr) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Artikelname</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editArticleForm.article_name) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Kategorie</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editArticleForm.article_category) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Gewicht</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editArticleForm.article_weight) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">EAN</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editArticleForm.article_ean) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Einheit (Stk, kg, etc)</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editArticleForm.article_unit) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Tiefe</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editArticleForm.article_depth) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Breite</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editArticleForm.article_width) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Höhe</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editArticleForm.article_height) }}
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                {{ form_widget(editArticleForm.save) }}
+                                {{ form_widget(editArticleForm.back_to_article_overview) }}
+                            </div>
+                            {{ form_end(editArticleForm) }}
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block javascripts %}
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.article.js') }}"></script>
+    {% endblock %}
+{% endblock %}

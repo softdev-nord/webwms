@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\CustomerRepository;
 
@@ -63,6 +64,22 @@ class Customer
      * @ORM\Column(type="string", length=255)
      */
     private $customer_city;
+
+    /**
+     * INVERSE SIDE
+     * The customer_orders property is the inverse side of the association between customer and customer orders.
+     * The association is joined over the customer id field and the userID field of the customer order.
+     *
+     * @var ArrayCollection<\WebWMS\Entity\Customer>
+     *
+     * @ORM\OneToMany(targetEntity="WebWMS\Entity\CustomerOrder", mappedBy="customer")
+     */
+    protected $customer_orders;
+
+    public function __construct()
+    {
+        $this->customer_orders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -190,5 +207,33 @@ class Customer
             'customer_zip_code' => $this->customer_zip_code,
             'customer_city' => $this->customer_city,
         ];
+    }
+
+    /**
+     * Returns an array collection of WebWMS\Entity\CustomerOrder model instances, which
+     * contains all data about the a single customer order. The association is defined over
+     * the Customer.customer_orders property (INVERSE SIDE) and the CustomerOrder.customer (OWNING SIDE) property.
+     * The order data is joined over the customer_orders.customer_id field.
+     *
+     * @return ArrayCollection<\WebWMS\Entity\CustomerOrder>
+     */
+    public function getCustomerOrders(): ArrayCollection
+    {
+        return $this->customer_orders;
+    }
+
+    /**
+     * Setter function for the customer_orders association property which contains many instances of the WebWMS\Entity\CustomerOrder model which
+     * contains all data about the a single customer order. The association is defined over
+     * the Customer.customer_orders property (INVERSE SIDE) and the CustomerOrder.customer (OWNING SIDE) property.
+     * The order data is joined over the customer_orders.customer_id field.
+     *
+     * @param ArrayCollection<\WebWMS\Entity\CustomerOrder>|null $customer_orders
+     */
+    public function setCustomerOrders(ArrayCollection $customer_orders): Customer
+    {
+        $this->customer_orders = $customer_orders;
+
+        return $this;
     }
 }

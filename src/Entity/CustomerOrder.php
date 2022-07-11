@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Components\Entity\ModelEntity;
 use WebWMS\Repository\CustomerOrderRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CustomerOrderRepository::class)
  * @ORM\Table(name="`customer_orders`")
  */
-class CustomerOrder
+class CustomerOrder extends ModelEntity
 {
     /**
      * @ORM\Id
@@ -31,7 +33,7 @@ class CustomerOrder
     private $usr_id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="customer_id", type="integer")
      */
     private $customer_id;
 
@@ -54,6 +56,28 @@ class CustomerOrder
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $customer_order_order_date;
+
+    /**
+     * INVERSE SIDE.
+     *
+     * @var \Doctrine\Common\Collections\ArrayCollection<\WebWMS\Entity\CustomerOrderPos>
+     *
+     * @ORM\OneToMany(targetEntity="\WebWMS\Entity\CustomerOrderPos", mappedBy="customer_orders")
+     */
+    protected $details;
+
+    /**
+     * @var \WebWMS\Entity\Customer
+     *
+     * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Customer", inversedBy="customer_orders")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     */
+    protected $customer;
+
+    public function __construct()
+    {
+        $this->details = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -163,5 +187,37 @@ class CustomerOrder
         $this->customer_order_order_date = $customer_order_order_date;
 
         return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection<\WebWMS\Entity\CustomerOrderPos>
+     */
+    public function getDetails(): ArrayCollection
+    {
+        return $this->details;
+    }
+
+    /**
+     * @param \WebWMS\Entity\CustomerOrderPos[]|null $details
+     */
+    public function setDetails(?array $details): CustomerOrder
+    {
+        return $this->setOneToMany($details, \WebWMS\Entity\CustomerOrderPos::class, 'details', 'customer_order');
+    }
+
+    /**
+     * @return \WebWMS\Entity\Customer
+     */
+    public function getCustomer(): Customer
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param \WebWMS\Entity\Customer $customer
+     */
+    public function setCustomer(Customer $customer)
+    {
+        $this->customer = $customer;
     }
 }
