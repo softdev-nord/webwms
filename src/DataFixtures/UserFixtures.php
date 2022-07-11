@@ -11,14 +11,9 @@ use WebWMS\Entity\User;
 
 class UserFixtures extends Fixture
 {
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
-
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $this->passwordEncoder = $passwordEncoder;
+    public function __construct(
+        private UserPasswordEncoderInterface $passwordEncoder
+    ) {
     }
 
     public function load(ObjectManager $manager)

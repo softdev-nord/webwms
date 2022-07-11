@@ -21,29 +21,14 @@ class Requirements extends AbstractController
     const APP_COPYRIGHT = '© 2019 Softdev-Nord | Rene Irrgang';
     const APP_LIZENZ = 'Demo Spedition<br>Demoweg 500<br>21698 Harsefeld';
 
-    /** @var RequirementsService */
-    private $requirementsService;
-
-    private $appName;
-    private $appVersion;
-    private $appVersionNumber;
-    private $appCopyright;
-    private $appLizenz;
-
     public function __construct(
-        string $appName,
-        string $appVersion,
-        string $appVersionNumber,
-        string $appCopyright,
-        string $appLizenz,
-        RequirementsService $requirementsService
+        private string $appName,
+        private string $appVersion,
+        private string $appVersionNumber,
+        private string $appCopyright,
+        private string $appLizenz,
+        private RequirementsService $requirementsService
     ) {
-        $this->appName = $appName;
-        $this->appVersion = $appVersion;
-        $this->appVersionNumber = $appVersionNumber;
-        $this->appLizenz = $appLizenz;
-        $this->appCopyright = $appCopyright;
-        $this->requirementsService = $requirementsService;
     }
 
     public function coreInfo(): array
@@ -59,10 +44,8 @@ class Requirements extends AbstractController
 
     /**
      * Checks the disk free space.
-     *
-     * @return bool|string
      */
-    public function checkDiskFreeSpace()
+    public function checkDiskFreeSpace(): bool|string
     {
         if (function_exists('disk_free_space')) {
             // Prevent Warning: disk_free_space() [function.disk-free-space]: Value too large for defined data type
@@ -92,10 +75,8 @@ class Requirements extends AbstractController
 
     /**
      * Checks the php version.
-     *
-     * @return bool|string
      */
-    public function checkPhp()
+    public function checkPhp(): bool|string
     {
         if (strpos(PHP_VERSION, '-')) {
             return substr(PHP_VERSION, 0, strpos(PHP_VERSION, '-'));

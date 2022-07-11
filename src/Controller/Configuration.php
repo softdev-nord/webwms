@@ -15,12 +15,8 @@ use WebWMS\Service\ConfigurationService;
  */
 class Configuration extends AbstractController
 {
-    /** @var ConfigurationService */
-    private $configurationService;
-
     public function __construct(
-        ConfigurationService $configurationService
+        private ConfigurationService $configurationService
     ) {
-        $this->configurationService = $configurationService;
     }
 }

@@ -18,10 +18,12 @@ class CustomerOrderService
     public function __construct(
         private EntityManagerInterface $entityManager,
         private CustomerOrderRepository $customerOrderRepository
-    )
-    {
+    ) {
     }
 
+    /**
+     * @throws EntityNotFoundException
+     */
     public function getCustomerOrderApi(int $customerOrderId): ?CustomerOrders
     {
         $customerOrder = $this->customerOrderRepository->findById($customerOrderId);
@@ -87,6 +89,9 @@ class CustomerOrderService
         return $customerOrder;
     }
 
+    /**
+     * @throws EntityNotFoundException
+     */
     public function deleteCustomerOrderApi(int $customerOrderId): void
     {
         $customerOrder = $this->customerOrderRepository->findById($customerOrderId);
@@ -109,9 +114,16 @@ class CustomerOrderService
         $queryBuilder = $conn->createQueryBuilder();
 
         $queryBuilder
-            ->select('co.customer_order_id', 'co.customer_order_nr', 'co.customer_order_reference',
-            'cu.customer_nr', 'cu.customer_name', 'co.customer_order_date',
-            'co.customer_order_order_date', 'usr.username')
+            ->select(
+                'co.customer_order_id',
+                'co.customer_order_nr',
+                'co.customer_order_reference',
+                'cu.customer_nr',
+                'cu.customer_name',
+                'co.customer_order_date',
+                'co.customer_order_order_date',
+                'usr.username'
+            )
             ->from('customer_orders', 'co')
             ->innerJoin('co', 'customer_order_pos', 'cop', 'cop.customer_order_id = co.customer_order_id')
             ->innerJoin('co', 'customer', 'cu', 'cu.customer_id = co.customer_id')

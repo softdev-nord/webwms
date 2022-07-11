@@ -27,27 +27,16 @@ use WebWMS\Service\CustomerOrderService;
  */
 class CustomerOrder extends AbstractController
 {
-    /** @var ArticleService */
-    private $articleService;
-
-    /** @var CustomerOrderService */
-    private $customerOrderService;
-
-    /** @var Requirements */
-    private $requirements;
-
     public function __construct(
-        ArticleService $articleService,
-        CustomerOrderService $customerOrderService,
-        Requirements $requirements
+        private ArticleService $articleService,
+        private CustomerOrderService $customerOrderService,
+        private Requirements $requirements
     ) {
-        $this->articleService = $articleService;
-        $this->customerOrderService = $customerOrderService;
-        $this->requirements = $requirements;
     }
 
     /**
      * @Route("/customer_order_ajax", name="customer_order_ajax")
+     * @throws Exception
      */
     public function getAllCustomerOrders(): JsonResponse
     {
@@ -75,7 +64,8 @@ class CustomerOrder extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('customer_order/index.html.twig',
+        return $this->render(
+            'customer_order/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
@@ -94,7 +84,7 @@ class CustomerOrder extends AbstractController
      *
      * @return RedirectResponse|Response
      */
-    public function addNewCustomerOrder(EntityManagerInterface $em, Request $request)
+    public function addNewCustomerOrder(EntityManagerInterface $em, Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -163,7 +153,8 @@ class CustomerOrder extends AbstractController
             ]
         );*/
 
-        return $this->render('customer_order/add_customer_order.html.twig',
+        return $this->render(
+            'customer_order/add_customer_order.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),

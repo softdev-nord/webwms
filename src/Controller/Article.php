@@ -7,6 +7,7 @@ namespace WebWMS\Controller;
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,23 +25,11 @@ use WebWMS\Service\ValidationService;
  */
 class Article extends AbstractController
 {
-    /** @var ArticleService */
-    private $articleService;
-
-    /** @var Requirements */
-    private $requirements;
-
-    /** @var ValidationService */
-    private $validationService;
-
     public function __construct(
-        ArticleService $articleService,
-        Requirements $requirements,
-        ValidationService $validationService
+        private ArticleService $articleService,
+        private Requirements $requirements,
+        private ValidationService $validationService
     ) {
-        $this->articleService = $articleService;
-        $this->requirements = $requirements;
-        $this->validationService = $validationService;
     }
 
     /**
@@ -55,6 +44,7 @@ class Article extends AbstractController
 
     /**
      * @Route("/artikel", name="article")
+     * @throws Exception
      */
     public function index(): Response
     {
@@ -64,7 +54,8 @@ class Article extends AbstractController
 
         $form = $this->createForm(AddNewArticleType::class);
 
-        return $this->render('article/index.html.twig',
+        return $this->render(
+            'article/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
@@ -96,7 +87,8 @@ class Article extends AbstractController
             return $this->redirectToRoute('add_article');
         }
 
-        return $this->render('article/add_new_article.html.twig',
+        return $this->render(
+            'article/add_new_article.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
@@ -112,8 +104,9 @@ class Article extends AbstractController
 
     /**
      * @Route("artikel_bearbeiten/articleNr/{article_nr}", name="edit_article", methods={"GET","POST"})
+     * @throws Exception
      */
-    public function editArticle(Request $request, $article_nr)
+    public function editArticle(Request $request, $article_nr): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -144,7 +137,8 @@ class Article extends AbstractController
             return new JsonResponse($responseData);
         }
 
-        return $this->render('article/edit.html.twig',
+        return $this->render(
+            'article/edit.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),

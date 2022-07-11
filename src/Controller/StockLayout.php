@@ -18,18 +18,10 @@ use WebWMS\Service\Stock\StockLayoutService;
  */
 class StockLayout extends AbstractController
 {
-    /** @var StockLayoutService */
-    private $stockLayoutService;
-
-    /** @var Requirements */
-    private $requirements;
-
     public function __construct(
-        StockLayoutService $stockLayoutService,
-        Requirements $requirements
+        private StockLayoutService $stockLayoutService,
+        private Requirements $requirements
     ) {
-        $this->stockLayoutService = $stockLayoutService;
-        $this->requirements = $requirements;
     }
 
     /**
@@ -37,7 +29,8 @@ class StockLayout extends AbstractController
      */
     public function stockLayout(): Response
     {
-        return $this->render('stock/stock_layout.html.twig',
+        return $this->render(
+            'stock/stock_layout.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),

@@ -22,18 +22,10 @@ use WebWMS\Service\CustomerService;
  */
 class Customer extends AbstractController
 {
-    /** @var CustomerService */
-    private $customerService;
-
-    /** @var Requirements */
-    private $requirements;
-
     public function __construct(
-        CustomerService $customerService,
-        Requirements $requirements
+        private CustomerService $customerService,
+        private Requirements $requirements
     ) {
-        $this->customerService = $customerService;
-        $this->requirements = $requirements;
     }
 
     public function getAllCustomers(): array
@@ -54,7 +46,7 @@ class Customer extends AbstractController
      *
      * @return RedirectResponse|Response
      */
-    public function addNewCustomer(Request $request)
+    public function addNewCustomer(Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -69,7 +61,8 @@ class Customer extends AbstractController
             return $this->redirectToRoute('create_customer');
         }
 
-        return $this->render('customer/add_customer.html.twig',
+        return $this->render(
+            'customer/add_customer.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
@@ -97,7 +90,8 @@ class Customer extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('customer/index.html.twig',
+        return $this->render(
+            'customer/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
@@ -120,7 +114,8 @@ class Customer extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('customer/index.html.twig',
+        return $this->render(
+            'customer/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),

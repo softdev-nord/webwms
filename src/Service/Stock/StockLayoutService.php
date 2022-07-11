@@ -17,8 +17,7 @@ class StockLayoutService
 {
     public function __construct(
         private EntityManagerInterface $entityManager
-    )
-    {
+    ) {
     }
 
     public function getStockLayout(): array

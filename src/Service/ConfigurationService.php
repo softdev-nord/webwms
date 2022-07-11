@@ -16,7 +16,6 @@ class ConfigurationService
 {
     public function __construct(
         private EntityManagerInterface $entityManager
-    )
-    {
+    ) {
     }
 }

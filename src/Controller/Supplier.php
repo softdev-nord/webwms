@@ -23,18 +23,10 @@ use WebWMS\Service\SupplierService;
  */
 class Supplier extends AbstractController
 {
-    /** @var SupplierService */
-    private $supplierService;
-
-    /** @var Requirements */
-    private $requirements;
-
     public function __construct(
-        SupplierService $supplierService,
-        Requirements $requirements
+        private SupplierService $supplierService,
+        private Requirements $requirements
     ) {
-        $this->supplierService = $supplierService;
-        $this->requirements = $requirements;
     }
 
     public function getAllSuppliers(): array
@@ -63,7 +55,8 @@ class Supplier extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('supplier/index.html.twig',
+        return $this->render(
+            'supplier/index.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
@@ -82,7 +75,7 @@ class Supplier extends AbstractController
      *
      * @return RedirectResponse|Response
      */
-    public function addNewSupplier(Request $request)
+    public function addNewSupplier(Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -97,7 +90,8 @@ class Supplier extends AbstractController
             return $this->redirectToRoute('add_supplier');
         }
 
-        return $this->render('supplier/add_supplier.html.twig',
+        return $this->render(
+            'supplier/add_supplier.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),

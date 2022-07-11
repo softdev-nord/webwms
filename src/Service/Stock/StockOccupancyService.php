@@ -19,8 +19,7 @@ class StockOccupancyService
 {
     public function __construct(
         private EntityManagerInterface $entityManager
-    )
-    {
+    ) {
     }
 
     /**
@@ -63,8 +62,6 @@ class StockOccupancyService
         $stockOccupancyDetail = [];
         $getAllStockOccupancy = $this->getAllStockOccupancy();
         $stockOccupancies = json_decode($getAllStockOccupancy->getContent(), true);
-
-        //dd($stockOccupancies);
 
         foreach ($stockOccupancies as $stockOccupancy) {
             if ($stockOccupancy['koordinate'] === $stockLocationCoordinate) {

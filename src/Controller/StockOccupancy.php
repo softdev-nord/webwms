@@ -14,23 +14,11 @@ use WebWMS\Service\Stock\StockOccupancyService;
 
 class StockOccupancy extends AbstractController
 {
-    /** @var StockOccupancyService */
-    private $stockOccupancyService;
-
-    /** @var StockLocationService */
-    private $stockLocationService;
-
-    /** @var Requirements */
-    private $requirements;
-
     public function __construct(
-        StockOccupancyService $stockOccupancyService,
-        StockLocationService $stockLocationService,
-        Requirements $requirements
+        private StockOccupancyService $stockOccupancyService,
+        private StockLocationService $stockLocationService,
+        private Requirements $requirements
     ) {
-        $this->stockOccupancyService = $stockOccupancyService;
-        $this->stockLocationService = $stockLocationService;
-        $this->requirements = $requirements;
     }
 
     /**
@@ -43,12 +31,21 @@ class StockOccupancy extends AbstractController
     }
 
     /**
+     * @Route("/stock_occupancy_ajax/{stock_location_coordinate}", name="stock_occupancy_ajax")
+     */
+    public function getStockOccupancyByCoordinate(Request $request): JsonResponse
+    {
+        return $this->stockOccupancyService->getStockOccupancyByCoordinate($request);
+    }
+
+    /**
      * @Route("/lagerbelegung", name="stock_occupancy")
      * @throws Exception
      */
     public function stockOccupancy(): Response
     {
-        return $this->render('stock/stock_occupancy.html.twig',
+        return $this->render(
+            'stock/stock_occupancy.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
@@ -72,7 +69,7 @@ class StockOccupancy extends AbstractController
         $result = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationCoordinate);
         $stockResults = [];
 
-        foreach ( $result as $stock ) {
+        foreach ($result as $stock) {
             if ($stock['system'] === 'Block-Lager') {
                 $stockResults[$stock['sp']][] = $stock;
             } else {
@@ -80,7 +77,8 @@ class StockOccupancy extends AbstractController
             }
         }
 
-        return $this->render('stock/stock_occupancy_graphical.html.twig',
+        return $this->render(
+            'stock/stock_occupancy_graphical.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
@@ -93,5 +91,4 @@ class StockOccupancy extends AbstractController
             ]
         );
     }
-
 }
