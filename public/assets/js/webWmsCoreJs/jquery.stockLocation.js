@@ -16,7 +16,7 @@
             style: 'single'
         },
         columns: [
-            {"data": "id"},
+            {"data": "stock_location_id"},
             {"data": "stock_location_ln"},
             {"data": "stock_location_fb"},
             {"data": "stock_location_sp"},

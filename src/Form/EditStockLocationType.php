@@ -20,12 +20,12 @@ class EditStockLocationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('id', HiddenType::class, [
+        $builder->add('stock_location_id', HiddenType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'id',
-                'data-type' => 'id',
+                'id' => 'stock_location_id',
+                'data-type' => 'stock_location_id',
             ],
         ]);
         $builder->add('stock_location_ln', TextType::class, [

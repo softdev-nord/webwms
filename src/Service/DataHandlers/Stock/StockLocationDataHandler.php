@@ -79,15 +79,15 @@ class StockLocationDataHandler
             return null;
         }
 
-        $stockLocation->setStockLocationLn($requestData['stock_location_ln']);
-        $stockLocation->setStockLocationFb($requestData['stock_location_fb']);
-        $stockLocation->setStockLocationSp($requestData['stock_location_sp']);
-        $stockLocation->setStockLocationTf($requestData['stock_location_tf']);
-        $stockLocation->setStockLocationCoordinate($requestData['stock_location_coordinate']);
-        $stockLocation->setStockLocationDesc($requestData['stock_location_desc']);
-        $stockLocation->setStockLocationWidth($requestData['stock_location_width']);
-        $stockLocation->setStockLocationDepth($requestData['stock_location_depth']);
-        $stockLocation->setStockLocationHeight($requestData['stock_location_height']);
+        $stockLocation->setStockLocationLn((int) $requestData['stock_location_ln']);
+        $stockLocation->setStockLocationFb((int) $requestData['stock_location_fb']);
+        $stockLocation->setStockLocationSp((int) $requestData['stock_location_sp']);
+        $stockLocation->setStockLocationTf((int) $requestData['stock_location_tf']);
+        $stockLocation->setStockLocationCoordinate((string) $requestData['stock_location_coordinate']);
+        $stockLocation->setStockLocationDesc((string) $requestData['stock_location_desc']);
+        $stockLocation->setStockLocationWidth((string) $requestData['stock_location_width']);
+        $stockLocation->setStockLocationDepth((string) $requestData['stock_location_depth']);
+        $stockLocation->setStockLocationHeight((string) $requestData['stock_location_height']);
 
         $this->update($stockLocation);
 
