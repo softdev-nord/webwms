@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Exception\NotFoundException;
+use WebWMS\Form\EditStockLocationType;
 use WebWMS\Form\StockLocationType;
+use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 use WebWMS\Service\Stock\StockLocationService;
+use WebWMS\Service\Validation\StockLocationValidationService;
 
 /**
  * @package:    WebWMS\Controller
@@ -24,14 +28,17 @@ class StockLocation extends AbstractController
 {
     public function __construct(
         private StockLocationService $stockLocationService,
-        private Requirements $requirements
+        private Requirements $requirements,
+        private StockLocationValidationService $stockLocationValidationService,
+        private StockLocationDataHandler $stockLocationDataHandler
     ) {
     }
 
     /**
-     * @throws NotFoundException
+     * @Route("/stock_location_ajax", name="stock_location_ajax")
+     *
      */
-    public function getAllStockLocations(): array
+    public function getAllStockLocations(): JsonResponse
     {
         return $this->stockLocationService->getAllStockLocations();
     }
@@ -64,9 +71,6 @@ class StockLocation extends AbstractController
         );
     }
 
-    /**
-     * @throws NotFoundException
-     */
     public function getFreeStockLocation(): array
     {
         return $this->stockLocationService->getFreeStockLocations();
@@ -74,9 +78,8 @@ class StockLocation extends AbstractController
 
     /**
      * @Route("/lagerplatz", name="stock_location")
-     * @throws NotFoundException
      */
-    public function stockLocations(): Response
+    public function index(): Response
     {
         return $this->render(
             'stock/stock_location.html.twig',
@@ -87,7 +90,55 @@ class StockLocation extends AbstractController
                 'appCopyright' => $this->requirements->getAppCopyright(),
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Lagerplätze',
-                'stockLocation' => $this->getAllStockLocations(),
+            ]
+        );
+    }
+
+    /**
+     * @Route("lagerplatz_bearbeiten/koordinate/{stock_location_coordinate}", name="edit_stock_location", methods={"GET","POST"})
+     */
+    public function editStockLocation(Request $request, $stock_location_coordinate): RedirectResponse|JsonResponse|Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $requestData = $request->request->all();
+
+        if (!empty($requestData)) {
+            $requestData = $requestData['edit_stock_location'];
+        }
+
+        $responseData = $this->stockLocationValidationService->validateStockLocationData($requestData);
+        $responseData['message'] = '';
+
+        $stockLocation = $this->stockLocationService->getStockLocationRepository()->findOneBy(['stock_location_coordinate' => $stock_location_coordinate]);
+        $form = $this->createForm(EditStockLocationType::class, $stockLocation);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($responseData['success']) {
+                $responseData['message'] = 'Die Änderungen am Lagerplatz wurden erfolgreich gespeichert.';
+                $this->stockLocationDataHandler->updateStockLocation($requestData);
+
+                return new JsonResponse($responseData);
+            }
+
+            $responseData['message'] = 'Lagerplatz konnte nicht gespeichert werden.';
+
+            return new JsonResponse($responseData);
+        }
+
+        return $this->render(
+            'stock/edit_stock_location.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Lagerplatz bearbeiten',
+                'editStockLocationForm' => $form->createView(),
+                'stockLocations' => json_decode($this->getAllStockLocations()->getContent()),
             ]
         );
     }

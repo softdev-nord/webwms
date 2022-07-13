@@ -1,0 +1,100 @@
+{% block copyright %}
+    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
+    --                                                                                                              --
+    --                webLVS (c) SoftDev Nord Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                --
+    --                                                                                                              --
+    ------------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE-----------------------------------*/
+{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {% block webwms_header %}
+        {{ include('header.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_submenu %}
+        {{ include('submenu.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_edit_stock_location %}
+    <div id="webWMS-edit-stock-location" class="wrapper-form">
+        <div class="wrapper-form-content">
+            <div class="card">
+                <div class="card-content">
+                    {% block webwms_edit_stock_location_form %}
+                        <div class="card">
+                            {{ form_start(editStockLocationForm) }}
+
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Lagernummer</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editStockLocationForm.stock_location_ln) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Fachboden</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editStockLocationForm.stock_location_fb) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Stellplatz</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editStockLocationForm.stock_location_sp) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Tiefe</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editStockLocationForm.stock_location_tf) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Koordinate</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editStockLocationForm.stock_location_coordinate) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Bezeichnung</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editStockLocationForm.stock_location_desc) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Breite</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editStockLocationForm.stock_location_width) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Tiefe</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editStockLocationForm.stock_location_depth) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Höhe</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editStockLocationForm.stock_location_height) }}
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                {{ form_widget(editStockLocationForm.save) }}
+                                {{ form_widget(editStockLocationForm.back_to_stock_location_overview) }}
+                            </div>
+                            {{ form_end(editStockLocationForm) }}
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block javascripts %}
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockLocation.js') }}"></script>
+    {% endblock %}
+{% endblock %}

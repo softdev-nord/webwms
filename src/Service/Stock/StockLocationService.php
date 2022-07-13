@@ -4,10 +4,12 @@ namespace WebWMS\Service\Stock;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\StockLocation;
 use WebWMS\Exception\NotFoundException;
+use WebWMS\Repository\StockLocationRepository;
+use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 
 /**
  * @package:    WebWMS\Service\Stock
@@ -18,14 +20,24 @@ use WebWMS\Exception\NotFoundException;
 class StockLocationService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private StockLocationDataHandler $stockLocationDataHandler,
+        private StockLocationRepository $stockLocationRepository
     ) {
     }
 
-    public function getAllStockLocations(): array
+    public function getStockLocationRepository(): StockLocationRepository
     {
-        $stockLocation = $this->entityManager
-            ->getRepository(StockLocation::class)->findAll();
+        return $this->stockLocationRepository;
+    }
+
+    /**
+     * @throws NotFoundException
+     * @throws Exception
+     */
+    public function getAllStockLocations(): JsonResponse
+    {
+        $stockLocation = $this->stockLocationDataHandler->getAllStockLocation();
 
         if (!$stockLocation) {
             throw new NotFoundException(

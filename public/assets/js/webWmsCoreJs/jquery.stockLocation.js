@@ -1,10 +1,7 @@
 (function($){
+    // StockLocation table
     const stockLocationTable = $('#stockLocationTable').DataTable({
         "lengthChange": false,
-        paging: false,
-        retrieve: true,
-        //searching: false,
-
         ajax: {
             'url': '/stock_location_ajax',
             'dataSrc': ''
@@ -19,6 +16,7 @@
             style: 'single'
         },
         columns: [
+            {"data": "id"},
             {"data": "stock_location_ln"},
             {"data": "stock_location_fb"},
             {"data": "stock_location_sp"},
@@ -33,7 +31,7 @@
                 className: "editor-edit text-center",
                 defaultContent: '<i class="mdi mdi-square-edit-outline"/>',
                 orderable: false,
-            }
+            },
         ],
         columnDefs: [
             {className: 'text-center', targets: "_all"},
@@ -72,24 +70,22 @@
         ]
     });
 
-    console.log(stockLocationTable);
-
-    // Get selected article
+    // Get selected stock location
     $(document).on('click','i.mdi-square-edit-outline',function(event) {
         const row = $(this).parents('tr')[0];
-        const articleNr = artTable.row(row).data().article_nr;
-        window.location.href = '/artikel_bearbeiten/articleNr/' + articleNr;
+        const stockLocationCoordinate = stockLocationTable.row(row).data().stock_location_coordinate;
+        window.location.href = '/lagerplatz_bearbeiten/koordinate/' + stockLocationCoordinate;
     });
 
-    // Save edit article
-    $(document).on('click','button#edit_article_save',function(event) {
-        const articleNr = $('#edit_article_article_nr').val();
-        const $form = $('form[name="edit_article"]');
+    // Save edit stock location
+    $(document).on('click','button#edit_stock_location_save',function(event) {
+        const stockLocationCoordinate = $('#edit_stock_location_stock_location_coordinate').val();
+        const $form = $('form[name="edit_stock_location"]');
         event.preventDefault();
 
         $.ajax({ // Process the form using $.ajax()
             type        : 'POST',
-            url         : `{{ path("edit_article",{'article_nr' : 'article_nr' }) }}`.replace('article_nr', articleNr),
+            url         : `{{ path("edit_stock_location",{'stock_location_coordinate' : 'stock_location_coordinate' }) }}`.replace('stock_location_coordinate', stockLocationCoordinate),
             data        : $form.serialize(),
             success     : function(data) {
                 if (data.error) {
@@ -101,7 +97,7 @@
                     let arrayString = errors.join();
                     const error = arrayString.replace(/,/g, " ");
                     $.jAlert({
-                        'title': 'Artikel konnte nicht gespeichert werden',
+                        'title': 'Lagerplatz konnte nicht gespeichert werden',
                         'content': error,
                         'theme': 'red',
                         'size': 'md',
@@ -111,7 +107,7 @@
                     });
                 } else {
                     $.jAlert({
-                        'title': 'Artikel erfolgreich gespeichert',
+                        'title': 'Lagerplatz erfolgreich gespeichert',
                         'content': data.message,
                         'theme': 'green',
                         'size': 'md',
@@ -125,12 +121,8 @@
 
     });
 
-    // Back to article overview
-    $(document).on('click','#edit_article_back_to_article_overview',function() {
-        window.location.href = '/artikel'
-    });
-
-    $(document).ready(function(){
-        itemsAddNewRow.init();
+    // Back to stock location overview
+    $(document).on('click','#edit_stock_location_back_to_stock_location_overview',function() {
+        window.location.href = '/lagerplatz'
     });
 })(jQuery);
