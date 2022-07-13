@@ -11,7 +11,6 @@
             ajax: {
                 'url': '/stock_occupancy_ajax/' + $(event.currentTarget).attr('data-target'),
                 'dataSrc': function ( json ) {
-                    console.log(json);
                     return json;
                 },
 
