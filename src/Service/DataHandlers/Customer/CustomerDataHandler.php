@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Service\DataHandlers;
+namespace WebWMS\Service\DataHandlers\Customer;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\Customer;
+use WebWMS\Repository\CustomerRepository;
 
 /**
  * @package:    WebWMS\Service\DataHandlers
@@ -19,9 +21,9 @@ use WebWMS\Entity\Customer;
 class CustomerDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
-    )
-    {
+        private EntityManagerInterface $entityManager,
+        private CustomerRepository $customerRepository
+    ) {
     }
 
     /**
@@ -34,15 +36,22 @@ class CustomerDataHandler
             ->find($customerId);
     }
 
-    public function getAllCustomers(): array
+    /**
+     * @throws Exception
+     */
+    public function getAllCustomers(): JsonResponse
     {
-        $customers = $this->entityManager->getRepository(Customer::class)->findAll();
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
 
-        if (!$customers) {
-            throw $this->createNotFoundException('Keine Kunden gefunden');
-        }
+        $queryBuilder
+            ->select('*')
+            ->from('customer');
 
-        return $customers;
+        $stmt = $queryBuilder->executeQuery();
+
+        $results = $stmt->fetchAllAssociative();
+
+        return new JsonResponse($results);
     }
 
     /**
@@ -217,6 +226,30 @@ class CustomerDataHandler
     {
         $this->entityManager->remove($customer);
         $this->entityManager->flush();
+    }
+
+    public function updateCustomer($requestData): ?Customer
+    {
+        $customer = $this->customerRepository
+            ->findOneBy(['customer_nr' => $requestData['customer_nr']]);
+
+        if (!$customer) {
+            return null;
+        }
+
+        $customer->setCustomerId((int) $requestData['customer_id']);
+        $customer->setCustomerNr((int) $requestData['customer_nr']);
+        $customer->setCustomerName((string) $requestData['customer_name']);
+        $customer->setCustomerAddressAddition((string) $requestData['customer_address_addition']);
+        $customer->setCustomerAddressStreet((string) $requestData['customer_address_street']);
+        $customer->setCustomerAddressStreetNr((string) $requestData['customer_address_street_nr']);
+        $customer->setCustomerCountryCode((string) $requestData['customer_country_code']);
+        $customer->setCustomerZipCode((string) $requestData['customer_zip_code']);
+        $customer->setCustomerCity((string) $requestData['customer_city']);
+
+        $this->update($customer);
+
+        return $customer;
     }
 
     protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException

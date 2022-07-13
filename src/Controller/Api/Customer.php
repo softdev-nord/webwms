@@ -13,7 +13,7 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Service\CustomerService;
+use WebWMS\Service\Customer\CustomerService;
 
 /**
  * @package:    WebWMS\Controller\Api

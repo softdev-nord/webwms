@@ -8,117 +8,109 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
-use WebWMS\Entity\Article;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use WebWMS\Entity\Customer;
 
 /**
  * @package:    WebWMS\Form
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        EditArticleType
+ * Class        EditCustomerType
  */
-class EditArticleType extends AbstractType
+class EditCustomerType extends AbstractType
 {
     public function __construct(
-        private AuthorizationChecker $authorizationChecker
+        private AuthorizationCheckerInterface $authorizationChecker
     ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('article_id', HiddenType::class, [
-            'label' => false,
-            'attr' => [
-                'class' => 'form-control',
-                'id' => 'article_id',
-                'data-type' => 'article_id',
-            ],
-        ]);
+        $builder->add('customer_id', HiddenType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customer_id',
+                    'data-type' => 'customer_id',
+                ],
+            ]);
         if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             $builder
-                ->add('article_nr', TextType::class, [
+                ->add('customer_nr', TextType::class, [
                     'label' => false,
                     'attr' => [
                         'class' => 'form-control',
-                        'id' => 'article_nr',
-                        'data-type' => 'article_nr',
+                        'id' => 'customer_nr',
+                        'data-type' => 'customer_nr',
                         'style' => 'background-color: transparent',
                         'readonly' => 'readonly',
                     ],
                 ]);
         } else {
-            $builder->add('article_nr', TextType::class, [
+            $builder->add('customer_nr', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_nr',
-                    'data-type' => 'article_nr',
+                    'id' => 'customer_nr',
+                    'data-type' => 'customer_nr',
                     'style' => 'background-color: transparent',
                 ],
             ]);
         }
-        $builder->add('article_name', TextType::class, [
+        $builder->add('customer_name', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_name',
-                'data-type' => 'article_name',
+                'id' => 'customer_name',
+                'data-type' => 'customer_name',
             ],
         ]);
-        $builder->add('article_category', TextType::class, [
+        $builder->add('customer_address_addition', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customer_address_addition',
+                    'data-type' => 'customer_address_addition',
+                ],
+        ]);
+        $builder->add('customer_address_street', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_category',
-                'data-type' => 'article_category',
+                'id' => 'customer_address_street',
+                'data-type' => 'customer_address_street',
             ],
         ]);
-        $builder->add('article_weight', TextType::class, [
+        $builder->add('customer_address_street_nr', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_weight',
-                'data-type' => 'article_weight',
+                'id' => 'customer_address_street_nr',
+                'data-type' => 'customer_address_street_nr',
             ],
         ]);
-        $builder->add('article_ean', TextType::class, [
+        $builder->add('customer_country_code', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_ean',
-                'data-type' => 'article_ean',
+                'id' => 'customer_country_code',
+                'data-type' => 'customer_country_code',
             ],
         ]);
-        $builder->add('article_unit', TextType::class, [
+        $builder->add('customer_zip_code', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_unit',
-                'data-type' => 'article_unit',
+                'id' => 'customer_zip_code',
+                'data-type' => 'customer_zip_code',
             ],
         ]);
-        $builder->add('article_depth', TextType::class, [
+        $builder->add('customer_city', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_depth',
-                'data-type' => 'article_depth',
-            ],
-        ]);
-        $builder->add('article_width', TextType::class, [
-            'label' => false,
-            'attr' => [
-                'class' => 'form-control',
-                'id' => 'article_width',
-                'data-type' => 'article_width',
-            ],
-        ]);
-        $builder->add('article_height', TextType::class, [
-            'label' => false,
-            'attr' => [
-                'class' => 'form-control',
-                'id' => 'article_height',
-                'data-type' => 'article_height',
+                'id' => 'customer_city',
+                'data-type' => 'customer_city',
             ],
         ]);
         $builder->add('save', ButtonType::class, [
@@ -127,7 +119,7 @@ class EditArticleType extends AbstractType
                 'class' => 'btn btn-secondary btn-lg',
             ],
         ]);
-        $builder->add('back_to_article_overview', ButtonType::class, [
+        $builder->add('back_to_customer_overview', ButtonType::class, [
             'label' => 'Zurück zur Übersicht',
             'attr' => [
                 'class' => 'btn btn-secondary btn-lg',
@@ -138,7 +130,7 @@ class EditArticleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Article::class,
+            'data_class' => Customer::class,
         ]);
     }
 }
