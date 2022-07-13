@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Service;
+namespace WebWMS\Service\Article;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityNotFoundException;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\Article;
 use WebWMS\Repository\ArticleRepository;
-use WebWMS\Service\DataHandlers\ArticleDataHandler;
+use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 
 /**
  * @package:    WebWMS\Service

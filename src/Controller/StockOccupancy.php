@@ -64,6 +64,10 @@ class StockOccupancy extends AbstractController
      */
     public function stockOccupancyGraphical(Request $request): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $stockLocationCoordinate = '141';
 
         $result = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationCoordinate);

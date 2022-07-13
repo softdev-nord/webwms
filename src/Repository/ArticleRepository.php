@@ -34,7 +34,8 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Article
+     * @param int $articleId
+     * @return Article|null
      */
     public function findById(int $articleId): ?Article
     {

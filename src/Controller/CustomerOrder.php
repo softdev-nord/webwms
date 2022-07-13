@@ -16,7 +16,7 @@ use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Entity\CustomerOrder as CustomerOrders;
 use WebWMS\Form\CustomerOrderPosType;
 use WebWMS\Form\CustomerOrderType;
-use WebWMS\Service\ArticleService;
+use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\CustomerOrderService;
 
 /**

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Entity\SupplierOrder as SupplierOrders;
 use WebWMS\Form\SupplierOrderType;
-use WebWMS\Service\ArticleService;
+use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\SupplierOrderService;
 
 /**

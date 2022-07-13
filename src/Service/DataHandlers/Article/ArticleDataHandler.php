@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Service\DataHandlers;
+namespace WebWMS\Service\DataHandlers\Article;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,8 +19,7 @@ class ArticleDataHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager
-    )
-    {
+    ) {
     }
 
     public function save(Article $article): void

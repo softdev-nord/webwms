@@ -14,8 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Form\AddNewArticleType;
 use WebWMS\Form\EditArticleType;
-use WebWMS\Service\ArticleService;
-use WebWMS\Service\ValidationService;
+use WebWMS\Service\Article\ArticleService;
+use WebWMS\Service\Validation\ArticleValidationService;
 
 /**
  * @package:    WebWMS\Controller
@@ -28,7 +28,7 @@ class Article extends AbstractController
     public function __construct(
         private ArticleService $articleService,
         private Requirements $requirements,
-        private ValidationService $validationService
+        private ArticleValidationService $articleValidationService
     ) {
     }
 
@@ -44,7 +44,6 @@ class Article extends AbstractController
 
     /**
      * @Route("/artikel", name="article")
-     * @throws Exception
      */
     public function index(): Response
     {
@@ -63,7 +62,6 @@ class Article extends AbstractController
                 'appCopyright' => $this->requirements->getAppCopyright(),
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Artikelübersicht',
-                'articles' => $this->getAllArticles(),
                 'editArticleForm' => $form->createView(),
             ]
         );
@@ -118,12 +116,13 @@ class Article extends AbstractController
             $requestData = $requestData['edit_article'];
         }
 
-        $responseData = $this->validationService->validateArticleData($requestData);
+        $responseData = $this->articleValidationService->validateArticleData($requestData);
         $responseData['message'] = '';
 
         $article = $this->articleService->getArticleRepository()->findOneBy(['article_nr' => $article_nr]);
         $form = $this->createForm(EditArticleType::class, $article);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
                 $responseData['message'] = 'Die Änderungen am Artikel wurden erfolgreich gespeichert.';
