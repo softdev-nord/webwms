@@ -25,37 +25,47 @@ class CustomerOrder extends ModelEntity
     /**
      * @ORM\Column(type="integer")
      */
-    private $customer_order_id;
+    private ?int $customer_order_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $usr_id;
+    private ?int $usr_id;
 
     /**
      * @ORM\Column(name="customer_id", type="integer")
      */
-    private $customer_id;
+    private ?int $customer_id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $customer_order_nr;
+    private ?string $customer_order_nr;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $customer_order_reference;
+    private ?string $customer_order_reference;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $customer_order_date;
+    private ?\DateTimeInterface $customer_order_date;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $customer_order_order_date;
+    private ?\DateTimeInterface $customer_order_order_date;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $customer_order_created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $customer_order_updated_at;
 
     /**
      * INVERSE SIDE.
@@ -64,7 +74,7 @@ class CustomerOrder extends ModelEntity
      *
      * @ORM\OneToMany(targetEntity="\WebWMS\Entity\CustomerOrderPos", mappedBy="customer_orders")
      */
-    protected $details;
+    protected ArrayCollection $details;
 
     /**
      * @var \WebWMS\Entity\Customer
@@ -72,7 +82,7 @@ class CustomerOrder extends ModelEntity
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Customer", inversedBy="customer_orders")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      */
-    protected $customer;
+    protected Customer $customer;
 
     public function __construct()
     {
@@ -219,5 +229,37 @@ class CustomerOrder extends ModelEntity
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerOrderCreatedAt(): mixed
+    {
+        return $this->customer_order_created_at;
+    }
+
+    /**
+     * @param mixed $customer_order_created_at
+     */
+    public function setCustomerOrderCreatedAt(mixed $customer_order_created_at): void
+    {
+        $this->customer_order_created_at = $customer_order_created_at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerOrderUpdatedAt(): mixed
+    {
+        return $this->customer_order_updated_at;
+    }
+
+    /**
+     * @param mixed $customer_order_updated_at
+     */
+    public function setCustomerOrderUpdatedAt(mixed $customer_order_updated_at): void
+    {
+        $this->customer_order_updated_at = $customer_order_updated_at;
     }
 }

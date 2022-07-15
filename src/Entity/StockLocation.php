@@ -61,6 +61,16 @@ class StockLocation
     private ?string $stock_location_depth;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $stock_location_created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $stock_location_updated_at;
+
+    /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
     private ?string $stock_location_height;
@@ -187,5 +197,37 @@ class StockLocation
         $this->stock_location_height = $stock_location_height;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStockLocationCreatedAt(): mixed
+    {
+        return $this->stock_location_created_at;
+    }
+
+    /**
+     * @param mixed $stock_location_created_at
+     */
+    public function setStockLocationCreatedAt(mixed $stock_location_created_at): void
+    {
+        $this->stock_location_created_at = $stock_location_created_at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStockLocationUpdatedAt(): mixed
+    {
+        return $this->stock_location_updated_at;
+    }
+
+    /**
+     * @param mixed $stock_location_updated_at
+     */
+    public function setStockLocationUpdatedAt(mixed $stock_location_updated_at): void
+    {
+        $this->stock_location_updated_at = $stock_location_updated_at;
     }
 }

@@ -8,12 +8,10 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\Customer;
-use WebWMS\Repository\CustomerRepository;
 
 /**
- * @package:    WebWMS\Service\DataHandlers
+ * @package:    WebWMS\Service\DataHandlers\Customer
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        CustomerDataHandler
@@ -21,9 +19,26 @@ use WebWMS\Repository\CustomerRepository;
 class CustomerDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private CustomerRepository $customerRepository
+        private EntityManagerInterface $entityManager
     ) {
+    }
+
+    public function save(Customer $customer): void
+    {
+        $this->entityManager->persist($customer);
+        $this->entityManager->flush();
+    }
+
+    public function update(Customer $customer): void
+    {
+        $this->entityManager->persist($customer);
+        $this->entityManager->flush();
+    }
+
+    public function delete(Customer $customer): void
+    {
+        $this->entityManager->remove($customer);
+        $this->entityManager->flush();
     }
 
     /**
@@ -34,6 +49,13 @@ class CustomerDataHandler
         return $this->entityManager
             ->getRepository(Customer::class)
             ->find($customerId);
+    }
+
+    public function getCustomerByNr(int $customerNr): ?Customer
+    {
+        return $this->entityManager
+            ->getRepository(Customer::class)
+            ->findOneBy(['customer_nr' => $customerNr]);
     }
 
     /**
@@ -210,27 +232,11 @@ class CustomerDataHandler
             ->getRepository(Customer::class)->findBy([], ['customer_nr' => 'DESC'], 1, 0);
     }
 
-    public function save(Customer $customer): void
-    {
-        $this->entityManager->persist($customer);
-        $this->entityManager->flush();
-    }
-
-    public function update(Customer $customer): void
-    {
-        $this->entityManager->persist($customer);
-        $this->entityManager->flush();
-    }
-
-    public function delete(Customer $customer): void
-    {
-        $this->entityManager->remove($customer);
-        $this->entityManager->flush();
-    }
-
     public function updateCustomer($requestData): ?Customer
     {
-        $customer = $this->customerRepository
+        $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
+        $customer = $this->entityManager
+            ->getRepository(Customer::class)
             ->findOneBy(['customer_nr' => $requestData['customer_nr']]);
 
         if (!$customer) {
@@ -246,14 +252,10 @@ class CustomerDataHandler
         $customer->setCustomerCountryCode((string) $requestData['customer_country_code']);
         $customer->setCustomerZipCode((string) $requestData['customer_zip_code']);
         $customer->setCustomerCity((string) $requestData['customer_city']);
+        $customer->setCustomerUpdatedAt($updatedAt);
 
         $this->update($customer);
 
         return $customer;
-    }
-
-    protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException
-    {
-        return new NotFoundHttpException($message, $previous);
     }
 }

@@ -66,6 +66,16 @@ class Customer
     private ?string $customer_city;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $customer_created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $customer_updated_at;
+
+    /**
      * INVERSE SIDE
      * The customer_orders property is the inverse side of the association between customer and customer orders.
      * The association is joined over the customer id field and the userID field of the customer order.
@@ -242,5 +252,37 @@ class Customer
         $this->customer_orders = $customer_orders;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerCreatedAt(): mixed
+    {
+        return $this->customer_created_at;
+    }
+
+    /**
+     * @param mixed $customer_created_at
+     */
+    public function setCustomerCreatedAt(mixed $customer_created_at): void
+    {
+        $this->customer_created_at = $customer_created_at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerUpdatedAt(): mixed
+    {
+        return $this->customer_updated_at;
+    }
+
+    /**
+     * @param mixed $customer_updated_at
+     */
+    public function setCustomerUpdatedAt(mixed $customer_updated_at): void
+    {
+        $this->customer_updated_at = $customer_updated_at;
     }
 }

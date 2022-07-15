@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace WebWMS\Service\Article;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\Article;
-use WebWMS\Repository\ArticleRepository;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 
 /**
@@ -23,20 +22,21 @@ use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 class ArticleService
 {
     public function __construct(
-        private ManagerRegistry $doctrine,
-        private ArticleRepository $articleRepository,
+        private EntityManagerInterface $entityManager,
         private ArticleDataHandler $articleDataHandler
     ) {
     }
 
-    public function getArticleRepository(): ArticleRepository
+    public function getArticleByNr(int $articleNr): ?Article
     {
-        return $this->articleRepository;
+        return $this->articleDataHandler->getArticleByNr($articleNr);
     }
 
     public function getArticleApi(int $articleId): ?Article
     {
-        $article = $this->articleRepository->findById($articleId);
+        $article = $this->entityManager
+            ->getRepository(Article::class)
+            ->find($articleId);
 
         if (!$article) {
             throw new EntityNotFoundException('Article with id '.$articleId.' does not exist!');
@@ -47,7 +47,9 @@ class ArticleService
 
     public function getAllArticlesApi(): ?array
     {
-        return $this->articleRepository->findAll();
+        return $this->entityManager
+            ->getRepository(Article::class)
+            ->findAll();
     }
 
     public function addArticleApi(
@@ -88,7 +90,10 @@ class ArticleService
         float $articleWidth,
         float $articleHeight
     ): ?Article {
-        $article = $this->articleRepository->findById($articleId);
+        $article = $this->entityManager
+            ->getRepository(Article::class)
+            ->find($articleId);
+
         if (!$article) {
             return null;
         }
@@ -108,9 +113,12 @@ class ArticleService
 
     public function deleteArticleApi(int $articleId): void
     {
-        $article = $this->articleRepository->findById($articleId);
+        $article = $this->entityManager
+            ->getRepository(Article::class)
+            ->find($articleId);
+
         if ($article) {
-            $this->articleRepository->delete($article);
+            $this->articleDataHandler->delete($article);
         }
     }
 
@@ -130,10 +138,11 @@ class ArticleService
 
     /**
      * Get article for.
+     * @throws Exception
      */
     public function getArticle(): JsonResponse
     {
-        $connection = $this->doctrine->getConnection();
+        $connection = $this->entityManager->getConnection();
 
         $numOfBoxArt = !empty($_GET['numOfBoxArt']) ? $_GET['numOfBoxArt'] : '';
         $name = !empty($_GET['article_nr']) ? strtolower(trim($_GET['article_nr'])) : '';
@@ -192,7 +201,12 @@ class ArticleService
 
     public function updateArticle($requestData)
     {
-        $article = $this->articleRepository->findById((int) $requestData['article_id']);
+        $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
+
+        $article = $this->entityManager
+            ->getRepository(Article::class)
+            ->find((int) $requestData['article_id']);
+
         if (!$article) {
             return null;
         }
@@ -206,6 +220,7 @@ class ArticleService
         $article->setArticleDepth($requestData['article_depth']);
         $article->setArticleWidth($requestData['article_width']);
         $article->setArticleHeight($requestData['article_height']);
+        $article->setArticleUpdatedAt($updatedAt);
 
         $this->articleDataHandler->update($article);
 
@@ -217,9 +232,9 @@ class ArticleService
      */
     public function getLastArticle(): ?Article
     {
-        $articleRepository = $this->getArticleRepository();
-
-        return $articleRepository->findOneBy([], ['article_nr' => 'DESC']);
+        return $this->entityManager
+            ->getRepository(Article::class)
+            ->findOneBy([], ['article_nr' => 'DESC']);
     }
 
     protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException

@@ -31,63 +31,6 @@ class Customer extends AbstractController
     }
 
     /**
-     * @Route("/customer_ajax", name="customer_ajax")
-     *
-     */
-    public function getAllCustomers(): JsonResponse
-    {
-        return $this->customerService->getAllCustomers();
-    }
-
-    /**
-     * @Route("/order_customer_ajax", name="order_customer_ajax")
-     */
-    public function getAllCustomersAjax(): JsonResponse
-    {
-        return $this->customerService->getAllCustomersAjax();
-    }
-
-    /**
-     * @Route("/kunden_anlegen", name="add_customer")
-     *
-     * @return RedirectResponse|Response
-     */
-    public function addNewCustomer(Request $request): RedirectResponse|Response
-    {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login');
-        }
-
-        $form = $this->createForm(EditCustomerType::class);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->customerService->addNewCustomer($request);
-            $this->addFlash('success', 'Der Kunde wurde erfolgreich angelegt.');
-
-            return $this->redirectToRoute('create_customer');
-        }
-
-        return $this->render(
-            'customer/add_customer.html.twig',
-            [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
-                'page' => 'Kunden anlegen',
-                'lastId' => $this->getLastCustomer()[0],
-                'addCustomerForm' => $form->createView(),
-            ]
-        );
-    }
-
-    public function getLastCustomer(): array
-    {
-        return $this->customerService->getLastCustomer();
-    }
-
-    /**
      * @Route("/kunden", name="customer")
      */
     public function index(): Response
@@ -112,15 +55,54 @@ class Customer extends AbstractController
     }
 
     /**
+     * @Route("/kunden_anlegen", name="add_customer")
+     *
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    public function addNewCustomer(Request $request): RedirectResponse|Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $form = $this->createForm(EditCustomerType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->customerService->addNewCustomer($request);
+            $this->addFlash('success', 'Der Kunde wurde erfolgreich angelegt.');
+
+            return $this->redirectToRoute('add_customer');
+        }
+
+        return $this->render(
+            'customer/add_customer.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Kunden anlegen',
+                'lastId' => $this->getLastCustomer()[0],
+                'addCustomerForm' => $form->createView(),
+            ]
+        );
+    }
+
+    /**
      * @Route("kunden_bearbeiten/kundenNr/{customer_nr}", name="edit_customer", methods={"GET","POST"})
      */
-    public function editCustomer(Request $request, $customer_nr): RedirectResponse|JsonResponse|Response
+    public function editCustomer(Request $request): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
         $requestData = $request->request->all();
+        $customer_nr = $request->attributes->get('customer_nr');
+
+        //dd($requestData);
 
         if (!empty($requestData)) {
             $requestData = $requestData['edit_customer'];
@@ -129,7 +111,7 @@ class Customer extends AbstractController
         $responseData = $this->customerValidationService->validateCustomerData($requestData);
         $responseData['message'] = '';
 
-        $customer = $this->customerService->getCustomerRepository()->findOneBy(['customer_nr' => $customer_nr]);
+        $customer = $this->customerService->getCustomerByNr((int) $customer_nr);
         $form = $this->createForm(EditCustomerType::class, $customer);
         $form->handleRequest($request);
 
@@ -162,26 +144,24 @@ class Customer extends AbstractController
     }
 
     /**
-     * @Route("/kunden_anlegen", name="create_customer")
+     * @Route("/customer_ajax", name="customer_ajax")
+     *
      */
-    public function createCustomer(): Response
+    public function getAllCustomers(): JsonResponse
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login');
-        }
+        return $this->customerService->getAllCustomers();
+    }
 
-        return $this->render(
-            'customer/index.html.twig',
-            [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
-                'page' => 'Kundenübersicht',
-                'data' => $this->getAllCustomersAjax(),
-                'customer' => $this->getAllCustomers(),
-            ]
-        );
+    /**
+     * @Route("/order_customer_ajax", name="order_customer_ajax")
+     */
+    public function getAllCustomersAjax(): JsonResponse
+    {
+        return $this->customerService->getAllCustomersAjax();
+    }
+
+    public function getLastCustomer(): array
+    {
+        return $this->customerService->getLastCustomer();
     }
 }

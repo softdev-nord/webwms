@@ -22,27 +22,10 @@ class StockOccupancy extends AbstractController
     }
 
     /**
-     * @Route("/stock_occupancy_ajax", name="stock_occupancy_ajax")
-     * @throws Exception
-     */
-    public function getAllStockOccupancy(): JsonResponse
-    {
-        return $this->stockOccupancyService->getAllStockOccupancy();
-    }
-
-    /**
-     * @Route("/stock_occupancy_ajax/{stock_location_coordinate}", name="stock_occupancy_ajax")
-     */
-    public function getStockOccupancyByCoordinate(Request $request): JsonResponse
-    {
-        return $this->stockOccupancyService->getStockOccupancyByCoordinate($request);
-    }
-
-    /**
      * @Route("/lagerbelegung", name="stock_occupancy")
      * @throws Exception
      */
-    public function stockOccupancy(): Response
+    public function index(): Response
     {
         return $this->render(
             'stock/stock_occupancy.html.twig',
@@ -94,5 +77,22 @@ class StockOccupancy extends AbstractController
                 'stockResults' => array_reverse($stockResults, true),
             ]
         );
+    }
+
+    /**
+     * @Route("/stock_occupancy_ajax", name="stock_occupancy_ajax")
+     * @throws Exception
+     */
+    public function getAllStockOccupancy(): JsonResponse
+    {
+        return $this->stockOccupancyService->getAllStockOccupancy();
+    }
+
+    /**
+     * @Route("/stock_occupancy_ajax/{stock_location_coordinate}", name="stock_occupancy_ajax")
+     */
+    public function getStockOccupancyByCoordinate(Request $request): JsonResponse
+    {
+        return $this->stockOccupancyService->getStockOccupancyByCoordinate($request);
     }
 }

@@ -20,73 +20,79 @@
     {% endblock %}
 
     {% block webwms_add_new_customer %}
-    <div id="webWMS-add-new-customer" class="wrapper-form-content create-form" style="width: 900px;">
-        {% block webwms_add_new_customer_form %}
-            <div class="card">
-                {{ form_start(addCustomerForm) }}
-                <p class="hint-text">Hier können Sie einen neuen Kunden anlegen</p>
-                <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">Kunden-Nr</label>
-                    <div class="col-xs-8" style="margin-bottom: 5px;">
-                        {{ form_row(addCustomerForm.customer_nr, {'value' : "#{lastId.customerNr +1}"}) }}
+        <div id="webWMS-add-new-customer" class="wrapper-form">
+            <div class="wrapper-form-content">
+                <div class="card">
+                    <div class="card-content">
+                        {% block webwms_add_new_customer_form %}
+                            <div class="card">
+                                {{ form_start(addCustomerForm) }}
+                                <p class="hint-text">Hier können Sie einen neuen Kunden anlegen</p>
+                                <div class="form-group">
+                                    <label for="text" class="control-label col-xs-4">Kunden-Nr</label>
+                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                        {{ form_row(addCustomerForm.customer_nr, {'value' : "#{lastId.customerNr +1}"}) }}
 
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">Kunden-Name</label>
-                    <div class="col-xs-8" style="margin-bottom: 5px;">
-                        {{ form_row(addCustomerForm.customer_name) }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">Anschrift Zusatz</label>
-                    <div class="col-xs-8" style="margin-bottom: 5px;">
-                        {{ form_row(addCustomerForm.customer_address_addition) }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">Straße</label>
-                    <div class="col-xs-8" style="margin-bottom: 5px;">
-                        {{ form_row(addCustomerForm.customer_address_street) }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">Haus-Nr</label>
-                    <div class="col-xs-8" style="margin-bottom: 5px;">
-                        {{ form_row(addCustomerForm.customer_address_street_nr) }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">Land</label>
-                    <div class="col-xs-8" style="margin-bottom: 5px;">
-                        {{ form_row(addCustomerForm.customer_country_code) }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">Postleitzahl</label>
-                    <div class="col-xs-8" style="margin-bottom: 5px;">
-                        {{ form_row(addCustomerForm.customer_zip_code) }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">Ort</label>
-                    <div class="col-xs-8" style="margin-bottom: 5px;">
-                        {{ form_row(addCustomerForm.customer_city) }}
-                    </div>
-                </div>
-                    <div class="form-group col-md-12">
-                        {% for message in app.flashes('success') %}
-                            <div class="alert alert-success">
-                                {{ message }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="control-label col-xs-4">Kunden-Name</label>
+                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                        {{ form_row(addCustomerForm.customer_name) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="control-label col-xs-4">Anschrift Zusatz</label>
+                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                        {{ form_row(addCustomerForm.customer_address_addition) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="control-label col-xs-4">Straße</label>
+                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                        {{ form_row(addCustomerForm.customer_address_street) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="control-label col-xs-4">Haus-Nr</label>
+                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                        {{ form_row(addCustomerForm.customer_address_street_nr) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="control-label col-xs-4">Land</label>
+                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                        {{ form_row(addCustomerForm.customer_country_code) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="control-label col-xs-4">Postleitzahl</label>
+                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                        {{ form_row(addCustomerForm.customer_zip_code) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="control-label col-xs-4">Ort</label>
+                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                        {{ form_row(addCustomerForm.customer_city) }}
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    {% for message in app.flashes('success') %}
+                                        <div class="alert alert-success">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="text-center">
+                                    {{ form_widget(addCustomerForm.save) }}
+                                </div>
+                                {{ form_end(addCustomerForm) }}
                             </div>
-                        {% endfor %}
+                        {% endblock %}
                     </div>
-                <div class="text-center">
-                    {{ form_widget(addCustomerForm.add_customer) }}
                 </div>
-                {{ form_end(addCustomerForm) }}
             </div>
-        {% endblock %}
-    </div>
+        </div>
     {% endblock %}
 {% endblock %}

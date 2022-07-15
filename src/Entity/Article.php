@@ -18,57 +18,67 @@ class Article
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $article_id;
+    private mixed $article_id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $article_nr;
+    private mixed $article_nr;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $article_name;
+    private mixed $article_name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $article_category;
+    private mixed $article_category;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
-    private $article_weight;
+    private mixed $article_weight;
 
     /**
      * @ORM\Column(type="string", length=15)
      */
-    private $article_ean;
+    private mixed $article_ean;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $article_unit;
+    private mixed $article_unit;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private $article_depth;
+    private mixed $article_depth;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private $article_width;
+    private mixed $article_width;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private $article_height;
+    private mixed $article_height;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $article_created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $article_updated_at;
 
     /**
      * @return mixed
      */
-    public function getArticleId()
+    public function getArticleId(): mixed
     {
         return $this->article_id;
     }
@@ -76,7 +86,7 @@ class Article
     /**
      * @param mixed $article_id
      */
-    public function setArticleId($article_id): void
+    public function setArticleId(mixed $article_id): void
     {
         $this->article_id = $article_id;
     }
@@ -84,7 +94,7 @@ class Article
     /**
      * @return mixed
      */
-    public function getArticleNr()
+    public function getArticleNr(): mixed
     {
         return $this->article_nr;
     }
@@ -92,7 +102,7 @@ class Article
     /**
      * @param mixed $article_nr
      */
-    public function setArticleNr($article_nr): void
+    public function setArticleNr(mixed $article_nr): void
     {
         $this->article_nr = $article_nr;
     }
@@ -100,7 +110,7 @@ class Article
     /**
      * @return mixed
      */
-    public function getArticleName()
+    public function getArticleName(): mixed
     {
         return $this->article_name;
     }
@@ -108,7 +118,7 @@ class Article
     /**
      * @param mixed $article_name
      */
-    public function setArticleName($article_name): void
+    public function setArticleName(mixed $article_name): void
     {
         $this->article_name = $article_name;
     }
@@ -116,7 +126,7 @@ class Article
     /**
      * @return mixed
      */
-    public function getArticleCategory()
+    public function getArticleCategory(): mixed
     {
         return $this->article_category;
     }
@@ -124,7 +134,7 @@ class Article
     /**
      * @param mixed $article_category
      */
-    public function setArticleCategory($article_category): void
+    public function setArticleCategory(mixed $article_category): void
     {
         $this->article_category = $article_category;
     }
@@ -132,7 +142,7 @@ class Article
     /**
      * @return mixed
      */
-    public function getArticleWeight()
+    public function getArticleWeight(): mixed
     {
         return $this->article_weight;
     }
@@ -140,7 +150,7 @@ class Article
     /**
      * @param mixed $article_weight
      */
-    public function setArticleWeight($article_weight): void
+    public function setArticleWeight(mixed $article_weight): void
     {
         $this->article_weight = $article_weight;
     }
@@ -148,7 +158,7 @@ class Article
     /**
      * @return mixed
      */
-    public function getArticleEan()
+    public function getArticleEan(): mixed
     {
         return $this->article_ean;
     }
@@ -156,7 +166,7 @@ class Article
     /**
      * @param mixed $article_ean
      */
-    public function setArticleEan($article_ean): void
+    public function setArticleEan(mixed $article_ean): void
     {
         $this->article_ean = $article_ean;
     }
@@ -164,7 +174,7 @@ class Article
     /**
      * @return mixed
      */
-    public function getArticleUnit()
+    public function getArticleUnit(): mixed
     {
         return $this->article_unit;
     }
@@ -172,7 +182,7 @@ class Article
     /**
      * @param mixed $article_unit
      */
-    public function setArticleUnit($article_unit): void
+    public function setArticleUnit(mixed $article_unit): void
     {
         $this->article_unit = $article_unit;
     }
@@ -180,7 +190,7 @@ class Article
     /**
      * @return mixed
      */
-    public function getArticleDepth()
+    public function getArticleDepth(): mixed
     {
         return $this->article_depth;
     }
@@ -188,7 +198,7 @@ class Article
     /**
      * @param mixed $article_depth
      */
-    public function setArticleDepth($article_depth): void
+    public function setArticleDepth(mixed $article_depth): void
     {
         $this->article_depth = $article_depth;
     }
@@ -196,7 +206,7 @@ class Article
     /**
      * @return mixed
      */
-    public function getArticleWidth()
+    public function getArticleWidth(): mixed
     {
         return $this->article_width;
     }
@@ -204,7 +214,7 @@ class Article
     /**
      * @param mixed $article_width
      */
-    public function setArticleWidth($article_width): void
+    public function setArticleWidth(mixed $article_width): void
     {
         $this->article_width = $article_width;
     }
@@ -212,7 +222,7 @@ class Article
     /**
      * @return mixed
      */
-    public function getArticleHeight()
+    public function getArticleHeight(): mixed
     {
         return $this->article_height;
     }
@@ -220,8 +230,40 @@ class Article
     /**
      * @param mixed $article_height
      */
-    public function setArticleHeight($article_height): void
+    public function setArticleHeight(mixed $article_height): void
     {
         $this->article_height = $article_height;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArticleCreatedAt(): mixed
+    {
+        return $this->article_created_at;
+    }
+
+    /**
+     * @param mixed $article_created_at
+     */
+    public function setArticleCreatedAt(mixed $article_created_at): void
+    {
+        $this->article_created_at = $article_created_at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArticleUpdatedAt(): mixed
+    {
+        return $this->article_updated_at;
+    }
+
+    /**
+     * @param mixed $article_updated_at
+     */
+    public function setArticleUpdatedAt(mixed $article_updated_at): void
+    {
+        $this->article_updated_at = $article_updated_at;
     }
 }

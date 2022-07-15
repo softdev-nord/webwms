@@ -33,16 +33,6 @@ class Article extends AbstractController
     }
 
     /**
-     * @Route("/article_ajax", name="article_ajax")
-     *
-     * @throws Exception
-     */
-    public function getAllArticles(): JsonResponse
-    {
-        return $this->articleService->getAllArticles();
-    }
-
-    /**
      * @Route("/artikel", name="article")
      */
     public function index(): Response
@@ -119,7 +109,7 @@ class Article extends AbstractController
         $responseData = $this->articleValidationService->validateArticleData($requestData);
         $responseData['message'] = '';
 
-        $article = $this->articleService->getArticleRepository()->findOneBy(['article_nr' => $article_nr]);
+        $article = $this->articleService->getArticleByNr((int) $article_nr);
         $form = $this->createForm(EditArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -150,5 +140,15 @@ class Article extends AbstractController
                 'articles' => json_decode($this->getAllArticles()->getContent()),
             ]
         );
+    }
+
+    /**
+     * @Route("/article_ajax", name="article_ajax")
+     *
+     * @throws Exception
+     */
+    public function getAllArticles(): JsonResponse
+    {
+        return $this->articleService->getAllArticles();
     }
 }

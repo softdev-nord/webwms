@@ -27,7 +27,7 @@ class StockLayout extends AbstractController
     /**
      * @Route("/lagerlayout", name="stock_layout")
      */
-    public function stockLayout(): Response
+    public function index(): Response
     {
         return $this->render(
             'stock/stock_layout.html.twig',

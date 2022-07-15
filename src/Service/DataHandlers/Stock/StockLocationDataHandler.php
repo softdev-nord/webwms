@@ -8,10 +8,9 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\StockLocation;
-use WebWMS\Repository\StockLocationRepository;
 
 /**
- * @package:    WebWMS\Service\DataHandlers
+ * @package:    WebWMS\Service\DataHandlers\Stock
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        StockLocationDataHandler
@@ -19,8 +18,7 @@ use WebWMS\Repository\StockLocationRepository;
 class StockLocationDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private StockLocationRepository $stockLocationRepository
+        private EntityManagerInterface $entityManager
     ) {
     }
 
@@ -52,6 +50,13 @@ class StockLocationDataHandler
             ->find($stockLocationId);
     }
 
+    public function getStockLocationByCoordinate(int $stock_location_coordinate): ?StockLocation
+    {
+        return $this->entityManager
+            ->getRepository(StockLocation::class)
+            ->findOneBy(['stock_location_coordinate' => $stock_location_coordinate]);
+    }
+
     /**
      * @throws Exception
      */
@@ -72,7 +77,10 @@ class StockLocationDataHandler
 
     public function updateStockLocation($requestData): ?StockLocation
     {
-        $stockLocation = $this->stockLocationRepository
+        $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
+
+        $stockLocation = $this->entityManager
+            ->getRepository(StockLocation::class)
             ->findOneBy(['stock_location_coordinate' => $requestData['stock_location_coordinate']]);
 
         if (!$stockLocation) {
@@ -88,6 +96,7 @@ class StockLocationDataHandler
         $stockLocation->setStockLocationWidth((string) $requestData['stock_location_width']);
         $stockLocation->setStockLocationDepth((string) $requestData['stock_location_depth']);
         $stockLocation->setStockLocationHeight((string) $requestData['stock_location_height']);
+        $stockLocation->setStockLocationUpdatedAt($updatedAt);
 
         $this->update($stockLocation);
 

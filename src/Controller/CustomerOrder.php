@@ -35,25 +35,6 @@ class CustomerOrder extends AbstractController
     }
 
     /**
-     * @Route("/customer_order_ajax", name="customer_order_ajax")
-     * @throws Exception
-     */
-    public function getAllCustomerOrders(): JsonResponse
-    {
-        return $this->customerOrderService->getAllCustomerOrders();
-    }
-
-    /**
-     * @Route("/customer_order_pos_ajax", name="customer_order_pos_ajax")
-     *
-     * @throws Exception
-     */
-    public function getAllCustomerOrdersPos(): JsonResponse
-    {
-        return $this->customerOrderService->getAllCustomerOrderPos();
-    }
-
-    /**
      * @Route("/auftrag", name="customer_orders")
      *
      * @throws Exception
@@ -82,6 +63,8 @@ class CustomerOrder extends AbstractController
     /**
      * @Route("/auftrag_anlegen", name="new_customer_order")
      *
+     * @param EntityManagerInterface $em
+     * @param Request $request
      * @return RedirectResponse|Response
      */
     public function addNewCustomerOrder(EntityManagerInterface $em, Request $request): RedirectResponse|Response
@@ -168,6 +151,25 @@ class CustomerOrder extends AbstractController
                 'customerOrderPosForm' => $customerOrderPosForm->createView(),
             ]
         );
+    }
+
+    /**
+     * @Route("/customer_order_ajax", name="customer_order_ajax")
+     * @throws Exception
+     */
+    public function getAllCustomerOrders(): JsonResponse
+    {
+        return $this->customerOrderService->getAllCustomerOrders();
+    }
+
+    /**
+     * @Route("/customer_order_pos_ajax", name="customer_order_pos_ajax")
+     *
+     * @throws Exception
+     */
+    public function getAllCustomerOrdersPos(): JsonResponse
+    {
+        return $this->customerOrderService->getAllCustomerOrderPos();
     }
 
     /**

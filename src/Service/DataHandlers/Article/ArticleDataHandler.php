@@ -50,6 +50,13 @@ class ArticleDataHandler
             ->find($articleId);
     }
 
+    public function getArticleByNr(int $articleNr): ?Article
+    {
+        return $this->entityManager
+            ->getRepository(Article::class)
+            ->findOneBy(['article_nr' => $articleNr]);
+    }
+
     /**
      * @throws Exception
      */

@@ -35,12 +35,21 @@ class StockLocation extends AbstractController
     }
 
     /**
-     * @Route("/stock_location_ajax", name="stock_location_ajax")
-     *
+     * @Route("/lagerplatz", name="stock_location")
      */
-    public function getAllStockLocations(): JsonResponse
+    public function index(): Response
     {
-        return $this->stockLocationService->getAllStockLocations();
+        return $this->render(
+            'stock/stock_location.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Lagerplätze',
+            ]
+        );
     }
 
     /**
@@ -71,29 +80,6 @@ class StockLocation extends AbstractController
         );
     }
 
-    public function getFreeStockLocation(): array
-    {
-        return $this->stockLocationService->getFreeStockLocations();
-    }
-
-    /**
-     * @Route("/lagerplatz", name="stock_location")
-     */
-    public function index(): Response
-    {
-        return $this->render(
-            'stock/stock_location.html.twig',
-            [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
-                'page' => 'Lagerplätze',
-            ]
-        );
-    }
-
     /**
      * @Route("lagerplatz_bearbeiten/koordinate/{stock_location_coordinate}", name="edit_stock_location", methods={"GET","POST"})
      */
@@ -112,7 +98,7 @@ class StockLocation extends AbstractController
         $responseData = $this->stockLocationValidationService->validateStockLocationData($requestData);
         $responseData['message'] = '';
 
-        $stockLocation = $this->stockLocationService->getStockLocationRepository()->findOneBy(['stock_location_coordinate' => $stock_location_coordinate]);
+        $stockLocation = $this->stockLocationDataHandler->getStockLocationByCoordinate((int) $stock_location_coordinate);
         $form = $this->createForm(EditStockLocationType::class, $stockLocation);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -141,6 +127,20 @@ class StockLocation extends AbstractController
                 'stockLocations' => json_decode($this->getAllStockLocations()->getContent()),
             ]
         );
+    }
+
+    public function getFreeStockLocation(): array
+    {
+        return $this->stockLocationService->getFreeStockLocations();
+    }
+
+    /**
+     * @Route("/stock_location_ajax", name="stock_location_ajax")
+     *
+     */
+    public function getAllStockLocations(): JsonResponse
+    {
+        return $this->stockLocationService->getAllStockLocations();
     }
 
     /**

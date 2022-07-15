@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use WebWMS\Entity\SupplierOrder;
 
@@ -22,34 +21,9 @@ use WebWMS\Entity\SupplierOrder;
  */
 class SupplierOrderRepository extends ServiceEntityRepository
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
         ManagerRegistry $registry
     ) {
-        $this->entityManager = $entityManager;
         parent::__construct($registry, SupplierOrder::class);
-    }
-
-    /**
-     * @return SupplierOrder
-     */
-    public function findById(int $orderId): ?SupplierOrder
-    {
-        return self::find($orderId);
-    }
-
-    public function save(SupplierOrder $order): void
-    {
-        $this->entityManager->persist($order);
-        $this->entityManager->flush();
-    }
-
-    public function delete(SupplierOrder $order): void
-    {
-        $this->entityManager->remove($order);
-        $this->entityManager->flush();
     }
 }

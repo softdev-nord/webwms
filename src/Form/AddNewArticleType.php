@@ -20,8 +20,6 @@ class AddNewArticleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        //dd($options);
-
         $builder
             ->add('article_id', HiddenType::class, [
                 'label' => false,

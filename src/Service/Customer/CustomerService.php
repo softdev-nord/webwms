@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Customer;
-use WebWMS\Repository\CustomerRepository;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
 /**
@@ -20,15 +19,19 @@ use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 class CustomerService
 {
     public function __construct(
-        private CustomerDataHandler $customerDataHandler,
-        private CustomerRepository $customerRepository
+        private CustomerDataHandler $customerDataHandler
     ) {
     }
-    public function getCustomerRepository(): CustomerRepository
+
+    public function getCustomerById(int $customerId): Customer
     {
-        return $this->customerRepository;
+        return $this->customerDataHandler->getCustomerById($customerId);
     }
 
+    public function getCustomerByNr(int $customerNr): ?Customer
+    {
+        return $this->customerDataHandler->getCustomerByNr($customerNr);
+    }
 
     public function getAllCustomers(): JsonResponse
     {
