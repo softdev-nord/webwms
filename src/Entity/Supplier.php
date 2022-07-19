@@ -84,7 +84,7 @@ class Supplier
      *
      * @ORM\OneToMany(targetEntity="WebWMS\Entity\SupplierOrder", mappedBy="supplier")
      */
-    protected ArrayCollection $supplier_orders;
+    protected $supplier_orders;
 
     public function __construct()
     {

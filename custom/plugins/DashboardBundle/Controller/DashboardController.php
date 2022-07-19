@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Bundles\DashboardBundle\Controller;
 
+use ArrayObject;
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,43 +28,19 @@ use WebWMS\Service\TransportRequestService;
  */
 class DashboardController extends AbstractController
 {
-    /** @var Requirements */
-    private $requirements;
-
     /** @var LoaderInterface */
     private $loader;
 
-    /** @var ChartBuilderInterface */
-    private $chartBuilder;
-
-    /** @var TransportHistoryRepository */
-    private $transportHistoryRepository;
-
-    /** @var StockRotationService */
-    private $stockRotationService;
-
-    /** @var TransportRequestService */
-    private $transportRequestService;
-
-    /** @var StockLocationService */
-    private $stockLocationService;
-
     public function __construct(
-        Requirements $requirements,
-        Environment $twig,
-        ChartBuilderInterface $chartBuilder,
-        TransportHistoryRepository $transportHistoryRepository,
-        StockRotationService $stockRotationService,
-        TransportRequestService $transportRequestService,
-        StockLocationService $stockLocationService
+        private Requirements $requirements,
+        private Environment $twig,
+        private ChartBuilderInterface $chartBuilder,
+        private TransportHistoryRepository $transportHistoryRepository,
+        private StockRotationService $stockRotationService,
+        private TransportRequestService $transportRequestService,
+        private StockLocationService $stockLocationService
     ) {
-        $this->requirements = $requirements;
         $this->loader = $twig->getLoader();
-        $this->chartBuilder = $chartBuilder;
-        $this->transportHistoryRepository = $transportHistoryRepository;
-        $this->stockRotationService = $stockRotationService;
-        $this->transportRequestService = $transportRequestService;
-        $this->stockLocationService = $stockLocationService;
     }
 
     /**
@@ -75,7 +52,8 @@ class DashboardController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('@Dashboard/dashboard/index_new.html.twig',
+        return $this->render(
+            '@Dashboard/dashboard/index_new.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
                 'appVersion' => $this->requirements->getAppVersion(),
@@ -207,10 +185,14 @@ class DashboardController extends AbstractController
      */
     public function getWarehouseUtilization(): array
     {
+        //dd($this->stockRotationService->getAllStockRotationsWithJoin());
         $warehouseUtilization = [];
-        $warehouseUtilization['allStockLocations'] = count($this->stockLocationService->getAllStockLocations());
-        $warehouseUtilization['occupiedBinLocations'] = count(array_column(
-                $this->stockRotationService->getAllStockRotationsWithJoin(), 'stock_location_id')
+        $warehouseUtilization['allStockLocations'] = count(json_decode($this->stockLocationService->getAllStockLocations()->getContent()));
+        $warehouseUtilization['occupiedStockLocations'] = count(
+            array_column(
+                json_decode($this->stockRotationService->getAllStockRotationsWithJoin()->getContent()),
+                'stock_location_id'
+            )
         );
 
         return $warehouseUtilization;

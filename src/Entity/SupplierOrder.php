@@ -73,7 +73,7 @@ class SupplierOrder extends ModelEntity
      *
      * @ORM\OneToMany(targetEntity="\WebWMS\Entity\SupplierOrderPos", mappedBy="supplier_orders", orphanRemoval=true, cascade={"persist"})
      */
-    protected SupplierOrderPos $details;
+    protected $details;
 
     /**
      * @var Supplier
@@ -81,7 +81,7 @@ class SupplierOrder extends ModelEntity
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Supplier", inversedBy="supplier_orders")
      * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
      */
-    protected Supplier $supplier;
+    protected $supplier;
 
     public function getId(): ?int
     {
