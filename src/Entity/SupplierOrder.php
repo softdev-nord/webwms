@@ -19,42 +19,52 @@ class SupplierOrder extends ModelEntity
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $supplier_order_id;
+    private ?int $supplier_order_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $usr_id;
+    private mixed $usr_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $supplier_id;
+    private mixed $supplier_id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $supplier_order_nr;
+    private mixed $supplier_order_nr;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $supplier_order_reference;
+    private mixed $supplier_order_reference;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $supplier_order_date;
+    private mixed $supplier_order_date;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $supplier_order_order_date;
+    private mixed $supplier_order_order_date;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $supplier_order_created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $supplier_order_updated_at;
 
     /**
      * INVERSE SIDE.
@@ -63,7 +73,7 @@ class SupplierOrder extends ModelEntity
      *
      * @ORM\OneToMany(targetEntity="\WebWMS\Entity\SupplierOrderPos", mappedBy="supplier_orders", orphanRemoval=true, cascade={"persist"})
      */
-    protected $details;
+    protected SupplierOrderPos $details;
 
     /**
      * @var Supplier
@@ -71,7 +81,7 @@ class SupplierOrder extends ModelEntity
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Supplier", inversedBy="supplier_orders")
      * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
      */
-    protected $supplier;
+    protected Supplier $supplier;
 
     public function getId(): ?int
     {
@@ -81,15 +91,15 @@ class SupplierOrder extends ModelEntity
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getSupplierOrderId()
+    public function getSupplierOrderId(): ?int
     {
         return $this->supplier_order_id;
     }
@@ -97,7 +107,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @param mixed $supplier_order_id
      */
-    public function setSupplierOrderId($supplier_order_id): void
+    public function setSupplierOrderId(mixed $supplier_order_id): void
     {
         $this->supplier_order_id = $supplier_order_id;
     }
@@ -105,7 +115,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @return mixed
      */
-    public function getUsrId()
+    public function getUsrId(): mixed
     {
         return $this->usr_id;
     }
@@ -113,7 +123,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @param mixed $usr_id
      */
-    public function setUsrId($usr_id): void
+    public function setUsrId(mixed $usr_id): void
     {
         $this->usr_id = $usr_id;
     }
@@ -121,7 +131,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @return mixed
      */
-    public function getSupplierId()
+    public function getSupplierId(): mixed
     {
         return $this->supplier_id;
     }
@@ -129,7 +139,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @param mixed $supplier_id
      */
-    public function setSupplierId($supplier_id): void
+    public function setSupplierId(mixed $supplier_id): void
     {
         $this->supplier_id = $supplier_id;
     }
@@ -137,7 +147,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @return mixed
      */
-    public function getSupplierOrderNr()
+    public function getSupplierOrderNr(): mixed
     {
         return $this->supplier_order_nr;
     }
@@ -145,7 +155,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @param mixed $supplier_order_nr
      */
-    public function setSupplierOrderNr($supplier_order_nr): void
+    public function setSupplierOrderNr(mixed $supplier_order_nr): void
     {
         $this->supplier_order_nr = $supplier_order_nr;
     }
@@ -153,7 +163,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @return mixed
      */
-    public function getSupplierOrderReference()
+    public function getSupplierOrderReference(): mixed
     {
         return $this->supplier_order_reference;
     }
@@ -161,7 +171,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @param mixed $supplier_order_reference
      */
-    public function setSupplierOrderReference($supplier_order_reference): void
+    public function setSupplierOrderReference(mixed $supplier_order_reference): void
     {
         $this->supplier_order_reference = $supplier_order_reference;
     }
@@ -169,7 +179,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @return mixed
      */
-    public function getSupplierOrderDate()
+    public function getSupplierOrderDate(): mixed
     {
         return $this->supplier_order_date;
     }
@@ -177,7 +187,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @param mixed $supplier_order_date
      */
-    public function setSupplierOrderDate($supplier_order_date): void
+    public function setSupplierOrderDate(mixed $supplier_order_date): void
     {
         $this->supplier_order_date = $supplier_order_date;
     }
@@ -185,7 +195,7 @@ class SupplierOrder extends ModelEntity
     /**
      * @return mixed
      */
-    public function getSupplierOrderOrderDate()
+    public function getSupplierOrderOrderDate(): mixed
     {
         return $this->supplier_order_order_date;
     }
@@ -193,9 +203,41 @@ class SupplierOrder extends ModelEntity
     /**
      * @param mixed $supplier_order_order_date
      */
-    public function setSupplierOrderOrderDate($supplier_order_order_date): void
+    public function setSupplierOrderOrderDate(mixed $supplier_order_order_date): void
     {
         $this->supplier_order_order_date = $supplier_order_order_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSupplierOrderCreatedAt(): mixed
+    {
+        return $this->supplier_order_created_at;
+    }
+
+    /**
+     * @param mixed $supplier_order_created_at
+     */
+    public function setSupplierOrderCreatedAt(mixed $supplier_order_created_at): void
+    {
+        $this->supplier_order_created_at = $supplier_order_created_at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSupplierOrderUpdatedAt(): mixed
+    {
+        return $this->supplier_order_updated_at;
+    }
+
+    /**
+     * @param mixed $supplier_order_updated_at
+     */
+    public function setSupplierOrderUpdatedAt(mixed $supplier_order_updated_at): void
+    {
+        $this->supplier_order_updated_at = $supplier_order_updated_at;
     }
 
     public function getDetails(): SupplierOrderPos

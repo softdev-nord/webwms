@@ -1,12 +1,9 @@
 (function($){
-    const stockLocationTable = $('#stockLocationTable').DataTable({
+    // StockLocation table
+    const customerTable = $('#customerTable').DataTable({
         "lengthChange": false,
-        paging: false,
-        retrieve: true,
-        //searching: false,
-
         ajax: {
-            'url': '/stock_location_ajax',
+            'url': '/customer_ajax',
             'dataSrc': ''
         },
         // Page length max. 10 entries
@@ -19,21 +16,20 @@
             style: 'single'
         },
         columns: [
-            {"data": "stock_location_ln"},
-            {"data": "stock_location_fb"},
-            {"data": "stock_location_sp"},
-            {"data": "stock_location_tf"},
-            {"data": "stock_location_coordinate"},
-            {"data": "stock_location_desc"},
-            {"data": "stock_location_width"},
-            {"data": "stock_location_depth"},
-            {"data": "stock_location_height"},
+            {"data": "customer_nr"},
+            {"data": "customer_name"},
+            {"data": "customer_address_addition"},
+            {"data": "customer_address_street"},
+            {"data": "customer_address_street_nr"},
+            {"data": "customer_country_code"},
+            {"data": "customer_zip_code"},
+            {"data": "customer_city"},
             {
                 data: null,
                 className: "editor-edit text-center",
                 defaultContent: '<i class="mdi mdi-square-edit-outline"/>',
                 orderable: false,
-            }
+            },
         ],
         columnDefs: [
             {className: 'text-center', targets: "_all"},
@@ -72,24 +68,22 @@
         ]
     });
 
-    console.log(stockLocationTable);
-
-    // Get selected article
+    // Get selected stock location
     $(document).on('click','i.mdi-square-edit-outline',function(event) {
         const row = $(this).parents('tr')[0];
-        const articleNr = artTable.row(row).data().article_nr;
-        window.location.href = '/artikel_bearbeiten/articleNr/' + articleNr;
+        const customerNr = customerTable.row(row).data().customer_nr;
+        window.location.href = '/kunden_bearbeiten/kundenNr/' + customerNr;
     });
 
-    // Save edit article
-    $(document).on('click','button#edit_article_save',function(event) {
-        const articleNr = $('#edit_article_article_nr').val();
-        const $form = $('form[name="edit_article"]');
+    // Save edit stock location
+    $(document).on('click','button#edit_customer_save',function(event) {
+        const customerNr = $('#edit_customer_customer_nr').val();
+        const $form = $('form[name="edit_customer"]');
         event.preventDefault();
 
         $.ajax({ // Process the form using $.ajax()
             type        : 'POST',
-            url         : `{{ path("edit_article",{'article_nr' : 'article_nr' }) }}`.replace('article_nr', articleNr),
+            url         : `{{ path("edit_customer",{'customer_nr' : 'customer_nr' }) }}`.replace('customer_nr', customerNr),
             data        : $form.serialize(),
             success     : function(data) {
                 if (data.error) {
@@ -101,7 +95,7 @@
                     let arrayString = errors.join();
                     const error = arrayString.replace(/,/g, " ");
                     $.jAlert({
-                        'title': 'Artikel konnte nicht gespeichert werden',
+                        'title': 'Kunde konnte nicht gespeichert werden',
                         'content': error,
                         'theme': 'red',
                         'size': 'md',
@@ -111,7 +105,7 @@
                     });
                 } else {
                     $.jAlert({
-                        'title': 'Artikel erfolgreich gespeichert',
+                        'title': 'Kunde erfolgreich gespeichert',
                         'content': data.message,
                         'theme': 'green',
                         'size': 'md',
@@ -125,12 +119,8 @@
 
     });
 
-    // Back to article overview
-    $(document).on('click','#edit_article_back_to_article_overview',function() {
-        window.location.href = '/artikel'
-    });
-
-    $(document).ready(function(){
-        itemsAddNewRow.init();
+    // Back to stock location overview
+    $(document).on('click','#edit_customer_back_to_customer_overview',function() {
+        window.location.href = '/kunden'
     });
 })(jQuery);

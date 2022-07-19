@@ -17,57 +17,74 @@ class StockLocation
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $stock_location_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_location_ln;
+    private ?int $stock_location_ln;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_location_fb;
+    private ?int $stock_location_fb;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_location_sp;
+    private ?int $stock_location_sp;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_location_tf;
+    private ?int $stock_location_tf;
 
     /**
      * @ORM\Column(type="integer")
      * * @ORM\OneToMany(targetEntity="\WebWMS\Entity\StockRotation", mappedBy="stock_location_coordinate")
      */
-    private $stock_location_coordinate;
+    private mixed $stock_location_coordinate;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $stock_location_desc;
+    private ?string $stock_location_desc;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private $stock_location_width;
+    private ?string $stock_location_width;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private $stock_location_depth;
+    private ?string $stock_location_depth;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $stock_location_created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $stock_location_updated_at;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private $stock_location_height;
+    private ?string $stock_location_height;
 
-    public function getId(): ?int
+    public function getStockLocationId(): ?int
     {
-        return $this->id;
+        return $this->stock_location_id;
+    }
+
+    public function setStockLocationId(int $stock_location_id): self
+    {
+        $this->stock_location_id = $stock_location_id;
+
+        return $this;
     }
 
     public function getStockLocationLn(): ?int
@@ -121,7 +138,7 @@ class StockLocation
     /**
      * @return mixed
      */
-    public function getStockLocationCoordinate()
+    public function getStockLocationCoordinate(): mixed
     {
         return $this->stock_location_coordinate;
     }
@@ -180,5 +197,37 @@ class StockLocation
         $this->stock_location_height = $stock_location_height;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStockLocationCreatedAt(): mixed
+    {
+        return $this->stock_location_created_at;
+    }
+
+    /**
+     * @param mixed $stock_location_created_at
+     */
+    public function setStockLocationCreatedAt(mixed $stock_location_created_at): void
+    {
+        $this->stock_location_created_at = $stock_location_created_at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStockLocationUpdatedAt(): mixed
+    {
+        return $this->stock_location_updated_at;
+    }
+
+    /**
+     * @param mixed $stock_location_updated_at
+     */
+    public function setStockLocationUpdatedAt(mixed $stock_location_updated_at): void
+    {
+        $this->stock_location_updated_at = $stock_location_updated_at;
     }
 }

@@ -10,8 +10,7 @@ class StockOutStrategyDataHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager
-    )
-    {
+    ) {
     }
 
     public function fiFoStrategy()

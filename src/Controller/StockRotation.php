@@ -25,16 +25,6 @@ class StockRotation extends AbstractController
     }
 
     /**
-     * @Route("/stock_rotation_ajax", name="stock_rotation_ajax")
-     *
-     * @throws Exception
-     */
-    public function getAllStockRotations(): JsonResponse
-    {
-        return $this->stockRotationService->getAllStockRotationsWithJoin();
-    }
-
-    /**
      * @Route("/lagerbewegung", name="stock_rotation")
      *
      * @throws Exception
@@ -53,5 +43,15 @@ class StockRotation extends AbstractController
                 'stockRotation' => $this->getAllStockRotations(),
             ]
         );
+    }
+
+    /**
+     * @Route("/stock_rotation_ajax", name="stock_rotation_ajax")
+     *
+     * @throws Exception
+     */
+    public function getAllStockRotations(): JsonResponse
+    {
+        return $this->stockRotationService->getAllStockRotationsWithJoin();
     }
 }

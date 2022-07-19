@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Service;
+namespace WebWMS\Service\Customer;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Customer;
-use WebWMS\Service\DataHandlers\CustomerDataHandler;
+use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
 /**
  * @package:    WebWMS\Service
@@ -23,7 +23,17 @@ class CustomerService
     ) {
     }
 
-    public function getAllCustomers(): array
+    public function getCustomerById(int $customerId): Customer
+    {
+        return $this->customerDataHandler->getCustomerById($customerId);
+    }
+
+    public function getCustomerByNr(int $customerNr): ?Customer
+    {
+        return $this->customerDataHandler->getCustomerByNr($customerNr);
+    }
+
+    public function getAllCustomers(): JsonResponse
     {
         return $this->customerDataHandler->getAllCustomers();
     }
@@ -115,5 +125,10 @@ class CustomerService
     public function deleteCustomerApi(int $customerId): void
     {
         $this->customerDataHandler->deleteCustomerApi($customerId);
+    }
+
+    public function updateCustomer($requestData): ?Customer
+    {
+        return $this->customerDataHandler->updateCustomer($requestData);
     }
 }

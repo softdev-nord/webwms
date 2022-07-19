@@ -23,47 +23,57 @@ class Customer
     /**
      * @ORM\Column(type="integer")
      */
-    private $customer_id;
+    private ?int $customer_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $customer_nr;
+    private ?int $customer_nr;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $customer_name;
+    private ?string $customer_name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $customer_address_addition;
+    private ?string $customer_address_addition;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $customer_address_street;
+    private ?string $customer_address_street;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $customer_address_street_nr;
+    private ?string $customer_address_street_nr;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $customer_country_code;
+    private ?string $customer_country_code;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $customer_zip_code;
+    private ?string $customer_zip_code;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $customer_city;
+    private ?string $customer_city;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $customer_created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $customer_updated_at;
 
     /**
      * INVERSE SIDE
@@ -84,6 +94,13 @@ class Customer
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getCustomerId(): ?int
@@ -235,5 +252,37 @@ class Customer
         $this->customer_orders = $customer_orders;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerCreatedAt(): mixed
+    {
+        return $this->customer_created_at;
+    }
+
+    /**
+     * @param mixed $customer_created_at
+     */
+    public function setCustomerCreatedAt(mixed $customer_created_at): void
+    {
+        $this->customer_created_at = $customer_created_at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomerUpdatedAt(): mixed
+    {
+        return $this->customer_updated_at;
+    }
+
+    /**
+     * @param mixed $customer_updated_at
+     */
+    public function setCustomerUpdatedAt(mixed $customer_updated_at): void
+    {
+        $this->customer_updated_at = $customer_updated_at;
     }
 }

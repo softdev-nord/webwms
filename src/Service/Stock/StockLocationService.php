@@ -4,10 +4,11 @@ namespace WebWMS\Service\Stock;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\StockLocation;
 use WebWMS\Exception\NotFoundException;
+use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 
 /**
  * @package:    WebWMS\Service\Stock
@@ -18,14 +19,18 @@ use WebWMS\Exception\NotFoundException;
 class StockLocationService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private StockLocationDataHandler $stockLocationDataHandler
     ) {
     }
 
-    public function getAllStockLocations(): array
+    /**
+     * @throws NotFoundException
+     * @throws Exception
+     */
+    public function getAllStockLocations(): JsonResponse
     {
-        $stockLocation = $this->entityManager
-            ->getRepository(StockLocation::class)->findAll();
+        $stockLocation = $this->stockLocationDataHandler->getAllStockLocation();
 
         if (!$stockLocation) {
             throw new NotFoundException(
@@ -51,6 +56,9 @@ class StockLocationService
         return (array) $stockLocation;
     }
 
+    /**
+     * @throws Exception
+     */
     public function getAllStockLocationsForSelect(): array
     {
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
@@ -67,6 +75,8 @@ class StockLocationService
 
     public function generateStockLocation(Request $request)
     {
+        $createdAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
+
         $stockLocations = $this->generateStockLocationValues($request);
 
         if (isset($request->request->all()['stock_location']['stock_location_check'])) {
@@ -81,6 +91,7 @@ class StockLocationService
                 $setStockLocations->setStockLocationWidth($stockLocation['stock_location_width']);
                 $setStockLocations->setStockLocationDepth($stockLocation['stock_location_depth']);
                 $setStockLocations->setStockLocationHeight($stockLocation['stock_location_height']);
+                $setStockLocations->setStockLocationCreatedAt($createdAt);
 
                 $this->entityManager->persist($setStockLocations);
                 $this->entityManager->flush();
@@ -96,6 +107,7 @@ class StockLocationService
             $setStockLocations->setStockLocationWidth($stockLocations['stock_location_width']);
             $setStockLocations->setStockLocationDepth($stockLocations['stock_location_depth']);
             $setStockLocations->setStockLocationHeight($stockLocations['stock_location_height']);
+            $setStockLocations->setStockLocationCreatedAt($createdAt);
 
             $this->entityManager->persist($setStockLocations);
             $this->entityManager->flush();
@@ -152,7 +164,8 @@ class StockLocationService
     public function getAllStockLocationsAjax(): array
     {
         $stockLocation = $this->entityManager
-            ->getRepository(StockLocation::class)->findAll();
+            ->getRepository(StockLocation::class)
+            ->findAll();
 
         if (!$stockLocation) {
             throw new NotFoundException(
@@ -163,7 +176,11 @@ class StockLocationService
         return $stockLocation;
     }
 
-    public function getFreeStockLocations(): array
+    /**
+     * @throws NotFoundException
+     * @throws Exception
+     */
+    public function getFreeStockLocations(): JsonResponse
     {
         return $this->getAllStockLocations();
     }

@@ -13,7 +13,7 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Service\ArticleService;
+use WebWMS\Service\Article\ArticleService;
 
 /**
  * @package:    WebWMS\Controller\Api

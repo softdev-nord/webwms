@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Form\SupplierType;
-use WebWMS\Service\SupplierService;
+use WebWMS\Service\Supplier\SupplierService;
 
 /**
  * @package:    WebWMS\Controller
@@ -27,21 +27,6 @@ class Supplier extends AbstractController
         private SupplierService $supplierService,
         private Requirements $requirements
     ) {
-    }
-
-    public function getAllSuppliers(): array
-    {
-        return $this->supplierService->getAllSuppliers();
-    }
-
-    /**
-     * @Route("/order_supplier_ajax", name="order_supplier_ajax")
-     *
-     * @throws Exception
-     */
-    public function getAllSuppliersAjax(): JsonResponse
-    {
-        return $this->supplierService->getAllSuppliersAjax();
     }
 
     /**
@@ -73,6 +58,7 @@ class Supplier extends AbstractController
     /**
      * @Route("/lieferant_anlegen", name="add_supplier")
      *
+     * @param Request $request
      * @return RedirectResponse|Response
      */
     public function addNewSupplier(Request $request): RedirectResponse|Response
@@ -103,6 +89,21 @@ class Supplier extends AbstractController
                 'addSupplierForm' => $form->createView(),
             ]
         );
+    }
+
+    public function getAllSuppliers(): array
+    {
+        return $this->supplierService->getAllSuppliers();
+    }
+
+    /**
+     * @Route("/order_supplier_ajax", name="order_supplier_ajax")
+     *
+     * @throws Exception
+     */
+    public function getAllSuppliersAjax(): JsonResponse
+    {
+        return $this->supplierService->getAllSuppliersAjax();
     }
 
     /**

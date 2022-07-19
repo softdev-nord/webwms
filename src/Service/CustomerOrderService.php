@@ -13,6 +13,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\CustomerOrder as CustomerOrders;
 use WebWMS\Repository\CustomerOrderRepository;
 
+/**
+ * @package:    WebWMS\Service
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        CustomerOrderService
+ */
 class CustomerOrderService
 {
     public function __construct(

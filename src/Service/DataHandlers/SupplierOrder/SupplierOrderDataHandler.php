@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+namespace WebWMS\Service\DataHandlers\SupplierOrder;
+
+use Doctrine\ORM\EntityManagerInterface;
+use WebWMS\Entity\SupplierOrder;
+
+/**
+ * @package:    WebWMS\Service\DataHandlers\SupplierOrder
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        SupplierOrderDataHandler
+ */
+class SupplierOrderDataHandler
+{
+    public function __construct(
+        private EntityManagerInterface $entityManager
+    ) {
+    }
+
+    public function save(SupplierOrder $supplierOrder): void
+    {
+        $this->entityManager->persist($supplierOrder);
+        $this->entityManager->flush();
+    }
+
+    public function update(SupplierOrder $supplierOrder): void
+    {
+        $this->entityManager->persist($supplierOrder);
+        $this->entityManager->flush();
+    }
+
+    public function delete(SupplierOrder $supplierOrder): void
+    {
+        $this->entityManager->remove($supplierOrder);
+        $this->entityManager->flush();
+    }
+
+    public function updateSupplierOrder($requestData): ?SupplierOrder
+    {
+        $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
+
+        $supplierOrder = $this->entityManager
+            ->getRepository(SupplierOrder::class)
+            ->findOneBy(['supplier_order_nr' => $requestData['supplier_order_nr']]);
+
+        if (!$supplierOrder) {
+            return null;
+        }
+
+        $supplierOrder->setSupplierOrderId((int) $requestData['	supplier_order_id']);
+        $supplierOrder->setUsrId((int) $requestData['usr_id']);
+        $supplierOrder->setSupplierId((int) $requestData['supplier_id']);
+        $supplierOrder->setSupplierOrderNr((int) $requestData['supplier_order_nr']);
+        $supplierOrder->setSupplierOrderReference((string) $requestData['supplier_order_reference']);
+        $supplierOrder->setSupplierOrderDate($requestData['supplier_order_date']);
+        $supplierOrder->setSupplierOrderOrderDate($requestData['supplier_address_street']);
+        $supplierOrder->setSupplierOrderUpdatedAt($updatedAt);
+
+        $this->update($supplierOrder);
+
+        return $supplierOrder;
+    }
+}

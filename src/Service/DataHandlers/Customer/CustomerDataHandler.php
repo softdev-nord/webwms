@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Service\DataHandlers;
+namespace WebWMS\Service\DataHandlers\Customer;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\Customer;
 
 /**
- * @package:    WebWMS\Service\DataHandlers
+ * @package:    WebWMS\Service\DataHandlers\Customer
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        CustomerDataHandler
@@ -20,8 +20,25 @@ class CustomerDataHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager
-    )
+    ) {
+    }
+
+    public function save(Customer $customer): void
     {
+        $this->entityManager->persist($customer);
+        $this->entityManager->flush();
+    }
+
+    public function update(Customer $customer): void
+    {
+        $this->entityManager->persist($customer);
+        $this->entityManager->flush();
+    }
+
+    public function delete(Customer $customer): void
+    {
+        $this->entityManager->remove($customer);
+        $this->entityManager->flush();
     }
 
     /**
@@ -34,15 +51,29 @@ class CustomerDataHandler
             ->find($customerId);
     }
 
-    public function getAllCustomers(): array
+    public function getCustomerByNr(int $customerNr): ?Customer
     {
-        $customers = $this->entityManager->getRepository(Customer::class)->findAll();
+        return $this->entityManager
+            ->getRepository(Customer::class)
+            ->findOneBy(['customer_nr' => $customerNr]);
+    }
 
-        if (!$customers) {
-            throw $this->createNotFoundException('Keine Kunden gefunden');
-        }
+    /**
+     * @throws Exception
+     */
+    public function getAllCustomers(): JsonResponse
+    {
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
 
-        return $customers;
+        $queryBuilder
+            ->select('*')
+            ->from('customer');
+
+        $stmt = $queryBuilder->executeQuery();
+
+        $results = $stmt->fetchAllAssociative();
+
+        return new JsonResponse($results);
     }
 
     /**
@@ -201,26 +232,30 @@ class CustomerDataHandler
             ->getRepository(Customer::class)->findBy([], ['customer_nr' => 'DESC'], 1, 0);
     }
 
-    public function save(Customer $customer): void
+    public function updateCustomer($requestData): ?Customer
     {
-        $this->entityManager->persist($customer);
-        $this->entityManager->flush();
-    }
+        $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
+        $customer = $this->entityManager
+            ->getRepository(Customer::class)
+            ->findOneBy(['customer_nr' => $requestData['customer_nr']]);
 
-    public function update(Customer $customer): void
-    {
-        $this->entityManager->persist($customer);
-        $this->entityManager->flush();
-    }
+        if (!$customer) {
+            return null;
+        }
 
-    public function delete(Customer $customer): void
-    {
-        $this->entityManager->remove($customer);
-        $this->entityManager->flush();
-    }
+        $customer->setCustomerId((int) $requestData['customer_id']);
+        $customer->setCustomerNr((int) $requestData['customer_nr']);
+        $customer->setCustomerName((string) $requestData['customer_name']);
+        $customer->setCustomerAddressAddition((string) $requestData['customer_address_addition']);
+        $customer->setCustomerAddressStreet((string) $requestData['customer_address_street']);
+        $customer->setCustomerAddressStreetNr((string) $requestData['customer_address_street_nr']);
+        $customer->setCustomerCountryCode((string) $requestData['customer_country_code']);
+        $customer->setCustomerZipCode((string) $requestData['customer_zip_code']);
+        $customer->setCustomerCity((string) $requestData['customer_city']);
+        $customer->setCustomerUpdatedAt($updatedAt);
 
-    protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException
-    {
-        return new NotFoundHttpException($message, $previous);
+        $this->update($customer);
+
+        return $customer;
     }
 }

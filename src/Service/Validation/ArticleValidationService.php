@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Service;
+namespace WebWMS\Service\Validation;
 
 /**
  * @package:    WebWMS\Service
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        ValidationService
+ * Class        ArticleValidationService
  */
-class ValidationService
+class ArticleValidationService
 {
     public function validateArticleData($requestData): array
     {
@@ -54,7 +54,7 @@ class ValidationService
         }
 
         if (empty($requestData['article_depth'])) {
-            $responseData['error']['article_depth'] = 'Die Tiefe darf nicht leer sein.';
+            $responseData['error']['article_depth'] = 'Die Breite darf nicht leer sein.';
         } else {
             $responseData['article_depth'] = $requestData['article_depth'];
         }

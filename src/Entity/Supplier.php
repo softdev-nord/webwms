@@ -18,52 +18,62 @@ class Supplier
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $supplier_id;
+    private mixed $supplier_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $supplier_nr;
+    private mixed $supplier_nr;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $supplier_name;
+    private mixed $supplier_name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $supplier_address_addition;
+    private mixed $supplier_address_addition;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $supplier_address_street;
+    private mixed $supplier_address_street;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $supplier_address_street_nr;
+    private mixed $supplier_address_street_nr;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $supplier_address_country_code;
+    private mixed $supplier_address_country_code;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $supplier_address_zipcode;
+    private mixed $supplier_address_zipcode;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $supplier_address_city;
+    private mixed $supplier_address_city;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $supplier_created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private mixed $supplier_updated_at;
 
     /**
      * INVERSE SIDE
@@ -74,7 +84,7 @@ class Supplier
      *
      * @ORM\OneToMany(targetEntity="WebWMS\Entity\SupplierOrder", mappedBy="supplier")
      */
-    protected $supplier_orders;
+    protected ArrayCollection $supplier_orders;
 
     public function __construct()
     {
@@ -89,7 +99,7 @@ class Supplier
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -97,7 +107,7 @@ class Supplier
     /**
      * @return mixed
      */
-    public function getSupplierId()
+    public function getSupplierId(): mixed
     {
         return $this->supplier_id;
     }
@@ -105,7 +115,7 @@ class Supplier
     /**
      * @param mixed $supplier_id
      */
-    public function setSupplierId($supplier_id): void
+    public function setSupplierId(mixed $supplier_id): void
     {
         $this->supplier_id = $supplier_id;
     }
@@ -113,7 +123,7 @@ class Supplier
     /**
      * @return mixed
      */
-    public function getSupplierNr()
+    public function getSupplierNr(): mixed
     {
         return $this->supplier_nr;
     }
@@ -121,7 +131,7 @@ class Supplier
     /**
      * @param mixed $supplier_nr
      */
-    public function setSupplierNr($supplier_nr): void
+    public function setSupplierNr(mixed $supplier_nr): void
     {
         $this->supplier_nr = $supplier_nr;
     }
@@ -129,7 +139,7 @@ class Supplier
     /**
      * @return mixed
      */
-    public function getSupplierName()
+    public function getSupplierName(): mixed
     {
         return $this->supplier_name;
     }
@@ -137,7 +147,7 @@ class Supplier
     /**
      * @param mixed $supplier_name
      */
-    public function setSupplierName($supplier_name): void
+    public function setSupplierName(mixed $supplier_name): void
     {
         $this->supplier_name = $supplier_name;
     }
@@ -145,7 +155,7 @@ class Supplier
     /**
      * @return mixed
      */
-    public function getSupplierAddressAddition()
+    public function getSupplierAddressAddition(): mixed
     {
         return $this->supplier_address_addition;
     }
@@ -153,7 +163,7 @@ class Supplier
     /**
      * @param mixed $supplier_address_addition
      */
-    public function setSupplierAddressAddition($supplier_address_addition): void
+    public function setSupplierAddressAddition(mixed $supplier_address_addition): void
     {
         $this->supplier_address_addition = $supplier_address_addition;
     }
@@ -161,7 +171,7 @@ class Supplier
     /**
      * @return mixed
      */
-    public function getSupplierAddressStreet()
+    public function getSupplierAddressStreet(): mixed
     {
         return $this->supplier_address_street;
     }
@@ -169,7 +179,7 @@ class Supplier
     /**
      * @param mixed $supplier_address_street
      */
-    public function setSupplierAddressStreet($supplier_address_street): void
+    public function setSupplierAddressStreet(mixed $supplier_address_street): void
     {
         $this->supplier_address_street = $supplier_address_street;
     }
@@ -177,7 +187,7 @@ class Supplier
     /**
      * @return mixed
      */
-    public function getSupplierAddressStreetNr()
+    public function getSupplierAddressStreetNr(): mixed
     {
         return $this->supplier_address_street_nr;
     }
@@ -185,7 +195,7 @@ class Supplier
     /**
      * @param mixed $supplier_address_street_nr
      */
-    public function setSupplierAddressStreetNr($supplier_address_street_nr): void
+    public function setSupplierAddressStreetNr(mixed $supplier_address_street_nr): void
     {
         $this->supplier_address_street_nr = $supplier_address_street_nr;
     }
@@ -193,7 +203,7 @@ class Supplier
     /**
      * @return mixed
      */
-    public function getSupplierAddressCountryCode()
+    public function getSupplierAddressCountryCode(): mixed
     {
         return $this->supplier_address_country_code;
     }
@@ -201,7 +211,7 @@ class Supplier
     /**
      * @param mixed $supplier_address_country_code
      */
-    public function setSupplierAddressCountryCode($supplier_address_country_code): void
+    public function setSupplierAddressCountryCode(mixed $supplier_address_country_code): void
     {
         $this->supplier_address_country_code = $supplier_address_country_code;
     }
@@ -209,7 +219,7 @@ class Supplier
     /**
      * @return mixed
      */
-    public function getSupplierAddressZipcode()
+    public function getSupplierAddressZipcode(): mixed
     {
         return $this->supplier_address_zipcode;
     }
@@ -217,7 +227,7 @@ class Supplier
     /**
      * @param mixed $supplier_address_zipcode
      */
-    public function setSupplierAddressZipcode($supplier_address_zipcode): void
+    public function setSupplierAddressZipcode(mixed $supplier_address_zipcode): void
     {
         $this->supplier_address_zipcode = $supplier_address_zipcode;
     }
@@ -225,7 +235,7 @@ class Supplier
     /**
      * @return mixed
      */
-    public function getSupplierAddressCity()
+    public function getSupplierAddressCity(): mixed
     {
         return $this->supplier_address_city;
     }
@@ -233,7 +243,7 @@ class Supplier
     /**
      * @param mixed $supplier_address_city
      */
-    public function setSupplierAddressCity($supplier_address_city): void
+    public function setSupplierAddressCity(mixed $supplier_address_city): void
     {
         $this->supplier_address_city = $supplier_address_city;
     }
@@ -261,7 +271,7 @@ class Supplier
      *
      * @return ArrayCollection<\WebWMS\Entity\SupplierOrder>
      */
-    public function getSupplierOrders()
+    public function getSupplierOrders(): ArrayCollection
     {
         return $this->supplier_orders;
     }
@@ -281,5 +291,37 @@ class Supplier
         $this->supplier_orders = $supplier_orders;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSupplierCreatedAt(): mixed
+    {
+        return $this->supplier_created_at;
+    }
+
+    /**
+     * @param mixed $supplier_created_at
+     */
+    public function setSupplierCreatedAt(mixed $supplier_created_at): void
+    {
+        $this->supplier_created_at = $supplier_created_at;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSupplierUpdatedAt(): mixed
+    {
+        return $this->supplier_updated_at;
+    }
+
+    /**
+     * @param mixed $supplier_updated_at
+     */
+    public function setSupplierUpdatedAt(mixed $supplier_updated_at): void
+    {
+        $this->supplier_updated_at = $supplier_updated_at;
     }
 }

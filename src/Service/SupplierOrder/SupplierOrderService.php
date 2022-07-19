@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Service;
+namespace WebWMS\Service\SupplierOrder;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\SupplierOrder as Orders;
+use WebWMS\Entity\SupplierOrder;
 use WebWMS\Exception\NotFoundException;
-use WebWMS\Repository\SupplierOrderRepository;
+use WebWMS\Service\DataHandlers\SupplierOrder\SupplierOrderDataHandler;
 
 /**
  * @package:    WebWMS\Service
@@ -21,13 +21,15 @@ class SupplierOrderService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private SupplierOrderRepository $supplierOrderRepository
+        private SupplierOrderDataHandler $supplierOrderDataHandler
     ) {
     }
 
-    public function getSupplierOrderApi(int $supplierOrderId): ?Orders
+    public function getSupplierOrderApi(int $supplierOrderId): ?SupplierOrder
     {
-        $order = $this->supplierOrderRepository->findById($supplierOrderId);
+        $order = $this->entityManager
+            ->getRepository(SupplierOrder::class)
+            ->find($supplierOrderId);
 
         if (!$order) {
             throw new NotFoundException(
@@ -43,7 +45,9 @@ class SupplierOrderService
      */
     public function getAllSupplierOrdersApi(): array
     {
-        return $this->supplierOrderRepository->findBy([], ['supplier_order_id' => 'ASC']);
+        return $this->entityManager
+            ->getRepository(SupplierOrder::class)
+            ->findBy([], ['supplier_order_id' => 'ASC']);
     }
 
     public function addSupplierOrderApi(
@@ -54,8 +58,8 @@ class SupplierOrderService
         string $supplierOrderReference,
         $supplierOrderDate,
         $supplierOrderOrderDate
-    ): Orders {
-        $supplierOrder = new Orders();
+    ): SupplierOrder {
+        $supplierOrder = new SupplierOrder();
         $supplierOrder->setSupplierOrderId($supplierOrderId);
         $supplierOrder->setUsrId($usrId);
         $supplierOrder->setSupplierId($supplierId);
@@ -63,7 +67,7 @@ class SupplierOrderService
         $supplierOrder->setSupplierOrderReference($supplierOrderReference);
         $supplierOrder->setSupplierOrderDate($supplierOrderDate);
         $supplierOrder->setSupplierOrderOrderDate($supplierOrderOrderDate);
-        $this->supplierOrderRepository->save($supplierOrder);
+        $this->supplierOrderDataHandler->save($supplierOrder);
 
         return $supplierOrder;
     }
@@ -77,8 +81,10 @@ class SupplierOrderService
         string $supplierOrderReference,
         $supplierOrderDate,
         $supplierOrderOrderDate
-    ): ?Orders {
-        $supplierOrder = $this->supplierOrderRepository->findById($supplierOrderMainId);
+    ): ?SupplierOrder {
+        $supplierOrder = $this->entityManager
+            ->getRepository(SupplierOrder::class)
+            ->find($supplierOrderMainId);
 
         $supplierOrder->setSupplierOrderId($supplierOrderId);
         $supplierOrder->setUsrId($usrId);
@@ -93,14 +99,16 @@ class SupplierOrderService
 
     public function deleteSupplierOrderApi(int $supplierOrderId): void
     {
-        $supplierOrder = $this->supplierOrderRepository->findById($supplierOrderId);
+        $supplierOrder = $this->entityManager
+            ->getRepository(SupplierOrder::class)
+            ->find($supplierOrderId);
 
         if (!$supplierOrder) {
             throw new NotFoundException(
                 'Supplier order with id '.$supplierOrderId.' does not exist!'
             );
         } else {
-            $this->supplierOrderRepository->delete($supplierOrder);
+            $this->supplierOrderDataHandler->delete($supplierOrder);
         }
     }
 
@@ -144,7 +152,7 @@ class SupplierOrderService
                 INNER JOIN supplier_orders AS ord
                     ON pos.supplier_order_id = ord.supplier_order_id
                 INNER JOIN article AS art
-                    ON pos.article_id = art.id
+                    ON pos.article_id = art.article_id
                 LEFT OUTER JOIN transport_history AS lbw
                     ON ord.supplier_order_nr = lbw.order_nr
                 GROUP BY pos.article_id ORDER BY pos.article_id";
@@ -161,8 +169,8 @@ class SupplierOrderService
      */
     public function getLastSupplierOrderId(): array
     {
-        $customerOrderRepository = $this->entityManager->getRepository(Orders::class);
-
-        return $customerOrderRepository->findBy([], ['supplier_order_id' => 'DESC'], 1, 0);
+        return $this->entityManager
+            ->getRepository(SupplierOrder::class)
+            ->findBy([], ['supplier_order_id' => 'DESC'], 1, 0);
     }
 }

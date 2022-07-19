@@ -16,8 +16,7 @@ class StockOutStrategyService
 {
     public function __construct(
         private StockOutStrategyDataHandler $stockOutStrategyDataHandler
-    )
-    {
+    ) {
     }
 
     /**

@@ -56,6 +56,9 @@ class StockOccupancyService
         return new JsonResponse($result);
     }
 
+    /**
+     * @throws Exception
+     */
     public function getStockOccupancyByCoordinate(Request $request): JsonResponse
     {
         $stockLocationCoordinate = $request->attributes->get('stock_location_coordinate');
