@@ -90,7 +90,7 @@
                                                     <div class="col-xxl-12">
                                                         <span class="text-muted mb-3 lh-1 d-block text-truncate">Lagerauslastung</span>
                                                         <span class="ms-1 text-muted font-size-12">Anzahl Lagerplätze</span>
-                                                        {% set foo = warehouseUtilization.occupiedBinLocations / warehouseUtilization.allStockLocations *100 %}
+                                                        {% set foo = warehouseUtilization.occupiedStockLocations / warehouseUtilization.allStockLocations *100 %}
                                                         <span class="badge rounded-pill badge-soft-success font-size-12 bg-soft-success text-success">{{ foo|number_format(2) }} %</span>
                                                         <div class="col-xxl-12 align-items-center">
                                                             <span class="col-4-text-center">Gesamt</span>
@@ -99,8 +99,8 @@
                                                         </div>
                                                         <div class="col-xxl-12 align-items-center">
                                                             <p class="col-4-form-control text-shadow">{{ warehouseUtilization.allStockLocations }}</p>
-                                                            <p class="col-4-form-control text-shadow">{{ warehouseUtilization.occupiedBinLocations }}</p>
-                                                            <p class="col-4-form-control text-shadow">{{ warehouseUtilization.allStockLocations - warehouseUtilization.occupiedBinLocations }}</p>
+                                                            <p class="col-4-form-control text-shadow">{{ warehouseUtilization.occupiedStockLocations }}</p>
+                                                            <p class="col-4-form-control text-shadow">{{ warehouseUtilization.allStockLocations - warehouseUtilization.occupiedStockLocations }}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -141,7 +141,7 @@
                                                 <div class="row" style="display: none">
                                                     <div class="col-xxl-12">
                                                         <span class="text-muted mb-3 lh-1 d-block text-truncate">Lagerauslastung</span>
-                                                        {% set foo = warehouseUtilization.occupiedBinLocations / warehouseUtilization.allStockLocations *100 %}
+                                                        {% set foo = warehouseUtilization.occupiedStockLocations / warehouseUtilization.allStockLocations *100 %}
                                                         <span class="badge rounded-pill badge-soft-success font-size-12 bg-soft-success text-success">{{ foo|number_format(2) }} %</span>
                                                         <div class="col-xxl-12" style="display: inline-flex">
                                                             <span class="col-4-text-center">Gesamt</span>
@@ -150,8 +150,8 @@
                                                         </div>
                                                         <div class="col-xxl-12" style="display: inline-flex">
                                                             <p class="col-4-form-control text-shadow">{{ warehouseUtilization.allStockLocations }}</p>
-                                                            <p class="col-4-form-control text-shadow">{{ warehouseUtilization.occupiedBinLocations }}</p>
-                                                            <p class="col-4-form-control text-shadow">{{ warehouseUtilization.allStockLocations - warehouseUtilization.occupiedBinLocations }}</p>
+                                                            <p class="col-4-form-control text-shadow">{{ warehouseUtilization.occupiedStockLocations }}</p>
+                                                            <p class="col-4-form-control text-shadow">{{ warehouseUtilization.allStockLocations - warehouseUtilization.occupiedStockLocations }}</p>
                                                         </div>
                                                     </div>
                                                 </div>
