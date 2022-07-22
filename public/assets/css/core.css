@@ -6036,12 +6036,14 @@ button.close {
 .modal-header {
   padding: 15px;
   border-bottom: 1px solid #1c1e22;
+  display: flex;
 }
 .modal-header .close {
   margin-top: -2px;
 }
 .modal-title {
   margin: 0;
+  width: 98%;
   line-height: 1.42857143;
 }
 .modal-body {
@@ -6085,7 +6087,7 @@ button.close {
 }
 @media (min-width: 992px) {
   .modal-lg {
-    width: 900px;
+    width: 60%;
   }
 }
 .tooltip {

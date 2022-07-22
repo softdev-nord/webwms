@@ -51,12 +51,51 @@ class StockOccupancy extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $stockLocationCoordinate = '141';
+        return $this->getStockOccupancyResults($request);
+    }
 
-        $result = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationCoordinate);
+    /**
+     * @Route("/stock_occupancy_ajax", name="stock_occupancy_ajax")
+     * @throws Exception
+     */
+    public function getAllStockOccupancy(): JsonResponse
+    {
+        return $this->stockOccupancyService->getAllStockOccupancy();
+    }
+
+    /**
+     * @Route("/stock_occupancy_ajax/{stock_location_coordinate}", name="stock_occupancy_ajax")
+     * @throws Exception
+     */
+    public function getStockOccupancyByCoordinate(Request $request): JsonResponse
+    {
+        return $this->stockOccupancyService->getStockOccupancyByCoordinate($request);
+    }
+
+    /**
+     * @Route("/stock_occupancy_ajax/stock_location_ln/{stock_location_ln}", name="stock_occupancy_ajax_ln")
+     * @throws Exception
+     */
+    public function getStockOccupancyByLn(Request $request): Response
+    {
+        return $this->getStockOccupancyResults($request);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getStockOccupancyResults($request): Response
+    {
+        if ($request->attributes->get('stock_location_ln')) {
+            $stockLocationLn = $request->attributes->get('stock_location_ln');
+        } else {
+            $stockLocationLn = $this->stockLocationService->getAllStockLocationsForSelect()[0]['stock_location_ln'];
+        }
+
+        $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationLn);
         $stockResults = [];
 
-        foreach ($result as $stock) {
+        foreach ($allStockOccupancy as $stock) {
             if ($stock['system'] === 'Block-Lager') {
                 $stockResults[$stock['sp']][] = $stock;
             } else {
@@ -77,22 +116,5 @@ class StockOccupancy extends AbstractController
                 'stockResults' => array_reverse($stockResults, true),
             ]
         );
-    }
-
-    /**
-     * @Route("/stock_occupancy_ajax", name="stock_occupancy_ajax")
-     * @throws Exception
-     */
-    public function getAllStockOccupancy(): JsonResponse
-    {
-        return $this->stockOccupancyService->getAllStockOccupancy();
-    }
-
-    /**
-     * @Route("/stock_occupancy_ajax/{stock_location_coordinate}", name="stock_occupancy_ajax")
-     */
-    public function getStockOccupancyByCoordinate(Request $request): JsonResponse
-    {
-        return $this->stockOccupancyService->getStockOccupancyByCoordinate($request);
     }
 }

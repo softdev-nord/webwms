@@ -1,7 +1,7 @@
 (function($){
     $(document).on('click','a#stockCoordinate',function(event) {
         event.stopPropagation();
-        $('#stockTable').DataTable({
+        const stockTable = $('#stockTable').DataTable({
             "lengthChange": false,
             "searching": false,
             "info": false,
@@ -45,6 +45,23 @@
         $(".modal-title").html(desc + stockComplete);
         $("#currentCoordinate").val(currentCoordinate);
         $('#showStockDetails').modal('show');
+    });
+
+    $(document).on('change','#selectStock',function(event) {
+        const select = $('#selectStock option:selected').text();
+        const url = '/stock_occupancy_ajax/stock_location_ln/' + select;
+
+        console.log(select);
+
+        $.ajax({
+            method: 'GET',
+            url         : url,
+            dataType: "html",
+            success     : function (data) {
+                console.log(data);
+                $('#stockLocationTable').load(url + ' #stockLocationTable');
+            }
+        });
     });
 })(jQuery);
 
