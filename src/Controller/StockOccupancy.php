@@ -94,6 +94,7 @@ class StockOccupancy extends AbstractController
 
         $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationLn);
         $stockResults = [];
+        $stockSystem = [];
 
         foreach ($allStockOccupancy as $stock) {
             if ($stock['system'] === 'Block-Lager') {
@@ -114,6 +115,7 @@ class StockOccupancy extends AbstractController
                 'page' => 'Lagerbelegungen',
                 'stockSelect' => $this->stockLocationService->getAllStockLocationsForSelect(),
                 'stockResults' => array_reverse($stockResults, true),
+                'stockSystem' => $stock['system'],
             ]
         );
     }
