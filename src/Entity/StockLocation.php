@@ -61,6 +61,16 @@ class StockLocation
     private ?string $stock_location_depth;
 
     /**
+     * @ORM\Column(type="decimal", precision=6, scale=2)
+     */
+    private ?string $stock_location_height;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private ?string $stock_location_zone;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private mixed $stock_location_created_at;
@@ -69,11 +79,6 @@ class StockLocation
      * @ORM\Column(type="datetime", nullable=true)
      */
     private mixed $stock_location_updated_at;
-
-    /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
-     */
-    private ?string $stock_location_height;
 
     public function getStockLocationId(): ?int
     {
@@ -197,6 +202,22 @@ class StockLocation
         $this->stock_location_height = $stock_location_height;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStockLocationZone(): ?string
+    {
+        return $this->stock_location_zone;
+    }
+
+    /**
+     * @param string|null $stock_location_zone
+     */
+    public function setStockLocationZone(?string $stock_location_zone): void
+    {
+        $this->stock_location_zone = $stock_location_zone;
     }
 
     /**

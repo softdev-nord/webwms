@@ -3,6 +3,7 @@
 namespace WebWMS\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -100,6 +101,25 @@ class AddNewArticleType extends AbstractType
                     'class' => 'form-control',
                     'id' => 'article_height',
                     'data-type' => 'article_height',
+                ],
+            ])
+            ->add('stock_out_strategy', ChoiceType::class, [
+                'label' => false,
+                'choices' => [
+                    'FIFO (First In – First Out)' => 'FIFO',
+                    'FEFO (First Expired – First Out)' => 'FEFO',
+                    'LIFO (Last In – First Out)' => 'LIFO',
+                    'HIFO (Highest In – First Out)' => 'HIFO',
+                    'LOFO (Lowest In – First Out)' => 'LOFO',
+                    'Chaotische Lagerhaltung (Chaotic warehousing)' => 'CWH'
+                ],
+            ])
+            ->add('le_quantity', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'le_quantity	',
+                    'data-type' => 'le_quantity',
                 ],
             ])
             ->add('add_article', SubmitType::class, [

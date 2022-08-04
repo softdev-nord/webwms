@@ -36,6 +36,12 @@ composer-update: ## Composer update
 clear-caches: ## Clear caches
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'bin/console cache:clear'
 
+yarn-watch: ## Yarn watch
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'yarn watch'
+
+generate-bundle: ## Yarn watch
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'bin/console webwms:generate:bundle'
+
 ######################################################################
 ############################ Database ################################
 ######################################################################

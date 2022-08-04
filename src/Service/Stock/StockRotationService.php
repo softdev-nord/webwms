@@ -39,7 +39,7 @@ class StockRotationService
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
 
         $queryBuilder
-            ->select('str.id, bm.bm_short, bm.bm_desc, str.stock_location_id,
+            ->select('str.id, bm.movement_type, bm.description, str.stock_location_id,
                     CONCAT(stl.stock_location_ln, "-", stl.stock_location_fb, "-", stl.stock_location_sp, "-", stl.stock_location_tf) AS stock_location,
                     stl.stock_location_desc, art.article_nr, art.article_name, str.pos_quantity, usr.username, str.access_date, str.dispatch_date')
             ->from('stock_rotation', 'str')

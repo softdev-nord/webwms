@@ -96,6 +96,7 @@ class StockLocationDataHandler
         $stockLocation->setStockLocationWidth((string) $requestData['stock_location_width']);
         $stockLocation->setStockLocationDepth((string) $requestData['stock_location_depth']);
         $stockLocation->setStockLocationHeight((string) $requestData['stock_location_height']);
+        $stockLocation->setStockLocationZone((string) $requestData['stock_location_zone']);
         $stockLocation->setStockLocationUpdatedAt($updatedAt);
 
         $this->update($stockLocation);

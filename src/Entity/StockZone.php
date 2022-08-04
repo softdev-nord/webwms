@@ -22,12 +22,12 @@ class StockZone
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $zone_short_desc;
+    private ?string $zone_short_desc;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $zone_description;
+    private ?string $zone_description;
 
     public function getId(): ?int
     {

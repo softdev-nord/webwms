@@ -20,41 +20,197 @@ class BookingMethod
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $bm_short;
+    private mixed $menu_id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $bm_desc;
+    private mixed $confirmation;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private mixed $movement_type;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private mixed $description;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private mixed $ansteuerung;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private mixed $upload;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private mixed $statistics;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private mixed $priority;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private mixed $tid_description;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBmShort(): ?string
+    /**
+     * @return mixed
+     */
+    public function getMenuId(): mixed
     {
-        return $this->bm_short;
+        return $this->menu_id;
     }
 
-    public function setBmShort(string $bm_short): self
+    /**
+     * @param mixed $menu_id
+     */
+    public function setMenuId(mixed $menu_id): void
     {
-        $this->bm_short = $bm_short;
-
-        return $this;
+        $this->menu_id = $menu_id;
     }
 
-    public function getBmDesc(): ?string
+    /**
+     * @return mixed
+     */
+    public function getConfirmation(): mixed
     {
-        return $this->bm_desc;
+        return $this->confirmation;
     }
 
-    public function setBmDesc(string $bm_desc): self
+    /**
+     * @param mixed $confirmation
+     */
+    public function setConfirmation(mixed $confirmation): void
     {
-        $this->bm_desc = $bm_desc;
+        $this->confirmation = $confirmation;
+    }
 
-        return $this;
+    /**
+     * @return mixed
+     */
+    public function getMovementType(): mixed
+    {
+        return $this->movement_type;
+    }
+
+    /**
+     * @param mixed $movement_type
+     */
+    public function setMovementType(mixed $movement_type): void
+    {
+        $this->movement_type = $movement_type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription(): mixed
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription(mixed $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnsteuerung(): mixed
+    {
+        return $this->ansteuerung;
+    }
+
+    /**
+     * @param mixed $ansteuerung
+     */
+    public function setAnsteuerung(mixed $ansteuerung): void
+    {
+        $this->ansteuerung = $ansteuerung;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpload(): mixed
+    {
+        return $this->upload;
+    }
+
+    /**
+     * @param mixed $upload
+     */
+    public function setUpload(mixed $upload): void
+    {
+        $this->upload = $upload;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatistics(): mixed
+    {
+        return $this->statistics;
+    }
+
+    /**
+     * @param mixed $statistics
+     */
+    public function setStatistics(mixed $statistics): void
+    {
+        $this->statistics = $statistics;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPriority(): mixed
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param mixed $priority
+     */
+    public function setPriority(mixed $priority): void
+    {
+        $this->priority = $priority;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTidDescription(): mixed
+    {
+        return $this->tid_description;
+    }
+
+    /**
+     * @param mixed $tid_description
+     */
+    public function setTidDescription(mixed $tid_description): void
+    {
+        $this->tid_description = $tid_description;
     }
 }

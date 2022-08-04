@@ -83,6 +83,18 @@
                                     {{ form_row(addArticleForm.article_height) }}
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Auslagerungsstrategie</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(addArticleForm.stock_out_strategy) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">LE-Menge</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(addArticleForm.le_quantity) }}
+                                </div>
+                            </div>
                             <div class="form-group col-md-12">
                                 {% for message in app.flashes('success') %}
                                     <div class="alert alert-success">

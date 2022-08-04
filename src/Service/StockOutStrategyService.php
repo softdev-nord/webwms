@@ -93,10 +93,10 @@ class StockOutStrategyService
     /**
      * LOFO (Lowest In – First Out).
      *
-     * Eine eher seltene Lagerstrategie, bei der die Ware mit dem höchsten Wert bzw. Preis
-     * oder Beschaffungswert das Lager zuerst verlassen.
-     * Vorzugsweise wird diese Strategie bei tagespreis abhängigen oder bei Ware,
-     * die durch die Zeit angegriffen wird, eingesetzt.
+     * Wie HIFO eine ebenfalls selten eingesetzte Strategie.
+     * Hier werden Waren mit dem niedrigsten Warenwert zuerst entnommen.
+     * Betriebswirtschaftlich macht diese Strategie wenig Sinn,
+     * weil die wertvolleren Artikel im Lager bleiben und hohes Kapital binden.
      */
     public function loFoStrategy()
     {
@@ -111,7 +111,7 @@ class StockOutStrategyService
      * Mithilfe eines chaotischen Lagers wird die Kapazität eines Lagers optimal ausgelastet.
      * Lagerplätze werden nicht freigehalten oder eingeplant, wenn ein Artikel ausgelagert oder ausverkauft ist.
      */
-    public function chaoticStorageStockOutStrategy()
+    public function chaoticWarehousingStockOutStrategy()
     {
         $this->stockOutStrategyDataHandler->chaoticStorageStockOutStrategy();
     }

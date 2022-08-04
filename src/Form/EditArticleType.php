@@ -4,6 +4,7 @@ namespace WebWMS\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -119,6 +120,22 @@ class EditArticleType extends AbstractType
                 'class' => 'form-control',
                 'id' => 'article_height',
                 'data-type' => 'article_height',
+            ],
+        ]);
+        $builder->add('stock_out_strategy', TextType::class, [
+            'label' => false,
+            'attr' => [
+                'class' => 'form-control',
+                'id' => 'stock_out_strategy',
+                'data-type' => 'stock_out_strategy',
+            ],
+        ]);
+        $builder->add('le_quantity', TextType::class, [
+            'label' => false,
+            'attr' => [
+                'class' => 'form-control',
+                'id' => 'le_quantity	',
+                'data-type' => 'le_quantity',
             ],
         ]);
         $builder->add('save', ButtonType::class, [

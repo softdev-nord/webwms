@@ -2,6 +2,8 @@
 
 namespace WebWMS\Form;
 
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -9,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\StockLocation;
+use WebWMS\Entity\StockZone;
 
 /**
  * @package:    WebWMS\Form
@@ -99,6 +102,18 @@ class EditStockLocationType extends AbstractType
                 'class' => 'form-control',
                 'id' => 'stock_location_height',
                 'data-type' => 'stock_location_height',
+            ],
+        ]);
+        /*$builder->add('stock_location_zone', EntityType::class, [
+            'label' => false,
+            'class' => StockZone::class,
+            'choice_label' => 'zone_short_desc',
+        ]);*/
+        $builder->add('stock_location_zone', TextType::class, [
+            'label' => false,
+            'attr' => [
+                'class' => 'form-control',
+                'data-type' => 'stock_location_zone',
             ],
         ]);
         $builder->add('save', ButtonType::class, [

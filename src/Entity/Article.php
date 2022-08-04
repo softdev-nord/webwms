@@ -66,6 +66,16 @@ class Article
     private mixed $article_height;
 
     /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private mixed $stock_out_strategy;
+
+    /**
+     * @ORM\Column(type="decimal", precision=6, scale=2)
+     */
+    private mixed $le_quantity;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private mixed $article_created_at;
@@ -233,6 +243,38 @@ class Article
     public function setArticleHeight(mixed $article_height): void
     {
         $this->article_height = $article_height;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStockOutStrategy(): mixed
+    {
+        return $this->stock_out_strategy;
+    }
+
+    /**
+     * @param mixed $stock_out_strategy
+     */
+    public function setStockOutStrategy(mixed $stock_out_strategy): void
+    {
+        $this->stock_out_strategy = $stock_out_strategy;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLeQuantity(): mixed
+    {
+        return $this->le_quantity;
+    }
+
+    /**
+     * @param mixed $le_quantity
+     */
+    public function setLeQuantity(mixed $le_quantity): void
+    {
+        $this->le_quantity = $le_quantity;
     }
 
     /**

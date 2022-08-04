@@ -39,6 +39,10 @@ class StockLocation extends AbstractController
      */
     public function index(): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render(
             'stock/stock_location.html.twig',
             [
