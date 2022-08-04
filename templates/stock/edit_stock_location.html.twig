@@ -82,6 +82,12 @@
                                     {{ form_row(editStockLocationForm.stock_location_height) }}
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="text" class="control-label col-xs-4">Lager-Zone</label>
+                                <div class="col-xs-8" style="margin-bottom: 5px;">
+                                    {{ form_row(editStockLocationForm.stock_location_zone) }}
+                                </div>
+                            </div>
                             <div class="text-center">
                                 {{ form_widget(editStockLocationForm.save) }}
                                 {{ form_widget(editStockLocationForm.back_to_stock_location_overview) }}

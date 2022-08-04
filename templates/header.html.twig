@@ -16,6 +16,7 @@
     <script type="text/javascript" src="{{ asset('assets/js/bootstrap.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/custom.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/jquery.webWMS.Core.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockTransactions.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/jBox/dist/jBox.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/jAlert.min.js') }}"></script>
 {% endblock %}
@@ -43,15 +44,15 @@
                         <ul class="dropdown-menu">
                             <li class="dropdown-submenu"><a href="#">Einlagern</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Einlagern direkt</a></li>
-                                    <li><a href="#">Zugang aus Wareneingang</a></li>
-                                    <li><a href="#">Zugang aus Produktion</a></li>
-                                    <li><a href="#">Einlagern von Kostenstelle</a></li>
-                                    <li><a href="#">Einlagern in Conatiner</a></li>
-                                    <li><a href="#">Einlagern mit Ladehilfsmittel</a></li>
-                                    <li><a href="#">Einlagern direkt in WE-Zone</a></li>
-                                    <li><a href="#">Einlagern direkt in WA-Zone</a></li>
-                                    <li><a href="#">WE zu Bestellung</a></li>
+                                    <li><a id="stock_in">Einlagern direkt</a></li>
+                                    <li><a id="stock_in_from_goods_receipt">Zugang aus Wareneingang</a></li>
+                                    <li><a id="stock_in_from_production">Zugang aus Produktion</a></li>
+                                    <li><a id="stock_in_from_cost_centre">Einlagern von Kostenstelle</a></li>
+                                    <li><a id="stock_in_into_container">Einlagern in Container</a></li>
+                                    <li><a id="stock_in_using_loading_equipment">Einlagern mit Ladehilfsmittel</a></li>
+                                    <li><a id="stock_in_into_receiving_area">Einlagern direkt in WE-Zone</a></li>
+                                    <li><a id="stock_in_into_dispatch_area">Einlagern direkt in WA-Zone</a></li>
+                                    <li><a id="stock_in_for_supplier_order">WE zu Bestellung</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown-submenu"><a href="#">Auslagern</a>
@@ -60,7 +61,7 @@
                                     <li><a href="#">Auslagern auf Kostenstelle</a></li>
                                     <li><a href="#">Ausleihen auf Kostenstelle</a></li>
                                     <li><a href="#">Auslagern aus Kostenstelle</a></li>
-                                    <li><a href="#">Auslagern aus Conatiner</a></li>
+                                    <li><a href="#">Auslagern aus Container</a></li>
                                     <li><a href="#">Auslagern direkt aus WA-Zone</a></li>
                                 </ul>
                             </li>
@@ -249,4 +250,16 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block webwms_stock_occupancies_stock_detail %}
+    {{ include('modal/stock_in_modal.html.twig') }}
+    {{ include('modal/stock_in_from_goods_receipt_modal.html.twig') }}
+    {{ include('modal/stock_in_from_production_modal.html.twig') }}
+    {{ include('modal/stock_in_from_cost_centre_modal.html.twig') }}
+    {{ include('modal/stock_in_into_container_modal.html.twig') }}
+    {{ include('modal/stock_in_using_loading_equipment_modal.html.twig') }}
+    {{ include('modal/stock_in_into_receiving_area_modal.html.twig') }}
+    {{ include('modal/stock_in_into_dispatch_area_modal.html.twig') }}
+    {{ include('modal/stock_in_for_supplier_order_modal.html.twig') }}
 {% endblock %}

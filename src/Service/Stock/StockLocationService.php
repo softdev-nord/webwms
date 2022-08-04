@@ -91,6 +91,7 @@ class StockLocationService
                 $setStockLocations->setStockLocationWidth($stockLocation['stock_location_width']);
                 $setStockLocations->setStockLocationDepth($stockLocation['stock_location_depth']);
                 $setStockLocations->setStockLocationHeight($stockLocation['stock_location_height']);
+                $setStockLocations->setStockLocationZone($stockLocations['stock_location_zone']);
                 $setStockLocations->setStockLocationCreatedAt($createdAt);
 
                 $this->entityManager->persist($setStockLocations);
@@ -107,6 +108,7 @@ class StockLocationService
             $setStockLocations->setStockLocationWidth($stockLocations['stock_location_width']);
             $setStockLocations->setStockLocationDepth($stockLocations['stock_location_depth']);
             $setStockLocations->setStockLocationHeight($stockLocations['stock_location_height']);
+            $setStockLocations->setStockLocationZone($stockLocations['stock_location_zone']);
             $setStockLocations->setStockLocationCreatedAt($createdAt);
 
             $this->entityManager->persist($setStockLocations);
