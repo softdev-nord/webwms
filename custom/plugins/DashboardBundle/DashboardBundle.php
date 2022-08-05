@@ -14,4 +14,18 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class DashboardBundle extends Bundle
 {
+    public function getNiceName(): string
+    {
+        return 'webWMS Dashboard';
+    }
+
+    public function getDescription(): string
+    {
+        return 'Bundle für die webWMS Dashboards';
+    }
+
+    public function getVersion(): string
+    {
+        return '1.0.0';
+    }
 }
