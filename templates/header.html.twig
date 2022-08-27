@@ -19,6 +19,7 @@
     <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockTransactions.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/jBox/dist/jBox.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/jAlert.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockInItemsAutofill.js') }}"></script>
 {% endblock %}
 
 {% block webwms_header_navigation %}
@@ -44,7 +45,7 @@
                         <ul class="dropdown-menu">
                             <li class="dropdown-submenu"><a href="#">Einlagern</a>
                                 <ul class="dropdown-menu">
-                                    <li><a id="stock_in">Einlagern direkt</a></li>
+                                    <li><a id="stock_in" href="{{ path('stock_in') }}">Einlagern direkt</a></li>
                                     <li><a id="stock_in_from_goods_receipt">Zugang aus Wareneingang</a></li>
                                     <li><a id="stock_in_from_production">Zugang aus Produktion</a></li>
                                     <li><a id="stock_in_from_cost_centre">Einlagern von Kostenstelle</a></li>
@@ -250,16 +251,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block webwms_stock_occupancies_stock_detail %}
-    {{ include('modal/stock_in_modal.html.twig') }}
-    {{ include('modal/stock_in_from_goods_receipt_modal.html.twig') }}
-    {{ include('modal/stock_in_from_production_modal.html.twig') }}
-    {{ include('modal/stock_in_from_cost_centre_modal.html.twig') }}
-    {{ include('modal/stock_in_into_container_modal.html.twig') }}
-    {{ include('modal/stock_in_using_loading_equipment_modal.html.twig') }}
-    {{ include('modal/stock_in_into_receiving_area_modal.html.twig') }}
-    {{ include('modal/stock_in_into_dispatch_area_modal.html.twig') }}
-    {{ include('modal/stock_in_for_supplier_order_modal.html.twig') }}
 {% endblock %}

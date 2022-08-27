@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\Article;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
+use WebWMS\Service\TransportRequestService;
 
 /**
  * @package:    WebWMS\Service
@@ -23,7 +24,8 @@ class ArticleService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private ArticleDataHandler $articleDataHandler
+        private ArticleDataHandler $articleDataHandler,
+        private TransportRequestService $transportRequestService
     ) {
     }
 
@@ -61,7 +63,10 @@ class ArticleService
         string $articleUnit,
         float $articleDepth,
         float $articleWidth,
-        float $articleHeight
+        float $articleHeight,
+        string $stockOutStrategy,
+        float $leQuantity,
+        string $standardLoadingEquipment
     ): Article {
         $article = new Article();
         $article->setArticleNr($articleNr);
@@ -73,6 +78,9 @@ class ArticleService
         $article->setArticleDepth($articleDepth);
         $article->setArticleWidth($articleWidth);
         $article->setArticleHeight($articleHeight);
+        $article->setStockOutStrategy($stockOutStrategy);
+        $article->setLeQuantity($leQuantity);
+        $article->setStandardLoadingEquipment($standardLoadingEquipment);
         $this->articleDataHandler->save($article);
 
         return $article;
@@ -88,7 +96,10 @@ class ArticleService
         string $articleUnit,
         float $articleDepth,
         float $articleWidth,
-        float $articleHeight
+        float $articleHeight,
+        string $stockOutStrategy,
+        float $leQuantity,
+        string $standardLoadingEquipment
     ): ?Article {
         $article = $this->entityManager
             ->getRepository(Article::class)
@@ -106,6 +117,9 @@ class ArticleService
         $article->setArticleDepth($articleDepth);
         $article->setArticleWidth($articleWidth);
         $article->setArticleHeight($articleHeight);
+        $article->setStockOutStrategy($stockOutStrategy);
+        $article->setLeQuantity($leQuantity);
+        $article->setStandardLoadingEquipment($standardLoadingEquipment);
         $this->articleDataHandler->save($article);
 
         return $article;
@@ -147,32 +161,47 @@ class ArticleService
         $numOfBoxArt = !empty($_GET['numOfBoxArt']) ? $_GET['numOfBoxArt'] : '';
         $name = !empty($_GET['article_nr']) ? strtolower(trim($_GET['article_nr'])) : '';
 
-        $boxName = 'article_nr';
+        $boxName = '';
 
         switch ($numOfBoxArt) {
             case 1:
-                $boxName = 'article_name';
+                $boxName = 'article_nr';
                 break;
             case 2:
-                $boxName = 'id';
-                break;
-            case 3:
-                $boxName = 'art_ean';
-                break;
-            case 4:
-                $boxName = 'art_kat';
+                $boxName = 'article_name';
                 break;
         }
+
+        if (empty($boxName)) {
+            $boxName = 'article_nr';
+        }
+
+        //dd($_GET['name_art']);
 
         $data = [];
         if (!empty($_GET['name_art'])) {
             $name = strtolower(trim($_GET['name_art']));
 
-            $sqlArt = "SELECT article_nr, article_name, article_id, article_ean, article_category FROM article where LOWER($boxName) LIKE '".$name."%'";
+            $sqlArt = "SELECT * FROM article where LOWER($boxName) LIKE '".$name."%'";
+
             $stmt = $connection->executeQuery($sqlArt);
 
             while ($row = $stmt->fetchAssociative()) {
-                $name = $row['article_nr'].'|'.$row['article_name'].'|'.$row['id'].'|'.$row['article_ean'].'|'.$row['article_category'];
+                $name = $row['article_id']
+                    .'|'.$row['article_nr']
+                    .'|'.$row['article_name']
+                    .'|'.$row['article_category']
+                    .'|'.$row['article_weight']
+                    .'|'.$row['article_ean']
+                    .'|'.$row['article_unit']
+                    .'|'.$row['article_depth']
+                    .'|'.$row['article_width']
+                    .'|'.$row['article_height']
+                    .'|'.$row['stock_out_strategy']
+                    .'|'.$row['le_quantity']
+                    .'|'.$row['standard_loading_equipment']
+                    .'|'.$row['article_created_at']
+                    .'|'.$row['article_updated_at'];
                 $data[] = $name;
             }
         }
@@ -182,6 +211,7 @@ class ArticleService
 
     public function addArticle(Request $request)
     {
+        $createdAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
         $params = $request->request->all()['add_new_article'];
         $lastArticle = $this->getLastArticle();
         $article = new Article();
@@ -195,6 +225,10 @@ class ArticleService
         $article->setArticleDepth($params['article_depth']);
         $article->setArticleWidth($params['article_width']);
         $article->setArticleHeight($params['article_height']);
+        $article->setStockOutStrategy($params['stock_out_strategy']);
+        $article->setLeQuantity($params['le_quantity']);
+        $article->setStandardLoadingEquipment($params['standard_loading_equipment']);
+        $article->setArticleCreatedAt($createdAt);
 
         $this->articleDataHandler->save($article);
     }
@@ -220,6 +254,9 @@ class ArticleService
         $article->setArticleDepth($requestData['article_depth']);
         $article->setArticleWidth($requestData['article_width']);
         $article->setArticleHeight($requestData['article_height']);
+        $article->setStockOutStrategy($requestData['stock_out_strategy']);
+        $article->setLeQuantity($requestData['le_quantity']);
+        $article->setStandardLoadingEquipment($requestData['standard_loading_equipment']);
         $article->setArticleUpdatedAt($updatedAt);
 
         $this->articleDataHandler->update($article);

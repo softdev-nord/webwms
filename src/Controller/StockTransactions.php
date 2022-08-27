@@ -5,9 +5,20 @@ declare(strict_types=1);
 namespace WebWMS\Controller;
 
 use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Controller\Requirements as Requirements;
+use WebWMS\Form\Stock\StockInType;
 use WebWMS\Service\BookingMethod\BookingMethodConstants;
 use WebWMS\Service\BookingMethod\BookingMethodService;
+use WebWMS\Service\SlackNotificationService;
+use WebWMS\Service\Stock\StockLocationService;
+use WebWMS\Service\Stock\StockOccupancyService;
+use WebWMS\Service\TransportRequestService;
 
 /**
  * @package:    WebWMS\Controller
@@ -15,11 +26,19 @@ use WebWMS\Service\BookingMethod\BookingMethodService;
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        StockTransactions
  */
-class StockTransactions
+class StockTransactions extends AbstractController
 {
+    public const KARTON = 'Durchlaufregal';
+    public const PALETTE = 'Pal Regal';
+    public const BLOCK = 'Block-Lager';
+
     public function __construct(
+        private Requirements $requirements,
         private BookingMethodService $bookingMethodService,
-        private BookingMethodConstants $bookingMethodConstants
+        private BookingMethodConstants $bookingMethodConstants,
+        private StockLocationService $stockLocationService,
+        private TransportRequestService $transportRequestService,
+        private StockOccupancyService $stockOccupancyService
     ) {
     }
 
@@ -29,10 +48,83 @@ class StockTransactions
      * @Route("/stock_in", name="stock_in")
      * @throws EntityNotFoundException
      */
-    public function stockIn()
+    public function stockIn(Request $request): RedirectResponse|Response
     {
+        //dd($request);
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $freeStockLocations = [];
         $bookingMethod = $this->bookingMethodConstants::SI101;
         $this->bookingMethodService->getBookingMethod($bookingMethod);
+
+        $form = $this->createForm(StockInType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $requestData = $form->getData();
+            $stockUnits = (int) ceil(
+                (int)$requestData['quantity'] / (int)$requestData['le_quantity'],
+            );
+
+            $stockSystem = match ($requestData['standard_loading_equipment']) {
+                'KARTON' => self::KARTON,
+                'PALETTE' => self::PALETTE,
+                'BLOCK' => self::BLOCK,
+                default => 'KST',
+            };
+
+            $fullPal = intdiv((int)$requestData['quantity'], (int)$requestData['le_quantity']);
+            $remainder = fmod((float) $requestData['quantity'], (float) $requestData['le_quantity']);
+
+            $stockLocations = $this->stockLocationService->getFreeStockLocations($stockSystem, $stockUnits);
+            $suId = $this->transportRequestService->getLastStockUnit()[0]->getSuId();
+
+            foreach ($stockLocations as $key => $stockLocation) {
+                if ((string)$fullPal <= $stockUnits) {
+                    $quantity = $key === array_key_last($stockLocations) ? number_format($remainder, 2, '.', '') : $requestData['le_quantity'];
+
+                    $freeStockLocations[] = [
+                        'su_id' => ++$suId,
+                        'ln' => $stockLocation['ln'],
+                        'fb' => $stockLocation['fb'],
+                        'sp' => $stockLocation['sp'],
+                        'tf' => $stockLocation['tf'],
+                        'ln_komplett' => $stockLocation['ln'] . '-' . $stockLocation['fb'] . '-' . $stockLocation['sp'] . '-' . $stockLocation['tf'],
+                        'koordinate' => $stockLocation['koordinate'],
+                        'system' => $stockLocation['system'],
+                        'quantity' => $quantity
+                    ];
+                }
+            }
+            return $this->render(
+                'modal/put_into_storage.html.twig',
+                [
+                    'appName' => $this->requirements->getAppName(),
+                    'appVersion' => $this->requirements->getAppVersion(),
+                    'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                    'appCopyright' => $this->requirements->getAppCopyright(),
+                    'appLizenz' => $this->requirements->getAppLizenz(),
+                    'page' => 'Einlagern direkt',
+                    'stockInForm' => $form->createView(),
+                    'selectedStockLocations' => $freeStockLocations
+                ]
+            );
+        }
+
+        return $this->render(
+            'modal/stock_in_modal.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Einlagern direkt',
+                'stockInForm' => $form->createView(),
+                'selectedStockLocations' => $freeStockLocations
+            ]
+        );
     }
 
     /**
@@ -309,5 +401,25 @@ class StockTransactions
     {
         $bookingMethod = $this->bookingMethodConstants::SO188;
         $this->bookingMethodService->getBookingMethod($bookingMethod);
+    }
+
+    /**
+     * @Route("/get_first_free_stock_location", name="get_first_free_stock_location")
+     */
+    public function getFirstFreeStockLocation(Request $request)
+    {
+        $form = $this->createFormBuilder($request);
+        dd($form);
+    }
+
+    public function generateSuId($stockLocations, $fullPal): int
+    {
+        $count = count(array_keys($stockLocations));
+        $suId = $this->transportRequestService->getLastStockUnit()[0]->getSuId();
+        for ($i = 0; $i <= $count; $i++) {
+            $suId += $i;
+        }
+
+        return $suId;
     }
 }

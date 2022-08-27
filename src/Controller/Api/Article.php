@@ -117,7 +117,10 @@ class Article extends AbstractFOSRestController
             $request->get('article_unit'),
             $request->get('article_depth'),
             $request->get('article_width'),
-            $request->get('article_height')
+            $request->get('article_height'),
+            $request->get('stock_out_strategy'),
+            $request->get('le_quantity'),
+            $request->get('standard_loading_equipment')
         );
 
         return View::create($article, Response::HTTP_CREATED);
@@ -148,7 +151,10 @@ class Article extends AbstractFOSRestController
             $request->get('article_unit'),
             $request->get('article_depth'),
             $request->get('article_width'),
-            $request->get('article_height')
+            $request->get('article_height'),
+            $request->get('stock_out_strategy'),
+            $request->get('le_quantity'),
+            $request->get('standard_loading_equipment')
         );
 
         return View::create($article, Response::HTTP_OK);

@@ -75,3 +75,13 @@ services:
 
     WebWMS\Bundles\DashboardBundle\Controller\DashboardController:
         public: true
+
+    WebWMS\EventListener\ControllerListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller }
+
+    WebWMS\Controller\StockTransactions:
+        public: true
+        tags: ['controller.service_arguments']
+        arguments:
+            $bookingMethodService: "@WebWMS\\Service\\BookingMethod\\BookingMethodService"

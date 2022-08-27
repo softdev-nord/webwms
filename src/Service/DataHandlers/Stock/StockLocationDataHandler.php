@@ -103,4 +103,57 @@ class StockLocationDataHandler
 
         return $stockLocation;
     }
+
+    public function getAllStockLocations($stockSystem, $limit): array
+    {
+        $allResults = [];
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('
+            sl.stock_location_coordinate AS koordinate,
+            sl.stock_location_ln AS ln,
+            sl.stock_location_fb AS fb,
+            sl.stock_location_sp AS sp,
+            sl.stock_location_tf AS tf,
+            sl.stock_location_desc,
+            (SELECT SUM((SELECT IF(tr_typ = 1, tr_quantity, 0.000))) FROM transport_history WHERE stock_coordinate = tph.stock_coordinate GROUP BY stock_coordinate LIMIT 1) - (SELECT SUM((SELECT IF(tr_typ = 2, tr_quantity, 0.000))) FROM transport_history WHERE stock_coordinate = tph.stock_coordinate GROUP BY stock_coordinate LIMIT 1) AS lp_bestand')
+            ->from('transport_history', 'tph')
+            ->rightJoin('tph', 'stock_location', 'sl', 'tph.stock_coordinate = sl.stock_location_coordinate')
+            ->where('sl.stock_location_desc = :system')
+            ->setParameter('system', $stockSystem)
+            ->groupBy('sl.stock_location_coordinate')->setMaxResults($limit);
+
+        $stmt = $queryBuilder->executeQuery();
+
+        $results = $stmt->fetchAllAssociative();
+
+        foreach ($results as $result) {
+            if ($result['lp_bestand'] > 0) {
+                $allResults[] = [
+                    'ln' => $result['ln'],
+                    'fb' => $result['fb'],
+                    'sp' => $result['sp'],
+                    'tf' => $result['tf'],
+                    'lnKomplett' => $result['ln'] . '-' . $result['fb'] . '-' . $result['sp'] . '-' . $result['tf'],
+                    'koordinate' => $result['koordinate'],
+                    'system' => $result['stock_location_desc'],
+                    'belegt' => true
+                ];
+            } else {
+                $allResults[] = [
+                    'ln' => $result['ln'],
+                    'fb' => $result['fb'],
+                    'sp' => $result['sp'],
+                    'tf' => $result['tf'],
+                    'lnKomplett' => $result['ln'] . '-' . $result['fb'] . '-' . $result['sp'] . '-' . $result['tf'],
+                    'koordinate' => $result['koordinate'],
+                    'system' => $result['stock_location_desc'],
+                    'belegt' => false
+                ];
+            }
+        }
+
+        return $allResults;
+    }
 }

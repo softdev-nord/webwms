@@ -4,6 +4,8 @@ namespace WebWMS\Service\Stock;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\StockLocation;
@@ -20,7 +22,8 @@ class StockLocationService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private StockLocationDataHandler $stockLocationDataHandler
+        private StockLocationDataHandler $stockLocationDataHandler,
+        private ContainerInterface $container
     ) {
     }
 
@@ -178,17 +181,52 @@ class StockLocationService
         return $stockLocation;
     }
 
-    /**
-     * @throws NotFoundException
-     * @throws Exception
-     */
-    public function getFreeStockLocations(): JsonResponse
+    public function getFreeStockLocations($stockSystem, $limit): array
     {
-        return $this->getAllStockLocations();
+        return $this->stockLocationDataHandler->getAllStockLocations($stockSystem, $limit);
+    }
+
+    public function getFirstFreeStockLocation($stockSystem, $limit): array
+    {
+        $freeStockLocation = [];
+        $stockLocations = $this->getFreeStockLocations($stockSystem, $limit);
+
+        foreach ($stockLocations as $stockLocation) {
+            if ($stockLocation['belegt'] !== true) {
+                $freeStockLocation[] = $stockLocation;
+            }
+        }
+
+        return $freeStockLocation;
     }
 
     public function generateStockCoordinateLevel($string): string
     {
         return str_pad($string, 4, '0', STR_PAD_LEFT);
+    }
+
+    public function getRemainder($stockLocation, $remainder): array
+    {
+        $freeStockLocations = [];
+
+        if (isset($remainder)) {
+            $freeStockLocations[] = [
+                'ln' => $stockLocation['ln'],
+                'fb' => $stockLocation['fb'],
+                'sp' => $stockLocation['sp'],
+                'tf' => $stockLocation['tf'],
+                'lnKomplett' => $stockLocation['ln'] . '-' . $stockLocation['fb'] . '-' . $stockLocation['sp'] . '-' . $stockLocation['tf'],
+                'koordinate' => $stockLocation['koordinate'],
+                'system' => $stockLocation['system'],
+                'quantity' => $remainder
+            ];
+        }
+
+        return $freeStockLocations;
+    }
+
+    protected function createForm(string $type, $data = null, array $options = []): FormInterface
+    {
+        return $this->container->get('form.factory')->create($type, $data, $options);
     }
 }

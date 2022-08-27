@@ -39,12 +39,12 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $firstname;
+    public $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $lastname;
+    public $lastname;
 
     public function getId(): ?int
     {

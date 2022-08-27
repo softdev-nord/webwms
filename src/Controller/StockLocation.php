@@ -155,4 +155,20 @@ class StockLocation extends AbstractController
     {
         return $this->stockLocationService->getSockLocationDetailsById($coordinate);
     }
+
+    /**
+     * @Route("/get_first_free_stock_location", name="get_first_free_stock_location")
+     */
+    public function getFirstFreeStockLocation($stockSystem, $limit): array
+    {
+        return $this->stockLocationService->getFirstFreeStockLocation($stockSystem, $limit);
+    }
+
+    /**
+     * @Route("/selected_stock_locations", name="selected_stock_locations")
+     */
+    public function getSelectedStocklocations($freeStockLocations)
+    {
+        return new JsonResponse($freeStockLocations);
+    }
 }
