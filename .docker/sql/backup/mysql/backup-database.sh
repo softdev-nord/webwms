@@ -8,19 +8,24 @@ MYSQL_HOST=database
 # If provided, take password from file
 [ -z "${MYSQL_PASS_FILE}" ] || { MYSQL_PASS=$(head -1 "${MYSQL_PASS_FILE}"); }
 # Alternatively, take it from env var
+[ -z "${MYSQL_USER:=MYSQL_USER}" ] && { echo "=> MYSQL_USER cannot be empty" && exit 1; }
 [ -z "${MYSQL_PASS:=$MYSQL_PASSWORD}" ] && { echo "=> MYSQL_PASS cannot be empty" && exit 1; }
 [ -z "${GZIP_LEVEL}" ] && { GZIP_LEVEL=6; }
 
-DATE=$(date +%Y.%m.%d.%H:%M)
-echo "=> Backup started at $(date "+%Y-%m-%d %H:%M:%S")"
+# remove backups older than $DAYS_KEEP
+DAYS_KEEP=3
+find /var/backup/mysql -mtime +$DAYS_KEEP -exec rm -f {} \;
+
+DATE=$(date +%d.%m.%Y.%H:%M)
+echo "=> Backup started at $DATE"
 DATABASES=${MYSQL_DATABASE:-${MYSQL_DB:-$(mysql -h "$MYSQL_HOST" -P "$MYSQL_PORT" -u "$MYSQL_USER" -p"$MYSQL_PASS" $MYSQL_SSL_OPTS -e "SHOW DATABASES;" | tr -d "| " | grep -v Database)}}
 for db in ${DATABASES}
 do
   if  [[ "$db" != "information_schema" ]] \
-      && [[ "$db" != "performance_schema" ]] \
-      && [[ "$db" != "mysql" ]] \
-      && [[ "$db" != "sys" ]] \
-      && [[ "$db" != _* ]]
+    && [[ "$db" != "performance_schema" ]] \
+    && [[ "$db" != "mysql" ]] \
+    && [[ "$db" != "sys" ]] \
+    && [[ "$db" != _* ]]
   then
     echo "==> Dumping database: $db"
     FILENAME=/var/backup/mysql/$DATE-$db.sql
@@ -40,19 +45,14 @@ do
       echo "==> Creating symlink to latest backup: $BASENAME"
       rm "$LATEST" 2> /dev/null
       cd /var/backup/mysql || exit && ln -s "$BASENAME" "$(basename "$LATEST")"
-      if [ -n "$MAX_BACKUPS" ]
-      then
-        while [ "$(find /var/backup/mysql -maxdepth 1 -name "*.$db.sql$EXT" -type f | wc -l)" -gt "$MAX_BACKUPS" ]
+        while [ "$(find /var/backup/mysql -maxdepth 1 -name "*.$db.sql$EXT" -type f | wc -l)" -gt 1 ]
         do
           TARGET=$(find /var/backup/mysql -maxdepth 1 -name "*.$db.sql$EXT" -type f | sort | head -n 1)
           echo "==> Max number of ($MAX_BACKUPS) backups reached. Deleting ${TARGET} ..."
           rm -rf "${TARGET}"
           echo "==> Backup ${TARGET} deleted"
         done
-      fi
-    else
-      rm -rf "$FILENAME"
     fi
   fi
 done
-echo "=> Backup process finished at $(date "+%Y-%m-%d %H:%M:%S")"
+echo "MySQL backup is completed! Backup name is $DATE-$db.tar.gz"

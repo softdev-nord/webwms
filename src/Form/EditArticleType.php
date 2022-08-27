@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use WebWMS\Entity\Article;
 
 /**
@@ -21,7 +21,7 @@ use WebWMS\Entity\Article;
 class EditArticleType extends AbstractType
 {
     public function __construct(
-        private AuthorizationChecker $authorizationChecker
+        private AuthorizationCheckerInterface $authorizationChecker
     ) {
     }
 
@@ -136,6 +136,14 @@ class EditArticleType extends AbstractType
                 'class' => 'form-control',
                 'id' => 'le_quantity	',
                 'data-type' => 'le_quantity',
+            ],
+        ]);
+        $builder->add('standard_loading_equipment', TextType::class, [
+            'label' => false,
+            'attr' => [
+                'class' => 'form-control',
+                'id' => 'standard_loading_equipment	',
+                'data-type' => 'standard_loading_equipment',
             ],
         ]);
         $builder->add('save', ButtonType::class, [

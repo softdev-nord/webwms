@@ -15,6 +15,7 @@ use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Form\AddNewArticleType;
 use WebWMS\Form\EditArticleType;
 use WebWMS\Service\Article\ArticleService;
+use WebWMS\Service\LoggingService;
 use WebWMS\Service\Validation\ArticleValidationService;
 
 /**
@@ -28,7 +29,8 @@ class Article extends AbstractController
     public function __construct(
         private ArticleService $articleService,
         private Requirements $requirements,
-        private ArticleValidationService $articleValidationService
+        private ArticleValidationService $articleValidationService,
+        private LoggingService $loggingService
     ) {
     }
 
@@ -116,7 +118,9 @@ class Article extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
                 $responseData['message'] = 'Die Änderungen am Artikel wurden erfolgreich gespeichert.';
+                $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde geändert.', $requestData['article_nr']);
                 $this->articleService->updateArticle($requestData);
+                $this->loggingService->write($request, $logMessage);
 
                 return new JsonResponse($responseData);
             }

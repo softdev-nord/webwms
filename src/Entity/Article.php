@@ -71,6 +71,11 @@ class Article
     private mixed $stock_out_strategy;
 
     /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private mixed $standard_loading_equipment;
+
+    /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
     private mixed $le_quantity;
@@ -275,6 +280,22 @@ class Article
     public function setLeQuantity(mixed $le_quantity): void
     {
         $this->le_quantity = $le_quantity;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStandardLoadingEquipment(): mixed
+    {
+        return $this->standard_loading_equipment;
+    }
+
+    /**
+     * @param mixed $standard_loading_equipment
+     */
+    public function setStandardLoadingEquipment(mixed $standard_loading_equipment): void
+    {
+        $this->standard_loading_equipment = $standard_loading_equipment;
     }
 
     /**
