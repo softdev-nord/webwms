@@ -39,7 +39,7 @@ clear-caches: ## Clear caches
 yarn-watch: ## Yarn watch
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'yarn watch'
 
-generate-bundle: ## Yarn watch
+generate-bundle: ## Generate bundles
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'bin/console webwms:generate:bundle'
 
 ######################################################################

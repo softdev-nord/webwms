@@ -74,7 +74,7 @@ class CustomerOrder extends ModelEntity
      *
      * @ORM\OneToMany(targetEntity="\WebWMS\Entity\CustomerOrderPos", mappedBy="customer_orders")
      */
-    protected ArrayCollection $details;
+    protected $details;
 
     /**
      * @var \WebWMS\Entity\Customer

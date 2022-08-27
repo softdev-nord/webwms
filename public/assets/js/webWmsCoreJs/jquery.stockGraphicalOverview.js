@@ -60,6 +60,7 @@
             success     : function (data) {
                 console.log(data);
                 $('#stockLocationTable').load(url + ' #stockLocationTable');
+                $('#stockSystem').load(url + ' #stockSystem');
             }
         });
     });
