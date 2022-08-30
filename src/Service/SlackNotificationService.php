@@ -24,7 +24,6 @@ class SlackNotificationService
     {
         $message = json_encode($freeStockLocations);
         $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde geändert.', '60004');
-        dd($logMessage);
         return $this->client->request('POST', 'https://hooks.slack.com/services/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', [
             'body' => "{\"channel\": \"#webwms\", \"username\": \"webhookbot\", \"text\": \"'.$logMessage.'\"}"
         ]);

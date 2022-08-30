@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller;
 
 use Exception;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,26 +28,20 @@ class Security extends AbstractController
     /**
      * @Route("/", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        $webServer = $_SERVER['SERVER_SOFTWARE'];
-        $serverIp = $_SERVER['REMOTE_ADDR'];
-        $serverName = $_SERVER['SERVER_NAME'];
+        $webServer = $request->server->get('SERVER_SOFTWARE');
+        $serverIp = $request->server->get('REMOTE_ADDR');
+        $serverName = $request->server->get('SERVER_NAME');
+        $phpVersion = $request->server->get('PHP_VERSION');
 
         $freeDiskSpace = $this->requirements->checkDiskFreeSpace();
-        $phpVersion = $this->requirements->checkPhp();
-        $mySqlVersion = $this->requirements->getServerVersion();
-
-        //return $this->redirectToRoute('target_path');
+        $mySqlVersion = $request->server->get('DATABASE');
 
         return $this->render(
             'security/login.html.twig',

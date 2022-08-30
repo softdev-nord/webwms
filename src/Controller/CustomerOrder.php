@@ -72,27 +72,17 @@ class CustomerOrder extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-        //dd($request->request->all());
 
         $customerOrderForm = $this->createForm(CustomerOrderType::class);
-
-        //dd($customerOrderForm->getData());
-        //$customerOrderForm->getData();
-
-        //$customerOrderForm = $this->createForm(CustomerOrderType::class, $request->get('customer_order_pos'));
 
         $customerOrder = new CustomerOrders();
         $customerOrderPosForm = $this->createForm(CustomerOrderPosType::class);
 
-        //dd($customerOrderForm);
-
         $form = $this->createForm(CustomerOrderType::class);
         $form->handleRequest($request);
-        //dd($form->getData());
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var CustomerOrders $customerOrder */
             $customerOrder = $form->getData();
-            //dd($customerOrder);
 
             //$customerOrder = new CustomerOrders();
             //$customerOrderPos = new CustomerOrderPos();

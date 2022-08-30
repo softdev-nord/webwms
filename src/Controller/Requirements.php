@@ -73,18 +73,6 @@ class Requirements extends AbstractController
         return $this->checkDiskFreeSpace();
     }
 
-    /**
-     * Checks the php version.
-     */
-    public function checkPhp(): bool|string
-    {
-        if (strpos(PHP_VERSION, '-')) {
-            return substr(PHP_VERSION, 0, strpos(PHP_VERSION, '-'));
-        }
-
-        return PHP_VERSION;
-    }
-
     public function getServerVersion()
     {
         return $this->requirementsService->getServerVersion();

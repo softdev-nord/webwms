@@ -133,11 +133,6 @@ class StockLocation extends AbstractController
         );
     }
 
-    public function getFreeStockLocation(): array
-    {
-        return $this->stockLocationService->getFreeStockLocations();
-    }
-
     /**
      * @Route("/stock_location_ajax", name="stock_location_ajax")
      *
@@ -157,17 +152,9 @@ class StockLocation extends AbstractController
     }
 
     /**
-     * @Route("/get_first_free_stock_location", name="get_first_free_stock_location")
-     */
-    public function getFirstFreeStockLocation($stockSystem, $limit): array
-    {
-        return $this->stockLocationService->getFirstFreeStockLocation($stockSystem, $limit);
-    }
-
-    /**
      * @Route("/selected_stock_locations", name="selected_stock_locations")
      */
-    public function getSelectedStocklocations($freeStockLocations)
+    public function getSelectedStocklocations($freeStockLocations): JsonResponse
     {
         return new JsonResponse($freeStockLocations);
     }

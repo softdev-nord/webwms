@@ -176,8 +176,6 @@ class ArticleService
             $boxName = 'article_nr';
         }
 
-        //dd($_GET['name_art']);
-
         $data = [];
         if (!empty($_GET['name_art'])) {
             $name = strtolower(trim($_GET['name_art']));

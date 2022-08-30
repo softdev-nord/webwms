@@ -102,8 +102,6 @@ class Customer extends AbstractController
         $requestData = $request->request->all();
         $customer_nr = $request->attributes->get('customer_nr');
 
-        //dd($requestData);
-
         if (!empty($requestData)) {
             $requestData = $requestData['edit_customer'];
         }
