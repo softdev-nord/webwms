@@ -6,18 +6,16 @@ namespace WebWMS\Controller;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Controller\Requirements as Requirements;
+use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
 use WebWMS\Service\BookingMethod\BookingMethodConstants;
 use WebWMS\Service\BookingMethod\BookingMethodService;
-use WebWMS\Service\SlackNotificationService;
 use WebWMS\Service\Stock\StockLocationService;
-use WebWMS\Service\Stock\StockOccupancyService;
 use WebWMS\Service\TransportRequestService;
 
 /**
@@ -37,8 +35,7 @@ class StockTransactions extends AbstractController
         private BookingMethodService $bookingMethodService,
         private BookingMethodConstants $bookingMethodConstants,
         private StockLocationService $stockLocationService,
-        private TransportRequestService $transportRequestService,
-        private StockOccupancyService $stockOccupancyService
+        private TransportRequestService $transportRequestService
     ) {
     }
 
@@ -50,7 +47,6 @@ class StockTransactions extends AbstractController
      */
     public function stockIn(Request $request): RedirectResponse|Response
     {
-        //dd($request);
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -97,6 +93,11 @@ class StockTransactions extends AbstractController
                     ];
                 }
             }
+
+            $StockInFinal = $this->createForm(StockInFinalType::class, ['freeStockLocations' => $freeStockLocations]);
+
+            // @TODO Eine Option finden, um im Formular mehrere Spalten zu nutzen!
+
             return $this->render(
                 'modal/put_into_storage.html.twig',
                 [
@@ -106,7 +107,7 @@ class StockTransactions extends AbstractController
                     'appCopyright' => $this->requirements->getAppCopyright(),
                     'appLizenz' => $this->requirements->getAppLizenz(),
                     'page' => 'Einlagern direkt',
-                    'stockInForm' => $form->createView(),
+                    'stockInFinalForm' => $StockInFinal->createView(),
                     'selectedStockLocations' => $freeStockLocations
                 ]
             );
@@ -404,12 +405,25 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * @Route("/get_first_free_stock_location", name="get_first_free_stock_location")
+     * @Route("/stock_in_final", name="stock_in_final")
      */
-    public function getFirstFreeStockLocation(Request $request)
+    public function stockInFinal($freeStockLocations): Response
     {
-        $form = $this->createFormBuilder($request);
-        dd($form);
+        $formFinal = $this->createForm(StockInFinalType::class);
+
+        return $this->render(
+            'modal/put_into_storage.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Einlagern direkt',
+                'stockInFinalForm' => $formFinal->createView(),
+                'selectedStockLocations' => $freeStockLocations
+            ]
+        );
     }
 
     public function generateSuId($stockLocations, $fullPal): int
