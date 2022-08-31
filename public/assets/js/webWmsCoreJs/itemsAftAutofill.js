@@ -94,8 +94,6 @@ const itemsAddNewRow = (function () {
 				numOfRow = getId(currentElement);
 				resArr = ui.item.data.split("|");
 
-				console.log(resArr);
-
 				$('#id_' + numOfRow).val(resArr[0]);
 				$('#art_nr_' + numOfRow).val(resArr[1]);
 				$('#art_name_' + numOfRow).val(resArr[2]);

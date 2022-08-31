@@ -60,8 +60,6 @@ const stockInItemsAutofill = (function(){
 
                 resArr = ui.item.data.split("|");
 
-                console.log('resArr', resArr);
-
                 $('#stock_in_le_quantity').val(resArr[11]);
                 $('#article_nr_right').val(resArr[1]);
                 $('#article_name_right').val(resArr[2]);

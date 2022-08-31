@@ -83,7 +83,6 @@ $(function() {
 				"data": "lbw_menge",
 				render: function (data, type, row) {
 					if (row["lbw_menge"] != null) {
-						//console.log(row);
 						return row["lbw_menge"];
 					} else {
 						return "0.000";
@@ -94,7 +93,6 @@ $(function() {
 				"data": "lbw_menge",
 				render: function (data, type, row) {
 					if (row["lbw_menge"] != null) {
-						//console.log(row);
 						return parseInt(row["customer_order_pos_quantity"]) - parseInt(row["lbw_menge"]);
 					} else {
 						return row["customer_order_pos_quantity"];
