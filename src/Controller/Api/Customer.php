@@ -25,14 +25,9 @@ use WebWMS\Service\Customer\CustomerService;
  */
 class Customer extends AbstractFOSRestController
 {
-    /**
-     * @var CustomerService
-     */
-    private $customerService;
-
-    public function __construct(CustomerService $customerService)
-    {
-        $this->customerService = $customerService;
+    public function __construct(
+        private CustomerService $customerService
+    ) {
     }
 
     /**

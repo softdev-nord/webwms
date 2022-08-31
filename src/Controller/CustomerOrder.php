@@ -34,11 +34,7 @@ class CustomerOrder extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/auftrag", name="customer_orders")
-     *
-     * @throws Exception
-     */
+    #[Route('/auftrag', name: 'customer_orders')]
     public function index(): Response
     {
         if (!$this->getUser()) {
@@ -61,12 +57,11 @@ class CustomerOrder extends AbstractController
     }
 
     /**
-     * @Route("/auftrag_anlegen", name="new_customer_order")
-     *
      * @param EntityManagerInterface $em
      * @param Request $request
      * @return RedirectResponse|Response
      */
+    #[Route('/auftrag_anlegen', name: 'new_customer_order')]
     public function addNewCustomerOrder(EntityManagerInterface $em, Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
@@ -143,28 +138,22 @@ class CustomerOrder extends AbstractController
         );
     }
 
-    /**
-     * @Route("/customer_order_ajax", name="customer_order_ajax")
-     * @throws Exception
-     */
+    #[Route('/customer_order_ajax', name: 'customer_order_ajax')]
     public function getAllCustomerOrders(): JsonResponse
     {
         return $this->customerOrderService->getAllCustomerOrders();
     }
 
     /**
-     * @Route("/customer_order_pos_ajax", name="customer_order_pos_ajax")
-     *
      * @throws Exception
      */
+    #[Route('/customer_order_pos_ajax', name: 'customer_order_pos_ajax')]
     public function getAllCustomerOrdersPos(): JsonResponse
     {
         return $this->customerOrderService->getAllCustomerOrderPos();
     }
 
-    /**
-     * @Route("/article_order_ajax", name="article_order_ajax")
-     */
+    #[Route('/article_order_ajax', name: 'article_order_ajax')]
     public function getAllArticleAjax(): JsonResponse
     {
         return $this->articleService->getArticle();

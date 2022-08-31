@@ -34,9 +34,7 @@ class Article extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/artikel", name="article")
-     */
+    #[Route('/artikel', name: 'article')]
     public function index(): Response
     {
         if (!$this->getUser()) {
@@ -59,9 +57,7 @@ class Article extends AbstractController
         );
     }
 
-    /**
-     * @Route("/artikel_anlegen", name="add_article")
-     */
+    #[Route('/artikel_anlegen', name: 'add_article')]
     public function addArticle(Request $request): Response
     {
         if (!$this->getUser()) {
@@ -93,9 +89,9 @@ class Article extends AbstractController
     }
 
     /**
-     * @Route("artikel_bearbeiten/articleNr/{article_nr}", name="edit_article", methods={"GET","POST"})
      * @throws Exception
      */
+    #[Route('artikel_bearbeiten/articleNr/{article_nr}', name: 'edit_article')]
     public function editArticle(Request $request, $article_nr): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
@@ -147,10 +143,9 @@ class Article extends AbstractController
     }
 
     /**
-     * @Route("/article_ajax", name="article_ajax")
-     *
      * @throws Exception
      */
+    #[Route('/article_ajax', name: 'article_ajax')]
     public function getAllArticles(): JsonResponse
     {
         return $this->articleService->getAllArticles();

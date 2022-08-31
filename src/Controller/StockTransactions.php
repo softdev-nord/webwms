@@ -42,9 +42,9 @@ class StockTransactions extends AbstractController
     /**
      * SI101 Einlagern direkt
      *
-     * @Route("/stock_in", name="stock_in")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_in', name: 'stock_in')]
     public function stockIn(Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
@@ -131,9 +131,9 @@ class StockTransactions extends AbstractController
     /**
      * SI102 Zugang aus Wareneingang
      *
-     * @Route("/stock_in_from_goods_receipt", name="stock_in_from_goods_receipt")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_in_from_goods_receipt', name: 'stock_in_from_goods_receipt')]
     public function stockInFromGoodsReceipt()
     {
         $bookingMethod = $this->bookingMethodConstants::SI102;
@@ -143,9 +143,9 @@ class StockTransactions extends AbstractController
     /**
      * SI103 Zugang aus Produktion
      *
-     * @Route("/stock_in_from_production", name="stock_in_from_production")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_in_from_production', name: 'stock_in_from_production')]
     public function stockInFromProduction()
     {
         $bookingMethod = $this->bookingMethodConstants::SI103;
@@ -155,9 +155,9 @@ class StockTransactions extends AbstractController
     /**
      * SI104 Rückgabe von Kostenstelle
      *
-     * @Route("/stock_in_from_cost_centre", name="stock_in_from_cost_centre")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_in_from_cost_centre', name: 'stock_in_from_cost_centre')]
     public function stockInFromCostCentre()
     {
         $bookingMethod = $this->bookingMethodConstants::SI104;
@@ -167,9 +167,9 @@ class StockTransactions extends AbstractController
     /**
      * SI105 Einlagern in Container
      *
-     * @Route("/stock_in_into_container", name="stock_in_into_container")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_in_into_container', name: 'stock_in_into_container')]
     public function stockInIntoContainer()
     {
         $bookingMethod = $this->bookingMethodConstants::SI105;
@@ -179,9 +179,9 @@ class StockTransactions extends AbstractController
     /**
      * SI106 WE zur Bestellung
      *
-     * @Route("/stock_in_for_supplier_order", name="stock_in_for_supplier_order")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_in_for_supplier_order', name: 'stock_in_for_supplier_order')]
     public function stockInForSupplierOrder()
     {
         $bookingMethod = $this->bookingMethodConstants::SI106;
@@ -191,9 +191,9 @@ class StockTransactions extends AbstractController
     /**
      * SI107 Einlagern mit Ladehilfsmittel
      *
-     * @Route("/stock_in_using_loading_equipment", name="stock_in_using_loading_equipment")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_in_using_loading_equipment', name: 'stock_in_using_loading_equipment')]
     public function stockInUsingLoadingEquipment()
     {
         $bookingMethod = $this->bookingMethodConstants::SI107;
@@ -203,9 +203,9 @@ class StockTransactions extends AbstractController
     /**
      * SI111 Einlagern direkt in WE-Zone
      *
-     * @Route("/stock_in_into_receiving_area", name="stock_in_into_receiving_area")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_in_into_receiving_area', name: 'stock_in_into_receiving_area')]
     public function stockInIntoReceivingArea()
     {
         $bookingMethod = $this->bookingMethodConstants::SI111;
@@ -215,9 +215,9 @@ class StockTransactions extends AbstractController
     /**
      * ST112 Rückgabe von Kostenstelle
      *
-     * @Route("/stock_transfer_from_cost_centre", name="stock_transfer_from_cost_centre")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_transfer_from_cost_centre', name: 'stock_transfer_from_cost_centre')]
     public function stockTransferFromCostCentre()
     {
         $bookingMethod = $this->bookingMethodConstants::ST112;
@@ -227,9 +227,9 @@ class StockTransactions extends AbstractController
     /**
      * SI113 Einlagern direkt in Kostenstelle
      *
-     * @Route("/stock_in_into_cost_centre", name="stock_in_into_cost_centre")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_in_into_cost_centre', name: 'stock_in_into_cost_centre')]
     public function stockInIntoCostCentre()
     {
         $bookingMethod = $this->bookingMethodConstants::SI113;
@@ -239,9 +239,9 @@ class StockTransactions extends AbstractController
     /**
      * SI114 Einlagern direkt in WA-Zone
      *
-     * @Route("/stock_in_into_dispatch_area", name="stock_in_into_dispatch_area")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_in_into_dispatch_area', name: 'stock_in_into_dispatch_area')]
     public function stockInIntoDispatchArea()
     {
         $bookingMethod = $this->bookingMethodConstants::SI114;
@@ -251,9 +251,9 @@ class StockTransactions extends AbstractController
     /**
      * SO151 Auslagern direkt
      *
-     * @Route("/stock_out", name="stock_out")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_out', name: 'stock_out')]
     public function stockOut()
     {
         $bookingMethod = $this->bookingMethodConstants::SO151;
@@ -263,9 +263,9 @@ class StockTransactions extends AbstractController
     /**
      * SO152 Auslagern auf Kostenstelle
      *
-     * @Route("/stock_out_to_cost_centre", name="stock_out_to_cost_centre")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_out_to_cost_centre', name: 'stock_out_to_cost_centre')]
     public function stockOutToCostCentre()
     {
         $bookingMethod = $this->bookingMethodConstants::SO152;
@@ -275,9 +275,9 @@ class StockTransactions extends AbstractController
     /**
      * SO153 Ausleihen auf Kostenstelle
      *
-     * @Route("/lending_to_cost_centre", name="lending_to_cost_centre")
      * @throws EntityNotFoundException
      */
+    #[Route('/lending_to_cost_centre', name: 'lending_to_cost_centre')]
     public function lendingToCostCentre()
     {
         $bookingMethod = $this->bookingMethodConstants::SO153;
@@ -287,9 +287,9 @@ class StockTransactions extends AbstractController
     /**
      * SO155 Auslagern aus Container
      *
-     * @Route("/stock_out_from_container", name="stock_out_from_container")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_out_from_container', name: 'stock_out_from_container')]
     public function stockOutFromContainer()
     {
         $bookingMethod = $this->bookingMethodConstants::SO155;
@@ -299,9 +299,9 @@ class StockTransactions extends AbstractController
     /**
      * SO156 Auslagern aus Kostenstelle
      *
-     * @Route("/stock_out_from_cost_centre", name="stock_out_from_cost_centre")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_out_from_cost_centre', name: 'stock_out_from_cost_centre')]
     public function stockOutFromCostCentre()
     {
         $bookingMethod = $this->bookingMethodConstants::SO156;
@@ -311,9 +311,9 @@ class StockTransactions extends AbstractController
     /**
      * SO157 Auslagern direkt aus WA-Zone
      *
-     * @Route("/stock_out_from_dispatch_area", name="stock_out_from_dispatch_area")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_out_from_dispatch_area', name: 'stock_out_from_dispatch_area')]
     public function stockOutFromDispatchArea()
     {
         $bookingMethod = $this->bookingMethodConstants::SO157;
@@ -323,9 +323,9 @@ class StockTransactions extends AbstractController
     /**
      * SO158 Auftrag auslagern
      *
-     * @Route("/stock_out_by_order", name="stock_out_by_order")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_out_by_order', name: 'stock_out_by_order')]
     public function stockOutByOrder()
     {
         $bookingMethod = $this->bookingMethodConstants::SO158;
@@ -335,9 +335,9 @@ class StockTransactions extends AbstractController
     /**
      * SO159 Auslagern direkt aus WE-Zone
      *
-     * @Route("/stock_out_from_receiving_area", name="stock_out_from_receiving_area")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_out_from_receiving_area', name: 'stock_out_from_receiving_area')]
     public function stockOutFromReceivingArea()
     {
         $bookingMethod = $this->bookingMethodConstants::SO159;
@@ -347,9 +347,9 @@ class StockTransactions extends AbstractController
     /**
      * SO181 Auftrag auslagern (Auftrag-Liste)
      *
-     * @Route("/stock_out_order_list", name="stock_out_order_list")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_out_order_list', name: 'stock_out_order_list')]
     public function stockOutOrderList()
     {
         $bookingMethod = $this->bookingMethodConstants::SO181;
@@ -359,9 +359,9 @@ class StockTransactions extends AbstractController
     /**
      * SO182 Auftrag auslagern mit Kostenstelle (Auftrag-Liste)
      *
-     * @Route("/stock_out_using_cost_centre", name="stock_out_using_cost_centre")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_out_using_cost_centre', name: 'stock_out_using_cost_centre')]
     public function stockOutUsingCostCentre()
     {
         $bookingMethod = $this->bookingMethodConstants::SO182;
@@ -371,9 +371,9 @@ class StockTransactions extends AbstractController
     /**
      * ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste)
      *
-     * @Route("/stock_transfer_to_cost_centre", name="stock_transfer_to_cost_centre")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_transfer_to_cost_centre', name: 'stock_transfer_to_cost_centre')]
     public function stockTransferToCostCentre()
     {
         $bookingMethod = $this->bookingMethodConstants::ST183;
@@ -383,9 +383,9 @@ class StockTransactions extends AbstractController
     /**
      * SO187 Auftrag auslagern in WA-Zone
      *
-     * @Route("/stock_out_to_dispatch_area", name="stock_out_to_dispatch_area")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_out_to_dispatch_area', name: 'stock_out_to_dispatch_area')]
     public function stockOutToDispatchArea()
     {
         $bookingMethod = $this->bookingMethodConstants::SO187;
@@ -395,9 +395,9 @@ class StockTransactions extends AbstractController
     /**
      * SO188 Sammelkommissionierung auf Kostenstelle
      *
-     * @Route("/stock_out_order_consolidation_to_cost_centre", name="stock_out_order_consolidation_to_cost_centre")
      * @throws EntityNotFoundException
      */
+    #[Route('/stock_out_order_consolidation_to_cost_centre', name: 'stock_out_order_consolidation_to_cost_centre')]
     public function stockOutOrderConsolidationToCostCentre()
     {
         $bookingMethod = $this->bookingMethodConstants::SO188;
@@ -405,8 +405,8 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * @Route("/stock_in_final", name="stock_in_final")
      */
+    #[Route('/stock_in_final', name: 'stock_in_final')]
     public function stockInFinal($freeStockLocations): Response
     {
         $formFinal = $this->createForm(StockInFinalType::class);

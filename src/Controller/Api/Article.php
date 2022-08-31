@@ -25,12 +25,9 @@ use WebWMS\Service\Article\ArticleService;
  */
 class Article extends AbstractFOSRestController
 {
-    /** @var ArticleService */
-    private $articleService;
-
-    public function __construct(ArticleService $articleService)
-    {
-        $this->articleService = $articleService;
+    public function __construct(
+        private ArticleService $articleService
+    ) {
     }
 
     /**

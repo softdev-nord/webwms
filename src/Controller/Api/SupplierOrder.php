@@ -25,12 +25,9 @@ use WebWMS\Service\SupplierOrder\SupplierOrderService;
  */
 class SupplierOrder extends AbstractFOSRestController
 {
-    /** @var SupplierOrderService */
-    private $supplierOrderService;
-
-    public function __construct(SupplierOrderService $supplierOrderService)
-    {
-        $this->supplierOrderService = $supplierOrderService;
+    public function __construct(
+        private SupplierOrderService $supplierOrderService
+    ) {
     }
 
     /**

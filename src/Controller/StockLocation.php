@@ -34,9 +34,7 @@ class StockLocation extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/lagerplatz", name="stock_location")
-     */
+    #[Route('/lagerplatz', name: 'stock_location')]
     public function index(): Response
     {
         if (!$this->getUser()) {
@@ -56,9 +54,7 @@ class StockLocation extends AbstractController
         );
     }
 
-    /**
-     * @Route("/lagerplatz_anlegen", name="add_stock_location")
-     */
+    #[Route('/lagerplatz_anlegen', name: 'add_stock_location')]
     public function addNewStockLocation(Request $request): RedirectResponse|Response
     {
         $form = $this->createForm(StockLocationType::class);
@@ -84,9 +80,7 @@ class StockLocation extends AbstractController
         );
     }
 
-    /**
-     * @Route("lagerplatz_bearbeiten/koordinate/{stock_location_coordinate}", name="edit_stock_location", methods={"GET","POST"})
-     */
+    #[Route('lagerplatz_bearbeiten/koordinate/{stock_location_coordinate}', name: 'edit_stock_location')]
     public function editStockLocation(Request $request, $stock_location_coordinate): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
@@ -133,27 +127,22 @@ class StockLocation extends AbstractController
         );
     }
 
-    /**
-     * @Route("/stock_location_ajax", name="stock_location_ajax")
-     *
-     */
+    #[Route('/stock_location_ajax', name: 'stock_location_ajax')]
     public function getAllStockLocations(): JsonResponse
     {
         return $this->stockLocationService->getAllStockLocations();
     }
 
     /**
-     * @Route("/lagerplatz_details/{stock_location_coordinate}", name="show_stock_location_details", methods={"GET","POST"})
      * @throws NotFoundException
      */
+    #[Route('/lagerplatz_details/{stock_location_coordinate}', name: 'show_stock_location_details')]
     public function getSockLocationDetailsById($coordinate): array
     {
         return $this->stockLocationService->getSockLocationDetailsById($coordinate);
     }
 
-    /**
-     * @Route("/selected_stock_locations", name="selected_stock_locations")
-     */
+    #[Route('/selected_stock_locations', name: 'selected_stock_locations')]
     public function getSelectedStocklocations($freeStockLocations): JsonResponse
     {
         return new JsonResponse($freeStockLocations);

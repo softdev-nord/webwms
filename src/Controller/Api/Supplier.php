@@ -25,14 +25,9 @@ use WebWMS\Service\Supplier\SupplierService;
  */
 class Supplier extends AbstractFOSRestController
 {
-    /**
-     * @var SupplierService
-     */
-    private $supplierService;
-
-    public function __construct(SupplierService $supplierService)
-    {
-        $this->supplierService = $supplierService;
+    public function __construct(
+        private SupplierService $supplierService
+    ) {
     }
 
     /**

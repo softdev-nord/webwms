@@ -25,9 +25,7 @@ class Security extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/", name="app_login")
-     */
+    #[Route('/', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         // get the login error if there is one
@@ -63,10 +61,9 @@ class Security extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="app_logout", methods={"GET"})
-     *
      * @throws Exception
      */
+    #[Route('/logout', name: 'app_logout')]
     public function logout()
     {
         // controller can be blank: it will never be executed!

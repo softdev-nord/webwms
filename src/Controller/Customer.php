@@ -30,9 +30,7 @@ class Customer extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/kunden", name="customer")
-     */
+    #[Route('/kunden', name: 'customer')]
     public function index(): Response
     {
         if (!$this->getUser()) {
@@ -55,11 +53,10 @@ class Customer extends AbstractController
     }
 
     /**
-     * @Route("/kunden_anlegen", name="add_customer")
-     *
      * @param Request $request
      * @return RedirectResponse|Response
      */
+    #[Route('/kunden_anlegen', name: 'add_customer')]
     public function addNewCustomer(Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
@@ -90,9 +87,7 @@ class Customer extends AbstractController
         );
     }
 
-    /**
-     * @Route("kunden_bearbeiten/kundenNr/{customer_nr}", name="edit_customer", methods={"GET","POST"})
-     */
+    #[Route('kunden_bearbeiten/kundenNr/{customer_nr}', name: 'edit_customer')]
     public function editCustomer(Request $request): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
@@ -141,18 +136,13 @@ class Customer extends AbstractController
         );
     }
 
-    /**
-     * @Route("/customer_ajax", name="customer_ajax")
-     *
-     */
+    #[Route('/customer_ajax', name: 'customer_ajax')]
     public function getAllCustomers(): JsonResponse
     {
         return $this->customerService->getAllCustomers();
     }
 
-    /**
-     * @Route("/order_customer_ajax", name="order_customer_ajax")
-     */
+    #[Route('/order_customer_ajax', name: 'order_customer_ajax')]
     public function getAllCustomersAjax(): JsonResponse
     {
         return $this->customerService->getAllCustomersAjax();

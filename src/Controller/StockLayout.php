@@ -24,9 +24,7 @@ class StockLayout extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/lagerlayout", name="stock_layout")
-     */
+    #[Route('/lagerlayout', name: 'stock_layout')]
     public function index(): Response
     {
         return $this->render(
