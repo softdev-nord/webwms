@@ -161,16 +161,11 @@ class ArticleService
         $numOfBoxArt = !empty($_GET['numOfBoxArt']) ? $_GET['numOfBoxArt'] : '';
         $name = !empty($_GET['article_nr']) ? strtolower(trim($_GET['article_nr'])) : '';
 
-        $boxName = '';
-
-        switch ($numOfBoxArt) {
-            case 1:
-                $boxName = 'article_nr';
-                break;
-            case 2:
-                $boxName = 'article_name';
-                break;
-        }
+        $boxName = match ($numOfBoxArt) {
+            'article_id' => 'article_id',
+            'article_name' => 'article_name',
+            default => 'article_nr',
+        };
 
         if (empty($boxName)) {
             $boxName = 'article_nr';
