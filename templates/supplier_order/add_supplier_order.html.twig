@@ -61,8 +61,10 @@
                                 <div class="row col-md-6">
                                     <div class="form-row col-md-12">
                                         <div class="form-group col-md-6">
-                                            {{ form_row(supplierOrderForm.supplier_order_nr, {'value' : "EBE-01-#{lastId.id +1}"}) }}
-                                            {{ form_row(supplierOrderForm.supplier_order_id, {'value' : lastId.id}) }}
+                                            {% set newCustomerOrderId = lastId.id +1 %}
+                                            {% set newCustomerOrderNr =  "EBE-01-#{lastId.id +1}" %}
+                                            {{ form_row(supplierOrderForm.supplier_order_nr, {'value' : newCustomerOrderNr }) }}
+                                            {{ form_row(supplierOrderForm.supplier_order_id, {'value' : newCustomerOrderId }) }}
                                         </div>
                                         <div class="form-group col-md-6">
                                             {{ form_row(supplierOrderForm.supplier_order_reference) }}
@@ -152,12 +154,8 @@
         <script>
             const orderId = {{ lastId.id }};
 
-            function getOrderId (){
-                document.querySelector(".inputOrderNr").value = orderId;
-                console.log(orderId)
-            }
-            window.addEventListener("load", function () {
-                getOrderId();
+            $(document).ready(function (){
+                $(".inputOrderNr").value = {{ lastId.id }};
             });
         </script>
     {% endblock %}
