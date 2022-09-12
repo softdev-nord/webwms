@@ -17,147 +17,152 @@ class TransportRequest
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $su_id;
+    private ?int $suId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $tr_nr;
+    private ?int $trNr;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $tr_pos;
+    private ?int $trPos;
 
     /**
      * @ORM\Column(type="integer", options={"default": 0})
      */
-    private $tr_prio;
+    private ?int $trPrio;
 
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private $article_nr;
+    private ?string $articleNr;
 
     /**
      * @ORM\Column(type="decimal", precision=11, scale=3)
      */
-    private $tr_quantity;
+    private ?string $trQuantity;
 
     /**
      * @ORM\Column(type="decimal", precision=25, scale=0)
      */
-    private $stock_coordinate;
+    private ?float $stockCoordinate;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_nr;
+    private ?int $stockNr;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_level1;
+    private ?int $stockLevel1;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_level2;
+    private ?int $stockLevel2;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_level3;
+    private ?int $stockLevel3;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_level4;
+    private ?int $stockLevel4;
 
     /**
      * @ORM\Column(type="datetime", nullable=true, options={"default": NULL})
      */
-    private $tr_access;
+    private ?\DateTimeInterface $trAccess;
 
     /**
      * @ORM\Column(type="datetime", nullable=true, options={"default": NULL})
      */
-    private $tr_dispatch;
+    private ?\DateTimeInterface $trDispatch;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $tr_state;
+    private ?int $trState;
 
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $order_username;
+    private ?string $orderUsername;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $booking_method;
+    private ?string $bookingMethod;
+
+    /**
+     * @ORM\Column(type="integer", length=11)
+     */
+    private ?int $docId;
 
     /**
      * @ORM\Column(type="string", length=25)
      */
-    private $order_nr;
+    private ?string $orderNr;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $order_pos;
+    private ?int $orderPos;
 
     /**
      * @ORM\Column(type="string", length=20, options={"default": NULL})
      */
-    private $charge;
+    private ?string $charge;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $loading_equipment;
+    private ?string $loadingEquipment;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $confirmation_state;
+    private ?int $confirmationState;
 
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $tr_username;
+    private ?string $trUsername;
 
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $tr_computer_ip;
+    private ?string $trComputerIp;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $tr_blocked;
+    private ?int $trBlocked;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $tr_start_date;
+    private ?\DateTimeInterface $trStartDate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $tr_edited;
+    private ?string $trEdited;
 
     /**
      * @ORM\Column(type="string", length=8)
      */
-    private $tr_typ;
+    private ?string $trTyp;
 
     public function getId(): ?int
     {
@@ -166,228 +171,238 @@ class TransportRequest
 
     public function getSuId(): ?int
     {
-        return $this->su_id;
+        return $this->suId;
     }
 
-    public function setSuId(int $su_id): self
+    public function setSuId(int $suId): self
     {
-        $this->su_id = $su_id;
+        $this->suId = $suId;
 
         return $this;
     }
 
     public function getTrNr(): ?int
     {
-        return $this->tr_nr;
+        return $this->trNr;
     }
 
-    public function setTrNr(int $tr_nr): self
+    public function setTrNr(int $trNr): self
     {
-        $this->tr_nr = $tr_nr;
+        $this->trNr = $trNr;
 
         return $this;
     }
 
     public function getTrPos(): ?int
     {
-        return $this->tr_pos;
+        return $this->trPos;
     }
 
-    public function setTrPos(int $tr_pos): self
+    public function setTrPos(int $trPos): self
     {
-        $this->tr_pos = $tr_pos;
+        $this->trPos = $trPos;
 
         return $this;
     }
 
     public function getTrPrio(): ?int
     {
-        return $this->tr_prio;
+        return $this->trPrio;
     }
 
-    public function setTrPrio(int $tr_prio): self
+    public function setTrPrio(int $trPrio): self
     {
-        $this->tr_prio = $tr_prio;
+        $this->trPrio = $trPrio;
 
         return $this;
     }
 
     public function getArtNr(): ?string
     {
-        return $this->article_nr;
+        return $this->articleNr;
     }
 
-    public function setArtNr(string $article_nr): self
+    public function setArtNr(string $articleNr): self
     {
-        $this->article_nr = $article_nr;
+        $this->articleNr = $articleNr;
 
         return $this;
     }
 
     public function getTrQuantity(): ?string
     {
-        return $this->tr_quantity;
+        return $this->trQuantity;
     }
 
-    public function setTrQuantity(string $tr_quantity): self
+    public function setTrQuantity(string $trQuantity): self
     {
-        $this->tr_quantity = $tr_quantity;
+        $this->trQuantity = $trQuantity;
 
         return $this;
     }
 
-    public function getStockCoordinate(): ?string
+    public function getStockCoordinate(): ?float
     {
-        return $this->stock_coordinate;
+        return $this->stockCoordinate;
     }
 
-    public function setStockCoordinate(string $stock_coordinate): self
+    public function setStockCoordinate(?float $stockCoordinate): self
     {
-        $this->stock_coordinate = $stock_coordinate;
+        $this->stockCoordinate = $stockCoordinate;
 
         return $this;
     }
 
     public function getStockNr(): ?int
     {
-        return $this->stock_nr;
+        return $this->stockNr;
     }
 
-    public function setStockNr(int $stock_nr): self
+    public function setStockNr(int $stockNr): self
     {
-        $this->stock_nr = $stock_nr;
+        $this->stockNr = $stockNr;
 
         return $this;
     }
 
     public function getStockLevel1(): ?int
     {
-        return $this->stock_level1;
+        return $this->stockLevel1;
     }
 
-    public function setStockLevel1(int $stock_level1): self
+    public function setStockLevel1(int $stockLevel1): self
     {
-        $this->stock_level1 = $stock_level1;
+        $this->stockLevel1 = $stockLevel1;
 
         return $this;
     }
 
     public function getStockLevel2(): ?int
     {
-        return $this->stock_level2;
+        return $this->stockLevel2;
     }
 
-    public function setStockLevel2(int $stock_level2): self
+    public function setStockLevel2(int $stockLevel2): self
     {
-        $this->stock_level2 = $stock_level2;
+        $this->stockLevel2 = $stockLevel2;
 
         return $this;
     }
 
     public function getStockLevel3(): ?int
     {
-        return $this->stock_level3;
+        return $this->stockLevel3;
     }
 
-    public function setStockLevel3(int $stock_level3): self
+    public function setStockLevel3(int $stockLevel3): self
     {
-        $this->stock_level3 = $stock_level3;
+        $this->stockLevel3 = $stockLevel3;
 
         return $this;
     }
 
     public function getStockLevel4(): ?int
     {
-        return $this->stock_level4;
+        return $this->stockLevel4;
     }
 
-    public function setStockLevel4(int $stock_level4): self
+    public function setStockLevel4(int $stockLevel4): self
     {
-        $this->stock_level4 = $stock_level4;
+        $this->stockLevel4 = $stockLevel4;
 
         return $this;
     }
 
     public function getTrAccess(): ?\DateTimeInterface
     {
-        return $this->tr_access;
+        return $this->trAccess;
     }
 
-    public function setTrAccess(?\DateTimeInterface $tr_access): self
+    public function setTrAccess(?\DateTimeInterface $trAccess): self
     {
-        $this->tr_access = $tr_access;
+        $this->trAccess = $trAccess;
 
         return $this;
     }
 
     public function getTrDispatch(): ?\DateTimeInterface
     {
-        return $this->tr_dispatch;
+        return $this->trDispatch;
     }
 
-    public function setTrDispatch(?\DateTimeInterface $tr_dispatch): self
+    public function setTrDispatch(?\DateTimeInterface $trDispatch): self
     {
-        $this->tr_dispatch = $tr_dispatch;
+        $this->trDispatch = $trDispatch;
 
         return $this;
     }
 
     public function getTrState(): ?int
     {
-        return $this->tr_state;
+        return $this->trState;
     }
 
-    public function setTrState(?int $tr_state): self
+    public function setTrState(?int $trState): self
     {
-        $this->tr_state = $tr_state;
+        $this->trState = $trState;
 
         return $this;
     }
 
     public function getOrderUsername(): ?string
     {
-        return $this->order_username;
+        return $this->orderUsername;
     }
 
-    public function setOrderUsername(string $order_username): self
+    public function setOrderUsername(string $orderUsername): self
     {
-        $this->order_username = $order_username;
+        $this->orderUsername = $orderUsername;
 
         return $this;
     }
 
     public function getBookingMethod(): ?string
     {
-        return $this->booking_method;
+        return $this->bookingMethod;
     }
 
-    public function setBookingMethod(string $booking_method): self
+    public function setBookingMethod(string $bookingMethod): self
     {
-        $this->booking_method = $booking_method;
+        $this->bookingMethod = $bookingMethod;
 
         return $this;
     }
 
-    public function getOrderNr(): ?string
+    public function getDocId(): ?int
     {
-        return $this->order_nr;
+        return $this->docId;
     }
 
-    public function setOrderNr(string $order_nr): self
+    public function setDocId($docId): void
     {
-        $this->order_nr = $order_nr;
+        $this->docId = $docId;
+    }
+
+    public function getOrderNr(): ?string
+    {
+        return $this->orderNr;
+    }
+
+    public function setOrderNr(string $orderNr): self
+    {
+        $this->orderNr = $orderNr;
 
         return $this;
     }
 
     public function getOrderPos(): ?int
     {
-        return $this->order_pos;
+        return $this->orderPos;
     }
 
-    public function setOrderPos(int $order_pos): self
+    public function setOrderPos(int $orderPos): self
     {
-        $this->order_pos = $order_pos;
+        $this->orderPos = $orderPos;
 
         return $this;
     }
@@ -406,96 +421,96 @@ class TransportRequest
 
     public function getLoadingEquipment(): ?string
     {
-        return $this->loading_equipment;
+        return $this->loadingEquipment;
     }
 
-    public function setLoadingEquipment(string $loading_equipment): self
+    public function setLoadingEquipment(string $loadingEquipment): self
     {
-        $this->loading_equipment = $loading_equipment;
+        $this->loadingEquipment = $loadingEquipment;
 
         return $this;
     }
 
     public function getConfirmationState(): ?int
     {
-        return $this->confirmation_state;
+        return $this->confirmationState;
     }
 
-    public function setConfirmationState(int $confirmation_state): self
+    public function setConfirmationState(int $confirmationState): self
     {
-        $this->confirmation_state = $confirmation_state;
+        $this->confirmationState = $confirmationState;
 
         return $this;
     }
 
     public function getTrUsername(): ?string
     {
-        return $this->tr_username;
+        return $this->trUsername;
     }
 
-    public function setTrUsername(string $tr_username): self
+    public function setTrUsername(string $trUsername): self
     {
-        $this->tr_username = $tr_username;
+        $this->trUsername = $trUsername;
 
         return $this;
     }
 
     public function getTrComputerIp(): ?string
     {
-        return $this->tr_computer_ip;
+        return $this->trComputerIp;
     }
 
-    public function setTrComputerIp(string $tr_computer_ip): self
+    public function setTrComputerIp(string $trComputerIp): self
     {
-        $this->tr_computer_ip = $tr_computer_ip;
+        $this->trComputerIp = $trComputerIp;
 
         return $this;
     }
 
     public function getTrBlocked(): ?int
     {
-        return $this->tr_blocked;
+        return $this->trBlocked;
     }
 
-    public function setTrBlocked(int $tr_blocked): self
+    public function setTrBlocked(int $trBlocked): self
     {
-        $this->tr_blocked = $tr_blocked;
+        $this->trBlocked = $trBlocked;
 
         return $this;
     }
 
     public function getTrStartDate(): ?\DateTimeInterface
     {
-        return $this->tr_start_date;
+        return $this->trStartDate;
     }
 
-    public function setTrStartDate(\DateTimeInterface $tr_start_date): self
+    public function setTrStartDate(\DateTimeInterface $trStartDate): self
     {
-        $this->tr_start_date = $tr_start_date;
+        $this->trStartDate = $trStartDate;
 
         return $this;
     }
 
     public function getTrEdited(): ?string
     {
-        return $this->tr_edited;
+        return $this->trEdited;
     }
 
-    public function setTrEdited(?string $tr_edited): self
+    public function setTrEdited(?string $trEdited): self
     {
-        $this->tr_edited = $tr_edited;
+        $this->trEdited = $trEdited;
 
         return $this;
     }
 
     public function getTrTyp(): ?string
     {
-        return $this->tr_typ;
+        return $this->trTyp;
     }
 
-    public function setTrTyp(string $tr_typ): self
+    public function setTrTyp(string $trTyp): self
     {
-        $this->tr_typ = $tr_typ;
+        $this->trTyp = $trTyp;
 
         return $this;
     }

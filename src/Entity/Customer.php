@@ -23,57 +23,57 @@ class Customer
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $customer_id;
+    private ?int $customerId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $customer_nr;
+    private ?int $customerNr;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $customer_name;
+    private ?string $customerName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $customer_address_addition;
+    private ?string $customerAddressAddition;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $customer_address_street;
+    private ?string $customerAddressStreet;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private ?string $customer_address_street_nr;
+    private ?string $customerAddressStreetNr;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private ?string $customer_country_code;
+    private ?string $customerCountryCode;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private ?string $customer_zip_code;
+    private ?string $customerZipCode;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $customer_city;
+    private ?string $customerCity;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $customer_created_at;
+    private mixed $customerCreatedAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $customer_updated_at;
+    private mixed $customerUpdatedAt;
 
     /**
      * INVERSE SIDE
@@ -84,11 +84,11 @@ class Customer
      *
      * @ORM\OneToMany(targetEntity="WebWMS\Entity\CustomerOrder", mappedBy="customer")
      */
-    protected $customer_orders;
+    protected ArrayCollection $customerOrders;
 
     public function __construct()
     {
-        $this->customer_orders = new ArrayCollection();
+        $this->customerOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,108 +105,108 @@ class Customer
 
     public function getCustomerId(): ?int
     {
-        return $this->customer_id;
+        return $this->customerId;
     }
 
-    public function setCustomerId(int $customer_id): self
+    public function setCustomerId(int $customerId): self
     {
-        $this->customer_id = $customer_id;
+        $this->customerId = $customerId;
 
         return $this;
     }
 
     public function getCustomerNr(): ?int
     {
-        return $this->customer_nr;
+        return $this->customerNr;
     }
 
-    public function setCustomerNr(int $customer_nr): self
+    public function setCustomerNr(int $customerNr): self
     {
-        $this->customer_nr = $customer_nr;
+        $this->customerNr = $customerNr;
 
         return $this;
     }
 
     public function getCustomerName(): ?string
     {
-        return $this->customer_name;
+        return $this->customerName;
     }
 
-    public function setCustomerName(string $customer_name): self
+    public function setCustomerName(string $customerName): self
     {
-        $this->customer_name = $customer_name;
+        $this->customerName = $customerName;
 
         return $this;
     }
 
     public function getCustomerAddressAddition(): ?string
     {
-        return $this->customer_address_addition;
+        return $this->customerAddressAddition;
     }
 
-    public function setCustomerAddressAddition(?string $customer_address_addition): self
+    public function setCustomerAddressAddition(?string $customerAddressAddition): self
     {
-        $this->customer_address_addition = $customer_address_addition;
+        $this->customerAddressAddition = $customerAddressAddition;
 
         return $this;
     }
 
     public function getCustomerAddressStreet(): ?string
     {
-        return $this->customer_address_street;
+        return $this->customerAddressStreet;
     }
 
-    public function setCustomerAddressStreet(string $customer_address_street): self
+    public function setCustomerAddressStreet(string $customerAddressStreet): self
     {
-        $this->customer_address_street = $customer_address_street;
+        $this->customerAddressStreet = $customerAddressStreet;
 
         return $this;
     }
 
     public function getCustomerAddressStreetNr(): ?string
     {
-        return $this->customer_address_street_nr;
+        return $this->customerAddressStreetNr;
     }
 
-    public function setCustomerAddressStreetNr(string $customer_address_street_nr): self
+    public function setCustomerAddressStreetNr(string $customerAddressStreetNr): self
     {
-        $this->customer_address_street_nr = $customer_address_street_nr;
+        $this->customerAddressStreetNr = $customerAddressStreetNr;
 
         return $this;
     }
 
     public function getCustomerCountryCode(): ?string
     {
-        return $this->customer_country_code;
+        return $this->customerCountryCode;
     }
 
-    public function setCustomerCountryCode(string $customer_country_code): self
+    public function setCustomerCountryCode(string $customerCountryCode): self
     {
-        $this->customer_country_code = $customer_country_code;
+        $this->customerCountryCode = $customerCountryCode;
 
         return $this;
     }
 
     public function getCustomerZipCode(): ?string
     {
-        return $this->customer_zip_code;
+        return $this->customerZipCode;
     }
 
-    public function setCustomerZipCode(string $customer_zip_code): self
+    public function setCustomerZipCode(string $customerZipCode): self
     {
-        $this->customer_zip_code = $customer_zip_code;
+        $this->customerZipCode = $customerZipCode;
 
         return $this;
     }
 
     public function getCustomerCity(): ?string
     {
-        return $this->customer_city;
+        return $this->customerCity;
     }
 
-    public function setCustomerCity(string $customer_city): self
+    public function setCustomerCity(string $customerCity): self
     {
-        $this->customer_city = $customer_city;
+        $this->customerCity = $customerCity;
 
         return $this;
     }
@@ -214,15 +214,15 @@ class Customer
     public function toArray(): array
     {
         return [
-            'customer_id' => $this->customer_id,
-            'customer_nr' => $this->customer_nr,
-            'customer_name' => $this->customer_name,
-            'customer_address_addition' => $this->customer_address_addition,
-            'customer_address_street' => $this->customer_address_street,
-            'customer_address_street_nr' => $this->customer_address_street_nr,
-            'customer_country_code' => $this->customer_country_code,
-            'customer_zip_code' => $this->customer_zip_code,
-            'customer_city' => $this->customer_city,
+            'customer_id' => $this->customerId,
+            'customer_nr' => $this->customerNr,
+            'customer_name' => $this->customerName,
+            'customer_address_addition' => $this->customerAddressAddition,
+            'customer_address_street' => $this->customerAddressStreet,
+            'customer_address_street_nr' => $this->customerAddressStreetNr,
+            'customer_country_code' => $this->customerCountryCode,
+            'customer_zip_code' => $this->customerZipCode,
+            'customer_city' => $this->customerCity,
         ];
     }
 
@@ -236,7 +236,7 @@ class Customer
      */
     public function getCustomerOrders(): ArrayCollection
     {
-        return $this->customer_orders;
+        return $this->customerOrders;
     }
 
     /**
@@ -245,44 +245,32 @@ class Customer
      * the Customer.customer_orders property (INVERSE SIDE) and the CustomerOrder.customer (OWNING SIDE) property.
      * The order data is joined over the customer_orders.customer_id field.
      *
-     * @param ArrayCollection<\WebWMS\Entity\CustomerOrder>|null $customer_orders
+     * @param ArrayCollection<\WebWMS\Entity\CustomerOrder>|null $customerOrders
      */
-    public function setCustomerOrders(ArrayCollection $customer_orders): Customer
+    public function setCustomerOrders(ArrayCollection $customerOrders): Customer
     {
-        $this->customer_orders = $customer_orders;
+        $this->customerOrders = $customerOrders;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCustomerCreatedAt(): mixed
     {
-        return $this->customer_created_at;
+        return $this->customerCreatedAt;
     }
 
-    /**
-     * @param mixed $customer_created_at
-     */
-    public function setCustomerCreatedAt(mixed $customer_created_at): void
+    public function setCustomerCreatedAt(mixed $customerCreatedAt): void
     {
-        $this->customer_created_at = $customer_created_at;
+        $this->customerCreatedAt = $customerCreatedAt;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCustomerUpdatedAt(): mixed
     {
-        return $this->customer_updated_at;
+        return $this->customerUpdatedAt;
     }
 
-    /**
-     * @param mixed $customer_updated_at
-     */
-    public function setCustomerUpdatedAt(mixed $customer_updated_at): void
+    public function setCustomerUpdatedAt(mixed $customerUpdatedAt): void
     {
-        $this->customer_updated_at = $customer_updated_at;
+        $this->customerUpdatedAt = $customerUpdatedAt;
     }
 }

@@ -3,10 +3,10 @@
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\OrderPosRepository;
+use WebWMS\Repository\CustomerOrderPosRepository;
 
 /**
- * @ORM\Entity(repositoryClass=OrderPosRepository::class)
+ * @ORM\Entity(repositoryClass=CustomerOrderPosRepository::class)
  */
 class OrderPos
 {
@@ -15,74 +15,56 @@ class OrderPos
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $order_id;
+    private ?int $orderId;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $article_id;
+    private ?int $articleId;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="decimal")
      */
-    private $order_pos_quantity;
+    private ?float $orderPosQuantity;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getOrderId()
+    public function getOrderId(): ?int
     {
-        return $this->order_id;
+        return $this->orderId;
     }
 
-    /**
-     * @param mixed $order_id
-     */
-    public function setOrderId($order_id): void
+    public function setOrderId($orderId): void
     {
-        $this->order_id = $order_id;
+        $this->orderId = $orderId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getArticleId()
+    public function getArticleId(): ?int
     {
-        return $this->article_id;
+        return $this->articleId;
     }
 
-    /**
-     * @param mixed $article_id
-     */
-    public function setArticleId($article_id): void
+    public function setArticleId($articleId): void
     {
-        $this->article_id = $article_id;
+        $this->articleId = $articleId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getOrderPosQuantity()
+    public function getOrderPosQuantity(): ?float
     {
-        return $this->order_pos_quantity;
+        return $this->orderPosQuantity;
     }
 
-    /**
-     * @param mixed $order_pos_quantity
-     */
-    public function setOrderPosQuantity($order_pos_quantity): void
+    public function setOrderPosQuantity($orderPosQuantity): void
     {
-        $this->order_pos_quantity = $order_pos_quantity;
+        $this->orderPosQuantity = $orderPosQuantity;
     }
 
 

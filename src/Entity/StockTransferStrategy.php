@@ -15,17 +15,17 @@ class StockTransferStrategy
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $short_code;
+    private ?string $shortCode;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $description;
+    private ?string $description;
 
     public function getId(): ?int
     {
@@ -34,12 +34,12 @@ class StockTransferStrategy
 
     public function getShortCode(): ?string
     {
-        return $this->short_code;
+        return $this->shortCode;
     }
 
-    public function setShortCode(string $short_code): self
+    public function setShortCode(string $shortCode): self
     {
-        $this->short_code = $short_code;
+        $this->shortCode = $shortCode;
 
         return $this;
     }
