@@ -62,7 +62,7 @@
                                     <div class="form-row col-md-12">
                                         <div class="form-group col-md-6">
                                             {% set newOrderId = lastId.customerOrderId +1 %}
-                                            {% set newOrderNr =  "VBE-01-#{newOrderId}" %}
+                                            {% set newOrderNr =  "VLS-01-#{newOrderId}" %}
                                             {{ form_row(customerForm.customer_order_nr, {'value' : newOrderNr }) }}
                                             {{ form_row(customerForm.customer_order_id, {'value' : newOrderId }) }}
                                             {{ form_row(customerForm.usr_id, {'value' : app.user.id }) }}
@@ -155,16 +155,5 @@
     {% block javascripts %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/customersAutofill.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/itemsAftAutofill.js') }}"></script>
-        <script>
-            const customerOrderId = {{ lastId.customerOrderId + 1 }};
-
-            function getOrderId (){
-                document.querySelector(".inputAftNr").value = customerOrderId;
-                console.log(customerOrderId)
-            }
-            window.addEventListener("load", function () {
-                getOrderId();
-            });
-        </script>
     {% endblock %}
 {% endblock %}

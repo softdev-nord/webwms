@@ -11,85 +11,67 @@ use WebWMS\Repository\SupplierOrderPosRepository;
 class SupplierOrderPos
 {
     /**
-     * @var \WebWMS\Entity\SupplierOrder
+     * @var SupplierOrder
      *
      * @ORM\ManyToOne(targetEntity="SupplierOrder", inversedBy="details")
-     * @ORM\JoinColumn(name="supplier_order_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="supplierOrderId", referencedColumnName="id")
      */
-    protected $supplier_orders;
+    protected SupplierOrder $supplierOrders;
 
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $supplier_order_id;
+    private ?int $supplierOrderId;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $article_id;
+    private ?int $articleId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $supplier_order_pos_quantity;
+    private ?int $supplierOrderPosQuantity;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierOrderId()
+    public function getSupplierOrderId(): ?int
     {
-        return $this->supplier_order_id;
+        return $this->supplierOrderId;
     }
 
-    /**
-     * @param mixed $supplier_order_id
-     */
-    public function setSupplierOrderId($supplier_order_id): void
+    public function setSupplierOrderId(?int $supplierOrderId): void
     {
-        $this->supplier_order_id = $supplier_order_id;
+        $this->supplierOrderId = $supplierOrderId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getArticleId()
+    public function getArticleId(): ?int
     {
-        return $this->article_id;
+        return $this->articleId;
     }
 
-    /**
-     * @param mixed $article_id
-     */
-    public function setArticleId($article_id): void
+    public function setArticleId(?int $articleId): void
     {
-        $this->article_id = $article_id;
+        $this->articleId = $articleId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierOrderPosQuantity()
+    public function getSupplierOrderPosQuantity(): ?int
     {
-        return $this->supplier_order_pos_quantity;
+        return $this->supplierOrderPosQuantity;
     }
 
-    /**
-     * @param mixed $supplier_order_pos_quantity
-     */
-    public function setSupplierOrderPosQuantity($supplier_order_pos_quantity): void
+    public function setSupplierOrderPosQuantity(?int $supplierOrderPosQuantity): void
     {
-        $this->supplier_order_pos_quantity = $supplier_order_pos_quantity;
+        $this->supplierOrderPosQuantity = $supplierOrderPosQuantity;
     }
 }

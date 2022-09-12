@@ -12,6 +12,11 @@ namespace WebWMS\Service\Validation;
  */
 class ArticleValidationService
 {
+    /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function validateArticleData($requestData): array
     {
         $responseData = [];

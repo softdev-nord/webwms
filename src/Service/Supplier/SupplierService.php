@@ -104,6 +104,9 @@ class SupplierService
         return $supplier;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function deleteSupplierApi(int $supplierId): void
     {
         $supplier = $this->entityManager
@@ -147,41 +150,25 @@ class SupplierService
     {
         $connection = $this->entityManager->getConnection();
 
-        $numOfBoxSupplier = !empty($_GET['numOfBoxSupplier']) ? $_GET['numOfBoxSupplier'] : '';
-        $nameSupp = !empty($_GET['supplier_nr']) ? strtolower(trim($_GET['supplier_nr'])) : '';
+        $numOfBoxSupplier = !empty(filter_input(INPUT_GET, 'numOfBoxSupplier')) ? filter_input(INPUT_GET, 'numOfBoxSupplier') : '';
+        $nameSupp = !empty(filter_input(INPUT_GET, 'supplier_nr')) ? strtolower(trim(filter_input(INPUT_GET, 'supplier_nr'))) : '';
 
         $boxName = 'supplier_nr';
 
-        switch ($numOfBoxSupplier) {
-            case 1:
-                $boxName = 'supplier_name';
-                break;
-            case 2:
-                $boxName = 'supplier_address_addition';
-                break;
-            case 3:
-                $boxName = 'supplier_address_street';
-                break;
-            case 4:
-                $boxName = 'supplier_address_street_nr';
-                break;
-            case 5:
-                $boxName = 'supplier_address_country_code';
-                break;
-            case 6:
-                $boxName = 'supplier_address_zipcode';
-                break;
-            case 7:
-                $boxName = 'supplier_address_city';
-                break;
-            case 8:
-                $boxName = 'supplier_id';
-                break;
-        }
+        $boxName = match ($numOfBoxSupplier) {
+            'supplier_name' => 'supplier_name',
+            'supplier_address_addition' => 'supplier_address_addition',
+            'supplier_address_street' => 'supplier_address_street',
+            'supplier_address_street_nr' => 'supplier_address_street_nr',
+            'supplier_address_country_code' => 'supplier_address_country_code',
+            'supplier_address_zipcode' => 'supplier_address_zipcode',
+            'supplier_address_city' => 'supplier_address_city',
+            default => 'supplier_nr',
+        };
 
         $data = [];
-        if (isset($_GET['name_supplier'])) {
-            $nameSupp = strtolower(trim($_GET['name_supplier']));
+        if (!empty(filter_input(INPUT_GET, 'name_supplier'))) {
+            $nameSupp = strtolower(trim(filter_input(INPUT_GET, 'name_supplier')));
 
             $sqlSupp = "SELECT supplier_nr, supplier_name, supplier_address_addition, supplier_address_street,
                             supplier_address_street_nr, supplier_address_country_code, supplier_address_zipcode,

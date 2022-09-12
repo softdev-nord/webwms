@@ -19,6 +19,9 @@ use WebWMS\Entity\User;
  */
 class UserType extends AbstractType
 {
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

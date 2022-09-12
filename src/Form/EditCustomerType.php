@@ -24,6 +24,10 @@ class EditCustomerType extends AbstractType
     ) {
     }
 
+    /**
+     * @SuppressWarnings("unused")
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('customer_id', HiddenType::class, [

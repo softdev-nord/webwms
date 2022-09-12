@@ -31,9 +31,7 @@ class SupplierOrder extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/bestellungen", name="orders")
-     */
+    #[Route('/bestellungen', name: 'orders')]
     public function index(): Response
     {
         if (!$this->getUser()) {
@@ -55,9 +53,7 @@ class SupplierOrder extends AbstractController
         );
     }
 
-    /**
-     * @Route("/bestellung_anlegen", name="new_supplier_order")
-     */
+    #[Route('/bestellung_anlegen', name: 'new_supplier_order')]
     public function addNewSupplierOrder(Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
@@ -94,26 +90,27 @@ class SupplierOrder extends AbstractController
     }
 
     /**
-     * @Route("/supplier_oders_ajax", name="supplier_orders_ajax")
      * @throws Exception
      */
+    #[Route('/supplier_oders_ajax', name: 'supplier_oders_ajax')]
     public function getAllOrders(): JsonResponse
     {
         return $this->supplierOrderService->getAllOrders();
     }
 
     /**
-     * @Route("/supplier_order_pos_ajax", name="supplier_order_pos_ajax")
      * @throws Exception
      */
+    #[Route('/supplier_order_pos_ajax', name: 'supplier_order_pos_ajax')]
     public function getAllOrderPos(): JsonResponse
     {
         return $this->supplierOrderService->getAllOrderPos();
     }
 
     /**
-     * @Route("/article_supplier_order_ajax", name="article_supplier_order_ajax")
+     * @throws Exception
      */
+    #[Route('/article_supplier_order_ajax', name: 'article_supplier_order_ajax')]
     public function getAllArticleAjax(): JsonResponse
     {
         return $this->articleService->getArticle();

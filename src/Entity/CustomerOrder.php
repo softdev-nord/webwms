@@ -25,59 +25,59 @@ class CustomerOrder extends ModelEntity
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $customer_order_id;
+    private ?int $customerOrderId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $usr_id;
+    private ?int $usrId;
 
     /**
      * @ORM\Column(name="customer_id", type="integer")
      */
-    private ?int $customer_id;
+    private ?int $customerId;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $customer_order_nr;
+    private ?string $customerOrderNr;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $customer_order_reference;
+    private ?string $customerOrderReference;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?\DateTimeInterface $customer_order_date;
+    private ?\DateTimeInterface $customerOrderDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?\DateTimeInterface $customer_order_order_date;
+    private ?\DateTimeInterface $customerOrderOrderDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $customer_order_created_at;
+    private mixed $customerOrderCreatedAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $customer_order_updated_at;
+    private mixed $customerOrderUpdatedAt;
 
     /**
      * INVERSE SIDE.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection<\WebWMS\Entity\CustomerOrderPos>
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="\WebWMS\Entity\CustomerOrderPos", mappedBy="customer_orders")
      */
-    protected $details;
+    protected ArrayCollection $details;
 
     /**
-     * @var \WebWMS\Entity\Customer
+     * @var Customer
      *
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Customer", inversedBy="customer_orders")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
@@ -96,170 +96,125 @@ class CustomerOrder extends ModelEntity
 
     public function getUsrId(): ?int
     {
-        return $this->usr_id;
+        return $this->usrId;
     }
 
-    /**
-     * @return $this
-     */
-    public function setUsrId(int $usr_id): self
+    public function setUsrId(int $usrId): self
     {
-        $this->usr_id = $usr_id;
+        $this->usrId = $usrId;
 
         return $this;
     }
 
     public function getCustomerId(): ?int
     {
-        return $this->customer_id;
+        return $this->customerId;
     }
 
-    /**
-     * @return $this
-     */
-    public function setCustomerId(int $customer_id): self
+    public function setCustomerId(int $customerId): self
     {
-        $this->customer_id = $customer_id;
+        $this->customerId = $customerId;
 
         return $this;
     }
 
     public function getCustomerOrderId(): ?int
     {
-        return $this->customer_order_id;
+        return $this->customerOrderId;
     }
 
-    /**
-     * @return $this
-     */
-    public function setCustomerOrderId(int $customer_order_id): self
+    public function setCustomerOrderId(int $customerOrderId): self
     {
-        $this->customer_order_id = $customer_order_id;
+        $this->customerOrderId = $customerOrderId;
 
         return $this;
     }
 
     public function getCustomerOrderNr(): ?string
     {
-        return $this->customer_order_nr;
+        return $this->customerOrderNr;
     }
 
-    /**
-     * @return $this
-     */
-    public function setCustomerOrderNr(string $customer_order_nr): self
+    public function setCustomerOrderNr(string $customerOrderNr): self
     {
-        $this->customer_order_nr = $customer_order_nr;
+        $this->customerOrderNr = $customerOrderNr;
 
         return $this;
     }
 
     public function getCustomerOrderReference(): ?string
     {
-        return $this->customer_order_reference;
+        return $this->customerOrderReference;
     }
 
-    /**
-     * @return $this
-     */
-    public function setCustomerOrderReference(?string $customer_order_reference): self
+    public function setCustomerOrderReference(?string $customerOrderReference): self
     {
-        $this->customer_order_reference = $customer_order_reference;
+        $this->customerOrderReference = $customerOrderReference;
 
         return $this;
     }
 
     public function getCustomerOrderDate(): ?\DateTimeInterface
     {
-        return $this->customer_order_date;
+        return $this->customerOrderDate;
     }
 
-    /**
-     * @return $this
-     */
-    public function setCustomerOrderDate(?\DateTimeInterface $customer_order_date): self
+    public function setCustomerOrderDate(?\DateTimeInterface $customerOrderDate): self
     {
-        $this->customer_order_date = $customer_order_date;
+        $this->customerOrderDate = $customerOrderDate;
 
         return $this;
     }
 
     public function getCustomerOrderOrderDate(): ?\DateTimeInterface
     {
-        return $this->customer_order_order_date;
+        return $this->customerOrderOrderDate;
     }
 
-    /**
-     * @return CustomerOrder
-     */
-    public function setCustomerOrderOrderDate(?\DateTimeInterface $customer_order_order_date): self
+    public function setCustomerOrderOrderDate(?\DateTimeInterface $customerOrderOrderDate): self
     {
-        $this->customer_order_order_date = $customer_order_order_date;
+        $this->customerOrderOrderDate = $customerOrderOrderDate;
 
         return $this;
     }
 
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection<\WebWMS\Entity\CustomerOrderPos>
-     */
     public function getDetails(): ArrayCollection
     {
         return $this->details;
     }
 
-    /**
-     * @param \WebWMS\Entity\CustomerOrderPos[]|null $details
-     */
-    public function setDetails(?array $details): CustomerOrder
+    public function setDetails(?array $details): ?CustomerOrder
     {
-        return $this->setOneToMany($details, \WebWMS\Entity\CustomerOrderPos::class, 'details', 'customer_order');
+        return $this->setOneToMany($details, CustomerOrderPos::class, 'details', 'customer_order');
     }
 
-    /**
-     * @return \WebWMS\Entity\Customer
-     */
     public function getCustomer(): Customer
     {
         return $this->customer;
     }
 
-    /**
-     * @param \WebWMS\Entity\Customer $customer
-     */
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCustomerOrderCreatedAt(): mixed
     {
-        return $this->customer_order_created_at;
+        return $this->customerOrderCreatedAt;
     }
 
-    /**
-     * @param mixed $customer_order_created_at
-     */
-    public function setCustomerOrderCreatedAt(mixed $customer_order_created_at): void
+    public function setCustomerOrderCreatedAt(mixed $customerOrderCreatedAt): void
     {
-        $this->customer_order_created_at = $customer_order_created_at;
+        $this->customerOrderCreatedAt = $customerOrderCreatedAt;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCustomerOrderUpdatedAt(): mixed
     {
-        return $this->customer_order_updated_at;
+        return $this->customerOrderUpdatedAt;
     }
 
-    /**
-     * @param mixed $customer_order_updated_at
-     */
-    public function setCustomerOrderUpdatedAt(mixed $customer_order_updated_at): void
+    public function setCustomerOrderUpdatedAt(mixed $customerOrderUpdatedAt): void
     {
-        $this->customer_order_updated_at = $customer_order_updated_at;
+        $this->customerOrderUpdatedAt = $customerOrderUpdatedAt;
     }
 }

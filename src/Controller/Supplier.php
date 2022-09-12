@@ -30,10 +30,9 @@ class Supplier extends AbstractController
     }
 
     /**
-     * @Route("/lieferanten", name="supplier")
-     *
      * @throws Exception
      */
+    #[Route('/lieferanten', name: 'supplier')]
     public function index(): Response
     {
         if (!$this->getUser()) {
@@ -56,11 +55,10 @@ class Supplier extends AbstractController
     }
 
     /**
-     * @Route("/lieferant_anlegen", name="add_supplier")
-     *
      * @param Request $request
      * @return RedirectResponse|Response
      */
+    #[Route('/lieferant_anlegen', name: 'add_supplier')]
     public function addNewSupplier(Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
@@ -97,10 +95,9 @@ class Supplier extends AbstractController
     }
 
     /**
-     * @Route("/order_supplier_ajax", name="order_supplier_ajax")
-     *
      * @throws Exception
      */
+    #[Route('/order_supplier_ajax', name: 'order_supplier_ajax')]
     public function getAllSuppliersAjax(): JsonResponse
     {
         return $this->supplierService->getAllSuppliersAjax();

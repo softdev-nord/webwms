@@ -16,12 +16,12 @@ use WebWMS\Repository\CustomerOrderPosRepository;
 class CustomerOrderPos extends ModelEntity
 {
     /**
-     * @var \WebWMS\Entity\CustomerOrder
+     * @var ArrayCollection
      *
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\CustomerOrder", inversedBy="details")
      * @ORM\JoinColumn(name="customer_order_id", referencedColumnName="id")
      */
-    protected $customer_orders;
+    protected ArrayCollection $customerOrders;
 
     /**
      * @ORM\Id
@@ -33,21 +33,21 @@ class CustomerOrderPos extends ModelEntity
     /**
      * @ORM\Column(name="customer_order_id", type="integer", nullable=true)
      */
-    private $customer_order_id;
+    private ?int $customerOrderId;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $article_id;
+    private ?int $articleId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $customer_order_pos_quantity;
+    private ?int $customerOrderPosQuantity;
 
     public function __construct()
     {
-        $this->customer_orders = new ArrayCollection();
+        $this->customerOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -57,47 +57,47 @@ class CustomerOrderPos extends ModelEntity
 
     public function getCustomerOrderId(): ?int
     {
-        return $this->customer_order_id;
+        return $this->customerOrderId;
     }
 
-    public function setCustomerOrderId(?int $customer_order_id): self
+    public function setCustomerOrderId(?int $customerOrderId): self
     {
-        $this->customer_order_id = $customer_order_id;
+        $this->customerOrderId = $customerOrderId;
 
         return $this;
     }
 
     public function getArticleId(): ?int
     {
-        return $this->article_id;
+        return $this->articleId;
     }
 
-    public function setArticleId(?int $article_id): self
+    public function setArticleId(?int $articleId): self
     {
-        $this->article_id = $article_id;
+        $this->articleId = $articleId;
 
         return $this;
     }
 
     public function getCustomerOrderPosQuantity(): ?int
     {
-        return $this->customer_order_pos_quantity;
+        return $this->customerOrderPosQuantity;
     }
 
-    public function setCustomerOrderPosQuantity(int $customer_order_pos_quantity): self
+    public function setCustomerOrderPosQuantity(int $customerOrderPosQuantity): self
     {
-        $this->customer_order_pos_quantity = $customer_order_pos_quantity;
+        $this->customerOrderPosQuantity = $customerOrderPosQuantity;
 
         return $this;
     }
 
-    public function getCustomerOrders(): CustomerOrder
+    public function getCustomerOrders(): ArrayCollection
     {
-        return $this->customer_orders;
+        return $this->customerOrders;
     }
 
-    public function setCustomerOrders(CustomerOrder $customer_orders): void
+    public function setCustomerOrders(ArrayCollection $customerOrders): void
     {
-        $this->customer_orders = $customer_orders;
+        $this->customerOrders = $customerOrders;
     }
 }

@@ -22,9 +22,7 @@ class Homepage extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/homepage", name="homepage")
-     */
+    #[Route('/homepage', name: 'homepage')]
     public function index(): Response
     {
         if (!$this->getUser()) {

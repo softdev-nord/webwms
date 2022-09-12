@@ -34,9 +34,7 @@ class StockLocation extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/lagerplatz", name="stock_location")
-     */
+    #[Route('/lagerplatz', name: 'stock_location')]
     public function index(): Response
     {
         if (!$this->getUser()) {
@@ -56,9 +54,7 @@ class StockLocation extends AbstractController
         );
     }
 
-    /**
-     * @Route("/lagerplatz_anlegen", name="add_stock_location")
-     */
+    #[Route('/lagerplatz_anlegen', name: 'add_stock_location')]
     public function addNewStockLocation(Request $request): RedirectResponse|Response
     {
         $form = $this->createForm(StockLocationType::class);
@@ -84,10 +80,8 @@ class StockLocation extends AbstractController
         );
     }
 
-    /**
-     * @Route("lagerplatz_bearbeiten/koordinate/{stock_location_coordinate}", name="edit_stock_location", methods={"GET","POST"})
-     */
-    public function editStockLocation(Request $request, $stock_location_coordinate): RedirectResponse|JsonResponse|Response
+    #[Route('lagerplatz_bearbeiten/koordinate/{stockLocationCoordinate}', name: 'edit_stock_location')]
+    public function editStockLocation(Request $request, $stockLocationCoordinate): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -102,7 +96,7 @@ class StockLocation extends AbstractController
         $responseData = $this->stockLocationValidationService->validateStockLocationData($requestData);
         $responseData['message'] = '';
 
-        $stockLocation = $this->stockLocationDataHandler->getStockLocationByCoordinate((int) $stock_location_coordinate);
+        $stockLocation = $this->stockLocationDataHandler->getStockLocationByCoordinate((int) $stockLocationCoordinate);
         $form = $this->createForm(EditStockLocationType::class, $stockLocation);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -133,41 +127,23 @@ class StockLocation extends AbstractController
         );
     }
 
-    public function getFreeStockLocation(): array
-    {
-        return $this->stockLocationService->getFreeStockLocations();
-    }
-
-    /**
-     * @Route("/stock_location_ajax", name="stock_location_ajax")
-     *
-     */
+    #[Route('/stock_location_ajax', name: 'stock_location_ajax')]
     public function getAllStockLocations(): JsonResponse
     {
         return $this->stockLocationService->getAllStockLocations();
     }
 
     /**
-     * @Route("/lagerplatz_details/{stock_location_coordinate}", name="show_stock_location_details", methods={"GET","POST"})
      * @throws NotFoundException
      */
+    #[Route('/lagerplatz_details/{stock_location_coordinate}', name: 'show_stock_location_details')]
     public function getSockLocationDetailsById($coordinate): array
     {
         return $this->stockLocationService->getSockLocationDetailsById($coordinate);
     }
 
-    /**
-     * @Route("/get_first_free_stock_location", name="get_first_free_stock_location")
-     */
-    public function getFirstFreeStockLocation($stockSystem, $limit): array
-    {
-        return $this->stockLocationService->getFirstFreeStockLocation($stockSystem, $limit);
-    }
-
-    /**
-     * @Route("/selected_stock_locations", name="selected_stock_locations")
-     */
-    public function getSelectedStocklocations($freeStockLocations)
+    #[Route('/selected_stock_locations', name: 'selected_stock_locations')]
+    public function getSelectedStocklocations($freeStockLocations): JsonResponse
     {
         return new JsonResponse($freeStockLocations);
     }

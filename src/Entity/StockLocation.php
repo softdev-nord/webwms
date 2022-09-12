@@ -17,238 +17,214 @@ class StockLocation
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $stock_location_id;
+    private ?int $stockLocationId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $stock_location_ln;
+    private ?int $stockLocationLn;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $stock_location_fb;
+    private ?int $stockLocationFb;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $stock_location_sp;
+    private ?int $stockLocationSp;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $stock_location_tf;
+    private ?int $stockLocationTf;
 
     /**
      * @ORM\Column(type="integer")
      * * @ORM\OneToMany(targetEntity="\WebWMS\Entity\StockRotation", mappedBy="stock_location_coordinate")
      */
-    private mixed $stock_location_coordinate;
+    private mixed $stockLocationCoordinate;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $stock_location_desc;
+    private ?string $stockLocationDesc;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private ?string $stock_location_width;
+    private ?string $stockLocationWidth;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private ?string $stock_location_depth;
+    private ?string $stockLocationDepth;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private ?string $stock_location_height;
+    private ?string $stockLocationHeight;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private ?string $stock_location_zone;
+    private ?string $stockLocationZone;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $stock_location_created_at;
+    private mixed $stockLocationCreatedAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $stock_location_updated_at;
+    private mixed $stockLocationUpdatedAt;
 
     public function getStockLocationId(): ?int
     {
-        return $this->stock_location_id;
+        return $this->stockLocationId;
     }
 
-    public function setStockLocationId(int $stock_location_id): self
+    public function setStockLocationId(int $stockLocationId): self
     {
-        $this->stock_location_id = $stock_location_id;
+        $this->stockLocationId = $stockLocationId;
 
         return $this;
     }
 
     public function getStockLocationLn(): ?int
     {
-        return $this->stock_location_ln;
+        return $this->stockLocationLn;
     }
 
-    public function setStockLocationLn(int $stock_location_ln): self
+    public function setStockLocationLn(int $stockLocationLn): self
     {
-        $this->stock_location_ln = $stock_location_ln;
+        $this->stockLocationLn = $stockLocationLn;
 
         return $this;
     }
 
     public function getStockLocationFb(): ?int
     {
-        return $this->stock_location_fb;
+        return $this->stockLocationFb;
     }
 
-    public function setStockLocationFb(int $stock_location_fb): self
+    public function setStockLocationFb(int $stockLocationFb): self
     {
-        $this->stock_location_fb = $stock_location_fb;
+        $this->stockLocationFb = $stockLocationFb;
 
         return $this;
     }
 
     public function getStockLocationSp(): ?int
     {
-        return $this->stock_location_sp;
+        return $this->stockLocationSp;
     }
 
-    public function setStockLocationSp(int $stock_location_sp): self
+    public function setStockLocationSp(int $stockLocationSp): self
     {
-        $this->stock_location_sp = $stock_location_sp;
+        $this->stockLocationSp = $stockLocationSp;
 
         return $this;
     }
 
     public function getStockLocationTf(): ?int
     {
-        return $this->stock_location_tf;
+        return $this->stockLocationTf;
     }
 
-    public function setStockLocationTf(int $stock_location_tf): self
+    public function setStockLocationTf(int $stockLocationTf): self
     {
-        $this->stock_location_tf = $stock_location_tf;
+        $this->stockLocationTf = $stockLocationTf;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getStockLocationCoordinate(): mixed
     {
-        return $this->stock_location_coordinate;
+        return $this->stockLocationCoordinate;
     }
 
-    /**
-     * @param mixed $stock_location_coordinate
-     */
-    public function setStockLocationCoordinate($stock_location_coordinate): void
+    public function setStockLocationCoordinate($stockLocationCoordinate): void
     {
-        $this->stock_location_coordinate = $stock_location_coordinate;
+        $this->stockLocationCoordinate = $stockLocationCoordinate;
     }
 
     public function getStockLocationDesc(): ?string
     {
-        return $this->stock_location_desc;
+        return $this->stockLocationDesc;
     }
 
-    public function setStockLocationDesc(string $stock_location_desc): self
+    public function setStockLocationDesc(string $stockLocationDesc): self
     {
-        $this->stock_location_desc = $stock_location_desc;
+        $this->stockLocationDesc = $stockLocationDesc;
 
         return $this;
     }
 
     public function getStockLocationWidth(): ?string
     {
-        return $this->stock_location_width;
+        return $this->stockLocationWidth;
     }
 
-    public function setStockLocationWidth(string $stock_location_width): self
+    public function setStockLocationWidth(string $stockLocationWidth): self
     {
-        $this->stock_location_width = $stock_location_width;
+        $this->stockLocationWidth = $stockLocationWidth;
 
         return $this;
     }
 
     public function getStockLocationDepth(): ?string
     {
-        return $this->stock_location_depth;
+        return $this->stockLocationDepth;
     }
 
-    public function setStockLocationDepth(string $stock_location_depth): self
+    public function setStockLocationDepth(string $stockLocationDepth): self
     {
-        $this->stock_location_depth = $stock_location_depth;
+        $this->stockLocationDepth = $stockLocationDepth;
 
         return $this;
     }
 
     public function getStockLocationHeight(): ?string
     {
-        return $this->stock_location_height;
+        return $this->stockLocationHeight;
     }
 
-    public function setStockLocationHeight(string $stock_location_height): self
+    public function setStockLocationHeight(string $stockLocationHeight): self
     {
-        $this->stock_location_height = $stock_location_height;
+        $this->stockLocationHeight = $stockLocationHeight;
 
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getStockLocationZone(): ?string
     {
-        return $this->stock_location_zone;
+        return $this->stockLocationZone;
     }
 
-    /**
-     * @param string|null $stock_location_zone
-     */
-    public function setStockLocationZone(?string $stock_location_zone): void
+    public function setStockLocationZone(?string $stockLocationZone): void
     {
-        $this->stock_location_zone = $stock_location_zone;
+        $this->stockLocationZone = $stockLocationZone;
     }
 
-    /**
-     * @return mixed
-     */
     public function getStockLocationCreatedAt(): mixed
     {
-        return $this->stock_location_created_at;
+        return $this->stockLocationCreatedAt;
     }
 
-    /**
-     * @param mixed $stock_location_created_at
-     */
-    public function setStockLocationCreatedAt(mixed $stock_location_created_at): void
+    public function setStockLocationCreatedAt(mixed $stockLocationCreatedAt): void
     {
-        $this->stock_location_created_at = $stock_location_created_at;
+        $this->stockLocationCreatedAt = $stockLocationCreatedAt;
     }
 
-    /**
-     * @return mixed
-     */
     public function getStockLocationUpdatedAt(): mixed
     {
-        return $this->stock_location_updated_at;
+        return $this->stockLocationUpdatedAt;
     }
 
-    /**
-     * @param mixed $stock_location_updated_at
-     */
-    public function setStockLocationUpdatedAt(mixed $stock_location_updated_at): void
+    public function setStockLocationUpdatedAt(mixed $stockLocationUpdatedAt): void
     {
-        $this->stock_location_updated_at = $stock_location_updated_at;
+        $this->stockLocationUpdatedAt = $stockLocationUpdatedAt;
     }
 }

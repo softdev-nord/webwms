@@ -19,6 +19,9 @@ use WebWMS\Entity\CustomerOrderPos;
  */
 class CustomerOrderPosType extends AbstractType
 {
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

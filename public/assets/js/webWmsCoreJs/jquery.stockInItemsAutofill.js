@@ -60,8 +60,6 @@ const stockInItemsAutofill = (function(){
 
                 resArr = ui.item.data.split("|");
 
-                console.log('resArr', resArr);
-
                 $('#stock_in_le_quantity').val(resArr[11]);
                 $('#article_nr_right').val(resArr[1]);
                 $('#article_name_right').val(resArr[2]);
@@ -89,4 +87,19 @@ const stockInItemsAutofill = (function(){
 
 $(document).ready(function(){
     stockInItemsAutofill.init();
+
+    /*$('#stock_in_post_final').on( 'click', function (e) {
+        e.preventDefault();
+        const form = $(this).closest('form');
+        const formData = form.serialize();
+        alert("save button clicked");
+        $.ajax({
+            method:'POST',
+            url:'/stock_in_final',
+            data: formData,
+            success: function(data){
+                console.log(formData);
+            }
+        });
+    });*/
 });

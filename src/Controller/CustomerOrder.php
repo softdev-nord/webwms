@@ -34,11 +34,7 @@ class CustomerOrder extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/auftrag", name="customer_orders")
-     *
-     * @throws Exception
-     */
+    #[Route('/auftrag', name: 'customer_orders')]
     public function index(): Response
     {
         if (!$this->getUser()) {
@@ -61,38 +57,27 @@ class CustomerOrder extends AbstractController
     }
 
     /**
-     * @Route("/auftrag_anlegen", name="new_customer_order")
-     *
-     * @param EntityManagerInterface $em
+     * @param EntityManagerInterface $entityManager
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function addNewCustomerOrder(EntityManagerInterface $em, Request $request): RedirectResponse|Response
+    #[Route('/auftrag_anlegen', name: 'new_customer_order')]
+    public function addNewCustomerOrder(EntityManagerInterface $entityManager, Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-        //dd($request->request->all());
 
         $customerOrderForm = $this->createForm(CustomerOrderType::class);
-
-        //dd($customerOrderForm->getData());
-        //$customerOrderForm->getData();
-
-        //$customerOrderForm = $this->createForm(CustomerOrderType::class, $request->get('customer_order_pos'));
 
         $customerOrder = new CustomerOrders();
         $customerOrderPosForm = $this->createForm(CustomerOrderPosType::class);
 
-        //dd($customerOrderForm);
-
         $form = $this->createForm(CustomerOrderType::class);
         $form->handleRequest($request);
-        //dd($form->getData());
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var CustomerOrders $customerOrder */
             $customerOrder = $form->getData();
-            //dd($customerOrder);
 
             //$customerOrder = new CustomerOrders();
             //$customerOrderPos = new CustomerOrderPos();
@@ -104,11 +89,9 @@ class CustomerOrder extends AbstractController
             $customerOrder->setCustomerOrderReference($data['customer_order[customer_order_reference]']);*/
             $customerOrder->setUsrId((int) $this->getUser());
 
-            //$em = $this->getDoctrine()->getManager();
-
-            $em->persist($customerOrder);
+            $entityManager->persist($customerOrder);
             //$em->persist($customerOrderPos);
-            $em->flush();
+            $entityManager->flush();
             //return new Response('News added successfuly');
 
             $this->addFlash('success', 'Der Auftrag und die Position(en) wurden erfolgreich angelegt.');
@@ -153,28 +136,22 @@ class CustomerOrder extends AbstractController
         );
     }
 
-    /**
-     * @Route("/customer_order_ajax", name="customer_order_ajax")
-     * @throws Exception
-     */
+    #[Route('/customer_order_ajax', name: 'customer_order_ajax')]
     public function getAllCustomerOrders(): JsonResponse
     {
         return $this->customerOrderService->getAllCustomerOrders();
     }
 
     /**
-     * @Route("/customer_order_pos_ajax", name="customer_order_pos_ajax")
-     *
      * @throws Exception
      */
+    #[Route('/customer_order_pos_ajax', name: 'customer_order_pos_ajax')]
     public function getAllCustomerOrdersPos(): JsonResponse
     {
         return $this->customerOrderService->getAllCustomerOrderPos();
     }
 
-    /**
-     * @Route("/article_order_ajax", name="article_order_ajax")
-     */
+    #[Route('/article_order_ajax', name: 'article_order_ajax')]
     public function getAllArticleAjax(): JsonResponse
     {
         return $this->articleService->getArticle();

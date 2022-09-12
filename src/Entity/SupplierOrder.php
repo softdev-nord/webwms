@@ -24,47 +24,47 @@ class SupplierOrder extends ModelEntity
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $supplier_order_id;
+    private ?int $supplierOrderId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private mixed $usr_id;
+    private ?int $usrId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private mixed $supplier_id;
+    private ?int $supplierId;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private mixed $supplier_order_nr;
+    private ?string $supplierOrderNr;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private mixed $supplier_order_reference;
+    private ?string $supplierOrderReference;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $supplier_order_date;
+    private ?\DateTimeInterface $supplierOrderDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $supplier_order_order_date;
+    private ?\DateTimeInterface $supplierOrderOrderDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $supplier_order_created_at;
+    private ?\DateTimeInterface $supplierOrderCreatedAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $supplier_order_updated_at;
+    private ?\DateTimeInterface $supplierOrderUpdatedAt;
 
     /**
      * INVERSE SIDE.
@@ -73,15 +73,15 @@ class SupplierOrder extends ModelEntity
      *
      * @ORM\OneToMany(targetEntity="\WebWMS\Entity\SupplierOrderPos", mappedBy="supplier_orders", orphanRemoval=true, cascade={"persist"})
      */
-    protected $details;
+    protected SupplierOrderPos $details;
 
     /**
      * @var Supplier
      *
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Supplier", inversedBy="supplier_orders")
-     * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="supplierId", referencedColumnName="id")
      */
-    protected $supplier;
+    protected Supplier $supplier;
 
     public function getId(): ?int
     {
@@ -101,143 +101,98 @@ class SupplierOrder extends ModelEntity
      */
     public function getSupplierOrderId(): ?int
     {
-        return $this->supplier_order_id;
+        return $this->supplierOrderId;
     }
 
     /**
-     * @param mixed $supplier_order_id
+     * @param mixed $supplierOrderId
      */
-    public function setSupplierOrderId(mixed $supplier_order_id): void
+    public function setSupplierOrderId(?int $supplierOrderId): void
     {
-        $this->supplier_order_id = $supplier_order_id;
+        $this->supplierOrderId = $supplierOrderId;
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getUsrId(): mixed
+    public function getUsrId(): ?int
     {
-        return $this->usr_id;
+        return $this->usrId;
     }
 
-    /**
-     * @param mixed $usr_id
-     */
-    public function setUsrId(mixed $usr_id): void
+    public function setUsrId(?int $usrId): void
     {
-        $this->usr_id = $usr_id;
+        $this->usrId = $usrId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierId(): mixed
+    public function getSupplierId(): ?int
     {
-        return $this->supplier_id;
+        return $this->supplierId;
     }
 
-    /**
-     * @param mixed $supplier_id
-     */
-    public function setSupplierId(mixed $supplier_id): void
+    public function setSupplierId(?int $supplierId): void
     {
-        $this->supplier_id = $supplier_id;
+        $this->supplierId = $supplierId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierOrderNr(): mixed
+    public function getSupplierOrderNr(): ?string
     {
-        return $this->supplier_order_nr;
+        return $this->supplierOrderNr;
     }
 
-    /**
-     * @param mixed $supplier_order_nr
-     */
-    public function setSupplierOrderNr(mixed $supplier_order_nr): void
+    public function setSupplierOrderNr(?string $supplierOrderNr): void
     {
-        $this->supplier_order_nr = $supplier_order_nr;
+        $this->supplierOrderNr = $supplierOrderNr;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierOrderReference(): mixed
+    public function getSupplierOrderReference(): ?string
     {
-        return $this->supplier_order_reference;
+        return $this->supplierOrderReference;
     }
 
-    /**
-     * @param mixed $supplier_order_reference
-     */
-    public function setSupplierOrderReference(mixed $supplier_order_reference): void
+    public function setSupplierOrderReference(?string $supplierOrderReference): void
     {
-        $this->supplier_order_reference = $supplier_order_reference;
+        $this->supplierOrderReference = $supplierOrderReference;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierOrderDate(): mixed
+    public function getSupplierOrderDate(): ?\DateTimeInterface
     {
-        return $this->supplier_order_date;
+        return $this->supplierOrderDate;
     }
 
-    /**
-     * @param mixed $supplier_order_date
-     */
-    public function setSupplierOrderDate(mixed $supplier_order_date): void
+    public function setSupplierOrderDate(?\DateTimeInterface $supplierOrderDate): void
     {
-        $this->supplier_order_date = $supplier_order_date;
+        $this->supplierOrderDate = $supplierOrderDate;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierOrderOrderDate(): mixed
+    public function getSupplierOrderOrderDate(): ?\DateTimeInterface
     {
-        return $this->supplier_order_order_date;
+        return $this->supplierOrderOrderDate;
     }
 
-    /**
-     * @param mixed $supplier_order_order_date
-     */
-    public function setSupplierOrderOrderDate(mixed $supplier_order_order_date): void
+    public function setSupplierOrderOrderDate(?\DateTimeInterface $supplierOrderOrderDate): void
     {
-        $this->supplier_order_order_date = $supplier_order_order_date;
+        $this->supplierOrderOrderDate = $supplierOrderOrderDate;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierOrderCreatedAt(): mixed
+    public function getSupplierOrderCreatedAt(): ?\DateTimeInterface
     {
-        return $this->supplier_order_created_at;
+        return $this->supplierOrderCreatedAt;
     }
 
-    /**
-     * @param mixed $supplier_order_created_at
-     */
-    public function setSupplierOrderCreatedAt(mixed $supplier_order_created_at): void
+    public function setSupplierOrderCreatedAt(?\DateTimeInterface $supplierOrderCreatedAt): void
     {
-        $this->supplier_order_created_at = $supplier_order_created_at;
+        $this->supplierOrderCreatedAt = $supplierOrderCreatedAt;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierOrderUpdatedAt(): mixed
+    public function getSupplierOrderUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->supplier_order_updated_at;
+        return $this->supplierOrderUpdatedAt;
     }
 
-    /**
-     * @param mixed $supplier_order_updated_at
-     */
-    public function setSupplierOrderUpdatedAt(mixed $supplier_order_updated_at): void
+    public function setSupplierOrderUpdatedAt(?\DateTimeInterface $supplierOrderUpdatedAt): void
     {
-        $this->supplier_order_updated_at = $supplier_order_updated_at;
+        $this->supplierOrderUpdatedAt = $supplierOrderUpdatedAt;
     }
 
     public function getDetails(): SupplierOrderPos
@@ -248,9 +203,9 @@ class SupplierOrder extends ModelEntity
     /**
      * @param SupplierOrderPos[]|null $details
      *
-     * @return ModelEntity|SupplierOrder|SupplierOrderPos
+     * @return ModelEntity|SupplierOrder
      */
-    public function setDetails(?array $details)
+    public function setDetails(?array $details): SupplierOrder|ModelEntity
     {
         return $this->setOneToMany($details, SupplierOrderPos::class, 'details', 'customer_order');
     }

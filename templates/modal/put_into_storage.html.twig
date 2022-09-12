@@ -25,93 +25,50 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card">
-                            <form name="put_into_storage" method="post" action="{{ path('get_first_free_stock_location') }}">
+                            {{ form_start(stockInFinalForm, {'action' : path('stock_in')}) }}
                                 {% block webwms_put_into_storage_table %}
                                     <table id="putIntoStorageTable" class="table table-striped table-bordered table-hover compact">
                                         <thead>
-                                        <tr>
-                                            <th scope="col" style="text-align: center">Lagereinheit</th>
-                                            <th scope="col" style="text-align: center">Lagersystem</th>
-                                            <th scope="col" style="text-align: center">Lagernummer</th>
-                                            <th scope="col" style="text-align: center">Fachboden</th>
-                                            <th scope="col" style="text-align: center">Stellplatz</th>
-                                            <th scope="col" style="text-align: center">Tiefe</th>
-                                            <th scope="col" style="text-align: center">Menge</th>
-                                            <th scope="col" style="text-align: center">TBE</th>
-                                            <th class="editor-edit text-center">LP ändern</th> <!-- Logik hierfür muss noch implementiert werden -->
-                                        </tr>
+                                            <tr>
+                                                <th scope="col" style="text-align: center">Lagereinheit</th>
+                                                <th scope="col" style="text-align: center">Lagersystem</th>
+                                                <th scope="col" style="text-align: center">Lagernummer</th>
+                                                <th scope="col" style="text-align: center">Fachboden</th>
+                                                <th scope="col" style="text-align: center">Stellplatz</th>
+                                                <th scope="col" style="text-align: center">Tiefe</th>
+                                                <th scope="col" style="text-align: center">Menge</th>
+                                                <th scope="col" style="text-align: center">TBE</th>
+                                                <th class="editor-edit text-center">Ändern</th> <!-- Logik hierfür muss noch implementiert werden -->
+                                            </tr>
                                         </thead>
                                         <tbody id="myTable" style="text-align: center">
-                                        {% for selectedStockLocation in selectedStockLocations %}
                                             <tr>
-                                                <td>{{ selectedStockLocation.su_id }}</td>
-                                                <td>{{ selectedStockLocation.system }}</td>
-                                                <td>{{ selectedStockLocation.ln }}</td>
-                                                <td>{{ selectedStockLocation.fb }}</td>
-                                                <td>{{ selectedStockLocation.sp }}</td>
-                                                <td>{{ selectedStockLocation.tf }}</td>
-                                                <td>{{ selectedStockLocation.quantity }}</td>
-                                                <td>{{ selectedStockLocation.quantity }}</td>
-                                                <td class="editor-edit text-center"><i class="mdi mdi-square-edit-outline"></i></td> <!-- Logik hierfür muss noch implementiert werden -->
+                                                <td>{{ form_row(stockInFinalForm.stock_su_id, {'value' : selectedStockLocations[0].su_id }) }}</td>
+                                                <td>{{ form_row(stockInFinalForm.stock_system, {'value' : selectedStockLocations[0].system }) }}</td>
+                                                <td>{{ form_row(stockInFinalForm.stock_ln, {'value' : selectedStockLocations[0].ln }) }}</td>
+                                                <td>{{ form_row(stockInFinalForm.stock_fb, {'value' : selectedStockLocations[0].fb }) }}</td>
+                                                <td>{{ form_row(stockInFinalForm.stock_sp, {'value' : selectedStockLocations[0].sp }) }}</td>
+                                                <td>{{ form_row(stockInFinalForm.stock_tf, {'value' : selectedStockLocations[0].tf }) }}</td>
+                                                <td>{{ form_row(stockInFinalForm.stock_quantity, {'value' : selectedStockLocations[0].quantity }) }}</td>
+                                                <td>{{ form_row(stockInFinalForm.stock_tbe, {'value' : selectedStockLocations[0].quantity }) }}</td>
+                                                <td class="editor-edit text-center" style="vertical-align: inherit;"><i class="mdi mdi-square-edit-outline"></i></td> <!-- Logik hierfür muss noch implementiert werden -->
+                                                {% for key, selectedStockLocation in selectedStockLocations %}
+
+                                                {% endfor %}
                                             </tr>
-                                            {#<tr>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" readonly id="put_into_storage_su_id" value="{{ selectedStockLocation.su_id }}" style="width: 180px">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" readonly id="put_into_storage_system" value="{{ selectedStockLocation.system }}" style="width: 100px">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" readonly id="put_into_storage_ln" value="{{ selectedStockLocation.ln }}" style="width: 100px">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" readonly id="put_into_storage_fb" value="{{ selectedStockLocation.fb }}" style="width: 100px">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" readonly id="put_into_storage_sp" value="{{ selectedStockLocation.sp }}" style="width: 100px">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" readonly id="put_into_storage_tf" value="{{ selectedStockLocation.tf }}" style="width: 100px">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" readonly id="put_into_storage_quantity" value="{{ selectedStockLocation.quantity }}" style="width: 100px">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" readonly id="put_into_storage_tbe" value="{{ selectedStockLocation.quantity }}" style="width: 100px">
-                                                    </div>
-                                                </td>
-                                            </tr>#}
-                                        {% endfor %}
                                         </tbody>
                                     </table>
                                 {% endblock %}
-                            </form>
+                                <div class="text-center">
+                                    {{ form_widget(stockInFinalForm.stock_in_post_final) }}
+                                    {{ form_widget(stockInFinalForm.stock_in_graphical) }}
+                                    {{ form_widget(stockInFinalForm.stock_in_correction) }}
+                                    {{ form_widget(stockInFinalForm.back_to_stock_in) }}
+                                </div>
                         </div>
                     </div>
                 </div>
-                <div class="text-center" style="margin-top: 15px">
-                    <button type="submit" id="stock_in_post_final" class="btn btn-secondary btn-lg btn">Buchen</button>
-                    <button type="button" id="stock_in_correction" class="btn btn-secondary btn-lg btn">Korrektur</button>
-                    <button type="button" id="stock_in_graphical" class="btn btn-secondary btn-lg btn">Grafik</button>
-                    <button type="button" class="btn btn-secondary btn-lg btn" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" class="white-text">Abbruch</span>
-                    </button>
-                </div>
+                {{ form_end(stockInFinalForm) }}
             </div>
         </div>
     {% endblock %}

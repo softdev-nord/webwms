@@ -12,11 +12,17 @@ namespace WebWMS\Service\Validation;
  */
 class StockLocationValidationService
 {
+    /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function validateStockLocationData($requestData): array
     {
         $responseData = [];
 
         // Validation of the request data from the stock location data change
+
         if (empty($requestData['stock_location_ln'])) {
             $responseData['error']['stock_location_ln'] = 'Die Lagernummer darf nicht leer sein.';
         } else {

@@ -97,6 +97,9 @@ class SupplierOrderService
         return $supplierOrder;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function deleteSupplierOrderApi(int $supplierOrderId): void
     {
         $supplierOrder = $this->entityManager

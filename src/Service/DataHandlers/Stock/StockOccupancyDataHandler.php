@@ -42,6 +42,7 @@ class StockOccupancyDataHandler
 
     /**
      * @throws Exception
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function getStockOccupancy($stockLocationLn): array
     {

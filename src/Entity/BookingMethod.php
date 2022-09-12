@@ -22,7 +22,7 @@ class BookingMethod
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private mixed $menu_id;
+    private mixed $menuId;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -32,7 +32,7 @@ class BookingMethod
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
      */
-    private mixed $movement_type;
+    private mixed $movementType;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -62,7 +62,7 @@ class BookingMethod
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private mixed $tid_description;
+    private mixed $tidDescription;
 
 
     public function getId(): ?int
@@ -70,147 +70,93 @@ class BookingMethod
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
     public function getMenuId(): mixed
     {
-        return $this->menu_id;
+        return $this->menuId;
     }
 
-    /**
-     * @param mixed $menu_id
-     */
-    public function setMenuId(mixed $menu_id): void
+    public function setMenuId(mixed $menuId): void
     {
-        $this->menu_id = $menu_id;
+        $this->menuId = $menuId;
     }
 
-    /**
-     * @return mixed
-     */
     public function getConfirmation(): mixed
     {
         return $this->confirmation;
     }
 
-    /**
-     * @param mixed $confirmation
-     */
     public function setConfirmation(mixed $confirmation): void
     {
         $this->confirmation = $confirmation;
     }
 
-    /**
-     * @return mixed
-     */
     public function getMovementType(): mixed
     {
-        return $this->movement_type;
+        return $this->movementType;
     }
 
-    /**
-     * @param mixed $movement_type
-     */
-    public function setMovementType(mixed $movement_type): void
+    public function setMovementType(mixed $movementType): void
     {
-        $this->movement_type = $movement_type;
+        $this->movementType = $movementType;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDescription(): mixed
     {
         return $this->description;
     }
 
-    /**
-     * @param mixed $description
-     */
     public function setDescription(mixed $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return mixed
-     */
     public function getAnsteuerung(): mixed
     {
         return $this->ansteuerung;
     }
 
-    /**
-     * @param mixed $ansteuerung
-     */
     public function setAnsteuerung(mixed $ansteuerung): void
     {
         $this->ansteuerung = $ansteuerung;
     }
 
-    /**
-     * @return mixed
-     */
     public function getUpload(): mixed
     {
         return $this->upload;
     }
 
-    /**
-     * @param mixed $upload
-     */
     public function setUpload(mixed $upload): void
     {
         $this->upload = $upload;
     }
 
-    /**
-     * @return mixed
-     */
     public function getStatistics(): mixed
     {
         return $this->statistics;
     }
 
-    /**
-     * @param mixed $statistics
-     */
     public function setStatistics(mixed $statistics): void
     {
         $this->statistics = $statistics;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPriority(): mixed
     {
         return $this->priority;
     }
 
-    /**
-     * @param mixed $priority
-     */
     public function setPriority(mixed $priority): void
     {
         $this->priority = $priority;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTidDescription(): mixed
     {
-        return $this->tid_description;
+        return $this->tidDescription;
     }
 
-    /**
-     * @param mixed $tid_description
-     */
-    public function setTidDescription(mixed $tid_description): void
+    public function setTidDescription(mixed $tidDescription): void
     {
-        $this->tid_description = $tid_description;
+        $this->tidDescription = $tidDescription;
     }
 }

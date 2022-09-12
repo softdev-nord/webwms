@@ -51,14 +51,11 @@
         const select = $('#selectStock option:selected').text();
         const url = '/stock_occupancy_ajax/stock_location_ln/' + select;
 
-        console.log(select);
-
         $.ajax({
             method: 'GET',
             url         : url,
             dataType: "html",
             success     : function (data) {
-                console.log(data);
                 $('#stockLocationTable').load(url + ' #stockLocationTable');
                 $('#stockSystem').load(url + ' #stockSystem');
             }

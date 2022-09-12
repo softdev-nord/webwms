@@ -25,12 +25,9 @@ use WebWMS\Service\SupplierOrder\SupplierOrderService;
  */
 class SupplierOrder extends AbstractFOSRestController
 {
-    /** @var SupplierOrderService */
-    private $supplierOrderService;
-
-    public function __construct(SupplierOrderService $supplierOrderService)
-    {
-        $this->supplierOrderService = $supplierOrderService;
+    public function __construct(
+        private SupplierOrderService $supplierOrderService
+    ) {
     }
 
     /**
@@ -56,7 +53,7 @@ class SupplierOrder extends AbstractFOSRestController
             throw new EntityNotFoundException('Order with id '.$supplierOrderId.' does not exist!');
         }
 
-        return View::create($supplierOrder, Response::HTTP_OK);
+        return $this->view($supplierOrder, Response::HTTP_OK);
     }
 
     /**
@@ -76,7 +73,7 @@ class SupplierOrder extends AbstractFOSRestController
     {
         $supplierOrder = $this->supplierOrderService->getAllSupplierOrdersApi();
 
-        return View::create($supplierOrder, Response::HTTP_OK);
+        return $this->view($supplierOrder, Response::HTTP_OK);
     }
 
     /**
@@ -104,7 +101,7 @@ class SupplierOrder extends AbstractFOSRestController
             $request->get('supplier_order_order_date'),
         );
 
-        return View::create($supplierOrder, Response::HTTP_CREATED);
+        return $this->view($supplierOrder, Response::HTTP_CREATED);
     }
 
     /**
@@ -141,7 +138,7 @@ class SupplierOrder extends AbstractFOSRestController
             $request->get('supplier_order_order_date'),
         );
 
-        return View::create($supplierOrder, Response::HTTP_OK);
+        return $this->view($supplierOrder, Response::HTTP_OK);
     }
 
     /**
@@ -163,6 +160,6 @@ class SupplierOrder extends AbstractFOSRestController
     {
         $this->supplierOrderService->deleteSupplierOrderApi($supplierOrderId);
 
-        return View::create([], Response::HTTP_NO_CONTENT);
+        return $this->view([], Response::HTTP_NO_CONTENT);
     }
 }

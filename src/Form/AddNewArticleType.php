@@ -19,6 +19,9 @@ use WebWMS\Entity\Article;
  */
 class AddNewArticleType extends AbstractType
 {
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

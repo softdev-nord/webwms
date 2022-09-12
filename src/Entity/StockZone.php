@@ -17,17 +17,17 @@ class StockZone
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private ?string $zone_short_desc;
+    private ?string $zoneShortDesc;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $zone_description;
+    private ?string $zoneDescription;
 
     public function getId(): ?int
     {
@@ -36,24 +36,24 @@ class StockZone
 
     public function getZoneShortDesc(): ?string
     {
-        return $this->zone_short_desc;
+        return $this->zoneShortDesc;
     }
 
-    public function setZoneShortDesc(string $zone_short_desc): self
+    public function setZoneShortDesc(string $zoneShortDesc): self
     {
-        $this->zone_short_desc = $zone_short_desc;
+        $this->zoneShortDesc = $zoneShortDesc;
 
         return $this;
     }
 
     public function getZoneDescription(): ?string
     {
-        return $this->zone_description;
+        return $this->zoneDescription;
     }
 
-    public function setZoneDescription(string $zone_description): self
+    public function setZoneDescription(string $zoneDescription): self
     {
-        $this->zone_description = $zone_description;
+        $this->zoneDescription = $zoneDescription;
 
         return $this;
     }

@@ -23,72 +23,72 @@ class Supplier
     /**
      * @ORM\Column(type="integer")
      */
-    private mixed $supplier_id;
+    private ?int $supplierId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private mixed $supplier_nr;
+    private ?int $supplierNr;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private mixed $supplier_name;
+    private ?string $supplierName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private mixed $supplier_address_addition;
+    private ?string $supplierAddressAddition;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private mixed $supplier_address_street;
+    private ?string $supplierAddressStreet;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private mixed $supplier_address_street_nr;
+    private ?string $supplierAddressStreetNr;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private mixed $supplier_address_country_code;
+    private ?string $supplierAddressCountryCode;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private mixed $supplier_address_zipcode;
+    private ?string $supplierAddressZipcode;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private mixed $supplier_address_city;
+    private ?string $supplierAddressCity;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $supplier_created_at;
+    private ?\DateTimeInterface $supplierCreatedAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private mixed $supplier_updated_at;
+    private ?\DateTimeInterface $supplierUpdatedAt;
 
     /**
      * INVERSE SIDE
      * The customer_orders property is the inverse side of the association between customer and customer orders.
      * The association is joined over the customer id field and the userID field of the customer order.
      *
-     * @var ArrayCollection<\WebWMS\Entity\Supplier>
+     * @var ArrayCollection<Supplier>
      *
      * @ORM\OneToMany(targetEntity="WebWMS\Entity\SupplierOrder", mappedBy="supplier")
      */
-    protected $supplier_orders;
+    protected ArrayCollection $supplierOrders;
 
     public function __construct()
     {
-        $this->supplier_orders = new ArrayCollection();
+        $this->supplierOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,170 +96,113 @@ class Supplier
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId(mixed $id): void
+    public function setId(?int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierId(): mixed
+    public function getSupplierId(): ?int
     {
-        return $this->supplier_id;
+        return $this->supplierId;
     }
 
-    /**
-     * @param mixed $supplier_id
-     */
-    public function setSupplierId(mixed $supplier_id): void
+    public function setSupplierId(?int $supplierId): void
     {
-        $this->supplier_id = $supplier_id;
+        $this->supplierId = $supplierId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierNr(): mixed
+    public function getSupplierNr(): ?int
     {
-        return $this->supplier_nr;
+        return $this->supplierNr;
     }
 
-    /**
-     * @param mixed $supplier_nr
-     */
-    public function setSupplierNr(mixed $supplier_nr): void
+    public function setSupplierNr(?int $supplierNr): void
     {
-        $this->supplier_nr = $supplier_nr;
+        $this->supplierNr = $supplierNr;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierName(): mixed
+    public function getSupplierName(): ?string
     {
-        return $this->supplier_name;
+        return $this->supplierName;
     }
 
-    /**
-     * @param mixed $supplier_name
-     */
-    public function setSupplierName(mixed $supplier_name): void
+    public function setSupplierName(?string $supplierName): void
     {
-        $this->supplier_name = $supplier_name;
+        $this->supplierName = $supplierName;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierAddressAddition(): mixed
+    public function getSupplierAddressAddition(): ?string
     {
-        return $this->supplier_address_addition;
+        return $this->supplierAddressAddition;
     }
 
-    /**
-     * @param mixed $supplier_address_addition
-     */
-    public function setSupplierAddressAddition(mixed $supplier_address_addition): void
+    public function setSupplierAddressAddition(?string $supplierAddressAddition): void
     {
-        $this->supplier_address_addition = $supplier_address_addition;
+        $this->supplierAddressAddition = $supplierAddressAddition;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierAddressStreet(): mixed
+    public function getSupplierAddressStreet(): ?string
     {
-        return $this->supplier_address_street;
+        return $this->supplierAddressStreet;
     }
 
-    /**
-     * @param mixed $supplier_address_street
-     */
-    public function setSupplierAddressStreet(mixed $supplier_address_street): void
+    public function setSupplierAddressStreet(?string $supplierAddressStreet): void
     {
-        $this->supplier_address_street = $supplier_address_street;
+        $this->supplierAddressStreet = $supplierAddressStreet;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierAddressStreetNr(): mixed
+    public function getSupplierAddressStreetNr(): ?string
     {
-        return $this->supplier_address_street_nr;
+        return $this->supplierAddressStreetNr;
     }
 
-    /**
-     * @param mixed $supplier_address_street_nr
-     */
-    public function setSupplierAddressStreetNr(mixed $supplier_address_street_nr): void
+    public function setSupplierAddressStreetNr(?string $supplierAddressStreetNr): void
     {
-        $this->supplier_address_street_nr = $supplier_address_street_nr;
+        $this->supplierAddressStreetNr = $supplierAddressStreetNr;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierAddressCountryCode(): mixed
+    public function getSupplierAddressCountryCode(): ?string
     {
-        return $this->supplier_address_country_code;
+        return $this->supplierAddressCountryCode;
     }
 
-    /**
-     * @param mixed $supplier_address_country_code
-     */
-    public function setSupplierAddressCountryCode(mixed $supplier_address_country_code): void
+    public function setSupplierAddressCountryCode(?string $supplierAddressCountryCode): void
     {
-        $this->supplier_address_country_code = $supplier_address_country_code;
+        $this->supplierAddressCountryCode = $supplierAddressCountryCode;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierAddressZipcode(): mixed
+    public function getSupplierAddressZipcode(): ?string
     {
-        return $this->supplier_address_zipcode;
+        return $this->supplierAddressZipcode;
     }
 
-    /**
-     * @param mixed $supplier_address_zipcode
-     */
-    public function setSupplierAddressZipcode(mixed $supplier_address_zipcode): void
+    public function setSupplierAddressZipcode(?string $supplierAddressZipcode): void
     {
-        $this->supplier_address_zipcode = $supplier_address_zipcode;
+        $this->supplierAddressZipcode = $supplierAddressZipcode;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierAddressCity(): mixed
+    public function getSupplierAddressCity(): ?string
     {
-        return $this->supplier_address_city;
+        return $this->supplierAddressCity;
     }
 
-    /**
-     * @param mixed $supplier_address_city
-     */
-    public function setSupplierAddressCity(mixed $supplier_address_city): void
+    public function setSupplierAddressCity(?string $supplierAddressCity): void
     {
-        $this->supplier_address_city = $supplier_address_city;
+        $this->supplierAddressCity = $supplierAddressCity;
     }
 
     public function toArray(): array
     {
         return [
-            'supplier_id' => $this->supplier_id,
-            'supplier_nr' => $this->supplier_nr,
-            'supplier_name' => $this->supplier_name,
-            'supplier_address_addition' => $this->supplier_address_addition,
-            'supplier_address_street' => $this->supplier_address_street,
-            'supplier_address_street_nr' => $this->supplier_address_street_nr,
-            'supplier_address_country_code' => $this->supplier_address_country_code,
-            'supplier_address_zipcode' => $this->supplier_address_zipcode,
-            'supplier_address_city' => $this->supplier_address_city,
+            'supplierId' => $this->supplierId,
+            'supplierNr' => $this->supplierNr,
+            'supplierName' => $this->supplierName,
+            'supplierAddressAddition' => $this->supplierAddressAddition,
+            'supplierAddressStreet' => $this->supplierAddressStreet,
+            'supplierAddressStreetNr' => $this->supplierAddressStreetNr,
+            'supplierAddressCountryCode' => $this->supplierAddressCountryCode,
+            'supplierAddressZipcode' => $this->supplierAddressZipcode,
+            'supplierAddressCity' => $this->supplierAddressCity,
         ];
     }
 
@@ -267,61 +210,49 @@ class Supplier
      * Returns an array collection of WebWMS\Entity\SupplierOrder model instances, which
      * contains all data about the a single supplier order. The association is defined over
      * the Supplier.supplier_orders property (INVERSE SIDE) and the SupplierOrder.supplier (OWNING SIDE) property.
-     * The order data is joined over the supplier_orders.supplier_id field.
+     * The order data is joined over the supplier_orders.supplierId field.
      *
-     * @return ArrayCollection<\WebWMS\Entity\SupplierOrder>
+     * @return ArrayCollection<SupplierOrder>
      */
     public function getSupplierOrders(): ArrayCollection
     {
-        return $this->supplier_orders;
+        return $this->supplierOrders;
     }
 
     /**
      * Setter function for the orders association property which contains many instances of the WebWMS\Entity\SupplierOrder model which
      * contains all data about the a single supplier order. The association is defined over
      * the Supplier.orders property (INVERSE SIDE) and the SupplierOrder.supplier (OWNING SIDE) property.
-     * The order data is joined over the supplier_orders.supplier_id field.
+     * The order data is joined over the supplier_orders.supplierId field.
      *
-     * @param ArrayCollection<\WebWMS\Entity\SupplierOrder>|null $supplier_orders
+     * @param ArrayCollection<SupplierOrder>|null $supplierOrders
      *
      * @return Supplier
      */
-    public function setSupplierOrders($supplier_orders)
+    public function setSupplierOrders($supplierOrders): static
     {
-        $this->supplier_orders = $supplier_orders;
+        $this->supplierOrders = $supplierOrders;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierCreatedAt(): mixed
+    public function getSupplierCreatedAt(): ?\DateTimeInterface
     {
-        return $this->supplier_created_at;
+        return $this->supplierCreatedAt;
     }
 
-    /**
-     * @param mixed $supplier_created_at
-     */
-    public function setSupplierCreatedAt(mixed $supplier_created_at): void
+    public function setSupplierCreatedAt(?\DateTimeInterface $supplierCreatedAt): void
     {
-        $this->supplier_created_at = $supplier_created_at;
+        $this->supplierCreatedAt = $supplierCreatedAt;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierUpdatedAt(): mixed
+    public function getSupplierUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->supplier_updated_at;
+        return $this->supplierUpdatedAt;
     }
 
-    /**
-     * @param mixed $supplier_updated_at
-     */
-    public function setSupplierUpdatedAt(mixed $supplier_updated_at): void
+    public function setSupplierUpdatedAt(?\DateTimeInterface $supplierUpdatedAt): void
     {
-        $this->supplier_updated_at = $supplier_updated_at;
+        $this->supplierUpdatedAt = $supplierUpdatedAt;
     }
 }

@@ -25,6 +25,10 @@ class EditArticleType extends AbstractType
     ) {
     }
 
+    /**
+     * @SuppressWarnings("unused")
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('article_id', HiddenType::class, [

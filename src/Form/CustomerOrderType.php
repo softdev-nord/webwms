@@ -22,6 +22,9 @@ use WebWMS\Entity\CustomerOrder;
  */
 class CustomerOrderType extends AbstractType
 {
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

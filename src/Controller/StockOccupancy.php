@@ -22,9 +22,9 @@ class StockOccupancy extends AbstractController
     }
 
     /**
-     * @Route("/lagerbelegung", name="stock_occupancy")
      * @throws Exception
      */
+    #[Route('/lagerbelegung', name: 'stock_occupancy')]
     public function index(): Response
     {
         return $this->render(
@@ -41,10 +41,7 @@ class StockOccupancy extends AbstractController
         );
     }
 
-    /**
-     * @Route("/grafische_lagerbelegung", name="stock_occupancy_graphical")
-     * @throws Exception
-     */
+    #[Route('/grafische_lagerbelegung', name: 'stock_occupancy_graphical')]
     public function stockOccupancyGraphical(Request $request): Response
     {
         if (!$this->getUser()) {
@@ -55,27 +52,27 @@ class StockOccupancy extends AbstractController
     }
 
     /**
-     * @Route("/stock_occupancy_ajax", name="stock_occupancy_ajax")
      * @throws Exception
      */
+    #[Route('/stock_occupancy_ajax', name: 'stock_occupancy_ajax')]
     public function getAllStockOccupancy(): JsonResponse
     {
         return $this->stockOccupancyService->getAllStockOccupancy();
     }
 
     /**
-     * @Route("/stock_occupancy_ajax/{stock_location_coordinate}", name="stock_occupancy_ajax")
      * @throws Exception
      */
+    #[Route('/stock_occupancy_ajax/{stock_location_coordinate}', name: 'stock_occupancy_ajax')]
     public function getStockOccupancyByCoordinate(Request $request): JsonResponse
     {
         return $this->stockOccupancyService->getStockOccupancyByCoordinate($request);
     }
 
     /**
-     * @Route("/stock_occupancy_ajax/stock_location_ln/{stock_location_ln}", name="stock_occupancy_ajax_ln")
      * @throws Exception
      */
+    #[Route('/stock_occupancy_ajax/stock_location_ln/{stock_location_ln}', name: 'stock_occupancy_ajax_ln')]
     public function getStockOccupancyByLn(Request $request): Response
     {
         return $this->getStockOccupancyResults($request);
@@ -83,6 +80,7 @@ class StockOccupancy extends AbstractController
 
     /**
      * @throws Exception
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function getStockOccupancyResults($request): Response
     {
@@ -94,14 +92,12 @@ class StockOccupancy extends AbstractController
 
         $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationLn);
         $stockResults = [];
-        $stockSystem = [];
 
         foreach ($allStockOccupancy as $stock) {
-            if ($stock['system'] === 'Block-Lager') {
-                $stockResults[$stock['sp']][] = $stock;
-            } else {
-                $stockResults[$stock['fb']][] = $stock;
-            }
+            match ($stock['system']) {
+                'Block-Lager' => $stockResults[$stock['sp']][] = $stock,
+                default => $stockResults[$stock['fb']][] = $stock,
+            };
         }
 
         return $this->render(

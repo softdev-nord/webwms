@@ -17,72 +17,72 @@ class StockZoneLayout
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $zone_short_desc;
+    private ?string $zoneShortDesc;
 
     /**
      * @ORM\Column(type="decimal", precision=25, scale=0)
      */
-    private $from_coordinate;
+    private ?string $fromCoordinate;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $from_stock_nr;
+    private ?int $fromStockNr;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $from_level1;
+    private ?int $fromLevel1;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $from_level2;
+    private ?int $fromLevel2;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $from_level3;
+    private ?int $fromLevel3;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $from_level4;
+    private ?int $fromLevel4;
 
     /**
      * @ORM\Column(type="decimal", precision=25, scale=0)
      */
-    private $to_coordinate;
+    private ?string $toCoordinate;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $to_level1;
+    private ?int $toLevel1;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $to_level2;
+    private ?int $toLevel2;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $to_level3;
+    private ?int $toLevel3;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $to_level4;
+    private ?int $toLevel4;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $sum_stock_loc;
+    private ?int $sumStockLoc;
 
     public function getId(): ?int
     {
@@ -91,156 +91,156 @@ class StockZoneLayout
 
     public function getZoneShortDesc(): ?string
     {
-        return $this->zone_short_desc;
+        return $this->zoneShortDesc;
     }
 
-    public function setZoneShortDesc(string $zone_short_desc): self
+    public function setZoneShortDesc(string $zoneShortDesc): self
     {
-        $this->zone_short_desc = $zone_short_desc;
+        $this->zoneShortDesc = $zoneShortDesc;
 
         return $this;
     }
 
     public function getFromCoordinate(): ?string
     {
-        return $this->from_coordinate;
+        return $this->fromCoordinate;
     }
 
-    public function setFromCoordinate(string $from_coordinate): self
+    public function setFromCoordinate(string $fromCoordinate): self
     {
-        $this->from_coordinate = $from_coordinate;
+        $this->fromCoordinate = $fromCoordinate;
 
         return $this;
     }
 
     public function getFromStockNr(): ?int
     {
-        return $this->from_stock_nr;
+        return $this->fromStockNr;
     }
 
-    public function setFromStockNr(int $from_stock_nr): self
+    public function setFromStockNr(int $fromStockNr): self
     {
-        $this->from_stock_nr = $from_stock_nr;
+        $this->fromStockNr = $fromStockNr;
 
         return $this;
     }
 
     public function getFromLevel1(): ?int
     {
-        return $this->from_level1;
+        return $this->fromLevel1;
     }
 
-    public function setFromLevel1(int $from_level1): self
+    public function setFromLevel1(int $fromLevel1): self
     {
-        $this->from_level1 = $from_level1;
+        $this->fromLevel1 = $fromLevel1;
 
         return $this;
     }
 
     public function getFromLevel2(): ?int
     {
-        return $this->from_level2;
+        return $this->fromLevel2;
     }
 
-    public function setFromLevel2(int $from_level2): self
+    public function setFromLevel2(int $fromLevel2): self
     {
-        $this->from_level2 = $from_level2;
+        $this->fromLevel2 = $fromLevel2;
 
         return $this;
     }
 
     public function getFromLevel3(): ?int
     {
-        return $this->from_level3;
+        return $this->fromLevel3;
     }
 
-    public function setFromLevel3(int $from_level3): self
+    public function setFromLevel3(int $fromLevel3): self
     {
-        $this->from_level3 = $from_level3;
+        $this->fromLevel3 = $fromLevel3;
 
         return $this;
     }
 
     public function getFromLevel4(): ?int
     {
-        return $this->from_level4;
+        return $this->fromLevel4;
     }
 
-    public function setFromLevel4(int $from_level4): self
+    public function setFromLevel4(int $fromLevel4): self
     {
-        $this->from_level4 = $from_level4;
+        $this->fromLevel4 = $fromLevel4;
 
         return $this;
     }
 
     public function getToCoordinate(): ?string
     {
-        return $this->to_coordinate;
+        return $this->toCoordinate;
     }
 
-    public function setToCoordinate(string $to_coordinate): self
+    public function setToCoordinate(string $toCoordinate): self
     {
-        $this->to_coordinate = $to_coordinate;
+        $this->toCoordinate = $toCoordinate;
 
         return $this;
     }
 
     public function getToLevel1(): ?int
     {
-        return $this->to_level1;
+        return $this->toLevel1;
     }
 
-    public function setToLevel1(int $to_level1): self
+    public function setToLevel1(int $toLevel1): self
     {
-        $this->to_level1 = $to_level1;
+        $this->toLevel1 = $toLevel1;
 
         return $this;
     }
 
     public function getToLevel2(): ?int
     {
-        return $this->to_level2;
+        return $this->toLevel2;
     }
 
-    public function setToLevel2(int $to_level2): self
+    public function setToLevel2(int $toLevel2): self
     {
-        $this->to_level2 = $to_level2;
+        $this->toLevel2 = $toLevel2;
 
         return $this;
     }
 
     public function getToLevel3(): ?int
     {
-        return $this->to_level3;
+        return $this->toLevel3;
     }
 
-    public function setToLevel3(int $to_level3): self
+    public function setToLevel3(int $toLevel3): self
     {
-        $this->to_level3 = $to_level3;
+        $this->toLevel3 = $toLevel3;
 
         return $this;
     }
 
     public function getToLevel4(): ?int
     {
-        return $this->to_level4;
+        return $this->toLevel4;
     }
 
-    public function setToLevel4(int $to_level4): self
+    public function setToLevel4(int $toLevel4): self
     {
-        $this->to_level4 = $to_level4;
+        $this->toLevel4 = $toLevel4;
 
         return $this;
     }
 
     public function getSumStockLoc(): ?int
     {
-        return $this->sum_stock_loc;
+        return $this->sumStockLoc;
     }
 
-    public function setSumStockLoc(int $sum_stock_loc): self
+    public function setSumStockLoc(int $sumStockLoc): self
     {
-        $this->sum_stock_loc = $sum_stock_loc;
+        $this->sumStockLoc = $sumStockLoc;
 
         return $this;
     }

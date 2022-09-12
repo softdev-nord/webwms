@@ -43,12 +43,12 @@ class Logging
     /**
      * @ORM\Column(type="string", length=20)
      */
-    private ?string $ip_address;
+    private ?string $ipAddress;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $user_agent;
+    private ?string $userAgent;
 
     public function getId(): ?int
     {
@@ -105,24 +105,24 @@ class Logging
 
     public function getIpAddress(): ?string
     {
-        return $this->ip_address;
+        return $this->ipAddress;
     }
 
-    public function setIpAddress(string $ip_address): self
+    public function setIpAddress(string $ipAddress): self
     {
-        $this->ip_address = $ip_address;
+        $this->ipAddress = $ipAddress;
 
         return $this;
     }
 
     public function getUserAgent(): ?string
     {
-        return $this->user_agent;
+        return $this->userAgent;
     }
 
-    public function setUserAgent(string $user_agent): self
+    public function setUserAgent(string $userAgent): self
     {
-        $this->user_agent = $user_agent;
+        $this->userAgent = $userAgent;
 
         return $this;
     }

@@ -17,183 +17,147 @@ class StockRotation
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $stock_location_id;
+    private ?int $stockLocationId;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $art_id;
+    private ?int $articleId;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $usr_id;
+    private ?int $usrId;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $customer_order_id;
+    private ?int $customerOrderId;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $supplier_order_id;
+    private ?int $supplierOrderId;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $movement_id;
+    private ?int $movementId;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $pos_quantity;
+    private ?int $posQuantity;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $access_date;
+    private ?\DateTimeInterface $accessDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $dispatch_date;
+    private ?\DateTimeInterface $dispatchDate;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getStockLocationId()
+    public function getStockLocationId(): ?int
     {
-        return $this->stock_location_id;
+        return $this->stockLocationId;
     }
 
-    /**
-     * @param mixed $stock_location_id
-     */
-    public function setStockLocationId($stock_location_id): void
+    public function setStockLocationId($stockLocationId): void
     {
-        $this->stock_location_id = $stock_location_id;
+        $this->stockLocationId = $stockLocationId;
     }
 
-    public function getArtId(): ?int
+    public function getArticleId(): ?int
     {
-        return $this->art_id;
+        return $this->articleId;
     }
 
-    public function setArtId(int $art_id): self
+    public function setArticleId(int $articleId): self
     {
-        $this->art_id = $art_id;
+        $this->articleId = $articleId;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUsrId()
+    public function getUsrId(): ?int
     {
-        return $this->usr_id;
+        return $this->usrId;
     }
 
-    /**
-     * @param mixed $usr_id
-     */
-    public function setUsrId($usr_id): void
+    public function setUsrId($usrId): void
     {
-        $this->usr_id = $usr_id;
+        $this->usrId = $usrId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCustomerOrderId()
+    public function getCustomerOrderId(): ?int
     {
-        return $this->customer_order_id;
+        return $this->customerOrderId;
     }
 
-    /**
-     * @param mixed $customer_order_id
-     */
-    public function setCustomerOrderId($customer_order_id): void
+    public function setCustomerOrderId($customerOrderId): void
     {
-        $this->customer_order_id = $customer_order_id;
+        $this->customerOrderId = $customerOrderId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSupplierOrderId()
+    public function getSupplierOrderId(): ?int
     {
-        return $this->supplier_order_id;
+        return $this->supplierOrderId;
     }
 
-    /**
-     * @param mixed $supplier_order_id
-     */
-    public function setSupplierOrderId($supplier_order_id): void
+    public function setSupplierOrderId($supplierOrderId): void
     {
-        $this->supplier_order_id = $supplier_order_id;
+        $this->supplierOrderId = $supplierOrderId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getMovementId()
+    public function getMovementId(): ?int
     {
-        return $this->movement_id;
+        return $this->movementId;
     }
 
-    /**
-     * @param mixed $movement_id
-     */
-    public function setMovementId($movement_id): void
+    public function setMovementId($movementId): void
     {
-        $this->movement_id = $movement_id;
+        $this->movementId = $movementId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPosQuantity()
+    public function getPosQuantity(): ?int
     {
-        return $this->pos_quantity;
+        return $this->posQuantity;
     }
 
-    /**
-     * @param mixed $pos_quantity
-     */
-    public function setPosQuantity($pos_quantity): void
+    public function setPosQuantity($posQuantity): void
     {
-        $this->pos_quantity = $pos_quantity;
+        $this->posQuantity = $posQuantity;
     }
 
     public function getAccessDate(): ?\DateTimeInterface
     {
-        return $this->access_date;
+        return $this->accessDate;
     }
 
-    public function setAccessDate(?\DateTimeInterface $access_date): void
+    public function setAccessDate(?\DateTimeInterface $accessDate): void
     {
-        $this->access_date = $access_date;
+        $this->accessDate = $accessDate;
     }
 
     public function getDispatchDate(): ?\DateTimeInterface
     {
-        return $this->dispatch_date;
+        return $this->dispatchDate;
     }
 
-    public function setDispatchDate(?\DateTimeInterface $dispatch_date): void
+    public function setDispatchDate(?\DateTimeInterface $dispatchDate): void
     {
-        $this->dispatch_date = $dispatch_date;
+        $this->dispatchDate = $dispatchDate;
     }
 }

@@ -25,14 +25,9 @@ use WebWMS\Service\Supplier\SupplierService;
  */
 class Supplier extends AbstractFOSRestController
 {
-    /**
-     * @var SupplierService
-     */
-    private $supplierService;
-
-    public function __construct(SupplierService $supplierService)
-    {
-        $this->supplierService = $supplierService;
+    public function __construct(
+        private SupplierService $supplierService
+    ) {
     }
 
     /**
@@ -57,7 +52,7 @@ class Supplier extends AbstractFOSRestController
             throw new EntityNotFoundException('Supplier with id '.$supplierId.' does not exist!');
         }
 
-        return View::create($supplier, Response::HTTP_OK);
+        return $this->view($supplier, Response::HTTP_OK);
     }
 
     /**
@@ -77,7 +72,7 @@ class Supplier extends AbstractFOSRestController
     {
         $suppliers = $this->supplierService->getAllSuppliersApi();
 
-        return View::create($suppliers, Response::HTTP_OK);
+        return $this->view($suppliers, Response::HTTP_OK);
     }
 
     /**
@@ -107,7 +102,7 @@ class Supplier extends AbstractFOSRestController
             $request->get('supplier_address_city')
         );
 
-        return View::create($supplier, Response::HTTP_CREATED);
+        return $this->view($supplier, Response::HTTP_CREATED);
     }
 
     /**
@@ -146,7 +141,7 @@ class Supplier extends AbstractFOSRestController
             $request->get('supplier_address_city')
         );
 
-        return View::create($supplier, Response::HTTP_OK);
+        return $this->view($supplier, Response::HTTP_OK);
     }
 
     /**
@@ -168,6 +163,6 @@ class Supplier extends AbstractFOSRestController
     {
         $this->supplierService->deleteSupplierApi($supplierId);
 
-        return View::create([], Response::HTTP_NO_CONTENT);
+        return $this->view([], Response::HTTP_NO_CONTENT);
     }
 }

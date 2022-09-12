@@ -17,52 +17,52 @@ class StockLayout
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_nr;
+    private ?int $stockNr;
 
     /**
      * @ORM\Column(type="string", length=25)
      */
-    private $stock_description;
+    private ?string $stockDescription;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_level1;
+    private ?int $stockLevel1;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_level2;
+    private ?int $stockLevel2;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_level3;
+    private ?int $stockLevel3;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $stock_level4;
+    private ?int $stockLevel4;
 
     /**
      * @ORM\Column(type="string", length=15)
      */
-    private $stock_model;
+    private ?string $stockModel;
 
     /**
      * @ORM\Column(type="string", length=15)
      */
-    private $stock_typ;
+    private ?string $stockTyp;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $stock_long_description;
+    private ?string $stockLongDescription;
 
     public function getId(): ?int
     {
@@ -71,108 +71,108 @@ class StockLayout
 
     public function getStockNr(): ?int
     {
-        return $this->stock_nr;
+        return $this->stockNr;
     }
 
-    public function setStockNr(int $stock_nr): self
+    public function setStockNr(int $stockNr): self
     {
-        $this->stock_nr = $stock_nr;
+        $this->stockNr = $stockNr;
 
         return $this;
     }
 
     public function getStockDescription(): ?string
     {
-        return $this->stock_description;
+        return $this->stockDescription;
     }
 
-    public function setStockDescription(string $stock_description): self
+    public function setStockDescription(string $stockDescription): self
     {
-        $this->stock_description = $stock_description;
+        $this->stockDescription = $stockDescription;
 
         return $this;
     }
 
     public function getStockLevel1(): ?int
     {
-        return $this->stock_level1;
+        return $this->stockLevel1;
     }
 
-    public function setStockLevel1(int $stock_level1): self
+    public function setStockLevel1(int $stockLevel1): self
     {
-        $this->stock_level1 = $stock_level1;
+        $this->stockLevel1 = $stockLevel1;
 
         return $this;
     }
 
     public function getStockLevel2(): ?int
     {
-        return $this->stock_level2;
+        return $this->stockLevel2;
     }
 
-    public function setStockLevel2(int $stock_level2): self
+    public function setStockLevel2(int $stockLevel2): self
     {
-        $this->stock_level2 = $stock_level2;
+        $this->stockLevel2 = $stockLevel2;
 
         return $this;
     }
 
     public function getStockLevel3(): ?int
     {
-        return $this->stock_level3;
+        return $this->stockLevel3;
     }
 
-    public function setStockLevel3(int $stock_level3): self
+    public function setStockLevel3(int $stockLevel3): self
     {
-        $this->stock_level3 = $stock_level3;
+        $this->stockLevel3 = $stockLevel3;
 
         return $this;
     }
 
     public function getStockLevel4(): ?int
     {
-        return $this->stock_level4;
+        return $this->stockLevel4;
     }
 
-    public function setStockLevel4(int $stock_level4): self
+    public function setStockLevel4(int $stockLevel4): self
     {
-        $this->stock_level4 = $stock_level4;
+        $this->stockLevel4 = $stockLevel4;
 
         return $this;
     }
 
     public function getStockModel(): ?string
     {
-        return $this->stock_model;
+        return $this->stockModel;
     }
 
-    public function setStockModel(string $stock_model): self
+    public function setStockModel(string $stockModel): self
     {
-        $this->stock_model = $stock_model;
+        $this->stockModel = $stockModel;
 
         return $this;
     }
 
     public function getStockTyp(): ?string
     {
-        return $this->stock_typ;
+        return $this->stockTyp;
     }
 
-    public function setStockTyp(string $stock_typ): self
+    public function setStockTyp(string $stockTyp): self
     {
-        $this->stock_typ = $stock_typ;
+        $this->stockTyp = $stockTyp;
 
         return $this;
     }
 
     public function getStockLongDescription(): ?string
     {
-        return $this->stock_long_description;
+        return $this->stockLongDescription;
     }
 
-    public function setStockLongDescription(string $stock_long_description): self
+    public function setStockLongDescription(string $stockLongDescription): self
     {
-        $this->stock_long_description = $stock_long_description;
+        $this->stockLongDescription = $stockLongDescription;
 
         return $this;
     }

@@ -83,41 +83,23 @@ class CustomerDataHandler
     {
         $connection = $this->entityManager->getConnection();
 
-        $numOfBoxCustomer = !empty($_GET['numOfBoxCustomer']) ? $_GET['numOfBoxCustomer'] : '';
-        $nameKd = !empty($_GET['customer_nr']) ? strtolower(trim($_GET['customer_nr'])) : '';
+        $numOfBoxCustomer = !empty(filter_input(INPUT_GET, 'numOfBoxCustomer')) ? filter_input(INPUT_GET, 'numOfBoxCustomer') : '';
+        $nameKd = !empty(filter_input(INPUT_GET, 'customer_nr')) ? strtolower(trim(filter_input(INPUT_GET, 'customer_nr'))) : '';
 
-        $boxName = 'customer_nr';
-
-        switch ($numOfBoxCustomer) {
-            case 1:
-                $boxName = 'customer_name';
-                break;
-            case 2:
-                $boxName = 'customer_address_addition';
-                break;
-            case 3:
-                $boxName = 'customer_address_street';
-                break;
-            case 4:
-                $boxName = 'customer_address_street_nr';
-                break;
-            case 5:
-                $boxName = 'customer_country_code';
-                break;
-            case 6:
-                $boxName = 'customer_zip_code';
-                break;
-            case 7:
-                $boxName = 'customer_city';
-                break;
-            case 8:
-                $boxName = 'id';
-                break;
-        }
+        $boxName = match ($numOfBoxCustomer) {
+            'customer_name' => 'customer_name',
+            'customer_address_addition' => 'customer_address_addition',
+            'customer_address_street' => 'customer_address_street',
+            'customer_address_street_nr' => 'customer_address_street_nr',
+            'customer_country_code' => 'customer_country_code',
+            'customer_zip_code' => 'customer_zip_code',
+            'customer_city' => 'customer_city',
+            default => 'customer_nr',
+        };
 
         $data = [];
-        if (isset($_GET['name_customer'])) {
-            $nameKd = strtolower(trim($_GET['name_customer']));
+        if (!empty(filter_input(INPUT_GET, 'name_customer'))) {
+            $nameKd = strtolower(trim(filter_input(INPUT_GET, 'name_customer')));
 
             $sqlKd = "SELECT customer_nr, customer_name, customer_address_addition, 
                         customer_address_street, customer_address_street_nr, customer_country_code, 
