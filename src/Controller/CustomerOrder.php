@@ -57,12 +57,12 @@ class CustomerOrder extends AbstractController
     }
 
     /**
-     * @param EntityManagerInterface $em
+     * @param EntityManagerInterface $entityManager
      * @param Request $request
      * @return RedirectResponse|Response
      */
     #[Route('/auftrag_anlegen', name: 'new_customer_order')]
-    public function addNewCustomerOrder(EntityManagerInterface $em, Request $request): RedirectResponse|Response
+    public function addNewCustomerOrder(EntityManagerInterface $entityManager, Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -89,11 +89,9 @@ class CustomerOrder extends AbstractController
             $customerOrder->setCustomerOrderReference($data['customer_order[customer_order_reference]']);*/
             $customerOrder->setUsrId((int) $this->getUser());
 
-            //$em = $this->getDoctrine()->getManager();
-
-            $em->persist($customerOrder);
+            $entityManager->persist($customerOrder);
             //$em->persist($customerOrderPos);
-            $em->flush();
+            $entityManager->flush();
             //return new Response('News added successfuly');
 
             $this->addFlash('success', 'Der Auftrag und die Position(en) wurden erfolgreich angelegt.');

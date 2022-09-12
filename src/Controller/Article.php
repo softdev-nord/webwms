@@ -92,7 +92,7 @@ class Article extends AbstractController
      * @throws Exception
      */
     #[Route('artikel_bearbeiten/articleNr/{article_nr}', name: 'edit_article')]
-    public function editArticle(Request $request, $article_nr): RedirectResponse|JsonResponse|Response
+    public function editArticle(Request $request, $articleNr): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -107,7 +107,7 @@ class Article extends AbstractController
         $responseData = $this->articleValidationService->validateArticleData($requestData);
         $responseData['message'] = '';
 
-        $article = $this->articleService->getArticleByNr((int) $article_nr);
+        $article = $this->articleService->getArticleByNr((int) $articleNr);
         $form = $this->createForm(EditArticleType::class, $article);
         $form->handleRequest($request);
 

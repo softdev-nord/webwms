@@ -53,7 +53,7 @@ class Customer extends AbstractFOSRestController
             throw new EntityNotFoundException('Customer with id '.$customerId.' does not exist!');
         }
 
-        return View::create($customer, Response::HTTP_OK);
+        return $this->view($customer, Response::HTTP_OK);
     }
 
     /**
@@ -73,7 +73,7 @@ class Customer extends AbstractFOSRestController
     {
         $customers = $this->customerService->getAllCustomersApi();
 
-        return View::create($customers, Response::HTTP_OK);
+        return $this->view($customers, Response::HTTP_OK);
     }
 
     /**
@@ -103,7 +103,7 @@ class Customer extends AbstractFOSRestController
             $request->get('customer_city')
         );
 
-        return View::create($article, Response::HTTP_CREATED);
+        return $this->view($article, Response::HTTP_CREATED);
     }
 
     /**
@@ -142,7 +142,7 @@ class Customer extends AbstractFOSRestController
             $request->get('customer_city')
         );
 
-        return View::create($customer, Response::HTTP_OK);
+        return $this->view($customer, Response::HTTP_OK);
     }
 
     /**
@@ -162,6 +162,6 @@ class Customer extends AbstractFOSRestController
     {
         $this->customerService->deleteCustomerApi($customerId);
 
-        return View::create([], Response::HTTP_NO_CONTENT);
+        return $this->view([], Response::HTTP_NO_CONTENT);
     }
 }

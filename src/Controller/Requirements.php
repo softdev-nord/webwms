@@ -49,7 +49,7 @@ class Requirements extends AbstractController
     {
         if (function_exists('disk_free_space')) {
             // Prevent Warning: disk_free_space() [function.disk-free-space]: Value too large for defined data type
-            $freeSpace = @disk_free_space(__DIR__);
+            $freeSpace = disk_free_space(__DIR__);
 
             return $this->encodeSize($freeSpace);
         }

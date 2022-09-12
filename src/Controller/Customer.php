@@ -87,7 +87,7 @@ class Customer extends AbstractController
         );
     }
 
-    #[Route('kunden_bearbeiten/kundenNr/{customer_nr}', name: 'edit_customer')]
+    #[Route('kunden_bearbeiten/kundenNr/{customerNr}', name: 'edit_customer')]
     public function editCustomer(Request $request): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
@@ -95,7 +95,7 @@ class Customer extends AbstractController
         }
 
         $requestData = $request->request->all();
-        $customer_nr = $request->attributes->get('customer_nr');
+        $customerNr = $request->attributes->get('customer_nr');
 
         if (!empty($requestData)) {
             $requestData = $requestData['edit_customer'];
@@ -104,7 +104,7 @@ class Customer extends AbstractController
         $responseData = $this->customerValidationService->validateCustomerData($requestData);
         $responseData['message'] = '';
 
-        $customer = $this->customerService->getCustomerByNr((int) $customer_nr);
+        $customer = $this->customerService->getCustomerByNr((int) $customerNr);
         $form = $this->createForm(EditCustomerType::class, $customer);
         $form->handleRequest($request);
 

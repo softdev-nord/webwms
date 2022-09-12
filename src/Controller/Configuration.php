@@ -7,6 +7,8 @@ namespace WebWMS\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Controller\Requirements as Requirements;
+use WebWMS\Form\Configuration\GeneralConfigurationType;
 use WebWMS\Service\ConfigurationService;
 
 /**
@@ -18,15 +20,28 @@ use WebWMS\Service\ConfigurationService;
 class Configuration extends AbstractController
 {
     public function __construct(
-        private ConfigurationService $configurationService
+        private ConfigurationService $configurationService,
+        private Requirements $requirements
     ) {
     }
 
     #[Route('/einstellungen', name: 'configuration')]
     public function index(): Response
     {
+        $generalConfiguration = $this->createForm(GeneralConfigurationType::class);
+
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('configuration/index.html.twig', [
-            'controller_name' => 'Configuration',
+            'appName' => $this->requirements->getAppName(),
+            'appVersion' => $this->requirements->getAppVersion(),
+            'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+            'appCopyright' => $this->requirements->getAppCopyright(),
+            'appLizenz' => $this->requirements->getAppLizenz(),
+            'generalConfiguration' => $generalConfiguration->createView(),
+            'page' => 'Einstellungen',
         ]);
     }
 }

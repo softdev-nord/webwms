@@ -74,7 +74,7 @@ class StockTransactions extends AbstractController
             $remainder = fmod((float) $requestData['quantity'], (float) $requestData['le_quantity']);
 
             $stockLocations = $this->stockLocationService->getFreeStockLocations($stockSystem, $stockUnits);
-            $suId = $this->transportRequestService->getLastStockUnit()[0]->getSuId();
+            $suId = $this->transportRequestService->getLastStockUnit();
 
             foreach ($stockLocations as $key => $stockLocation) {
                 if ((string)$fullPal <= $stockUnits) {
@@ -94,7 +94,7 @@ class StockTransactions extends AbstractController
                 }
             }
 
-            $StockInFinal = $this->createForm(StockInFinalType::class, ['freeStockLocations' => $freeStockLocations]);
+            $stockInFinal = $this->createForm(StockInFinalType::class, ['freeStockLocations' => $freeStockLocations]);
 
             // @TODO Eine Option finden, um im Formular mehrere Spalten zu nutzen!
 
@@ -107,8 +107,9 @@ class StockTransactions extends AbstractController
                     'appCopyright' => $this->requirements->getAppCopyright(),
                     'appLizenz' => $this->requirements->getAppLizenz(),
                     'page' => 'Einlagern direkt',
-                    'stockInFinalForm' => $StockInFinal->createView(),
-                    'selectedStockLocations' => $freeStockLocations
+                    'stockInFinalForm' => $stockInFinal->createView(),
+                    'freeStockLocations' => $freeStockLocations,
+                    'charge' => $requestData['charge']
                 ]
             );
         }
@@ -407,26 +408,65 @@ class StockTransactions extends AbstractController
     /**
      */
     #[Route('/stock_in_final', name: 'stock_in_final')]
-    public function stockInFinal($freeStockLocations): Response
+    public function stockInFinal(Request $request)
     {
-        $formFinal = $this->createForm(StockInFinalType::class);
+        $newArray = [];
+        //dd($request->request->all());
 
-        return $this->render(
-            'modal/put_into_storage.html.twig',
-            [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
-                'page' => 'Einlagern direkt',
-                'stockInFinalForm' => $formFinal->createView(),
-                'selectedStockLocations' => $freeStockLocations
-            ]
-        );
+        $requestNew = $request;
+
+        dd($requestNew);
+
+        $result = []; // blank array to store result
+        foreach ($requestNew['stock_in_final'] as $val) {
+            //dd($val);
+            foreach ($val as $item => $value) {
+                dd($val['stock_su_id']);
+                $result[$item] =
+                dd($result);
+                $result[$val] = $val["brand"];
+            }
+        }
+
+        dd($this->transportRequestService->getLastTransportRequestNr());
+
+        dd($result);
+
+        foreach ($requestNew['stock_in_final'] as $key => $req) {
+            //dd($key);
+            foreach ($req as $item => $value) {
+                //dd($item);
+                $newArray[$item][$key] = $value;
+            }
+            //dd($key);
+            //$newArray[] = $key;
+            //echo $key ." ". $req . "<br>";
+        }
+        dd($newArray);
+        die();
+
+        $keys = array_keys($requestNew['stock_in_final']);
+        for ($i = 0; $i < count($requestNew['stock_in_final']); $i++) {
+            echo $requestNew['stock_in_final'] . "{<br>";
+            foreach ($requestNew[$keys[$i]] as $key => $value) {
+                echo $key . " : " . $value . "<br>";
+            }
+            echo "}<br>";
+        }
+
+        die();
+
+        foreach (array_keys($requestNew['stock_in_final']) as $fieldKey) {
+            //dd($fieldKey);
+            foreach ($requestNew['stock_in_final'][$fieldKey] as $key=>$value) {
+                $newArray[$key][$fieldKey] = $value;
+            }
+        }
+
+        dd($newArray);
     }
 
-    public function generateSuId($stockLocations, $fullPal): int
+    public function generateSuId($stockLocations): int
     {
         $count = count(array_keys($stockLocations));
         $suId = $this->transportRequestService->getLastStockUnit()[0]->getSuId();

@@ -80,8 +80,8 @@ class StockLocation extends AbstractController
         );
     }
 
-    #[Route('lagerplatz_bearbeiten/koordinate/{stock_location_coordinate}', name: 'edit_stock_location')]
-    public function editStockLocation(Request $request, $stock_location_coordinate): RedirectResponse|JsonResponse|Response
+    #[Route('lagerplatz_bearbeiten/koordinate/{stockLocationCoordinate}', name: 'edit_stock_location')]
+    public function editStockLocation(Request $request, $stockLocationCoordinate): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -96,7 +96,7 @@ class StockLocation extends AbstractController
         $responseData = $this->stockLocationValidationService->validateStockLocationData($requestData);
         $responseData['message'] = '';
 
-        $stockLocation = $this->stockLocationDataHandler->getStockLocationByCoordinate((int) $stock_location_coordinate);
+        $stockLocation = $this->stockLocationDataHandler->getStockLocationByCoordinate((int) $stockLocationCoordinate);
         $form = $this->createForm(EditStockLocationType::class, $stockLocation);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

@@ -67,7 +67,7 @@ class Article extends AbstractFOSRestController
             throw new EntityNotFoundException('Article with id '.$articleId.' does not exist!');
         }
 
-        return View::create($article, Response::HTTP_OK);
+        return $this->view($article, Response::HTTP_OK);
     }
 
     /**
@@ -87,7 +87,7 @@ class Article extends AbstractFOSRestController
     {
         $articles = $this->articleService->getAllArticlesApi();
 
-        return View::create($articles, Response::HTTP_OK);
+        return $this->view($articles, Response::HTTP_OK);
     }
 
     /**
@@ -120,7 +120,7 @@ class Article extends AbstractFOSRestController
             $request->get('standard_loading_equipment')
         );
 
-        return View::create($article, Response::HTTP_CREATED);
+        return $this->view($article, Response::HTTP_CREATED);
     }
 
     /**
@@ -154,7 +154,7 @@ class Article extends AbstractFOSRestController
             $request->get('standard_loading_equipment')
         );
 
-        return View::create($article, Response::HTTP_OK);
+        return $this->view($article, Response::HTTP_OK);
     }
 
     /**
@@ -174,6 +174,6 @@ class Article extends AbstractFOSRestController
     {
         $this->articleService->deleteArticleApi($articleId);
 
-        return View::create([], Response::HTTP_NO_CONTENT);
+        return $this->view([], Response::HTTP_NO_CONTENT);
     }
 }

@@ -91,14 +91,12 @@ class StockOccupancy extends AbstractController
 
         $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationLn);
         $stockResults = [];
-        $stockSystem = [];
 
         foreach ($allStockOccupancy as $stock) {
-            if ($stock['system'] === 'Block-Lager') {
-                $stockResults[$stock['sp']][] = $stock;
-            } else {
-                $stockResults[$stock['fb']][] = $stock;
-            }
+            match ($stock['system']) {
+                'Block-Lager' => $stockResults[$stock['sp']][] = $stock,
+                default => $stockResults[$stock['fb']][] = $stock,
+            };
         }
 
         return $this->render(
