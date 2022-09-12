@@ -5,6 +5,8 @@ namespace WebWMS\Form\Stock;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -13,24 +15,29 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        StockInFinalCollectionType
  */
-class StockInFinalCollectionType extends AbstractType
+class StockInFinalCollectionType extends CollectionType
 {
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('freeStockLocations', CollectionType::class, [
             'entry_type' => StockInFinalType::class,
-            'entry_options'  => [
-                'attr' => [
-                    'class' => 'image-box'
-                ]
-            ]
         ]);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            //dd($event->getData());
+            $form = $event->getForm();
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => null
+            'data_class' => StockInFinalType::class,
+            'allow_add' => true,
+            'allow_delete' => true,
         ]);
     }
 }

@@ -20,6 +20,9 @@ use WebWMS\Entity\SupplierOrder;
  */
 class SupplierOrderType extends AbstractType
 {
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

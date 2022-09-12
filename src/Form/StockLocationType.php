@@ -20,6 +20,9 @@ use WebWMS\Entity\StockZone;
  */
 class StockLocationType extends AbstractType
 {
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

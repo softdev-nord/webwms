@@ -21,6 +21,9 @@ use WebWMS\Entity\StockZone;
  */
 class EditStockLocationType extends AbstractType
 {
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('stock_location_id', HiddenType::class, [

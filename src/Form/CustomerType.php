@@ -18,6 +18,9 @@ use WebWMS\Entity\Customer;
  */
 class CustomerType extends AbstractType
 {
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

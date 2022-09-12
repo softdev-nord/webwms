@@ -4,11 +4,14 @@ namespace WebWMS\Form\Stock;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * @package:    WebWMS\Form\Stock
@@ -18,11 +21,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class StockInFinalType extends AbstractType
 {
+    public function __construct(
+        private PropertyAccessorInterface $propertyAccess
+    ) {
+    }
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $propertyAccessor = $this->propertyAccess;
+        foreach ($options['data']['freeStockLocations'] as $key => $value) {
+            $property = $propertyAccessor->getValue($value, '[koordinate]') .'_' . $key;
+            //dd($propertyAccessor->getValue($value, '[su_id]'));
+        }
+        //dd($key);
         $builder
-            ->add('stock_su_id', TextType::class, [
+            ->add('stock_su_id_'. $key, TextType::class, [
                 'label' => false,
+                'empty_data' => 'John Doe',
                 'attr' => [
                     'id' => 'stock_su_id',
                     'data-type' => 'stock_su_id',
@@ -92,8 +109,9 @@ class StockInFinalType extends AbstractType
                     'style' => 'text-align: center; background: #3b4245;',
                     'readonly' => true,
                 ],
-            ])
-            ->add('stock_in_post_final', ButtonType::class, [
+            ]);
+        $builder
+            ->add('stock_in_post_final', SubmitType::class, [
                 'label' => 'Buchen',
                 'attr' => [
                     'class' => 'btn btn-secondary btn-lg',
@@ -126,5 +144,9 @@ class StockInFinalType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+        $resolver
+            ->setDefaults([
+                'data_class' => null,
+            ]);
     }
 }

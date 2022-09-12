@@ -20,6 +20,9 @@ use WebWMS\Entity\Article;
  */
 class StockInType extends AbstractType
 {
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -88,5 +91,8 @@ class StockInType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+        $resolver->setDefaults([
+            'data_class' => null,
+        ]);
     }
 }
