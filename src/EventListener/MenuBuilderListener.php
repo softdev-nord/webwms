@@ -6,6 +6,9 @@ use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 
 final class MenuBuilderListener
 {
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function addMenuItems(ConfigureMenuEvent $event): void
     {
         $menu = $event->getMenu();

@@ -21,6 +21,9 @@ class ControllerListener extends AbstractController
     {
     }
 
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function onKernelController(ControllerEvent $event): void
     {
         $this->twig->addGlobal('stockInForm', $this->createForm(StockInType::class)->createView());
