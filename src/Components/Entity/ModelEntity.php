@@ -33,6 +33,9 @@ abstract class ModelEntity
     }
 
     /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     *
      * Helper function to set the association data of a ORM\OneToOne association of doctrine.
      * <br><br>
      * The <b>$data</b> parameter contains the data for the property. It can contains an array with model data
@@ -116,6 +119,10 @@ abstract class ModelEntity
     }
 
     /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     *
      * Helper function to set the association data of a ORM\OneToMany association of doctrine.
      * <br><br>
      * The <b>$data</b> parameter contains the data for the collection property. It can contains an array of
@@ -226,6 +233,8 @@ abstract class ModelEntity
     }
 
     /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
      * Helper function to set the association data of a ORM\ManyToOne association of doctrine.
      * <br><br>
      * The <b>$data</b> parameter contains the data for the collection property. It can contains an array of

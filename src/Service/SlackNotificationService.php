@@ -20,6 +20,9 @@ class SlackNotificationService
     ) {
     }
 
+    /**
+     * @SuppressWarnings("unused")
+     */
     public function sendSlackNotification($freeStockLocations): ResponseInterface
     {
         $message = json_encode($freeStockLocations);

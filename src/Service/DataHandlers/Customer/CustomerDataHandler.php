@@ -83,8 +83,8 @@ class CustomerDataHandler
     {
         $connection = $this->entityManager->getConnection();
 
-        $numOfBoxCustomer = !empty($_GET['numOfBoxCustomer']) ? $_GET['numOfBoxCustomer'] : '';
-        $nameKd = !empty($_GET['customer_nr']) ? strtolower(trim($_GET['customer_nr'])) : '';
+        $numOfBoxCustomer = !empty(filter_input(INPUT_GET, 'numOfBoxCustomer')) ? filter_input(INPUT_GET, 'numOfBoxCustomer') : '';
+        $nameKd = !empty(filter_input(INPUT_GET, 'customer_nr')) ? strtolower(trim(filter_input(INPUT_GET, 'customer_nr'))) : '';
 
         $boxName = match ($numOfBoxCustomer) {
             'customer_name' => 'customer_name',
@@ -98,8 +98,8 @@ class CustomerDataHandler
         };
 
         $data = [];
-        if (isset($_GET['name_customer'])) {
-            $nameKd = strtolower(trim($_GET['name_customer']));
+        if (!empty(filter_input(INPUT_GET, 'name_customer'))) {
+            $nameKd = strtolower(trim(filter_input(INPUT_GET, 'name_customer')));
 
             $sqlKd = "SELECT customer_nr, customer_name, customer_address_addition, 
                         customer_address_street, customer_address_street_nr, customer_country_code, 

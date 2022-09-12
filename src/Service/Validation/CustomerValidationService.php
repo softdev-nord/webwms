@@ -12,6 +12,9 @@ namespace WebWMS\Service\Validation;
  */
 class CustomerValidationService
 {
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function validateCustomerData($requestData): array
     {
         $responseData = [];

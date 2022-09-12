@@ -76,6 +76,9 @@ class StockLocationService
         return $stmt->fetchAllAssociative();
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function generateStockLocation(Request $request)
     {
         $createdAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
@@ -119,6 +122,9 @@ class StockLocationService
         }
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function generateStockLocationValues($request): array
     {
         $stockLocations = [];

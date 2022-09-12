@@ -97,10 +97,33 @@ class TransportRequestService
         return $object;
     }
 
-    public function getLastStockUnit(): array
+    public function getLastStockUnit(): int
     {
-        return $this->entityManager
-            ->getRepository(TransportHistory::class)
+        $result = $this->entityManager
+            ->getRepository(TransportRequest::class)
             ->findBy([], ['su_id' => 'DESC'], 1, 0);
+
+        if (!$result) {
+            $result = $this->entityManager
+                ->getRepository(TransportHistory::class)
+                ->findBy([], ['su_id' => 'DESC'], 1, 0);
+        }
+
+        return $result[0]->getSuId();
+    }
+
+    public function getLastTransportRequestNr(): int
+    {
+        $result = $this->entityManager
+            ->getRepository(TransportRequest::class)
+            ->findBy([], ['tr_nr' => 'DESC'], 1, 0);
+
+        if (!$result) {
+            $result = $this->entityManager
+                ->getRepository(TransportHistory::class)
+                ->findBy([], ['tr_nr' => 'DESC'], 1, 0);
+        }
+
+        return $result[0]->getTrNr();
     }
 }

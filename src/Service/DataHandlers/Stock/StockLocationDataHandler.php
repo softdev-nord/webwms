@@ -50,11 +50,11 @@ class StockLocationDataHandler
             ->find($stockLocationId);
     }
 
-    public function getStockLocationByCoordinate(int $stock_location_coordinate): ?StockLocation
+    public function getStockLocationByCoordinate(int $stockLocationCoordinate): ?StockLocation
     {
         return $this->entityManager
             ->getRepository(StockLocation::class)
-            ->findOneBy(['stock_location_coordinate' => $stock_location_coordinate]);
+            ->findOneBy(['stock_location_coordinate' => $stockLocationCoordinate]);
     }
 
     /**
@@ -104,6 +104,9 @@ class StockLocationDataHandler
         return $stockLocation;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function getAllStockLocations($stockSystem, $limit): array
     {
         $allResults = [];

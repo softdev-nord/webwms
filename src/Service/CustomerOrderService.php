@@ -97,6 +97,7 @@ class CustomerOrderService
 
     /**
      * @throws EntityNotFoundException
+     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function deleteCustomerOrderApi(int $customerOrderId): void
     {

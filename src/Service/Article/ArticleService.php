@@ -158,8 +158,8 @@ class ArticleService
     {
         $connection = $this->entityManager->getConnection();
 
-        $numOfBoxArt = !empty($_GET['numOfBoxArt']) ? $_GET['numOfBoxArt'] : '';
-        $name = !empty($_GET['article_nr']) ? strtolower(trim($_GET['article_nr'])) : '';
+        $numOfBoxArt = !empty(filter_input(INPUT_GET, 'numOfBoxArt')) ? filter_input(INPUT_GET, 'numOfBoxArt') : '';
+        $name = !empty(filter_input(INPUT_GET, 'article_nr')) ? strtolower(trim(filter_input(INPUT_GET, 'article_nr'))) : '';
 
         $boxName = match ($numOfBoxArt) {
             'article_id' => 'article_id',
@@ -172,8 +172,8 @@ class ArticleService
         }
 
         $data = [];
-        if (!empty($_GET['name_art'])) {
-            $name = strtolower(trim($_GET['name_art']));
+        if (!empty(filter_input(INPUT_GET, 'name_art'))) {
+            $name = strtolower(trim(filter_input(INPUT_GET, 'name_art')));
 
             $sqlArt = "SELECT * FROM article where LOWER($boxName) LIKE '".$name."%'";
 

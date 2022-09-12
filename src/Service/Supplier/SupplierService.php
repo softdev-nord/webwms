@@ -104,6 +104,9 @@ class SupplierService
         return $supplier;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function deleteSupplierApi(int $supplierId): void
     {
         $supplier = $this->entityManager
@@ -147,8 +150,8 @@ class SupplierService
     {
         $connection = $this->entityManager->getConnection();
 
-        $numOfBoxSupplier = !empty($_GET['numOfBoxSupplier']) ? $_GET['numOfBoxSupplier'] : '';
-        $nameSupp = !empty($_GET['supplier_nr']) ? strtolower(trim($_GET['supplier_nr'])) : '';
+        $numOfBoxSupplier = !empty(filter_input(INPUT_GET, 'numOfBoxSupplier')) ? filter_input(INPUT_GET, 'numOfBoxSupplier') : '';
+        $nameSupp = !empty(filter_input(INPUT_GET, 'supplier_nr')) ? strtolower(trim(filter_input(INPUT_GET, 'supplier_nr'))) : '';
 
         $boxName = 'supplier_nr';
 
@@ -164,8 +167,8 @@ class SupplierService
         };
 
         $data = [];
-        if (isset($_GET['name_supplier'])) {
-            $nameSupp = strtolower(trim($_GET['name_supplier']));
+        if (!empty(filter_input(INPUT_GET, 'name_supplier'))) {
+            $nameSupp = strtolower(trim(filter_input(INPUT_GET, 'name_supplier')));
 
             $sqlSupp = "SELECT supplier_nr, supplier_name, supplier_address_addition, supplier_address_street,
                             supplier_address_street_nr, supplier_address_country_code, supplier_address_zipcode,
