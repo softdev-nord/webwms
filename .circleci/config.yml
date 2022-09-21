@@ -2,25 +2,36 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+orbs:
+  php: circleci/php@1.1.0
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
+  test:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: cimg/base:stable
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    working_directory: ~/webwms
     steps:
-      - checkout
+      - checkout:
+          path: ~/webwms
+      - php/install-php:
+          version: '8.1'
+      - php/install-composer
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: "Coding Standards (PHP)"
+          command: |
+            composer install --ignore-platform-reqs
+            vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots
+            vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  test-workflow:
     jobs:
-      - say-hello
+      - test
