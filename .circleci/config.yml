@@ -34,7 +34,7 @@ jobs:
       - run:
           name: "Coding Standards (PHP)"
           command: |
-            cd webwms/  
+#            cd webwms/
             composer install --ignore-platform-reqs --no-interaction
             vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots
             vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor
