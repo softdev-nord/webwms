@@ -9,7 +9,7 @@ orbs:
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   build:
-    working_directory: /home/circleci/webwms
+    working_directory: /home/circleci
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
@@ -22,7 +22,8 @@ jobs:
       - run:
           name: Checkout code
           command: |
-            git clone --recurse "$CIRCLE_REPOSITORY_URL"
+              cd $CIRCLE_WORKING_DIRECTORY && \
+              git clone "$CIRCLE_REPOSITORY_URL"
       #- checkout
       #- php/install-php:
       #    version: '8.1'
