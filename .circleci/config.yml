@@ -23,7 +23,7 @@ jobs:
       - run:
           name: "Coding Standards (PHP)"
           command: |
-            composer install
+            composer install --ignore-platform-reqs
             vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots
 
 # Invoke jobs via workflows
