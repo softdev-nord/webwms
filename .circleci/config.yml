@@ -24,7 +24,7 @@ jobs:
           name: "Coding Standards (PHP)"
           command: |
             composer install --ignore-platform-reqs
-            ./vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots
+            vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
