@@ -28,22 +28,13 @@ jobs:
       #- php/install-php:
       #    version: '8.1'
       - php/install-composer
-        # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "composer.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-      - save_cache:
-          paths:
-            - ./vendor
-          key: v1-dependencies-{{ checksum "composer.json" }}
       - run:
           command: |
             pwd
       - run:
           name: "Coding Standards (PHP)"
           command: |
+            cd webwms/
             composer install --ignore-platform-reqs --no-interaction
             vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots
             vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor
