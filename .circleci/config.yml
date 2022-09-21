@@ -36,7 +36,7 @@ jobs:
           command: |
             cd webwms/ 
             composer install --ignore-platform-reqs --no-scripts
-            vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --using-cache=no -vvv --show-progress=dots
+            vendor/bin/php-cs-fixer fix --config=./.php-cs-fixer.php --dry-run --using-cache=no -vvv --show-progress=dots
             vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor
 
 # Invoke jobs via workflows
