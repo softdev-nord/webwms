@@ -23,7 +23,7 @@ jobs:
       - php/install-composer
       - run:
           command: |
-          pwd
+            pwd
       #- run:
       #    name: "Coding Standards (PHP)"
       #    command: |
