@@ -35,7 +35,7 @@ jobs:
           name: "Coding Standards (PHP)"
           command: |
             cd webwms/ 
-            composer install --ignore-platform-reqs --no-scripts
+            composer install --ignore-platform-reqs
             vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor
 
 # Invoke jobs via workflows
