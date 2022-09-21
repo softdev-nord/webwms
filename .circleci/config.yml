@@ -17,7 +17,7 @@ jobs:
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     environment:
-        CIRCLE_REPOSITORY_URL: softdev-nord:fgQjemukwVzXKTEXX9M4@bitbucket.org/softdev-nord/webwms.git
+        CIRCLE_REPOSITORY_URL: https://softdev-nord:fgQjemukwVzXKTEXX9M4@bitbucket.org/softdev-nord/webwms.git
     steps:
       - run:
           name: Checkout code
