@@ -17,6 +17,11 @@ jobs:
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
+      - run:
+          name: Checkout code
+          command: |
+            cd $CIRCLE_WORKING_DIRECTORY && \
+            git clone --recurse "$CIRCLE_REPOSITORY_URL"
       #- checkout
       - php/install-php:
           version: '8.1'
