@@ -21,12 +21,13 @@ jobs:
       - php/install-php:
           version: '8.1'
       - php/install-composer
-      - run:
-          name: "Coding Standards (PHP)"
-          command: |
-            composer install --ignore-platform-reqs --no-interaction
-            vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots
-            vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor
+      - run: echo "Hello, $USER!"
+      #- run:
+      #    name: "Coding Standards (PHP)"
+      #    command: |
+      #      composer install --ignore-platform-reqs --no-interaction
+      #      vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots
+      #      vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
