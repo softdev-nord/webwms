@@ -23,7 +23,6 @@ jobs:
       - run:
           name: "Coding Standards (PHP)"
           command: |
-            cd webwms/
             composer install --ignore-platform-reqs
             vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots
 
