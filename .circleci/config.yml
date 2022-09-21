@@ -24,7 +24,7 @@ jobs:
           command: |
             cd $CIRCLE_WORKING_DIRECTORY && \
             git clone --recurse "$CIRCLE_REPOSITORY_URL"
-      #- checkout
+      - checkout
       - php/install-php:
           version: '8.1'
       - php/install-composer
