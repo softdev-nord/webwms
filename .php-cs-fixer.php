@@ -1,10 +1,10 @@
 <?php
 
 $finder = (new PhpCsFixer\Finder())
+    ->in(__DIR__)
     ->exclude('var')
     ->exclude('.docker')
     ->exclude('vendor')
-    ->in(__DIR__)
 ;
 
 return (new PhpCsFixer\Config())
