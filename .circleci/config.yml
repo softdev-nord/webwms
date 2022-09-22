@@ -16,8 +16,6 @@ jobs:
       - image: cimg/php:8.1.9
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    environment:
-        CIRCLE_REPOSITORY_URL: https://softdev-nord:fgQjemukwVzXKTEXX9M4@bitbucket.org/softdev-nord/webwms.git
     steps:
       - php/install-composer
       - run:
@@ -29,8 +27,10 @@ jobs:
       #- php/install-php:
       #    version: '8.1'
       - run:
+          name: "Pipeline Id and Branch"
           command: |
-            pwd
+            echo "This is pipeline ID << pipeline.id >>"
+            echo "This is Branch << pipeline.git.branch >>"
       - run:
           name: "Coding Standards (PHP)"
           command: |
