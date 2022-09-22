@@ -411,59 +411,22 @@ class StockTransactions extends AbstractController
     public function stockInFinal(Request $request)
     {
         $newArray = [];
-        //dd($request->request->all());
 
         $requestNew = $request;
 
-        //dd($requestNew);
-
-        $result = []; // blank array to store result
-        foreach ($requestNew['stock_in_final'] as $val) {
-            //dd($val);
-            foreach ($val as $item => $value) {
-                //dd($val['stock_su_id']);
-                $result[$item] =
-                //dd($result);
-                $result[$val] = $val["brand"];
-            }
-        }
-
-        //dd($this->transportRequestService->getLastTransportRequestNr());
-
-        //dd($result);
-
         foreach ($requestNew['stock_in_final'] as $key => $req) {
-            //dd($key);
             foreach ($req as $item => $value) {
-                //dd($item);
                 $newArray[$item][$key] = $value;
             }
-            //dd($key);
-            //$newArray[] = $key;
-            //echo $key ." ". $req . "<br>";
         }
-        //dd($newArray);
-        //die();
-
-        $keys = array_keys($requestNew['stock_in_final']);
-        for ($i = 0; $i < count($requestNew['stock_in_final']); $i++) {
-            echo $requestNew['stock_in_final'] . "{<br>";
-            foreach ($requestNew[$keys[$i]] as $key => $value) {
-                echo $key . " : " . $value . "<br>";
-            }
-            echo "}<br>";
-        }
-
-        //die();
 
         foreach (array_keys($requestNew['stock_in_final']) as $fieldKey) {
-            //dd($fieldKey);
             foreach ($requestNew['stock_in_final'][$fieldKey] as $key=>$value) {
                 $newArray[$key][$fieldKey] = $value;
             }
         }
 
-        //dd($newArray);
+        return $newArray;
     }
 
     public function generateSuId($stockLocations): int
