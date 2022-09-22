@@ -23,9 +23,7 @@ jobs:
           command: |
             cd $CIRCLE_WORKING_DIRECTORY && \
             git clone "$CIRCLE_REPOSITORY_URL"
-      #- checkout
-      #- php/install-php:
-      #    version: '8.1'
+            git checkout << pipeline.git.branch >>
       - run:
           name: "Coding Standards (PHP)"
           command: |
@@ -39,6 +37,3 @@ workflows:
   build-workflow:
     jobs:
       - build
-          filters:
-            branches:
-              only: << pipeline.git.branch >>
