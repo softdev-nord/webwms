@@ -152,6 +152,7 @@ class ArticleService
 
     /**
      * Get article for.
+     *
      * @throws Exception
      */
     public function getArticle(): JsonResponse

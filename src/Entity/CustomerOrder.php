@@ -70,15 +70,11 @@ class CustomerOrder extends ModelEntity
     /**
      * INVERSE SIDE.
      *
-     * @var ArrayCollection
-     *
      * @ORM\OneToMany(targetEntity="\WebWMS\Entity\CustomerOrderPos", mappedBy="customer_orders")
      */
     protected ArrayCollection $details;
 
     /**
-     * @var Customer
-     *
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Customer", inversedBy="customer_orders")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      */

@@ -28,7 +28,6 @@ use WebWMS\Entity\User;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        LoginFormAuthenticator
- *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
@@ -113,6 +112,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     /**
      * @return RedirectResponse|Response|null
+     *
      * @SuppressWarnings("unused")
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)

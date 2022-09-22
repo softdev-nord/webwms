@@ -16,8 +16,6 @@ use WebWMS\Repository\CustomerOrderPosRepository;
 class CustomerOrderPos extends ModelEntity
 {
     /**
-     * @var ArrayCollection
-     *
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\CustomerOrder", inversedBy="details")
      * @ORM\JoinColumn(name="customer_order_id", referencedColumnName="id")
      */

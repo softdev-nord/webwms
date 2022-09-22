@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Form\AddNewArticleType;
 use WebWMS\Form\EditArticleType;
 use WebWMS\Service\Article\ArticleService;

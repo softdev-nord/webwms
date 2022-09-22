@@ -32,7 +32,6 @@ class Supplier extends AbstractFOSRestController
 
     /**
      * @Rest\Get("/suppliers/{supplierId}")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Retrieves a Supplier by id",
@@ -57,7 +56,6 @@ class Supplier extends AbstractFOSRestController
 
     /**
      * @Rest\Get("/suppliers")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Retrieves a collection of Suppliers",
@@ -77,7 +75,6 @@ class Supplier extends AbstractFOSRestController
 
     /**
      * @Rest\Post("/suppliers")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Creates a Supplier",
@@ -107,7 +104,6 @@ class Supplier extends AbstractFOSRestController
 
     /**
      * @Rest\Put("/suppliers/{supplierId}")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Replace a Supplier by Id",
@@ -146,7 +142,6 @@ class Supplier extends AbstractFOSRestController
 
     /**
      * @Rest\Delete("/suppliers/{supplierId}")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Removes a Supplier by Id",

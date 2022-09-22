@@ -32,7 +32,6 @@ class Customer extends AbstractFOSRestController
 
     /**
      * @Rest\Get("/customers/{customerId}")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Retrieves a Customer by id",
@@ -58,7 +57,6 @@ class Customer extends AbstractFOSRestController
 
     /**
      * @Rest\Get("/customers")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Retrieves a collection of Customers",
@@ -78,7 +76,6 @@ class Customer extends AbstractFOSRestController
 
     /**
      * @Rest\Post("/customers")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Creates a Customer",
@@ -108,7 +105,6 @@ class Customer extends AbstractFOSRestController
 
     /**
      * @Rest\Put("/customers/{customerId}")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Replace a Customer by Id",
@@ -147,7 +143,6 @@ class Customer extends AbstractFOSRestController
 
     /**
      * @Rest\Delete("/customers/{customerId}")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Removes a Customer by Id",

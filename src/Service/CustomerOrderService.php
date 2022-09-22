@@ -97,6 +97,7 @@ class CustomerOrderService
 
     /**
      * @throws EntityNotFoundException
+     *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function deleteCustomerOrderApi(int $customerOrderId): void
@@ -112,6 +113,7 @@ class CustomerOrderService
 
     /**
      * Get all Customer Orders for Ajax-Request.
+     *
      * @throws Exception
      */
     public function getAllCustomerOrders(): JsonResponse

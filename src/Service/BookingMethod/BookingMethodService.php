@@ -54,7 +54,7 @@ class BookingMethodService
     }
 
     /**
-     * SI101 Einlagern direkt
+     * SI101 Einlagern direkt.
      */
     public function stockIn(): string
     {
@@ -62,7 +62,7 @@ class BookingMethodService
     }
 
     /**
-     * SI102 Zugang aus Wareneingang
+     * SI102 Zugang aus Wareneingang.
      */
     public function stockInFromGoodsReceipt()
     {
@@ -70,7 +70,7 @@ class BookingMethodService
     }
 
     /**
-     * SI103 Zugang aus Produktion
+     * SI103 Zugang aus Produktion.
      */
     public function stockInFromProduction()
     {
@@ -78,7 +78,7 @@ class BookingMethodService
     }
 
     /**
-     * SI104 Rückgabe von Kostenstelle
+     * SI104 Rückgabe von Kostenstelle.
      */
     public function stockInFromCostCentre()
     {
@@ -86,7 +86,7 @@ class BookingMethodService
     }
 
     /**
-     * SI105 Einlagern in Container
+     * SI105 Einlagern in Container.
      */
     public function stockInIntoContainer()
     {
@@ -94,7 +94,7 @@ class BookingMethodService
     }
 
     /**
-     * SI106 WE zur Bestellung
+     * SI106 WE zur Bestellung.
      */
     public function stockInForSupplierOrder()
     {
@@ -102,7 +102,7 @@ class BookingMethodService
     }
 
     /**
-     * SI107 Einlagern mit Ladehilfsmittel
+     * SI107 Einlagern mit Ladehilfsmittel.
      */
     public function stockInUsingLoadingEquipment()
     {
@@ -110,7 +110,7 @@ class BookingMethodService
     }
 
     /**
-     * SI111 Einlagern direkt in WE-Zone
+     * SI111 Einlagern direkt in WE-Zone.
      */
     public function stockInIntoReceivingArea()
     {
@@ -118,7 +118,7 @@ class BookingMethodService
     }
 
     /**
-     * ST112 Rückgabe von Kostenstelle
+     * ST112 Rückgabe von Kostenstelle.
      */
     public function stockTransferFromCostCentre()
     {
@@ -126,7 +126,7 @@ class BookingMethodService
     }
 
     /**
-     * SI113 Einlagern direkt in Kostenstelle
+     * SI113 Einlagern direkt in Kostenstelle.
      */
     public function stockInIntoCostCentre()
     {
@@ -134,7 +134,7 @@ class BookingMethodService
     }
 
     /**
-     * SI114 Einlagern direkt in WA-Zone
+     * SI114 Einlagern direkt in WA-Zone.
      */
     public function stockInIntoDispatchArea()
     {
@@ -142,7 +142,7 @@ class BookingMethodService
     }
 
     /**
-     * SO151 Auslagern direkt
+     * SO151 Auslagern direkt.
      */
     public function stockOut()
     {
@@ -150,7 +150,7 @@ class BookingMethodService
     }
 
     /**
-     * SO152 Auslagern auf Kostenstelle
+     * SO152 Auslagern auf Kostenstelle.
      */
     public function stockOutToCostCentre()
     {
@@ -158,7 +158,7 @@ class BookingMethodService
     }
 
     /**
-     * SO153 Ausleihen auf Kostenstelle
+     * SO153 Ausleihen auf Kostenstelle.
      */
     public function lendingToCostCentre()
     {
@@ -166,7 +166,7 @@ class BookingMethodService
     }
 
     /**
-     * SO155 Auslagern aus Container
+     * SO155 Auslagern aus Container.
      */
     public function stockOutFromContainer()
     {
@@ -174,7 +174,7 @@ class BookingMethodService
     }
 
     /**
-     * SO156 Auslagern aus Kostenstelle
+     * SO156 Auslagern aus Kostenstelle.
      */
     public function stockOutFromCostCentre()
     {
@@ -182,7 +182,7 @@ class BookingMethodService
     }
 
     /**
-     * SO157 Auslagern direkt aus WA-Zone
+     * SO157 Auslagern direkt aus WA-Zone.
      */
     public function stockOutFromDispatchArea()
     {
@@ -190,7 +190,7 @@ class BookingMethodService
     }
 
     /**
-     * SO158 Auftrag auslagern
+     * SO158 Auftrag auslagern.
      */
     public function stockOutByOrder()
     {
@@ -198,7 +198,7 @@ class BookingMethodService
     }
 
     /**
-     * SO159 Auslagern direkt aus WE-Zone
+     * SO159 Auslagern direkt aus WE-Zone.
      */
     public function stockOutFromReceivingArea()
     {
@@ -206,7 +206,7 @@ class BookingMethodService
     }
 
     /**
-     * SO181 Auftrag auslagern (Auftrag-Liste)
+     * SO181 Auftrag auslagern (Auftrag-Liste).
      */
     public function stockOutOrderList()
     {
@@ -214,7 +214,7 @@ class BookingMethodService
     }
 
     /**
-     * SO182 Auftrag auslagern mit Kostenstelle (Auftrag-Liste)
+     * SO182 Auftrag auslagern mit Kostenstelle (Auftrag-Liste).
      */
     public function stockOutUsingCostCentre()
     {
@@ -222,7 +222,7 @@ class BookingMethodService
     }
 
     /**
-     * ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste)
+     * ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste).
      */
     public function stockTransferToCostCentre()
     {
@@ -230,7 +230,7 @@ class BookingMethodService
     }
 
     /**
-     * SO187 Auftrag auslagern in WA-Zone
+     * SO187 Auftrag auslagern in WA-Zone.
      */
     public function stockOutToDispatchArea()
     {
@@ -238,7 +238,7 @@ class BookingMethodService
     }
 
     /**
-     * SO188 Sammelkommissionierung auf Kostenstelle
+     * SO188 Sammelkommissionierung auf Kostenstelle.
      */
     public function stockOutOrderConsolidationToCostCentre()
     {
@@ -246,7 +246,7 @@ class BookingMethodService
     }
 
     /**
-     * ST201 Umlagern
+     * ST201 Umlagern.
      */
     public function stockTransferBetween()
     {
@@ -254,7 +254,7 @@ class BookingMethodService
     }
 
     /**
-     * ST203 Bestandskorrektur
+     * ST203 Bestandskorrektur.
      */
     public function stockCorrection()
     {
@@ -262,7 +262,7 @@ class BookingMethodService
     }
 
     /**
-     * ST207 Umlagerung aus WE-Zone ins LV-Lager (aus Artikelbelegung)
+     * ST207 Umlagerung aus WE-Zone ins LV-Lager (aus Artikelbelegung).
      */
     public function stockTransferFromReceivingAreaToStock()
     {
@@ -270,7 +270,7 @@ class BookingMethodService
     }
 
     /**
-     * ST208 Umlagerung aus LV-Lager in WA-Zone (aus Artikelbelegung)
+     * ST208 Umlagerung aus LV-Lager in WA-Zone (aus Artikelbelegung).
      */
     public function stockTransferFromStockToDispatchArea()
     {

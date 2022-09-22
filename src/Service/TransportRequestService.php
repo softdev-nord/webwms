@@ -101,12 +101,12 @@ class TransportRequestService
     {
         $result = $this->entityManager
             ->getRepository(TransportRequest::class)
-            ->findBy([], ['su_id' => 'DESC'], 1, 0);
+            ->findBy([], ['suId' => 'DESC'], 1, 0);
 
         if (!$result) {
             $result = $this->entityManager
                 ->getRepository(TransportHistory::class)
-                ->findBy([], ['su_id' => 'DESC'], 1, 0);
+                ->findBy([], ['suId' => 'DESC'], 1, 0);
         }
 
         return $result[0]->getSuId();

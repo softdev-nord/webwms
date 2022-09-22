@@ -66,6 +66,4 @@ class OrderPos
     {
         $this->orderPosQuantity = $orderPosQuantity;
     }
-
-
 }

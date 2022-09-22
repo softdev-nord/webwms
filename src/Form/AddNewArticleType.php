@@ -114,7 +114,7 @@ class AddNewArticleType extends AbstractType
                     'LIFO (Last In – First Out)' => 'LIFO',
                     'HIFO (Highest In – First Out)' => 'HIFO',
                     'LOFO (Lowest In – First Out)' => 'LOFO',
-                    'Chaotische Lagerhaltung (Chaotic warehousing)' => 'CWH'
+                    'Chaotische Lagerhaltung (Chaotic warehousing)' => 'CWH',
                 ],
             ])
             ->add('le_quantity', TextType::class, [

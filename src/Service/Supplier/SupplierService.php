@@ -33,9 +33,7 @@ class SupplierService
             ->find($supplierId);
 
         if (!$supplier) {
-            throw new NotFoundException(
-                'Supplier with id '.$supplierId.' does not exist!'
-            );
+            throw new NotFoundException('Supplier with id '.$supplierId.' does not exist!');
         }
 
         return $supplier;
@@ -114,9 +112,7 @@ class SupplierService
             ->find($supplierId);
 
         if (!$supplier) {
-            throw new NotFoundException(
-                'Supplier with id '.$supplierId.' does not exist!'
-            );
+            throw new NotFoundException('Supplier with id '.$supplierId.' does not exist!');
         } else {
             $this->supplierDataHandler->delete($supplier);
         }
@@ -127,9 +123,7 @@ class SupplierService
         $suppliers = $this->entityManager->getRepository(Supplier::class)->findAll();
 
         if (!$suppliers) {
-            throw new NotFoundException(
-                'Keine Lieferanten gefunden'
-            );
+            throw new NotFoundException('Keine Lieferanten gefunden');
         }
 
         return $suppliers;

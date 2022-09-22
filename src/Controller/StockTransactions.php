@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
 use WebWMS\Service\BookingMethod\BookingMethodConstants;
@@ -40,7 +39,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SI101 Einlagern direkt
+     * SI101 Einlagern direkt.
      *
      * @throws EntityNotFoundException
      */
@@ -60,7 +59,7 @@ class StockTransactions extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
             $stockUnits = (int) ceil(
-                (int)$requestData['quantity'] / (int)$requestData['le_quantity'],
+                (int) $requestData['quantity'] / (int) $requestData['le_quantity'],
             );
 
             $stockSystem = match ($requestData['standard_loading_equipment']) {
@@ -70,14 +69,14 @@ class StockTransactions extends AbstractController
                 default => 'KST',
             };
 
-            $fullPal = intdiv((int)$requestData['quantity'], (int)$requestData['le_quantity']);
+            $fullPal = intdiv((int) $requestData['quantity'], (int) $requestData['le_quantity']);
             $remainder = fmod((float) $requestData['quantity'], (float) $requestData['le_quantity']);
 
             $stockLocations = $this->stockLocationService->getFreeStockLocations($stockSystem, $stockUnits);
             $suId = $this->transportRequestService->getLastStockUnit();
 
             foreach ($stockLocations as $key => $stockLocation) {
-                if ((string)$fullPal <= $stockUnits) {
+                if ((string) $fullPal <= $stockUnits) {
                     $quantity = $key === array_key_last($stockLocations) ? number_format($remainder, 2, '.', '') : $requestData['le_quantity'];
 
                     $freeStockLocations[] = [
@@ -86,10 +85,10 @@ class StockTransactions extends AbstractController
                         'fb' => $stockLocation['fb'],
                         'sp' => $stockLocation['sp'],
                         'tf' => $stockLocation['tf'],
-                        'ln_komplett' => $stockLocation['ln'] . '-' . $stockLocation['fb'] . '-' . $stockLocation['sp'] . '-' . $stockLocation['tf'],
+                        'ln_komplett' => $stockLocation['ln'].'-'.$stockLocation['fb'].'-'.$stockLocation['sp'].'-'.$stockLocation['tf'],
                         'koordinate' => $stockLocation['koordinate'],
                         'system' => $stockLocation['system'],
-                        'quantity' => $quantity
+                        'quantity' => $quantity,
                     ];
                 }
             }
@@ -109,7 +108,7 @@ class StockTransactions extends AbstractController
                     'page' => 'Einlagern direkt',
                     'stockInFinalForm' => $stockInFinal->createView(),
                     'freeStockLocations' => $freeStockLocations,
-                    'charge' => $requestData['charge']
+                    'charge' => $requestData['charge'],
                 ]
             );
         }
@@ -124,13 +123,13 @@ class StockTransactions extends AbstractController
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Einlagern direkt',
                 'stockInForm' => $form->createView(),
-                'selectedStockLocations' => $freeStockLocations
+                'selectedStockLocations' => $freeStockLocations,
             ]
         );
     }
 
     /**
-     * SI102 Zugang aus Wareneingang
+     * SI102 Zugang aus Wareneingang.
      *
      * @throws EntityNotFoundException
      */
@@ -142,7 +141,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SI103 Zugang aus Produktion
+     * SI103 Zugang aus Produktion.
      *
      * @throws EntityNotFoundException
      */
@@ -154,7 +153,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SI104 Rückgabe von Kostenstelle
+     * SI104 Rückgabe von Kostenstelle.
      *
      * @throws EntityNotFoundException
      */
@@ -166,7 +165,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SI105 Einlagern in Container
+     * SI105 Einlagern in Container.
      *
      * @throws EntityNotFoundException
      */
@@ -178,7 +177,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SI106 WE zur Bestellung
+     * SI106 WE zur Bestellung.
      *
      * @throws EntityNotFoundException
      */
@@ -190,7 +189,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SI107 Einlagern mit Ladehilfsmittel
+     * SI107 Einlagern mit Ladehilfsmittel.
      *
      * @throws EntityNotFoundException
      */
@@ -202,7 +201,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SI111 Einlagern direkt in WE-Zone
+     * SI111 Einlagern direkt in WE-Zone.
      *
      * @throws EntityNotFoundException
      */
@@ -214,7 +213,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * ST112 Rückgabe von Kostenstelle
+     * ST112 Rückgabe von Kostenstelle.
      *
      * @throws EntityNotFoundException
      */
@@ -226,7 +225,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SI113 Einlagern direkt in Kostenstelle
+     * SI113 Einlagern direkt in Kostenstelle.
      *
      * @throws EntityNotFoundException
      */
@@ -238,7 +237,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SI114 Einlagern direkt in WA-Zone
+     * SI114 Einlagern direkt in WA-Zone.
      *
      * @throws EntityNotFoundException
      */
@@ -250,7 +249,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO151 Auslagern direkt
+     * SO151 Auslagern direkt.
      *
      * @throws EntityNotFoundException
      */
@@ -262,7 +261,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO152 Auslagern auf Kostenstelle
+     * SO152 Auslagern auf Kostenstelle.
      *
      * @throws EntityNotFoundException
      */
@@ -274,7 +273,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO153 Ausleihen auf Kostenstelle
+     * SO153 Ausleihen auf Kostenstelle.
      *
      * @throws EntityNotFoundException
      */
@@ -286,7 +285,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO155 Auslagern aus Container
+     * SO155 Auslagern aus Container.
      *
      * @throws EntityNotFoundException
      */
@@ -298,7 +297,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO156 Auslagern aus Kostenstelle
+     * SO156 Auslagern aus Kostenstelle.
      *
      * @throws EntityNotFoundException
      */
@@ -310,7 +309,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO157 Auslagern direkt aus WA-Zone
+     * SO157 Auslagern direkt aus WA-Zone.
      *
      * @throws EntityNotFoundException
      */
@@ -322,7 +321,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO158 Auftrag auslagern
+     * SO158 Auftrag auslagern.
      *
      * @throws EntityNotFoundException
      */
@@ -334,7 +333,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO159 Auslagern direkt aus WE-Zone
+     * SO159 Auslagern direkt aus WE-Zone.
      *
      * @throws EntityNotFoundException
      */
@@ -346,7 +345,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO181 Auftrag auslagern (Auftrag-Liste)
+     * SO181 Auftrag auslagern (Auftrag-Liste).
      *
      * @throws EntityNotFoundException
      */
@@ -358,7 +357,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO182 Auftrag auslagern mit Kostenstelle (Auftrag-Liste)
+     * SO182 Auftrag auslagern mit Kostenstelle (Auftrag-Liste).
      *
      * @throws EntityNotFoundException
      */
@@ -370,7 +369,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste)
+     * ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste).
      *
      * @throws EntityNotFoundException
      */
@@ -382,7 +381,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO187 Auftrag auslagern in WA-Zone
+     * SO187 Auftrag auslagern in WA-Zone.
      *
      * @throws EntityNotFoundException
      */
@@ -394,7 +393,7 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * SO188 Sammelkommissionierung auf Kostenstelle
+     * SO188 Sammelkommissionierung auf Kostenstelle.
      *
      * @throws EntityNotFoundException
      */
@@ -422,7 +421,7 @@ class StockTransactions extends AbstractController
         }
 
         foreach (array_keys($requestNew['stock_in_final']) as $fieldKey) {
-            foreach ($requestNew['stock_in_final'][$fieldKey] as $key=>$value) {
+            foreach ($requestNew['stock_in_final'][$fieldKey] as $key => $value) {
                 $newArray[$key][$fieldKey] = $value;
             }
         }
@@ -434,7 +433,7 @@ class StockTransactions extends AbstractController
     {
         $count = count(array_keys($stockLocations));
         $suId = $this->transportRequestService->getLastStockUnit();
-        for ($i = 0; $i <= $count; $i++) {
+        for ($i = 0; $i <= $count; ++$i) {
             $suId += $i;
         }
 

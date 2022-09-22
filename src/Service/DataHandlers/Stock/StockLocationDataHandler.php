@@ -138,10 +138,10 @@ class StockLocationDataHandler
                     'fb' => $result['fb'],
                     'sp' => $result['sp'],
                     'tf' => $result['tf'],
-                    'lnKomplett' => $result['ln'] . '-' . $result['fb'] . '-' . $result['sp'] . '-' . $result['tf'],
+                    'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
                     'koordinate' => $result['koordinate'],
                     'system' => $result['stock_location_desc'],
-                    'belegt' => true
+                    'belegt' => true,
                 ];
             } else {
                 $allResults[] = [
@@ -149,10 +149,10 @@ class StockLocationDataHandler
                     'fb' => $result['fb'],
                     'sp' => $result['sp'],
                     'tf' => $result['tf'],
-                    'lnKomplett' => $result['ln'] . '-' . $result['fb'] . '-' . $result['sp'] . '-' . $result['tf'],
+                    'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
                     'koordinate' => $result['koordinate'],
                     'system' => $result['stock_location_desc'],
-                    'belegt' => false
+                    'belegt' => false,
                 ];
             }
         }

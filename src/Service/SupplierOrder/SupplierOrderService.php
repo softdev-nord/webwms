@@ -32,9 +32,7 @@ class SupplierOrderService
             ->find($supplierOrderId);
 
         if (!$order) {
-            throw new NotFoundException(
-                'Supplier order with id '.$supplierOrderId.' does not exist!'
-            );
+            throw new NotFoundException('Supplier order with id '.$supplierOrderId.' does not exist!');
         }
 
         return $order;
@@ -107,9 +105,7 @@ class SupplierOrderService
             ->find($supplierOrderId);
 
         if (!$supplierOrder) {
-            throw new NotFoundException(
-                'Supplier order with id '.$supplierOrderId.' does not exist!'
-            );
+            throw new NotFoundException('Supplier order with id '.$supplierOrderId.' does not exist!');
         } else {
             $this->supplierOrderDataHandler->delete($supplierOrder);
         }

@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Stock\StockOccupancyService;
 
@@ -80,6 +79,7 @@ class StockOccupancy extends AbstractController
 
     /**
      * @throws Exception
+     *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function getStockOccupancyResults($request): Response

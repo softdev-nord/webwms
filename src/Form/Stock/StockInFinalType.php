@@ -10,7 +10,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
@@ -25,6 +24,7 @@ class StockInFinalType extends AbstractType
         private PropertyAccessorInterface $propertyAccess
     ) {
     }
+
     /**
      * @SuppressWarnings("unused")
      */
@@ -32,12 +32,12 @@ class StockInFinalType extends AbstractType
     {
         $propertyAccessor = $this->propertyAccess;
         foreach ($options['data']['freeStockLocations'] as $key => $value) {
-            $property = $propertyAccessor->getValue($value, '[koordinate]') .'_' . $key;
-            //dd($propertyAccessor->getValue($value, '[su_id]'));
+            $property = $propertyAccessor->getValue($value, '[koordinate]').'_'.$key;
+            // dd($propertyAccessor->getValue($value, '[su_id]'));
         }
-        //dd($key);
+        // dd($key);
         $builder
-            ->add('stock_su_id_'. $key, TextType::class, [
+            ->add('stock_su_id_'.$key, TextType::class, [
                 'label' => false,
                 'empty_data' => 'John Doe',
                 'attr' => [
@@ -138,7 +138,7 @@ class StockInFinalType extends AbstractType
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            //dd($event->getData());
+            // dd($event->getData());
         });
     }
 

@@ -10,6 +10,7 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: true         // <---- This is the new additional config.
 
         bind:
             $appName: '%env(APP_NAME)%'
@@ -82,6 +83,11 @@ services:
 
     WebWMS\Controller\StockTransactions:
         public: true
+        autowire: true
         tags: ['controller.service_arguments']
         arguments:
+            $requirements: "@WebWMS\\Controller\\Requirements"
             $bookingMethodService: "@WebWMS\\Service\\BookingMethod\\BookingMethodService"
+            $bookingMethodConstants: "@WebWMS\\Service\\BookingMethod\\BookingMethodConstants"
+            $stockLocationService: "@WebWMS\\Service\\Stock\\StockLocationService"
+            $transportRequestService: "@WebWMS\\Service\\TransportRequestService"

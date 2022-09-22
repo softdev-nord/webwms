@@ -69,15 +69,11 @@ class SupplierOrder extends ModelEntity
     /**
      * INVERSE SIDE.
      *
-     * @var SupplierOrderPos
-     *
      * @ORM\OneToMany(targetEntity="\WebWMS\Entity\SupplierOrderPos", mappedBy="supplier_orders", orphanRemoval=true, cascade={"persist"})
      */
     protected SupplierOrderPos $details;
 
     /**
-     * @var Supplier
-     *
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Supplier", inversedBy="supplier_orders")
      * @ORM\JoinColumn(name="supplierId", referencedColumnName="id")
      */
@@ -88,17 +84,11 @@ class SupplierOrder extends ModelEntity
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
     public function setId(mixed $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return int|null
-     */
     public function getSupplierOrderId(): ?int
     {
         return $this->supplierOrderId;
@@ -112,9 +102,6 @@ class SupplierOrder extends ModelEntity
         $this->supplierOrderId = $supplierOrderId;
     }
 
-    /**
-     * @return int|null
-     */
     public function getUsrId(): ?int
     {
         return $this->usrId;
@@ -202,8 +189,6 @@ class SupplierOrder extends ModelEntity
 
     /**
      * @param SupplierOrderPos[]|null $details
-     *
-     * @return ModelEntity|SupplierOrder
      */
     public function setDetails(?array $details): SupplierOrder|ModelEntity
     {

@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\Article;
 
 /**
  * @package:    WebWMS\Form\Stock
@@ -47,7 +46,7 @@ class StockInType extends AbstractType
                 'choices' => [
                     'KARTON' => 'KARTON',
                     'PALETTE' => 'PALETTE',
-                    'BLOCK' => 'BLOCK'
+                    'BLOCK' => 'BLOCK',
                 ],
             ])
             ->add('le_quantity', TextType::class, [

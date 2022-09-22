@@ -28,6 +28,7 @@ RUN apt-get -y update && \
     apt-get -y --no-install-recommends install default-mysql-client \
     zlib1g-dev \
     libzip-dev \
+    libxslt-dev \
     libicu-dev && \
     apt-get -y --no-install-recommends install --fix-missing apt-utils \
     build-essential \
@@ -87,7 +88,7 @@ RUN if [ ${INSTALL_OPCACHE} = true ]; then \
 ###########################################################################
 # Other PHP Extensions
 ###########################################################################
-RUN PHP_EXTENSIONS="pdo_mysql mysqli curl zip intl mbstring gettext exif" \
+RUN PHP_EXTENSIONS="pdo pdo_mysql mysqli curl zip intl mbstring gettext exif xml" \
     && docker-php-ext-install ${PHP_EXTENSIONS} \
     && docker-php-ext-enable ${PHP_EXTENSIONS}
 RUN pecl install pcov \

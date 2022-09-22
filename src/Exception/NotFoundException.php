@@ -12,5 +12,4 @@ namespace WebWMS\Exception;
  */
 class NotFoundException extends \Exception
 {
-
 }

@@ -30,7 +30,7 @@ class LoggingService
         $logEntry->setRoute($request->attributes->get('_route'));
         $logEntry->setMessage($message);
         $logEntry->setDate(new \DateTime('NOW', new \DateTimeZone('Europe/Berlin')));
-        $logEntry->setUser($user->getFirstname() . ' ' . $user->getLastname());
+        $logEntry->setUser($user->getFirstname().' '.$user->getLastname());
         $logEntry->setIpAddress($request->getClientIp());
         $logEntry->setUserAgent($request->headers->get('User-Agent'));
 

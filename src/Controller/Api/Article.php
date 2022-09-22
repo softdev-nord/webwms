@@ -32,7 +32,6 @@ class Article extends AbstractFOSRestController
 
     /**
      * @Rest\Get("/articles/{articleId}")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Retrieves an Article by id",
@@ -72,7 +71,6 @@ class Article extends AbstractFOSRestController
 
     /**
      * @Rest\Get("/articles")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Retrieves a collection of Articles",
@@ -92,7 +90,6 @@ class Article extends AbstractFOSRestController
 
     /**
      * @Rest\Post("/articles")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Creates an Article",
@@ -125,7 +122,6 @@ class Article extends AbstractFOSRestController
 
     /**
      * @Rest\Put("/articles/{articleId}")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Replace a Article",
@@ -159,7 +155,6 @@ class Article extends AbstractFOSRestController
 
     /**
      * @Rest\Delete("/articles/{articleId}")
-     *
      * @OA\Response(
      *     response=200,
      *     description="Removes the Article by Id",
