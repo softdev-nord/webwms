@@ -19,6 +19,7 @@ jobs:
     environment:
         CIRCLE_REPOSITORY_URL: https://softdev-nord:fgQjemukwVzXKTEXX9M4@bitbucket.org/softdev-nord/webwms.git
     steps:
+      - php/install-composer
       - run:
           name: Checkout code
           command: |
@@ -27,7 +28,6 @@ jobs:
       #- checkout
       #- php/install-php:
       #    version: '8.1'
-      - php/install-composer
       - run:
           command: |
             pwd
