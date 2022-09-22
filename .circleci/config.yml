@@ -35,7 +35,7 @@ jobs:
           name: "Coding Standards (PHP)"
           command: |
             cd webwms/  
-            composer install --ignore-platform-reqs
+            composer install --ignore-platform-reqs --no-scripts
             vendor/bin/phpmd ./src/ ansi rulesets.xml
 
 # Invoke jobs via workflows
