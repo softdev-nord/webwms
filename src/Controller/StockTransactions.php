@@ -415,22 +415,22 @@ class StockTransactions extends AbstractController
 
         $requestNew = $request;
 
-        dd($requestNew);
+        //dd($requestNew);
 
         $result = []; // blank array to store result
         foreach ($requestNew['stock_in_final'] as $val) {
             //dd($val);
             foreach ($val as $item => $value) {
-                dd($val['stock_su_id']);
+                //dd($val['stock_su_id']);
                 $result[$item] =
-                dd($result);
+                //dd($result);
                 $result[$val] = $val["brand"];
             }
         }
 
-        dd($this->transportRequestService->getLastTransportRequestNr());
+        //dd($this->transportRequestService->getLastTransportRequestNr());
 
-        dd($result);
+        //dd($result);
 
         foreach ($requestNew['stock_in_final'] as $key => $req) {
             //dd($key);
@@ -442,8 +442,8 @@ class StockTransactions extends AbstractController
             //$newArray[] = $key;
             //echo $key ." ". $req . "<br>";
         }
-        dd($newArray);
-        die();
+        //dd($newArray);
+        //die();
 
         $keys = array_keys($requestNew['stock_in_final']);
         for ($i = 0; $i < count($requestNew['stock_in_final']); $i++) {
@@ -454,7 +454,7 @@ class StockTransactions extends AbstractController
             echo "}<br>";
         }
 
-        die();
+        //die();
 
         foreach (array_keys($requestNew['stock_in_final']) as $fieldKey) {
             //dd($fieldKey);
@@ -463,13 +463,13 @@ class StockTransactions extends AbstractController
             }
         }
 
-        dd($newArray);
+        //dd($newArray);
     }
 
     public function generateSuId($stockLocations): int
     {
         $count = count(array_keys($stockLocations));
-        $suId = $this->transportRequestService->getLastStockUnit()[0]->getSuId();
+        $suId = $this->transportRequestService->getLastStockUnit();
         for ($i = 0; $i <= $count; $i++) {
             $suId += $i;
         }
