@@ -17,11 +17,6 @@ jobs:
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
-      - run:
-          name: "Pipeline Id and Branch"
-          command: |
-            echo "This is pipeline ID << pipeline.id >>"
-            echo "This is Branch << pipeline.git.branch >>"
       - php/install-composer
       - run:
           name: Checkout code
@@ -44,3 +39,6 @@ workflows:
   build-workflow:
     jobs:
       - build
+          filters:
+            branches:
+              only: << pipeline.git.branch >>
