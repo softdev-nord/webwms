@@ -16,6 +16,8 @@ jobs:
       - image: cimg/php:8.1.9
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    environment:
+      CIRCLE_REPOSITORY_URL: https://softdev-nord:fgQjemukwVzXKTEXX9M4@bitbucket.org/softdev-nord/webwms.git
     steps:
       - php/install-composer
       - run:
