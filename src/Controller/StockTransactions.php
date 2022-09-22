@@ -406,9 +406,10 @@ class StockTransactions extends AbstractController
     }
 
     /**
+     * @SuppressWarnings(PHPMD.ExitExpression)
      */
     #[Route('/stock_in_final', name: 'stock_in_final')]
-    public function stockInFinal(Request $request)
+    public function stockInFinal(Request $request): array
     {
         $newArray = [];
 
