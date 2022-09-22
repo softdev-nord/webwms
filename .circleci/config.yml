@@ -25,10 +25,10 @@ jobs:
           command: |
             cd $CIRCLE_WORKING_DIRECTORY && \
             git clone "$CIRCLE_REPOSITORY_URL"
-            git checkout << pipeline.git.branch >>
       - run:
           name: "Coding Standards (PHP)"
           command: |
+            git checkout << pipeline.git.branch >>
             cd webwms/  
             composer install --ignore-platform-reqs --no-scripts
             vendor/bin/phpmd ./src/ ansi rulesets.xml
