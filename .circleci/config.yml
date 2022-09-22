@@ -17,20 +17,20 @@ jobs:
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
-      - php/install-composer
-      - run:
-          name: Checkout code
-          command: |
-              cd $CIRCLE_WORKING_DIRECTORY && \
-              git clone "$CIRCLE_REPOSITORY_URL"
-      #- checkout
-      #- php/install-php:
-      #    version: '8.1'
       - run:
           name: "Pipeline Id and Branch"
           command: |
             echo "This is pipeline ID << pipeline.id >>"
             echo "This is Branch << pipeline.git.branch >>"
+      - php/install-composer
+      - run:
+          name: Checkout code
+          command: |
+            cd $CIRCLE_WORKING_DIRECTORY && \
+            git clone "$CIRCLE_REPOSITORY_URL"
+      #- checkout
+      #- php/install-php:
+      #    version: '8.1'
       - run:
           name: "Coding Standards (PHP)"
           command: |
