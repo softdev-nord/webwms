@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\CustomerOrder as CustomerOrders;
 use WebWMS\Repository\CustomerOrderRepository;
+use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
 /**
  * @package:    WebWMS\Service
@@ -23,7 +24,8 @@ class CustomerOrderService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private CustomerOrderRepository $customerOrderRepository
+        private CustomerOrderRepository $customerOrderRepository,
+        private CustomerDataHandler $customerDataHandler
     ) {
     }
 
@@ -192,7 +194,7 @@ class CustomerOrderService
         // TODO: Implement logic
 
         $params = $request->request->all()['customer'];
-        $lastCustomer = $this->getLastCustomer()[0]->toArray();
+        $lastCustomer = $this->customerDataHandler->getLastCustomer()[0]->toArray();
 
         $customerOrder = new CustomerOrders();
         $customerOrder->setCustomerId($lastCustomer['customer_id'] + 1);

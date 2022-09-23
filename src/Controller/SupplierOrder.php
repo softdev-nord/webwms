@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Form\SupplierOrderType;
 use WebWMS\Service\Article\ArticleService;
+use WebWMS\Service\Supplier\SupplierService;
 use WebWMS\Service\SupplierOrder\SupplierOrderService;
 
 /**
@@ -26,6 +27,7 @@ class SupplierOrder extends AbstractController
     public function __construct(
         private ArticleService $articleService,
         private SupplierOrderService $supplierOrderService,
+        private SupplierService $supplierService,
         private Requirements $requirements
     ) {
     }

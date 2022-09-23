@@ -1,0 +1,18 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+parameters:
+
+    #  max or choose from 9 levels (0 is the loosest, 8 is the strictest).
+    level: 0
+
+    symfony:
+        container_xml_path: var/cache/dev/WebWMS_KernelDevDebugContainer.xml
+
+    paths:
+        - src
+
+    excludePaths:
+        - tests/*
+
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
