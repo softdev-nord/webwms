@@ -54,7 +54,6 @@ jobs:
                   | xargs -I % curl %  -L --output local-php-security-checker
                 chmod +x local-php-security-checker
                 ./local-php-security-checker
-  deploy
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
