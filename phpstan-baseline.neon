@@ -276,11 +276,6 @@ parameters:
 			path: src/Controller/StockTransactions.php
 
 		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: src/Controller/StockTransactions.php
-
-		-
 			message: "#^Method WebWMS\\\\Controller\\\\Supplier\\:\\:getAllSuppliers\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Controller/Supplier.php
@@ -514,11 +509,6 @@ parameters:
 			message: "#^Method WebWMS\\\\Form\\\\CustomerOrderType\\:\\:configureOptions\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/Form/CustomerOrderType.php
-
-		-
-			message: "#^Variable \\$key might not be defined\\.$#"
-			count: 1
-			path: src/Form/Stock/StockInFinalType.php
 
 		-
 			message: "#^Method WebWMS\\\\Form\\\\StockLocationType\\:\\:buildForm\\(\\) has no return typehint specified\\.$#"
@@ -1026,12 +1016,42 @@ parameters:
 			path: src/Service/DataHandlers/Customer/CustomerDataHandler.php
 
 		-
-			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Stock\\\\StockLocationDataHandler\\:\\:getAllStockLocations\\(\\) has parameter \\$stockSystem with no typehint specified\\.$#"
+			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Stock\\\\StockLocationDataHandler\\:\\:getAllFreeStockLocations\\(\\) has parameter \\$limit with no typehint specified\\.$#"
 			count: 1
 			path: src/Service/DataHandlers/Stock/StockLocationDataHandler.php
 
 		-
-			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Stock\\\\StockLocationDataHandler\\:\\:getAllStockLocations\\(\\) return type has no value type specified in iterable type array\\.$#"
+			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Stock\\\\StockLocationDataHandler\\:\\:getAllFreeStockLocations\\(\\) has parameter \\$stockSystem with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/DataHandlers/Stock/StockLocationDataHandler.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Stock\\\\StockLocationDataHandler\\:\\:getAllFreeStockLocations\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Service/DataHandlers/Stock/StockLocationDataHandler.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Stock\\\\StockLocationDataHandler\\:\\:getAllStockLocationsQuery\\(\\) has parameter \\$stockSystem with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/DataHandlers/Stock/StockLocationDataHandler.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Stock\\\\StockLocationDataHandler\\:\\:getAllStockLocationsQuery\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Service/DataHandlers/Stock/StockLocationDataHandler.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Stock\\\\StockLocationDataHandler\\:\\:getOccupiedFreeStockLocations\\(\\) has parameter \\$limit with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/DataHandlers/Stock/StockLocationDataHandler.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Stock\\\\StockLocationDataHandler\\:\\:getOccupiedFreeStockLocations\\(\\) has parameter \\$stockSystem with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/DataHandlers/Stock/StockLocationDataHandler.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Stock\\\\StockLocationDataHandler\\:\\:getOccupiedFreeStockLocations\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Service/DataHandlers/Stock/StockLocationDataHandler.php
 
@@ -1186,6 +1206,21 @@ parameters:
 			path: src/Service/Stock/StockLocationService.php
 
 		-
+			message: "#^Method WebWMS\\\\Service\\\\Stock\\\\StockLocationService\\:\\:getAllFreeStockLocations\\(\\) has parameter \\$limit with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/Stock/StockLocationService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\Stock\\\\StockLocationService\\:\\:getAllFreeStockLocations\\(\\) has parameter \\$stockSystem with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/Stock/StockLocationService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\Stock\\\\StockLocationService\\:\\:getAllFreeStockLocations\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Service/Stock/StockLocationService.php
+
+		-
 			message: "#^Method WebWMS\\\\Service\\\\Stock\\\\StockLocationService\\:\\:getAllStockLocationsAjax\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Service/Stock/StockLocationService.php
@@ -1207,21 +1242,6 @@ parameters:
 
 		-
 			message: "#^Method WebWMS\\\\Service\\\\Stock\\\\StockLocationService\\:\\:getFirstFreeStockLocation\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Service/Stock/StockLocationService.php
-
-		-
-			message: "#^Method WebWMS\\\\Service\\\\Stock\\\\StockLocationService\\:\\:getFreeStockLocations\\(\\) has parameter \\$limit with no typehint specified\\.$#"
-			count: 1
-			path: src/Service/Stock/StockLocationService.php
-
-		-
-			message: "#^Method WebWMS\\\\Service\\\\Stock\\\\StockLocationService\\:\\:getFreeStockLocations\\(\\) has parameter \\$stockSystem with no typehint specified\\.$#"
-			count: 1
-			path: src/Service/Stock/StockLocationService.php
-
-		-
-			message: "#^Method WebWMS\\\\Service\\\\Stock\\\\StockLocationService\\:\\:getFreeStockLocations\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Service/Stock/StockLocationService.php
 
@@ -1492,7 +1512,7 @@ parameters:
 
 		-
 			message: "#^Method WebWMS\\\\Service\\\\TransportRequestService\\:\\:getLastStockUnit\\(\\) should return int but returns int\\|null\\.$#"
-			count: 1
+			count: 2
 			path: src/Service/TransportRequestService.php
 
 		-
