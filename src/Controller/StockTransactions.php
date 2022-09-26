@@ -58,7 +58,7 @@ class StockTransactions extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
-            //dd($requestData);
+            // dd($requestData);
             $stockUnits = (int) ceil(
                 (int) $requestData['quantity'] / (int) $requestData['le_quantity'],
             );

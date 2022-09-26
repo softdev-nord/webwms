@@ -44,9 +44,9 @@ class TransportRequestService
         $requestData = $request->request->all();
         dd($requestData['stock_in_final']);
         foreach ($requestData['stock_in_final'] as $key => $data) {
-            $transportRequest->setSuId((int)$data[$key]['stock_su_id']);
-            $transportRequest->setTrNr($this->getLastTransportRequestNr() +1);
-            $transportRequest->setTrPos((int)$key +1);
+            $transportRequest->setSuId((int) $data[$key]['stock_su_id']);
+            $transportRequest->setTrNr($this->getLastTransportRequestNr() + 1);
+            $transportRequest->setTrPos((int) $key + 1);
             $transportRequest->setTrPrio(0);
             $transportRequest->setArtNr($requestData['article_nr']);
             $transportRequest->setTrQuantity($data['stock_quantity']);

@@ -134,7 +134,7 @@ class StockLocationDataHandler
         $results = $this->getAllStockLocationsQuery($stockSystem);
 
         foreach ($results as $result) {
-            if ($result['lp_bestand'] !== null) {
+            if (null !== $result['lp_bestand']) {
                 continue;
             }
             $allResults[] = [
@@ -158,7 +158,7 @@ class StockLocationDataHandler
         $results = $this->getAllStockLocationsQuery($stockSystem);
 
         foreach ($results as $result) {
-            if ($result['lp_bestand'] === null) {
+            if (null === $result['lp_bestand']) {
                 continue;
             }
             $allResults[] = [

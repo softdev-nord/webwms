@@ -192,7 +192,7 @@ class StockLocationService
         $stockLocations = $this->getAllFreeStockLocations($stockSystem, $limit);
 
         foreach ($stockLocations as $stockLocation) {
-            if ($stockLocation['belegt'] !== true) {
+            if (true !== $stockLocation['belegt']) {
                 $freeStockLocation[] = $stockLocation;
             }
         }
