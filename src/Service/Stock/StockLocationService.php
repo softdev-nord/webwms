@@ -181,18 +181,18 @@ class StockLocationService
         return $stockLocation;
     }
 
-    public function getFreeStockLocations($stockSystem, $limit): array
+    public function getAllFreeStockLocations($stockSystem, $limit): array
     {
-        return $this->stockLocationDataHandler->getAllStockLocations($stockSystem, $limit);
+        return $this->stockLocationDataHandler->getAllFreeStockLocations($stockSystem, $limit);
     }
 
     public function getFirstFreeStockLocation($stockSystem, $limit): array
     {
         $freeStockLocation = [];
-        $stockLocations = $this->getFreeStockLocations($stockSystem, $limit);
+        $stockLocations = $this->getAllFreeStockLocations($stockSystem, $limit);
 
         foreach ($stockLocations as $stockLocation) {
-            if (true !== $stockLocation['belegt']) {
+            if ($stockLocation['belegt'] !== true) {
                 $freeStockLocation[] = $stockLocation;
             }
         }

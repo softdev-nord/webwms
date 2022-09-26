@@ -104,12 +104,8 @@ class StockLocationDataHandler
         return $stockLocation;
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     */
-    public function getAllStockLocations($stockSystem, $limit): array
+    public function getAllStockLocationsQuery($stockSystem): array
     {
-        $allResults = [];
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
 
         $queryBuilder
@@ -125,38 +121,58 @@ class StockLocationDataHandler
             ->rightJoin('tph', 'stock_location', 'sl', 'tph.stock_coordinate = sl.stock_location_coordinate')
             ->where('sl.stock_location_desc = :system')
             ->setParameter('system', $stockSystem)
-            ->groupBy('sl.stock_location_coordinate')->setMaxResults($limit);
+            ->groupBy('sl.stock_location_coordinate');
 
         $stmt = $queryBuilder->executeQuery();
 
-        $results = $stmt->fetchAllAssociative();
+        return $stmt->fetchAllAssociative();
+    }
+
+    public function getAllFreeStockLocations($stockSystem, $limit): array
+    {
+        $allResults = [];
+        $results = $this->getAllStockLocationsQuery($stockSystem);
 
         foreach ($results as $result) {
-            if ($result['lp_bestand'] > 0) {
-                $allResults[] = [
-                    'ln' => $result['ln'],
-                    'fb' => $result['fb'],
-                    'sp' => $result['sp'],
-                    'tf' => $result['tf'],
-                    'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
-                    'koordinate' => $result['koordinate'],
-                    'system' => $result['stock_location_desc'],
-                    'belegt' => true,
-                ];
-            } else {
-                $allResults[] = [
-                    'ln' => $result['ln'],
-                    'fb' => $result['fb'],
-                    'sp' => $result['sp'],
-                    'tf' => $result['tf'],
-                    'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
-                    'koordinate' => $result['koordinate'],
-                    'system' => $result['stock_location_desc'],
-                    'belegt' => false,
-                ];
+            if ($result['lp_bestand'] !== null) {
+                continue;
             }
+            $allResults[] = [
+                'ln' => $result['ln'],
+                'fb' => $result['fb'],
+                'sp' => $result['sp'],
+                'tf' => $result['tf'],
+                'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
+                'koordinate' => $result['koordinate'],
+                'system' => $result['stock_location_desc'],
+                'belegt' => false,
+            ];
         }
 
-        return $allResults;
+        return array_slice($allResults, 0, $limit);
+    }
+
+    public function getOccupiedFreeStockLocations($stockSystem, $limit): array
+    {
+        $allResults = [];
+        $results = $this->getAllStockLocationsQuery($stockSystem);
+
+        foreach ($results as $result) {
+            if ($result['lp_bestand'] === null) {
+                continue;
+            }
+            $allResults[] = [
+                'ln' => $result['ln'],
+                'fb' => $result['fb'],
+                'sp' => $result['sp'],
+                'tf' => $result['tf'],
+                'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
+                'koordinate' => $result['koordinate'],
+                'system' => $result['stock_location_desc'],
+                'belegt' => true,
+            ];
+        }
+
+        return array_slice($allResults, 0, $limit);
     }
 }

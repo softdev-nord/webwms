@@ -1,0 +1,72 @@
+{% block copyright %}
+    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
+    --                                                                                                              --
+    --                webLVS (c) SoftDev Nord Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                --
+    --                                                                                                              --
+    ------------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE-----------------------------------*/
+{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {% block webwms_header %}
+        {{ include('header.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_submenu %}
+        {{ include('submenu.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_configuration %}
+        <div id="webWMS-edit-article" class="wrapper-form">
+            <div class="wrapper-form-content">
+                <div class="card">
+                    <div class="card-content">
+                        {% block webwms_configuration_overview %}
+                            <div class="card" id="click-me-div">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li><a href="#allgemein" class="active" aria-selected="true" role="tab" data-toggle="tab">Allgemein</a></li>
+                                    <li><a href="#javatab" role="tab" data-toggle="tab">Java</a></li>
+                                    <li><a href="#csharptab" role="tab" data-toggle="tab">C#</a></li>
+                                    <li><a href="#mysqltab" role="tab" data-toggle="tab">MySQL</a></li>
+                                    <li><a href="#jquerytab" role="tab" data-toggle="tab">jQuery</a></li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="card-content">
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="allgemein">
+                                                    {{ form_start(generalConfiguration) }}{{ form_end(generalConfiguration) }}
+                                                </div>
+                                                <div class="tab-pane" id="javatab">The Java is an object-oriented programming language <br /> that was developed by James Gosling from the Sun Microsystems in 1995.</div>
+                                                <div class="tab-pane" id="csharptab">C# is also a programming language</div>
+                                                <div class="tab-pane" id="mysqltab">MySQL is a databased mostly used for web applications.</div>
+                                                <div class="tab-pane" id="jquerytab">jQuery content here</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    {% block javascripts %}
+        <script type="text/javascript" src="{{ asset('assets/js/jquery-3.6.0.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('doku_weblvs/assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                $('.navbar li').removeClass('active');
+                $('#' + newID ).addClass('active');
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

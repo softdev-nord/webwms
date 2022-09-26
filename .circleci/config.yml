@@ -61,7 +61,7 @@ workflows:
   build:
     jobs:
       - build
-      - deploy:
-         type: approval
-         requires:
-           - build
+#      - deploy:
+#         type: approval
+#         requires:
+#           - build

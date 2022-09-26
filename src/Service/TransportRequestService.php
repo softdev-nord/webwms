@@ -39,10 +39,35 @@ class TransportRequestService
 
     public function createTransportRequest(Request $request)
     {
-        $requestData = $request->request->all();
+        $transportRequest = new TransportRequest();
 
-        $createTransportRequest = new TransportRequest();
-        $createTransportRequestEntry = $this->setData($createTransportRequest, $requestData);
+        $requestData = $request->request->all();
+        dd($requestData['stock_in_final']);
+        foreach ($requestData['stock_in_final'] as $key => $data) {
+            $transportRequest->setSuId((int)$data[$key]['stock_su_id']);
+            $transportRequest->setTrNr($this->getLastTransportRequestNr() +1);
+            $transportRequest->setTrPos((int)$key +1);
+            $transportRequest->setTrPrio(0);
+            $transportRequest->setArtNr($requestData['article_nr']);
+            $transportRequest->setTrQuantity($data['stock_quantity']);
+            $transportRequest->setStockCoordinate($data['stock_coordinate']);
+            $transportRequest->setStockNr($data['stock_ln']);
+            $transportRequest->setStockLevel1($data['stock_fb']);
+            $transportRequest->setStockLevel2($data['stock_sp']);
+            $transportRequest->setStockLevel3($data['stock_tf']);
+            $transportRequest->setStockLevel4(1);
+            $transportRequest->setTrAccess(new \DateTime('NOW', new \DateTimeZone('Europe/Berlin')));
+            $transportRequest->setTrState(0);
+            $transportRequest->setOrderUsername($request->getSession()->all()['_security.last_username']);
+            $transportRequest->setBookingMethod($data['booking_method']);
+            $transportRequest->setCharge($data['charge']);
+            $transportRequest->setLoadingEquipment($data['loading_equipment']);
+            $transportRequest->setTrTyp('1');
+        }
+
+        $createTransportRequestEntry = $this->setData($transportRequest, $request);
+
+        dd($createTransportRequestEntry);
 
         $this->entityManager->persist($createTransportRequestEntry);
         $this->entityManager->flush();
@@ -56,7 +81,7 @@ class TransportRequestService
             ->findOneBy(['tr_nr' => $requestData['tr_nr']]);
 
         $transportHistoryObject = new TransportHistory();
-        $transportHistoryEntry = $this->setData($transportHistoryObject, $requestData);
+        $transportHistoryEntry = $this->setData($transportHistoryObject, $request);
 
         $this->entityManager->persist($transportHistoryEntry);
         $this->entityManager->remove($transportRequestEntry);
@@ -97,31 +122,36 @@ class TransportRequestService
         return $object;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function getLastStockUnit(): int
     {
-        $result = $this->entityManager
+        $lastStockUnitTr = $this->entityManager
             ->getRepository(TransportRequest::class)
             ->findBy([], ['suId' => 'DESC'], 1, 0);
 
-        if (!$result) {
-            $result = $this->entityManager
-                ->getRepository(TransportHistory::class)
-                ->findBy([], ['suId' => 'DESC'], 1, 0);
-        }
+        $lastStockUnitTh = $this->entityManager
+            ->getRepository(TransportHistory::class)
+            ->findBy([], ['suId' => 'DESC'], 1, 0);
 
-        return $result[0]->getSuId();
+        if ($lastStockUnitTr > $lastStockUnitTh) {
+            return $lastStockUnitTr[0]->getSuId();
+        } else {
+            return $lastStockUnitTh[0]->getSuId();
+        }
     }
 
     public function getLastTransportRequestNr(): int
     {
         $result = $this->entityManager
             ->getRepository(TransportRequest::class)
-            ->findBy([], ['tr_nr' => 'DESC'], 1, 0);
+            ->findBy([], ['trNr' => 'DESC'], 1, 0);
 
         if (!$result) {
             $result = $this->entityManager
                 ->getRepository(TransportHistory::class)
-                ->findBy([], ['tr_nr' => 'DESC'], 1, 0);
+                ->findBy([], ['trNr' => 'DESC'], 1, 0);
         }
 
         return $result[0]->getTrNr();

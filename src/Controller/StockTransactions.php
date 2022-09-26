@@ -58,6 +58,7 @@ class StockTransactions extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
+            //dd($requestData);
             $stockUnits = (int) ceil(
                 (int) $requestData['quantity'] / (int) $requestData['le_quantity'],
             );
@@ -72,7 +73,7 @@ class StockTransactions extends AbstractController
             $fullPal = intdiv((int) $requestData['quantity'], (int) $requestData['le_quantity']);
             $remainder = fmod((float) $requestData['quantity'], (float) $requestData['le_quantity']);
 
-            $stockLocations = $this->stockLocationService->getFreeStockLocations($stockSystem, $stockUnits);
+            $stockLocations = $this->stockLocationService->getAllFreeStockLocations($stockSystem, $stockUnits);
             $suId = $this->transportRequestService->getLastStockUnit();
 
             foreach ($stockLocations as $key => $stockLocation) {
@@ -109,6 +110,7 @@ class StockTransactions extends AbstractController
                     'stockInFinalForm' => $stockInFinal->createView(),
                     'freeStockLocations' => $freeStockLocations,
                     'charge' => $requestData['charge'],
+                    'article_nr' => $requestData['article_nr'],
                 ]
             );
         }
@@ -408,25 +410,9 @@ class StockTransactions extends AbstractController
      * @SuppressWarnings(PHPMD.ExitExpression)
      */
     #[Route('/stock_in_final', name: 'stock_in_final')]
-    public function stockInFinal(Request $request): array
+    public function stockInFinal(Request $request)
     {
-        $newArray = [];
-
-        $requestNew = $request;
-
-        foreach ($requestNew['stock_in_final'] as $key => $req) {
-            foreach ($req as $item => $value) {
-                $newArray[$item][$key] = $value;
-            }
-        }
-
-        foreach (array_keys($requestNew['stock_in_final']) as $fieldKey) {
-            foreach ($requestNew['stock_in_final'][$fieldKey] as $key => $value) {
-                $newArray[$key][$fieldKey] = $value;
-            }
-        }
-
-        return $newArray;
+        $this->transportRequestService->createTransportRequest($request);
     }
 
     public function generateSuId($stockLocations): int
