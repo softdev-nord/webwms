@@ -19,6 +19,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
         "jms/serializer-bundle": "^4.0",
+        "mpdf/mpdf": "^6.1",
         "nelmio/api-doc-bundle": "^4.8",
         "sensio/framework-extra-bundle": "^5.1",
         "sixlive/dotenv-editor": "^2.0",
@@ -56,7 +57,8 @@
         "symfony/yaml": "5.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
-        "webbamboo/material-dashboard-symfony": "^1.0"
+        "webbamboo/material-dashboard-symfony": "^1.0",
+        "ext-intl": "*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
