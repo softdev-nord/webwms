@@ -48,7 +48,7 @@ class CustomerOrderService
      */
     public function getAllCustomerOrdersApi(): array
     {
-        return $this->customerOrderRepository->findBy([], ['customer_order_id' => 'ASC']);
+        return $this->customerOrderRepository->findBy([], ['customerOrderId' => 'ASC']);
     }
 
     public function addCustomerOrderApi(
@@ -181,7 +181,9 @@ class CustomerOrderService
         $customerOrderRepository = $this->entityManager
             ->getRepository(CustomerOrders::class);
 
-        return $customerOrderRepository->findBy([], ['customer_order_id' => 'DESC'], 1, 0);
+        //dd($customerOrderRepository);
+
+        return $customerOrderRepository->findBy([], ['customerOrderId' => 'DESC'], 1, 0);
     }
 
     protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException

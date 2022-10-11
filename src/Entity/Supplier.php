@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\SupplierRepository;
 
@@ -80,11 +81,11 @@ class Supplier
      * The customer_orders property is the inverse side of the association between customer and customer orders.
      * The association is joined over the customer id field and the userID field of the customer order.
      *
-     * @var ArrayCollection<Supplier>
+     * @var Collection<Supplier>
      *
      * @ORM\OneToMany(targetEntity="WebWMS\Entity\SupplierOrder", mappedBy="supplier")
      */
-    protected ArrayCollection $supplierOrders;
+    protected Collection $supplierOrders;
 
     public function __construct()
     {
@@ -212,9 +213,10 @@ class Supplier
      * the Supplier.supplier_orders property (INVERSE SIDE) and the SupplierOrder.supplier (OWNING SIDE) property.
      * The order data is joined over the supplier_orders.supplierId field.
      *
-     * @return ArrayCollection<SupplierOrder>
+     * @return ArrayCollection|Collection
      */
-    public function getSupplierOrders(): ArrayCollection
+    public function getSupplierOrders(): ArrayCollection|Collection
+
     {
         return $this->supplierOrders;
     }
@@ -225,11 +227,11 @@ class Supplier
      * the Supplier.orders property (INVERSE SIDE) and the SupplierOrder.supplier (OWNING SIDE) property.
      * The order data is joined over the supplier_orders.supplierId field.
      *
-     * @param ArrayCollection<SupplierOrder>|null $supplierOrders
+     * @param ArrayCollection|Collection<SupplierOrder>|null $supplierOrders
      *
      * @return Supplier
      */
-    public function setSupplierOrders($supplierOrders): static
+    public function setSupplierOrders(ArrayCollection|Collection|null $supplierOrders): Supplier
     {
         $this->supplierOrders = $supplierOrders;
 

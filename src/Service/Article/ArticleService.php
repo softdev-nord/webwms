@@ -265,7 +265,7 @@ class ArticleService
     {
         return $this->entityManager
             ->getRepository(Article::class)
-            ->findOneBy([], ['article_nr' => 'DESC']);
+            ->findOneBy([], ['articleNr' => 'DESC']);
     }
 
     protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException

@@ -45,7 +45,7 @@ class SupplierOrderService
     {
         return $this->entityManager
             ->getRepository(SupplierOrder::class)
-            ->findBy([], ['supplier_order_id' => 'ASC']);
+            ->findBy([], ['supplierOrderId' => 'ASC']);
     }
 
     public function addSupplierOrderApi(
@@ -170,6 +170,6 @@ class SupplierOrderService
     {
         return $this->entityManager
             ->getRepository(SupplierOrder::class)
-            ->findBy([], ['supplier_order_id' => 'DESC'], 1, 0);
+            ->findBy([], ['supplierOrderId' => 'DESC'], 1, 0);
     }
 }

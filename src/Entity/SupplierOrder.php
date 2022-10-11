@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use WebWMS\Components\Entity\ModelEntity;
 use WebWMS\Repository\SupplierOrderRepository;
 
@@ -71,11 +72,11 @@ class SupplierOrder extends ModelEntity
      *
      * @ORM\OneToMany(targetEntity="\WebWMS\Entity\SupplierOrderPos", mappedBy="supplier_orders", orphanRemoval=true, cascade={"persist"})
      */
-    protected SupplierOrderPos $details;
+    protected PersistentCollection|SupplierOrderPos $details;
 
     /**
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Supplier", inversedBy="supplier_orders")
-     * @ORM\JoinColumn(name="supplierId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
      */
     protected Supplier $supplier;
 
@@ -94,8 +95,10 @@ class SupplierOrder extends ModelEntity
         return $this->supplierOrderId;
     }
 
+
     /**
-     * @param mixed $supplierOrderId
+     * @param int|null $supplierOrderId
+     * @return void
      */
     public function setSupplierOrderId(?int $supplierOrderId): void
     {
@@ -127,7 +130,7 @@ class SupplierOrder extends ModelEntity
         return $this->supplierOrderNr;
     }
 
-    public function setSupplierOrderNr(?string $supplierOrderNr): void
+    public function setSupplierOrderNr(?int $supplierOrderNr): void
     {
         $this->supplierOrderNr = $supplierOrderNr;
     }
@@ -182,7 +185,7 @@ class SupplierOrder extends ModelEntity
         $this->supplierOrderUpdatedAt = $supplierOrderUpdatedAt;
     }
 
-    public function getDetails(): SupplierOrderPos
+    public function getDetails(): PersistentCollection|SupplierOrderPos
     {
         return $this->details;
     }

@@ -6,6 +6,7 @@ namespace WebWMS\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use WebWMS\Components\Entity\ModelEntity;
 use WebWMS\Repository\CustomerOrderRepository;
 
@@ -72,7 +73,7 @@ class CustomerOrder extends ModelEntity
      *
      * @ORM\OneToMany(targetEntity="\WebWMS\Entity\CustomerOrderPos", mappedBy="customer_orders")
      */
-    protected ArrayCollection $details;
+    protected PersistentCollection|ArrayCollection $details;
 
     /**
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Customer", inversedBy="customer_orders")
@@ -174,7 +175,7 @@ class CustomerOrder extends ModelEntity
         return $this;
     }
 
-    public function getDetails(): ArrayCollection
+    public function getDetails(): PersistentCollection|ArrayCollection
     {
         return $this->details;
     }
