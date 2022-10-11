@@ -32,7 +32,7 @@ $(function() {
 				"orderable": false
 			}
 		],
-		"columnDefs": [
+		columnDefs: [
 			{className: 'text-center', targets: [0, 1, 4, 5, 6]},
 			{
 				targets: [4, 5], render: function (data) {
@@ -41,6 +41,32 @@ $(function() {
 				}
 			}
 		],
+		dom: 'Bfrtip',
+		buttons: [
+			{
+				extend:    'copyHtml5',
+				text:      'Kopieren',
+				title:     'Export',
+				titleAttr: 'Copy'
+			},
+			{
+				extend:    'csvHtml5',
+				text:      'CSV',
+				title:     'Export',
+				titleAttr: 'CSV'
+			},
+			{
+				extend:    'pdfHtml5',
+				text:      'PDF',
+				title:     'Export',
+				titleAttr: 'PDF'
+			},
+			{
+				extend: 'print',
+				text: 'Drucken',
+				autoPrint: false
+			}
+		]
 	});
 	// JS Funktion Ajax Daten für Auftragspositionen
 	const posTable = $('#posTable').DataTable({
@@ -100,9 +126,9 @@ $(function() {
 				},
 			}
 		],
-		columnDefs: [
+		/*columnDefs: [
 			{className: 'text-center', targets: [0, 1, 3, 4, 5]},
-		],
+		],*/
 	});
 
 // Bei Auswahl einer Zeile in der Auftrags-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.

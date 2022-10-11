@@ -52,12 +52,6 @@
                 titleAttr: 'Copy'
             },
             {
-                extend:    'excelHtml5',
-                text:      'Excel',
-                title:     'Export',
-                titleAttr: 'Excel'
-            },
-            {
                 extend:    'csvHtml5',
                 text:      'CSV',
                 title:     'Export',

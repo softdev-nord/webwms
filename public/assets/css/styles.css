@@ -127,7 +127,7 @@
 
 	.btn-outline-webLVS:hover {
 		color: #eb501f;
-		background-color: none;
+		background-color: transparent;
 		border-color: #808080;
 	}
 
@@ -186,7 +186,6 @@
 	}
 
 	.iconMenu-webLVS-border {
-
 		border: solid 2px #ed7c31;
 		border-radius: 5px;
 		padding: 5px;
