@@ -7,7 +7,6 @@ namespace WebWMS\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use WebWMS\Entity\MailAttachment;
 use WebWMS\Entity\Template;
@@ -183,10 +182,6 @@ class TemplatesService
      * The docker web host is "web" when the application is requested via "localhost" in the browser,
      * mpdf uses the host from the request, which is localhost. But there is no web server listening on localhost in the php container.
      * That's why we need to change the src to the real host "web".
-     *
-     * @param string $input
-     *
-     * @return string
      */
     private function mapImageSrc(string $input): string
     {

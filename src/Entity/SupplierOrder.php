@@ -95,11 +95,6 @@ class SupplierOrder extends ModelEntity
         return $this->supplierOrderId;
     }
 
-
-    /**
-     * @param int|null $supplierOrderId
-     * @return void
-     */
     public function setSupplierOrderId(?int $supplierOrderId): void
     {
         $this->supplierOrderId = $supplierOrderId;

@@ -27,8 +27,6 @@ class CSRFProtectionService
      * Saves a generated token into session and returns the generated token for csrf protection
      * The form must have a hidden input field where the token can be used
      * This hidden input field will be validated against the saved token (funtion: validateCSRFToken).
-     *
-     * @return string
      */
     public function getCSRFTokenForForm(): string
     {
@@ -41,7 +39,7 @@ class CSRFProtectionService
     /**
      * Validates the submitted csrf token against the token saved in the session.
      *
-     * @param bool $invalidateToken token is only valid for one submit
+     * @param bool   $invalidateToken token is only valid for one submit
      * @param string $fieldName       Set the name of the hidden input field default='_csrf_token'
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)

@@ -25,7 +25,6 @@ use WebWMS\Service\TemplatesService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        TemplatesServiceController
- *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */

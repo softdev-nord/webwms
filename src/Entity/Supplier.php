@@ -212,11 +212,8 @@ class Supplier
      * contains all data about the a single supplier order. The association is defined over
      * the Supplier.supplier_orders property (INVERSE SIDE) and the SupplierOrder.supplier (OWNING SIDE) property.
      * The order data is joined over the supplier_orders.supplierId field.
-     *
-     * @return ArrayCollection|Collection
      */
     public function getSupplierOrders(): ArrayCollection|Collection
-
     {
         return $this->supplierOrders;
     }
@@ -228,8 +225,6 @@ class Supplier
      * The order data is joined over the supplier_orders.supplierId field.
      *
      * @param ArrayCollection|Collection<SupplierOrder>|null $supplierOrders
-     *
-     * @return Supplier
      */
     public function setSupplierOrders(ArrayCollection|Collection|null $supplierOrders): Supplier
     {

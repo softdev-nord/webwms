@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use WebWMS\Repository\TemplateRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\TemplateRepository;
 
 /**
  * @ORM\Entity(repositoryClass=TemplateRepository::class)
@@ -124,10 +124,6 @@ class Template
 
     /**
      * Set isDefault.
-     *
-     * @param bool $isDefault
-     *
-     * @return Template
      */
     public function setIsDefault(bool $isDefault): Template
     {
