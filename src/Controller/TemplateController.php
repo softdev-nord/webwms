@@ -27,6 +27,7 @@ use WebWMS\Service\TemplatesService;
  * Class        TemplatesServiceController
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 #[Route(path: '/settings/templates')]
 class TemplateController extends AbstractController
