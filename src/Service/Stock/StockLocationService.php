@@ -36,9 +36,7 @@ class StockLocationService
         $stockLocation = $this->stockLocationDataHandler->getAllStockLocation();
 
         if (!$stockLocation) {
-            throw new NotFoundException(
-                'Keine Lagerorte gefunden'
-            );
+            throw new NotFoundException('Keine Lagerorte gefunden');
         }
 
         return $stockLocation;
@@ -51,9 +49,7 @@ class StockLocationService
             ->findOneBy(['stock_location_coordinate' => $coordinate]);
 
         if (!$stockLocation) {
-            throw new NotFoundException(
-                'Keine Details für den gewählten Lagerort gefunden.'
-            );
+            throw new NotFoundException('Keine Details für den gewählten Lagerort gefunden.');
         }
 
         return (array) $stockLocation;
@@ -179,26 +175,24 @@ class StockLocationService
             ->findAll();
 
         if (!$stockLocation) {
-            throw new NotFoundException(
-                'Keine Lagerorte gefunden'
-            );
+            throw new NotFoundException('Keine Lagerorte gefunden');
         }
 
         return $stockLocation;
     }
 
-    public function getFreeStockLocations($stockSystem, $limit): array
+    public function getAllFreeStockLocations($stockSystem, $limit): array
     {
-        return $this->stockLocationDataHandler->getAllStockLocations($stockSystem, $limit);
+        return $this->stockLocationDataHandler->getAllFreeStockLocations($stockSystem, $limit);
     }
 
     public function getFirstFreeStockLocation($stockSystem, $limit): array
     {
         $freeStockLocation = [];
-        $stockLocations = $this->getFreeStockLocations($stockSystem, $limit);
+        $stockLocations = $this->getAllFreeStockLocations($stockSystem, $limit);
 
         foreach ($stockLocations as $stockLocation) {
-            if ($stockLocation['belegt'] !== true) {
+            if (true !== $stockLocation['belegt']) {
                 $freeStockLocation[] = $stockLocation;
             }
         }
@@ -221,10 +215,10 @@ class StockLocationService
                 'fb' => $stockLocation['fb'],
                 'sp' => $stockLocation['sp'],
                 'tf' => $stockLocation['tf'],
-                'lnKomplett' => $stockLocation['ln'] . '-' . $stockLocation['fb'] . '-' . $stockLocation['sp'] . '-' . $stockLocation['tf'],
+                'lnKomplett' => $stockLocation['ln'].'-'.$stockLocation['fb'].'-'.$stockLocation['sp'].'-'.$stockLocation['tf'],
                 'koordinate' => $stockLocation['koordinate'],
                 'system' => $stockLocation['system'],
-                'quantity' => $remainder
+                'quantity' => $remainder,
             ];
         }
 

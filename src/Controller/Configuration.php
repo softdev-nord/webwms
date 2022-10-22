@@ -7,7 +7,6 @@ namespace WebWMS\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Form\Configuration\GeneralConfigurationType;
 use WebWMS\Service\ConfigurationService;
 
@@ -21,7 +20,7 @@ class Configuration extends AbstractController
 {
     public function __construct(
         private ConfigurationService $configurationService,
-        private Requirements $requirements
+        private Requirements $requirements,
     ) {
     }
 

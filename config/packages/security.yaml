@@ -1,7 +1,12 @@
 security:
-    encoders:
-        WebWMS\Entity\User:
-            algorithm: auto
+    enable_authenticator_manager: true
+    password_hashers:
+        # Use native password hasher, which auto-selects and migrates the best
+        # possible hashing algorithm (which currently is "bcrypt")
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+#    encoders:
+#        WebWMS\Entity\User:
+#            algorithm: auto
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -15,20 +20,25 @@ security:
             security: false
         main:
             form_login:
-                login_path: login
-                check_path: login_check
+                login_path: app_login
+                check_path: app_login
                 #target: /
                 default_target_path: /
                 always_use_default_target_path: true
-            anonymous: true
             provider: app_user_provider
-            guard:
-                authenticators:
-                    - WebWMS\Security\LoginFormAuthenticator
+            entry_point: form_login
             logout:
                 path: app_logout
                 # where to redirect after logout
                 target: /
+            custom_authenticator: WebWMS\Security\WebWmsAuthenticator
+            remember_me:
+                secret: '%kernel.secret%' # required
+                lifetime: 604800 # 1 week in seconds
+                # by default, the feature is enabled by checking a
+                # checkbox in the login form (see below), uncomment the
+                # following line to always enable it.
+                #always_remember_me: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

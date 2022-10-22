@@ -1,0 +1,24 @@
+nav.user.online: Online
+nav.user.admin: Administrator
+nav.user.user: Benutzer
+nav.logictics.headline: Logistik
+nav.logictics.submenu.headline1: Einlagern
+nav.logictics.submenu.headline1.entry1: Einlagern direkt
+nav.logictics.submenu.headline1.entry2: Zugang aus Wareneingang
+nav.logictics.submenu.headline1.entry3: Zugang aus Produktion
+nav.logictics.submenu.headline1.entry4: Einlagern von Kostenstelle
+nav.logictics.submenu.headline1.entry5: Einlagern in Container
+nav.logictics.submenu.headline1.entry6: Einlagern mit Ladehilfsmittel
+nav.logictics.submenu.headline1.entry7: Einlagern direkt in WE-Zone
+nav.logictics.submenu.headline1.entry8: Einlagern direkt in WA-Zone
+nav.logictics.submenu.headline1.entry9: WE zu Bestellung
+nav.logictics.submenu.headline2: Auslagern
+nav.logictics.submenu.headline2.entry1: Auslagern direkt
+nav.logictics.submenu.headline2.entry2: Auslagern auf Kostenstelle
+nav.logictics.submenu.headline2.entry3: Ausleihen auf Kostenstelle
+nav.logictics.submenu.headline2.entry4: Auslagern aus Kostenstelle
+nav.logictics.submenu.headline2.entry5: Auslagern aus Container
+nav.logictics.submenu.headline2.entry6: Auslagern direkt aus WA-Zone
+
+
+

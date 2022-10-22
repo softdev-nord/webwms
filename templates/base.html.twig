@@ -1,17 +1,98 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="{{ app.request.locale|split('_')[0] }}">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/app.css') }}">
+            <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
         {% endblock %}
-        <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-    </head>
-    <body>
-    {% block body %}
-        {{ include('header.html.twig') }}
-    {% endblock %}
+        {% block javascripts %}
+            <script type="text/javascript" src="{{ asset('assets/js/jquery-3.6.0.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/jquery-ui.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/jquery.dataTables.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/dataTables.buttons.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/dataTables.select.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/moment.WithLocales.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/dataTables.sum.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/jszip.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/pdfmake.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/vfs_fonts.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/buttons.html5.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/buttons.print.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/custom.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/jquery.webWMS.Core.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockTransactions.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/jBox/dist/jBox.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/jAlert.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/ajax_1.0.1.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/settings.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/bodyevents.js') }}"></script>
+{#            <script type="text/javascript" src="{{ asset('assets/js/switch.js') }}"></script>#}
+            <script>
+                $(document).ready(function () {
+                    const delegate = (element, type, selector, handler) => {
+                        if(element){
+                            element.addEventListener(type, (event) => {
+                                if (event.target.closest(selector)) {
+                                    handler(event);
+                                }
+                            });
+                        }
+                    };
 
+                    /**
+                     * Enable click event for copy-to-clipboard function
+                     */
+                    delegate(document.querySelector('#modal-content-ajax'), 'click', '.copy-to-clipboard', (e) => {
+                        copyToClipboard(e.target.closest('.copy-to-clipboard'));
+                    });
+                })
+            </script>
+        {% endblock %}
+    </head>
+    <body class="bg-dark text-light">
+    {% for configuration in configurations.layout %}
+        <div class="page-wrapper webwms-theme toggled">
+            <!-- Das ist der Block webwms_header_navigation -->
+            {% block webwms_header_navigation %}
+                {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                    {{ include('menu_vertical.html.twig') }}
+                {% else %}
+                    {{ include('menu_horizontal.html.twig') }}
+                {% endif %}
+            {% endblock %}
+            {% block webwms_content %}{% endblock %}
+        </div>
+        {% block bodyjs %}
+            <script>
+                const loader = '<img src="{{ asset('assets/images/ajax-loader.gif') }}" />';
+                const modalLoader = '<div class="modal-body">' + loader + '</div>';
+            </script>
+        {% endblock %}
+        {% block modal %}
+            <!-- Modal -->
+            <div class="modal" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="modalCenterTitle"></h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="white-text">&times;</span>
+                            </button>
+                        </div>
+                        <div id="modal-content-ajax">
+                            <div class="modal-body">
+                                <img src="{{ asset('assets/images/ajax-loader.gif') }}" alt=""/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endfor %}
     </body>
 </html>

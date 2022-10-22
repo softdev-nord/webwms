@@ -8,30 +8,60 @@ orbs:
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  test:
+  build:
+    working_directory: /home/circleci
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      - image: cimg/base:stable
+      - image: cimg/php:8.1.9
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    working_directory: webwms
+    environment:
+      CIRCLE_REPOSITORY_URL: https://softdev-nord:fgQjemukwVzXKTEXX9M4@bitbucket.org/softdev-nord/webwms.git
     steps:
-      - checkout:
-          path: webwms
-      - php/install-php:
-          version: '8.1'
       - php/install-composer
       - run:
-          name: "Coding Standards (PHP)"
+          name: "Checkout code"
           command: |
-            composer install --ignore-platform-reqs
+            cd $CIRCLE_WORKING_DIRECTORY && \
+            git clone -b << pipeline.git.branch >> "$CIRCLE_REPOSITORY_URL"
+      - run:
+          name: "PHP Mess Detector"
+          command: |
+            cd webwms/  
+            composer install --ignore-platform-reqs --no-scripts
+            vendor/bin/phpmd ./src/ ansi rulesets.xml
+      - run:
+          name: "PHP CS Fixer"
+          command: |
+            cd webwms/  
+            composer install --ignore-platform-reqs --no-scripts
             vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots
-            vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor
+      - run:
+            name: "PHP Static Analysis"
+            command: |
+                cd webwms/  
+                composer install --ignore-platform-reqs --no-scripts
+                vendor/bin/phpstan analyse
+      - run:
+            name: "Dependency Vulnerability Scan"
+            command: |
+                cd webwms/  
+                curl -s https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest \
+                  | grep "browser_download_url.*_linux_amd64" \
+                  | cut -d: -f 2,3 \
+                  | tr -d \" \
+                  | xargs -I % curl %  -L --output local-php-security-checker
+                chmod +x local-php-security-checker
+                ./local-php-security-checker
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  test-workflow:
+  build:
     jobs:
-      - test
+      - build
+#      - deploy:
+#         type: approval
+#         requires:
+#           - build

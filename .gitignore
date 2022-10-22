@@ -8,7 +8,7 @@ node_modules/
 dist/
 
 # Environment files
-.env
+!.env
 .env.test
 
 # JetBrains IDE
@@ -54,7 +54,7 @@ yarn-error.log
 ###< symfony/framework-bundle ###
 
 ###> friendsofphp/php-cs-fixer ###
-/.php-cs-fixer.php
+!/.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
 

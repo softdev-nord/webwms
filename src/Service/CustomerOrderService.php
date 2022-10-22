@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\CustomerOrder as CustomerOrders;
 use WebWMS\Repository\CustomerOrderRepository;
+use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
 /**
  * @package:    WebWMS\Service
@@ -23,7 +24,8 @@ class CustomerOrderService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private CustomerOrderRepository $customerOrderRepository
+        private CustomerOrderRepository $customerOrderRepository,
+        private CustomerDataHandler $customerDataHandler
     ) {
     }
 
@@ -46,7 +48,7 @@ class CustomerOrderService
      */
     public function getAllCustomerOrdersApi(): array
     {
-        return $this->customerOrderRepository->findBy([], ['customer_order_id' => 'ASC']);
+        return $this->customerOrderRepository->findBy([], ['customerOrderId' => 'ASC']);
     }
 
     public function addCustomerOrderApi(
@@ -97,6 +99,7 @@ class CustomerOrderService
 
     /**
      * @throws EntityNotFoundException
+     *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function deleteCustomerOrderApi(int $customerOrderId): void
@@ -112,6 +115,7 @@ class CustomerOrderService
 
     /**
      * Get all Customer Orders for Ajax-Request.
+     *
      * @throws Exception
      */
     public function getAllCustomerOrders(): JsonResponse
@@ -177,7 +181,9 @@ class CustomerOrderService
         $customerOrderRepository = $this->entityManager
             ->getRepository(CustomerOrders::class);
 
-        return $customerOrderRepository->findBy([], ['customer_order_id' => 'DESC'], 1, 0);
+        // dd($customerOrderRepository);
+
+        return $customerOrderRepository->findBy([], ['customerOrderId' => 'DESC'], 1, 0);
     }
 
     protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException
@@ -190,7 +196,7 @@ class CustomerOrderService
         // TODO: Implement logic
 
         $params = $request->request->all()['customer'];
-        $lastCustomer = $this->getLastCustomer()[0]->toArray();
+        $lastCustomer = $this->customerDataHandler->getLastCustomer()[0]->toArray();
 
         $customerOrder = new CustomerOrders();
         $customerOrder->setCustomerId($lastCustomer['customer_id'] + 1);

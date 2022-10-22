@@ -2,7 +2,7 @@
     /*! Tiny Pub/Sub - v0.7.0 - 2013-01-29
      * https://github.com/cowboy/jquery-tiny-pubsub
      * Copyright (c) 2014 "Cowboy" Ben Alman; Licensed MIT */
-    var o = $({});
+    const o = $({});
     $.subscribe = function () {
         o.on.apply(o, arguments);
     };
@@ -19,7 +19,7 @@
 ;(function ($, window) {
     'use strict';
 
-    var numberRegex = /^-?\d*\.?\d*$/,
+    const numberRegex = /^-?\d*\.?\d*$/,
         objectRegex = /^[[{]/;
 
     /**

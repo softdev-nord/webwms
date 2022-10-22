@@ -15,11 +15,11 @@ use WebWMS\Service\RequirementsService;
  */
 class Requirements extends AbstractController
 {
-    const APP_NAME = ' | webLVS Das webbasierte Lagerverwaltungssystem';
-    const APP_VERSION = 'Enterprise Version';
-    const APP_VERSION_NUMBER = '1.1.0';
-    const APP_COPYRIGHT = '© 2019 Softdev-Nord | Rene Irrgang';
-    const APP_LIZENZ = 'Demo Spedition<br>Demoweg 500<br>21698 Harsefeld';
+    public const APP_NAME = ' | webLVS Das webbasierte Lagerverwaltungssystem';
+    public const APP_VERSION = 'Enterprise Version';
+    public const APP_VERSION_NUMBER = '1.1.0';
+    public const APP_COPYRIGHT = '© 2019 Softdev-Nord | Rene Irrgang';
+    public const APP_LIZENZ = 'Demo Spedition<br>Demoweg 500<br>21698 Harsefeld';
 
     public function __construct(
         private string $appName,
@@ -63,7 +63,8 @@ class Requirements extends AbstractController
     public function encodeSize(float $bytes): string
     {
         $types = ['B', 'KB', 'MB', 'GB', 'TB'];
-        for ($i = 0; $bytes >= 1024 && $i < (count($types) - 1); $bytes /= 1024, $i++);
+        for ($i = 0; $bytes >= 1024 && $i < (count($types) - 1); $bytes /= 1024, $i++) {
+        }
 
         return round($bytes, 2).' '.$types[$i];
     }

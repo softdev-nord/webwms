@@ -1,11 +1,3 @@
-{% block copyright %}
-    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
-    --                                                                                                              --
-    --                webLVS (c) SoftDev Nord Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                --
-    --                                                                                                              --
-    ------------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE-----------------------------------*/
-{% endblock %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ page }}{{ appName }}{% endblock %}
@@ -15,18 +7,17 @@
         {{ include('header.html.twig') }}
     {% endblock %}
 
-    {% block webwms_submenu %}
-        {{ include('submenu.html.twig') }}
-    {% endblock %}
-
-    {% block webwms_stock_in %}
-        <div id="webWMS-stock-in" class="wrapper-form" style="width: 80%; margin: auto">
-            <div class="wrapper-form-content">
-                <div class="card">
-                    <div class="card-content">
-                        {% block webwms_stock_in_form %}
-                            <div class="modal-body" style="display: flex">
-                                <div class="form-row col-md-8">
+    {% block webwms_content %}
+        {% block webwms_stock_in %}
+            <div id="webWMS-stock-in" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                        <div class="webwms-page">{{ page }}</div>
+                    {% endif %}
+                    <div class="card">
+                        <div class="card-content">
+                            {% block webwms_stock_in_form %}
+                                <div class="form-row col-md-6">
                                     <div class="card" style="width: 100%">
                                         <div class="card-content">
                                             {{ form_start(stockInForm, {'action' : path('stock_in')}) }}
@@ -75,7 +66,7 @@
                                     </div>
                                     <input id="currentCoordinate" type="hidden">
                                 </div>
-                                <div class="form-row col-md-8">
+                                <div class="form-row col-md-6">
                                     <div class="card" style="width: 100%">
                                         <div class="card-content">
                                             <div class="form-group">
@@ -119,15 +110,15 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endblock %}
+                            {% endblock %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endblock %}
     {% endblock %}
 {% endblock %}
 
-{% block javascripts %}
+{% block bodyjs %}
     <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockInItemsAutofill.js') }}"></script>
 {% endblock %}

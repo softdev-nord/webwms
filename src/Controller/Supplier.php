@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Form\SupplierType;
 use WebWMS\Service\Supplier\SupplierService;
 
@@ -54,10 +53,6 @@ class Supplier extends AbstractController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return RedirectResponse|Response
-     */
     #[Route('/lieferant_anlegen', name: 'add_supplier')]
     public function addNewSupplier(Request $request): RedirectResponse|Response
     {

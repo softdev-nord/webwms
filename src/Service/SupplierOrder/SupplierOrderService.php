@@ -32,9 +32,7 @@ class SupplierOrderService
             ->find($supplierOrderId);
 
         if (!$order) {
-            throw new NotFoundException(
-                'Supplier order with id '.$supplierOrderId.' does not exist!'
-            );
+            throw new NotFoundException('Supplier order with id '.$supplierOrderId.' does not exist!');
         }
 
         return $order;
@@ -47,7 +45,7 @@ class SupplierOrderService
     {
         return $this->entityManager
             ->getRepository(SupplierOrder::class)
-            ->findBy([], ['supplier_order_id' => 'ASC']);
+            ->findBy([], ['supplierOrderId' => 'ASC']);
     }
 
     public function addSupplierOrderApi(
@@ -107,9 +105,7 @@ class SupplierOrderService
             ->find($supplierOrderId);
 
         if (!$supplierOrder) {
-            throw new NotFoundException(
-                'Supplier order with id '.$supplierOrderId.' does not exist!'
-            );
+            throw new NotFoundException('Supplier order with id '.$supplierOrderId.' does not exist!');
         } else {
             $this->supplierOrderDataHandler->delete($supplierOrder);
         }
@@ -174,6 +170,6 @@ class SupplierOrderService
     {
         return $this->entityManager
             ->getRepository(SupplierOrder::class)
-            ->findBy([], ['supplier_order_id' => 'DESC'], 1, 0);
+            ->findBy([], ['supplierOrderId' => 'DESC'], 1, 0);
     }
 }

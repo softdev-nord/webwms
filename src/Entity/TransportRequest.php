@@ -378,9 +378,11 @@ class TransportRequest
         return $this->docId;
     }
 
-    public function setDocId($docId): void
+    public function setDocId($docId): self
     {
         $this->docId = $docId;
+
+        return $this;
     }
 
     public function getOrderNr(): ?string
@@ -400,7 +402,7 @@ class TransportRequest
         return $this->orderPos;
     }
 
-    public function setOrderPos(int $orderPos): self
+    public function setOrderPos(?int $orderPos): self
     {
         $this->orderPos = $orderPos;
 
@@ -412,7 +414,7 @@ class TransportRequest
         return $this->charge;
     }
 
-    public function setCharge(string $charge): self
+    public function setCharge(?string $charge): self
     {
         $this->charge = $charge;
 
@@ -436,7 +438,7 @@ class TransportRequest
         return $this->confirmationState;
     }
 
-    public function setConfirmationState(int $confirmationState): self
+    public function setConfirmationState(?int $confirmationState): self
     {
         $this->confirmationState = $confirmationState;
 
@@ -448,7 +450,7 @@ class TransportRequest
         return $this->trUsername;
     }
 
-    public function setTrUsername(string $trUsername): self
+    public function setTrUsername(?string $trUsername): self
     {
         $this->trUsername = $trUsername;
 
@@ -472,7 +474,7 @@ class TransportRequest
         return $this->trBlocked;
     }
 
-    public function setTrBlocked(int $trBlocked): self
+    public function setTrBlocked(?int $trBlocked): self
     {
         $this->trBlocked = $trBlocked;
 
@@ -484,7 +486,7 @@ class TransportRequest
         return $this->trStartDate;
     }
 
-    public function setTrStartDate(\DateTimeInterface $trStartDate): self
+    public function setTrStartDate(?\DateTimeInterface $trStartDate): self
     {
         $this->trStartDate = $trStartDate;
 

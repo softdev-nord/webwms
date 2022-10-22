@@ -37,6 +37,7 @@ class CustomerOrderDataHandler
         $this->entityManager->remove($customerOrder);
         $this->entityManager->flush();
     }
+
     /**
      * @return CustomerOrder|null Returns an array of Customer order objects
      */
@@ -46,5 +47,4 @@ class CustomerOrderDataHandler
             ->getRepository(CustomerOrder::class)
             ->find($customerOrderId);
     }
-
 }

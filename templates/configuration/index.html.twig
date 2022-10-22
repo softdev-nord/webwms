@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {% block webwms_header %}
+        {{ include('header.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_content %}
+        {% block webwms_configuration %}
+            <div id="webWMS-configuration" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                        <div class="webwms-page">{{ page }}</div>
+                    {% endif %}
+                    <div class="card-content">
+                        {% block webwms_configuration_overview %}
+                            <div class="card click-me-div" id="click-me-div">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li><a href="#allgemein" class="active" aria-selected="true" role="tab" data-toggle="tab">Allgemein</a></li>
+                                    <li><a href="#javatab" role="tab" data-toggle="tab">Java</a></li>
+                                    <li><a href="#csharptab" role="tab" data-toggle="tab">C#</a></li>
+                                    <li><a href="#mysqltab" role="tab" data-toggle="tab">MySQL</a></li>
+                                    <li><a href="#jquerytab" role="tab" data-toggle="tab">jQuery</a></li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="card-content">
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="allgemein">
+                                                    <form name="general_configuration" method="post">
+                                                        <div class="form-group">
+                                                            <label for="general_configuration_name" class="required">Name</label>
+                                                            <input type="text" id="general_configuration_name" name="general_configuration[name]" required="required" maxlength="255" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="general_configuration_value">Value</label>
+                                                            <textarea id="general_configuration_value" name="general_configuration[value]" class="form-control"></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="general_configuration_label">Label</label>
+                                                            <input type="text" id="general_configuration_label" name="general_configuration[label]" maxlength="255" class="form-control">
+                                                        </div>
+                                                        <div class="form-group"><label for="general_configuration_description">Description</label>
+                                                            <textarea id="general_configuration_description" name="general_configuration[description]" class="form-control"></textarea>
+                                                        </div>
+                                                        <div class="form-group"><label for="general_configuration_type" class="required">Type</label>
+                                                            <input type="text" id="general_configuration_type" name="general_configuration[type]" required="required" maxlength="255" class="form-control">
+                                                        </div>
+                                                        <input name="_csrf_token" value="{{ csrf_token('authenticate') }}" type="hidden">
+                                                    </form>
+                                                </div>
+                                                <div class="tab-pane" id="javatab">The Java is an object-oriented programming language <br /> that was developed by James Gosling from the Sun Microsystems in 1995.</div>
+                                                <div class="tab-pane" id="csharptab">C# is also a programming language</div>
+                                                <div class="tab-pane" id="mysqltab">MySQL is a databased mostly used for web applications.</div>
+                                                <div class="tab-pane" id="jquerytab">jQuery content here</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endblock %}
+    {% block bodyjs %}
+        <script type="text/javascript" src="{{ asset('assets/js/jquery-3.6.0.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('doku_weblvs/assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                $('.navbar li').removeClass('active');
+                $('#' + newID ).addClass('active');
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

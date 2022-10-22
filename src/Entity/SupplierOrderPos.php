@@ -11,8 +11,6 @@ use WebWMS\Repository\SupplierOrderPosRepository;
 class SupplierOrderPos
 {
     /**
-     * @var SupplierOrder
-     *
      * @ORM\ManyToOne(targetEntity="SupplierOrder", inversedBy="details")
      * @ORM\JoinColumn(name="supplierOrderId", referencedColumnName="id")
      */

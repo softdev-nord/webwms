@@ -1,11 +1,3 @@
-{% block copyright %}
-    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
-    --                                                                                                              --
-    --                webLVS (c) SoftDev Nord Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                --
-    --                                                                                                              --
-    ------------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE-----------------------------------*/
-{% endblock %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ page }}{{ appName }}{% endblock %}
@@ -15,53 +7,54 @@
         {{ include('header.html.twig') }}
     {% endblock %}
 
-    {% block webwms_submenu %}
-        {{ include('submenu.html.twig') }}
-    {% endblock %}
-
-    {% block webwms_supplier_order_overview %}
-        <div id="webWMS-supplier-order-overview" class="wrapper-form">
-            <div class="wrapper-form-content">
-                <div class="card">
-                    <div class="card-content">
-                        {% block webwms_supplier_order_overview_table_orders %}
-                            <table id="bstTable" class="table table-striped table-bordered table-hover compact">
-                                <thead>
-                                <tr>
-                                    <th style="text-align: center">Bestellungs-Nr</th>
-                                    <th style="text-align: center">Bestellungs Referenz</th>
-                                    <th style="text-align: center">Lieferanten-Nr</th>
-                                    <th style="text-align: center">Lieferanten-Name</th>
-                                    <th style="text-align: center">Bestellungsdatum</th>
-                                    <th style="text-align: center">Benutzer</th>
-                                </thead>
-                            </table>
-                        {% endblock %}
+    {% block webwms_content %}
+        {% block webwms_supplier_order_overview %}
+            <div id="webWMS-supplier-order-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                        <div class="webwms-page">{{ page }}</div>
+                    {% endif %}
+                    <div class="card">
+                        <div class="card-content">
+                            {% block webwms_supplier_order_overview_table_orders %}
+                                <table id="bstTable" class="table table-bordered table-hover compact table-dark">
+                                    <thead>
+                                    <tr>
+                                        <th style="text-align: center">Bestellungs-Nr</th>
+                                        <th style="text-align: center">Bestellungs Referenz</th>
+                                        <th style="text-align: center">Lieferanten-Nr</th>
+                                        <th style="text-align: center">Lieferanten-Name</th>
+                                        <th style="text-align: center">Bestellungsdatum</th>
+                                        <th style="text-align: center">Benutzer</th>
+                                        <th style="text-align: center"></th>
+                                    </thead>
+                                </table>
+                            {% endblock %}
+                        </div>
                     </div>
-                </div>
-                <br><br>
-                <div class="card">
-                    <div class="card-content">
-                        {% block webwms_supplier_order_overview_table_orders_pos %}
-                            <table id="posTable" class="table table-striped table-bordered table-hover compact">
-                                <thead>
-                                <tr>
-                                    <th style="text-align: center" width="5%">Bestellungs-Nr</th>
-                                    <th style="text-align: center" width="5%">Artikel-Nr</th>
-                                    <th style="text-align: center" width="25%">Artikelname</th>
-                                    <th style="text-align: center" width="5%">Menge</th>
-                                    <th style="text-align: center" width="5%">Geliefert</th>
-                                    <th style="text-align: center" width="5%">Offen</th>
-                                </thead>
-                            </table>
-                        {% endblock %}
-                        <br><br>
+                    <br><br>
+                    <div class="card">
+                        <div class="card-content">
+                            {% block webwms_supplier_order_overview_table_orders_pos %}
+                                <table id="posTable" class="table table-bordered table-hover compact table-dark">
+                                    <thead>
+                                    <tr>
+                                        <th style="text-align: center" width="5%">Bestellungs-Nr</th>
+                                        <th style="text-align: center" width="5%">Artikel-Nr</th>
+                                        <th style="text-align: center" width="25%">Artikelname</th>
+                                        <th style="text-align: center" width="5%">Menge</th>
+                                        <th style="text-align: center" width="5%">Geliefert</th>
+                                        <th style="text-align: center" width="5%">Offen</th>
+                                    </thead>
+                                </table>
+                            {% endblock %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endblock %}
     {% endblock %}
-    {% block javascripts %}
-        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/bstTable.js') }}"></script>
+    {% block bodyjs %}
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.bstTable.js') }}"></script>
     {% endblock %}
 {% endblock %}

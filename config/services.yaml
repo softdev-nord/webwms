@@ -4,12 +4,24 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    locale: '%env(LOCALE)%'
+    fromMail:  '%env(FROM_MAIL)%'
+    fromName: '%env(FROM_NAME)%'
+    returnPath: '%env(RETURN_PATH)%'
+    mailHost:  '%env(MAIL_HOST)%'
+    webHost: '%env(WEB_HOST)%'
+    publicUploadDirectory: 'export'
+    uploadDirectory: '%kernel.project_dir%/public/%publicUploadDirectory%'
+    version: '3.3.0'
+    mailCopy: '%env(default:default_mailcopy:MAIL_COPY)%'
+    default_mailcopy: 'true'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: true         // <---- This is the new additional config.
 
         bind:
             $appName: '%env(APP_NAME)%'
@@ -82,6 +94,35 @@ services:
 
     WebWMS\Controller\StockTransactions:
         public: true
+        autowire: true
         tags: ['controller.service_arguments']
         arguments:
+            $requirements: "@WebWMS\\Controller\\Requirements"
             $bookingMethodService: "@WebWMS\\Service\\BookingMethod\\BookingMethodService"
+            $bookingMethodConstants: "@WebWMS\\Service\\BookingMethod\\BookingMethodConstants"
+            $stockLocationService: "@WebWMS\\Service\\Stock\\StockLocationService"
+            $transportRequestService: "@WebWMS\\Service\\TransportRequestService"
+
+    WebWMS\Service\MailService:
+        arguments:
+            - '%fromMail%'
+            - '%fromName%'
+            - '%returnPath%'
+            - '%mailCopy%'
+
+    WebWMS\Service\TemplatesService:
+        arguments:
+            - '%webHost%'
+
+    WebWMS\Service\FileUploader:
+        arguments:
+            $publicDirectory: '%publicUploadDirectory%'
+            $targetDirectory: '%uploadDirectory%'
+
+    WebWMS\Service\ConfigurationService:
+        arguments:
+            $configurationDataHandler: '@WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler'
+
+    WebWMS\Twig\TwigGlobalSubscriber:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }

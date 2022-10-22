@@ -1,11 +1,3 @@
-{% block copyright %}
-    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
-    --                                                                                                              --
-    --                webLVS (c) SoftDev Nord Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                --
-    --                                                                                                              --
-    ------------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE-----------------------------------*/
-{% endblock %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ page }}{{ appName }}{% endblock %}
@@ -15,102 +7,103 @@
         {{ include('header.html.twig') }}
     {% endblock %}
 
-    {% block webwms_submenu %}
-        {{ include('submenu.html.twig') }}
-    {% endblock %}
+    {% block webwms_content %}
+        {% block webwms_add_new_article %}
+            <div id="webWMS-add-new-article" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                        <div class="webwms-page">{{ page }}</div>
+                    {% endif %}
+                    <div class="card">
+                        <div class="card-content">
+                            {% block webwms_add_new_article_form %}
+                                <div class="card">
+                                    {{ form_start(addArticleForm) }}
+                                    <p class="hint-text">Hier können Sie einen neuen Artikel anlegen</p>
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.article_nr, {'value' : "#{lastId.articleNr +1}"}) }}
 
-    {% block webwms_add_new_article %}
-    <div id="webWMS-add-new-article" class="wrapper-form">
-        <div class="wrapper-form-content">
-            <div class="card">
-                <div class="card-content">
-                    {% block webwms_add_new_article_form %}
-                        <div class="card">
-                            {{ form_start(addArticleForm) }}
-                            <p class="hint-text">Hier können Sie einen neuen Artikel anlegen</p>
-                            <div class="form-group">
-                                <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
-                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                    {{ form_row(addArticleForm.article_nr, {'value' : "#{lastId.articleNr +1}"}) }}
-
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="control-label col-xs-4">Artikelname</label>
-                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                    {{ form_row(addArticleForm.article_name) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="control-label col-xs-4">Kategorie</label>
-                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                    {{ form_row(addArticleForm.article_category) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="control-label col-xs-4">Gewicht</label>
-                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                    {{ form_row(addArticleForm.article_weight) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="control-label col-xs-4">EAN-Nr.</label>
-                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                    {{ form_row(addArticleForm.article_ean) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="control-label col-xs-4">Einheit (Stk, kg, etc)</label>
-                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                    {{ form_row(addArticleForm.article_unit) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="control-label col-xs-4">Tiefe</label>
-                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                    {{ form_row(addArticleForm.article_depth) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="control-label col-xs-4">Breite</label>
-                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                    {{ form_row(addArticleForm.article_width) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="control-label col-xs-4">Höhe</label>
-                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                    {{ form_row(addArticleForm.article_height) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="control-label col-xs-4">Auslagerungsstrategie</label>
-                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                    {{ form_row(addArticleForm.stock_out_strategy) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="text" class="control-label col-xs-4">LE-Menge</label>
-                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                    {{ form_row(addArticleForm.le_quantity) }}
-                                </div>
-                            </div>
-                            <div class="form-group col-md-12">
-                                {% for message in app.flashes('success') %}
-                                    <div class="alert alert-success">
-                                        {{ message }}
+                                        </div>
                                     </div>
-                                {% endfor %}
-                            </div>
-                            <div class="text-center">
-                                {{ form_widget(addArticleForm.add_article) }}
-                            </div>
-                            {{ form_end(addArticleForm) }}
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">Artikelname</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.article_name) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">Kategorie</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.article_category) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">Gewicht</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.article_weight) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">EAN-Nr.</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.article_ean) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">Einheit (Stk, kg, etc)</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.article_unit) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">Tiefe</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.article_depth) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">Breite</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.article_width) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">Höhe</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.article_height) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">Auslagerungsstrategie</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.stock_out_strategy) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">LE-Menge</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.le_quantity) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        {% for message in app.flashes('success') %}
+                                            <div class="alert alert-success">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="text-center">
+                                        {{ form_widget(addArticleForm.add_article) }}
+                                    </div>
+                                    {{ form_end(addArticleForm) }}
+                                </div>
+                            {% endblock %}
                         </div>
-                    {% endblock %}
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        {% endblock %}
     {% endblock %}
 {% endblock %}

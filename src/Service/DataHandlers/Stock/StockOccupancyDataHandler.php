@@ -42,6 +42,7 @@ class StockOccupancyDataHandler
 
     /**
      * @throws Exception
+     *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function getStockOccupancy($stockLocationLn): array
@@ -75,10 +76,10 @@ class StockOccupancyDataHandler
                     'fb' => $result['fb'],
                     'sp' => $result['sp'],
                     'tf' => $result['tf'],
-                    'lnKomplett' => $result['ln'] . '-' . $result['fb'] . '-' . $result['sp'] . '-' . $result['tf'],
+                    'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
                     'koordinate' => $result['koordinate'],
                     'system' => $result['stock_location_desc'],
-                    'belegt' => true
+                    'belegt' => true,
                 ];
             } else {
                 $allResults[] = [
@@ -86,10 +87,10 @@ class StockOccupancyDataHandler
                     'fb' => $result['fb'],
                     'sp' => $result['sp'],
                     'tf' => $result['tf'],
-                    'lnKomplett' => $result['ln'] . '-' . $result['fb'] . '-' . $result['sp'] . '-' . $result['tf'],
+                    'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
                     'koordinate' => $result['koordinate'],
                     'system' => $result['stock_location_desc'],
-                    'belegt' => false
+                    'belegt' => false,
                 ];
             }
         }

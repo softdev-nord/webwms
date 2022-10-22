@@ -41,7 +41,13 @@
             }
         ],
         columnDefs: [
-            {className: 'text-center', targets: "_all"},
+            {
+                className: 'text-center', targets: "_all"
+            },
+            {
+                render: $.fn.dataTable.render.number( '.'),
+                "targets": [9],
+            },
         ],
         dom: 'Bfrtip',
         buttons: [
@@ -50,12 +56,6 @@
                 text:      'Kopieren',
                 title:     'Export',
                 titleAttr: 'Copy'
-            },
-            {
-                extend:    'excelHtml5',
-                text:      'Excel',
-                title:     'Export',
-                titleAttr: 'Excel'
             },
             {
                 extend:    'csvHtml5',

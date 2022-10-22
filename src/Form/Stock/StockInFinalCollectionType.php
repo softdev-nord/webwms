@@ -2,7 +2,6 @@
 
 namespace WebWMS\Form\Stock;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -27,7 +26,7 @@ class StockInFinalCollectionType extends CollectionType
         ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            //dd($event->getData());
+            // dd($event->getData());
             $form = $event->getForm();
         });
     }

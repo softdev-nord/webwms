@@ -6,6 +6,7 @@ namespace WebWMS\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use WebWMS\Repository\CustomerRepository;
 
 /**
@@ -84,7 +85,7 @@ class Customer
      *
      * @ORM\OneToMany(targetEntity="WebWMS\Entity\CustomerOrder", mappedBy="customer")
      */
-    protected ArrayCollection $customerOrders;
+    protected ArrayCollection|PersistentCollection $customerOrders;
 
     public function __construct()
     {

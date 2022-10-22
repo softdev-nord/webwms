@@ -34,7 +34,7 @@ composer-update: ## Composer update
 	@docker exec -it $(APP_CONTAINER_NAME) composer update
 
 clear-caches: ## Clear caches
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'bin/console cache:clear'
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'bin/console cache:clear --no-warmup'
 
 yarn-watch: ## Yarn watch
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'yarn watch'
@@ -64,7 +64,10 @@ db-logs: ## Tail database container logs
 ######################### Code Analysis ##############################
 ######################################################################
 phpstan: ## run code analyse for src folder (phpstan)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpstan analyse src -c phpstan.neon';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpstan analyse';
+
+phpstan-baseline: ## Run code analyse (phpstan) incl. baseline
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpstan analyse --generate-baseline';
 
 var-dump-check: ## Find var_dump, dd, etc.
 	@docker exec -t $(APP_CONTAINER_NAME) vendor/bin/var-dump-check --symfony --laravel --doctrine \
@@ -80,4 +83,7 @@ phpcs-fix: ## run code style fix
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --using-cache=no -vvv --show-progress=dots';
 
 phpmd: ## run code check (phpmd)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c ' vendor/bin/phpmd ./src/ ansi rulesets.xml';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd ./src/ ansi rulesets.xml';
+
+phpqa: ## run code check (phpmd)
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src';

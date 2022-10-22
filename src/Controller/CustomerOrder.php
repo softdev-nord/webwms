@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Entity\CustomerOrder as CustomerOrders;
 use WebWMS\Form\CustomerOrderPosType;
 use WebWMS\Form\CustomerOrderType;
@@ -56,11 +55,6 @@ class CustomerOrder extends AbstractController
         );
     }
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param Request $request
-     * @return RedirectResponse|Response
-     */
     #[Route('/auftrag_anlegen', name: 'new_customer_order')]
     public function addNewCustomerOrder(EntityManagerInterface $entityManager, Request $request): RedirectResponse|Response
     {
@@ -79,8 +73,8 @@ class CustomerOrder extends AbstractController
             /** @var CustomerOrders $customerOrder */
             $customerOrder = $form->getData();
 
-            //$customerOrder = new CustomerOrders();
-            //$customerOrderPos = new CustomerOrderPos();
+            // $customerOrder = new CustomerOrders();
+            // $customerOrderPos = new CustomerOrderPos();
             /*$customerOrder->setCustomerId($data['customer_order[customer_id]']);
             $customerOrder->setCustomerOrderDate($data['customer_order[customer_order_date]']);
             $customerOrder->setCustomerOrderId($data['customer_order[customer_order_id]']);
@@ -90,9 +84,9 @@ class CustomerOrder extends AbstractController
             $customerOrder->setUsrId((int) $this->getUser());
 
             $entityManager->persist($customerOrder);
-            //$em->persist($customerOrderPos);
+            // $em->persist($customerOrderPos);
             $entityManager->flush();
-            //return new Response('News added successfuly');
+            // return new Response('News added successfuly');
 
             $this->addFlash('success', 'Der Auftrag und die Position(en) wurden erfolgreich angelegt.');
 

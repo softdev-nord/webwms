@@ -94,15 +94,15 @@ class CustomerOrderType extends AbstractType
             ->add('add_customer_order', SubmitType::class, [
                 'label' => 'Auftrag anlegen',
                 'attr' => [
-                    'class' => 'btn btn-secondary btn-lg',
+                    'class' => 'btn btn-lg',
                 ],
             ])
         ;
 
-        $builder
+        /*$builder
             ->add('details', CollectionType::class, [
                 'entry_type' => CustomerOrderPosType::class,
-            ]);
+            ]);*/
     }
 
     public function configureOptions(OptionsResolver $resolver)

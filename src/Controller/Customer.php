@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Controller\Requirements as Requirements;
 use WebWMS\Form\EditCustomerType;
 use WebWMS\Service\Customer\CustomerService;
 use WebWMS\Service\Validation\CustomerValidationService;
@@ -52,10 +51,6 @@ class Customer extends AbstractController
         );
     }
 
-    /**
-     * @param Request $request
-     * @return RedirectResponse|Response
-     */
     #[Route('/kunden_anlegen', name: 'add_customer')]
     public function addNewCustomer(Request $request): RedirectResponse|Response
     {

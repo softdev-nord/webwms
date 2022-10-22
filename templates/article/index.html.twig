@@ -1,11 +1,3 @@
-{% block copyright %}
-    /*--------------------------------------COPYRIGHT NOTICE *** DO NOT REMOVE----------------------------------------
-    --                                                                                                              --
-    --                webLVS (c) SoftDev Nord Rene Irrgang, Spreenweg 23a, D-21698 Harsefeld, * 2019                --
-    --                                                                                                              --
-    ------------------------------------END OF COPYRIGHT NOTICE *** DO NOT REMOVE-----------------------------------*/
-{% endblock %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ page }}{{ appName }}{% endblock %}
@@ -15,40 +7,41 @@
         {{ include('header.html.twig') }}
     {% endblock %}
 
-    {% block webwms_submenu %}
-        {{ include('submenu.html.twig') }}
-    {% endblock %}
-
-    {% block webwms_article_overview %}
-    <div id="webwms-article-overview" class="wrapper-form">
-        <div class="wrapper-form-content">
-            <div class="card">
-                <div class="card-content">
-                    {% block webwms_article_overview_table %}
-                        <table id="artTable" class="table table-striped table-bordered table-hover compact">
-                            <thead>
-                            <tr>
-                                <th scope="col" style="text-align: center">Artikel-Nr</th>
-                                <th scope="col" style="text-align: center">Bezeichnung</th>
-                                <th scope="col" style="text-align: center">Kategorie</th>
-                                <th scope="col" style="text-align: center">Gewicht in Kg</th>
-                                <th scope="col" style="text-align: center">EAN-Code</th>
-                                <th scope="col" style="text-align: center">Einheit</th>
-                                <th scope="col" style="text-align: center">Tiefe (mm)</th>
-                                <th scope="col" style="text-align: center">Breite (mm)</th>
-                                <th scope="col" style="text-align: center">Höhe (mm)</th>
-                                <th scope="col" style="text-align: center">Bestand</th>
-                                <th style="text-align: center"></th>
-                            </tr>
-                            </thead>
-                        </table>
-                    {% endblock %}
+    {% block webwms_content %}
+        {% block webwms_article_overview %}
+        <div id="webwms-article-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+            <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                    <div class="webwms-page">{{ page }}</div>
+                {% endif %}
+                <div class="card">
+                    <div class="card-content">
+                        {% block webwms_article_overview_table %}
+                            <table id="artTable" class="table table-striped table-bordered table-hover compact">
+                                <thead>
+                                <tr>
+                                    <th scope="col" style="text-align: center">Artikel-Nr</th>
+                                    <th scope="col" style="text-align: center">Bezeichnung</th>
+                                    <th scope="col" style="text-align: center">Kategorie</th>
+                                    <th scope="col" style="text-align: center">Gewicht in Kg</th>
+                                    <th scope="col" style="text-align: center">EAN-Code</th>
+                                    <th scope="col" style="text-align: center">Einheit</th>
+                                    <th scope="col" style="text-align: center">Tiefe (mm)</th>
+                                    <th scope="col" style="text-align: center">Breite (mm)</th>
+                                    <th scope="col" style="text-align: center">Höhe (mm)</th>
+                                    <th scope="col" style="text-align: center">Bestand</th>
+                                    <th style="text-align: center"></th>
+                                </tr>
+                                </thead>
+                            </table>
+                        {% endblock %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        {% endblock %}
     {% endblock %}
-    {% block javascripts %}
+    {% block bodyjs %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.article.js') }}"></script>
     {% endblock %}
 {% endblock %}

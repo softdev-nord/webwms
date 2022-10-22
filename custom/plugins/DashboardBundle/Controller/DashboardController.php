@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Bundles\DashboardBundle\Controller;
 
-use ArrayObject;
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +12,7 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use Twig\Environment;
 use Twig\Loader\LoaderInterface;
-use WebWMS\Controller\Requirements as Requirements;
+use WebWMS\Controller\Requirements;
 use WebWMS\Exception\NotFoundException;
 use WebWMS\Repository\TransportHistoryRepository;
 use WebWMS\Service\Stock\StockLocationService;
@@ -28,8 +27,7 @@ use WebWMS\Service\TransportRequestService;
  */
 class DashboardController extends AbstractController
 {
-    /** @var LoaderInterface */
-    private $loader;
+    private LoaderInterface $loader;
 
     public function __construct(
         private Requirements $requirements,
@@ -118,12 +116,12 @@ class DashboardController extends AbstractController
     {
         $datasets = [];
         $chartType = 'TYPE_LINE';
-        $repo = $this->transportHistoryRepository->findBy(['tr_typ' => 1]);
-        //dd($repo);
+        $repo = $this->transportHistoryRepository->findBy(['trTyp' => 1]);
+
         foreach ($repo as $data) {
             $datasets[] = $data->getTrAccess()->format('d.m.Y');
         }
-        //dd($datasets);
+
         $dataResults = array_count_values($datasets);
 
         return $this->createChartForDashboard($dataResults, $chartType);
@@ -133,12 +131,12 @@ class DashboardController extends AbstractController
     {
         $datasets = [];
         $chartType = 'TYPE_BAR';
-        $repo = $this->transportHistoryRepository->findBy(['tr_typ' => 2]);
-        //dd($repo);
+        $repo = $this->transportHistoryRepository->findBy(['trTyp' => 2]);
+
         foreach ($repo as $data) {
             $datasets[] = $data->getTrDispatch()->format('d.m.Y');
         }
-        //dd($datasets);
+
         $dataResults = array_count_values($datasets);
 
         return $this->createChartForDashboard($dataResults, $chartType);
@@ -149,7 +147,7 @@ class DashboardController extends AbstractController
         $datasets = [];
         $chartType = 'TYPE_BAR';
         $repo = $this->transportHistoryRepository->findAll();
-        //dd($repo);
+
         foreach ($repo as $data) {
             if (1 == $data->getTrTyp() && null !== $data->getTrAccess()) {
                 $datasets[] = $data->getTrAccess()->format('d.m.Y');
@@ -157,27 +155,27 @@ class DashboardController extends AbstractController
                 $datasets[] = $data->getTrDispatch()->format('d.m.Y');
             }
         }
-        //dd($datasets);
+
         $dataResults = array_count_values($datasets);
 
         return $this->createChartForDashboard($dataResults, $chartType);
     }
+
     public function getAllTransportRequest(): array
     {
         $allOpenTr = [];
         $transportRequests = $this->transportRequestService->getAllOpenTransportRequests();
 
         foreach ($transportRequests as $transportRequest) {
-            if ($transportRequest->getTrState() === 1) {
-                $allOpenTr['TrInProgress'] = count((array)$transportRequest->getTrState());
-            } elseif ($transportRequest->getTrState() === 0) {
-                $allOpenTr['TrOpen'] = count((array)$transportRequest->getTrState());
+            if (1 === $transportRequest->getTrState()) {
+                $allOpenTr['TrInProgress'] = count((array) $transportRequest->getTrState());
+            } elseif (0 === $transportRequest->getTrState()) {
+                $allOpenTr['TrOpen'] = count((array) $transportRequest->getTrState());
             }
         }
 
         return $allOpenTr;
     }
-
 
     /**
      * @throws NotFoundException
@@ -185,7 +183,6 @@ class DashboardController extends AbstractController
      */
     public function getWarehouseUtilization(): array
     {
-        //dd($this->stockRotationService->getAllStockRotationsWithJoin());
         $warehouseUtilization = [];
         $warehouseUtilization['allStockLocations'] = count(json_decode($this->stockLocationService->getAllStockLocations()->getContent()));
         $warehouseUtilization['occupiedStockLocations'] = count(

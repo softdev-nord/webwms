@@ -64,7 +64,6 @@ class BookingMethod
      */
     private mixed $tidDescription;
 
-
     public function getId(): ?int
     {
         return $this->id;
