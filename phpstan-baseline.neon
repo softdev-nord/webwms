@@ -291,6 +291,241 @@ parameters:
 			path: src/Controller/SupplierOrder.php
 
 		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getReference\\(\\)\\.$#"
+			count: 3
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<WebWMS\\\\Controller\\\\Customer\\>\\:\\:findOneByLastname\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<WebWMS\\\\Controller\\\\Reservation\\>\\:\\:loadReservationsForPeriod\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<WebWMS\\\\Controller\\\\Reservation\\>\\:\\:loadReservationsWithoutInvoiceForCustomer\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to an undefined method WebWMS\\\\Entity\\\\Template\\:\\:getCorrespondences\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to an undefined method WebWMS\\\\Service\\\\TemplatesService\\:\\:getMailAttachment\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to an undefined method WebWMS\\\\Service\\\\TemplatesService\\:\\:getReferencedReservationsInSession\\(\\)\\.$#"
+			count: 3
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to an undefined method WebWMS\\\\Service\\\\TemplatesService\\:\\:makeCorespondenceOfInvoice\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to method addChild\\(\\) on an unknown class WebWMS\\\\Controller\\\\MailCorrespondence\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to method getId\\(\\) on an unknown class WebWMS\\\\Controller\\\\FileCorrespondence\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to method getName\\(\\) on an unknown class WebWMS\\\\Controller\\\\Correspondence\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to method getName\\(\\) on an unknown class WebWMS\\\\Controller\\\\FileCorrespondence\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to method getTemplate\\(\\) on an unknown class WebWMS\\\\Controller\\\\Correspondence\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to method getTemplate\\(\\) on an unknown class WebWMS\\\\Controller\\\\FileCorrespondence\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to method getText\\(\\) on an unknown class WebWMS\\\\Controller\\\\Correspondence\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to method getText\\(\\) on an unknown class WebWMS\\\\Controller\\\\FileCorrespondence\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to method setFileName\\(\\) on an unknown class WebWMS\\\\Controller\\\\FileCorrespondence\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to method setRecipient\\(\\) on an unknown class WebWMS\\\\Controller\\\\MailCorrespondence\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Class WebWMS\\\\Controller\\\\Correspondence not found\\.$#"
+			count: 5
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Class WebWMS\\\\Controller\\\\FileCorrespondence not found\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Class WebWMS\\\\Controller\\\\MailCorrespondence not found\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Class WebWMS\\\\Controller\\\\Reservation not found\\.$#"
+			count: 4
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Instantiated class WebWMS\\\\Controller\\\\FileCorrespondence not found\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Instantiated class WebWMS\\\\Controller\\\\MailCorrespondence not found\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:clear\\(\\) invoked with 1 parameter, 0 required\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\TemplateController\\:\\:editAction\\(\\) has parameter \\$id with no typehint specified\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\TemplateController\\:\\:exportPDFCorrespondenceAction\\(\\) has parameter \\$id with no typehint specified\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\TemplateController\\:\\:getAction\\(\\) has parameter \\$id with no typehint specified\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\TemplateController\\:\\:getLastTemplateId\\(\\) has parameter \\$entityManager with no typehint specified\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\TemplateController\\:\\:getLastTemplateId\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\TemplateController\\:\\:getTemplatesForEditor\\(\\) has parameter \\$templateTypeId with no typehint specified\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\TemplateController\\:\\:previewAction\\(\\) has parameter \\$id with no typehint specified\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\TemplateController\\:\\:selectReservationAction\\(\\) invoked with 2 parameters, 3 required\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\TemplateController\\:\\:showMailCorrespondenceAction\\(\\) has parameter \\$id with no typehint specified\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getRepository\\(\\) expects class\\-string\\<WebWMS\\\\Controller\\\\Correspondence\\>, string given\\.$#"
+			count: 3
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Parameter \\#1 \\$className of method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getRepository\\(\\) expects class\\-string\\<WebWMS\\\\Controller\\\\Reservation\\>, string given\\.$#"
+			count: 4
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Parameter \\#1 \\$doctrine of method WebWMS\\\\Controller\\\\TemplateController\\:\\:selectReservationAction\\(\\) expects Doctrine\\\\Persistence\\\\ManagerRegistry, Symfony\\\\Component\\\\HttpFoundation\\\\RequestStack given\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function strlen expects string, bool\\|float\\|int\\|string\\|null given\\.$#"
+			count: 5
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function strlen expects string, string\\|null given\\.$#"
+			count: 2
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Parameter \\#1 \\$to of method WebWMS\\\\Service\\\\MailService\\:\\:sendHTMLMail\\(\\) expects string, bool\\|float\\|int\\|string\\|null given\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Parameter \\#2 \\$requestStack of method WebWMS\\\\Controller\\\\TemplateController\\:\\:selectReservationAction\\(\\) expects Symfony\\\\Component\\\\HttpFoundation\\\\RequestStack, Symfony\\\\Component\\\\HttpFoundation\\\\Request given\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Parameter \\#2 \\$subject of method WebWMS\\\\Service\\\\MailService\\:\\:sendHTMLMail\\(\\) expects string, bool\\|float\\|int\\|string\\|null given\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Parameter \\#3 \\$body of method WebWMS\\\\Service\\\\MailService\\:\\:sendHTMLMail\\(\\) expects string, bool\\|float\\|int\\|string\\|null given\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Parameter \\$invoiceService of method WebWMS\\\\Controller\\\\TemplateController\\:\\:addAttachmentAction\\(\\) has invalid typehint type WebWMS\\\\Controller\\\\InvoiceService\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Variable \\$file might not be defined\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Variable \\$isAttachment might not be defined\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to an undefined method WebWMS\\\\Entity\\\\User\\:\\:setPassword\\(\\)\\.$#"
+			count: 1
+			path: src/DataFixtures/UserFixtures.php
+
+		-
 			message: "#^Method WebWMS\\\\DataFixtures\\\\UserFixtures\\:\\:load\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/DataFixtures/UserFixtures.php
@@ -306,7 +541,7 @@ parameters:
 			path: src/Entity/Configuration.php
 
 		-
-			message: "#^Method WebWMS\\\\Entity\\\\Customer\\:\\:getCustomerOrders\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\CustomerOrder\\> but returns Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\Customer\\>\\.$#"
+			message: "#^Method WebWMS\\\\Entity\\\\Customer\\:\\:getCustomerOrders\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\CustomerOrder\\> but returns \\(Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\Customer\\>\\)\\|Doctrine\\\\ORM\\\\PersistentCollection\\.$#"
 			count: 1
 			path: src/Entity/Customer.php
 
@@ -326,9 +561,19 @@ parameters:
 			path: src/Entity/Customer.php
 
 		-
+			message: "#^Property WebWMS\\\\Entity\\\\Customer\\:\\:\\$customerOrders type has no value type specified in iterable type \\(Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\Customer\\>\\)\\|Doctrine\\\\ORM\\\\PersistentCollection\\.$#"
+			count: 1
+			path: src/Entity/Customer.php
+
+		-
 			message: "#^Property WebWMS\\\\Entity\\\\Customer\\:\\:\\$id has no typehint specified\\.$#"
 			count: 1
 			path: src/Entity/Customer.php
+
+		-
+			message: "#^Method WebWMS\\\\Entity\\\\CustomerOrder\\:\\:getDetails\\(\\) return type has no value type specified in iterable type Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\|Doctrine\\\\ORM\\\\PersistentCollection\\.$#"
+			count: 1
+			path: src/Entity/CustomerOrder.php
 
 		-
 			message: "#^Method WebWMS\\\\Entity\\\\CustomerOrder\\:\\:setCustomer\\(\\) has no return typehint specified\\.$#"
@@ -337,6 +582,11 @@ parameters:
 
 		-
 			message: "#^Method WebWMS\\\\Entity\\\\CustomerOrder\\:\\:setDetails\\(\\) has parameter \\$details with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/CustomerOrder.php
+
+		-
+			message: "#^Property WebWMS\\\\Entity\\\\CustomerOrder\\:\\:\\$details type has no value type specified in iterable type Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\|Doctrine\\\\ORM\\\\PersistentCollection\\.$#"
 			count: 1
 			path: src/Entity/CustomerOrder.php
 
@@ -371,6 +621,11 @@ parameters:
 			path: src/Entity/StockLocation.php
 
 		-
+			message: "#^Parameter \\$repositoryClass of attribute class Doctrine\\\\ORM\\\\Mapping\\\\Entity constructor expects class\\-string\\<Doctrine\\\\ORM\\\\EntityRepository\\<T of object\\>\\>\\|null, 'WebWMS\\\\\\\\Repository\\\\\\\\StockOccupancyRepository' given\\.$#"
+			count: 1
+			path: src/Entity/StockOccupancy.php
+
+		-
 			message: "#^Method WebWMS\\\\Entity\\\\StockRotation\\:\\:setCustomerOrderId\\(\\) has parameter \\$customerOrderId with no typehint specified\\.$#"
 			count: 1
 			path: src/Entity/StockRotation.php
@@ -401,22 +656,12 @@ parameters:
 			path: src/Entity/StockRotation.php
 
 		-
-			message: "#^Method WebWMS\\\\Entity\\\\Supplier\\:\\:getSupplierOrders\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\SupplierOrder\\> but returns Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\Supplier\\>\\.$#"
-			count: 1
-			path: src/Entity/Supplier.php
-
-		-
 			message: "#^Method WebWMS\\\\Entity\\\\Supplier\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Entity/Supplier.php
 
 		-
-			message: "#^PHPDoc tag @return with type WebWMS\\\\Entity\\\\Supplier is not subtype of native type static\\(WebWMS\\\\Entity\\\\Supplier\\)\\.$#"
-			count: 1
-			path: src/Entity/Supplier.php
-
-		-
-			message: "#^Property WebWMS\\\\Entity\\\\Supplier\\:\\:\\$supplierOrders \\(Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\Supplier\\>\\) does not accept \\(Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\SupplierOrder\\>\\)\\|null\\.$#"
+			message: "#^Property WebWMS\\\\Entity\\\\Supplier\\:\\:\\$supplierOrders \\(Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<WebWMS\\\\Entity\\\\Supplier\\>\\) does not accept Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\|\\(Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<WebWMS\\\\Entity\\\\SupplierOrder\\>\\)\\|null\\.$#"
 			count: 1
 			path: src/Entity/Supplier.php
 
@@ -426,14 +671,29 @@ parameters:
 			path: src/Entity/SupplierOrder.php
 
 		-
-			message: "#^PHPDoc tag @param for parameter \\$supplierOrderId with type mixed is not subtype of native type int\\|null\\.$#"
+			message: "#^Parameter \\#1 \\$data of method WebWMS\\\\Components\\\\Entity\\\\ModelEntity\\:\\:setOneToMany\\(\\) expects array\\<array\\|WebWMS\\\\Components\\\\Entity\\\\ModelEntity\\>\\|null, array\\<WebWMS\\\\Entity\\\\SupplierOrderPos\\>\\|null given\\.$#"
 			count: 1
 			path: src/Entity/SupplierOrder.php
 
 		-
-			message: "#^Parameter \\#1 \\$data of method WebWMS\\\\Components\\\\Entity\\\\ModelEntity\\:\\:setOneToMany\\(\\) expects array\\<array\\|WebWMS\\\\Components\\\\Entity\\\\ModelEntity\\>\\|null, array\\<WebWMS\\\\Entity\\\\SupplierOrderPos\\>\\|null given\\.$#"
+			message: "#^Property WebWMS\\\\Entity\\\\SupplierOrder\\:\\:\\$supplierOrderNr \\(string\\|null\\) does not accept int\\|null\\.$#"
 			count: 1
 			path: src/Entity/SupplierOrder.php
+
+		-
+			message: "#^Access to an undefined property WebWMS\\\\Entity\\\\Template\\:\\:\\$correspondences\\.$#"
+			count: 1
+			path: src/Entity/Template.php
+
+		-
+			message: "#^Method WebWMS\\\\Entity\\\\Template\\:\\:setId\\(\\) has parameter \\$id with no typehint specified\\.$#"
+			count: 1
+			path: src/Entity/Template.php
+
+		-
+			message: "#^Method WebWMS\\\\Entity\\\\TemplateType\\:\\:getTemplates\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\ArrayCollection but returns Doctrine\\\\Common\\\\Collections\\\\Collection\\.$#"
+			count: 1
+			path: src/Entity/TemplateType.php
 
 		-
 			message: "#^Method WebWMS\\\\Entity\\\\TransportHistory\\:\\:setDocId\\(\\) has parameter \\$docId with no typehint specified\\.$#"
@@ -456,17 +716,7 @@ parameters:
 			path: src/Entity/User.php
 
 		-
-			message: "#^Method WebWMS\\\\Entity\\\\User\\:\\:serialize\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/Entity/User.php
-
-		-
 			message: "#^Method WebWMS\\\\Entity\\\\User\\:\\:setRoles\\(\\) has parameter \\$roles with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Entity/User.php
-
-		-
-			message: "#^Property WebWMS\\\\Entity\\\\User\\:\\:\\$firstname has no typehint specified\\.$#"
 			count: 1
 			path: src/Entity/User.php
 
@@ -476,17 +726,7 @@ parameters:
 			path: src/Entity/User.php
 
 		-
-			message: "#^Property WebWMS\\\\Entity\\\\User\\:\\:\\$lastname has no typehint specified\\.$#"
-			count: 1
-			path: src/Entity/User.php
-
-		-
-			message: "#^Property WebWMS\\\\Entity\\\\User\\:\\:\\$roles has no typehint specified\\.$#"
-			count: 1
-			path: src/Entity/User.php
-
-		-
-			message: "#^Property WebWMS\\\\Entity\\\\User\\:\\:\\$username has no typehint specified\\.$#"
+			message: "#^Property WebWMS\\\\Entity\\\\User\\:\\:\\$roles type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Entity/User.php
 
@@ -541,29 +781,64 @@ parameters:
 			path: src/Form/UserType.php
 
 		-
+			message: "#^Method WebWMS\\\\Interfaces\\\\ITemplateRenderer\\:\\:getRenderParams\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Interfaces/ITemplateRenderer.php
+
+		-
+			message: "#^Method WebWMS\\\\Repository\\\\TemplateRepository\\:\\:loadByTypeName\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Repository/TemplateRepository.php
+
+		-
+			message: "#^Method WebWMS\\\\Repository\\\\TemplateRepository\\:\\:loadByTypeName\\(\\) has parameter \\$names with no typehint specified\\.$#"
+			count: 1
+			path: src/Repository/TemplateRepository.php
+
+		-
+			message: "#^Call to an undefined method WebWMS\\\\Entity\\\\User\\:\\:setPassword\\(\\)\\.$#"
+			count: 1
+			path: src/Repository/UserRepository.php
+
+		-
 			message: "#^Method WebWMS\\\\Security\\\\LoginFormAuthenticator\\:\\:getCredentials\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Security/LoginFormAuthenticator.php
 
 		-
-			message: "#^Property WebWMS\\\\Security\\\\LoginFormAuthenticator\\:\\:\\$csrfTokenManager has no typehint specified\\.$#"
+			message: "#^Method WebWMS\\\\Security\\\\LoginFormAuthenticator\\:\\:getPassword\\(\\) has parameter \\$credentials with no typehint specified\\.$#"
 			count: 1
 			path: src/Security/LoginFormAuthenticator.php
 
 		-
-			message: "#^Property WebWMS\\\\Security\\\\LoginFormAuthenticator\\:\\:\\$entityManager has no typehint specified\\.$#"
+			message: "#^Method WebWMS\\\\Security\\\\LoginFormAuthenticator\\:\\:getUser\\(\\) has parameter \\$credentials with no typehint specified\\.$#"
 			count: 1
 			path: src/Security/LoginFormAuthenticator.php
 
 		-
-			message: "#^Property WebWMS\\\\Security\\\\LoginFormAuthenticator\\:\\:\\$passwordEncoder has no typehint specified\\.$#"
+			message: "#^Parameter \\#1 \\$password of class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Credentials\\\\PasswordCredentials constructor expects string, bool\\|float\\|int\\|string given\\.$#"
 			count: 1
 			path: src/Security/LoginFormAuthenticator.php
 
 		-
-			message: "#^Property WebWMS\\\\Security\\\\LoginFormAuthenticator\\:\\:\\$urlGenerator has no typehint specified\\.$#"
+			message: "#^Parameter \\#1 \\$userIdentifier of class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\UserBadge constructor expects string, bool\\|float\\|int\\|string given\\.$#"
 			count: 1
 			path: src/Security/LoginFormAuthenticator.php
+
+		-
+			message: "#^Parameter \\#1 \\$password of class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Credentials\\\\PasswordCredentials constructor expects string, bool\\|float\\|int\\|string given\\.$#"
+			count: 1
+			path: src/Security/WebWmsAuthenticator.php
+
+		-
+			message: "#^Parameter \\#1 \\$userIdentifier of class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\UserBadge constructor expects string, bool\\|float\\|int\\|string given\\.$#"
+			count: 1
+			path: src/Security/WebWmsAuthenticator.php
+
+		-
+			message: "#^Parameter \\#2 \\$csrfToken of class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\CsrfTokenBadge constructor expects string\\|null, bool\\|float\\|int\\|string\\|null given\\.$#"
+			count: 1
+			path: src/Security/WebWmsAuthenticator.php
 
 		-
 			message: "#^Cannot access offset 'article_category' on array\\<bool\\|float\\|int\\|string\\>\\|bool\\|float\\|int\\|string\\.$#"
@@ -796,6 +1071,21 @@ parameters:
 			path: src/Service/BookingMethod/BookingMethodService.php
 
 		-
+			message: "#^Method WebWMS\\\\Service\\\\CSRFProtectionService\\:\\:generateToken\\(\\) has parameter \\$alphaNumeric with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/CSRFProtectionService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\CSRFProtectionService\\:\\:generateToken\\(\\) has parameter \\$length with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/CSRFProtectionService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\ConfigurationService\\:\\:getAllConfigurations\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Service/ConfigurationService.php
+
+		-
 			message: "#^Method WebWMS\\\\Service\\\\Customer\\\\CustomerService\\:\\:addNewCustomer\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/Service/Customer/CustomerService.php
@@ -929,6 +1219,11 @@ parameters:
 			message: "#^Method WebWMS\\\\Service\\\\CustomerOrderService\\:\\:updateCustomerOrderApi\\(\\) has parameter \\$customerOrderOrderDate with no typehint specified\\.$#"
 			count: 1
 			path: src/Service/CustomerOrderService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Configuration\\\\ConfigurationDataHandler\\:\\:getAllConfigurations\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Service/DataHandlers/Configuration/ConfigurationDataHandler.php
 
 		-
 			message: "#^Call to an undefined method Doctrine\\\\ORM\\\\EntityRepository\\<WebWMS\\\\Entity\\\\Customer\\>\\:\\:findById\\(\\)\\.$#"
@@ -1116,11 +1411,6 @@ parameters:
 			path: src/Service/DataHandlers/SupplierOrder/SupplierOrderDataHandler.php
 
 		-
-			message: "#^Parameter \\#1 \\$supplierOrderNr of method WebWMS\\\\Entity\\\\SupplierOrder\\:\\:setSupplierOrderNr\\(\\) expects string\\|null, int given\\.$#"
-			count: 1
-			path: src/Service/DataHandlers/SupplierOrder/SupplierOrderDataHandler.php
-
-		-
 			message: "#^Cannot call method getToken\\(\\) on object\\|null\\.$#"
 			count: 1
 			path: src/Service/LoggingService.php
@@ -1144,6 +1434,31 @@ parameters:
 			message: "#^Parameter \\#1 \\$userAgent of method WebWMS\\\\Entity\\\\Logging\\:\\:setUserAgent\\(\\) expects string, string\\|null given\\.$#"
 			count: 1
 			path: src/Service/LoggingService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\MailService\\:\\:sendHTMLMail\\(\\) has parameter \\$attachments with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Service/MailService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\MailService\\:\\:sendTemplatedMail\\(\\) has parameter \\$parameter with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Service/MailService.php
+
+		-
+			message: "#^Cannot call method getLocale\\(\\) on Symfony\\\\Component\\\\HttpFoundation\\\\Request\\|null\\.$#"
+			count: 1
+			path: src/Service/MpdfService.php
+
+		-
+			message: "#^Instantiated class Mpdf\\\\Mpdf not found\\.$#"
+			count: 1
+			path: src/Service/MpdfService.php
+
+		-
+			message: "#^Return typehint of method WebWMS\\\\Service\\\\MpdfService\\:\\:getMpdf\\(\\) has invalid type Mpdf\\\\Mpdf\\.$#"
+			count: 1
+			path: src/Service/MpdfService.php
 
 		-
 			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Driver\\\\Connection\\:\\:getServerVersion\\(\\)\\.$#"
@@ -1501,6 +1816,156 @@ parameters:
 			path: src/Service/SupplierOrder/SupplierOrderService.php
 
 		-
+			message: "#^Parameter \\#1 \\$supplierOrderNr of method WebWMS\\\\Entity\\\\SupplierOrder\\:\\:setSupplierOrderNr\\(\\) expects int\\|null, string given\\.$#"
+			count: 1
+			path: src/Service/SupplierOrder/SupplierOrderService.php
+
+		-
+			message: "#^Call to method Output\\(\\) on an unknown class Mpdf\\\\Mpdf\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Call to method WriteHTML\\(\\) on an unknown class Mpdf\\\\Mpdf\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Call to method addPage\\(\\) on an unknown class Mpdf\\\\Mpdf\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Cannot call method getService\\(\\) on WebWMS\\\\Entity\\\\TemplateType\\|null\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Cannot call method getTemplateType\\(\\) on WebWMS\\\\Entity\\\\Template\\|null\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Cannot call method getText\\(\\) on WebWMS\\\\Entity\\\\Template\\|null\\.$#"
+			count: 2
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Cannot call method setIsDefault\\(\\) on WebWMS\\\\Entity\\\\Template\\|null\\.$#"
+			count: 2
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Cannot call method setName\\(\\) on WebWMS\\\\Entity\\\\Template\\|null\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Cannot call method setParams\\(\\) on WebWMS\\\\Entity\\\\Template\\|null\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Cannot call method setTemplateType\\(\\) on WebWMS\\\\Entity\\\\Template\\|null\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Cannot call method setText\\(\\) on WebWMS\\\\Entity\\\\Template\\|null\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:addFileAsAttachment\\(\\) has parameter \\$cId with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:addFileAsAttachment\\(\\) has parameter \\$reservations with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:getDefaultTemplate\\(\\) has parameter \\$templates with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:getEntityFromForm\\(\\) should return WebWMS\\\\Entity\\\\Template but returns WebWMS\\\\Entity\\\\Template\\|null\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:getPDFOutput\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:getPDFOutput\\(\\) has parameter \\$input with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:getPDFOutput\\(\\) has parameter \\$name with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:getPDFOutput\\(\\) has parameter \\$noResponseOutput with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:getPDFOutput\\(\\) has parameter \\$template with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:mapImageSrc\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:renderTemplateForReservations\\(\\) has parameter \\$reservations with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:renderTemplateForReservations\\(\\) has parameter \\$templateId with no typehint specified\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\TemplatesService\\:\\:replaceTwigSyntax\\(\\) should return string but returns string\\|null\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Parameter \\#1 \\$object of method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:remove\\(\\) expects object, WebWMS\\\\Entity\\\\Template\\|null given\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of function trim expects string, bool\\|float\\|int\\|string\\|null given\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Parameter \\#1 \\$string of method WebWMS\\\\Service\\\\TemplatesService\\:\\:replaceTwigSyntax\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Parameter \\#1 \\$template of method Twig\\\\Environment\\:\\:createTemplate\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
+			message: "#^Parameter \\#1 \\$template of method WebWMS\\\\Interfaces\\\\ITemplateRenderer\\:\\:getRenderParams\\(\\) expects WebWMS\\\\Entity\\\\Template, WebWMS\\\\Entity\\\\Template\\|null given\\.$#"
+			count: 1
+			path: src/Service/TemplatesService.php
+
+		-
 			message: "#^Method WebWMS\\\\Service\\\\TransportRequestService\\:\\:createTransportRequest\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/Service/TransportRequestService.php
@@ -1594,6 +2059,16 @@ parameters:
 			message: "#^Method WebWMS\\\\Twig\\\\ArrayExtension\\:\\:castToArray\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Twig/ArrayExtension.php
+
+		-
+			message: "#^Method WebWMS\\\\Twig\\\\TwigGlobalSubscriber\\:\\:injectGlobalVariables\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Twig/TwigGlobalSubscriber.php
+
+		-
+			message: "#^Method WebWMS\\\\Twig\\\\TwigGlobalSubscriber\\:\\:onKernelRequest\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Twig/TwigGlobalSubscriber.php
 
 		-
 			message: "#^Method WebWMS\\\\Twig\\\\VarsExtension\\:\\:jsonDecode\\(\\) has no return typehint specified\\.$#"
