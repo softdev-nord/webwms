@@ -7,12 +7,12 @@
         {{ include('header.html.twig') }}
     {% endblock %}
 
-    {% block webwms_submenu %}
-        {{ include('submenu.html.twig') }}
-    {% endblock %}
-
     {% block webwms_add_new_supplier %}
-        <div id="webWMS-add-new-supplier" class="wrapper-form-content create-form" style="width: 900px;">
+        <div id="webWMS-add-new-supplier" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+            <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                    <div class="webwms-page">{{ page }}</div>
+                {% endif %}
             <div class="card">
             {{ form_start(addSupplierForm) }}
             <p class="hint-text">Hier können Sie einen neuen Lieferanten anlegen</p>

@@ -1,0 +1,68 @@
+TEMPLATE_INVOICE_PDF: PDF Rechnung
+TEMPLATE_RESERVATION_PDF: PDF Vorlage für Reservierungen
+TEMPLATE_CASHJOURNAL_PDF: PDF Kassenblatt
+TEMPLATE_GDPR_PDF: PDF für DSGVO Export
+TEMPLATE_RESERVATION_EMAIL: E-Mail Vorlage für Reservierungen
+TEMPLATE_FILE_PDF: PDF Datei
+templates.title: Vorlagen
+templates.description: Vorlagen für eMails, Rechnungen usw.
+templates.add: Vorlage hinzufügen
+templates.name: Name
+templates.flash.create.success: Vorlage erfolgreich angelegt.
+templates.flash.edit.success: Vorlage erfolgreich bearbeitet.
+templates.flash.delete.success: Vorlage erfolgreich gelöscht.
+templates.delete.ask: Vorlage wirklich löschen?
+templates.flash.delete.inuse.reservations: Vorlage kann nicht gelöscht werden, 
+  da sie in vorhandenen Konversationen genutzt wird.
+templates.preview: Vorschau
+templates.edit: Vorlage bearbeiten
+templates.type: Vorlagentyp
+templates.select.reservations: Reservierung auswählen
+templates.select.template: Vorlage auswählen
+templates.sendemail.success: Die Nachricht wurde erfolgreich versendet.
+templates.sendemail.preview: Nachricht versenden
+templates.savefile.success: Datei wurde erfolgreich gespeichert.
+templates.correspondence.created: Datum
+templates.correspondence.name: Name
+templates.attachment.notfound: Der Anhang konnte nicht gefunden werden.
+templates.correspondence.delete.ok: Eintrag erfolgreich gelöscht.
+templates.correspondence.notfound: Der Eintrag konnte nicht gefunden werden.
+templates.params: zusätzliche Paramater (JSON-String)
+templates.default: Standardvorlage für Typ
+templates.recipient: Empfänger
+templates.subject: Betreff
+templates.attachment: Anhang
+templates.editor.company: Firma
+templates.editor.address: Anschrift
+templates.editor.zip: PLZ
+templates.editor.city: Stadt
+templates.editor.phone: Telefon
+templates.editor.footer: Fußzeile
+templates.editor.footer.desc: Fügt eine Fußzeile hinzu, die auf jeder Seite am unteren Rand der Seite erscheint.
+templates.editor.invoice.number: Rechnungsnummer
+templates.editor.invoice.number.desc: Rechnungsnummer
+templates.editor.invoice.date: Rechnungsdatum
+templates.editor.invoice.date.desc: Rechnungsdatum
+templates.editor.firstname: Vorname
+templates.editor.lastname: Nachname
+templates.editor.remarks: Bemerkungen
+templates.editor.price.total: Gesamtpreis aller Zimmerpositionen
+templates.editor.price.total.desc: Gibt den Gesamtpreis aller Zimmerpositionen aus.
+templates.editor.misc.total: Gesamtpreis aller Sonstigepositionen
+templates.editor.misc.total.desc: Gibt den Gesamtpreis aller Sonstigepositionen aus.
+templates.editor.price.sum: Gesamtpreis
+templates.editor.price.sum.desc: Gibt den Gesamtpreis aller Zimmer- und Sonstigepositionen aus.
+templates.editor.brutto: Gesamt Brutto
+templates.editor.brutto.desc: Gesamtsumme Brutto
+templates.editor.netto: Gesamt Netto
+templates.editor.netto.desc: Gesamtsumme (Netto)
+templates.editor.vat: enthaltene MwSt.
+templates.editor.vat.desc: Fügt eine Liste mit Einzelpositionen der enthaltenen MwSt. ein.
+templates.editor.appartement.positions: Liste der Zimmerpositionen
+templates.editor.appartement.positions.desc: Fügt eine Tabelle mit allen Zimmerpositionen ein. 
+  Wenn mehrere Zimmer ausgewählt wurden, werden alle Zimmer aufgelistet. 
+  In der Vorschau ist nur eine Zeile zu sehen, beim Export werden alle vorhanden sein.
+templates.editor.misc.positions: Liste der Sonstigepositionen
+templates.editor.misc.positions.desc: Fügt eine Tabelle mit allen Sonstigepositionen ein. 
+  Wenn mehrere Positionen existieren, werden alle aufgelistet. 
+  In der Vorschau ist nur eine Zeile zu sehen, beim Export werden alle vorhanden sein.

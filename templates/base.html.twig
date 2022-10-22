@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="{{ app.request.locale|split('_')[0] }}">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/app.css') }}">
-            <link href="{{ asset('assets/js/bootstrap-5.2.2/dist/css/bootstrap.min.css') }}">
+            <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
         {% endblock %}
         {% block javascripts %}
             <script type="text/javascript" src="{{ asset('assets/js/jquery-3.6.0.js') }}"></script>
@@ -31,11 +31,9 @@
             <script type="text/javascript" src="{{ asset('assets/js/settings.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/js/bodyevents.js') }}"></script>
+{#            <script type="text/javascript" src="{{ asset('assets/js/switch.js') }}"></script>#}
             <script>
                 $(document).ready(function () {
-                    const loader = '<img src="{{ asset('assets/images/ajax-loader.gif') }}" />';
-                    const modalLoader = '<div class="modal-body">' + loader + '</div>';
-
                     const delegate = (element, type, selector, handler) => {
                         if(element){
                             element.addEventListener(type, (event) => {
@@ -55,36 +53,46 @@
                 })
             </script>
         {% endblock %}
-        <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     </head>
-    <body>
-    {% block body %}
-        {% block webwms_page_wrapper %}
+    <body class="bg-dark text-light">
+    {% for configuration in configurations.layout %}
         <div class="page-wrapper webwms-theme toggled">
-            {% block webwms_header_navigation %}{% endblock %}
+            <!-- Das ist der Block webwms_header_navigation -->
+            {% block webwms_header_navigation %}
+                {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                    {{ include('menu_vertical.html.twig') }}
+                {% else %}
+                    {{ include('menu_horizontal.html.twig') }}
+                {% endif %}
+            {% endblock %}
             {% block webwms_content %}{% endblock %}
         </div>
+        {% block bodyjs %}
+            <script>
+                const loader = '<img src="{{ asset('assets/images/ajax-loader.gif') }}" />';
+                const modalLoader = '<div class="modal-body">' + loader + '</div>';
+            </script>
         {% endblock %}
-    {% endblock %}
-    {% block modal %}
-        <!-- Modal -->
-        <div class="modal" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="modalCenterTitle"></h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" class="white-text">&times;</span>
-                        </button>
-                    </div>
-                    <div id="modal-content-ajax">
-                        <div class="modal-body">
-                            <img src="{{ asset('assets/images/ajax-loader.gif') }}" alt=""/>
+        {% block modal %}
+            <!-- Modal -->
+            <div class="modal" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="modalCenterTitle"></h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="white-text">&times;</span>
+                            </button>
+                        </div>
+                        <div id="modal-content-ajax">
+                            <div class="modal-body">
+                                <img src="{{ asset('assets/images/ajax-loader.gif') }}" alt=""/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    {% endblock %}
+        {% endblock %}
+    {% endfor %}
     </body>
 </html>

@@ -10,7 +10,7 @@ $(function() {
         },
         // Seitenlänge max. 10 Einträge
         pageLength: 10,
-        "language": {
+        language: {
             "url": "./resources/dataTable.German.json"
         },
         // Initialisierung der DataTables Select-Erweiterung
@@ -23,7 +23,14 @@ $(function() {
             {"data": "supplier_nr"},
             {"data": "supplier_name"},
             {"data": "supplier_order_order_date"},
-            {"data": "username"}
+            {"data": "username"},
+            {
+                "data": null,
+                "rowId": 'staffId',
+                "className": "editor-edit text-center",
+                "defaultContent": '<i class="mdi mdi-square-edit-outline"/>',
+                "orderable": false
+            }
         ],
         columnDefs: [
             {className: 'text-center', targets: [0, 2, 4, 5]},
@@ -32,6 +39,32 @@ $(function() {
                     moment.locale("de");
                     return moment(data).format("L");
                 }
+            }
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend:    'copyHtml5',
+                text:      'Kopieren',
+                title:     'Export',
+                titleAttr: 'Copy'
+            },
+            {
+                extend:    'csvHtml5',
+                text:      'CSV',
+                title:     'Export',
+                titleAttr: 'CSV'
+            },
+            {
+                extend:    'pdfHtml5',
+                text:      'PDF',
+                title:     'Export',
+                titleAttr: 'PDF'
+            },
+            {
+                extend: 'print',
+                text: 'Drucken',
+                autoPrint: false
             }
         ]
     });
@@ -71,14 +104,16 @@ $(function() {
             {"data": "supplier_order_nr"},
             {"data": "article_nr"},
             {"data": "article_name"},
-            {"data": "supplier_order_pos_quantity"},
+            {"data": "supplier_order_pos_quantity",
+                render: $.fn.dataTable.render.number( '.')
+            },
             {
-                "data": "lbw_menge",
+                "data": null,
                 render: function (data, type, row) {
                     if (row["lbw_menge"] != null) {
-                        return row["lbw_menge"];
+                        return numberWithCommas(row["lbw_menge"]);
                     } else {
-                        return "0.000";
+                        return "0";
                     }
                 },
             },
@@ -86,15 +121,17 @@ $(function() {
                 "data": null,
                 render: function (data, type, row) {
                     if (row["lbw_menge"] != null) {
-                        return parseInt(row["supplier_order_pos_quantity"]) - parseInt(row["lbw_menge"]);
+                        return numberWithCommas(parseInt(row["supplier_order_pos_quantity"]) - parseInt(row["lbw_menge"]));
                     } else {
-                        return row["supplier_order_pos_quantity"];
+                        return numberWithCommas(row["supplier_order_pos_quantity"]);
                     }
                 },
             }
         ],
         columnDefs: [
-            {className: 'text-center', targets: [0, 1, 3, 4, 5]},
+            {
+                className: 'text-center', targets: [0, 1, 3, 4, 5]
+            }
         ],
         dom: 'Bfrtip',
         buttons: [
@@ -103,23 +140,6 @@ $(function() {
                 text:      'Kopieren',
                 title:     'Export',
                 titleAttr: 'Copy'
-            },
-            {
-                extend:    'csvHtml5',
-                text:      'CSV',
-                title:     'Export',
-                titleAttr: 'CSV'
-            },
-            {
-                extend:    'pdfHtml5',
-                text:      'PDF',
-                title:     'Export',
-                titleAttr: 'PDF'
-            },
-            {
-                extend: 'print',
-                text: 'Drucken',
-                autoPrint: false
             }
         ]
     });
@@ -135,6 +155,14 @@ $(function() {
         //aftTable.rows().deselect();
         posTable.ajax.reload();
     } );
+
+    function numberWithCommas(number) {
+        const formatConfig = {
+            style: "decimal",
+            minimumFractionDigits: 0,
+        };
+        return new Intl.NumberFormat('de-DE', formatConfig).format(number);
+    }
 
 } );
 

@@ -9,8 +9,11 @@
 
     {% block webwms_content %}
         {% block webwms_stock_layout_overview %}
-            <div id="webWMS-stock-layout-overview" class="wrapper-form{% if appTheme.setTheme == 'vertical' %} vertical-theme{% endif %}">
-                <div class="wrapper-form-content{% if appTheme.setTheme == 'vertical' %} vertical-theme{% endif %}">
+            <div id="webWMS-stock-layout-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                        <div class="webwms-page">{{ page }}</div>
+                    {% endif %}
                     {% block webwms_stock_layout_overview_table %}
                         <div class="card">
                             <div class="card-content">

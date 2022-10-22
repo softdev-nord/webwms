@@ -1,0 +1,53 @@
+login.application.title: webPMS
+nav.user: Benutzer
+nav.user.overview: Benutzer Übersicht
+nav.user.add: Benutzer anlegen
+nav.logout: Abmelden
+nav.welcome: Willkommen, %user%
+button.cancel: Abbrechen
+button.delete: Löschen
+nav.appartement: Zimmer
+nav.appartement.overview: Zimmer Übersicht
+nav.appartement.add: Zimmer anlegen
+nav.settings: Einstellungen
+button.hide: Ausblenden
+button.edit: Bearbeiten
+button.save: Speichern
+button.close: Schließen
+nav.object: Niederlassungen
+nav.object.overview: Niederlassungs Übersicht
+nav.object.add: Niederlassung anlegen
+flash.mandatory: Bitte alle Pflichtfelder ausfüllen.
+nav.customer.overview: Gästeübersicht
+nav.customer.add: Gast anlegen
+nav.customers: Gäste
+nav.invoices: Rechnungsübersicht
+button.continue: Weiter
+base.action: Aktion
+button.back: Zurück
+button.continue.with: Weiter mit
+nav.prices: Preisliste
+nav.price.add: Preis hinzufügen
+nav.reservation.edit: Reservierung bearbeiten
+nav.registrationbook: Meldebuch
+nav.invoice.add: Neue Rechnung erstellen
+button.details: Details Anzeigen
+button.export.pdf: als PDF exportieren
+button.add: Hinzufügen
+button.accept: Übernehmen
+nav.reservation.overview: webPMS
+nav.reservationorigin: Reservierungsherkunft
+nav.statistics: Statistik
+nav.utilization: Auslastung
+nav.origin: Reservierungsherkunft
+nav.templates: Vorlagen
+flash.invalidtoken: Ungültiges Token.
+button.download: Herunterladen
+nav.cashjournal: Kassenbuch
+flash.access.denied: Zugriff verweigert.
+button.gdpr: DSGVO Übersicht
+nav.category: Zimmerkategorien
+nav.category.add: Zimmerkategorie anlegen
+nav.status: Reservierungsstatus
+copy.text: Kopieren
+copy.sucess: Text in die Zwischenablage kopiert!

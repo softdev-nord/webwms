@@ -10,8 +10,11 @@
     {% block webwms_content %}
         {% block webwms_add_supplier_order_form %}
             {{ form_start(supplierOrderForm) }}
-                <div id="webWMS-add-new-supplier-order" class="wrapper-form{% if appTheme.setTheme == 'vertical' %} vertical-theme{% endif %}">
-                    <div class="wrapper-form-content{% if appTheme.setTheme == 'vertical' %} vertical-theme{% endif %}">
+                <div id="webWMS-add-new-supplier-order" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                    <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                        {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                            <div class="webwms-page">{{ page }}</div>
+                        {% endif %}
                         {% block webwms_add_supplier_order_form_order %}
                             <div class="card">
                                 <div class="card-content">
@@ -120,14 +123,14 @@
                                                 </table>
                                             </div>
                                             <div class="btn-container">
-                                                <input id="addNewButton" class="btn btn-primary btn-sm" value="Neue Position">
+                                                <input id="addNewButton" class="btn btn-sm" value="Neue Position">
                                             </div>
                                         </div>
                                     {% endblock %}
                                 </div>
 
                                 <div class="row" style="margin-left: auto; margin-right: auto;">
-                                    <br><button type="submit" name="customer_order" value="Bestellung anlegen" class="btn btn-secondary btn-lg" aria-label="Center">Bestellung anlegen</button><br><br>
+                                    <br><button type="submit" name="customer_order" value="Bestellung anlegen" class="btn btn-lg" aria-label="Center">Bestellung anlegen</button><br><br>
                                 </div>
                             </div>
                         {% endblock %}

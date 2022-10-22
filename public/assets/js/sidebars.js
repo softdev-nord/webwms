@@ -48,12 +48,14 @@
         $(".page-wrapper").removeClass("toggled");
         $(".wrapper-form").removeClass("vertical-theme").addClass("toggled");
         $(".wrapper-form-content").removeClass("vertical-theme").addClass("toggled");
+        $("#aftTable").css({'width':'100%'});
     });
 
     $(document).on('click','#show-sidebar',function() {
         $(".page-wrapper").addClass("toggled");
         $(".wrapper-form").addClass("vertical-theme").removeClass("toggled");
         $(".wrapper-form-content").addClass("vertical-theme").removeClass("toggled");
+        $("#aftTable").css({'width':'100%'});
     });
 
 })(jQuery);

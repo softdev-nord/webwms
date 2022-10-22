@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
+use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
 
 /**
  * @package:    WebWMS\Service
@@ -14,8 +14,14 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class ConfigurationService
 {
+
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private ConfigurationDataHandler $configurationDataHandler
     ) {
+    }
+
+    public function getAllConfigurations(): array
+    {
+        return $this->configurationDataHandler->getAllConfigurations();
     }
 }

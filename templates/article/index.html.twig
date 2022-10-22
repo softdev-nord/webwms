@@ -9,8 +9,11 @@
 
     {% block webwms_content %}
         {% block webwms_article_overview %}
-        <div id="webwms-article-overview" class="wrapper-form{% if appTheme.setTheme == 'vertical' %} vertical-theme{% endif %}">
-            <div class="wrapper-form-content{% if appTheme.setTheme == 'vertical' %} vertical-theme{% endif %}">
+        <div id="webwms-article-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+            <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                    <div class="webwms-page">{{ page }}</div>
+                {% endif %}
                 <div class="card">
                     <div class="card-content">
                         {% block webwms_article_overview_table %}
@@ -38,7 +41,7 @@
         </div>
         {% endblock %}
     {% endblock %}
-    {% block javascripts %}
+    {% block bodyjs %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.article.js') }}"></script>
     {% endblock %}
 {% endblock %}

@@ -1,7 +1,3 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}{{ page }}{{ appName }}{% endblock %}
-
 {% block body %}
     {% block webwms_header %}
         {{ include('header.html.twig') }}
@@ -17,7 +13,7 @@
 
     <div class="text-center">
         <div class="container-fluid">
-            <img  class="image-webLVS" alt="" src="assets/images/start.png">
+            <img  class="image-webLVS" alt="" src="{{ asset('assets/images/warehouse.png') }}">
         </div>
     </div>
 {% endblock %}

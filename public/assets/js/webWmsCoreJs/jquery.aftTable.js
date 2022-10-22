@@ -104,14 +104,16 @@ $(function() {
 			{"data": "order_nr"},
 			{"data": "article_nr"},
 			{"data": "article_name"},
-			{"data": "customer_order_pos_quantity"},
+			{"data": "customer_order_pos_quantity",
+				render: $.fn.dataTable.render.number( '.')
+			},
 			{
 				"data": "lbw_menge",
 				render: function (data, type, row) {
 					if (row["lbw_menge"] != null) {
-						return row["lbw_menge"];
+						return numberWithCommas(row["lbw_menge"]);
 					} else {
-						return "0.000";
+						return "0";
 					}
 				},
 			},
@@ -119,16 +121,18 @@ $(function() {
 				"data": "lbw_menge",
 				render: function (data, type, row) {
 					if (row["lbw_menge"] != null) {
-						return parseInt(row["customer_order_pos_quantity"]) - parseInt(row["lbw_menge"]);
+						return numberWithCommas(parseInt(row["customer_order_pos_quantity"]) - parseInt(row["lbw_menge"]));
 					} else {
-						return row["customer_order_pos_quantity"];
+						return numberWithCommas(row["customer_order_pos_quantity"]);
 					}
 				},
 			}
 		],
-		/*columnDefs: [
-			{className: 'text-center', targets: [0, 1, 3, 4, 5]},
-		],*/
+		columnDefs: [
+			{
+				className: 'text-center', targets: [0, 1, 3, 4, 5]
+			},
+		],
 	});
 
 // Bei Auswahl einer Zeile in der Auftrags-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.
@@ -147,5 +151,13 @@ $(function() {
 	$(document).on('click', '.editor-edit', function () {
 		$('#exampleModal').modal();
 	});
+
+	function numberWithCommas(number) {
+		const formatConfig = {
+			style: "decimal",
+			minimumFractionDigits: 0,
+		};
+		return new Intl.NumberFormat('de-DE', formatConfig).format(number);
+	}
 
 } );

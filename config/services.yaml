@@ -118,3 +118,11 @@ services:
         arguments:
             $publicDirectory: '%publicUploadDirectory%'
             $targetDirectory: '%uploadDirectory%'
+
+    WebWMS\Service\ConfigurationService:
+        arguments:
+            $configurationDataHandler: '@WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler'
+
+    WebWMS\Twig\TwigGlobalSubscriber:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }

@@ -17,8 +17,11 @@
 
     {% block webwms_content %}
         {% block webwms_article_overview %}
-            <div id="webwms-dashboard-overview" class="wrapper-form{% if appTheme.setTheme == 'vertical' %} vertical-theme{% endif %}">
-                <div class="wrapper-form-content{% if appTheme.setTheme == 'vertical' %} vertical-theme{% endif %}">
+            <div id="webwms-dashboard-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                        <div class="webwms-page">{{ page }}</div>
+                    {% endif %}
                     <div id="layout-wrapper">
                         {{ include('@DashboardBundle/dashboard/partials/menu.html.twig') }}
                         <!-- ============================================================== -->
@@ -35,7 +38,7 @@
                                                 <div class="card-body">
                                                     <div class="row align-items-center">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Wareneingänge</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">Wareneingänge</span>
                                                             <span class="ms-1 text-muted font-size-12">Letzte Woche</span>
                                                             {{ render_chart(incomingGoods) }}
                                                         </div>
@@ -51,7 +54,7 @@
                                                 <div class="card-body">
                                                     <div class="row align-items-center">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Warenausgänge</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">Warenausgänge</span>
                                                             <span class="ms-1 text-muted font-size-12">Letzte Woche</span>
                                                             {{ render_chart(outgoingGoods) }}
                                                         </div>
@@ -67,7 +70,7 @@
                                                 <div class="card-body">
                                                     <div class="row align-items-center">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Transportaufträge</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">Transportaufträge</span>
                                                             <span class="ms-1 text-muted font-size-12">Letzte Woche</span>
                                                             {{ render_chart(allTransportRequestsForChart) }}
                                                         </div>
@@ -83,7 +86,7 @@
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Lagerauslastung</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">Lagerauslastung</span>
                                                             <span class="ms-1 text-muted font-size-12">Anzahl Lagerplätze</span>
                                                             {% set foo = warehouseUtilization.occupiedStockLocations / warehouseUtilization.allStockLocations *100 %}
                                                             <span class="badge rounded-pill badge-soft-success font-size-12 bg-soft-success text-success">{{ foo|number_format(2) }} %</span>
@@ -112,7 +115,7 @@
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Transportaufträge</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">Transportaufträge</span>
                                                             <span class="ms-1 text-muted font-size-12">Übersicht</span>
                                                             <div class="col-xxl-12 align-items-center">
                                                                 <span class="col-4-text-center">Offen</span>
@@ -135,7 +138,7 @@
                                                 <div class="card-body">
                                                     <div class="row" style="display: none">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 d-block text-truncate">Lagerauslastung</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">Lagerauslastung</span>
                                                             {% set foo = warehouseUtilization.occupiedStockLocations / warehouseUtilization.allStockLocations *100 %}
                                                             <span class="badge rounded-pill badge-soft-success font-size-12 bg-soft-success text-success">{{ foo|number_format(2) }} %</span>
                                                             <div class="col-xxl-12" style="display: inline-flex">

@@ -1,420 +1,496 @@
 {# templates/menu_vertical.html.twig #}
 
-{% extends 'base.html.twig' %}
-
 {% block javascripts %}
-    {{ parent() }}
-    {% if appTheme.setTheme == 'vertical' %}
+    {% if configuration.name == 'vertical_menu' and configuration.value == 'true' %}
         <script type="text/javascript" src="{{ asset('assets/js/sidebars.js') }}"></script>
     {% endif %}
 {% endblock %}
 
-{% block body %}
-    {% block webwms_page_wrapper %}
-        {% block webwms_header_navigation %}
-            {% block webwms_header_menu_vertical_navigation %}
-                <!-- Sidebar -->
-                <a id="show-sidebar" class="btn btn-dark" href="#">
-                    <i class="mdi mdi-forwardburger"></i>
+{% block webwms_header_menu_vertical_navigation %}
+    <!-- Sidebar -->
+    <nav id="sidebar" class="sidebar-wrapper navbar-dark bg-dark">
+        <div class="sidebar-top-header bg-dark">
+            <div id="close-sidebar">
+                <i class="mdi mdi-backburger"></i>
+            </div>
+            <a id="show-sidebar" class="btn-sidebar btn-dark" href="#">
+                <i class="mdi mdi-forwardburger"></i>
+            </a>
+            <!-- LIGHT SWITCH -->
+            <div class="light-switch">
+                <div class="form-check form-switch">
+                    <label class="form-check-label" for="lightSwitch">
+                        <i class="mdi mdi-weather-sunny"></i>
+                        {#<svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="25"
+                                    height="25"
+                                    fill="currentColor"
+                                    class="bi bi-brightness-high"
+                                    viewBox="0 0 16 16"
+                            >
+                                <path
+                                        d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"
+                                />
+                            </svg>#}
+                    </label>
+                    <input class="form-check-input" type="checkbox" id="lightSwitch" />
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-content bg-dark">
+            <div class="sidebar-brand">
+                <a
+                        href="{{ path('homepage') }}"><span class="text-first">web</span><span class="text-last">WMS</span>
                 </a>
-                <nav id="sidebar" class="sidebar-wrapper">
-                    <div class="sidebar-content">
-                        <div id="close-sidebar">
-                            <i class="mdi mdi-backburger"></i>
-                        </div>
-                        <div class="sidebar-brand">
-                            <a
-                                    href="{{ path('homepage') }}"><span class="text-first">web</span><span class="text-last">WMS</span>
-                            </a>
-                            <div class="text-muted sidebar-brand-version">{{ appVersionNumber }} {{ appVersion }}</div>
-                        </div>
-                        <div class="sidebar-header">
-                            <div class="user-pic">
-                                <img class="img-responsive img-rounded" src="{{ asset('assets/images/user_profile.png') }}"
-                                     alt="User picture">
-                            </div>
-                            <div class="user-info">
+                <div class="text-muted sidebar-brand-version">{{ appVersionNumber }} {{ appVersion }}</div>
+            </div>
+            <div class="sidebar-header">
+                <div class="user-pic">
+                    <img class="img-responsive img-rounded" src="{{ asset('assets/images/user_profile.png') }}"
+                         alt="User picture">
+                </div>
+                <div class="user-info">
                     <span class="user-name">
+                        {% if app.user != null %}
                         {{ app.user.firstname }} {{ app.user.lastname }}
+                        {% endif %}
                     </span>
-                                <span class="text-muted user-role">
-                        {% if app.user.roles.0 == 'ROLE_SUPER_ADMIN' %}
-                            Administrator
+                    <span class="text-muted user-role">
+                        {% if (app.user != null) and (app.user.roles.0 == 'ROLE_SUPER_ADMIN') %}
+                            {{ 'nav.user.admin'|trans }}
                         {% else %}
-                            Benutzer
+                            {{ 'nav.user.user'|trans }}
                         {% endif %}
                     </span>
                                 <span class="user-status">
                         <i class="mdi mdi-circle"></i>
-                        <span class="text-muted">Online</span>
+                        <span class="text-muted">{{ 'nav.user.online'|trans }}</span>
                     </span>
-                            </div>
-                        </div>
-                        <div class="sidebar-menu">
+                </div>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="text-muted-primary mdi mdi-warehouse"></i>
+                            <span class="text-muted-primary">{{ 'nav.logictics.headline'|trans }}</span>
+                            <span class="badge badge-pill badge-warning">New</span>
+                        </a>
+                        <div class="sidebar-submenu">
                             <ul>
-                                <li class="sidebar-dropdown">
+                                <li class="sidebar-submenu-dropdown">
                                     <a href="#">
-                                        <i class="text-muted-primary mdi mdi-warehouse"></i>
-                                        <span class="text-muted-primary">Logistik</span>
-                                        <span class="badge badge-pill badge-warning">New</span>
+                                        <i class="mdi mdi-forklift mdi-flip-h"></i>
+                                        <span>{{ 'nav.logictics.submenu.headline1'|trans }}</span>
                                     </a>
-                                    <div class="sidebar-submenu">
-                                        <ul>
-                                            <li class="sidebar-submenu-dropdown">
-                                                <a href="#">
-                                                    <i class="mdi mdi-forklift mdi-flip-h"></i>
-                                                    <span>Einlagern</span>
-                                                </a>
-                                                <div class="sidebar-submenu-sub">
-                                                    <ul>
-                                                        <li><a id="stock_in" href="{{ path('stock_in') }}">Einlagern direkt</a></li>
-                                                        <li><a id="stock_in_from_goods_receipt">Zugang aus Wareneingang</a></li>
-                                                        <li><a id="stock_in_from_production">Zugang aus Produktion</a></li>
-                                                        <li><a id="stock_in_from_cost_centre">Einlagern von Kostenstelle</a></li>
-                                                        <li><a id="stock_in_into_container">Einlagern in Container</a></li>
-                                                        <li><a id="stock_in_using_loading_equipment">Einlagern mit Ladehilfsmittel</a></li>
-                                                        <li><a id="stock_in_into_receiving_area">Einlagern direkt in WE-Zone</a></li>
-                                                        <li><a id="stock_in_into_dispatch_area">Einlagern direkt in WA-Zone</a></li>
-                                                        <li><a id="stock_in_for_supplier_order">WE zu Bestellung</a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li class="sidebar-submenu-dropdown">
-                                                <a href="#">
-                                                    <i class="mdi mdi-forklift"></i>
-                                                    <span>Auslagern</span>
-                                                </a>
-                                                <div class="sidebar-submenu-sub">
-                                                    <ul>
-                                                        <li><a href="#">Auslagern direkt</a></li>
-                                                        <li><a href="#">Auslagern auf Kostenstelle</a></li>
-                                                        <li><a href="#">Ausleihen auf Kostenstelle</a></li>
-                                                        <li><a href="#">Auslagern aus Kostenstelle</a></li>
-                                                        <li><a href="#">Auslagern aus Container</a></li>
-                                                        <li><a href="#">Auslagern direkt aus WA-Zone</a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="sidebar-dropdown">
-                                    <a href="#">
-                                        <i class="mdi mdi-file-search"></i>
-                                        <span>Bestellungen</span>
-                                        <span class="badge badge-pill badge-danger">3</span>
-                                    </a>
-                                    <div class="sidebar-submenu">
+                                    <div class="sidebar-submenu-sub">
                                         <ul>
                                             <li>
-                                                <a href="{{ path('orders') }}">
-                                                    <i class="mdi mdi-file-eye" style="font-size: 16px"></i>
-                                                    Übersicht Bestellungen
+                                                <a id="stock_in" href="{{ path('stock_in') }}">
+                                                    {{ 'nav.logictics.submenu.headline1.entry1'|trans }}
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="{{ path('new_supplier_order') }}">
-                                                    <i class="mdi mdi-file-plus" style="font-size: 16px"></i>
-                                                    Bestellung anlegen
+                                                <a id="stock_in_from_goods_receipt">
+                                                    {{ 'nav.logictics.submenu.headline1.entry2'|trans }}
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#">
-                                                    <i class="mdi mdi-file-edit" style="font-size: 16px"></i>
-                                                    Bestellung ändern/stornieren
+                                                <a id="stock_in_from_production">
+                                                    {{ 'nav.logictics.submenu.headline1.entry3'|trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a id="stock_in_from_cost_centre">
+                                                    {{ 'nav.logictics.submenu.headline1.entry4'|trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a id="stock_in_into_container">
+                                                    {{ 'nav.logictics.submenu.headline1.entry5'|trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a id="stock_in_using_loading_equipment">
+                                                    {{ 'nav.logictics.submenu.headline1.entry6'|trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a id="stock_in_into_receiving_area">
+                                                    {{ 'nav.logictics.submenu.headline1.entry7'|trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a id="stock_in_into_dispatch_area">
+                                                    {{ 'nav.logictics.submenu.headline1.entry8'|trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a id="stock_in_for_supplier_order">
+                                                    {{ 'nav.logictics.submenu.headline1.entry9'|trans }}
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
-                                <li class="sidebar-dropdown">
+                                <li class="sidebar-submenu-dropdown">
                                     <a href="#">
-                                        <i class="mdi mdi-file-search-outline"></i>
-                                        <span>Aufträge</span>
+                                        <i class="mdi mdi-forklift"></i>
+                                        <span>{{ 'nav.logictics.submenu.headline2'|trans }}</span>
                                     </a>
-                                    <div class="sidebar-submenu">
+                                    <div class="sidebar-submenu-sub">
                                         <ul>
                                             <li>
-                                                <a href="{{ path('customer_orders') }}">
-                                                    <i class="mdi mdi-file-search-outline" style="font-size: 16px"></i>
-                                                    Übersicht Aufträge
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ path('new_customer_order') }}">
-                                                    <i class="mdi mdi-file-plus-outline" style="font-size: 16px"></i>
-                                                    Auftrag anlegen
+                                                <a href="#">
+                                                    {{ 'nav.logictics.submenu.headline2.entry1'|trans }}
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#">
-                                                    <i class="mdi mdi-file-edit-outline" style="font-size: 16px"></i>
-                                                    Auftrag ändern/stornieren
+                                                    {{ 'nav.logictics.submenu.headline2.entry2'|trans }}Auslagern auf Kostenstelle
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    {{ 'nav.logictics.submenu.headline2.entry3'|trans }}Ausleihen auf Kostenstelle
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    {{ 'nav.logictics.submenu.headline2.entry4'|trans }}Auslagern aus Kostenstelle
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    {{ 'nav.logictics.submenu.headline2.entry5'|trans }}Auslagern aus Container
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    {{ 'nav.logictics.submenu.headline2.entry6'|trans }}Auslagern direkt aus WA-Zone
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
-                                <li class="sidebar-dropdown">
-                                    <a href="#">
-                                        <i class="mdi mdi-archive-cog-outline"></i>
-                                        <span>Stammdaten</span>
-                                    </a>
-                                    <div class="sidebar-submenu">
-                                        <ul>
-                                            <li class="sidebar-submenu-dropdown">
-                                                <a href="#">
-                                                    <i class="mdi mdi-package-variant"></i>
-                                                    <span>Artikel</span>
-                                                </a>
-                                                <div class="sidebar-submenu-sub">
-                                                    <ul>
-                                                        <li><a href="{{ path('article') }}">Übersicht Artikel</a></li>
-                                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                                            <li><a href="{{ path('add_article') }}">Artikel Anlegen</a></li>
-                                                        {% endif %}
-                                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                                            <li><a href="#">Sachmerkmale zuordnen</a></li>
-                                                        {% endif %}
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li class="sidebar-submenu-dropdown">
-                                                <a href="#">
-                                                    <i class="mdi mdi-warehouse"></i>
-                                                    <span>Lager</span>
-                                                </a>
-                                                <div class="sidebar-submenu-sub">
-                                                    <ul>
-                                                        <li><a href="{{ path('stock_location') }}">Übersicht Lagerplätze</a></li>
-                                                        <li><a href="{{ path('stock_layout') }}">Lagerlayout</a></li>
-                                                        <li><a href="#">Lagerzonen</a></li>
-                                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                                            <li><a href="{{ path('add_stock_location') }}">Lager anlegen</a></li>
-                                                        {% endif %}
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li class="sidebar-submenu-dropdown">
-                                                <a href="#">
-                                                    <i class="mdi mdi-card-account-details-outline"></i>
-                                                    <span>Kunden</span>
-                                                </a>
-                                                <div class="sidebar-submenu-sub">
-                                                    <ul>
-                                                        <li><a href="{{ path('customer') }}">Übersicht Kunden</a></li>
-                                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                                            <li><a href="{{ path('add_customer') }}">Kunden Anlegen</a></li>
-                                                        {% endif %}
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li class="sidebar-submenu-dropdown">
-                                                <a href="#">
-                                                    <i class="mdi mdi-card-account-details"></i>
-                                                    <span>Lieferanten</span>
-                                                </a>
-                                                <div class="sidebar-submenu-sub">
-                                                    <ul>
-                                                        <li><a href="{{ path('supplier') }}">Übersicht Lieferanten</a></li>
-                                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                                            <li><a href="{{ path('add_supplier') }}">Lieferanten Anlegen</a></li>
-                                                        {% endif %}
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li class="sidebar-submenu-dropdown">
-                                                <a href="#">
-                                                    <i class="mdi mdi-shipping-pallet"></i>
-                                                    <span>Ladehilfsmittel</span>
-                                                </a>
-                                            </li>
-                                            <li class="sidebar-submenu-dropdown">
-                                                <a href="#">
-                                                    <i class="mdi mdi-badge-account"></i>
-                                                    <span>Benutzerverwaltung</span>
-                                                </a>
-                                                <div class="sidebar-submenu-sub">
-                                                    <ul>
-                                                        <li><a href="#">Übersicht Benutzer</a></li>
-                                                        <li><a href="#">Benutzer anlegen</a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="sidebar-dropdown">
-                                    <a href="#">
-                                        <i class="mdi mdi-store-edit-outline"></i>
-                                        <span>Bearbeiten</span>
-                                    </a>
-                                    <div class="sidebar-submenu">
-                                        <ul>
-                                            <li>
-                                                <a href="#">
-                                                    <i class="mdi mdi-arrow-right-thick" style="font-size: 16px"></i>
-                                                    Aktuelles Fenster drucken
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i class="mdi mdi-arrow-right-thick" style="font-size: 16px"></i>
-                                                    TA abschließen
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i class="mdi mdi-arrow-right-thick" style="font-size: 16px"></i>
-                                                    TA drucken
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i class="mdi mdi-arrow-right-thick" style="font-size: 16px"></i>
-                                                    Beleg drucken
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i class="mdi mdi-arrow-right-thick" style="font-size: 16px"></i>
-                                                    Bestellung drucken
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="sidebar-dropdown">
-                                    <a href="#">
-                                        <i class="mdi mdi-chart-areaspline"></i>
-                                        <span>Auswertungen</span>
-                                    </a>
-                                    <div class="sidebar-submenu">
-                                        <ul>
-                                            <li>
-                                                <a href="{{ path('stock_rotation') }}">
-                                                    <i class="mdi mdi-table-refresh"></i>
-                                                    Lagerbewegungen
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i class="mdi mdi-cash-sync"></i>
-                                                    Lagergeld berechnen
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ path('stock_occupancy') }}">
-                                                    <i class="mdi mdi-view-dashboard-variant-outline"></i>
-                                                    Lagerbelegung
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ path('stock_occupancy_graphical') }}">
-                                                    <i class="mdi mdi-monitor-dashboard"></i>
-                                                    Grafische Lagerbelegung
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ path('dashboard') }}">
-                                                    <i class="mdi mdi-monitor"></i>
-                                                    Dashboard
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="sidebar-dropdown">
-                                    <a href="#">
-                                        <i class="mdi mdi-text-box-multiple-outline"></i>
-                                        <span>Inventur</span>
-                                    </a>
-                                    <div class="sidebar-submenu">
-                                        <ul>
-                                            <li>
-                                                <a href="{{ path('stock_inventory_start') }}">
-                                                    <i class="mdi mdi-text-box-outline"></i>
-                                                    Inventur starten
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i class="mdi mdi-text-box-plus-outline"></i>
-                                                    Inventur buchen
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i class="mdi mdi-text-box-check-outline"></i>
-                                                    Inventur abschließen
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="sidebar-dropdown">
-                                    <a href="#">
-                                        <i class="mdi mdi-store-cog-outline"></i>
-                                        <span>Administration</span>
-                                    </a>
-                                    <div class="sidebar-submenu">
-                                        <ul>
-                                            <li>
-                                                <a href="/einstellungen">
-                                                    <i class="mdi mdi-application-cog-outline"></i>
-                                                    Einstellungen
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="header-menu">
-                                    <span>Hilfe</span>
-                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="mdi mdi-file-search"></i>
+                            <span>Bestellungen</span>
+                            <span class="badge badge-pill badge-danger">3</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
                                 <li>
-                                    <a href="../doku_weblvs/index.php" target="_blank">
-                                        <i class="mdi mdi-information-outline"></i>
-                                        <span>Documentation</span>
-                                        <span class="badge badge-pill badge-primary">Beta</span>
+                                    <a href="{{ path('orders') }}">
+                                        <i class="mdi mdi-file-eye" style="font-size: 16px"></i>
+                                        Übersicht Bestellungen
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#aboutwebLVS" data-toggle="modal" data-target="#aboutwebLVS">
-                                        <i class="mdi mdi-help-circle-outline"></i>
-                                        <span>Über</span>
+                                    <a href="{{ path('new_supplier_order') }}">
+                                        <i class="mdi mdi-file-plus" style="font-size: 16px"></i>
+                                        Bestellung anlegen
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('app.swagger_ui') }}" target="_blank" >
-                                        <i class="mdi mdi-file-code-outline"></i>
-                                        <span>API Dokumentation</span>
+                                    <a href="#">
+                                        <i class="mdi mdi-file-edit" style="font-size: 16px"></i>
+                                        Bestellung ändern/stornieren
                                     </a>
                                 </li>
                             </ul>
                         </div>
-                        <!-- sidebar-menu  -->
-                    </div>
-                    <!-- Sidebar content -->
-                    <div class="sidebar-footer">
+                    </li>
+                    <li class="sidebar-dropdown">
                         <a href="#">
-                            <i class="mdi mdi-alarm-bell"></i>
-                            <span class="badge badge-pill badge-warning notification">3</span>
+                            <i class="mdi mdi-file-search-outline"></i>
+                            <span>Aufträge</span>
                         </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="{{ path('customer_orders') }}">
+                                        <i class="mdi mdi-file-search-outline" style="font-size: 16px"></i>
+                                        Übersicht Aufträge
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('new_customer_order') }}">
+                                        <i class="mdi mdi-file-plus-outline" style="font-size: 16px"></i>
+                                        Auftrag anlegen
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="mdi mdi-file-edit-outline" style="font-size: 16px"></i>
+                                        Auftrag ändern/stornieren
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
                         <a href="#">
-                            <i class="mdi mdi-email-outline"></i>
-                            <span class="badge badge-pill badge-success notification">7</span>
+                            <i class="mdi mdi-archive-cog-outline"></i>
+                            <span>Stammdaten</span>
                         </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li class="sidebar-submenu-dropdown">
+                                    <a href="#">
+                                        <i class="mdi mdi-package-variant"></i>
+                                        <span>Artikel</span>
+                                    </a>
+                                    <div class="sidebar-submenu-sub">
+                                        <ul>
+                                            <li><a href="{{ path('article') }}">Übersicht Artikel</a></li>
+                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                                <li><a href="{{ path('add_article') }}">Artikel Anlegen</a></li>
+                                            {% endif %}
+                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                                <li><a href="#">Sachmerkmale zuordnen</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="sidebar-submenu-dropdown">
+                                    <a href="#">
+                                        <i class="mdi mdi-warehouse"></i>
+                                        <span>Lager</span>
+                                    </a>
+                                    <div class="sidebar-submenu-sub">
+                                        <ul>
+                                            <li><a href="{{ path('stock_location') }}">Übersicht Lagerplätze</a></li>
+                                            <li><a href="{{ path('stock_layout') }}">Lagerlayout</a></li>
+                                            <li><a href="#">Lagerzonen</a></li>
+                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                                <li><a href="{{ path('add_stock_location') }}">Lager anlegen</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="sidebar-submenu-dropdown">
+                                    <a href="#">
+                                        <i class="mdi mdi-card-account-details-outline"></i>
+                                        <span>Kunden</span>
+                                    </a>
+                                    <div class="sidebar-submenu-sub">
+                                        <ul>
+                                            <li><a href="{{ path('customer') }}">Übersicht Kunden</a></li>
+                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                                <li><a href="{{ path('add_customer') }}">Kunden Anlegen</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="sidebar-submenu-dropdown">
+                                    <a href="#">
+                                        <i class="mdi mdi-card-account-details"></i>
+                                        <span>Lieferanten</span>
+                                    </a>
+                                    <div class="sidebar-submenu-sub">
+                                        <ul>
+                                            <li><a href="{{ path('supplier') }}">Übersicht Lieferanten</a></li>
+                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                                <li><a href="{{ path('add_supplier') }}">Lieferanten Anlegen</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="sidebar-submenu-dropdown">
+                                    <a href="#">
+                                        <i class="mdi mdi-shipping-pallet"></i>
+                                        <span>Ladehilfsmittel</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-submenu-dropdown">
+                                    <a href="#">
+                                        <i class="mdi mdi-badge-account"></i>
+                                        <span>Benutzerverwaltung</span>
+                                    </a>
+                                    <div class="sidebar-submenu-sub">
+                                        <ul>
+                                            <li><a href="#">Übersicht Benutzer</a></li>
+                                            <li><a href="#">Benutzer anlegen</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
                         <a href="#">
-                            <i class="mdi mdi-cog"></i>
-                            <span class="badge-sonar"></span>
+                            <i class="mdi mdi-store-edit-outline"></i>
+                            <span>Bearbeiten</span>
                         </a>
-                        <a href="{{ path('app_logout') }}">
-                            <i class="mdi mdi-power"></i>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <i class="mdi mdi-arrow-right-thick" style="font-size: 16px"></i>
+                                        Aktuelles Fenster drucken
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="mdi mdi-arrow-right-thick" style="font-size: 16px"></i>
+                                        TA abschließen
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="mdi mdi-arrow-right-thick" style="font-size: 16px"></i>
+                                        TA drucken
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="mdi mdi-arrow-right-thick" style="font-size: 16px"></i>
+                                        Beleg drucken
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="mdi mdi-arrow-right-thick" style="font-size: 16px"></i>
+                                        Bestellung drucken
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="mdi mdi-chart-areaspline"></i>
+                            <span>Auswertungen</span>
                         </a>
-                    </div>
-                </nav>
-                <!-- Sidebar end-->
-            {% endblock %}
-        {% endblock %}
-    {% endblock %}
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="{{ path('stock_rotation') }}">
+                                        <i class="mdi mdi-table-refresh"></i>
+                                        Lagerbewegungen
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="mdi mdi-cash-sync"></i>
+                                        Lagergeld berechnen
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('stock_occupancy') }}">
+                                        <i class="mdi mdi-view-dashboard-variant-outline"></i>
+                                        Lagerbelegung
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('stock_occupancy_graphical') }}">
+                                        <i class="mdi mdi-monitor-dashboard"></i>
+                                        Grafische Lagerbelegung
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('dashboard') }}">
+                                        <i class="mdi mdi-monitor"></i>
+                                        Dashboard
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="mdi mdi-text-box-multiple-outline"></i>
+                            <span>Inventur</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="{{ path('stock_inventory_start') }}">
+                                        <i class="mdi mdi-text-box-outline"></i>
+                                        Inventur starten
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="mdi mdi-text-box-plus-outline"></i>
+                                        Inventur buchen
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="mdi mdi-text-box-check-outline"></i>
+                                        Inventur abschließen
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-dropdown">
+                        <a href="#">
+                            <i class="mdi mdi-store-cog-outline"></i>
+                            <span>Administration</span>
+                        </a>
+                        <div class="sidebar-submenu">
+                            <ul>
+                                <li>
+                                    <a href="/einstellungen">
+                                        <i class="mdi mdi-application-cog-outline"></i>
+                                        Einstellungen
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="header-menu">
+                        <span>Hilfe</span>
+                    </li>
+                    <li>
+                        <a href="../doku_weblvs/index.php" target="_blank">
+                            <i class="mdi mdi-information-outline"></i>
+                            <span>Documentation</span>
+                            <span class="badge badge-pill badge-primary">Beta</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#aboutwebLVS" data-toggle="modal" data-target="#aboutwebLVS">
+                            <i class="mdi mdi-help-circle-outline"></i>
+                            <span>Über</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app.swagger_ui') }}" target="_blank" >
+                            <i class="mdi mdi-file-code-outline"></i>
+                            <span>API Dokumentation</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- sidebar-menu  -->
+        </div>
+        <!-- Sidebar content -->
+        <div class="sidebar-footer">
+            <a href="#">
+                <i class="mdi mdi-alarm-bell"></i>
+                <span class="badge badge-pill badge-warning notification">3</span>
+            </a>
+            <a href="#">
+                <i class="mdi mdi-email-outline"></i>
+                <span class="badge badge-pill badge-success notification">7</span>
+            </a>
+            <a href="#">
+                <i class="mdi mdi-cog"></i>
+                <span class="badge-sonar"></span>
+            </a>
+            <a href="{{ path('app_logout') }}">
+                <i class="mdi mdi-power"></i>
+            </a>
+        </div>
+    </nav>
+    <!-- Sidebar end-->
 {% endblock %}

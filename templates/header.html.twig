@@ -2,18 +2,6 @@
 
 {% extends 'base.html.twig' %}
 
-{% block webwms_header_navigation %}
-    {% if appTheme.setTheme == 'vertical' %}
-        {% block webwms_header_menu_vertical %}
-            {{ include('menu_vertical.html.twig') }}
-        {% endblock %}
-    {% else %}
-        {% block webwms_header_menu_horizontal %}
-            {{ include('menu_horizontal.html.twig') }}
-        {% endblock %}
-    {% endif %}
-{% endblock %}
-
 {% block webwms_about_modal %}
     <div class="modal" id="aboutwebLVS" tabindex="-1" role="dialog" aria-labelledby="aboutwebLVS"
          aria-hidden="true">

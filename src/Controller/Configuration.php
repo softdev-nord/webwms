@@ -20,7 +20,7 @@ class Configuration extends AbstractController
 {
     public function __construct(
         private ConfigurationService $configurationService,
-        private Requirements $requirements
+        private Requirements $requirements,
     ) {
     }
 

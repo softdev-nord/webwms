@@ -10,8 +10,11 @@
     {% block webwms_content %}
         {% block webwms_add_customer_order_form %}
             {{ form_start(customerForm) }}
-                <div id="webWMS-add-new-customer-order" class="wrapper-form{% if appTheme.setTheme == 'vertical' %} vertical-theme{% endif %}">
-                    <div class="wrapper-form-content{% if appTheme.setTheme == 'vertical' %} vertical-theme{% endif %}">
+                <div id="webWMS-add-new-customer-order" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                    <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                        {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                            <div class="webwms-page">{{ page }}</div>
+                        {% endif %}
                         {% block webwms_add_order_form_order %}
                             <div class="card">
                                 <div class="card-content">
@@ -124,7 +127,7 @@
                                             {{ form_end(customerOrderPosForm) }}
 
                                             <div class="btn-container">
-                                                <input id="addNewButton" class="btn btn-primary btn-sm" value="Neue Position">
+                                                <input id="addNewButton" class="btn btn-sm" value="Neue Position">
                                             </div>
 
                                         </div>

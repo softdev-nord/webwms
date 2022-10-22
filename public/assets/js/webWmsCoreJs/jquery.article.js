@@ -41,7 +41,13 @@
             }
         ],
         columnDefs: [
-            {className: 'text-center', targets: "_all"},
+            {
+                className: 'text-center', targets: "_all"
+            },
+            {
+                render: $.fn.dataTable.render.number( '.'),
+                "targets": [9],
+            },
         ],
         dom: 'Bfrtip',
         buttons: [

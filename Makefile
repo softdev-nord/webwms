@@ -34,7 +34,7 @@ composer-update: ## Composer update
 	@docker exec -it $(APP_CONTAINER_NAME) composer update
 
 clear-caches: ## Clear caches
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'bin/console cache:clear'
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'bin/console cache:clear --no-warmup'
 
 yarn-watch: ## Yarn watch
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'yarn watch'
