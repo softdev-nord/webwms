@@ -60,12 +60,12 @@ class ConfigurationDataHandler
         $results = $stmt->fetchAllAssociative();
 
         foreach ($results as $result) {
-            if ($result['type'] === 'layout') {
+            if ('layout' === $result['type']) {
                 $configurations['configuration']['layout'] = $results;
             }
         }
 
-        //dd($configurations);
+        // dd($configurations);
 
         return $configurations;
     }

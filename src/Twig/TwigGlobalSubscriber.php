@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig\Environment;
-use WebWMS\Entity\Configuration;
 use WebWMS\Service\ConfigurationService;
 
 /**
@@ -41,7 +40,7 @@ class TwigGlobalSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [ KernelEvents::CONTROLLER =>  'injectGlobalVariables' ];
+        return [KernelEvents::CONTROLLER => 'injectGlobalVariables'];
     }
 
     public function onKernelRequest()
