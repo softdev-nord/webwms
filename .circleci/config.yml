@@ -4,6 +4,7 @@ version: 2.1
 
 orbs:
   php: circleci/php@1.1.0
+  envsubst: sawadashota/envsubst@volatile
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -20,16 +21,17 @@ jobs:
       CIRCLE_REPOSITORY_URL: https://softdev-nord:${BITBUCKET_PASSWORD}@bitbucket.org/softdev-nord/webwms.git
     steps:
       - php/install-composer
-      - run:
-          name: "Setup custom environment variables"
-          command: |
-              cd webwms/  
-              ci/set-env.sh
+      - envsubst/install
       - run:
           name: "Checkout code"
           command: |
             cd $CIRCLE_WORKING_DIRECTORY && \
             git clone -b << pipeline.git.branch >> "$CIRCLE_REPOSITORY_URL"
+      - run:
+          name: "Setup custom environment variables (.env)"
+          command: |
+            cd webwms/
+            ci/set-env.sh
       - run:
           name: "PHP Mess Detector"
           command: |
@@ -63,9 +65,9 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  build:
-    jobs:
-      - build
+    build:
+        jobs:
+            - build
 #      - deploy:
 #         type: approval
 #         requires:
