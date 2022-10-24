@@ -14,7 +14,7 @@ export APP_LIZENZ='Demo Spedition | Demoweg 500 | 21698 Harsefeld'
 export APP_ENV=dev
 export APP_SECRET=af2b45ff237087d068938bb0858bddff
 export APP_DEBUG=false
-export DATABASE_URL=mysql://webwms:${DATABASE_PASSWORD}@127.0.0.1:3306/webwmsserverVersion=5.7
+export DATABASE_URL=mysql://webwms:${DATABASE_PASSWORD}@127.0.0.1:3306/webwms?serverVersion=5.7
 
 export LOCALE=de
 export WEB_HOST=https://webwms.softdev-nord.de
