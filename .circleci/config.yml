@@ -22,7 +22,6 @@ jobs:
     steps:
       - php/install-composer
       - envsubst/install
-      - run: which envsubst
       - run:
           name: "Checkout code"
           command: |
