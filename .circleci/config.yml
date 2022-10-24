@@ -67,6 +67,11 @@ jobs:
     steps:
       - run: sudo apt update
       - run: sudo apt install openssh-client rsync
+      - run:
+          name: "Checkout code"
+          command: |
+            cd $CIRCLE_WORKING_DIRECTORY && \
+            git clone -b << pipeline.git.branch >> "$CIRCLE_REPOSITORY_URL"
       - add_ssh_keys:
           fingerprints:
           - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
@@ -76,7 +81,7 @@ jobs:
       - run:
           name: Deploy Over SSH
           command: |
-            rsync -arvce ssh --exclude 'ci/rsync.exclude' /home/circleci/ admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de
+            rsync --progress -rDvz --delete -e ssh --exclude 'ci/rsync.exclude' /home/circleci/ admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de
 
 
 # Invoke jobs via workflows
