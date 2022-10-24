@@ -22,7 +22,45 @@ jobs:
       - php/install-composer
       - run:
           name: "Setup custom environment variables"
-          command: \<<include(./ci/set-env.sh)>>
+          command: |
+            cd webwms/
+              #!/bin/bash
+              # Helper script for creating environment variables file.
+              set -Eeuo pipefail
+              shopt -s inherit_errexit
+  
+              # Define variables
+  
+              ###> webWMS ###
+              export APP_NAME=' | webWMS Das webbasierte Lagerverwaltungssystem'
+              export APP_VERSION='Enterprise Version'
+              export APP_VERSION_NUMBER='1.2.0'
+              export APP_COPYRIGHT='© 2019 Softdev-Nord | Rene Irrgang'
+              export APP_LIZENZ='Demo Spedition | Demoweg 500 | 21698 Harsefeld'
+              export APP_ENV=dev
+              export APP_SECRET=af2b45ff237087d068938bb0858bddff
+              export APP_DEBUG=false
+              export DATABASE_URL=mysql://webwms:${DATABASE_PASSWORD}@127.0.0.1:3306/webwms?serverVersion=5.7
+    
+              export LOCALE=de
+              export WEB_HOST=https://webwms.softdev-nord.de
+              ###< webWMS ###
+  
+              ### mailer settings ###
+              export FROM_MAIL=info@softdev-nord.de
+              export FROM_NAME='webWMS Test'
+              export RETURN_PATH=info@softdev-nord.de
+              # sent copy of mail to the address specified in FROM_MAIL
+              export MAIL_COPY=true
+              ### mailer settings ###
+
+              ###> symfony/mailer ###
+              # e.g. smtp://username:password@yourdomain.tld:port
+              export MAILER_DSN=null://localhost
+              ###< symfony/mailer ###
+  
+             # Generate environment variables file
+             envsubst < .env.template > .env
       - run:
           name: "Checkout code"
           command: |
