@@ -62,8 +62,8 @@ jobs:
                 chmod +x local-php-security-checker
                 ./local-php-security-checker
   deploy-dev:
-    machine:
-      enabled: true
+    docker:
+      - image: cimg/php:8.1.9
     steps:
       - run: sudo apt update
       - run: sudo apt install openssh-client rsync
