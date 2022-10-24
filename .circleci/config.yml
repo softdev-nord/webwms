@@ -69,7 +69,7 @@ jobs:
       - run: sudo apt-get install rsync
       - add_ssh_keys:
           fingerprints:
-          - bc:f3:4f:ba:71:fc:98:65:cb:03:c9:81:d8:7d:fb:f1
+          - bf:39:00:aa:7e:57:15:c7:e7:af:7e:c8:c1:5c:11:65
       - run: rsync -avce ssh --delete admin_sodeno@178.20.100.70:/webwms.softdev-nord.de
 
 
