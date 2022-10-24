@@ -65,7 +65,7 @@ jobs:
     docker:
       - image: cimg/php:8.1.9
     steps:
-      - run: sudo apt install rsync
+      - run: sudo apt-get install rsync
       - run: rsync -avce ssh --delete admin_sodeno@178.20.100.70:/webwms.softdev-nord.de
 
 
