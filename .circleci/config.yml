@@ -23,8 +23,8 @@ jobs:
       - run:
           name: "Setup custom environment variables"
           command: |
-            cd webwms/
-            ./ci/set-env.sh
+            cd webwms/ \
+            bash ./ci/set-env.sh
       - run:
           name: "Checkout code"
           command: |
