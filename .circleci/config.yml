@@ -70,6 +70,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
           - be:55:0b:e0:ad:c0:9a:e0:ca:da:f4:9d:6f:b1:7b:65
+      - run: ssh-keyscan -H 178.20.100.70 >> ~/.ssh/known_hosts
       - run: rsync -avce ssh --delete admin_sodeno@178.20.100.70:/webwms.softdev-nord.de
 
 
