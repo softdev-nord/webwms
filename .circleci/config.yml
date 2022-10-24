@@ -65,6 +65,8 @@ jobs:
     working_directory: /home/circleci
     docker:
       - image: cimg/php:8.1.9
+    environment:
+      CIRCLE_REPOSITORY_URL: https://softdev-nord:${BITBUCKET_PASSWORD}@bitbucket.org/softdev-nord/webwms.git
     steps:
       - run: sudo apt update
       - run: sudo apt install openssh-client rsync
