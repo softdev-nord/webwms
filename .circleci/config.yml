@@ -76,7 +76,7 @@ jobs:
       - run:
           name: Deploy Over SSH
           command: |
-            rsync -avvz -e ssh --delete --exclude=node_modules admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de
+            rsync --progress -rDvz --delete --exclude-from=ci/rsync.exclude-avvz -e ssh admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de
 
 
 # Invoke jobs via workflows
