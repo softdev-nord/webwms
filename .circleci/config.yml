@@ -22,7 +22,7 @@ jobs:
       - php/install-composer
       - run:
           name: "Setup custom environment variables"
-          command: bash ./ci/set-env.sh
+          command: <<include(./ci/set-env.sh)>>
       - run:
           name: "Checkout code"
           command: |
