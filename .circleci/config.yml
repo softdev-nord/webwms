@@ -29,6 +29,7 @@ jobs:
           name: "Setup custom environment variables (.env)"
           command: |
             cd webwms/
+            apt-get install gettext-base
             ci/set-env.sh
       - run:
           name: "PHP Mess Detector"
