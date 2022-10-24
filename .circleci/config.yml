@@ -62,8 +62,8 @@ jobs:
                 chmod +x local-php-security-checker
                 ./local-php-security-checker
   deploy-dev:
-    docker:
-      - image: cimg/php:8.1.9
+    machine:
+      enabled: true
     steps:
       - run: sudo apt update
       - run: sudo apt install openssh-client rsync
@@ -71,7 +71,11 @@ jobs:
           fingerprints:
           - be:55:0b:e0:ad:c0:9a:e0:ca:da:f4:9d:6f:b1:7b:65
       - run: ssh-keyscan -H 178.20.100.70 >> ~/.ssh/known_hosts
-      - run: rsync -e ssh -avvz --exclude=node_modules ssh -o "StrictHostKeyChecking=no" admin_sodeno@178.20.100.70:/webwms.softdev-nord.de
+#      - run: rsync -e -avvz --exclude=node_modules ssh -o "StrictHostKeyChecking=no" admin_sodeno@178.20.100.70:/webwms.softdev-nord.de
+      - run:
+          name: Deploy Over SSH
+          command: |
+            rsync -e ssh -o "StrictHostKeyChecking=no" -avvz --exclude=node_modules admin_sodeno@178.20.100.70:/webwms.softdev-nord.de/
 
 
 # Invoke jobs via workflows
