@@ -21,15 +21,15 @@ jobs:
     steps:
       - php/install-composer
       - run:
-          name: "Setup custom environment variables (.env)"
-          command: |
-            cd webwms/
-            bash ./ci/set-env.sh
-      - run:
           name: "Checkout code"
           command: |
             cd $CIRCLE_WORKING_DIRECTORY && \
             git clone -b << pipeline.git.branch >> "$CIRCLE_REPOSITORY_URL"
+      - run:
+          name: "Setup custom environment variables (.env)"
+          command: |
+            cd webwms/
+            ci/set-env.sh
       - run:
           name: "PHP Mess Detector"
           command: |
