@@ -22,9 +22,8 @@ jobs:
       - php/install-composer
       - run:
           name: "Setup custom environment variables"
-          command: |
-            cd webwms/ \
-            bash ./ci/set-env.sh
+          command:
+            - bash ./ci/set-env.sh
       - run:
           name: "Checkout code"
           command: |
