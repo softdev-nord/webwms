@@ -69,7 +69,7 @@ jobs:
       - run: sudo apt install openssh-client rsync
       - add_ssh_keys:
           fingerprints:
-          - 54:58:0b:a3:93:c1:9b:30:fd:59:a0:2b:8b:4b:f7:0d
+          - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
 #      - run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no"
       - run: ssh-keyscan -H 178.20.100.70 >> ~/.ssh/known_hosts
 #      - run: rsync -e -avvz --exclude=node_modules ssh -o "StrictHostKeyChecking=no" admin_sodeno@178.20.100.70:/webwms.softdev-nord.de
