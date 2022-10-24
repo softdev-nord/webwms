@@ -74,7 +74,7 @@ jobs:
       - run: rsync -az \
           --force \
           --delete \
-          -e ssh --delete admin_sodeno@178.20.100.70:/webwms.softdev-nord.de
+          -e ssh -o "StrictHostKeyChecking=no" admin_sodeno@178.20.100.70:/webwms.softdev-nord.de
 
 
 # Invoke jobs via workflows
