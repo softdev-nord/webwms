@@ -87,6 +87,14 @@ jobs:
             rsync --progress -rDvz --delete -e ssh --exclude 'ci/rsync.exclude'
             /home/circleci/webwms/
             $SSH_USER@$SSH_HOST:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
+      - run:
+          name: Composer install
+          command: |
+            /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install
+      - run:
+          name: Clear the caches
+          command: |
+            /opt/plesk/php/8.1/bin/php bin/console cache:clear
 
   deploy-production:
     working_directory: /home/circleci
@@ -119,6 +127,14 @@ jobs:
             rsync --progress -rDvz --delete -e ssh --exclude 'ci/rsync.exclude'
             /home/circleci/webwms/
             $SSH_USER@$SSH_HOST:/var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de
+      - run:
+          name: Composer install
+          command: |
+            /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install
+      - run:
+          name: Clear the caches
+          command: |
+            /opt/plesk/php/8.1/bin/php bin/console cache:clear
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
