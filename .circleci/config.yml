@@ -83,9 +83,9 @@ jobs:
       - run:
           name: Deploy development over SSH
           command: |
-            rsync --progress -rDvz --delete -e ssh --exclude 'ci/rsync.exclude'
-            /home/circleci/webwms/
-            $SSH_USER@$SSH_HOST:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
+            rsync --progress -rDvz --delete -e ssh --exclude 'ci/rsync.exclude' \
+            | /home/circleci/webwms/ \
+            | $SSH_USER@$SSH_HOST:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
       - run:
           name: Composer install
           command: |
@@ -122,8 +122,8 @@ jobs:
       - run:
           name: Deploy production over SSH
           command: |
-            rsync --progress -rDvz --delete -e ssh --exclude 'ci/rsync.exclude'
-            /home/circleci/webwms/
+            | rsync --progress -rDvz --delete -e ssh --exclude 'ci/rsync.exclude' \
+            | /home/circleci/webwms/ \
             $SSH_USER@$SSH_HOST:/var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de
       - run:
           name: Composer install
