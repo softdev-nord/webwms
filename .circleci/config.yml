@@ -55,12 +55,14 @@ jobs:
                   | xargs -I % curl %  -L --output local-php-security-checker
                 chmod +x local-php-security-checker
                 ./local-php-security-checker
-  deploy-dev:
+
+  deploy-development:
     working_directory: /home/circleci
     docker:
       - image: cimg/php:8.1.9
     environment:
       CIRCLE_REPOSITORY_URL: https://softdev-nord:${BITBUCKET_PASSWORD}@bitbucket.org/softdev-nord/webwms.git
+      APP_ENV: dev
     steps:
       - envsubst/install
       - run: sudo apt update
@@ -77,15 +79,46 @@ jobs:
             ci/set-env.sh
       - add_ssh_keys:
           fingerprints:
-          - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
-#      - run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no"
-      - run: ssh-keyscan -H 178.20.100.70 >> ~/.ssh/known_hosts
-#      - run: rsync -e -avvz --exclude=node_modules ssh -o "StrictHostKeyChecking=no" admin_sodeno@178.20.100.70:/webwms.softdev-nord.de
+          - $SSH_FINGERPRINT
+      - run: ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
       - run:
-          name: Deploy Over SSH
+          name: Deploy development over SSH
           command: |
-            rsync --progress -rDvz --delete -e ssh --exclude 'ci/rsync.exclude' /home/circleci/webwms/ admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de
+            rsync --progress -rDvz --delete -e ssh --exclude 'ci/rsync.exclude'
+            /home/circleci/webwms/
+            $SSH_USER@$SSH_HOST:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
 
+  deploy-production:
+    working_directory: /home/circleci
+    docker:
+      - image: cimg/php:8.1.9
+    environment:
+      CIRCLE_REPOSITORY_URL: https://softdev-nord:${BITBUCKET_PASSWORD}@bitbucket.org/softdev-nord/webwms.git
+      APP_ENV: prod
+    steps:
+      - envsubst/install
+      - run: sudo apt update
+      - run: sudo apt install openssh-client rsync
+      - run:
+          name: "Checkout code"
+          command: |
+            cd $CIRCLE_WORKING_DIRECTORY && \
+            git clone -b << pipeline.git.branch >> "$CIRCLE_REPOSITORY_URL"
+      - run:
+          name: "Setup custom environment variables (.env)"
+          command: |
+            cd webwms/
+            ci/set-env.sh
+      - add_ssh_keys:
+          fingerprints:
+            - $SSH_FINGERPRINT
+      - run: ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+      - run:
+          name: Deploy production over SSH
+          command: |
+            rsync --progress -rDvz --delete -e ssh --exclude 'ci/rsync.exclude'
+            /home/circleci/webwms/
+            $SSH_USER@$SSH_HOST:/var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -93,6 +126,17 @@ workflows:
     build-deploy:
       jobs:
         - build
-        - deploy-dev:
+        - deploy-development:
+            filters:
+              branches:
+                only:
+                  - development
+            requires:
+              - build
+        - deploy-production:
+            filters:
+              branches:
+                only:
+                  - master
             requires:
               - build
