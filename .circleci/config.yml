@@ -80,7 +80,6 @@ jobs:
       - add_ssh_keys:
           fingerprints:
           - $SSH_FINGERPRINT
-      - run: ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
       - run:
           name: Deploy development over SSH
           command: |
@@ -120,7 +119,6 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - $SSH_FINGERPRINT
-      - run: ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
       - run:
           name: Deploy production over SSH
           command: |
