@@ -4,9 +4,9 @@ security:
         # Use native password hasher, which auto-selects and migrates the best
         # possible hashing algorithm (which currently is "bcrypt")
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-#    encoders:
-#        WebWMS\Entity\User:
-#            algorithm: auto
+    encoders:
+        WebWMS\Entity\User:
+            algorithm: auto
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
