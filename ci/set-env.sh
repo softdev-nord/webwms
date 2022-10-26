@@ -7,7 +7,7 @@ shopt -s inherit_errexit
 
 ###> webWMS ###
 
-if [[ ${CIRCLE_BRANCH} == master ]]
+if [ "${CIRCLE_BRANCH}" == "master" ]
 then
   export APP_ENV=prod
 else
