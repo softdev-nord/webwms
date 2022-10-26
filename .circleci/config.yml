@@ -62,7 +62,6 @@ jobs:
       - image: cimg/php:8.1.9
     environment:
       CIRCLE_REPOSITORY_URL: https://softdev-nord:${BITBUCKET_PASSWORD}@bitbucket.org/softdev-nord/webwms.git
-      APP_ENV: dev
     steps:
       - envsubst/install
       - run: sudo apt update
@@ -102,7 +101,6 @@ jobs:
       - image: cimg/php:8.1.9
     environment:
       CIRCLE_REPOSITORY_URL: https://softdev-nord:${BITBUCKET_PASSWORD}@bitbucket.org/softdev-nord/webwms.git
-      APP_ENV: prod
     steps:
       - envsubst/install
       - run: sudo apt update
@@ -117,6 +115,10 @@ jobs:
           command: |
             cd webwms/
             ci/set-env.sh
+      - run: echo
+          name: "Show APP_ENV variable"
+          command: |
+            echo $APP_ENV
       - add_ssh_keys:
           fingerprints:
             - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
