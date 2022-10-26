@@ -84,18 +84,16 @@ jobs:
       - run:
           name: Deploy development over SSH
           command: |
-            rsync -avuPe ssh --exclude 'ci/rsync.exclude' \
+            rsync -ave ssh --exclude 'ci/rsync.exclude' \
             /home/circleci/webwms/ \
             admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
       - run:
           name: Composer install
           command: |
-            cd /var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de \
             /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install
       - run:
           name: Clear the caches
           command: |
-            cd /var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de \
             /opt/plesk/php/8.1/bin/php bin/console cache:clear
 
   deploy-production:
@@ -126,18 +124,16 @@ jobs:
       - run:
           name: Deploy production over SSH
           command: |
-            rsync -avuPe ssh --exclude 'ci/rsync.exclude' \
+            rsync -ave ssh --exclude 'ci/rsync.exclude' \
             /home/circleci/webwms/ \
             admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de
       - run:
           name: Composer install
           command: |
-            cd /var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de \
             /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install
       - run:
           name: Clear the caches
           command: |
-            cd /var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de \
             /opt/plesk/php/8.1/bin/php bin/console cache:clear
 
 # Invoke jobs via workflows
