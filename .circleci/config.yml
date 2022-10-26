@@ -130,7 +130,7 @@ jobs:
       - run:
           name: Composer install
           command: |
-            php /usr/lib/plesk-9.0/composer.phar install
+            php composer install
       - run:
           name: Clear the caches
           command: |
