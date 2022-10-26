@@ -3,6 +3,7 @@
 	src: url('../fonts/hollowpoint.eot');
 	src: url('../fonts/hollowpoint.eot?#iefix') format('embedded-opentype'),
 	url('../fonts/hollowpoint.svg#hollowpoint') format('svg'),
+	url('../fonts/hollowpoint.ttf') format('truetype'),
 	url('../fonts/hollowpoint.woff') format('woff'),
 	url('../fonts/hollowpoint.woff2') format('woff2');
 }
@@ -12,6 +13,7 @@
 	src: url('../fonts/hollowpointital.eot');
 	src: url('../fonts/hollowpointital.eot?#iefix') format('embedded-opentype'),
 	url('../fonts/hollowpointital.svg#hollowpointital') format('svg'),
+	url('../fonts/hollowpointital.ttf') format('truetype'),
 	url('../fonts/hollowpointital.woff') format('woff'),
 	url('../fonts/hollowpointital.woff2') format('woff2');
 }
@@ -21,6 +23,7 @@
 	src: url('../fonts/hollowpointsuperital.eot');
 	src: url('../fonts/hollowpointsuperital.eot?#iefix') format('embedded-opentype'),
 	url('../fonts/hollowpointsuperital.svg#hollowpointsuperital') format('svg'),
+	url('../fonts/hollowpointsuperital.ttf') format('truetype'),
 	url('../fonts/hollowpointsuperital.woff') format('woff'),
 	url('../fonts/hollowpointsuperital.woff2') format('woff2');
 }
@@ -30,6 +33,7 @@
 	src: url('../fonts/hollowpointsemiital.eot');
 	src: url('../fonts/hollowpointsemiital.eot?#iefix') format('embedded-opentype'),
 	url('../fonts/hollowpointsemiital.svg#hollowpointsemiital') format('svg'),
+	url('../fonts/hollowpointsemiital.ttf') format('truetype'),
 	url('../fonts/hollowpointsemiital.woff') format('woff'),
 	url('../fonts/hollowpointsemiital.woff2') format('woff2');
 }
@@ -39,6 +43,7 @@
 	src: url('../fonts/hollowpointleft.eot');
 	src: url('../fonts/hollowpointleft.eot?#iefix') format('embedded-opentype'),
 	url('../fonts/hollowpointleft.svg#hollowpointleft') format('svg'),
+	url('../fonts/hollowpointleft.ttf') format('truetype'),
 	url('../fonts/hollowpointleft.woff') format('woff'),
 	url('../fonts/hollowpointleft.woff2') format('woff2');
 }
@@ -47,8 +52,9 @@
 	font-family: 'hollowpointexpand';
 	src: url('../fonts/hollowpointexpand.eot');
 	src: url('../fonts/hollowpointexpand.eot?#iefix') format('embedded-opentype'),
-	url('../fonts/hollowpointexpand.woff') format('woff'),
 	url('../fonts/hollowpointexpand.svg#hollowpointexpand') format('svg'),
+	url('../fonts/hollowpointexpand.ttf') format('truetype'),
+	url('../fonts/hollowpointexpand.woff') format('woff'),
 	url('../fonts/hollowpointexpand.woff2') format('woff2');
 }
 
@@ -57,6 +63,7 @@
 	src: url('../fonts/hollowpointexpandital.eot');
 	src: url('../fonts/hollowpointexpandital.eot?#iefix') format('embedded-opentype'),
 	url('../fonts/hollowpointexpandital.svg#hollowpointexpandital') format('svg'),
+	url('../fonts/hollowpointexpandital.ttf') format('truetype'),
 	url('../fonts/hollowpointexpandital.woff') format('woff'),
 	url('../fonts/hollowpointexpandital.woff2') format('woff2');
 }
@@ -66,6 +73,7 @@
 	src: url('../fonts/hollowpointcond.eot');
 	src: url('../fonts/hollowpointcond.eot?#iefix') format('embedded-opentype'),
 	url('../fonts/hollowpointcond.svg#hollowpointcond') format('svg'),
+	url('../fonts/hollowpointcond.ttf') format('truetype'),
 	url('../fonts/hollowpointcond.woff') format('woff'),
 	url('../fonts/hollowpointcond.woff2') format('woff2');
 }
@@ -75,6 +83,7 @@
 	src: url('../fonts/hollowpointcondital.eot');
 	src: url('../fonts/hollowpointcondital.eot?#iefix') format('embedded-opentype'),
 	url('../fonts/hollowpointcondital.svg#hollowpointcondital') format('svg'),
+	url('../fonts/hollowpointcondital.ttf') format('truetype'),
 	url('../fonts/hollowpointcondital.woff') format('woff'),
 	url('../fonts/hollowpointcondital.woff2') format('woff2');
 }
@@ -84,6 +93,7 @@
 	src: url('../fonts/hollowpoint3d.eot');
 	src: url('../fonts/hollowpoint3d.eot?#iefix') format('embedded-opentype'),
 	url('../fonts/hollowpoint3d.svg#hollowpoint3d') format('svg'),
+	url('../fonts/hollowpoint3d.ttf') format('truetype'),
 	url('../fonts/hollowpoint3d.woff') format('woff'),
 	url('../fonts/hollowpoint3d.woff2') format('woff2');
 }
@@ -93,6 +103,7 @@
 	src: url('../fonts/hollowpoint3dital.eot');
 	src: url('../fonts/hollowpoint3dital.eot?#iefix') format('embedded-opentype'),
 	url('../fonts/hollowpoint3dital.svg#hollowpoint3dital') format('svg'),
+	url('../fonts/hollowpoint3d.ttf') format('truetype'),
 	url('../fonts/hollowpoint3dital.woff') format('woff'),
 	url('../fonts/hollowpoint3dital.woff2') format('woff2');
 }
