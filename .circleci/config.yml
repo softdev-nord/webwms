@@ -131,7 +131,7 @@ jobs:
           name: Composer install
           command: |
             cd webwms/
-            composer install
+            composer install --ignore-platform-reqs
       - run:
           name: Clear the caches
           command: |
