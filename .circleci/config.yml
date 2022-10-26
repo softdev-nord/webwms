@@ -138,7 +138,7 @@ jobs:
           name: Clear the caches
           command: |
             cd /var/www/vhosts/softdev-nord.de/webwms.softdev-nord.de \
-    /       opt/plesk/php/8.1/bin/php bin/console cache:clear
+            /opt/plesk/php/8.1/bin/php bin/console cache:clear
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
