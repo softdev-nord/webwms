@@ -90,11 +90,11 @@ jobs:
       - run:
           name: Composer install
           command: |
-            /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install
+            composer install
       - run:
           name: Clear the caches
           command: |
-            /opt/plesk/php/8.1/bin/php bin/console cache:clear
+            php bin/console cache:clear
 
   deploy-production:
     working_directory: /home/circleci
@@ -130,11 +130,11 @@ jobs:
       - run:
           name: Composer install
           command: |
-            php composer install
+            composer install
       - run:
           name: Clear the caches
           command: |
-            /opt/plesk/php/8.1/bin/php bin/console cache:clear
+            php bin/console cache:clear
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
