@@ -239,7 +239,7 @@ body {
     margin-bottom: -15px !important;
     font-size: 25px;
     font-weight: 700;
-    font-family: 'Hollow Point Italic', sans-serif;
+    font-family: 'hollowpointital', sans-serif;
     color: #dee2e6;
     text-shadow:
             1px 1px 1px #808080,
@@ -261,7 +261,7 @@ body {
     margin-bottom: -15px !important;
     font-size: 35px;
     font-weight: 700;
-    font-family: 'Hollow Point Italic', sans-serif;
+    font-family: 'hollowpointital', sans-serif;
     color: #ec6702;
     text-shadow:
             1px 1px 1px #808080,
@@ -350,7 +350,7 @@ body {
 }
 
 .sidebar-wrapper .sidebar-menu .sidebar-dropdown > a:after {
-    font-family: "Material Design Icons";
+    font-family: "Material Design Icons", sans-serif;
     font-weight: 900;
     content: "\F0CE0";
     font-style: normal;
@@ -381,7 +381,7 @@ body {
 }
 
 .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu-sub li a:before {
-    font-family: "Material Design Icons";
+    font-family: "Material Design Icons", sans-serif;
     content: "\F0055";
     font-weight: 400;
     font-style: normal;
