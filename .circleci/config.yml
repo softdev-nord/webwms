@@ -89,10 +89,12 @@ jobs:
       - run:
           name: Composer install
           command: |
+            cd webwms/
             composer install
       - run:
           name: Clear the caches
           command: |
+            cd webwms/
             php bin/console cache:clear
 
   deploy-production:
@@ -115,10 +117,6 @@ jobs:
           command: |
             cd webwms/
             ci/set-env.sh
-      - run:
-          name: "Show APP_ENV variable"
-          command: |
-            echo $APP_ENV
       - add_ssh_keys:
           fingerprints:
             - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
