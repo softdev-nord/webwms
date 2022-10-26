@@ -130,10 +130,12 @@ jobs:
       - run:
           name: Composer install
           command: |
+            cd webwms/
             composer install
       - run:
           name: Clear the caches
           command: |
+            cd webwms/
             php bin/console cache:clear
 
 # Invoke jobs via workflows
