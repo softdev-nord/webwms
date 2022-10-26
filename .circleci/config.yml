@@ -130,6 +130,7 @@ jobs:
       - run:
           name: Composer install
           command: |
+            pwd
             /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install
       - run:
           name: Clear the caches
