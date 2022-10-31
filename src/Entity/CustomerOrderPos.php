@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Components\Entity\ModelEntity;
 use WebWMS\Repository\CustomerOrderPosRepository;
@@ -19,7 +20,7 @@ class CustomerOrderPos extends ModelEntity
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\CustomerOrder", inversedBy="details")
      * @ORM\JoinColumn(name="customer_order_id", referencedColumnName="id")
      */
-    protected ArrayCollection $customerOrders;
+    protected CustomerOrder $customerOrders;
 
     /**
      * @ORM\Id
@@ -89,12 +90,12 @@ class CustomerOrderPos extends ModelEntity
         return $this;
     }
 
-    public function getCustomerOrders(): ArrayCollection
+    public function getCustomerOrders(): CustomerOrder
     {
         return $this->customerOrders;
     }
 
-    public function setCustomerOrders(ArrayCollection $customerOrders): void
+    public function setCustomerOrders(CustomerOrder $customerOrders): void
     {
         $this->customerOrders = $customerOrders;
     }

@@ -12,7 +12,7 @@ class SupplierOrderPos
 {
     /**
      * @ORM\ManyToOne(targetEntity="SupplierOrder", inversedBy="details")
-     * @ORM\JoinColumn(name="supplierOrderId", referencedColumnName="id")
+     * @ORM\JoinColumn(name="supplier_order_id", referencedColumnName="id")
      */
     protected SupplierOrder $supplierOrders;
 
@@ -71,5 +71,15 @@ class SupplierOrderPos
     public function setSupplierOrderPosQuantity(?int $supplierOrderPosQuantity): void
     {
         $this->supplierOrderPosQuantity = $supplierOrderPosQuantity;
+    }
+
+    public function getSupplierOrders(): SupplierOrder
+    {
+        return $this->supplierOrders;
+    }
+
+    public function setSupplierOrders(SupplierOrder $supplierOrders): void
+    {
+        $this->supplierOrders = $supplierOrders;
     }
 }

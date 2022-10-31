@@ -43,6 +43,7 @@ class SupplierOrder extends AbstractFOSRestController
      * @OA\Tag(name="SupplierOrder")
      *
      * @throws EntityNotFoundException
+     * @throws \WebWMS\Exception\NotFoundException
      */
     public function getSupplierOrder(int $supplierOrderId): View
     {

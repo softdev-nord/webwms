@@ -180,7 +180,7 @@ class CustomerDataHandler
         string $customerCity
     ): ?Customer {
         $customer = $this->entityManager
-            ->getRepository(Customer::class)->findById($customerMainId);
+            ->getRepository(Customer::class)->find($customerMainId);
 
         if (!$customer) {
             return null;
