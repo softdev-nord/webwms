@@ -95,7 +95,7 @@ jobs:
           name: Clear the caches
           command: |
             cd webwms/
-            php bin/console cache:clear
+            php bin/console cache:clear --no-debug
 
   deploy-production:
     working_directory: /home/circleci
@@ -136,7 +136,7 @@ jobs:
           name: Clear the caches
           command: |
             cd webwms/
-            php bin/console cache:clear
+            php bin/console cache:clear --no-debug
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
