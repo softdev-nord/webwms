@@ -27,6 +27,8 @@ class GroupRepository extends ServiceEntityRepository
      * @param Group $entity
      * @param bool $flush
      *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
      * @return int
      */
     public function add(Group $entity, bool $flush = true): int

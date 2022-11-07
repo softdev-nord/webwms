@@ -27,6 +27,8 @@ class FeatureRepository extends ServiceEntityRepository
    * @param Feature $entity
    * @param bool $flush
    *
+   * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+   *
    * @return int
    */
   public function add(Feature $entity, bool $flush = true): int

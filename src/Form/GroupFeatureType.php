@@ -17,6 +17,8 @@ class GroupFeatureType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array $options
      *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
      * @return void
      * @throws \Exception
      */

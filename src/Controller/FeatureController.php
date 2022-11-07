@@ -36,7 +36,7 @@ class FeatureController extends AbstractController
     {
         try {
             $name = $request->get('name') ?? "";
-            $display_name = $request->get('display_name') ?? $name;
+            $displayName = $request->get('display_name') ?? $name;
             if (empty($name)) {
                 throw new \Symfony\Component\Config\Definition\Exception\Exception("Feature Name can not be null!");
             }
@@ -44,7 +44,7 @@ class FeatureController extends AbstractController
             $feature = new Feature();
             $featureName = "feature_" . $name;
             $feature->setName($featureName);
-            $feature->setDisplayName($display_name);
+            $feature->setDisplayName($displayName);
 
             $feature->setDescription($request->get('description') ?? "Test Description");
 

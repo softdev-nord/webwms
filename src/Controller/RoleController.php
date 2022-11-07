@@ -23,31 +23,36 @@ class RoleController extends AbstractController
     ) {
     }
 
-  #[Route('/acl/role/create', name: 'role_create')]
-  public function create(Request $request): Response
-  {
-      try {
-          $role = new DefaultRole();
-          $roleName = "role_" . rand(0, 9999);
-          $role->setName($roleName);
-          $role->setDescription($roleName . ' Description');
-          $role->setType(Role::CUSTOM_ROLE_TYPE);
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    #[Route('/acl/role/create', name: 'role_create')]
+    public function create(Request $request): Response
+    {
+        try {
+            $role = new DefaultRole();
+            $roleName = "role_" . rand(0, 9999);
+            $role->setName($roleName);
+            $role->setDescription($roleName . ' Description');
+            $role->setType(Role::CUSTOM_ROLE_TYPE);
 
-          $roleId = $this->roleRepository->add($role);
-          return $this->json([
-            'role_id' => $roleId,
-            "role_name" => $roleName,
-            "type" => Role::CUSTOM_ROLE_TYPE,
-          ]);
-      } catch (\Throwable $e) {
-          return $this->json(["error_message" => $e->getMessage()]);
-      }
-  }
+            $roleId = $this->roleRepository->add($role);
+            return $this->json([
+              'role_id' => $roleId,
+              "role_name" => $roleName,
+              "type" => Role::CUSTOM_ROLE_TYPE,
+            ]);
+        } catch (\Throwable $e) {
+            return $this->json(["error_message" => $e->getMessage()]);
+        }
+    }
 
     /**
      * @param Request $request
      * @param int $roleId
      * @param int $permissionId
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
      * @return Response
      */

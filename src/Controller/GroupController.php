@@ -36,6 +36,9 @@ class GroupController extends AbstractController
     ) {
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     #[Route('/acl/group/create', name: 'group_create')]
     public function create(Request $request): Response
     {
@@ -97,6 +100,9 @@ class GroupController extends AbstractController
         }
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     #[Route('/acl/list/groups', name: 'acl_group_list')]
     public function list(Request $request, GroupRepository $groupRepository): Response
     {
@@ -129,6 +135,9 @@ class GroupController extends AbstractController
         ]);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     #[Route('/acl/list/group/{id}/roles', name: 'acl_group_roles_list')]
     public function listRoles(Group $group, Request $request): Response
     {

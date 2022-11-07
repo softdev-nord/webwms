@@ -94,6 +94,9 @@ class Acl extends AbstractController
 //        return $this->json($responseJson);
 //    }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     #[Route('/fetch/user', name: 'app_user')]
     public function fetchUser(Request $request, UserRepository $userRepository): Response
     {
@@ -109,6 +112,9 @@ class Acl extends AbstractController
         return new Response('Ok');
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     #[Route('/create/{id}/document', name: 'app_manage_documentation')]
     public function createDocument(Group $group, Request $request): Response
     {

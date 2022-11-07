@@ -27,6 +27,8 @@ class DefaultRoleRepository extends ServiceEntityRepository
      * @param DefaultRole $entity
      * @param bool $flush
      *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
      * @return int
      */
     public function add(DefaultRole $entity, bool $flush = true): int

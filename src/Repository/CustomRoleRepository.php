@@ -27,6 +27,8 @@ class CustomRoleRepository extends ServiceEntityRepository
      * @param CustomRole $entity
      * @param bool $flush
      *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
      * @return int
      */
     public function add(CustomRole $entity, bool $flush = true): int

@@ -27,6 +27,8 @@ class PermissionRepository extends ServiceEntityRepository
      * @param Permission $entity
      * @param bool $flush
      *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
      * @return int
      */
     public function add(Permission $entity, bool $flush = true): int

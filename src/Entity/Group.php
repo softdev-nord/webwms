@@ -51,11 +51,11 @@ class Group
     /**
      * @ORM\OneToMany(targetEntity="WebWMS\Entity\Survey", mappedBy="group")
      */
-    private $survey;
+//    private $survey;
 
     public function __construct()
     {
-        $this->roles = new ArrayCollection();
+//        $this->roles = new ArrayCollection();
         $this->features = new ArrayCollection();
         $this->user = new ArrayCollection();
     }
@@ -84,15 +84,15 @@ class Group
         $this->name = $name;
     }
 
-  public function getRoles(): Collection
-  {
-      return $this->roles;
-  }
+//    public function getRoles(): Collection
+//    {
+//      return $this->roles;
+//    }
 
-  public function addRole(Role $role): void
-  {
-      $this->roles[] = $role;
-  }
+//    public function addRole(Role $role): void
+//    {
+//      $this->roles[] = $role;
+//    }
 
     public function addUser(User $user): void
     {
@@ -144,5 +144,5 @@ class Group
         }
 
         return false;
-    }
+}
 }

@@ -25,6 +25,8 @@ class SurveyRepository extends ServiceEntityRepository
    * @param Survey $entity
    * @param bool $flush
    *
+   * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+   *
    * @return int
    */
     public function save(Survey $entity, bool $flush = true): int
@@ -43,6 +45,14 @@ class SurveyRepository extends ServiceEntityRepository
         return $entity->getId();
     }
 
+    /**
+     * @param Survey $entity
+     * @param bool $flush
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
+     * @return void
+     */
     public function remove(Survey $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
