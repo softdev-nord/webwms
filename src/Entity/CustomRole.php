@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use WebWMS\Repository\CustomRoleRepository;
 
 /**
- * Role
+ * Role.
  *
  * @ORM\Entity(repositoryClass=CustomRoleRepository::class)
  */
@@ -19,11 +19,11 @@ class CustomRole extends Role
 {
     /**
      * One Role has One Group.
+     *
      * @ManyToOne(targetEntity="WebWMS\Entity\Group")
      * @ORM\JoinColumns({
      *   @JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")
      *})
-     *
      */
     protected Group $group;
 
@@ -34,8 +34,6 @@ class CustomRole extends Role
     }
 
     /**
-     * @param Group $group
-     *
      * @return $this
      */
     public function setGroup(Group $group): self

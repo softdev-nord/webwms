@@ -6,7 +6,6 @@ namespace WebWMS\Service\BookingMethod;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +40,7 @@ class BookingMethodService
     /**
      * @throws EntityNotFoundException
      */
-    public function getBookingMethod($bookingMethod, $request): RedirectResponse|Response
+    public function getBookingMethod($bookingMethod, Request $request): RedirectResponse|Response
     {
         return match ($bookingMethod) {
             'stock_in' => $this->stockIn($request), // SI101 Einlagern direkt
@@ -377,9 +376,7 @@ class BookingMethodService
     protected function renderView(string $view, array $parameters = []): string
     {
         if (!$this->container->has('twig')) {
-            throw new \LogicException(
-                'You cannot use the "renderView" method if the Twig Bundle is not available. Try running "composer require symfony/twig-bundle".'
-            );
+            throw new \LogicException('You cannot use the "renderView" method if the Twig Bundle is not available. Try running "composer require symfony/twig-bundle".');
         }
 
         return $this->container->get('twig')->render($view, $parameters);

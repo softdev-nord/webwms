@@ -2,18 +2,17 @@
 
 namespace WebWMS\Controller;
 
-use WebWMS\Entity\DefaultRole;
-use WebWMS\Entity\Role;
-use WebWMS\Repository\PermissionRepository;
-use WebWMS\Form\RoleType;
-use WebWMS\Repository\DefaultRoleRepository;
-use WebWMS\Repository\RoleRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Service\RoleService;
+use WebWMS\Entity\DefaultRole;
+use WebWMS\Entity\Role;
+use WebWMS\Form\RoleType;
+use WebWMS\Repository\DefaultRoleRepository;
+use WebWMS\Repository\PermissionRepository;
+use WebWMS\Repository\RoleRepository;
 
 class RoleController extends AbstractController
 {
@@ -31,30 +30,25 @@ class RoleController extends AbstractController
     {
         try {
             $role = new DefaultRole();
-            $roleName = "role_" . rand(0, 9999);
+            $roleName = 'role_'.rand(0, 9999);
             $role->setName($roleName);
-            $role->setDescription($roleName . ' Description');
+            $role->setDescription($roleName.' Description');
             $role->setType(Role::CUSTOM_ROLE_TYPE);
 
             $roleId = $this->roleRepository->add($role);
+
             return $this->json([
               'role_id' => $roleId,
-              "role_name" => $roleName,
-              "type" => Role::CUSTOM_ROLE_TYPE,
+              'role_name' => $roleName,
+              'type' => Role::CUSTOM_ROLE_TYPE,
             ]);
         } catch (\Throwable $e) {
-            return $this->json(["error_message" => $e->getMessage()]);
+            return $this->json(['error_message' => $e->getMessage()]);
         }
     }
 
     /**
-     * @param Request $request
-     * @param int $roleId
-     * @param int $permissionId
-     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     *
-     * @return Response
      */
     #[Route('/acl/assign-role-to-permission/role/{roleId}/permission/{permissionId}', name: 'assign_permissions_to_role')]
     public function assignPermission(Request $request, int $roleId, int $permissionId): Response
@@ -64,27 +58,27 @@ class RoleController extends AbstractController
               'id' => $roleId,
             ]);
             if (empty($role)) {
-                throw new EntityNotFoundException("Role does not exist with provided Id!");
+                throw new EntityNotFoundException('Role does not exist with provided Id!');
             }
 
             $permission = $this->permissionRepository->findOneBy([
               'id' => $permissionId,
             ]);
             if (empty($permission)) {
-                throw new EntityNotFoundException("Permission does not exist with provided Id!");
+                throw new EntityNotFoundException('Permission does not exist with provided Id!');
             }
 
             $role->addPermission($permission);
             $roleId = $this->roleRepository->add($role);
+
             return $this->json([
               'role_id' => $roleId,
-              "message" => "Permission ". $permission->getName() ."has been assign to role!",
+              'message' => 'Permission '.$permission->getName().'has been assign to role!',
             ]);
         } catch (\Throwable $e) {
-            return $this->json(["error_message" => $e->getMessage()]);
+            return $this->json(['error_message' => $e->getMessage()]);
         }
     }
-
 
     #[Route('/acl/role/{id}/edit', name: 'role_edit')]
     public function edit(Role $role, Request $request, RoleRepository $roleRepository): Response
@@ -95,15 +89,16 @@ class RoleController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $roleRepository->add($role);
                 $this->addFlash('success', 'User Updated!');
+
                 return $this->redirectToRoute('role_edit', [
-                  'id' => $role->getId()
+                  'id' => $role->getId(),
                 ]);
             }
         }
 
         return $this->render('role/edit.html.twig', [
           'roleForm' => $form->createView(),
-          'role' => $role
+          'role' => $role,
         ]);
     }
 }

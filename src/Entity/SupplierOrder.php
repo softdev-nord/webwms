@@ -6,7 +6,6 @@ namespace WebWMS\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use WebWMS\Components\Entity\ModelEntity;
 use WebWMS\Repository\SupplierOrderRepository;
 

@@ -2,11 +2,10 @@
 
 namespace WebWMS\Entity;
 
-use WebWMS\Repository\SurveyRepository;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\SurveyRepository;
 
 /**
- *
  * @ORM\Table(name="survey")
  * @ORM\Entity(repositoryClass=SurveyRepository::class)
  */
@@ -45,57 +44,36 @@ class Survey
         $this->updatedAt = new \DateTime();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param \DateTime $createdAt
-     */
     public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param \DateTime $updatedAt
-     */
     public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;

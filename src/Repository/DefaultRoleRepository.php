@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\DefaultRole;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\DefaultRole;
 
 /**
  * @extends ServiceEntityRepository<DefaultRole>
@@ -24,12 +24,7 @@ class DefaultRoleRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param DefaultRole $entity
-     * @param bool $flush
-     *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
-     * @return int
      */
     public function add(DefaultRole $entity, bool $flush = true): int
     {

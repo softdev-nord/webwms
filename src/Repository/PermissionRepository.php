@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\Permission;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\Permission;
 
 /**
  * @extends ServiceEntityRepository<Permission>
@@ -24,12 +24,7 @@ class PermissionRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Permission $entity
-     * @param bool $flush
-     *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
-     * @return int
      */
     public function add(Permission $entity, bool $flush = true): int
     {
@@ -49,6 +44,7 @@ class PermissionRepository extends ServiceEntityRepository
             ->from('permission', 'permission');
 
         $stmt = $queryBuilder->executeQuery();
+
         return $stmt->fetchAllAssociative();
     }
 }

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\PermissionRepository;
 
 /**
- * Permission
+ * Permission.
  *
  * @ORM\Table(name="permission")
  * @ORM\Entity(repositoryClass=PermissionRepository::class)
@@ -42,59 +42,39 @@ class Permission
      */
     private string $category;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @return string
-     */
     public function getScope(): string
     {
         return $this->scope;
     }
 
-    /**
-     * @return string
-     */
     public function getCategory(): string
     {
         return $this->category;
     }
 
-    /**
-     * @param int $id
-     */
     public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-  /**
-   * @param string $name
-   *
-   * @throws \Exception
-   */
+    /**
+     * @throws \Exception
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -102,9 +82,6 @@ class Permission
         return $this;
     }
 
-    /**
-     * @param string $description
-     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -112,9 +89,6 @@ class Permission
         return $this;
     }
 
-    /**
-     * @param string $scope
-     */
     public function setScope(string $scope): self
     {
         $this->scope = $scope;
@@ -122,10 +96,6 @@ class Permission
         return $this;
     }
 
-    /**
-     * @param string $category
-     * @return Permission
-     */
     public function setCategory(string $category): self
     {
         $this->category = $category;

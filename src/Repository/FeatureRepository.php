@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\Feature;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\Feature;
 
 /**
  * @extends ServiceEntityRepository<Feature>
@@ -24,12 +24,7 @@ class FeatureRepository extends ServiceEntityRepository
     }
 
   /**
-   * @param Feature $entity
-   * @param bool $flush
-   *
    * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-   *
-   * @return int
    */
   public function add(Feature $entity, bool $flush = true): int
   {

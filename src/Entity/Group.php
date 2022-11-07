@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\GroupRepository;
 
 /**
- * Group
+ * Group.
  *
  * @ORM\Table(name="`group`")
  * @ORM\Entity(repositoryClass=GroupRepository::class)
@@ -60,25 +60,16 @@ class Group
         $this->user = new ArrayCollection();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
@@ -114,27 +105,16 @@ class Group
         $this->features[] = $feature;
     }
 
-    /**
-     * @param bool $useDefaultRoles
-     */
     public function setUseDefaultRoles(bool $useDefaultRoles): void
     {
         $this->useDefaultRoles = $useDefaultRoles;
     }
 
-    /**
-     * @return bool
-     */
     public function isUseDefaultRoles(): bool
     {
         return $this->useDefaultRoles;
     }
 
-    /**
-     * @param Feature $feature
-     *
-     * @return bool
-     */
     public function hasFeature(Feature $feature): bool
     {
         foreach ($this->getFeatures() as $groupFeature) {
@@ -144,5 +124,5 @@ class Group
         }
 
         return false;
-}
+    }
 }

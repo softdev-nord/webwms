@@ -4,22 +4,18 @@ declare(strict_types=1);
 
 namespace WebWMS\Form;
 
-use WebWMS\Entity\Feature;
-use WebWMS\Entity\Group;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use WebWMS\Entity\Feature;
+use WebWMS\Entity\Group;
 
 class GroupFeatureType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
-     * @return void
      * @throws \Exception
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -29,7 +25,7 @@ class GroupFeatureType extends AbstractType
             'class' => Feature::class,
             'multiple' => true,
             'expanded' => true,
-            'choice_label' => 'name'
+            'choice_label' => 'name',
           ]);
     }
 
@@ -37,7 +33,7 @@ class GroupFeatureType extends AbstractType
     {
         $resolver->setDefaults([
           'data_class' => Group::class,
-          'attr' => ['class="row g-3"']
+          'attr' => ['class="row g-3"'],
         ]);
     }
 }

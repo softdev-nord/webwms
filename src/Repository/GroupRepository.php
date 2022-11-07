@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\Group;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\Group;
 
 /**
  * @extends ServiceEntityRepository<Group>
@@ -24,12 +24,7 @@ class GroupRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Group $entity
-     * @param bool $flush
-     *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
-     * @return int
      */
     public function add(Group $entity, bool $flush = true): int
     {

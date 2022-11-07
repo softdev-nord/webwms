@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
+use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Entity\Group;
 use WebWMS\Entity\User;
 use WebWMS\Form\GroupFeatureType;
 use WebWMS\Form\GroupType;
-use WebWMS\Form\RoleType;
-use WebWMS\Repository\FeatureRepository;
-use WebWMS\Repository\UserRepository;
 use WebWMS\Repository\DefaultRoleRepository;
 use WebWMS\Repository\GroupRepository;
-use Doctrine\ORM\EntityNotFoundException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Repository\UserRepository;
 
 /**
  * @package:    WebWMS\Controller
@@ -44,13 +41,14 @@ class GroupController extends AbstractController
     {
         try {
             $group = new Group();
-            $groupName = "group_" . rand(0, 9999);
+            $groupName = 'group_'.rand(0, 9999);
             $group->setName($groupName);
 
             $groupId = $this->groupRepository->add($group);
-            return $this->json(['group_id' => $groupId, "group_name" => $groupName]);
+
+            return $this->json(['group_id' => $groupId, 'group_name' => $groupName]);
         } catch (\Throwable $e) {
-            return $this->json(["error_message" => $e->getMessage()]);
+            return $this->json(['error_message' => $e->getMessage()]);
         }
     }
 
@@ -64,39 +62,39 @@ class GroupController extends AbstractController
 
         $role = $this->roleRepository->findOneBy(['id' => (int) $roleId, 'type' => 'default']);
         if (empty($role)) {
-            throw new EntityNotFoundException("Role does not exist with provided Id!");
+            throw new EntityNotFoundException('Role does not exist with provided Id!');
         }
 
         try {
             $group->addRole($role);
             $updatedGroup = $this->groupRepository->add($group);
 
-            return $this->json(['group_id' => $updatedGroup, "message" => "role has been assigned to the group!"]);
+            return $this->json(['group_id' => $updatedGroup, 'message' => 'role has been assigned to the group!']);
         } catch (\Throwable $e) {
-            return $this->json(["error_message" => $e->getMessage()]);
+            return $this->json(['error_message' => $e->getMessage()]);
         }
     }
 
     /**
      * @throws EntityNotFoundException
      */
-    #[Route('/acl/group/{groupId}/user/{userId}', name:'assign_user_to_group')]
+    #[Route('/acl/group/{groupId}/user/{userId}', name: 'assign_user_to_group')]
     public function assignUser(int $groupId, int $userId): JsonResponse
     {
         $group = $this->getGroup($groupId);
 
         $user = $this->userRepository->findOneBy(['id' => (int) $userId]);
         if (empty($user)) {
-            throw new EntityNotFoundException("User does not exist with provided Id!");
+            throw new EntityNotFoundException('User does not exist with provided Id!');
         }
 
         try {
             $group->addUser($user);
             $updatedGroup = $this->groupRepository->add($group);
 
-            return $this->json(['group_id' => $updatedGroup, "message" => "User has been added to the group!"]);
+            return $this->json(['group_id' => $updatedGroup, 'message' => 'User has been added to the group!']);
         } catch (\Throwable $e) {
-            return $this->json(["error_message" => $e->getMessage()]);
+            return $this->json(['error_message' => $e->getMessage()]);
         }
     }
 
@@ -110,7 +108,7 @@ class GroupController extends AbstractController
         $groups = $user->getGroups();
 
         return $this->render('group/list.html.twig', [
-          'groups' => $groups
+          'groups' => $groups,
         ]);
     }
 
@@ -123,15 +121,16 @@ class GroupController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $groupRepository->add($group);
                 $this->addFlash('success', 'Group Updated!');
+
                 return $this->redirectToRoute('group_edit', [
-                  'id' => $group->getId()
+                  'id' => $group->getId(),
                 ]);
             }
         }
 
         return $this->render('group/edit.html.twig', [
           'groupForm' => $form->createView(),
-          'group' => $group
+          'group' => $group,
         ]);
     }
 
@@ -153,14 +152,11 @@ class GroupController extends AbstractController
         $roles = $user->getGroupRoles();
 
         return $this->render('group/listRoles.html.twig', [
-          'roles' => $roles
+          'roles' => $roles,
         ]);
     }
 
     /**
-     * @param int $groupId
-     *
-     * @return Group
      * @throws EntityNotFoundException
      */
     private function getGroup(int $groupId): Group
@@ -168,8 +164,9 @@ class GroupController extends AbstractController
         $group = $this->groupRepository->findOneBy(['id' => $groupId]);
 
         if (empty($group)) {
-            throw new EntityNotFoundException("Group does not exist with provided Id!");
+            throw new EntityNotFoundException('Group does not exist with provided Id!');
         }
+
         return $group;
     }
 
@@ -188,15 +185,16 @@ class GroupController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->groupRepository->add($group);
                 $this->addFlash('success', 'Features Updated for this group!');
+
                 return $this->redirectToRoute('group_features', [
-                  'id' => $group->getId()
+                  'id' => $group->getId(),
                 ]);
             }
         }
 
         return $this->render('group/featureList.html.twig', [
           'groupFeatureForm' => $form->createView(),
-          'group' => $group
+          'group' => $group,
         ]);
     }
 }

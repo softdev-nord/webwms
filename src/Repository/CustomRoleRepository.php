@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\CustomRole;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\CustomRole;
 
 /**
  * @extends ServiceEntityRepository<CustomRole>
@@ -24,12 +24,7 @@ class CustomRoleRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param CustomRole $entity
-     * @param bool $flush
-     *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
-     * @return int
      */
     public function add(CustomRole $entity, bool $flush = true): int
     {

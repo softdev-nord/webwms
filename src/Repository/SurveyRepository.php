@@ -2,9 +2,9 @@
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\Survey;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\Survey;
 
 /**
  * @extends ServiceEntityRepository<Survey>
@@ -21,14 +21,9 @@ class SurveyRepository extends ServiceEntityRepository
         parent::__construct($registry, Survey::class);
     }
 
-  /**
-   * @param Survey $entity
-   * @param bool $flush
-   *
-   * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-   *
-   * @return int
-   */
+    /**
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     */
     public function save(Survey $entity, bool $flush = true): int
     {
         /*$this->getEntityManager()->persist($entity);
@@ -46,12 +41,7 @@ class SurveyRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Survey $entity
-     * @param bool $flush
-     *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
-     * @return void
      */
     public function remove(Survey $entity, bool $flush = false): void
     {
@@ -61,8 +51,6 @@ class SurveyRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-
 
 //    /**
 //     * @return Survey[] Returns an array of Survey objects

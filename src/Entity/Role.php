@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\RoleRepository;
 
 /**
- * Role
+ * Role.
  *
  * @ORM\Table(name="role")
  * @ORM\Entity(repositoryClass=RoleRepository::class)
@@ -24,12 +24,12 @@ use WebWMS\Repository\RoleRepository;
  */
 class Role
 {
-    const DEFAULT_ROLE_TYPE = DefaultRole::class;
-    const CUSTOM_ROLE_TYPE = CustomRole::class;
+    public const DEFAULT_ROLE_TYPE = DefaultRole::class;
+    public const CUSTOM_ROLE_TYPE = CustomRole::class;
 
-    const TYPES = [
+    public const TYPES = [
         self::DEFAULT_ROLE_TYPE,
-        self::CUSTOM_ROLE_TYPE
+        self::CUSTOM_ROLE_TYPE,
     ];
 
     /**
@@ -69,9 +69,6 @@ class Role
         $this->user = new ArrayCollection();
     }
 
-    /**
-     * @return Collection
-     */
     public function getUser(): Collection
     {
         return $this->user;
@@ -105,6 +102,7 @@ class Role
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 

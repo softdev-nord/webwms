@@ -2,16 +2,16 @@
 
 namespace WebWMS\Controller;
 
+use Doctrine\ORM\EntityNotFoundException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Entity\Group;
 use WebWMS\Entity\Survey;
 use WebWMS\Repository\SurveyRepository;
 use WebWMS\Repository\UserRepository;
-use Doctrine\ORM\EntityNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class SurveyController extends AbstractController
 {
@@ -21,23 +21,17 @@ class SurveyController extends AbstractController
     ) {
     }
 
-    /**
-     * @param Group $group
-     * @param Request $request
-     *
-     * @return Response
-     */
     #[Route('/survey/group/{id}', name: 'create-survey')]
-    //#[IsGranted((array)'lb_survey create node survey', subject: 'group')]
+    // #[IsGranted((array)'lb_survey create node survey', subject: 'group')]
     public function create(Group $group, Request $request): Response
     {
-        //$this->denyAccessUnlessGranted('can_create_survey', $group);
+        // $this->denyAccessUnlessGranted('can_create_survey', $group);
 
         try {
             $name = $request->get('name');
 
             if (empty($name)) {
-                throw new EntityNotFoundException("User id or survey name can not be null!");
+                throw new EntityNotFoundException('User id or survey name can not be null!');
             }
 
             $survey = new Survey();
@@ -46,21 +40,14 @@ class SurveyController extends AbstractController
             $surveyId = $this->surveyRepository->save($survey);
 
             return $this->json([
-              "surveyId" => $surveyId,
-              "message" => "Survey created successfully",
+              'surveyId' => $surveyId,
+              'message' => 'Survey created successfully',
             ]);
         } catch (\Throwable $e) {
-            return $this->json(["error_message" => $e->getMessage()]);
+            return $this->json(['error_message' => $e->getMessage()]);
         }
     }
 
-
-    /**
-     * @param Survey $survey
-     * @param Request $request
-     *
-     * @return Response
-     */
     #[Route('/survey/{id}/edit', name: 'edit-survey')]
     public function edit(Survey $survey, Request $request): Response
     {
@@ -70,7 +57,7 @@ class SurveyController extends AbstractController
             $name = $request->get('name');
 
             if (empty($name)) {
-                throw new EntityNotFoundException("User id or survey name can not be null!");
+                throw new EntityNotFoundException('User id or survey name can not be null!');
             }
 
             $survey->setName($name);
@@ -78,11 +65,11 @@ class SurveyController extends AbstractController
             $surveyId = $this->surveyRepository->save($survey);
 
             return $this->json([
-              "surveyId" => $surveyId,
-              "message" => "Survey created successfully",
+              'surveyId' => $surveyId,
+              'message' => 'Survey created successfully',
             ]);
         } catch (\Throwable $e) {
-            return $this->json(["error_message" => $e->getMessage()]);
+            return $this->json(['error_message' => $e->getMessage()]);
         }
     }
 }

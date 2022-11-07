@@ -8,24 +8,23 @@ use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\DefaultRoleRepository;
 
 /**
- * DefaultRole
+ * DefaultRole.
  *
  * @ORM\Entity(repositoryClass=DefaultRoleRepository::class)
  */
 class DefaultRole extends Role
 {
-    const NON_MEMBER = 'non-member';
-    const MEMBER = 'member';
-    const ADMINISTRATOR_MEMBER = 'administrator member';
-    const CONTRIBUTOR_MEMBER = 'contributor member';
+    public const NON_MEMBER = 'non-member';
+    public const MEMBER = 'member';
+    public const ADMINISTRATOR_MEMBER = 'administrator member';
+    public const CONTRIBUTOR_MEMBER = 'contributor member';
 
-    const VALID_NAMES = [
+    public const VALID_NAMES = [
       self::NON_MEMBER,
       self::MEMBER,
       self::ADMINISTRATOR_MEMBER,
-      self::CONTRIBUTOR_MEMBER
+      self::CONTRIBUTOR_MEMBER,
     ];
-
 
     public function __construct()
     {
@@ -33,9 +32,8 @@ class DefaultRole extends Role
     }
 
     /**
-     * @param string $name
-     *
      * @return $this
+     *
      * @throws \Exception
      */
     public function setName(string $name): self
@@ -45,6 +43,7 @@ class DefaultRole extends Role
         }
 
         $this->name = $name;
+
         return $this;
     }
 }

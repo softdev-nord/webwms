@@ -20,8 +20,8 @@ final class Version20221102075855 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        //$this->addSql('ALTER TABLE transport_history CHANGE charge charge VARCHAR(20) NOT NULL, CHANGE confirmation_state confirmation_state INT NOT NULL, CHANGE tr_blocked tr_blocked INT NOT NULL, CHANGE tr_start_date tr_start_date DATETIME NOT NULL');
-        //$this->addSql('ALTER TABLE transport_request CHANGE doc_id doc_id INT NOT NULL, CHANGE charge charge VARCHAR(20) NOT NULL, CHANGE confirmation_state confirmation_state INT NOT NULL, CHANGE tr_blocked tr_blocked INT NOT NULL, CHANGE tr_start_date tr_start_date DATETIME NOT NULL');
+        // $this->addSql('ALTER TABLE transport_history CHANGE charge charge VARCHAR(20) NOT NULL, CHANGE confirmation_state confirmation_state INT NOT NULL, CHANGE tr_blocked tr_blocked INT NOT NULL, CHANGE tr_start_date tr_start_date DATETIME NOT NULL');
+        // $this->addSql('ALTER TABLE transport_request CHANGE doc_id doc_id INT NOT NULL, CHANGE charge charge VARCHAR(20) NOT NULL, CHANGE confirmation_state confirmation_state INT NOT NULL, CHANGE tr_blocked tr_blocked INT NOT NULL, CHANGE tr_start_date tr_start_date DATETIME NOT NULL');
         $this->addSql('ALTER TABLE user CHANGE roles roles LONGTEXT NOT NULL COMMENT \'(DC2Type:json)\'');
     }
 

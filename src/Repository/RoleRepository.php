@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Repository;
 
-use WebWMS\Entity\Role;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Entity\Role;
 
 /**
  * @extends ServiceEntityRepository<Role>
@@ -24,12 +24,7 @@ class RoleRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Role $entity
-     * @param bool $flush
-     *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
-     * @return int
      */
     public function add(Role $entity, bool $flush = true): int
     {
@@ -49,6 +44,7 @@ class RoleRepository extends ServiceEntityRepository
             ->from('role', 'r');
 
         $stmt = $queryBuilder->executeQuery();
+
         return $stmt->fetchAllAssociative();
     }
 }

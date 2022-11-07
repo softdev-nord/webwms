@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\Permission as Permissions;
-use WebWMS\Repository\PermissionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Entity\Permission as Permissions;
+use WebWMS\Repository\PermissionRepository;
 
 /**
  * @package:    WebWMS\Controller
@@ -29,7 +29,7 @@ class Permission extends AbstractController
     {
         return $this->render('role/index.html.twig', [
             'page' => 'Übersicht Benutzerollen',
-            'permissions' => $this->permissionRepository->findAll()
+            'permissions' => $this->permissionRepository->findAll(),
         ]);
     }
 
@@ -46,18 +46,17 @@ class Permission extends AbstractController
             $permission->setName($name);
             $permission->setCategory($category);
             $permission->setScope($scope);
-            $permission->setDescription($name . ' Description');
-
+            $permission->setDescription($name.' Description');
 
             $permissionId = $this->permissionRepository->add($permission);
 
             return $this->json([
               'permissionId' => $permissionId,
               'permissionName' => $name,
-              "message" => "Permission has been created successfully!",
+              'message' => 'Permission has been created successfully!',
             ]);
         } catch (\Throwable $e) {
-            return $this->json(["error_message" => $e->getMessage()]);
+            return $this->json(['error_message' => $e->getMessage()]);
         }
     }
 }

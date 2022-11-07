@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Kernel;
@@ -30,7 +29,7 @@ class Homepage extends AbstractController
         $bundles = $this->kernel->getBundles();
         $bundles['DashboardBundle']->getNamespace();
 
-        //dd($this->kernel->getProjectDir());
+        // dd($this->kernel->getProjectDir());
 
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -45,7 +44,7 @@ class Homepage extends AbstractController
                 'appCopyright' => $this->requirements->getAppCopyright(),
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Startseite',
-                'test' => $this->kernel->getBundles()
+                'test' => $this->kernel->getBundles(),
             ]
         );
     }

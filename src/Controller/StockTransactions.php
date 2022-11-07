@@ -30,8 +30,6 @@ class StockTransactions extends AbstractController
     /**
      * SI101 Einlagern direkt.
      *
-     * @param Request $request
-     * @return RedirectResponse|Response
      * @throws EntityNotFoundException
      */
     #[Route('/stock_in', name: 'stock_in')]
@@ -42,6 +40,7 @@ class StockTransactions extends AbstractController
         }
 
         $bookingMethod = $request->attributes->get('_route');
+
         return $this->bookingMethodService->getBookingMethod($bookingMethod, $request);
     }
 

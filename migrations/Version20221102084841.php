@@ -32,9 +32,9 @@ final class Version20221102084841 extends AbstractMigration
         $this->addSql('ALTER TABLE user_group ADD CONSTRAINT FK_8F02BF9DFE54D947 FOREIGN KEY (group_id) REFERENCES `group` (id)');
         $this->addSql('ALTER TABLE user_role ADD CONSTRAINT FK_2DE8C6A3A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE user_role ADD CONSTRAINT FK_2DE8C6A3D60322AC FOREIGN KEY (role_id) REFERENCES role (id)');
-        //$this->addSql('ALTER TABLE transport_history CHANGE charge charge VARCHAR(20) NOT NULL, CHANGE confirmation_state confirmation_state INT NOT NULL, CHANGE tr_blocked tr_blocked INT NOT NULL, CHANGE tr_start_date tr_start_date DATETIME NOT NULL');
-        //$this->addSql('ALTER TABLE transport_request CHANGE doc_id doc_id INT NOT NULL, CHANGE charge charge VARCHAR(20) NOT NULL, CHANGE confirmation_state confirmation_state INT NOT NULL, CHANGE tr_blocked tr_blocked INT NOT NULL, CHANGE tr_start_date tr_start_date DATETIME NOT NULL');
-        //$this->addSql('ALTER TABLE user ADD email VARCHAR(255) NOT NULL, ADD last_login DATETIME DEFAULT NULL, ADD enabled TINYINT(1) NOT NULL, ADD created_at DATETIME NOT NULL, ADD updated_at DATETIME NOT NULL, CHANGE username username VARCHAR(255) NOT NULL');
+        // $this->addSql('ALTER TABLE transport_history CHANGE charge charge VARCHAR(20) NOT NULL, CHANGE confirmation_state confirmation_state INT NOT NULL, CHANGE tr_blocked tr_blocked INT NOT NULL, CHANGE tr_start_date tr_start_date DATETIME NOT NULL');
+        // $this->addSql('ALTER TABLE transport_request CHANGE doc_id doc_id INT NOT NULL, CHANGE charge charge VARCHAR(20) NOT NULL, CHANGE confirmation_state confirmation_state INT NOT NULL, CHANGE tr_blocked tr_blocked INT NOT NULL, CHANGE tr_start_date tr_start_date DATETIME NOT NULL');
+        // $this->addSql('ALTER TABLE user ADD email VARCHAR(255) NOT NULL, ADD last_login DATETIME DEFAULT NULL, ADD enabled TINYINT(1) NOT NULL, ADD created_at DATETIME NOT NULL, ADD updated_at DATETIME NOT NULL, CHANGE username username VARCHAR(255) NOT NULL');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON user (username)');
     }
 

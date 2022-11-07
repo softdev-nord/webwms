@@ -7,8 +7,6 @@ namespace WebWMS\Service\SupplierOrder;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\SupplierOrder;
 use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\DataHandlers\SupplierOrder\SupplierOrderDataHandler;

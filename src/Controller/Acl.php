@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
-use WebWMS\Entity\CustomRole;
-use WebWMS\Entity\Group;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Entity\CustomRole;
+use WebWMS\Entity\Group;
 use WebWMS\Entity\Permission;
 use WebWMS\Entity\Role;
 use WebWMS\Entity\User;
@@ -34,13 +33,10 @@ class Acl extends AbstractController
     ) {
     }
 
-    /**
-     * @return Response
-     */
     #[Route('/acl', name: 'app_index')]
     public function index(): Response
     {
-        //dd($this->permissionRepository->getAllPermissions());
+        // dd($this->permissionRepository->getAllPermissions());
 
         return $this->render('acl/index.html.twig', [
             'page' => 'Übersicht Benutzerrechte',
@@ -59,13 +55,13 @@ class Acl extends AbstractController
 //        RoleRepository $roleRepository,
 //        PermissionRepository $permissionRepository
 //    ): Response {
-////    $user = $this->getUser();
-////
-////    if (!$permissionService->canAccess($user->getId(), $groupId, new Permission('list any contract content')) ||
-////      !$featureService->isEnabled('gov_contracts_feature', $groupId)
-////    ) {
-////      return new JsonResponse('Access denied', Response::HTTP_UNAUTHORIZED);
-////    }
+// //    $user = $this->getUser();
+// //
+// //    if (!$permissionService->canAccess($user->getId(), $groupId, new Permission('list any contract content')) ||
+// //      !$featureService->isEnabled('gov_contracts_feature', $groupId)
+// //    ) {
+// //      return new JsonResponse('Access denied', Response::HTTP_UNAUTHORIZED);
+// //    }
 //        $user = new User();
 //        $user->setUsername($username.rand());
 //        $user->setPassword('testPassword');
@@ -104,11 +100,12 @@ class Acl extends AbstractController
 
         /** @var Role $role */
         foreach ($user->getRoles() as $role) {
-            var_dump('user role =>'. $role->getName().'<br/>');
+            var_dump('user role =>'.$role->getName().'<br/>');
             foreach ($role->getPermissions() as $permission) {
-                var_dump('user role permission =>'. $permission->getPermission().'<br/>');
+                var_dump('user role permission =>'.$permission->getPermission().'<br/>');
             }
         }
+
         return new Response('Ok');
     }
 
