@@ -19,7 +19,7 @@ class CustomerOrderPos extends ModelEntity
      * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\CustomerOrder", inversedBy="details")
      * @ORM\JoinColumn(name="customer_order_id", referencedColumnName="id")
      */
-    protected ArrayCollection $customerOrders;
+    protected CustomerOrder $customerOrders;
 
     /**
      * @ORM\Id
@@ -89,12 +89,12 @@ class CustomerOrderPos extends ModelEntity
         return $this;
     }
 
-    public function getCustomerOrders(): ArrayCollection
+    public function getCustomerOrders(): CustomerOrder
     {
         return $this->customerOrders;
     }
 
-    public function setCustomerOrders(ArrayCollection $customerOrders): void
+    public function setCustomerOrders(CustomerOrder $customerOrders): void
     {
         $this->customerOrders = $customerOrders;
     }

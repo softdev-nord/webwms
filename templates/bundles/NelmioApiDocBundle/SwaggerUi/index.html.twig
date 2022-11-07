@@ -31,5 +31,30 @@ https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/
     {{ parent() }}
 {% endblock javascripts %}
 
+{% block swagger_ui %}
+    <div id="swagger-ui" class="api-platform">
+        test
+        <div class="information-container wrapper">
+            <section class="block col-12">
+                <div>
+                    <div class="info">
+                        <hgroup class="main">
+                            <h2 class="title"><span class="text-first">web</span><span class="text-last">WMS</span> API
+                                <span>
+                                <small><pre class="version"> 1.0.0 </pre></small>
+                                <small class="version-stamp"><pre class="version">OAS3</pre></small>
+                            </span>
+                            </h2>
+                        </hgroup>
+                        <div class="description">
+                            <div class="renderedMarkdown"><p>An API for fetching, adding, adapting and deleting resources.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
 {% block header_block %}
 {% endblock header_block %}

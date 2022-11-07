@@ -36,6 +36,11 @@ parameters:
 			path: src/Components/Entity/ModelEntity.php
 
 		-
+			message: "#^Cannot call method getRoles\\(\\) on Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null\\.$#"
+			count: 1
+			path: src/Controller/Acl.php
+
+		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: src/Controller/Api/Customer.php
@@ -91,6 +96,31 @@ parameters:
 			path: src/Controller/CustomerOrder.php
 
 		-
+			message: "#^Call to an undefined method WebWMS\\\\Entity\\\\Group\\:\\:addRole\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/GroupController.php
+
+		-
+			message: "#^Cannot call method getGroups\\(\\) on Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null\\.$#"
+			count: 1
+			path: src/Controller/GroupController.php
+
+		-
+			message: "#^Cannot call method hasGroup\\(\\) on Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null\\.$#"
+			count: 1
+			path: src/Controller/GroupController.php
+
+		-
+			message: "#^Parameter \\#1 \\$submittedData of method Symfony\\\\Component\\\\Form\\\\FormInterface\\:\\:submit\\(\\) expects array\\|string\\|null, bool\\|float\\|int\\|string\\|null given\\.$#"
+			count: 2
+			path: src/Controller/GroupController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\Permission\\:\\:index\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Controller/Permission.php
+
+		-
 			message: "#^Method WebWMS\\\\Controller\\\\Requirements\\:\\:__toString\\(\\) should return string but returns bool\\|string\\.$#"
 			count: 1
 			path: src/Controller/Requirements.php
@@ -109,6 +139,11 @@ parameters:
 			message: "#^Parameter \\#1 \\$bytes of method WebWMS\\\\Controller\\\\Requirements\\:\\:encodeSize\\(\\) expects float, float\\|false given\\.$#"
 			count: 1
 			path: src/Controller/Requirements.php
+
+		-
+			message: "#^Parameter \\#1 \\$submittedData of method Symfony\\\\Component\\\\Form\\\\FormInterface\\:\\:submit\\(\\) expects array\\|string\\|null, bool\\|float\\|int\\|string\\|null given\\.$#"
+			count: 1
+			path: src/Controller/RoleController.php
 
 		-
 			message: "#^Method WebWMS\\\\Controller\\\\Security\\:\\:logout\\(\\) has no return typehint specified\\.$#"
@@ -521,11 +556,6 @@ parameters:
 			path: src/Controller/TemplateController.php
 
 		-
-			message: "#^Call to an undefined method WebWMS\\\\Entity\\\\User\\:\\:setPassword\\(\\)\\.$#"
-			count: 1
-			path: src/DataFixtures/UserFixtures.php
-
-		-
 			message: "#^Method WebWMS\\\\DataFixtures\\\\UserFixtures\\:\\:load\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/DataFixtures/UserFixtures.php
@@ -541,9 +571,14 @@ parameters:
 			path: src/Entity/Configuration.php
 
 		-
-			message: "#^Method WebWMS\\\\Entity\\\\Customer\\:\\:getCustomerOrders\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\CustomerOrder\\> but returns \\(Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\Customer\\>\\)\\|Doctrine\\\\ORM\\\\PersistentCollection\\.$#"
+			message: "#^Access to an undefined property WebWMS\\\\Entity\\\\CustomRole\\:\\:\\$users\\.$#"
 			count: 1
-			path: src/Entity/Customer.php
+			path: src/Entity/CustomRole.php
+
+		-
+			message: "#^Access to private property \\$permissions of parent class WebWMS\\\\Entity\\\\Role\\.$#"
+			count: 1
+			path: src/Entity/CustomRole.php
 
 		-
 			message: "#^Method WebWMS\\\\Entity\\\\Customer\\:\\:setId\\(\\) has parameter \\$id with no typehint specified\\.$#"
@@ -556,24 +591,9 @@ parameters:
 			path: src/Entity/Customer.php
 
 		-
-			message: "#^PHPDoc tag @param for parameter \\$customerOrders with type \\(Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\CustomerOrder\\>\\)\\|null is not subtype of native type Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\.$#"
-			count: 1
-			path: src/Entity/Customer.php
-
-		-
-			message: "#^Property WebWMS\\\\Entity\\\\Customer\\:\\:\\$customerOrders type has no value type specified in iterable type \\(Doctrine\\\\Common\\\\Collections\\\\ArrayCollection&iterable\\<WebWMS\\\\Entity\\\\Customer\\>\\)\\|Doctrine\\\\ORM\\\\PersistentCollection\\.$#"
-			count: 1
-			path: src/Entity/Customer.php
-
-		-
 			message: "#^Property WebWMS\\\\Entity\\\\Customer\\:\\:\\$id has no typehint specified\\.$#"
 			count: 1
 			path: src/Entity/Customer.php
-
-		-
-			message: "#^Method WebWMS\\\\Entity\\\\CustomerOrder\\:\\:getDetails\\(\\) return type has no value type specified in iterable type Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\|Doctrine\\\\ORM\\\\PersistentCollection\\.$#"
-			count: 1
-			path: src/Entity/CustomerOrder.php
 
 		-
 			message: "#^Method WebWMS\\\\Entity\\\\CustomerOrder\\:\\:setCustomer\\(\\) has no return typehint specified\\.$#"
@@ -586,19 +606,24 @@ parameters:
 			path: src/Entity/CustomerOrder.php
 
 		-
-			message: "#^Property WebWMS\\\\Entity\\\\CustomerOrder\\:\\:\\$details type has no value type specified in iterable type Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\|Doctrine\\\\ORM\\\\PersistentCollection\\.$#"
-			count: 1
-			path: src/Entity/CustomerOrder.php
-
-		-
 			message: "#^Property WebWMS\\\\Entity\\\\CustomerOrder\\:\\:\\$id has no typehint specified\\.$#"
 			count: 1
 			path: src/Entity/CustomerOrder.php
 
 		-
+			message: "#^Property WebWMS\\\\Entity\\\\CustomerOrderPos\\:\\:\\$customerOrders \\(WebWMS\\\\Entity\\\\CustomerOrder\\) does not accept Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<\\(int\\|string\\), mixed\\>\\.$#"
+			count: 1
+			path: src/Entity/CustomerOrderPos.php
+
+		-
 			message: "#^Property WebWMS\\\\Entity\\\\CustomerOrderPos\\:\\:\\$id has no typehint specified\\.$#"
 			count: 1
 			path: src/Entity/CustomerOrderPos.php
+
+		-
+			message: "#^Access to private property \\$name of parent class WebWMS\\\\Entity\\\\Role\\.$#"
+			count: 1
+			path: src/Entity/DefaultRole.php
 
 		-
 			message: "#^Method WebWMS\\\\Entity\\\\OrderPos\\:\\:setArticleId\\(\\) has parameter \\$articleId with no typehint specified\\.$#"
@@ -614,6 +639,11 @@ parameters:
 			message: "#^Method WebWMS\\\\Entity\\\\OrderPos\\:\\:setOrderPosQuantity\\(\\) has parameter \\$orderPosQuantity with no typehint specified\\.$#"
 			count: 1
 			path: src/Entity/OrderPos.php
+
+		-
+			message: "#^Access to an undefined property WebWMS\\\\Entity\\\\Role\\:\\:\\$type\\.$#"
+			count: 2
+			path: src/Entity/Role.php
 
 		-
 			message: "#^Method WebWMS\\\\Entity\\\\StockLocation\\:\\:setStockLocationCoordinate\\(\\) has parameter \\$stockLocationCoordinate with no typehint specified\\.$#"
@@ -661,9 +691,9 @@ parameters:
 			path: src/Entity/Supplier.php
 
 		-
-			message: "#^Property WebWMS\\\\Entity\\\\Supplier\\:\\:\\$supplierOrders \\(Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<WebWMS\\\\Entity\\\\Supplier\\>\\) does not accept Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\|\\(Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<WebWMS\\\\Entity\\\\SupplierOrder\\>\\)\\|null\\.$#"
+			message: "#^Method WebWMS\\\\Entity\\\\SupplierOrder\\:\\:setDetails\\(\\) has parameter \\$details with no value type specified in iterable type array\\.$#"
 			count: 1
-			path: src/Entity/Supplier.php
+			path: src/Entity/SupplierOrder.php
 
 		-
 			message: "#^Method WebWMS\\\\Entity\\\\SupplierOrder\\:\\:setSupplier\\(\\) has no return typehint specified\\.$#"
@@ -671,14 +701,9 @@ parameters:
 			path: src/Entity/SupplierOrder.php
 
 		-
-			message: "#^Parameter \\#1 \\$data of method WebWMS\\\\Components\\\\Entity\\\\ModelEntity\\:\\:setOneToMany\\(\\) expects array\\<array\\|WebWMS\\\\Components\\\\Entity\\\\ModelEntity\\>\\|null, array\\<WebWMS\\\\Entity\\\\SupplierOrderPos\\>\\|null given\\.$#"
+			message: "#^Method WebWMS\\\\Entity\\\\Survey\\:\\:getId\\(\\) should return int but returns int\\|null\\.$#"
 			count: 1
-			path: src/Entity/SupplierOrder.php
-
-		-
-			message: "#^Property WebWMS\\\\Entity\\\\SupplierOrder\\:\\:\\$supplierOrderNr \\(string\\|null\\) does not accept int\\|null\\.$#"
-			count: 1
-			path: src/Entity/SupplierOrder.php
+			path: src/Entity/Survey.php
 
 		-
 			message: "#^Access to an undefined property WebWMS\\\\Entity\\\\Template\\:\\:\\$correspondences\\.$#"
@@ -707,6 +732,11 @@ parameters:
 
 		-
 			message: "#^Method WebWMS\\\\Entity\\\\User\\:\\:eraseCredentials\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Entity/User.php
+
+		-
+			message: "#^Method WebWMS\\\\Entity\\\\User\\:\\:getLastLogin\\(\\) should return DateTime but returns DateTime\\|null\\.$#"
 			count: 1
 			path: src/Entity/User.php
 
@@ -751,6 +781,21 @@ parameters:
 			path: src/Form/CustomerOrderType.php
 
 		-
+			message: "#^Method WebWMS\\\\Form\\\\GroupFeatureType\\:\\:configureOptions\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Form/GroupFeatureType.php
+
+		-
+			message: "#^Method WebWMS\\\\Form\\\\GroupType\\:\\:configureOptions\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Form/GroupType.php
+
+		-
+			message: "#^Method WebWMS\\\\Form\\\\RoleType\\:\\:configureOptions\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Form/RoleType.php
+
+		-
 			message: "#^Method WebWMS\\\\Form\\\\StockLocationType\\:\\:buildForm\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/Form/StockLocationType.php
@@ -786,6 +831,16 @@ parameters:
 			path: src/Interfaces/ITemplateRenderer.php
 
 		-
+			message: "#^Method WebWMS\\\\Repository\\\\PermissionRepository\\:\\:getAllPermissions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Repository/PermissionRepository.php
+
+		-
+			message: "#^Method WebWMS\\\\Repository\\\\RoleRepository\\:\\:getAllRoles\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Repository/RoleRepository.php
+
+		-
 			message: "#^Method WebWMS\\\\Repository\\\\TemplateRepository\\:\\:loadByTypeName\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/Repository/TemplateRepository.php
@@ -794,11 +849,6 @@ parameters:
 			message: "#^Method WebWMS\\\\Repository\\\\TemplateRepository\\:\\:loadByTypeName\\(\\) has parameter \\$names with no typehint specified\\.$#"
 			count: 1
 			path: src/Repository/TemplateRepository.php
-
-		-
-			message: "#^Call to an undefined method WebWMS\\\\Entity\\\\User\\:\\:setPassword\\(\\)\\.$#"
-			count: 1
-			path: src/Repository/UserRepository.php
 
 		-
 			message: "#^Method WebWMS\\\\Security\\\\LoginFormAuthenticator\\:\\:getCredentials\\(\\) return type has no value type specified in iterable type array\\.$#"
@@ -926,7 +976,7 @@ parameters:
 			path: src/Service/Article/ArticleService.php
 
 		-
-			message: "#^Method WebWMS\\\\Service\\\\BookingMethod\\\\BookingMethodService\\:\\:getBookingMethod\\(\\) has no return typehint specified\\.$#"
+			message: "#^Cannot call method render\\(\\) on object\\|null\\.$#"
 			count: 1
 			path: src/Service/BookingMethod/BookingMethodService.php
 
@@ -937,6 +987,16 @@ parameters:
 
 		-
 			message: "#^Method WebWMS\\\\Service\\\\BookingMethod\\\\BookingMethodService\\:\\:lendingToCostCentre\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Service/BookingMethod/BookingMethodService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\BookingMethod\\\\BookingMethodService\\:\\:render\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Service/BookingMethod/BookingMethodService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\BookingMethod\\\\BookingMethodService\\:\\:renderView\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Service/BookingMethod/BookingMethodService.php
 
@@ -1157,7 +1217,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method WebWMS\\\\Repository\\\\CustomerOrderRepository\\:\\:findById\\(\\)\\.$#"
-			count: 3
+			count: 2
 			path: src/Service/CustomerOrderService.php
 
 		-
@@ -1224,11 +1284,6 @@ parameters:
 			message: "#^Method WebWMS\\\\Service\\\\DataHandlers\\\\Configuration\\\\ConfigurationDataHandler\\:\\:getAllConfigurations\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Service/DataHandlers/Configuration/ConfigurationDataHandler.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\ORM\\\\EntityRepository\\<WebWMS\\\\Entity\\\\Customer\\>\\:\\:findById\\(\\)\\.$#"
-			count: 1
-			path: src/Service/DataHandlers/Customer/CustomerDataHandler.php
 
 		-
 			message: "#^Cannot access offset 'customer_address…' on array\\<bool\\|float\\|int\\|string\\>\\|bool\\|float\\|int\\|string\\.$#"
@@ -1411,6 +1466,11 @@ parameters:
 			path: src/Service/DataHandlers/SupplierOrder/SupplierOrderDataHandler.php
 
 		-
+			message: "#^Parameter \\#1 \\$supplierOrderNr of method WebWMS\\\\Entity\\\\SupplierOrder\\:\\:setSupplierOrderNr\\(\\) expects string\\|null, int given\\.$#"
+			count: 1
+			path: src/Service/DataHandlers/SupplierOrder/SupplierOrderDataHandler.php
+
+		-
 			message: "#^Cannot call method getToken\\(\\) on object\\|null\\.$#"
 			count: 1
 			path: src/Service/LoggingService.php
@@ -1469,6 +1529,11 @@ parameters:
 			message: "#^Method WebWMS\\\\Service\\\\RequirementsService\\:\\:getServerVersion\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/Service/RequirementsService.php
+
+		-
+			message: "#^Method WebWMS\\\\Service\\\\RoleService\\:\\:getAllRoles\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Service/RoleService.php
 
 		-
 			message: "#^Method WebWMS\\\\Service\\\\SlackNotificationService\\:\\:sendSlackNotification\\(\\) has parameter \\$freeStockLocations with no typehint specified\\.$#"
@@ -1812,11 +1877,6 @@ parameters:
 
 		-
 			message: "#^Method WebWMS\\\\Service\\\\SupplierOrder\\\\SupplierOrderService\\:\\:updateSupplierOrderApi\\(\\) has parameter \\$supplierOrderOrderDate with no typehint specified\\.$#"
-			count: 1
-			path: src/Service/SupplierOrder/SupplierOrderService.php
-
-		-
-			message: "#^Parameter \\#1 \\$supplierOrderNr of method WebWMS\\\\Entity\\\\SupplierOrder\\:\\:setSupplierOrderNr\\(\\) expects int\\|null, string given\\.$#"
 			count: 1
 			path: src/Service/SupplierOrder/SupplierOrderService.php
 

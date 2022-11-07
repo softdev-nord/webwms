@@ -34,7 +34,9 @@ class CustomerOrderService
      */
     public function getCustomerOrderApi(int $customerOrderId): ?CustomerOrders
     {
-        $customerOrder = $this->customerOrderRepository->findById($customerOrderId);
+        $customerOrder = $this->entityManager
+            ->getRepository(CustomerOrders::class)
+            ->find($customerOrderId);
 
         if (!$customerOrder) {
             throw new EntityNotFoundException('Customer order with id '.$customerOrderId.' does not exist!');
@@ -180,8 +182,6 @@ class CustomerOrderService
     {
         $customerOrderRepository = $this->entityManager
             ->getRepository(CustomerOrders::class);
-
-        // dd($customerOrderRepository);
 
         return $customerOrderRepository->findBy([], ['customerOrderId' => 'DESC'], 1, 0);
     }

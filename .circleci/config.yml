@@ -89,11 +89,13 @@ jobs:
       - run:
           name: Composer install
           command: |
-            composer install
+            cd webwms/
+            composer install --ignore-platform-reqs
       - run:
           name: Clear the caches
           command: |
-            php bin/console cache:clear
+            cd webwms/
+            php bin/console cache:clear --no-debug
 
   deploy-production:
     working_directory: /home/circleci
@@ -115,10 +117,6 @@ jobs:
           command: |
             cd webwms/
             ci/set-env.sh
-      - run:
-          name: "Show APP_ENV variable"
-          command: |
-            echo $APP_ENV
       - add_ssh_keys:
           fingerprints:
             - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
@@ -138,7 +136,7 @@ jobs:
           name: Clear the caches
           command: |
             cd webwms/
-            php bin/console cache:clear
+            php bin/console cache:clear --no-debug
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows

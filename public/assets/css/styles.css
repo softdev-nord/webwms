@@ -1,192 +1,191 @@
-	.body{	 
-		text-align: center; 
-		background-color: #C0C0C0; 
-	}
+.body{
+	text-align: center;
+	background-color: #C0C0C0;
+}
 
-	.signup-form{
-		width: 600px;
-		margin: 0 auto;
-		padding-top: 200px;
-	}
+.signup-form{
+	width: 600px;
+	margin: 0 auto;
+	padding-top: 200px;
+}
 
-	.signup-form h2{
-		color: #000;
-        margin: 0 0 15px;
-		position: relative;
-		text-align: center;
-    }
+.signup-form h2{
+	color: #000;
+	margin: 0 0 15px;
+	position: relative;
+	text-align: center;
+}
 
-	.signup-form h2:before{
-		left: 0;
-	}
+.signup-form h2:before{
+	left: 0;
+}
 
-	.signup-form h2:after{
-		right: 0;
-	}
+.signup-form h2:after{
+	right: 0;
+}
 
-    .signup-form .hint-text{
-		color: #000;
-		margin-bottom: 30px;
-		text-align: center;
-	}
+.signup-form .hint-text{
+	color: #000;
+	margin-bottom: 30px;
+	text-align: center;
+}
 
-    .signup-form form{
-		border-radius: 3px;
-    	margin-bottom: 15px;
-        background: #f8f8f8;
-        box-shadow: 0 0 10px 2px #282828;
-        padding: 30px;
-    }
+.signup-form form{
+	border-radius: 3px;
+	margin-bottom: 15px;
+	background: #f8f8f8;
+	box-shadow: 0 0 10px 2px #282828;
+	padding: 30px;
+}
 
-	.signup-form .form-group{
-		margin-bottom: 15px;
-	}
+.signup-form .form-group{
+	margin-bottom: 15px;
+}
 
-	.signup-form .btn{        
-        font-size: 16px;
-        font-weight: bold;		
-		min-width: 140px;
-        /*outline: none !important;*/
-		background: #ed7c31;
-		color: #555555;
-		border: 2px groove #555555;
-    }
+.signup-form .btn{
+	font-size: 16px;
+	font-weight: bold;
+	min-width: 140px;
+	/*outline: none !important;*/
+	background: #ed7c31;
+	color: #555555;
+	border: 2px groove #555555;
+}
 
-	.signup-form .btn:hover{
-		font-size: 16px;
-		font-weight: bold;
-		min-width: 140px;
-		/*outline: none !important;*/
-		background: #808080;
-		color: #ed7c31;
-		border: 2px solid #ed7c31;
-	}
+.signup-form .btn:hover{
+	font-size: 16px;
+	font-weight: bold;
+	min-width: 140px;
+	/*outline: none !important;*/
+	background: #808080;
+	color: #ed7c31;
+	border: 2px solid #ed7c31;
+}
 
-	.signup-form .row div:first-child{
-		/*padding-right: 10px;*/
-	}
+.signup-form .row div:first-child{
+	/*padding-right: 10px;*/
+}
 
-	.signup-form .row div:last-child{
-		/*padding-left: 10px;*/
-	}
+.signup-form .row div:last-child{
+	/*padding-left: 10px;*/
+}
 
-    .signup-form a{
-		color: #fff;
-		text-decoration: underline;
-	}
+.signup-form a{
+	color: #fff;
+	text-decoration: underline;
+}
 
-    .signup-form a:hover{
-		text-decoration: none;
-	}
+.signup-form a:hover{
+	text-decoration: none;
+}
 
-	.signup-form form a{
-		color: #ed7c31;
-		text-decoration: none;
-	}
+.signup-form form a{
+	color: #ed7c31;
+	text-decoration: none;
+}
 
-	.signup-form form a:hover{
-		text-decoration: underline;
-	}
+.signup-form form a:hover{
+	text-decoration: underline;
+}
 /* Ende signup-form */
 
 /* Beginn side-form */
 
-	.side-form{
-		margin: 0 auto;
-		padding-top: 95px;
-		width: 98%;
-		
-	}
-	.side-form form{
-		border-radius: 3px;
-    	margin-bottom: 15px;
-        background: #f8f8f8;
-        box-shadow: 0 0 10px 2px #282828;
-        padding: 15px;
-    }
-	
-	.wrapper-form{
-		margin: 5px;
-		padding-top: 86px;
-		
-	}
-	.wrapper-form-content{
-		border-radius: 3px;
-    	margin-bottom: 15px;
-        background: #f8f8f8;
-        box-shadow: 0 0 10px 2px #282828;
-        padding: 15px;
-    }
+.side-form{
+	margin: 0 auto;
+	padding-top: 95px;
+	width: 98%;
 
-	.btn-outline-webLVS {
-		color: #1cc88a;
-		border-color: #eb501f;
-		-webkit-box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
-		box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
-	}
+}
+.side-form form{
+	border-radius: 3px;
+	margin-bottom: 15px;
+	background: #f8f8f8;
+	box-shadow: 0 0 10px 2px #282828;
+	padding: 15px;
+}
 
-	.btn-outline-webLVS:hover {
-		color: #eb501f;
-		background-color: transparent;
-		border-color: #808080;
-	}
+.wrapper-form{
+	margin: 5px;
+	padding-top: 86px;
 
-	.btn-outline-webLVS:focus, .btn-outline-webLVS.focus {
-		-webkit-box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
-		box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
-	}
+}
+.wrapper-form-content{
+	border-radius: 3px;
+	margin-bottom: 15px;
+	background: #f8f8f8;
+	box-shadow: 0 0 10px 2px #282828;
+	padding: 15px;
+}
 
-	.btn-outline-webLVS.disabled, .btn-outline-webLVS:disabled {
-  		color: #1cc88a;
-		background-color: transparent;
-	}
+.btn-outline-webLVS {
+	color: #1cc88a;
+	border-color: #eb501f;
+	-webkit-box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
+	box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
+}
 
-	.btn-outline-webLVS:not(:disabled):not(.disabled):active, .btn-outline-webLVS:not(:disabled):not(.disabled).active,
-	.show > .btn-outline-webLVS.dropdown-toggle {
-		color: #fff;
-		background-color: #1cc88a;
-		border-color: #1cc88a;
-	}
+.btn-outline-webLVS:hover {
+	color: #eb501f;
+	background-color: transparent;
+	border-color: #808080;
+}
 
-	.btn-outline-webLVS:not(:disabled):not(.disabled):active:focus, .btn-outline-webLVS:not(:disabled):not(.disabled).active:focus,
-	.show > .btn-outline-webLVS.dropdown-toggle:focus {
-		-webkit-box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
-		box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
-	}
+.btn-outline-webLVS:focus, .btn-outline-webLVS.focus {
+	-webkit-box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
+	box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
+}
 
-	.nav-webLVS {
-		background-color: #f8f8f8;
-		border-color: #e7e7e7;
-	}
+.btn-outline-webLVS.disabled, .btn-outline-webLVS:disabled {
+	color: #1cc88a;
+	background-color: transparent;
+}
 
-	.brands-webLVS {
-		color: #ed7c31;
-		padding: 3px;
-		margin-left: 5px;
-		margin-right: 5px;
-		border: 2px solid #ed7c31;
-		border-radius: 3px;
-		width: 60px;
-		box-shadow: 3px 3px 3px #808080;
-	}
+.btn-outline-webLVS:not(:disabled):not(.disabled):active, .btn-outline-webLVS:not(:disabled):not(.disabled).active,
+.show > .btn-outline-webLVS.dropdown-toggle {
+	color: #fff;
+	background-color: #1cc88a;
+	border-color: #1cc88a;
+}
 
-	.iconMenu-webLVS {
-		margin-left: 5px;
-		margin-right: 5px;
-		color: #ed7c63;
-		font-size: 20px;
-		text-align: center;
-	}
+.btn-outline-webLVS:not(:disabled):not(.disabled):active:focus, .btn-outline-webLVS:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-webLVS.dropdown-toggle:focus {
+	-webkit-box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
+	box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.5);
+}
 
-	.iconMenu-webLVS:hover {
-		margin-left: 5px;
-		margin-right: 5px;
-		color: #808080;
-		font-size: 20px;
-	}
+.nav-webLVS {
+	background-color: #f8f8f8;
+	border-color: #e7e7e7;
+}
 
-	.iconMenu-webLVS-border {
-		border: solid 2px #ed7c31;
-		border-radius: 5px;
-		padding: 5px;
-	}
+.brands-webLVS {
+	color: #ed7c31;
+	padding: 3px;
+	margin-left: 5px;
+	margin-right: 5px;
+	border: 2px solid #ed7c31;
+	border-radius: 3px;
+	width: 60px;
+}
+
+.iconMenu-webLVS {
+	margin-left: 5px;
+	margin-right: 5px;
+	color: #ed7c63;
+	font-size: 20px;
+	text-align: center;
+}
+
+.iconMenu-webLVS:hover {
+	margin-left: 5px;
+	margin-right: 5px;
+	color: #808080;
+	font-size: 20px;
+}
+
+.iconMenu-webLVS-border {
+	border: solid 2px #ed7c31;
+	border-radius: 5px;
+	padding: 5px;
+}

@@ -25,6 +25,9 @@ class SupplierOrderService
     ) {
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function getSupplierOrderApi(int $supplierOrderId): ?SupplierOrder
     {
         $order = $this->entityManager

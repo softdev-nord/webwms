@@ -4,7 +4,9 @@
 
     <title>{% block title %}Anmelden | webWMS | Das webbasierte Lagerverwaltungssystem{% endblock %}</title>
     {% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styles.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/app.css') }}">
+        <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     {% endblock %}
 
 {% block webwms_login_form %}

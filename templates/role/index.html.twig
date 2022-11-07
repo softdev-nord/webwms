@@ -1,0 +1,7 @@
+{% block webwms_permission_overview_content %}
+    {{ dump(acl_roles) }}
+    {% for permission in acl_permissions %}
+        Test
+        {{ dump(permissions) }}
+    {% endfor %}
+{% endblock %}

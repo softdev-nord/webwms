@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\SupplierRepository;
 
@@ -75,22 +73,6 @@ class Supplier
      * @ORM\Column(type="datetime", nullable=true)
      */
     private ?\DateTimeInterface $supplierUpdatedAt;
-
-    /**
-     * INVERSE SIDE
-     * The customer_orders property is the inverse side of the association between customer and customer orders.
-     * The association is joined over the customer id field and the userID field of the customer order.
-     *
-     * @var Collection<Supplier>
-     *
-     * @ORM\OneToMany(targetEntity="WebWMS\Entity\SupplierOrder", mappedBy="supplier")
-     */
-    protected Collection $supplierOrders;
-
-    public function __construct()
-    {
-        $this->supplierOrders = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -205,32 +187,6 @@ class Supplier
             'supplierAddressZipcode' => $this->supplierAddressZipcode,
             'supplierAddressCity' => $this->supplierAddressCity,
         ];
-    }
-
-    /**
-     * Returns an array collection of WebWMS\Entity\SupplierOrder model instances, which
-     * contains all data about the a single supplier order. The association is defined over
-     * the Supplier.supplier_orders property (INVERSE SIDE) and the SupplierOrder.supplier (OWNING SIDE) property.
-     * The order data is joined over the supplier_orders.supplierId field.
-     */
-    public function getSupplierOrders(): ArrayCollection|Collection
-    {
-        return $this->supplierOrders;
-    }
-
-    /**
-     * Setter function for the orders association property which contains many instances of the WebWMS\Entity\SupplierOrder model which
-     * contains all data about the a single supplier order. The association is defined over
-     * the Supplier.orders property (INVERSE SIDE) and the SupplierOrder.supplier (OWNING SIDE) property.
-     * The order data is joined over the supplier_orders.supplierId field.
-     *
-     * @param ArrayCollection|Collection<SupplierOrder>|null $supplierOrders
-     */
-    public function setSupplierOrders(ArrayCollection|Collection|null $supplierOrders): Supplier
-    {
-        $this->supplierOrders = $supplierOrders;
-
-        return $this;
     }
 
     public function getSupplierCreatedAt(): ?\DateTimeInterface

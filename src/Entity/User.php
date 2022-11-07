@@ -4,39 +4,40 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Repository\UserRepository;
 
 /**
+ * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass=UserRepository::class)
- *
- * @method string getUserIdentifier()
  */
 class User implements UserInterface
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(name="username", type="string", length=255, unique=true)
      */
     private string $username;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(name="roles", type="json")
      */
     private array $roles = [];
 
     /**
      * @var string The hashed password
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="password", type="string", length=255, nullable=false)
      */
     private string $password;
 
@@ -49,6 +50,58 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     public ?string $lastname;
+
+    /**
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     */
+    private string $email;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="WebWMS\Entity\Group")
+     * @ORM\JoinTable(name="user_group",
+     *       joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *       inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
+     *   )
+     */
+    private Collection $groups;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="WebWMS\Entity\Role")
+     * @ORM\JoinTable(name="user_role",
+     *       joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *       inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
+     *   )
+     */
+    private Collection $groupRoles;
+
+    /**
+     * @ORM\Column(name="last_login", type="datetime", nullable=true)
+     */
+    private ?\DateTime $lastLogin;
+
+    /**
+     * @ORM\Column(name="enabled", type="boolean")
+     */
+    private bool $enabled;
+
+    /**
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private \DateTime $createdAt;
+
+    /**
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private \DateTime $updatedAt;
+
+    public function __construct()
+    {
+        $this->groupRoles = new ArrayCollection();
+        $this->groups = new ArrayCollection();
+        $this->enabled = false;
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -68,25 +121,6 @@ class User implements UserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
 
         return $this;
     }
@@ -132,6 +166,56 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function getLastLogin(): \DateTime
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTime $lastLogin): void
+    {
+        $this->lastLogin = $lastLogin;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
     public function serialize(): string
     {
         // causes infinite nesting
@@ -159,5 +243,65 @@ class User implements UserInterface
     public function getPassword(): ?string
     {
         return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getGroupRoles(): Collection
+    {
+        return $this->groupRoles;
+    }
+
+    public function addGroupRole(Role $role): void
+    {
+        $this->groupRoles[] = $role;
+    }
+
+    public function removeGroupRole(Role $role): void
+    {
+        $this->groupRoles->removeElement($role);
+    }
+
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): void
+    {
+        $this->groups[] = $group;
+    }
+
+    public function hasGroup(Group $group): bool
+    {
+        foreach ($this->getGroups() as $userGroup) {
+            if ($userGroup === $group) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
