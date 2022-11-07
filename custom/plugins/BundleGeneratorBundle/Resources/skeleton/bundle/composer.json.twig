@@ -1,0 +1,30 @@
+{
+    "name": "webwms/{{ extension_alias }}",
+    "description": "{{ bundle_basename }} Bundle",
+    "version": "1.0.0",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SoftDev Nord, Rene Irrgang"
+        }
+    ],
+    "extra": {
+        "webwms-plugin-class": "WebWMS\\{{ bundle }}\\{{ bundle }}",
+        "copyright": "(c) SoftDev Nord",
+        "label": {
+            "de-DE": "{{ bundle_basename }} Plugin",
+            "en-GB": "{{ bundle }} plugin"
+        },
+        "description": {
+            "de-DE": "{{ bundle_basename }} Plugin für WebWMS",
+            "en-GB": "{{ bundle_basename }} plugin for WebWMS"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "WebWMS\\{{ bundle }}\\": ""
+        }
+    }
+}
+

@@ -29,6 +29,16 @@ services:
             $appVersionNumber: '%env(APP_VERSION_NUMBER)%'
             $appCopyright: '%env(APP_COPYRIGHT)%'
             $appLizenz: '%env(APP_LIZENZ)%'
+            # Resolve issue:  Cannot autowire service : argument of method "__construct()" is type-hinted "string", you should configure its value explicitly.
+            string $publicDirectory: '%publicUploadDirectory%'
+            string $targetDirectory: '%uploadDirectory%'
+            string $fromMail: '%fromMail%'
+            string $fromName: '%fromName%'
+            string $returnPath: '%returnPath%'
+            string $mailCopy: '%mailCopy%'
+            string $webHost: '%webHost%'
+
+    Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -78,51 +88,78 @@ services:
                 method: addMenuItems
             }
 
-    webwms.form.type.task:
+    web_wms.form.type.task:
         class: WebWMS\Form\EditArticleType
         public: true
         arguments: [ "@security.authorization_checker" ]
         tags:
             - { name: form.type }
 
-    WebWMS\Bundles\DashboardBundle\Controller\DashboardController:
-        public: true
-
-    WebWMS\EventListener\ControllerListener:
+    web_wms.event_listener.controller_listener:
+        class: WebWMS\EventListener\ControllerListener
         tags:
             - { name: kernel.event_listener, event: kernel.controller }
 
-    WebWMS\Controller\StockTransactions:
+    web_wms.service.booking_methode.booking_methode_service:
+        class: WebWMS\Service\BookingMethod\BookingMethodService
+    
+    web_wms.service.transport_request_service:
+        class: WebWMS\Service\TransportRequestService
+    
+    web_wms.service.data_handlers.configuration.configuration_data_handler:
+        class: WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler
+    
+    web_wms.controller.stock_transactions:
+        class: WebWMS\Controller\StockTransactions
         public: true
         autowire: true
         tags: ['controller.service_arguments']
         arguments:
-            $requirements: "@WebWMS\\Controller\\Requirements"
-            $bookingMethodService: "@WebWMS\\Service\\BookingMethod\\BookingMethodService"
-            $bookingMethodConstants: "@WebWMS\\Service\\BookingMethod\\BookingMethodConstants"
-            $stockLocationService: "@WebWMS\\Service\\Stock\\StockLocationService"
-            $transportRequestService: "@WebWMS\\Service\\TransportRequestService"
+            $bookingMethodService: '@web_wms.service.booking_methode.booking_methode_service'
+            $transportRequestService: '@web_wms.service.transport_request_service'
 
-    WebWMS\Service\MailService:
+    web_wms.service.mail_service:
+        class: WebWMS\Service\MailService
         arguments:
-            - '%fromMail%'
-            - '%fromName%'
-            - '%returnPath%'
-            - '%mailCopy%'
+            $fromMail: '%fromMail%'
+            $fromName: '%fromName%'
+            $returnPath: '%returnPath%'
+            $mailCopy: '%mailCopy%'
 
-    WebWMS\Service\TemplatesService:
+    web_wms.service.templates_service:
+        class: WebWMS\Service\TemplatesService
         arguments:
-            - '%webHost%'
+            $webHost: '%webHost%'
 
-    WebWMS\Service\FileUploader:
+    web_wms.service.file_uploader:
+        class: WebWMS\Service\FileUploader
+        autowire: true
         arguments:
             $publicDirectory: '%publicUploadDirectory%'
             $targetDirectory: '%uploadDirectory%'
 
-    WebWMS\Service\ConfigurationService:
+    web_wms.service.configuration_service:
+        class: WebWMS\Service\ConfigurationService
         arguments:
-            $configurationDataHandler: '@WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler'
+            $configurationDataHandler: '@web_wms.service.data_handlers.configuration.configuration_data_handler'
 
-    WebWMS\Twig\TwigGlobalSubscriber:
+    web_wms.twig.twig_global_subscriber:
+        class: WebWMS\Twig\TwigGlobalSubscriber
         tags:
             - { name: kernel.event_listener, event: kernel.request }
+
+    web_wms.service.logging_service:
+        class: WebWMS\Service\LoggingService
+        arguments:
+            $container: '@service_container'
+
+    web_wms.controller.dashboard_controller:
+        class: WebWMS\Controller\DashboardController
+        arguments:
+            $requirements: 'WebWMS\Controller\Requirements'
+            $twig: 'Twig\Environment'
+            $chartBuilder: 'Symfony\UX\Chartjs\Builder\ChartBuilderInterface'
+            $transportHistoryRepository: 'WebWMS\Repository\TransportHistoryRepository'
+            $stockRotationService: 'WebWMS\Service\Stock\StockRotationService'
+            $transportRequestService: 'WebWMS\Service\TransportRequestService'
+            $stockLocationService: 'WebWMS\Service\Stock\StockLocationService'

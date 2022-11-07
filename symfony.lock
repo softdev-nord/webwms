@@ -104,6 +104,20 @@
             "config/routes/nelmio_api_doc.yaml"
         ]
     },
+    "phpunit/phpunit": {
+        "version": "9.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "9.3",
+            "ref": "a6249a6c4392e9169b87abf93225f7f9f59025e6"
+        },
+        "files": [
+            ".env.test",
+            "phpunit.xml.dist",
+            "tests/bootstrap.php"
+        ]
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.6",
         "recipe": {
@@ -271,6 +285,18 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/messenger": {
+        "version": "6.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "2523f7d31488903e247a522e760dc279be7f7aaf"
+        },
+        "files": [
+            "config/packages/messenger.yaml"
+        ]
     },
     "symfony/monolog-bundle": {
         "version": "3.8",

@@ -1,14 +1,10 @@
 sonata_admin:
-  title: false
-  title_logo: bundles/sonataadmin/images/webWMS_logo.png
-  dashboard:
-    groups:
-      Stammdaten:
-        label:                ~
-        translation_domain:   ~
-        icon:               'fas fa-database' # html is also supported
-        items:
-          - admin.user
-          - admin.customer
-        roles: ['ROLE_ADMIN', 'ROLE_SONATA_ADMIN']
+    title: 'Sonata Admin'
+    dashboard:
+        blocks:
+            - { type: sonata.admin.block.admin_list, position: left }
 
+sonata_block:
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts: [admin]

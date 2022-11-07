@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace WebWMS\Bundles\{{ bundle }}\Service;
+
+{% block use_statements %}
+use WebWMS\Bundles\{{ bundle }}\Service\DataHandlers;
+{% endblock use_statements %}
+
+{% block class_definition %}
+/**
+ * @package:    WebWMS\Bundles\{{ bundle }}\Service
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © {{ 'now' | date('Y') }}, SoftDev Nord
+ * Class        {{ bundle }}Service
+ */
+class {{ bundle }}Service
+{% endblock class_definition %}
+{
+{% block class_body %}
+    public function __construct(
+        private {{ bundle_basename }}DataHandler ${{ bundle_basename|lower }}DataHandler
+    ) {
+    }
+{% endblock class_body %}
+}

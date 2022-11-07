@@ -1,8 +1,8 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
-    form_themes: ['bootstrap_4_layout.html.twig']
-    globals:
-        appTheme: '@WebWMS\Components\Constants'
+#    paths:
+#        '%kernel.project_dir%/custom/plugins/DashboardBundle/Resources/templates/dashboard': DashboardBundle
 
-    paths:
-        '%kernel.project_dir%/custom/plugins/DashboardBundle/Resources/views': DashboardBundle
+when@test:
+    twig:
+        strict_variables: true

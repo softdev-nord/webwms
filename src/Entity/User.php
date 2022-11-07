@@ -12,9 +12,8 @@ use WebWMS\Repository\UserRepository;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  *
- * @method string getUserIdentifier()
  */
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id

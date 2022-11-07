@@ -1,6 +1,0 @@
-#services:
-#    WebWMS\Bundles\DashboardBundle\Controller\DashboardController:
-#        resource: '../../Ci'
-#        public: true
-#        autowire: true
-#        tags: ['controller.service_arguments']

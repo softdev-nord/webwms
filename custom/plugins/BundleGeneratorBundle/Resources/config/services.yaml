@@ -1,0 +1,21 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    #
+    # COMMANDS
+    #
+
+    # auto-register all commands as services
+    WebWMS\Bundles\BundleGeneratorBundle\Command\:
+        resource: '../../Command'
+        exclude: '../../Command/Validators.php'
+        tags: ['console.command']
+
+    WebWMS\Bundles\BundleGeneratorBundle\Command\BaseGenerateBundleCommand:
+        public: true
+
+    WebWMS\Bundles\BundleGeneratorBundle\Command\Helper\QuestionHelper:
+        public: true

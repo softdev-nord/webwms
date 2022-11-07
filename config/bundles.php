@@ -24,6 +24,5 @@ return [
     JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
     Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
     FOS\RestBundle\FOSRestBundle::class => ['all' => true],
-    WebWMS\Bundles\DashboardBundle\DashboardBundle::class => ['all' => true],
     Symfony\UX\Chartjs\ChartjsBundle::class => ['all' => true],
 ];
