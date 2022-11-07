@@ -16,6 +16,10 @@ dist/
 
 .docker/data/mysql/
 !.docker/data/mysql/.gitkeep
+.docker/logs/*
+!.docker/logs/.gitkeep
+.docker/sql/backup/*
+!.docker/sql/backup/.gitkeep
 
 # Unit test reports
 TEST*.xml

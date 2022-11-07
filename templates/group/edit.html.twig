@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <a href="{{ path('group_list') }}"
+           class="btn btn-link btn-xs pull-right js-remove-scientist-user">
+            Back
+        </a>
+        <div class="row">
+            <div class="col-xs-8">
+                <h1>Edit {{ group.name }} Group</h1>
+                {{ form_start(groupForm) }}
+                {{ form_errors(groupForm) }}
+                {{ form_row(groupForm.name) }}
+                {{ form_row(groupForm.useDefaultRoles) }}
+
+                <button type="submit" class="btn btn-primary">Update</button>
+                {{ form_end(groupForm) }}
+            </div>
+
+            {% for notice in app.flashes('success') %}
+                {{ notice }}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -745,21 +745,21 @@
 
     .webwms-theme .sidebar-wrapper .sidebar-menu ul li a
 
-    /*.table {
-        --bs-table-color: #c7cbcc;
-        --bs-table-bg: transparent;
-        --bs-table-border-color: transparent;
-        --bs-table-accent-bg: #303234;
-        --bs-table-striped-color: #353a41;
-        --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
-        --bs-table-active-color: #c7cbcc;
-        --bs-table-active-bg: rgba(0, 0, 0, 0.1);
-        --bs-table-hover-color: #c7cbcc;
-        --bs-table-hover-bg: #484e55;
-        width: 100%;
-        margin-bottom: 1rem;
-        vertical-align: top;
-    }*/
+        /*.table {
+            --bs-table-color: #c7cbcc;
+            --bs-table-bg: transparent;
+            --bs-table-border-color: transparent;
+            --bs-table-accent-bg: #303234;
+            --bs-table-striped-color: #353a41;
+            --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+            --bs-table-active-color: #c7cbcc;
+            --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+            --bs-table-hover-color: #c7cbcc;
+            --bs-table-hover-bg: #484e55;
+            width: 100%;
+            margin-bottom: 1rem;
+            vertical-align: top;
+        }*/
 
     table.dataTable {
         border-collapse: collapse;
@@ -966,22 +966,22 @@
         margin-bottom: 25px;
     }
 
-/*    .text-light {
-        color: #c7cbcc !important;
-    }
+    /*    .text-light {
+            color: #c7cbcc !important;
+        }
 
-    .text-dark {
-        --bs-body-color: #31353D !important;
-    }
+        .text-dark {
+            --bs-body-color: #31353D !important;
+        }
 
-    .bg-dark {
-        background-color: #484e55 !important;
-    }
+        .bg-dark {
+            background-color: #484e55 !important;
+        }
 
-    body.bg-light.text-dark {
-        background-color: #bababa !important;
-        --bs-body-color: #31353D !important;
-    }*/
+        body.bg-light.text-dark {
+            background-color: #bababa !important;
+            --bs-body-color: #31353D !important;
+        }*/
 
     .bg-light {
         background-color: #bababa !important;
