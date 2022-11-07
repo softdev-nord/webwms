@@ -23,6 +23,9 @@ class LocaleSubscriber implements EventSubscriberInterface
         $this->defaultLocale = $defaultLocale;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();

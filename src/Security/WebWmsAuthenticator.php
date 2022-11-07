@@ -56,11 +56,11 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
                 if (!$user) {
                     throw new UserNotFoundException();
                 }
+
                 return $user;
             }),
             new PasswordCredentials($password),
             [
-
                 new CsrfTokenBadge(
                     'authenticate',
                     $request->request->get('_csrf_token')
@@ -80,7 +80,6 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('homepage'));
         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
-
 
     protected function getLoginUrl(Request $request): string
     {

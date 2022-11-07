@@ -99,6 +99,9 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/auth-lock-screen.html.twig');
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExitExpression)
+     */
     public function root($path)
     {
         if ($this->loader->exists($path.'.html.twig')) {

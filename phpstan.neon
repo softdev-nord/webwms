@@ -12,5 +12,8 @@ parameters:
     paths:
         - src
 
+    excludePaths:
+        - vendor/symfony/*
+
     reportUnmatchedIgnoredErrors: false
     checkGenericClassInNonGenericObjectType: false

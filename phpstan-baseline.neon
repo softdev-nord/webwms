@@ -91,6 +91,51 @@ parameters:
 			path: src/Controller/CustomerOrder.php
 
 		-
+			message: "#^Cannot call method format\\(\\) on DateTimeInterface\\|null\\.$#"
+			count: 2
+			path: src/Controller/DashboardController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\DashboardController\\:\\:createChartForDashboard\\(\\) has parameter \\$chartType with no typehint specified\\.$#"
+			count: 1
+			path: src/Controller/DashboardController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\DashboardController\\:\\:createChartForDashboard\\(\\) has parameter \\$data with no typehint specified\\.$#"
+			count: 1
+			path: src/Controller/DashboardController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\DashboardController\\:\\:getAllTransportRequest\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Controller/DashboardController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\DashboardController\\:\\:getWarehouseUtilization\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Controller/DashboardController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\DashboardController\\:\\:root\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/Controller/DashboardController.php
+
+		-
+			message: "#^Method WebWMS\\\\Controller\\\\DashboardController\\:\\:root\\(\\) has parameter \\$path with no typehint specified\\.$#"
+			count: 1
+			path: src/Controller/DashboardController.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 2
+			path: src/Controller/DashboardController.php
+
+		-
+			message: "#^Parameter \\#1 \\$url of method Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:\\:redirect\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: src/Controller/LanguageController.php
+
+		-
 			message: "#^Method WebWMS\\\\Controller\\\\Requirements\\:\\:__toString\\(\\) should return string but returns bool\\|string\\.$#"
 			count: 1
 			path: src/Controller/Requirements.php
@@ -521,16 +566,6 @@ parameters:
 			path: src/Controller/TemplateController.php
 
 		-
-			message: "#^Call to an undefined method WebWMS\\\\Entity\\\\User\\:\\:setPassword\\(\\)\\.$#"
-			count: 1
-			path: src/DataFixtures/UserFixtures.php
-
-		-
-			message: "#^Method WebWMS\\\\DataFixtures\\\\UserFixtures\\:\\:load\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: src/DataFixtures/UserFixtures.php
-
-		-
 			message: "#^Property WebWMS\\\\Entity\\\\BookingMethod\\:\\:\\$id has no typehint specified\\.$#"
 			count: 1
 			path: src/Entity/BookingMethod.php
@@ -711,7 +746,7 @@ parameters:
 			path: src/Entity/User.php
 
 		-
-			message: "#^Method WebWMS\\\\Entity\\\\User\\:\\:getSalt\\(\\) should return string\\|null but return statement is missing\\.$#"
+			message: "#^Method WebWMS\\\\Entity\\\\User\\:\\:getSalt\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: src/Entity/User.php
 
@@ -729,6 +764,11 @@ parameters:
 			message: "#^Property WebWMS\\\\Entity\\\\User\\:\\:\\$roles type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Entity/User.php
+
+		-
+			message: "#^Method WebWMS\\\\EventSubscriber\\\\LocaleSubscriber\\:\\:onKernelRequest\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: src/EventSubscriber/LocaleSubscriber.php
 
 		-
 			message: "#^Method WebWMS\\\\Form\\\\CustomerOrderPosType\\:\\:buildForm\\(\\) has no return typehint specified\\.$#"
@@ -826,12 +866,12 @@ parameters:
 			path: src/Security/LoginFormAuthenticator.php
 
 		-
-			message: "#^Parameter \\#1 \\$password of class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Credentials\\\\PasswordCredentials constructor expects string, bool\\|float\\|int\\|string given\\.$#"
+			message: "#^Parameter \\#1 \\$password of class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Credentials\\\\PasswordCredentials constructor expects string, bool\\|float\\|int\\|string\\|null given\\.$#"
 			count: 1
 			path: src/Security/WebWmsAuthenticator.php
 
 		-
-			message: "#^Parameter \\#1 \\$userIdentifier of class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\UserBadge constructor expects string, bool\\|float\\|int\\|string given\\.$#"
+			message: "#^Parameter \\#1 \\$userIdentifier of class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\UserBadge constructor expects string, bool\\|float\\|int\\|string\\|null given\\.$#"
 			count: 1
 			path: src/Security/WebWmsAuthenticator.php
 
