@@ -52,7 +52,6 @@ class Template
      */
     public function __construct()
     {
-        $this->correspondences = new ArrayCollection();
         $this->isDefault = false;
     }
 

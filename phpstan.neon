@@ -1,10 +1,11 @@
 includes:
-    - vendor/phpstan/phpstan-symfony/extension.neon
-    - phpstan-baseline.neon
+#    - phpstan-baseline.neon
+    - ./vendor/phpstan/phpstan-symfony/extension.neon
+
 parameters:
 
     #  max or choose from 10 levels (0 is the loosest, 9 is the strictest).
-    level: 8
+    level: 0
 
 #    symfony:
 #        container_xml_path: var/cache/dev/WebWMS_KernelDevDebugContainer.xml
@@ -12,8 +13,4 @@ parameters:
     paths:
         - src
 
-    excludePaths:
-        - vendor/symfony/*
-
     reportUnmatchedIgnoredErrors: false
-    checkGenericClassInNonGenericObjectType: false
