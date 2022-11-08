@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use WebWMS\Components\Entity\ModelEntity;
 use WebWMS\Repository\SupplierOrderRepository;
 
@@ -70,12 +70,12 @@ class SupplierOrder extends ModelEntity
     /**
      * INVERSE SIDE.
      *
-     * @ORM\OneToMany(targetEntity="\WebWMS\Entity\SupplierOrderPos", mappedBy="supplier_orders", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="\WebWMS\Entity\SupplierOrderPos", mappedBy="supplierOrders", orphanRemoval=true, cascade={"persist"})
      */
-    protected PersistentCollection|SupplierOrderPos $details;
+    protected Collection $details;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Supplier", inversedBy="supplier_orders")
+     * @ORM\OneToOne(targetEntity="\WebWMS\Entity\Supplier")
      * @ORM\JoinColumn(name="supplier_id", referencedColumnName="id")
      */
     protected Supplier $supplier;
@@ -125,7 +125,7 @@ class SupplierOrder extends ModelEntity
         return $this->supplierOrderNr;
     }
 
-    public function setSupplierOrderNr(?int $supplierOrderNr): void
+    public function setSupplierOrderNr(?string $supplierOrderNr): void
     {
         $this->supplierOrderNr = $supplierOrderNr;
     }
@@ -180,17 +180,14 @@ class SupplierOrder extends ModelEntity
         $this->supplierOrderUpdatedAt = $supplierOrderUpdatedAt;
     }
 
-    public function getDetails(): PersistentCollection|SupplierOrderPos
+    public function getDetails(): Collection
     {
         return $this->details;
     }
 
-    /**
-     * @param SupplierOrderPos[]|null $details
-     */
-    public function setDetails(?array $details): SupplierOrder|ModelEntity
+    public function setDetails(?array $details): SupplierOrder
     {
-        return $this->setOneToMany($details, SupplierOrderPos::class, 'details', 'customer_order');
+        return $this->setOneToMany($details, SupplierOrderPos::class, 'details', 'SupplierOrder');
     }
 
     public function getSupplier(): Supplier

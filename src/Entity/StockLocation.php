@@ -40,8 +40,7 @@ class StockLocation
     private ?int $stockLocationTf;
 
     /**
-     * @ORM\Column(type="integer")
-     * * @ORM\OneToMany(targetEntity="\WebWMS\Entity\StockRotation", mappedBy="stock_location_coordinate")
+     * @ORM\Column(type="string", length=255)
      */
     private mixed $stockLocationCoordinate;
 

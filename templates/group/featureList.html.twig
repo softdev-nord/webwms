@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% include('header.html.twig') %}
+    <div class="container-fluid">
+        <div class="row">
+
+            {% if is_granted('IS_AUTHENTICATED') %}
+                {% include('navbar.html.twig') %}
+            {% endif %}
+
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <h1>Update <a href="{{ path('group_list') }}"> {{ group.name }} </a> Group Features </h1>
+
+                {% include('flash_message.html.twig') %}
+
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+
+
+                    <div class="container">
+
+
+                        {{ form_start(groupFeatureForm) }}
+                        {{ form_errors(groupFeatureForm) }}
+
+
+                        {{ form_row(groupFeatureForm.features, {
+                            "label": "Features",
+                            "required": true,
+                            "attr": {
+                                "class": "form-check",
+                                "readonly": true
+                            }
+                        }) }}
+
+                        <button type="submit" class="btn btn-primary">Update</button>
+
+                        {{ form_end(groupFeatureForm) }}
+
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+{% endblock %}
+

@@ -10,8 +10,10 @@ shopt -s inherit_errexit
 if [ "$CIRCLE_BRANCH" == "master" ]
 then
   export APP_ENV=prod
+  export DATABASE_URL=mysql://webwms:${DATABASE_PASSWORD}@127.0.0.1:3306/webwms?serverVersion=5.7
 else
   export APP_ENV=dev
+  export DATABASE_URL=mysql://webwms-dev:FgQjemukwVzXKTEXX9M4@127.0.0.1:3306/webwms-dev?serverVersion=5.7
 fi
 
 export APP_NAME=' | webWMS Das webbasierte Lagerverwaltungssystem'
@@ -21,7 +23,6 @@ export APP_COPYRIGHT='© 2019 Softdev-Nord | Rene Irrgang'
 export APP_LIZENZ='Demo Spedition | Demoweg 500 | 21698 Harsefeld'
 export APP_SECRET=af2b45ff237087d068938bb0858bddff
 export APP_DEBUG=false
-export DATABASE_URL=mysql://webwms:${DATABASE_PASSWORD}@127.0.0.1:3306/webwms?serverVersion=5.7
 
 export LOCALE=de
 export WEB_HOST=https://webwms.softdev-nord.de

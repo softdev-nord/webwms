@@ -95,10 +95,23 @@ services:
         tags:
             - { name: form.type }
 
+    web_wms.bundles.dashboard_bundle.controller.dashboard_controller:
+        class: WebWMS\Bundles\DashboardBundle\Controller\DashboardController
+        public: true
+
     web_wms.event_listener.controller_listener:
         class: WebWMS\EventListener\ControllerListener
         tags:
             - { name: kernel.event_listener, event: kernel.controller }
+    
+    web_wms.service.booking_methode.booking_methode_service:
+        class: WebWMS\Service\BookingMethod\BookingMethodService
+    
+    web_wms.service.transport_request_service:
+        class: WebWMS\Service\TransportRequestService
+    
+    web_wms.service.data_handlers.configuration.configuration_data_handler:
+        class: WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler
 
     web_wms.service.booking_methode.booking_methode_service:
         class: WebWMS\Service\BookingMethod\BookingMethodService

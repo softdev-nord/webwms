@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use WebWMS\Components\Entity\ModelEntity;
 use WebWMS\Repository\CustomerOrderRepository;
 
@@ -71,12 +71,12 @@ class CustomerOrder extends ModelEntity
     /**
      * INVERSE SIDE.
      *
-     * @ORM\OneToMany(targetEntity="\WebWMS\Entity\CustomerOrderPos", mappedBy="customer_orders")
+     * @ORM\OneToMany(targetEntity="\WebWMS\Entity\CustomerOrderPos", mappedBy="customerOrders")
      */
-    protected PersistentCollection|ArrayCollection $details;
+    protected Collection $details;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Customer", inversedBy="customer_orders")
+     * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Customer", inversedBy="customerOrders")
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      */
     protected Customer $customer;
@@ -175,14 +175,14 @@ class CustomerOrder extends ModelEntity
         return $this;
     }
 
-    public function getDetails(): PersistentCollection|ArrayCollection
+    public function getDetails(): Collection
     {
         return $this->details;
     }
 
     public function setDetails(?array $details): ?CustomerOrder
     {
-        return $this->setOneToMany($details, CustomerOrderPos::class, 'details', 'customer_order');
+        return $this->setOneToMany($details, CustomerOrderPos::class, 'details', 'customerOrder');
     }
 
     public function getCustomer(): Customer

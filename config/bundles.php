@@ -25,4 +25,5 @@ return [
     Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
     FOS\RestBundle\FOSRestBundle::class => ['all' => true],
     Symfony\UX\Chartjs\ChartjsBundle::class => ['all' => true],
+    WebWMS\Bundles\BundleGeneratorBundle\BundleGeneratorBundle::class => ['all' => true],
 ];

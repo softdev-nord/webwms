@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use WebWMS\Repository\CustomerRepository;
 
 /**
@@ -75,22 +73,6 @@ class Customer
      * @ORM\Column(type="datetime", nullable=true)
      */
     private mixed $customerUpdatedAt;
-
-    /**
-     * INVERSE SIDE
-     * The customer_orders property is the inverse side of the association between customer and customer orders.
-     * The association is joined over the customer id field and the userID field of the customer order.
-     *
-     * @var ArrayCollection<\WebWMS\Entity\Customer>
-     *
-     * @ORM\OneToMany(targetEntity="WebWMS\Entity\CustomerOrder", mappedBy="customer")
-     */
-    protected ArrayCollection|PersistentCollection $customerOrders;
-
-    public function __construct()
-    {
-        $this->customerOrders = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -225,34 +207,6 @@ class Customer
             'customer_zip_code' => $this->customerZipCode,
             'customer_city' => $this->customerCity,
         ];
-    }
-
-    /**
-     * Returns an array collection of WebWMS\Entity\CustomerOrder model instances, which
-     * contains all data about the a single customer order. The association is defined over
-     * the Customer.customer_orders property (INVERSE SIDE) and the CustomerOrder.customer (OWNING SIDE) property.
-     * The order data is joined over the customer_orders.customer_id field.
-     *
-     * @return ArrayCollection<\WebWMS\Entity\CustomerOrder>
-     */
-    public function getCustomerOrders(): ArrayCollection
-    {
-        return $this->customerOrders;
-    }
-
-    /**
-     * Setter function for the customer_orders association property which contains many instances of the WebWMS\Entity\CustomerOrder model which
-     * contains all data about the a single customer order. The association is defined over
-     * the Customer.customer_orders property (INVERSE SIDE) and the CustomerOrder.customer (OWNING SIDE) property.
-     * The order data is joined over the customer_orders.customer_id field.
-     *
-     * @param ArrayCollection<\WebWMS\Entity\CustomerOrder>|null $customerOrders
-     */
-    public function setCustomerOrders(ArrayCollection $customerOrders): Customer
-    {
-        $this->customerOrders = $customerOrders;
-
-        return $this;
     }
 
     public function getCustomerCreatedAt(): mixed

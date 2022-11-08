@@ -5,50 +5,68 @@ declare(strict_types=1);
 namespace WebWMS\Service\BookingMethod;
 
 use Doctrine\ORM\EntityNotFoundException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use WebWMS\Controller\Requirements;
+use WebWMS\Form\Stock\StockInFinalType;
+use WebWMS\Form\Stock\StockInType;
+use WebWMS\Service\Stock\StockLocationService;
+use WebWMS\Service\TransportRequestService;
 
 /**
  * @package:    WebWMS\Service\BookingMethod
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        BookingMethodService
+ * Class        BookingMethod
  */
 class BookingMethodService
 {
+    public const KARTON = 'Durchlaufregal';
+    public const PALETTE = 'Pal Regal';
+    public const BLOCK = 'Block-Lager';
+
     public function __construct(
-        private BookingMethodConstants $bookingMethodConstants
+        private Requirements $requirements,
+        private StockLocationService $stockLocationService,
+        private TransportRequestService $transportRequestService,
+        private FormFactoryInterface $formFactory,
+        private ContainerInterface $container
     ) {
     }
 
     /**
      * @throws EntityNotFoundException
      */
-    public function getBookingMethod($bookingMethod)
+    public function getBookingMethod($bookingMethod, Request $request): RedirectResponse|Response
     {
-        match ($bookingMethod) {
-            $this->bookingMethodConstants::SI101 => $this->stockIn(), // SI101 Einlagern direkt
-            $this->bookingMethodConstants::SI102 => $this->stockInFromGoodsReceipt(), // SI102 Zugang aus Wareneingang
-            $this->bookingMethodConstants::SI103 => $this->stockInFromProduction(), // SI103 Zugang aus Produktion
-            $this->bookingMethodConstants::SI104 => $this->stockInFromCostCentre(), // SI104 Rückgabe von Kostenstelle
-            $this->bookingMethodConstants::SI105 => $this->stockInIntoContainer(), // SI105 Einlagern in Container
-            $this->bookingMethodConstants::SI106 => $this->stockInForSupplierOrder(), // SI106 WE zur Bestellung
-            $this->bookingMethodConstants::SI107 => $this->stockInUsingLoadingEquipment(), // SI107 Einlagern mit Ladehilfsmittel
-            $this->bookingMethodConstants::SI111 => $this->stockInIntoReceivingArea(), // SI111 Einlagern direkt in WE-Zone
-            $this->bookingMethodConstants::ST112 => $this->stockTransferFromCostCentre(), // ST112 Rückgabe von Kostenstelle
-            $this->bookingMethodConstants::SI113 => $this->stockInIntoCostCentre(), // SI113 Einlagern direkt in Kostenstelle
-            $this->bookingMethodConstants::SI114 => $this->stockInIntoDispatchArea(), // SI114 Einlagern direkt in WA-Zone
-            $this->bookingMethodConstants::SO151 => $this->stockOut(), // SO151 Auslagern direkt
-            $this->bookingMethodConstants::SO152 => $this->stockOutToCostCentre(), // SO152 Auslagern auf Kostenstelle
-            $this->bookingMethodConstants::SO153 => $this->lendingToCostCentre(), // SO153 Ausleihen auf Kostenstelle
-            $this->bookingMethodConstants::SO155 => $this->stockOutFromContainer(), // SO155 Auslagern aus Container
-            $this->bookingMethodConstants::SO156 => $this->stockOutFromCostCentre(), // SO156 Auslagern aus Kostenstelle
-            $this->bookingMethodConstants::SO157 => $this->stockOutFromDispatchArea(), // SO157 Auslagern direkt aus WA-Zone
-            $this->bookingMethodConstants::SO158 => $this->stockOutByOrder(), // SO158 Auftrag auslagern
-            $this->bookingMethodConstants::SO159 => $this->stockOutFromReceivingArea(), // SO159 Auslagern direkt aus WE-Zone
-            $this->bookingMethodConstants::SO181 => $this->stockOutOrderList(), // SO181 Auftrag auslagern (Auftrag-Liste)
-            $this->bookingMethodConstants::SO182 => $this->stockOutUsingCostCentre(), // SO182 Auftrag auslagern mit Kostenstelle (Auftrag-Liste)
-            $this->bookingMethodConstants::ST183 => $this->stockTransferToCostCentre(), // ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste)
-            $this->bookingMethodConstants::SO187 => $this->stockOutToDispatchArea(), // SO187 Auftrag auslagern in WA-Zone
-            $this->bookingMethodConstants::SO188 => $this->stockOutOrderConsolidationToCostCentre(), // SO188 Sammelkommissionierung auf Kostenstelle
+        return match ($bookingMethod) {
+            'stock_in' => $this->stockIn($request), // SI101 Einlagern direkt
+//            $this->bookingMethodConstants::SI102 => $this->stockInFromGoodsReceipt(), // SI102 Zugang aus Wareneingang
+//            $this->bookingMethodConstants::SI103 => $this->stockInFromProduction(), // SI103 Zugang aus Produktion
+//            $this->bookingMethodConstants::SI104 => $this->stockInFromCostCentre(), // SI104 Rückgabe von Kostenstelle
+//            $this->bookingMethodConstants::SI105 => $this->stockInIntoContainer(), // SI105 Einlagern in Container
+//            $this->bookingMethodConstants::SI106 => $this->stockInForSupplierOrder(), // SI106 WE zur Bestellung
+//            $this->bookingMethodConstants::SI107 => $this->stockInUsingLoadingEquipment(), // SI107 Einlagern mit Ladehilfsmittel
+//            $this->bookingMethodConstants::SI111 => $this->stockInIntoReceivingArea(), // SI111 Einlagern direkt in WE-Zone
+//            $this->bookingMethodConstants::ST112 => $this->stockTransferFromCostCentre(), // ST112 Rückgabe von Kostenstelle
+//            $this->bookingMethodConstants::SI113 => $this->stockInIntoCostCentre(), // SI113 Einlagern direkt in Kostenstelle
+//            $this->bookingMethodConstants::SI114 => $this->stockInIntoDispatchArea(), // SI114 Einlagern direkt in WA-Zone
+//            $this->bookingMethodConstants::SO151 => $this->stockOut(), // SO151 Auslagern direkt
+//            $this->bookingMethodConstants::SO152 => $this->stockOutToCostCentre(), // SO152 Auslagern auf Kostenstelle
+//            $this->bookingMethodConstants::SO153 => $this->lendingToCostCentre(), // SO153 Ausleihen auf Kostenstelle
+//            $this->bookingMethodConstants::SO155 => $this->stockOutFromContainer(), // SO155 Auslagern aus Container
+//            $this->bookingMethodConstants::SO156 => $this->stockOutFromCostCentre(), // SO156 Auslagern aus Kostenstelle
+//            $this->bookingMethodConstants::SO157 => $this->stockOutFromDispatchArea(), // SO157 Auslagern direkt aus WA-Zone
+//            $this->bookingMethodConstants::SO158 => $this->stockOutByOrder(), // SO158 Auftrag auslagern
+//            $this->bookingMethodConstants::SO159 => $this->stockOutFromReceivingArea(), // SO159 Auslagern direkt aus WE-Zone
+//            $this->bookingMethodConstants::SO181 => $this->stockOutOrderList(), // SO181 Auftrag auslagern (Auftrag-Liste)
+//            $this->bookingMethodConstants::SO182 => $this->stockOutUsingCostCentre(), // SO182 Auftrag auslagern mit Kostenstelle (Auftrag-Liste)
+//            $this->bookingMethodConstants::ST183 => $this->stockTransferToCostCentre(), // ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste)
+//            $this->bookingMethodConstants::SO187 => $this->stockOutToDispatchArea(), // SO187 Auftrag auslagern in WA-Zone
+//            $this->bookingMethodConstants::SO188 => $this->stockOutOrderConsolidationToCostCentre(), // SO188 Sammelkommissionierung auf Kostenstelle
             default => throw new EntityNotFoundException('Buchungsmethode mit der Nr. '.$bookingMethod.' wurde nicht gefunden!'),
         };
     }
@@ -56,9 +74,84 @@ class BookingMethodService
     /**
      * SI101 Einlagern direkt.
      */
-    public function stockIn(): string
+    public function stockIn(Request $request): RedirectResponse|Response
     {
-        return 'SI101 Einlagern direkt';
+        $freeStockLocations = [];
+
+        $form = $this->formFactory->create(StockInType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $requestData = $form->getData();
+            // dd($requestData);
+            $stockUnits = (int) ceil(
+                (int) $requestData['quantity'] / (int) $requestData['le_quantity'],
+            );
+
+            $stockSystem = match ($requestData['standard_loading_equipment']) {
+                'KARTON' => self::KARTON,
+                'PALETTE' => self::PALETTE,
+                'BLOCK' => self::BLOCK,
+                default => 'KST',
+            };
+
+            $fullPal = intdiv((int) $requestData['quantity'], (int) $requestData['le_quantity']);
+            $remainder = fmod((float) $requestData['quantity'], (float) $requestData['le_quantity']);
+
+            $stockLocations = $this->stockLocationService->getAllFreeStockLocations($stockSystem, $stockUnits);
+            $suId = $this->transportRequestService->getLastStockUnit();
+
+            foreach ($stockLocations as $key => $stockLocation) {
+                if ((string) $fullPal <= $stockUnits) {
+                    $quantity = $key === array_key_last($stockLocations) ? number_format($remainder, 2, '.', '') : $requestData['le_quantity'];
+
+                    $freeStockLocations[] = [
+                        'su_id' => ++$suId,
+                        'ln' => $stockLocation['ln'],
+                        'fb' => $stockLocation['fb'],
+                        'sp' => $stockLocation['sp'],
+                        'tf' => $stockLocation['tf'],
+                        'ln_komplett' => $stockLocation['ln'].'-'.$stockLocation['fb'].'-'.$stockLocation['sp'].'-'.$stockLocation['tf'],
+                        'koordinate' => $stockLocation['koordinate'],
+                        'system' => $stockLocation['system'],
+                        'quantity' => $quantity,
+                    ];
+                }
+            }
+
+            $stockInFinal = $this->formFactory->create(StockInFinalType::class, ['freeStockLocations' => $freeStockLocations]);
+
+            // @TODO Eine Option finden, um im Formular mehrere Spalten zu nutzen!
+
+            return $this->render(
+                'modal/put_into_storage.html.twig',
+                [
+                    'appName' => $this->requirements->getAppName(),
+                    'appVersion' => $this->requirements->getAppVersion(),
+                    'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                    'appCopyright' => $this->requirements->getAppCopyright(),
+                    'appLizenz' => $this->requirements->getAppLizenz(),
+                    'page' => 'Einlagern direkt',
+                    'stockInFinalForm' => $stockInFinal->createView(),
+                    'freeStockLocations' => $freeStockLocations,
+                    'charge' => $requestData['charge'],
+                    'article_nr' => $requestData['article_nr'],
+                ]
+            );
+        }
+
+        return $this->render(
+            'modal/stock_in_modal.html.twig',
+            [
+                'appName' => $this->requirements->getAppName(),
+                'appVersion' => $this->requirements->getAppVersion(),
+                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
+                'appCopyright' => $this->requirements->getAppCopyright(),
+                'appLizenz' => $this->requirements->getAppLizenz(),
+                'page' => 'Einlagern direkt',
+                'stockInForm' => $form->createView(),
+                'selectedStockLocations' => $freeStockLocations,
+            ]
+        );
     }
 
     /**
@@ -275,6 +368,34 @@ class BookingMethodService
     public function stockTransferFromStockToDispatchArea()
     {
         // TODO: Implement logic
+    }
+
+    /**
+     * Returns a rendered view.
+     */
+    protected function renderView(string $view, array $parameters = []): string
+    {
+        if (!$this->container->has('twig')) {
+            throw new \LogicException('You cannot use the "renderView" method if the Twig Bundle is not available. Try running "composer require symfony/twig-bundle".');
+        }
+
+        return $this->container->get('twig')->render($view, $parameters);
+    }
+
+    /**
+     * Renders a view.
+     */
+    protected function render(string $view, array $parameters = [], Response $response = null): Response
+    {
+        $content = $this->renderView($view, $parameters);
+
+        if (null === $response) {
+            $response = new Response();
+        }
+
+        $response->setContent($content);
+
+        return $response;
     }
 
 // 207,  'move receicvings to storage'              bfid_uml_we_lv      207   // umlagerung aus we-zone ins lv-lager (aus artikelbelegung)
