@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\Service;
 
 use Symfony\Component\HttpFoundation\RequestStack;
-use mPDF;
 
 /**
  * @package:    WebWMS\Service
@@ -20,7 +19,7 @@ class MpdfService
     ) {
     }
 
-    public function getMpdf(): mPDF
+    public function getMpdf(): \mPDF
     {
         $locale = $this->requestStack->getCurrentRequest()->getLocale();
         $config = [
@@ -35,6 +34,6 @@ class MpdfService
             'margin_footer' => 9,
         ];
 
-        return new mPDF($config);
+        return new \mPDF($config);
     }
 }

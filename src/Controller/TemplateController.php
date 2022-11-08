@@ -604,25 +604,25 @@ class TemplateController extends AbstractController
      * Adds an already added file (correspondence) as attachment of the current mail.
      */
     #[Route('/attachment/add', name: 'settings.templates.attachment.add', methods: ['POST'])]
-////    public function addAttachmentAction(
-////        TemplatesService $templatesService,
-////        Request $request,
-////        InvoiceService $invoiceService
-////    ): Response {
-////        $error = false;
-////        $isInvoice = $request->request->get('isInvoice', 'false');
-////        $cId = $request->request->get('id');
-////        if ('false' != $isInvoice) {
-////            $cId = $templatesService->makeCorespondenceOfInvoice($cId, $invoiceService);
-////        }
-////
-////        $reservations = $templatesService->getReferencedReservationsInSession();
-////        $templatesService->addFileAsAttachment($cId, $reservations);
-////
-////        return $this->render('feedback.html.twig', [
-////            'error' => $error,
-////        ]);
-////    }
+// //    public function addAttachmentAction(
+// //        TemplatesService $templatesService,
+// //        Request $request,
+// //        InvoiceService $invoiceService
+// //    ): Response {
+// //        $error = false;
+// //        $isInvoice = $request->request->get('isInvoice', 'false');
+// //        $cId = $request->request->get('id');
+// //        if ('false' != $isInvoice) {
+// //            $cId = $templatesService->makeCorespondenceOfInvoice($cId, $invoiceService);
+// //        }
+// //
+// //        $reservations = $templatesService->getReferencedReservationsInSession();
+// //        $templatesService->addFileAsAttachment($cId, $reservations);
+// //
+// //        return $this->render('feedback.html.twig', [
+// //            'error' => $error,
+// //        ]);
+// //    }
 //
 //    /**
 //     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
