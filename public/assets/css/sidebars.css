@@ -97,9 +97,15 @@ body {
 #show-sidebar.btn-sidebar {
     width: auto;
     padding: 0 10px;
-    background: transparent;
     border: none;
-    margin-top: 30px;
+    margin-top: 15px;
+    color: #ec6702;
+    background-color: #414a50;
+    background-image: -webkit-linear-gradient(top, #475158 2%, #373e44 98%);
+    background-image: linear-gradient(to bottom,#475158 2%, #373e44 98%);
+    -webkit-box-shadow: inset 0 1px 0 #636367, inset 0 -1px 0 #353c41, 0 2px 3px rgb(0 0 0 / 8%);
+    box-shadow: inset 0 1px 0 #636367, inset 0 -1px 0 #353c41, 0 2px 3px rgb(0 0 0 / 8%);
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 8%);
 }
 
 #show-sidebar i {
@@ -108,6 +114,7 @@ body {
 
 .page-wrapper.toggled #show-sidebar {
     left: -50px;
+    transition: none;
 }
 
 .light-switch {

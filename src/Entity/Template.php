@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\TemplateRepository;
 
@@ -52,7 +51,6 @@ class Template
      */
     public function __construct()
     {
-        $this->correspondences = new ArrayCollection();
         $this->isDefault = false;
     }
 

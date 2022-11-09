@@ -38,6 +38,8 @@ services:
             string $mailCopy: '%mailCopy%'
             string $webHost: '%webHost%'
 
+    Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     WebWMS\:
@@ -93,10 +95,6 @@ services:
         tags:
             - { name: form.type }
 
-    web_wms.bundles.dashboard_bundle.controller.dashboard_controller:
-        class: WebWMS\Bundles\DashboardBundle\Controller\DashboardController
-        public: true
-
     web_wms.event_listener.controller_listener:
         class: WebWMS\EventListener\ControllerListener
         tags:
@@ -149,3 +147,19 @@ services:
         class: WebWMS\Twig\TwigGlobalSubscriber
         tags:
             - { name: kernel.event_listener, event: kernel.request }
+
+    web_wms.service.logging_service:
+        class: WebWMS\Service\LoggingService
+        arguments:
+            $container: '@service_container'
+
+    web_wms.controller.dashboard_controller:
+        class: WebWMS\Controller\DashboardController
+        arguments:
+            $requirements: 'WebWMS\Controller\Requirements'
+            $twig: 'Twig\Environment'
+            $chartBuilder: 'Symfony\UX\Chartjs\Builder\ChartBuilderInterface'
+            $transportHistoryRepository: 'WebWMS\Repository\TransportHistoryRepository'
+            $stockRotationService: 'WebWMS\Service\Stock\StockRotationService'
+            $transportRequestService: 'WebWMS\Service\TransportRequestService'
+            $stockLocationService: 'WebWMS\Service\Stock\StockLocationService'

@@ -1,8 +1,0 @@
-dashboard:
-    path: /dashboard
-    controller: WebWMS\Bundles\DashboardBundle\Controller\DashboardController::index
-
-#dashboard_bundle:
-#    # loads routes from the YAML or XML files found in some bundle directory
-#    resource: '@DashboardBundle/Resources/config'
-#    type:     directory

@@ -19,7 +19,7 @@ class MpdfService
     ) {
     }
 
-    public function getMpdf(): \Mpdf\Mpdf
+    public function getMpdf(): \mPDF
     {
         $locale = $this->requestStack->getCurrentRequest()->getLocale();
         $config = [
@@ -34,6 +34,6 @@ class MpdfService
             'margin_footer' => 9,
         ];
 
-        return new \Mpdf\Mpdf($config);
+        return new \mPDF($config);
     }
 }

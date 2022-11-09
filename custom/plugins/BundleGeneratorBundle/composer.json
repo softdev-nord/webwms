@@ -1,0 +1,30 @@
+{
+  "name": "webwms/bundle-generator",
+  "description": "Bundle Generator Bundle",
+  "version": "1.0.0",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "SoftDev Nord, Rene Irrgang"
+    }
+  ],
+  "extra": {
+    "webwms-plugin-class": "WebWMS\\BundleGeneratorBundle\\BundleGeneratorBundle",
+    "copyright": "(c) SoftDev Nord",
+    "label": {
+      "de-DE": "Bundle Generator Plugin",
+      "en-GB": "Bundle Generator plugin"
+    },
+    "description": {
+      "de-DE": "Bundle Generator plugin für WebWMS",
+      "en-GB": "Bundle Generator plugin for WebWMS"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "WebWMS\\BundleGeneratorBundle\\": ""
+    }
+  }
+}
+

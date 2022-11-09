@@ -1,0 +1,31 @@
+<?php
+
+declare(strict_types=1);
+
+namespace WebWMS\Bundles\{{ bundle }}\Tests\Controller;
+
+{% block use_statements %}
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+{% endblock use_statements %}
+
+{% block class_definition %}
+/**
+ * @package:    WebWMS\Bundles\{{ bundle }}\Tests\Controller
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © {{ 'now' | date('Y') }}, SoftDev Nord
+ * Class        {{ bundle }}ControllerTest
+ */
+class {{ bundle }}ControllerTest extends WebTestCase
+{% endblock class_definition %}
+{
+{% block class_body %}
+    public function testIndex()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/');
+
+        $this->assertContains('Hello World', $client->getResponse()->getContent());
+    }
+{% endblock class_body %}
+}

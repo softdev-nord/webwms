@@ -26,14 +26,11 @@ class Homepage extends AbstractController
     #[Route('/homepage', name: 'homepage')]
     public function index(): Response
     {
-        $bundles = $this->kernel->getBundles();
-        $bundles['DashboardBundle']->getNamespace();
-
-        // dd($this->kernel->getProjectDir());
-
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         return $this->render(
             'homepage/index.html.twig',
