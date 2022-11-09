@@ -1,5 +1,5 @@
 {
-    "name": "webwms/webwms",
+    "name": "webwms/webwms-core",
     "description": "webWMS Das webbasierte Lagerverwaltungssystem",
     "keywords": ["webWMS", "wms"],
     "homepage": "https://softdev-nord.de",
@@ -64,21 +64,6 @@
         "twig/twig": "^2.12|^3.0",
         "webbamboo/material-dashboard-symfony": "^1.0"
     },
-    "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "^3.3",
-        "friendsofphp/php-cs-fixer": "^v3.8.0",
-        "php-parallel-lint/php-var-dump-check": "~0.4",
-        "phpmd/phpmd": "^2.12",
-        "phpstan/phpstan": "^0.12.80",
-        "phpstan/phpstan-doctrine": "^0.12.32",
-        "phpstan/phpstan-symfony": "^0.12.20",
-        "symfony/browser-kit": "^5.1",
-        "symfony/css-selector": "^5.1",
-        "symfony/debug-bundle": "^5.1",
-        "symfony/maker-bundle": "^1.0",
-        "symfony/phpunit-bridge": "^5.1",
-        "symfony/var-dumper": "^5.1"
-    },
     "config": {
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
@@ -142,7 +127,6 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "friendsofphp/php-cs-fixer": "^v3.8.0",
-        "friendsofsymfony/rest-bundle": "@dev",
         "php-parallel-lint/php-var-dump-check": "~0.4",
         "phpmd/phpmd": "^2.12",
         "phpstan/phpstan": "^1.9",
