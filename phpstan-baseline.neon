@@ -1,0 +1,21 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Access to an undefined property WebWMS\\\\Entity\\\\CustomRole\\:\\:\\$users\\.$#"
+			count: 1
+			path: src/Entity/CustomRole.php
+
+		-
+			message: "#^Access to private property \\$permissions of parent class WebWMS\\\\Entity\\\\Role\\.$#"
+			count: 1
+			path: src/Entity/CustomRole.php
+
+		-
+			message: "#^Access to private property \\$name of parent class WebWMS\\\\Entity\\\\Role\\.$#"
+			count: 1
+			path: src/Entity/DefaultRole.php
+
+		-
+			message: "#^Access to an undefined property WebWMS\\\\Entity\\\\Role\\:\\:\\$type\\.$#"
+			count: 2
+			path: src/Entity/Role.php
