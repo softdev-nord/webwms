@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 class MailAttachment
 {
+    #[ORM\Column(name: 'body', type: 'string', length: 255, nullable: false)]
     private string $body;
+
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
     private string $name;
+
+    #[ORM\Column(name: 'content_type', type: 'string', length: 255, nullable: false)]
     private string $contentType;
 
     public function __construct(string $body, string $name, string $contentType)
@@ -22,16 +29,6 @@ class MailAttachment
         return $this->body;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getContentType(): string
-    {
-        return $this->contentType;
-    }
-
     public function setBody(string $body): static
     {
         $this->body = $body;
@@ -39,11 +36,21 @@ class MailAttachment
         return $this;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function setName(string $name): static
     {
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getContentType(): string
+    {
+        return $this->contentType;
     }
 
     public function setContentType(string $contentType): static

@@ -7,50 +7,37 @@ namespace WebWMS\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\GroupRepository;
 
-/**
- * Group.
- *
- * @ORM\Table(name="`group`")
- * @ORM\Entity(repositoryClass=GroupRepository::class)
- */
+#[ORM\Table(name: 'group')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\GroupRepository')]
 class Group
 {
-    /**
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    /**
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
     private string $name;
 
-    /**
-     * @ORM\Column(name="use_default_roles", type="boolean")
-     */
+    #[ORM\Column(name: 'use_default_roles', type: 'boolean')]
     private bool $useDefaultRoles = true;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="groups")
-     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'groups')]
+    #[ORM\JoinTable(name: 'user')]
     private Collection $user;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="WebWMS\Entity\Feature")
-     * @ORM\JoinTable(name="group_feature",
-     *   joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(name="feature_id", referencedColumnName="id")}
-     *   )
-     */
+    #[ORM\ManyToMany(targetEntity: Feature::class, mappedBy: 'groups')]
+    #[ORM\JoinTable(name: 'group_feature')]
     private Collection $features;
 
-    /**
-     * @ORM\OneToMany(targetEntity="WebWMS\Entity\Survey", mappedBy="group")
-     */
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
+
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
+
+//    #[ORM\OneToMany(mappedBy: 'group', targetEntity: Survey::class)]
 //    private $survey;
 
     public function __construct()
@@ -63,6 +50,13 @@ class Group
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): string
@@ -124,5 +118,29 @@ class Group
         }
 
         return false;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }

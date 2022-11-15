@@ -5,50 +5,39 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\TemplateRepository;
 
-/**
- * @ORM\Entity(repositoryClass=TemplateRepository::class)
- * @ORM\Table(name="templates")
- */
+#[ORM\Table(name: 'templates')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\TemplateRepository')]
 class Template
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private ?string $name = null;
+    #[ORM\Column(name: 'name', type: 'string', length: 100, nullable: false)]
+    private string $name;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private ?string $text = null;
+    #[ORM\Column(name: 'text', type: 'text', nullable: false)]
+    private string $text;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $params = null;
+    #[ORM\Column(name: 'name', type: 'string', length: 100, nullable: false)]
+    private string $params;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     */
+    #[ORM\Column(name: 'is_default', type: 'boolean', nullable: false)]
     private bool $isDefault;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\TemplateType", inversedBy="templates")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
-     */
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
+
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
+
+    /** Many Templates have one TemplateType. This is the owning side. */
+    #[ORM\ManyToOne(targetEntity: TemplateType::class, inversedBy: 'templates')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
     private ?TemplateType $templateType = null;
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         $this->isDefault = false;
@@ -59,82 +48,94 @@ class Template
         return $this->id;
     }
 
-    public function setId($id): static
+    public function setId($id): self
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): Template
+    public function setName(string $name): Template
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function setText(?string $text): Template
+    public function getText(): string
+    {
+        return $this->text;
+    }
+
+    public function setText(string $text): Template
     {
         $this->text = $text;
 
         return $this;
     }
 
-    public function getText(): ?string
+    public function getParams(): string
     {
-        return $this->text;
+        return $this->params;
     }
 
-    public function setTemplateType(?TemplateType $templateType): Template
-    {
-        $this->templateType = $templateType;
-
-        return $this;
-    }
-
-    /**
-     * Get templateType.
-     */
-    public function getTemplateType(): ?TemplateType
-    {
-        return $this->templateType;
-    }
-
-    public function setParams(?string $params): ?Template
+    public function setParams(string $params): self
     {
         $this->params = $params;
 
         return $this;
     }
 
-    /**
-     * Get params.
-     */
-    public function getParams(): ?string
+    public function getIsDefault(): bool
     {
-        return $this->params;
+        return $this->isDefault;
     }
 
-    /**
-     * Set isDefault.
-     */
-    public function setIsDefault(bool $isDefault): Template
+    public function setIsDefault(bool $isDefault): self
     {
         $this->isDefault = $isDefault;
 
         return $this;
     }
 
-    /**
-     * Get isDefault.
-     */
-    public function getIsDefault(): bool
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->isDefault;
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function setTemplateType(?TemplateType $templateType): self
+    {
+        $this->templateType = $templateType;
+
+        return $this;
+    }
+
+    public function getTemplateType(): ?TemplateType
+    {
+        return $this->templateType;
     }
 }

@@ -46,27 +46,27 @@
     </rule>
     <rule ref="rulesets/codesize.xml/ExcessivePublicCount">
         <properties>
-            <property name="minimum" value="60" />
+            <property name="minimum" value="65" />
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/TooManyFields">
         <properties>
-            <property name="maxfields" value="60" />
+            <property name="maxfields" value="65" />
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/TooManyMethods">
         <properties>
-            <property name="maxmethods" value="60" />
+            <property name="maxmethods" value="65" />
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/TooManyPublicMethods">
         <properties>
-            <property name="maxmethods" value="60" />
+            <property name="maxmethods" value="65" />
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity">
         <properties>
-            <property name="maximum" value="60" />
+            <property name="maximum" value="65" />
         </properties>
     </rule>
     <rule ref="rulesets/controversial.xml/Superglobals" />

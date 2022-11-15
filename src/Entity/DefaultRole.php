@@ -5,13 +5,8 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\DefaultRoleRepository;
 
-/**
- * DefaultRole.
- *
- * @ORM\Entity(repositoryClass=DefaultRoleRepository::class)
- */
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\DefaultRoleRepository')]
 class DefaultRole extends Role
 {
     public const NON_MEMBER = 'non-member';

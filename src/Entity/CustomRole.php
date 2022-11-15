@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
-use WebWMS\Repository\CustomRoleRepository;
 
-/**
- * Role.
- *
- * @ORM\Entity(repositoryClass=CustomRoleRepository::class)
- */
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomRoleRepository')]
 class CustomRole extends Role
 {
     /**
@@ -25,12 +19,13 @@ class CustomRole extends Role
      *   @JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")
      *})
      */
+    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'details')]
+    #[ORM\JoinColumn(name: 'customer_order_id', referencedColumnName: 'id')]
     protected Group $group;
 
     public function __construct()
     {
-        $this->permissions = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        parent::__construct();
     }
 
     /**

@@ -7,21 +7,9 @@ namespace WebWMS\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\RoleRepository;
 
-/**
- * Role.
- *
- * @ORM\Table(name="role")
- * @ORM\Entity(repositoryClass=RoleRepository::class)
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *      "CUSTOM" = CustomRole::class,
- *      "DEFAULT" = DefaultRole::class
- * })
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Table(name: 'role')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\RoleRepository')]
 class Role
 {
     public const DEFAULT_ROLE_TYPE = DefaultRole::class;
@@ -32,36 +20,29 @@ class Role
         self::CUSTOM_ROLE_TYPE,
     ];
 
-    /**
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
+    protected int $id;
 
-    /**
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     */
-    private string $name;
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
+    protected string $name;
 
-    /**
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
-     */
-    private string $description;
+    #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: false)]
+    protected string $description;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="WebWMS\Entity\Permission")
-     * @ORM\JoinTable(name="role_permission",
-     *       joinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")},
-     *       inverseJoinColumns={@ORM\JoinColumn(name="permission_id", referencedColumnName="id")}
-     *   )
-     */
-    private Collection $permissions;
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: 'role')]
+    protected Collection $permissions;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="WebWMS\Entity\User", mappedBy="groupRoles")
-     */
-    private Collection $user;
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'groupRoles')]
+    #[ORM\JoinTable(name: 'user')]
+    protected Collection $user;
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
+
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
 
     public function __construct()
     {
@@ -126,5 +107,29 @@ class Role
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }

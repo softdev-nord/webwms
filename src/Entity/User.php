@@ -9,110 +9,73 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Repository\UserRepository;
 
-/**
- * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass=UserRepository::class)
- */
+#[ORM\Table(name: 'user')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\UserRepository')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(name="username", type="string", length=255, unique=true)
-     */
+    #[ORM\Column(name: 'username', type: 'string', length: 255, unique: true)]
     private string $username;
 
-    /**
-     * @ORM\Column(name="roles", type="json")
-     */
+    #[ORM\Column(name: 'roles', type: 'json')]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: 'password', type: 'string', length: 255, nullable: false)]
     private string $password;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
     public ?string $firstname;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(name: 'lastname', type: 'string', length: 255, nullable: true)]
     public ?string $lastname;
 
-    /**
-     * @ORM\Column(name="email", type="string", length=255, unique=true)
-     */
+    #[ORM\Column(name: 'email', type: 'string', length: 255, unique: true)]
     private string $email;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="WebWMS\Entity\Group")
-     * @ORM\JoinTable(name="user_group",
-     *       joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *       inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
-     *   )
-     */
+    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: 'group')]
     private Collection $groups;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="WebWMS\Entity\Role")
-     * @ORM\JoinTable(name="user_role",
-     *       joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *       inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
-     *   )
-     */
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: 'role')]
     private Collection $groupRoles;
 
-    /**
-     * @ORM\Column(name="last_login", type="datetime", nullable=true)
-     */
-    private ?\DateTime $lastLogin;
+    #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $lastLogin;
 
-    /**
-     * @ORM\Column(name="enabled", type="boolean")
-     */
+    #[ORM\Column(name: 'enabled', type: 'boolean')]
     private bool $enabled;
 
-    /**
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private \DateTime $createdAt;
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
 
-    /**
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private \DateTime $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
 
     public function __construct()
     {
         $this->groupRoles = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->enabled = false;
-        $this->createdAt = new \DateTime();
-        $this->updatedAt = new \DateTime();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getUsername(): string
     {
         return $this->username;
@@ -176,14 +139,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->email = $email;
     }
 
-    public function getLastLogin(): \DateTime
+    public function getLastLogin(): ?\DateTimeInterface
     {
         return $this->lastLogin;
     }
 
-    public function setLastLogin(?\DateTime $lastLogin): void
+    public function setLastLogin(?\DateTimeInterface $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
+
+        return $this;
     }
 
     public function isEnabled(): bool
@@ -191,29 +156,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->enabled;
     }
 
-    public function setEnabled(bool $enabled): void
+    public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
     }
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): void
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     public function serialize(): string
@@ -245,9 +216,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): void
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
     }
 
     /**

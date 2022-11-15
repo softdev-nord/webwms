@@ -8,43 +8,35 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="template_types")
- */
+#[ORM\Table(name: 'template_type')]
 class TemplateType
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    #[ORM\Column(name: 'name', type: 'string', length: 50, nullable: false)]
     private string $name;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    #[ORM\Column(name: 'icon', type: 'string', length: 50, nullable: false)]
     private string $icon;
 
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
+    #[ORM\Column(name: 'service', type: 'string', length: 150, nullable: false)]
     private string $service;
 
-    /**
-     * @ORM\OneToMany(targetEntity="WebWMS\Entity\Template", mappedBy="templateType")
-     */
-    private Collection $templates;
-
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
+    #[ORM\Column(name: 'editor_template', type: 'string', length: 50, nullable: true)]
     private ?string $editorTemplate;
+
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
+
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
+
+    /** One Template Type has many Templates. This is the inverse side. */
+    #[ORM\OneToMany(mappedBy: 'templateType', targetEntity: Template::class)]
+    private Collection $templates;
 
     public function __construct()
     {
@@ -56,9 +48,9 @@ class TemplateType
         return $this->id;
     }
 
-    public function setName(string $name): static
+    public function setId($id): self
     {
-        $this->name = $name;
+        $this->id = $id;
 
         return $this;
     }
@@ -68,9 +60,9 @@ class TemplateType
         return $this->name;
     }
 
-    public function setIcon(string $icon): static
+    public function setName(string $name): self
     {
-        $this->icon = $icon;
+        $this->name = $name;
 
         return $this;
     }
@@ -80,9 +72,9 @@ class TemplateType
         return $this->icon;
     }
 
-    public function setService(string $service): static
+    public function setIcon(string $icon): self
     {
-        $this->service = $service;
+        $this->icon = $icon;
 
         return $this;
     }
@@ -92,21 +84,11 @@ class TemplateType
         return $this->service;
     }
 
-    public function addTemplate(Template $template): static
+    public function setService(string $service): self
     {
-        $this->templates[] = $template;
+        $this->service = $service;
 
         return $this;
-    }
-
-    public function removeTemplate(Template $template): void
-    {
-        $this->templates->removeElement($template);
-    }
-
-    public function getTemplates(): ArrayCollection
-    {
-        return $this->templates;
     }
 
     public function getEditorTemplate(): ?string
@@ -119,5 +101,46 @@ class TemplateType
         $this->editorTemplate = $editorTemplate;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getTemplates(): Collection
+    {
+        return $this->templates;
+    }
+
+    public function setTemplate(Template $template): self
+    {
+        $this->templates[] = $template;
+
+        return $this;
+    }
+
+    public function removeTemplate(Template $template): void
+    {
+        $this->templates->removeElement($template);
     }
 }

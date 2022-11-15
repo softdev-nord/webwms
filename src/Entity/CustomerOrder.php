@@ -8,77 +8,50 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Components\Entity\ModelEntity;
-use WebWMS\Repository\CustomerOrderRepository;
 
-/**
- * @ORM\Entity(repositoryClass=CustomerOrderRepository::class)
- * @ORM\Table(name="`customer_orders`")
- */
+#[ORM\Table(name: 'customer_orders')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderRepository')]
 class CustomerOrder extends ModelEntity
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $customerOrderId;
+    #[ORM\Column(name: 'customer_order_id', type: 'integer', nullable: false)]
+    private int $customerOrderId;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $usrId;
+    #[ORM\Column(name: 'usr_id', type: 'integer', nullable: false)]
+    private int $usrId;
 
-    /**
-     * @ORM\Column(name="customer_id", type="integer")
-     */
-    private ?int $customerId;
+    #[ORM\Column(name: 'customer_id', type: 'integer', nullable: false)]
+    private int $customerId;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private ?string $customerOrderNr;
+    #[ORM\Column(name: 'customer_order_nr', type: 'string', length: 255, nullable: false)]
+    private string $customerOrderNr;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: 'customer_order_reference', type: 'string', length: 255, nullable: true)]
     private ?string $customerOrderReference;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: 'customer_order_date', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $customerOrderDate;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private ?\DateTimeInterface $customerOrderOrderDate;
+    #[ORM\Column(name: 'customer_order_creation_date', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $customerOrderCreationDate;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private mixed $customerOrderCreatedAt;
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private mixed $customerOrderUpdatedAt;
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
 
-    /**
-     * INVERSE SIDE.
-     *
-     * @ORM\OneToMany(targetEntity="\WebWMS\Entity\CustomerOrderPos", mappedBy="customerOrders")
-     */
+    /** One Customer Order has many Customer Order Positions. This is the inverse side. */
+    #[ORM\OneToMany(mappedBy: 'customerOrders', targetEntity: CustomerOrderPos::class)]
     protected Collection $details;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="\WebWMS\Entity\Customer", inversedBy="customerOrders")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
-     */
+    /** Many Customer Orders have one Customer. This is the owning side. */
+    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'customerOrders')]
+    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
     protected Customer $customer;
 
     public function __construct()
@@ -86,12 +59,19 @@ class CustomerOrder extends ModelEntity
         $this->details = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getUsrId(): ?int
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getUsrId(): int
     {
         return $this->usrId;
     }
@@ -103,7 +83,7 @@ class CustomerOrder extends ModelEntity
         return $this;
     }
 
-    public function getCustomerId(): ?int
+    public function getCustomerId(): int
     {
         return $this->customerId;
     }
@@ -115,7 +95,7 @@ class CustomerOrder extends ModelEntity
         return $this;
     }
 
-    public function getCustomerOrderId(): ?int
+    public function getCustomerOrderId(): int
     {
         return $this->customerOrderId;
     }
@@ -127,7 +107,7 @@ class CustomerOrder extends ModelEntity
         return $this;
     }
 
-    public function getCustomerOrderNr(): ?string
+    public function getCustomerOrderNr(): string
     {
         return $this->customerOrderNr;
     }
@@ -163,14 +143,14 @@ class CustomerOrder extends ModelEntity
         return $this;
     }
 
-    public function getCustomerOrderOrderDate(): ?\DateTimeInterface
+    public function getCustomerOrderCreationDate(): ?\DateTimeInterface
     {
-        return $this->customerOrderOrderDate;
+        return $this->customerOrderCreationDate;
     }
 
-    public function setCustomerOrderOrderDate(?\DateTimeInterface $customerOrderOrderDate): self
+    public function setCustomerOrderCreationDate(?\DateTimeInterface $customerOrderCreationDate): self
     {
-        $this->customerOrderOrderDate = $customerOrderOrderDate;
+        $this->customerOrderCreationDate = $customerOrderCreationDate;
 
         return $this;
     }
@@ -180,7 +160,7 @@ class CustomerOrder extends ModelEntity
         return $this->details;
     }
 
-    public function setDetails(?array $details): ?CustomerOrder
+    public function setDetails(array $details): CustomerOrder
     {
         return $this->setOneToMany($details, CustomerOrderPos::class, 'details', 'customerOrder');
     }
@@ -195,23 +175,27 @@ class CustomerOrder extends ModelEntity
         $this->customer = $customer;
     }
 
-    public function getCustomerOrderCreatedAt(): mixed
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->customerOrderCreatedAt;
+        return $this->createdAt;
     }
 
-    public function setCustomerOrderCreatedAt(mixed $customerOrderCreatedAt): void
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
-        $this->customerOrderCreatedAt = $customerOrderCreatedAt;
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 
-    public function getCustomerOrderUpdatedAt(): mixed
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->customerOrderUpdatedAt;
+        return $this->updatedAt;
     }
 
-    public function setCustomerOrderUpdatedAt(mixed $customerOrderUpdatedAt): void
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
-        $this->customerOrderUpdatedAt = $customerOrderUpdatedAt;
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }

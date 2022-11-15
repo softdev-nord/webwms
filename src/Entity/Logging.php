@@ -5,57 +5,47 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\LoggingRepository;
 
-/**
- * @ORM\Table(name="logging")
- * @ORM\Entity(repositoryClass=LoggingRepository::class)
- */
+#[ORM\Table(name: 'logging')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\LoggingRepository')]
 class Logging
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private ?string $route;
+    #[ORM\Column(name: 'route', type: 'string', length: 100, nullable: false)]
+    private string $route;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private ?string $message;
+    #[ORM\Column(name: 'message', type: 'string', length: 255, nullable: false)]
+    private string $message;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private ?\DateTimeInterface $date;
+    #[ORM\Column(name: 'date', type: 'datetime', nullable: false)]
+    private \DateTimeInterface $date;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private ?string $user;
+    #[ORM\Column(name: 'customer_order_reference', type: 'string', length: 100, nullable: false)]
+    private string $user;
 
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    private ?string $ipAddress;
+    #[ORM\Column(name: 'ip_address', type: 'string', length: 20, nullable: false)]
+    private string $ipAddress;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private ?string $userAgent;
+    #[ORM\Column(name: 'user_agent', type: 'string', length: 255, nullable: false)]
+    private string $userAgent;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getRoute(): ?string
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getRoute(): string
     {
         return $this->route;
     }
@@ -79,7 +69,7 @@ class Logging
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): \DateTimeInterface
     {
         return $this->date;
     }
@@ -91,7 +81,7 @@ class Logging
         return $this;
     }
 
-    public function getUser(): ?string
+    public function getUser(): string
     {
         return $this->user;
     }
@@ -103,7 +93,7 @@ class Logging
         return $this;
     }
 
-    public function getIpAddress(): ?string
+    public function getIpAddress(): string
     {
         return $this->ipAddress;
     }
@@ -115,7 +105,7 @@ class Logging
         return $this;
     }
 
-    public function getUserAgent(): ?string
+    public function getUserAgent(): string
     {
         return $this->userAgent;
     }

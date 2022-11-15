@@ -5,52 +5,44 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\ConfigurationRepository;
 
-/**
- * @ORM\Table(name="configuration")
- * @ORM\Entity(repositoryClass=ConfigurationRepository::class)
- */
+#[ORM\Table(name: 'configuration')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\ConfigurationRepository')]
 class Configuration
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private ?string $name;
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
+    private string $name;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $value;
+    #[ORM\Column(name: 'value', type: 'text', nullable: false)]
+    private string $value;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $label;
+    #[ORM\Column(name: 'label', type: 'string', length: 255, nullable: false)]
+    private string $label;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $description;
+    #[ORM\Column(name: 'description', type: 'text', nullable: false)]
+    private string $description;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private ?string $type;
+    #[ORM\Column(name: 'type', type: 'string', length: 255, nullable: false)]
+    private string $type;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getName(): string
     {
         return $this->name;
     }
@@ -62,43 +54,43 @@ class Configuration
         return $this;
     }
 
-    public function getValue(): ?string
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    public function setValue(?string $value): self
+    public function setValue(string $value): self
     {
         $this->value = $value;
 
         return $this;
     }
 
-    public function getLabel(): ?string
+    public function getLabel(): string
     {
         return $this->label;
     }
 
-    public function setLabel(?string $label): self
+    public function setLabel(string $label): self
     {
         $this->label = $label;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): string
     {
         return $this->type;
     }
