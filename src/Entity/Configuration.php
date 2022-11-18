@@ -24,7 +24,7 @@ class Configuration
     #[ORM\Column(name: 'label', type: 'string', length: 255, nullable: false)]
     private string $label;
 
-    #[ORM\Column(name: 'description', type: 'text', nullable: false)]
+    #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
     private string $description;
 
     #[ORM\Column(name: 'type', type: 'string', length: 255, nullable: false)]

@@ -36,10 +36,10 @@ class StockRotation
     #[ORM\Column(name: 'pos_quantity', type: 'integer', nullable: false)]
     private int $posQuantity;
 
-    #[ORM\Column(name: 'supplier_order_id', type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'access_date', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $accessDate;
 
-    #[ORM\Column(name: 'supplier_order_id', type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'dispatch_date', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $dispatchDate;
 
     #[ORM\Column(name: 'tr_type', type: 'string', length: 8, nullable: false)]

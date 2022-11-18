@@ -80,7 +80,7 @@ class CustomerOrderType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('customer_order_order_date', DateType::class, [
+            ->add('customer_order_creation_date', DateType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'd.m.Y',

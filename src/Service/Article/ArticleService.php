@@ -55,10 +55,10 @@ class ArticleService
     }
 
     public function addArticleApi(
-        int $articleNr,
+        string $articleNr,
         string $articleName,
         string $articleCategory,
-        float $articleWeight,
+        string $articleWeight,
         string $articleEan,
         string $articleUnit,
         float $articleDepth,
@@ -194,8 +194,8 @@ class ArticleService
                     .'|'.$row['stock_out_strategy']
                     .'|'.$row['le_quantity']
                     .'|'.$row['standard_loading_equipment']
-                    .'|'.$row['article_created_at']
-                    .'|'.$row['article_updated_at'];
+                    .'|'.$row['created_at']
+                    .'|'.$row['updated_at'];
                 $data[] = $name;
             }
         }

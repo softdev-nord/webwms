@@ -21,7 +21,7 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: true         // <---- This is the new additional config.
+        public: false         // <---- This is the new additional config.
 
         bind:
             $appName: '%env(APP_NAME)%'
@@ -138,8 +138,8 @@ services:
             $publicDirectory: '%publicUploadDirectory%'
             $targetDirectory: '%uploadDirectory%'
 
-    web_wms.service.configuration_service:
-        class: WebWMS\Service\ConfigurationService
+    web_wms.service.configuration.configuration_service:
+        class: WebWMS\Service\Configuration\ConfigurationService
         arguments:
             $configurationDataHandler: '@web_wms.service.data_handlers.configuration.configuration_data_handler'
 
@@ -163,3 +163,9 @@ services:
             $stockRotationService: 'WebWMS\Service\Stock\StockRotationService'
             $transportRequestService: 'WebWMS\Service\TransportRequestService'
             $stockLocationService: 'WebWMS\Service\Stock\StockLocationService'
+
+    web_wms.service.booking_method.booking_method_service:
+        class: WebWMS\Service\BookingMethod\BookingMethodService
+        arguments:
+            $requirements: 'WebWMS\Controller\Requirements'
+            $twig: 'Twig\Environment'

@@ -39,17 +39,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    public function loadUserByIdentifier(string $usernameOrEmail): ?User
-    {
-        $entityManager = $this->getEntityManager();
-
-        return $entityManager->createQuery(
-            'SELECT u
-                FROM WebWMS\Entity\User u
-                WHERE u.username = :query
-                OR u.email = :query'
-        )
-            ->setParameter('query', $usernameOrEmail)
-            ->getOneOrNullResult();
-    }
+//    public function loadUserByIdentifier(string $usernameOrEmail): ?User
+//    {
+//        $entityManager = $this->getEntityManager();#
+//
+//        return $entityManager->createQuery(
+//            'SELECT u
+//                FROM WebWMS\Entity\User u
+//                WHERE u.username = :query
+//                OR u.email = :query'
+//        )
+//            ->setParameter('query', $usernameOrEmail)
+//            ->getOneOrNullResult();
+//    }
 }

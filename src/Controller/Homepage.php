@@ -30,7 +30,7 @@ class Homepage extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         return $this->render(
             'homepage/index.html.twig',

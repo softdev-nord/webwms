@@ -21,7 +21,7 @@ class Template
     #[ORM\Column(name: 'text', type: 'text', nullable: false)]
     private string $text;
 
-    #[ORM\Column(name: 'name', type: 'string', length: 100, nullable: false)]
+    #[ORM\Column(name: 'params', type: 'string', length: 255, nullable: false)]
     private string $params;
 
     #[ORM\Column(name: 'is_default', type: 'boolean', nullable: false)]
@@ -34,8 +34,8 @@ class Template
     private ?\DateTimeInterface $updatedAt;
 
     /** Many Templates have one TemplateType. This is the owning side. */
-    #[ORM\ManyToOne(targetEntity: TemplateType::class, inversedBy: 'templates')]
-    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
+#    #[ORM\ManyToOne(targetEntity: TemplateType::class, inversedBy: 'templates')]
+#    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
     private ?TemplateType $templateType = null;
 
     public function __construct()

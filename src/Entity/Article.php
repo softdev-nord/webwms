@@ -6,7 +6,7 @@ namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'article')]
+//#[ORM\Table(name: 'article')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\ArticleRepository')]
 class Article
 {
@@ -25,7 +25,7 @@ class Article
     private string $articleCategory;
 
     #[ORM\Column(name: 'article_weight', type: 'decimal', precision: 10, scale: 2, nullable: false)]
-    private string $articleWeight;
+    private float $articleWeight;
 
     #[ORM\Column(name: 'article_ean', type: 'string', length: 15, nullable: false)]
     private string $articleEan;
@@ -39,7 +39,7 @@ class Article
     #[ORM\Column(name: 'article_width', type: 'decimal', precision: 6, scale: 2, nullable: false)]
     private float $articleWidth;
 
-    #[ORM\Column(name: 'article_weight', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[ORM\Column(name: 'article_height', type: 'decimal', precision: 6, scale: 2, nullable: false)]
     private float $articleHeight;
 
     #[ORM\Column(name: 'stock_out_strategy', type: 'string', length: 10, nullable: false)]

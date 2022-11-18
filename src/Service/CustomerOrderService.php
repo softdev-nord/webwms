@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\CustomerOrder as CustomerOrders;
 use WebWMS\Repository\CustomerOrderRepository;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
+use WebWMS\Service\DataHandlers\CustomerOrder\CustomerOrderDataHandler;
 
 /**
  * @package:    WebWMS\Service
@@ -25,7 +26,8 @@ class CustomerOrderService
     public function __construct(
         private EntityManagerInterface $entityManager,
         private CustomerOrderRepository $customerOrderRepository,
-        private CustomerDataHandler $customerDataHandler
+        private CustomerDataHandler $customerDataHandler,
+        private CustomerOrderDataHandler $customerOrderDataHandler
     ) {
     }
 
@@ -34,9 +36,7 @@ class CustomerOrderService
      */
     public function getCustomerOrderApi(int $customerOrderId): ?CustomerOrders
     {
-        $customerOrder = $this->entityManager
-            ->getRepository(CustomerOrders::class)
-            ->find($customerOrderId);
+        $customerOrder = $this->customerOrderDataHandler->getCustomerOrderById($customerOrderId);
 
         if (!$customerOrder) {
             throw new EntityNotFoundException('Customer order with id '.$customerOrderId.' does not exist!');
@@ -62,6 +62,8 @@ class CustomerOrderService
         $customerOrderDate,
         $customerOrderOrderDate
     ): CustomerOrders {
+        $createdAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
+
         $customerOrder = new CustomerOrders();
         $customerOrder->setCustomerOrderId($customerOrderId);
         $customerOrder->setUsrId($usrId);
@@ -69,8 +71,9 @@ class CustomerOrderService
         $customerOrder->setCustomerOrderNr($customerOrderNr);
         $customerOrder->setCustomerOrderReference($customerOrderReference);
         $customerOrder->setCustomerOrderDate($customerOrderDate);
-        $customerOrder->setCustomerOrderOrderDate($customerOrderOrderDate);
-        $this->customerOrderRepository->save($customerOrder);
+        $customerOrder->setCustomerOrderCreationDate($customerOrderOrderDate);
+        $customerOrder->setCreatedAt($createdAt);
+        $this->customerOrderDataHandler->save($customerOrder);
 
         return $customerOrder;
     }
@@ -83,9 +86,11 @@ class CustomerOrderService
         string $customerOrderNr,
         string $customerOrderReference,
         $customerOrderDate,
-        $customerOrderOrderDate
+        $customerOrderCreationDate
     ): ?CustomerOrders {
-        $customerOrder = $this->customerOrderRepository->findById($customerOrderMainId);
+        $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
+
+        $customerOrder = $this->customerOrderDataHandler->getCustomerOrderById($customerOrderMainId);
 
         $customerOrder->setCustomerOrderId($customerOrderId);
         $customerOrder->setUsrId($usrId);
@@ -93,8 +98,9 @@ class CustomerOrderService
         $customerOrder->setCustomerOrderNr($customerOrderNr);
         $customerOrder->setCustomerOrderReference($customerOrderReference);
         $customerOrder->setCustomerOrderDate($customerOrderDate);
-        $customerOrder->setCustomerOrderOrderDate($customerOrderOrderDate);
-        $this->customerOrderRepository->save($customerOrder);
+        $customerOrder->setCustomerOrderCreationDate($customerOrderCreationDate);
+        $customerOrder->setUpdatedAt($updatedAt);
+        $this->customerOrderDataHandler->save($customerOrder);
 
         return $customerOrder;
     }
@@ -106,12 +112,12 @@ class CustomerOrderService
      */
     public function deleteCustomerOrderApi(int $customerOrderId): void
     {
-        $customerOrder = $this->customerOrderRepository->findById($customerOrderId);
+        $customerOrder = $this->customerOrderDataHandler->getCustomerOrderById($customerOrderId);
 
         if (!$customerOrder) {
             throw new EntityNotFoundException('Supplier with id '.$customerOrderId.' does not exist!');
         } else {
-            $this->customerOrderRepository->delete($customerOrder);
+            $this->customerOrderDataHandler->delete($customerOrder);
         }
     }
 
@@ -134,7 +140,7 @@ class CustomerOrderService
                 'cu.customer_nr',
                 'cu.customer_name',
                 'co.customer_order_date',
-                'co.customer_order_order_date',
+                'co.customer_order_creation_date',
                 'usr.username'
             )
             ->from('customer_orders', 'co')

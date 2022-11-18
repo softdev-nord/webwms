@@ -18,7 +18,7 @@ class StockZone
     #[ORM\Column(name: 'stock_zone_short_desc', type: 'string', length: 100, nullable: false)]
     private string $stockZoneShortDesc;
 
-    #[ORM\Column(name: 'stock_zone_short_desc', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'stock_zone_description', type: 'string', length: 255, nullable: false)]
     private string $stockZoneDescription;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]

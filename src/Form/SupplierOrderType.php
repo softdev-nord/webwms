@@ -69,7 +69,7 @@ class SupplierOrderType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('supplier_order_order_date', DateType::class, [
+            ->add('supplier_order_creation_date', DateType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'd.m.Y',

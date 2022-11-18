@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Components\Entity\ModelEntity;
 
-#[ORM\Table(name: 'customer_orders')]
+#[ORM\Table(name: 'customer_orders_pos')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderRepository')]
 class CustomerOrderPos extends ModelEntity
 {

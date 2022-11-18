@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Components\Entity\ModelEntity;
@@ -48,10 +49,10 @@ class SupplierOrder extends ModelEntity
     #[ORM\OneToMany(mappedBy: 'supplierOrders', targetEntity: SupplierOrderPos::class)]
     protected Collection $details;
 
-    /** Many Supplier Orders have one Supplier. This is the owning side. */
-    #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'supplierOrders')]
-    #[ORM\JoinColumn(name: 'supplier_id', referencedColumnName: 'id')]
-    protected Supplier $supplier;
+    public function __construct()
+    {
+        $this->details = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -181,15 +182,5 @@ class SupplierOrder extends ModelEntity
     public function setDetails(?array $details): SupplierOrder
     {
         return $this->setOneToMany($details, SupplierOrderPos::class, 'details', 'SupplierOrder');
-    }
-
-    public function getSupplier(): Supplier
-    {
-        return $this->supplier;
-    }
-
-    public function setSupplier(Supplier $supplier)
-    {
-        $this->supplier = $supplier;
     }
 }

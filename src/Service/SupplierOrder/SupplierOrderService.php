@@ -58,8 +58,10 @@ class SupplierOrderService
         string $supplierOrderNr,
         string $supplierOrderReference,
         $supplierOrderDate,
-        $supplierOrderOrderDate
+        $supplierOrderCreationDate
     ): SupplierOrder {
+        $createdAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
+
         $supplierOrder = new SupplierOrder();
         $supplierOrder->setSupplierOrderId($supplierOrderId);
         $supplierOrder->setUsrId($usrId);
@@ -67,7 +69,8 @@ class SupplierOrderService
         $supplierOrder->setSupplierOrderNr($supplierOrderNr);
         $supplierOrder->setSupplierOrderReference($supplierOrderReference);
         $supplierOrder->setSupplierOrderDate($supplierOrderDate);
-        $supplierOrder->setSupplierOrderOrderDate($supplierOrderOrderDate);
+        $supplierOrder->setSupplierOrderCreationDate($supplierOrderCreationDate);
+        $supplierOrder->setCreatedAt($createdAt);
         $this->supplierOrderDataHandler->save($supplierOrder);
 
         return $supplierOrder;
@@ -81,8 +84,10 @@ class SupplierOrderService
         string $supplierOrderNr,
         string $supplierOrderReference,
         $supplierOrderDate,
-        $supplierOrderOrderDate
+        $supplierOrderCreationDate
     ): ?SupplierOrder {
+        $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
+
         $supplierOrder = $this->entityManager
             ->getRepository(SupplierOrder::class)
             ->find($supplierOrderMainId);
@@ -93,7 +98,8 @@ class SupplierOrderService
         $supplierOrder->setSupplierOrderNr($supplierOrderNr);
         $supplierOrder->setSupplierOrderReference($supplierOrderReference);
         $supplierOrder->setSupplierOrderDate($supplierOrderDate);
-        $supplierOrder->setSupplierOrderOrderDate($supplierOrderOrderDate);
+        $supplierOrder->setSupplierOrderCreationDate($supplierOrderCreationDate);
+        $supplierOrder->setUpdatedAt($updatedAt);
 
         return $supplierOrder;
     }
@@ -127,7 +133,7 @@ class SupplierOrderService
 
         $queryBuilder
             ->select('so.supplier_order_id, so.supplier_order_nr, so.supplier_order_reference,
-            sup.supplier_nr, sup.supplier_name, so.supplier_order_order_date, usr.username')
+            sup.supplier_nr, sup.supplier_name, so.supplier_order_creation_date, usr.username')
             ->from('supplier_orders', 'so')
             ->innerJoin('so', 'supplier_order_pos', 'sop', 'sop.supplier_order_id = so.supplier_order_id')
             ->innerJoin('so', 'supplier', 'sup', 'so.supplier_id = sup.id')
@@ -149,7 +155,7 @@ class SupplierOrderService
         $conn = $this->entityManager->getConnection();
 
         $sql = "SELECT pos.supplier_order_id, ord.supplier_order_nr, art.article_nr, art.article_name, pos.supplier_order_pos_quantity,
-                (SELECT (SUM(IF(transport_history.tr_typ = '1', transport_history.tr_quantity, 0.000))) FROM transport_history WHERE transport_history.article_nr = art.article_nr GROUP BY transport_history.article_nr LIMIT 1) AS lbw_menge
+                (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) FROM transport_history WHERE transport_history.article_nr = art.article_nr GROUP BY transport_history.article_nr LIMIT 1) AS lbw_menge
                 FROM supplier_order_pos AS pos
                 INNER JOIN supplier_orders AS ord
                     ON pos.supplier_order_id = ord.supplier_order_id

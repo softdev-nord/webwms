@@ -18,7 +18,7 @@ stop: ## Stops the full docker-compose stack, but keeps containers
 	@docker-compose stop
 
 down: ## Drop all container instances for a fresh restart
-	@docker-compose down
+	@docker-compose down -v
 
 ######################################################################
 ############################### App ##################################

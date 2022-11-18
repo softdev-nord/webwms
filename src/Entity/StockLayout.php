@@ -21,7 +21,7 @@ class StockLayout
     #[ORM\Column(name: 'stock_description', type: 'string', length: 25, nullable: false)]
     private string $stockDescription;
 
-    #[ORM\Column(name: 'stock_level4', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'stock_level1', type: 'integer', nullable: false)]
     private int $stockLevel1;
 
     #[ORM\Column(name: 'stock_level2', type: 'integer', nullable: false)]

@@ -15,9 +15,6 @@ class BookingMethod
     #[ORM\Column(type: 'integer')]
     private int $id;
 
-    #[ORM\Column(name: 'menu_id', type: 'integer', nullable: false)]
-    private int $menuId;
-
     #[ORM\Column(name: 'confirmation', type: 'integer', nullable: false)]
     private int $confirmation;
 
@@ -39,8 +36,8 @@ class BookingMethod
     #[ORM\Column(name: 'priority', type: 'integer', nullable: false)]
     private int $priority;
 
-    #[ORM\Column(name: 'tid_description', type: 'integer', nullable: false)]
-    private int $tidDescription;
+    #[ORM\Column(name: 'tid_description', type: 'integer', nullable: true)]
+    private ?int $tidDescription;
 
     public function getId(): int
     {
@@ -150,12 +147,12 @@ class BookingMethod
         return $this;
     }
 
-    public function getTidDescription(): int
+    public function getTidDescription(): ?int
     {
         return $this->tidDescription;
     }
 
-    public function setTidDescription(int $tidDescription): self
+    public function setTidDescription(?int $tidDescription): self
     {
         $this->tidDescription = $tidDescription;
 

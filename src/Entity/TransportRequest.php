@@ -60,7 +60,7 @@ class TransportRequest
     #[ORM\Column(name: 'tr_state', type: 'integer', nullable: false, options: ['default' => '0'])]
     private int $trState;
 
-    #[ORM\Column(name: 'stock_coordinate', type: 'string', length: 30, nullable: false)]
+    #[ORM\Column(name: 'order_username', type: 'string', length: 30, nullable: false)]
     private string $orderUsername;
 
     #[ORM\Column(name: 'booking_method', type: 'string', length: 10, nullable: false)]
@@ -81,7 +81,7 @@ class TransportRequest
     #[ORM\Column(name: 'loading_equipment', type: 'string', length: 30, nullable: false)]
     private string $loadingEquipment;
 
-    #[ORM\Column(name: 'confirmation_state', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'confirmation_state', type: 'integer', nullable: false, options: ['default' => '0'])]
     private int $confirmationState;
 
     #[ORM\Column(name: 'tr_username', type: 'string', length: 30, nullable: false)]
@@ -90,17 +90,17 @@ class TransportRequest
     #[ORM\Column(name: 'tr_computer_ip', type: 'string', length: 30, nullable: false)]
     private string $trComputerIp;
 
-    #[ORM\Column(name: 'tr_blocked', type: 'boolean', nullable: true, options: ['default' => false])]
-    private int $trBlocked;
+    #[ORM\Column(name: 'tr_blocked', type: 'boolean', nullable: false, options: ['default' => false])]
+    private bool $trBlocked;
 
     #[ORM\Column(name: 'tr_start_date', type: 'datetime', nullable: true, options: ['default' => null])]
     private ?\DateTimeInterface $trStartDate;
 
-    #[ORM\Column(name: 'tr_edited', type: 'integer', nullable: false)]
-    private int $trEdited;
+    #[ORM\Column(name: 'tr_edited', type: 'boolean', nullable: false, options: ['default' => false])]
+    private bool $trEdited;
 
     #[ORM\Column(name: 'tr_type', type: 'integer', nullable: false)]
-    private string $trType;
+    private int $trType;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $createdAt;
@@ -420,12 +420,12 @@ class TransportRequest
         return $this;
     }
 
-    public function getTrBlocked(): int
+    public function getTrBlocked(): bool
     {
         return $this->trBlocked;
     }
 
-    public function setTrBlocked(int $trBlocked): self
+    public function setTrBlocked(bool $trBlocked): self
     {
         $this->trBlocked = $trBlocked;
 
@@ -444,24 +444,24 @@ class TransportRequest
         return $this;
     }
 
-    public function getTrEdited(): int
+    public function getTrEdited(): bool
     {
         return $this->trEdited;
     }
 
-    public function setTrEdited(int $trEdited): self
+    public function setTrEdited(bool $trEdited): self
     {
         $this->trEdited = $trEdited;
 
         return $this;
     }
 
-    public function getTrType(): string
+    public function getTrType(): int
     {
         return $this->trType;
     }
 
-    public function setTrType(string $trType): self
+    public function setTrType(int $trType): self
     {
         $this->trType = $trType;
 

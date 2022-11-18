@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,16 +32,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'lastname', type: 'string', length: 255, nullable: true)]
     public ?string $lastname;
 
-    #[ORM\Column(name: 'email', type: 'string', length: 255, unique: true)]
+    #[ORM\Column(name: 'email', type: 'string', length: 255)]
     private string $email;
-
-    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users')]
-    #[ORM\JoinTable(name: 'group')]
-    private Collection $groups;
-
-    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
-    #[ORM\JoinTable(name: 'role')]
-    private Collection $groupRoles;
 
     #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $lastLogin;
@@ -59,8 +49,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->groupRoles = new ArrayCollection();
-        $this->groups = new ArrayCollection();
         $this->enabled = false;
     }
 
@@ -240,41 +228,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
-    }
-
-    public function getGroupRoles(): Collection
-    {
-        return $this->groupRoles;
-    }
-
-    public function addGroupRole(Role $role): void
-    {
-        $this->groupRoles[] = $role;
-    }
-
-    public function removeGroupRole(Role $role): void
-    {
-        $this->groupRoles->removeElement($role);
-    }
-
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-
-    public function addGroup(Group $group): void
-    {
-        $this->groups[] = $group;
-    }
-
-    public function hasGroup(Group $group): bool
-    {
-        foreach ($this->getGroups() as $userGroup) {
-            if ($userGroup === $group) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

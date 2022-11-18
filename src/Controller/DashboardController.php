@@ -118,7 +118,7 @@ class DashboardController extends AbstractController
     {
         $datasets = [];
         $chartType = 'TYPE_LINE';
-        $repo = $this->transportHistoryRepository->findBy(['trTyp' => 1]);
+        $repo = $this->transportHistoryRepository->findBy(['trType' => 1]);
 
         foreach ($repo as $data) {
             $datasets[] = $data->getTrAccess()->format('d.m.Y');
@@ -133,7 +133,7 @@ class DashboardController extends AbstractController
     {
         $datasets = [];
         $chartType = 'TYPE_BAR';
-        $repo = $this->transportHistoryRepository->findBy(['trTyp' => 2]);
+        $repo = $this->transportHistoryRepository->findBy(['trType' => 2]);
 
         foreach ($repo as $data) {
             $datasets[] = $data->getTrDispatch()->format('d.m.Y');
@@ -151,9 +151,9 @@ class DashboardController extends AbstractController
         $repo = $this->transportHistoryRepository->findAll();
 
         foreach ($repo as $data) {
-            if (1 == $data->getTrTyp() && null !== $data->getTrAccess()) {
+            if (1 == $data->getTrType() && null !== $data->getTrAccess()) {
                 $datasets[] = $data->getTrAccess()->format('d.m.Y');
-            } elseif (2 == $data->getTrTyp() && null !== $data->getTrDispatch()) {
+            } elseif (2 == $data->getTrType() && null !== $data->getTrDispatch()) {
                 $datasets[] = $data->getTrDispatch()->format('d.m.Y');
             }
         }

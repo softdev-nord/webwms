@@ -49,11 +49,6 @@ class CustomerOrder extends ModelEntity
     #[ORM\OneToMany(mappedBy: 'customerOrders', targetEntity: CustomerOrderPos::class)]
     protected Collection $details;
 
-    /** Many Customer Orders have one Customer. This is the owning side. */
-    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'customerOrders')]
-    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
-    protected Customer $customer;
-
     public function __construct()
     {
         $this->details = new ArrayCollection();
@@ -163,16 +158,6 @@ class CustomerOrder extends ModelEntity
     public function setDetails(array $details): CustomerOrder
     {
         return $this->setOneToMany($details, CustomerOrderPos::class, 'details', 'customerOrder');
-    }
-
-    public function getCustomer(): Customer
-    {
-        return $this->customer;
-    }
-
-    public function setCustomer(Customer $customer)
-    {
-        $this->customer = $customer;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface

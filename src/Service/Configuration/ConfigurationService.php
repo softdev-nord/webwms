@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Service;
+namespace WebWMS\Service\Configuration;
 
 use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
 

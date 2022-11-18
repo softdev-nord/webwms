@@ -95,7 +95,7 @@ class CustomerOrder extends AbstractFOSRestController
             $request->get('customer_order_nr'),
             $request->get('customer_order_reference'),
             $request->get('customer_order_date'),
-            $request->get('customer_order_order_date'),
+            $request->get('customer_order_creation_date'),
         );
 
         return $this->view($customerOrder, Response::HTTP_CREATED);
@@ -131,7 +131,7 @@ class CustomerOrder extends AbstractFOSRestController
             $request->get('customer_order_nr'),
             $request->get('customer_order_reference'),
             $request->get('customer_order_date'),
-            $request->get('customer_order_order_date')
+            $request->get('customer_order_creation_date')
         );
 
         return $this->view($customerOrder, Response::HTTP_OK);
