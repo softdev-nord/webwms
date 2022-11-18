@@ -20,7 +20,6 @@ use WebWMS\Service\DataHandlers\CustomerOrder\CustomerOrderDataHandler;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        CustomerOrderService
- *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class CustomerOrderService
