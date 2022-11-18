@@ -6,7 +6,7 @@ namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-//#[ORM\Table(name: 'article')]
+// #[ORM\Table(name: 'article')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\ArticleRepository')]
 class Article
 {

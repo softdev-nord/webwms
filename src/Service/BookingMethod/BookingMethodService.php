@@ -140,6 +140,7 @@ class BookingMethodService
                     'article_nr' => $requestData['article_nr'],
                 ]
             );
+
             return new Response($html);
         }
 
@@ -156,6 +157,7 @@ class BookingMethodService
                 'selectedStockLocations' => $freeStockLocations,
             ]
         );
+
         return new Response($html);
     }
 

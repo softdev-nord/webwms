@@ -34,8 +34,8 @@ class Template
     private ?\DateTimeInterface $updatedAt;
 
     /** Many Templates have one TemplateType. This is the owning side. */
-#    #[ORM\ManyToOne(targetEntity: TemplateType::class, inversedBy: 'templates')]
-#    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
+//    #[ORM\ManyToOne(targetEntity: TemplateType::class, inversedBy: 'templates')]
+//    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
     private ?TemplateType $templateType = null;
 
     public function __construct()

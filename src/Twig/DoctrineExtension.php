@@ -9,19 +9,17 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**
- * This class contains the needed functions in order to do the query highlighting
+ * This class contains the needed functions in order to do the query highlighting.
  */
 class DoctrineExtension extends AbstractExtension
 {
     /**
-     * Number of maximum characters that one single line can hold in the interface
-     *
-     * @var int
+     * Number of maximum characters that one single line can hold in the interface.
      */
     private int $maxCharWidth = 100;
 
     /**
-     * Define our functions
+     * Define our functions.
      *
      * @return TwigFilter[]
      */
@@ -35,7 +33,7 @@ class DoctrineExtension extends AbstractExtension
     }
 
     /**
-     * Minify the query
+     * Minify the query.
      */
     public function minifyQuery(string $query): string
     {
@@ -45,25 +43,25 @@ class DoctrineExtension extends AbstractExtension
 
         // Check if we can match the query against any of the major types
         switch (true) {
-            case mb_stripos($query, 'SELECT') !== false:
+            case false !== mb_stripos($query, 'SELECT'):
                 $keywords = ['SELECT', 'FROM', 'WHERE', 'HAVING', 'ORDER BY', 'LIMIT'];
                 $required = 2;
 
                 break;
 
-            case mb_stripos($query, 'DELETE') !== false:
+            case false !== mb_stripos($query, 'DELETE'):
                 $keywords = ['DELETE', 'FROM', 'WHERE', 'ORDER BY', 'LIMIT'];
                 $required = 2;
 
                 break;
 
-            case mb_stripos($query, 'UPDATE') !== false:
+            case false !== mb_stripos($query, 'UPDATE'):
                 $keywords = ['UPDATE', 'SET', 'WHERE', 'ORDER BY', 'LIMIT'];
                 $required = 2;
 
                 break;
 
-            case mb_stripos($query, 'INSERT') !== false:
+            case false !== mb_stripos($query, 'INSERT'):
                 $keywords = ['INSERT', 'INTO', 'VALUE', 'VALUES'];
                 $required = 2;
 
@@ -75,7 +73,7 @@ class DoctrineExtension extends AbstractExtension
         }
 
         // If we had a match then we should minify it
-        if ($result === '') {
+        if ('' === $result) {
             $result = $this->composeMiniQuery($query, $keywords, $required);
         }
 
@@ -84,9 +82,9 @@ class DoctrineExtension extends AbstractExtension
 
     /**
      * Escape parameters of a SQL query
-     * DON'T USE THIS FUNCTION OUTSIDE ITS INTENDED SCOPE
+     * DON'T USE THIS FUNCTION OUTSIDE ITS INTENDED SCOPE.
      *
-     * @internal
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public static function escapeFunction($parameter): string
     {
@@ -95,12 +93,12 @@ class DoctrineExtension extends AbstractExtension
         switch (true) {
             // Check if result is non-unicode string using PCRE_UTF8 modifier
             case \is_string($result) && !preg_match('//u', $result):
-                $result = '0x' . mb_strtoupper(bin2hex($result));
+                $result = '0x'.mb_strtoupper(bin2hex($result));
 
                 break;
 
             case \is_string($result):
-                $result = "'" . addslashes($result) . "'";
+                $result = "'".addslashes($result)."'";
 
                 break;
 
@@ -118,7 +116,7 @@ class DoctrineExtension extends AbstractExtension
 
                 break;
 
-            case $result === null:
+            case null === $result:
                 $result = 'NULL';
 
                 break;
@@ -133,7 +131,7 @@ class DoctrineExtension extends AbstractExtension
     }
 
     /**
-     * Return a query with the parameters replaced
+     * Return a query with the parameters replaced.
      *
      * @param array|Data $parameters
      */
@@ -172,6 +170,10 @@ class DoctrineExtension extends AbstractExtension
     /**
      * Formats and/or highlights the given SQL statement.
      *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     *
      * @param bool $highlightOnly If true the query is not formatted, just highlighted
      */
     public function formatQuery(string $sql, bool $highlightOnly = false): string
@@ -199,7 +201,7 @@ class DoctrineExtension extends AbstractExtension
     }
 
     /**
-     * Get the name of the extension
+     * Get the name of the extension.
      */
     public function getName(): string
     {
@@ -207,14 +209,14 @@ class DoctrineExtension extends AbstractExtension
     }
 
     /**
-     * Get the possible combinations of elements from the given array
+     * Get the possible combinations of elements from the given array.
      */
     private function getPossibleCombinations(array $elements, int $combinationsLevel): array
     {
         $baseCount = \count($elements);
         $result = [];
 
-        if ($combinationsLevel === 1) {
+        if (1 === $combinationsLevel) {
             foreach ($elements as $element) {
                 $result[] = [$element];
             }
@@ -235,7 +237,7 @@ class DoctrineExtension extends AbstractExtension
                     continue;
                 }
 
-                if ($found !== true || $key >= $baseCount) {
+                if (true !== $found || $key >= $baseCount) {
                     continue;
                 }
 
@@ -250,7 +252,7 @@ class DoctrineExtension extends AbstractExtension
     }
 
     /**
-     * Shrink the values of parameters from a combination
+     * Shrink the values of parameters from a combination.
      */
     private function shrinkParameters(array $parameters, array $combination): string
     {
@@ -281,14 +283,14 @@ class DoctrineExtension extends AbstractExtension
                 $value .= ' [...]';
             }
 
-            $result .= ' ' . $combination[$key] . ' ' . $value;
+            $result .= ' '.$combination[$key].' '.$value;
         }
 
         return trim($result);
     }
 
     /**
-     * Attempt to compose the best scenario minified query so that a user could find it without expanding it
+     * Attempt to compose the best scenario minified query so that a user could find it without expanding it.
      */
     private function composeMiniQuery(string $query, array $keywords, int $required): string
     {
@@ -308,8 +310,8 @@ class DoctrineExtension extends AbstractExtension
         foreach ($combinations as $combination) {
             $combination = array_merge($mandatoryKeywords, $combination);
 
-            $regexp = implode('(.*) ', $combination) . ' (.*)';
-            $regexp = '/^' . $regexp . '/is';
+            $regexp = implode('(.*) ', $combination).' (.*)';
+            $regexp = '/^'.$regexp.'/is';
 
             if (preg_match($regexp, $query, $matches)) {
                 return $this->shrinkParameters($matches, $combination);
@@ -317,8 +319,8 @@ class DoctrineExtension extends AbstractExtension
         }
 
         // Try and match the simplest query form that contains only the mandatory keywords
-        $regexp = implode(' (.*)', $mandatoryKeywords) . ' (.*)';
-        $regexp = '/^' . $regexp . '/is';
+        $regexp = implode(' (.*)', $mandatoryKeywords).' (.*)';
+        $regexp = '/^'.$regexp.'/is';
 
         if (preg_match($regexp, $query, $matches)) {
             return $this->shrinkParameters($matches, $mandatoryKeywords);

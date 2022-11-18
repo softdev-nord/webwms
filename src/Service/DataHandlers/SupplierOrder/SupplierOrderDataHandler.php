@@ -63,7 +63,7 @@ class SupplierOrderDataHandler
         $supplierOrder->setSupplierOrderId((int) $requestData['	supplier_order_id']);
         $supplierOrder->setUsrId((int) $requestData['usr_id']);
         $supplierOrder->setSupplierId((int) $requestData['supplier_id']);
-        $supplierOrder->setSupplierOrderNr((string)$requestData['supplier_order_nr']);
+        $supplierOrder->setSupplierOrderNr((string) $requestData['supplier_order_nr']);
         $supplierOrder->setSupplierOrderReference((string) $requestData['supplier_order_reference']);
         $supplierOrder->setSupplierOrderDate($requestData['supplier_order_date']);
         $supplierOrder->setSupplierOrderCreationDate($requestData['supplier_address_street']);
