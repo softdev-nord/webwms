@@ -145,7 +145,7 @@ class CustomerOrderService
                 'usr.username'
             )
             ->from('customer_orders', 'co')
-            ->innerJoin('co', 'customer_order_pos', 'cop', 'cop.customer_order_id = co.customer_order_id')
+            ->innerJoin('co', 'customer_orders_pos', 'cop', 'cop.customer_order_id = co.customer_order_id')
             ->innerJoin('co', 'customer', 'cu', 'cu.customer_id = co.customer_id')
             ->innerJoin('co', 'user', 'usr', 'usr.id = co.usr_id')
             ->groupBy('cop.customer_order_id');
@@ -166,13 +166,13 @@ class CustomerOrderService
     {
         $conn = $this->entityManager->getConnection();
 
-        $sql = "SELECT DISTINCT cop.customer_order_id, th.order_nr, art.article_nr, art.article_name, cop.customer_order_pos_quantity, th.tr_quantity AS lbw_menge
+        $sql = "SELECT DISTINCT cop.customer_order_id, th.order_nr as customer_order_nr, art.article_nr, art.article_name, cop.customer_order_pos_quantity, th.tr_quantity AS lbw_menge
             FROM transport_history AS th
             INNER JOIN article AS art
                 ON th.article_nr = art.article_nr
             INNER JOIN customer_orders AS co
                 ON th.doc_id = co.customer_order_id
-            LEFT OUTER JOIN customer_order_pos AS cop
+            LEFT OUTER JOIN customer_orders_pos AS cop
                 ON th.order_nr LIKE CONCAT('%', cop.customer_order_id ,'%')";
 
         $data = $conn->fetchAllAssociative($sql);

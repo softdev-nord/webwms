@@ -11,8 +11,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Form\EditSupplierOrderType;
 use WebWMS\Form\SupplierOrderType;
 use WebWMS\Service\Article\ArticleService;
+use WebWMS\Service\LoggingService;
 use WebWMS\Service\Supplier\SupplierService;
 use WebWMS\Service\SupplierOrder\SupplierOrderService;
 
@@ -28,7 +30,8 @@ class SupplierOrder extends AbstractController
         private ArticleService $articleService,
         private SupplierOrderService $supplierOrderService,
         private SupplierService $supplierService,
-        private Requirements $requirements
+        private Requirements $requirements,
+        private LoggingService $loggingService
     ) {
     }
 
@@ -85,9 +88,33 @@ class SupplierOrder extends AbstractController
         );
     }
 
-    public function editSupplierOrder()
+    #[Route('/bestellung_bearbeiten/id/{id}', name: 'edit_supplier_order')]
+    public function editSupplierOrder(Request $request, $id): RedirectResponse|Response
     {
-        // TODO: Implement logic
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $supplierOrder = $this->supplierOrderService->getSupplierOrderById((int) $id);
+
+        // dd($supplierOrder);
+
+        $form = $this->createForm(EditSupplierOrderType::class, $supplierOrder);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // $em->persist($article);
+            // $em->flush();
+            $this->addFlash('success', 'Article Updated! Inaccuracies squashed!');
+            // return $this->redirectToRoute('admin_article_edit', [
+            //    'id' => $article->getId(),
+            // ]);
+        }
+
+        return $this->render('supplier_order/supplier_order_form_edit.html.twig', [
+            'editSupplierOrderForm' => $form->createView(),
+            'supplierData' => $this->supplierService->getSupplierById($supplierOrder->getSupplierId()),
+            'supplierOrderPos' => $supplierOrder->getSupplierOrderPos()->toArray(),
+        ]);
     }
 
     /**

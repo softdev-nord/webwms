@@ -80,8 +80,9 @@
     // Get selected article
     $(document).on('click','i.mdi-square-edit-outline',function(event) {
         const row = $(this).parents('tr')[0];
-        const articleNr = artTable.row(row).data().article_nr;
-        window.location.href = '/artikel_bearbeiten/articleNr/' + articleNr;
+        const id = artTable.row(row).data().article_id;
+        console.log(id);
+        window.location.href = '/artikel_bearbeiten/articleId/' + id;
     });
 
     // Save edit article

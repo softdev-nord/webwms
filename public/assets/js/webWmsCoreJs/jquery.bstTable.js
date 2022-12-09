@@ -2,6 +2,9 @@
 
 $(function() {
     const bstTable = $('#bstTable').DataTable({
+        createdRow: function (row, data, dataIndex) {
+            $(row).attr('data-supplier-order-id', data.supplier_order_id);
+        },
         "lengthChange": false,
         // Ajax-Anfrage via PHP (Json)
         ajax: {
@@ -22,7 +25,7 @@ $(function() {
             {"data": "supplier_order_reference"},
             {"data": "supplier_nr"},
             {"data": "supplier_name"},
-            {"data": "supplier_order_order_date"},
+            {"data": "supplier_order_creation_date"},
             {"data": "username"},
             {
                 "data": null,
@@ -38,6 +41,9 @@ $(function() {
                 targets: [4], render: function (data) {
                     moment.locale("de");
                     return moment(data).format("L");
+                },
+                createdCell:  function (tr, cellData, rowData, row, col) {
+                    $(tr).attr('data-supplier-order-id', rowData);
                 }
             }
         ],
@@ -68,6 +74,63 @@ $(function() {
             }
         ]
     });
+
+    $.contextMenu({
+        selector: 'tr',
+        trigger: 'right',
+        callback: function(key, options, event) {
+            const row = bstTable.row(options.$trigger);
+
+            switch (key) {
+                case 'edit' :
+                    //$(document).on('click','#editAddressModalBtn',function(event) {
+                        editSupplierOrder(row.data().supplier_order_id);
+                    //})
+                    console.log(row.data().supplier_order_id);
+                    //row.remove().draw()
+                    break;
+                default :
+                    break
+            }
+        },
+        items: {
+            "edit": {name: "Bearbeiten", icon: "edit"},
+        }
+    });
+
+    $(function(){
+        // Changed the default modal width
+        $("#modalCenter .modal-dialog").css('max-width', '98%');
+    });
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    function editSupplierOrder(id) {
+        const url = '/bestellung_bearbeiten/id/' + id;
+        const content = '<div class="modal-body"></div>';
+
+        $('#modalCenter .modal-title').text("Bestellung bearbeiten");
+        $("#modal-content-ajax").html(content);
+        $('#modalCenter').modal('show');
+
+        $.ajax({
+            url: url,
+            type: "get",
+            data: ($("#supplier-order-form-new").serialize()),
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+            },
+            success: function (data) {
+                $("#modal-content-ajax").html(data);
+            }
+        });
+
+        return false;
+    }
+
+
     // JS Funktion Ajax Daten für Bestellungspositionen
     const posTable = $('#posTable').DataTable({
         "lengthChange": false,

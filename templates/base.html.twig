@@ -32,6 +32,7 @@
             <script type="text/javascript" src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/js/bodyevents.js') }}"></script>
 {#            <script type="text/javascript" src="{{ asset('assets/js/switch.js') }}"></script>#}
+            <script type="text/javascript" src="{{ asset('assets/js/jquery.contextMenu.js') }}"></script>
             <script>
                 $(document).ready(function () {
                     const delegate = (element, type, selector, handler) => {
@@ -75,7 +76,7 @@
         {% block modal %}
             <!-- Modal -->
             <div class="modal" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3 class="modal-title" id="modalCenterTitle"></h3>

@@ -46,12 +46,21 @@ class SupplierOrder extends ModelEntity
     private ?\DateTimeInterface $updatedAt;
 
     /** One Supplier Order has many Supplier Order Positions. This is the inverse side. */
-    #[ORM\OneToMany(mappedBy: 'supplierOrders', targetEntity: SupplierOrderPos::class)]
-    protected Collection $details;
+    #[ORM\OneToMany(
+        mappedBy: 'supplierOrder',
+        targetEntity: SupplierOrderPos::class,
+        cascade: ['persist'],
+        fetch: 'EAGER'
+    )]
+    private Collection|ArrayCollection $supplierOrderPos;
+
+    #[ORM\OneToOne(targetEntity: Supplier::class)]
+    #[ORM\JoinColumn(name: 'supplier_id', referencedColumnName: 'id')]
+    private ?Supplier $supplier;
 
     public function __construct()
     {
-        $this->details = new ArrayCollection();
+        $this->supplierOrderPos = new ArrayCollection();
     }
 
     public function getId(): int
@@ -174,13 +183,42 @@ class SupplierOrder extends ModelEntity
         return $this;
     }
 
-    public function getDetails(): Collection
+    public function getSupplierOrderPos(): Collection
     {
-        return $this->details;
+        return $this->supplierOrderPos;
     }
 
-    public function setDetails(?array $details): SupplierOrder
+    public function addSupplierOrderPos(SupplierOrderPos $supplierOrderPos): self
     {
-        return $this->setOneToMany($details, SupplierOrderPos::class, 'details', 'SupplierOrder');
+        if (!$this->supplierOrderPos->contains($supplierOrderPos)) {
+            $this->supplierOrderPos->add($supplierOrderPos);
+            $supplierOrderPos->setSupplierOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSupplierOrderPos(SupplierOrderPos $supplierOrderPos): self
+    {
+        if ($this->supplierOrderPos->removeElement($supplierOrderPos)) {
+            // set the owning side to null (unless already changed)
+            if ($supplierOrderPos->getSupplierOrder() === $this) {
+                $supplierOrderPos->setSupplierOrder(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSupplier(): ?Supplier
+    {
+        return $this->supplier;
+    }
+
+    public function setSupplier(?Supplier $supplier): self
+    {
+        $this->supplier = $supplier;
+
+        return $this;
     }
 }

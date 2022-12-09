@@ -225,4 +225,11 @@ class SupplierService
             ->getRepository(Supplier::class)
             ->findBy([], ['supplier_nr' => 'DESC'], 1, 0);
     }
+
+    public function getSupplierById($id): ?Supplier
+    {
+        return $this->entityManager
+            ->getRepository(Supplier::class)
+            ->findOneBy(['id' => $id]);
+    }
 }

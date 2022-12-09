@@ -105,12 +105,12 @@ class Article
         return $this;
     }
 
-    public function getArticleWeight(): string
+    public function getArticleWeight(): float
     {
         return $this->articleWeight;
     }
 
-    public function setArticleWeight(string $articleWeight): self
+    public function setArticleWeight(float $articleWeight): self
     {
         $this->articleWeight = $articleWeight;
 

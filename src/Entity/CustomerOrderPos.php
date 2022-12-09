@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Components\Entity\ModelEntity;
 
@@ -13,11 +11,6 @@ use WebWMS\Components\Entity\ModelEntity;
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderRepository')]
 class CustomerOrderPos extends ModelEntity
 {
-    /** Many Customer Order Positions have one Customer Order. This is the owning side. */
-    #[ORM\ManyToOne(targetEntity: CustomerOrder::class, inversedBy: 'details')]
-    #[ORM\JoinColumn(name: 'customer_order_id', referencedColumnName: 'id')]
-    protected Collection $customerOrders;
-
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
@@ -38,10 +31,10 @@ class CustomerOrderPos extends ModelEntity
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt;
 
-    public function __construct()
-    {
-        $this->customerOrders = new ArrayCollection();
-    }
+    /** Many Customer Order Positions have one Customer Order. This is the owning side. */
+    #[ORM\ManyToOne(inversedBy: 'customerOrderPos')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?CustomerOrder $customerOrder = null;
 
     public function getId(): int
     {
@@ -91,14 +84,14 @@ class CustomerOrderPos extends ModelEntity
         return $this;
     }
 
-    public function getCustomerOrders(): Collection
+    public function getCustomerOrder(): ?CustomerOrder
     {
-        return $this->customerOrders;
+        return $this->customerOrder;
     }
 
-    public function setCustomerOrders(Collection $customerOrders): self
+    public function setCustomerOrder(?CustomerOrder $customerOrder): self
     {
-        $this->customerOrders = $customerOrders;
+        $this->customerOrder = $customerOrder;
 
         return $this;
     }

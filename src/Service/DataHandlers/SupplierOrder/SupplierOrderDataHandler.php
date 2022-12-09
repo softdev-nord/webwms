@@ -41,11 +41,11 @@ class SupplierOrderDataHandler
     /**
      * @return SupplierOrder|null Returns an array of Customer order objects
      */
-    public function getSupplierOrderById(int $supplierOrderId): ?SupplierOrder
+    public function getSupplierOrderById(int $id): ?SupplierOrder
     {
         return $this->entityManager
             ->getRepository(SupplierOrder::class)
-            ->find($supplierOrderId);
+            ->findOneBy(['id' => $id]);
     }
 
     public function updateSupplierOrder($requestData): ?SupplierOrder

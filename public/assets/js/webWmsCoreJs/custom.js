@@ -11,7 +11,7 @@ $(function(){
 
 // Datepicker für Auftrag anlegen
 $( function() {
-	$("#customer_order_customer_order_order_date")
+	$("#customer_order_customer_order_creation_date")
 		.datepicker({ dateFormat: "dd.mm.yy" }).val();
 	$("#customer_order_customer_order_date")
 		.datepicker({ dateFormat: "dd.mm.yy" }).val();
@@ -20,9 +20,9 @@ $( function() {
 
 // Datepicker für Bestellung anlegen
 $( function() {
-	$("#order_order_order_date")
+	$("#supplier_order_supplier_order_date")
 		.datepicker({ dateFormat: "dd.mm.yy" }).val();
-	$("#order_order_date")
+	$("#supplier_order_supplier_order_creation_date")
 		.datepicker({ dateFormat: "dd.mm.yy" }).val();
 });
 

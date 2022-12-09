@@ -1,0 +1,148 @@
+<div class="row">
+    {% block webwms_edit_supplier_order_form_order %}
+        <div class="card">
+            {{ dump(supplierOrderPos) }}
+            <div class="card-content">
+                <div class="row col-md-6">
+                    <div class="form-row col-md-12">
+                        <div class="form-group col-md-8">
+                            <label for="inputSupplier">Lieferanten suchen</label>
+                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_nr"
+                                   name="inputSupplierNr" id="supplier_nr_1" placeholder="Über Lieferanten-Nr suchen"></br></br>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="inputSupplier">Lieferant</label>
+                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_name"
+                                   name="inputSupplierName" id="supplier_name_1" placeholder="Über Lieferanten-Namen suchen"
+                                   value="{{ supplierData.supplierName }}">
+                        </div>
+                        <div class="form-group col-md-8">
+                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_address_addition"
+                                   name="inputSupplierAddition" id="supplier_address_addition_1" placeholder="Anschrift Zusatz"
+                                   value="{{ supplierData.supplierAddressAddition }}">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_address_street"
+                                   name="inputSupplierStreet" id="supplier_address_street_1" placeholder="Straße"
+                                   value="{{ supplierData.supplierAddressStreet }}">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_address_street_nr"
+                                   name="inputSupplierStreetNr" id="supplier_address_street_nr_1" placeholder="Haus-Nr"
+                                   value="{{ supplierData.supplierAddressStreetNr }}">
+                        </div>
+                        <div class="form-group col-md-4"></div>
+                        <div class="form-group col-md-1">
+                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_country_code"
+                                   name="inputSupplierCountryCode" id="supplier_country_code_1" placeholder="Land"
+                                   value="{{ supplierData.supplierAddressCountryCode }}">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_zip_code"
+                                   name="inputSupplierZipCode" id="supplier_zip_code_1" placeholder="PLZ"
+                                   value="{{ supplierData.supplierAddressZipcode }}">
+                        </div>
+                        <div class="form-group col-md-5">
+                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_city"
+                                   name="inputSupplierCity" id="supplier_city_1" placeholder="Ort"
+                                   value="{{ supplierData.supplierAddressCity }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-6">
+                    <div class="form-row col-md-12">
+                        <div class="form-group col-md-6">
+                            {{ form_row(editSupplierOrderForm.supplierOrderNr) }}
+                            {{ form_row(editSupplierOrderForm.supplierOrderId) }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ form_row(editSupplierOrderForm.supplierOrderReference) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-6">
+                    <div class="form-row col-md-12">
+                        <div class="form-group col-md-4">
+                            {{ form_row(editSupplierOrderForm.supplierOrderDate) }}
+                        </div>
+                        <div class="form-group col-md-2"></div>
+                        <div class="form-group col-md-4">
+                            {{ form_row(editSupplierOrderForm.supplierOrderCreationDate) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-6">
+                    <div class="form-row col-md-12">
+                        <div class="form-group col-md-4">
+                            <label for="inputOrderDat">Bearbeiter</label>
+                            <input class="form-control" type="text" placeholder="{{ app.user.firstname }} {{ app.user.lastname }}" readonly="" style="background-color: transparent;">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12"></div>
+                {% block webwms_edit_order_form_order_message %}
+                    <div class="form-group col-md-12">
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endblock %}
+                <div class="form-group col-md-12"></div>
+                {% block webwms_edit_supplier_order_form_order_table_pos %}
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table id="autocomplete_table" class="table table-hover">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th width="1%" style="text-align:center;">#</th>
+                                    <th width="15%" scope="col">Artikel-Nr</th>
+                                    <th width="35%" style="text-align:center;">Artikel Bezeichnung</th>
+                                    <th width="10%" style="text-align:center;">Menge</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for key, position in supplierOrderPos %}
+                                    <tr id="row_{{ key }}">
+                                        <th id="delete_{{ key }}" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
+                                        <td>
+                                            <input id="art_nr_{{ key }}" type="text" data-type="art_nr" name="inputArtNr[]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleId }}">
+                                            <input id="id_{{ key }}" type="hidden" data-type="id" name="inputArtId[]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.id }}">
+                                        </td>
+                                        <td>
+                                            <input id="art_name_{{ key }}" type="text" data-type="art_name" name="inputArtName[]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleName }}">
+                                        </td>
+                                        <td>
+                                            <input id="order_pos_quantity_{{ key }}" type="text" data-type="order_pos_quantity" name="inputOrderPosQuantity[]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.supplierOrderPosQuantity }}">
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="btn-container">
+                            <button id="addNewButton" class="btn btn-sm" value="Neue Position">Neue Position</button>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+
+            <div class="row" style="margin-left: auto; margin-right: auto;">
+                <br><button type="submit" name="customer_order" value="Bestellung speichern" class="btn btn-lg" aria-label="Center">Bestellung speichern</button><br><br>
+            </div>
+        </div>
+    {% endblock %}
+    {{ form_end(editSupplierOrderForm) }}
+    {% block javascripts %}
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.suppliersAutofill.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.itemsSupplierOrderPosAutofill.js') }}"></script>
+        <script>
+            const orderId = {{ lastId.id }};
+
+            $(document).ready(function (){
+                $(".inputOrderNr").value = {{ lastId.id }};
+            });
+        </script>
+    {% endblock %}
+</div>

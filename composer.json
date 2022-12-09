@@ -80,7 +80,7 @@
     "autoload": {
         "psr-4": {
             "WebWMS\\": "src/",
-            "WebWMS\\Bundles\\": "custom/plugins/"
+            "WebWMS\\Bundles\\": "modules/"
         }
     },
     "autoload-dev": {

@@ -47,14 +47,21 @@ class ArticleDataHandler
     {
         return $this->entityManager
             ->getRepository(Article::class)
-            ->find($articleId);
+            ->findOneBy(['articleId' => $articleId]);
     }
 
     public function getArticleByNr(int $articleNr): ?Article
     {
         return $this->entityManager
             ->getRepository(Article::class)
-            ->findOneBy(['article_nr' => $articleNr]);
+            ->findOneBy(['articleNr' => $articleNr]);
+    }
+
+    public function getAllArticles(): ?array
+    {
+        return $this->entityManager
+            ->getRepository(Article::class)
+            ->findAll();
     }
 
     /**

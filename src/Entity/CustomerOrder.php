@@ -45,13 +45,32 @@ class CustomerOrder extends ModelEntity
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt;
 
-    /** One Customer Order has many Customer Order Positions. This is the inverse side. */
-    #[ORM\OneToMany(mappedBy: 'customerOrders', targetEntity: CustomerOrderPos::class)]
-    protected Collection $details;
+    /** One Supplier Order has many Supplier Order Positions. This is the inverse side. */
+    #[ORM\OneToMany(
+        mappedBy: 'customerOrder',
+        targetEntity: CustomerOrderPos::class,
+        cascade: ['persist'],
+        fetch: 'EAGER'
+    )]
+    private Collection|ArrayCollection $customerOrderPos;
+
+    #[ORM\OneToOne(targetEntity: Customer::class)]
+    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
+    private ?Customer $customer;
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(Customer|null $customer): void
+    {
+        $this->customer = $customer;
+    }
 
     public function __construct()
     {
-        $this->details = new ArrayCollection();
+        $this->customerOrderPos = new ArrayCollection();
     }
 
     public function getId(): int
@@ -150,14 +169,31 @@ class CustomerOrder extends ModelEntity
         return $this;
     }
 
-    public function getDetails(): Collection
+    public function getCustomerOrderPos(): Collection
     {
-        return $this->details;
+        return $this->customerOrderPos;
     }
 
-    public function setDetails(array $details): CustomerOrder
+    public function addCustomerOrderPos(CustomerOrderPos $customerOrderPos): self
     {
-        return $this->setOneToMany($details, CustomerOrderPos::class, 'details', 'customerOrder');
+        if (!$this->customerOrderPos->contains($customerOrderPos)) {
+            $this->customerOrderPos->add($customerOrderPos);
+            $customerOrderPos->setCustomerOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerOrderPos(CustomerOrderPos $customerOrderPos): self
+    {
+        if ($this->customerOrderPos->removeElement($customerOrderPos)) {
+            // set the owning side to null (unless already changed)
+            if ($customerOrderPos->getCustomerOrder() === $this) {
+                $customerOrderPos->setCustomerOrder(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface

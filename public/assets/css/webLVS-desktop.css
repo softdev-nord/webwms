@@ -458,10 +458,6 @@
         width: 50%;
     }
 
-    table.dataTable.compact tbody th, table.dataTable.compact tbody td {
-        padding: 4px;
-    }
-
     .webwms-page {
         text-align: left;
         font-size: 18px;
@@ -773,23 +769,9 @@
         --bs-table-color: #31353D;
     }
 
-    .webwms-theme .sidebar-wrapper .sidebar-menu ul li a
-
-        /*.table {
-            --bs-table-color: #c7cbcc;
-            --bs-table-bg: transparent;
-            --bs-table-border-color: transparent;
-            --bs-table-accent-bg: #303234;
-            --bs-table-striped-color: #353a41;
-            --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
-            --bs-table-active-color: #c7cbcc;
-            --bs-table-active-bg: rgba(0, 0, 0, 0.1);
-            --bs-table-hover-color: #c7cbcc;
-            --bs-table-hover-bg: #484e55;
-            width: 100%;
-            margin-bottom: 1rem;
-            vertical-align: top;
-        }*/
+    .table-responsive > .table {
+        border: none;
+    }
 
     table.dataTable {
         border-collapse: collapse;
@@ -800,11 +782,6 @@
         background: none;
         border: 1px solid #2e3436;
         color: #c7cbcc;
-        -webkit-box-shadow: inset 0 1px 0 #393f42, 0 1px 0 rgba(255, 255, 255, 0.16);
-        box-shadow: inset 0 1px 0 #393f42, 0 1px 0 rgba(255, 255, 255, 0.16);
-        -webkit-transition: box-shadow 180ms, border 180ms;
-        -moz-transition: box-shadow 180ms, border 180ms;
-        transition: box-shadow 180ms, border 180ms;
     }
 
     .table > thead > tr > th,
@@ -890,7 +867,7 @@
         background-color: #3e444c;
     }
 
-    /*.table > thead > tr > th,
+    .table > thead > tr > th,
     .table > tbody > tr > th,
     .table > tfoot > tr > th,
     .table > thead > tr > td,
@@ -899,12 +876,12 @@
         padding: 8px;
         line-height: 1.42857143;
         vertical-align: top;
-        border-top: 1px solid #2e3436;
+        border: 1px solid #2e3436;
     }
     .table > thead > tr > th {
         vertical-align: bottom;
         border-bottom: none;
-    }*/
+    }
 
     .table-striped > tbody > tr:nth-of-type(odd) > * {
         background-color: #49515a;
@@ -914,6 +891,11 @@
     .table-striped-columns > :not(caption) > tr > :nth-child(even) {
         --bs-table-accent-bg: var(--bs-table-striped-bg);
         color: var(--bs-table-striped-color);
+    }
+
+    th[id^="delete_"] {
+        vertical-align: middle !important;
+        text-align: center;
     }
 
     .badge:empty {
@@ -996,23 +978,6 @@
         margin-bottom: 25px;
     }
 
-    /*    .text-light {
-            color: #c7cbcc !important;
-        }
-
-        .text-dark {
-            --bs-body-color: #31353D !important;
-        }
-
-        .bg-dark {
-            background-color: #484e55 !important;
-        }
-
-        body.bg-light.text-dark {
-            background-color: #bababa !important;
-            --bs-body-color: #31353D !important;
-        }*/
-
     .bg-light {
         background-color: #bababa !important;
     }
@@ -1075,6 +1040,14 @@
         border: none;
     }
 
+    /* ############################################################ */
+    /* ##########            Beginn dataTables           ########## */
+    /* ############################################################ */
+
+    table.dataTable.compact tbody th, table.dataTable.compact tbody td {
+        padding: 4px;
+    }
+
     .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
         font-size: 15px;
         line-height: 15px;
@@ -1083,5 +1056,170 @@
     .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
         font-size: 15px;
         line-height: 15px;
+    }
+
+    /* ############################################################ */
+    /* ##########            Beginn datepicker           ########## */
+    /* ############################################################ */
+
+    .ui-datepicker-div {
+        -webkit-box-shadow: inset 0 1px 0 #393f42, 0 1px 0 rgb(255 255 255 / 16%);
+        box-shadow: inset 0 1px 0 #393f42, 0 1px 0 rgb(255 255 255 / 16%);
+        -webkit-transition: box-shadow 180ms, border 180ms;
+        -moz-transition: box-shadow 180ms, border 180ms;
+        transition: box-shadow 180ms, border 180ms;
+    }
+
+    .ui-datepicker {
+        width: 16.6em !important;
+    }
+
+    .ui-widget-header {
+        border: 1px solid #2e3436;
+        background: #3b4245;
+        color: #c7cbcc;
+        font-weight: bold;
+    }
+
+    .ui-widget-header .ui-icon {
+        background-image: url(../images/ui-icons_777777_256x240.png);
+    }
+
+    .ui-widget-content {
+        border: 1px solid #2e3436 !important;
+        background: #484e55;
+        color: #c7cbcc;
+    }
+
+    .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+        border: 1px solid #2e3436;
+        background: #3b4245;
+        font-weight: normal;
+        color: #c7cbcc;
+    }
+
+    /* ############################################################ */
+    /* ##########              Beginn modal              ########## */
+    /* ############################################################ */
+
+    .modal-content {
+        border: 1px solid #2e3436;
+        background: #3b4245;
+        color: #c7cbcc;
+    }
+
+    .modal-header {
+        justify-content: unset;
+        padding: 10px;
+        text-align: left;
+        font-size: 18px;
+        font-weight: bold;
+        width: 100%;
+        border-bottom: 1px solid #2e3436;
+        color: #c7cbcc;
+        box-shadow: inset 0 1px 0 #393f42, 0 1px 2px rgb(255 255 255 / 16%);
+        transition: box-shadow 180ms, border 180ms;
+        text-shadow:
+                rgb(16 16 16 / 40%) 1px 10px 6px,
+                rgb(16 16 16 / 20%) 1px 14px 10px,
+                rgb(16 16 16 / 20%) 1px 18px 35px,
+                rgb(16 16 16 / 40%) 1px 22px 65px;
+    }
+
+    .modal-header .close {
+        margin-right: 5px;
+    }
+
+    .modal-title {
+        width: inherit;
+        margin-left: 5px;
+        color: #c7cbcc;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #2e3436;
+        box-shadow: inset 0 1px 0 #393f42, 0 1px 2px rgb(255 255 255 / 16%);
+    }
+
+    .modal-footer .btn + .btn {
+        margin: unset;
+    }
+
+    .modal-dialog .form-group {
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .modal-dialog .modal-fullscreen-width {
+        max-width: 95%;
+    }
+
+
+
+    .ui-widget.ui-widget-content {
+        z-index: 10000;
+    }
+
+
+    /* ############################################################ */
+    /* ##########          Beginn Stock details          ########## */
+    /* ############################################################ */
+
+    .stock-details {
+        border: 3px solid;
+        padding: 5px;
+        margin-right: 3px;
+    }
+
+    .stock-details-content {
+        display: grid;
+    }
+
+    .stock-details-content-inner {
+        display: inline-flex;
+        margin-bottom: 10px;
+    }
+
+    .stock-details-content-inner.block {
+        border: 3px solid;
+        margin-bottom: 3px;
+    }
+
+    .stock-details-content-inner-desc {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px 10px 0 10px;
+    }
+
+    .stock-details-badge-occupancy {
+        display: block;
+        width: 25px;
+        height: 25px;
+    }
+
+    .stock-details-badge-occupancy.stock-details-occupied {
+        background: rgba(var(--bs-danger-rgb), var(--bs-text-opacity));
+    }
+
+    .stock-details-badge-occupancy.stock-details-occupied:hover {
+        opacity: 0.5;
+    }
+
+    .stock-details-badge-occupancy.stock-details-not-occupied {
+        background: rgba(var(--bs-success-rgb), var(--bs-text-opacity));
+    }
+
+    .stock-details-badge-occupancy.stock-details-not-occupied:hover {
+        opacity: 0.5;
+    }
+
+    .no-stock-details {
+        margin-left: 5px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #c7cbcc;
     }
 }

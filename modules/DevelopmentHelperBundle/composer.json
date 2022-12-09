@@ -1,0 +1,28 @@
+{
+    "name": "webwms/development-helper",
+    "version": "1.0.0",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SoftDev Nord, Rene Irrgang"
+        }
+    ],
+    "extra": {
+        "webwms-plugin-class": "WebWMS\\DevelopmentHelperBundle\\DevelopmentHelperBundle",
+        "copyright": "(c) SoftDev Nord",
+        "label": {
+            "de-DE": "Hilfreiche Tools für die Entwicklung",
+            "en-GB": "Helpful development tools"
+        },
+        "description": {
+            "de-DE": "Stellt Hilfsfunktionen für die Entwicklung von Modulen in WebWMS bereit.",
+            "en-GB": "Provides help functions for the development of modules in WebWMS."
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "WebWMS\\DevelopmentHelperBundle\\": ""
+        }
+    }
+}

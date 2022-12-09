@@ -2,8 +2,6 @@
 
 namespace WebWMS\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'supplier_order_pos')]
@@ -11,10 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 class SupplierOrderPos
 {
     /** Many Supplier Order Positions have one Supplier Order. This is the owning side. */
-    #[ORM\ManyToOne(targetEntity: SupplierOrder::class, inversedBy: 'details')]
-    #[ORM\JoinColumn(name: 'supplier_order_id', referencedColumnName: 'id')]
-    protected Collection $supplierOrders;
-
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
@@ -26,6 +20,12 @@ class SupplierOrderPos
     #[ORM\Column(name: 'article_id', type: 'integer', nullable: false)]
     private ?int $articleId;
 
+    #[ORM\Column(name: 'article_nr', type: 'string', length: 50, nullable: false)]
+    private string $articleNr;
+
+    #[ORM\Column(name: 'article_name', type: 'string', length: 255, nullable: false)]
+    private string $articleName;
+
     #[ORM\Column(name: 'supplier_order_pos_quantity', type: 'integer', nullable: false)]
     private ?int $supplierOrderPosQuantity;
 
@@ -35,10 +35,9 @@ class SupplierOrderPos
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt;
 
-    public function __construct()
-    {
-        $this->supplierOrders = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'supplierOrderPos')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SupplierOrder $supplierOrder = null;
 
     public function getId(): int
     {
@@ -64,7 +63,7 @@ class SupplierOrderPos
         return $this;
     }
 
-    public function getArticleId(): int
+    public function getArticleId(): ?int
     {
         return $this->articleId;
     }
@@ -72,6 +71,30 @@ class SupplierOrderPos
     public function setArticleId(int $articleId): self
     {
         $this->articleId = $articleId;
+
+        return $this;
+    }
+
+    public function getArticleNr(): string
+    {
+        return $this->articleNr;
+    }
+
+    public function setArticleNr(string $articleNr): self
+    {
+        $this->articleNr = $articleNr;
+
+        return $this;
+    }
+
+    public function getArticleName(): string
+    {
+        return $this->articleName;
+    }
+
+    public function setArticleName(string $articleName): self
+    {
+        $this->articleName = $articleName;
 
         return $this;
     }
@@ -84,18 +107,6 @@ class SupplierOrderPos
     public function setSupplierOrderPosQuantity(int $supplierOrderPosQuantity): self
     {
         $this->supplierOrderPosQuantity = $supplierOrderPosQuantity;
-
-        return $this;
-    }
-
-    public function getSupplierOrders(): Collection
-    {
-        return $this->supplierOrders;
-    }
-
-    public function setSupplierOrders(Collection $supplierOrders): self
-    {
-        $this->supplierOrders = $supplierOrders;
 
         return $this;
     }
@@ -120,6 +131,18 @@ class SupplierOrderPos
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getSupplierOrder(): ?SupplierOrder
+    {
+        return $this->supplierOrder;
+    }
+
+    public function setSupplierOrder(?SupplierOrder $supplierOrder): self
+    {
+        $this->supplierOrder = $supplierOrder;
 
         return $this;
     }

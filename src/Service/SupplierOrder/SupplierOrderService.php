@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\SupplierOrder;
 use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\DataHandlers\SupplierOrder\SupplierOrderDataHandler;
+use WebWMS\Service\DateTimeService;
 
 /**
  * @package:    WebWMS\Service
@@ -21,7 +22,8 @@ class SupplierOrderService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private SupplierOrderDataHandler $supplierOrderDataHandler
+        private SupplierOrderDataHandler $supplierOrderDataHandler,
+        private DateTimeService $dateTimeService
     ) {
     }
 
@@ -147,6 +149,11 @@ class SupplierOrderService
         return new JsonResponse($result);
     }
 
+    public function getSupplierOrderById(int $id): ?SupplierOrder
+    {
+        return $this->supplierOrderDataHandler->getSupplierOrderById($id);
+    }
+
     /**
      * @throws Exception
      */
@@ -168,6 +175,33 @@ class SupplierOrderService
         $data = $conn->fetchAllAssociative($sql);
 
         return new JsonResponse($data);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function updateSupplierOrder($requestData)
+    {
+        $supplierOrder = $this->supplierOrderDataHandler->getSupplierOrderById($requestData['id']);
+
+        if (!$supplierOrder) {
+            return null;
+        }
+
+        $supplierOrder->setId($requestData['id']);
+        $supplierOrder->setSupplierOrderId($requestData['supplierOrderId']);
+        $supplierOrder->setUsrId($requestData['usrId']);
+        $supplierOrder->setSupplierId($requestData['supplierId']);
+        $supplierOrder->setSupplierOrderNr($requestData['supplierOrderNr']);
+        $supplierOrder->setSupplierOrderReference($requestData['supplierOrderReference']);
+        $supplierOrder->setSupplierOrderDate($requestData['supplierOrderDate']);
+        $supplierOrder->setSupplierOrderCreationDate($requestData['supplierOrderCreationDate']);
+        $supplierOrder->setCreatedAt($requestData['createdAt']);
+        $supplierOrder->setUpdatedAt($this->dateTimeService->createDateTime());
+
+        $this->supplierOrderDataHandler->update($supplierOrder);
+
+        return $supplierOrder;
     }
 
     /**
