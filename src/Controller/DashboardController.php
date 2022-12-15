@@ -196,12 +196,17 @@ class DashboardController extends AbstractController
     public function getWarehouseUtilization(): array
     {
         $warehouseUtilization = [];
-        $warehouseUtilization['allStockLocations'] = count(json_decode($this->stockLocationService->getAllStockLocations()->getContent()));
-        $warehouseUtilization['occupiedStockLocations'] = count(
-            array_column(
-                json_decode($this->stockRotationService->getAllStockRotationsWithJoin()->getContent()),
-                'stock_location_id'
+
+        $warehouseUtilization['allStockLocations'] = count(
+            json_decode(
+                $this->stockLocationService->getAllStockLocations()->getContent()
             )
+        );
+
+        $warehouseUtilization['occupiedStockLocations'] = count(
+            json_decode(
+                $this->stockRotationService->getAllStockRotationsWithJoin()->getContent()
+            ),
         );
 
         return $warehouseUtilization;
