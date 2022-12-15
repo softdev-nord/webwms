@@ -100,7 +100,7 @@ jobs:
           name: Yarn watch
           command: |
             cd webwms/
-            yarn watch
+            yarn run encore dev --watch
   
   deploy-production:
     working_directory: /home/circleci
