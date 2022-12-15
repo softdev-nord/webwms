@@ -96,11 +96,11 @@ jobs:
           command: |
             cd webwms/
             php bin/console cache:clear --no-debug
-      - run:
-          name: Yarn watch
-          command: |
-            cd webwms/
-            yarn run encore dev --watch
+#      - run:
+#          name: Yarn watch
+#          command: |
+#            cd webwms/
+#            yarn run encore dev --watch
   
   deploy-production:
     working_directory: /home/circleci
