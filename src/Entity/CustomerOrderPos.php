@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Components\Entity\ModelEntity;
 
 #[ORM\Table(name: 'customer_orders_pos')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderRepository')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderPosRepository')]
 class CustomerOrderPos extends ModelEntity
 {
     #[ORM\Id]
@@ -22,8 +22,14 @@ class CustomerOrderPos extends ModelEntity
     #[ORM\Column(name: 'article_id', type: 'integer', nullable: false)]
     private int $articleId;
 
-    #[ORM\Column(name: 'customer_order_pos_quantity', type: 'integer', nullable: false)]
-    private int $customerOrderPosQuantity;
+    #[ORM\Column(name: 'article_nr', type: 'string', length: 50, nullable: false)]
+    private string $articleNr;
+
+    #[ORM\Column(name: 'article_name', type: 'string', length: 255, nullable: false)]
+    private string $articleName;
+
+    #[ORM\Column(name: 'quantity', type: 'integer', nullable: false)]
+    private int $quantity;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $createdAt;
@@ -72,14 +78,38 @@ class CustomerOrderPos extends ModelEntity
         return $this;
     }
 
-    public function getCustomerOrderPosQuantity(): int
+    public function getArticleNr(): string
     {
-        return $this->customerOrderPosQuantity;
+        return $this->articleNr;
     }
 
-    public function setCustomerOrderPosQuantity(int $customerOrderPosQuantity): self
+    public function setArticleNr(string $articleNr): self
     {
-        $this->customerOrderPosQuantity = $customerOrderPosQuantity;
+        $this->articleNr = $articleNr;
+
+        return $this;
+    }
+
+    public function getArticleName(): string
+    {
+        return $this->articleName;
+    }
+
+    public function setArticleName(string $articleName): self
+    {
+        $this->articleName = $articleName;
+
+        return $this;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

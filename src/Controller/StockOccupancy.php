@@ -129,7 +129,6 @@ class StockOccupancy extends AbstractController
     #[Route('/stock_occupancy_ajax_article/{article_nr}', name: 'stock_occupancy_ajax_article')]
     public function getStockOccupancyByArticle(Request $request): Response
     {
-        // dd($request->attributes->get('article_nr'));
         $article = $this->stockOccupancyService
             ->getStockOccupancyByArticleNr(
                 $request->attributes->get('article_nr')

@@ -2,8 +2,9 @@
 
 (function($){
     $(document).on('change','#selectStock',function(event) {
-        const select = $('#selectStock option:selected').text();
+        const select = $('#selectStock option:selected').text().substring(0,3);
         const url = '/stock_occupancy_ajax/stock_location_ln/' + select;
+        console.log(select);
 
         $.ajaxSetup({ cache: false });
 
@@ -40,7 +41,7 @@
             success: function (data) {
                 $("#modal-content-ajax").html(data);
                 $('#stockLocationTable').load(url + ' #stockLocationTable');
-                //$('#stockSystem').replace("#stockSystem", #stockSystem);.load(url + ' #stockSystem');
+                $('#stockSystem').load(url + ' #stockSystem');
             }
         });
     });
@@ -51,11 +52,9 @@
         callback: function(key, options, event) {
             const table = $('#showStockDetailTable').DataTable({paging: false, info: false, searching: false});
             const row = table.row(options.$trigger);
-            //const article = new article();
 
             switch (key) {
                 case 'show' :
-                    console.log(row.data()[1]);
                     getStockOccupancyByArticle(row.data()[1]);
                     break;
                 default :
@@ -63,7 +62,7 @@
             }
         },
         items: {
-            "show": {name: "Artikel Lagerbelegungen", icon: false},
+            "show": {name: "Artikel Lagerbelegungen", icon: "loading"},
         }
     });
 

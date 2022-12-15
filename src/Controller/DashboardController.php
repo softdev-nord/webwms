@@ -164,22 +164,29 @@ class DashboardController extends AbstractController
         return $this->createChartForDashboard($dataResults, $chartType);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function getAllTransportRequest(): array
     {
-        $allOpenTr = [];
+        $countTrOpen = [];
+        $countTrInProgress = [];
         $transportRequests = $this->transportRequestService->getAllOpenTransportRequests();
 
         /** @var TransportRequest $transportRequest */
         foreach ($transportRequests as $transportRequest) {
             if (1 === $transportRequest->getTrState()) {
-                $allOpenTr['TrInProgress'] = count((array) $transportRequest->getTrState());
-            } elseif (0 === $transportRequest->getTrState()) {
-                $allOpenTr['TrOpen'] = count((array) $transportRequest->getTrState());
+                $countTrInProgress[] = $transportRequest->getTrState();
+            } else {
+                $countTrOpen[] = $transportRequest->getTrState();
             }
         }
-        $allOpenTr['TrSum'] = count($transportRequests);
 
-        return $allOpenTr;
+        return [
+            'TrSum' => count($transportRequests),
+            'TrOpen' => count($countTrOpen),
+            'TrInProgress' => count($countTrInProgress),
+        ];
     }
 
     /**

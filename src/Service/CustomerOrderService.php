@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use WebWMS\Entity\Customer;
 use WebWMS\Entity\CustomerOrder as CustomerOrders;
 use WebWMS\Repository\CustomerOrderRepository;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
@@ -164,20 +165,62 @@ class CustomerOrderService
      */
     public function getAllCustomerOrderPos(): JsonResponse
     {
-        $conn = $this->entityManager->getConnection();
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+        $queryBuilder
+            ->select('cop.customer_order_id,
+                    tph.order_nr as customer_order_nr,
+                    cop.article_nr,
+                    cop.article_name,
+                    cop.quantity,
+                    tph.tr_quantity AS lbw_menge')
+            ->from('customer_orders_pos', 'cop')
+            ->innerJoin(
+                'cop',
+                'transport_history',
+                'tph',
+                'cop.customer_order_id = tph.doc_id'
+            )
+            ->andWhere('tph.article_nr = cop.article_nr');
 
-        $sql = "SELECT DISTINCT cop.customer_order_id, th.order_nr as customer_order_nr, art.article_nr, art.article_name, cop.customer_order_pos_quantity, th.tr_quantity AS lbw_menge
-            FROM transport_history AS th
-            INNER JOIN article AS art
-                ON th.article_nr = art.article_nr
-            INNER JOIN customer_orders AS co
-                ON th.doc_id = co.customer_order_id
-            LEFT OUTER JOIN customer_orders_pos AS cop
-                ON th.order_nr LIKE CONCAT('%', cop.customer_order_id ,'%')";
+        $stmt = $queryBuilder->executeQuery();
+        $results = $stmt->fetchAllAssociative();
 
-        $data = $conn->fetchAllAssociative($sql);
+        return new JsonResponse($results);
+    }
 
-        return new JsonResponse($data);
+    /**
+     * @throws Exception
+     */
+    public function getCustomerOrderPosByOrderId(int $id): JsonResponse
+    {
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+        $queryBuilder
+            ->select('cop.customer_order_id,
+                    tph.order_nr as customer_order_nr,
+                    cop.article_nr,
+                    cop.article_name,
+                    cop.quantity,
+                    tph.tr_quantity AS lbw_menge')
+            ->from('customer_orders_pos', 'cop')
+            ->innerJoin(
+                'cop',
+                'transport_history',
+                'tph',
+                'cop.customer_order_id = tph.doc_id'
+            )
+            ->andWhere('tph.doc_id = :customer_order_id')
+            ->andWhere('tph.article_nr = cop.article_nr')
+            ->setParameter('customer_order_id', $id);
+
+        $stmt = $queryBuilder->executeQuery();
+        $results = $stmt->fetchAllAssociative();
+
+        return new JsonResponse($results);
+    }
+
+    public function getCustomerOrderById(int $id): ?CustomerOrders
+    {
+        return $this->customerOrderDataHandler->getCustomerOrderById($id);
     }
 
     /**
@@ -198,14 +241,14 @@ class CustomerOrderService
         return new NotFoundHttpException($message, $previous);
     }
 
-    public function addNewCustomerOrderAndRelatedPositions(Request $request)
+    public function addNewCustomerOrderAndRelatedPositions(Request $request): void
     {
         // TODO: Implement logic
 
         $params = $request->request->all()['customer'];
         $lastCustomer = $this->customerDataHandler->getLastCustomer()[0]->toArray();
 
-        $customerOrder = new CustomerOrders();
+        $customerOrder = new Customer();
         $customerOrder->setCustomerId($lastCustomer['customer_id'] + 1);
         $customerOrder->setCustomerNr($lastCustomer['customer_nr'] + 1);
         $customerOrder->setCustomerName($params['customer_name']);

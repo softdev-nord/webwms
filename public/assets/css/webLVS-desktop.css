@@ -648,7 +648,7 @@
         -webkit-box-flex: 1;
         -ms-flex: 1 1 auto;
         flex: 1 1 auto;
-        padding: 5px 20px 30px 20px;
+        padding: 5px;
     }
 
     .card .bg-light {
@@ -1168,19 +1168,55 @@
     /* ##########          Beginn Stock details          ########## */
     /* ############################################################ */
 
+    .stock-select:after {
+        font-family: "Material Design Icons", sans-serif;
+        font-weight: 900;
+        content: "\F0CE0";
+        font-style: normal;
+        display: inline-block;
+        font-variant: normal;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        background: 0 0;
+        position: absolute;
+        right: 8px;
+        top: 16px;
+    }
+
     .stock-details {
         border: 3px solid;
         padding: 5px;
         margin-right: 3px;
     }
 
+    .stock-details.block {
+        border: 0;
+        padding: 5px;
+        margin-right: 0;
+    }
+
+    .stock-details.block.section-1-2 {
+        display: flex;
+    }
+
+    .stock-details.block.section-2-2 {
+        display: flex;
+    }
+
     .stock-details-content {
         display: grid;
     }
 
+    .stock-details-content.block {
+        display: flex;
+    }
+
     .stock-details-content-inner {
         display: inline-flex;
-        margin-bottom: 10px;
+        margin-bottom: 3px;
+        padding: 5px 0;
     }
 
     .stock-details-content-inner.block {
@@ -1189,15 +1225,20 @@
     }
 
     .stock-details-content-inner-desc {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: bold;
-        padding: 10px 10px 0 10px;
+        padding: 15px 10px 0 10px;
+    }
+
+    .stock-details-content-inner-space {
+        display: block;
     }
 
     .stock-details-badge-occupancy {
-        display: block;
-        width: 25px;
-        height: 25px;
+        display: inline-grid;
+        width: 20px;
+        height: 20px;
+        color: var(--bs-gray-dark);
     }
 
     .stock-details-badge-occupancy.stock-details-occupied {

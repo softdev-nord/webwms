@@ -24,7 +24,9 @@ class TransportRequestService
 
     public function getAllOpenTransportRequests(): array
     {
-        return $this->entityManager->getRepository(TransportRequest::class)->findAll();
+        return $this->entityManager->getRepository(
+            TransportRequest::class
+        )->findAll();
     }
 
     public function getTransportRequestById($id): array

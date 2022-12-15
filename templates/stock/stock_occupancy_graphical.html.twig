@@ -19,22 +19,19 @@
                             <div class="card-content">
                                 <div class="row">
                                     <span class="text-truncate" style="float: left; padding-top: 8px;padding-right: 10px; width: auto">Lagerbereich auswählen</span>
-                                    <select id="selectStock" class="form-control col-md-1" style="width: 5%">
-                                        {% for oneStockSelected in stockSelect %}
+                                    <select id="selectStock" class="form-control col-md-1 stock-select" style="width: 10%">
+                                        {% for oneStockSelected in stockSelect|sort %}
                                             {% set selected = '' %}
                                             {% if (oneStockSelected.stock_location_ln) == stockSelect %}
                                                 {% set selected = 'selected' %}
                                             {% endif %}
-                                            <option value="{{oneStockSelected.stock_location_ln}}" {{ selected }}>{{oneStockSelected.stock_location_ln}}</option>
+                                            <option value="{{oneStockSelected.stock_location_ln}}" {{ selected }}>{{oneStockSelected.stock_location_ln}} {{oneStockSelected.stock_location_desc}}</option>
                                         {% endfor %}
                                     </select>
-                                        <span id="stockSystem" class="text-truncate stock-system" style="float: left; padding-top: 8px;padding-right: 10px; width: auto">{{ stockSystem }}</span>
                                 </div>
-                                <div class="row" style="display: block; margin-top: 50px;">
+                                <div class="row" style="display: block; margin-top: 10px;">
                                     <div class="col-md-12">
-                                        <!-- card -->
                                         <div class="card card-h-100">
-                                            <!-- card body -->
                                             <div class="card-body">
                                                 <div class="header-item">
                                                     <div class="row">
@@ -45,16 +42,17 @@
                                                         {% set resultSp = 0 %}
                                                         {% set stockSystem = 'Block' %}
                                                         {% set fieldWidth = 3 %}
-                                                        {{ dump(stockResults) }}
-                                                        {% for fb, stock in stockResults %}
-                                                            {% for sp, sog in stock %}
-                                                                {% if stockSystem != sog.system %}
-                                                                    {% set stockSystem = sog.system %}
+                                                        {% for stockResult in stockResults %}
+                                                            {% for stock in stockResult %}
+                                                                {% if stockSystem != stock.system %}
+                                                                    {% set stockSystem = stock.system %}
 
                                                                     {% if stockSystem == 'Pal Regal' or stockSystem == 'Durchlaufregal' %}
                                                                         <div id="stockLocationDiv">
                                                                             <div class="stock-details-content">
                                                                                 {% for fb, stock in stockResults %}
+                                                                                    {% set maxTf = stock|length %}
+                                                                                    {% set halfTf = maxTf / 3 %}
                                                                                     <div class="stock-details-content-inner">
                                                                                         <div class="stock-details-content-inner-desc">
                                                                                             {% if startFb < fb %}
@@ -66,11 +64,12 @@
                                                                                         <div class="col-xxl-12" style="display: inline-flex">
                                                                                             {% for sp, sog in stock %}
                                                                                                 {% if startSp < sog.sp %}
-                                                                                                    <div style="display: grid">
+                                                                                                    <div style="display: block">
                                                                                                         <div id="stockCoordinate" href="#showStockDetails" class="stock-details" data-toggle="modal" data-target="{{ sog.koordinate }}" data-ln-komplett="{{ sog.lnKomplett }}">
-                                                                                                            <span class="stock-details-badge-occupancy {% if sog.belegt%}stock-details-occupied{% else %}stock-details-not-occupied{% endif %}"></span>
+                                                                                                            <span class="stock-details-badge-occupancy {% if sog.belegt%}stock-details-occupied{% else %}stock-details-not-occupied{% endif %}">
+                                                                                                                <span class="text-truncate" style="text-align: center;">{{ sog.sp }}</span>
+                                                                                                            </span>
                                                                                                         </div>
-                                                                                                        <span class="text-truncate" style="text-align: center;">{{ sog.sp }}</span>
                                                                                                     </div>
                                                                                                 {% endif %}
                                                                                             {% endfor %}
@@ -82,7 +81,9 @@
                                                                     {% else %}
                                                                         <div id="stockLocationDiv">
                                                                             <div class="stock-details-content">
-                                                                                {% for sp, stock in stockResults %}
+                                                                                {% for sp, stockResult in stockResults %}
+                                                                                    {% set maxTf = stockResult|length %}
+                                                                                    {% set halfTf = maxTf / 2 %}
                                                                                     <div class="stock-details-content-inner block">
                                                                                         <div class="stock-details-content-inner-desc block">
                                                                                             {% if startSp < sp %}
@@ -91,18 +92,33 @@
                                                                                                 </div>
                                                                                             {% endif %}
                                                                                         </div>
-                                                                                        <div class="col-xxl-12" style="display: inline-flex">
-                                                                                            {% for tf, sog in stock %}
-                                                                                                {% if startTf < sog.tf %}
-                                                                                                    <div style="display: grid">
-                                                                                                        <span class="text-truncate" style="text-align: center;">{{ sog.tf }}</span>
-                                                                                                        <div id="stockCoordinate" href="#showStockDetails" class="stock-details" data-toggle="modal" data-target="{{ sog.koordinate }}" data-ln-komplett="{{ sog.lnKomplett }}">
-                                                                                                            <span class="stock-details-badge-occupancy {% if sog.belegt%}stock-details-occupied{% else %}stock-details-not-occupied{% endif %}"></span>
+                                                                                        <div id="test" class="stock-details-content-inner-space">
+                                                                                            <div class="stock-details-block-section-1" style="display: flex">
+                                                                                                {% for stock in stockResult|filter(stock => stock.tf <= halfTf) %}
+                                                                                                    {% if startTf < stock.tf %}
+                                                                                                        <div id="stockCoordinate" href="#showStockDetails" class="stock-details block{% if stock.tf <= halfTf %} section-1-{{ stock.sp }}{% else %} section-2-{{ stock.sp }}{% endif %}"
+                                                                                                             data-toggle="modal" data-target="{{ stock.koordinate }}" data-ln-komplett="{{ stock.lnKomplett }}" data-sp="{{ stock.sp }}"
+                                                                                                        >
+                                                                                                            <span id="stockDetailsBadge" class="stock-details-badge-occupancy {% if stock.belegt%}stock-details-occupied{% else %}stock-details-not-occupied{% endif %}">
+                                                                                                                <span class="text-truncate" style="text-align: center;">{{ stock.tf }}</span>
                                                                                                             </span>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                {% endif %}
-                                                                                            {% endfor %}
+                                                                                                   {% endif %}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                            <div class="stock-details-block-section-2" style="display: flex">
+                                                                                                {% for stock in stockResult|filter(stock => stock.tf > halfTf) %}
+                                                                                                    {% if startTf < stock.tf %}
+                                                                                                        <div id="stockCoordinate" href="#showStockDetails" class="stock-details block{% if stock.tf <= halfTf %} section-1-{{ stock.sp }}{% else %} section-2-{{ stock.sp }}{% endif %}"
+                                                                                                             data-toggle="modal" data-target="{{ stock.koordinate }}" data-ln-komplett="{{ stock.lnKomplett }}" data-sp="{{ stock.sp }}"
+                                                                                                        >
+                                                                                                        <span id="stockDetailsBadge" class="stock-details-badge-occupancy {% if stock.belegt%}stock-details-occupied{% else %}stock-details-not-occupied{% endif %}">
+                                                                                                            <span class="text-truncate" style="text-align: center;">{{ stock.tf }}</span>
+                                                                                                        </span>
+                                                                                                        </div>
+                                                                                                    {% endif %}
+                                                                                                {% endfor %}
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 {% endfor %}
@@ -133,6 +149,9 @@
     {% block bodyjs %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockGraphicalOverview.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.article.js') }}"></script>
+        <script>
+
+        </script>
     {% endblock %}
 
 {% endblock %}

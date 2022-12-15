@@ -1,19 +1,19 @@
-// JS Funktion Ajax Daten für Übersicht Bestellungen
+// JS Funktion Ajax Daten für Übersicht Aufträge
 
 $(function() {
-    const bstTable = $('#bstTable').DataTable({
+    const aftTable = $('#aftTable').DataTable({
         createdRow: function (row, data, dataIndex) {
-            $(row).attr('data-supplier-order-id', data.supplier_order_id);
+            $(row).attr('data-customer-order-id', data.customer_order_id);
         },
         "lengthChange": false,
         // Ajax-Anfrage via PHP (Json)
         ajax: {
-            'url': '/supplier_orders_ajax',
+            'url': '/customer_order_ajax',
             'dataSrc': ''
         },
         // Seitenlänge max. 10 Einträge
         pageLength: 10,
-        language: {
+        "language": {
             "url": "./resources/dataTable.German.json"
         },
         // Initialisierung der DataTables Select-Erweiterung
@@ -21,11 +21,12 @@ $(function() {
             style: 'single'
         },
         columns: [
-            {"data": "supplier_order_nr"},
-            {"data": "supplier_order_reference"},
-            {"data": "supplier_nr"},
-            {"data": "supplier_name"},
-            {"data": "supplier_order_creation_date"},
+            {"data": "customer_order_nr"},
+            {"data": "customer_nr"},
+            {"data": "customer_name"},
+            {"data": "customer_order_reference"},
+            {"data": "customer_order_date"},
+            {"data": "customer_order_creation_date"},
             {"data": "username"},
             {
                 "data": null,
@@ -36,14 +37,14 @@ $(function() {
             }
         ],
         columnDefs: [
-            {className: 'text-center', targets: [0, 2, 4, 5]},
+            {className: 'text-center', targets: [0, 1, 4, 5, 6]},
             {
-                targets: [4], render: function (data) {
+                targets: [4, 5], render: function (data) {
                     moment.locale("de");
                     return moment(data).format("L");
                 },
                 createdCell:  function (tr, cellData, rowData, row, col) {
-                    $(tr).attr('data-supplier-order-id', rowData);
+                    $(tr).attr('data-customer-order-id', rowData);
                 }
             }
         ],
@@ -79,11 +80,11 @@ $(function() {
         selector: 'tr',
         trigger: 'right',
         callback: function(key, options, event) {
-            const row = bstTable.row(options.$trigger);
+            const row = aftTable.row(options.$trigger);
 
             switch (key) {
                 case 'edit' :
-                    editSupplierOrder(row.data().supplier_order_id);
+                    editCustomerOrder(row.data().customer_order_id);
                     break;
                 default :
                     break
@@ -103,18 +104,18 @@ $(function() {
         cache: false
     });
 
-    function editSupplierOrder(id) {
-        const url = '/bestellung_bearbeiten/id/' + id;
+    function editCustomerOrder(id) {
+        const url = '/auftrag_bearbeiten/id/' + id;
         const content = '<div class="modal-body"></div>';
 
-        $('#modalCenter .modal-title').text("Bestellung bearbeiten");
+        $('#modalCenter .modal-title').text("Auftrag bearbeiten");
         $("#modal-content-ajax").html(content);
         $('#modalCenter').modal('show');
 
         $.ajax({
             url: url,
             type: "get",
-            data: ($("#supplier-order-form-new").serialize()),
+            data: ($("#customer-order-form-new").serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
@@ -126,28 +127,30 @@ $(function() {
         return false;
     }
 
+    // JS Funktion Ajax Daten für Auftragspositionen
     const posTable = $('#posTable').DataTable({
-        "lengthChange": false,
         "searching": false,
+        "lengthChange": false,
         "info": false,
         "language": {
             "url": "./resources/dataTable.German.json",
         },
+
         // Ajax-Anfrage via PHP (Json)
         ajax: {
-            'url': '/supplier_order_pos_ajax',
+            'url': '/customer_order_pos_ajax',
 
             // Es werden nur die Daten in der Positions-Tabelle geladen,
-            // die mit der ID in der Bestellungs-Tabelle übereinstimmen.
+            // die mit der ID in der Auftrags-Tabelle übereinstimmen.
             dataSrc: function (data) {
-                const selected = bstTable.row({selected: true});
+                const selected = aftTable.row({selected: true});
                 const rows = [];
 
                 if (selected.any()) {
-                    const supplier_order_id = selected.data().supplier_order_id;
+                    const customer_order_id = selected.data().customer_order_id;
                     for (i = 0; i < data.length; i++) {
                         const row = data[i];
-                        if (row.supplier_order_id === supplier_order_id) {
+                        if (row.customer_order_id === customer_order_id) {
                             rows.push(row);
                         }
                     }
@@ -155,17 +158,18 @@ $(function() {
                 return rows;
             }
         },
+
         // Seitenlänge max. 5 Einträge
         pageLength: 5,
         columns: [
-            {"data": "supplier_order_nr"},
+            {"data": "customer_order_nr"},
             {"data": "article_nr"},
             {"data": "article_name"},
-            {"data": "supplier_order_pos_quantity",
+            {"data": "quantity",
                 render: $.fn.dataTable.render.number( '.')
             },
             {
-                "data": null,
+                "data": "lbw_menge",
                 render: function (data, type, row) {
                     if (row["lbw_menge"] != null) {
                         return numberWithCommas(row["lbw_menge"]);
@@ -175,12 +179,12 @@ $(function() {
                 },
             },
             {
-                "data": null,
+                "data": "lbw_menge",
                 render: function (data, type, row) {
                     if (row["lbw_menge"] != null) {
-                        return numberWithCommas(parseInt(row["supplier_order_pos_quantity"]) - parseInt(row["lbw_menge"]));
+                        return numberWithCommas(parseInt(row["quantity"]) - parseInt(row["lbw_menge"]));
                     } else {
-                        return numberWithCommas(row["supplier_order_pos_quantity"]);
+                        return numberWithCommas(row["quantity"]);
                     }
                 },
             }
@@ -188,29 +192,25 @@ $(function() {
         columnDefs: [
             {
                 className: 'text-center', targets: [0, 1, 3, 4, 5]
-            }
+            },
         ],
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend:    'copyHtml5',
-                text:      'Kopieren',
-                title:     'Export',
-                titleAttr: 'Copy'
-            }
-        ]
     });
 
-    // Durch Auswahl einer Zeile in der Bestellungs-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.
-    bstTable.on( 'click', function () {
+    // Bei Auswahl einer Zeile in der Auftrags-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.
+    aftTable.on( 'select', function () {
         posTable.ajax.reload();
 
-    } );
+    });
 
-    // Beim Abwählen der Zeile in der Bestellungs-Tabelle wird die Positions-Tabelle wieder geleert.
-    bstTable.on( 'deselect', function () {
+    // Beim Abwählen der Zeile in der Auftrags-Tabelle wird die Positions-Tabelle wieder geleert.
+    aftTable.on( 'deselect', function () {
         posTable.ajax.reload();
-    } );
+    });
+
+    // Edit record
+    $(document).on('click', '.editor-edit', function () {
+        $('#exampleModal').modal();
+    });
 
     function numberWithCommas(number) {
         const formatConfig = {
@@ -219,5 +219,4 @@ $(function() {
         };
         return new Intl.NumberFormat('de-DE', formatConfig).format(number);
     }
-
-} );
+});

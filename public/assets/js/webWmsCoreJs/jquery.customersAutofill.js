@@ -1,4 +1,4 @@
-const customersAutofill = (function () {
+const jqueryCustomersAutofill = (function () {
 
 	function getNumOfBoxCustomer(type) {
 		let numOfBoxCustomer;
@@ -115,5 +115,5 @@ const customersAutofill = (function () {
 })();
 
 $(document).ready(function(){
-	customersAutofill.init();
+	jqueryCustomersAutofill.init();
 });
