@@ -33,7 +33,6 @@ import './js/buttons.html5.js'
 import './js/buttons.print.js'
 import './js/webWmsCoreJs/custom.js'
 import './js/jquery.webWMS.Core.js'
-import './jBox/dist/jBox.js'
 import './js/ChartJs/chart'
 //const $ = require('jquery'); global.$ = global.jQuery = $;
 
