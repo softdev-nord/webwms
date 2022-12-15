@@ -51,6 +51,24 @@ class TransportHistory
     #[ORM\Column(name: 'stock_level4', type: 'integer', nullable: false)]
     private int $stockLevel4;
 
+//    #[ORM\Column(name: 'to_stock_coordinate', type: 'string', length: 25, nullable: false)]
+//    private string $toStockCoordinate;
+//
+//    #[ORM\Column(name: 'to_stock_nr', type: 'integer', nullable: false)]
+//    private int $toStockNr;
+//
+//    #[ORM\Column(name: 'to_stock_level1', type: 'integer', nullable: false)]
+//    private int $toStockLevel1;
+//
+//    #[ORM\Column(name: 'to_stock_level2', type: 'integer', nullable: false)]
+//    private int $toStockLevel2;
+//
+//    #[ORM\Column(name: 'to_stock_level3', type: 'integer', nullable: false)]
+//    private int $toStockLevel3;
+//
+//    #[ORM\Column(name: 'to_stock_level4', type: 'integer', nullable: false)]
+//    private int $toStockLevel4;
+
     #[ORM\Column(name: 'tr_access', type: 'datetime', nullable: true, options: ['default' => null])]
     private ?\DateTimeInterface $trAccess;
 
@@ -263,6 +281,78 @@ class TransportHistory
 
         return $this;
     }
+//
+//    public function getToStockCoordinate(): string
+//    {
+//        return $this->toStockCoordinate;
+//    }
+//
+//    public function setToStockCoordinate(string $toStockCoordinate): self
+//    {
+//        $this->toStockCoordinate = $toStockCoordinate;
+//
+//        return $this;
+//    }
+//
+//    public function getToStockNr(): int
+//    {
+//        return $this->toStockNr;
+//    }
+//
+//    public function setToStockNr(int $toStockNr): self
+//    {
+//        $this->toStockNr = $toStockNr;
+//
+//        return $this;
+//    }
+//
+//    public function getToStockLevel1(): int
+//    {
+//        return $this->toStockLevel1;
+//    }
+//
+//    public function setToStockLevel1(int $toStockLevel1): self
+//    {
+//        $this->toStockLevel1 = $toStockLevel1;
+//
+//        return $this;
+//    }
+//
+//    public function getToStockLevel2(): int
+//    {
+//        return $this->toStockLevel2;
+//    }
+//
+//    public function setToStockLevel2(int $toStockLevel2): self
+//    {
+//        $this->toStockLevel2 = $toStockLevel2;
+//
+//        return $this;
+//    }
+//
+//    public function getToStockLevel3(): int
+//    {
+//        return $this->toStockLevel3;
+//    }
+//
+//    public function setToStockLevel3(int $toStockLevel3): self
+//    {
+//        $this->toStockLevel3 = $toStockLevel3;
+//
+//        return $this;
+//    }
+//
+//    public function getToStockLevel4(): int
+//    {
+//        return $this->toStockLevel4;
+//    }
+//
+//    public function setToStockLevel4(int $toStockLevel4): self
+//    {
+//        $this->toStockLevel4 = $toStockLevel4;
+//
+//        return $this;
+//    }
 
     public function getTrAccess(): ?\DateTimeInterface
     {
