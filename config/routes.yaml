@@ -46,15 +46,6 @@ stock_in_final:
     path: /stock_in_final
     controller: WebWMS\Controller\StockTransactions::stockInFinal
 
-admin_area:
-    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
-    prefix: /administration
-
-_sonata_admin:
-    resource: .
-    type: sonata_admin
-    prefix: /administration
-
 dashboard:
     path: /dashboard
     controller: WebWMS\Controller\DashboardController::index
