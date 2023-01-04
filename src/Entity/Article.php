@@ -5,238 +5,235 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\ArticleRepository;
 
-/**
- * @ORM\Table(name="article")
- * @ORM\Entity(repositoryClass=ArticleRepository::class)
- */
+// #[ORM\Table(name: 'article')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\ArticleRepository')]
 class Article
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private mixed $articleId;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
+    private int $articleId;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private mixed $articleNr;
+    #[ORM\Column(name: 'article_nr', type: 'string', length: 255, nullable: false)]
+    private string $articleNr;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private mixed $articleName;
+    #[ORM\Column(name: 'article_name', type: 'string', length: 255, nullable: false)]
+    private string $articleName;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private mixed $articleCategory;
+    #[ORM\Column(name: 'article_category', type: 'string', length: 255, nullable: false)]
+    private string $articleCategory;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)
-     */
-    private mixed $articleWeight;
+    #[ORM\Column(name: 'article_weight', type: 'decimal', precision: 10, scale: 2, nullable: false)]
+    private float $articleWeight;
 
-    /**
-     * @ORM\Column(type="string", length=15)
-     */
-    private mixed $articleEan;
+    #[ORM\Column(name: 'article_ean', type: 'string', length: 15, nullable: false)]
+    private string $articleEan;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private mixed $articleUnit;
+    #[ORM\Column(name: 'article_unit', type: 'string', length: 10, nullable: false)]
+    private string $articleUnit;
 
-    /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
-     */
-    private mixed $articleDepth;
+    #[ORM\Column(name: 'article_depth', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    private float $articleDepth;
 
-    /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
-     */
-    private mixed $articleWidth;
+    #[ORM\Column(name: 'article_width', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    private float $articleWidth;
 
-    /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
-     */
-    private mixed $articleHeight;
+    #[ORM\Column(name: 'article_height', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    private float $articleHeight;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private mixed $stockOutStrategy;
+    #[ORM\Column(name: 'stock_out_strategy', type: 'string', length: 10, nullable: false)]
+    private string $stockOutStrategy;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private mixed $standardLoadingEquipment;
+    #[ORM\Column(name: 'standard_loading_equipment', type: 'string', length: 10, nullable: false)]
+    private string $standardLoadingEquipment;
 
-    /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
-     */
-    private mixed $leQuantity;
+    #[ORM\Column(name: 'le_quantity', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    private float $leQuantity;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private mixed $articleCreatedAt;
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private mixed $articleUpdatedAt;
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
 
-    public function getArticleId(): mixed
+    public function getArticleId(): int
     {
         return $this->articleId;
     }
 
-    public function setArticleId(mixed $articleId): void
+    public function setArticleId(int $articleId): self
     {
         $this->articleId = $articleId;
+
+        return $this;
     }
 
-    public function getArticleNr(): mixed
+    public function getArticleNr(): string
     {
         return $this->articleNr;
     }
 
-    public function setArticleNr(mixed $articleNr): void
+    public function setArticleNr(string $articleNr): self
     {
         $this->articleNr = $articleNr;
+
+        return $this;
     }
 
-    public function getArticleName(): mixed
+    public function getArticleName(): string
     {
         return $this->articleName;
     }
 
-    public function setArticleName(mixed $articleName): void
+    public function setArticleName(string $articleName): self
     {
         $this->articleName = $articleName;
+
+        return $this;
     }
 
-    public function getArticleCategory(): mixed
+    public function getArticleCategory(): string
     {
         return $this->articleCategory;
     }
 
-    public function setArticleCategory(mixed $articleCategory): void
+    public function setArticleCategory(string $articleCategory): self
     {
         $this->articleCategory = $articleCategory;
+
+        return $this;
     }
 
-    public function getArticleWeight(): mixed
+    public function getArticleWeight(): float
     {
         return $this->articleWeight;
     }
 
-    public function setArticleWeight(mixed $articleWeight): void
+    public function setArticleWeight(float $articleWeight): self
     {
         $this->articleWeight = $articleWeight;
+
+        return $this;
     }
 
-    public function getArticleEan(): mixed
+    public function getArticleEan(): string
     {
         return $this->articleEan;
     }
 
-    public function setArticleEan(mixed $articleEan): void
+    public function setArticleEan(string $articleEan): self
     {
         $this->articleEan = $articleEan;
+
+        return $this;
     }
 
-    public function getArticleUnit(): mixed
+    public function getArticleUnit(): string
     {
         return $this->articleUnit;
     }
 
-    public function setArticleUnit(mixed $articleUnit): void
+    public function setArticleUnit(string $articleUnit): self
     {
         $this->articleUnit = $articleUnit;
+
+        return $this;
     }
 
-    public function getArticleDepth(): mixed
+    public function getArticleDepth(): float
     {
         return $this->articleDepth;
     }
 
-    public function setArticleDepth(mixed $articleDepth): void
+    public function setArticleDepth(float $articleDepth): self
     {
         $this->articleDepth = $articleDepth;
+
+        return $this;
     }
 
-    public function getArticleWidth(): mixed
+    public function getArticleWidth(): float
     {
         return $this->articleWidth;
     }
 
-    public function setArticleWidth(mixed $articleWidth): void
+    public function setArticleWidth(float $articleWidth): self
     {
         $this->articleWidth = $articleWidth;
+
+        return $this;
     }
 
-    public function getArticleHeight(): mixed
+    public function getArticleHeight(): float
     {
         return $this->articleHeight;
     }
 
-    public function setArticleHeight(mixed $articleHeight): void
+    public function setArticleHeight(float $articleHeight): self
     {
         $this->articleHeight = $articleHeight;
+
+        return $this;
     }
 
-    public function getStockOutStrategy(): mixed
+    public function getStockOutStrategy(): string
     {
         return $this->stockOutStrategy;
     }
 
-    public function setStockOutStrategy(mixed $stockOutStrategy): void
+    public function setStockOutStrategy(string $stockOutStrategy): self
     {
         $this->stockOutStrategy = $stockOutStrategy;
+
+        return $this;
     }
 
-    public function getLeQuantity(): mixed
+    public function getLeQuantity(): float
     {
         return $this->leQuantity;
     }
 
-    public function setLeQuantity(mixed $leQuantity): void
+    public function setLeQuantity(float $leQuantity): self
     {
         $this->leQuantity = $leQuantity;
+
+        return $this;
     }
 
-    public function getStandardLoadingEquipment(): mixed
+    public function getStandardLoadingEquipment(): string
     {
         return $this->standardLoadingEquipment;
     }
 
-    public function setStandardLoadingEquipment(mixed $standardLoadingEquipment): void
+    public function setStandardLoadingEquipment(string $standardLoadingEquipment): self
     {
         $this->standardLoadingEquipment = $standardLoadingEquipment;
+
+        return $this;
     }
 
-    public function getArticleCreatedAt(): mixed
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->articleCreatedAt;
+        return $this->createdAt;
     }
 
-    public function setArticleCreatedAt(mixed $articleCreatedAt): void
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
-        $this->articleCreatedAt = $articleCreatedAt;
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 
-    public function getArticleUpdatedAt(): mixed
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->articleUpdatedAt;
+        return $this->updatedAt;
     }
 
-    public function setArticleUpdatedAt(mixed $articleUpdatedAt): void
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
-        $this->articleUpdatedAt = $articleUpdatedAt;
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }

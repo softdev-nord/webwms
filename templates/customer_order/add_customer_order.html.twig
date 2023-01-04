@@ -22,31 +22,39 @@
                                         <div class="form-row col-md-12">
                                             <div class="form-group col-md-8">
                                                 <label for="inputKunde">Kunden suchen</label>
-                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_nr" name="inputKdNr" id="customer_nr_1" placeholder="Über Kunden-Nr suchen"></br></br>
+                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_nr"
+                                                       name="inputKdNr" id="customer_nr_1" placeholder="Über Kunden-Nr suchen"></br></br>
                                             </div>
                                             <div class="form-group col-md-8">
                                                 <label for="inputKunde">Kunde</label>
-                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_name" name="inputKdName" id="customer_name_1" placeholder="Über Kunden-Namen suchen">
+                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_name"
+                                                       name="inputKdName" id="customer_name_1" placeholder="Über Kunden-Namen suchen">
                                                 {{ form_row(customerForm.customer_id) }}
                                             </div>
                                             <div class="form-group col-md-8">
-                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_address_addition" name="inputKdAnsZu" id="customer_address_addition_1" placeholder="Anschrift Zusatz">
+                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_address_addition"
+                                                       name="inputKdAnsZu" id="customer_address_addition_1" placeholder="Anschrift Zusatz">
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_address_street" name="inputKdStr" id="customer_address_street_1" placeholder="Straße">
+                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_address_street"
+                                                       name="inputKdStr" id="customer_address_street_1" placeholder="Straße">
                                             </div>
                                             <div class="form-group col-md-2">
-                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_address_street_nr" name="inputKdHnr" id="customer_address_street_nr_1" placeholder="Haus-Nr">
+                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_address_street_nr"
+                                                       name="inputKdHnr" id="customer_address_street_nr_1" placeholder="Haus-Nr">
                                             </div>
                                             <div class="form-group col-md-4"></div>
                                             <div class="form-group col-md-1">
-                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_country_code" name="inputKdLandKrz" id="customer_country_code_1" placeholder="Land">
+                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_country_code"
+                                                       name="inputKdLandKrz" id="customer_country_code_1" placeholder="Land">
                                             </div>
                                             <div class="form-group col-md-2">
-                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_zip_code" name="inputKdPlz" id="customer_zip_code_1" placeholder="PLZ">
+                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_zip_code"
+                                                       name="inputKdPlz" id="customer_zip_code_1" placeholder="PLZ">
                                             </div>
                                             <div class="form-group col-md-5">
-                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_city" name="inputKdOrt" id="customer_city_1" placeholder="Ort">
+                                                <input type="text" class="form-control autocomplete_customers" data-type="customer_city"
+                                                       name="inputKdOrt" id="customer_city_1" placeholder="Ort">
                                             </div>
                                         </div>
                                     </div>
@@ -67,11 +75,11 @@
                                     <div class="row col-md-6">
                                         <div class="form-row col-md-12">
                                             <div class="form-group col-md-4">
-                                                {{ form_row(customerForm.customer_order_order_date) }}
+                                                {{ form_row(customerForm.customer_order_date) }}
                                             </div>
                                             <div class="form-group col-md-2"></div>
                                             <div class="form-group col-md-4">
-                                                {{ form_row(customerForm.customer_order_date, {'value' : "now"|date("d.m.Y")}) }}
+                                                {{ form_row(customerForm.customer_order_creation_date, {'value' : "now"|date("d.m.Y")}) }}
                                             </div>
                                         </div>
                                     </div>
@@ -146,7 +154,7 @@
     {% endblock %}
 
     {% block bodyjs %}
-        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/customersAutofill.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.customersAutofill.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/itemsAftAutofill.js') }}"></script>
     {% endblock %}
 {% endblock %}

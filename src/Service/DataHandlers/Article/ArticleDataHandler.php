@@ -47,14 +47,21 @@ class ArticleDataHandler
     {
         return $this->entityManager
             ->getRepository(Article::class)
-            ->find($articleId);
+            ->findOneBy(['articleId' => $articleId]);
     }
 
     public function getArticleByNr(int $articleNr): ?Article
     {
         return $this->entityManager
             ->getRepository(Article::class)
-            ->findOneBy(['article_nr' => $articleNr]);
+            ->findOneBy(['articleNr' => $articleNr]);
+    }
+
+    public function getAllArticles(): ?array
+    {
+        return $this->entityManager
+            ->getRepository(Article::class)
+            ->findAll();
     }
 
     /**
@@ -65,7 +72,7 @@ class ArticleDataHandler
         $conn = $this->entityManager->getConnection();
 
         $sql = "SELECT art.article_id, art.article_nr, art.article_name, art.article_category, art.article_weight, art.article_ean, art.article_unit, art.article_depth, art.article_width, art.article_height,
-                (SELECT (SUM(IF(transport_history.tr_typ = '1', transport_history.tr_quantity, 0.000))) - (SUM(IF(transport_history.tr_typ = '2', transport_history.tr_quantity, 0.000))) 
+                (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) - (SUM(IF(transport_history.tr_type = '2', transport_history.tr_quantity, 0.000))) 
                     FROM transport_history WHERE transport_history.article_nr = art.article_nr GROUP BY transport_history.article_nr LIMIT 1) AS lbw_menge
                 FROM transport_history AS tph
                 RIGHT OUTER JOIN article AS art

@@ -6,6 +6,7 @@
 # Node artifact files
 node_modules/
 dist/
+package-lock.json
 
 # Environment files
 .env
@@ -66,8 +67,3 @@ yarn-error.log
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
-
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###

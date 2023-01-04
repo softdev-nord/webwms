@@ -21,7 +21,7 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: true         // <---- This is the new additional config.
+        public: false         // <---- This is the new additional config.
 
         bind:
             $appName: '%env(APP_NAME)%'
@@ -58,35 +58,6 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    admin.customer:
-        class: WebWMS\Admin\CustomerAdmin
-        tags:
-            - {
-                name: sonata.admin,
-                model_class: WebWMS\Entity\Customer,
-                manager_type: orm,
-                label: Kunden
-            }
-
-    admin.user:
-        class: WebWMS\Admin\UserAdmin
-        tags:
-            - {
-                name: sonata.admin,
-                model_class: WebWMS\Entity\User,
-                manager_type: orm,
-                label: Benutzer
-            }
-
-    web_wms.menu_listener:
-        class: WebWMS\EventListener\MenuBuilderListener
-        tags:
-            - {
-                name: kernel.event_listener,
-                event: sonata.admin.event.configure.menu.sidebar,
-                method: addMenuItems
-            }
 
     web_wms.form.type.task:
         class: WebWMS\Form\EditArticleType
@@ -138,8 +109,8 @@ services:
             $publicDirectory: '%publicUploadDirectory%'
             $targetDirectory: '%uploadDirectory%'
 
-    web_wms.service.configuration_service:
-        class: WebWMS\Service\ConfigurationService
+    web_wms.service.configuration.configuration_service:
+        class: WebWMS\Service\Configuration\ConfigurationService
         arguments:
             $configurationDataHandler: '@web_wms.service.data_handlers.configuration.configuration_data_handler'
 
@@ -163,3 +134,9 @@ services:
             $stockRotationService: 'WebWMS\Service\Stock\StockRotationService'
             $transportRequestService: 'WebWMS\Service\TransportRequestService'
             $stockLocationService: 'WebWMS\Service\Stock\StockLocationService'
+
+    web_wms.service.booking_method.booking_method_service:
+        class: WebWMS\Service\BookingMethod\BookingMethodService
+        arguments:
+            $requirements: 'WebWMS\Controller\Requirements'
+            $twig: 'Twig\Environment'

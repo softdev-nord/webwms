@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\Article;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
+use WebWMS\Service\DateTimeService;
 use WebWMS\Service\TransportRequestService;
 
 /**
@@ -25,20 +26,19 @@ class ArticleService
     public function __construct(
         private EntityManagerInterface $entityManager,
         private ArticleDataHandler $articleDataHandler,
-        private TransportRequestService $transportRequestService
+        private TransportRequestService $transportRequestService,
+        private DateTimeService $dateTimeService
     ) {
     }
 
-    public function getArticleByNr(int $articleNr): ?Article
+    public function getArticleById(int $articleId): ?Article
     {
-        return $this->articleDataHandler->getArticleByNr($articleNr);
+        return $this->articleDataHandler->getArticleById($articleId);
     }
 
     public function getArticleApi(int $articleId): ?Article
     {
-        $article = $this->entityManager
-            ->getRepository(Article::class)
-            ->find($articleId);
+        $article = $this->articleDataHandler->getArticleById($articleId);
 
         if (!$article) {
             throw new EntityNotFoundException('Article with id '.$articleId.' does not exist!');
@@ -49,16 +49,14 @@ class ArticleService
 
     public function getAllArticlesApi(): ?array
     {
-        return $this->entityManager
-            ->getRepository(Article::class)
-            ->findAll();
+        return $this->articleDataHandler->getAllArticles();
     }
 
     public function addArticleApi(
-        int $articleNr,
+        string $articleNr,
         string $articleName,
         string $articleCategory,
-        float $articleWeight,
+        string $articleWeight,
         string $articleEan,
         string $articleUnit,
         float $articleDepth,
@@ -81,6 +79,7 @@ class ArticleService
         $article->setStockOutStrategy($stockOutStrategy);
         $article->setLeQuantity($leQuantity);
         $article->setStandardLoadingEquipment($standardLoadingEquipment);
+        $article->setCreatedAt($this->dateTimeService->createDateTime());
         $this->articleDataHandler->save($article);
 
         return $article;
@@ -120,6 +119,7 @@ class ArticleService
         $article->setStockOutStrategy($stockOutStrategy);
         $article->setLeQuantity($leQuantity);
         $article->setStandardLoadingEquipment($standardLoadingEquipment);
+        $article->setUpdatedAt($this->dateTimeService->createDateTime());
         $this->articleDataHandler->save($article);
 
         return $article;
@@ -194,8 +194,8 @@ class ArticleService
                     .'|'.$row['stock_out_strategy']
                     .'|'.$row['le_quantity']
                     .'|'.$row['standard_loading_equipment']
-                    .'|'.$row['article_created_at']
-                    .'|'.$row['article_updated_at'];
+                    .'|'.$row['created_at']
+                    .'|'.$row['updated_at'];
                 $data[] = $name;
             }
         }
@@ -203,9 +203,11 @@ class ArticleService
         return new JsonResponse($data);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function addArticle(Request $request)
     {
-        $createdAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
         $params = $request->request->all()['add_new_article'];
         $lastArticle = $this->getLastArticle();
         $article = new Article();
@@ -222,18 +224,17 @@ class ArticleService
         $article->setStockOutStrategy($params['stock_out_strategy']);
         $article->setLeQuantity($params['le_quantity']);
         $article->setStandardLoadingEquipment($params['standard_loading_equipment']);
-        $article->setArticleCreatedAt($createdAt);
+        $article->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->articleDataHandler->save($article);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function updateArticle($requestData)
     {
-        $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
-
-        $article = $this->entityManager
-            ->getRepository(Article::class)
-            ->find((int) $requestData['article_id']);
+        $article = $this->articleDataHandler->getArticleById($requestData['article_id']);
 
         if (!$article) {
             return null;
@@ -251,7 +252,7 @@ class ArticleService
         $article->setStockOutStrategy($requestData['stock_out_strategy']);
         $article->setLeQuantity($requestData['le_quantity']);
         $article->setStandardLoadingEquipment($requestData['standard_loading_equipment']);
-        $article->setArticleUpdatedAt($updatedAt);
+        $article->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->articleDataHandler->update($article);
 
@@ -265,7 +266,7 @@ class ArticleService
     {
         return $this->entityManager
             ->getRepository(Article::class)
-            ->findOneBy([], ['articleNr' => 'DESC']);
+            ->findOneBy([], ['article_nr' => 'DESC']);
     }
 
     protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException

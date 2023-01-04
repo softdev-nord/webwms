@@ -5,76 +5,50 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\CustomerRepository;
 
-/**
- * @ORM\Entity(repositoryClass=CustomerRepository::class)
- */
+#[ORM\Table(name: 'customer')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerRepository')]
 class Customer
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $customerId;
+    #[ORM\Column(name: 'customer_id', type: 'integer', nullable: false)]
+    private int $customerId;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $customerNr;
+    #[ORM\Column(name: 'customer_nr', type: 'integer', nullable: false)]
+    private int $customerNr;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private ?string $customerName;
+    #[ORM\Column(name: 'customer_name', type: 'string', length: 255, nullable: false)]
+    private string $customerName;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: 'customer_address_addition', type: 'string', length: 255, nullable: true)]
     private ?string $customerAddressAddition;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private ?string $customerAddressStreet;
+    #[ORM\Column(name: 'customer_address_street', type: 'string', length: 255, nullable: false)]
+    private string $customerAddressStreet;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private ?string $customerAddressStreetNr;
+    #[ORM\Column(name: 'customer_address_street_nr', type: 'string', length: 10, nullable: false)]
+    private string $customerAddressStreetNr;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private ?string $customerCountryCode;
+    #[ORM\Column(name: 'customer_country_code', type: 'string', length: 10, nullable: false)]
+    private string $customerCountryCode;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private ?string $customerZipCode;
+    #[ORM\Column(name: 'customer_zip_code', type: 'string', length: 10, nullable: false)]
+    private string $customerZipCode;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private ?string $customerCity;
+    #[ORM\Column(name: 'customer_city', type: 'string', length: 255, nullable: false)]
+    private string $customerCity;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private mixed $customerCreatedAt;
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private mixed $customerUpdatedAt;
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -86,7 +60,7 @@ class Customer
         return $this;
     }
 
-    public function getCustomerId(): ?int
+    public function getCustomerId(): int
     {
         return $this->customerId;
     }
@@ -98,7 +72,7 @@ class Customer
         return $this;
     }
 
-    public function getCustomerNr(): ?int
+    public function getCustomerNr(): int
     {
         return $this->customerNr;
     }
@@ -110,7 +84,7 @@ class Customer
         return $this;
     }
 
-    public function getCustomerName(): ?string
+    public function getCustomerName(): string
     {
         return $this->customerName;
     }
@@ -134,7 +108,7 @@ class Customer
         return $this;
     }
 
-    public function getCustomerAddressStreet(): ?string
+    public function getCustomerAddressStreet(): string
     {
         return $this->customerAddressStreet;
     }
@@ -146,7 +120,7 @@ class Customer
         return $this;
     }
 
-    public function getCustomerAddressStreetNr(): ?string
+    public function getCustomerAddressStreetNr(): string
     {
         return $this->customerAddressStreetNr;
     }
@@ -158,7 +132,7 @@ class Customer
         return $this;
     }
 
-    public function getCustomerCountryCode(): ?string
+    public function getCustomerCountryCode(): string
     {
         return $this->customerCountryCode;
     }
@@ -170,7 +144,7 @@ class Customer
         return $this;
     }
 
-    public function getCustomerZipCode(): ?string
+    public function getCustomerZipCode(): string
     {
         return $this->customerZipCode;
     }
@@ -182,7 +156,7 @@ class Customer
         return $this;
     }
 
-    public function getCustomerCity(): ?string
+    public function getCustomerCity(): string
     {
         return $this->customerCity;
     }
@@ -209,23 +183,27 @@ class Customer
         ];
     }
 
-    public function getCustomerCreatedAt(): mixed
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->customerCreatedAt;
+        return $this->createdAt;
     }
 
-    public function setCustomerCreatedAt(mixed $customerCreatedAt): void
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
-        $this->customerCreatedAt = $customerCreatedAt;
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 
-    public function getCustomerUpdatedAt(): mixed
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->customerUpdatedAt;
+        return $this->updatedAt;
     }
 
-    public function setCustomerUpdatedAt(mixed $customerUpdatedAt): void
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
-        $this->customerUpdatedAt = $customerUpdatedAt;
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }

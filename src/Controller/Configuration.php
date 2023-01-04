@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Form\Configuration\GeneralConfigurationType;
-use WebWMS\Service\ConfigurationService;
+use WebWMS\Service\Configuration\ConfigurationService;
 
 /**
  * @package:    WebWMS\Controller

@@ -1,39 +1,57 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\StockOccupancyRepository;
 
-#[ORM\Entity(repositoryClass: StockOccupancyRepository::class)]
+#[ORM\Table(name: 'stock_occupancy')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\StockOccupancyRepository')]
 class StockOccupancy
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    #[ORM\Column(name: 'stockLocationId', type: 'integer', nullable: false)]
-    private ?int $stockLocationId = null;
+    /** One Stock Location has One Stock Occupancy. */
+    #[ORM\OneToOne(targetEntity: StockLocation::class)]
+    #[ORM\JoinColumn(name: 'stock_location_id', referencedColumnName: 'stock_location_id')]
+    #[ORM\Column(name: 'stock_location_id', type: 'integer', nullable: false)]
+    private int $stockLocationId;
 
-    #[ORM\Column(name: 'articleId', type: 'integer', nullable: false)]
-    private ?int $articleId = null;
+    #[ORM\Column(name: 'article_id', type: 'integer', nullable: false)]
+    private int $articleId;
 
-    #[ORM\Column(name: 'stock', type: 'integer', nullable: false)]
-    private ?int $stock = null;
+    #[ORM\Column(name: 'in_stock', type: 'integer', nullable: false)]
+    private int $inStock;
 
-    #[ORM\Column(name: 'incomingStock', type: 'integer', nullable: false)]
-    private ?int $incomingStock = null;
+    #[ORM\Column(name: 'incoming_stock', type: 'integer', nullable: false)]
+    private int $incomingStock;
 
-    #[ORM\Column(name: 'reservedStock', type: 'integer', nullable: false)]
-    private ?int $reservedStock = null;
+    #[ORM\Column(name: 'reserved_stock', type: 'integer', nullable: false)]
+    private int $reservedStock;
 
-    public function getId(): ?int
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
+
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getStockLocationId(): ?int
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getStockLocationId(): int
     {
         return $this->stockLocationId;
     }
@@ -45,7 +63,7 @@ class StockOccupancy
         return $this;
     }
 
-    public function getArticleId(): ?int
+    public function getArticleId(): int
     {
         return $this->articleId;
     }
@@ -57,19 +75,19 @@ class StockOccupancy
         return $this;
     }
 
-    public function getStock(): ?int
+    public function getInStock(): int
     {
-        return $this->stock;
+        return $this->inStock;
     }
 
-    public function setStock(int $stock): self
+    public function setInStock(int $inStock): self
     {
-        $this->stock = $stock;
+        $this->inStock = $inStock;
 
         return $this;
     }
 
-    public function getIncomingStock(): ?int
+    public function getIncomingStock(): int
     {
         return $this->incomingStock;
     }
@@ -81,7 +99,7 @@ class StockOccupancy
         return $this;
     }
 
-    public function getReservedStock(): ?int
+    public function getReservedStock(): int
     {
         return $this->reservedStock;
     }
@@ -89,6 +107,30 @@ class StockOccupancy
     public function setReservedStock(int $reservedStock): self
     {
         $this->reservedStock = $reservedStock;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

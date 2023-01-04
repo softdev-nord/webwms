@@ -33,7 +33,7 @@ class StockOccupancyService
     /**
      * @throws Exception
      */
-    public function getStockOccupancyByCoordinate(Request $request): JsonResponse
+    public function getStockOccupancyByCoordinate(Request $request): array
     {
         $stockLocationCoordinate = $request->attributes->get('stock_location_coordinate');
         $stockOccupancyDetail = [];
@@ -46,7 +46,7 @@ class StockOccupancyService
             }
         }
 
-        return new JsonResponse($stockOccupancyDetail);
+        return $stockOccupancyDetail;
     }
 
     /**
@@ -55,5 +55,13 @@ class StockOccupancyService
     public function getAllStockOccupancyByLn($stockLocationLn): array
     {
         return $this->stockOccupancyDataHandler->getStockOccupancy($stockLocationLn);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getStockOccupancyByArticleNr($articleNr): array
+    {
+        return $this->stockOccupancyDataHandler->getStockOccupancyByArticleNr($articleNr);
     }
 }

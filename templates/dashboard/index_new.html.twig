@@ -35,7 +35,7 @@
                                         <div class="row">
                                             <div class="col-xl-3 col-md-3">
                                                 <!-- card -->
-                                                <div class="card card-h-100">
+                                                <div class="card">
                                                     <!-- card body -->
                                                     <div class="card-body">
                                                         <div class="row align-items-center">
@@ -51,7 +51,7 @@
 
                                             <div class="col-xl-3 col-md-3">
                                                 <!-- card -->
-                                                <div class="card card-h-100">
+                                                <div class="card">
                                                     <!-- card body -->
                                                     <div class="card-body">
                                                         <div class="row align-items-center">
@@ -67,7 +67,7 @@
 
                                             <div class="col-xl-3 col-md-3">
                                                 <!-- card -->
-                                                <div class="card card-h-100">
+                                                <div class="card">
                                                     <!-- card body -->
                                                     <div class="card-body">
                                                         <div class="row align-items-center">
@@ -83,7 +83,7 @@
 
                                             <div class="col-xl-3 col-md-3">
                                                 <!-- card -->
-                                                <div class="card card-h-100">
+                                                <div class="card">
                                                     <!-- card body -->
                                                     <div class="card-body">
                                                         <div class="row">
@@ -98,9 +98,27 @@
                                                                     <span class="col-4-text-center">Frei</span>
                                                                 </div>
                                                                 <div class="col-xxl-12 align-items-center">
-                                                                    <p class="col-4-form-control text-shadow">{{ warehouseUtilization.allStockLocations }}</p>
-                                                                    <p class="col-4-form-control text-shadow">{{ warehouseUtilization.occupiedStockLocations }}</p>
-                                                                    <p class="col-4-form-control text-shadow">{{ warehouseUtilization.allStockLocations - warehouseUtilization.occupiedStockLocations }}</p>
+                                                                    <p class="col-4-form-control text-shadow">
+                                                                        {% if warehouseUtilization.allStockLocations > 0 %}
+                                                                            {{ warehouseUtilization.allStockLocations }}
+                                                                        {% else %}
+                                                                            0
+                                                                        {% endif %}
+                                                                    </p>
+                                                                    <p class="col-4-form-control text-shadow">
+                                                                        {% if warehouseUtilization.occupiedStockLocations > 0 %}
+                                                                            {{ warehouseUtilization.occupiedStockLocations }}
+                                                                        {% else %}
+                                                                            0
+                                                                        {% endif %}
+                                                                    </p>
+                                                                    <p class="col-4-form-control text-shadow">
+                                                                        {% if (warehouseUtilization.allStockLocations - warehouseUtilization.occupiedStockLocations) > 0 %}
+                                                                            {{ warehouseUtilization.allStockLocations - warehouseUtilization.occupiedStockLocations }}
+                                                                        {% else %}
+                                                                            0
+                                                                        {% endif %}
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -112,7 +130,7 @@
                                         <div class="row">
                                             <div class="col-xl-3 col-md-3">
                                                 <!-- card -->
-                                                <div class="card card-h-100">
+                                                <div class="card">
                                                     <!-- card body -->
                                                     <div class="card-body">
                                                         <div class="row">
@@ -120,12 +138,32 @@
                                                                 <span class="text-muted mb-3 lh-1 text-truncate">Transportaufträge</span>
                                                                 <span class="ms-1 text-muted font-size-12">Übersicht</span>
                                                                 <div class="col-xxl-12 align-items-center">
+                                                                    <span class="col-4-text-center">Gesamt</span>
                                                                     <span class="col-4-text-center">Offen</span>
                                                                     <span class="col-4-text-center">In Arbeit</span>
                                                                 </div>
                                                                 <div class="col-xxl-12 align-items-center">
-                                                                    <p class="col-4-form-control text-shadow">{{ allTransportRequests.TrOpen }}</p>
-                                                                    <p class="col-4-form-control text-shadow">{{ allTransportRequests.TrInProgress }}</p>
+                                                                    <p class="col-4-form-control text-shadow">
+                                                                        {% if allTransportRequests.TrSum > 0 %}
+                                                                            {{ allTransportRequests.TrSum }}
+                                                                        {% else %}
+                                                                            0
+                                                                        {% endif %}
+                                                                    </p>
+                                                                    <p class="col-4-form-control text-shadow">
+                                                                        {% if allTransportRequests.TrOpen > 0 %}
+                                                                            {{ allTransportRequests.TrOpen }}
+                                                                        {% else %}
+                                                                            0
+                                                                        {% endif %}
+                                                                    </p>
+                                                                    <p class="col-4-form-control text-shadow">
+                                                                        {% if allTransportRequests.TrInProgress > 0 %}
+                                                                            {{ allTransportRequests.TrInProgress }}
+                                                                        {% else %}
+                                                                            0
+                                                                        {% endif %}
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -135,7 +173,7 @@
 
                                             <div class="col-xl-3 col-md-3">
                                                 <!-- card -->
-                                                <div class="card card-h-100">
+                                                <div class="card">
                                                     <!-- card body -->
                                                     <div class="card-body">
                                                         <div class="row" style="display: none">
@@ -168,7 +206,7 @@
                                         <div class="row" style="display: none">
                                             <div class="col-xl-4 col-md-3">
                                                 <!-- card -->
-                                                <div class="card card-h-100">
+                                                <div class="card">
                                                     <!-- card body -->
                                                     <div class="card-body">
                                                         <div class="d-flex flex-wrap align-items-center mb-4">
@@ -221,7 +259,7 @@
                                             <!-- end col -->
                                             <div class="col-xl-4 col-md-3">
                                                 <!-- card -->
-                                                <div class="card card-h-100">
+                                                <div class="card">
                                                     <!-- card body -->
                                                     <div class="card-body">
                                                         <div class="d-flex flex-wrap align-items-center mb-4">

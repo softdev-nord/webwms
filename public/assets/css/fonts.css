@@ -10,12 +10,14 @@
 
 @font-face {
     font-family: 'hollowpointital';
-    src: url('../fonts/hollowpointital.eot');
-    src: url('../fonts/hollowpointital.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/hollowpointital.svg#hollowpointital') format('svg'),
-    url('../fonts/hollowpointital.ttf') format('truetype'),
-    url('../fonts/hollowpointital.woff') format('woff'),
-    url('../fonts/hollowpointital.woff2') format('woff2');
+    src: url('../fonts/hollowpointital-webfont.eot');
+    src: url('../fonts/hollowpointital-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/hollowpointital-webfont.woff2') format('woff2'),
+    url('../fonts/hollowpointital-webfont.woff') format('woff'),
+    url('../fonts/hollowpointital-webfont.ttf') format('truetype'),
+    url('../fonts/hollowpointital-webfont.svg#hollowpointital') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @font-face {

@@ -1,21 +1,36 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Access to an undefined property WebWMS\\\\Entity\\\\CustomRole\\:\\:\\$users\\.$#"
-			count: 1
-			path: src/Entity/CustomRole.php
-
-		-
-			message: "#^Access to private property \\$permissions of parent class WebWMS\\\\Entity\\\\Role\\.$#"
-			count: 1
-			path: src/Entity/CustomRole.php
-
-		-
-			message: "#^Access to private property \\$name of parent class WebWMS\\\\Entity\\\\Role\\.$#"
-			count: 1
-			path: src/Entity/DefaultRole.php
-
-		-
-			message: "#^Access to an undefined property WebWMS\\\\Entity\\\\Role\\:\\:\\$type\\.$#"
+			message: "#^Access to an undefined property WebWMS\\\\Entity\\\\BookingMethod\\:\\:\\$menuId\\.$#"
 			count: 2
-			path: src/Entity/Role.php
+			path: src/Entity/BookingMethod.php
+
+		-
+			message: "#^Class WebWMS\\\\Entity\\\\Feature not found\\.$#"
+			count: 1
+			path: src/Form/GroupFeatureType.php
+
+		-
+			message: "#^Class WebWMS\\\\Entity\\\\Group not found\\.$#"
+			count: 1
+			path: src/Form/GroupFeatureType.php
+
+		-
+			message: "#^Class WebWMS\\\\Entity\\\\Group not found\\.$#"
+			count: 1
+			path: src/Form/GroupType.php
+
+		-
+			message: "#^Class WebWMS\\\\Entity\\\\Permission not found\\.$#"
+			count: 1
+			path: src/Form/RoleType.php
+
+		-
+			message: "#^Class WebWMS\\\\Entity\\\\Role not found\\.$#"
+			count: 1
+			path: src/Form/RoleType.php
+
+		-
+			message: "#^Class WebWMS\\\\Entity\\\\Role not found\\.$#"
+			count: 1
+			path: src/Service/RoleService.php

@@ -3,54 +3,64 @@
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\SupplierOrderPosRepository;
 
-/**
- * @ORM\Entity(repositoryClass=SupplierOrderPosRepository::class)
- */
+#[ORM\Table(name: 'supplier_order_pos')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\SupplierOrderPosRepository')]
 class SupplierOrderPos
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="SupplierOrder", inversedBy="details")
-     * @ORM\JoinColumn(name="supplier_order_id", referencedColumnName="id")
-     */
-    protected SupplierOrder $supplierOrders;
-
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    /** Many Supplier Order Positions have one Supplier Order. This is the owning side. */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(name: 'supplier_order_id', type: 'integer', nullable: false)]
     private ?int $supplierOrderId;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(name: 'article_id', type: 'integer', nullable: false)]
     private ?int $articleId;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(name: 'article_nr', type: 'string', length: 50, nullable: false)]
+    private string $articleNr;
+
+    #[ORM\Column(name: 'article_name', type: 'string', length: 255, nullable: false)]
+    private string $articleName;
+
+    #[ORM\Column(name: 'supplier_order_pos_quantity', type: 'integer', nullable: false)]
     private ?int $supplierOrderPosQuantity;
 
-    public function getId(): ?int
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
+
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
+
+    #[ORM\ManyToOne(inversedBy: 'supplierOrderPos')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SupplierOrder $supplierOrder = null;
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getSupplierOrderId(): ?int
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getSupplierOrderId(): int
     {
         return $this->supplierOrderId;
     }
 
-    public function setSupplierOrderId(?int $supplierOrderId): void
+    public function setSupplierOrderId(int $supplierOrderId): self
     {
         $this->supplierOrderId = $supplierOrderId;
+
+        return $this;
     }
 
     public function getArticleId(): ?int
@@ -58,28 +68,82 @@ class SupplierOrderPos
         return $this->articleId;
     }
 
-    public function setArticleId(?int $articleId): void
+    public function setArticleId(int $articleId): self
     {
         $this->articleId = $articleId;
+
+        return $this;
     }
 
-    public function getSupplierOrderPosQuantity(): ?int
+    public function getArticleNr(): string
+    {
+        return $this->articleNr;
+    }
+
+    public function setArticleNr(string $articleNr): self
+    {
+        $this->articleNr = $articleNr;
+
+        return $this;
+    }
+
+    public function getArticleName(): string
+    {
+        return $this->articleName;
+    }
+
+    public function setArticleName(string $articleName): self
+    {
+        $this->articleName = $articleName;
+
+        return $this;
+    }
+
+    public function getSupplierOrderPosQuantity(): int
     {
         return $this->supplierOrderPosQuantity;
     }
 
-    public function setSupplierOrderPosQuantity(?int $supplierOrderPosQuantity): void
+    public function setSupplierOrderPosQuantity(int $supplierOrderPosQuantity): self
     {
         $this->supplierOrderPosQuantity = $supplierOrderPosQuantity;
+
+        return $this;
     }
 
-    public function getSupplierOrders(): SupplierOrder
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->supplierOrders;
+        return $this->createdAt;
     }
 
-    public function setSupplierOrders(SupplierOrder $supplierOrders): void
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
-        $this->supplierOrders = $supplierOrders;
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getSupplierOrder(): ?SupplierOrder
+    {
+        return $this->supplierOrder;
+    }
+
+    public function setSupplierOrder(?SupplierOrder $supplierOrder): self
+    {
+        $this->supplierOrder = $supplierOrder;
+
+        return $this;
     }
 }

@@ -63,7 +63,7 @@ class StockLocationService
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
 
         $queryBuilder
-            ->select('stock_location_ln')
+            ->select('stock_location_ln, stock_location_desc')
             ->from('stock_location')
             ->groupBy('stock_location_ln');
 
@@ -75,7 +75,7 @@ class StockLocationService
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function generateStockLocation(Request $request)
+    public function generateStockLocation(Request $request): void
     {
         $createdAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
 
@@ -94,7 +94,7 @@ class StockLocationService
                 $setStockLocations->setStockLocationDepth($stockLocation['stock_location_depth']);
                 $setStockLocations->setStockLocationHeight($stockLocation['stock_location_height']);
                 $setStockLocations->setStockLocationZone($stockLocations['stock_location_zone']);
-                $setStockLocations->setStockLocationCreatedAt($createdAt);
+                $setStockLocations->setCreatedAt($createdAt);
 
                 $this->entityManager->persist($setStockLocations);
                 $this->entityManager->flush();
@@ -111,7 +111,7 @@ class StockLocationService
             $setStockLocations->setStockLocationDepth($stockLocations['stock_location_depth']);
             $setStockLocations->setStockLocationHeight($stockLocations['stock_location_height']);
             $setStockLocations->setStockLocationZone($stockLocations['stock_location_zone']);
-            $setStockLocations->setStockLocationCreatedAt($createdAt);
+            $setStockLocations->setCreatedAt($createdAt);
 
             $this->entityManager->persist($setStockLocations);
             $this->entityManager->flush();

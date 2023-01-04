@@ -41,12 +41,12 @@ class CustomerOrderPosType extends AbstractType
                     'id' => 'id_1',
                 ],
             ])
-            ->add('customer_order_pos_quantity', TextType::class, [
+            ->add('quantity', TextType::class, [
                 'data_class' => null,
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control autocomplete_items',
-                    'id' => 'customer_order_pos_quantity',
+                    'id' => 'quantity',
                 ],
             ])
         ;

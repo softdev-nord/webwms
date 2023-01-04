@@ -24,7 +24,9 @@ class TransportRequestService
 
     public function getAllOpenTransportRequests(): array
     {
-        return $this->entityManager->getRepository(TransportRequest::class)->findAll();
+        return $this->entityManager->getRepository(
+            TransportRequest::class
+        )->findAll();
     }
 
     public function getTransportRequestById($id): array
@@ -62,7 +64,7 @@ class TransportRequestService
             $transportRequest->setBookingMethod($data['booking_method']);
             $transportRequest->setCharge($data['charge']);
             $transportRequest->setLoadingEquipment($data['loading_equipment']);
-            $transportRequest->setTrTyp('1');
+            $transportRequest->setTrType('1');
         }
 
         $createTransportRequestEntry = $this->setData($transportRequest, $request);
@@ -117,7 +119,7 @@ class TransportRequestService
         $object->setTrBlocked($requestData['tr_blocked']);
         $object->setTrStartDate($requestData['tr_start_date']);
         $object->setTrEdited($requestData['tr_edited']);
-        $object->setTrTyp($requestData['tr_typ']);
+        $object->setTrType($requestData['tr_type']);
 
         return $object;
     }

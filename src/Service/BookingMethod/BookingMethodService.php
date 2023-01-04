@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace WebWMS\Service\BookingMethod;
 
 use Doctrine\ORM\EntityNotFoundException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 use WebWMS\Controller\Requirements;
 use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
@@ -33,7 +33,7 @@ class BookingMethodService
         private StockLocationService $stockLocationService,
         private TransportRequestService $transportRequestService,
         private FormFactoryInterface $formFactory,
-        private ContainerInterface $container
+        private Environment $twig
     ) {
     }
 
@@ -82,7 +82,6 @@ class BookingMethodService
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
-            // dd($requestData);
             $stockUnits = (int) ceil(
                 (int) $requestData['quantity'] / (int) $requestData['le_quantity'],
             );
@@ -118,11 +117,15 @@ class BookingMethodService
                 }
             }
 
-            $stockInFinal = $this->formFactory->create(StockInFinalType::class, ['freeStockLocations' => $freeStockLocations]);
+            $stockInFinal = $this->formFactory
+                ->create(
+                    StockInFinalType::class,
+                    ['freeStockLocations' => $freeStockLocations]
+                );
 
             // @TODO Eine Option finden, um im Formular mehrere Spalten zu nutzen!
 
-            return $this->render(
+            $html = $this->twig->render(
                 'modal/put_into_storage.html.twig',
                 [
                     'appName' => $this->requirements->getAppName(),
@@ -137,9 +140,11 @@ class BookingMethodService
                     'article_nr' => $requestData['article_nr'],
                 ]
             );
+
+            return new Response($html);
         }
 
-        return $this->render(
+        $html = $this->twig->render(
             'modal/stock_in_modal.html.twig',
             [
                 'appName' => $this->requirements->getAppName(),
@@ -152,6 +157,8 @@ class BookingMethodService
                 'selectedStockLocations' => $freeStockLocations,
             ]
         );
+
+        return new Response($html);
     }
 
     /**
@@ -368,34 +375,6 @@ class BookingMethodService
     public function stockTransferFromStockToDispatchArea()
     {
         // TODO: Implement logic
-    }
-
-    /**
-     * Returns a rendered view.
-     */
-    protected function renderView(string $view, array $parameters = []): string
-    {
-        if (!$this->container->has('twig')) {
-            throw new \LogicException('You cannot use the "renderView" method if the Twig Bundle is not available. Try running "composer require symfony/twig-bundle".');
-        }
-
-        return $this->container->get('twig')->render($view, $parameters);
-    }
-
-    /**
-     * Renders a view.
-     */
-    protected function render(string $view, array $parameters = [], Response $response = null): Response
-    {
-        $content = $this->renderView($view, $parameters);
-
-        if (null === $response) {
-            $response = new Response();
-        }
-
-        $response->setContent($content);
-
-        return $response;
     }
 
 // 207,  'move receicvings to storage'              bfid_uml_we_lv      207   // umlagerung aus we-zone ins lv-lager (aus artikelbelegung)

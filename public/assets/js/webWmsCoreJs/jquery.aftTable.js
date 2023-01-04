@@ -101,7 +101,7 @@ $(function() {
 		// Seitenlänge max. 5 Einträge
 		pageLength: 5,
 		columns: [
-			{"data": "order_nr"},
+			{"data": "customer_order_nr"},
 			{"data": "article_nr"},
 			{"data": "article_name"},
 			{"data": "customer_order_pos_quantity",

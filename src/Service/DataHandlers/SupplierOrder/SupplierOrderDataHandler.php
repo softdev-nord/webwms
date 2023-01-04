@@ -38,6 +38,16 @@ class SupplierOrderDataHandler
         $this->entityManager->flush();
     }
 
+    /**
+     * @return SupplierOrder|null Returns an array of Customer order objects
+     */
+    public function getSupplierOrderById(int $id): ?SupplierOrder
+    {
+        return $this->entityManager
+            ->getRepository(SupplierOrder::class)
+            ->findOneBy(['id' => $id]);
+    }
+
     public function updateSupplierOrder($requestData): ?SupplierOrder
     {
         $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
@@ -53,11 +63,11 @@ class SupplierOrderDataHandler
         $supplierOrder->setSupplierOrderId((int) $requestData['	supplier_order_id']);
         $supplierOrder->setUsrId((int) $requestData['usr_id']);
         $supplierOrder->setSupplierId((int) $requestData['supplier_id']);
-        $supplierOrder->setSupplierOrderNr((int) $requestData['supplier_order_nr']);
+        $supplierOrder->setSupplierOrderNr((string) $requestData['supplier_order_nr']);
         $supplierOrder->setSupplierOrderReference((string) $requestData['supplier_order_reference']);
         $supplierOrder->setSupplierOrderDate($requestData['supplier_order_date']);
-        $supplierOrder->setSupplierOrderOrderDate($requestData['supplier_address_street']);
-        $supplierOrder->setSupplierOrderUpdatedAt($updatedAt);
+        $supplierOrder->setSupplierOrderCreationDate($requestData['supplier_address_street']);
+        $supplierOrder->setUpdatedAt($updatedAt);
 
         $this->update($supplierOrder);
 

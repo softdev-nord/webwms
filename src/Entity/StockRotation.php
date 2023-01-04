@@ -5,81 +5,74 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\StockRotationRepository;
 
-/**
- * @ORM\Entity(repositoryClass=StockRotationRepository::class)
- */
+#[ORM\Table(name: 'stock_rotation')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\StockRotationRepository')]
 class StockRotation
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private ?int $stockLocationId;
+    #[ORM\Column(name: 'stock_location_id', type: 'integer', nullable: false)]
+    private int $stockLocationId;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private ?int $articleId;
+    #[ORM\Column(name: 'article_id', type: 'integer', nullable: false)]
+    private int $articleId;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private ?int $usrId;
+    #[ORM\Column(name: 'usr_id', type: 'integer', nullable: false)]
+    private int $usrId;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(name: 'customer_order_id', type: 'integer', nullable: true)]
     private ?int $customerOrderId;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(name: 'supplier_order_id', type: 'integer', nullable: true)]
     private ?int $supplierOrderId;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private ?int $movementId;
+    #[ORM\Column(name: 'movement_id', type: 'integer', nullable: false)]
+    private int $movementId;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $posQuantity;
+    #[ORM\Column(name: 'pos_quantity', type: 'integer', nullable: false)]
+    private int $posQuantity;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: 'access_date', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $accessDate;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: 'dispatch_date', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $dispatchDate;
 
-    public function getId(): ?int
+    #[ORM\Column(name: 'tr_type', type: 'string', length: 8, nullable: false)]
+    private string $trType;
+
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getStockLocationId(): ?int
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getStockLocationId(): int
     {
         return $this->stockLocationId;
     }
 
-    public function setStockLocationId($stockLocationId): void
+    public function setStockLocationId($stockLocationId): self
     {
         $this->stockLocationId = $stockLocationId;
+
+        return $this;
     }
 
-    public function getArticleId(): ?int
+    public function getArticleId(): int
     {
         return $this->articleId;
     }
@@ -91,54 +84,64 @@ class StockRotation
         return $this;
     }
 
-    public function getUsrId(): ?int
+    public function getUsrId(): int
     {
         return $this->usrId;
     }
 
-    public function setUsrId($usrId): void
+    public function setUsrId($usrId): self
     {
         $this->usrId = $usrId;
+
+        return $this;
     }
 
-    public function getCustomerOrderId(): ?int
+    public function getCustomerOrderId(): int
     {
         return $this->customerOrderId;
     }
 
-    public function setCustomerOrderId($customerOrderId): void
+    public function setCustomerOrderId($customerOrderId): self
     {
         $this->customerOrderId = $customerOrderId;
+
+        return $this;
     }
 
-    public function getSupplierOrderId(): ?int
+    public function getSupplierOrderId(): int
     {
         return $this->supplierOrderId;
     }
 
-    public function setSupplierOrderId($supplierOrderId): void
+    public function setSupplierOrderId($supplierOrderId): self
     {
         $this->supplierOrderId = $supplierOrderId;
+
+        return $this;
     }
 
-    public function getMovementId(): ?int
+    public function getMovementId(): int
     {
         return $this->movementId;
     }
 
-    public function setMovementId($movementId): void
+    public function setMovementId($movementId): self
     {
         $this->movementId = $movementId;
+
+        return $this;
     }
 
-    public function getPosQuantity(): ?int
+    public function getPosQuantity(): int
     {
         return $this->posQuantity;
     }
 
-    public function setPosQuantity($posQuantity): void
+    public function setPosQuantity($posQuantity): self
     {
         $this->posQuantity = $posQuantity;
+
+        return $this;
     }
 
     public function getAccessDate(): ?\DateTimeInterface
@@ -146,9 +149,11 @@ class StockRotation
         return $this->accessDate;
     }
 
-    public function setAccessDate(?\DateTimeInterface $accessDate): void
+    public function setAccessDate(?\DateTimeInterface $accessDate): self
     {
         $this->accessDate = $accessDate;
+
+        return $this;
     }
 
     public function getDispatchDate(): ?\DateTimeInterface
@@ -156,8 +161,34 @@ class StockRotation
         return $this->dispatchDate;
     }
 
-    public function setDispatchDate(?\DateTimeInterface $dispatchDate): void
+    public function setDispatchDate(?\DateTimeInterface $dispatchDate): self
     {
         $this->dispatchDate = $dispatchDate;
+
+        return $this;
+    }
+
+    public function getTrType(): string
+    {
+        return $this->trType;
+    }
+
+    public function setTrType(string $trType): self
+    {
+        $this->trType = $trType;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 }

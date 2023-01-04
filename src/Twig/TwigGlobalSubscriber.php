@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig\Environment;
-use WebWMS\Service\ConfigurationService;
+use WebWMS\Service\Configuration\ConfigurationService;
 
 /**
  * @package:    WebWMS\Twig

@@ -7,148 +7,151 @@
         {{ include('header.html.twig') }}
     {% endblock %}
 
-    {% block webwms_stock_occupancies_overview %}
-        <div id="webWMS-stock-occupancies-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-            <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
-                    <div class="webwms-page">{{ page }}</div>
-                {% endif %}
-                {% block webwms_stock_occupancies_overview_table %}
-                    <div class="card">
-                        <div class="card-content">
-                            <span class="text-muted mb-3 lh-1 d-block text-truncate" style="float: left; padding-top: 8px;padding-right: 10px;">Lagerbereich auswählen</span>
-                            <select id="selectStock" class="form-control col-md-1">
-                                {% for oneStockSelected in stockSelect %}
-                                    {% set selected = '' %}
-                                    {% if (oneStockSelected.stock_location_ln) == stockSelect %}
-                                        {% set selected = 'selected' %}
-                                    {% endif %}
-                                    <option value="{{oneStockSelected.stock_location_ln}}" {{ selected }}>{{oneStockSelected.stock_location_ln}}</option>
-                                {% endfor %}
-                            </select>
-                            <div id="stockSystem">
-                                <div class="text-muted mb-3 lh-1 d-block text-truncate stock-system">{{ stockSystem }}</div>
-                            </div>
-                            <div class="row" style="display: block; margin-top: 50px;">
-                                <div class="col-md-12">
-                                    <!-- card -->
-                                    <div class="card card-h-100">
-                                        <!-- card body -->
-                                        <div class="card-body">
-                                            <div class="header-item">
-                                                <div class="row">
-                                                    {% set startFb = 0 %}
-                                                    {% set startSp = 0 %}
-                                                    {% set startTf = 0 %}
-                                                    {% set resultFb = 0 %}
-                                                    {% set resultSp = 0 %}
-                                                    {% set stockSystem = 'Block' %}
+    {% block webwms_content %}
+        {% block webwms_stock_occupancy_graphical_overview %}
+            <div id="webWMS-stock-occupancies-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                        <div class="webwms-page">{{ page }}</div>
+                    {% endif %}
+                    {% block webwms_stock_occupancy_graphical_overview_table %}
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="row">
+                                    <span class="text-truncate" style="float: left; padding-top: 8px;padding-right: 10px; width: auto">Lagerbereich auswählen</span>
+                                    <select id="selectStock" class="form-control col-md-1 stock-select" style="width: 10%">
+                                        {% for oneStockSelected in stockSelect|sort %}
+                                            {% set selected = '' %}
+                                            {% if (oneStockSelected.stock_location_ln) == stockSelect %}
+                                                {% set selected = 'selected' %}
+                                            {% endif %}
+                                            <option value="{{oneStockSelected.stock_location_ln}}" {{ selected }}>{{oneStockSelected.stock_location_ln}} {{oneStockSelected.stock_location_desc}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="row" style="display: block; margin-top: 10px;">
+                                    <div class="col-md-12">
+                                        <div class="card card-h-100">
+                                            <div class="card-body">
+                                                <div class="header-item">
+                                                    <div class="row">
+                                                        {% set startFb = 0 %}
+                                                        {% set startSp = 0 %}
+                                                        {% set startTf = 0 %}
+                                                        {% set resultFb = 0 %}
+                                                        {% set resultSp = 0 %}
+                                                        {% set stockSystem = 'Block' %}
+                                                        {% set fieldWidth = 3 %}
+                                                        {% for stockResult in stockResults %}
+                                                            {% for stock in stockResult %}
+                                                                {% if stockSystem != stock.system %}
+                                                                    {% set stockSystem = stock.system %}
 
-                                                    {% for fb, stock in stockResults %}
-                                                        {% for sp, sog in stock %}
-                                                            {% if stockSystem != sog.system %}
-                                                                {% set stockSystem = sog.system %}
-
-                                                                {% if stockSystem == 'Pal Regal' or stockSystem == 'Durchlaufregal' %}
-                                                                    <table id="stockLocationTable" class="table table-striped table-bordered compact" style="width: auto; margin: auto">
-                                                                        <thead class="table-header">
-                                                                            <tr>
-                                                                                <th style="text-align: center; width: 10%" scope="col">Fachboden</th>
-                                                                                <th style="text-align: center" scope="col">Stellplatz</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody style="text-align: center;">
-                                                                            <tr>
+                                                                    {% if stockSystem == 'Pal Regal' or stockSystem == 'Durchlaufregal' %}
+                                                                        <div id="stockLocationDiv">
+                                                                            <div class="stock-details-content">
                                                                                 {% for fb, stock in stockResults %}
-                                                                                <td style="width: 10%; vertical-align: middle; font-size: 20px; font-weight: bold">
-                                                                                    {% if startFb < fb %}
-                                                                                    <div>
-                                                                                        <span class="text-muted mb-3 lh-1 d-block text-truncate" style="text-align: center;">{{ fb }}</span>
-                                                                                    </div>
-                                                                                    {% endif %}
-                                                                                </td>
-                                                                                <td>
-                                                                                    <div class="col-xxl-12" style="display: inline-flex">
-                                                                                        {% for sp, sog in stock %}
-                                                                                            {% if startSp < sog.sp %}
-                                                                                                <div style="display: grid">
-                                                                                                    <span class="text-muted mb-3 lh-1 d-block text-truncate" style="text-align: center;">{{ sog.sp }}</span>
-                                                                                                    <a id="stockCoordinate" href="#showStockDetails" data-toggle="modal" data-target="{{ sog.koordinate }}" data-ln-komplett="{{ sog.lnKomplett }}">
-                                                                                                    <span class="badge-occupancy badge-soft-success font-size-24 bg-soft-success {% if sog.belegt%}text-danger {% else %}text-success {% endif %}">
-                                                                                                    <i class="mdi mdi-checkbox-blank"></i>
-                                                                                                </span>
-                                                                                                    </a>
+                                                                                    {% set maxTf = stock|length %}
+                                                                                    {% set halfTf = maxTf / 3 %}
+                                                                                    <div class="stock-details-content-inner">
+                                                                                        <div class="stock-details-content-inner-desc">
+                                                                                            {% if startFb < fb %}
+                                                                                                <div>
+                                                                                                    <span class="text-truncate">Ebene {{ fb }}</span>
                                                                                                 </div>
                                                                                             {% endif %}
-                                                                                        {% endfor %}
+                                                                                        </div>
+                                                                                        <div class="col-xxl-12" style="display: inline-flex">
+                                                                                            {% for sp, sog in stock %}
+                                                                                                {% if startSp < sog.sp %}
+                                                                                                    <div style="display: block">
+                                                                                                        <div id="stockCoordinate" href="#showStockDetails" class="stock-details" data-toggle="modal" data-target="{{ sog.koordinate }}" data-ln-komplett="{{ sog.lnKomplett }}">
+                                                                                                            <span class="stock-details-badge-occupancy {% if sog.belegt%}stock-details-occupied{% else %}stock-details-not-occupied{% endif %}">
+                                                                                                                <span class="text-truncate" style="text-align: center;">{{ sog.sp }}</span>
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
+                                                                                        </div>
                                                                                     </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        {% endfor %}
-                                                                        </tbody>
-                                                                    </table>
-                                                                {% else %}
-                                                                    <table id="stockLocationTable" class="table table-striped table-bordered compact" style="width: auto; margin: auto">
-                                                                        <thead class="table-header">
-                                                                        <tr>
-                                                                            <th style="text-align: center; width: 10%" scope="col">Stellplatz</th>
-                                                                            <th style="text-align: center" scope="col">Tiefe</th>
-                                                                        </tr>
-                                                                        </thead>
-                                                                        <tbody style="text-align: center;">
-                                                                        <tr>
-                                                                            {% for sp, stock in stockResults %}
-                                                                            <td style="width: 10%; vertical-align: middle; font-size: 20px; font-weight: bold">
-                                                                                {% if startSp < sp %}
-                                                                                    <div>
-                                                                                        <span class="text-muted mb-3 lh-1 d-block text-truncate" style="text-align: center;">{{ sp }}</span>
-                                                                                    </div>
-                                                                                {% endif %}
-                                                                            </td>
-                                                                            <td>
-                                                                                <div class="col-xxl-12" style="display: inline-flex">
-                                                                                    {% for tf, sog in stock %}
-                                                                                        {% if startTf < sog.tf %}
-                                                                                            <div style="display: grid">
-                                                                                                <span class="text-muted mb-3 lh-1 d-block text-truncate" style="text-align: center;">{{ sog.tf }}</span>
-                                                                                                <a id="stockCoordinate" href="#showStockDetails" data-toggle="modal" data-target="{{ sog.koordinate }}" data-ln-komplett="{{ sog.lnKomplett }}">
-                                                                                                    <span class="badge-occupancy badge-soft-success font-size-24 bg-soft-success {% if sog.belegt%}text-danger {% else %}text-success {% endif %}">
-                                                                                                    <i class="mdi mdi-checkbox-blank"></i>
-                                                                                                </span>
-                                                                                                </a>
+                                                                                {% endfor %}
+                                                                            </div>
+                                                                        </div>
+                                                                    {% else %}
+                                                                        <div id="stockLocationDiv">
+                                                                            <div class="stock-details-content">
+                                                                                {% for sp, stockResult in stockResults %}
+                                                                                    {% set maxTf = stockResult|length %}
+                                                                                    {% set halfTf = maxTf / 2 %}
+                                                                                    <div class="stock-details-content-inner block">
+                                                                                        <div class="stock-details-content-inner-desc block">
+                                                                                            {% if startSp < sp %}
+                                                                                                <div>
+                                                                                                    <span class="text-truncate" style="text-align: center;">Stellplatz {{ sp }}</span>
+                                                                                                </div>
+                                                                                            {% endif %}
+                                                                                        </div>
+                                                                                        <div id="test" class="stock-details-content-inner-space">
+                                                                                            <div class="stock-details-block-section-1" style="display: flex">
+                                                                                                {% for stock in stockResult|filter(stock => stock.tf <= halfTf) %}
+                                                                                                    {% if startTf < stock.tf %}
+                                                                                                        <div id="stockCoordinate" href="#showStockDetails" class="stock-details block{% if stock.tf <= halfTf %} section-1-{{ stock.sp }}{% else %} section-2-{{ stock.sp }}{% endif %}"
+                                                                                                             data-toggle="modal" data-target="{{ stock.koordinate }}" data-ln-komplett="{{ stock.lnKomplett }}" data-sp="{{ stock.sp }}"
+                                                                                                        >
+                                                                                                            <span id="stockDetailsBadge" class="stock-details-badge-occupancy {% if stock.belegt%}stock-details-occupied{% else %}stock-details-not-occupied{% endif %}">
+                                                                                                                <span class="text-truncate" style="text-align: center;">{{ stock.tf }}</span>
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                   {% endif %}
+                                                                                                {% endfor %}
                                                                                             </div>
-                                                                                        {% endif %}
-                                                                                    {% endfor %}
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                        {% endfor %}
-                                                                        </tbody>
-                                                                    </table>
+                                                                                            <div class="stock-details-block-section-2" style="display: flex">
+                                                                                                {% for stock in stockResult|filter(stock => stock.tf > halfTf) %}
+                                                                                                    {% if startTf < stock.tf %}
+                                                                                                        <div id="stockCoordinate" href="#showStockDetails" class="stock-details block{% if stock.tf <= halfTf %} section-1-{{ stock.sp }}{% else %} section-2-{{ stock.sp }}{% endif %}"
+                                                                                                             data-toggle="modal" data-target="{{ stock.koordinate }}" data-ln-komplett="{{ stock.lnKomplett }}" data-sp="{{ stock.sp }}"
+                                                                                                        >
+                                                                                                        <span id="stockDetailsBadge" class="stock-details-badge-occupancy {% if stock.belegt%}stock-details-occupied{% else %}stock-details-not-occupied{% endif %}">
+                                                                                                            <span class="text-truncate" style="text-align: center;">{{ stock.tf }}</span>
+                                                                                                        </span>
+                                                                                                        </div>
+                                                                                                    {% endif %}
+                                                                                                {% endfor %}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                {% endfor %}
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endif %}
                                                                 {% endif %}
-                                                            {% endif %}
+                                                            {% endfor %}
                                                         {% endfor %}
-                                                    {% endfor %}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div><!-- end card body -->
-                                    </div><!-- end card -->
-                                </div><!-- end col -->
-                            </div><!-- end row-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                {% endblock %}
+                    {% endblock %}
+                </div>
             </div>
-        </div>
+        {% endblock %}
     {% endblock %}
 
-    {% block webwms_stock_occupancies_stock_detail %}
+    {% block webwms_stock_occupancy_graphical_stock_detail %}
         {{ include('modal/show_stock_details_modal.html.twig', {'stockResults': stockResults}) }}
     {% endblock %}
 
-    {% block javascripts %}
-        {{ parent() }}
+    {% block bodyjs %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockGraphicalOverview.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.article.js') }}"></script>
+        <script>
+
+        </script>
     {% endblock %}
 
 {% endblock %}

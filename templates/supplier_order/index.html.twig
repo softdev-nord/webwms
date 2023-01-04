@@ -17,7 +17,7 @@
                     <div class="card">
                         <div class="card-content">
                             {% block webwms_supplier_order_overview_table_orders %}
-                                <table id="bstTable" class="table table-bordered table-hover compact table-dark">
+                                <table id="bstTable" class="table table-striped table-bordered table-hover compact dataTable no-footer">
                                     <thead>
                                     <tr>
                                         <th style="text-align: center">Bestellungs-Nr</th>
@@ -36,7 +36,7 @@
                     <div class="card">
                         <div class="card-content">
                             {% block webwms_supplier_order_overview_table_orders_pos %}
-                                <table id="posTable" class="table table-bordered table-hover compact table-dark">
+                                <table id="posTable" class="table table-striped table-bordered table-hover compact dataTable no-footer">
                                     <thead>
                                     <tr>
                                         <th style="text-align: center" width="5%">Bestellungs-Nr</th>
@@ -55,6 +55,6 @@
         {% endblock %}
     {% endblock %}
     {% block bodyjs %}
-        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.bstTable.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.supplierOrder.js') }}"></script>
     {% endblock %}
 {% endblock %}

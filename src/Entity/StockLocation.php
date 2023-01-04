@@ -5,81 +5,53 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\StockLocationRepository;
 
-/**
- * @ORM\Entity(repositoryClass=StockLocationRepository::class)
- */
+#[ORM\Table(name: 'stock_location')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\StockLocationRepository')]
 class StockLocation
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private ?int $stockLocationId;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
+    private int $stockLocationId;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $stockLocationLn;
+    #[ORM\Column(name: 'stock_location_ln', type: 'integer', nullable: false)]
+    private int $stockLocationLn;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $stockLocationFb;
+    #[ORM\Column(name: 'stock_location_fb', type: 'integer', nullable: false)]
+    private int $stockLocationFb;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $stockLocationSp;
+    #[ORM\Column(name: 'stock_location_sp', type: 'integer', nullable: false)]
+    private int $stockLocationSp;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $stockLocationTf;
+    #[ORM\Column(name: 'stock_location_tf', type: 'integer', nullable: false)]
+    private int $stockLocationTf;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private mixed $stockLocationCoordinate;
+    #[ORM\Column(name: 'stock_location_coordinate', type: 'string', length: 25, nullable: false)]
+    private string $stockLocationCoordinate;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private ?string $stockLocationDesc;
+    #[ORM\Column(name: 'stock_location_desc', type: 'string', length: 255, nullable: false)]
+    private string $stockLocationDesc;
 
-    /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
-     */
-    private ?string $stockLocationWidth;
+    #[ORM\Column(name: 'stock_location_width', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    private float $stockLocationWidth;
 
-    /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
-     */
-    private ?string $stockLocationDepth;
+    #[ORM\Column(name: 'stock_location_depth', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    private float $stockLocationDepth;
 
-    /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
-     */
-    private ?string $stockLocationHeight;
+    #[ORM\Column(name: 'stock_location_height', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    private float $stockLocationHeight;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private ?string $stockLocationZone;
+    #[ORM\Column(name: 'stock_location_zone', type: 'string', length: 10, nullable: false)]
+    private string $stockLocationZone;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private mixed $stockLocationCreatedAt;
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private mixed $stockLocationUpdatedAt;
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
 
-    public function getStockLocationId(): ?int
+    public function getStockLocationId(): int
     {
         return $this->stockLocationId;
     }
@@ -91,7 +63,7 @@ class StockLocation
         return $this;
     }
 
-    public function getStockLocationLn(): ?int
+    public function getStockLocationLn(): int
     {
         return $this->stockLocationLn;
     }
@@ -103,7 +75,7 @@ class StockLocation
         return $this;
     }
 
-    public function getStockLocationFb(): ?int
+    public function getStockLocationFb(): int
     {
         return $this->stockLocationFb;
     }
@@ -115,7 +87,7 @@ class StockLocation
         return $this;
     }
 
-    public function getStockLocationSp(): ?int
+    public function getStockLocationSp(): int
     {
         return $this->stockLocationSp;
     }
@@ -127,7 +99,7 @@ class StockLocation
         return $this;
     }
 
-    public function getStockLocationTf(): ?int
+    public function getStockLocationTf(): int
     {
         return $this->stockLocationTf;
     }
@@ -139,7 +111,7 @@ class StockLocation
         return $this;
     }
 
-    public function getStockLocationCoordinate(): mixed
+    public function getStockLocationCoordinate(): string
     {
         return $this->stockLocationCoordinate;
     }
@@ -149,7 +121,7 @@ class StockLocation
         $this->stockLocationCoordinate = $stockLocationCoordinate;
     }
 
-    public function getStockLocationDesc(): ?string
+    public function getStockLocationDesc(): string
     {
         return $this->stockLocationDesc;
     }
@@ -161,69 +133,73 @@ class StockLocation
         return $this;
     }
 
-    public function getStockLocationWidth(): ?string
+    public function getStockLocationWidth(): float
     {
         return $this->stockLocationWidth;
     }
 
-    public function setStockLocationWidth(string $stockLocationWidth): self
+    public function setStockLocationWidth(float $stockLocationWidth): self
     {
         $this->stockLocationWidth = $stockLocationWidth;
 
         return $this;
     }
 
-    public function getStockLocationDepth(): ?string
+    public function getStockLocationDepth(): float
     {
         return $this->stockLocationDepth;
     }
 
-    public function setStockLocationDepth(string $stockLocationDepth): self
+    public function setStockLocationDepth(float $stockLocationDepth): self
     {
         $this->stockLocationDepth = $stockLocationDepth;
 
         return $this;
     }
 
-    public function getStockLocationHeight(): ?string
+    public function getStockLocationHeight(): float
     {
         return $this->stockLocationHeight;
     }
 
-    public function setStockLocationHeight(string $stockLocationHeight): self
+    public function setStockLocationHeight(float $stockLocationHeight): self
     {
         $this->stockLocationHeight = $stockLocationHeight;
 
         return $this;
     }
 
-    public function getStockLocationZone(): ?string
+    public function getStockLocationZone(): string
     {
         return $this->stockLocationZone;
     }
 
-    public function setStockLocationZone(?string $stockLocationZone): void
+    public function setStockLocationZone(string $stockLocationZone): void
     {
         $this->stockLocationZone = $stockLocationZone;
     }
 
-    public function getStockLocationCreatedAt(): mixed
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->stockLocationCreatedAt;
+        return $this->createdAt;
     }
 
-    public function setStockLocationCreatedAt(mixed $stockLocationCreatedAt): void
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
-        $this->stockLocationCreatedAt = $stockLocationCreatedAt;
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 
-    public function getStockLocationUpdatedAt(): mixed
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->stockLocationUpdatedAt;
+        return $this->updatedAt;
     }
 
-    public function setStockLocationUpdatedAt(mixed $stockLocationUpdatedAt): void
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
-        $this->stockLocationUpdatedAt = $stockLocationUpdatedAt;
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }

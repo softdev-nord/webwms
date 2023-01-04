@@ -118,15 +118,19 @@ class SupplierService
         }
     }
 
-    public function getAllSuppliers(): array
+    public function getAllSuppliers(): JsonResponse
     {
-        $suppliers = $this->entityManager->getRepository(Supplier::class)->findAll();
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
 
-        if (!$suppliers) {
-            throw new NotFoundException('Keine Lieferanten gefunden');
-        }
+        $queryBuilder
+            ->select('*')
+            ->from('supplier');
 
-        return $suppliers;
+        $stmt = $queryBuilder->executeQuery();
+
+        $results = $stmt->fetchAllAssociative();
+
+        return new JsonResponse($results);
     }
 
     /**
@@ -220,5 +224,12 @@ class SupplierService
         return $this->entityManager
             ->getRepository(Supplier::class)
             ->findBy([], ['supplier_nr' => 'DESC'], 1, 0);
+    }
+
+    public function getSupplierById($id): ?Supplier
+    {
+        return $this->entityManager
+            ->getRepository(Supplier::class)
+            ->findOneBy(['id' => $id]);
     }
 }

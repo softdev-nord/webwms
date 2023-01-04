@@ -15,7 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Entity\CustomerOrder as CustomerOrders;
 use WebWMS\Form\CustomerOrderPosType;
 use WebWMS\Form\CustomerOrderType;
+use WebWMS\Form\EditCustomerOrderType;
 use WebWMS\Service\Article\ArticleService;
+use WebWMS\Service\Customer\CustomerService;
 use WebWMS\Service\CustomerOrderService;
 
 /**
@@ -23,13 +25,15 @@ use WebWMS\Service\CustomerOrderService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        CustomerOrder
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class CustomerOrder extends AbstractController
 {
     public function __construct(
         private ArticleService $articleService,
         private CustomerOrderService $customerOrderService,
-        private Requirements $requirements
+        private Requirements $requirements,
+        private CustomerService $customerService
     ) {
     }
 
@@ -50,7 +54,6 @@ class CustomerOrder extends AbstractController
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Übersicht Aufträge',
                 'customer_order' => $this->getAllCustomerOrders(),
-                'customer_order_pos' => $this->getAllCustomerOrdersPos(),
             ]
         );
     }
@@ -130,6 +133,35 @@ class CustomerOrder extends AbstractController
         );
     }
 
+    #[Route('/auftrag_bearbeiten/id/{id}', name: 'edit_customer_order')]
+    public function editCustomerOrder(Request $request, $id): RedirectResponse|Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $customerOrder = $this->customerOrderService->getCustomerOrderById((int) $id);
+
+        // dd($supplierOrder);
+
+        $form = $this->createForm(EditCustomerOrderType::class, $customerOrder);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // $em->persist($article);
+            // $em->flush();
+            $this->addFlash('success', 'Article Updated! Inaccuracies squashed!');
+            // return $this->redirectToRoute('admin_article_edit', [
+            //    'id' => $article->getId(),
+            // ]);
+        }
+
+        return $this->render('customer_order/customer_order_form_edit.html.twig', [
+            'editCustomerOrderForm' => $form->createView(),
+            'customerData' => $this->customerService->getCustomerById($customerOrder->getCustomerId()),
+            'customerOrderPos' => $customerOrder->getCustomerOrderPos()->toArray(),
+        ]);
+    }
+
     #[Route('/customer_order_ajax', name: 'customer_order_ajax')]
     public function getAllCustomerOrders(): JsonResponse
     {
@@ -143,6 +175,15 @@ class CustomerOrder extends AbstractController
     public function getAllCustomerOrdersPos(): JsonResponse
     {
         return $this->customerOrderService->getAllCustomerOrderPos();
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/customer_order_pos_ajax/id/{id}', name: 'customer_order_pos_ajax_by_id')]
+    public function getCustomerOrderPosByOrderId(string $id): JsonResponse
+    {
+        return $this->customerOrderService->getCustomerOrderPosByOrderId((int) $id);
     }
 
     #[Route('/article_order_ajax', name: 'article_order_ajax')]

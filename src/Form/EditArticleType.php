@@ -30,7 +30,7 @@ class EditArticleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('article_id', HiddenType::class, [
+        $builder->add('articleId', HiddenType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -40,7 +40,7 @@ class EditArticleType extends AbstractType
         ]);
         if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             $builder
-                ->add('article_nr', TextType::class, [
+                ->add('articleNr', TextType::class, [
                     'label' => false,
                     'attr' => [
                         'class' => 'form-control',
@@ -51,7 +51,7 @@ class EditArticleType extends AbstractType
                     ],
                 ]);
         } else {
-            $builder->add('article_nr', TextType::class, [
+            $builder->add('articleNr', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -61,7 +61,7 @@ class EditArticleType extends AbstractType
                 ],
             ]);
         }
-        $builder->add('article_name', TextType::class, [
+        $builder->add('articleName', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -69,7 +69,7 @@ class EditArticleType extends AbstractType
                 'data-type' => 'article_name',
             ],
         ]);
-        $builder->add('article_category', TextType::class, [
+        $builder->add('articleCategory', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -77,7 +77,7 @@ class EditArticleType extends AbstractType
                 'data-type' => 'article_category',
             ],
         ]);
-        $builder->add('article_weight', TextType::class, [
+        $builder->add('articleWeight', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -85,7 +85,7 @@ class EditArticleType extends AbstractType
                 'data-type' => 'article_weight',
             ],
         ]);
-        $builder->add('article_ean', TextType::class, [
+        $builder->add('articleEan', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -93,7 +93,7 @@ class EditArticleType extends AbstractType
                 'data-type' => 'article_ean',
             ],
         ]);
-        $builder->add('article_unit', TextType::class, [
+        $builder->add('articleUnit', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -101,7 +101,7 @@ class EditArticleType extends AbstractType
                 'data-type' => 'article_unit',
             ],
         ]);
-        $builder->add('article_depth', TextType::class, [
+        $builder->add('articleDepth', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -109,7 +109,7 @@ class EditArticleType extends AbstractType
                 'data-type' => 'article_depth',
             ],
         ]);
-        $builder->add('article_width', TextType::class, [
+        $builder->add('articleWidth', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -117,7 +117,7 @@ class EditArticleType extends AbstractType
                 'data-type' => 'article_width',
             ],
         ]);
-        $builder->add('article_height', TextType::class, [
+        $builder->add('articleHeight', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -125,7 +125,7 @@ class EditArticleType extends AbstractType
                 'data-type' => 'article_height',
             ],
         ]);
-        $builder->add('stock_out_strategy', TextType::class, [
+        $builder->add('stockOutStrategy', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -133,7 +133,7 @@ class EditArticleType extends AbstractType
                 'data-type' => 'stock_out_strategy',
             ],
         ]);
-        $builder->add('le_quantity', TextType::class, [
+        $builder->add('leQuantity', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -141,7 +141,7 @@ class EditArticleType extends AbstractType
                 'data-type' => 'le_quantity',
             ],
         ]);
-        $builder->add('standard_loading_equipment', TextType::class, [
+        $builder->add('standardLoadingEquipment', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',

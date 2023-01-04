@@ -24,7 +24,6 @@
             <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/custom.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/js/jquery.webWMS.Core.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockTransactions.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/jBox/dist/jBox.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/js/jAlert.min.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/js/ajax_1.0.1.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>
@@ -32,6 +31,7 @@
             <script type="text/javascript" src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/js/bodyevents.js') }}"></script>
 {#            <script type="text/javascript" src="{{ asset('assets/js/switch.js') }}"></script>#}
+            <script type="text/javascript" src="{{ asset('assets/js/jquery.contextMenu.js') }}"></script>
             <script>
                 $(document).ready(function () {
                     const delegate = (element, type, selector, handler) => {
@@ -57,7 +57,6 @@
     <body class="bg-dark text-light">
     {% for configuration in configurations.layout %}
         <div class="page-wrapper webwms-theme toggled">
-            <!-- Das ist der Block webwms_header_navigation -->
             {% block webwms_header_navigation %}
                 {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
                     {{ include('menu_vertical.html.twig') }}
@@ -76,7 +75,7 @@
         {% block modal %}
             <!-- Modal -->
             <div class="modal" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3 class="modal-title" id="modalCenterTitle"></h3>

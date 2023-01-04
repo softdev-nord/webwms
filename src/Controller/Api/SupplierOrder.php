@@ -96,7 +96,7 @@ class SupplierOrder extends AbstractFOSRestController
             $request->get('supplier_order_nr'),
             $request->get('supplier_order_reference'),
             $request->get('supplier_order_date'),
-            $request->get('supplier_order_order_date'),
+            $request->get('supplier_order_creation_date'),
         );
 
         return $this->view($supplierOrder, Response::HTTP_CREATED);
@@ -132,7 +132,7 @@ class SupplierOrder extends AbstractFOSRestController
             $request->get('supplier_order_nr'),
             $request->get('supplier_order_reference'),
             $request->get('supplier_order_date'),
-            $request->get('supplier_order_order_date'),
+            $request->get('supplier_order_creation_date'),
         );
 
         return $this->view($supplierOrder, Response::HTTP_OK);

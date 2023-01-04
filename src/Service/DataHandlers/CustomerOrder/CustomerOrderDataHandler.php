@@ -41,10 +41,10 @@ class CustomerOrderDataHandler
     /**
      * @return CustomerOrder|null Returns an array of Customer order objects
      */
-    public function getCustomerOrderById(int $customerOrderId): ?CustomerOrder
+    public function getCustomerOrderById(int $id): ?CustomerOrder
     {
         return $this->entityManager
             ->getRepository(CustomerOrder::class)
-            ->find($customerOrderId);
+            ->findOneBy(['id' => $id]);
     }
 }

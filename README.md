@@ -1,47 +1,117 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/bb/softdev-nord/webwms/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/bb/softdev-nord/webwms/tree/master)
+![CircleCI](https://img.shields.io/circleci/build/bitbucket/softdev-nord/webwms/master?style=for-the-badge)
 
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+# webWMS
+**Das webbasierte Lagerverwaltungssystem**
+`https://webwms-dev.softdev-nord.de`
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+## Systemvoraussetzung:
+* min. PHP 8.0
+* MySQL, MariaDB
+* Apache/Nginx
+* NodeJs
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+## Tech-Stack:
+* Symfony 6.1
+* jQuery
+* Twig
+* NodeJs
+* FriendsOfSymfony/FOSRestBundle
+* Nelmio/NelmioApiDocBundle
+* Symfony/UX-Chart.js
+
+## CI / CD:
+* CircleCI
+
+## QA-Tools:
+* PHP CS Fixer
+* PHP Static Analysis
+* PHP Mess Detector
+* Dependency Vulnerability Scan
+
+## Lokale Entwicklungsumgebung:
+* PHP 8.1
+* Apache
+* MariaDB 10.5
+* PhpMyAdmin (latest)
+
+## Installation:
+Derzeit werden die folgenden Plattformen unterstützt:
+
+* Linux
+
+OSX und Windows sind ungetestet
+
+### Anforderungen:
+Die folgenden Programme müssen auf Ihrem System vorhanden sein:
+
+* **Docker** siehe https://docs.docker.com/engine/install/
+* **Docker Compose** siehe https://docs.docker.com/compose/install/
+
+### Git-Repositories klonen/auschecken
+* Klonen Sie dieses Repository auf Ihrem lokalen Computer
+* Konfigurieren Sie .env nach Bedarf
+* Führen Sie den Befehl `docker-compose up -d` aus.
+
+```shell
+git clone https://bitbucket.org/softdev-nord/webwms.git
+cd webwms/
+# Erstellung der .env
+cp .env.template .env
+# .env nach Bedarf konfigurieren
+docker-compose up -d
+# Besuchen Sie http://webwms.local
+```
 
 ---
 
-## Edit a file
+## Zusätzliches
 
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
+#### Ein selbst signiertes SSL-Zertifikat erstellen
+```shell
+# In den Zertifikatsordner wechseln
+cd webwms/.docker/config/certs
 
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
+#######################
+# Zertifizierungsstelle
+#######################
 
----
+# Verwenden Sie Ihren eigenen Domainnamen
+NAME=webwms.local
 
-## Create a file
+# Privaten Schlüssel generieren
+openssl genrsa -des3 -out $NAME.rootCA.key 2048
+# Root-Zertifikat generieren
+openssl req -x509 -new -nodes -key $NAME.rootCA.key -sha256 -days 825 -out $NAME.rootCA.pem
 
-Next, you’ll add a new file to this repository.
+####################################
+# CA-signierte Zertifikate erstellen
+####################################
 
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
+# Erzeugen eines privaten Schlüssels
+openssl genrsa -out $NAME.key 2048
+# Erstellen einer Zertifikatsignierungsanfrage.
+openssl req -new -key $NAME.key -out $NAME.csr
+# Erstellen einer Konfigurationsdatei für die Erweiterungen.
+$NAME.ext cat <<-EOF
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = $NAME # Achten Sie darauf, den Domänennamen hier einzuschließen, da der Common Name allein nicht so häufig beachtet wird.
+DNS.2 = foo.$NAME # Optional können Sie weitere Domänen hinzufügen (ich habe hier eine Subdomäne hinzugefügt)
+EOF
+# Erstellen Sie das signierte Zertifikat
+openssl x509 -req -in $NAME.csr -CA $NAME.rootCA.pem -CAkey $NAME.rootCA.key -CAcreateserial -out $NAME.crt -days 825 -sha256 -extfile $NAME.ext
+```
 
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
+1. CA-signierte Zertifikate erstellen
+2. Signieren Sie Ihr Zertifikat mit Ihrem CA cert+key
+3. Importieren Sie "webwms.local.rootCA.pem" als "Autorität" (nicht in "Ihre Zertifikate") in Ihren Chrome-Einstellungen (Einstellungen > Zertifikate verwalten > Autoritäten > Importieren)
+4. Verwenden Sie die Dateien `webwms.local.crt` und `webwms.local.key` auf Ihrer Umgebung
 
----
+##### Mit folgenden Befehl können Sie sicherstellen, dass das Zertifikat korrekt erstellt wurde:
 
-## Clone a repository
-
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
-
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
-
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+```shell
+openssl verify -CAfile webwms.local.rootCA.pem -verify_hostname bar.webwms.local webwms.local.crt
+```

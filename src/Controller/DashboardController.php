@@ -12,6 +12,7 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use Twig\Environment;
 use Twig\Loader\LoaderInterface;
+use WebWMS\Entity\TransportRequest;
 use WebWMS\Exception\NotFoundException;
 use WebWMS\Repository\TransportHistoryRepository;
 use WebWMS\Service\Stock\StockLocationService;
@@ -118,7 +119,7 @@ class DashboardController extends AbstractController
     {
         $datasets = [];
         $chartType = 'TYPE_LINE';
-        $repo = $this->transportHistoryRepository->findBy(['trTyp' => 1]);
+        $repo = $this->transportHistoryRepository->findBy(['trType' => 1]);
 
         foreach ($repo as $data) {
             $datasets[] = $data->getTrAccess()->format('d.m.Y');
@@ -133,7 +134,7 @@ class DashboardController extends AbstractController
     {
         $datasets = [];
         $chartType = 'TYPE_BAR';
-        $repo = $this->transportHistoryRepository->findBy(['trTyp' => 2]);
+        $repo = $this->transportHistoryRepository->findBy(['trType' => 2]);
 
         foreach ($repo as $data) {
             $datasets[] = $data->getTrDispatch()->format('d.m.Y');
@@ -151,9 +152,9 @@ class DashboardController extends AbstractController
         $repo = $this->transportHistoryRepository->findAll();
 
         foreach ($repo as $data) {
-            if (1 == $data->getTrTyp() && null !== $data->getTrAccess()) {
+            if (1 == $data->getTrType() && null !== $data->getTrAccess()) {
                 $datasets[] = $data->getTrAccess()->format('d.m.Y');
-            } elseif (2 == $data->getTrTyp() && null !== $data->getTrDispatch()) {
+            } elseif (2 == $data->getTrType() && null !== $data->getTrDispatch()) {
                 $datasets[] = $data->getTrDispatch()->format('d.m.Y');
             }
         }
@@ -163,20 +164,29 @@ class DashboardController extends AbstractController
         return $this->createChartForDashboard($dataResults, $chartType);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
     public function getAllTransportRequest(): array
     {
-        $allOpenTr = [];
+        $countTrOpen = [];
+        $countTrInProgress = [];
         $transportRequests = $this->transportRequestService->getAllOpenTransportRequests();
 
+        /** @var TransportRequest $transportRequest */
         foreach ($transportRequests as $transportRequest) {
             if (1 === $transportRequest->getTrState()) {
-                $allOpenTr['TrInProgress'] = count((array) $transportRequest->getTrState());
-            } elseif (0 === $transportRequest->getTrState()) {
-                $allOpenTr['TrOpen'] = count((array) $transportRequest->getTrState());
+                $countTrInProgress[] = $transportRequest->getTrState();
+            } else {
+                $countTrOpen[] = $transportRequest->getTrState();
             }
         }
 
-        return $allOpenTr;
+        return [
+            'TrSum' => count($transportRequests),
+            'TrOpen' => count($countTrOpen),
+            'TrInProgress' => count($countTrInProgress),
+        ];
     }
 
     /**
@@ -186,12 +196,17 @@ class DashboardController extends AbstractController
     public function getWarehouseUtilization(): array
     {
         $warehouseUtilization = [];
-        $warehouseUtilization['allStockLocations'] = count(json_decode($this->stockLocationService->getAllStockLocations()->getContent()));
-        $warehouseUtilization['occupiedStockLocations'] = count(
-            array_column(
-                json_decode($this->stockRotationService->getAllStockRotationsWithJoin()->getContent()),
-                'stock_location_id'
+
+        $warehouseUtilization['allStockLocations'] = count(
+            json_decode(
+                $this->stockLocationService->getAllStockLocations()->getContent()
             )
+        );
+
+        $warehouseUtilization['occupiedStockLocations'] = count(
+            json_decode(
+                $this->stockRotationService->getAllStockRotationsWithJoin()->getContent()
+            ),
         );
 
         return $warehouseUtilization;

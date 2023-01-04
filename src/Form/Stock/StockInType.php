@@ -43,6 +43,9 @@ class StockInType extends AbstractType
             ])
             ->add('standard_loading_equipment', ChoiceType::class, [
                 'label' => false,
+                'attr' => [
+                    'class' => 'form-select',
+                ],
                 'choices' => [
                     'KARTON' => 'KARTON',
                     'PALETTE' => 'PALETTE',
@@ -76,13 +79,13 @@ class StockInType extends AbstractType
             ->add('post', SubmitType::class, [
                 'label' => 'Buchen',
                 'attr' => [
-                    'class' => 'btn btn-secondary btn-lg',
+                    'class' => 'btn btn-lg',
                 ],
             ])
             ->add('clear_form', ButtonType::class, [
                 'label' => 'Formular leeren',
                 'attr' => [
-                    'class' => 'btn btn-secondary btn-lg',
+                    'class' => 'btn btn-lg',
                 ],
             ])
         ;

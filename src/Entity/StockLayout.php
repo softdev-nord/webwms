@@ -5,71 +5,62 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\StockLayoutRepository;
 
-/**
- * @ORM\Entity(repositoryClass=StockLayoutRepository::class)
- */
+#[ORM\Table(name: 'stock_layout')]
+#[ORM\Entity(repositoryClass: 'WebWMS\Repository\StockLayoutRepository')]
 class StockLayout
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $stockNr;
+    #[ORM\Column(name: 'stock_nr', type: 'integer', nullable: false)]
+    private int $stockNr;
 
-    /**
-     * @ORM\Column(type="string", length=25)
-     */
-    private ?string $stockDescription;
+    #[ORM\Column(name: 'stock_description', type: 'string', length: 25, nullable: false)]
+    private string $stockDescription;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $stockLevel1;
+    #[ORM\Column(name: 'stock_level1', type: 'integer', nullable: false)]
+    private int $stockLevel1;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $stockLevel2;
+    #[ORM\Column(name: 'stock_level2', type: 'integer', nullable: false)]
+    private int $stockLevel2;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $stockLevel3;
+    #[ORM\Column(name: 'stock_level3', type: 'integer', nullable: false)]
+    private int $stockLevel3;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $stockLevel4;
+    #[ORM\Column(name: 'stock_level4', type: 'integer', nullable: false)]
+    private int $stockLevel4;
 
-    /**
-     * @ORM\Column(type="string", length=15)
-     */
-    private ?string $stockModel;
+    #[ORM\Column(name: 'stock_model', type: 'string', length: 15, nullable: false)]
+    private string $stockModel;
 
-    /**
-     * @ORM\Column(type="string", length=15)
-     */
-    private ?string $stockTyp;
+    #[ORM\Column(name: 'stock_typ', type: 'string', length: 15, nullable: false)]
+    private string $stockTyp;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(name: 'stock_long_description', type: 'string', length: 255, nullable: true)]
     private ?string $stockLongDescription;
+
+    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $createdAt;
+
+    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStockNr(): ?int
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getStockNr(): int
     {
         return $this->stockNr;
     }
@@ -81,7 +72,7 @@ class StockLayout
         return $this;
     }
 
-    public function getStockDescription(): ?string
+    public function getStockDescription(): string
     {
         return $this->stockDescription;
     }
@@ -93,7 +84,7 @@ class StockLayout
         return $this;
     }
 
-    public function getStockLevel1(): ?int
+    public function getStockLevel1(): int
     {
         return $this->stockLevel1;
     }
@@ -105,7 +96,7 @@ class StockLayout
         return $this;
     }
 
-    public function getStockLevel2(): ?int
+    public function getStockLevel2(): int
     {
         return $this->stockLevel2;
     }
@@ -117,7 +108,7 @@ class StockLayout
         return $this;
     }
 
-    public function getStockLevel3(): ?int
+    public function getStockLevel3(): int
     {
         return $this->stockLevel3;
     }
@@ -129,7 +120,7 @@ class StockLayout
         return $this;
     }
 
-    public function getStockLevel4(): ?int
+    public function getStockLevel4(): int
     {
         return $this->stockLevel4;
     }
@@ -141,7 +132,7 @@ class StockLayout
         return $this;
     }
 
-    public function getStockModel(): ?string
+    public function getStockModel(): string
     {
         return $this->stockModel;
     }
@@ -153,7 +144,7 @@ class StockLayout
         return $this;
     }
 
-    public function getStockTyp(): ?string
+    public function getStockTyp(): string
     {
         return $this->stockTyp;
     }
@@ -173,6 +164,30 @@ class StockLayout
     public function setStockLongDescription(string $stockLongDescription): self
     {
         $this->stockLongDescription = $stockLongDescription;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

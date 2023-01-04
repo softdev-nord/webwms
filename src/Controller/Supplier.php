@@ -84,7 +84,8 @@ class Supplier extends AbstractController
         );
     }
 
-    public function getAllSuppliers(): array
+    #[Route('/supplier_ajax', name: 'supplier_ajax')]
+    public function getAllSuppliers(): JsonResponse
     {
         return $this->supplierService->getAllSuppliers();
     }
