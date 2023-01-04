@@ -136,12 +136,5 @@
     {% block javascripts %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.customersAutofill.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.itemsCustomerOrderPosAutofill.js') }}"></script>
-        <script>
-            const orderId = {{ lastId.id }};
-
-            $(document).ready(function (){
-                $(".inputOrderNr").value = {{ lastId.id }};
-            });
-        </script>
     {% endblock %}
 </div>
