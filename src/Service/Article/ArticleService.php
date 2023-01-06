@@ -56,7 +56,7 @@ class ArticleService
         string $articleNr,
         string $articleName,
         string $articleCategory,
-        string $articleWeight,
+        float $articleWeight,
         string $articleEan,
         string $articleUnit,
         float $articleDepth,
@@ -209,21 +209,20 @@ class ArticleService
     public function addArticle(Request $request)
     {
         $params = $request->request->all()['add_new_article'];
-        $lastArticle = $this->getLastArticle();
         $article = new Article();
 
-        $article->setArticleNr($lastArticle->getArticleNr());
-        $article->setArticleName($params['article_name']);
-        $article->setArticleCategory($params['article_category']);
-        $article->setArticleWeight($params['article_weight']);
-        $article->setArticleEan($params['article_ean']);
-        $article->setArticleUnit($params['article_unit']);
-        $article->setArticleDepth($params['article_depth']);
-        $article->setArticleWidth($params['article_width']);
-        $article->setArticleHeight($params['article_height']);
-        $article->setStockOutStrategy($params['stock_out_strategy']);
-        $article->setLeQuantity($params['le_quantity']);
-        $article->setStandardLoadingEquipment($params['standard_loading_equipment']);
+        $article->setArticleNr($params['articleNr']);
+        $article->setArticleName($params['articleName']);
+        $article->setArticleCategory($params['articleCategory']);
+        $article->setArticleWeight((float)$params['articleWeight']);
+        $article->setArticleEan($params['articleEan']);
+        $article->setArticleUnit($params['articleUnit']);
+        $article->setArticleDepth((float)$params['articleDepth']);
+        $article->setArticleWidth((float)$params['articleWidth']);
+        $article->setArticleHeight((float)$params['articleHeight']);
+        $article->setStockOutStrategy($params['stockOutStrategy']);
+        $article->setLeQuantity((float)$params['leQuantity']);
+        $article->setStandardLoadingEquipment($params['standardLoadingEquipment']);
         $article->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->articleDataHandler->save($article);
@@ -232,26 +231,26 @@ class ArticleService
     /**
      * @throws \Exception
      */
-    public function updateArticle($requestData)
+    public function updateArticle($requestData): ?Article
     {
-        $article = $this->articleDataHandler->getArticleById($requestData['article_id']);
+        $article = $this->articleDataHandler->getArticleById((int)$requestData['articleId']);
 
         if (!$article) {
             return null;
         }
 
-        $article->setArticleNr($requestData['article_nr']);
-        $article->setArticleName($requestData['article_name']);
-        $article->setArticleCategory($requestData['article_category']);
-        $article->setArticleWeight($requestData['article_weight']);
-        $article->setArticleEan($requestData['article_ean']);
-        $article->setArticleUnit($requestData['article_unit']);
-        $article->setArticleDepth($requestData['article_depth']);
-        $article->setArticleWidth($requestData['article_width']);
-        $article->setArticleHeight($requestData['article_height']);
-        $article->setStockOutStrategy($requestData['stock_out_strategy']);
-        $article->setLeQuantity($requestData['le_quantity']);
-        $article->setStandardLoadingEquipment($requestData['standard_loading_equipment']);
+        $article->setArticleNr($requestData['articleNr']);
+        $article->setArticleName($requestData['articleName']);
+        $article->setArticleCategory($requestData['articleCategory']);
+        $article->setArticleWeight((float)$requestData['articleWeight']);
+        $article->setArticleEan($requestData['articleEan']);
+        $article->setArticleUnit($requestData['articleUnit']);
+        $article->setArticleDepth((float)$requestData['articleDepth']);
+        $article->setArticleWidth((float)$requestData['articleWidth']);
+        $article->setArticleHeight((float)$requestData['articleHeight']);
+        $article->setStockOutStrategy($requestData['stockOutStrategy']);
+        $article->setLeQuantity((float)$requestData['leQuantity']);
+        $article->setStandardLoadingEquipment($requestData['standardLoadingEquipment']);
         $article->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->articleDataHandler->update($article);
@@ -266,7 +265,7 @@ class ArticleService
     {
         return $this->entityManager
             ->getRepository(Article::class)
-            ->findOneBy([], ['article_nr' => 'DESC']);
+            ->findOneBy([], ['articleNr' => 'DESC']);
     }
 
     protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException

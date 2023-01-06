@@ -1,52 +1,45 @@
 (function($){
-    // Article table
+    // Artikel Tabelle
     const artTable = $('#artTable').DataTable({
-        "lengthChange": false,
+        lengthChange: false,
         paging: false,
         retrieve: true,
-        //searching: false,
 
         ajax: {
             'url': '/article_ajax',
             'dataSrc': ''
         },
-        // Page length max. 10 entries
+        // Seitenlänge max. 10 Einträge
         pageLength: 10,
-        "language": {
-            "url": "./resources/dataTable.German.json"
+        'language': {
+            'url': './resources/dataTable.German.json'
         },
-        // Initialisation of the DataTables Select extension
+        // Initialisierung der DataTables Select-Erweiterung
         select: {
             style: 'single'
         },
         columns: [
-            {"data": "article_nr"},
-            {"data": "article_name"},
-            {"data": "article_category"},
-            {"data": "article_weight"},
-            {"data": "article_ean"},
-            {"data": "article_unit"},
-            {"data": "article_depth"},
-            {"data": "article_width"},
-            {"data": "article_height"},
+            {'data': 'article_nr'},
+            {'data': 'article_name'},
+            {'data': 'article_category'},
+            {'data': 'article_weight'},
+            {'data': 'article_ean'},
+            {'data': 'article_unit'},
+            {'data': 'article_depth'},
+            {'data': 'article_width'},
+            {'data': 'article_height'},
             {
-                "data": "lbw_menge",
-                "defaultContent": 0
-            },
-            {
-                data: null,
-                className: "editor-edit text-center",
-                defaultContent: '<i class="mdi mdi-square-edit-outline"/>',
-                orderable: false,
+                'data': 'lbw_menge',
+                'defaultContent': 0
             }
         ],
         columnDefs: [
             {
-                className: 'text-center', targets: "_all"
+                className: 'text-center', targets: '_all'
             },
             {
                 render: $.fn.dataTable.render.number( '.'),
-                "targets": [9],
+                'targets': [9],
             },
         ],
         dom: 'Bfrtip',
@@ -55,47 +48,118 @@
                 extend:    'copyHtml5',
                 text:      'Kopieren',
                 title:     'Export',
-                titleAttr: 'Copy'
             },
             {
                 extend:    'csvHtml5',
                 text:      'CSV',
                 title:     'Export',
-                titleAttr: 'CSV'
             },
             {
                 extend:    'pdfHtml5',
                 text:      'PDF',
                 title:     'Export',
-                titleAttr: 'PDF'
             },
             {
                 extend: 'print',
                 text: 'Drucken',
                 autoPrint: false
+            },
+            {
+                text: 'Artikel anlegen',
+                className: 'btn-add-new',
+                action: function ( e, dt, node, config ) {
+                    addArticle();
+                }
             }
-        ]
+        ],
     });
 
-    // Get selected article
-    $(document).on('click','i.mdi-square-edit-outline',function(event) {
-        const row = $(this).parents('tr')[0];
-        const id = artTable.row(row).data().article_id;
-        console.log(id);
-        window.location.href = '/artikel_bearbeiten/articleId/' + id;
+    $.contextMenu({
+        selector: 'tr',
+        trigger: 'right',
+        callback: function(key, options, event) {
+            const row = artTable.row(options.$trigger);
+
+            switch (key) {
+                case 'edit' :
+                    editArticle(row.data().article_id);
+                    break;
+                default :
+                    break
+            }
+        },
+        items: {
+            'edit': {name: 'Bearbeiten', icon: 'edit'}
+        }
     });
 
-    // Save edit article
+    $(function(){
+        // Ändern der Standardbreite des Modals
+        $("#modalCenter .modal-dialog").css('max-width', '90%');
+    });
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    function editArticle(id) {
+        const url = '/artikel_bearbeiten/articleId/' + id;
+        const content = '<div class="modal-body"></div>';
+
+        $('#modalCenter .modal-title').text('Artikel bearbeiten');
+        $('#modal-content-ajax').html(content);
+        $('#modalCenter').modal('show');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: ($('#article-form-edit').serialize()),
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+            },
+            success: function (data) {
+                $("#modal-content-ajax").html(data);
+            }
+        });
+
+        return false;
+    }
+
+    function addArticle() {
+        const url = '/artikel_anlegen';
+        const content = '<div class="modal-body"></div>';
+
+        $('#modalCenter .modal-title').text('Artikel anlegen');
+        $('#modal-content-ajax').html(content);
+        $('#modalCenter').modal('show');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: ($('#article-form-new').serialize()),
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+            },
+            success: function (data) {
+                $('#modal-content-ajax').html(data);
+            }
+        });
+
+        return false;
+    }
+
+    // Geänderten Artikel speichern
     $(document).on('click','button#edit_article_save',function(event) {
-        const articleNr = $('#edit_article_article_nr').val();
-        const $form = $('form[name="edit_article"]');
+        const articleId = $('#edit_article_articleId').val();
+        const $form = $('form#article-form-edit');
+        const url = '/artikel_bearbeiten/articleId/' + articleId;
         event.preventDefault();
 
-        $.ajax({ // Process the form using $.ajax()
-            type        : 'POST',
-            url         : `{{ path("edit_article",{'article_nr' : 'article_nr' }) }}`.replace('article_nr', articleNr),
-            data        : $form.serialize(),
-            success     : function(data) {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: $form.serialize(),
+            success: function(data) {
                 if (data.error) {
                     let errors = [];
                     let i = 0;
@@ -123,14 +187,65 @@
                         'hideAnimation': 'fadeOutDown',
                         'autoClose': 5000
                     });
+                    $('#modalCenter').modal('hide');
+                    $('#webwms-article-overview').load(window.location.href + ' #webwms-article-overview' );
                 }
             }
         });
 
     });
 
-    // Back to article overview
+    // Neuen Artikel speichern
+    $(document).on('click','button#add_new_article_save',function(event) {
+        const $form = $('form#article-form-new');
+        const url = '/artikel_anlegen';
+        event.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: $form.serialize(),
+            success: function(data) {
+                if (data.error) {
+                    let errors = [];
+                    let i = 0;
+                    $.each(data.error, function(key, value) {
+                        errors[i++] = value + '</br>';
+                    });
+                    let arrayString = errors.join();
+                    const error = arrayString.replace(/,/g, ' ');
+                    $.jAlert({
+                        'title': 'Artikel konnte nicht gespeichert werden',
+                        'content': error,
+                        'theme': 'red',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                } else {
+                    $.jAlert({
+                        'title': 'Artikel erfolgreich gespeichert',
+                        'content': data.message,
+                        'theme': 'green',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                    $('#modalCenter').modal('hide');
+                    $('#webwms-article-overview').load(window.location.href + ' #webwms-article-overview' );
+                }
+            }
+        });
+
+    });
+
+    // Zurück zur Artikelübersicht
     $(document).on('click','#edit_article_back_to_article_overview',function() {
+        window.location.href = '/artikel'
+    });
+    $(document).on('click','#add_new_article_back_to_article_overview',function() {
         window.location.href = '/artikel'
     });
 })(jQuery);

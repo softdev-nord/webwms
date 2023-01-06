@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
+use WebWMS\Entity\Article;
+
 /**
  * @package:    WebWMS\Service
  * @author:     SoftDev Nord, Rene Irrgang

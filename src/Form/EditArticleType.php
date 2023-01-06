@@ -5,6 +5,7 @@ namespace WebWMS\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,8 +35,8 @@ class EditArticleType extends AbstractType
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_id',
-                'data-type' => 'article_id',
+                'id' => 'articleId',
+                'data-type' => 'articleId',
             ],
         ]);
         if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
@@ -44,8 +45,8 @@ class EditArticleType extends AbstractType
                     'label' => false,
                     'attr' => [
                         'class' => 'form-control',
-                        'id' => 'article_nr',
-                        'data-type' => 'article_nr',
+                        'id' => 'articleNr',
+                        'data-type' => 'articleNr',
                         'style' => 'background-color: transparent',
                         'readonly' => 'readonly',
                     ],
@@ -55,8 +56,8 @@ class EditArticleType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_nr',
-                    'data-type' => 'article_nr',
+                    'id' => 'articleNr',
+                    'data-type' => 'articleNr',
                     'style' => 'background-color: transparent',
                 ],
             ]);
@@ -65,100 +66,100 @@ class EditArticleType extends AbstractType
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_name',
-                'data-type' => 'article_name',
+                'id' => 'articleName',
+                'data-type' => 'articleName',
             ],
         ]);
         $builder->add('articleCategory', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_category',
-                'data-type' => 'article_category',
+                'id' => 'articleCategory',
+                'data-type' => 'articleCategory',
             ],
         ]);
         $builder->add('articleWeight', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_weight',
-                'data-type' => 'article_weight',
+                'id' => 'articleWeight',
+                'data-type' => 'articleWeight',
             ],
         ]);
         $builder->add('articleEan', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_ean',
-                'data-type' => 'article_ean',
+                'id' => 'articleEan',
+                'data-type' => 'articleEan',
             ],
         ]);
         $builder->add('articleUnit', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_unit',
-                'data-type' => 'article_unit',
+                'id' => 'articleUnit',
+                'data-type' => 'articleUnit',
             ],
         ]);
         $builder->add('articleDepth', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_depth',
-                'data-type' => 'article_depth',
+                'id' => 'articleDepth',
+                'data-type' => 'articleDepth',
             ],
         ]);
         $builder->add('articleWidth', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_width',
-                'data-type' => 'article_width',
+                'id' => 'articleWidth',
+                'data-type' => 'articleWidth',
             ],
         ]);
         $builder->add('articleHeight', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'article_height',
-                'data-type' => 'article_height',
+                'id' => 'articleHeight',
+                'data-type' => 'articleHeight',
             ],
         ]);
         $builder->add('stockOutStrategy', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'stock_out_strategy',
-                'data-type' => 'stock_out_strategy',
+                'id' => 'stockOutStrategy',
+                'data-type' => 'stockOutStrategy',
             ],
         ]);
         $builder->add('leQuantity', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'le_quantity	',
-                'data-type' => 'le_quantity',
+                'id' => 'leQuantity	',
+                'data-type' => 'leQuantity',
             ],
         ]);
         $builder->add('standardLoadingEquipment', TextType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
-                'id' => 'standard_loading_equipment	',
-                'data-type' => 'standard_loading_equipment',
+                'id' => 'standardLoadingEquipment	',
+                'data-type' => 'standardLoadingEquipment',
             ],
         ]);
-        $builder->add('save', ButtonType::class, [
+        $builder->add('save', SubmitType::class, [
             'label' => 'Änderungen speichern',
             'attr' => [
-                'class' => 'btn btn-secondary btn-lg',
+                'class' => 'btn btn-lg',
             ],
         ]);
         $builder->add('back_to_article_overview', ButtonType::class, [
             'label' => 'Zurück zur Übersicht',
             'attr' => [
-                'class' => 'btn btn-secondary btn-lg',
+                'class' => 'btn btn-lg',
             ],
         ]);
     }

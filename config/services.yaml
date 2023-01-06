@@ -121,8 +121,6 @@ services:
 
     web_wms.service.logging_service:
         class: WebWMS\Service\LoggingService
-        arguments:
-            $container: '@service_container'
 
     web_wms.controller.dashboard_controller:
         class: WebWMS\Controller\DashboardController
