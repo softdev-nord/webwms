@@ -169,7 +169,7 @@
                     let arrayString = errors.join();
                     const error = arrayString.replace(/,/g, " ");
                     $.jAlert({
-                        'title': 'Artikel konnte nicht gespeichert werden',
+                        'title': 'Artikeldaten konnten nicht gespeichert werden',
                         'content': error,
                         'theme': 'red',
                         'size': 'md',
@@ -179,7 +179,7 @@
                     });
                 } else {
                     $.jAlert({
-                        'title': 'Artikel erfolgreich gespeichert',
+                        'title': 'Artikeldaten erfolgreich gespeichert',
                         'content': data.message,
                         'theme': 'green',
                         'size': 'md',
@@ -188,7 +188,7 @@
                         'autoClose': 5000
                     });
                     $('#modalCenter').modal('hide');
-                    $('#webwms-article-overview').load(window.location.href + ' #webwms-article-overview' );
+                    artTable.ajax.reload();
                 }
             }
         });
@@ -215,7 +215,7 @@
                     let arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
-                        'title': 'Artikel konnte nicht gespeichert werden',
+                        'title': 'Artikeldaten konnten nicht gespeichert werden',
                         'content': error,
                         'theme': 'red',
                         'size': 'md',
@@ -225,7 +225,7 @@
                     });
                 } else {
                     $.jAlert({
-                        'title': 'Artikel erfolgreich gespeichert',
+                        'title': 'Artikeldaten erfolgreich gespeichert',
                         'content': data.message,
                         'theme': 'green',
                         'size': 'md',
@@ -234,7 +234,7 @@
                         'autoClose': 5000
                     });
                     $('#modalCenter').modal('hide');
-                    $('#webwms-article-overview').load(window.location.href + ' #webwms-article-overview' );
+                    artTable.ajax.reload();
                 }
             }
         });

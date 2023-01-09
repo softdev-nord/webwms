@@ -85,7 +85,7 @@ class Article extends AbstractController
             [
                 'lastId' => $this->articleService->getLastArticle(),
                 'articleForm' => $form->createView(),
-                'editArticle' => false
+                'editArticle' => false,
             ]
         );
     }
@@ -117,8 +117,8 @@ class Article extends AbstractController
             if ($responseData['success']) {
                 $responseData['message'] = 'Die Änderungen am Artikel wurden erfolgreich gespeichert.';
                 $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde geändert.', $requestData['articleNr']);
-                $this->articleService->updateArticle($requestData);
                 $this->loggingService->write($request, $logMessage);
+                $this->articleService->updateArticle($requestData);
 
                 return new JsonResponse($responseData);
             }
@@ -133,7 +133,7 @@ class Article extends AbstractController
             [
                 'articleForm' => $form->createView(),
                 'articles' => $article,
-                'editArticle' => true
+                'editArticle' => true,
             ]
         );
     }
