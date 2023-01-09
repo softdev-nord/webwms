@@ -20,46 +20,46 @@ class CustomerValidationService
         $responseData = [];
 
         // Validation of the request data from the customer data change
-        if (empty($requestData['customer_nr'])) {
-            $responseData['error']['customer_nr'] = 'Die Kunden-Nr. darf nicht leer sein.';
+        if (empty($requestData['customerNr'])) {
+            $responseData['error']['customerNr'] = 'Die Kunden-Nr. darf nicht leer sein.';
         } else {
-            $responseData['customer_nr'] = $requestData['customer_nr'];
+            $responseData['customerNr'] = $requestData['customerNr'];
         }
 
-        if (empty($requestData['customer_name'])) {
-            $responseData['error']['customer_name'] = 'Der Kunden-Name darf nicht leer sein.';
+        if (empty($requestData['customerName'])) {
+            $responseData['error']['customerName'] = 'Der Kunden-Name darf nicht leer sein.';
         } else {
-            $responseData['customer_name'] = $requestData['customer_name'];
+            $responseData['customerName'] = $requestData['customerName'];
         }
 
-        if (empty($requestData['customer_address_street'])) {
-            $responseData['error']['customer_address_street'] = 'Die Straße darf nicht leer sein.';
+        if (empty($requestData['customerAddressStreet'])) {
+            $responseData['error']['customerAddressStreet'] = 'Die Straße darf nicht leer sein.';
         } else {
-            $responseData['customer_address_street'] = $requestData['customer_address_street'];
+            $responseData['customerAddressStreet'] = $requestData['customerAddressStreet'];
         }
 
-        if (empty($requestData['customer_address_street_nr'])) {
-            $responseData['error']['customer_address_street_nr'] = 'Die Hausnummer darf nicht leer sein.';
+        if (empty($requestData['customerAddressStreetNr'])) {
+            $responseData['error']['customerAddressStreetNr'] = 'Die Hausnummer darf nicht leer sein.';
         } else {
-            $responseData['customer_address_street_nr'] = $requestData['customer_address_street_nr'];
+            $responseData['customerAddressStreetNr'] = $requestData['customerAddressStreetNr'];
         }
 
-        if (empty($requestData['customer_country_code'])) {
-            $responseData['error']['customer_country_code'] = 'Das Land darf nicht leer sein.';
+        if (empty($requestData['customerCountryCode'])) {
+            $responseData['error']['customerCountryCode'] = 'Das Land darf nicht leer sein.';
         } else {
-            $responseData['customer_country_code'] = $requestData['customer_country_code'];
+            $responseData['customerCountryCode'] = $requestData['customerCountryCode'];
         }
 
-        if (empty($requestData['customer_zip_code'])) {
-            $responseData['error']['customer_zip_code'] = 'Die Postleitzahl darf nicht leer sein.';
+        if (empty($requestData['customerZipCode'])) {
+            $responseData['error']['customerZipCode'] = 'Die Postleitzahl darf nicht leer sein.';
         } else {
-            $responseData['customer_zip_code'] = $requestData['customer_zip_code'];
+            $responseData['customerZipCode'] = $requestData['customerZipCode'];
         }
 
-        if (empty($requestData['customer_city'])) {
-            $responseData['error']['customer_city'] = 'Die Stadt darf nicht leer sein.';
+        if (empty($requestData['customerCity'])) {
+            $responseData['error']['customerCity'] = 'Die Stadt darf nicht leer sein.';
         } else {
-            $responseData['customer_city'] = $requestData['customer_city'];
+            $responseData['customerCity'] = $requestData['customerCity'];
         }
 
         $responseData['success'] = empty($responseData['error']);

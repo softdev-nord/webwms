@@ -1,0 +1,70 @@
+<div class="row">
+    {% block webwms_customer_form %}
+        <div class="card">
+            {{ form_start(customerForm) }}
+
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Kunden-Nr</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {% if editCustomer %}
+                        {{ form_row(customerForm.customerNr) }}
+                    {% else %}
+                        {{ form_row(customerForm.customerNr, {'value' : "#{lastId.customerNr +1}"}) }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Kunden-Name</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(customerForm.customerName) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Anschrift Zusatz</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(customerForm.customerAddressAddition) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Straße</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(customerForm.customerAddressStreet) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Haus-Nr</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(customerForm.customerAddressStreetNr) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Land</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(customerForm.customerCountryCode) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">PLZ</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(customerForm.customerZipCode) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Ort</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(customerForm.customerCity) }}
+                </div>
+            </div>
+            <div class="text-center">
+                {{ form_widget(customerForm.save) }}
+                {{ form_widget(customerForm.back_to_customer_overview) }}
+            </div>
+            {{ form_end(customerForm) }}
+        </div>
+    {% endblock %}
+
+    {% block bodyjs %}
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.customersAutofill.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.itemsCustomerOrderPosAutofill.js') }}"></script>
+    {% endblock %}
+</div>

@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Customer;
+use WebWMS\Service\DateTimeService;
 
 /**
  * @package:    WebWMS\Service\DataHandlers\Customer
@@ -19,7 +20,8 @@ use WebWMS\Entity\Customer;
 class CustomerDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService
     ) {
     }
 
@@ -55,7 +57,7 @@ class CustomerDataHandler
     {
         return $this->entityManager
             ->getRepository(Customer::class)
-            ->findOneBy(['customer_nr' => $customerNr]);
+            ->findOneBy(['customerNr' => $customerNr]);
     }
 
     /**
@@ -115,22 +117,19 @@ class CustomerDataHandler
         return new JsonResponse($data);
     }
 
-    public function addNewCustomer(Request $request)
+    public function addCustomer($requestData): void
     {
-        $params = $request->request->all()['customer'];
-        $lastCustomer = $this->getLastCustomer()[0]->toArray();
-
         $customer = new Customer();
 
-        $customer->setCustomerId($lastCustomer['customer_id'] + 1);
-        $customer->setCustomerNr($lastCustomer['customer_nr'] + 1);
-        $customer->setCustomerName($params['customer_name']);
-        $customer->setCustomerAddressAddition($params['customer_address_addition']);
-        $customer->setCustomerAddressStreet($params['customer_address_street']);
-        $customer->setCustomerAddressStreetNr($params['customer_address_street_nr']);
-        $customer->setCustomerCountryCode($params['customer_country_code']);
-        $customer->setCustomerZipCode($params['customer_zip_code']);
-        $customer->setCustomerCity($params['customer_city']);
+        $customer->setCustomerNr((int) $requestData['customerNr']);
+        $customer->setCustomerName((string) $requestData['customerName']);
+        $customer->setCustomerAddressAddition((string) $requestData['customerAddressAddition']);
+        $customer->setCustomerAddressStreet((string) $requestData['customerAddressStreet']);
+        $customer->setCustomerAddressStreetNr((string) $requestData['customerAddressStreetNr']);
+        $customer->setCustomerCountryCode((string) $requestData['customerCountryCode']);
+        $customer->setCustomerZipCode((string) $requestData['customerZipCode']);
+        $customer->setCustomerCity((string) $requestData['customerCity']);
+        $customer->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($customer);
     }
@@ -211,30 +210,28 @@ class CustomerDataHandler
     public function getLastCustomer(): array
     {
         return $this->entityManager
-            ->getRepository(Customer::class)->findBy([], ['customer_nr' => 'DESC'], 1, 0);
+            ->getRepository(Customer::class)->findBy([], ['customerNr' => 'DESC'], 1, 0);
     }
 
     public function updateCustomer($requestData): ?Customer
     {
-        $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
         $customer = $this->entityManager
             ->getRepository(Customer::class)
-            ->findOneBy(['customer_nr' => $requestData['customer_nr']]);
+            ->findOneBy(['customerNr' => $requestData['customerNr']]);
 
         if (!$customer) {
             return null;
         }
 
-        $customer->setCustomerId((int) $requestData['customer_id']);
-        $customer->setCustomerNr((int) $requestData['customer_nr']);
-        $customer->setCustomerName((string) $requestData['customer_name']);
-        $customer->setCustomerAddressAddition((string) $requestData['customer_address_addition']);
-        $customer->setCustomerAddressStreet((string) $requestData['customer_address_street']);
-        $customer->setCustomerAddressStreetNr((string) $requestData['customer_address_street_nr']);
-        $customer->setCustomerCountryCode((string) $requestData['customer_country_code']);
-        $customer->setCustomerZipCode((string) $requestData['customer_zip_code']);
-        $customer->setCustomerCity((string) $requestData['customer_city']);
-        $customer->setCustomerUpdatedAt($updatedAt);
+        $customer->setCustomerNr((int) $requestData['customerNr']);
+        $customer->setCustomerName((string) $requestData['customerName']);
+        $customer->setCustomerAddressAddition((string) $requestData['customerAddressAddition']);
+        $customer->setCustomerAddressStreet((string) $requestData['customerAddressStreet']);
+        $customer->setCustomerAddressStreetNr((string) $requestData['customerAddressStreetNr']);
+        $customer->setCustomerCountryCode((string) $requestData['customerCountryCode']);
+        $customer->setCustomerZipCode((string) $requestData['customerZipCode']);
+        $customer->setCustomerCity((string) $requestData['customerCity']);
+        $customer->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->update($customer);
 

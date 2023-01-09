@@ -8,25 +8,18 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use WebWMS\Entity\Customer;
 
 /**
  * @package:    WebWMS\Form
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        EditCustomerType
+ * Class        AddCustomerType
  */
-class EditCustomerType extends AbstractType
+class AddCustomerType extends AbstractType
 {
-    public function __construct(
-        private AuthorizationCheckerInterface $authorizationChecker
-    ) {
-    }
-
     /**
      * @SuppressWarnings("unused")
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -38,32 +31,15 @@ class EditCustomerType extends AbstractType
                     'id' => 'customerId',
                     'data-type' => 'customerId',
                 ],
-            ]);
-        if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            $builder
-                ->add('customerNr', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerNr',
-                        'data-type' => 'customerNr',
-                        'style' => 'background-color: transparent',
-                        'readonly' => 'readonly',
-                    ],
-                ]);
-        } else {
-            $builder
-                ->add('customerNr', TextType::class, [
+            ])
+            ->add('customerNr', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'id' => 'customerNr',
                     'data-type' => 'customerNr',
-                    'style' => 'background-color: transparent',
                 ],
-            ]);
-        }
-        $builder
+            ])
             ->add('customerName', TextType::class, [
                 'label' => false,
                 'attr' => [
@@ -121,7 +97,7 @@ class EditCustomerType extends AbstractType
                 ],
             ])
             ->add('save', ButtonType::class, [
-                'label' => 'Änderungen speichern',
+                'label' => 'Kunden anlegen',
                 'attr' => [
                     'class' => 'btn btn-lg',
                 ],
@@ -131,7 +107,8 @@ class EditCustomerType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-lg',
                 ],
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
