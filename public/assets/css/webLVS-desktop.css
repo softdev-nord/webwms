@@ -675,6 +675,12 @@
     }
     .dt-buttons {
         margin-bottom: 5px;
+        width: 80%;
+    }
+
+    button.dt-button.btn-add-new {
+        float: right;
+        padding: 0 10px;
     }
 
     .btn {

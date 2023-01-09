@@ -145,6 +145,7 @@ class CustomerOrder extends AbstractController
         // dd($supplierOrder);
 
         $form = $this->createForm(EditCustomerOrderType::class, $customerOrder);
+        // dd($form->getData());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // $em->persist($article);

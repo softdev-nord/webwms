@@ -43,9 +43,9 @@ class CustomerService
         return $this->customerDataHandler->getCustomers();
     }
 
-    public function addNewCustomer(Request $request)
+    public function addCustomer(Request $request): void
     {
-        $this->customerDataHandler->addNewCustomer($request);
+        $this->customerDataHandler->addCustomer($request);
     }
 
     public function getLastCustomer(): array

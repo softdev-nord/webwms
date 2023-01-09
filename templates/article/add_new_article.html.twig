@@ -23,68 +23,74 @@
                                     <div class="form-group">
                                         <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
                                         <div class="col-xs-8" style="margin-bottom: 5px;">
-                                            {{ form_row(addArticleForm.article_nr, {'value' : "#{lastId.articleNr +1}"}) }}
+                                            {{ form_row(addArticleForm.articleNr, {'value' : "#{lastId.articleNr +1}"}) }}
 
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="text" class="control-label col-xs-4">Artikelname</label>
                                         <div class="col-xs-8" style="margin-bottom: 5px;">
-                                            {{ form_row(addArticleForm.article_name) }}
+                                            {{ form_row(addArticleForm.articleName) }}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="text" class="control-label col-xs-4">Kategorie</label>
                                         <div class="col-xs-8" style="margin-bottom: 5px;">
-                                            {{ form_row(addArticleForm.article_category) }}
+                                            {{ form_row(addArticleForm.articleCategory) }}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="text" class="control-label col-xs-4">Gewicht</label>
                                         <div class="col-xs-8" style="margin-bottom: 5px;">
-                                            {{ form_row(addArticleForm.article_weight) }}
+                                            {{ form_row(addArticleForm.articleWeight) }}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="text" class="control-label col-xs-4">EAN-Nr.</label>
                                         <div class="col-xs-8" style="margin-bottom: 5px;">
-                                            {{ form_row(addArticleForm.article_ean) }}
+                                            {{ form_row(addArticleForm.articleEan) }}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="text" class="control-label col-xs-4">Einheit (Stk, kg, etc)</label>
                                         <div class="col-xs-8" style="margin-bottom: 5px;">
-                                            {{ form_row(addArticleForm.article_unit) }}
+                                            {{ form_row(addArticleForm.articleUnit) }}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="text" class="control-label col-xs-4">Tiefe</label>
                                         <div class="col-xs-8" style="margin-bottom: 5px;">
-                                            {{ form_row(addArticleForm.article_depth) }}
+                                            {{ form_row(addArticleForm.articleDepth) }}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="text" class="control-label col-xs-4">Breite</label>
                                         <div class="col-xs-8" style="margin-bottom: 5px;">
-                                            {{ form_row(addArticleForm.article_width) }}
+                                            {{ form_row(addArticleForm.articleWidth) }}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="text" class="control-label col-xs-4">Höhe</label>
                                         <div class="col-xs-8" style="margin-bottom: 5px;">
-                                            {{ form_row(addArticleForm.article_height) }}
+                                            {{ form_row(addArticleForm.articleHeight) }}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="text" class="control-label col-xs-4">Auslagerungsstrategie</label>
                                         <div class="col-xs-8" style="margin-bottom: 5px;">
-                                            {{ form_row(addArticleForm.stock_out_strategy) }}
+                                            {{ form_row(addArticleForm.stockOutStrategy) }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="text" class="control-label col-xs-4">Standard Ladehilfsmittel</label>
+                                        <div class="col-xs-8" style="margin-bottom: 5px;">
+                                            {{ form_row(addArticleForm.standardLoadingEquipment) }}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="text" class="control-label col-xs-4">LE-Menge</label>
                                         <div class="col-xs-8" style="margin-bottom: 5px;">
-                                            {{ form_row(addArticleForm.le_quantity) }}
+                                            {{ form_row(addArticleForm.leQuantity) }}
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12">
@@ -95,7 +101,7 @@
                                         {% endfor %}
                                     </div>
                                     <div class="text-center">
-                                        {{ form_widget(addArticleForm.add_article) }}
+                                        {{ form_widget(addArticleForm.addArticle) }}
                                     </div>
                                     {{ form_end(addArticleForm) }}
                                 </div>

@@ -51,7 +51,7 @@ class Article extends AbstractController
                 'appCopyright' => $this->requirements->getAppCopyright(),
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Artikelübersicht',
-                'editArticleForm' => $form->createView(),
+                'articleForm' => $form->createView(),
             ]
         );
     }
@@ -63,26 +63,29 @@ class Article extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $requestData = $request->request->all();
+
+        if (!empty($requestData)) {
+            $requestData = $requestData['add_new_article'];
+        }
+
         $form = $this->createForm(AddNewArticleType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $requestData['message'] = 'Der Artikel wurde erfolgreich angelegt.';
+            $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde angelegt.', $requestData['articleNr']);
+            $this->loggingService->write($request, $logMessage);
             $this->articleService->addArticle($request);
-            $this->addFlash('success', 'Der Artikel wurde erfolgreich angelegt.');
 
-            return $this->redirectToRoute('add_article');
+            return new JsonResponse($requestData);
         }
 
         return $this->render(
-            'article/add_new_article.html.twig',
+            'article/article_add.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
-                'page' => 'Artikel bearbeiten',
                 'lastId' => $this->articleService->getLastArticle(),
-                'addArticleForm' => $form->createView(),
+                'articleForm' => $form->createView(),
+                'editArticle' => false,
             ]
         );
     }
@@ -98,7 +101,6 @@ class Article extends AbstractController
         }
 
         $requestData = $request->request->all();
-        dd($requestData);
 
         if (!empty($requestData)) {
             $requestData = $requestData['edit_article'];
@@ -108,17 +110,15 @@ class Article extends AbstractController
         $responseData['message'] = '';
 
         $article = $this->articleService->getArticleById((int) $articleId);
-        // dd($article);
         $form = $this->createForm(EditArticleType::class, $article);
-        dd($form);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
                 $responseData['message'] = 'Die Änderungen am Artikel wurden erfolgreich gespeichert.';
                 $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde geändert.', $requestData['articleNr']);
-                $this->articleService->updateArticle($requestData);
                 $this->loggingService->write($request, $logMessage);
+                $this->articleService->updateArticle($requestData);
 
                 return new JsonResponse($responseData);
             }
@@ -129,17 +129,11 @@ class Article extends AbstractController
         }
 
         return $this->render(
-            'article/edit.html.twig',
+            'article/article_edit.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
-                'page' => 'Artikel bearbeiten',
-                'lastId' => $this->articleService->getLastArticle(),
-                'editArticleForm' => $form->createView(),
-                'articles' => json_decode($this->getAllArticles()->getContent()),
+                'articleForm' => $form->createView(),
+                'articles' => $article,
+                'editArticle' => true,
             ]
         );
     }

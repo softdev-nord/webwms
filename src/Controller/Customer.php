@@ -10,8 +10,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Form\AddCustomerType;
 use WebWMS\Form\EditCustomerType;
 use WebWMS\Service\Customer\CustomerService;
+use WebWMS\Service\LoggingService;
 use WebWMS\Service\Validation\CustomerValidationService;
 
 /**
@@ -25,7 +27,8 @@ class Customer extends AbstractController
     public function __construct(
         private CustomerService $customerService,
         private Requirements $requirements,
-        private CustomerValidationService $customerValidationService
+        private CustomerValidationService $customerValidationService,
+        private LoggingService $loggingService
     ) {
     }
 
@@ -58,39 +61,40 @@ class Customer extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $form = $this->createForm(EditCustomerType::class);
+        $requestData = $request->request->all();
+
+        if (!empty($requestData)) {
+            $requestData = $requestData['add_customer'];
+        }
+
+        $form = $this->createForm(AddCustomerType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->customerService->addNewCustomer($request);
-            $this->addFlash('success', 'Der Kunde wurde erfolgreich angelegt.');
+            $logMessage = sprintf('Der Kunde mit der Kunden-Nr. %s wurde angelegt.', $requestData['customerNr']);
+            $this->loggingService->write($request, $logMessage);
+            $this->customerService->addCustomer($requestData);
 
-            return $this->redirectToRoute('add_customer');
+            return new JsonResponse($requestData);
         }
 
         return $this->render(
-            'customer/add_customer.html.twig',
+            'customer/customer_add.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
-                'page' => 'Kunden anlegen',
                 'lastId' => $this->getLastCustomer()[0],
-                'addCustomerForm' => $form->createView(),
+                'customerForm' => $form->createView(),
+                'editCustomer' => false,
             ]
         );
     }
 
     #[Route('kunden_bearbeiten/kundenNr/{customerNr}', name: 'edit_customer')]
-    public function editCustomer(Request $request): RedirectResponse|JsonResponse|Response
+    public function editCustomer(Request $request, $customerNr): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
         $requestData = $request->request->all();
-        $customerNr = $request->attributes->get('customer_nr');
 
         if (!empty($requestData)) {
             $requestData = $requestData['edit_customer'];
@@ -106,6 +110,8 @@ class Customer extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
                 $responseData['message'] = 'Die Änderungen der Kundendaten wurden erfolgreich gespeichert.';
+                $logMessage = sprintf('Der Der Kunde mit der Kunden-Nr. %s wurde geändert.', $requestData['customerNr']);
+                $this->loggingService->write($request, $logMessage);
                 $this->customerService->updateCustomer($requestData);
 
                 return new JsonResponse($responseData);
@@ -117,16 +123,11 @@ class Customer extends AbstractController
         }
 
         return $this->render(
-            'customer/edit.html.twig',
+            'customer/customer_edit.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
-                'page' => 'Artikel bearbeiten',
-                'editCustomerForm' => $form->createView(),
-                'customers' => json_decode($this->getAllCustomers()->getContent()),
+                'customerForm' => $form->createView(),
+                'customers' => $customer,
+                'editCustomer' => true,
             ]
         );
     }

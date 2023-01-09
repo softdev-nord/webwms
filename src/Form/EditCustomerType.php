@@ -30,105 +30,108 @@ class EditCustomerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('customer_id', HiddenType::class, [
+        $builder
+            ->add('customerId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'customer_id',
-                    'data-type' => 'customer_id',
+                    'id' => 'customerId',
+                    'data-type' => 'customerId',
                 ],
             ]);
         if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             $builder
-                ->add('customer_nr', TextType::class, [
+                ->add('customerNr', TextType::class, [
                     'label' => false,
                     'attr' => [
                         'class' => 'form-control',
-                        'id' => 'customer_nr',
-                        'data-type' => 'customer_nr',
+                        'id' => 'customerNr',
+                        'data-type' => 'customerNr',
                         'style' => 'background-color: transparent',
                         'readonly' => 'readonly',
                     ],
                 ]);
         } else {
-            $builder->add('customer_nr', TextType::class, [
+            $builder
+                ->add('customerNr', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'customer_nr',
-                    'data-type' => 'customer_nr',
+                    'id' => 'customerNr',
+                    'data-type' => 'customerNr',
                     'style' => 'background-color: transparent',
                 ],
             ]);
         }
-        $builder->add('customer_name', TextType::class, [
-            'label' => false,
-            'attr' => [
-                'class' => 'form-control',
-                'id' => 'customer_name',
-                'data-type' => 'customer_name',
-            ],
-        ]);
-        $builder->add('customer_address_addition', TextType::class, [
+        $builder
+            ->add('customerName', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'customer_address_addition',
-                    'data-type' => 'customer_address_addition',
+                    'id' => 'customerName',
+                    'data-type' => 'customerName',
                 ],
-        ]);
-        $builder->add('customer_address_street', TextType::class, [
-            'label' => false,
-            'attr' => [
-                'class' => 'form-control',
-                'id' => 'customer_address_street',
-                'data-type' => 'customer_address_street',
-            ],
-        ]);
-        $builder->add('customer_address_street_nr', TextType::class, [
-            'label' => false,
-            'attr' => [
-                'class' => 'form-control',
-                'id' => 'customer_address_street_nr',
-                'data-type' => 'customer_address_street_nr',
-            ],
-        ]);
-        $builder->add('customer_country_code', TextType::class, [
-            'label' => false,
-            'attr' => [
-                'class' => 'form-control',
-                'id' => 'customer_country_code',
-                'data-type' => 'customer_country_code',
-            ],
-        ]);
-        $builder->add('customer_zip_code', TextType::class, [
-            'label' => false,
-            'attr' => [
-                'class' => 'form-control',
-                'id' => 'customer_zip_code',
-                'data-type' => 'customer_zip_code',
-            ],
-        ]);
-        $builder->add('customer_city', TextType::class, [
-            'label' => false,
-            'attr' => [
-                'class' => 'form-control',
-                'id' => 'customer_city',
-                'data-type' => 'customer_city',
-            ],
-        ]);
-        $builder->add('save', ButtonType::class, [
-            'label' => 'Änderungen speichern',
-            'attr' => [
-                'class' => 'btn btn-secondary btn-lg',
-            ],
-        ]);
-        $builder->add('back_to_customer_overview', ButtonType::class, [
-            'label' => 'Zurück zur Übersicht',
-            'attr' => [
-                'class' => 'btn btn-secondary btn-lg',
-            ],
-        ]);
+            ])
+            ->add('customerAddressAddition', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerAddressAddition',
+                    'data-type' => 'customerAddressAddition',
+                ],
+            ])
+            ->add('customerAddressStreet', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerAddressStreet',
+                    'data-type' => 'customerAddressStreet',
+                ],
+            ])
+            ->add('customerAddressStreetNr', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerAddressStreetNr',
+                    'data-type' => 'customerAddressStreetNr',
+                ],
+            ])
+            ->add('customerCountryCode', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerCountryCode',
+                    'data-type' => 'customerCountryCode',
+                ],
+            ])
+            ->add('customerZipCode', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerZipCode',
+                    'data-type' => 'customerZipCode',
+                ],
+            ])
+            ->add('customerCity', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerCity',
+                    'data-type' => 'customerCity',
+                ],
+            ])
+            ->add('save', ButtonType::class, [
+                'label' => 'Änderungen speichern',
+                'attr' => [
+                    'class' => 'btn btn-lg',
+                ],
+            ])
+            ->add('back_to_customer_overview', ButtonType::class, [
+                'label' => 'Zurück zur Übersicht',
+                'attr' => [
+                    'class' => 'btn btn-lg',
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

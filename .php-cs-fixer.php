@@ -5,6 +5,7 @@ $finder = (new PhpCsFixer\Finder())
     ->exclude('var')
     ->exclude('.docker')
     ->exclude('vendor')
+    ->exclude('node_modules')
 ;
 
 return (new PhpCsFixer\Config())

@@ -3,6 +3,7 @@
 namespace WebWMS\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,80 +26,79 @@ class AddNewArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('article_id', HiddenType::class, [
+            ->add('articleId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_id',
-                    'data-type' => 'article_id',
+                    'id' => 'articleId',
+                    'data-type' => 'articleId',
                 ],
             ])
-            ->add('article_nr', TextType::class, [
+            ->add('articleNr', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_nr',
-                    'data-type' => 'article_nr',
-                    'style' => 'background-color: transparent',
+                    'id' => 'articleNr',
+                    'data-type' => 'articleNr',
                 ],
             ])
-            ->add('article_name', TextType::class, [
+            ->add('articleName', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_name',
-                    'data-type' => 'article_name',
+                    'id' => 'articleName',
+                    'data-type' => 'articleName',
                 ],
             ])
-            ->add('article_category', TextType::class, [
+            ->add('articleCategory', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_category',
-                    'data-type' => 'article_category',
+                    'id' => 'articleCategory',
+                    'data-type' => 'articleCategory',
                 ],
             ])
-            ->add('article_weight', TextType::class, [
+            ->add('articleWeight', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_weight',
-                    'data-type' => 'article_weight',
+                    'id' => 'articleWeight',
+                    'data-type' => 'articleWeight',
                 ],
             ])
-            ->add('article_ean', TextType::class, [
+            ->add('articleEan', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_ean',
-                    'data-type' => 'article_ean',
+                    'id' => 'articleEan',
+                    'data-type' => 'articleEan',
                 ],
             ])
-            ->add('article_unit', TextType::class, [
+            ->add('articleUnit', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_unit',
-                    'data-type' => 'article_unit',
+                    'id' => 'articleUnit',
+                    'data-type' => 'articleUnit',
                 ],
             ])
-            ->add('article_depth', TextType::class, [
+            ->add('articleDepth', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_depth',
-                    'data-type' => 'article_depth',
+                    'id' => 'articleDepth',
+                    'data-type' => 'articleDepth',
                 ],
             ])
-            ->add('article_width', TextType::class, [
+            ->add('articleWidth', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_width',
-                    'data-type' => 'article_width',
+                    'id' => 'articleWidth',
+                    'data-type' => 'articleWidth',
                 ],
             ])
-            ->add('article_height', TextType::class, [
+            ->add('articleHeight', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -106,8 +106,11 @@ class AddNewArticleType extends AbstractType
                     'data-type' => 'article_height',
                 ],
             ])
-            ->add('stock_out_strategy', ChoiceType::class, [
+            ->add('stockOutStrategy', ChoiceType::class, [
                 'label' => false,
+                'attr' => [
+                    'class' => 'form-select',
+                ],
                 'choices' => [
                     'FIFO (First In – First Out)' => 'FIFO',
                     'FEFO (First Expired – First Out)' => 'FEFO',
@@ -117,18 +120,35 @@ class AddNewArticleType extends AbstractType
                     'Chaotische Lagerhaltung (Chaotic warehousing)' => 'CWH',
                 ],
             ])
-            ->add('le_quantity', TextType::class, [
+            ->add('standardLoadingEquipment', ChoiceType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-select',
+                ],
+                'choices' => [
+                    'KARTON' => 'KARTON',
+                    'PALETTE' => 'PALETTE',
+                    'BLOCK' => 'BLOCK',
+                ],
+            ])
+            ->add('leQuantity', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'le_quantity	',
-                    'data-type' => 'le_quantity',
+                    'id' => 'leQuantity	',
+                    'data-type' => 'leQuantity',
                 ],
             ])
-            ->add('add_article', SubmitType::class, [
+            ->add('save', SubmitType::class, [
                 'label' => 'Artikel anlegen',
                 'attr' => [
-                    'class' => 'btn btn-secondary btn-lg',
+                    'class' => 'btn btn-lg',
+                ],
+            ])
+            ->add('back_to_article_overview', ButtonType::class, [
+                'label' => 'Zurück zur Übersicht',
+                'attr' => [
+                    'class' => 'btn btn-lg',
                 ],
             ])
         ;
