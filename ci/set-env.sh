@@ -1,9 +1,9 @@
 #!/bin/bash
-# Helper script for creating environment variables file.
+# Hilfsskript zur Erstellung einer Datei mit Umgebungsvariablen.
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-# Define variables
+# Definiere Variablen
 
 ###> webWMS ###
 
@@ -13,7 +13,7 @@ then
   export DATABASE_URL=mysql://webwms:${DATABASE_PASSWORD}@127.0.0.1:3306/webwms?serverVersion=5.7
 else
   export APP_ENV=dev
-  export DATABASE_URL=mysql://webwms-dev:FgQjemukwVzXKTEXX9M4@127.0.0.1:3306/webwms-dev?serverVersion=5.7
+  export DATABASE_URL=mysql://webwms-dev:${DATABASE_PASSWORD}@127.0.0.1:3306/webwms-dev?serverVersion=5.7
 fi
 
 export APP_NAME=' | webWMS Das webbasierte Lagerverwaltungssystem'
@@ -32,7 +32,7 @@ export WEB_HOST=https://webwms.softdev-nord.de
 export FROM_MAIL=info@softdev-nord.de
 export FROM_NAME='webWMS Test'
 export RETURN_PATH=info@softdev-nord.de
-# sent copy of mail to the address specified in FROM_MAIL
+# Kopie der Mail an die in FROM_MAIL angegebene Adresse geschickt
 export MAIL_COPY=true
 ### mailer settings ###
 
@@ -41,5 +41,5 @@ export MAIL_COPY=true
 export MAILER_DSN=null://localhost
 ###< symfony/mailer ###
 
-# Generate environment variables file
+# Datei mit Umgebungsvariablen generieren
 envsubst < .env.template > .env
