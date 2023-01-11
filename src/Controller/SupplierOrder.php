@@ -67,7 +67,7 @@ class SupplierOrder extends AbstractController
         $form = $this->createForm(SupplierOrderType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->supplierService->addNewSupplier($request);
+            $this->supplierService->addSupplier($request);
             $this->addFlash('success', 'Die Bestellung wurde erfolgreich angelegt.');
 
             return $this->redirectToRoute('add_supplier');

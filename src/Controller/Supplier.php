@@ -159,7 +159,7 @@ class Supplier extends AbstractController
             );
             $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde gelöscht.', $supplier->getSupplierNr());
             $this->loggingService->write($request, $logMessage);
-            $this->supplierService->deleteSupplier((int)$requestData['supplierNr']);
+            $this->supplierService->deleteSupplier((int) $requestData['supplierNr']);
 
             return new JsonResponse($responseData);
         }

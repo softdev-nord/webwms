@@ -13,7 +13,6 @@ class Customer
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(name: 'customer_id', type: 'integer', nullable: false)]
-
     private int $customerId;
 
     #[ORM\Column(name: 'customer_nr', type: 'integer', nullable: false)]

@@ -54,7 +54,7 @@ class StockLocationDataHandler
     {
         return $this->entityManager
             ->getRepository(StockLocation::class)
-            ->findOneBy(['stock_location_coordinate' => $stockLocationCoordinate]);
+            ->findOneBy(['stockLocationCoordinate' => $stockLocationCoordinate]);
     }
 
     /**

@@ -6,7 +6,6 @@ namespace WebWMS\Service\Customer;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Customer;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
