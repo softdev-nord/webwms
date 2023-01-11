@@ -55,7 +55,7 @@ class SupplierOrder extends ModelEntity
     private Collection|ArrayCollection $supplierOrderPos;
 
     #[ORM\OneToOne(targetEntity: Supplier::class)]
-    #[ORM\JoinColumn(name: 'supplier_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'supplier_id', referencedColumnName: 'supplier_id')]
     private ?Supplier $supplier;
 
     public function __construct()

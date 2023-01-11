@@ -55,7 +55,7 @@ class CustomerOrder extends ModelEntity
     private Collection|ArrayCollection $customerOrderPos;
 
     #[ORM\OneToOne(targetEntity: Customer::class)]
-    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'customer_id')]
     private ?Customer $customer;
 
     public function getCustomer(): ?Customer
