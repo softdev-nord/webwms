@@ -1,6 +1,6 @@
 <?php
 
-namespace WebWMS\Form;
+namespace WebWMS\Form\Supplier;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\Supplier;
 
 /**
- * @package:    WebWMS\Form
+ * @package:    WebWMS\Form\Supplier
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        SupplierType
@@ -24,77 +24,77 @@ class SupplierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('supplier_id', HiddenType::class, [
+            ->add('supplierId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'supplier_id',
-                    'data-type' => 'supplier_id',
+                    'id' => 'supplierId',
+                    'data-type' => 'supplierId',
                 ],
             ])
-            ->add('supplier_nr', TextType::class, [
+            ->add('supplierNr', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'supplier_nr',
-                    'data-type' => 'supplier_nr',
+                    'id' => 'supplierNr',
+                    'data-type' => 'supplierNr',
                     'style' => 'background-color: transparent',
                 ],
             ])
-            ->add('supplier_name', TextType::class, [
+            ->add('supplierName', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'supplier_name',
-                    'data-type' => 'supplier_name',
+                    'id' => 'supplierName',
+                    'data-type' => 'supplierName',
                 ],
             ])
-            ->add('supplier_address_addition', TextType::class, [
+            ->add('supplierAddressAddition', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'supplier_address_addition',
-                    'data-type' => 'supplier_address_addition',
+                    'id' => 'supplierAddressAddition',
+                    'data-type' => 'supplierAddressAddition',
                 ],
             ])
-            ->add('supplier_address_street', TextType::class, [
+            ->add('supplierAddressStreet', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'supplier_address_street',
-                    'data-type' => 'supplier_address_street',
+                    'id' => 'supplierAddressStreet',
+                    'data-type' => 'supplierAddressStreet',
                 ],
             ])
-            ->add('supplier_address_street_nr', TextType::class, [
+            ->add('supplierAddressStreetNr', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'supplier_address_street_nr',
-                    'data-type' => 'supplier_address_street_nr',
+                    'id' => 'supplierAddressStreetNr',
+                    'data-type' => 'supplierAddressStreetNr',
                 ],
             ])
-            ->add('supplier_address_country_code', TextType::class, [
+            ->add('supplierAddressCountryCode', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'supplier_address_country_code',
-                    'data-type' => 'supplier_address_country_code',
+                    'id' => 'supplierAddressCountryCode',
+                    'data-type' => 'supplierAddressCountryCode',
                 ],
             ])
-            ->add('supplier_address_zipcode', TextType::class, [
+            ->add('supplierAddressZipcode', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'supplier_address_zipcode',
-                    'data-type' => 'supplier_address_zipcode',
+                    'id' => 'supplierAddressZipcode',
+                    'data-type' => 'supplierAddressZipcode',
                 ],
             ])
-            ->add('supplier_address_city', TextType::class, [
+            ->add('supplierAddressCity', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'supplier_address_city',
-                    'data-type' => 'supplier_address_city',
+                    'id' => 'supplierAddressCity',
+                    'data-type' => 'supplierAddressCity',
                 ],
             ])
             ->add('add_supplier', SubmitType::class, [

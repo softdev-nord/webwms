@@ -7,7 +7,6 @@ namespace WebWMS\Service\Supplier;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Supplier;
 use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
@@ -138,82 +137,12 @@ class SupplierService
      */
     public function getAllSuppliersAjax(): JsonResponse
     {
-        return $this->getSuppliers();
+        return $this->supplierDataHandler->getSuppliers();
     }
 
-    /**
-     * @throws Exception
-     */
-    public function getSuppliers(): JsonResponse
+    public function addSupplier($requestData): void
     {
-        $connection = $this->entityManager->getConnection();
-
-        $numOfBoxSupplier = !empty(filter_input(INPUT_GET, 'numOfBoxSupplier')) ? filter_input(INPUT_GET, 'numOfBoxSupplier') : '';
-        $nameSupp = !empty(filter_input(INPUT_GET, 'supplier_nr')) ? strtolower(trim(filter_input(INPUT_GET, 'supplier_nr'))) : '';
-
-        $boxName = 'supplier_nr';
-
-        $boxName = match ($numOfBoxSupplier) {
-            'supplier_name' => 'supplier_name',
-            'supplier_address_addition' => 'supplier_address_addition',
-            'supplier_address_street' => 'supplier_address_street',
-            'supplier_address_street_nr' => 'supplier_address_street_nr',
-            'supplier_address_country_code' => 'supplier_address_country_code',
-            'supplier_address_zipcode' => 'supplier_address_zipcode',
-            'supplier_address_city' => 'supplier_address_city',
-            default => 'supplier_nr',
-        };
-
-        $data = [];
-        if (!empty(filter_input(INPUT_GET, 'name_supplier'))) {
-            $nameSupp = strtolower(trim(filter_input(INPUT_GET, 'name_supplier')));
-
-            $sqlSupp = "SELECT supplier_nr, supplier_name, supplier_address_addition, supplier_address_street,
-                            supplier_address_street_nr, supplier_address_country_code, supplier_address_zipcode,
-                            supplier_address_city, supplier_id 
-                        FROM supplier where LOWER($boxName) LIKE '".$nameSupp."%'";
-            $stmt = $connection->executeQuery($sqlSupp);
-
-            while ($rowSupp = $stmt->fetchAssociative()) {
-                $nameSupp = $rowSupp['supplier_nr'].'|'.
-                            $rowSupp['supplier_name'].'|'.
-                            $rowSupp['supplier_address_addition'].'|'.
-                            $rowSupp['supplier_address_street'].'|'.
-                            $rowSupp['supplier_address_street_nr'].'|'.
-                            $rowSupp['supplier_address_country_code'].'|'.
-                            $rowSupp['supplier_address_zipcode'].'|'.
-                            $rowSupp['supplier_address_city'].'|'.
-                            $rowSupp['supplier_id']
-                ;
-
-                $data[] = $nameSupp;
-            }
-        }
-
-        return new JsonResponse($data);
-    }
-
-    public function addNewSupplier(Request $request)
-    {
-        $createdAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
-
-        $params = $request->request->all()['supplier'];
-        $lastCustomer = $this->getLastSupplier()[0]->toArray();
-
-        $customer = new Supplier();
-        $customer->setSupplierId($lastCustomer['supplier_id'] + 1);
-        $customer->setSupplierNr($lastCustomer['supplier_nr'] + 1);
-        $customer->setSupplierName($params['supplier_name']);
-        $customer->setSupplierAddressAddition($params['supplier_address_addition']);
-        $customer->setSupplierAddressStreet($params['supplier_address_street']);
-        $customer->setSupplierAddressStreetNr($params['supplier_address_street_nr']);
-        $customer->setSupplierAddressCountryCode($params['supplier_address_country_code']);
-        $customer->setSupplierAddressZipcode($params['supplier_address_zipcode']);
-        $customer->setSupplierAddressCity($params['supplier_address_city']);
-        $customer->setSupplierCreatedAt($createdAt);
-
-        $this->entityManager->persist($customer);
-        $this->entityManager->flush();
+        $this->supplierDataHandler->addSupplier($requestData);
     }
 
     /**
@@ -223,7 +152,7 @@ class SupplierService
     {
         return $this->entityManager
             ->getRepository(Supplier::class)
-            ->findBy([], ['supplier_nr' => 'DESC'], 1, 0);
+            ->findBy([], ['supplierNr' => 'DESC'], 1, 0);
     }
 
     public function getSupplierById($id): ?Supplier
@@ -231,5 +160,20 @@ class SupplierService
         return $this->entityManager
             ->getRepository(Supplier::class)
             ->findOneBy(['id' => $id]);
+    }
+
+    public function getSupplierByNr(int $supplierNr): ?Supplier
+    {
+        return $this->supplierDataHandler->getSupplierByNr($supplierNr);
+    }
+
+    public function updateSupplier($requestData): ?Supplier
+    {
+        return $this->supplierDataHandler->updateSupplier($requestData);
+    }
+
+    public function deleteSupplier(int $supplierNr): void
+    {
+        $this->supplierDataHandler->deleteSupplier($supplierNr);
     }
 }
