@@ -31,7 +31,6 @@ class StockRotation extends AbstractController
     #[Route('/lagerbewegung', name: 'stock_rotation')]
     public function stockRotations(): Response
     {
-        //dd($this->getAllStockRotations());
         return $this->render(
             'stock/stock_rotation.html.twig',
             [
@@ -52,7 +51,6 @@ class StockRotation extends AbstractController
     #[Route('/stock_rotation_ajax', name: 'stock_rotation_ajax')]
     public function getAllStockRotations(): JsonResponse
     {
-        //dd($this->stockRotationService->getAllStockRotationsWithJoin());
         return $this->stockRotationService->getAllStockRotationsWithJoin();
     }
 }

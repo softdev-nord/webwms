@@ -26,7 +26,6 @@ class StockInFinalCollectionType extends CollectionType
         ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            // dd($event->getData());
             $form = $event->getForm();
         });
     }
