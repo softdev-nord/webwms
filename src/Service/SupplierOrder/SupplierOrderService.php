@@ -182,13 +182,12 @@ class SupplierOrderService
      */
     public function updateSupplierOrder($requestData)
     {
-        $supplierOrder = $this->supplierOrderDataHandler->getSupplierOrderById($requestData['id']);
+        $supplierOrder = $this->supplierOrderDataHandler->getSupplierOrderById($requestData['supplierOrderId']);
 
         if (!$supplierOrder) {
             return null;
         }
 
-        $supplierOrder->setId($requestData['id']);
         $supplierOrder->setSupplierOrderId($requestData['supplierOrderId']);
         $supplierOrder->setUsrId($requestData['usrId']);
         $supplierOrder->setSupplierId($requestData['supplierId']);

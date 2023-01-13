@@ -91,7 +91,7 @@ class Article extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[Route('artikel_bearbeiten/articleId/{articleId}', name: 'edit_article')]
     public function editArticle(Request $request, $articleId): RedirectResponse|JsonResponse|Response

@@ -62,7 +62,7 @@ class StockOccupancy extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/stock_occupancy_ajax/{stock_location_coordinate}', name: 'stock_occupancy_ajax')]
+    #[Route('/stock_occupancy_ajax/{stock_location_coordinate}', name: 'stock_occupancy_ajax_coordinate')]
     public function getStockOccupancyByCoordinate(Request $request): Response
     {
         $stockResults = $this->stockOccupancyService->getStockOccupancyByCoordinate($request);

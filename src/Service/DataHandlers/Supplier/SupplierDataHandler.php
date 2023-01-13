@@ -99,9 +99,7 @@ class SupplierDataHandler
     public function getSuppliers(): JsonResponse
     {
         $connection = $this->entityManager->getConnection();
-
         $numOfBoxSupplier = !empty(filter_input(INPUT_GET, 'numOfBoxSupplier')) ? filter_input(INPUT_GET, 'numOfBoxSupplier') : '';
-        $nameSupp = !empty(filter_input(INPUT_GET, 'supplier_nr')) ? strtolower(trim(filter_input(INPUT_GET, 'supplier_nr'))) : '';
 
         $boxName = match ($numOfBoxSupplier) {
             'supplier_name' => 'supplier_name',
@@ -116,27 +114,27 @@ class SupplierDataHandler
 
         $data = [];
         if (!empty(filter_input(INPUT_GET, 'name_supplier'))) {
-            $nameSupp = strtolower(trim(filter_input(INPUT_GET, 'name_supplier')));
+            $nameSupplier = strtolower(trim(filter_input(INPUT_GET, 'name_supplier')));
 
-            $sqlSupp = "SELECT supplier_nr, supplier_name, supplier_address_addition, supplier_address_street,
+            $sql = "SELECT supplier_nr, supplier_name, supplier_address_addition, supplier_address_street,
                             supplier_address_street_nr, supplier_address_country_code, supplier_address_zipcode,
                             supplier_address_city, supplier_id 
-                        FROM supplier where LOWER($boxName) LIKE '".$nameSupp."%'";
-            $stmt = $connection->executeQuery($sqlSupp);
+                        FROM supplier where LOWER($boxName) LIKE '".$nameSupplier."%'";
+            $stmt = $connection->executeQuery($sql);
 
-            while ($rowSupp = $stmt->fetchAssociative()) {
-                $nameSupp = $rowSupp['supplier_nr'].'|'.
-                    $rowSupp['supplier_name'].'|'.
-                    $rowSupp['supplier_address_addition'].'|'.
-                    $rowSupp['supplier_address_street'].'|'.
-                    $rowSupp['supplier_address_street_nr'].'|'.
-                    $rowSupp['supplier_address_country_code'].'|'.
-                    $rowSupp['supplier_address_zipcode'].'|'.
-                    $rowSupp['supplier_address_city'].'|'.
-                    $rowSupp['supplier_id']
+            while ($rowSupplier = $stmt->fetchAssociative()) {
+                $nameSupplier = $rowSupplier['supplier_nr'].'|'.
+                    $rowSupplier['supplier_name'].'|'.
+                    $rowSupplier['supplier_address_addition'].'|'.
+                    $rowSupplier['supplier_address_street'].'|'.
+                    $rowSupplier['supplier_address_street_nr'].'|'.
+                    $rowSupplier['supplier_address_country_code'].'|'.
+                    $rowSupplier['supplier_address_zipcode'].'|'.
+                    $rowSupplier['supplier_address_city'].'|'.
+                    $rowSupplier['supplier_id']
                 ;
 
-                $data[] = $nameSupp;
+                $data[] = $nameSupplier;
             }
         }
 

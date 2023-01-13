@@ -72,8 +72,6 @@ class SupplierService
     }
 
     public function updateSupplierApi(
-        int $supplierMainId,
-        int $supplierId,
         int $supplierNr,
         string $supplierName,
         string $supplierAddressAddition,
@@ -83,11 +81,8 @@ class SupplierService
         string $supplierAddressZipCode,
         string $supplierAddressCity
     ): ?Supplier {
-        $supplier = $this->entityManager
-            ->getRepository(Supplier::class)
-            ->find($supplierMainId);
+        $supplier = $this->supplierDataHandler->getSupplierByNr($supplierNr);
 
-        $supplier->setSupplierId($supplierId);
         $supplier->setSupplierNr($supplierNr);
         $supplier->setSupplierName($supplierName);
         $supplier->setSupplierAddressAddition($supplierAddressAddition);
@@ -159,7 +154,7 @@ class SupplierService
     {
         return $this->entityManager
             ->getRepository(Supplier::class)
-            ->findOneBy(['id' => $id]);
+            ->findOneBy(['supplierId' => $id]);
     }
 
     public function getSupplierByNr(int $supplierNr): ?Supplier

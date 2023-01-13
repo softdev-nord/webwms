@@ -9,11 +9,12 @@
  */
 function getContentForModal(url, title, successFunc) {
     const modalLoader = '<div class="modal-body"></div>';
+    const modalContentAjax = $("#modal-content-ajax");
     title = title || "";
     successFunc = successFunc || function(){};
     $("#modalCenter .modal-title").text(title);
-    $("#modal-content-ajax").html(modalLoader);
-    $("#modal-content-ajax").load(url, function (response, status, xhr) {
+    modalContentAjax.html(modalLoader);
+    modalContentAjax.load(url, function (response, status, xhr) {
         successFunc();
     });
 }
@@ -30,6 +31,7 @@ function getContentForModal(url, title, successFunc) {
  * @returns {Boolean}
  */
 function _doPost(formId, url, successUrl, type, successFunc) {
+    const flashMessage = $("#flash-message-overlay");
     successUrl = successUrl || "";
     type = type || "POST";
     successFunc = successFunc || null;
@@ -49,9 +51,9 @@ function _doPost(formId, url, successUrl, type, successFunc) {
                 if($(data).filter('.modal-body').length > 0 || $(data).find('.modal-body').length > 0) {
                     $("#modal-content-ajax").html(data);
                 // if only flash messages are returned
-                } else if (data && data.length > 0) {   
-                    $("#flash-message-overlay").empty();
-                    $("#flash-message-overlay").append(data);
+                } else if (data && data.length > 0) {
+                    flashMessage.empty();
+                    flashMessage.append(data);
                 } else if(successUrl.length > 0 ) {
                     location.href = successUrl;
                 } else {

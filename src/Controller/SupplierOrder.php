@@ -97,8 +97,6 @@ class SupplierOrder extends AbstractController
 
         $supplierOrder = $this->supplierOrderService->getSupplierOrderById((int) $id);
 
-        // dd($supplierOrder);
-
         $form = $this->createForm(EditSupplierOrderType::class, $supplierOrder);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

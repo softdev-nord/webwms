@@ -233,7 +233,9 @@ class ArticleService
      */
     public function updateArticle($requestData): ?Article
     {
-        $article = $this->articleDataHandler->getArticleById((int) $requestData['articleId']);
+        $article = $this->articleDataHandler->getArticleById(
+            (int) $requestData['articleId']
+        );
 
         if (!$article) {
             return null;

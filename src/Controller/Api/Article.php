@@ -19,10 +19,10 @@ use WebWMS\Service\Article\ArticleService;
  * @package:    WebWMS\Controller\Api
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * @Route("/api",name="api_")
  *
  * Class        Article
  */
+#[Route('/api', name: 'api_')]
 class Article extends AbstractFOSRestController
 {
     public function __construct(
