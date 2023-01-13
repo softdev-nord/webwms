@@ -60,7 +60,7 @@ services:
     # please note that last definitions always *replace* previous ones
 
     web_wms.form.type.task:
-        class: WebWMS\Form\EditArticleType
+        class: WebWMS\Form\Article\EditArticleType
         public: true
         arguments: [ "@security.authorization_checker" ]
         tags:
