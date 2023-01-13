@@ -1,6 +1,6 @@
 <?php
 
-namespace WebWMS\Form;
+namespace WebWMS\Form\Article;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -18,7 +18,7 @@ use WebWMS\Entity\Article;
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        AddNewArticleType
  */
-class AddNewArticleType extends AbstractType
+class AddArticleType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")

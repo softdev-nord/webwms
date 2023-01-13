@@ -83,4 +83,13 @@ class ArticleDataHandler
 
         return new JsonResponse($data);
     }
+
+    public function deleteArticle(int $articleNr): void
+    {
+        $article = $this->getArticleByNr($articleNr);
+
+        if ($article) {
+            $this->delete($article);
+        }
+    }
 }

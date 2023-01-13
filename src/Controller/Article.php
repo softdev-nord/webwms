@@ -11,8 +11,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Form\AddNewArticleType;
-use WebWMS\Form\EditArticleType;
+use WebWMS\Form\Article\AddArticleType;
+use WebWMS\Form\Article\DeleteArticleType;
+use WebWMS\Form\Article\EditArticleType;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\Validation\ArticleValidationService;
@@ -22,6 +23,7 @@ use WebWMS\Service\Validation\ArticleValidationService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        Article
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Article extends AbstractController
 {
@@ -40,7 +42,7 @@ class Article extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $form = $this->createForm(AddNewArticleType::class);
+        $form = $this->createForm(AddArticleType::class);
 
         return $this->render(
             'article/index.html.twig',
@@ -69,7 +71,7 @@ class Article extends AbstractController
             $requestData = $requestData['add_new_article'];
         }
 
-        $form = $this->createForm(AddNewArticleType::class);
+        $form = $this->createForm(AddArticleType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData['message'] = 'Der Artikel wurde erfolgreich angelegt.';
@@ -134,6 +136,44 @@ class Article extends AbstractController
                 'articleForm' => $form->createView(),
                 'articles' => $article,
                 'editArticle' => true,
+            ]
+        );
+    }
+
+    #[Route('/artikel_löschen/articleId/{articleId}', name: 'delete_article')]
+    public function deleteArticle(Request $request, $articleId): RedirectResponse|JsonResponse|Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $requestData = $request->request->all();
+
+        if (!empty($requestData)) {
+            $requestData = $requestData['delete_article'];
+        }
+
+        $article = $this->articleService->getArticleById((int) $articleId);
+        $form = $this->createForm(DeleteArticleType::class, $article);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $responseData['message'] = sprintf(
+                'Der Artikel mit der Artikel-Nr. %s wurde erfolgreich gelöscht.',
+                $requestData['articleNr']
+            );
+            $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde gelöscht.', $requestData['articleNr']);
+            $this->loggingService->write($request, $logMessage);
+            $this->articleService->deleteArticle((int) $requestData['articleNr']);
+
+            return new JsonResponse($responseData);
+        }
+
+        return $this->render(
+            'article/article_delete_ask.html.twig',
+            [
+                'articleNr' => $article->getArticleNr(),
+                'articleForm' => $form->createView(),
             ]
         );
     }

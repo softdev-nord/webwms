@@ -260,6 +260,11 @@ class ArticleService
         return $article;
     }
 
+    public function deleteArticle(int $supplierNr): void
+    {
+        $this->articleDataHandler->deleteArticle($supplierNr);
+    }
+
     /**
      * Get last article.
      */
