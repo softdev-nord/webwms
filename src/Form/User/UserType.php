@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Form;
+namespace WebWMS\Form\User;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;

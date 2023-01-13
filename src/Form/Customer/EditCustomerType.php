@@ -1,6 +1,6 @@
 <?php
 
-namespace WebWMS\Form;
+namespace WebWMS\Form\Customer;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;

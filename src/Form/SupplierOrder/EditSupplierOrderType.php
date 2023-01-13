@@ -1,8 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
-namespace WebWMS\Form;
+namespace WebWMS\Form\SupplierOrder;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -12,54 +10,41 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\SupplierOrder;
 
-/**
- * @package:    WebWMS\Form
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        SupplierOrderType
- */
-class SupplierOrderType extends AbstractType
+class EditSupplierOrderType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('supplier_order_id', HiddenType::class, [
+            ->add('supplierOrderId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'inputOrderNr',
-                    'id' => 'supplier_order_id_1',
                 ],
             ])
-            ->add('supplier_id', HiddenType::class, [
+            ->add('supplierId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'form-control autocomplete_suppliers',
-                    'id' => 'id_1',
-                    'data-type' => 'id',
+                    'class' => 'form-control',
                 ],
             ])
-            ->add('supplier_order_nr', TextType::class, [
+            ->add('supplierOrderNr', TextType::class, [
                 'label' => 'Bestellungs-Nr',
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'supplier_order_nr_1',
-                    'data-type' => 'supplier_order_nr_1',
                     'style' => 'background-color: transparent',
                     'disabled' => true,
                 ],
             ])
-            ->add('supplier_order_reference', TextType::class, [
+            ->add('supplierOrderReference', TextType::class, [
                 'label' => 'Bestellungs-Referenz',
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'aft_ref',
-                    'placeholder' => 'Bestellungs-Referenz',
                 ],
             ])
-            ->add('supplier_order_date', DateType::class, [
+            ->add('supplierOrderDate', DateType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'd.m.Y',
@@ -69,7 +54,7 @@ class SupplierOrderType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('supplier_order_creation_date', DateType::class, [
+            ->add('supplierOrderCreationDate', DateType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'd.m.Y',
@@ -83,7 +68,7 @@ class SupplierOrderType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => SupplierOrder::class,

@@ -1,6 +1,6 @@
 <?php
 
-namespace WebWMS\Form;
+namespace WebWMS\Form\Stock;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

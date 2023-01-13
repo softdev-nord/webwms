@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Service;
+namespace WebWMS\Service\CustomerOrder;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 use WebWMS\Service\DataHandlers\CustomerOrder\CustomerOrderDataHandler;
 
 /**
- * @package:    WebWMS\Service
+ * @package:    WebWMS\Service\CustomerOrder
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        CustomerOrderService

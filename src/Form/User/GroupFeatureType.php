@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Form;
+namespace WebWMS\Form\User;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\Feature;
-use WebWMS\Entity\Group;
+
+// use WebWMS\Entity\Feature;
+// use WebWMS\Entity\Group;
 
 class GroupFeatureType extends AbstractType
 {
@@ -22,7 +23,7 @@ class GroupFeatureType extends AbstractType
     {
         $builder
           ->add('features', EntityType::class, [
-            'class' => Feature::class,
+//            'class' => Feature::class,
             'multiple' => true,
             'expanded' => true,
             'choice_label' => 'name',
@@ -32,7 +33,7 @@ class GroupFeatureType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-          'data_class' => Group::class,
+//          'data_class' => Group::class,
           'attr' => ['class="row g-3"'],
         ]);
     }
