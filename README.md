@@ -4,6 +4,11 @@
 **Das webbasierte Lagerverwaltungssystem**
 `https://webwms-dev.softdev-nord.de`
 
+**Test User:**
+* Benutzername: `testAdmin`
+* Passwort: `WebWms2023!#`
+
+
 ## Systemvoraussetzung:
 * min. PHP 8.0
 * MySQL, MariaDB
