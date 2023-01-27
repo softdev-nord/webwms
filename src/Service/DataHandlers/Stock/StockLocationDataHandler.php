@@ -107,8 +107,6 @@ class StockLocationDataHandler
 
     public function updateStockLocation($requestData): ?StockLocation
     {
-        $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
-
         $stockLocation = $this->entityManager
             ->getRepository(StockLocation::class)
             ->findOneBy(['stock_location_coordinate' => $requestData['stock_location_coordinate']]);
