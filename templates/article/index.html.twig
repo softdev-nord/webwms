@@ -9,7 +9,7 @@
 
     {% block webwms_content %}
         {% block webwms_article_overview %}
-        <div id="webwms-article-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+        <div id="webwms-article-overview" data-article="true" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
             <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
                 {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
                     <div class="webwms-page">{{ page }}</div>
@@ -23,13 +23,14 @@
                                     <th scope="col" style="text-align: center">Artikel-Nr</th>
                                     <th scope="col" style="text-align: center">Bezeichnung</th>
                                     <th scope="col" style="text-align: center">Kategorie</th>
-                                    <th scope="col" style="text-align: center">Gewicht in Kg</th>
+                                    <th scope="col" style="text-align: center">Gewicht in g</th>
                                     <th scope="col" style="text-align: center">EAN-Code</th>
                                     <th scope="col" style="text-align: center">Einheit</th>
                                     <th scope="col" style="text-align: center">Tiefe (mm)</th>
                                     <th scope="col" style="text-align: center">Breite (mm)</th>
                                     <th scope="col" style="text-align: center">Höhe (mm)</th>
                                     <th scope="col" style="text-align: center">Bestand</th>
+                                    <th scope="col" style="text-align: center">Letzte Änderung</th>
                                 </tr>
                                 </thead>
                             </table>

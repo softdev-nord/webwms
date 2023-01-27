@@ -12,7 +12,7 @@ class StockLocation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'stock_location_id', type: 'integer')]
     private int $stockLocationId;
 
     #[ORM\Column(name: 'stock_location_ln', type: 'integer', nullable: false)]

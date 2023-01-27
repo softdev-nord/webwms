@@ -31,7 +31,8 @@
             {
                 'data': 'lbw_menge',
                 'defaultContent': 0
-            }
+            },
+            {'data': 'updated_at'},
         ],
         columnDefs: [
             {
@@ -225,7 +226,7 @@
     });
 
     // Neuen Artikel speichern
-    $(document).on('click','button#add_new_article_save',function(event) {
+    $(document).on('click','button#add_article_save',function(event) {
         const $form = $('form#article-form-new');
         const url = '/artikel_anlegen';
         event.preventDefault();

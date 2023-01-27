@@ -7,7 +7,7 @@ namespace WebWMS\Service\DataHandlers\Stock;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockLocation;
+use WebWMS\Entity\StockOccupancy;
 
 /**
  * @package:    WebWMS\Service\DataHandlers\Stock
@@ -22,21 +22,21 @@ class StockOccupancyDataHandler
     ) {
     }
 
-    public function save(StockLocation $stockLocation): void
+    public function save(StockOccupancy $stockOccupancy): void
     {
-        $this->entityManager->persist($stockLocation);
+        $this->entityManager->persist($stockOccupancy);
         $this->entityManager->flush();
     }
 
-    public function update(StockLocation $stockLocation): void
+    public function update(StockOccupancy $stockOccupancy): void
     {
-        $this->entityManager->persist($stockLocation);
+        $this->entityManager->persist($stockOccupancy);
         $this->entityManager->flush();
     }
 
-    public function delete(StockLocation $stockLocation): void
+    public function delete(StockOccupancy $stockOccupancy): void
     {
-        $this->entityManager->remove($stockLocation);
+        $this->entityManager->remove($stockOccupancy);
         $this->entityManager->flush();
     }
 

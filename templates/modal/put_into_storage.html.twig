@@ -148,8 +148,9 @@
                                                             >
                                                         </div>
                                                     </td>
-                                                    <td class="editor-edit text-center" style="vertical-align: inherit;"><i class="mdi mdi-square-edit-outline"></i></td>
-                                                    <input type="hidden" id="stock_in_final_stock_coordinate" name="stock_in_final[{{ key }}][stock_coordinate]" value="{{ freeStockLocation.koordinate }}">
+                                                    <td class="edit-selected-stock-location text-center" style="vertical-align: inherit;"><i class="edit-selected-stock-location mdi mdi-square-edit-outline"></i></td>
+                                                    <input type="hidden" id="stock_in_final_stock_coordinate_{{ key }}" name="stock_in_final[{{ key }}][stock_coordinate]" value="{{ freeStockLocation.koordinate }}">
+                                                    <input type="hidden" id="stock_location_id" value="{{ freeStockLocation.id }}">
                                                 </tr>
                                                 {% endfor %}
                                                 <input type="hidden" id="stock_in_final_charge" name="stock_in_final[charge]" value="{{ charge }}">
@@ -175,6 +176,7 @@
 
 {% block bodyjs %}
     <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockInItemsAutofill.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockTransactions.js') }}"></script>
 {% endblock %}
 
 

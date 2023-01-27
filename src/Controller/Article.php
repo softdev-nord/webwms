@@ -36,7 +36,7 @@ class Article extends AbstractController
     }
 
     #[Route('/artikel', name: 'article')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -54,6 +54,7 @@ class Article extends AbstractController
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Artikelübersicht',
                 'articleForm' => $form->createView(),
+                'route' => $request->attributes->get('_route'),
             ]
         );
     }
@@ -68,7 +69,7 @@ class Article extends AbstractController
         $requestData = $request->request->all();
 
         if (!empty($requestData)) {
-            $requestData = $requestData['add_new_article'];
+            $requestData = $requestData['add_article'];
         }
 
         $form = $this->createForm(AddArticleType::class);

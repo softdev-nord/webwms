@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace WebWMS\Service\Supplier;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Supplier;
 use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
+use WebWMS\Service\DateTimeService;
 
 /**
  * @package:    WebWMS\Service
@@ -20,16 +21,17 @@ use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
 class SupplierService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private SupplierDataHandler $supplierDataHandler
+        private SupplierDataHandler $supplierDataHandler,
+        private DateTimeService $dateTimeService
     ) {
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function getSupplierApi(int $supplierId): ?Supplier
     {
-        $supplier = $this->entityManager
-            ->getRepository(Supplier::class)
-            ->find($supplierId);
+        $supplier = $this->supplierDataHandler->getSupplierApi($supplierId);
 
         if (!$supplier) {
             throw new NotFoundException('Supplier with id '.$supplierId.' does not exist!');
@@ -40,60 +42,50 @@ class SupplierService
 
     public function getAllSuppliersApi(): ?array
     {
-        return $this->entityManager
-            ->getRepository(Supplier::class)
-            ->findAll();
+        return $this->supplierDataHandler->getAllSuppliersApi();
     }
 
-    public function addSupplierApi(
-        int $supplierId,
-        int $supplierNr,
-        string $supplierName,
-        string $supplierAddressAddition,
-        string $supplierAddressStreet,
-        string $supplierAddressStreetNr,
-        string $supplierAddressCountryCode,
-        string $supplierAddressZipCode,
-        string $supplierAddressCity
-    ): Supplier {
+    public function addSupplierApi(Request $request): Supplier
+    {
+        $requestData = $request->request->all();
         $supplier = new Supplier();
-        $supplier->setSupplierId($supplierId);
-        $supplier->setSupplierNr($supplierNr);
-        $supplier->setSupplierName($supplierName);
-        $supplier->setSupplierAddressAddition($supplierAddressAddition);
-        $supplier->setSupplierAddressStreet($supplierAddressStreet);
-        $supplier->setSupplierAddressStreetNr($supplierAddressStreetNr);
-        $supplier->setSupplierAddressCountryCode($supplierAddressCountryCode);
-        $supplier->setSupplierAddressZipcode($supplierAddressZipCode);
-        $supplier->setSupplierAddressCity($supplierAddressCity);
+        $supplier->setSupplierNr((int) $requestData['supplierNr']);
+        $supplier->setSupplierName($requestData['supplierName']);
+        $supplier->setSupplierAddressAddition($requestData['supplierAddressAddition']);
+        $supplier->setSupplierAddressStreet($requestData['supplierAddressStreet']);
+        $supplier->setSupplierAddressStreetNr($requestData['supplierAddressStreetNr']);
+        $supplier->setSupplierAddressCountryCode($requestData['supplierAddressCountryCode']);
+        $supplier->setSupplierAddressZipcode($requestData['supplierAddressZipcode']);
+        $supplier->setSupplierAddressCity($requestData['supplierAddressCity']);
+        $supplier->setCreatedAt($this->dateTimeService->createDateTime());
         $this->supplierDataHandler->save($supplier);
 
         return $supplier;
     }
 
-    public function updateSupplierApi(
-        int $supplierNr,
-        string $supplierName,
-        string $supplierAddressAddition,
-        string $supplierAddressStreet,
-        string $supplierAddressStreetNr,
-        string $supplierAddressCountryCode,
-        string $supplierAddressZipCode,
-        string $supplierAddressCity
-    ): ?Supplier {
-        $supplier = $this->supplierDataHandler->getSupplierByNr($supplierNr);
+    public function updateSupplierApi(Request $request): ?Supplier
+    {
+        $requestData = $request->request->all();
 
-        $supplier->setSupplierNr($supplierNr);
-        $supplier->setSupplierName($supplierName);
-        $supplier->setSupplierAddressAddition($supplierAddressAddition);
-        $supplier->setSupplierAddressStreet($supplierAddressStreet);
-        $supplier->setSupplierAddressStreetNr($supplierAddressStreetNr);
-        $supplier->setSupplierAddressCountryCode($supplierAddressCountryCode);
-        $supplier->setSupplierAddressZipcode($supplierAddressZipCode);
-        $supplier->setSupplierAddressCity($supplierAddressCity);
+        $supplier = $this->supplierDataHandler->getSupplierByNr($requestData['supplierNr']);
+
+        $supplier->setSupplierNr((int) $requestData['supplierNr']);
+        $supplier->setSupplierName($requestData['supplierName']);
+        $supplier->setSupplierAddressAddition($requestData['supplierAddressAddition']);
+        $supplier->setSupplierAddressStreet($requestData['supplierAddressStreet']);
+        $supplier->setSupplierAddressStreetNr($requestData['supplierAddressStreetNr']);
+        $supplier->setSupplierAddressCountryCode($requestData['supplierAddressCountryCode']);
+        $supplier->setSupplierAddressZipcode($requestData['supplierAddressZipcode']);
+        $supplier->setSupplierAddressCity($requestData['supplierAddressCity']);
+        $supplier->setUpdatedAt($this->dateTimeService->createDateTime());
         $this->supplierDataHandler->save($supplier);
 
         return $supplier;
+    }
+
+    public function getSupplierByNr(int $supplierNr): ?Supplier
+    {
+        return $this->supplierDataHandler->getSupplierByNr($supplierNr);
     }
 
     /**
@@ -101,9 +93,7 @@ class SupplierService
      */
     public function deleteSupplierApi(int $supplierId): void
     {
-        $supplier = $this->entityManager
-            ->getRepository(Supplier::class)
-            ->find($supplierId);
+        $supplier = $this->supplierDataHandler->getSupplierById($supplierId);
 
         if (!$supplier) {
             throw new NotFoundException('Supplier with id '.$supplierId.' does not exist!');
@@ -112,19 +102,17 @@ class SupplierService
         }
     }
 
+    public function getSupplierById($supplierId): ?Supplier
+    {
+        return $this->supplierDataHandler->getSupplierById($supplierId);
+    }
+
+    /**
+     * @throws Exception
+     */
     public function getAllSuppliers(): JsonResponse
     {
-        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
-
-        $queryBuilder
-            ->select('*')
-            ->from('supplier');
-
-        $stmt = $queryBuilder->executeQuery();
-
-        $results = $stmt->fetchAllAssociative();
-
-        return new JsonResponse($results);
+        return $this->supplierDataHandler->getAllSuppliers();
     }
 
     /**
@@ -145,21 +133,7 @@ class SupplierService
      */
     public function getLastSupplier(): array
     {
-        return $this->entityManager
-            ->getRepository(Supplier::class)
-            ->findBy([], ['supplierNr' => 'DESC'], 1, 0);
-    }
-
-    public function getSupplierById($id): ?Supplier
-    {
-        return $this->entityManager
-            ->getRepository(Supplier::class)
-            ->findOneBy(['supplierId' => $id]);
-    }
-
-    public function getSupplierByNr(int $supplierNr): ?Supplier
-    {
-        return $this->supplierDataHandler->getSupplierByNr($supplierNr);
+        return $this->supplierDataHandler->getLastSupplier();
     }
 
     public function updateSupplier($requestData): ?Supplier

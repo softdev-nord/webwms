@@ -87,17 +87,7 @@ class Supplier extends AbstractFOSRestController
      */
     public function postSupplier(Request $request): View
     {
-        $supplier = $this->supplierService->addSupplierApi(
-            $request->get('supplier_id'),
-            $request->get('supplier_nr'),
-            $request->get('supplier_name'),
-            $request->get('supplier_address_addition'),
-            $request->get('supplier_address_street'),
-            $request->get('supplier_address_street_nr'),
-            $request->get('supplier_address_country_code'),
-            $request->get('supplier_address_zipcode'),
-            $request->get('supplier_address_city')
-        );
+        $supplier = $this->supplierService->addSupplierApi($request);
 
         return $this->view($supplier, Response::HTTP_CREATED);
     }

@@ -63,7 +63,7 @@ class TransportRequestService
             $transportRequest->setBookingMethod($data['booking_method']);
             $transportRequest->setCharge($data['charge']);
             $transportRequest->setLoadingEquipment($data['loading_equipment']);
-            $transportRequest->setTrType('1');
+            $transportRequest->setTrType(1);
         }
 
         $createTransportRequestEntry = $this->setData($transportRequest, $request);

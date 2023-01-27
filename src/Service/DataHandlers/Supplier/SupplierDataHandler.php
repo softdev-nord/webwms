@@ -8,6 +8,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Supplier;
+use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\DateTimeService;
 
 /**
@@ -93,6 +94,13 @@ class SupplierDataHandler
         }
     }
 
+    public function getSupplierByNr(int $supplierNr): ?Supplier
+    {
+        return $this->entityManager
+            ->getRepository(Supplier::class)
+            ->findOneBy(['supplierNr' => $supplierNr]);
+    }
+
     /**
      * @throws Exception
      */
@@ -131,8 +139,7 @@ class SupplierDataHandler
                     $rowSupplier['supplier_address_country_code'].'|'.
                     $rowSupplier['supplier_address_zipcode'].'|'.
                     $rowSupplier['supplier_address_city'].'|'.
-                    $rowSupplier['supplier_id']
-                ;
+                    $rowSupplier['supplier_id'];
 
                 $data[] = $nameSupplier;
             }
@@ -141,17 +148,55 @@ class SupplierDataHandler
         return new JsonResponse($data);
     }
 
-    public function getSupplierByNr(int $supplierNr): ?Supplier
-    {
-        return $this->entityManager
-            ->getRepository(Supplier::class)
-            ->findOneBy(['supplierNr' => $supplierNr]);
-    }
-
     public function getSupplierById(int $supplierId): ?Supplier
     {
         return $this->entityManager
             ->getRepository(Supplier::class)
             ->findOneBy(['supplierId' => $supplierId]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getAllSuppliers(): JsonResponse
+    {
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('*')
+            ->from('supplier');
+
+        $stmt = $queryBuilder->executeQuery();
+
+        $results = $stmt->fetchAllAssociative();
+
+        return new JsonResponse($results);
+    }
+
+    public function getSupplierApi(int $supplierId): ?Supplier
+    {
+        $supplier = $this->entityManager
+            ->getRepository(Supplier::class)
+            ->find($supplierId);
+
+        if (!$supplier) {
+            throw new NotFoundException('Supplier with id '.$supplierId.' does not exist!');
+        }
+
+        return $supplier;
+    }
+
+    public function getAllSuppliersApi(): ?array
+    {
+        return $this->entityManager
+            ->getRepository(Supplier::class)
+            ->findAll();
+    }
+
+    public function getLastSupplier(): array
+    {
+        return $this->entityManager
+            ->getRepository(Supplier::class)
+            ->findBy([], ['supplierNr' => 'DESC'], 1, 0);
     }
 }

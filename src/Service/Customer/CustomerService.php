@@ -72,7 +72,6 @@ class CustomerService
     }
 
     public function addCustomerApi(
-        int $customerId,
         int $customerNr,
         string $customerName,
         string $customerAddressAddition,
@@ -83,7 +82,6 @@ class CustomerService
         string $customerCity
     ): Customer {
         return $this->customerDataHandler->addCustomerApi(
-            $customerId,
             $customerNr,
             $customerName,
             $customerAddressAddition,
@@ -96,8 +94,6 @@ class CustomerService
     }
 
     public function updateCustomerApi(
-        int $customerMainId,
-        int $customerId,
         int $customerNr,
         string $customerName,
         string $customerAddressAddition,
@@ -108,8 +104,6 @@ class CustomerService
         string $customerCity
     ): ?Customer {
         return $this->customerDataHandler->updateCustomerApi(
-            $customerMainId,
-            $customerId,
             $customerNr,
             $customerName,
             $customerAddressAddition,
