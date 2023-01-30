@@ -17,7 +17,7 @@
 * NodeJs
 * FriendsOfSymfony/FOSRestBundle
 * Nelmio/NelmioApiDocBundle
-* Symfony/UX-Chart.js
+* Symfony/UX-Chart
 
 ## CI / CD:
 * CircleCI
@@ -47,7 +47,15 @@ Die folgenden Programme müssen auf Ihrem System vorhanden sein:
 * **Docker** siehe https://docs.docker.com/engine/install/
 * **Docker Compose** siehe https://docs.docker.com/compose/install/
 
-### Git-Repositories klonen/auschecken
+### Hosts Eintrag hinzufügen:
+* Zuordnung von Hostnamen zu den IP-Adressen in der `hosts`.
+
+```shell
+172.45.0.2 webwms.local www.webwms.local
+172.45.0.4 pma.webwms.local
+```
+
+### Git-Repositories klonen/auschecken:
 * Klonen Sie dieses Repository auf Ihrem lokalen Computer
 * Konfigurieren Sie .env nach Bedarf
 * Führen Sie den Befehl `docker-compose up -d` aus.
