@@ -57,20 +57,28 @@ class SupplierOrder extends AbstractController
         );
     }
 
-    #[Route('/bestellung_anlegen', name: 'new_supplier_order')]
-    public function addNewSupplierOrder(Request $request): RedirectResponse|Response
+    #[Route('/bestellung_anlegen', name: 'add_supplier_order')]
+    public function addSupplierOrder(Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
+        $requestData = $request->request->all();
+
+        if (!empty($requestData)) {
+            $requestData = $requestData['add_supplier_order'];
+        }
+
         $form = $this->createForm(SupplierOrderType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $requestData['message'] = 'Die Bestellung wurde erfolgreich angelegt.';
+            $logMessage = sprintf('Die Bestellung mit der Bestell-Nr. %s wurde angelegt.', $requestData['supplierOrderNr']);
+            $this->loggingService->write($request, $logMessage);
             $this->supplierService->addSupplier($request);
-            $this->addFlash('success', 'Die Bestellung wurde erfolgreich angelegt.');
 
-            return $this->redirectToRoute('add_supplier');
+            return $this->redirectToRoute('add_supplier_order');
         }
 
         return $this->render(

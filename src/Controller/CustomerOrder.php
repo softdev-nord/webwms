@@ -83,8 +83,8 @@ class CustomerOrder extends AbstractController
             $customerOrder->setCustomerOrderId($data['customer_order[customer_order_id]']);
             $customerOrder->setCustomerOrderNr($data['customer_order[customer_order_nr]']);
             $customerOrder->setCustomerOrderOrderDate($data['customer_order[customer_order_order_date]']);
-            $customerOrder->setCustomerOrderReference($data['customer_order[customer_order_reference]']);*/
-            $customerOrder->setUsrId((int) $this->getUser());
+            $customerOrder->setCustomerOrderReference($data['customer_order[customer_order_reference]']);
+            $customerOrder->setUsrId((int) $this->getUser());*/
 
             $entityManager->persist($customerOrder);
             // $em->persist($customerOrderPos);
@@ -134,7 +134,7 @@ class CustomerOrder extends AbstractController
     }
 
     #[Route('/auftrag_bearbeiten/id/{id}', name: 'edit_customer_order')]
-    public function editCustomerOrder(Request $request, $id): RedirectResponse|Response
+    public function editCustomerOrder(Request $request, int $id): RedirectResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');

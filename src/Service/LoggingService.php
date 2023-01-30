@@ -19,18 +19,19 @@ class LoggingService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private TokenStorageInterface $tokenStorage
+        private TokenStorageInterface $tokenStorage,
+        private DateTimeService $dateTimeService
     ) {
     }
 
-    public function write(Request $request, $message)
+    public function write(Request $request, $message): void
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
         $logEntry = new Logging();
         $logEntry->setRoute($request->attributes->get('_route'));
         $logEntry->setMessage($message);
-        $logEntry->setDate(new \DateTime('NOW', new \DateTimeZone('Europe/Berlin')));
+        $logEntry->setDate($this->dateTimeService->createDateTime());
         $logEntry->setUser($user->getFirstname().' '.$user->getLastname());
         $logEntry->setIpAddress($request->getClientIp());
         $logEntry->setUserAgent($request->headers->get('User-Agent'));

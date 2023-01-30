@@ -5,7 +5,7 @@ includes:
 parameters:
 
     #  max or choose from 10 levels (0 is the loosest, 9 is the strictest).
-    level: 0
+    level: 5
 
 #    symfony:
 #        container_xml_path: var/cache/dev/WebWMS_KernelDevDebugContainer.xml
@@ -14,3 +14,4 @@ parameters:
         - src
 
     reportUnmatchedIgnoredErrors: false
+    checkGenericClassInNonGenericObjectType: false

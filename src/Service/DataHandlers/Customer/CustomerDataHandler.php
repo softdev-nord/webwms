@@ -124,7 +124,7 @@ class CustomerDataHandler
         return new JsonResponse($data);
     }
 
-    public function addCustomer($requestData): void
+    public function addCustomer($requestData): Customer
     {
         $customer = new Customer();
 
@@ -139,6 +139,8 @@ class CustomerDataHandler
         $customer->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($customer);
+
+        return $customer;
     }
 
     public function updateCustomer($requestData): ?Customer
@@ -170,61 +172,6 @@ class CustomerDataHandler
     {
         return $this->entityManager
             ->getRepository(Customer::class)->findAll();
-    }
-
-    public function addCustomerApi(
-        int $customerNr,
-        string $customerName,
-        string $customerAddressAddition,
-        string $customerAddressStreet,
-        string $customerAddressStreetNr,
-        string $customerCountryCode,
-        string $customerZipCode,
-        string $customerCity
-    ): Customer {
-        $customer = new Customer();
-
-        $customer->setCustomerNr($customerNr);
-        $customer->setCustomerName($customerName);
-        $customer->setCustomerAddressAddition($customerAddressAddition);
-        $customer->setCustomerAddressStreet($customerAddressStreet);
-        $customer->setCustomerAddressStreetNr($customerAddressStreetNr);
-        $customer->setCustomerCountryCode($customerCountryCode);
-        $customer->setCustomerZipCode($customerZipCode);
-        $customer->setCustomerCity($customerCity);
-        $this->save($customer);
-
-        return $customer;
-    }
-
-    public function updateCustomerApi(
-        int $customerNr,
-        string $customerName,
-        string $customerAddressAddition,
-        string $customerAddressStreet,
-        string $customerAddressStreetNr,
-        string $customerCountryCode,
-        string $customerZipCode,
-        string $customerCity
-    ): ?Customer {
-        $customer = $this->entityManager
-            ->getRepository(Customer::class)->find($customerNr);
-
-        if (!$customer) {
-            return null;
-        }
-
-        $customer->setCustomerNr($customerNr);
-        $customer->setCustomerName($customerName);
-        $customer->setCustomerAddressAddition($customerAddressAddition);
-        $customer->setCustomerAddressStreet($customerAddressStreet);
-        $customer->setCustomerAddressStreetNr($customerAddressStreetNr);
-        $customer->setCustomerCountryCode($customerCountryCode);
-        $customer->setCustomerZipCode($customerZipCode);
-        $customer->setCustomerCity($customerCity);
-        $this->save($customer);
-
-        return $customer;
     }
 
     public function deleteCustomerApi(int $customerId): void

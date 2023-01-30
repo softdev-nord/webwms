@@ -19,7 +19,7 @@ class ArticleValidationService
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateArticleData($requestData): array
+    public function validateArticleData(array $requestData): array
     {
         $responseData = [];
 

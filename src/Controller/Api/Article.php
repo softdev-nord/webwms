@@ -102,20 +102,7 @@ class Article extends AbstractFOSRestController
      */
     public function postArticle(Request $request): View
     {
-        $article = $this->articleService->addArticleApi(
-            $request->get('article_nr'),
-            $request->get('article_name'),
-            $request->get('article_category'),
-            $request->get('article_weight'),
-            $request->get('article_ean'),
-            $request->get('article_unit'),
-            $request->get('article_depth'),
-            $request->get('article_width'),
-            $request->get('article_height'),
-            $request->get('stock_out_strategy'),
-            $request->get('le_quantity'),
-            $request->get('standard_loading_equipment')
-        );
+        $article = $this->articleService->addArticleApi($request);
 
         return $this->view($article, Response::HTTP_CREATED);
     }
@@ -134,21 +121,10 @@ class Article extends AbstractFOSRestController
      */
     public function putArticle(int $articleId, Request $request): View
     {
-        $article = $this->articleService->updateArticleApi(
-            $articleId,
-            $request->get('article_nr'),
-            $request->get('article_name'),
-            $request->get('article_category'),
-            $request->get('article_weight'),
-            $request->get('article_ean'),
-            $request->get('article_unit'),
-            $request->get('article_depth'),
-            $request->get('article_width'),
-            $request->get('article_height'),
-            $request->get('stock_out_strategy'),
-            $request->get('le_quantity'),
-            $request->get('standard_loading_equipment')
-        );
+        if (!$articleId) {
+            throw new EntityNotFoundException('Article with id '.$articleId.' does not exist!');
+        }
+        $article = $this->articleService->updateArticleApi($request);
 
         return $this->view($article, Response::HTTP_OK);
     }

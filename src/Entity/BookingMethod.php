@@ -51,18 +51,6 @@ class BookingMethod
         return $this;
     }
 
-    public function getMenuId(): int
-    {
-        return $this->menuId;
-    }
-
-    public function setMenuId(?int $menuId): self
-    {
-        $this->menuId = $menuId;
-
-        return $this;
-    }
-
     public function getConfirmation(): int
     {
         return $this->confirmation;
