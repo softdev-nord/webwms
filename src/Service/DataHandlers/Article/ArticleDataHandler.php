@@ -71,8 +71,9 @@ class ArticleDataHandler
     {
         $conn = $this->entityManager->getConnection();
 
-        $sql = "SELECT art.article_id, art.article_nr, art.article_name, art.article_category, art.article_weight, art.article_ean, art.article_unit, art.article_depth, art.article_width, art.article_height,
-                (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) - (SUM(IF(transport_history.tr_type = '2', transport_history.tr_quantity, 0.000))) 
+        $sql = "SELECT art.article_id, art.article_nr, art.article_name, art.article_category, art.article_weight, art.article_ean, art.article_unit, art.article_depth, art.article_width, art.article_height, art.updated_at,
+                (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) - (SUM(IF(transport_history.tr_type = '2', transport_history.tr_quantity, 0.000)))
+
                     FROM transport_history WHERE transport_history.article_nr = art.article_nr GROUP BY transport_history.article_nr LIMIT 1) AS lbw_menge
                 FROM transport_history AS tph
                 RIGHT OUTER JOIN article AS art
@@ -82,5 +83,14 @@ class ArticleDataHandler
         $data = $conn->fetchAllAssociative($sql);
 
         return new JsonResponse($data);
+    }
+
+    public function deleteArticle(int $articleNr): void
+    {
+        $article = $this->getArticleByNr($articleNr);
+
+        if ($article) {
+            $this->delete($article);
+        }
     }
 }

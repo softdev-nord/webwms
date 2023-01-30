@@ -31,11 +31,6 @@ class ArticleService
     ) {
     }
 
-    public function getArticleById(int $articleId): ?Article
-    {
-        return $this->articleDataHandler->getArticleById($articleId);
-    }
-
     public function getArticleApi(int $articleId): ?Article
     {
         $article = $this->articleDataHandler->getArticleById($articleId);
@@ -47,9 +42,33 @@ class ArticleService
         return $article;
     }
 
+    public function getArticleById(int $articleId): ?Article
+    {
+        return $this->articleDataHandler->getArticleById($articleId);
+    }
+
     public function getAllArticlesApi(): ?array
     {
         return $this->articleDataHandler->getAllArticles();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getAllArticles(): JsonResponse
+    {
+        $articles = $this->articleDataHandler->getAllArticlesWithJoin();
+
+        if (!$articles) {
+            throw $this->createNotFoundException('Keine Artikel gefunden');
+        }
+
+        return $articles;
+    }
+
+    protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException
+    {
+        return new NotFoundHttpException($message, $previous);
     }
 
     public function addArticleApi(
@@ -137,20 +156,6 @@ class ArticleService
     }
 
     /**
-     * @throws Exception
-     */
-    public function getAllArticles(): JsonResponse
-    {
-        $articles = $this->articleDataHandler->getAllArticlesWithJoin();
-
-        if (!$articles) {
-            throw $this->createNotFoundException('Keine Artikel gefunden');
-        }
-
-        return $articles;
-    }
-
-    /**
      * Get article for.
      *
      * @throws Exception
@@ -208,7 +213,7 @@ class ArticleService
      */
     public function addArticle(Request $request): void
     {
-        $params = $request->request->all()['add_new_article'];
+        $params = $request->request->all()['add_article'];
         $article = new Article();
 
         $article->setArticleNr($params['articleNr']);
@@ -233,7 +238,9 @@ class ArticleService
      */
     public function updateArticle($requestData): ?Article
     {
-        $article = $this->articleDataHandler->getArticleById((int) $requestData['articleId']);
+        $article = $this->articleDataHandler->getArticleById(
+            (int) $requestData['articleId']
+        );
 
         if (!$article) {
             return null;
@@ -258,6 +265,11 @@ class ArticleService
         return $article;
     }
 
+    public function deleteArticle(int $articleNr): void
+    {
+        $this->articleDataHandler->deleteArticle($articleNr);
+    }
+
     /**
      * Get last article.
      */
@@ -266,10 +278,5 @@ class ArticleService
         return $this->entityManager
             ->getRepository(Article::class)
             ->findOneBy([], ['articleNr' => 'DESC']);
-    }
-
-    protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException
-    {
-        return new NotFoundHttpException($message, $previous);
     }
 }

@@ -249,9 +249,7 @@
                                     <div class="sidebar-submenu-sub">
                                         <ul>
                                             <li><a href="{{ path('article') }}">Übersicht Artikel</a></li>
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                                <li><a href="{{ path('add_article') }}">Artikel Anlegen</a></li>
-                                            {% endif %}
+                                            <li><a id="add_article">Artikel Anlegen</a></li>
                                             {% if is_granted('ROLE_SUPER_ADMIN') %}
                                                 <li><a href="#">Sachmerkmale zuordnen</a></li>
                                             {% endif %}

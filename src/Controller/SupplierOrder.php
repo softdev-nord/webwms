@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Form\EditSupplierOrderType;
-use WebWMS\Form\SupplierOrderType;
+use WebWMS\Form\SupplierOrder\EditSupplierOrderType;
+use WebWMS\Form\SupplierOrder\SupplierOrderType;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\Supplier\SupplierService;
@@ -67,7 +67,7 @@ class SupplierOrder extends AbstractController
         $form = $this->createForm(SupplierOrderType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->supplierService->addNewSupplier($request);
+            $this->supplierService->addSupplier($request);
             $this->addFlash('success', 'Die Bestellung wurde erfolgreich angelegt.');
 
             return $this->redirectToRoute('add_supplier');
@@ -96,8 +96,6 @@ class SupplierOrder extends AbstractController
         }
 
         $supplierOrder = $this->supplierOrderService->getSupplierOrderById((int) $id);
-
-        // dd($supplierOrder);
 
         $form = $this->createForm(EditSupplierOrderType::class, $supplierOrder);
         $form->handleRequest($request);

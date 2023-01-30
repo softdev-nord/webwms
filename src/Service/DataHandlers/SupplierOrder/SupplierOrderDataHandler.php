@@ -45,7 +45,7 @@ class SupplierOrderDataHandler
     {
         return $this->entityManager
             ->getRepository(SupplierOrder::class)
-            ->findOneBy(['id' => $id]);
+            ->findOneBy(['supplierOrderId' => $id]);
     }
 
     public function updateSupplierOrder($requestData): ?SupplierOrder

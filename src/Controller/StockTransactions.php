@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Service\BookingMethod\BookingMethodService;
+use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\TransportRequestService;
 
 /**
@@ -23,7 +24,8 @@ class StockTransactions extends AbstractController
 {
     public function __construct(
         private BookingMethodService $bookingMethodService,
-        private TransportRequestService $transportRequestService
+        private TransportRequestService $transportRequestService,
+        private StockLocationService $stockLocationService
     ) {
     }
 
@@ -326,6 +328,7 @@ class StockTransactions extends AbstractController
     #[Route('/stock_in_final', name: 'stock_in_final')]
     public function stockInFinal(Request $request)
     {
+        dd($request);
         $this->transportRequestService->createTransportRequest($request);
     }
 
@@ -338,5 +341,23 @@ class StockTransactions extends AbstractController
         }
 
         return $suId;
+    }
+
+    #[Route('/edit_pre_selected_stock_location/id/{stockLocationId}', name: 'edit_pre_selected_stock_location')]
+    public function editPreSelectedStockLocation(Request $request)
+    {
+        $stockLocationId = $request->attributes->get('stockLocationId');
+        /* @var $stockSystem \WebWMS\Entity\StockLocation */
+        $stockSystem = $this->stockLocationService->getSockLocationDetailsById($stockLocationId);
+
+        $preSelectedStockLocation = $this->stockLocationService->getAllFreeStockLocations($stockSystem[0]->getStockLocationDesc());
+
+        return $this->render(
+            'stock/stock_in_edit.html.twig',
+            [
+                'freeStockLocations' => $preSelectedStockLocation,
+                'editArticle' => true,
+            ]
+        );
     }
 }

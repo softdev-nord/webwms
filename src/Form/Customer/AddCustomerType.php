@@ -1,0 +1,120 @@
+<?php
+
+namespace WebWMS\Form\Customer;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use WebWMS\Entity\Customer;
+
+/**
+ * @package:    WebWMS\Form
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2022, SoftDev Nord
+ * Class        AddCustomerType
+ */
+class AddCustomerType extends AbstractType
+{
+    /**
+     * @SuppressWarnings("unused")
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('customerId', HiddenType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerId',
+                    'data-type' => 'customerId',
+                ],
+            ])
+            ->add('customerNr', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerNr',
+                    'data-type' => 'customerNr',
+                ],
+            ])
+            ->add('customerName', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerName',
+                    'data-type' => 'customerName',
+                ],
+            ])
+            ->add('customerAddressAddition', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerAddressAddition',
+                    'data-type' => 'customerAddressAddition',
+                ],
+            ])
+            ->add('customerAddressStreet', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerAddressStreet',
+                    'data-type' => 'customerAddressStreet',
+                ],
+            ])
+            ->add('customerAddressStreetNr', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerAddressStreetNr',
+                    'data-type' => 'customerAddressStreetNr',
+                ],
+            ])
+            ->add('customerCountryCode', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerCountryCode',
+                    'data-type' => 'customerCountryCode',
+                ],
+            ])
+            ->add('customerZipCode', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerZipCode',
+                    'data-type' => 'customerZipCode',
+                ],
+            ])
+            ->add('customerCity', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerCity',
+                    'data-type' => 'customerCity',
+                ],
+            ])
+            ->add('save', ButtonType::class, [
+                'label' => 'Kunden anlegen',
+                'attr' => [
+                    'class' => 'btn btn-lg',
+                ],
+            ])
+            ->add('back_to_customer_overview', ButtonType::class, [
+                'label' => 'Zurück zur Übersicht',
+                'attr' => [
+                    'class' => 'btn btn-lg',
+                ],
+            ])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Customer::class,
+        ]);
+    }
+}

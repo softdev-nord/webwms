@@ -44,7 +44,6 @@ class TransportRequestService
         $transportRequest = new TransportRequest();
 
         $requestData = $request->request->all();
-        dd($requestData['stock_in_final']);
         foreach ($requestData['stock_in_final'] as $key => $data) {
             $transportRequest->setSuId((int) $data[$key]['stock_su_id']);
             $transportRequest->setTrNr($this->getLastTransportRequestNr() + 1);
@@ -64,12 +63,10 @@ class TransportRequestService
             $transportRequest->setBookingMethod($data['booking_method']);
             $transportRequest->setCharge($data['charge']);
             $transportRequest->setLoadingEquipment($data['loading_equipment']);
-            $transportRequest->setTrType('1');
+            $transportRequest->setTrType(1);
         }
 
         $createTransportRequestEntry = $this->setData($transportRequest, $request);
-
-        dd($createTransportRequestEntry);
 
         $this->entityManager->persist($createTransportRequestEntry);
         $this->entityManager->flush();

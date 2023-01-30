@@ -7,7 +7,6 @@ namespace WebWMS\Service\DataHandlers\Customer;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Customer;
 use WebWMS\Service\DateTimeService;
 
@@ -84,9 +83,7 @@ class CustomerDataHandler
     public function getCustomers(): JsonResponse
     {
         $connection = $this->entityManager->getConnection();
-
         $numOfBoxCustomer = !empty(filter_input(INPUT_GET, 'numOfBoxCustomer')) ? filter_input(INPUT_GET, 'numOfBoxCustomer') : '';
-        $nameKd = !empty(filter_input(INPUT_GET, 'customer_nr')) ? strtolower(trim(filter_input(INPUT_GET, 'customer_nr'))) : '';
 
         $boxName = match ($numOfBoxCustomer) {
             'customer_name' => 'customer_name',
@@ -101,16 +98,26 @@ class CustomerDataHandler
 
         $data = [];
         if (!empty(filter_input(INPUT_GET, 'name_customer'))) {
-            $nameKd = strtolower(trim(filter_input(INPUT_GET, 'name_customer')));
+            $nameCustomer = strtolower(trim(filter_input(INPUT_GET, 'name_customer')));
 
             $sqlKd = "SELECT customer_nr, customer_name, customer_address_addition, 
                         customer_address_street, customer_address_street_nr, customer_country_code, 
-                        customer_zip_code, customer_city, id FROM customer WHERE LOWER($boxName) LIKE '".$nameKd."%'";
+                        customer_zip_code, customer_city, customer_id FROM customer WHERE LOWER($boxName) LIKE '".$nameCustomer."%'";
             $stmt = $connection->executeQuery($sqlKd);
 
-            while ($rowKd = $stmt->fetchAssociative()) {
-                $nameKd = $rowKd['customer_nr'].'|'.$rowKd['customer_name'].'|'.$rowKd['customer_address_addition'].'|'.$rowKd['customer_address_street'].'|'.$rowKd['customer_address_street_nr'].'|'.$rowKd['customer_country_code'].'|'.$rowKd['customer_zip_code'].'|'.$rowKd['customer_city'].'|'.$rowKd['id'];
-                $data[] = $nameKd;
+            while ($rowCustomer = $stmt->fetchAssociative()) {
+                $nameCustomer = $rowCustomer['customer_nr'].'|'.
+                    $rowCustomer['customer_name'].'|'.
+                    $rowCustomer['customer_address_addition'].'|'.
+                    $rowCustomer['customer_address_street'].'|'.
+                    $rowCustomer['customer_address_street_nr'].'|'.
+                    $rowCustomer['customer_country_code'].'|'.
+                    $rowCustomer['customer_zip_code'].'|'.
+                    $rowCustomer['customer_city'].'|'.
+                    $rowCustomer['customer_id']
+                ;
+
+                $data[] = $nameCustomer;
             }
         }
 
@@ -129,88 +136,9 @@ class CustomerDataHandler
         $customer->setCustomerCountryCode((string) $requestData['customerCountryCode']);
         $customer->setCustomerZipCode((string) $requestData['customerZipCode']);
         $customer->setCustomerCity((string) $requestData['customerCity']);
-        $customer->setUpdatedAt($this->dateTimeService->createDateTime());
+        $customer->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($customer);
-    }
-
-    public function getAllCustomersApi(): ?array
-    {
-        return $this->entityManager
-            ->getRepository(Customer::class)->findAll();
-    }
-
-    public function addCustomerApi(
-        int $customerId,
-        int $customerNr,
-        string $customerName,
-        string $customerAddressAddition,
-        string $customerAddressStreet,
-        string $customerAddressStreetNr,
-        string $customerCountryCode,
-        string $customerZipCode,
-        string $customerCity
-    ): Customer {
-        $customer = new Customer();
-        $customer->setCustomerId($customerId);
-        $customer->setCustomerNr($customerNr);
-        $customer->setCustomerName($customerName);
-        $customer->setCustomerAddressAddition($customerAddressAddition);
-        $customer->setCustomerAddressStreet($customerAddressStreet);
-        $customer->setCustomerAddressStreetNr($customerAddressStreetNr);
-        $customer->setCustomerCountryCode($customerCountryCode);
-        $customer->setCustomerZipCode($customerZipCode);
-        $customer->setCustomerCity($customerCity);
-        $this->save($customer);
-
-        return $customer;
-    }
-
-    public function updateCustomerApi(
-        int $customerMainId,
-        int $customerId,
-        int $customerNr,
-        string $customerName,
-        string $customerAddressAddition,
-        string $customerAddressStreet,
-        string $customerAddressStreetNr,
-        string $customerCountryCode,
-        string $customerZipCode,
-        string $customerCity
-    ): ?Customer {
-        $customer = $this->entityManager
-            ->getRepository(Customer::class)->find($customerMainId);
-
-        if (!$customer) {
-            return null;
-        }
-
-        $customer->setCustomerId($customerId);
-        $customer->setCustomerNr($customerNr);
-        $customer->setCustomerName($customerName);
-        $customer->setCustomerAddressAddition($customerAddressAddition);
-        $customer->setCustomerAddressStreet($customerAddressStreet);
-        $customer->setCustomerAddressStreetNr($customerAddressStreetNr);
-        $customer->setCustomerCountryCode($customerCountryCode);
-        $customer->setCustomerZipCode($customerZipCode);
-        $customer->setCustomerCity($customerCity);
-        $this->save($customer);
-
-        return $customer;
-    }
-
-    public function deleteCustomerApi(int $customerId): void
-    {
-        $customer = $this->getCustomerById($customerId);
-        if ($customer) {
-            $this->delete($customer);
-        }
-    }
-
-    public function getLastCustomer(): array
-    {
-        return $this->entityManager
-            ->getRepository(Customer::class)->findBy([], ['customerNr' => 'DESC'], 1, 0);
     }
 
     public function updateCustomer($requestData): ?Customer
@@ -236,5 +164,80 @@ class CustomerDataHandler
         $this->update($customer);
 
         return $customer;
+    }
+
+    public function getAllCustomersApi(): ?array
+    {
+        return $this->entityManager
+            ->getRepository(Customer::class)->findAll();
+    }
+
+    public function addCustomerApi(
+        int $customerNr,
+        string $customerName,
+        string $customerAddressAddition,
+        string $customerAddressStreet,
+        string $customerAddressStreetNr,
+        string $customerCountryCode,
+        string $customerZipCode,
+        string $customerCity
+    ): Customer {
+        $customer = new Customer();
+
+        $customer->setCustomerNr($customerNr);
+        $customer->setCustomerName($customerName);
+        $customer->setCustomerAddressAddition($customerAddressAddition);
+        $customer->setCustomerAddressStreet($customerAddressStreet);
+        $customer->setCustomerAddressStreetNr($customerAddressStreetNr);
+        $customer->setCustomerCountryCode($customerCountryCode);
+        $customer->setCustomerZipCode($customerZipCode);
+        $customer->setCustomerCity($customerCity);
+        $this->save($customer);
+
+        return $customer;
+    }
+
+    public function updateCustomerApi(
+        int $customerNr,
+        string $customerName,
+        string $customerAddressAddition,
+        string $customerAddressStreet,
+        string $customerAddressStreetNr,
+        string $customerCountryCode,
+        string $customerZipCode,
+        string $customerCity
+    ): ?Customer {
+        $customer = $this->entityManager
+            ->getRepository(Customer::class)->find($customerNr);
+
+        if (!$customer) {
+            return null;
+        }
+
+        $customer->setCustomerNr($customerNr);
+        $customer->setCustomerName($customerName);
+        $customer->setCustomerAddressAddition($customerAddressAddition);
+        $customer->setCustomerAddressStreet($customerAddressStreet);
+        $customer->setCustomerAddressStreetNr($customerAddressStreetNr);
+        $customer->setCustomerCountryCode($customerCountryCode);
+        $customer->setCustomerZipCode($customerZipCode);
+        $customer->setCustomerCity($customerCity);
+        $this->save($customer);
+
+        return $customer;
+    }
+
+    public function deleteCustomerApi(int $customerId): void
+    {
+        $customer = $this->getCustomerById($customerId);
+        if ($customer) {
+            $this->delete($customer);
+        }
+    }
+
+    public function getLastCustomer(): array
+    {
+        return $this->entityManager
+            ->getRepository(Customer::class)->findBy([], ['customerNr' => 'DESC'], 1, 0);
     }
 }

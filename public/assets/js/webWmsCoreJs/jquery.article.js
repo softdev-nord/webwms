@@ -31,7 +31,8 @@
             {
                 'data': 'lbw_menge',
                 'defaultContent': 0
-            }
+            },
+            {'data': 'updated_at'},
         ],
         columnDefs: [
             {
@@ -84,12 +85,16 @@
                 case 'edit' :
                     editArticle(row.data().article_id);
                     break;
+                case 'delete' :
+                    deleteArticle(row.data().article_id);
+                    break;
                 default :
                     break
             }
         },
         items: {
-            'edit': {name: 'Bearbeiten', icon: 'edit'}
+            'edit': {name: 'Bearbeiten', icon: 'edit'},
+            'delete': {name: 'Löschen', icon: 'delete'}
         }
     });
 
@@ -129,6 +134,7 @@
         const url = '/artikel_anlegen';
         const content = '<div class="modal-body"></div>';
 
+        $('#modalCenter .modal-dialog').css('max-width', '90%');
         $('#modalCenter .modal-title').text('Artikel anlegen');
         $('#modal-content-ajax').html(content);
         $('#modalCenter').modal('show');
@@ -137,6 +143,30 @@
             url: url,
             type: 'get',
             data: ($('#article-form-new').serialize()),
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+            },
+            success: function (data) {
+                $('#modal-content-ajax').html(data);
+            }
+        });
+
+        return false;
+    }
+
+    function deleteArticle(articleId) {
+        console.log(articleId);
+        const url = '/artikel_löschen/articleId/' + articleId;
+        const content = '<div class="modal-body"></div>';
+
+        $('#modalCenter .modal-dialog').css('max-width', '30%');
+        $('#modalCenter .modal-title').text('Artikel löschen');
+        $('#modal-content-ajax').html(content);
+        $('#modalCenter').modal('show');
+
+        $.ajax({
+            url: url,
+            type: 'get',
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
@@ -196,7 +226,7 @@
     });
 
     // Neuen Artikel speichern
-    $(document).on('click','button#add_new_article_save',function(event) {
+    $(document).on('click','button#add_article_save',function(event) {
         const $form = $('form#article-form-new');
         const url = '/artikel_anlegen';
         event.preventDefault();
@@ -238,7 +268,52 @@
                 }
             }
         });
+    });
 
+    // Artikel löschen
+    $(document).on('click','button#delete_article_delete',function(event) {
+        const articleId = $('#delete_article_articleNr').val();
+        const $form = $('form#article-modal-delete-ask');
+        const url = '/artikel_löschen/articleId/' + articleId;
+        event.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: $form.serialize(),
+            success: function(data) {
+                if (data.error) {
+                    let errors = [];
+                    let i = 0;
+                    $.each(data.error, function(key, value) {
+                        errors[i++] = value + '</br>';
+                    });
+                    let arrayString = errors.join();
+                    const error = arrayString.replace(/,/g, ' ');
+                    $.jAlert({
+                        'title': 'Artikel konnten nicht gelöscht werden',
+                        'content': error,
+                        'theme': 'red',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                } else {
+                    $.jAlert({
+                        'title': 'Artikel erfolgreich gelöscht',
+                        'content': data.message,
+                        'theme': 'green',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                    $('#modalCenter').modal('hide');
+                    artTable.ajax.reload();
+                }
+            }
+        });
     });
 
     // Zurück zur Artikelübersicht
@@ -247,5 +322,8 @@
     });
     $(document).on('click','#add_new_article_back_to_article_overview',function() {
         window.location.href = '/artikel'
+    });
+    $(document).on('click','button#delete_article_abort',function() {
+        $('#modalCenter').modal('hide');
     });
 })(jQuery);

@@ -96,7 +96,7 @@ class BookingMethodService
             $fullPal = intdiv((int) $requestData['quantity'], (int) $requestData['le_quantity']);
             $remainder = fmod((float) $requestData['quantity'], (float) $requestData['le_quantity']);
 
-            $stockLocations = $this->stockLocationService->getAllFreeStockLocations($stockSystem, $stockUnits);
+            $stockLocations = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $stockUnits);
             $suId = $this->transportRequestService->getLastStockUnit();
 
             foreach ($stockLocations as $key => $stockLocation) {
@@ -104,6 +104,7 @@ class BookingMethodService
                     $quantity = $key === array_key_last($stockLocations) ? number_format($remainder, 2, '.', '') : $requestData['le_quantity'];
 
                     $freeStockLocations[] = [
+                        'id' => $stockLocation['id'],
                         'su_id' => ++$suId,
                         'ln' => $stockLocation['ln'],
                         'fb' => $stockLocation['fb'],

@@ -13,12 +13,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Entity\CustomerOrder as CustomerOrders;
-use WebWMS\Form\CustomerOrderPosType;
-use WebWMS\Form\CustomerOrderType;
-use WebWMS\Form\EditCustomerOrderType;
+use WebWMS\Form\CustomerOrder\CustomerOrderPosType;
+use WebWMS\Form\CustomerOrder\CustomerOrderType;
+use WebWMS\Form\CustomerOrder\EditCustomerOrderType;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\Customer\CustomerService;
-use WebWMS\Service\CustomerOrderService;
+use WebWMS\Service\CustomerOrder\CustomerOrderService;
 
 /**
  * @package:    WebWMS\Controller
@@ -59,7 +59,7 @@ class CustomerOrder extends AbstractController
     }
 
     #[Route('/auftrag_anlegen', name: 'new_customer_order')]
-    public function addNewCustomerOrder(EntityManagerInterface $entityManager, Request $request): RedirectResponse|Response
+    public function addCustomerOrder(EntityManagerInterface $entityManager, Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -142,10 +142,7 @@ class CustomerOrder extends AbstractController
 
         $customerOrder = $this->customerOrderService->getCustomerOrderById((int) $id);
 
-        // dd($supplierOrder);
-
         $form = $this->createForm(EditCustomerOrderType::class, $customerOrder);
-        // dd($form->getData());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // $em->persist($article);

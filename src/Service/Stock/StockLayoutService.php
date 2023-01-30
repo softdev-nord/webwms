@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Stock;
 
-use Doctrine\ORM\EntityManagerInterface;
-use WebWMS\Entity\StockLayout;
+use WebWMS\Service\DataHandlers\Stock\StockLayoutDataHandler;
 
 /**
  * @package:    WebWMS\Service\Stock
@@ -16,13 +15,12 @@ use WebWMS\Entity\StockLayout;
 class StockLayoutService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private StockLayoutDataHandler $stockLayoutDataHandler
     ) {
     }
 
     public function getStockLayout(): array
     {
-        return $this->entityManager
-            ->getRepository(StockLayout::class)->findAll();
+        return $this->stockLayoutDataHandler->getStockLayout();
     }
 }

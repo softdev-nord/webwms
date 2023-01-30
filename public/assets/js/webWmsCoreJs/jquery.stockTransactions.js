@@ -61,6 +61,40 @@
         $(".modal-title").html(desc);
         $('#stock_in_for_supplier_order_modal').modal('show');
     });
+
+    // Vorausgewählten Lagerplatz ändern
+    $(document).on('click','i.edit-selected-stock-location',function(event) {
+        const stockLocationId = $('#stock_location_id').val();
+        const $form = $('form#stock-in-form-edit');
+        const url = '/edit_pre_selected_stock_location/id/' + stockLocationId;
+        const content = '<div class="modal-body"></div>';
+        event.preventDefault();
+
+        $('#modalCenter .modal-dialog').css('max-width', '50%');
+        $('#modalCenter .modal-title').text('Lagerplatz Korrektur');
+        $('#modal-content-ajax').html(content);
+        $('#modalCenter').modal('show');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+            },
+            success: function (data) {
+                $('#modal-content-ajax').html(data);
+            }
+        });
+
+        return false;
+
+    });
+
+    $(document).ready(function () {
+        $('#editStockLocationTable tbody').on('click', 'tr:nth-child(1)', function () {
+            console.log('Test');
+        });
+    });
 })(jQuery);
 
 

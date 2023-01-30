@@ -1,0 +1,69 @@
+<div class="row">
+    {% block webwms_supplier_form %}
+        <div class="card">
+            {{ form_start(supplierForm) }}
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Lieferanten-Nr</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {% if editSupplier %}
+                        {{ form_row(supplierForm.supplierNr) }}
+                    {% else %}
+                        {{ form_row(supplierForm.supplierNr, {'value' : "#{lastId.supplierNr +1}"}) }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Lieferanten-Name</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(supplierForm.supplierName) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Anschrift Zusatz</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(supplierForm.supplierAddressAddition) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Straße</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(supplierForm.supplierAddressStreet) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Haus-Nr</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(supplierForm.supplierAddressStreetNr) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Land</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(supplierForm.supplierAddressCountryCode) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">PLZ</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(supplierForm.supplierAddressZipcode) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Ort</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(supplierForm.supplierAddressCity) }}
+                </div>
+            </div>
+            <div class="text-center">
+                {{ form_widget(supplierForm.save) }}
+                {{ form_widget(supplierForm.back_to_supplier_overview) }}
+            </div>
+            {{ form_end(supplierForm) }}
+        </div>
+    {% endblock %}
+
+    {% block bodyjs %}
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.suppliersAutofill.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.itemsSupplierOrderPosAutofill.js') }}"></script>
+    {% endblock %}
+</div>

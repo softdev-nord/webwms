@@ -12,9 +12,6 @@ class Customer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
-    private int $id;
-
     #[ORM\Column(name: 'customer_id', type: 'integer', nullable: false)]
     private int $customerId;
 
@@ -47,18 +44,6 @@ class Customer
 
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt;
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function setId($id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
 
     public function getCustomerId(): int
     {

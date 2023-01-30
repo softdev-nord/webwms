@@ -6,7 +6,6 @@ namespace WebWMS\Service\Customer;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Customer;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
@@ -43,9 +42,9 @@ class CustomerService
         return $this->customerDataHandler->getCustomers();
     }
 
-    public function addCustomer(Request $request): void
+    public function addCustomer($requestData): void
     {
-        $this->customerDataHandler->addCustomer($request);
+        $this->customerDataHandler->addCustomer($requestData);
     }
 
     public function getLastCustomer(): array
@@ -73,7 +72,6 @@ class CustomerService
     }
 
     public function addCustomerApi(
-        int $customerId,
         int $customerNr,
         string $customerName,
         string $customerAddressAddition,
@@ -84,7 +82,6 @@ class CustomerService
         string $customerCity
     ): Customer {
         return $this->customerDataHandler->addCustomerApi(
-            $customerId,
             $customerNr,
             $customerName,
             $customerAddressAddition,
@@ -97,8 +94,6 @@ class CustomerService
     }
 
     public function updateCustomerApi(
-        int $customerMainId,
-        int $customerId,
         int $customerNr,
         string $customerName,
         string $customerAddressAddition,
@@ -109,8 +104,6 @@ class CustomerService
         string $customerCity
     ): ?Customer {
         return $this->customerDataHandler->updateCustomerApi(
-            $customerMainId,
-            $customerId,
             $customerNr,
             $customerName,
             $customerAddressAddition,

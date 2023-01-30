@@ -11,8 +11,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Form\SupplierType;
+use WebWMS\Form\Supplier\AddSupplierType;
+use WebWMS\Form\Supplier\DeleteSupplierType;
+use WebWMS\Form\Supplier\EditSupplierType;
+use WebWMS\Service\LoggingService;
 use WebWMS\Service\Supplier\SupplierService;
+use WebWMS\Service\Validation\SupplierValidationService;
 
 /**
  * @package:    WebWMS\Controller
@@ -24,7 +28,9 @@ class Supplier extends AbstractController
 {
     public function __construct(
         private SupplierService $supplierService,
-        private Requirements $requirements
+        private Requirements $requirements,
+        private LoggingService $loggingService,
+        private SupplierValidationService $supplierValidationService,
     ) {
     }
 
@@ -47,39 +53,122 @@ class Supplier extends AbstractController
                 'appCopyright' => $this->requirements->getAppCopyright(),
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Lieferantenübersicht',
-                'data' => $this->getAllSuppliersAjax(),
-                'supplier' => $this->getAllSuppliers(),
             ]
         );
     }
 
     #[Route('/lieferant_anlegen', name: 'add_supplier')]
-    public function addNewSupplier(Request $request): RedirectResponse|Response
+    public function addSupplier(Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $form = $this->createForm(SupplierType::class);
+        $requestData = $request->request->all();
+
+        if (!empty($requestData)) {
+            $requestData = $requestData['add_supplier'];
+        }
+
+        $form = $this->createForm(AddSupplierType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->supplierService->addNewSupplier($request);
-            $this->addFlash('success', 'Der Lieferant wurde erfolgreich angelegt.');
+            $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde angelegt.', $requestData['supplierNr']);
+            $this->loggingService->write($request, $logMessage);
+            $this->supplierService->addSupplier($requestData);
 
-            return $this->redirectToRoute('add_supplier');
+            return new JsonResponse($requestData);
         }
 
         return $this->render(
-            'supplier/add_supplier.html.twig',
+            'supplier/supplier_add.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
-                'page' => 'Lieferant anlegen',
                 'lastId' => $this->getLastSupplier()[0],
-                'addSupplierForm' => $form->createView(),
+                'supplierForm' => $form->createView(),
+                'editSupplier' => false,
+            ]
+        );
+    }
+
+    #[Route('/lieferant_bearbeiten/lieferantenNr/{supplierNr}', name: 'edit_supplier')]
+    public function editSupplier(Request $request, $supplierNr): RedirectResponse|JsonResponse|Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $requestData = $request->request->all();
+
+        if (!empty($requestData)) {
+            $requestData = $requestData['edit_supplier'];
+        }
+
+        $responseData = $this->supplierValidationService->validateSupplierData($requestData);
+        $responseData['message'] = '';
+
+        $supplier = $this->supplierService->getSupplierByNr((int) $supplierNr);
+        $form = $this->createForm(EditSupplierType::class, $supplier);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($responseData['success']) {
+                $responseData['message'] = 'Die Änderungen der Lieferantendaten wurden erfolgreich gespeichert.';
+                $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde geändert.', $requestData['supplierNr']);
+                $this->loggingService->write($request, $logMessage);
+                $this->supplierService->updateSupplier($requestData);
+
+                return new JsonResponse($responseData);
+            }
+
+            $responseData['message'] = 'Die Änderungen der Lieferantendaten konnte nicht gespeichert werden.';
+
+            return new JsonResponse($responseData);
+        }
+
+        return $this->render(
+            'supplier/supplier_edit.html.twig',
+            [
+                'supplierForm' => $form->createView(),
+                'supplier' => $supplier,
+                'editSupplier' => true,
+            ]
+        );
+    }
+
+    #[Route('/lieferant_löschen/lieferantenNr/{supplierNr}', name: 'delete_supplier')]
+    public function deleteSupplier(Request $request, $supplierNr): RedirectResponse|JsonResponse|Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $requestData = $request->request->all();
+
+        if (!empty($requestData)) {
+            $requestData = $requestData['delete_supplier'];
+        }
+
+        $supplier = $this->supplierService->getSupplierByNr((int) $supplierNr);
+        $form = $this->createForm(DeleteSupplierType::class, $supplier);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $responseData['message'] = sprintf(
+                'Der Lieferant mit der Lieferanten-Nr. %s wurde erfolgreich gelöscht.',
+                $supplier->getSupplierNr()
+            );
+            $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde gelöscht.', $supplier->getSupplierNr());
+            $this->loggingService->write($request, $logMessage);
+            $this->supplierService->deleteSupplier((int) $requestData['supplierNr']);
+
+            return new JsonResponse($responseData);
+        }
+
+        return $this->render(
+            'supplier/supplier_delete_ask.html.twig',
+            [
+                'supplierNr' => $supplier->getSupplierNr(),
+                'supplierForm' => $form->createView(),
             ]
         );
     }
