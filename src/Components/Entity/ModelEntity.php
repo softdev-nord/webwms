@@ -12,9 +12,7 @@ abstract class ModelEntity
      * $model->fromArray($data);
      * $model->setShipping($shippingModel->fromArray($shippingData));
      *
-     * @param array $fillable optional property whitelist for mass-assignment
-     *
-     * @return $this
+     * @param array<string, ModelEntity> $array
      */
     public function fromArray(array $array = [], array $fillable = []): ModelEntity
     {
@@ -43,32 +41,8 @@ abstract class ModelEntity
      * will removed.
      * <br><br>
      * The <b>$model</b> parameter expects the full name of the associated model.
-     * For example:
-     * <ul>
-     * <li>We are in the Customer model in the setBilling() function.
-     * <li>Here we want to set the Billing object over the "setOneToOne" function
-     * <li>So we passed as $model parameter: <b>"\Shopware\Models\Customer\Billing"</b>
-     * </ul>
-     * <br>
-     * The <b>$property</b> parameter expect the name of the association property.
-     * For example:
-     * <ul>
-     * <li>In the setBilling() function of the customer model we would expects <b>"billing"</b>.</li>
-     * </ul>
-     * <br>
-     * The <b>$reference</b> property expect the name of the property on the other side of the association.
-     * For example:
-     * <ul>
-     * <li>In the setBilling() function we want to fill the billing data.</li>
-     * <li>To set the reference between customer and billing we set in the billing object the "customer"</li>
-     * <li>To set the customer we use the "$billing->setCustomer()" function.</li>
-     * <li>So the parameter expect <b>"customer"</b></li>
-     * </ul>.
      *
-     * @param ModelEntity|ArrayCollection|array|null $data      Model data, example: an instance of \Shopware\Models\Order\Order
-     * @param string                                 $model     Full namespace of the association model, example: '\Shopware\Models\Order\Order'
-     * @param string                                 $property  Name of the association property, example: 'orders'
-     * @param string|null                            $reference Name of the reference property, example: 'customer'
+     * @param ModelEntity|ArrayCollection|array|null $data
      *
      * @return $this
      */
@@ -127,34 +101,8 @@ abstract class ModelEntity
      * <br><br>
      * The <b>$data</b> parameter contains the data for the collection property. It can contains an array of
      * models or data arrays. If the $data parameter is set to null the associated collection will cleared.
-     * <br><br>
-     * The <b>$model</b> parameter expects the full name of the associated model.
-     * For example:
-     * <ul>
-     * <li>We are in the Customer model in the setOrders() function.</li>
-     * <li>Here we want to set the Order objects over the "setOneToMany" function</li>
-     * <li>So we passed as $model parameter: <b>"\Shopware\Models\Order\Order"</b></li>
-     * </ul>
-     * <br>
-     * The <b>$property</b> parameter expect the name of the association property.
-     * For example:
-     * <ul>
-     * <li>In the setOrders() function of the customer model we would expects <b>"orders"</b>.</li>
-     * </ul>
-     * <br>
-     * The <b>$reference</b> property expect the name of the property on the other side of the association.
-     * For example:
-     * <ul>
-     * <li>In the setOrders() function we want to fill the orders data.</li>
-     * <li>To set the reference between customer and orders we set in the orders object the "customer"</li>
-     * <li>To set the customer we use the "$order->setCustomer()" function.</li>
-     * <li>So the parameter expect <b>"customer"</b></li>
-     * </ul>.
      *
-     * @param array[]|ModelEntity[]|null $data      Model data, example: an array of \Shopware\Models\Order\Order
-     * @param string                     $model     Full namespace of the association model, example: '\Shopware\Models\Order\Order'
-     * @param string                     $property  Name of the association property, example: 'orders'
-     * @param string|null                $reference Name of the reference property, example: 'customer'
+     * @param array[]|ModelEntity[]|null $data
      *
      * @return $this
      */
@@ -224,7 +172,7 @@ abstract class ModelEntity
         // to remove all old items which are not updated.
         foreach ($this->$getterFunction() as $attr) {
             // The updated collection contains all updated and created models.
-            if (!$updated->contains($attr)) {
+            if (null !== $updated->contains($attr)) {
                 $this->$getterFunction()->removeElement($attr);
             }
         }
@@ -241,22 +189,8 @@ abstract class ModelEntity
      * models or data arrays. If the $data parameter is set to null the associated collection will cleared.
      * <br><br>
      * The <b>$model</b> parameter expects the full name of the associated model.
-     * For example:
-     * <ul>
-     * <li>We are in the Article model in the setSupplier() function.</li>
-     * <li>Here we want to set the Supplier objects over the "setManyToOne" function</li>
-     * <li>So we passed as $model parameter: <b>"\Shopware\Models\Article\Supplier"</b></li>
-     * </ul>
-     * <br>
-     * The <b>$property</b> parameter expect the name of the association property.
-     * For example:
-     * <ul>
-     * <li>In the setSupplier() function of the article model we would expects <b>"supplier"</b>.</li>
-     * </ul>.
      *
-     * @param ModelEntity|array|null $data     Model data, example: an data array or an instance of the model
-     * @param string                 $model    Full namespace of the association model, example: '\Shopware\Models\Article\Supplier'
-     * @param string                 $property Name of the association property, example: 'supplier'
+     * @param ModelEntity|array|null $data
      *
      * @return $this
      *
@@ -307,16 +241,16 @@ abstract class ModelEntity
     }
 
     /**
-     * @param ModelEntity[]|ArrayCollection<ModelEntity> $collection
+     * @param ArrayCollection<ModelEntity>|ModelEntity[] $collection
      */
-    private function getArrayCollectionElementById($collection, int $id): ?ModelEntity
+    private function getArrayCollectionElementById(array|ArrayCollection $collection, int $id): ?ModelEntity
     {
         if (0 === $collection->count()) {
             return null;
         }
 
         foreach ($collection as $item) {
-            if ($item->getId() === $id) {
+            if ($item['id'] === $id) {
                 return $item;
             }
         }

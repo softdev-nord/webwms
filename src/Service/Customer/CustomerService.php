@@ -6,6 +6,7 @@ namespace WebWMS\Service\Customer;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Customer;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
@@ -71,48 +72,18 @@ class CustomerService
         return $this->customerDataHandler->getAllCustomersApi();
     }
 
-    public function addCustomerApi(
-        int $customerNr,
-        string $customerName,
-        string $customerAddressAddition,
-        string $customerAddressStreet,
-        string $customerAddressStreetNr,
-        string $customerCountryCode,
-        string $customerZipCode,
-        string $customerCity
-    ): Customer {
-        return $this->customerDataHandler->addCustomerApi(
-            $customerNr,
-            $customerName,
-            $customerAddressAddition,
-            $customerAddressStreet,
-            $customerAddressStreetNr,
-            $customerCountryCode,
-            $customerZipCode,
-            $customerCity
-        );
+    public function addCustomerApi(Request $request): Customer
+    {
+        $requestData = $request->request->all();
+
+        return $this->customerDataHandler->addCustomer($requestData);
     }
 
-    public function updateCustomerApi(
-        int $customerNr,
-        string $customerName,
-        string $customerAddressAddition,
-        string $customerAddressStreet,
-        string $customerAddressStreetNr,
-        string $customerCountryCode,
-        string $customerZipCode,
-        string $customerCity
-    ): ?Customer {
-        return $this->customerDataHandler->updateCustomerApi(
-            $customerNr,
-            $customerName,
-            $customerAddressAddition,
-            $customerAddressStreet,
-            $customerAddressStreetNr,
-            $customerCountryCode,
-            $customerZipCode,
-            $customerCity
-        );
+    public function updateCustomerApi(Request $request): ?Customer
+    {
+        $requestData = $request->request->all();
+
+        return $this->customerDataHandler->updateCustomer($requestData);
     }
 
     public function deleteCustomerApi(int $customerId): void

@@ -88,17 +88,7 @@ class Customer extends AbstractFOSRestController
      */
     public function postCustomer(Request $request): View
     {
-        $article = $this->customerService->addCustomerApi(
-            $request->get('customer_id'),
-            $request->get('customer_nr'),
-            $request->get('customer_name'),
-            $request->get('customer_address_addition'),
-            $request->get('customer_address_street'),
-            $request->get('customer_address_street_nr'),
-            $request->get('customer_country_code'),
-            $request->get('customer_zip_code'),
-            $request->get('customer_city')
-        );
+        $article = $this->customerService->addCustomerApi($request);
 
         return $this->view($article, Response::HTTP_CREATED);
     }
@@ -119,24 +109,11 @@ class Customer extends AbstractFOSRestController
      */
     public function putCustomer(int $customerId, Request $request): View
     {
-        $customer = $this->getCustomer($customerId);
-
-        if (!$customer) {
+        if (!$customerId) {
             throw new EntityNotFoundException('Customer with id '.$customerId.' does not exist!');
         }
 
-        $customer = $this->customerService->updateCustomerApi(
-            $customerId,
-            $request->get('customer_id'),
-            $request->get('customer_nr'),
-            $request->get('customer_name'),
-            $request->get('customer_address_addition'),
-            $request->get('customer_address_street'),
-            $request->get('customer_address_street_nr'),
-            $request->get('customer_country_code'),
-            $request->get('customer_zip_code'),
-            $request->get('customer_city')
-        );
+        $customer = $this->customerService->updateCustomerApi($request);
 
         return $this->view($customer, Response::HTTP_OK);
     }

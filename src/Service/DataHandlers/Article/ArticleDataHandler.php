@@ -8,6 +8,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Article;
+use WebWMS\Service\DateTimeService;
 
 /**
  * @package:    WebWMS\Service\DataHandlers
@@ -18,7 +19,8 @@ use WebWMS\Entity\Article;
 class ArticleDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService
     ) {
     }
 
@@ -83,6 +85,56 @@ class ArticleDataHandler
         $data = $conn->fetchAllAssociative($sql);
 
         return new JsonResponse($data);
+    }
+
+    public function addArticle($requestData): Article
+    {
+        $article = new Article();
+
+        $article->setArticleNr($requestData['articleNr']);
+        $article->setArticleName($requestData['articleName']);
+        $article->setArticleCategory($requestData['articleCategory']);
+        $article->setArticleWeight($requestData['articleWeight']);
+        $article->setArticleEan($requestData['articleEan']);
+        $article->setArticleUnit($requestData['articleUnit']);
+        $article->setArticleDepth($requestData['articleDepth']);
+        $article->setArticleWidth($requestData['articleWidth']);
+        $article->setArticleHeight($requestData['articleHeight']);
+        $article->setStockOutStrategy($requestData['stockOutStrategy']);
+        $article->setLeQuantity($requestData['leQuantity']);
+        $article->setStandardLoadingEquipment($requestData['standardLoadingEquipment']);
+        $article->setCreatedAt($this->dateTimeService->createDateTime());
+        $this->save($article);
+
+        return $article;
+    }
+
+    public function updateArticle($requestData): ?Article
+    {
+        $article = $this->entityManager
+            ->getRepository(Article::class)
+            ->findOneBy(['articleNr' => $requestData['articleNr']]);
+
+        if (!$article) {
+            return null;
+        }
+
+        $article->setArticleNr($requestData['articleNr']);
+        $article->setArticleName($requestData['articleName']);
+        $article->setArticleCategory($requestData['articleCategory']);
+        $article->setArticleWeight($requestData['articleWeight']);
+        $article->setArticleEan($requestData['articleEan']);
+        $article->setArticleUnit($requestData['articleUnit']);
+        $article->setArticleDepth($requestData['articleDepth']);
+        $article->setArticleWidth($requestData['articleWidth']);
+        $article->setArticleHeight($requestData['articleHeight']);
+        $article->setStockOutStrategy($requestData['stockOutStrategy']);
+        $article->setLeQuantity($requestData['leQuantity']);
+        $article->setStandardLoadingEquipment($requestData['standardLoadingEquipment']);
+        $article->setCreatedAt($this->dateTimeService->createDateTime());
+        $this->save($article);
+
+        return $article;
     }
 
     public function deleteArticle(int $articleNr): void

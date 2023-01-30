@@ -9,11 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Entity\Article;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 use WebWMS\Service\DateTimeService;
-use WebWMS\Service\TransportRequestService;
 
 /**
  * @package:    WebWMS\Service
@@ -26,7 +24,6 @@ class ArticleService
     public function __construct(
         private EntityManagerInterface $entityManager,
         private ArticleDataHandler $articleDataHandler,
-        private TransportRequestService $transportRequestService,
         private DateTimeService $dateTimeService
     ) {
     }
@@ -57,91 +54,21 @@ class ArticleService
      */
     public function getAllArticles(): JsonResponse
     {
-        $articles = $this->articleDataHandler->getAllArticlesWithJoin();
-
-        if (!$articles) {
-            throw $this->createNotFoundException('Keine Artikel gefunden');
-        }
-
-        return $articles;
+        return $this->articleDataHandler->getAllArticlesWithJoin();
     }
 
-    protected function createNotFoundException(string $message = 'Not Found', \Throwable $previous = null): NotFoundHttpException
+    public function addArticleApi(Request $request): Article
     {
-        return new NotFoundHttpException($message, $previous);
+        $requestData = $request->request->all();
+
+        return $this->articleDataHandler->addArticle($requestData);
     }
 
-    public function addArticleApi(
-        string $articleNr,
-        string $articleName,
-        string $articleCategory,
-        float $articleWeight,
-        string $articleEan,
-        string $articleUnit,
-        float $articleDepth,
-        float $articleWidth,
-        float $articleHeight,
-        string $stockOutStrategy,
-        float $leQuantity,
-        string $standardLoadingEquipment
-    ): Article {
-        $article = new Article();
-        $article->setArticleNr($articleNr);
-        $article->setArticleName($articleName);
-        $article->setArticleCategory($articleCategory);
-        $article->setArticleWeight($articleWeight);
-        $article->setArticleEan($articleEan);
-        $article->setArticleUnit($articleUnit);
-        $article->setArticleDepth($articleDepth);
-        $article->setArticleWidth($articleWidth);
-        $article->setArticleHeight($articleHeight);
-        $article->setStockOutStrategy($stockOutStrategy);
-        $article->setLeQuantity($leQuantity);
-        $article->setStandardLoadingEquipment($standardLoadingEquipment);
-        $article->setCreatedAt($this->dateTimeService->createDateTime());
-        $this->articleDataHandler->save($article);
+    public function updateArticleApi(Request $request): ?Article
+    {
+        $requestData = $request->request->all();
 
-        return $article;
-    }
-
-    public function updateArticleApi(
-        int $articleId,
-        int $articleNr,
-        string $articleName,
-        string $articleCategory,
-        float $articleWeight,
-        string $articleEan,
-        string $articleUnit,
-        float $articleDepth,
-        float $articleWidth,
-        float $articleHeight,
-        string $stockOutStrategy,
-        float $leQuantity,
-        string $standardLoadingEquipment
-    ): ?Article {
-        $article = $this->entityManager
-            ->getRepository(Article::class)
-            ->find($articleId);
-
-        if (!$article) {
-            return null;
-        }
-        $article->setArticleNr($articleNr);
-        $article->setArticleName($articleName);
-        $article->setArticleCategory($articleCategory);
-        $article->setArticleWeight($articleWeight);
-        $article->setArticleEan($articleEan);
-        $article->setArticleUnit($articleUnit);
-        $article->setArticleDepth($articleDepth);
-        $article->setArticleWidth($articleWidth);
-        $article->setArticleHeight($articleHeight);
-        $article->setStockOutStrategy($stockOutStrategy);
-        $article->setLeQuantity($leQuantity);
-        $article->setStandardLoadingEquipment($standardLoadingEquipment);
-        $article->setUpdatedAt($this->dateTimeService->createDateTime());
-        $this->articleDataHandler->save($article);
-
-        return $article;
+        return $this->articleDataHandler->updateArticle($requestData);
     }
 
     public function deleteArticleApi(int $articleId): void
@@ -172,10 +99,6 @@ class ArticleService
             'article_name' => 'article_name',
             default => 'article_nr',
         };
-
-        if (empty($boxName)) {
-            $boxName = 'article_nr';
-        }
 
         $data = [];
         if (!empty(filter_input(INPUT_GET, 'name_art'))) {

@@ -97,7 +97,7 @@ class Article extends AbstractController
      * @throws \Exception
      */
     #[Route('artikel_bearbeiten/articleId/{articleId}', name: 'edit_article')]
-    public function editArticle(Request $request, $articleId): RedirectResponse|JsonResponse|Response
+    public function editArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -142,7 +142,7 @@ class Article extends AbstractController
     }
 
     #[Route('/artikel_löschen/articleId/{articleId}', name: 'delete_article')]
-    public function deleteArticle(Request $request, $articleId): RedirectResponse|JsonResponse|Response
+    public function deleteArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');

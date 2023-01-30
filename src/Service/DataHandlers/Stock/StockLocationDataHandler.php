@@ -121,9 +121,9 @@ class StockLocationDataHandler
         $stockLocation->setStockLocationTf((int) $requestData['stock_location_tf']);
         $stockLocation->setStockLocationCoordinate((string) $requestData['stock_location_coordinate']);
         $stockLocation->setStockLocationDesc((string) $requestData['stock_location_desc']);
-        $stockLocation->setStockLocationWidth((string) $requestData['stock_location_width']);
-        $stockLocation->setStockLocationDepth((string) $requestData['stock_location_depth']);
-        $stockLocation->setStockLocationHeight((string) $requestData['stock_location_height']);
+        $stockLocation->setStockLocationWidth((float) $requestData['stock_location_width']);
+        $stockLocation->setStockLocationDepth((float) $requestData['stock_location_depth']);
+        $stockLocation->setStockLocationHeight((float) $requestData['stock_location_height']);
         $stockLocation->setStockLocationZone((string) $requestData['stock_location_zone']);
         $stockLocation->setUpdatedAt($this->dateTimeService->createDateTime());
 
