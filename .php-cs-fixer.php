@@ -11,7 +11,7 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
-        'phpdoc_separation' => false
+        'phpdoc_separation' => false,
     ])
     ->setFinder($finder->append(['.php-cs-fixer.php']))
 ;
