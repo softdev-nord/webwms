@@ -13,6 +13,7 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\SupplierOrder\SupplierOrderService;
 
 /**
@@ -43,7 +44,7 @@ class SupplierOrder extends AbstractFOSRestController
      * @OA\Tag(name="SupplierOrder")
      *
      * @throws EntityNotFoundException
-     * @throws \WebWMS\Exception\NotFoundException
+     * @throws NotFoundException
      */
     public function getSupplierOrder(int $supplierOrderId): View
     {
@@ -67,6 +68,8 @@ class SupplierOrder extends AbstractFOSRestController
      *     ),
      * )
      * @OA\Tag(name="SupplierOrder")
+     *
+     * @throws \Exception
      */
     public function getSupplierOrders(): View
     {
@@ -118,9 +121,7 @@ class SupplierOrder extends AbstractFOSRestController
      */
     public function putSupplierOrder(int $supplierOrderId, Request $request): View
     {
-        $supplierOrder = $this->getSupplierOrder($supplierOrderId);
-
-        if (!$supplierOrder) {
+        if (!$supplierOrderId) {
             throw new EntityNotFoundException('Order with id '.$supplierOrderId.' does not exist!');
         }
 
@@ -150,7 +151,7 @@ class SupplierOrder extends AbstractFOSRestController
      * )
      * @OA\Tag(name="SupplierOrder")
      *
-     * @throws EntityNotFoundException
+     * @throws NotFoundException
      */
     public function deleteOrder(int $supplierOrderId): View
     {

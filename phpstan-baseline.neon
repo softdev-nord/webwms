@@ -1,36 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Access to an undefined property WebWMS\\\\Entity\\\\BookingMethod\\:\\:\\$menuId\\.$#"
-			count: 2
-			path: src/Entity/BookingMethod.php
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getFirstname\\(\\)\\.$#"
+			count: 1
+			path: src/Service/LoggingService.php
 
 		-
-			message: "#^Class WebWMS\\\\Entity\\\\Feature not found\\.$#"
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:getLastname\\(\\)\\.$#"
 			count: 1
-			path: src/Form/GroupFeatureType.php
+			path: src/Service/LoggingService.php
 
 		-
-			message: "#^Class WebWMS\\\\Entity\\\\Group not found\\.$#"
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Driver\\\\Connection\\:\\:getServerVersion\\(\\)\\.$#"
 			count: 1
-			path: src/Form/GroupFeatureType.php
-
-		-
-			message: "#^Class WebWMS\\\\Entity\\\\Group not found\\.$#"
-			count: 1
-			path: src/Form/GroupType.php
-
-		-
-			message: "#^Class WebWMS\\\\Entity\\\\Permission not found\\.$#"
-			count: 1
-			path: src/Form/RoleType.php
-
-		-
-			message: "#^Class WebWMS\\\\Entity\\\\Role not found\\.$#"
-			count: 1
-			path: src/Form/RoleType.php
-
-		-
-			message: "#^Class WebWMS\\\\Entity\\\\Role not found\\.$#"
-			count: 1
-			path: src/Service/RoleService.php
+			path: src/Service/RequirementsService.php

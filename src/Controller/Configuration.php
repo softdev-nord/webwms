@@ -41,6 +41,7 @@ class Configuration extends AbstractController
             'appLizenz' => $this->requirements->getAppLizenz(),
             'generalConfiguration' => $generalConfiguration->createView(),
             'page' => 'Einstellungen',
+            'configuration' => $this->configurationService->getAllConfigurations(),
         ]);
     }
 }

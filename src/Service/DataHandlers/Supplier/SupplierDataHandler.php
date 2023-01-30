@@ -43,7 +43,7 @@ class SupplierDataHandler
         $this->entityManager->flush();
     }
 
-    public function addSupplier($requestData): void
+    public function addSupplier($requestData): ?Supplier
     {
         $supplier = new Supplier();
 
@@ -58,6 +58,8 @@ class SupplierDataHandler
         $supplier->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($supplier);
+
+        return $supplier;
     }
 
     public function updateSupplier($requestData): ?Supplier
@@ -83,15 +85,6 @@ class SupplierDataHandler
         $this->update($supplier);
 
         return $supplier;
-    }
-
-    public function deleteSupplier(int $supplierNr): void
-    {
-        $supplier = $this->getSupplierByNr($supplierNr);
-
-        if ($supplier) {
-            $this->delete($supplier);
-        }
     }
 
     public function getSupplierByNr(int $supplierNr): ?Supplier
@@ -198,5 +191,14 @@ class SupplierDataHandler
         return $this->entityManager
             ->getRepository(Supplier::class)
             ->findBy([], ['supplierNr' => 'DESC'], 1, 0);
+    }
+
+    public function deleteSupplier(int $supplierNr): void
+    {
+        $supplier = $this->getSupplierByNr($supplierNr);
+
+        if ($supplier) {
+            $this->delete($supplier);
+        }
     }
 }

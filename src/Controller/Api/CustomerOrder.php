@@ -48,7 +48,7 @@ class CustomerOrder extends AbstractFOSRestController
     {
         $customerOrder = $this->customerOrderService->getCustomerOrderApi($customerOrderId);
 
-        if (!$customerOrder) {
+        if (!$customerOrderId) {
             throw new EntityNotFoundException('Customer order with id '.$customerOrderId.' does not exist!');
         }
 
@@ -66,6 +66,8 @@ class CustomerOrder extends AbstractFOSRestController
      *     ),
      * )
      * @OA\Tag(name="CustomerOrder")
+     *
+     * @throws \Exception
      */
     public function getCustomerOrders(): View
     {
@@ -117,9 +119,7 @@ class CustomerOrder extends AbstractFOSRestController
      */
     public function putCustomerOrder(int $customerOrderId, Request $request): View
     {
-        $customerOrder = $this->getCustomerOrder($customerOrderId);
-
-        if (!$customerOrder) {
+        if (!$customerOrderId) {
             throw new EntityNotFoundException('Customer order with id '.$customerOrderId.' does not exist!');
         }
 

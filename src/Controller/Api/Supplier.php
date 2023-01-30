@@ -13,6 +13,7 @@ use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\Supplier\SupplierService;
 
 /**
@@ -108,24 +109,11 @@ class Supplier extends AbstractFOSRestController
      */
     public function putSupplier(int $supplierId, Request $request): View
     {
-        $supplier = $this->getSupplier($supplierId);
-
-        if (!$supplier) {
+        if (!$supplierId) {
             throw new EntityNotFoundException('Supplier with id '.$supplierId.' does not exist!');
         }
 
-        $supplier = $this->supplierService->updateSupplierApi(
-            $supplierId,
-            $request->get('supplierId'),
-            $request->get('supplier_nr'),
-            $request->get('supplier_name'),
-            $request->get('supplier_address_addition'),
-            $request->get('supplier_address_street'),
-            $request->get('supplier_address_street_nr'),
-            $request->get('supplier_address_country_code'),
-            $request->get('supplier_address_zipcode'),
-            $request->get('supplier_address_city')
-        );
+        $supplier = $this->supplierService->updateSupplierApi($request);
 
         return $this->view($supplier, Response::HTTP_OK);
     }
@@ -142,7 +130,7 @@ class Supplier extends AbstractFOSRestController
      * )
      * @OA\Tag(name="Supplier")
      *
-     * @throws EntityNotFoundException
+     * @throws NotFoundException
      */
     public function deleteSupplier(int $supplierId): View
     {

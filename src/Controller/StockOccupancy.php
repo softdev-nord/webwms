@@ -91,6 +91,8 @@ class StockOccupancy extends AbstractController
      */
     public function getStockOccupancyResults($request): Response
     {
+        $stock = [];
+
         if ($request->attributes->get('stock_location_ln')) {
             $stockLocationLn = $request->attributes->get('stock_location_ln');
         } else {

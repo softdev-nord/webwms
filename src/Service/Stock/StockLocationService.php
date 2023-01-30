@@ -28,18 +28,11 @@ class StockLocationService
     }
 
     /**
-     * @throws NotFoundException
      * @throws Exception
      */
     public function getAllStockLocations(): JsonResponse
     {
-        $stockLocation = $this->stockLocationDataHandler->getAllStockLocation();
-
-        if (!$stockLocation) {
-            throw new NotFoundException('Keine Lagerorte gefunden');
-        }
-
-        return $stockLocation;
+        return $this->stockLocationDataHandler->getAllStockLocation();
     }
 
     /**
