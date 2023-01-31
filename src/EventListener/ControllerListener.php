@@ -17,8 +17,9 @@ use WebWMS\Form\Stock\StockInType;
  */
 class ControllerListener extends AbstractController
 {
-    public function __construct(private Environment $twig)
-    {
+    public function __construct(
+        private Environment $twig
+    ) {
     }
 
     /**

@@ -6,8 +6,8 @@ namespace WebWMS\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use WebWMS\Entity\Logging;
+use WebWMS\Entity\User;
 
 /**
  * @package:    WebWMS\Service
@@ -19,14 +19,16 @@ class LoggingService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private TokenStorageInterface $tokenStorage,
         private DateTimeService $dateTimeService
     ) {
     }
 
-    public function write(Request $request, $message): void
+    public function write(Request $request, string $message, string $username): void
     {
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->entityManager->getRepository(
+            User::class)->findOneBy(
+                ['username' => $username]
+            );
 
         $logEntry = new Logging();
         $logEntry->setRoute($request->attributes->get('_route'));

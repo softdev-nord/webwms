@@ -75,7 +75,7 @@ class SupplierOrder extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData['message'] = 'Die Bestellung wurde erfolgreich angelegt.';
             $logMessage = sprintf('Die Bestellung mit der Bestell-Nr. %s wurde angelegt.', $requestData['supplierOrderNr']);
-            $this->loggingService->write($request, $logMessage);
+            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierService->addSupplier($request);
 
             return $this->redirectToRoute('add_supplier_order');

@@ -7,11 +7,10 @@ namespace WebWMS\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Components\Entity\ModelEntity;
 
 #[ORM\Table(name: 'supplier_orders')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\SupplierOrderRepository')]
-class SupplierOrder extends ModelEntity
+class SupplierOrder
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]

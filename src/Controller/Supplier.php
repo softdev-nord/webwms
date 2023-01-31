@@ -74,7 +74,7 @@ class Supplier extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde angelegt.', $requestData['supplierNr']);
-            $this->loggingService->write($request, $logMessage);
+            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierService->addSupplier($requestData);
 
             return new JsonResponse($requestData);
@@ -114,7 +114,7 @@ class Supplier extends AbstractController
             if ($responseData['success']) {
                 $responseData['message'] = 'Die Änderungen der Lieferantendaten wurden erfolgreich gespeichert.';
                 $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde geändert.', $requestData['supplierNr']);
-                $this->loggingService->write($request, $logMessage);
+                $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->supplierService->updateSupplier($requestData);
 
                 return new JsonResponse($responseData);
@@ -158,7 +158,7 @@ class Supplier extends AbstractController
                 $supplier->getSupplierNr()
             );
             $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde gelöscht.', $supplier->getSupplierNr());
-            $this->loggingService->write($request, $logMessage);
+            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierService->deleteSupplier((int) $requestData['supplierNr']);
 
             return new JsonResponse($responseData);

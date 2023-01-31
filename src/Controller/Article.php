@@ -77,7 +77,7 @@ class Article extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData['message'] = 'Der Artikel wurde erfolgreich angelegt.';
             $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde angelegt.', $requestData['articleNr']);
-            $this->loggingService->write($request, $logMessage);
+            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->articleService->addArticle($request);
 
             return new JsonResponse($requestData);
@@ -120,7 +120,7 @@ class Article extends AbstractController
             if ($responseData['success']) {
                 $responseData['message'] = 'Die Änderungen am Artikel wurden erfolgreich gespeichert.';
                 $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde geändert.', $requestData['articleNr']);
-                $this->loggingService->write($request, $logMessage);
+                $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->articleService->updateArticle($requestData);
 
                 return new JsonResponse($responseData);
@@ -164,7 +164,7 @@ class Article extends AbstractController
                 $requestData['articleNr']
             );
             $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde gelöscht.', $requestData['articleNr']);
-            $this->loggingService->write($request, $logMessage);
+            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->articleService->deleteArticle((int) $requestData['articleNr']);
 
             return new JsonResponse($responseData);

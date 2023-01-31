@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Components\Entity\ModelEntity;
 
 #[ORM\Table(name: 'customer_orders_pos')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderPosRepository')]
-class CustomerOrderPos extends ModelEntity
+class CustomerOrderPos
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
