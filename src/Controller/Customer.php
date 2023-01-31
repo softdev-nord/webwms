@@ -71,7 +71,7 @@ class Customer extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $logMessage = sprintf('Der Kunde mit der Kunden-Nr. %s wurde angelegt.', $requestData['customerNr']);
-            $this->loggingService->write($request, $logMessage);
+            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->customerService->addCustomer($requestData);
 
             return new JsonResponse($requestData);
@@ -111,7 +111,7 @@ class Customer extends AbstractController
             if ($responseData['success']) {
                 $responseData['message'] = 'Die Änderungen der Kundendaten wurden erfolgreich gespeichert.';
                 $logMessage = sprintf('Der Der Kunde mit der Kunden-Nr. %s wurde geändert.', $requestData['customerNr']);
-                $this->loggingService->write($request, $logMessage);
+                $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->customerService->updateCustomer($requestData);
 
                 return new JsonResponse($responseData);
