@@ -23,9 +23,9 @@ use WebWMS\Service\TransportRequestService;
  * @package:    WebWMS\Controller
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        DashboardController
+ * Class        Dashboard
  */
-class DashboardController extends AbstractController
+class Dashboard extends AbstractController
 {
     private LoaderInterface $loader;
 

@@ -123,7 +123,7 @@ services:
         class: WebWMS\Service\LoggingService
 
     web_wms.controller.dashboard_controller:
-        class: WebWMS\Controller\DashboardController
+        class: WebWMS\Controller\Dashboard
         arguments:
             $requirements: 'WebWMS\Controller\Requirements'
             $twig: 'Twig\Environment'

@@ -15,16 +15,16 @@
         "ext-pdo": "*",
         "ext-simplexml": "*",
         "ext-zend-opcache": "*",
+        "api-platform/core": "^3.1",
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",
-        "friendsofsymfony/rest-bundle": "^3.0",
         "jdorn/sql-formatter": "^1.2",
         "jms/serializer-bundle": "^4.0",
         "mpdf/mpdf": "^6.1",
-        "nelmio/api-doc-bundle": "^v4.10.2",
+        "nelmio/cors-bundle": "^2.2",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.11",
         "sensio/framework-extra-bundle": "^6.1",
@@ -61,7 +61,8 @@
         "symfony/yaml": "6.2.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
-        "webbamboo/material-dashboard-symfony": "^1.0"
+        "webbamboo/material-dashboard-symfony": "^1.0",
+        "webonyx/graphql-php": "^15.0"
     },
     "config": {
         "allow-plugins": {

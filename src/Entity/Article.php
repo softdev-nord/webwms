@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\ArticleRepository')]
+#[ApiResource(formats: 'json')]
 class Article
 {
     #[ORM\Id]

@@ -13,9 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package:    WebWMS\Controller
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        LanguageController
+ * Class        Language
  */
-class LanguageController extends AbstractController
+class Language extends AbstractController
 {
     /**
      * @Route("/lang/{_locale}", requirements={

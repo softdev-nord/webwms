@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Form\Stock;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

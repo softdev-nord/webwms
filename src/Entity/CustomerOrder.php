@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'customer_orders')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderRepository')]
+#[ApiResource]
 class CustomerOrder
 {
     #[ORM\Id]
