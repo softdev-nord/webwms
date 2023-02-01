@@ -75,6 +75,7 @@ jobs:
       HOST_DIR: ${HOST_DIR}
     steps:
       - envsubst/install
+      - run: sudo apt update
       - run: sudo apt install openssh-client rsync
       - run:
           name: "Checkout code"
@@ -93,7 +94,7 @@ jobs:
       - run:
           name: Deploy development over SSH
           command: |
-            rsync -r --delete --ignore-existing -e ssh \
+            rsync -re ssh --delete --ignore-existing \
             /home/circleci/webwms/ \
             admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
       - run:
