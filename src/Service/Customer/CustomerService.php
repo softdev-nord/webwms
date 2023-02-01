@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Customer;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Customer;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
@@ -51,44 +49,6 @@ class CustomerService
     public function getLastCustomer(): array
     {
         return $this->customerDataHandler->getLastCustomer();
-    }
-
-    /**
-     * @throws EntityNotFoundException
-     */
-    public function getCustomerApi(int $customerId): ?Customer
-    {
-        $customer = $this->customerDataHandler->getCustomerById($customerId);
-
-        if (!$customer) {
-            throw new EntityNotFoundException('Customer with id '.$customerId.' does not exist!');
-        }
-
-        return $customer;
-    }
-
-    public function getAllCustomersApi(): ?array
-    {
-        return $this->customerDataHandler->getAllCustomersApi();
-    }
-
-    public function addCustomerApi(Request $request): Customer
-    {
-        $requestData = $request->request->all();
-
-        return $this->customerDataHandler->addCustomer($requestData);
-    }
-
-    public function updateCustomerApi(Request $request): ?Customer
-    {
-        $requestData = $request->request->all();
-
-        return $this->customerDataHandler->updateCustomer($requestData);
-    }
-
-    public function deleteCustomerApi(int $customerId): void
-    {
-        $this->customerDataHandler->deleteCustomerApi($customerId);
     }
 
     public function updateCustomer($requestData): ?Customer

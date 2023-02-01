@@ -168,20 +168,6 @@ class CustomerDataHandler
         return $customer;
     }
 
-    public function getAllCustomersApi(): ?array
-    {
-        return $this->entityManager
-            ->getRepository(Customer::class)->findAll();
-    }
-
-    public function deleteCustomerApi(int $customerId): void
-    {
-        $customer = $this->getCustomerById($customerId);
-        if ($customer) {
-            $this->delete($customer);
-        }
-    }
-
     public function getLastCustomer(): array
     {
         return $this->entityManager

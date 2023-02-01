@@ -6,9 +6,7 @@ namespace WebWMS\Service\Supplier;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Supplier;
-use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
 
 /**
@@ -24,56 +22,9 @@ class SupplierService
     ) {
     }
 
-    /**
-     * @throws NotFoundException
-     */
-    public function getSupplierApi(int $supplierId): ?Supplier
-    {
-        $supplier = $this->supplierDataHandler->getSupplierApi($supplierId);
-
-        if (!$supplier) {
-            throw new NotFoundException('Supplier with id '.$supplierId.' does not exist!');
-        }
-
-        return $supplier;
-    }
-
-    public function getAllSuppliersApi(): ?array
-    {
-        return $this->supplierDataHandler->getAllSuppliersApi();
-    }
-
-    public function addSupplierApi(Request $request): Supplier
-    {
-        $requestData = $request->request->all();
-
-        return $this->supplierDataHandler->addSupplier($requestData);
-    }
-
-    public function updateSupplierApi(Request $request): ?Supplier
-    {
-        $requestData = $request->request->all();
-
-        return $this->supplierDataHandler->updateSupplier($requestData);
-    }
-
     public function getSupplierByNr(int $supplierNr): ?Supplier
     {
         return $this->supplierDataHandler->getSupplierByNr($supplierNr);
-    }
-
-    /**
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     */
-    public function deleteSupplierApi(int $supplierId): void
-    {
-        $supplier = $this->supplierDataHandler->getSupplierById($supplierId);
-
-        if (!$supplier) {
-            throw new NotFoundException('Supplier with id '.$supplierId.' does not exist!');
-        } else {
-            $this->supplierDataHandler->delete($supplier);
-        }
     }
 
     public function getSupplierById($supplierId): ?Supplier

@@ -6,7 +6,6 @@ namespace WebWMS\Service\Article;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Article;
@@ -28,25 +27,9 @@ class ArticleService
     ) {
     }
 
-    public function getArticleApi(int $articleId): ?Article
-    {
-        $article = $this->articleDataHandler->getArticleById($articleId);
-
-        if (!$article) {
-            throw new EntityNotFoundException('Article with id '.$articleId.' does not exist!');
-        }
-
-        return $article;
-    }
-
     public function getArticleById(int $articleId): ?Article
     {
         return $this->articleDataHandler->getArticleById($articleId);
-    }
-
-    public function getAllArticlesApi(): ?array
-    {
-        return $this->articleDataHandler->getAllArticles();
     }
 
     /**
@@ -55,31 +38,6 @@ class ArticleService
     public function getAllArticles(): JsonResponse
     {
         return $this->articleDataHandler->getAllArticlesWithJoin();
-    }
-
-    public function addArticleApi(Request $request): Article
-    {
-        $requestData = $request->request->all();
-
-        return $this->articleDataHandler->addArticle($requestData);
-    }
-
-    public function updateArticleApi(Request $request): ?Article
-    {
-        $requestData = $request->request->all();
-
-        return $this->articleDataHandler->updateArticle($requestData);
-    }
-
-    public function deleteArticleApi(int $articleId): void
-    {
-        $article = $this->entityManager
-            ->getRepository(Article::class)
-            ->find($articleId);
-
-        if ($article) {
-            $this->articleDataHandler->delete($article);
-        }
     }
 
     /**
