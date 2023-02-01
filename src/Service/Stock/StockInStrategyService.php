@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Service;
+namespace WebWMS\Service\Stock;
 
 /**
- * @package:    WebWMS\Service
+ * @package:    WebWMS\Service\Stock
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        StockInStrategyService
