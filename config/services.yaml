@@ -97,11 +97,6 @@ services:
             $returnPath: '%returnPath%'
             $mailCopy: '%mailCopy%'
 
-    web_wms.service.templates_service:
-        class: WebWMS\Service\TemplatesService
-        arguments:
-            $webHost: '%webHost%'
-
     web_wms.service.file_uploader:
         class: WebWMS\Service\FileUploader
         autowire: true
