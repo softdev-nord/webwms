@@ -89,11 +89,12 @@ jobs:
             ci/set-env.sh
       - add_ssh_keys:
           fingerprints:
-          - $SSH_FINGERPRINT
-      - run: ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+            - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
+      - run: ssh-keyscan -H 178.20.100.70 >> ~/.ssh/known_hosts
       - run:
           name: Deploy development over SSH
           command: |
+            echo $SSH_USER \
             rsync -avP ssh \
             /home/circleci/webwms/ \
             $SSH_USER@$SSH_HOST:$HOST_DIR
