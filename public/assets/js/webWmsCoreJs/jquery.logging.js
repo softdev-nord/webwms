@@ -2,15 +2,13 @@
     // Log Tabelle
     $('#loggingTable').DataTable({
         lengthChange: false,
-        paging: false,
-        retrieve: true,
 
         ajax: {
             'url': '/logging_ajax',
             'dataSrc': ''
         },
-        // Seitenlänge max. 10 Einträge
-        pageLength: 10,
+        // Seitenlänge max. 15 Einträge
+        pageLength: 15,
         'language': {
             'url': './resources/dataTable.German.json'
         },

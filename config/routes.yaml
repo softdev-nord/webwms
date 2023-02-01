@@ -48,4 +48,4 @@ stock_in_final:
 
 dashboard:
     path: /dashboard
-    controller: WebWMS\Controller\DashboardController::index
+    controller: WebWMS\Controller\Dashboard::index

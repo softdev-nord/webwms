@@ -94,7 +94,7 @@ jobs:
       - run:
           name: Deploy development over SSH
           command: |
-            rsync -re ssh --delete --ignore-existing \
+            rsync -ae ssh --exclude 'ci/rsync.exclude' \
             /home/circleci/webwms/ \
             admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
       - run:
