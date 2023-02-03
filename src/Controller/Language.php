@@ -24,10 +24,14 @@ class Language extends AbstractController
      */
     public function index(Request $request): RedirectResponse
     {
-        $locale = $request->getLocale();
-        $request->setLocale($locale);
-        $request->getSession()->set('_locale', $locale);
-        $referer = $request->headers->get('referer');
+        $referer = '';
+
+        if (null !== $request->headers->get('referer')) {
+            $locale = $request->getLocale();
+            $request->setLocale($locale);
+            $request->getSession()->set('_locale', $locale);
+            $referer = $request->headers->get('referer');
+        }
 
         return $this->redirect($referer);
     }

@@ -82,9 +82,9 @@ class SupplierOrderService
     }
 
     /**
-     * @throws \Exception
+     * @param array<string|int|mixed> $requestData
      */
-    public function updateSupplierOrder($requestData): ?SupplierOrder
+    public function updateSupplierOrder(array $requestData): ?SupplierOrder
     {
         $supplierOrder = $this->supplierOrderDataHandler->getSupplierOrderById($requestData['supplierOrderId']);
 

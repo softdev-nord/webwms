@@ -84,14 +84,14 @@ class TransportRequest
     #[ORM\Column(name: 'booking_method', type: 'string', length: 10, nullable: false)]
     private string $bookingMethod;
 
-    #[ORM\Column(name: 'doc_id', type: 'integer', nullable: false)]
-    private int $docId;
+    #[ORM\Column(name: 'doc_id', type: 'integer', nullable: true, options: ['default' => null])]
+    private ?int $docId;
 
-    #[ORM\Column(name: 'order_nr', type: 'string', length: 30, nullable: false)]
-    private string $orderNr;
+    #[ORM\Column(name: 'order_nr', type: 'string', length: 30, nullable: true)]
+    private ?string $orderNr;
 
-    #[ORM\Column(name: 'order_pos', type: 'integer', nullable: false)]
-    private int $orderPos;
+    #[ORM\Column(name: 'order_pos', type: 'integer', nullable: true)]
+    private ?string $orderPos;
 
     #[ORM\Column(name: 'charge', type: 'string', length: 30, nullable: true, options: ['default' => null])]
     private string $charge;
@@ -99,23 +99,23 @@ class TransportRequest
     #[ORM\Column(name: 'loading_equipment', type: 'string', length: 30, nullable: false)]
     private string $loadingEquipment;
 
-    #[ORM\Column(name: 'confirmation_state', type: 'integer', nullable: false, options: ['default' => '0'])]
-    private int $confirmationState;
+    #[ORM\Column(name: 'confirmation_state', type: 'integer', nullable: true, options: ['default' => null])]
+    private ?int $confirmationState;
 
-    #[ORM\Column(name: 'tr_username', type: 'string', length: 30, nullable: false)]
-    private string $trUsername;
+    #[ORM\Column(name: 'tr_username', type: 'string', length: 30, nullable: true)]
+    private ?string $trUsername;
 
     #[ORM\Column(name: 'tr_computer_ip', type: 'string', length: 30, nullable: false)]
     private string $trComputerIp;
 
-    #[ORM\Column(name: 'tr_blocked', type: 'boolean', nullable: false, options: ['default' => false])]
-    private bool $trBlocked;
+    #[ORM\Column(name: 'tr_blocked', type: 'boolean', nullable: true, options: ['default' => false])]
+    private ?bool $trBlocked;
 
     #[ORM\Column(name: 'tr_start_date', type: 'datetime', nullable: true, options: ['default' => null])]
     private ?\DateTimeInterface $trStartDate;
 
-    #[ORM\Column(name: 'tr_edited', type: 'boolean', nullable: false, options: ['default' => false])]
-    private bool $trEdited;
+    #[ORM\Column(name: 'tr_edited', type: 'boolean', nullable: true, options: ['default' => false])]
+    private ?bool $trEdited;
 
     #[ORM\Column(name: 'tr_type', type: 'integer', nullable: false)]
     private int $trType;
@@ -131,7 +131,7 @@ class TransportRequest
         return $this->id;
     }
 
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 
@@ -414,19 +414,19 @@ class TransportRequest
         return $this;
     }
 
-    public function getDocId(): int
+    public function getDocId(): ?int
     {
         return $this->docId;
     }
 
-    public function setDocId($docId): self
+    public function setDocId(int|null $docId): self
     {
         $this->docId = $docId;
 
         return $this;
     }
 
-    public function getOrderNr(): string
+    public function getOrderNr(): ?string
     {
         return $this->orderNr;
     }
@@ -438,12 +438,12 @@ class TransportRequest
         return $this;
     }
 
-    public function getOrderPos(): int
+    public function getOrderPos(): ?string
     {
         return $this->orderPos;
     }
 
-    public function setOrderPos(int $orderPos): self
+    public function setOrderPos(null|string $orderPos): self
     {
         $this->orderPos = $orderPos;
 
@@ -474,24 +474,24 @@ class TransportRequest
         return $this;
     }
 
-    public function getConfirmationState(): int
+    public function getConfirmationState(): ?int
     {
         return $this->confirmationState;
     }
 
-    public function setConfirmationState(int $confirmationState): self
+    public function setConfirmationState(null|int $confirmationState): self
     {
         $this->confirmationState = $confirmationState;
 
         return $this;
     }
 
-    public function getTrUsername(): string
+    public function getTrUsername(): ?string
     {
         return $this->trUsername;
     }
 
-    public function setTrUsername(string $trUsername): self
+    public function setTrUsername(null|string $trUsername): self
     {
         $this->trUsername = $trUsername;
 
@@ -510,12 +510,12 @@ class TransportRequest
         return $this;
     }
 
-    public function getTrBlocked(): bool
+    public function getTrBlocked(): ?bool
     {
         return $this->trBlocked;
     }
 
-    public function setTrBlocked(bool $trBlocked): self
+    public function setTrBlocked(null|bool $trBlocked): self
     {
         $this->trBlocked = $trBlocked;
 
@@ -534,12 +534,12 @@ class TransportRequest
         return $this;
     }
 
-    public function getTrEdited(): bool
+    public function getTrEdited(): ?bool
     {
         return $this->trEdited;
     }
 
-    public function setTrEdited(bool $trEdited): self
+    public function setTrEdited(null|bool $trEdited): self
     {
         $this->trEdited = $trEdited;
 

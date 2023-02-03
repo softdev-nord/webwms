@@ -48,6 +48,10 @@ class ConfigurationDataHandler
             ->find($configurationId);
     }
 
+    /**
+     * @return array<string|int|mixed>
+     * @throws \Exception
+     */
     public function getAllConfigurations(): array
     {
         $configurations = [];
@@ -64,8 +68,6 @@ class ConfigurationDataHandler
                 $configurations['configuration']['layout'] = $results;
             }
         }
-
-        // dd($configurations);
 
         return $configurations;
     }

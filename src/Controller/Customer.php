@@ -55,24 +55,20 @@ class Customer extends AbstractController
     }
 
     #[Route('/kunden_anlegen', name: 'add_customer')]
-    public function addNewCustomer(Request $request): RedirectResponse|Response
+    public function addCustomer(Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $requestData = $request->request->all();
-
-        if (!empty($requestData)) {
-            $requestData = $requestData['add_customer'];
-        }
+        $requestData = $request->request->all()['add_customer'];
 
         $form = $this->createForm(AddCustomerType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $logMessage = sprintf('Der Kunde mit der Kunden-Nr. %s wurde angelegt.', $requestData['customerNr']);
+            $logMessage = 'Der Kunde mit der Kunden-Nr. '.$requestData['customerNr'].' wurde angelegt.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->customerService->addCustomer($requestData);
+            $this->customerService->addCustomer($request);
 
             return new JsonResponse($requestData);
         }
@@ -88,31 +84,33 @@ class Customer extends AbstractController
     }
 
     #[Route('kunden_bearbeiten/kundenNr/{customerNr}', name: 'edit_customer')]
-    public function editCustomer(Request $request, $customerNr): RedirectResponse|JsonResponse|Response
+    public function editCustomer(Request $request, int $customerNr): RedirectResponse|JsonResponse|Response|null
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $requestData = $request->request->all();
+        $requestData = $request->request->all()['edit_customer'];
 
-        if (!empty($requestData)) {
-            $requestData = $requestData['edit_customer'];
-        }
-
-        $responseData = $this->customerValidationService->validateCustomerData($requestData);
+        $responseData = $this->customerValidationService->validateCustomerData((array) $requestData);
         $responseData['message'] = '';
 
-        $customer = $this->customerService->getCustomerByNr((int) $customerNr);
+        $customer = $this->customerService->getCustomerByNr($customerNr);
+
+        if (!$customer) {
+            return null;
+        }
+
         $form = $this->createForm(EditCustomerType::class, $customer);
         $form->handleRequest($request);
+        $customerNr = $customer->getCustomerNr();
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
-                $responseData['message'] = 'Die Änderungen der Kundendaten wurden erfolgreich gespeichert.';
-                $logMessage = sprintf('Der Der Kunde mit der Kunden-Nr. %s wurde geändert.', $requestData['customerNr']);
+                $responseData['message'] = 'Die Änderungen am Kunden '.$customerNr.' wurden erfolgreich gespeichert.';
+                $logMessage = 'Der Kunde mit der Kunden-Nr. '.$customerNr.' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-                $this->customerService->updateCustomer($requestData);
+                $this->customerService->updateCustomer($request);
 
                 return new JsonResponse($responseData);
             }
@@ -144,6 +142,9 @@ class Customer extends AbstractController
         return $this->customerService->getAllCustomersAjax();
     }
 
+    /**
+     * @return object[]
+     */
     public function getLastCustomer(): array
     {
         return $this->customerService->getLastCustomer();

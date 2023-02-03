@@ -38,22 +38,24 @@ class StockLocationService
     }
 
     /**
-     * @throws NotFoundException
+     * @return array<int, StockLocation|null>
      */
-    public function getSockLocationDetailsByCoordinate($coordinate): array
+    public function getSockLocationDetailsByCoordinate(string $coordinate): array
     {
         return $this->stockLocationDataHandler->getSockLocationDetailsByCoordinate($coordinate);
     }
 
     /**
+     * @return object[]
      * @throws NotFoundException
      */
-    public function getSockLocationDetailsById($stockLocationId): array
+    public function getSockLocationDetailsById(string $stockLocationId): array
     {
         return $this->stockLocationDataHandler->getSockLocationDetailsById($stockLocationId);
     }
 
     /**
+     * @return array<string|int|mixed>
      * @throws Exception
      */
     public function getAllStockLocationsForSelect(): array
@@ -66,6 +68,10 @@ class StockLocationService
         $this->stockLocationDataHandler->generateStockLocation($request);
     }
 
+    /**
+     * @return object[]
+     * @throws NotFoundException
+     */
     public function getAllStockLocationsAjax(): array
     {
         $stockLocation = $this->entityManager
@@ -79,17 +85,29 @@ class StockLocationService
         return $stockLocation;
     }
 
-    public function getAllFreeStockLocations($stockSystem): array
+    /**
+     * @return array<string|int|mixed>
+     * @throws Exception
+     */
+    public function getAllFreeStockLocations(string $stockSystem): array
     {
         return $this->stockLocationDataHandler->getAllFreeStockLocations($stockSystem);
     }
 
-    public function getAllFreeStockLocationsWithLimit($stockSystem, $limit): array
+    /**
+     * @return array<string|int|mixed>
+     * @throws Exception
+     */
+    public function getAllFreeStockLocationsWithLimit(string $stockSystem, int $limit): array
     {
         return $this->stockLocationDataHandler->getAllFreeStockLocationsWithLimit($stockSystem, $limit);
     }
 
-    public function getFirstFreeStockLocation($stockSystem, $limit): array
+    /**
+     * @return object[]
+     * @throws Exception
+     */
+    public function getFirstFreeStockLocation(string $stockSystem, int $limit): array
     {
         $freeStockLocation = [];
         $stockLocations = $this->getAllFreeStockLocationsWithLimit($stockSystem, $limit);
@@ -103,7 +121,24 @@ class StockLocationService
         return $freeStockLocation;
     }
 
-    public function getRemainder($stockLocation, $remainder): array
+    public function updateStockLocation(Request $request): ?StockLocation
+    {
+        return $this->stockLocationDataHandler->updateStockLocation($request);
+    }
+
+    public function getStockLocationByCoordinate(int $stockLocationCoordinate): ?StockLocation
+    {
+        return $this->stockLocationDataHandler
+            ->getStockLocationByCoordinate(
+                $stockLocationCoordinate
+            );
+    }
+
+    /**
+     * @param  array<string>                         $stockLocation
+     * @return array<int, array<string, int|string>>
+     */
+    public function getRemainder(array $stockLocation, int|null $remainder): array
     {
         $freeStockLocations = [];
 
@@ -123,8 +158,14 @@ class StockLocationService
         return $freeStockLocations;
     }
 
-    protected function createForm(string $type, $data = null, array $options = []): FormInterface
+    /**
+     * @param array<string> $options
+     */
+    protected function createForm(string $type, mixed $data = null, array $options = []): FormInterface
     {
+        /*
+         * @phpstan-ignore-next-line
+         */
         return $this->container->get('form.factory')->create($type, $data, $options);
     }
 }

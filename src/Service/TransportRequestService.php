@@ -18,10 +18,14 @@ use WebWMS\Entity\TransportRequest;
 class TransportRequestService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService
     ) {
     }
 
+    /**
+     * @return object[]
+     */
     public function getAllOpenTransportRequests(): array
     {
         return $this->entityManager->getRepository(
@@ -29,97 +33,104 @@ class TransportRequestService
         )->findAll();
     }
 
-    public function getTransportRequestById($id): array
+    /**
+     * @return object[]
+     */
+    public function getTransportRequestById(int $id): array
     {
         return $this->entityManager->getRepository(TransportRequest::class)->findBy(['id' => $id]);
     }
 
-    public function putTransportRequest()
+    public function putTransportRequest(): void
     {
         // TODO: Implement logic
     }
 
-    public function createTransportRequest(Request $request)
+    public function createTransportRequest(Request $request, string $user): void
     {
+        $requestData = $request->request->all()['stock_in_final'];
+        $articleNr = $requestData['article_nr'];
+        $bookingMethod = $requestData['booking_method'];
+        $charge = $requestData['charge'];
+        $loadingEquipment = $requestData['loading_equipment'];
+        $clientIp = $request->getClientIp();
         $transportRequest = new TransportRequest();
 
-        $requestData = $request->request->all();
         foreach ($requestData['stock_in_final'] as $key => $data) {
-            $transportRequest->setSuId((int) $data[$key]['stock_su_id']);
+            $transportRequest->setSuId((int) $data['stock_su_id']);
             $transportRequest->setTrNr($this->getLastTransportRequestNr() + 1);
-            $transportRequest->setTrPos((int) $key + 1);
+            $transportRequest->setTrPos($key + 1);
             $transportRequest->setTrPrio(0);
-            $transportRequest->setArtNr($requestData['article_nr']);
-            $transportRequest->setTrQuantity($data['stock_quantity']);
+            $transportRequest->setArtNr($articleNr);
+            $transportRequest->setTrQuantity((float) $data['stock_quantity']);
             $transportRequest->setStockCoordinate($data['stock_coordinate']);
-            $transportRequest->setStockNr($data['stock_ln']);
-            $transportRequest->setStockLevel1($data['stock_fb']);
-            $transportRequest->setStockLevel2($data['stock_sp']);
-            $transportRequest->setStockLevel3($data['stock_tf']);
+            $transportRequest->setStockNr((int) $data['stock_ln']);
+            $transportRequest->setStockLevel1((int) $data['stock_fb']);
+            $transportRequest->setStockLevel2((int) $data['stock_sp']);
+            $transportRequest->setStockLevel3((int) $data['stock_tf']);
             $transportRequest->setStockLevel4(1);
-            $transportRequest->setTrAccess(new \DateTime('NOW', new \DateTimeZone('Europe/Berlin')));
+            $transportRequest->setTrAccess($this->dateTimeService->createDateTime());
             $transportRequest->setTrState(0);
-            $transportRequest->setOrderUsername($request->getSession()->all()['_security.last_username']);
-            $transportRequest->setBookingMethod($data['booking_method']);
-            $transportRequest->setCharge($data['charge']);
-            $transportRequest->setLoadingEquipment($data['loading_equipment']);
+            $transportRequest->setOrderUsername($user);
+            $transportRequest->setBookingMethod($bookingMethod);
+            $transportRequest->setDocId(null);
+            $transportRequest->setCharge($charge);
+            $transportRequest->setTrComputerIp((string) $clientIp);
+            $transportRequest->setLoadingEquipment($loadingEquipment);
             $transportRequest->setTrType(1);
         }
 
-        $createTransportRequestEntry = $this->setData($transportRequest, $request);
-
-        $this->entityManager->persist($createTransportRequestEntry);
+        $this->entityManager->persist($transportRequest);
         $this->entityManager->flush();
     }
 
-    public function moveTransportRequestToTransportHistory(Request $request)
-    {
-        $requestData = $request->request->all();
-        $transportRequestEntry = $this->entityManager
-            ->getRepository(TransportRequest::class)
-            ->findOneBy(['tr_nr' => $requestData['tr_nr']]);
+//    public function moveTransportRequestToTransportHistory(Request $request): void
+//    {
+//        $requestData = $request->request->all();
+//        $trNr = (string) $requestData['tr_nr'];
+//        $transportRequestEntry = $this->entityManager
+//            ->getRepository(TransportRequest::class)
+//            ->findOneBy(['tr_nr' => $trNr]);
+//
+//        $transportHistoryObject = new TransportHistory();
+//        $transportHistoryEntry = $this->setData($transportHistoryObject, $request);
+//
+//        $this->entityManager->persist($transportHistoryEntry);
+//        $this->entityManager->remove($transportRequestEntry);
+//        $this->entityManager->flush();
+//    }
 
-        $transportHistoryObject = new TransportHistory();
-        $transportHistoryEntry = $this->setData($transportHistoryObject, $request);
-
-        $this->entityManager->persist($transportHistoryEntry);
-        $this->entityManager->remove($transportRequestEntry);
-        $this->entityManager->flush();
-    }
-
-    public function setData(TransportRequest|TransportHistory $object, $requestData): TransportRequest|TransportHistory
-    {
-        $object->setSuId($requestData['su_id']);
-        $object->setTrNr($requestData['tr_nr']);
-        $object->setTrPos($requestData['tr_pos']);
-        $object->setTrPrio($requestData['tr_prio']);
-        $object->setArtNr($requestData['article_nr']);
-        $object->setTrQuantity($requestData['tr_quantity']);
-        $object->setStockCoordinate($requestData['stock_coordinate']);
-        $object->setStockNr($requestData['stock_nr']);
-        $object->setStockLevel1($requestData['stock_level1']);
-        $object->setStockLevel2($requestData['stock_level2']);
-        $object->setStockLevel3($requestData['stock_level3']);
-        $object->setStockLevel4($requestData['stock_level3']);
-        $object->setTrAccess($requestData['tr_access']);
-        $object->setTrDispatch($requestData['tr_dispatch']);
-        $object->setTrState($requestData['tr_state']);
-        $object->setOrderUsername($requestData['order_username']);
-        $object->setBookingMethod($requestData['booking_method']);
-        $object->setOrderNr($requestData['order_nr']);
-        $object->setOrderPos($requestData['order_pos']);
-        $object->setCharge($requestData['charge']);
-        $object->setLoadingEquipment($requestData['loading_equipment']);
-        $object->setConfirmationState($requestData['confirmation_state']);
-        $object->setTrUsername($requestData['tr_username']);
-        $object->setTrComputerIp($requestData['tr_computer_ip']);
-        $object->setTrBlocked($requestData['tr_blocked']);
-        $object->setTrStartDate($requestData['tr_start_date']);
-        $object->setTrEdited($requestData['tr_edited']);
-        $object->setTrType($requestData['tr_type']);
-
-        return $object;
-    }
+//    /**
+//     * @param TransportRequest|TransportHistory $object
+//     * @param Request $request
+//     * @return TransportRequest|TransportHistory
+//     */
+//    public function setData(TransportRequest|TransportHistory $object, Request $request): TransportRequest|TransportHistory
+//    {
+//        $requestData = $request->request->all();
+//
+//        $object->setSuId((int) $requestData['suId']);
+//        $object->setTrNr((int) $requestData['trNr']);
+//        $object->setTrPos((int) $requestData['trPos']);
+//        $object->setTrPrio((int) $requestData['trPrio']);
+//        $object->setArtNr((string) $requestData['articleNr']);
+//        $object->setTrQuantity((int) $requestData['trQuantity']);
+//        $object->setStockCoordinate((string) $requestData['stockCoordinate']);
+//        $object->setStockNr((int) $requestData['stockCoordinate']);
+//        $object->setStockLevel1((int) $requestData['stockLevel1']);
+//        $object->setStockLevel2((int) $requestData['stockLevel2']);
+//        $object->setStockLevel3((int) $requestData['stockLevel3']);
+//        $object->setStockLevel4((int) $requestData['stockLevel4']);
+//        $object->setTrAccess($requestData['trAccess']);
+//        $object->setTrState((int) $requestData['trState']);
+//        $object->setOrderUsername((string) $requestData['orderUsername']);
+//        $object->setBookingMethod($requestData['bookingMethod']);
+//        $object->setCharge($requestData['charge']);
+//        $object->setLoadingEquipment($requestData['loadingEquipment']);
+//        $object->setTrType((int) $requestData['trType']);
+//
+//        return $object;
+//    }
 
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)

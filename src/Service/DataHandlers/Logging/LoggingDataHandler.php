@@ -33,13 +33,16 @@ class LoggingDataHandler
                 ['username' => $username]
             );
 
+        if (!$user) {
+            return;
+        }
+
         $logEntry = new Logging();
         $logEntry->setRoute($request->attributes->get('_route'));
         $logEntry->setMessage($message);
         $logEntry->setDate($this->dateTimeService->createDateTime());
-        $logEntry->setUser($user->getFirstname().' '.$user->getLastname());
-        $logEntry->setIpAddress($request->getClientIp());
-        $logEntry->setUserAgent($request->headers->get('User-Agent'));
+        $logEntry->setIpAddress((string) $request->getClientIp());
+        $logEntry->setUserAgent((string) $request->headers->get('User-Agent'));
 
         $this->entityManager->persist($logEntry);
         $this->entityManager->flush();

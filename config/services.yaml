@@ -133,3 +133,4 @@ services:
         arguments:
             $requirements: 'WebWMS\Controller\Requirements'
             $twig: 'Twig\Environment'
+    

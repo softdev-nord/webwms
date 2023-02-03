@@ -155,6 +155,9 @@ class Customer
         return $this;
     }
 
+    /**
+     * @return array<string, int|string|null>
+     */
     public function toArray(): array
     {
         return [

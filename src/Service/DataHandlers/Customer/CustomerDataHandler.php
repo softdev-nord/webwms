@@ -7,6 +7,7 @@ namespace WebWMS\Service\DataHandlers\Customer;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Customer;
 use WebWMS\Service\DateTimeService;
 
@@ -124,8 +125,9 @@ class CustomerDataHandler
         return new JsonResponse($data);
     }
 
-    public function addCustomer($requestData): Customer
+    public function addCustomer(Request $request): Customer
     {
+        $requestData = $request->request->all()['add_customer'];
         $customer = new Customer();
 
         $customer->setCustomerNr((int) $requestData['customerNr']);
@@ -143,8 +145,9 @@ class CustomerDataHandler
         return $customer;
     }
 
-    public function updateCustomer($requestData): ?Customer
+    public function updateCustomer(Request $request): ?Customer
     {
+        $requestData = $request->request->all()['edit_customer'];
         $customer = $this->entityManager
             ->getRepository(Customer::class)
             ->findOneBy(['customerNr' => $requestData['customerNr']]);
@@ -168,6 +171,9 @@ class CustomerDataHandler
         return $customer;
     }
 
+    /**
+     * @return object[]
+     */
     public function getLastCustomer(): array
     {
         return $this->entityManager

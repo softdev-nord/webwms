@@ -91,7 +91,7 @@ class StockOccupancy extends AbstractController
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function getStockOccupancyResults($request): Response
+    public function getStockOccupancyResults(Request $request): Response
     {
         $stock = [];
 

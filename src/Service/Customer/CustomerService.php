@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Service\Customer;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Customer;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
@@ -21,7 +22,7 @@ class CustomerService
     ) {
     }
 
-    public function getCustomerById(int $customerId): Customer
+    public function getCustomerById(int $customerId): ?Customer
     {
         return $this->customerDataHandler->getCustomerById($customerId);
     }
@@ -41,18 +42,21 @@ class CustomerService
         return $this->customerDataHandler->getCustomers();
     }
 
-    public function addCustomer($requestData): void
+    public function addCustomer(Request $request): void
     {
-        $this->customerDataHandler->addCustomer($requestData);
+        $this->customerDataHandler->addCustomer($request);
     }
 
+    /**
+     * @return object[]
+     */
     public function getLastCustomer(): array
     {
         return $this->customerDataHandler->getLastCustomer();
     }
 
-    public function updateCustomer($requestData): ?Customer
+    public function updateCustomer(Request $request): ?Customer
     {
-        return $this->customerDataHandler->updateCustomer($requestData);
+        return $this->customerDataHandler->updateCustomer($request);
     }
 }

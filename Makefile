@@ -49,7 +49,7 @@ backup:
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'cd /var/backup/mysql && ./backup-database.sh'
 
 list-backup:
-	@docker exec -it webWMS-MariaDB10.5 ls /var/backup/mysql
+	@docker exec -it $(APP_CONTAINER_NAME) ls /var/backup/mysql
 
 ######################################################################
 ############################# Logs ###################################
@@ -63,7 +63,7 @@ db-logs: ## Tail database container logs
 ######################################################################
 ######################### Code Analysis ##############################
 ######################################################################
-phpstan: ## run code analyse for src folder (phpstan)
+phpstan: ## run code analyse for src and bundles folder (phpstan)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpstan analyse';
 
 phpstan-baseline: ## Run code analyse (phpstan) incl. baseline

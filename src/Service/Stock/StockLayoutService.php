@@ -19,6 +19,9 @@ class StockLayoutService
     ) {
     }
 
+    /**
+     * @return object[]
+     */
     public function getStockLayout(): array
     {
         return $this->stockLayoutDataHandler->getStockLayout();

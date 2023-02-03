@@ -21,14 +21,15 @@ class StockRotationService
     ) {
     }
 
+    /**
+     * @return object[]
+     */
     public function getAllStockRotations(): array
     {
         return $this->stockRotationDataHandler->getAllStockRotations();
     }
 
     /**
-     * Get all Stock Rotations for Ajax-Request.
-     *
      * @throws Exception
      */
     public function getAllStockRotationsWithJoin(): JsonResponse

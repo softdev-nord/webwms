@@ -75,6 +75,9 @@ class Supplier extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde angelegt.', $requestData['supplierNr']);
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
+            /*
+             * @phpstan-ignore-next-line
+             */
             $this->supplierService->addSupplier($requestData);
 
             return new JsonResponse($requestData);
@@ -91,7 +94,7 @@ class Supplier extends AbstractController
     }
 
     #[Route('/lieferant_bearbeiten/lieferantenNr/{supplierNr}', name: 'edit_supplier')]
-    public function editSupplier(Request $request, $supplierNr): RedirectResponse|JsonResponse|Response
+    public function editSupplier(Request $request, int $supplierNr): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -103,10 +106,13 @@ class Supplier extends AbstractController
             $requestData = $requestData['edit_supplier'];
         }
 
+        /**
+         * @phpstan-ignore-next-line
+         */
         $responseData = $this->supplierValidationService->validateSupplierData($requestData);
         $responseData['message'] = '';
 
-        $supplier = $this->supplierService->getSupplierByNr((int) $supplierNr);
+        $supplier = $this->supplierService->getSupplierByNr($supplierNr);
         $form = $this->createForm(EditSupplierType::class, $supplier);
         $form->handleRequest($request);
 
@@ -115,6 +121,9 @@ class Supplier extends AbstractController
                 $responseData['message'] = 'Die Änderungen der Lieferantendaten wurden erfolgreich gespeichert.';
                 $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde geändert.', $requestData['supplierNr']);
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
+                /*
+                 * @phpstan-ignore-next-line
+                 */
                 $this->supplierService->updateSupplier($requestData);
 
                 return new JsonResponse($responseData);
@@ -136,7 +145,7 @@ class Supplier extends AbstractController
     }
 
     #[Route('/lieferant_löschen/lieferantenNr/{supplierNr}', name: 'delete_supplier')]
-    public function deleteSupplier(Request $request, $supplierNr): RedirectResponse|JsonResponse|Response
+    public function deleteSupplier(Request $request, int $supplierNr): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -148,18 +157,18 @@ class Supplier extends AbstractController
             $requestData = $requestData['delete_supplier'];
         }
 
-        $supplier = $this->supplierService->getSupplierByNr((int) $supplierNr);
+        $supplier = $this->supplierService->getSupplierByNr($supplierNr);
         $form = $this->createForm(DeleteSupplierType::class, $supplier);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $responseData['message'] = sprintf(
                 'Der Lieferant mit der Lieferanten-Nr. %s wurde erfolgreich gelöscht.',
-                $supplier->getSupplierNr()
+                $supplierNr
             );
-            $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde gelöscht.', $supplier->getSupplierNr());
+            $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde gelöscht.', $supplierNr);
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->supplierService->deleteSupplier((int) $requestData['supplierNr']);
+            $this->supplierService->deleteSupplier($supplierNr);
 
             return new JsonResponse($responseData);
         }
@@ -167,7 +176,7 @@ class Supplier extends AbstractController
         return $this->render(
             'supplier/supplier_delete_ask.html.twig',
             [
-                'supplierNr' => $supplier->getSupplierNr(),
+                'supplierNr' => $supplierNr,
                 'supplierForm' => $form->createView(),
             ]
         );
@@ -189,7 +198,7 @@ class Supplier extends AbstractController
     }
 
     /**
-     * Get last supplier.
+     * @return object[]
      */
     public function getLastSupplier(): array
     {

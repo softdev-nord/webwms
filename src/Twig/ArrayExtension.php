@@ -22,7 +22,11 @@ class ArrayExtension extends AbstractExtension
         ];
     }
 
-    public function castToArray($stdClassObject): array
+    /**
+     * @param  array<object>                             $stdClassObject
+     * @return array<int, array<int, int|object|string>>
+     */
+    public function castToArray(array $stdClassObject): array
     {
         $response = [];
         foreach ($stdClassObject as $key => $value) {

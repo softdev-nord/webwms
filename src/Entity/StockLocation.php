@@ -116,7 +116,7 @@ class StockLocation
         return $this->stockLocationCoordinate;
     }
 
-    public function setStockLocationCoordinate($stockLocationCoordinate): void
+    public function setStockLocationCoordinate(string $stockLocationCoordinate): void
     {
         $this->stockLocationCoordinate = $stockLocationCoordinate;
     }

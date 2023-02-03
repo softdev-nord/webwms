@@ -137,6 +137,9 @@ class Supplier
         $this->supplierAddressCity = $supplierAddressCity;
     }
 
+    /**
+     * @return array<string, int|string|null>
+     */
     public function toArray(): array
     {
         return [

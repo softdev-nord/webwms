@@ -114,39 +114,12 @@ class ArticleService
         $this->articleDataHandler->save($article);
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function updateArticle($requestData): ?Article
+    public function updateArticle(Request $request): ?Article
     {
-        $article = $this->articleDataHandler->getArticleById(
-            (int) $requestData['articleId']
-        );
-
-        if (!$article) {
-            return null;
-        }
-
-        $article->setArticleNr($requestData['articleNr']);
-        $article->setArticleName($requestData['articleName']);
-        $article->setArticleCategory($requestData['articleCategory']);
-        $article->setArticleWeight((float) $requestData['articleWeight']);
-        $article->setArticleEan($requestData['articleEan']);
-        $article->setArticleUnit($requestData['articleUnit']);
-        $article->setArticleDepth((float) $requestData['articleDepth']);
-        $article->setArticleWidth((float) $requestData['articleWidth']);
-        $article->setArticleHeight((float) $requestData['articleHeight']);
-        $article->setStockOutStrategy($requestData['stockOutStrategy']);
-        $article->setLeQuantity((float) $requestData['leQuantity']);
-        $article->setStandardLoadingEquipment($requestData['standardLoadingEquipment']);
-        $article->setUpdatedAt($this->dateTimeService->createDateTime());
-
-        $this->articleDataHandler->update($article);
-
-        return $article;
+        return $this->articleDataHandler->updateArticle($request);
     }
 
-    public function deleteArticle(int $articleNr): void
+    public function deleteArticle(string $articleNr): void
     {
         $this->articleDataHandler->deleteArticle($articleNr);
     }

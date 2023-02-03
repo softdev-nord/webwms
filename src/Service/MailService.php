@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Service;
 
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -30,6 +31,10 @@ class MailService
     ) {
     }
 
+    /**
+     * @param  array<string>               $parameter
+     * @throws TransportExceptionInterface
+     */
     public function sendTemplatedMail(string $to, string $subject, string $template, array $parameter = []): void
     {
         $email = (new TemplatedEmail())
@@ -42,6 +47,10 @@ class MailService
         $this->mailer->send($email);
     }
 
+    /**
+     * @param  object[]                    $attachments
+     * @throws TransportExceptionInterface
+     */
     public function sendHTMLMail(string $to, string $subject, string $body, array $attachments = []): void
     {
         $email = (new Email())
@@ -59,14 +68,14 @@ class MailService
             $email->bcc(new Address($this->fromMail));
         }
 
-        /* @var $attachment MailAttachment */
-        foreach ($attachments as $attachment) {
-            $email->attach(
-                $attachment->getBody(),
-                $attachment->getName(),
-                $attachment->getContentType()
-            );
-        }
+//        /* @var $attachment MailAttachment */
+//        foreach ($attachments as $attachment) {
+//            $email->attach(
+//                $attachment->getBody(),
+//                $attachment->getName(),
+//                $attachment->getContentType()
+//            );
+//        }
         $this->mailer->send($email);
     }
 }

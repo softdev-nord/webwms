@@ -28,7 +28,6 @@ class StockInFinalType extends AbstractType
             $builder
                 ->add('stock_su_id_'.$key, TextType::class, [
                     'label' => false,
-                    'empty_data' => 'John Doe',
                     'attr' => [
                         'id' => 'stock_su_id',
                         'data-type' => 'stock_su_id',

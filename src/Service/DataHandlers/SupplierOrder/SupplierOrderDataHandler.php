@@ -48,7 +48,11 @@ class SupplierOrderDataHandler
             ->findOneBy(['supplierOrderId' => $id]);
     }
 
-    public function updateSupplierOrder($requestData): ?SupplierOrder
+    /**
+     * @param  array<string|int|mixed> $requestData
+     * @throws \Exception
+     */
+    public function updateSupplierOrder(array $requestData): ?SupplierOrder
     {
         $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
 
@@ -60,11 +64,11 @@ class SupplierOrderDataHandler
             return null;
         }
 
-        $supplierOrder->setSupplierOrderId((int) $requestData['	supplier_order_id']);
-        $supplierOrder->setUsrId((int) $requestData['usr_id']);
-        $supplierOrder->setSupplierId((int) $requestData['supplier_id']);
-        $supplierOrder->setSupplierOrderNr((string) $requestData['supplier_order_nr']);
-        $supplierOrder->setSupplierOrderReference((string) $requestData['supplier_order_reference']);
+        $supplierOrder->setSupplierOrderId($requestData['	supplier_order_id']);
+        $supplierOrder->setUsrId($requestData['usr_id']);
+        $supplierOrder->setSupplierId($requestData['supplier_id']);
+        $supplierOrder->setSupplierOrderNr($requestData['supplier_order_nr']);
+        $supplierOrder->setSupplierOrderReference($requestData['supplier_order_reference']);
         $supplierOrder->setSupplierOrderDate($requestData['supplier_order_date']);
         $supplierOrder->setSupplierOrderCreationDate($requestData['supplier_address_street']);
         $supplierOrder->setUpdatedAt($updatedAt);

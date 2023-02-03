@@ -13,32 +13,32 @@ class StockOutStrategyDataHandler
     ) {
     }
 
-    public function fiFoStrategy()
+    public function fiFoStrategy(): void
     {
         // TODO: Implement logic
     }
 
-    public function feFoStrategy()
+    public function feFoStrategy(): void
     {
         // TODO: Implement logic
     }
 
-    public function liFoStrategy()
+    public function liFoStrategy(): void
     {
         // TODO: Implement logic
     }
 
-    public function hiFoStrategy()
+    public function hiFoStrategy(): void
     {
         // TODO: Implement logic
     }
 
-    public function loFoStrategy()
+    public function loFoStrategy(): void
     {
         // TODO: Implement logic
     }
 
-    public function chaoticStorageStockOutStrategy()
+    public function chaoticStorageStockOutStrategy(): void
     {
         // TODO: Implement logic
     }

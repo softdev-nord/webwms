@@ -131,7 +131,7 @@ class TransportHistory
         return $this->id;
     }
 
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 
@@ -419,7 +419,7 @@ class TransportHistory
         return $this->docId;
     }
 
-    public function setDocId($docId): self
+    public function setDocId(int $docId): self
     {
         $this->docId = $docId;
 

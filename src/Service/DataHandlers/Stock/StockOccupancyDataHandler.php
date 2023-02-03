@@ -41,11 +41,11 @@ class StockOccupancyDataHandler
     }
 
     /**
+     * @return array<int|mixed>
      * @throws Exception
-     *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function getStockOccupancy($stockLocationLn): array
+    public function getStockOccupancy(string $stockLocationLn): array
     {
         $allResults = [];
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
@@ -62,7 +62,7 @@ class StockOccupancyDataHandler
             ->from('transport_history', 'tph')
             ->rightJoin('tph', 'stock_location', 'sl', 'tph.stock_coordinate = sl.stock_location_coordinate')
             ->andWhere('sl.stock_location_ln = :stock_location_ln')
-            ->setParameter('stock_location_ln', (int) $stockLocationLn)
+            ->setParameter('stock_location_ln', $stockLocationLn)
             ->groupBy('sl.stock_location_coordinate');
 
         $stmt = $queryBuilder->executeQuery();
@@ -99,11 +99,11 @@ class StockOccupancyDataHandler
     }
 
     /**
+     * @return array<string|int|mixed>
      * @throws Exception
-     *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function getStockOccupancyByArticleNr($articleNr): array
+    public function getStockOccupancyByArticleNr(int $articleNr): array
     {
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
 

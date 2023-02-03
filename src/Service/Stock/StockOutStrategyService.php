@@ -47,7 +47,7 @@ class StockOutStrategyService
      * Oft ist hier auch von einem Durchlauflager die Rede. Was am längsten liegt, wird als erstes genommen,
      * das hält die Lagerzeiten in einem ungefähren Gleichgewicht.
      */
-    public function fiFoStrategy()
+    public function fiFoStrategy(): void
     {
         $this->stockOutStrategyDataHandler->fiFoStrategy();
     }
@@ -58,7 +58,7 @@ class StockOutStrategyService
      * Diese Strategie findet zumeist Anwendung bei Waren mit einem Mindesthaltbarkeitsdatum (MHD) wie Lebensmittel
      * oder Pharmazeutika. Die Ware mit dem frühsten Ablaufdatum wird als erstes ausgelagert.
      */
-    public function feFoStrategy()
+    public function feFoStrategy(): void
     {
         $this->stockOutStrategyDataHandler->feFoStrategy();
     }
@@ -72,7 +72,7 @@ class StockOutStrategyService
      * Bei Einfahrregalen mit nur einer offenen Seite, ist LIFO oft zu finden. Nachteilig ist,
      * dass ältere Artikel länger im Lager verbleiben und so Kosten für einen nicht effektiv genutzten Lagerplatz produzieren.
      */
-    public function liFoStrategy()
+    public function liFoStrategy(): void
     {
         $this->stockOutStrategyDataHandler->liFoStrategy();
     }
@@ -85,7 +85,7 @@ class StockOutStrategyService
      * Vorzugsweise wird diese Strategie bei tagespreis abhängigen oder bei Ware,
      * die durch die Zeit angegriffen wird, eingesetzt.
      */
-    public function hiFoStrategy()
+    public function hiFoStrategy(): void
     {
         $this->stockOutStrategyDataHandler->hiFoStrategy();
     }
@@ -98,7 +98,7 @@ class StockOutStrategyService
      * Betriebswirtschaftlich macht diese Strategie wenig Sinn,
      * weil die wertvolleren Artikel im Lager bleiben und hohes Kapital binden.
      */
-    public function loFoStrategy()
+    public function loFoStrategy(): void
     {
         $this->stockOutStrategyDataHandler->loFoStrategy();
     }
@@ -111,7 +111,7 @@ class StockOutStrategyService
      * Mithilfe eines chaotischen Lagers wird die Kapazität eines Lagers optimal ausgelastet.
      * Lagerplätze werden nicht freigehalten oder eingeplant, wenn ein Artikel ausgelagert oder ausverkauft ist.
      */
-    public function chaoticWarehousingStockOutStrategy()
+    public function chaoticWarehousingStockOutStrategy(): void
     {
         $this->stockOutStrategyDataHandler->chaoticStorageStockOutStrategy();
     }

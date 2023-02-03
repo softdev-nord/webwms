@@ -40,6 +40,9 @@ class StockRotationDataHandler
         $this->entityManager->flush();
     }
 
+    /**
+     * @return object[]
+     */
     public function getAllStockRotations(): array
     {
         return $this->entityManager

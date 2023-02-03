@@ -6,6 +6,7 @@ namespace WebWMS\Service\Supplier;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Supplier;
 use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
 
@@ -27,7 +28,7 @@ class SupplierService
         return $this->supplierDataHandler->getSupplierByNr($supplierNr);
     }
 
-    public function getSupplierById($supplierId): ?Supplier
+    public function getSupplierById(int $supplierId): ?Supplier
     {
         return $this->supplierDataHandler->getSupplierById($supplierId);
     }
@@ -48,20 +49,23 @@ class SupplierService
         return $this->supplierDataHandler->getSuppliers();
     }
 
-    public function addSupplier($requestData): void
+    public function addSupplier(Request $request): void
     {
-        $this->supplierDataHandler->addSupplier($requestData);
+        $this->supplierDataHandler->addSupplier($request);
     }
 
     /**
-     * Get last supplier.
+     * @return object[]
      */
     public function getLastSupplier(): array
     {
         return $this->supplierDataHandler->getLastSupplier();
     }
 
-    public function updateSupplier($requestData): ?Supplier
+    /**
+     * @param array<string> $requestData
+     */
+    public function updateSupplier(array $requestData): ?Supplier
     {
         return $this->supplierDataHandler->updateSupplier($requestData);
     }

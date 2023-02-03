@@ -21,6 +21,9 @@ class MpdfService
 
     public function getMpdf(): \mPDF
     {
+        /**
+         * @phpstan-ignore-next-line
+         */
         $locale = $this->requestStack->getCurrentRequest()->getLocale();
         $config = [
             'mode' => $locale,

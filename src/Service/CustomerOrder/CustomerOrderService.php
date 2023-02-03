@@ -50,7 +50,7 @@ class CustomerOrderService
     }
 
     /**
-     * Get last customer order id.
+     * @return object[]
      */
     public function getLastCustomerOrderId(): array
     {

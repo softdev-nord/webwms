@@ -93,7 +93,7 @@ class SupplierOrder
         return $this->usrId;
     }
 
-    public function setUsrId(?int $usrId): self
+    public function setUsrId(int $usrId): self
     {
         $this->usrId = $usrId;
 

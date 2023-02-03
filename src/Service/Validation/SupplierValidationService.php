@@ -13,9 +13,11 @@ namespace WebWMS\Service\Validation;
 class SupplierValidationService
 {
     /**
+     * @param  array<string|int|mixed> $requestData
+     * @return array<string>
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateSupplierData($requestData): array
+    public function validateSupplierData(array $requestData): array
     {
         $responseData = [];
 
