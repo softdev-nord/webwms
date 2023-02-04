@@ -28,19 +28,17 @@ class LoggingDataHandler
 
     public function write(Request $request, string $message, string $username): void
     {
+        /** @var User $user */
         $user = $this->entityManager->getRepository(
             User::class)->findOneBy(
                 ['username' => $username]
             );
 
-        if (!$user) {
-            return;
-        }
-
         $logEntry = new Logging();
         $logEntry->setRoute($request->attributes->get('_route'));
         $logEntry->setMessage($message);
         $logEntry->setDate($this->dateTimeService->createDateTime());
+        $logEntry->setUser($user->getFirstname().$user->getLastname());
         $logEntry->setIpAddress((string) $request->getClientIp());
         $logEntry->setUserAgent((string) $request->headers->get('User-Agent'));
 

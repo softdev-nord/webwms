@@ -62,12 +62,9 @@ class SupplierService
         return $this->supplierDataHandler->getLastSupplier();
     }
 
-    /**
-     * @param array<string> $requestData
-     */
-    public function updateSupplier(array $requestData): ?Supplier
+    public function updateSupplier(Request $request): ?Supplier
     {
-        return $this->supplierDataHandler->updateSupplier($requestData);
+        return $this->supplierDataHandler->updateSupplier($request);
     }
 
     public function deleteSupplier(int $supplierNr): void

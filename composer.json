@@ -61,8 +61,7 @@
         "symfony/yaml": "6.2.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
-        "webbamboo/material-dashboard-symfony": "^1.0",
-        "webonyx/graphql-php": "^15.0"
+        "webbamboo/material-dashboard-symfony": "^1.0"
     },
     "config": {
         "allow-plugins": {

@@ -21,7 +21,7 @@ class CustomerOrderDataHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private CustomerDataHandler $customerDataHandler
+        // private CustomerDataHandler $customerDataHandler
     ) {
     }
 
@@ -151,7 +151,7 @@ class CustomerOrderDataHandler
         // TODO: Implement logic
 
         $params = $request->request->all()['customer'];
-        $lastCustomer = $this->customerDataHandler->getLastCustomer();
+        // $lastCustomer = $this->customerDataHandler->getLastCustomer();
 
         $customerOrder = new Customer();
         // $customerOrder->setCustomerId($lastCustomer['customer_id'] + 1);

@@ -352,11 +352,12 @@ class StockTransactions extends AbstractController
     #[Route('/stock_in_final', name: 'stock_in_final')]
     public function stockInFinal(Request $request): void
     {
+        $user = '';
         if (null !== $this->getUser()) {
             $user = $this->getUser()->getUserIdentifier();
         }
 
-        // $this->transportRequestService->createTransportRequest($request, $user);
+        $this->transportRequestService->createTransportRequest($request, $user);
     }
 
     /**

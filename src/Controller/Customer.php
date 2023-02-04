@@ -90,11 +90,6 @@ class Customer extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $requestData = $request->request->all()['edit_customer'];
-
-        $responseData = $this->customerValidationService->validateCustomerData((array) $requestData);
-        $responseData['message'] = '';
-
         $customer = $this->customerService->getCustomerByNr($customerNr);
 
         if (!$customer) {
@@ -104,6 +99,10 @@ class Customer extends AbstractController
         $form = $this->createForm(EditCustomerType::class, $customer);
         $form->handleRequest($request);
         $customerNr = $customer->getCustomerNr();
+        $requestData = $form->getData();
+
+        $responseData = $this->customerValidationService->validateCustomerData($requestData);
+        $responseData['message'] = '';
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {

@@ -48,10 +48,10 @@ class MailService
     }
 
     /**
-     * @param  object[]                    $attachments
+     * @param  array<object>               $attachments
      * @throws TransportExceptionInterface
      */
-    public function sendHTMLMail(string $to, string $subject, string $body, array $attachments = []): void
+    public function sendHTMLMail(string $to, string $subject, string $body, array $attachments): void
     {
         $email = (new Email())
             ->from(new Address($this->fromMail, $this->fromName))
@@ -68,14 +68,14 @@ class MailService
             $email->bcc(new Address($this->fromMail));
         }
 
-//        /* @var $attachment MailAttachment */
-//        foreach ($attachments as $attachment) {
-//            $email->attach(
-//                $attachment->getBody(),
-//                $attachment->getName(),
-//                $attachment->getContentType()
-//            );
-//        }
+        /* @var $attachment MailAttachment */
+        foreach ($attachments as $attachment) {
+            $email->attach(
+                $attachment->getBody(), /* @phpstan-ignore-line */
+                $attachment->getName(), /* @phpstan-ignore-line */
+                $attachment->getContentType() /* @phpstan-ignore-line */
+            );
+        }
         $this->mailer->send($email);
     }
 }

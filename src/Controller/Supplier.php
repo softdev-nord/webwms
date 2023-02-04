@@ -94,37 +94,32 @@ class Supplier extends AbstractController
     }
 
     #[Route('/lieferant_bearbeiten/lieferantenNr/{supplierNr}', name: 'edit_supplier')]
-    public function editSupplier(Request $request, int $supplierNr): RedirectResponse|JsonResponse|Response
+    public function editSupplier(Request $request, int $supplierNr): RedirectResponse|JsonResponse|Response|null
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $requestData = $request->request->all();
+        $supplier = $this->supplierService->getSupplierByNr($supplierNr);
 
-        if (!empty($requestData)) {
-            $requestData = $requestData['edit_supplier'];
+        if (!$supplier) {
+            return null;
         }
 
-        /**
-         * @phpstan-ignore-next-line
-         */
+        $form = $this->createForm(EditSupplierType::class, $supplier);
+        $form->handleRequest($request);
+        $supplierNr = $supplier->getSupplierNr();
+        $requestData = $form->getData();
+
         $responseData = $this->supplierValidationService->validateSupplierData($requestData);
         $responseData['message'] = '';
 
-        $supplier = $this->supplierService->getSupplierByNr($supplierNr);
-        $form = $this->createForm(EditSupplierType::class, $supplier);
-        $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
-                $responseData['message'] = 'Die Änderungen der Lieferantendaten wurden erfolgreich gespeichert.';
-                $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde geändert.', $requestData['supplierNr']);
+                $responseData['message'] = 'Die Änderungen am Lieferanten '.$supplierNr.' wurden erfolgreich gespeichert.';
+                $logMessage = 'Lieferant mit der Lieferanten-Nr. '.$supplierNr.' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-                /*
-                 * @phpstan-ignore-next-line
-                 */
-                $this->supplierService->updateSupplier($requestData);
+                $this->supplierService->updateSupplier($request);
 
                 return new JsonResponse($responseData);
             }

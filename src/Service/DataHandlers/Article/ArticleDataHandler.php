@@ -130,16 +130,16 @@ class ArticleDataHandler
         $article->setArticleNr($requestData['articleNr']);
         $article->setArticleName($requestData['articleName']);
         $article->setArticleCategory($requestData['articleCategory']);
-        $article->setArticleWeight($requestData['articleWeight']);
+        $article->setArticleWeight((float) $requestData['articleWeight']);
         $article->setArticleEan($requestData['articleEan']);
         $article->setArticleUnit($requestData['articleUnit']);
-        $article->setArticleDepth($requestData['articleDepth']);
-        $article->setArticleWidth($requestData['articleWidth']);
-        $article->setArticleHeight($requestData['articleHeight']);
+        $article->setArticleDepth((float) $requestData['articleDepth']);
+        $article->setArticleWidth((float) $requestData['articleWidth']);
+        $article->setArticleHeight((float) $requestData['articleHeight']);
         $article->setStockOutStrategy($requestData['stockOutStrategy']);
-        $article->setLeQuantity($requestData['leQuantity']);
+        $article->setLeQuantity((float) $requestData['leQuantity']);
         $article->setStandardLoadingEquipment($requestData['standardLoadingEquipment']);
-        $article->setCreatedAt($this->dateTimeService->createDateTime());
+        $article->setUpdatedAt($this->dateTimeService->createDateTime());
         $this->save($article);
 
         return $article;

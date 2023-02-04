@@ -63,11 +63,9 @@ class SupplierDataHandler
         return $supplier;
     }
 
-    /**
-     * @param array<int|string> $requestData
-     */
-    public function updateSupplier(array $requestData): ?Supplier
+    public function updateSupplier(Request $request): ?Supplier
     {
+        $requestData = $request->request->all()['edit_supplier'];
         $supplier = $this->entityManager
             ->getRepository(Supplier::class)
             ->findOneBy(['supplierNr' => $requestData['supplierNr']]);

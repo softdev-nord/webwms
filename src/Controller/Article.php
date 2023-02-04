@@ -102,11 +102,6 @@ class Article extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $requestData = $request->request->all()['edit_article'];
-
-        $responseData = $this->articleValidationService->validateArticleData((array) $requestData);
-        $responseData['message'] = '';
-
         $article = $this->articleService->getArticleById($articleId);
 
         if (!$article) {
@@ -116,6 +111,10 @@ class Article extends AbstractController
         $form = $this->createForm(EditArticleType::class, $article);
         $form->handleRequest($request);
         $articleNr = $article->getArticleNr();
+        $requestData = $form->getData();
+
+        $responseData = $this->articleValidationService->validateArticleData($requestData);
+        $responseData['message'] = '';
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {

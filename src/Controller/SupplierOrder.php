@@ -99,7 +99,6 @@ class SupplierOrder extends AbstractController
     #[Route('/bestellung_bearbeiten/id/{id}', name: 'edit_supplier_order')]
     public function editSupplierOrder(Request $request, int $id): RedirectResponse|Response|null
     {
-        $supplierId = '';
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
