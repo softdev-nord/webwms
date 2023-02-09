@@ -1,0 +1,50 @@
+<div class="row">
+    {% block webwms_user_form %}
+        <div class="card">
+            {{ form_start(userForm) }}
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Benutzername</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(userForm.username) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Benutzerrollen</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(userForm.roles) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Vorname</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(userForm.firstname) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Nachname</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(userForm.lastname) }}
+                </div>
+            </div>
+            {% if addUser %}
+                <div class="form-group">
+                    <label for="text" class="control-label col-xs-4">Passwort</label>
+                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                        {{ form_row(userForm.password.first) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="text" class="control-label col-xs-4">Passwort wiederholen</label>
+                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                        {{ form_row(userForm.password.second) }}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="text-center">
+                {{ form_widget(userForm.save) }}
+                {{ form_widget(userForm.back_to_user_overview) }}
+            </div>
+            {{ form_end(userForm) }}
+        </div>
+    {% endblock %}
+</div>

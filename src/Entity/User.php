@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Table(name: 'user')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\UserRepository')]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,7 +23,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $username;
 
     #[ORM\Column(name: 'roles', type: 'json')]
-    private array $roles = [];
+    private ?array $roles = [];
 
     #[ORM\Column(name: 'password', type: 'string', length: 255, nullable: false)]
     private string $password;
@@ -33,7 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public ?string $lastname;
 
     #[ORM\Column(name: 'email', type: 'string', length: 255)]
-    private string $email;
+    private ?string $email;
 
     #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $lastLogin;
@@ -117,7 +119,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
