@@ -57,7 +57,7 @@
                         {% endif %}
                     </span>
                     <span class="text-muted user-role">
-                        {% if (app.user != null) and (app.user.roles.0 == 'ROLE_SUPER_ADMIN') %}
+                        {% if (app.user != null) and (has_role(app.user, 'ROLE_SUPER_ADMIN')) %}
                             {{ 'nav.user.admin'|trans }}
                         {% else %}
                             {{ 'nav.user.user'|trans }}
@@ -250,7 +250,7 @@
                                         <ul>
                                             <li><a href="{{ path('article') }}">Übersicht Artikel</a></li>
                                             <li><a id="add_article">Artikel Anlegen</a></li>
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
                                                 <li><a href="#">Sachmerkmale zuordnen</a></li>
                                             {% endif %}
                                         </ul>
@@ -266,7 +266,7 @@
                                             <li><a href="{{ path('stock_location') }}">Übersicht Lagerplätze</a></li>
                                             <li><a href="{{ path('stock_layout') }}">Lagerlayout</a></li>
                                             <li><a href="#">Lagerzonen</a></li>
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
                                                 <li><a href="{{ path('add_stock_location') }}">Lager anlegen</a></li>
                                             {% endif %}
                                         </ul>
@@ -280,7 +280,7 @@
                                     <div class="sidebar-submenu-sub">
                                         <ul>
                                             <li><a href="{{ path('customer') }}">Übersicht Kunden</a></li>
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
                                                 <li><a href="{{ path('add_customer') }}">Kunden Anlegen</a></li>
                                             {% endif %}
                                         </ul>
@@ -294,7 +294,7 @@
                                     <div class="sidebar-submenu-sub">
                                         <ul>
                                             <li><a href="{{ path('supplier') }}">Übersicht Lieferanten</a></li>
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
                                                 <li><a href="{{ path('add_supplier') }}">Lieferanten Anlegen</a></li>
                                             {% endif %}
                                         </ul>
@@ -313,8 +313,11 @@
                                     </a>
                                     <div class="sidebar-submenu-sub">
                                         <ul>
-                                            <li><a href="#">Übersicht Benutzer</a></li>
-                                            <li><a href="#">Benutzer anlegen</a></li>
+                                            <li><a href="{{ path('user') }}">Übersicht Benutzer</a></li>
+                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
+                                                <li><a href="#">Benutzer anlegen</a></li>
+                                                <li><a href="#">Benutzerpasswort zurücksetzen</a></li>
+                                            {% endif %}
                                         </ul>
                                     </div>
                                 </li>
