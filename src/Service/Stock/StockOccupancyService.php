@@ -54,7 +54,7 @@ class StockOccupancyService
      * @return array<int|mixed>
      * @throws Exception
      */
-    public function getAllStockOccupancyByLn(string $stockLocationLn): array
+    public function getAllStockOccupancyByLn(int $stockLocationLn): array
     {
         return $this->stockOccupancyDataHandler->getStockOccupancy($stockLocationLn);
     }

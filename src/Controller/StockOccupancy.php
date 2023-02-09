@@ -101,7 +101,7 @@ class StockOccupancy extends AbstractController
             $stockLocationLn = $this->stockLocationService->getAllStockLocationsForSelect()[0]['stock_location_ln'];
         }
 
-        $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationLn);
+        $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn((int) $stockLocationLn);
         $stockResults = [];
 
         foreach ($allStockOccupancy as $stock) {

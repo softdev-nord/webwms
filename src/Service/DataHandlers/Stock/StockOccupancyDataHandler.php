@@ -45,7 +45,7 @@ class StockOccupancyDataHandler
      * @throws Exception
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function getStockOccupancy(string $stockLocationLn): array
+    public function getStockOccupancy(int $stockLocationLn): array
     {
         $allResults = [];
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();

@@ -222,8 +222,6 @@
         const url = '/lieferant_anlegen';
         event.preventDefault();
 
-        console.log($form.serialize());
-
         $.ajax({
             type: 'POST',
             url: url,
