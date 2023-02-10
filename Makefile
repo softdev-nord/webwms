@@ -87,3 +87,16 @@ phpmd: ## run code check (phpmd)
 
 phpqa: ## run code check (phpmd)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src';
+
+######################################################################
+############################# Tests ##################################
+######################################################################
+
+#run-tests-all: ## run all tests
+#	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/codecept run';
+
+run-tests-unit: ## run unit tests
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit';
+
+#run-tests-api: ## run api tests
+#	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/codecept run api';
