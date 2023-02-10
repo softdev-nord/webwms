@@ -230,6 +230,9 @@ api_platform:
   
     html:
       mime_types: [ 'text/html' ]
+    
+    jsonhal:
+      mime_types: [ 'application/hal+json' ]
   
     # ...
   

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\User;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -13,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use WebWMS\Entity\Role;
 use WebWMS\Entity\User;
 
 /**
@@ -30,24 +32,40 @@ class AddUserType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
                 ],
             ])
             ->add('firstname', TextType::class, [
+                'empty_data' => [],
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
                 ],
             ])
             ->add('lastname', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
                 ],
             ])
+            ->add('role', EntityType::class, [
+                'empty_data' => '',
+                'label' => false,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'class' => Role::class,
+                'choice_label' => function ($role) {
+                    return $role->getName();
+                },
+            ])
             ->add('password', RepeatedType::class, [
+                'empty_data' => '',
                 'invalid_message' => 'Die Passwortfelder müssen übereinstimmen.',
                 'options' => ['attr' => ['class' => 'form-control']],
                 'required' => true,

@@ -8,9 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use WebWMS\Repository\UserRepository;
 
 #[ORM\Table(name: 'user')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\UserRepository')]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -22,8 +23,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'username', type: 'string', length: 255, unique: true)]
     private string $username;
 
-    #[ORM\Column(name: 'roles', type: 'json')]
-    private ?array $roles = [];
+    #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'user')]
+    private Role $role;
 
     #[ORM\Column(name: 'password', type: 'string', length: 255, nullable: false)]
     private string $password;
@@ -213,26 +214,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getRole(): Role
+    {
+        return $this->role;
+    }
+
+    public function setRole(Role $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    /**
-     * @param  array<string> $roles
-     * @return $this
-     */
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
+        return [$this->role->getRole()];
     }
 }

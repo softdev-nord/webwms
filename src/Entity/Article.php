@@ -6,9 +6,10 @@ namespace WebWMS\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\ArticleRepository;
 
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\ArticleRepository')]
-#[ApiResource(formats: 'json')]
+#[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ApiResource]
 class Article
 {
     #[ORM\Id]

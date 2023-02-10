@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\User;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use WebWMS\Entity\Role;
 use WebWMS\Entity\User;
 
 /**
@@ -33,12 +35,16 @@ class EditUserType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('roles', TextType::class, [
+            ->add('role', EntityType::class, [
                 'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
                 ],
+                'class' => Role::class,
+                'choice_label' => function ($role) {
+                    return $role->getName();
+                },
             ])
             ->add('firstname', TextType::class, [
                 'empty_data' => '',
@@ -68,18 +74,18 @@ class EditUserType extends AbstractType
             ])
         ;
 
-        $builder->get('roles')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($tagsAsArray) {
-                    // transform the array to a string
-                    return implode(', ', $tagsAsArray);
-                },
-                function ($tagsAsString) {
-                    // transform the string back to an array
-                    return explode(', ', $tagsAsString);
-                }
-            ))
-        ;
+//        $builder->get('roles')
+//            ->addModelTransformer(new CallbackTransformer(
+//                function ($tagsAsArray) {
+//                    // transform the array to a string
+//                    return implode(', ', $tagsAsArray);
+//                },
+//                function ($tagsAsString) {
+//                    // transform the string back to an array
+//                    return explode(', ', $tagsAsString);
+//                }
+//            ))
+//        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

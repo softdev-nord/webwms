@@ -105,7 +105,7 @@ class UserDataHandler
         }
 
         $user->setUsername((string) $requestData['username']);
-        $user->setRoles((array) $requestData['roles']);
+        $user->setRole($requestData['roles']);
         $user->setFirstname((string) $requestData['firstname']);
         $user->setLastname((string) $requestData['lastname']);
         $user->setUpdatedAt($this->dateTimeService->createDateTime());
@@ -157,5 +157,20 @@ class UserDataHandler
         return $this->entityManager
             ->getRepository(User::class)
             ->findBy([], ['id' => 'DESC'], 1, 0);
+    }
+
+    public function updateLastLogin(User $user): void
+    {
+        $selectedUser = $this->entityManager
+            ->getRepository(User::class)
+            ->find($user->getId());
+
+        if (!$selectedUser) {
+            return;
+        }
+
+        $selectedUser->setLastLogin($this->dateTimeService->createDateTime());
+
+        $this->update($selectedUser);
     }
 }

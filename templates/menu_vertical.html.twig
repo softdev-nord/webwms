@@ -57,13 +57,9 @@
                         {% endif %}
                     </span>
                     <span class="text-muted user-role">
-                        {% if (app.user != null) and (has_role(app.user, 'ROLE_SUPER_ADMIN')) %}
-                            {{ 'nav.user.admin'|trans }}
-                        {% else %}
-                            {{ 'nav.user.user'|trans }}
-                        {% endif %}
+                        {{ app.user.role.name }}
                     </span>
-                                <span class="user-status">
+                    <span class="user-status">
                         <i class="mdi mdi-circle"></i>
                         <span class="text-muted">{{ 'nav.user.online'|trans }}</span>
                     </span>

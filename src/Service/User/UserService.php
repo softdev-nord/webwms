@@ -68,4 +68,9 @@ class UserService
     {
         $this->userDataHandler->deleteUser($username);
     }
+
+    public function updateLastLogin(User $user): void
+    {
+        $this->userDataHandler->updateLastLogin($user);
+    }
 }
