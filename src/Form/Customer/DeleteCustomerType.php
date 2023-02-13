@@ -26,10 +26,10 @@ class DeleteCustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('customerNr', HiddenType::class, [
+            ->add('customerId', HiddenType::class, [
                 'attr' => [
-                    'id' => 'customerNr',
-                    'data-type' => 'customerNr',
+                    'id' => 'customerId',
+                    'data-type' => 'customerId',
                 ],
             ])
             ->add('delete', ButtonType::class, [
