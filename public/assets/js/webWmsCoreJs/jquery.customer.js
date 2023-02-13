@@ -73,18 +73,23 @@
         selector: 'tr',
         trigger: 'right',
         callback: function(key, options, event) {
-            const row = customerTable.row(options.$trigger);
+            const row = customerTable.row(options.$trigger),
+            articleId = row.data().customer_id;
 
             switch (key) {
                 case 'edit' :
-                    editCustomer(row.data().customer_nr);
+                    editCustomer(articleId);
+                    break;
+                case 'delete' :
+                    deleteCustomer(articleId);
                     break;
                 default :
                     break
             }
         },
         items: {
-            'edit': {name: 'Bearbeiten', icon: 'edit'}
+            'edit': {name: 'Bearbeiten', icon: 'edit'},
+            'delete': {name: 'Löschen', icon: 'delete'},
         }
     });
 
@@ -97,29 +102,7 @@
         cache: false
     });
 
-    function editCustomer(customerNr) {
-        const url = 'kunden_bearbeiten/kundenNr/' + customerNr;
-        const content = '<div class="modal-body"></div>';
-
-        $('#modalCenter .modal-title').text('Kunden bearbeiten');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'get',
-            data: ($('#customer-form-edit').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
-    }
-
+    // Modal für Kunden anlegen
     function addCustomer() {
         const url = '/kunden_anlegen';
         const content = '<div class="modal-body"></div>';
@@ -143,51 +126,53 @@
         return false;
     }
 
-    // Geänderten Kunden speichern
-    $(document).on('click','button#edit_customer_save',function(event) {
-        const customerNr = $('#edit_customer_customerNr').val();
-        const $form = $('form#customer-form-edit');
-        const url = '/kunden_bearbeiten/kundenNr/' + customerNr;
-        event.preventDefault();
+    // Modal für Kunden bearbeiten
+    function editCustomer(customerId) {
+        const url = 'kunden_bearbeiten/customerId/' + customerId;
+        const content = '<div class="modal-body"></div>';
+
+        $('#modalCenter .modal-title').text('Kunden bearbeiten');
+        $('#modal-content-ajax').html(content);
+        $('#modalCenter').modal('show');
 
         $.ajax({
-            type: 'POST',
             url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    let errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    let arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Kundendaten konnten nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Kundendaten erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    customerTable.ajax.reload();
-                }
+            type: 'get',
+            data: ($('#customer-form-edit').serialize()),
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+            },
+            success: function (data) {
+                $('#modal-content-ajax').html(data);
             }
         });
-    });
+
+        return false;
+    }
+
+    // Modal für Kunden löschen
+    function deleteCustomer(articleId) {
+        const url = '/kunden_löschen/customerId/' + articleId;
+        const content = '<div class="modal-body"></div>';
+
+        $('#modalCenter .modal-dialog').css('max-width', '30%');
+        $('#modalCenter .modal-title').text('Kunden löschen');
+        $('#modal-content-ajax').html(content);
+        $('#modalCenter').modal('show');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+            },
+            success: function (data) {
+                $('#modal-content-ajax').html(data);
+            }
+        });
+
+        return false;
+    }
 
     // Neuen Kunden speichern
     $(document).on('click','button#add_customer_save',function(event) {
@@ -236,8 +221,106 @@
         });
     });
 
+    // Geänderten Kunden speichern
+    $(document).on('click','button#edit_customer_save',function(event) {
+        const customer_id = $('#edit_customer_customerId').val();
+        const $form = $('form#customer-form-edit');
+        const url = '/kunden_bearbeiten/customerId/' + customer_id;
+        event.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: $form.serialize(),
+            success: function(data) {
+                if (data.error) {
+                    let errors = [];
+                    let i = 0;
+                    $.each(data.error, function(key, value) {
+                        errors[i++] = value + '</br>';
+                    });
+                    let arrayString = errors.join();
+                    const error = arrayString.replace(/,/g, ' ');
+                    $.jAlert({
+                        'title': 'Kundendaten konnten nicht gespeichert werden',
+                        'content': error,
+                        'theme': 'red',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                } else {
+                    $.jAlert({
+                        'title': 'Kundendaten erfolgreich gespeichert',
+                        'content': data.message,
+                        'theme': 'green',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                    $('#modalCenter').modal('hide');
+                    customerTable.ajax.reload();
+                }
+            }
+        });
+    });
+
+    // Artikel löschen
+    $(document).on('click','button#delete_customer_delete',function(event) {
+        const customerId = $('#delete_customer_customerId').val();
+        const $form = $('form#customer-modal-delete-ask');
+        const url = '/kunden_löschen/customerId/' + customerId;
+        event.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: $form.serialize(),
+            success: function(data) {
+                if (data.error) {
+                    let errors = [];
+                    let i = 0;
+                    $.each(data.error, function(key, value) {
+                        errors[i++] = value + '</br>';
+                    });
+                    let arrayString = errors.join();
+                    const error = arrayString.replace(/,/g, ' ');
+                    $.jAlert({
+                        'title': 'Kunde konnte nicht gelöscht werden',
+                        'content': error,
+                        'theme': 'red',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                } else {
+                    $.jAlert({
+                        'title': 'Kunde erfolgreich gelöscht',
+                        'content': data.message,
+                        'theme': 'green',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                    $('#modalCenter').modal('hide');
+                    customerTable.ajax.reload();
+                }
+            }
+        });
+    });
+
     // Zurück zur Kundenübersicht
     $(document).on('click','#edit_customer_back_to_customer_overview',function() {
-        window.location.href = '/kunden'
+        $('#modalCenter').modal('hide');
+    });
+    $(document).on('click','#add_customer_back_to_customer_overview',function() {
+        $('#modalCenter').modal('hide');
+    });
+    $(document).on('click','button#delete_customer_abort',function() {
+        $('#modalCenter').modal('hide');
     });
 })(jQuery);

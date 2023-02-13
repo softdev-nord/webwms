@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Form\Customer\AddCustomerType;
+use WebWMS\Form\Customer\DeleteCustomerType;
 use WebWMS\Form\Customer\EditCustomerType;
 use WebWMS\Service\Customer\CustomerService;
 use WebWMS\Service\LoggingService;
@@ -48,8 +49,6 @@ class Customer extends AbstractController
                 'appCopyright' => $this->requirements->getAppCopyright(),
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Kundenübersicht',
-                'data' => $this->getAllCustomersAjax(),
-                'customer' => $this->getAllCustomers(),
             ]
         );
     }
@@ -61,36 +60,38 @@ class Customer extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $requestData = $request->request->all()['add_customer'];
-
         $form = $this->createForm(AddCustomerType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $logMessage = 'Der Kunde mit der Kunden-Nr. '.$requestData['customerNr'].' wurde angelegt.';
-            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->customerService->addCustomer($request);
 
-            return new JsonResponse($requestData);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $requestData = $form->getData();
+            $customerNr = $requestData->getCustomerNr();
+            $responseData['message'] = 'Der Kunde mit der Kunden-Nr. '.$customerNr.' wurde erfolgreich angelegt.';
+            $logMessage = 'Der Kunde mit der Kunden-Nr. '.$customerNr.' wurde angelegt.';
+            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
+            $this->customerService->addCustomer($requestData);
+
+            return new JsonResponse($responseData);
         }
 
         return $this->render(
             'customer/customer_add.html.twig',
             [
-                'lastId' => $this->getLastCustomer()[0],
                 'customerForm' => $form->createView(),
+                'lastId' => $this->getLastCustomer()[0],
                 'editCustomer' => false,
             ]
         );
     }
 
-    #[Route('kunden_bearbeiten/kundenNr/{customerNr}', name: 'edit_customer')]
-    public function editCustomer(Request $request, int $customerNr): RedirectResponse|JsonResponse|Response|null
+    #[Route('kunden_bearbeiten/customerId/{customerId}', name: 'edit_customer')]
+    public function editCustomer(Request $request, int $customerId): RedirectResponse|JsonResponse|Response|null
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $customer = $this->customerService->getCustomerByNr($customerNr);
+        $customer = $this->customerService->getCustomerById($customerId);
 
         if (!$customer) {
             return null;
@@ -98,8 +99,8 @@ class Customer extends AbstractController
 
         $form = $this->createForm(EditCustomerType::class, $customer);
         $form->handleRequest($request);
-        $customerNr = $customer->getCustomerNr();
         $requestData = $form->getData();
+        $customerNr = $requestData->getCustomerNr();
 
         $responseData = $this->customerValidationService->validateCustomerData($requestData);
         $responseData['message'] = '';
@@ -109,12 +110,12 @@ class Customer extends AbstractController
                 $responseData['message'] = 'Die Änderungen am Kunden '.$customerNr.' wurden erfolgreich gespeichert.';
                 $logMessage = 'Der Kunde mit der Kunden-Nr. '.$customerNr.' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-                $this->customerService->updateCustomer($request);
+                $this->customerService->updateCustomer($requestData);
 
                 return new JsonResponse($responseData);
             }
 
-            $responseData['message'] = 'Die Änderungen der Kundendaten konnte nicht gespeichert werden.';
+            $responseData['message'] = 'Die Änderungen der Kundendaten konnten nicht gespeichert werden.';
 
             return new JsonResponse($responseData);
         }
@@ -125,6 +126,42 @@ class Customer extends AbstractController
                 'customerForm' => $form->createView(),
                 'customers' => $customer,
                 'editCustomer' => true,
+            ]
+        );
+    }
+
+    #[Route('/kunden_löschen/customerId/{customerId}', name: 'delete_customer')]
+    public function deleteCustomer(Request $request, int $customerId): RedirectResponse|JsonResponse|Response|null
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $customer = $this->customerService->getCustomerById($customerId);
+
+        if (!$customer) {
+            return null;
+        }
+
+        $form = $this->createForm(DeleteCustomerType::class, $customer);
+        $form->handleRequest($request);
+        $requestData = $form->getData();
+        $customerNr = $requestData->getCustomerNr();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $responseData['message'] = 'Der Kunde mit der Kunden-Nr. '.$customerNr.' wurde erfolgreich gelöscht.';
+            $logMessage = 'Der Kunde mit der Kunden-Nr. '.$customerNr.' wurde gelöscht.';
+            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
+            $this->customerService->deleteCustomer($requestData);
+
+            return new JsonResponse($responseData);
+        }
+
+        return $this->render(
+            'customer/customer_delete_ask.html.twig',
+            [
+                'customerForm' => $form->createView(),
+                'customerNr' => $customerNr,
             ]
         );
     }
