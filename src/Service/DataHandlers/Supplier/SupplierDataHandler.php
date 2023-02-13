@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\DataHandlers\Supplier;
 
-use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Supplier;
 use WebWMS\Service\DateTimeService;
 
@@ -31,62 +29,17 @@ class SupplierDataHandler
         $this->entityManager->flush();
     }
 
-    public function update(Supplier $supplier): void
-    {
-        $this->entityManager->persist($supplier);
-        $this->entityManager->flush();
-    }
-
     public function delete(Supplier $supplier): void
     {
         $this->entityManager->remove($supplier);
         $this->entityManager->flush();
     }
 
-    public function addSupplier(Request $request): ?Supplier
+    public function getSupplierById(int $supplierId): ?Supplier
     {
-        $requestData = $request->request->all()['add_supplier'];
-        $supplier = new Supplier();
-
-        $supplier->setSupplierNr((int) $requestData['supplierNr']);
-        $supplier->setSupplierName((string) $requestData['supplierName']);
-        $supplier->setSupplierAddressAddition((string) $requestData['supplierAddressAddition']);
-        $supplier->setSupplierAddressStreet((string) $requestData['supplierAddressStreet']);
-        $supplier->setSupplierAddressStreetNr((string) $requestData['supplierAddressStreetNr']);
-        $supplier->setSupplierAddressCountryCode((string) $requestData['supplierAddressCountryCode']);
-        $supplier->setSupplierAddressZipcode((string) $requestData['supplierAddressZipcode']);
-        $supplier->setSupplierAddressCity((string) $requestData['supplierAddressCity']);
-        $supplier->setCreatedAt($this->dateTimeService->createDateTime());
-
-        $this->save($supplier);
-
-        return $supplier;
-    }
-
-    public function updateSupplier(Request $request): ?Supplier
-    {
-        $requestData = $request->request->all()['edit_supplier'];
-        $supplier = $this->entityManager
+        return $this->entityManager
             ->getRepository(Supplier::class)
-            ->findOneBy(['supplierNr' => $requestData['supplierNr']]);
-
-        if (!$supplier) {
-            return null;
-        }
-
-        $supplier->setSupplierNr((int) $requestData['supplierNr']);
-        $supplier->setSupplierName((string) $requestData['supplierName']);
-        $supplier->setSupplierAddressAddition((string) $requestData['supplierAddressAddition']);
-        $supplier->setSupplierAddressStreet((string) $requestData['supplierAddressStreet']);
-        $supplier->setSupplierAddressStreetNr((string) $requestData['supplierAddressStreetNr']);
-        $supplier->setSupplierAddressCountryCode((string) $requestData['supplierAddressCountryCode']);
-        $supplier->setSupplierAddressZipcode((string) $requestData['supplierAddressZipcode']);
-        $supplier->setSupplierAddressCity((string) $requestData['supplierAddressCity']);
-        $supplier->setUpdatedAt($this->dateTimeService->createDateTime());
-
-        $this->update($supplier);
-
-        return $supplier;
+            ->findOneBy(['supplierId' => $supplierId]);
     }
 
     public function getSupplierByNr(int $supplierNr): ?Supplier
@@ -96,9 +49,6 @@ class SupplierDataHandler
             ->findOneBy(['supplierNr' => $supplierNr]);
     }
 
-    /**
-     * @throws Exception
-     */
     public function getSuppliers(): JsonResponse
     {
         $connection = $this->entityManager->getConnection();
@@ -143,16 +93,6 @@ class SupplierDataHandler
         return new JsonResponse($data);
     }
 
-    public function getSupplierById(int $supplierId): ?Supplier
-    {
-        return $this->entityManager
-            ->getRepository(Supplier::class)
-            ->findOneBy(['supplierId' => $supplierId]);
-    }
-
-    /**
-     * @throws Exception
-     */
     public function getAllSuppliers(): JsonResponse
     {
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
@@ -168,6 +108,25 @@ class SupplierDataHandler
         return new JsonResponse($results);
     }
 
+    public function addSupplier(Supplier $supplier): void
+    {
+        $supplier->setCreatedAt($this->dateTimeService->createDateTime());
+
+        $this->save($supplier);
+    }
+
+    public function updateSupplier(Supplier $supplier): void
+    {
+        $supplier->setUpdatedAt($this->dateTimeService->createDateTime());
+
+        $this->save($supplier);
+    }
+
+    public function deleteSupplier(Supplier $supplier): void
+    {
+        $this->delete($supplier);
+    }
+
     /**
      * @return object[]
      */
@@ -176,14 +135,5 @@ class SupplierDataHandler
         return $this->entityManager
             ->getRepository(Supplier::class)
             ->findBy([], ['supplierNr' => 'DESC'], 1, 0);
-    }
-
-    public function deleteSupplier(int $supplierNr): void
-    {
-        $supplier = $this->getSupplierByNr($supplierNr);
-
-        if ($supplier) {
-            $this->delete($supplier);
-        }
     }
 }

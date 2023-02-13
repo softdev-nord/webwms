@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
-use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,9 +33,6 @@ class Supplier extends AbstractController
     ) {
     }
 
-    /**
-     * @throws Exception
-     */
     #[Route('/lieferanten', name: 'supplier')]
     public function index(): Response
     {
@@ -64,43 +60,38 @@ class Supplier extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $requestData = $request->request->all();
-
-        if (!empty($requestData)) {
-            $requestData = $requestData['add_supplier'];
-        }
-
         $form = $this->createForm(AddSupplierType::class);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde angelegt.', $requestData['supplierNr']);
+            $requestData = $form->getData();
+            $supplierNr = $requestData->getSupplierNr();
+            $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. '.$supplierNr.' wurde erfolgreich angelegt.';
+            $logMessage = 'Der Lieferant mit der Lieferanten-Nr. '.$supplierNr.' wurde angelegt.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            /*
-             * @phpstan-ignore-next-line
-             */
             $this->supplierService->addSupplier($requestData);
 
-            return new JsonResponse($requestData);
+            return new JsonResponse($responseData);
         }
 
         return $this->render(
             'supplier/supplier_add.html.twig',
             [
-                'lastId' => $this->getLastSupplier()[0],
                 'supplierForm' => $form->createView(),
+                'lastId' => $this->getLastSupplier()[0],
                 'editSupplier' => false,
             ]
         );
     }
 
-    #[Route('/lieferant_bearbeiten/lieferantenNr/{supplierNr}', name: 'edit_supplier')]
-    public function editSupplier(Request $request, int $supplierNr): RedirectResponse|JsonResponse|Response|null
+    #[Route('/lieferant_bearbeiten/supplierId/{supplierId}', name: 'edit_supplier')]
+    public function editSupplier(Request $request, int $supplierId): RedirectResponse|JsonResponse|Response|null
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $supplier = $this->supplierService->getSupplierByNr($supplierNr);
+        $supplier = $this->supplierService->getSupplierById($supplierId);
 
         if (!$supplier) {
             return null;
@@ -108,8 +99,8 @@ class Supplier extends AbstractController
 
         $form = $this->createForm(EditSupplierType::class, $supplier);
         $form->handleRequest($request);
-        $supplierNr = $supplier->getSupplierNr();
         $requestData = $form->getData();
+        $supplierNr = $requestData->getSupplierNr();
 
         $responseData = $this->supplierValidationService->validateSupplierData($requestData);
         $responseData['message'] = '';
@@ -119,12 +110,12 @@ class Supplier extends AbstractController
                 $responseData['message'] = 'Die Änderungen am Lieferanten '.$supplierNr.' wurden erfolgreich gespeichert.';
                 $logMessage = 'Lieferant mit der Lieferanten-Nr. '.$supplierNr.' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-                $this->supplierService->updateSupplier($request);
+                $this->supplierService->updateSupplier($requestData);
 
                 return new JsonResponse($responseData);
             }
 
-            $responseData['message'] = 'Die Änderungen der Lieferantendaten konnte nicht gespeichert werden.';
+            $responseData['message'] = 'Die Änderungen der Lieferantendaten konnten nicht gespeichert werden.';
 
             return new JsonResponse($responseData);
         }
@@ -139,31 +130,29 @@ class Supplier extends AbstractController
         );
     }
 
-    #[Route('/lieferant_löschen/lieferantenNr/{supplierNr}', name: 'delete_supplier')]
-    public function deleteSupplier(Request $request, int $supplierNr): RedirectResponse|JsonResponse|Response
+    #[Route('/lieferant_löschen/supplierId/{supplierId}', name: 'delete_supplier')]
+    public function deleteSupplier(Request $request, int $supplierId): RedirectResponse|JsonResponse|Response|null
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $requestData = $request->request->all();
+        $supplier = $this->supplierService->getSupplierById($supplierId);
 
-        if (!empty($requestData)) {
-            $requestData = $requestData['delete_supplier'];
+        if (!$supplier) {
+            return null;
         }
 
-        $supplier = $this->supplierService->getSupplierByNr($supplierNr);
         $form = $this->createForm(DeleteSupplierType::class, $supplier);
         $form->handleRequest($request);
+        $requestData = $form->getData();
+        $supplierNr = $requestData->getSupplierNr();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $responseData['message'] = sprintf(
-                'Der Lieferant mit der Lieferanten-Nr. %s wurde erfolgreich gelöscht.',
-                $supplierNr
-            );
-            $logMessage = sprintf('Der Lieferant mit der Lieferanten-Nr. %s wurde gelöscht.', $supplierNr);
+            $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. '.$supplierNr.' wurde erfolgreich angelegt.';
+            $logMessage = 'Der Lieferant mit der Lieferanten-Nr. '.$supplierNr.' wurde angelegt.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->supplierService->deleteSupplier($supplierNr);
+            $this->supplierService->deleteSupplier($requestData);
 
             return new JsonResponse($responseData);
         }
@@ -171,8 +160,8 @@ class Supplier extends AbstractController
         return $this->render(
             'supplier/supplier_delete_ask.html.twig',
             [
-                'supplierNr' => $supplierNr,
                 'supplierForm' => $form->createView(),
+                'supplierNr' => $supplierNr,
             ]
         );
     }
@@ -183,9 +172,6 @@ class Supplier extends AbstractController
         return $this->supplierService->getAllSuppliers();
     }
 
-    /**
-     * @throws Exception
-     */
     #[Route('/order_supplier_ajax', name: 'order_supplier_ajax')]
     public function getAllSuppliersAjax(): JsonResponse
     {

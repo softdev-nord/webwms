@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Supplier;
 
-use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Supplier;
 use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
 
@@ -23,35 +21,39 @@ class SupplierService
     ) {
     }
 
-    public function getSupplierByNr(int $supplierNr): ?Supplier
-    {
-        return $this->supplierDataHandler->getSupplierByNr($supplierNr);
-    }
-
     public function getSupplierById(int $supplierId): ?Supplier
     {
         return $this->supplierDataHandler->getSupplierById($supplierId);
     }
 
-    /**
-     * @throws Exception
-     */
+    public function getSupplierByNr(int $supplierNr): ?Supplier
+    {
+        return $this->supplierDataHandler->getSupplierByNr($supplierNr);
+    }
+
     public function getAllSuppliers(): JsonResponse
     {
         return $this->supplierDataHandler->getAllSuppliers();
     }
 
-    /**
-     * @throws Exception
-     */
     public function getAllSuppliersAjax(): JsonResponse
     {
         return $this->supplierDataHandler->getSuppliers();
     }
 
-    public function addSupplier(Request $request): void
+    public function addSupplier(Supplier $supplier): void
     {
-        $this->supplierDataHandler->addSupplier($request);
+        $this->supplierDataHandler->addSupplier($supplier);
+    }
+
+    public function updateSupplier(Supplier $supplier): void
+    {
+        $this->supplierDataHandler->updateSupplier($supplier);
+    }
+
+    public function deleteSupplier(Supplier $supplier): void
+    {
+        $this->supplierDataHandler->deleteSupplier($supplier);
     }
 
     /**
@@ -60,15 +62,5 @@ class SupplierService
     public function getLastSupplier(): array
     {
         return $this->supplierDataHandler->getLastSupplier();
-    }
-
-    public function updateSupplier(Request $request): ?Supplier
-    {
-        return $this->supplierDataHandler->updateSupplier($request);
-    }
-
-    public function deleteSupplier(int $supplierNr): void
-    {
-        $this->supplierDataHandler->deleteSupplier($supplierNr);
     }
 }
