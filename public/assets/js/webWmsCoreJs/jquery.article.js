@@ -272,7 +272,7 @@
 
     // Artikel löschen
     $(document).on('click','button#delete_article_delete',function(event) {
-        const articleId = $('#delete_article_articleNr').val();
+        const articleId = $('#delete_article_articleId').val();
         const $form = $('form#article-modal-delete-ask');
         const url = '/artikel_löschen/articleId/' + articleId;
         event.preventDefault();

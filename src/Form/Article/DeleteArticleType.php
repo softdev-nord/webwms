@@ -9,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use WebWMS\Entity\Article;
 
 /**
@@ -20,11 +19,6 @@ use WebWMS\Entity\Article;
  */
 class DeleteArticleType extends AbstractType
 {
-    public function __construct(
-        private AuthorizationCheckerInterface $authorizationChecker
-    ) {
-    }
-
     /**
      * @SuppressWarnings("unused")
      * @SuppressWarnings(PHPMD.ElseExpression)
@@ -32,24 +26,20 @@ class DeleteArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('articleNr', HiddenType::class, [
+            ->add('articleId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'id' => 'articleNr',
                     'data-type' => 'articleNr',
                 ],
-            ]);
-        if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            $builder
-                ->add('delete', ButtonType::class, [
-                    'label' => 'Löschen',
-                    'attr' => [
-                        'class' => 'btn btn-lg',
-                    ],
-                ]);
-        }
-        $builder
+            ])
+            ->add('delete', ButtonType::class, [
+                'label' => 'Löschen',
+                'attr' => [
+                    'class' => 'btn btn-lg',
+                ],
+            ])
             ->add('abort', ButtonType::class, [
                 'label' => 'Abbrechen',
                 'attr' => [
