@@ -44,7 +44,7 @@ jobs:
           command: |
             cd webwms/  
             composer install --ignore-platform-reqs --no-scripts
-            vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots  --allow-risky=yes
+            vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots --allow-risky=yes
       - run:
             name: "PHP Static Analysis"
             command: |
