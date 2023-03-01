@@ -21,7 +21,7 @@ class CustomerOrderDataHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private CustomerDataHandler $customerDataHandler
+        // private CustomerDataHandler $customerDataHandler
     ) {
     }
 
@@ -135,6 +135,9 @@ class CustomerOrderDataHandler
         return new JsonResponse($results);
     }
 
+    /**
+     * @return object[]
+     */
     public function getLastCustomerOrderId(): array
     {
         $customerOrderRepository = $this->entityManager
@@ -148,11 +151,11 @@ class CustomerOrderDataHandler
         // TODO: Implement logic
 
         $params = $request->request->all()['customer'];
-        $lastCustomer = $this->customerDataHandler->getLastCustomer()[0]->toArray();
+        // $lastCustomer = $this->customerDataHandler->getLastCustomer();
 
         $customerOrder = new Customer();
-        $customerOrder->setCustomerId($lastCustomer['customer_id'] + 1);
-        $customerOrder->setCustomerNr($lastCustomer['customer_nr'] + 1);
+        // $customerOrder->setCustomerId($lastCustomer['customer_id'] + 1);
+        // $customerOrder->setCustomerNr($lastCustomer['customer_nr'] + 1);
         $customerOrder->setCustomerName($params['customer_name']);
         $customerOrder->setCustomerAddressAddition($params['customer_address_addition']);
         $customerOrder->setCustomerAddressStreet($params['customer_address_street']);

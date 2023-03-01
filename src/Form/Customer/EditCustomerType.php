@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Form\Customer;
 
 use Symfony\Component\Form\AbstractType;
@@ -42,6 +44,7 @@ class EditCustomerType extends AbstractType
         if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             $builder
                 ->add('customerNr', TextType::class, [
+                    'empty_data' => '',
                     'label' => false,
                     'attr' => [
                         'class' => 'form-control',
@@ -54,17 +57,19 @@ class EditCustomerType extends AbstractType
         } else {
             $builder
                 ->add('customerNr', TextType::class, [
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'id' => 'customerNr',
-                    'data-type' => 'customerNr',
-                    'style' => 'background-color: transparent',
-                ],
-            ]);
+                    'empty_data' => '',
+                    'label' => false,
+                    'attr' => [
+                        'class' => 'form-control',
+                        'id' => 'customerNr',
+                        'data-type' => 'customerNr',
+                        'style' => 'background-color: transparent',
+                    ],
+                ]);
         }
         $builder
             ->add('customerName', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -73,6 +78,7 @@ class EditCustomerType extends AbstractType
                 ],
             ])
             ->add('customerAddressAddition', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -81,6 +87,7 @@ class EditCustomerType extends AbstractType
                 ],
             ])
             ->add('customerAddressStreet', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -89,6 +96,7 @@ class EditCustomerType extends AbstractType
                 ],
             ])
             ->add('customerAddressStreetNr', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -97,6 +105,7 @@ class EditCustomerType extends AbstractType
                 ],
             ])
             ->add('customerCountryCode', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -105,6 +114,7 @@ class EditCustomerType extends AbstractType
                 ],
             ])
             ->add('customerZipCode', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -113,6 +123,7 @@ class EditCustomerType extends AbstractType
                 ],
             ])
             ->add('customerCity', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',

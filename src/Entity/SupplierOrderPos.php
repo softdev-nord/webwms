@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -44,14 +46,14 @@ class SupplierOrderPos
         return $this->id;
     }
 
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getSupplierOrderId(): int
+    public function getSupplierOrderId(): ?int
     {
         return $this->supplierOrderId;
     }
@@ -99,7 +101,7 @@ class SupplierOrderPos
         return $this;
     }
 
-    public function getSupplierOrderPosQuantity(): int
+    public function getSupplierOrderPosQuantity(): ?int
     {
         return $this->supplierOrderPosQuantity;
     }

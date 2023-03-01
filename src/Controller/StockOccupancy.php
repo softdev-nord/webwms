@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Controller;
 
 use Doctrine\DBAL\Exception;
@@ -89,7 +91,7 @@ class StockOccupancy extends AbstractController
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function getStockOccupancyResults($request): Response
+    public function getStockOccupancyResults(Request $request): Response
     {
         $stock = [];
 
@@ -99,7 +101,7 @@ class StockOccupancy extends AbstractController
             $stockLocationLn = $this->stockLocationService->getAllStockLocationsForSelect()[0]['stock_location_ln'];
         }
 
-        $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationLn);
+        $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn((int) $stockLocationLn);
         $stockResults = [];
 
         foreach ($allStockOccupancy as $stock) {

@@ -1,8 +1,8 @@
- $.ajaxSetup({
+$.ajaxSetup({
     cache: false
 });
 /**
- * Loads content into the modal via get
+ * Lädt Inhalte in das Modal über get
  * @param {string} url
  * @param {string} title
  * @param {type} successFunc
@@ -20,9 +20,9 @@ function getContentForModal(url, title, successFunc) {
 }
 
 /**
- * Performs a post request with data from the given form id
- * if a validation error occurs the warning will be displayed in the modal itself
- * if success a reload is performed
+ * Führt eine Post-Anfrage mit Daten aus der angegebenen Formular-ID durch
+ * Wenn ein Validierungsfehler auftritt, wird die Warnung im Modal selbst angezeigt
+ * Bei Erfolg wird ein Reload durchgeführt
  * @param {string} formId
  * @param {string} url
  * @param {string} successUrl
@@ -44,17 +44,17 @@ function _doPost(formId, url, successUrl, type, successFunc) {
             alert(xhr.status);
         },
         success: function (data) {
-            if(successFunc !== null) {
+            if (successFunc !== null) {
                 successFunc(data);
             } else {
                 // if the whole modal content is returned
-                if($(data).filter('.modal-body').length > 0 || $(data).find('.modal-body').length > 0) {
+                if ($(data).filter('.modal-body').length > 0 || $(data).find('.modal-body').length > 0) {
                     $("#modal-content-ajax").html(data);
                 // if only flash messages are returned
                 } else if (data && data.length > 0) {
                     flashMessage.empty();
                     flashMessage.append(data);
-                } else if(successUrl.length > 0 ) {
+                } else if (successUrl.length > 0) {
                     location.href = successUrl;
                 } else {
                     location.reload();

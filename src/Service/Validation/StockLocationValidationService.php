@@ -13,11 +13,13 @@ namespace WebWMS\Service\Validation;
 class StockLocationValidationService
 {
     /**
+     * @param  array<string|int|mixed> $requestData
+     * @return array<string>
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateStockLocationData($requestData): array
+    public function validateStockLocationData(array $requestData): array
     {
         $responseData = [];
 

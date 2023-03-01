@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Twig;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,7 +23,7 @@ class TwigGlobalSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    public function injectGlobalVariables()
+    public function injectGlobalVariables(): void
     {
         $configurations = $this->configurationService->getAllConfigurations();
         $this->twig->addGlobal('configurations', $configurations['configuration']);
@@ -41,7 +43,7 @@ class TwigGlobalSubscriber implements EventSubscriberInterface
         return [KernelEvents::CONTROLLER => 'injectGlobalVariables'];
     }
 
-    public function onKernelRequest()
+    public function onKernelRequest(): void
     {
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Form\Stock;
 
 use Symfony\Component\Form\AbstractType;
@@ -24,9 +26,8 @@ class StockInFinalType extends AbstractType
     {
         foreach ($options['data']['freeStockLocations'] as $key => $value) {
             $builder
-                ->add('stock_su_id_'.$key, TextType::class, [
+                ->add('stock_su_id_' . $key, TextType::class, [
                     'label' => false,
-                    'empty_data' => 'John Doe',
                     'attr' => [
                         'id' => 'stock_su_id',
                         'data-type' => 'stock_su_id',

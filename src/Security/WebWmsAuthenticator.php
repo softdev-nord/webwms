@@ -46,8 +46,8 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
+        $username = (string) $request->request->get('username');
+        $password = (string) $request->request->get('password');
 
         return new Passport(
             new UserBadge($username, function ($userIdentifier) {
@@ -63,7 +63,7 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
             [
                 new CsrfTokenBadge(
                     'authenticate',
-                    $request->request->get('_csrf_token')
+                    (string) $request->request->get('_csrf_token')
                 ),
                 new RememberMeBadge(),
             ]

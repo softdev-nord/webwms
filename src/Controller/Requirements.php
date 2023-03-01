@@ -31,6 +31,17 @@ class Requirements extends AbstractController
     ) {
     }
 
+    public function __toString()
+    {
+        /*
+         * @phpstan-ignore-next-line
+         */
+        return $this->checkDiskFreeSpace();
+    }
+
+    /**
+     * @return array<string>
+     */
     public function coreInfo(): array
     {
         return [
@@ -51,6 +62,9 @@ class Requirements extends AbstractController
             // Prevent Warning: disk_free_space() [function.disk-free-space]: Value too large for defined data type
             $freeSpace = disk_free_space(__DIR__);
 
+            /*
+             * @phpstan-ignore-next-line
+             */
             return $this->encodeSize($freeSpace);
         }
 
@@ -66,15 +80,10 @@ class Requirements extends AbstractController
         for ($i = 0; $bytes >= 1024 && $i < (count($types) - 1); $bytes /= 1024, $i++) {
         }
 
-        return round($bytes, 2).' '.$types[$i];
+        return round($bytes, 2) . ' ' . $types[$i];
     }
 
-    public function __toString()
-    {
-        return $this->checkDiskFreeSpace();
-    }
-
-    public function getServerVersion()
+    public function getServerVersion(): string
     {
         return $this->requirementsService->getServerVersion();
     }

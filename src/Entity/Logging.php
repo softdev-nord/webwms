@@ -24,7 +24,7 @@ class Logging
     #[ORM\Column(name: 'date', type: 'datetime', nullable: false)]
     private \DateTimeInterface $date;
 
-    #[ORM\Column(name: 'customer_order_reference', type: 'string', length: 100, nullable: false)]
+    #[ORM\Column(name: 'user', type: 'string', length: 100, nullable: false)]
     private string $user;
 
     #[ORM\Column(name: 'ip_address', type: 'string', length: 20, nullable: false)]
@@ -38,7 +38,7 @@ class Logging
         return $this->id;
     }
 
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 

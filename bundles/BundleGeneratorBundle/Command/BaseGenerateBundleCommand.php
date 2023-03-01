@@ -26,10 +26,7 @@ use WebWMS\Bundles\BundleGeneratorBundle\Generator\BundleGenerator;
 )]
 class BaseGenerateBundleCommand extends BaseGeneratorCommand
 {
-    /**
-     * @see Command
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Generates a webWMS bundle')

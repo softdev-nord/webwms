@@ -5,13 +5,16 @@ includes:
 parameters:
 
     #  max or choose from 10 levels (0 is the loosest, 9 is the strictest).
-    level: 5
+    level: 8
 
 #    symfony:
 #        container_xml_path: var/cache/dev/WebWMS_KernelDevDebugContainer.xml
 
     paths:
         - src
+
+    ignoreErrors:
+    	- '#Cannot access offset#'
 
     reportUnmatchedIgnoredErrors: false
     checkGenericClassInNonGenericObjectType: false

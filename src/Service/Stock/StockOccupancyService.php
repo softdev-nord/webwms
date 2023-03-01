@@ -32,13 +32,14 @@ class StockOccupancyService
 
     /**
      * @throws Exception
+     * @return array<string>
      */
     public function getStockOccupancyByCoordinate(Request $request): array
     {
         $stockLocationCoordinate = $request->attributes->get('stock_location_coordinate');
         $stockOccupancyDetail = [];
         $getAllStockOccupancy = $this->getAllStockOccupancy();
-        $stockOccupancies = json_decode($getAllStockOccupancy->getContent(), true);
+        $stockOccupancies = json_decode((string) $getAllStockOccupancy->getContent(), true);
 
         foreach ($stockOccupancies as $stockOccupancy) {
             if ($stockOccupancy['koordinate'] === $stockLocationCoordinate) {
@@ -51,16 +52,18 @@ class StockOccupancyService
 
     /**
      * @throws Exception
+     * @return array<int|mixed>
      */
-    public function getAllStockOccupancyByLn($stockLocationLn): array
+    public function getAllStockOccupancyByLn(int $stockLocationLn): array
     {
         return $this->stockOccupancyDataHandler->getStockOccupancy($stockLocationLn);
     }
 
     /**
      * @throws Exception
+     * @return array<int|mixed|string>
      */
-    public function getStockOccupancyByArticleNr($articleNr): array
+    public function getStockOccupancyByArticleNr(mixed $articleNr): array
     {
         return $this->stockOccupancyDataHandler->getStockOccupancyByArticleNr($articleNr);
     }

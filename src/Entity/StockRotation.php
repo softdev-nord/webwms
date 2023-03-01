@@ -53,7 +53,7 @@ class StockRotation
         return $this->id;
     }
 
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 
@@ -65,7 +65,7 @@ class StockRotation
         return $this->stockLocationId;
     }
 
-    public function setStockLocationId($stockLocationId): self
+    public function setStockLocationId(int $stockLocationId): self
     {
         $this->stockLocationId = $stockLocationId;
 
@@ -89,31 +89,31 @@ class StockRotation
         return $this->usrId;
     }
 
-    public function setUsrId($usrId): self
+    public function setUsrId(int $usrId): self
     {
         $this->usrId = $usrId;
 
         return $this;
     }
 
-    public function getCustomerOrderId(): int
+    public function getCustomerOrderId(): ?int
     {
         return $this->customerOrderId;
     }
 
-    public function setCustomerOrderId($customerOrderId): self
+    public function setCustomerOrderId(int $customerOrderId): self
     {
         $this->customerOrderId = $customerOrderId;
 
         return $this;
     }
 
-    public function getSupplierOrderId(): int
+    public function getSupplierOrderId(): ?int
     {
         return $this->supplierOrderId;
     }
 
-    public function setSupplierOrderId($supplierOrderId): self
+    public function setSupplierOrderId(int $supplierOrderId): self
     {
         $this->supplierOrderId = $supplierOrderId;
 
@@ -125,7 +125,7 @@ class StockRotation
         return $this->movementId;
     }
 
-    public function setMovementId($movementId): self
+    public function setMovementId(int $movementId): self
     {
         $this->movementId = $movementId;
 
@@ -137,7 +137,7 @@ class StockRotation
         return $this->posQuantity;
     }
 
-    public function setPosQuantity($posQuantity): self
+    public function setPosQuantity(int $posQuantity): self
     {
         $this->posQuantity = $posQuantity;
 

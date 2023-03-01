@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
-use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,12 +52,11 @@ class CustomerOrder extends AbstractController
                 'appCopyright' => $this->requirements->getAppCopyright(),
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Übersicht Aufträge',
-                'customer_order' => $this->getAllCustomerOrders(),
             ]
         );
     }
 
-    #[Route('/auftrag_anlegen', name: 'new_customer_order')]
+    #[Route('/auftrag_anlegen', name: 'add_customer_order')]
     public function addCustomerOrder(EntityManagerInterface $entityManager, Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
@@ -93,7 +91,7 @@ class CustomerOrder extends AbstractController
 
             $this->addFlash('success', 'Der Auftrag und die Position(en) wurden erfolgreich angelegt.');
 
-            return $this->redirectToRoute('new_customer_order');
+            return $this->redirectToRoute('add_customer_order');
         }
 
         /*return $this->render(
@@ -134,13 +132,17 @@ class CustomerOrder extends AbstractController
     }
 
     #[Route('/auftrag_bearbeiten/id/{id}', name: 'edit_customer_order')]
-    public function editCustomerOrder(Request $request, int $id): RedirectResponse|Response
+    public function editCustomerOrder(Request $request, int $id): RedirectResponse|Response|null
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $customerOrder = $this->customerOrderService->getCustomerOrderById((int) $id);
+        $customerOrder = $this->customerOrderService->getCustomerOrderById($id);
+
+        if (!$customerOrder) {
+            return null;
+        }
 
         $form = $this->createForm(EditCustomerOrderType::class, $customerOrder);
         $form->handleRequest($request);
@@ -166,18 +168,12 @@ class CustomerOrder extends AbstractController
         return $this->customerOrderService->getAllCustomerOrders();
     }
 
-    /**
-     * @throws Exception
-     */
     #[Route('/customer_order_pos_ajax', name: 'customer_order_pos_ajax')]
     public function getAllCustomerOrdersPos(): JsonResponse
     {
         return $this->customerOrderService->getAllCustomerOrderPos();
     }
 
-    /**
-     * @throws Exception
-     */
     #[Route('/customer_order_pos_ajax/id/{id}', name: 'customer_order_pos_ajax_by_id')]
     public function getCustomerOrderPosByOrderId(string $id): JsonResponse
     {

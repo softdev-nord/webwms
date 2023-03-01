@@ -19,6 +19,10 @@ class ConfigurationService
     ) {
     }
 
+    /**
+     * @throws \Exception
+     * @return array<string>
+     */
     public function getAllConfigurations(): array
     {
         return $this->configurationDataHandler->getAllConfigurations();

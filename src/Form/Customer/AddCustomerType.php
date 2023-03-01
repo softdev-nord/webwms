@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Form\Customer;
 
 use Symfony\Component\Form\AbstractType;

@@ -36,13 +36,11 @@ class Article extends AbstractController
     }
 
     #[Route('/artikel', name: 'article')]
-    public function index(Request $request): Response
+    public function index(): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-
-        $form = $this->createForm(AddArticleType::class);
 
         return $this->render(
             'article/index.html.twig',
@@ -53,8 +51,6 @@ class Article extends AbstractController
                 'appCopyright' => $this->requirements->getAppCopyright(),
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Artikelübersicht',
-                'articleForm' => $form->createView(),
-                'route' => $request->attributes->get('_route'),
             ]
         );
     }
@@ -66,21 +62,18 @@ class Article extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $requestData = $request->request->all();
-
-        if (!empty($requestData)) {
-            $requestData = $requestData['add_article'];
-        }
-
         $form = $this->createForm(AddArticleType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $requestData['message'] = 'Der Artikel wurde erfolgreich angelegt.';
-            $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde angelegt.', $requestData['articleNr']);
-            $this->loggingService->write($request, $logMessage);
-            $this->articleService->addArticle($request);
 
-            return new JsonResponse($requestData);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $requestData = $form->getData();
+            $articleNr = $requestData->getArticleNr();
+            $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich angelegt.';
+            $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde angelegt.';
+            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
+            $this->articleService->addArticle($requestData);
+
+            return new JsonResponse($responseData);
         }
 
         return $this->render(
@@ -93,34 +86,32 @@ class Article extends AbstractController
         );
     }
 
-    /**
-     * @throws \Exception
-     */
     #[Route('artikel_bearbeiten/articleId/{articleId}', name: 'edit_article')]
-    public function editArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response
+    public function editArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response|null
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $requestData = $request->request->all();
+        $article = $this->articleService->getArticleById($articleId);
 
-        if (!empty($requestData)) {
-            $requestData = $requestData['edit_article'];
+        if (!$article) {
+            return null;
         }
+
+        $form = $this->createForm(EditArticleType::class, $article);
+        $form->handleRequest($request);
+        $requestData = $form->getData();
+        $articleNr = $article->getArticleNr();
 
         $responseData = $this->articleValidationService->validateArticleData($requestData);
         $responseData['message'] = '';
 
-        $article = $this->articleService->getArticleById((int) $articleId);
-        $form = $this->createForm(EditArticleType::class, $article);
-        $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
-                $responseData['message'] = 'Die Änderungen am Artikel wurden erfolgreich gespeichert.';
-                $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde geändert.', $requestData['articleNr']);
-                $this->loggingService->write($request, $logMessage);
+                $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich geändert.';
+                $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde geändert.';
+                $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->articleService->updateArticle($requestData);
 
                 return new JsonResponse($responseData);
@@ -142,30 +133,28 @@ class Article extends AbstractController
     }
 
     #[Route('/artikel_löschen/articleId/{articleId}', name: 'delete_article')]
-    public function deleteArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response
+    public function deleteArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response|null
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $requestData = $request->request->all();
+        $article = $this->articleService->getArticleById($articleId);
 
-        if (!empty($requestData)) {
-            $requestData = $requestData['delete_article'];
+        if (!$article) {
+            return null;
         }
 
-        $article = $this->articleService->getArticleById((int) $articleId);
         $form = $this->createForm(DeleteArticleType::class, $article);
         $form->handleRequest($request);
+        $requestData = $form->getData();
+        $articleNr = $article->getArticleNr();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $responseData['message'] = sprintf(
-                'Der Artikel mit der Artikel-Nr. %s wurde erfolgreich gelöscht.',
-                $requestData['articleNr']
-            );
-            $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde gelöscht.', $requestData['articleNr']);
-            $this->loggingService->write($request, $logMessage);
-            $this->articleService->deleteArticle((int) $requestData['articleNr']);
+            $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich gelöscht.';
+            $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde gelöscht.';
+            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
+            $this->articleService->deleteArticle($requestData);
 
             return new JsonResponse($responseData);
         }
@@ -173,8 +162,8 @@ class Article extends AbstractController
         return $this->render(
             'article/article_delete_ask.html.twig',
             [
-                'articleNr' => $article->getArticleNr(),
                 'articleForm' => $form->createView(),
+                'articleNr' => $articleNr,
             ]
         );
     }

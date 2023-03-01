@@ -22,7 +22,7 @@ class VarsExtension extends AbstractExtension
         ];
     }
 
-    public function jsonDecode($str)
+    public function jsonDecode(string $str): mixed
     {
         return json_decode($str);
     }

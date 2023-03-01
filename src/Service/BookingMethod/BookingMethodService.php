@@ -40,7 +40,7 @@ class BookingMethodService
     /**
      * @throws EntityNotFoundException
      */
-    public function getBookingMethod($bookingMethod, Request $request): RedirectResponse|Response
+    public function getBookingMethod(string $bookingMethod, Request $request): RedirectResponse|Response
     {
         return match ($bookingMethod) {
             'stock_in' => $this->stockIn($request), // SI101 Einlagern direkt
@@ -67,7 +67,7 @@ class BookingMethodService
 //            $this->bookingMethodConstants::ST183 => $this->stockTransferToCostCentre(), // ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste)
 //            $this->bookingMethodConstants::SO187 => $this->stockOutToDispatchArea(), // SO187 Auftrag auslagern in WA-Zone
 //            $this->bookingMethodConstants::SO188 => $this->stockOutOrderConsolidationToCostCentre(), // SO188 Sammelkommissionierung auf Kostenstelle
-            default => throw new EntityNotFoundException('Buchungsmethode mit der Nr. '.$bookingMethod.' wurde nicht gefunden!'),
+            default => throw new EntityNotFoundException('Buchungsmethode mit der Nr. ' . $bookingMethod . ' wurde nicht gefunden!'),
         };
     }
 
@@ -76,6 +76,7 @@ class BookingMethodService
      */
     public function stockIn(Request $request): RedirectResponse|Response
     {
+        $bookingMethod = 'SI101';
         $freeStockLocations = [];
 
         $form = $this->formFactory->create(StockInType::class);
@@ -110,7 +111,7 @@ class BookingMethodService
                         'fb' => $stockLocation['fb'],
                         'sp' => $stockLocation['sp'],
                         'tf' => $stockLocation['tf'],
-                        'ln_komplett' => $stockLocation['ln'].'-'.$stockLocation['fb'].'-'.$stockLocation['sp'].'-'.$stockLocation['tf'],
+                        'ln_komplett' => $stockLocation['ln'] . '-' . $stockLocation['fb'] . '-' . $stockLocation['sp'] . '-' . $stockLocation['tf'],
                         'koordinate' => $stockLocation['koordinate'],
                         'system' => $stockLocation['system'],
                         'quantity' => $quantity,
@@ -139,6 +140,8 @@ class BookingMethodService
                     'freeStockLocations' => $freeStockLocations,
                     'charge' => $requestData['charge'],
                     'article_nr' => $requestData['article_nr'],
+                    'booking_method' => $bookingMethod,
+                    'loading_equipment' => $stockSystem,
                 ]
             );
 
@@ -165,7 +168,7 @@ class BookingMethodService
     /**
      * SI102 Zugang aus Wareneingang.
      */
-    public function stockInFromGoodsReceipt()
+    public function stockInFromGoodsReceipt(): void
     {
         // TODO: Implement logic
     }
@@ -173,7 +176,7 @@ class BookingMethodService
     /**
      * SI103 Zugang aus Produktion.
      */
-    public function stockInFromProduction()
+    public function stockInFromProduction(): void
     {
         // TODO: Implement logic
     }
@@ -181,7 +184,7 @@ class BookingMethodService
     /**
      * SI104 Rückgabe von Kostenstelle.
      */
-    public function stockInFromCostCentre()
+    public function stockInFromCostCentre(): void
     {
         // TODO: Implement logic
     }
@@ -189,7 +192,7 @@ class BookingMethodService
     /**
      * SI105 Einlagern in Container.
      */
-    public function stockInIntoContainer()
+    public function stockInIntoContainer(): void
     {
         // TODO: Implement logic
     }
@@ -197,7 +200,7 @@ class BookingMethodService
     /**
      * SI106 WE zur Bestellung.
      */
-    public function stockInForSupplierOrder()
+    public function stockInForSupplierOrder(): void
     {
         // TODO: Implement logic
     }
@@ -205,7 +208,7 @@ class BookingMethodService
     /**
      * SI107 Einlagern mit Ladehilfsmittel.
      */
-    public function stockInUsingLoadingEquipment()
+    public function stockInUsingLoadingEquipment(): void
     {
         // TODO: Implement logic
     }
@@ -213,7 +216,7 @@ class BookingMethodService
     /**
      * SI111 Einlagern direkt in WE-Zone.
      */
-    public function stockInIntoReceivingArea()
+    public function stockInIntoReceivingArea(): void
     {
         // TODO: Implement logic
     }
@@ -221,7 +224,7 @@ class BookingMethodService
     /**
      * ST112 Rückgabe von Kostenstelle.
      */
-    public function stockTransferFromCostCentre()
+    public function stockTransferFromCostCentre(): void
     {
         // TODO: Implement logic
     }
@@ -229,7 +232,7 @@ class BookingMethodService
     /**
      * SI113 Einlagern direkt in Kostenstelle.
      */
-    public function stockInIntoCostCentre()
+    public function stockInIntoCostCentre(): void
     {
         // TODO: Implement logic
     }
@@ -237,7 +240,7 @@ class BookingMethodService
     /**
      * SI114 Einlagern direkt in WA-Zone.
      */
-    public function stockInIntoDispatchArea()
+    public function stockInIntoDispatchArea(): void
     {
         // TODO: Implement logic
     }
@@ -245,7 +248,7 @@ class BookingMethodService
     /**
      * SO151 Auslagern direkt.
      */
-    public function stockOut()
+    public function stockOut(): void
     {
         // TODO: Implement logic
     }
@@ -253,7 +256,7 @@ class BookingMethodService
     /**
      * SO152 Auslagern auf Kostenstelle.
      */
-    public function stockOutToCostCentre()
+    public function stockOutToCostCentre(): void
     {
         // TODO: Implement logic
     }
@@ -261,7 +264,7 @@ class BookingMethodService
     /**
      * SO153 Ausleihen auf Kostenstelle.
      */
-    public function lendingToCostCentre()
+    public function lendingToCostCentre(): void
     {
         // TODO: Implement logic
     }
@@ -269,7 +272,7 @@ class BookingMethodService
     /**
      * SO155 Auslagern aus Container.
      */
-    public function stockOutFromContainer()
+    public function stockOutFromContainer(): void
     {
         // TODO: Implement logic
     }
@@ -277,7 +280,7 @@ class BookingMethodService
     /**
      * SO156 Auslagern aus Kostenstelle.
      */
-    public function stockOutFromCostCentre()
+    public function stockOutFromCostCentre(): void
     {
         // TODO: Implement logic
     }
@@ -285,7 +288,7 @@ class BookingMethodService
     /**
      * SO157 Auslagern direkt aus WA-Zone.
      */
-    public function stockOutFromDispatchArea()
+    public function stockOutFromDispatchArea(): void
     {
         // TODO: Implement logic
     }
@@ -293,7 +296,7 @@ class BookingMethodService
     /**
      * SO158 Auftrag auslagern.
      */
-    public function stockOutByOrder()
+    public function stockOutByOrder(): void
     {
         // TODO: Implement logic
     }
@@ -301,7 +304,7 @@ class BookingMethodService
     /**
      * SO159 Auslagern direkt aus WE-Zone.
      */
-    public function stockOutFromReceivingArea()
+    public function stockOutFromReceivingArea(): void
     {
         // TODO: Implement logic
     }
@@ -309,7 +312,7 @@ class BookingMethodService
     /**
      * SO181 Auftrag auslagern (Auftrag-Liste).
      */
-    public function stockOutOrderList()
+    public function stockOutOrderList(): void
     {
         // TODO: Implement logic
     }
@@ -317,7 +320,7 @@ class BookingMethodService
     /**
      * SO182 Auftrag auslagern mit Kostenstelle (Auftrag-Liste).
      */
-    public function stockOutUsingCostCentre()
+    public function stockOutUsingCostCentre(): void
     {
         // TODO: Implement logic
     }
@@ -325,7 +328,7 @@ class BookingMethodService
     /**
      * ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste).
      */
-    public function stockTransferToCostCentre()
+    public function stockTransferToCostCentre(): void
     {
         // TODO: Implement logic
     }
@@ -333,7 +336,7 @@ class BookingMethodService
     /**
      * SO187 Auftrag auslagern in WA-Zone.
      */
-    public function stockOutToDispatchArea()
+    public function stockOutToDispatchArea(): void
     {
         // TODO: Implement logic
     }
@@ -341,7 +344,7 @@ class BookingMethodService
     /**
      * SO188 Sammelkommissionierung auf Kostenstelle.
      */
-    public function stockOutOrderConsolidationToCostCentre()
+    public function stockOutOrderConsolidationToCostCentre(): void
     {
         // TODO: Implement logic
     }
@@ -349,7 +352,7 @@ class BookingMethodService
     /**
      * ST201 Umlagern.
      */
-    public function stockTransferBetween()
+    public function stockTransferBetween(): void
     {
         // TODO: Implement logic
     }
@@ -357,7 +360,7 @@ class BookingMethodService
     /**
      * ST203 Bestandskorrektur.
      */
-    public function stockCorrection()
+    public function stockCorrection(): void
     {
         // TODO: Implement logic
     }
@@ -365,7 +368,7 @@ class BookingMethodService
     /**
      * ST207 Umlagerung aus WE-Zone ins LV-Lager (aus Artikelbelegung).
      */
-    public function stockTransferFromReceivingAreaToStock()
+    public function stockTransferFromReceivingAreaToStock(): void
     {
         // TODO: Implement logic
     }
@@ -373,7 +376,7 @@ class BookingMethodService
     /**
      * ST208 Umlagerung aus LV-Lager in WA-Zone (aus Artikelbelegung).
      */
-    public function stockTransferFromStockToDispatchArea()
+    public function stockTransferFromStockToDispatchArea(): void
     {
         // TODO: Implement logic
     }

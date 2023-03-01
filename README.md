@@ -9,7 +9,7 @@
 * Passwort: `WebWms2023!#`
 
 ## Systemvoraussetzung:
-* min. PHP 8.0
+* min. PHP 8.1
 * MySQL, MariaDB
 * Apache/Nginx
 * NodeJs
@@ -19,9 +19,9 @@
 * jQuery
 * Twig
 * NodeJs
-* FriendsOfSymfony/FOSRestBundle
-* Nelmio/NelmioApiDocBundle
-* Symfony/UX-Chart
+* API-Platform/Core `Hauptmenu >>> API Dokumentation`
+* Nelmio/Cors-Bundle
+* Symfony/UX-Chart `Dashboard`
 
 ## CI / CD:
 * CircleCI

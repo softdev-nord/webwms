@@ -8,12 +8,10 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\SupplierOrder;
-use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\DataHandlers\SupplierOrder\SupplierOrderDataHandler;
-use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Service
+ * @package:    WebWMS\Service\SupplierOrder
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        SupplierOrderService
@@ -22,112 +20,21 @@ class SupplierOrderService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private SupplierOrderDataHandler $supplierOrderDataHandler,
-        private DateTimeService $dateTimeService
+        private SupplierOrderDataHandler $supplierOrderDataHandler
     ) {
     }
 
-    /**
-     * @throws NotFoundException
-     */
-    public function getSupplierOrderApi(int $supplierOrderId): ?SupplierOrder
+    public function getSupplierOrderById(int $supplierId): ?SupplierOrder
     {
-        $order = $this->entityManager
-            ->getRepository(SupplierOrder::class)
-            ->find($supplierOrderId);
-
-        if (!$order) {
-            throw new NotFoundException('Supplier order with id '.$supplierOrderId.' does not exist!');
-        }
-
-        return $order;
+        return $this->supplierOrderDataHandler->getSupplierOrderById($supplierId);
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function getAllSupplierOrdersApi(): array
+    public function getSupplierOrderByNr(int $supplierNr): ?SupplierOrder
     {
-        return $this->entityManager
-            ->getRepository(SupplierOrder::class)
-            ->findBy([], ['supplierOrderId' => 'ASC']);
+        return $this->supplierOrderDataHandler->getSupplierOrderById($supplierNr);
     }
 
-    public function addSupplierOrderApi(
-        int $supplierOrderId,
-        int $usrId,
-        int $supplierId,
-        string $supplierOrderNr,
-        string $supplierOrderReference,
-        $supplierOrderDate,
-        $supplierOrderCreationDate
-    ): SupplierOrder {
-        $createdAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
-
-        $supplierOrder = new SupplierOrder();
-        $supplierOrder->setSupplierOrderId($supplierOrderId);
-        $supplierOrder->setUsrId($usrId);
-        $supplierOrder->setSupplierId($supplierId);
-        $supplierOrder->setSupplierOrderNr($supplierOrderNr);
-        $supplierOrder->setSupplierOrderReference($supplierOrderReference);
-        $supplierOrder->setSupplierOrderDate($supplierOrderDate);
-        $supplierOrder->setSupplierOrderCreationDate($supplierOrderCreationDate);
-        $supplierOrder->setCreatedAt($createdAt);
-        $this->supplierOrderDataHandler->save($supplierOrder);
-
-        return $supplierOrder;
-    }
-
-    public function updateSupplierOrderApi(
-        int $supplierOrderMainId,
-        int $supplierOrderId,
-        int $usrId,
-        int $supplierId,
-        string $supplierOrderNr,
-        string $supplierOrderReference,
-        $supplierOrderDate,
-        $supplierOrderCreationDate
-    ): ?SupplierOrder {
-        $updatedAt = new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
-
-        $supplierOrder = $this->entityManager
-            ->getRepository(SupplierOrder::class)
-            ->find($supplierOrderMainId);
-
-        $supplierOrder->setSupplierOrderId($supplierOrderId);
-        $supplierOrder->setUsrId($usrId);
-        $supplierOrder->setSupplierId($supplierId);
-        $supplierOrder->setSupplierOrderNr($supplierOrderNr);
-        $supplierOrder->setSupplierOrderReference($supplierOrderReference);
-        $supplierOrder->setSupplierOrderDate($supplierOrderDate);
-        $supplierOrder->setSupplierOrderCreationDate($supplierOrderCreationDate);
-        $supplierOrder->setUpdatedAt($updatedAt);
-
-        return $supplierOrder;
-    }
-
-    /**
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     */
-    public function deleteSupplierOrderApi(int $supplierOrderId): void
-    {
-        $supplierOrder = $this->entityManager
-            ->getRepository(SupplierOrder::class)
-            ->find($supplierOrderId);
-
-        if (!$supplierOrder) {
-            throw new NotFoundException('Supplier order with id '.$supplierOrderId.' does not exist!');
-        } else {
-            $this->supplierOrderDataHandler->delete($supplierOrder);
-        }
-    }
-
-    /**
-     * Get all Orders for Ajax-Request.
-     *
-     * @throws Exception
-     */
-    public function getAllOrders(): JsonResponse
+    public function getAllSupplierOrder(): JsonResponse
     {
         $conn = $this->entityManager->getConnection();
 
@@ -135,7 +42,7 @@ class SupplierOrderService
 
         $queryBuilder
             ->select('so.supplier_order_id, so.supplier_order_nr, so.supplier_order_reference,
-            sup.supplier_nr, sup.supplier_name, so.supplier_order_creation_date, usr.username')
+            sup.supplier_nr, sup.supplier_name, so.supplier_order_creation_date, usr.username, so.created_at, so.updated_at')
             ->from('supplier_orders', 'so')
             ->innerJoin('so', 'supplier_order_pos', 'sop', 'sop.supplier_order_id = so.supplier_order_id')
             ->innerJoin('so', 'supplier', 'sup', 'so.supplier_id = sup.supplier_id')
@@ -147,11 +54,6 @@ class SupplierOrderService
         $result = $stmt->fetchAllAssociative();
 
         return new JsonResponse($result);
-    }
-
-    public function getSupplierOrderById(int $id): ?SupplierOrder
-    {
-        return $this->supplierOrderDataHandler->getSupplierOrderById($id);
     }
 
     /**
@@ -177,36 +79,23 @@ class SupplierOrderService
         return new JsonResponse($data);
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function updateSupplierOrder($requestData)
+    public function addSupplierOrder(SupplierOrder $supplierOrder): void
     {
-        $supplierOrder = $this->supplierOrderDataHandler->getSupplierOrderById($requestData['supplierOrderId']);
+        $this->supplierOrderDataHandler->addSupplierOrder($supplierOrder);
+    }
 
-        if (!$supplierOrder) {
-            return null;
-        }
+    public function updateSupplierOrder(SupplierOrder $supplierOrder): void
+    {
+        $this->supplierOrderDataHandler->updateSupplierOrder($supplierOrder);
+    }
 
-        $supplierOrder->setSupplierOrderId($requestData['supplierOrderId']);
-        $supplierOrder->setUsrId($requestData['usrId']);
-        $supplierOrder->setSupplierId($requestData['supplierId']);
-        $supplierOrder->setSupplierOrderNr($requestData['supplierOrderNr']);
-        $supplierOrder->setSupplierOrderReference($requestData['supplierOrderReference']);
-        $supplierOrder->setSupplierOrderDate($requestData['supplierOrderDate']);
-        $supplierOrder->setSupplierOrderCreationDate($requestData['supplierOrderCreationDate']);
-        $supplierOrder->setCreatedAt($requestData['createdAt']);
-        $supplierOrder->setUpdatedAt($this->dateTimeService->createDateTime());
-
-        $this->supplierOrderDataHandler->update($supplierOrder);
-
-        return $supplierOrder;
+    public function deleteSupplierOrder(SupplierOrder $supplierOrder): void
+    {
+        $this->supplierOrderDataHandler->deleteSupplierOrder($supplierOrder);
     }
 
     /**
-     * Get last customer order id.
-     *
-     * @return object[]
+     * @return array<int, SupplierOrder>
      */
     public function getLastSupplierOrderId(): array
     {

@@ -5,13 +5,21 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use WebWMS\Repository\UserRepository;
 
 #[ORM\Table(name: 'user')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\UserRepository')]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
+    public ?string $firstname;
+
+    #[ORM\Column(name: 'lastname', type: 'string', length: 255, nullable: true)]
+    public ?string $lastname;
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
@@ -20,20 +28,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'username', type: 'string', length: 255, unique: true)]
     private string $username;
 
-    #[ORM\Column(name: 'roles', type: 'json')]
-    private array $roles = [];
+    #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'user')]
+    private Role $role;
 
     #[ORM\Column(name: 'password', type: 'string', length: 255, nullable: false)]
     private string $password;
 
-    #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
-    public ?string $firstname;
-
-    #[ORM\Column(name: 'lastname', type: 'string', length: 255, nullable: true)]
-    public ?string $lastname;
-
     #[ORM\Column(name: 'email', type: 'string', length: 255)]
-    private string $email;
+    private ?string $email;
 
     #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $lastLogin;
@@ -79,7 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function getSalt()
+    public function getSalt(): void
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
@@ -87,7 +89,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -117,7 +119,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -211,22 +213,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getRole(): Role
+    {
+        return $this->role;
+    }
+
+    public function setRole(Role $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
+        return [$this->role->getRole()];
     }
 }

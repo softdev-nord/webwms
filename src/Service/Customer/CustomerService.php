@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Customer;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Customer;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
@@ -23,7 +21,7 @@ class CustomerService
     ) {
     }
 
-    public function getCustomerById(int $customerId): Customer
+    public function getCustomerById(int $customerId): ?Customer
     {
         return $this->customerDataHandler->getCustomerById($customerId);
     }
@@ -43,56 +41,26 @@ class CustomerService
         return $this->customerDataHandler->getCustomers();
     }
 
-    public function addCustomer($requestData): void
+    public function addCustomer(Customer $customer): void
     {
-        $this->customerDataHandler->addCustomer($requestData);
+        $this->customerDataHandler->addCustomer($customer);
     }
 
-    public function getLastCustomer(): array
+    public function updateCustomer(Customer $customer): void
     {
-        return $this->customerDataHandler->getLastCustomer();
+        $this->customerDataHandler->updateCustomer($customer);
+    }
+
+    public function deleteCustomer(Customer $customer): void
+    {
+        $this->customerDataHandler->deleteCustomer($customer);
     }
 
     /**
-     * @throws EntityNotFoundException
+     * @return object[]
      */
-    public function getCustomerApi(int $customerId): ?Customer
+    public function getLastCustomer(): array
     {
-        $customer = $this->customerDataHandler->getCustomerById($customerId);
-
-        if (!$customer) {
-            throw new EntityNotFoundException('Customer with id '.$customerId.' does not exist!');
-        }
-
-        return $customer;
-    }
-
-    public function getAllCustomersApi(): ?array
-    {
-        return $this->customerDataHandler->getAllCustomersApi();
-    }
-
-    public function addCustomerApi(Request $request): Customer
-    {
-        $requestData = $request->request->all();
-
-        return $this->customerDataHandler->addCustomer($requestData);
-    }
-
-    public function updateCustomerApi(Request $request): ?Customer
-    {
-        $requestData = $request->request->all();
-
-        return $this->customerDataHandler->updateCustomer($requestData);
-    }
-
-    public function deleteCustomerApi(int $customerId): void
-    {
-        $this->customerDataHandler->deleteCustomerApi($customerId);
-    }
-
-    public function updateCustomer($requestData): ?Customer
-    {
-        return $this->customerDataHandler->updateCustomer($requestData);
+        return $this->customerDataHandler->getLastCustomer();
     }
 }

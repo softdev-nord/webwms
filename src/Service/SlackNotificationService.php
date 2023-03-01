@@ -23,7 +23,7 @@ class SlackNotificationService
     /**
      * @SuppressWarnings("unused")
      */
-    public function sendSlackNotification($freeStockLocations): ResponseInterface
+    public function sendSlackNotification(string $freeStockLocations): ResponseInterface
     {
         $message = json_encode($freeStockLocations);
         $logMessage = sprintf('Der Artikel mit der Artikel-Nr. %s wurde geändert.', '60004');

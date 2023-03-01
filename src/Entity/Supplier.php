@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'supplier')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\SupplierRepository')]
+#[ApiResource(
+    extraProperties: [
+        'standard_put' => true,
+    ],
+)]
 class Supplier
 {
     #[ORM\Id]
@@ -135,6 +141,9 @@ class Supplier
         $this->supplierAddressCity = $supplierAddressCity;
     }
 
+    /**
+     * @return array<string, int|string|null>
+     */
     public function toArray(): array
     {
         return [

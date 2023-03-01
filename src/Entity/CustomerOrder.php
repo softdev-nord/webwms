@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Components\Entity\ModelEntity;
 
 #[ORM\Table(name: 'customer_orders')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderRepository')]
-class CustomerOrder extends ModelEntity
+#[ApiResource(
+    extraProperties: [
+        'standard_put' => true,
+    ],
+)]
+class CustomerOrder
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -24,6 +29,7 @@ class CustomerOrder extends ModelEntity
     #[ORM\Column(name: 'usr_id', type: 'integer', nullable: false)]
     private int $usrId;
 
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: CustomerOrderPos::class)]
     #[ORM\Column(name: 'customer_id', type: 'integer', nullable: false)]
     private int $customerId;
 
@@ -45,7 +51,7 @@ class CustomerOrder extends ModelEntity
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt;
 
-    /** One Supplier Order has many Supplier Order Positions. This is the inverse side. */
+    /** One Customer Order has many Customer Order Positions. This is the inverse side. */
     #[ORM\OneToMany(
         mappedBy: 'customerOrder',
         targetEntity: CustomerOrderPos::class,
@@ -58,6 +64,11 @@ class CustomerOrder extends ModelEntity
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'customer_id')]
     private ?Customer $customer;
 
+    public function __construct()
+    {
+        $this->customerOrderPos = new ArrayCollection();
+    }
+
     public function getCustomer(): ?Customer
     {
         return $this->customer;
@@ -68,17 +79,12 @@ class CustomerOrder extends ModelEntity
         $this->customer = $customer;
     }
 
-    public function __construct()
-    {
-        $this->customerOrderPos = new ArrayCollection();
-    }
-
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 

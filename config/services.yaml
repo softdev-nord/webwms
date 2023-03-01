@@ -97,11 +97,6 @@ services:
             $returnPath: '%returnPath%'
             $mailCopy: '%mailCopy%'
 
-    web_wms.service.templates_service:
-        class: WebWMS\Service\TemplatesService
-        arguments:
-            $webHost: '%webHost%'
-
     web_wms.service.file_uploader:
         class: WebWMS\Service\FileUploader
         autowire: true
@@ -123,7 +118,7 @@ services:
         class: WebWMS\Service\LoggingService
 
     web_wms.controller.dashboard_controller:
-        class: WebWMS\Controller\DashboardController
+        class: WebWMS\Controller\Dashboard
         arguments:
             $requirements: 'WebWMS\Controller\Requirements'
             $twig: 'Twig\Environment'
@@ -138,3 +133,4 @@ services:
         arguments:
             $requirements: 'WebWMS\Controller\Requirements'
             $twig: 'Twig\Environment'
+    

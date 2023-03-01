@@ -44,7 +44,7 @@ jobs:
           command: |
             cd webwms/  
             composer install --ignore-platform-reqs --no-scripts
-            vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots
+            vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots --allow-risky=yes
       - run:
             name: "PHP Static Analysis"
             command: |
@@ -69,6 +69,10 @@ jobs:
       - image: cimg/php:8.1.9
     environment:
       CIRCLE_REPOSITORY_URL: https://softdev-nord:${BITBUCKET_PASSWORD}@bitbucket.org/softdev-nord/webwms.git
+      SSH_FINGERPRINT: ${SSH_FINGERPRINT}
+      SSH_USER: ${SSH_USER}
+      SSH_HOST: ${SSH_HOST}
+      HOST_DIR: ${HOST_DIR}
     steps:
       - envsubst/install
       - run: sudo apt update
@@ -85,7 +89,7 @@ jobs:
             ci/set-env.sh
       - add_ssh_keys:
           fingerprints:
-          - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
+            - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
       - run: ssh-keyscan -H 178.20.100.70 >> ~/.ssh/known_hosts
       - run:
           name: Deploy development over SSH

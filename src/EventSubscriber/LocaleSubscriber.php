@@ -16,17 +16,15 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class LocaleSubscriber implements EventSubscriberInterface
 {
-    private string $defaultLocale;
-
-    public function __construct(string $defaultLocale = 'de')
-    {
-        $this->defaultLocale = $defaultLocale;
+    public function __construct(
+        private string $defaultLocale = 'de'
+    ) {
     }
 
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         if (!$request->hasPreviousSession()) {

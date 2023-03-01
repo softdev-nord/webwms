@@ -347,13 +347,22 @@ class StockTransactions extends AbstractController
 
     /**
      * @SuppressWarnings(PHPMD.ExitExpression)
+     * @throws \Exception
      */
     #[Route('/stock_in_final', name: 'stock_in_final')]
     public function stockInFinal(Request $request): void
     {
-        $this->transportRequestService->createTransportRequest($request);
+        $user = '';
+        if ($this->getUser() !== null) {
+            $user = $this->getUser()->getUserIdentifier();
+        }
+
+        $this->transportRequestService->createTransportRequest($request, $user);
     }
 
+    /**
+     * @param array<string> $stockLocations
+     */
     public function generateSuId(array $stockLocations): int
     {
         $count = count(array_keys($stockLocations));
@@ -366,12 +375,15 @@ class StockTransactions extends AbstractController
     }
 
     #[Route('/edit_pre_selected_stock_location/id/{stockLocationId}', name: 'edit_pre_selected_stock_location')]
-    public function editPreSelectedStockLocation(Request $request)
+    public function editPreSelectedStockLocation(Request $request): Response
     {
         $stockLocationId = $request->attributes->get('stockLocationId');
         /* @var $stockSystem \WebWMS\Entity\StockLocation */
         $stockSystem = $this->stockLocationService->getSockLocationDetailsById($stockLocationId);
 
+        /**
+         * @phpstan-ignore-next-line
+         */
         $preSelectedStockLocation = $this->stockLocationService->getAllFreeStockLocations($stockSystem[0]->getStockLocationDesc());
 
         return $this->render(

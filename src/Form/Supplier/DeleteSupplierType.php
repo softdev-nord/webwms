@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Form\Supplier;
 
 use Symfony\Component\Form\AbstractType;
@@ -7,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use WebWMS\Entity\Supplier;
 
 /**
@@ -18,11 +19,6 @@ use WebWMS\Entity\Supplier;
  */
 class DeleteSupplierType extends AbstractType
 {
-    public function __construct(
-        private AuthorizationCheckerInterface $authorizationChecker
-    ) {
-    }
-
     /**
      * @SuppressWarnings("unused")
      * @SuppressWarnings(PHPMD.ElseExpression)
@@ -30,24 +26,20 @@ class DeleteSupplierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('supplierNr', HiddenType::class, [
+            ->add('supplierId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'supplierNr',
-                    'data-type' => 'supplierNr',
+                    'id' => 'supplierId',
+                    'data-type' => 'supplierId',
                 ],
-            ]);
-        if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            $builder
-                ->add('delete', ButtonType::class, [
-                    'label' => 'Löschen',
-                    'attr' => [
-                        'class' => 'btn btn-lg',
-                    ],
-                ]);
-        }
-        $builder
+            ])
+            ->add('delete', ButtonType::class, [
+                'label' => 'Löschen',
+                'attr' => [
+                    'class' => 'btn btn-lg',
+                ],
+            ])
             ->add('abort', ButtonType::class, [
                 'label' => 'Abbrechen',
                 'attr' => [

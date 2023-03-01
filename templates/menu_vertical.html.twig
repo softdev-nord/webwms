@@ -57,13 +57,9 @@
                         {% endif %}
                     </span>
                     <span class="text-muted user-role">
-                        {% if (app.user != null) and (app.user.roles.0 == 'ROLE_SUPER_ADMIN') %}
-                            {{ 'nav.user.admin'|trans }}
-                        {% else %}
-                            {{ 'nav.user.user'|trans }}
-                        {% endif %}
+                        {{ app.user.role.name }}
                     </span>
-                                <span class="user-status">
+                    <span class="user-status">
                         <i class="mdi mdi-circle"></i>
                         <span class="text-muted">{{ 'nav.user.online'|trans }}</span>
                     </span>
@@ -186,7 +182,7 @@
                         <div class="sidebar-submenu">
                             <ul>
                                 <li>
-                                    <a href="{{ path('orders') }}">
+                                    <a href="{{ path('supplier_orders') }}">
                                         <i class="mdi mdi-file-eye" style="font-size: 16px"></i>
                                         Übersicht Bestellungen
                                     </a>
@@ -220,7 +216,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('new_customer_order') }}">
+                                    <a href="{{ path('add_customer_order') }}">
                                         <i class="mdi mdi-file-plus-outline" style="font-size: 16px"></i>
                                         Auftrag anlegen
                                     </a>
@@ -250,7 +246,7 @@
                                         <ul>
                                             <li><a href="{{ path('article') }}">Übersicht Artikel</a></li>
                                             <li><a id="add_article">Artikel Anlegen</a></li>
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
                                                 <li><a href="#">Sachmerkmale zuordnen</a></li>
                                             {% endif %}
                                         </ul>
@@ -266,7 +262,7 @@
                                             <li><a href="{{ path('stock_location') }}">Übersicht Lagerplätze</a></li>
                                             <li><a href="{{ path('stock_layout') }}">Lagerlayout</a></li>
                                             <li><a href="#">Lagerzonen</a></li>
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
                                                 <li><a href="{{ path('add_stock_location') }}">Lager anlegen</a></li>
                                             {% endif %}
                                         </ul>
@@ -280,7 +276,7 @@
                                     <div class="sidebar-submenu-sub">
                                         <ul>
                                             <li><a href="{{ path('customer') }}">Übersicht Kunden</a></li>
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
                                                 <li><a href="{{ path('add_customer') }}">Kunden Anlegen</a></li>
                                             {% endif %}
                                         </ul>
@@ -294,7 +290,7 @@
                                     <div class="sidebar-submenu-sub">
                                         <ul>
                                             <li><a href="{{ path('supplier') }}">Übersicht Lieferanten</a></li>
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
                                                 <li><a href="{{ path('add_supplier') }}">Lieferanten Anlegen</a></li>
                                             {% endif %}
                                         </ul>
@@ -313,8 +309,11 @@
                                     </a>
                                     <div class="sidebar-submenu-sub">
                                         <ul>
-                                            <li><a href="#">Übersicht Benutzer</a></li>
-                                            <li><a href="#">Benutzer anlegen</a></li>
+                                            <li><a href="{{ path('user') }}">Übersicht Benutzer</a></li>
+                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
+                                                <li><a href="#">Benutzer anlegen</a></li>
+                                                <li><a href="#">Benutzerpasswort zurücksetzen</a></li>
+                                            {% endif %}
                                         </ul>
                                     </div>
                                 </li>
@@ -398,6 +397,12 @@
                                         Dashboard
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{ path('logging') }}">
+                                        <i class="mdi mdi-clipboard-text-search-outline"></i>
+                                        Logs
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -462,7 +467,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ path('app.swagger_ui') }}" target="_blank" >
+                        <a href="{{ path('api_doc') }}" target="_blank" >
                             <i class="mdi mdi-file-code-outline"></i>
                             <span>API Dokumentation</span>
                         </a>

@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Components\Entity\ModelEntity;
 
 #[ORM\Table(name: 'supplier_orders')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\SupplierOrderRepository')]
-class SupplierOrder extends ModelEntity
+#[ApiResource(
+    extraProperties: [
+        'standard_put' => true,
+    ],
+)]
+class SupplierOrder
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -92,7 +97,7 @@ class SupplierOrder extends ModelEntity
         return $this->usrId;
     }
 
-    public function setUsrId(?int $usrId): self
+    public function setUsrId(int $usrId): self
     {
         $this->usrId = $usrId;
 

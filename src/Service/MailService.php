@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Service;
 
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -30,6 +31,10 @@ class MailService
     ) {
     }
 
+    /**
+     * @param  array<string>               $parameter
+     * @throws TransportExceptionInterface
+     */
     public function sendTemplatedMail(string $to, string $subject, string $template, array $parameter = []): void
     {
         $email = (new TemplatedEmail())
@@ -42,7 +47,11 @@ class MailService
         $this->mailer->send($email);
     }
 
-    public function sendHTMLMail(string $to, string $subject, string $body, array $attachments = []): void
+    /**
+     * @param  array<object>               $attachments
+     * @throws TransportExceptionInterface
+     */
+    public function sendHTMLMail(string $to, string $subject, string $body, array $attachments): void
     {
         $email = (new Email())
             ->from(new Address($this->fromMail, $this->fromName))
@@ -55,16 +64,16 @@ class MailService
             $email->replyTo(new Address($this->returnPath));
         }
 
-        if ('true' == $this->mailCopy) {
+        if ($this->mailCopy == 'true') {
             $email->bcc(new Address($this->fromMail));
         }
 
         /* @var $attachment MailAttachment */
         foreach ($attachments as $attachment) {
             $email->attach(
-                $attachment->getBody(),
-                $attachment->getName(),
-                $attachment->getContentType()
+                $attachment->getBody(), /* @phpstan-ignore-line */
+                $attachment->getName(), /* @phpstan-ignore-line */
+                $attachment->getContentType() /* @phpstan-ignore-line */
             );
         }
         $this->mailer->send($email);

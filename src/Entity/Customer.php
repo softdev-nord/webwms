@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'customer')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerRepository')]
+#[ApiResource(
+    extraProperties: [
+        'standard_put' => true,
+    ],
+)]
 class Customer
 {
     #[ORM\Id]
@@ -153,6 +159,9 @@ class Customer
         return $this;
     }
 
+    /**
+     * @return array<string, int|string|null>
+     */
     public function toArray(): array
     {
         return [

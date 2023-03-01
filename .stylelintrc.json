@@ -1,0 +1,22 @@
+{
+  "extends": "stylelint-config-standard",
+  "ignoreFiles": [
+    "./node_modules/**/*.css",
+    "./node_modules/**/*.js",
+    "./public/assets/css/DataTables*/**"
+  ],
+  "rules": {
+    "at-rule-empty-line-before": null,
+    "at-rule-no-unknown": null,
+    "comment-empty-line-before": "never",
+    "font-weight-notation": null,
+    "no-descending-specificity": null,
+    "rule-empty-line-before": null,
+    "selector-class-pattern": null,
+    "selector-id-pattern": null,
+    "value-keyword-case": null,
+    "selector-pseudo-class-no-unknown": null,
+    "selector-pseudo-element-no-unknown": null,
+    "no-duplicate-selectors": null
+  }
+}

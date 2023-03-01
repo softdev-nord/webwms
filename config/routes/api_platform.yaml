@@ -1,0 +1,7 @@
+# api/config/packages/api_platform.yaml
+api_platform:
+  resource: .
+  type: api_platform
+  prefix: /api
+  defaults:
+    description: 'Test API'

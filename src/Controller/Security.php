@@ -23,7 +23,7 @@ class Security extends AbstractController
     ) {
     }
 
-    #[Route('/', name: 'app_login')]
+    #[Route(path: '/', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         // get the login error if there is one
@@ -58,13 +58,9 @@ class Security extends AbstractController
         );
     }
 
-    /**
-     * @throws \Exception
-     */
-    #[Route('/logout', name: 'app_logout')]
-    public function logout()
+    #[Route(path: '/logout', name: 'app_logout')]
+    public function logout(): void
     {
-        // controller can be blank: it will never be executed!
-        throw new \Exception('Don\'t forget to activate logout in security.yaml');
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

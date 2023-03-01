@@ -32,7 +32,7 @@ class StockTransferStrategy
         return $this->id;
     }
 
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 

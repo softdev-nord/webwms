@@ -62,7 +62,7 @@
             {
                 text: 'Lieferant anlegen',
                 className: 'btn-add-new',
-                action: function ( e, dt, node, config ) {
+                action: function (e, dt, node, config) {
                     addSupplier();
                 }
             }
@@ -73,22 +73,23 @@
         selector: 'tr',
         trigger: 'right',
         callback: function(key, options, event) {
-            const row = supplierTable.row(options.$trigger);
+            const row = supplierTable.row(options.$trigger),
+                supplierId = row.data().supplier_id;
 
             switch (key) {
                 case 'edit' :
-                    editSupplier(row.data().supplier_nr);
+                    editSupplier(supplierId);
                     break;
                 case 'delete' :
-                    deleteSupplier(row.data().supplier_nr);
+                    deleteSupplier(supplierId);
                     break;
                 default :
-                    break
+                    break;
             }
         },
         items: {
             'edit': {name: 'Bearbeiten', icon: 'edit'},
-            'delete': {name: 'Löschen', icon: 'delete'}
+            'delete': {name: 'Löschen', icon: 'delete'},
         }
     });
 
@@ -101,29 +102,7 @@
         cache: false
     });
 
-    function editSupplier(supplierNr) {
-        const url = '/lieferant_bearbeiten/lieferantenNr/' + supplierNr;
-        const content = '<div class="modal-body"></div>';
-
-        $('#modalCenter .modal-title').text('Lieferanten bearbeiten');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'get',
-            data: ($('#supplier-form-edit').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
-    }
-
+    // Modal für Lieferanten anlegen
     function addSupplier() {
         const url = '/lieferant_anlegen';
         const content = '<div class="modal-body"></div>';
@@ -147,8 +126,33 @@
         return false;
     }
 
-    function deleteSupplier(supplierNr) {
-        const url = '/lieferant_löschen/lieferantenNr/' + supplierNr;
+    // Modal für Lieferanten bearbeiten
+    function editSupplier(supplierId) {
+        const url = '/lieferant_bearbeiten/supplierId/' + supplierId;
+        const content = '<div class="modal-body"></div>';
+
+        $('#modalCenter .modal-title').text('Lieferanten bearbeiten');
+        $('#modal-content-ajax').html(content);
+        $('#modalCenter').modal('show');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: ($('#supplier-form-edit').serialize()),
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+            },
+            success: function (data) {
+                $('#modal-content-ajax').html(data);
+            }
+        });
+
+        return false;
+    }
+
+    // Modal für Lieferanten löschen
+    function deleteSupplier(supplierId) {
+        const url = '/lieferant_löschen/supplierId/' + supplierId;
         const content = '<div class="modal-body"></div>';
 
         $('#modalCenter .modal-dialog').css('max-width', '30%');
@@ -170,11 +174,10 @@
         return false;
     }
 
-    // Geänderten Lieferanten speichern
-    $(document).on('click','button#edit_supplier_save',function(event) {
-        const supplierNr = $('#edit_supplier_supplierNr').val();
-        const $form = $('form#supplier-form-edit');
-        const url = '/lieferant_bearbeiten/lieferantenNr/' + supplierNr;
+    // Neuen Lieferanten speichern
+    $(document).on('click','button#add_supplier_save',function(event) {
+        const $form = $('form#supplier-form-new');
+        const url = '/lieferant_anlegen';
         event.preventDefault();
 
         $.ajax({
@@ -183,12 +186,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Lieferantendaten konnten nicht gespeichert werden',
@@ -216,13 +219,12 @@
         });
     });
 
-    // Neuen Lieferanten speichern
-    $(document).on('click','button#add_supplier_save',function(event) {
-        const $form = $('form#supplier-form-new');
-        const url = '/lieferant_anlegen';
+    // Geänderten Lieferanten speichern
+    $(document).on('click','button#edit_supplier_save',function(event) {
+        const supplierId = $('#edit_supplier_supplierId').val();
+        const $form = $('form#supplier-form-edit');
+        const url = '/lieferant_bearbeiten/supplierId/' + supplierId;
         event.preventDefault();
-
-        console.log($form.serialize());
 
         $.ajax({
             type: 'POST',
@@ -230,12 +232,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Lieferantendaten konnten nicht gespeichert werden',
@@ -265,9 +267,9 @@
 
     // Lieferanten löschen
     $(document).on('click','button#delete_supplier_delete',function(event) {
-        const supplierNr = $('#delete_supplier_supplierNr').val();
+        const supplierId = $('#delete_supplier_supplierId').val();
         const $form = $('form#supplier-modal-delete-ask');
-        const url = '/lieferant_löschen/lieferantenNr/' + supplierNr;
+        const url = '/lieferant_löschen/supplierId/' + supplierId;
         event.preventDefault();
 
         $.ajax({
@@ -276,12 +278,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Lieferant konnten nicht gelöscht werden',
@@ -311,7 +313,7 @@
 
     // Back to stock location overview
     $(document).on('click','#edit_supplier_back_to_supplier_overview',function() {
-        window.location.href = '/lieferanten'
+        window.location.href = '/lieferanten';
     });
     $(document).on('click','button#delete_supplier_abort',function() {
         $('#modalCenter').modal('hide');

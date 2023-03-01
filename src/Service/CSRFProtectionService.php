@@ -30,7 +30,7 @@ class CSRFProtectionService
      */
     public function getCSRFTokenForForm(): string
     {
-        $token = $this->generateToken(20);
+        $token = $this->generateToken();
         $this->requestStack->getSession()->set('_csrf_token', $token);
 
         return $token;
@@ -66,19 +66,15 @@ class CSRFProtectionService
      * @SuppressWarnings(PHPMD.ElseExpression)
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
-    private function generateToken($length, $alphaNumeric = true): string
+    private function generateToken(): string
     {
         $numeric = '0123456789';
         $alpha = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $token = '';
 
-        if ($alphaNumeric) {
-            $chars = $numeric.$alpha;
-        } else {
-            $chars = $alpha;
-        }
+        $chars = $numeric . $alpha;
 
-        for ($i = 0; $i < $length; ++$i) {
+        for ($i = 0; $i < 20; ++$i) {
             $tmpStr = str_shuffle($chars);
             $token .= $tmpStr[0];
         }

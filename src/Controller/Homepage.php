@@ -7,7 +7,6 @@ namespace WebWMS\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Kernel;
 
 /**
  * @package:    WebWMS\Controller
@@ -18,8 +17,7 @@ use WebWMS\Kernel;
 class Homepage extends AbstractController
 {
     public function __construct(
-        private Requirements $requirements,
-        private Kernel $kernel
+        private Requirements $requirements
     ) {
     }
 
@@ -41,7 +39,6 @@ class Homepage extends AbstractController
                 'appCopyright' => $this->requirements->getAppCopyright(),
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Startseite',
-                'test' => $this->kernel->getBundles(),
             ]
         );
     }

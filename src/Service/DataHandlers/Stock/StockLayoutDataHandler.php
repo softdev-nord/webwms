@@ -20,6 +20,9 @@ class StockLayoutDataHandler
     ) {
     }
 
+    /**
+     * @return object[]
+     */
     public function getStockLayout(): array
     {
         return $this->entityManager

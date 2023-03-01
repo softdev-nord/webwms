@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
+use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Exception\NotFoundException;
 use WebWMS\Form\Stock\EditStockLocationType;
 use WebWMS\Form\Stock\StockLocationType;
-use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Validation\StockLocationValidationService;
 
@@ -28,8 +28,7 @@ class StockLocation extends AbstractController
     public function __construct(
         private StockLocationService $stockLocationService,
         private Requirements $requirements,
-        private StockLocationValidationService $stockLocationValidationService,
-        private StockLocationDataHandler $stockLocationDataHandler
+        private StockLocationValidationService $stockLocationValidationService
     ) {
     }
 
@@ -80,7 +79,7 @@ class StockLocation extends AbstractController
     }
 
     #[Route('lagerplatz_bearbeiten/koordinate/{stockLocationCoordinate}', name: 'edit_stock_location')]
-    public function editStockLocation(Request $request, $stockLocationCoordinate): RedirectResponse|JsonResponse|Response
+    public function editStockLocation(Request $request, string $stockLocationCoordinate): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -92,16 +91,16 @@ class StockLocation extends AbstractController
             $requestData = $requestData['edit_stock_location'];
         }
 
-        $responseData = $this->stockLocationValidationService->validateStockLocationData($requestData);
+        $responseData = $this->stockLocationValidationService->validateStockLocationData((array) $requestData);
         $responseData['message'] = '';
 
-        $stockLocation = $this->stockLocationDataHandler->getStockLocationByCoordinate((int) $stockLocationCoordinate);
+        $stockLocation = $this->stockLocationService->getStockLocationByCoordinate((int) $stockLocationCoordinate);
         $form = $this->createForm(EditStockLocationType::class, $stockLocation);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
                 $responseData['message'] = 'Die Änderungen am Lagerplatz wurden erfolgreich gespeichert.';
-                $this->stockLocationDataHandler->updateStockLocation($requestData);
+                $this->stockLocationService->updateStockLocation($request);
 
                 return new JsonResponse($responseData);
             }
@@ -121,11 +120,14 @@ class StockLocation extends AbstractController
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Lagerplatz bearbeiten',
                 'editStockLocationForm' => $form->createView(),
-                'stockLocations' => json_decode($this->getAllStockLocations()->getContent()),
+                'stockLocations' => json_decode((string) $this->getAllStockLocations()->getContent()),
             ]
         );
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/stock_location_ajax', name: 'stock_location_ajax')]
     public function getAllStockLocations(): JsonResponse
     {
@@ -134,15 +136,19 @@ class StockLocation extends AbstractController
 
     /**
      * @throws NotFoundException
+     * @return array|object[]
      */
     #[Route('/lagerplatz_details/{stock_location_coordinate}', name: 'show_stock_location_details')]
-    public function getSockLocationDetailsById($coordinate): array
+    public function getSockLocationDetailsById(string $coordinate): array
     {
         return $this->stockLocationService->getSockLocationDetailsById($coordinate);
     }
 
+    /**
+     * @param array<string> $freeStockLocations
+     */
     #[Route('/selected_stock_locations', name: 'selected_stock_locations')]
-    public function getSelectedStocklocations($freeStockLocations): JsonResponse
+    public function getSelectedStocklocations(array $freeStockLocations): JsonResponse
     {
         return new JsonResponse($freeStockLocations);
     }

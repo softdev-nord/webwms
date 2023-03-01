@@ -19,8 +19,11 @@ class RequirementsService
     ) {
     }
 
-    public function getServerVersion()
+    public function getServerVersion(): string
     {
-        return $this->entityManager->getConnection()->getWrappedConnection()->getServerVersion();
+        /*
+         * @phpstan-ignore-next-line
+         */
+        return $this->entityManager->getConnection()->getParams()['serverVersion'];
     }
 }
