@@ -35,10 +35,10 @@
             {
                 "data": null,
                 render: function (data, type, row) {
-                    if (row["updated_at"] != null) {
-                        return row["updated_at"];
+                    if (row.updated_at != null) {
+                        return row.updated_at;
                     } else {
-                        return row["created_at"];
+                        return row.created_at;
                     }
                 },
             }
@@ -48,7 +48,7 @@
                 className: 'text-center', targets: '_all'
             },
             {
-                render: $.fn.dataTable.render.number( '.'),
+                render: $.fn.dataTable.render.number('.'),
                 'targets': [9],
             },
         ],
@@ -77,7 +77,7 @@
             {
                 text: 'Artikel anlegen',
                 className: 'btn-add-new',
-                action: function ( e, dt, node, config ) {
+                action: function (e, dt, node, config) {
                     addArticle();
                 }
             }
@@ -89,7 +89,7 @@
         trigger: 'right',
         callback: function(key, options, event) {
             const row = artTable.row(options.$trigger),
-            articleId = row.data().article_id;
+                articleId = row.data().article_id;
 
             switch (key) {
                 case 'edit' :
@@ -99,7 +99,7 @@
                     deleteArticle(articleId);
                     break;
                 default :
-                    break
+                    break;
             }
         },
         items: {
@@ -203,12 +203,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Artikeldaten konnten nicht gespeichert werden',
@@ -249,12 +249,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, " ");
                     $.jAlert({
                         'title': 'Artikeldaten konnten nicht gespeichert werden',
@@ -280,7 +280,6 @@
                 }
             }
         });
-
     });
 
     // Artikel löschen
@@ -296,12 +295,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Artikel konnten nicht gelöscht werden',

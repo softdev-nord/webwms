@@ -29,10 +29,10 @@
             {
                 "data": null,
                 render: function (data, type, row) {
-                    if (row["updated_at"] != null) {
-                        return row["updated_at"];
+                    if (row.updated_at != null) {
+                        return row.updated_at;
                     } else {
-                        return row["created_at"];
+                        return row.created_at;
                     }
                 },
             }
@@ -79,7 +79,7 @@
             {
                 text: 'Bestellung anlegen',
                 className: 'btn-add-new',
-                action: function ( e, dt, node, config ) {
+                action: function (e, dt, node, config) {
                     addSupplierOrder();
                 }
             }
@@ -91,7 +91,7 @@
         trigger: 'right',
         callback: function(key, options, event) {
             const row = supplierOrderTable.row(options.$trigger),
-            supplierOrderId = row.data().supplier_order_id;
+                supplierOrderId = row.data().supplier_order_id;
 
             switch (key) {
                 case 'edit' :
@@ -101,7 +101,7 @@
                     deleteSupplierOrder(supplierOrderId);
                     break;
                 default :
-                    break
+                    break;
             }
         },
         items: {
@@ -204,12 +204,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Bestellung konnte nicht gespeichert werden',
@@ -250,12 +250,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Bestellung konnte nicht gespeichert werden',
@@ -296,12 +296,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Bestellung konnten nicht gelöscht werden',
@@ -365,13 +365,13 @@
             {"data": "article_nr"},
             {"data": "article_name"},
             {"data": "supplier_order_pos_quantity",
-                render: $.fn.dataTable.render.number( '.')
+                render: $.fn.dataTable.render.number('.')
             },
             {
                 "data": null,
                 render: function (data, type, row) {
-                    if (row["lbw_menge"] != null) {
-                        return numberWithCommas(row["lbw_menge"]);
+                    if (row.lbw_menge != null) {
+                        return numberWithCommas(row.lbw_menge);
                     } else {
                         return "0";
                     }
@@ -380,10 +380,10 @@
             {
                 "data": null,
                 render: function (data, type, row) {
-                    if (row["lbw_menge"] != null) {
-                        return numberWithCommas(parseInt(row["supplier_order_pos_quantity"]) - parseInt(row["lbw_menge"]));
+                    if (row.lbw_menge != null) {
+                        return numberWithCommas(parseInt(row.supplier_order_pos_quantity) - parseInt(row.lbw_menge));
                     } else {
-                        return numberWithCommas(row["supplier_order_pos_quantity"]);
+                        return numberWithCommas(row.supplier_order_pos_quantity);
                     }
                 },
             }
@@ -405,15 +405,14 @@
     });
 
     // Durch Auswahl einer Zeile in der Bestellungs-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.
-    supplierOrderTable.on( 'click', function () {
+    supplierOrderTable.on('click', function () {
         posTable.ajax.reload();
-
-    } );
+    });
 
     // Beim Abwählen der Zeile in der Bestellungs-Tabelle wird die Positions-Tabelle wieder geleert.
-    supplierOrderTable.on( 'deselect', function () {
+    supplierOrderTable.on('deselect', function () {
         posTable.ajax.reload();
-    } );
+    });
 
     function numberWithCommas(number) {
         const formatConfig = {
@@ -422,5 +421,4 @@
         };
         return new Intl.NumberFormat('de-DE', formatConfig).format(number);
     }
-
 })(jQuery);

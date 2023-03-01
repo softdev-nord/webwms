@@ -1,4 +1,4 @@
- $.ajaxSetup({
+$.ajaxSetup({
     cache: false
 });
 /**
@@ -44,17 +44,17 @@ function _doPost(formId, url, successUrl, type, successFunc) {
             alert(xhr.status);
         },
         success: function (data) {
-            if(successFunc !== null) {
+            if (successFunc !== null) {
                 successFunc(data);
             } else {
                 // if the whole modal content is returned
-                if($(data).filter('.modal-body').length > 0 || $(data).find('.modal-body').length > 0) {
+                if ($(data).filter('.modal-body').length > 0 || $(data).find('.modal-body').length > 0) {
                     $("#modal-content-ajax").html(data);
                 // if only flash messages are returned
                 } else if (data && data.length > 0) {
                     flashMessage.empty();
                     flashMessage.append(data);
-                } else if(successUrl.length > 0 ) {
+                } else if (successUrl.length > 0) {
                     location.href = successUrl;
                 } else {
                     location.reload();

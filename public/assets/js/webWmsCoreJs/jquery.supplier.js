@@ -62,7 +62,7 @@
             {
                 text: 'Lieferant anlegen',
                 className: 'btn-add-new',
-                action: function ( e, dt, node, config ) {
+                action: function (e, dt, node, config) {
                     addSupplier();
                 }
             }
@@ -74,7 +74,7 @@
         trigger: 'right',
         callback: function(key, options, event) {
             const row = supplierTable.row(options.$trigger),
-            supplierId = row.data().supplier_id;
+                supplierId = row.data().supplier_id;
 
             switch (key) {
                 case 'edit' :
@@ -84,7 +84,7 @@
                     deleteSupplier(supplierId);
                     break;
                 default :
-                    break
+                    break;
             }
         },
         items: {
@@ -186,12 +186,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Lieferantendaten konnten nicht gespeichert werden',
@@ -232,12 +232,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Lieferantendaten konnten nicht gespeichert werden',
@@ -278,12 +278,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Lieferant konnten nicht gelöscht werden',
@@ -313,7 +313,7 @@
 
     // Back to stock location overview
     $(document).on('click','#edit_supplier_back_to_supplier_overview',function() {
-        window.location.href = '/lieferanten'
+        window.location.href = '/lieferanten';
     });
     $(document).on('click','button#delete_supplier_abort',function() {
         $('#modalCenter').modal('hide');

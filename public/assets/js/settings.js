@@ -51,7 +51,7 @@ function _deleteEntry(id, url) {
     if (collapseEntry(id)) {
         const cell = "#entry-cell-" + id;
         $(cell).load(url, function (response, status, xhr) {
-            //if(status == "success") location.reload();
+            // if(status == "success") location.reload();
         });
     }
     return false;

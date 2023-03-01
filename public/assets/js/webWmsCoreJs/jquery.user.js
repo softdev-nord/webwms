@@ -59,7 +59,7 @@
             {
                 text: 'Benutzer anlegen',
                 className: 'btn-add-new',
-                action: function ( e, dt, node, config ) {
+                action: function (e, dt, node, config) {
                     addUser();
                 }
             }
@@ -84,7 +84,7 @@
                         deleteUser(row.data().username);
                         break;
                     default :
-                        break
+                        break;
                 }
             },
             items: {
@@ -208,12 +208,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Benutzer konnten nicht gespeichert werden',
@@ -254,12 +254,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Benutzerpasswort konnten nicht gespeichert werden',
@@ -300,12 +300,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Benutzer konnten nicht gelöscht werden',
@@ -346,12 +346,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Benutzer konnte nicht gespeichert werden',
@@ -381,7 +381,7 @@
 
     // Zurück zur Kundenübersicht
     $(document).on('click','#edit_user_back_to_user_overview',function() {
-        window.location.href = '/benutzer'
+        window.location.href = '/benutzer';
     });
 
     $(document).on('click','button#delete_user_abort',function() {

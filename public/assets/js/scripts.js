@@ -6,17 +6,17 @@
  * @param addDays
  */
 function iniStartOrEndDate(idStart, idEnd, addDays) {
-    let end = document.getElementById(idEnd);
-    let start = document.getElementById(idStart);
+    const end = document.getElementById(idEnd);
+    const start = document.getElementById(idStart);
     if (end.value === '' && start.value !== '') {
-        let dEnd = new Date(start.value).addDays(addDays);
-        let sDate = dEnd.getFullYear() + '-' + ('0' + (dEnd.getMonth() + 1)).slice(-2) + '-' + ('0' + dEnd.getDate()).slice(-2);
+        const dEnd = new Date(start.value).addDays(addDays);
+        const sDate = dEnd.getFullYear() + '-' + ('0' + (dEnd.getMonth() + 1)).slice(-2) + '-' + ('0' + dEnd.getDate()).slice(-2);
         end.value = sDate;
     }
 
     if (start.value === '' && end.value !== '') {
-        let dStart = new Date(end.value).minusDays(addDays);
-        let sDate = dStart.getFullYear() + '-' + ('0' + (dStart.getMonth() + 1)).slice(-2) + '-' + ('0' + dStart.getDate()).slice(-2);
+        const dStart = new Date(end.value).minusDays(addDays);
+        const sDate = dStart.getFullYear() + '-' + ('0' + (dStart.getMonth() + 1)).slice(-2) + '-' + ('0' + dStart.getDate()).slice(-2);
         start.value = sDate;
     }
 }
@@ -28,7 +28,7 @@ function iniStartOrEndDate(idStart, idEnd, addDays) {
  */
 function copyToClipboard(elm) {
     if (elm) {
-        let target = elm.closest('div').querySelector('input[type=text]');
+        const target = elm.closest('div').querySelector('input[type=text]');
         if (target) {
             target.select();
             target.setSelectionRange(0, target.value.lengt);
@@ -41,7 +41,7 @@ function copyToClipboard(elm) {
             }
 
             if (suceed) {
-                var popover = new bootstrap.Popover(target, {
+                const popover = new bootstrap.Popover(target, {
                     'content': elm.dataset.hint,
                     'placement': 'top',
                 });

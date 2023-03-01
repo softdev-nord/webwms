@@ -62,7 +62,7 @@
             {
                 text: 'Kunde anlegen',
                 className: 'btn-add-new',
-                action: function ( e, dt, node, config ) {
+                action: function (e, dt, node, config) {
                     addCustomer();
                 }
             }
@@ -74,7 +74,7 @@
         trigger: 'right',
         callback: function(key, options, event) {
             const row = customerTable.row(options.$trigger),
-            articleId = row.data().customer_id;
+                articleId = row.data().customer_id;
 
             switch (key) {
                 case 'edit' :
@@ -84,7 +84,7 @@
                     deleteCustomer(articleId);
                     break;
                 default :
-                    break
+                    break;
             }
         },
         items: {
@@ -188,12 +188,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Kundendaten konnten nicht gespeichert werden',
@@ -234,12 +234,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Kundendaten konnten nicht gespeichert werden',
@@ -280,12 +280,12 @@
             data: $form.serialize(),
             success: function(data) {
                 if (data.error) {
-                    let errors = [];
+                    const errors = [];
                     let i = 0;
                     $.each(data.error, function(key, value) {
                         errors[i++] = value + '</br>';
                     });
-                    let arrayString = errors.join();
+                    const arrayString = errors.join();
                     const error = arrayString.replace(/,/g, ' ');
                     $.jAlert({
                         'title': 'Kunde konnte nicht gelöscht werden',

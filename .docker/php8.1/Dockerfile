@@ -19,7 +19,7 @@ RUN apt-get -y update --fix-missing && \
 # Install useful tools and install important libaries
 ###########################################################################
 RUN apt-get -y update && \
-    apt-get -y --no-install-recommends install nano wget \
+    apt-get -y --no-install-recommends install nano wget nodejs npm \
     dialog \
     cron \
     bash-completion \
