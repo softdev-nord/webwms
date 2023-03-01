@@ -46,8 +46,8 @@ class StockLocationService
     }
 
     /**
-     * @return object[]
      * @throws NotFoundException
+     * @return object[]
      */
     public function getSockLocationDetailsById(string $stockLocationId): array
     {
@@ -55,8 +55,8 @@ class StockLocationService
     }
 
     /**
-     * @return array<string|int|mixed>
      * @throws Exception
+     * @return array<string|int|mixed>
      */
     public function getAllStockLocationsForSelect(): array
     {
@@ -69,8 +69,8 @@ class StockLocationService
     }
 
     /**
-     * @return object[]
      * @throws NotFoundException
+     * @return object[]
      */
     public function getAllStockLocationsAjax(): array
     {
@@ -86,8 +86,8 @@ class StockLocationService
     }
 
     /**
-     * @return array<string|int|mixed>
      * @throws Exception
+     * @return array<string|int|mixed>
      */
     public function getAllFreeStockLocations(string $stockSystem): array
     {
@@ -95,8 +95,8 @@ class StockLocationService
     }
 
     /**
-     * @return array<string|int|mixed>
      * @throws Exception
+     * @return array<string|int|mixed>
      */
     public function getAllFreeStockLocationsWithLimit(string $stockSystem, int $limit): array
     {
@@ -104,8 +104,8 @@ class StockLocationService
     }
 
     /**
-     * @return object[]
      * @throws Exception
+     * @return object[]
      */
     public function getFirstFreeStockLocation(string $stockSystem, int $limit): array
     {
@@ -113,7 +113,7 @@ class StockLocationService
         $stockLocations = $this->getAllFreeStockLocationsWithLimit($stockSystem, $limit);
 
         foreach ($stockLocations as $stockLocation) {
-            if (true !== $stockLocation['belegt']) {
+            if ($stockLocation['belegt'] !== true) {
                 $freeStockLocation[] = $stockLocation;
             }
         }
@@ -148,7 +148,7 @@ class StockLocationService
                 'fb' => $stockLocation['fb'],
                 'sp' => $stockLocation['sp'],
                 'tf' => $stockLocation['tf'],
-                'lnKomplett' => $stockLocation['ln'].'-'.$stockLocation['fb'].'-'.$stockLocation['sp'].'-'.$stockLocation['tf'],
+                'lnKomplett' => $stockLocation['ln'] . '-' . $stockLocation['fb'] . '-' . $stockLocation['sp'] . '-' . $stockLocation['tf'],
                 'koordinate' => $stockLocation['koordinate'],
                 'system' => $stockLocation['system'],
                 'quantity' => $remainder,

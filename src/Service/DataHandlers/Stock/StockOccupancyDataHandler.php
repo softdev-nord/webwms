@@ -41,8 +41,8 @@ class StockOccupancyDataHandler
     }
 
     /**
-     * @return array<int|mixed>
      * @throws Exception
+     * @return array<int|mixed>
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function getStockOccupancy(int $stockLocationLn): array
@@ -76,7 +76,7 @@ class StockOccupancyDataHandler
                     'fb' => $result['fb'],
                     'sp' => $result['sp'],
                     'tf' => $result['tf'],
-                    'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
+                    'lnKomplett' => $result['ln'] . '-' . $result['fb'] . '-' . $result['sp'] . '-' . $result['tf'],
                     'koordinate' => $result['koordinate'],
                     'system' => $result['stock_location_desc'],
                     'belegt' => true,
@@ -87,7 +87,7 @@ class StockOccupancyDataHandler
                     'fb' => $result['fb'],
                     'sp' => $result['sp'],
                     'tf' => $result['tf'],
-                    'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
+                    'lnKomplett' => $result['ln'] . '-' . $result['fb'] . '-' . $result['sp'] . '-' . $result['tf'],
                     'koordinate' => $result['koordinate'],
                     'system' => $result['stock_location_desc'],
                     'belegt' => false,
@@ -99,8 +99,8 @@ class StockOccupancyDataHandler
     }
 
     /**
-     * @return array<string|int|mixed>
      * @throws Exception
+     * @return array<string|int|mixed>
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function getStockOccupancyByArticleNr(int $articleNr): array

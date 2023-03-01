@@ -97,26 +97,26 @@ class ArticleDataHandler
         if (!empty(filter_input(INPUT_GET, 'name_art'))) {
             $name = strtolower(trim(filter_input(INPUT_GET, 'name_art')));
 
-            $sqlArt = "SELECT * FROM article where LOWER($boxName) LIKE '".$name."%'";
+            $sqlArt = "SELECT * FROM article where LOWER($boxName) LIKE '" . $name . "%'";
 
             $stmt = $connection->executeQuery($sqlArt);
 
             while ($row = $stmt->fetchAssociative()) {
                 $name = $row['article_id']
-                    .'|'.$row['article_nr']
-                    .'|'.$row['article_name']
-                    .'|'.$row['article_category']
-                    .'|'.$row['article_weight']
-                    .'|'.$row['article_ean']
-                    .'|'.$row['article_unit']
-                    .'|'.$row['article_depth']
-                    .'|'.$row['article_width']
-                    .'|'.$row['article_height']
-                    .'|'.$row['stock_out_strategy']
-                    .'|'.$row['le_quantity']
-                    .'|'.$row['standard_loading_equipment']
-                    .'|'.$row['created_at']
-                    .'|'.$row['updated_at'];
+                    . '|' . $row['article_nr']
+                    . '|' . $row['article_name']
+                    . '|' . $row['article_category']
+                    . '|' . $row['article_weight']
+                    . '|' . $row['article_ean']
+                    . '|' . $row['article_unit']
+                    . '|' . $row['article_depth']
+                    . '|' . $row['article_width']
+                    . '|' . $row['article_height']
+                    . '|' . $row['stock_out_strategy']
+                    . '|' . $row['le_quantity']
+                    . '|' . $row['standard_loading_equipment']
+                    . '|' . $row['created_at']
+                    . '|' . $row['updated_at'];
                 $data[] = $name;
             }
         }

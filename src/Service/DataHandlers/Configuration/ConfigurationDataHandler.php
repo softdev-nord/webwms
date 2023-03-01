@@ -49,8 +49,8 @@ class ConfigurationDataHandler
     }
 
     /**
-     * @return array<string|int|mixed>
      * @throws \Exception
+     * @return array<string|int|mixed>
      */
     public function getAllConfigurations(): array
     {
@@ -64,7 +64,7 @@ class ConfigurationDataHandler
         $results = $stmt->fetchAllAssociative();
 
         foreach ($results as $result) {
-            if ('layout' === $result['type']) {
+            if ($result['type'] === 'layout') {
                 $configurations['configuration']['layout'] = $results;
             }
         }

@@ -77,7 +77,7 @@ class User extends AbstractController
         $requestData = $form->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $logMessage = 'Der Benutzer '.$requestData['username'].' wurde angelegt.';
+            $logMessage = 'Der Benutzer ' . $requestData['username'] . ' wurde angelegt.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->userService->addUser($request);
 
@@ -120,8 +120,8 @@ class User extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
-                $responseData['message'] = 'Der Benutzer '.$username.' wurde erfolgreich geändert.';
-                $logMessage = 'Der Benutzer '.$username.' wurde geändert.';
+                $responseData['message'] = 'Der Benutzer ' . $username . ' wurde erfolgreich geändert.';
+                $logMessage = 'Der Benutzer ' . $username . ' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->userService->updateUser($request);
 
@@ -169,8 +169,8 @@ class User extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($responseData['success']) {
-                $responseData['message'] = 'Das Passwort für den Benutzer '.$username.' wurde erfolgreich geändert.';
-                $logMessage = 'Das Passwort für den Benutzer '.$username.' wurde geändert.';
+                $responseData['message'] = 'Das Passwort für den Benutzer ' . $username . ' wurde erfolgreich geändert.';
+                $logMessage = 'Das Passwort für den Benutzer ' . $username . ' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $newHashedPassword = $this->passwordHasher->hashPassword(
                     $user,
@@ -213,8 +213,8 @@ class User extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $responseData['message'] = 'Der Benutzer '.$username.' wurde erfolgreich gelöscht.';
-            $logMessage = 'Der Benutzer '.$username.' wurde gelöscht.';
+            $responseData['message'] = 'Der Benutzer ' . $username . ' wurde erfolgreich gelöscht.';
+            $logMessage = 'Der Benutzer ' . $username . ' wurde gelöscht.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->userService->deleteUser($username);
 

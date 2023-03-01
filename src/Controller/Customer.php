@@ -66,8 +66,8 @@ class Customer extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
             $customerNr = $requestData->getCustomerNr();
-            $responseData['message'] = 'Der Kunde mit der Kunden-Nr. '.$customerNr.' wurde erfolgreich angelegt.';
-            $logMessage = 'Der Kunde mit der Kunden-Nr. '.$customerNr.' wurde angelegt.';
+            $responseData['message'] = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde erfolgreich angelegt.';
+            $logMessage = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde angelegt.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->customerService->addCustomer($requestData);
 
@@ -107,8 +107,8 @@ class Customer extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
-                $responseData['message'] = 'Die Änderungen am Kunden '.$customerNr.' wurden erfolgreich gespeichert.';
-                $logMessage = 'Der Kunde mit der Kunden-Nr. '.$customerNr.' wurde geändert.';
+                $responseData['message'] = 'Die Änderungen am Kunden ' . $customerNr . ' wurden erfolgreich gespeichert.';
+                $logMessage = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->customerService->updateCustomer($requestData);
 
@@ -149,8 +149,8 @@ class Customer extends AbstractController
         $customerNr = $requestData->getCustomerNr();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $responseData['message'] = 'Der Kunde mit der Kunden-Nr. '.$customerNr.' wurde erfolgreich gelöscht.';
-            $logMessage = 'Der Kunde mit der Kunden-Nr. '.$customerNr.' wurde gelöscht.';
+            $responseData['message'] = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde erfolgreich gelöscht.';
+            $logMessage = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde gelöscht.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->customerService->deleteCustomer($requestData);
 

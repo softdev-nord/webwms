@@ -64,7 +64,7 @@ class MailService
             $email->replyTo(new Address($this->returnPath));
         }
 
-        if ('true' == $this->mailCopy) {
+        if ($this->mailCopy == 'true') {
             $email->bcc(new Address($this->fromMail));
         }
 

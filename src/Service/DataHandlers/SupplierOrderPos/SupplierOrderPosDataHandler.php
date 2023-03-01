@@ -93,7 +93,7 @@ class SupplierOrderPosDataHandler
 
     public function deleteSupplierOrderPos(?SupplierOrderPos $supplierOrderPos): void
     {
-        if (null !== $supplierOrderPos) {
+        if ($supplierOrderPos !== null) {
             $this->delete($supplierOrderPos);
         }
     }

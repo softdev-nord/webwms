@@ -72,7 +72,7 @@ class CSRFProtectionService
         $alpha = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $token = '';
 
-        $chars = $numeric.$alpha;
+        $chars = $numeric . $alpha;
 
         for ($i = 0; $i < 20; ++$i) {
             $tmpStr = str_shuffle($chars);

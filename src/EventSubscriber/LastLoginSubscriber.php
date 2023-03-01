@@ -43,7 +43,7 @@ class LastLoginSubscriber implements EventSubscriberInterface
     public function updateLastLogin(FinishRequestEvent $event): void
     {
         $accessToken = $this->tokenStorage->getToken();
-        if (null !== $accessToken) {
+        if ($accessToken !== null) {
             /* @var User $user */
             $user = $accessToken->getUser();
             if ($user instanceof User) {

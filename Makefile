@@ -77,10 +77,10 @@ var-dump-check: ## Find var_dump, dd, etc.
 ######################## Code Style Check ############################
 ######################################################################
 php-cs: ## run code style check
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots --allow-risky=yes';
 
 phpcs-fix: ## run code style fix
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --using-cache=no -vvv --show-progress=dots';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --using-cache=no -vvv --show-progress=dots --allow-risky=yes';
 
 phpmd: ## run code check (phpmd)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd ./src/ ansi rulesets.xml';

@@ -106,13 +106,14 @@ class Dashboard extends AbstractController
      */
     public function root(string $path)
     {
-        if ($this->loader->exists($path.'.html.twig')) {
-            if ('/' == $path || 'admin' == $path) {
+        if ($this->loader->exists($path . '.html.twig')) {
+            if ($path == '/' || $path == 'admin') {
                 exit('Admin');
             }
 
-            return $this->render($path.'.html.twig');
+            return $this->render($path . '.html.twig');
         }
+
         throw $this->createNotFoundException('The Requested Page Not Found.');
     }
 
@@ -123,7 +124,7 @@ class Dashboard extends AbstractController
         $repo = $this->transportHistoryRepository->findBy(['trType' => 1]);
 
         foreach ($repo as $data) {
-            if (null !== $data->getTrAccess()) {
+            if ($data->getTrAccess() !== null) {
                 $datasets[] = $data->getTrAccess()->format('d.m.Y');
             }
         }
@@ -140,7 +141,7 @@ class Dashboard extends AbstractController
         $repo = $this->transportHistoryRepository->findBy(['trType' => 2]);
 
         foreach ($repo as $data) {
-            if (null !== $data->getTrDispatch()) {
+            if ($data->getTrDispatch() !== null) {
                 $datasets[] = $data->getTrDispatch()->format('d.m.Y');
             }
         }
@@ -157,9 +158,9 @@ class Dashboard extends AbstractController
         $repo = $this->transportHistoryRepository->findAll();
 
         foreach ($repo as $data) {
-            if (1 === $data->getTrType() && null !== $data->getTrAccess()) {
+            if ($data->getTrType() === 1 && $data->getTrAccess() !== null) {
                 $datasets[] = $data->getTrAccess()->format('d.m.Y');
-            } elseif (2 == $data->getTrType() && null !== $data->getTrDispatch()) {
+            } elseif ($data->getTrType() == 2 && $data->getTrDispatch() !== null) {
                 $datasets[] = $data->getTrDispatch()->format('d.m.Y');
             }
         }
@@ -182,7 +183,7 @@ class Dashboard extends AbstractController
 
         /** @var TransportRequest $transportRequest */
         foreach ($transportRequests as $transportRequest) {
-            if (1 === $transportRequest->getTrState()) {
+            if ($transportRequest->getTrState() === 1) {
                 $countTrInProgress[] = $transportRequest->getTrState();
             } else {
                 $countTrOpen[] = $transportRequest->getTrState();
@@ -197,8 +198,8 @@ class Dashboard extends AbstractController
     }
 
     /**
-     * @return array<int>
      * @throws Exception
+     * @return array<int>
      */
     public function getWarehouseUtilization(): array
     {
@@ -229,24 +230,31 @@ class Dashboard extends AbstractController
         switch ($chartType) {
             case 'TYPE_LINE':
                 $setChartType = Chart::TYPE_LINE;
+
                 break;
             case 'TYPE_PIE':
                 $setChartType = Chart::TYPE_PIE;
+
                 break;
             case 'TYPE_BAR':
                 $setChartType = Chart::TYPE_BAR;
+
                 break;
             case 'TYPE_BUBBLE':
                 $setChartType = Chart::TYPE_BUBBLE;
+
                 break;
             case 'TYPE_DOUGHNUT':
                 $setChartType = Chart::TYPE_DOUGHNUT;
+
                 break;
             case 'TYPE_POLAR_AREA':
                 $setChartType = Chart::TYPE_POLAR_AREA;
+
                 break;
             case 'TYPE_SCATTER':
                 $setChartType = Chart::TYPE_SCATTER;
+
                 break;
             default:
                 break;

@@ -135,8 +135,8 @@ class StockLocation extends AbstractController
     }
 
     /**
-     * @return array|object[]
      * @throws NotFoundException
+     * @return array|object[]
      */
     #[Route('/lagerplatz_details/{stock_location_coordinate}', name: 'show_stock_location_details')]
     public function getSockLocationDetailsById(string $coordinate): array

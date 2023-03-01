@@ -31,8 +31,8 @@ class StockOccupancyService
     }
 
     /**
-     * @return array<string>
      * @throws Exception
+     * @return array<string>
      */
     public function getStockOccupancyByCoordinate(Request $request): array
     {
@@ -51,8 +51,8 @@ class StockOccupancyService
     }
 
     /**
-     * @return array<int|mixed>
      * @throws Exception
+     * @return array<int|mixed>
      */
     public function getAllStockOccupancyByLn(int $stockLocationLn): array
     {
@@ -60,8 +60,8 @@ class StockOccupancyService
     }
 
     /**
-     * @return array<int|mixed|string>
      * @throws Exception
+     * @return array<int|mixed|string>
      */
     public function getStockOccupancyByArticleNr(mixed $articleNr): array
     {

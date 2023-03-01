@@ -72,18 +72,18 @@ class SupplierDataHandler
             $sql = "SELECT supplier_nr, supplier_name, supplier_address_addition, supplier_address_street,
                             supplier_address_street_nr, supplier_address_country_code, supplier_address_zipcode,
                             supplier_address_city, supplier_id 
-                        FROM supplier where LOWER($boxName) LIKE '".$nameSupplier."%'";
+                        FROM supplier where LOWER($boxName) LIKE '" . $nameSupplier . "%'";
             $stmt = $connection->executeQuery($sql);
 
             while ($rowSupplier = $stmt->fetchAssociative()) {
-                $nameSupplier = $rowSupplier['supplier_nr'].'|'.
-                    $rowSupplier['supplier_name'].'|'.
-                    $rowSupplier['supplier_address_addition'].'|'.
-                    $rowSupplier['supplier_address_street'].'|'.
-                    $rowSupplier['supplier_address_street_nr'].'|'.
-                    $rowSupplier['supplier_address_country_code'].'|'.
-                    $rowSupplier['supplier_address_zipcode'].'|'.
-                    $rowSupplier['supplier_address_city'].'|'.
+                $nameSupplier = $rowSupplier['supplier_nr'] . '|' .
+                    $rowSupplier['supplier_name'] . '|' .
+                    $rowSupplier['supplier_address_addition'] . '|' .
+                    $rowSupplier['supplier_address_street'] . '|' .
+                    $rowSupplier['supplier_address_street_nr'] . '|' .
+                    $rowSupplier['supplier_address_country_code'] . '|' .
+                    $rowSupplier['supplier_address_zipcode'] . '|' .
+                    $rowSupplier['supplier_address_city'] . '|' .
                     $rowSupplier['supplier_id'];
 
                 $data[] = $nameSupplier;

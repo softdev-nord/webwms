@@ -31,6 +31,14 @@ class Requirements extends AbstractController
     ) {
     }
 
+    public function __toString()
+    {
+        /*
+         * @phpstan-ignore-next-line
+         */
+        return $this->checkDiskFreeSpace();
+    }
+
     /**
      * @return array<string>
      */
@@ -72,15 +80,7 @@ class Requirements extends AbstractController
         for ($i = 0; $bytes >= 1024 && $i < (count($types) - 1); $bytes /= 1024, $i++) {
         }
 
-        return round($bytes, 2).' '.$types[$i];
-    }
-
-    public function __toString()
-    {
-        /*
-         * @phpstan-ignore-next-line
-         */
-        return $this->checkDiskFreeSpace();
+        return round($bytes, 2) . ' ' . $types[$i];
     }
 
     public function getServerVersion(): string

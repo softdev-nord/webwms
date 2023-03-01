@@ -64,6 +64,11 @@ class CustomerOrder
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'customer_id')]
     private ?Customer $customer;
 
+    public function __construct()
+    {
+        $this->customerOrderPos = new ArrayCollection();
+    }
+
     public function getCustomer(): ?Customer
     {
         return $this->customer;
@@ -72,11 +77,6 @@ class CustomerOrder
     public function setCustomer(Customer|null $customer): void
     {
         $this->customer = $customer;
-    }
-
-    public function __construct()
-    {
-        $this->customerOrderPos = new ArrayCollection();
     }
 
     public function getId(): int

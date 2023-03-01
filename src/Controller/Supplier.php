@@ -66,8 +66,8 @@ class Supplier extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
             $supplierNr = $requestData->getSupplierNr();
-            $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. '.$supplierNr.' wurde erfolgreich angelegt.';
-            $logMessage = 'Der Lieferant mit der Lieferanten-Nr. '.$supplierNr.' wurde angelegt.';
+            $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde erfolgreich angelegt.';
+            $logMessage = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde angelegt.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierService->addSupplier($requestData);
 
@@ -107,8 +107,8 @@ class Supplier extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
-                $responseData['message'] = 'Die Änderungen am Lieferanten '.$supplierNr.' wurden erfolgreich gespeichert.';
-                $logMessage = 'Lieferant mit der Lieferanten-Nr. '.$supplierNr.' wurde geändert.';
+                $responseData['message'] = 'Die Änderungen am Lieferanten ' . $supplierNr . ' wurden erfolgreich gespeichert.';
+                $logMessage = 'Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->supplierService->updateSupplier($requestData);
 
@@ -149,8 +149,8 @@ class Supplier extends AbstractController
         $supplierNr = $requestData->getSupplierNr();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. '.$supplierNr.' wurde erfolgreich angelegt.';
-            $logMessage = 'Der Lieferant mit der Lieferanten-Nr. '.$supplierNr.' wurde angelegt.';
+            $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde erfolgreich angelegt.';
+            $logMessage = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde angelegt.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierService->deleteSupplier($requestData);
 

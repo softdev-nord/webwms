@@ -26,7 +26,7 @@ class StockInFinalType extends AbstractType
     {
         foreach ($options['data']['freeStockLocations'] as $key => $value) {
             $builder
-                ->add('stock_su_id_'.$key, TextType::class, [
+                ->add('stock_su_id_' . $key, TextType::class, [
                     'label' => false,
                     'attr' => [
                         'id' => 'stock_su_id',

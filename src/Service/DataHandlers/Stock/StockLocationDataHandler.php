@@ -74,8 +74,8 @@ class StockLocationDataHandler
     }
 
     /**
-     * @return object[]
      * @throws NotFoundException
+     * @return object[]
      */
     public function getSockLocationDetailsById(string $stockLocationId): array
     {
@@ -137,8 +137,8 @@ class StockLocationDataHandler
     }
 
     /**
-     * @return array<string|int|mixed>
      * @throws Exception
+     * @return array<string|int|mixed>
      */
     public function getAllStockLocationsQuery(string $stockSystem): array
     {
@@ -166,8 +166,8 @@ class StockLocationDataHandler
     }
 
     /**
-     * @return array<string|int|mixed>
      * @throws Exception
+     * @return array<string|int|mixed>
      */
     public function getAllStockLocationsForSelect(): array
     {
@@ -184,8 +184,8 @@ class StockLocationDataHandler
     }
 
     /**
-     * @return array<string|int|mixed>
      * @throws Exception
+     * @return array<string|int|mixed>
      */
     public function getAllFreeStockLocations(string $stockSystem): array
     {
@@ -193,7 +193,7 @@ class StockLocationDataHandler
         $results = $this->getAllStockLocationsQuery($stockSystem);
 
         foreach ($results as $result) {
-            if (null !== $result['lp_bestand']) {
+            if ($result['lp_bestand'] !== null) {
                 continue;
             }
             $allResults[] = [
@@ -202,7 +202,7 @@ class StockLocationDataHandler
                 'fb' => $result['fb'],
                 'sp' => $result['sp'],
                 'tf' => $result['tf'],
-                'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
+                'lnKomplett' => $result['ln'] . '-' . $result['fb'] . '-' . $result['sp'] . '-' . $result['tf'],
                 'koordinate' => $result['koordinate'],
                 'system' => $result['stock_location_desc'],
                 'belegt' => false,
@@ -213,8 +213,8 @@ class StockLocationDataHandler
     }
 
     /**
-     * @return array<string|int|mixed>
      * @throws Exception
+     * @return array<string|int|mixed>
      */
     public function getAllFreeStockLocationsWithLimit(string $stockSystem, int $limit): array
     {
@@ -222,7 +222,7 @@ class StockLocationDataHandler
         $results = $this->getAllStockLocationsQuery($stockSystem);
 
         foreach ($results as $result) {
-            if (null !== $result['lp_bestand']) {
+            if ($result['lp_bestand'] !== null) {
                 continue;
             }
             $allResults[] = [
@@ -231,7 +231,7 @@ class StockLocationDataHandler
                 'fb' => $result['fb'],
                 'sp' => $result['sp'],
                 'tf' => $result['tf'],
-                'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
+                'lnKomplett' => $result['ln'] . '-' . $result['fb'] . '-' . $result['sp'] . '-' . $result['tf'],
                 'koordinate' => $result['koordinate'],
                 'system' => $result['stock_location_desc'],
                 'belegt' => false,
@@ -242,8 +242,8 @@ class StockLocationDataHandler
     }
 
     /**
-     * @return array<string|int|mixed>
      * @throws Exception
+     * @return array<string|int|mixed>
      */
     public function getOccupiedFreeStockLocations(string $stockSystem, int $limit): array
     {
@@ -251,7 +251,7 @@ class StockLocationDataHandler
         $results = $this->getAllStockLocationsQuery($stockSystem);
 
         foreach ($results as $result) {
-            if (null === $result['lp_bestand']) {
+            if ($result['lp_bestand'] === null) {
                 continue;
             }
             $allResults[] = [
@@ -259,7 +259,7 @@ class StockLocationDataHandler
                 'fb' => $result['fb'],
                 'sp' => $result['sp'],
                 'tf' => $result['tf'],
-                'lnKomplett' => $result['ln'].'-'.$result['fb'].'-'.$result['sp'].'-'.$result['tf'],
+                'lnKomplett' => $result['ln'] . '-' . $result['fb'] . '-' . $result['sp'] . '-' . $result['tf'],
                 'koordinate' => $result['koordinate'],
                 'system' => $result['stock_location_desc'],
                 'belegt' => true,
@@ -329,9 +329,9 @@ class StockLocationDataHandler
             $stockLocations['stock_location_tf'] = (string) $stockLocation['stock_location_tf'];
             $stockLocations['stock_location_coordinate'] =
                 $stockLocation['stock_location_ln']
-                .$this->generateStockCoordinateLevel((string) $stockLocation['stock_location_fb'])
-                .$this->generateStockCoordinateLevel((string) $stockLocation['stock_location_sp'])
-                .$this->generateStockCoordinateLevel((string) $stockLocation['stock_location_tf'])
+                . $this->generateStockCoordinateLevel((string) $stockLocation['stock_location_fb'])
+                . $this->generateStockCoordinateLevel((string) $stockLocation['stock_location_sp'])
+                . $this->generateStockCoordinateLevel((string) $stockLocation['stock_location_tf'])
             ;
             $stockLocations['stock_location_desc'] = $stockLocation['stock_location_desc'];
             $stockLocations['stock_location_width'] = $stockLocation['stock_location_width'];
@@ -347,9 +347,9 @@ class StockLocationDataHandler
                         $generatedStockLocation['stock_location_tf'] = (string) $tfn;
                         $generatedStockLocation['stock_location_coordinate'] =
                             $stockLocation['stock_location_ln']
-                            .$this->generateStockCoordinateLevel((string) $fbn)
-                            .$this->generateStockCoordinateLevel((string) $spn)
-                            .$this->generateStockCoordinateLevel((string) $tfn)
+                            . $this->generateStockCoordinateLevel((string) $fbn)
+                            . $this->generateStockCoordinateLevel((string) $spn)
+                            . $this->generateStockCoordinateLevel((string) $tfn)
                         ;
                         $generatedStockLocation['stock_location_desc'] = $stockLocation['stock_location_desc'];
                         $generatedStockLocation['stock_location_width'] = $stockLocation['stock_location_width'];

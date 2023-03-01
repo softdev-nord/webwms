@@ -67,7 +67,7 @@ class BookingMethodService
 //            $this->bookingMethodConstants::ST183 => $this->stockTransferToCostCentre(), // ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste)
 //            $this->bookingMethodConstants::SO187 => $this->stockOutToDispatchArea(), // SO187 Auftrag auslagern in WA-Zone
 //            $this->bookingMethodConstants::SO188 => $this->stockOutOrderConsolidationToCostCentre(), // SO188 Sammelkommissionierung auf Kostenstelle
-            default => throw new EntityNotFoundException('Buchungsmethode mit der Nr. '.$bookingMethod.' wurde nicht gefunden!'),
+            default => throw new EntityNotFoundException('Buchungsmethode mit der Nr. ' . $bookingMethod . ' wurde nicht gefunden!'),
         };
     }
 
@@ -111,7 +111,7 @@ class BookingMethodService
                         'fb' => $stockLocation['fb'],
                         'sp' => $stockLocation['sp'],
                         'tf' => $stockLocation['tf'],
-                        'ln_komplett' => $stockLocation['ln'].'-'.$stockLocation['fb'].'-'.$stockLocation['sp'].'-'.$stockLocation['tf'],
+                        'ln_komplett' => $stockLocation['ln'] . '-' . $stockLocation['fb'] . '-' . $stockLocation['sp'] . '-' . $stockLocation['tf'],
                         'koordinate' => $stockLocation['koordinate'],
                         'system' => $stockLocation['system'],
                         'quantity' => $quantity,

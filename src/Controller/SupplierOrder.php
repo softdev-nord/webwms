@@ -70,8 +70,8 @@ class SupplierOrder extends AbstractController
             $supplierOrderRequestData = $supplierOrderForm->getData();
             $supplierOrderNr = $supplierOrderRequestData->getSupplierOrderNr();
 
-            $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. '.$supplierOrderNr.' wurde erfolgreich angelegt.';
-            $logMessage = 'Die Bestellung mit der Bestell-Nr. '.$supplierOrderNr.' wurde angelegt.';
+            $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde erfolgreich angelegt.';
+            $logMessage = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde angelegt.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierOrderService->addSupplierOrder($supplierOrderRequestData);
@@ -84,8 +84,8 @@ class SupplierOrder extends AbstractController
             $supplierOrderPosRequestData = $supplierOrderPosForm->getData();
             $supplierOrderNr = $supplierOrderPosRequestData->getSupplierOrderNr();
 
-            $responseData['message'] = 'Die Position(en) für die Bestell-Nr. '.$supplierOrderNr.' wurde(n) erfolgreich angelegt.';
-            $logMessage = 'Die Position(en) für die Bestell-Nr. '.$supplierOrderNr.' wurde(n) angelegt.';
+            $responseData['message'] = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) erfolgreich angelegt.';
+            $logMessage = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) angelegt.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierOrderPosService->addSupplierOrderPos($request);
@@ -131,8 +131,8 @@ class SupplierOrder extends AbstractController
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
             $supplierOrderRequestData = $supplierOrderForm->getData();
             $supplierOrderNr = $supplierOrderRequestData->getSupplierOrderNr();
-            $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. '.$supplierOrderNr.' wurde erfolgreich geändert.';
-            $logMessage = 'Die Bestellung mit der Bestell-Nr. '.$supplierOrderNr.' wurde geändert.';
+            $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde erfolgreich geändert.';
+            $logMessage = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde geändert.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierOrderService->updateSupplierOrder($supplierOrderRequestData);
 
@@ -144,8 +144,8 @@ class SupplierOrder extends AbstractController
             $supplierOrderPosRequestData = $supplierOrderPosForm->getData();
             $supplierOrderNr = $supplierOrderPosRequestData->getSupplierOrderNr();
 
-            $responseData['message'] = 'Die Position(en) für die Bestell-Nr. '.$supplierOrderNr.' wurde(n) erfolgreich angelegt.';
-            $logMessage = 'Die Position(en) für die Bestell-Nr. '.$supplierOrderNr.' wurde(n) angelegt.';
+            $responseData['message'] = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) erfolgreich angelegt.';
+            $logMessage = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) angelegt.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierOrderPosService->addSupplierOrderPos($request);
@@ -182,8 +182,8 @@ class SupplierOrder extends AbstractController
         $supplierOrderNr = $supplierOrderRequestData->getSupplierOrderNr();
 
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
-            $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. '.$supplierOrderNr.' wurde erfolgreich gelöscht.';
-            $logMessage = 'Die Bestellung mit der Bestell-Nr. '.$supplierOrderNr.' wurde gelöscht.';
+            $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde erfolgreich gelöscht.';
+            $logMessage = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde gelöscht.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierOrderService->deleteSupplierOrder($supplierOrderRequestData);

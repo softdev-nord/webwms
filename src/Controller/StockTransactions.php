@@ -353,7 +353,7 @@ class StockTransactions extends AbstractController
     public function stockInFinal(Request $request): void
     {
         $user = '';
-        if (null !== $this->getUser()) {
+        if ($this->getUser() !== null) {
             $user = $this->getUser()->getUserIdentifier();
         }
 

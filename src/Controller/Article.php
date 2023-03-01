@@ -68,8 +68,8 @@ class Article extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
             $articleNr = $requestData->getArticleNr();
-            $responseData['message'] = 'Der Artikel mit der Artikel-Nr. '.$articleNr.' wurde erfolgreich angelegt.';
-            $logMessage = 'Der Artikel mit der Artikel-Nr. '.$articleNr.' wurde angelegt.';
+            $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich angelegt.';
+            $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde angelegt.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->articleService->addArticle($requestData);
 
@@ -109,8 +109,8 @@ class Article extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($responseData['success']) {
-                $responseData['message'] = 'Der Artikel mit der Artikel-Nr. '.$articleNr.' wurde erfolgreich geändert.';
-                $logMessage = 'Der Artikel mit der Artikel-Nr. '.$articleNr.' wurde geändert.';
+                $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich geändert.';
+                $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->articleService->updateArticle($requestData);
 
@@ -151,8 +151,8 @@ class Article extends AbstractController
         $articleNr = $article->getArticleNr();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $responseData['message'] = 'Der Artikel mit der Artikel-Nr. '.$articleNr.' wurde erfolgreich gelöscht.';
-            $logMessage = 'Der Artikel mit der Artikel-Nr. '.$articleNr.' wurde gelöscht.';
+            $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich gelöscht.';
+            $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde gelöscht.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->articleService->deleteArticle($requestData);
 

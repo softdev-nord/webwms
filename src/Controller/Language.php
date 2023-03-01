@@ -26,7 +26,7 @@ class Language extends AbstractController
     {
         $referer = '';
 
-        if (null !== $request->headers->get('referer')) {
+        if ($request->headers->get('referer') !== null) {
             $locale = $request->getLocale();
             $request->setLocale($locale);
             $request->getSession()->set('_locale', $locale);

@@ -147,9 +147,9 @@ class TransportRequestService
 
         if ($lastStockUnitTr > $lastStockUnitTh) {
             return $lastStockUnitTr[0]->getSuId();
-        } else {
-            return $lastStockUnitTh[0]->getSuId();
         }
+
+        return $lastStockUnitTh[0]->getSuId();
     }
 
     public function getLastTransportRequestNr(): int

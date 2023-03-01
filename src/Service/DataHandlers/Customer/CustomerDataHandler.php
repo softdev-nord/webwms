@@ -92,18 +92,18 @@ class CustomerDataHandler
 
             $sqlKd = "SELECT customer_nr, customer_name, customer_address_addition, 
                         customer_address_street, customer_address_street_nr, customer_country_code, 
-                        customer_zip_code, customer_city, customer_id FROM customer WHERE LOWER($boxName) LIKE '".$nameCustomer."%'";
+                        customer_zip_code, customer_city, customer_id FROM customer WHERE LOWER($boxName) LIKE '" . $nameCustomer . "%'";
             $stmt = $connection->executeQuery($sqlKd);
 
             while ($rowCustomer = $stmt->fetchAssociative()) {
-                $nameCustomer = $rowCustomer['customer_nr'].'|'.
-                    $rowCustomer['customer_name'].'|'.
-                    $rowCustomer['customer_address_addition'].'|'.
-                    $rowCustomer['customer_address_street'].'|'.
-                    $rowCustomer['customer_address_street_nr'].'|'.
-                    $rowCustomer['customer_country_code'].'|'.
-                    $rowCustomer['customer_zip_code'].'|'.
-                    $rowCustomer['customer_city'].'|'.
+                $nameCustomer = $rowCustomer['customer_nr'] . '|' .
+                    $rowCustomer['customer_name'] . '|' .
+                    $rowCustomer['customer_address_addition'] . '|' .
+                    $rowCustomer['customer_address_street'] . '|' .
+                    $rowCustomer['customer_address_street_nr'] . '|' .
+                    $rowCustomer['customer_country_code'] . '|' .
+                    $rowCustomer['customer_zip_code'] . '|' .
+                    $rowCustomer['customer_city'] . '|' .
                     $rowCustomer['customer_id']
                 ;
 

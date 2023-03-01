@@ -20,8 +20,8 @@ class ConfigurationService
     }
 
     /**
-     * @return array<string>
      * @throws \Exception
+     * @return array<string>
      */
     public function getAllConfigurations(): array
     {

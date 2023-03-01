@@ -15,6 +15,11 @@ use WebWMS\Repository\UserRepository;
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
+    public ?string $firstname;
+
+    #[ORM\Column(name: 'lastname', type: 'string', length: 255, nullable: true)]
+    public ?string $lastname;
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
@@ -28,12 +33,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(name: 'password', type: 'string', length: 255, nullable: false)]
     private string $password;
-
-    #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
-    public ?string $firstname;
-
-    #[ORM\Column(name: 'lastname', type: 'string', length: 255, nullable: true)]
-    public ?string $lastname;
 
     #[ORM\Column(name: 'email', type: 'string', length: 255)]
     private ?string $email;
