@@ -9,10 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\SupplierOrder;
 use WebWMS\Service\DataHandlers\SupplierOrder\SupplierOrderDataHandler;
-use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Service
+ * @package:    WebWMS\Service\SupplierOrder
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        SupplierOrderService
@@ -21,17 +20,21 @@ class SupplierOrderService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private SupplierOrderDataHandler $supplierOrderDataHandler,
-        private DateTimeService $dateTimeService
+        private SupplierOrderDataHandler $supplierOrderDataHandler
     ) {
     }
 
-    /**
-     * Get all Orders for Ajax-Request.
-     *
-     * @throws Exception
-     */
-    public function getAllOrders(): JsonResponse
+    public function getSupplierOrderById(int $supplierId): ?SupplierOrder
+    {
+        return $this->supplierOrderDataHandler->getSupplierOrderById($supplierId);
+    }
+
+    public function getSupplierOrderByNr(int $supplierNr): ?SupplierOrder
+    {
+        return $this->supplierOrderDataHandler->getSupplierOrderById($supplierNr);
+    }
+
+    public function getAllSupplierOrder(): JsonResponse
     {
         $conn = $this->entityManager->getConnection();
 
@@ -39,7 +42,7 @@ class SupplierOrderService
 
         $queryBuilder
             ->select('so.supplier_order_id, so.supplier_order_nr, so.supplier_order_reference,
-            sup.supplier_nr, sup.supplier_name, so.supplier_order_creation_date, usr.username')
+            sup.supplier_nr, sup.supplier_name, so.supplier_order_creation_date, usr.username, so.created_at, so.updated_at')
             ->from('supplier_orders', 'so')
             ->innerJoin('so', 'supplier_order_pos', 'sop', 'sop.supplier_order_id = so.supplier_order_id')
             ->innerJoin('so', 'supplier', 'sup', 'so.supplier_id = sup.supplier_id')
@@ -51,11 +54,6 @@ class SupplierOrderService
         $result = $stmt->fetchAllAssociative();
 
         return new JsonResponse($result);
-    }
-
-    public function getSupplierOrderById(int $id): ?SupplierOrder
-    {
-        return $this->supplierOrderDataHandler->getSupplierOrderById($id);
     }
 
     /**
@@ -81,36 +79,23 @@ class SupplierOrderService
         return new JsonResponse($data);
     }
 
-    /**
-     * @param array<string|int|mixed> $requestData
-     */
-    public function updateSupplierOrder(array $requestData): ?SupplierOrder
+    public function addSupplierOrder(SupplierOrder $supplierOrder): void
     {
-        $supplierOrder = $this->supplierOrderDataHandler->getSupplierOrderById($requestData['supplierOrderId']);
+        $this->supplierOrderDataHandler->addSupplierOrder($supplierOrder);
+    }
 
-        if (!$supplierOrder) {
-            return null;
-        }
+    public function updateSupplierOrder(SupplierOrder $supplierOrder): void
+    {
+        $this->supplierOrderDataHandler->updateSupplierOrder($supplierOrder);
+    }
 
-        $supplierOrder->setSupplierOrderId($requestData['supplierOrderId']);
-        $supplierOrder->setUsrId($requestData['usrId']);
-        $supplierOrder->setSupplierId($requestData['supplierId']);
-        $supplierOrder->setSupplierOrderNr($requestData['supplierOrderNr']);
-        $supplierOrder->setSupplierOrderReference($requestData['supplierOrderReference']);
-        $supplierOrder->setSupplierOrderDate($requestData['supplierOrderDate']);
-        $supplierOrder->setSupplierOrderCreationDate($requestData['supplierOrderCreationDate']);
-        $supplierOrder->setCreatedAt($requestData['createdAt']);
-        $supplierOrder->setUpdatedAt($this->dateTimeService->createDateTime());
-
-        $this->supplierOrderDataHandler->update($supplierOrder);
-
-        return $supplierOrder;
+    public function deleteSupplierOrder(SupplierOrder $supplierOrder): void
+    {
+        $this->supplierOrderDataHandler->deleteSupplierOrder($supplierOrder);
     }
 
     /**
-     * Get last customer order id.
-     *
-     * @return object[]
+     * @return array<int, SupplierOrder>
      */
     public function getLastSupplierOrderId(): array
     {

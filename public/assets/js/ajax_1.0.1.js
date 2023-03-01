@@ -2,7 +2,7 @@
     cache: false
 });
 /**
- * Loads content into the modal via get
+ * Lädt Inhalte in das Modal über get
  * @param {string} url
  * @param {string} title
  * @param {type} successFunc
@@ -20,9 +20,9 @@ function getContentForModal(url, title, successFunc) {
 }
 
 /**
- * Performs a post request with data from the given form id
- * if a validation error occurs the warning will be displayed in the modal itself
- * if success a reload is performed
+ * Führt eine Post-Anfrage mit Daten aus der angegebenen Formular-ID durch
+ * Wenn ein Validierungsfehler auftritt, wird die Warnung im Modal selbst angezeigt
+ * Bei Erfolg wird ein Reload durchgeführt
  * @param {string} formId
  * @param {string} url
  * @param {string} successUrl

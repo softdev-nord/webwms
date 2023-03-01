@@ -89,7 +89,7 @@
         },
         items: {
             'edit': {name: 'Bearbeiten', icon: 'edit'},
-            'delete': {name: 'Löschen', icon: 'delete'}
+            'delete': {name: 'Löschen', icon: 'delete'},
         }
     });
 

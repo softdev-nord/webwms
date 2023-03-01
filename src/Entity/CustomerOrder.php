@@ -11,7 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'customer_orders')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderRepository')]
-#[ApiResource]
+#[ApiResource(
+    extraProperties: [
+        'standard_put' => true,
+    ],
+)]
 class CustomerOrder
 {
     #[ORM\Id]
@@ -25,6 +29,7 @@ class CustomerOrder
     #[ORM\Column(name: 'usr_id', type: 'integer', nullable: false)]
     private int $usrId;
 
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: CustomerOrderPos::class)]
     #[ORM\Column(name: 'customer_id', type: 'integer', nullable: false)]
     private int $customerId;
 
@@ -46,7 +51,7 @@ class CustomerOrder
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt;
 
-    /** One Supplier Order has many Supplier Order Positions. This is the inverse side. */
+    /** One Customer Order has many Customer Order Positions. This is the inverse side. */
     #[ORM\OneToMany(
         mappedBy: 'customerOrder',
         targetEntity: CustomerOrderPos::class,

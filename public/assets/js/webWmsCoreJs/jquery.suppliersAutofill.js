@@ -36,7 +36,7 @@ const suppliersAutofill = (function () {
 		return numOfBoxSupplier;
 	}
 
-	function autocompleteHandleLief() {
+	function autocompleteHandleSupplier() {
 		let type, numOfBoxSupplier;
 		type = $(this).data('type');
 		numOfBoxSupplier = getNumOfBoxSupplier(type);
@@ -84,28 +84,28 @@ const suppliersAutofill = (function () {
 
 				resArraySupplier = ui.item.data.split("|");
 
-				$('#supplier_nr_1').val(resArraySupplier[0]);
-				$('#supplier_name_1').val(resArraySupplier[1]);
-				$('#supplier_address_addition_1').val(resArraySupplier[2]);
-				$('#supplier_address_street_1').val(resArraySupplier[3]);
-				$('#supplier_address_street_nr_1').val(resArraySupplier[4]);
-				$('#supplier_country_code_1').val(resArraySupplier[5]);
-				$('#supplier_zip_code_1').val(resArraySupplier[6]);
-				$('#supplier_city_1').val(resArraySupplier[7]);
-				$('#supplier_id_1').val(resArraySupplier[8]);
+				$('#supplier_nr').val(resArraySupplier[0]);
+				$('#supplier_supplierName').val(resArraySupplier[1]);
+				$('#supplier_supplierAddressAddition').val(resArraySupplier[2]);
+				$('#supplier_supplierAddressStreet').val(resArraySupplier[3]);
+				$('#supplier_supplierAddressStreetNr').val(resArraySupplier[4]);
+				$('#supplier_supplierAddressCountryCode').val(resArraySupplier[5]);
+				$('#supplier_supplierAddressZipcode').val(resArraySupplier[6]);
+				$('#supplier_supplierAddressCity').val(resArraySupplier[7]);
+				$('#supplier_supplierId').val(resArraySupplier[8]);
 			}
 		});
 	}
 
 // Events registrieren
-	function registerEventLief() {
+	function registerEventSupplier() {
 		//register autocomplete events
-		$(document).on('focus', '.autocomplete_suppliers', autocompleteHandleLief);
+		$(document).on('focus', '.autocomplete_suppliers', autocompleteHandleSupplier);
 	}
 
 // Events iniziieren
 	function init() {
-		registerEventLief();
+		registerEventSupplier();
 	}
 
 	return {

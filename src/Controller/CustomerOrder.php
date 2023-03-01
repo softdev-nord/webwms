@@ -52,12 +52,11 @@ class CustomerOrder extends AbstractController
                 'appCopyright' => $this->requirements->getAppCopyright(),
                 'appLizenz' => $this->requirements->getAppLizenz(),
                 'page' => 'Übersicht Aufträge',
-                'customer_order' => $this->getAllCustomerOrders(),
             ]
         );
     }
 
-    #[Route('/auftrag_anlegen', name: 'new_customer_order')]
+    #[Route('/auftrag_anlegen', name: 'add_customer_order')]
     public function addCustomerOrder(EntityManagerInterface $entityManager, Request $request): RedirectResponse|Response
     {
         if (!$this->getUser()) {
@@ -92,7 +91,7 @@ class CustomerOrder extends AbstractController
 
             $this->addFlash('success', 'Der Auftrag und die Position(en) wurden erfolgreich angelegt.');
 
-            return $this->redirectToRoute('new_customer_order');
+            return $this->redirectToRoute('add_customer_order');
         }
 
         /*return $this->render(

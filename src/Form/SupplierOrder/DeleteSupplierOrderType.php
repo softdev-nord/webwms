@@ -2,29 +2,23 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Form\User;
+namespace WebWMS\Form\SupplierOrder;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use WebWMS\Entity\User;
+use WebWMS\Entity\SupplierOrder;
 
 /**
- * @package:    WebWMS\Form\User
+ * @package:    WebWMS\Form\SupplierOrder
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        DeleteUserType
+ * Class        DeleteSupplierOrderType
  */
-class DeleteUserType extends AbstractType
+class DeleteSupplierOrderType extends AbstractType
 {
-    public function __construct(
-        private AuthorizationCheckerInterface $authorizationChecker
-    ) {
-    }
-
     /**
      * @SuppressWarnings("unused")
      * @SuppressWarnings(PHPMD.ElseExpression)
@@ -32,22 +26,18 @@ class DeleteUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username', HiddenType::class, [
+            ->add('supplierOrderId', HiddenType::class, [
+                'label' => false,
                 'attr' => [
-                    'id' => 'username',
-                    'data-type' => 'username',
+                    'class' => 'form-control',
                 ],
-            ]);
-        if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            $builder
-                ->add('delete', ButtonType::class, [
-                    'label' => 'Löschen',
-                    'attr' => [
-                        'class' => 'btn btn-lg',
-                    ],
-                ]);
-        }
-        $builder
+            ])
+            ->add('delete', ButtonType::class, [
+                'label' => 'Löschen',
+                'attr' => [
+                    'class' => 'btn btn-lg',
+                ],
+            ])
             ->add('abort', ButtonType::class, [
                 'label' => 'Abbrechen',
                 'attr' => [
@@ -59,7 +49,7 @@ class DeleteUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => SupplierOrder::class,
         ]);
     }
 }

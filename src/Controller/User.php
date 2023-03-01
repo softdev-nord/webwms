@@ -211,7 +211,6 @@ class User extends AbstractController
 
         $form = $this->createForm(DeleteUserType::class, $user);
         $form->handleRequest($request);
-        $username = $user->getUserIdentifier();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $responseData['message'] = 'Der Benutzer '.$username.' wurde erfolgreich gelöscht.';

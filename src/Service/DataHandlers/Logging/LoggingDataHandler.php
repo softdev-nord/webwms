@@ -38,7 +38,7 @@ class LoggingDataHandler
         $logEntry->setRoute($request->attributes->get('_route'));
         $logEntry->setMessage($message);
         $logEntry->setDate($this->dateTimeService->createDateTime());
-        $logEntry->setUser($user->getFirstname().$user->getLastname());
+        $logEntry->setUser($user->getFirstname().' '.$user->getLastname());
         $logEntry->setIpAddress((string) $request->getClientIp());
         $logEntry->setUserAgent((string) $request->headers->get('User-Agent'));
 

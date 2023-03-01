@@ -1,7 +1,6 @@
-// JS Funktion Ajax Daten für Übersicht Bestellungen
-
-$(function() {
-    const bstTable = $('#bstTable').DataTable({
+;(function($){
+    // Lieferanten Bestellungen Tabelle
+    const supplierOrderTable = $('#supplierOrderTable').DataTable({
         createdRow: function (row, data, dataIndex) {
             $(row).attr('data-supplier-order-id', data.supplier_order_id);
         },
@@ -29,14 +28,19 @@ $(function() {
             {"data": "username"},
             {
                 "data": null,
-                "rowId": 'staffId',
-                "className": "editor-edit text-center",
-                "defaultContent": '<i class="mdi mdi-square-edit-outline"/>',
-                "orderable": false
+                render: function (data, type, row) {
+                    if (row["updated_at"] != null) {
+                        return row["updated_at"];
+                    } else {
+                        return row["created_at"];
+                    }
+                },
             }
         ],
         columnDefs: [
-            {className: 'text-center', targets: [0, 2, 4, 5]},
+            {
+                className: 'text-center', targets: "_all"
+            },
             {
                 targets: [4], render: function (data) {
                     moment.locale("de");
@@ -71,6 +75,13 @@ $(function() {
                 extend: 'print',
                 text: 'Drucken',
                 autoPrint: false
+            },
+            {
+                text: 'Bestellung anlegen',
+                className: 'btn-add-new',
+                action: function ( e, dt, node, config ) {
+                    addSupplierOrder();
+                }
             }
         ]
     });
@@ -79,11 +90,15 @@ $(function() {
         selector: 'tr',
         trigger: 'right',
         callback: function(key, options, event) {
-            const row = bstTable.row(options.$trigger);
+            const row = supplierOrderTable.row(options.$trigger),
+            supplierOrderId = row.data().supplier_order_id;
 
             switch (key) {
                 case 'edit' :
-                    editSupplierOrder(row.data().supplier_order_id);
+                    editSupplierOrder(supplierOrderId);
+                    break;
+                case 'delete' :
+                    deleteSupplierOrder(supplierOrderId);
                     break;
                 default :
                     break
@@ -91,11 +106,12 @@ $(function() {
         },
         items: {
             "edit": {name: "Bearbeiten", icon: "edit"},
+            'delete': {name: 'Löschen', icon: 'delete'},
         }
     });
 
     $(function(){
-        // Changed the default modal width
+        // Ändern der Standardbreite des Modals
         $("#modalCenter .modal-dialog").css('max-width', '98%');
     });
 
@@ -103,8 +119,33 @@ $(function() {
         cache: false
     });
 
-    function editSupplierOrder(id) {
-        const url = '/bestellung_bearbeiten/id/' + id;
+    // Modal für Bestellung anlegen
+    function addSupplierOrder() {
+        const url = '/bestellung_anlegen';
+        const content = '<div class="modal-body"></div>';
+
+        $('#modalCenter .modal-title').text('Bestellung anlegen');
+        $('#modal-content-ajax').html(content);
+        $('#modalCenter').modal('show');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: ($('#supplier-order-form-new').serialize()),
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+            },
+            success: function (data) {
+                $('#modal-content-ajax').html(data);
+            }
+        });
+
+        return false;
+    }
+
+    // Modal für Bestellung bearbeiten
+    function editSupplierOrder(supplierOrderId) {
+        const url = '/bestellung_bearbeiten/supplierOrderId/' + supplierOrderId;
         const content = '<div class="modal-body"></div>';
 
         $('#modalCenter .modal-title').text("Bestellung bearbeiten");
@@ -126,6 +167,168 @@ $(function() {
         return false;
     }
 
+    // Modal für Bestellung löschen
+    function deleteSupplierOrder(supplierOrderId) {
+        const url = '/bestellung_löschen/supplierOrderId/' + supplierOrderId;
+        const content = '<div class="modal-body"></div>';
+
+        $('#modalCenter .modal-dialog').css('max-width', '30%');
+        $('#modalCenter .modal-title').text('Bestellung löschen');
+        $('#modal-content-ajax').html(content);
+        $('#modalCenter').modal('show');
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+            },
+            success: function (data) {
+                $('#modal-content-ajax').html(data);
+            }
+        });
+
+        return false;
+    }
+
+    // Neue Bestellung speichern
+    $(document).on('click','button#supplier_order_save',function(event) {
+        const $form = $('form#supplier-order-form-new');
+        const url = '/bestellung_anlegen';
+        event.preventDefault();
+
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: $form.serialize(),
+            success: function(data) {
+                if (data.error) {
+                    let errors = [];
+                    let i = 0;
+                    $.each(data.error, function(key, value) {
+                        errors[i++] = value + '</br>';
+                    });
+                    let arrayString = errors.join();
+                    const error = arrayString.replace(/,/g, ' ');
+                    $.jAlert({
+                        'title': 'Bestellung konnte nicht gespeichert werden',
+                        'content': error,
+                        'theme': 'red',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                } else {
+                    $.jAlert({
+                        'title': 'Bestellung erfolgreich gespeichert',
+                        'content': data.message,
+                        'theme': 'green',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                    $('#modalCenter').modal('hide');
+                    supplierOrderTable.ajax.reload();
+                }
+            }
+        });
+    });
+
+    // Geänderte Bestellung speichern
+    $(document).on('click','button#edit_supplier_order_save',function(event) {
+        const supplierOrderId = $('#edit_supplierOrder_supplierOrderId').val();
+        const $form = $('form#supplier-order-form-edit');
+        const url = '/bestellung_bearbeiten/supplierOrderId/' + supplierOrderId;
+        event.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: $form.serialize(),
+            success: function(data) {
+                if (data.error) {
+                    let errors = [];
+                    let i = 0;
+                    $.each(data.error, function(key, value) {
+                        errors[i++] = value + '</br>';
+                    });
+                    let arrayString = errors.join();
+                    const error = arrayString.replace(/,/g, ' ');
+                    $.jAlert({
+                        'title': 'Bestellung konnte nicht gespeichert werden',
+                        'content': error,
+                        'theme': 'red',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                } else {
+                    $.jAlert({
+                        'title': 'Bestellung erfolgreich gespeichert',
+                        'content': data.message,
+                        'theme': 'green',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                    $('#modalCenter').modal('hide');
+                    supplierOrderTable.ajax.reload();
+                }
+            }
+        });
+    });
+
+    // Bestellung löschen
+    $(document).on('click','button#delete_supplier_order_delete',function(event) {
+        const supplierOrderId = $('#delete_supplier_order_supplierOrderId').val();
+        const $form = $('form#supplier-order-modal-delete-ask');
+        const url = '/bestellung_löschen/supplierOrderId/' + supplierOrderId;
+        event.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: $form.serialize(),
+            success: function(data) {
+                if (data.error) {
+                    let errors = [];
+                    let i = 0;
+                    $.each(data.error, function(key, value) {
+                        errors[i++] = value + '</br>';
+                    });
+                    let arrayString = errors.join();
+                    const error = arrayString.replace(/,/g, ' ');
+                    $.jAlert({
+                        'title': 'Bestellung konnten nicht gelöscht werden',
+                        'content': error,
+                        'theme': 'red',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                } else {
+                    $.jAlert({
+                        'title': 'Bestellung erfolgreich gelöscht',
+                        'content': data.message,
+                        'theme': 'green',
+                        'size': 'md',
+                        'showAnimation': 'fadeInUp',
+                        'hideAnimation': 'fadeOutDown',
+                        'autoClose': 5000
+                    });
+                    $('#modalCenter').modal('hide');
+                    supplierOrderTable.ajax.reload();
+                }
+            }
+        });
+    });
+
     const posTable = $('#posTable').DataTable({
         "lengthChange": false,
         "searching": false,
@@ -140,7 +343,7 @@ $(function() {
             // Es werden nur die Daten in der Positions-Tabelle geladen,
             // die mit der ID in der Bestellungs-Tabelle übereinstimmen.
             dataSrc: function (data) {
-                const selected = bstTable.row({selected: true});
+                const selected = supplierOrderTable.row({selected: true});
                 const rows = [];
 
                 if (selected.any()) {
@@ -202,13 +405,13 @@ $(function() {
     });
 
     // Durch Auswahl einer Zeile in der Bestellungs-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.
-    bstTable.on( 'click', function () {
+    supplierOrderTable.on( 'click', function () {
         posTable.ajax.reload();
 
     } );
 
     // Beim Abwählen der Zeile in der Bestellungs-Tabelle wird die Positions-Tabelle wieder geleert.
-    bstTable.on( 'deselect', function () {
+    supplierOrderTable.on( 'deselect', function () {
         posTable.ajax.reload();
     } );
 
@@ -220,4 +423,4 @@ $(function() {
         return new Intl.NumberFormat('de-DE', formatConfig).format(number);
     }
 
-} );
+})(jQuery);

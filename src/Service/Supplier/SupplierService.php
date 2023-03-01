@@ -9,7 +9,7 @@ use WebWMS\Entity\Supplier;
 use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
 
 /**
- * @package:    WebWMS\Service
+ * @package:    WebWMS\Service\Supplier
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        SupplierService

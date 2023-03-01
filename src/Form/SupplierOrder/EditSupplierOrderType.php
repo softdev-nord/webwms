@@ -52,9 +52,6 @@ class EditSupplierOrderType extends AbstractType
                 'format' => 'd.m.Y',
                 'label' => 'Bestellungsdatum',
                 'html5' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                ],
             ])
             ->add('supplierOrderCreationDate', DateType::class, [
                 'widget' => 'single_text',
@@ -62,10 +59,6 @@ class EditSupplierOrderType extends AbstractType
                 'format' => 'd.m.Y',
                 'label' => 'Bestelldatum',
                 'html5' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'Bestelldatum',
-                ],
             ])
         ;
     }

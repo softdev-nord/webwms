@@ -1,4 +1,4 @@
-(function($){
+;(function($){
     // Artikel Tabelle
     const artTable = $('#artTable').DataTable({
         lengthChange: false,
@@ -32,7 +32,16 @@
                 'data': 'lbw_menge',
                 'defaultContent': 0
             },
-            {'data': 'updated_at'},
+            {
+                "data": null,
+                render: function (data, type, row) {
+                    if (row["updated_at"] != null) {
+                        return row["updated_at"];
+                    } else {
+                        return row["created_at"];
+                    }
+                },
+            }
         ],
         columnDefs: [
             {

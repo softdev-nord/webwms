@@ -177,7 +177,7 @@ api_platform:
       enabled: false
     
       # URLs of the Varnish servers to purge using cache tags when a resource is updated.
-      varnish_urls: [ ]
+      urls: [ ]
     
       # To pass options to the client charged with the request.
       request_options: [ ]
@@ -202,9 +202,6 @@ api_platform:
   
     # The hosts to the Elasticsearch nodes.
     hosts: [ ]
-  
-    # The mapping between resource classes and indexes.
-    mapping: [ ]
   
   # The list of exceptions mapped to their HTTP status code.
   exception_to_status:

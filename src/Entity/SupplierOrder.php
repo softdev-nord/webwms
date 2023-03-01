@@ -11,7 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'supplier_orders')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\SupplierOrderRepository')]
-#[ApiResource]
+#[ApiResource(
+    extraProperties: [
+        'standard_put' => true,
+    ],
+)]
 class SupplierOrder
 {
     #[ORM\Id]

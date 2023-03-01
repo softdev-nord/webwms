@@ -1,72 +1,163 @@
 <div class="row">
     {% block webwms_edit_supplier_order_form_order %}
         <div class="card">
+            {{ form_start(supplierOrderForm) }}
             <div class="card-content">
                 <div class="row col-md-6">
                     <div class="form-row col-md-12">
-                        <div class="form-group col-md-8">
-                            <label for="inputSupplier">Lieferanten suchen</label>
-                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_nr"
-                                   name="inputSupplierNr" id="supplier_nr_1" placeholder="Über Lieferanten-Nr suchen"></br></br>
-                        </div>
-                        <div class="form-group col-md-8">
-                            <label for="inputSupplier">Lieferant</label>
-                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_name"
-                                   name="inputSupplierName" id="supplier_name_1" placeholder="Über Lieferanten-Namen suchen"
-                                   value="{{ supplierData.supplierName }}">
-                        </div>
-                        <div class="form-group col-md-8">
-                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_address_addition"
-                                   name="inputSupplierAddition" id="supplier_address_addition_1" placeholder="Anschrift Zusatz"
-                                   value="{{ supplierData.supplierAddressAddition }}">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_address_street"
-                                   name="inputSupplierStreet" id="supplier_address_street_1" placeholder="Straße"
-                                   value="{{ supplierData.supplierAddressStreet }}">
-                        </div>
-                        <div class="form-group col-md-2">
-                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_address_street_nr"
-                                   name="inputSupplierStreetNr" id="supplier_address_street_nr_1" placeholder="Haus-Nr"
-                                   value="{{ supplierData.supplierAddressStreetNr }}">
-                        </div>
-                        <div class="form-group col-md-4"></div>
-                        <div class="form-group col-md-1">
-                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_country_code"
-                                   name="inputSupplierCountryCode" id="supplier_country_code_1" placeholder="Land"
-                                   value="{{ supplierData.supplierAddressCountryCode }}">
-                        </div>
-                        <div class="form-group col-md-2">
-                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_zip_code"
-                                   name="inputSupplierZipCode" id="supplier_zip_code_1" placeholder="PLZ"
-                                   value="{{ supplierData.supplierAddressZipcode }}">
-                        </div>
-                        <div class="form-group col-md-5">
-                            <input type="text" class="form-control autocomplete_suppliers" data-type="supplier_city"
-                                   name="inputSupplierCity" id="supplier_city_1" placeholder="Ort"
-                                   value="{{ supplierData.supplierAddressCity }}">
-                        </div>
+                            <div class="form-group col-md-8">
+                                <label for="inputSupplier">Lieferanten suchen</label>
+                                <input
+                                        type="text"
+                                        id="supplier_supplierNr"
+                                        name="supplier[supplierNr]"
+                                        required="required"
+                                        placeholder="Über Lieferanten-Nr suchen"
+                                        class="form-control autocomplete_suppliers ui-autocomplete-input"
+                                        data-type="supplier_nr"
+                                        style="background-color:
+                                        transparent" autocomplete="off"
+                                        value="{% if editSupplierOrder %}{{ supplierData.supplierNr }}{% endif %}"
+                                >
+                                <input
+                                        type="hidden"
+                                        id="supplier_supplierId"
+                                        name="supplier[supplierId]"
+                                        data-type="supplierId"
+                                        value="{% if editSupplierOrder %}{{ supplierData.supplierId }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-12"></div>
+                            <div class="form-group col-md-12"></div>
+                            <div class="form-group col-md-8">
+                                <input
+                                        type="text"
+                                        id="supplier_supplierName"
+                                        name="supplier[supplierName]"
+                                        required="required"
+                                        placeholder="Lieferanten Name"
+                                        class="form-control autocomplete_suppliers ui-autocomplete-input"
+                                        data-type="supplier_name"
+                                        autocomplete="off"
+                                        value="{% if editSupplierOrder %}{{ supplierData.supplierName }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-8">
+                                <input
+                                        type="text"
+                                        id="supplier_supplierAddressAddition"
+                                        name="supplier[supplierAddressAddition]"
+                                        placeholder="Anschrift Zusatz"
+                                        class="form-control autocomplete_suppliers ui-autocomplete-input"
+                                        data-type="supplier_address_addition"
+                                        autocomplete="off"
+                                        value="{% if editSupplierOrder %}{{ supplierData.supplierAddressAddition }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input
+                                        type="text"
+                                        id="supplier_supplierAddressStreet"
+                                        name="supplier[supplierAddressStreet]"
+                                        required="required"
+                                        placeholder="Straße"
+                                        class="form-control autocomplete_suppliers ui-autocomplete-input"
+                                        data-type="supplier_address_street"
+                                        autocomplete="off"
+                                        value="{% if editSupplierOrder %}{{ supplierData.supplierAddressStreet }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-2">
+                                <input
+                                        type="text"
+                                        id="supplier_supplierAddressStreetNr"
+                                        name="supplier[supplierAddressStreetNr]"
+                                        required="required"
+                                        placeholder="Haus-Nr."
+                                        class="form-control autocomplete_suppliers ui-autocomplete-input"
+                                        data-type="supplier_address_street_nr"
+                                        autocomplete="off"
+                                        value="{% if editSupplierOrder %}{{ supplierData.supplierAddressStreetNr }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-4"></div>
+                            <div class="form-group col-md-1">
+                                <input
+                                        type="text"
+                                        id="supplier_supplierAddressCountryCode"
+                                        name="supplier[supplierAddressCountryCode]"
+                                        required="required"
+                                        placeholder="Land"
+                                        class="form-control autocomplete_suppliers ui-autocomplete-input"
+                                        data-type="supplier_country_code"
+                                        autocomplete="off"
+                                        value="{% if editSupplierOrder %}{{ supplierData.supplierAddressCountryCode }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-2">
+                                <input
+                                        type="text"
+                                        id="supplier_supplierAddressZipcode"
+                                        name="supplier[supplierAddressZipcode]"
+                                        required="required"
+                                        placeholder="PLZ"
+                                        class="form-control autocomplete_suppliers ui-autocomplete-input"
+                                        data-type="supplier_zip_code"
+                                        autocomplete="off"
+                                        value="{% if editSupplierOrder %}{{ supplierData.supplierAddressZipcode }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-5">
+                                <input
+                                        type="text"
+                                        id="supplier_supplierAddressCity"
+                                        name="supplier[supplierAddressCity]"
+                                        required="required"
+                                        placeholder="Ort"
+                                        class="form-control autocomplete_suppliers ui-autocomplete-input"
+                                        data-type="supplier_city"
+                                        autocomplete="off"
+                                        value="{% if editSupplierOrder %}{{ supplierData.supplierAddressCity }}{% endif %}"
+                                >
+                            </div>
                     </div>
                 </div>
                 <div class="row col-md-6">
                     <div class="form-row col-md-12">
                         <div class="form-group col-md-6">
-                            {{ form_row(editSupplierOrderForm.supplierOrderNr) }}
-                            {{ form_row(editSupplierOrderForm.supplierOrderId) }}
+                            {% set newSupplierOrderId = lastId.id +1 %}
+                            {% set newSupplierOrderNr =  "EBE-01-#{lastId.id +1}" %}
+
+                            {% if editSupplierOrder %}
+                                {{ form_row(supplierOrderForm.supplierOrderNr) }}
+                            {% else %}
+                                {{ form_row(supplierOrderForm.supplierOrderNr, {'value' : newSupplierOrderNr }) }}
+                            {% endif %}
+                            {{ form_row(supplierOrderForm.supplierId) }}
+                            {{ form_row(supplierOrderForm.supplierOrderId, {'value' : newSupplierOrderId }) }}
+                            {{ form_row(supplierOrderForm.usrId, {'value' : app.user.id }) }}
                         </div>
                         <div class="form-group col-md-6">
-                            {{ form_row(editSupplierOrderForm.supplierOrderReference) }}
+                            {{ form_row(supplierOrderForm.supplierOrderReference) }}
                         </div>
                     </div>
                 </div>
                 <div class="row col-md-6">
                     <div class="form-row col-md-12">
                         <div class="form-group col-md-4">
-                            {{ form_row(editSupplierOrderForm.supplierOrderDate) }}
+                            {% if editSupplierOrder %}
+                                {{ form_row(supplierOrderForm.supplierOrderDate, {'attr': {'class': 'form-control', 'style': 'background-color: transparent', 'readonly': 'true' }}) }}
+                            {% else %}
+                                {{ form_row(supplierOrderForm.supplierOrderDate) }}
+                            {% endif %}
                         </div>
                         <div class="form-group col-md-2"></div>
                         <div class="form-group col-md-4">
-                            {{ form_row(editSupplierOrderForm.supplierOrderCreationDate) }}
+                            {% if editSupplierOrder %}
+                                {{ form_row(supplierOrderForm.supplierOrderCreationDate, {'attr': {'class': 'form-control', 'style': 'background-color: transparent', 'readonly': 'true' }}) }}
+                            {% else %}
+                                {{ form_row(supplierOrderForm.supplierOrderCreationDate, {'value' : "now"|date("d.m.Y") }) }}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -79,17 +170,9 @@
                     </div>
                 </div>
                 <div class="form-group col-md-12"></div>
-                {% block webwms_edit_order_form_order_message %}
-                    <div class="form-group col-md-12">
-                        {% for message in app.flashes('success') %}
-                            <div class="alert alert-success">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endblock %}
                 <div class="form-group col-md-12"></div>
                 {% block webwms_edit_supplier_order_form_order_table_pos %}
+                    {{ form_start(supplierOrderPosForm) }}
                     <div class="col-md-12">
                         <div class="table-responsive">
                             <table id="autocomplete_table" class="table table-hover">
@@ -102,39 +185,88 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for key, position in supplierOrderPos %}
-                                    <tr id="row_{{ key }}">
-                                        <th id="delete_{{ key }}" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
+                                {% if editSupplierOrder %}
+                                    {% for key, position in supplierOrderPos %}
+                                        <tr id="row_{{ key }}">
+                                            <th id="delete_{{ key }}" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
+                                            <td>
+                                                <input id="supplier_order_pos_articleNr_{{ key }}" type="text" data-type="article_nr" name="supplier_order_pos[articleNr]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleId }}">
+                                                <input id="supplier_order_pos_articleId_{{ key }}" type="hidden" data-type="article_id" name="supplier_order_pos[articleId]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.id }}">
+                                            </td>
+                                            <td>
+                                                <input id="supplier_order_pos_articleName_{{ key }}" type="text" data-type="article_name" name="supplier_order_pos[articleName]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleName }}">
+                                            </td>
+                                            <td>
+                                                <input id="supplier_order_pos_supplierOrderPosQuantity_{{ key }}" type="text" data-type="supplier_order_pos_quantity" name="supplier_order_pos[supplierOrderPosQuantity]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.supplierOrderPosQuantity }}">
+                                                <input id="supplier_order_pos_supplierOrderId_{{ key }}" type="hidden" data-type="supplier_order_id" name="supplier_order_pos[supplierOrderId]" class="inputOrderId2" autocomplete="off" value="{{ position.supplierOrderId }}">
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr id="row_1">
+                                        <th id="delete_1" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
                                         <td>
-                                            <input id="art_nr_{{ key }}" type="text" data-type="art_nr" name="inputArtNr[]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleId }}">
-                                            <input id="id_{{ key }}" type="hidden" data-type="id" name="inputArtId[]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.id }}">
+                                            {{ form_row(supplierOrderPosForm.articleNr, {'id': 'supplier_order_pos_articleNr_1'}) }}
+                                            {{ form_row(supplierOrderPosForm.articleId, {'id': 'supplier_order_pos_articleId_1'}) }}
                                         </td>
                                         <td>
-                                            <input id="art_name_{{ key }}" type="text" data-type="art_name" name="inputArtName[]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleName }}">
+                                            {{ form_row(supplierOrderPosForm.articleName, {'id': 'supplier_order_pos_articleName_1'}) }}
+                                            {{ form_row(supplierOrderPosForm.supplierOrderId, {
+                                                'attr':
+                                                {
+                                                    'id': 'supplier_order_pos_supplierOrderId_1',
+                                                    'value' : newSupplierOrderId
+                                                }
+                                            }) }}
                                         </td>
                                         <td>
-                                            <input id="order_pos_quantity_{{ key }}" type="text" data-type="order_pos_quantity" name="inputOrderPosQuantity[]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.supplierOrderPosQuantity }}">
+                                            {{ form_row(supplierOrderPosForm.supplierOrderPosQuantity, {'id': 'supplier_order_pos_supplierOrderPosQuantity_1'}) }}
                                         </td>
                                     </tr>
-                                {% endfor %}
+                                {% endif %}
                                 </tbody>
                             </table>
                         </div>
                         <div class="btn-container">
                             <button id="addNewButton" class="btn btn-sm" value="Neue Position">Neue Position</button>
                         </div>
+                        <input
+                                type="hidden"
+                                id="editSupplierOrder"
+                                name="supplierOrder[editSupplierOrder]"
+                                value="{{ editSupplierOrder|json_encode() }}"
+                        >
                     </div>
+                    {{ form_end(supplierOrderPosForm) }}
                 {% endblock %}
             </div>
 
-            <div class="row" style="margin-left: auto; margin-right: auto;">
-                <br><button type="submit" name="customer_order" value="Bestellung speichern" class="btn btn-lg" aria-label="Center">Bestellung speichern</button><br><br>
+            <div class="text-center">
+                {{ form_widget(supplierOrderForm.save) }} {{ form_widget(supplierOrderForm.back_to_supplier_order_overview) }}
             </div>
+            {{ form_end(supplierOrderForm) }}
         </div>
     {% endblock %}
-    {{ form_end(editSupplierOrderForm) }}
-    {% block javascripts %}
+
+    {% block bodyjs %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.suppliersAutofill.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.itemsSupplierOrderPosAutofill.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.modalDatePicker.js') }}"></script>
+        <script>
+            {% set newSupplierOrderId = lastId.id +1 %}
+            {% set editOrder = editSupplierOrder|json_encode() %}
+
+            const orderId = {{ newSupplierOrderId }};
+            const editOrder = {{ editOrder }};
+
+            if (!editOrder) {
+                $.getScript( '{{ asset('assets/js/webWmsCoreJs/jquery.modalDatePicker.js') }}' );
+            }
+
+            $("#supplier_supplierNr").change(function() {
+                $('#supplier_order_supplierId').val($('#supplier_supplierId').val());
+            });
+
+        </script>
     {% endblock %}
 </div>

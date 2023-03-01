@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'customer')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerRepository')]
-#[ApiResource]
+#[ApiResource(
+    extraProperties: [
+        'standard_put' => true,
+    ],
+)]
 class Customer
 {
     #[ORM\Id]

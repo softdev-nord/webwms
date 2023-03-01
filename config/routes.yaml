@@ -10,21 +10,9 @@ article_ajax:
     path: /article_ajax
     controller: WebWMS\Controller\Article::getAllArticles
 
-supplier_oders:
-    path: /bestellungen
-    controller: WebWMS\Controller\SupplierOrder::index
-
 customer_orders:
     path: /auftrag
     controller: WebWMS\Controller\CustomerOrder::index
-
-supplier_oders_ajax:
-    path: /supplier_orders_ajax
-    controller: WebWMS\Controller\SupplierOrder::getAllOrders
-
-supplier_oders_pos_ajax:
-    path: /supplier_oders_pos_ajax
-    controller: WebWMS\Controller\SupplierOrder::getAllOrderPos
 
 customer_order_ajax:
     path: /customer_order_ajax

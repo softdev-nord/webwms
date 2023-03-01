@@ -1,5 +1,5 @@
 /**
- * Inits  two date input fields if one of the fields is empty. It will add e.g. in the other field + 1 day
+ * Fügt zwei Datumseingabefelder ein, wenn eines der Felder leer ist. Es wird z.B. im anderen Feld + 1 Tag hinzugefügt
  * @returns void
  * @param idStart
  * @param idEnd
@@ -22,7 +22,7 @@ function iniStartOrEndDate(idStart, idEnd, addDays) {
 }
 
 /**
- * Copy the text of a near textfield to clipboard
+ * Kopieren des Textes eines nahen Textfeldes in die Zwischenablage
  * @param {Element} elm
  * @returns {void}
  */

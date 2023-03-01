@@ -9,9 +9,9 @@ $(document).ready(function(){
     }
 
     /**
-     * @function dark mode
-     * @summary: changes the theme to 'dark mode' and save settings to local storage.
-     * Basically, replaces/toggles every CSS class that has '-light' class with '-dark'
+     * @function Dunkler Modus
+     * @summary: Ändert das Design in den "dunklen Modus" und speichert die Einstellungen im lokalen Speicher.
+     * Ersetzt jede CSS-Klasse, die die Klasse '-light' hat, durch '-dark' und schaltet sie um.
      */
     function darkMode() {
       document.querySelectorAll('.bg-light').forEach((element) => {
@@ -30,12 +30,11 @@ $(document).ready(function(){
       const tables = document.querySelectorAll('table');
       for (let i = 0; i < tables.length; i++) {
         if (tables[i].classList.contains('table-light')) {
-          // Replace the class table-light with table-dark in each table
+          // Ersetzt die Klasse table-light durch table-dark in jeder Tabelle
           tables[i].classList.replace('table-light', 'table-dark');
         }
       }
 
-      // set light switch input to true
       if (!lightSwitch.checked) {
         lightSwitch.checked = false;
       }
@@ -44,7 +43,8 @@ $(document).ready(function(){
 
     /**
      * @function light-mode
-     * @summary: changes the theme to 'light mode' and save settings to local storage.
+     * @summary: Ändert das Design in "hellen Modus"
+     * und speichert die Einstellungen im lokalen Speicher.
      */
     function lightMode() {
       document.querySelectorAll('.bg-dark').forEach((element) => {
@@ -63,7 +63,7 @@ $(document).ready(function(){
       const tables = document.querySelectorAll('table');
       for (let i = 0; i < tables.length; i++) {
         if (tables[i].classList.contains('table-dark')) {
-          // Replace the class table-dark with table-light in each table
+          // Ersetzt in jeder Tabelle die Klasse table-dark durch table-light
           tables[i].classList.replace('table-dark', 'table-light');
         }
       }
@@ -76,7 +76,8 @@ $(document).ready(function(){
 
     /**
      * @function onToggleMode
-     * @summary: the event handler attached to the switch. calling @darkMode or @lightMode depending on the checked state.
+     * @summary: Der an den Switch angehängte event handler,
+     * der je nach Kontrollstatus @darkMode oder @lightMode aufruft.
      */
     function onToggleMode() {
       if (!lightSwitch.checked) {
@@ -88,7 +89,7 @@ $(document).ready(function(){
 
     /**
      * @function getSystemDefaultTheme
-     * @summary: get system default theme by media query
+     * @summary: System-Standard Design per Medienabfrage abrufen
      */
     function getSystemDefaultTheme() {
       const darkThemeMq = window.matchMedia('(prefers-color-scheme: dark)');

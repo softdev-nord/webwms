@@ -1,5 +1,5 @@
 /**
- * Replaces an occurrence in a string
+ * Ersetzt ein Vorkommen in einer Zeichenkette
  * @param {string} text to look into
  * @param {string} replacement
  * @param {string} placeholderString
@@ -11,7 +11,7 @@ function replacePlaceholder(text, replacement, placeholderString) {
 }
 
 /**
- * Show or hide the delete row in a table when clicking on the delete icon for an entry
+ * Ein- oder Ausblenden der Löschzeile in einer Tabelle, wenn Sie auf das Löschsymbol eines Eintrags klicken
  * @param {int} id
  * @returns {Boolean}
  */
@@ -29,7 +29,7 @@ function collapseEntry(id) {
 }
 
 /**
- * Enables the edit form when clicking on edit button
+ * Aktiviert das Bearbeitungsformular beim Klicken auf die Schaltfläche Bearbeiten
  * @param {int} id
  */
 function enableEditForm(id) {
@@ -42,7 +42,7 @@ function enableEditForm(id) {
 }
 
 /**
- * Initiates the delete process and shows the question whether to delete the entry or not
+ * Initiiert den Löschvorgang und zeigt die Frage an, ob der Eintrag gelöscht werden soll oder nicht
  * @param {int} id
  * @param {string} url
  * @returns {Boolean}

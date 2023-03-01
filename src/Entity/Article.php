@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\ArticleRepository;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    extraProperties: [
+        'standard_put' => true,
+    ],
+)]
 class Article
 {
     #[ORM\Id]
