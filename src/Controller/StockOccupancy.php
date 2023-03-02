@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Stock\StockOccupancyService;
 
@@ -18,7 +19,7 @@ class StockOccupancy extends AbstractController
     public function __construct(
         private StockOccupancyService $stockOccupancyService,
         private StockLocationService $stockLocationService,
-        private Requirements $requirements
+        private RequirementsService $requirementsService
     ) {
     }
 
@@ -31,11 +32,11 @@ class StockOccupancy extends AbstractController
         return $this->render(
             'stock/stock_occupancy.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Lagerbelegungen',
                 'stockOccupancy' => $this->getAllStockOccupancy(),
             ]
@@ -114,11 +115,11 @@ class StockOccupancy extends AbstractController
         return $this->render(
             'stock/stock_occupancy_graphical.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Lagerbelegungen',
                 'stockSelect' => $this->stockLocationService->getAllStockLocationsForSelect(),
                 'stockResults' => array_reverse($stockResults, true),

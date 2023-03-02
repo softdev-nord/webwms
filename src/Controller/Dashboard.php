@@ -14,6 +14,7 @@ use Twig\Environment;
 use Twig\Loader\LoaderInterface;
 use WebWMS\Entity\TransportRequest;
 use WebWMS\Repository\TransportHistoryRepository;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Stock\StockRotationService;
 use WebWMS\Service\TransportRequestService;
@@ -29,7 +30,7 @@ class Dashboard extends AbstractController
     private LoaderInterface $loader;
 
     public function __construct(
-        private Requirements $requirements,
+        private RequirementsService $requirementsService,
         private Environment $twig,
         private ChartBuilderInterface $chartBuilder,
         private TransportHistoryRepository $transportHistoryRepository,
@@ -52,11 +53,11 @@ class Dashboard extends AbstractController
         return $this->render(
             'dashboard/index_new.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Dashboard',
                 'incomingGoods' => $this->getAllIncomingGoods(),
                 'outgoingGoods' => $this->getAllOutgoingGoods(),

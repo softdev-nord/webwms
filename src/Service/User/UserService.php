@@ -7,6 +7,8 @@ namespace WebWMS\Service\User;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Entity\User;
 use WebWMS\Service\DataHandlers\User\UserDataHandler;
 
@@ -59,9 +61,9 @@ class UserService
         return $this->userDataHandler->updateUser($request);
     }
 
-    public function updateUserPassword(Request $request): ?User
+    public function upgradePassword(UserInterface|PasswordAuthenticatedUserInterface $user, $newHashedPassword): void
     {
-        return $this->userDataHandler->updateUserPassword($request);
+        $this->userDataHandler->upgradePassword($user, $newHashedPassword);
     }
 
     public function deleteUser(string $username): void

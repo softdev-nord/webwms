@@ -10,11 +10,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Form\Customer\AddCustomerType;
-use WebWMS\Form\Customer\DeleteCustomerType;
-use WebWMS\Form\Customer\EditCustomerType;
+use WebWMS\Helper\FormHelper\CustomerFormHelper;
 use WebWMS\Service\Customer\CustomerService;
 use WebWMS\Service\LoggingService;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Validation\CustomerValidationService;
 
 /**
@@ -27,9 +26,10 @@ class Customer extends AbstractController
 {
     public function __construct(
         private CustomerService $customerService,
-        private Requirements $requirements,
+        private RequirementsService $requirementsService,
         private CustomerValidationService $customerValidationService,
-        private LoggingService $loggingService
+        private LoggingService $loggingService,
+        private CustomerFormHelper $customerFormHelper
     ) {
     }
 
@@ -43,11 +43,11 @@ class Customer extends AbstractController
         return $this->render(
             'customer/index.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Kundenübersicht',
             ]
         );
@@ -60,7 +60,7 @@ class Customer extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $form = $this->createForm(AddCustomerType::class);
+        $form = $this->customerFormHelper->addCustomerForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -97,7 +97,7 @@ class Customer extends AbstractController
             return null;
         }
 
-        $form = $this->createForm(EditCustomerType::class, $customer);
+        $form = $this->customerFormHelper->editCustomerForm($customer);
         $form->handleRequest($request);
         $requestData = $form->getData();
         $customerNr = $requestData->getCustomerNr();
@@ -143,7 +143,7 @@ class Customer extends AbstractController
             return null;
         }
 
-        $form = $this->createForm(DeleteCustomerType::class, $customer);
+        $form = $this->customerFormHelper->deleteCustomerForm($customer);
         $form->handleRequest($request);
         $requestData = $form->getData();
         $customerNr = $requestData->getCustomerNr();

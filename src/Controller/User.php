@@ -13,13 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Form\Model\ChangePassword;
-use WebWMS\Form\User\AddUserType;
-use WebWMS\Form\User\ChangePasswordType;
-use WebWMS\Form\User\DeleteUserType;
-use WebWMS\Form\User\EditUserType;
-use WebWMS\Repository\UserRepository;
+use WebWMS\Helper\FormHelper\UserFormHelper;
 use WebWMS\Service\DateTimeService;
 use WebWMS\Service\LoggingService;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\User\UserService;
 use WebWMS\Service\Validation\ChangePasswordValidationService;
 use WebWMS\Service\Validation\UserValidationService;
@@ -34,14 +31,14 @@ use WebWMS\Service\Validation\UserValidationService;
 class User extends AbstractController
 {
     public function __construct(
-        private Requirements $requirements,
+        private RequirementsService $requirementsService,
         private LoggingService $loggingService,
         private UserService $userService,
         private UserValidationService $userValidationService,
         private ChangePasswordValidationService $passwordValidationService,
         private UserPasswordHasherInterface $passwordHasher,
-        private UserRepository $userRepository,
-        private DateTimeService $dateTimeService
+        private DateTimeService $dateTimeService,
+        private UserFormHelper $userFormHelper
     ) {
     }
 
@@ -55,11 +52,11 @@ class User extends AbstractController
         return $this->render(
             'user/index.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Übersicht Benutzer',
             ]
         );
@@ -72,7 +69,7 @@ class User extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $form = $this->createForm(AddUserType::class);
+        $form = $this->userFormHelper->addUserForm();
         $form->handleRequest($request);
         $requestData = $form->getData();
 
@@ -110,7 +107,7 @@ class User extends AbstractController
             return null;
         }
 
-        $form = $this->createForm(EditUserType::class, $user);
+        $form = $this->userFormHelper->editUserForm($user);
         $form->handleRequest($request);
         $username = $user->getUserIdentifier();
         $requestData = $form->getData();
@@ -159,7 +156,7 @@ class User extends AbstractController
         }
 
         $changePasswordModel = new ChangePassword();
-        $form = $this->createForm(ChangePasswordType::class, $changePasswordModel);
+        $form = $this->userFormHelper->changePasswordForm($changePasswordModel);
         $form->handleRequest($request);
         $username = $user->getUserIdentifier();
         $newPassword = $form->getData()->getNewPassword();
@@ -177,7 +174,7 @@ class User extends AbstractController
                     $newPassword
                 );
                 $user->setUpdatedAt($this->dateTimeService->createDateTime());
-                $this->userRepository->upgradePassword($user, $newHashedPassword);
+                $this->userService->upgradePassword($user, $newHashedPassword);
 
                 return new JsonResponse($responseData);
             }
@@ -209,7 +206,7 @@ class User extends AbstractController
             return null;
         }
 
-        $form = $this->createForm(DeleteUserType::class, $user);
+        $form = $this->userFormHelper->deleteUserForm($user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

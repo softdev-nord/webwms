@@ -31,12 +31,6 @@ class CustomerOrderDataHandler
         $this->entityManager->flush();
     }
 
-    public function update(CustomerOrder $customerOrder): void
-    {
-        $this->entityManager->persist($customerOrder);
-        $this->entityManager->flush();
-    }
-
     public function delete(CustomerOrder $customerOrder): void
     {
         $this->entityManager->remove($customerOrder);

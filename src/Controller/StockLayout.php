@@ -7,6 +7,7 @@ namespace WebWMS\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLayoutService;
 
 /**
@@ -19,7 +20,7 @@ class StockLayout extends AbstractController
 {
     public function __construct(
         private StockLayoutService $stockLayoutService,
-        private Requirements $requirements
+        private RequirementsService $requirementsService
     ) {
     }
 
@@ -29,11 +30,11 @@ class StockLayout extends AbstractController
         return $this->render(
             'stock/stock_layout.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Lagerlayout',
                 'stocklayout' => $this->stockLayoutService->getStockLayout(),
             ]

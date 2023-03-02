@@ -14,6 +14,7 @@ use WebWMS\Form\SupplierOrder\DeleteSupplierOrderType;
 use WebWMS\Form\SupplierOrder\SupplierOrderPosType;
 use WebWMS\Form\SupplierOrder\SupplierOrderType;
 use WebWMS\Service\LoggingService;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Supplier\SupplierService;
 use WebWMS\Service\SupplierOrder\SupplierOrderService;
 use WebWMS\Service\SupplierOrderPos\SupplierOrderPosService;
@@ -30,7 +31,7 @@ class SupplierOrder extends AbstractController
         private SupplierOrderService $supplierOrderService,
         private SupplierOrderPosService $supplierOrderPosService,
         private SupplierService $supplierService,
-        private Requirements $requirements,
+        private RequirementsService $requirementsService,
         private LoggingService $loggingService
     ) {
     }
@@ -45,11 +46,11 @@ class SupplierOrder extends AbstractController
         return $this->render(
             'supplier_order/index.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Übersicht Bestellungen',
             ]
         );
@@ -96,11 +97,11 @@ class SupplierOrder extends AbstractController
         return $this->render(
             'supplier_order/supplier_order_add.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Bestellung anlegen',
                 'lastId' => $this->supplierOrderService->getLastSupplierOrderId()[0],
                 'supplierOrderPos' => $this->supplierService->getAllSuppliers()->getContent(),
@@ -164,7 +165,7 @@ class SupplierOrder extends AbstractController
     }
 
     #[Route('/bestellung_löschen/supplierOrderId/{supplierOrderId}', name: 'delete_supplier_order')]
-    public function deleteArticle(Request $request, int $supplierOrderId): RedirectResponse|JsonResponse|Response|null
+    public function deleteSupplierOrder(Request $request, int $supplierOrderId): RedirectResponse|JsonResponse|Response|null
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');

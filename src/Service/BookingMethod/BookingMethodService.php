@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
-use WebWMS\Controller\Requirements;
 use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\TransportRequestService;
 
@@ -29,7 +29,7 @@ class BookingMethodService
     public const BLOCK = 'Block-Lager';
 
     public function __construct(
-        private Requirements $requirements,
+        private RequirementsService $requirementsService,
         private StockLocationService $stockLocationService,
         private TransportRequestService $transportRequestService,
         private FormFactoryInterface $formFactory,
@@ -130,11 +130,11 @@ class BookingMethodService
             $html = $this->twig->render(
                 'modal/put_into_storage.html.twig',
                 [
-                    'appName' => $this->requirements->getAppName(),
-                    'appVersion' => $this->requirements->getAppVersion(),
-                    'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                    'appCopyright' => $this->requirements->getAppCopyright(),
-                    'appLizenz' => $this->requirements->getAppLizenz(),
+                    'appName' => $this->requirementsService->getAppName(),
+                    'appVersion' => $this->requirementsService->getAppVersion(),
+                    'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                    'appCopyright' => $this->requirementsService->getAppCopyright(),
+                    'appLizenz' => $this->requirementsService->getAppLizenz(),
                     'page' => 'Einlagern direkt',
                     'stockInFinalForm' => $stockInFinal->createView(),
                     'freeStockLocations' => $freeStockLocations,
@@ -151,11 +151,11 @@ class BookingMethodService
         $html = $this->twig->render(
             'modal/stock_in_modal.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Einlagern direkt',
                 'stockInForm' => $form->createView(),
                 'selectedStockLocations' => $freeStockLocations,

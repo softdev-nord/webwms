@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Service\LoggingService;
+use WebWMS\Service\RequirementsService;
 
 /**
  * @package:    WebWMS\Controller
@@ -20,7 +21,7 @@ use WebWMS\Service\LoggingService;
 class Logging extends AbstractController
 {
     public function __construct(
-        private Requirements $requirements,
+        private RequirementsService $requirementsService,
         private LoggingService $loggingService
     ) {
     }
@@ -35,11 +36,11 @@ class Logging extends AbstractController
         return $this->render(
             'logging/index.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Logs',
             ]
         );
