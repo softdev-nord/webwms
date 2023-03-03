@@ -15,6 +15,7 @@ return (new PhpCsFixer\Config())
         'lowercase_cast' => true,
         'magic_constant_casing' => true,
         'phpdoc_separation' => false,
+        'phpdoc_align' => false,
         'native_function_casing' => true,
         'no_blank_lines_after_class_opening' => true,
         'no_blank_lines_after_phpdoc' => true,
@@ -54,7 +55,7 @@ return (new PhpCsFixer\Config())
         'array_syntax' => ['syntax' => 'short'],
         'yoda_style' => ['equal' => false, 'identical' => false, 'less_and_greater' => false],
         'declare_strict_types' => true,
-        'no_superfluous_phpdoc_tags' => true,
+        'no_superfluous_phpdoc_tags' => false,
         'cast_spaces' => ['space' => 'single'],
     ])
     ->setFinder($finder->append(['.php-cs-fixer.php']))
