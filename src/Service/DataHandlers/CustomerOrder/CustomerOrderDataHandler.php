@@ -6,10 +6,8 @@ namespace WebWMS\Service\DataHandlers\CustomerOrder;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\Customer;
 use WebWMS\Entity\CustomerOrder;
-use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
+use WebWMS\Service\DateTimeService;
 
 /**
  * @package:    WebWMS\Service\DataHandlers\CustomerOrder
@@ -21,7 +19,7 @@ class CustomerOrderDataHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        // private CustomerDataHandler $customerDataHandler
+        private DateTimeService $dateTimeService
     ) {
     }
 
@@ -62,7 +60,9 @@ class CustomerOrderDataHandler
                 'cu.customer_name',
                 'co.customer_order_date',
                 'co.customer_order_creation_date',
-                'usr.username'
+                'usr.username',
+                'co.created_at',
+                'co.updated_at'
             )
             ->from('customer_orders', 'co')
             ->innerJoin('co', 'customer_orders_pos', 'cop', 'cop.customer_order_id = co.customer_order_id')
@@ -102,7 +102,7 @@ class CustomerOrderDataHandler
         return new JsonResponse($results);
     }
 
-    public function getCustomerOrderPosByOrderId(int $id): JsonResponse
+    public function getCustomerOrderPosByCustomerOrderId(int $id): JsonResponse
     {
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
         $queryBuilder
@@ -140,24 +140,31 @@ class CustomerOrderDataHandler
         return $customerOrderRepository->findBy([], ['customerOrderId' => 'DESC'], 1, 0);
     }
 
-    public function addNewCustomerOrderAndRelatedPositions(Request $request): void
+    public function addCustomerOrder(CustomerOrder $customerOrder): void
     {
-        // TODO: Implement logic
+        $newCustomerOrder = new CustomerOrder();
 
-        $params = $request->request->all()['customer'];
-        // $lastCustomer = $this->customerDataHandler->getLastCustomer();
+        $newCustomerOrder->setCustomerOrderId($customerOrder->getCustomerOrderId());
+        $newCustomerOrder->setUsrId($customerOrder->getUsrId());
+        $newCustomerOrder->setCustomerId($customerOrder->getCustomerId());
+        $newCustomerOrder->setCustomerOrderNr($customerOrder->getCustomerOrderNr());
+        $newCustomerOrder->setCustomerOrderReference($customerOrder->getCustomerOrderReference());
+        $newCustomerOrder->setCustomerOrderDate($customerOrder->getCustomerOrderDate());
+        $newCustomerOrder->setCustomerOrderCreationDate($customerOrder->getCustomerOrderCreationDate());
+        $newCustomerOrder->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $customerOrder = new Customer();
-        // $customerOrder->setCustomerId($lastCustomer['customer_id'] + 1);
-        // $customerOrder->setCustomerNr($lastCustomer['customer_nr'] + 1);
-        $customerOrder->setCustomerName($params['customer_name']);
-        $customerOrder->setCustomerAddressAddition($params['customer_address_addition']);
-        $customerOrder->setCustomerAddressStreet($params['customer_address_street']);
-        $customerOrder->setCustomerAddressStreetNr($params['customer_address_street_nr']);
-        $customerOrder->setCustomerCountryCode($params['customer_country_code']);
-        $customerOrder->setCustomerZipCode($params['customer_zip_code']);
-        $customerOrder->setCustomerCity($params['customer_city']);
-        $this->entityManager->persist($customerOrder);
-        $this->entityManager->flush();
+        $this->save($newCustomerOrder);
+    }
+
+    public function updateCustomerOrder(CustomerOrder $customerOrder): void
+    {
+        $customerOrder->setUpdatedAt($this->dateTimeService->createDateTime());
+
+        $this->save($customerOrder);
+    }
+
+    public function deleteCustomerOrder(CustomerOrder $customerOrder): void
+    {
+        $this->delete($customerOrder);
     }
 }

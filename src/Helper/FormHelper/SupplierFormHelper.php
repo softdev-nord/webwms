@@ -23,6 +23,12 @@ class SupplierFormHelper
     ) {
     }
 
+    /**
+     * @param string $type
+     * @param mixed|null $data
+     * @param array<string> $options
+     * @return FormInterface
+     */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
     {
         return $this->formFactory->create($type, $data, $options);
@@ -33,12 +39,20 @@ class SupplierFormHelper
         return $this->createForm(AddSupplierType::class);
     }
 
-    public function editSupplierForm($supplier): FormInterface
+    /**
+     * @param object $supplier
+     * @return FormInterface
+     */
+    public function editSupplierForm(object $supplier): FormInterface
     {
         return $this->createForm(EditSupplierType::class, $supplier);
     }
 
-    public function deleteSupplierForm($supplier): FormInterface
+    /**
+     * @param object $supplier
+     * @return FormInterface
+     */
+    public function deleteSupplierForm(object $supplier): FormInterface
     {
         return $this->createForm(DeleteSupplierType::class, $supplier);
     }

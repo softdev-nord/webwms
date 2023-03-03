@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace WebWMS\Form\CustomerOrder;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,81 +27,83 @@ class CustomerOrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('customer_order_id', HiddenType::class, [
+            ->add('customerOrderId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'inputAftNr',
-                    'id' => 'customer_order_id',
-                    'data-type' => 'customer_order_id',
+                    'id' => 'customerOrderId',
+                    'data-type' => 'customerOrderId',
                 ],
             ])
-            ->add('customer_id', HiddenType::class, [
+            ->add('customerId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control autocomplete_customers',
-                    'id' => 'customer_id',
-                    'data-type' => 'customer_id',
+                    'id' => 'customerId',
+                    'data-type' => 'customerId',
                 ],
             ])
-            ->add('usr_id', HiddenType::class, [
+            ->add('usrId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control autocomplete_customers',
-                    'id' => 'usr_id',
-                    'data-type' => 'usr_id',
+                    'id' => 'usrId',
+                    'data-type' => 'usrId',
                 ],
             ])
-            ->add('customer_order_nr', TextType::class, [
+            ->add('customerOrderNr', TextType::class, [
                 'label' => 'Auftrags-Nr',
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'customer_order_nr',
-                    'data-type' => 'customer_order_nr',
+                    'id' => 'customerOrderNr',
+                    'data-type' => 'customerOrderNr',
                     'style' => 'background-color: transparent',
                     'readonly' => true,
                 ],
             ])
-            ->add('customer_order_reference', TextType::class, [
+            ->add('customerOrderReference', TextType::class, [
                 'label' => 'Auftrags-Referenz',
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'customer_order_reference',
+                    'id' => 'customerOrderReference',
                     'placeholder' => 'Auftrags-Referenz',
                 ],
             ])
-            ->add('customer_order_date', DateType::class, [
+            ->add('customerOrderDate', DateType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
-                'format' => 'd.m.Y',
+                'format' => 'dd.MM.yyyy',
                 'label' => 'Auftragsdatum',
                 'html5' => false,
                 'attr' => [
                     'class' => 'form-control',
                 ],
             ])
-            ->add('customer_order_creation_date', DateType::class, [
+            ->add('customerOrderCreationDate', DateType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
-                'format' => 'd.m.Y',
-                'label' => 'Bestelldatum',
+                'format' => 'dd.MM.yyyy',
+                'label' => 'Anlagedatum',
                 'html5' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Bestelldatum',
+                    'style' => 'background-color: transparent',
+                    'readonly' => 'true',
                 ],
             ])
-            ->add('add_customer_order', SubmitType::class, [
+            ->add('save', ButtonType::class, [
                 'label' => 'Auftrag anlegen',
                 'attr' => [
                     'class' => 'btn btn-lg',
                 ],
             ])
+            ->add('back_to_customer_order_overview', ButtonType::class, [
+                'label' => 'Zurück zur Übersicht',
+                'attr' => [
+                    'class' => 'btn btn-lg',
+                ],
+            ])
         ;
-
-        /*$builder
-            ->add('details', CollectionType::class, [
-                'entry_type' => CustomerOrderPosType::class,
-            ]);*/
     }
 
     public function configureOptions(OptionsResolver $resolver): void

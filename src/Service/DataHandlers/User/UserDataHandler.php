@@ -8,7 +8,6 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use WebWMS\Entity\User;
@@ -24,18 +23,11 @@ class UserDataHandler implements PasswordUpgraderInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private DateTimeService $dateTimeService,
-        private UserPasswordHasherInterface $userPasswordHasher
+        private DateTimeService $dateTimeService
     ) {
     }
 
     public function save(User $user): void
-    {
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-    }
-
-    public function update(User $user): void
     {
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -112,7 +104,7 @@ class UserDataHandler implements PasswordUpgraderInterface
         $user->setLastname((string) $requestData['lastname']);
         $user->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->update($user);
+        $this->save($user);
 
         return $user;
     }
@@ -129,7 +121,7 @@ class UserDataHandler implements PasswordUpgraderInterface
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function upgradePassword($user, $newHashedPassword): void
+    public function upgradePassword($user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
@@ -161,6 +153,6 @@ class UserDataHandler implements PasswordUpgraderInterface
 
         $selectedUser->setLastLogin($this->dateTimeService->createDateTime());
 
-        $this->update($selectedUser);
+        $this->save($selectedUser);
     }
 }

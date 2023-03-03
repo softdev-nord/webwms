@@ -24,9 +24,6 @@ class SupplierType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // dd($options);
-        $isCreateSupplier = $options['isCreateSupplier'];
-
         $builder
             ->add('supplierId', HiddenType::class, [
                 'label' => false,
@@ -108,22 +105,20 @@ class SupplierType extends AbstractType
                     'id' => 'supplier_city',
                     'data-type' => 'supplier_city',
                 ],
-            ]);
-        if ($isCreateSupplier) {
-            $builder->add('add_supplier', SubmitType::class, [
+            ])
+            ->add('add_supplier', SubmitType::class, [
                 'label' => 'Lieferant anlegen',
                 'attr' => [
                     'class' => 'btn btn-secondary btn-lg',
                 ],
-            ]);
-        }
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => null,
-            'isCreateSupplier' => [],
         ]);
     }
 }

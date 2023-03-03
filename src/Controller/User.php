@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Form\Model\ChangePassword;
+use WebWMS\Form\User\Model\ChangePassword;
 use WebWMS\Helper\FormHelper\UserFormHelper;
 use WebWMS\Service\DateTimeService;
 use WebWMS\Service\LoggingService;

@@ -61,7 +61,7 @@ class UserService
         return $this->userDataHandler->updateUser($request);
     }
 
-    public function upgradePassword(UserInterface|PasswordAuthenticatedUserInterface $user, $newHashedPassword): void
+    public function upgradePassword(User $user, string $newHashedPassword): void
     {
         $this->userDataHandler->upgradePassword($user, $newHashedPassword);
     }

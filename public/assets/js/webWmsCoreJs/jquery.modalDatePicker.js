@@ -4,4 +4,10 @@ $(document).ready(function() {
             todayHighlight: true,
         }
     );
+
+    $('#customer_order_customerOrderDate').datepicker(
+        {
+            todayHighlight: true,
+        }
+    );
 });

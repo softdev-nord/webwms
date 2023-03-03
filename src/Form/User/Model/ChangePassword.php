@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Form\Model;
+namespace WebWMS\Form\User\Model;
 
 class ChangePassword
 {

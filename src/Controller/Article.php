@@ -22,7 +22,6 @@ use WebWMS\Service\Validation\ArticleValidationService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        Article
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Article extends AbstractController
 {

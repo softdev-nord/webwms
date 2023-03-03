@@ -6,17 +6,16 @@ namespace WebWMS\Helper\FormHelper;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use WebWMS\Form\Article\AddArticleType;
-use WebWMS\Form\Article\DeleteArticleType;
-use WebWMS\Form\Article\EditArticleType;
+use WebWMS\Form\Customer\DeleteCustomerType;
+use WebWMS\Form\CustomerOrder\CustomerOrderType;
 
 /**
  * @package:    WebWMS\Helper\FormHelper
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        ArticleFormHelper
+ * Class        CustomerOrderFormHelper
  */
-class ArticleFormHelper
+class CustomerOrderFormHelper
 {
     public function __construct(
         private FormFactoryInterface $formFactory
@@ -34,26 +33,26 @@ class ArticleFormHelper
         return $this->formFactory->create($type, $data, $options);
     }
 
-    public function addArticleForm(): FormInterface
+    public function addCustomerForm(): FormInterface
     {
-        return $this->createForm(AddArticleType::class);
+        return $this->createForm(CustomerOrderType::class);
     }
 
     /**
-     * @param object $article
+     * @param object $customer
      * @return FormInterface
      */
-    public function editArticleForm(object $article): FormInterface
+    public function editCustomerForm(object $customer): FormInterface
     {
-        return $this->createForm(EditArticleType::class, $article);
+        return $this->createForm(CustomerOrderType::class, $customer);
     }
 
     /**
-     * @param object $article
+     * @param object $customer
      * @return FormInterface
      */
-    public function deleteArticleForm(object $article): FormInterface
+    public function deleteCustomerForm(object $customer): FormInterface
     {
-        return $this->createForm(DeleteArticleType::class, $article);
+        return $this->createForm(DeleteCustomerType::class, $customer);
     }
 }

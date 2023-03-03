@@ -155,7 +155,7 @@
         $.ajax({
             url: url,
             type: "get",
-            data: ($("#supplier-order-form-new").serialize()),
+            data: ($("#supplier-order-form-edit").serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
