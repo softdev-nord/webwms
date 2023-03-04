@@ -149,8 +149,8 @@ class Supplier extends AbstractController
         $supplierNr = $requestData->getSupplierNr();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde erfolgreich angelegt.';
-            $logMessage = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde angelegt.';
+            $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde erfolgreich gelöscht.';
+            $logMessage = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde gelöscht.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierService->deleteSupplier($requestData);
 

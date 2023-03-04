@@ -142,7 +142,8 @@ class EditCustomerType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-lg',
                 ],
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -6,7 +6,7 @@ namespace WebWMS\Helper\FormHelper;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use WebWMS\Form\Customer\CustomerType;
+use WebWMS\Form\Customer\AddCustomerType;
 use WebWMS\Form\Customer\DeleteCustomerType;
 use WebWMS\Form\Customer\EditCustomerType;
 
@@ -36,7 +36,7 @@ class CustomerFormHelper
 
     public function addCustomerForm(): FormInterface
     {
-        return $this->createForm(CustomerType::class);
+        return $this->createForm(AddCustomerType::class);
     }
 
     /**

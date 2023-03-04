@@ -11,8 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Form\SupplierOrder\DeleteSupplierOrderType;
-use WebWMS\Form\SupplierOrder\SupplierOrderPosType;
-use WebWMS\Form\SupplierOrder\SupplierOrderType;
+use WebWMS\Helper\FormHelper\SupplierOrderFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Supplier\SupplierService;
@@ -32,7 +31,8 @@ class SupplierOrder extends AbstractController
         private SupplierOrderPosService $supplierOrderPosService,
         private SupplierService $supplierService,
         private RequirementsService $requirementsService,
-        private LoggingService $loggingService
+        private LoggingService $loggingService,
+        private SupplierOrderFormHelper $supplierOrderFormHelper
     ) {
     }
 
@@ -63,8 +63,7 @@ class SupplierOrder extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $supplierOrderForm = $this->createForm(SupplierOrderType::class);
-        $supplierOrderPosForm = $this->createForm(SupplierOrderPosType::class);
+        $supplierOrderForm = $this->supplierOrderFormHelper->addSupplierOrderForm();
 
         $supplierOrderForm->handleRequest($request);
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
@@ -79,6 +78,8 @@ class SupplierOrder extends AbstractController
 
             return new JsonResponse($responseData);
         }
+
+        $supplierOrderPosForm = $this->supplierOrderFormHelper->addSupplierOrderPosForm();
 
         $supplierOrderPosForm->handleRequest($request);
         if ($supplierOrderPosForm->isSubmitted() && $supplierOrderPosForm->isValid()) {
@@ -120,13 +121,13 @@ class SupplierOrder extends AbstractController
         }
 
         $supplierOrder = $this->supplierOrderService->getSupplierOrderById($supplierOrderId);
+        $supplierOrderPos = $this->supplierOrderPosService->getSupplierOrderPosBySupplierOrderId($supplierOrderId);
 
         if (!$supplierOrder) {
             return null;
         }
 
-        $supplierOrderForm = $this->createForm(SupplierOrderType::class, $supplierOrder);
-        $supplierOrderPosForm = $this->createForm(SupplierOrderPosType::class);
+        $supplierOrderForm = $this->supplierOrderFormHelper->editSupplierOrderForm($supplierOrder);
 
         $supplierOrderForm->handleRequest($request);
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
@@ -140,6 +141,8 @@ class SupplierOrder extends AbstractController
             return new JsonResponse($responseData);
         }
 
+        $supplierOrderPosForm = $this->supplierOrderFormHelper->editSupplierOrderPosForm($supplierOrderPos);
+
         $supplierOrderPosForm->handleRequest($request);
         if ($supplierOrderPosForm->isSubmitted() && $supplierOrderPosForm->isValid()) {
             $supplierOrderPosRequestData = $supplierOrderPosForm->getData();
@@ -149,19 +152,22 @@ class SupplierOrder extends AbstractController
             $logMessage = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) angelegt.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->supplierOrderPosService->addSupplierOrderPos($request);
+            $this->supplierOrderPosService->updateSupplierOrder($supplierOrderPosRequestData);
 
             return new JsonResponse($responseData);
         }
 
-        return $this->render('supplier_order/supplier_order_edit.html.twig', [
-            'supplierOrderForm' => $supplierOrderForm->createView(),
-            'supplierOrderPosForm' => $supplierOrderPosForm->createView(),
-            'supplierData' => $this->supplierService->getSupplierById($supplierOrder->getSupplierId()),
-            'supplierOrderPos' => $supplierOrder->getSupplierOrderPos()->toArray(),
-            'lastId' => $this->supplierOrderService->getLastSupplierOrderId()[0],
-            'editSupplierOrder' => true,
-        ]);
+        return $this->render(
+            'supplier_order/supplier_order_edit.html.twig',
+            [
+                'supplierOrderForm' => $supplierOrderForm->createView(),
+                'supplierOrderPosForm' => $supplierOrderPosForm->createView(),
+                'supplierData' => $this->supplierService->getSupplierById($supplierOrder->getSupplierId()),
+                'supplierOrderPos' => $supplierOrder->getSupplierOrderPos()->toArray(),
+                'lastId' => $this->supplierOrderService->getLastSupplierOrderId()[0],
+                'editSupplierOrder' => true,
+            ]
+        );
     }
 
     #[Route('/bestellung_löschen/supplierOrderId/{supplierOrderId}', name: 'delete_supplier_order')]

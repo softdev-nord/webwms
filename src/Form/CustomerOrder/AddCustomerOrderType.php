@@ -14,12 +14,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\CustomerOrder;
 
 /**
- * @package:    WebWMS\Form
+ * @package:    WebWMS\Form\CustomerOrder
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        CustomerOrderType
  */
-class CustomerOrderType extends AbstractType
+class AddCustomerOrderType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")

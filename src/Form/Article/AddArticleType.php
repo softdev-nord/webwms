@@ -15,10 +15,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\Article;
 
 /**
- * @package:    WebWMS\Form
+ * @package:    WebWMS\Form\Article
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        AddNewArticleType
+ * Class        AddArticleType
  */
 class AddArticleType extends AbstractType
 {

@@ -17,9 +17,9 @@ use WebWMS\Entity\SupplierOrder;
  * @package:    WebWMS\Form\SupplierOrder
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        SupplierOrderType
+ * Class        AddSupplierOrderType
  */
-class SupplierOrderType extends AbstractType
+class AddSupplierOrderType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
@@ -53,15 +53,12 @@ class SupplierOrderType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'data-type' => 'supplier_order_supplier_id',
                 ],
             ])
             ->add('supplierOrderReference', TextType::class, [
                 'label' => 'Bestellungs-Referenz',
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'aft_ref',
-                    'placeholder' => 'Bestellungs-Referenz',
                 ],
             ])
             ->add('supplierOrderDate', DateTimeType::class, [

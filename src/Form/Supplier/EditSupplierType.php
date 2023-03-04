@@ -44,6 +44,7 @@ class EditSupplierType extends AbstractType
         if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             $builder
                 ->add('supplierNr', TextType::class, [
+                    'empty_data' => '',
                     'label' => false,
                     'attr' => [
                         'class' => 'form-control',
@@ -67,6 +68,7 @@ class EditSupplierType extends AbstractType
         }
         $builder
             ->add('supplierName', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -75,6 +77,7 @@ class EditSupplierType extends AbstractType
                 ],
             ])
             ->add('supplierAddressAddition', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -83,6 +86,7 @@ class EditSupplierType extends AbstractType
                 ],
             ])
             ->add('supplierAddressStreet', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -91,6 +95,7 @@ class EditSupplierType extends AbstractType
                 ],
             ])
             ->add('supplierAddressStreetNr', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -99,6 +104,7 @@ class EditSupplierType extends AbstractType
                 ],
             ])
             ->add('supplierAddressCountryCode', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -107,6 +113,7 @@ class EditSupplierType extends AbstractType
                 ],
             ])
             ->add('supplierAddressZipcode', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -115,6 +122,7 @@ class EditSupplierType extends AbstractType
                 ],
             ])
             ->add('supplierAddressCity', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',

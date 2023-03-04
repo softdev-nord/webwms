@@ -18,7 +18,7 @@ use WebWMS\Entity\Customer;
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        CustomerType
  */
-class CustomerType extends AbstractType
+class AddCustomerType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")

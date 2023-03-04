@@ -44,6 +44,7 @@ class EditArticleType extends AbstractType
         if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             $builder
                 ->add('articleNr', TextType::class, [
+                    'empty_data' => '',
                     'label' => false,
                     'attr' => [
                         'class' => 'form-control',
@@ -65,6 +66,7 @@ class EditArticleType extends AbstractType
             ]);
         }
         $builder->add('articleName', TextType::class, [
+            'empty_data' => '',
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -73,6 +75,7 @@ class EditArticleType extends AbstractType
             ],
         ]);
         $builder->add('articleCategory', TextType::class, [
+            'empty_data' => '',
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -81,6 +84,7 @@ class EditArticleType extends AbstractType
             ],
         ]);
         $builder->add('articleWeight', TextType::class, [
+            'empty_data' => '',
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -89,6 +93,7 @@ class EditArticleType extends AbstractType
             ],
         ]);
         $builder->add('articleEan', TextType::class, [
+            'empty_data' => '',
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -97,6 +102,7 @@ class EditArticleType extends AbstractType
             ],
         ]);
         $builder->add('articleUnit', TextType::class, [
+            'empty_data' => '',
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -105,6 +111,7 @@ class EditArticleType extends AbstractType
             ],
         ]);
         $builder->add('articleDepth', TextType::class, [
+            'empty_data' => '',
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -113,6 +120,7 @@ class EditArticleType extends AbstractType
             ],
         ]);
         $builder->add('articleWidth', TextType::class, [
+            'empty_data' => '',
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -121,6 +129,7 @@ class EditArticleType extends AbstractType
             ],
         ]);
         $builder->add('articleHeight', TextType::class, [
+            'empty_data' => '',
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -129,6 +138,7 @@ class EditArticleType extends AbstractType
             ],
         ]);
         $builder->add('stockOutStrategy', TextType::class, [
+            'empty_data' => '',
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -137,6 +147,7 @@ class EditArticleType extends AbstractType
             ],
         ]);
         $builder->add('leQuantity', TextType::class, [
+            'empty_data' => '',
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -145,6 +156,7 @@ class EditArticleType extends AbstractType
             ],
         ]);
         $builder->add('standardLoadingEquipment', TextType::class, [
+            'empty_data' => '',
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
