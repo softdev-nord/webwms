@@ -10,10 +10,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Form\Supplier\AddSupplierType;
-use WebWMS\Form\Supplier\DeleteSupplierType;
-use WebWMS\Form\Supplier\EditSupplierType;
+use WebWMS\Helper\FormHelper\SupplierFormHelper;
 use WebWMS\Service\LoggingService;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Supplier\SupplierService;
 use WebWMS\Service\Validation\SupplierValidationService;
 
@@ -27,9 +26,10 @@ class Supplier extends AbstractController
 {
     public function __construct(
         private SupplierService $supplierService,
-        private Requirements $requirements,
+        private RequirementsService $requirementsService,
         private LoggingService $loggingService,
         private SupplierValidationService $supplierValidationService,
+        private SupplierFormHelper $supplierFormHelper
     ) {
     }
 
@@ -43,11 +43,11 @@ class Supplier extends AbstractController
         return $this->render(
             'supplier/index.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Lieferantenübersicht',
             ]
         );
@@ -60,7 +60,7 @@ class Supplier extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $form = $this->createForm(AddSupplierType::class);
+        $form = $this->supplierFormHelper->addSupplierForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -97,7 +97,7 @@ class Supplier extends AbstractController
             return null;
         }
 
-        $form = $this->createForm(EditSupplierType::class, $supplier);
+        $form = $this->supplierFormHelper->editSupplierForm($supplier);
         $form->handleRequest($request);
         $requestData = $form->getData();
         $supplierNr = $requestData->getSupplierNr();
@@ -143,14 +143,14 @@ class Supplier extends AbstractController
             return null;
         }
 
-        $form = $this->createForm(DeleteSupplierType::class, $supplier);
+        $form = $this->supplierFormHelper->deleteSupplierForm($supplier);
         $form->handleRequest($request);
         $requestData = $form->getData();
         $supplierNr = $requestData->getSupplierNr();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde erfolgreich angelegt.';
-            $logMessage = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde angelegt.';
+            $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde erfolgreich gelöscht.';
+            $logMessage = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde gelöscht.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierService->deleteSupplier($requestData);
 

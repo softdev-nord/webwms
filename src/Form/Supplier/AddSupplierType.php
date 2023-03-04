@@ -94,8 +94,8 @@ class AddSupplierType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'customerCity',
-                    'data-type' => 'customerCity',
+                    'id' => 'supplierAddressCity',
+                    'data-type' => 'supplierAddressCity',
                 ],
             ])
             ->add('save', ButtonType::class, [

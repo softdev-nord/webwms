@@ -15,7 +15,7 @@
                         </thead>
                         <tbody style="text-align: center">
                         {% for key, freeStockLocation in freeStockLocations %}
-                            <tr>
+                            <tr stock-location-id="{{ freeStockLocation.id }}" role="row">
                                 <td>
                                     <div class="form-group">
                                         <input type="text"
@@ -98,12 +98,11 @@
     {% block bodyjs %}
         <script>
             $(document).ready(function () {
-                var table = $('#editStockLocationTable').DataTable();
-                $('#editStockLocationTable tbody').on('dblclick', 'tr td', function () {
-                    var id = table.row( this ).data();
-                    console.log(id["0"]);
-                    console.log('Test');
-                });
+                 $('#editStockLocationTable tbody').on('dblclick', 'tr', function (event) {
+                     const $el = $(event.currentTarget)
+                     let currentStockLocationId =  $el.attr('stock-location-id');
+                     console.log(currentStockLocationId);
+                 });
             });
         </script>
     {% endblock %}

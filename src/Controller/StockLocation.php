@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Exception\NotFoundException;
 use WebWMS\Form\Stock\EditStockLocationType;
 use WebWMS\Form\Stock\StockLocationType;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Validation\StockLocationValidationService;
 
@@ -27,7 +28,7 @@ class StockLocation extends AbstractController
 {
     public function __construct(
         private StockLocationService $stockLocationService,
-        private Requirements $requirements,
+        private RequirementsService $requirementsService,
         private StockLocationValidationService $stockLocationValidationService
     ) {
     }
@@ -40,20 +41,20 @@ class StockLocation extends AbstractController
         }
 
         return $this->render(
-            'stock/stock_location.html.twig',
+            'stock/stock_location/stock_location.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Lagerplätze',
             ]
         );
     }
 
     #[Route('/lagerplatz_anlegen', name: 'add_stock_location')]
-    public function addNewStockLocation(Request $request): RedirectResponse|Response
+    public function addStockLocation(Request $request): RedirectResponse|Response
     {
         $form = $this->createForm(StockLocationType::class);
         $form->handleRequest($request);
@@ -65,13 +66,13 @@ class StockLocation extends AbstractController
         }
 
         return $this->render(
-            'stock/add_new_stock_location.html.twig',
+            'stock/stock_location/add_new_stock_location.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Lagerplatz anlegen',
                 'stockLocationForm' => $form->createView(),
             ]
@@ -111,13 +112,13 @@ class StockLocation extends AbstractController
         }
 
         return $this->render(
-            'stock/edit_stock_location.html.twig',
+            'stock/stock_location/edit_stock_location.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Lagerplatz bearbeiten',
                 'editStockLocationForm' => $form->createView(),
                 'stockLocations' => json_decode((string) $this->getAllStockLocations()->getContent()),

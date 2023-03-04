@@ -94,6 +94,10 @@
         $('#editStockLocationTable tbody').on('click', 'tr:nth-child(1)', function () {
             console.log('Test');
         });
+
+        $('#editStockLocationTable tbody').on('dblclick','tr',function(e){
+            dataTable.rows(this).select()
+        })
     });
 })(jQuery);
 

@@ -16,7 +16,7 @@ use WebWMS\Entity\Customer;
  * @package:    WebWMS\Form
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        AddCustomerType
+ * Class        CustomerType
  */
 class AddCustomerType extends AbstractType
 {

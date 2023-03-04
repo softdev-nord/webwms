@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Form\SupplierOrder;
+namespace WebWMS\Form\CustomerOrder;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\SupplierOrder;
+use WebWMS\Entity\CustomerOrder;
 
 /**
- * @package:    WebWMS\Form\SupplierOrder
+ * @package:    WebWMS\Form\CustomerOrder
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        SupplierOrderType
+ * Class        CustomerOrderType
  */
-class SupplierOrderType extends AbstractType
+class AddCustomerOrderType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
@@ -27,54 +27,59 @@ class SupplierOrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('supplierOrderId', HiddenType::class, [
+            ->add('customerOrderId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'inputOrderNr',
-                    'id' => 'supplier_order_id',
+                    'class' => 'inputAftNr',
+                    'id' => 'customerOrderId',
+                    'data-type' => 'customerOrderId',
                 ],
             ])
-            ->add('supplierOrderNr', TextType::class, [
-                'label' => 'Bestellungs-Nr',
+            ->add('customerId', HiddenType::class, [
+                'label' => false,
                 'attr' => [
-                    'class' => 'form-control is--transparent',
-                    'data-type' => 'supplier_order_nr',
+                    'class' => 'form-control autocomplete_customers',
+                    'id' => 'customerId',
+                    'data-type' => 'customerId',
                 ],
             ])
             ->add('usrId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'form-control',
-                    'id' => 'user_id',
-                    'data-type' => 'user_id',
+                    'class' => 'form-control autocomplete_customers',
+                    'id' => 'usrId',
+                    'data-type' => 'usrId',
                 ],
             ])
-            ->add('supplierId', HiddenType::class, [
-                'label' => false,
+            ->add('customerOrderNr', TextType::class, [
+                'label' => 'Auftrags-Nr',
                 'attr' => [
                     'class' => 'form-control',
-                    'data-type' => 'supplier_order_supplier_id',
+                    'id' => 'customerOrderNr',
+                    'data-type' => 'customerOrderNr',
+                    'style' => 'background-color: transparent',
+                    'readonly' => true,
                 ],
             ])
-            ->add('supplierOrderReference', TextType::class, [
-                'label' => 'Bestellungs-Referenz',
+            ->add('customerOrderReference', TextType::class, [
+                'label' => 'Auftrags-Referenz',
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'aft_ref',
-                    'placeholder' => 'Bestellungs-Referenz',
+                    'id' => 'customerOrderReference',
+                    'placeholder' => 'Auftrags-Referenz',
                 ],
             ])
-            ->add('supplierOrderDate', DateTimeType::class, [
+            ->add('customerOrderDate', DateType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'dd.MM.yyyy',
-                'label' => 'Bestelldatum',
+                'label' => 'Auftragsdatum',
                 'html5' => false,
                 'attr' => [
                     'class' => 'form-control',
                 ],
             ])
-            ->add('supplierOrderCreationDate', DateTimeType::class, [
+            ->add('customerOrderCreationDate', DateType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'dd.MM.yyyy',
@@ -87,12 +92,12 @@ class SupplierOrderType extends AbstractType
                 ],
             ])
             ->add('save', ButtonType::class, [
-                'label' => 'Bestellung anlegen',
+                'label' => 'Auftrag anlegen',
                 'attr' => [
                     'class' => 'btn btn-lg',
                 ],
             ])
-            ->add('back_to_supplier_order_overview', ButtonType::class, [
+            ->add('back_to_customer_order_overview', ButtonType::class, [
                 'label' => 'Zurück zur Übersicht',
                 'attr' => [
                     'class' => 'btn btn-lg',
@@ -104,7 +109,7 @@ class SupplierOrderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => SupplierOrder::class,
+            'data_class' => CustomerOrder::class,
         ]);
     }
 }

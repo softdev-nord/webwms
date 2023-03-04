@@ -7,7 +7,7 @@ namespace WebWMS\Service\Validation;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use WebWMS\Entity\User;
-use WebWMS\Form\Model\ChangePassword;
+use WebWMS\Form\User\Model\ChangePassword;
 
 /**
  * @package:    WebWMS\Service

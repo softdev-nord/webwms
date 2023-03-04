@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace WebWMS\Service\CustomerOrder;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\CustomerOrder as CustomerOrders;
+
+use WebWMS\Entity\CustomerOrder;
 use WebWMS\Service\DataHandlers\CustomerOrder\CustomerOrderDataHandler;
 
 /**
@@ -14,7 +14,6 @@ use WebWMS\Service\DataHandlers\CustomerOrder\CustomerOrderDataHandler;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        CustomerOrderService
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class CustomerOrderService
 {
@@ -23,7 +22,7 @@ class CustomerOrderService
     ) {
     }
 
-    public function getCustomerOrderById(int $id): ?CustomerOrders
+    public function getCustomerOrderById(int $id): ?CustomerOrder
     {
         return $this->customerOrderDataHandler->getCustomerOrderById($id);
     }
@@ -46,7 +45,7 @@ class CustomerOrderService
 
     public function getCustomerOrderPosByOrderId(int $id): JsonResponse
     {
-        return $this->customerOrderDataHandler->getCustomerOrderPosByOrderId($id);
+        return $this->customerOrderDataHandler->getCustomerOrderPosByCustomerOrderId($id);
     }
 
     /**
@@ -57,8 +56,18 @@ class CustomerOrderService
         return $this->customerOrderDataHandler->getLastCustomerOrderId();
     }
 
-    public function addNewCustomerOrderAndRelatedPositions(Request $request): void
+    public function addCustomerOrder(CustomerOrder $customerOrder): void
     {
-        $this->customerOrderDataHandler->addNewCustomerOrderAndRelatedPositions($request);
+        $this->customerOrderDataHandler->addCustomerOrder($customerOrder);
+    }
+
+    public function updateCustomerOrder(CustomerOrder $customerOrder): void
+    {
+        $this->customerOrderDataHandler->updateCustomerOrder($customerOrder);
+    }
+
+    public function deleteCustomerOrder(CustomerOrder $customerOrder): void
+    {
+        $this->customerOrderDataHandler->deleteCustomerOrder($customerOrder);
     }
 }

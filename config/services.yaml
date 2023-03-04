@@ -21,7 +21,7 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: false         // <---- This is the new additional config.
+        public: true         // <---- This is the new additional config.
 
         bind:
             $appName: '%env(APP_NAME)%'
@@ -120,7 +120,7 @@ services:
     web_wms.controller.dashboard_controller:
         class: WebWMS\Controller\Dashboard
         arguments:
-            $requirements: 'WebWMS\Controller\Requirements'
+            $requirementsService: 'WebWMS\Service\RequirementsService'
             $twig: 'Twig\Environment'
             $chartBuilder: 'Symfony\UX\Chartjs\Builder\ChartBuilderInterface'
             $transportHistoryRepository: 'WebWMS\Repository\TransportHistoryRepository'
@@ -131,6 +131,6 @@ services:
     web_wms.service.booking_method.booking_method_service:
         class: WebWMS\Service\BookingMethod\BookingMethodService
         arguments:
-            $requirements: 'WebWMS\Controller\Requirements'
+            $requirementsService: 'WebWMS\Service\RequirementsService'
             $twig: 'Twig\Environment'
     

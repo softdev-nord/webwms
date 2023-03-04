@@ -11,11 +11,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Form\Article\AddArticleType;
-use WebWMS\Form\Article\DeleteArticleType;
-use WebWMS\Form\Article\EditArticleType;
+use WebWMS\Helper\FormHelper\ArticleFormHelper;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\LoggingService;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Validation\ArticleValidationService;
 
 /**
@@ -23,15 +22,15 @@ use WebWMS\Service\Validation\ArticleValidationService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        Article
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Article extends AbstractController
 {
     public function __construct(
         private ArticleService $articleService,
-        private Requirements $requirements,
+        private RequirementsService $requirementsService,
         private ArticleValidationService $articleValidationService,
-        private LoggingService $loggingService
+        private LoggingService $loggingService,
+        private ArticleFormHelper $articleFormHelper
     ) {
     }
 
@@ -45,11 +44,11 @@ class Article extends AbstractController
         return $this->render(
             'article/index.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Artikelübersicht',
             ]
         );
@@ -62,7 +61,7 @@ class Article extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $form = $this->createForm(AddArticleType::class);
+        $form = $this->articleFormHelper->addArticleForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -99,7 +98,7 @@ class Article extends AbstractController
             return null;
         }
 
-        $form = $this->createForm(EditArticleType::class, $article);
+        $form = $this->articleFormHelper->editArticleForm($article);
         $form->handleRequest($request);
         $requestData = $form->getData();
         $articleNr = $article->getArticleNr();
@@ -145,7 +144,7 @@ class Article extends AbstractController
             return null;
         }
 
-        $form = $this->createForm(DeleteArticleType::class, $article);
+        $form = $this->articleFormHelper->deleteArticleForm($article);
         $form->handleRequest($request);
         $requestData = $form->getData();
         $articleNr = $article->getArticleNr();

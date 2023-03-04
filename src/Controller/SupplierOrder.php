@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Form\SupplierOrder\DeleteSupplierOrderType;
-use WebWMS\Form\SupplierOrder\SupplierOrderPosType;
-use WebWMS\Form\SupplierOrder\SupplierOrderType;
+use WebWMS\Helper\FormHelper\SupplierOrderFormHelper;
 use WebWMS\Service\LoggingService;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Supplier\SupplierService;
 use WebWMS\Service\SupplierOrder\SupplierOrderService;
 use WebWMS\Service\SupplierOrderPos\SupplierOrderPosService;
@@ -30,8 +30,9 @@ class SupplierOrder extends AbstractController
         private SupplierOrderService $supplierOrderService,
         private SupplierOrderPosService $supplierOrderPosService,
         private SupplierService $supplierService,
-        private Requirements $requirements,
-        private LoggingService $loggingService
+        private RequirementsService $requirementsService,
+        private LoggingService $loggingService,
+        private SupplierOrderFormHelper $supplierOrderFormHelper
     ) {
     }
 
@@ -45,11 +46,11 @@ class SupplierOrder extends AbstractController
         return $this->render(
             'supplier_order/index.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Übersicht Bestellungen',
             ]
         );
@@ -62,8 +63,7 @@ class SupplierOrder extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $supplierOrderForm = $this->createForm(SupplierOrderType::class);
-        $supplierOrderPosForm = $this->createForm(SupplierOrderPosType::class);
+        $supplierOrderForm = $this->supplierOrderFormHelper->addSupplierOrderForm();
 
         $supplierOrderForm->handleRequest($request);
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
@@ -78,6 +78,8 @@ class SupplierOrder extends AbstractController
 
             return new JsonResponse($responseData);
         }
+
+        $supplierOrderPosForm = $this->supplierOrderFormHelper->addSupplierOrderPosForm();
 
         $supplierOrderPosForm->handleRequest($request);
         if ($supplierOrderPosForm->isSubmitted() && $supplierOrderPosForm->isValid()) {
@@ -96,11 +98,11 @@ class SupplierOrder extends AbstractController
         return $this->render(
             'supplier_order/supplier_order_add.html.twig',
             [
-                'appName' => $this->requirements->getAppName(),
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Bestellung anlegen',
                 'lastId' => $this->supplierOrderService->getLastSupplierOrderId()[0],
                 'supplierOrderPos' => $this->supplierService->getAllSuppliers()->getContent(),
@@ -119,13 +121,13 @@ class SupplierOrder extends AbstractController
         }
 
         $supplierOrder = $this->supplierOrderService->getSupplierOrderById($supplierOrderId);
+        $supplierOrderPos = $this->supplierOrderPosService->getSupplierOrderPosBySupplierOrderId($supplierOrderId);
 
         if (!$supplierOrder) {
             return null;
         }
 
-        $supplierOrderForm = $this->createForm(SupplierOrderType::class, $supplierOrder);
-        $supplierOrderPosForm = $this->createForm(SupplierOrderPosType::class);
+        $supplierOrderForm = $this->supplierOrderFormHelper->editSupplierOrderForm($supplierOrder);
 
         $supplierOrderForm->handleRequest($request);
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
@@ -139,6 +141,8 @@ class SupplierOrder extends AbstractController
             return new JsonResponse($responseData);
         }
 
+        $supplierOrderPosForm = $this->supplierOrderFormHelper->editSupplierOrderPosForm($supplierOrderPos);
+
         $supplierOrderPosForm->handleRequest($request);
         if ($supplierOrderPosForm->isSubmitted() && $supplierOrderPosForm->isValid()) {
             $supplierOrderPosRequestData = $supplierOrderPosForm->getData();
@@ -148,23 +152,26 @@ class SupplierOrder extends AbstractController
             $logMessage = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) angelegt.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->supplierOrderPosService->addSupplierOrderPos($request);
+            $this->supplierOrderPosService->updateSupplierOrder($supplierOrderPosRequestData);
 
             return new JsonResponse($responseData);
         }
 
-        return $this->render('supplier_order/supplier_order_edit.html.twig', [
-            'supplierOrderForm' => $supplierOrderForm->createView(),
-            'supplierOrderPosForm' => $supplierOrderPosForm->createView(),
-            'supplierData' => $this->supplierService->getSupplierById($supplierOrder->getSupplierId()),
-            'supplierOrderPos' => $supplierOrder->getSupplierOrderPos()->toArray(),
-            'lastId' => $this->supplierOrderService->getLastSupplierOrderId()[0],
-            'editSupplierOrder' => true,
-        ]);
+        return $this->render(
+            'supplier_order/supplier_order_edit.html.twig',
+            [
+                'supplierOrderForm' => $supplierOrderForm->createView(),
+                'supplierOrderPosForm' => $supplierOrderPosForm->createView(),
+                'supplierData' => $this->supplierService->getSupplierById($supplierOrder->getSupplierId()),
+                'supplierOrderPos' => $supplierOrder->getSupplierOrderPos()->toArray(),
+                'lastId' => $this->supplierOrderService->getLastSupplierOrderId()[0],
+                'editSupplierOrder' => true,
+            ]
+        );
     }
 
     #[Route('/bestellung_löschen/supplierOrderId/{supplierOrderId}', name: 'delete_supplier_order')]
-    public function deleteArticle(Request $request, int $supplierOrderId): RedirectResponse|JsonResponse|Response|null
+    public function deleteSupplierOrder(Request $request, int $supplierOrderId): RedirectResponse|JsonResponse|Response|null
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -211,6 +218,6 @@ class SupplierOrder extends AbstractController
     #[Route('/supplier_order_pos_ajax', name: 'supplier_order_pos_ajax')]
     public function getAllOrderPos(): JsonResponse
     {
-        return $this->supplierOrderService->getAllOrderPos();
+        return $this->supplierOrderPosService->getAllSupplierOrderPos();
     }
 }

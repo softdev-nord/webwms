@@ -59,9 +59,9 @@ class UserService
         return $this->userDataHandler->updateUser($request);
     }
 
-    public function updateUserPassword(Request $request): ?User
+    public function upgradePassword(User $user, string $newHashedPassword): void
     {
-        return $this->userDataHandler->updateUserPassword($request);
+        $this->userDataHandler->upgradePassword($user, $newHashedPassword);
     }
 
     public function deleteUser(string $username): void

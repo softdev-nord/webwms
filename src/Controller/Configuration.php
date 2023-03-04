@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Form\Configuration\GeneralConfigurationType;
 use WebWMS\Service\Configuration\ConfigurationService;
+use WebWMS\Service\RequirementsService;
 
 /**
  * @package:    WebWMS\Controller
@@ -20,7 +21,7 @@ class Configuration extends AbstractController
 {
     public function __construct(
         private ConfigurationService $configurationService,
-        private Requirements $requirements,
+        private RequirementsService $requirementsService,
     ) {
     }
 
@@ -34,11 +35,11 @@ class Configuration extends AbstractController
         }
 
         return $this->render('configuration/index.html.twig', [
-            'appName' => $this->requirements->getAppName(),
-            'appVersion' => $this->requirements->getAppVersion(),
-            'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-            'appCopyright' => $this->requirements->getAppCopyright(),
-            'appLizenz' => $this->requirements->getAppLizenz(),
+            'appName' => $this->requirementsService->getAppName(),
+            'appVersion' => $this->requirementsService->getAppVersion(),
+            'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+            'appCopyright' => $this->requirementsService->getAppCopyright(),
+            'appLizenz' => $this->requirementsService->getAppLizenz(),
             'generalConfiguration' => $generalConfiguration->createView(),
             'page' => 'Einstellungen',
             'configuration' => $this->configurationService->getAllConfigurations(),

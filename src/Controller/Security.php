@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use WebWMS\Service\RequirementsService;
 
 /**
  * @package:    WebWMS\Controller
@@ -19,7 +20,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class Security extends AbstractController
 {
     public function __construct(
-        private Requirements $requirements
+        private RequirementsService $requirementsService
     ) {
     }
 
@@ -36,7 +37,7 @@ class Security extends AbstractController
         $serverName = $request->server->get('SERVER_NAME');
         $phpVersion = $request->server->get('PHP_VERSION');
 
-        $freeDiskSpace = $this->requirements->checkDiskFreeSpace();
+        $freeDiskSpace = $this->requirementsService->checkDiskFreeSpace();
         $mySqlVersion = $request->server->get('DATABASE');
 
         return $this->render(
@@ -50,10 +51,10 @@ class Security extends AbstractController
                 'freeDiskSpace' => $freeDiskSpace,
                 'phpVersion' => $phpVersion,
                 'mySqlVersion' => $mySqlVersion,
-                'appVersion' => $this->requirements->getAppVersion(),
-                'appVersionNumber' => $this->requirements->getAppVersionNumber(),
-                'appCopyright' => $this->requirements->getAppCopyright(),
-                'appLizenz' => $this->requirements->getAppLizenz(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
             ]
         );
     }
