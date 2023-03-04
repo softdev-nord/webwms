@@ -52,17 +52,22 @@ class SupplierOrderPosDataHandler
 
     public function getAllSupplierOrderPos(): JsonResponse
     {
-        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+        $conn = $this->entityManager->getConnection();
 
-        $queryBuilder
-            ->select('*')
-            ->from('supplier_order_pos');
+        $sql = "SELECT pos.supplier_order_id, ord.supplier_order_nr, art.article_nr, art.article_name, pos.supplier_order_pos_quantity,
+                (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) FROM transport_history WHERE transport_history.article_nr = art.article_nr GROUP BY transport_history.article_nr LIMIT 1) AS lbw_menge
+                FROM supplier_order_pos AS pos
+                INNER JOIN supplier_orders AS ord
+                    ON pos.supplier_order_id = ord.supplier_order_id
+                INNER JOIN article AS art
+                    ON pos.article_id = art.article_id
+                LEFT OUTER JOIN transport_history AS lbw
+                    ON ord.supplier_order_nr = lbw.order_nr
+                GROUP BY pos.article_id ORDER BY pos.article_id";
 
-        $stmt = $queryBuilder->executeQuery();
+        $data = $conn->fetchAllAssociative($sql);
 
-        $results = $stmt->fetchAllAssociative();
-
-        return new JsonResponse($results);
+        return new JsonResponse($data);
     }
 
     public function addSupplierOrderPos(Request $request): void

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Service\DataHandlers\SupplierOrder;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\SupplierOrder;
 use WebWMS\Service\DateTimeService;
 
@@ -46,6 +47,36 @@ class SupplierOrderDataHandler
         return $this->entityManager
             ->getRepository(SupplierOrder::class)
             ->findOneBy(['supplierOrderNr' => $supplierOrderNr]);
+    }
+
+    public function getAllSupplierOrder(): JsonResponse
+    {
+        $conn = $this->entityManager->getConnection();
+
+        $queryBuilder = $conn->createQueryBuilder();
+
+        $queryBuilder
+            ->select(
+                'so.supplier_order_id',
+                'so.supplier_order_nr',
+                'so.supplier_order_reference',
+                'sup.supplier_nr',
+                'sup.supplier_name',
+                'so.supplier_order_creation_date',
+                'usr.username',
+                'so.created_at, so.updated_at'
+            )
+            ->from('supplier_orders', 'so')
+            ->innerJoin('so', 'supplier_order_pos', 'sop', 'sop.supplier_order_id = so.supplier_order_id')
+            ->innerJoin('so', 'supplier', 'sup', 'so.supplier_id = sup.supplier_id')
+            ->innerJoin('so', 'user', 'usr', 'so.usr_id = usr.id')
+            ->groupBy('sop.supplier_order_id');
+
+        $stmt = $queryBuilder->executeQuery();
+
+        $result = $stmt->fetchAllAssociative();
+
+        return new JsonResponse($result);
     }
 
     public function addSupplierOrder(SupplierOrder $supplierOrder): void

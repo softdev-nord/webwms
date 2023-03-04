@@ -41,7 +41,7 @@ class StockLocation extends AbstractController
         }
 
         return $this->render(
-            'stock/stock_location.html.twig',
+            'stock/stock_location/stock_location.html.twig',
             [
                 'appName' => $this->requirementsService->getAppName(),
                 'appVersion' => $this->requirementsService->getAppVersion(),
@@ -66,7 +66,7 @@ class StockLocation extends AbstractController
         }
 
         return $this->render(
-            'stock/add_new_stock_location.html.twig',
+            'stock/stock_location/add_new_stock_location.html.twig',
             [
                 'appName' => $this->requirementsService->getAppName(),
                 'appVersion' => $this->requirementsService->getAppVersion(),
@@ -112,7 +112,7 @@ class StockLocation extends AbstractController
         }
 
         return $this->render(
-            'stock/edit_stock_location.html.twig',
+            'stock/stock_location/edit_stock_location.html.twig',
             [
                 'appName' => $this->requirementsService->getAppName(),
                 'appVersion' => $this->requirementsService->getAppVersion(),

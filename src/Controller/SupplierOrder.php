@@ -218,6 +218,6 @@ class SupplierOrder extends AbstractController
     #[Route('/supplier_order_pos_ajax', name: 'supplier_order_pos_ajax')]
     public function getAllOrderPos(): JsonResponse
     {
-        return $this->supplierOrderService->getAllOrderPos();
+        return $this->supplierOrderPosService->getAllSupplierOrderPos();
     }
 }

@@ -2,13 +2,6 @@
     {% block webwms_header %}
         {{ include('header.html.twig') }}
     {% endblock %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }},
-            <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
     <!-- Beginn Seite -->
 
     <div class="text-center">

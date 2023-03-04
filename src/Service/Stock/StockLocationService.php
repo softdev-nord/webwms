@@ -6,8 +6,6 @@ namespace WebWMS\Service\Stock;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\StockLocation;
@@ -24,8 +22,7 @@ class StockLocationService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private StockLocationDataHandler $stockLocationDataHandler,
-        private ContainerInterface $container
+        private StockLocationDataHandler $stockLocationDataHandler
     ) {
     }
 
@@ -135,7 +132,7 @@ class StockLocationService
     }
 
     /**
-     * @param  array<string>                         $stockLocation
+     * @param  array<string> $stockLocation
      * @return array<int, array<string, int|string>>
      */
     public function getRemainder(array $stockLocation, int|null $remainder): array
@@ -156,16 +153,5 @@ class StockLocationService
         }
 
         return $freeStockLocations;
-    }
-
-    /**
-     * @param array<string> $options
-     */
-    protected function createForm(string $type, mixed $data = null, array $options = []): FormInterface
-    {
-        /*
-         * @phpstan-ignore-next-line
-         */
-        return $this->container->get('form.factory')->create($type, $data, $options);
     }
 }
