@@ -30,7 +30,7 @@ class CustomerOrderPosType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                     'id' => 'customer_order_pos_id',
-                    'data-type' => 'supplier_order_pos_id',
+                    'data-type' => 'customer_order_pos_id',
                 ],
             ])
             ->add('customerOrderId', HiddenType::class, [

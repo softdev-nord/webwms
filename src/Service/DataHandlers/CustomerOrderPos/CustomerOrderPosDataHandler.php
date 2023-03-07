@@ -47,7 +47,7 @@ class CustomerOrderPosDataHandler
     {
         return $this->entityManager
             ->getRepository(CustomerOrderPos::class)
-            ->find(['customerOrderId' => $customerOrderId]);
+            ->find($customerOrderId);
     }
 
     public function getAllCustomerOrderPos(): JsonResponse

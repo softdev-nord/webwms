@@ -47,7 +47,7 @@ class SupplierOrderPosDataHandler
     {
         return $this->entityManager
             ->getRepository(SupplierOrderPos::class)
-            ->find(['supplierOrderId' => $supplierOrderId]);
+            ->find($supplierOrderId);
     }
 
     public function getAllSupplierOrderPos(): JsonResponse

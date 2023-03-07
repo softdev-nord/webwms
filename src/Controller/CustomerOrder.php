@@ -228,16 +228,16 @@ class CustomerOrder extends AbstractController
         return $this->customerOrderService->getAllCustomerOrders();
     }
 
-    #[Route('/customer_order_pos_ajax', name: 'customer_order_pos_ajax')]
+    #[Route('/customer_order_pos', name: 'customer_order_pos')]
     public function getAllCustomerOrdersPos(): JsonResponse
     {
         return $this->customerOrderService->getAllCustomerOrderPos();
     }
 
-    #[Route('/customer_order_pos_ajax/id/{id}', name: 'customer_order_pos_ajax_by_id')]
-    public function getCustomerOrderPosByOrderId(string $id): JsonResponse
+    #[Route('/customer_order_pos/customerOrderId/{customerOrderId}', name: 'customer_order_pos_by_customer_order_id')]
+    public function getCustomerOrderPosByOrderId(int $customerOrderId): JsonResponse
     {
-        return $this->customerOrderService->getCustomerOrderPosByOrderId((int) $id);
+        return $this->customerOrderService->getCustomerOrderPosByOrderId($customerOrderId);
     }
 
     #[Route('/article_order_ajax', name: 'article_order_ajax')]
