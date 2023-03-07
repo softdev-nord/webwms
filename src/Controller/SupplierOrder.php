@@ -64,8 +64,8 @@ class SupplierOrder extends AbstractController
         }
 
         $supplierOrderForm = $this->supplierOrderFormHelper->addSupplierOrderForm();
-
         $supplierOrderForm->handleRequest($request);
+
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
             $supplierOrderRequestData = $supplierOrderForm->getData();
             $supplierOrderNr = $supplierOrderRequestData->getSupplierOrderNr();
@@ -80,8 +80,8 @@ class SupplierOrder extends AbstractController
         }
 
         $supplierOrderPosForm = $this->supplierOrderFormHelper->addSupplierOrderPosForm();
-
         $supplierOrderPosForm->handleRequest($request);
+
         if ($supplierOrderPosForm->isSubmitted() && $supplierOrderPosForm->isValid()) {
             $supplierOrderPosRequestData = $supplierOrderPosForm->getData();
             $supplierOrderNr = $supplierOrderPosRequestData->getSupplierOrderNr();
@@ -98,12 +98,6 @@ class SupplierOrder extends AbstractController
         return $this->render(
             'supplier_order/supplier_order_add.html.twig',
             [
-                'appName' => $this->requirementsService->getAppName(),
-                'appVersion' => $this->requirementsService->getAppVersion(),
-                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
-                'appCopyright' => $this->requirementsService->getAppCopyright(),
-                'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Bestellung anlegen',
                 'lastId' => $this->supplierOrderService->getLastSupplierOrderId()[0],
                 'supplierOrderPos' => $this->supplierService->getAllSuppliers()->getContent(),
                 'editSupplierOrder' => false,
@@ -128,13 +122,15 @@ class SupplierOrder extends AbstractController
         }
 
         $supplierOrderForm = $this->supplierOrderFormHelper->editSupplierOrderForm($supplierOrder);
-
         $supplierOrderForm->handleRequest($request);
+
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
             $supplierOrderRequestData = $supplierOrderForm->getData();
             $supplierOrderNr = $supplierOrderRequestData->getSupplierOrderNr();
+
             $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde erfolgreich geändert.';
             $logMessage = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde geändert.';
+
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierOrderService->updateSupplierOrder($supplierOrderRequestData);
 
@@ -142,14 +138,14 @@ class SupplierOrder extends AbstractController
         }
 
         $supplierOrderPosForm = $this->supplierOrderFormHelper->editSupplierOrderPosForm($supplierOrderPos);
-
         $supplierOrderPosForm->handleRequest($request);
+
         if ($supplierOrderPosForm->isSubmitted() && $supplierOrderPosForm->isValid()) {
             $supplierOrderPosRequestData = $supplierOrderPosForm->getData();
             $supplierOrderNr = $supplierOrderPosRequestData->getSupplierOrderNr();
 
-            $responseData['message'] = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) erfolgreich angelegt.';
-            $logMessage = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) angelegt.';
+            $responseData['message'] = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) erfolgreich geändert.';
+            $logMessage = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) geändert.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierOrderPosService->updateSupplierOrder($supplierOrderPosRequestData);
@@ -185,15 +181,17 @@ class SupplierOrder extends AbstractController
 
         $supplierOrderForm = $this->createForm(DeleteSupplierOrderType::class, $supplierOrder);
         $supplierOrderForm->handleRequest($request);
-        $supplierOrderRequestData = $supplierOrderForm->getData();
-        $supplierOrderNr = $supplierOrderRequestData->getSupplierOrderNr();
 
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
+            $supplierOrderRequestData = $supplierOrderForm->getData();
+            $supplierOrderNr = $supplierOrderRequestData->getSupplierOrderNr();
+
             $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde gelöscht.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierOrderService->deleteSupplierOrder($supplierOrderRequestData);
+
             $supplierOrderPos = $this->supplierOrderPosService->getSupplierOrderPosBySupplierOrderId($supplierOrderId);
             $this->supplierOrderPosService->deleteSupplierOrderPos($supplierOrderPos);
 
@@ -204,7 +202,7 @@ class SupplierOrder extends AbstractController
             'supplier_order/supplier_order_delete_ask.html.twig',
             [
                 'supplierOrderForm' => $supplierOrderForm->createView(),
-                'supplierOrderNr' => $supplierOrderNr,
+                'supplierOrderNr' => $supplierOrder->getSupplierOrderNr(),
             ]
         );
     }

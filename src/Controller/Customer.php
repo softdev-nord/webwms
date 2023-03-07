@@ -66,8 +66,10 @@ class Customer extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
             $customerNr = $requestData->getCustomerNr();
+
             $responseData['message'] = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde erfolgreich angelegt.';
             $logMessage = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde angelegt.';
+
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->customerService->addCustomer($requestData);
 
@@ -99,16 +101,16 @@ class Customer extends AbstractController
 
         $form = $this->customerFormHelper->editCustomerForm($customer);
         $form->handleRequest($request);
-        $requestData = $form->getData();
-        $customerNr = $requestData->getCustomerNr();
-
-        $responseData = $this->customerValidationService->validateCustomerData($requestData);
-        $responseData['message'] = '';
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $requestData = $form->getData();
+            $customerNr = $requestData->getCustomerNr();
+            $responseData = $this->customerValidationService->validateCustomerData($requestData);
+
             if ($responseData['success']) {
-                $responseData['message'] = 'Die Änderungen am Kunden ' . $customerNr . ' wurden erfolgreich gespeichert.';
+                $responseData['message'] = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurden erfolgreich geändert.';
                 $logMessage = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde geändert.';
+
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->customerService->updateCustomer($requestData);
 
@@ -145,12 +147,14 @@ class Customer extends AbstractController
 
         $form = $this->customerFormHelper->deleteCustomerForm($customer);
         $form->handleRequest($request);
-        $requestData = $form->getData();
-        $customerNr = $requestData->getCustomerNr();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $requestData = $form->getData();
+            $customerNr = $requestData->getCustomerNr();
+
             $responseData['message'] = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde gelöscht.';
+
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->customerService->deleteCustomer($requestData);
 
@@ -161,7 +165,7 @@ class Customer extends AbstractController
             'customer/customer_delete_ask.html.twig',
             [
                 'customerForm' => $form->createView(),
-                'customerNr' => $customerNr,
+                'customerNr' => $customer->getCustomerNr(),
             ]
         );
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
-use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -67,8 +66,10 @@ class Article extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
             $articleNr = $requestData->getArticleNr();
+
             $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich angelegt.';
             $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde angelegt.';
+
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->articleService->addArticle($requestData);
 
@@ -100,23 +101,23 @@ class Article extends AbstractController
 
         $form = $this->articleFormHelper->editArticleForm($article);
         $form->handleRequest($request);
-        $requestData = $form->getData();
-        $articleNr = $article->getArticleNr();
-
-        $responseData = $this->articleValidationService->validateArticleData($requestData);
-        $responseData['message'] = '';
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $requestData = $form->getData();
+            $articleNr = $article->getArticleNr();
+            $responseData = $this->articleValidationService->validateArticleData($requestData);
+
             if ($responseData['success']) {
                 $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich geändert.';
                 $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde geändert.';
+
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->articleService->updateArticle($requestData);
 
                 return new JsonResponse($responseData);
             }
 
-            $responseData['message'] = 'Artikel konnte nicht gespeichert werden.';
+            $responseData['message'] = 'Die Änderungen am Artikel konnten nicht gespeichert werden.';
 
             return new JsonResponse($responseData);
         }
@@ -146,12 +147,14 @@ class Article extends AbstractController
 
         $form = $this->articleFormHelper->deleteArticleForm($article);
         $form->handleRequest($request);
-        $requestData = $form->getData();
-        $articleNr = $article->getArticleNr();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $requestData = $form->getData();
+            $articleNr = $article->getArticleNr();
+
             $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde gelöscht.';
+
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->articleService->deleteArticle($requestData);
 
@@ -162,14 +165,11 @@ class Article extends AbstractController
             'article/article_delete_ask.html.twig',
             [
                 'articleForm' => $form->createView(),
-                'articleNr' => $articleNr,
+                'articleNr' => $article->getArticleNr(),
             ]
         );
     }
 
-    /**
-     * @throws Exception
-     */
     #[Route('/article_ajax', name: 'article_ajax')]
     public function getAllArticles(): JsonResponse
     {
