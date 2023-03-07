@@ -340,7 +340,7 @@ $(function() {
 
         // Ajax-Anfrage via PHP (Json)
         ajax: {
-            'url': '/customer_order_pos_ajax',
+            'url': '/customer_order_pos',
 
             // Es werden nur die Daten in der Positions-Tabelle geladen,
             // die mit der ID in der Auftrags-Tabelle übereinstimmen.
