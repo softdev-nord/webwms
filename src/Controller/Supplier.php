@@ -66,8 +66,10 @@ class Supplier extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
             $supplierNr = $requestData->getSupplierNr();
+
             $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde erfolgreich angelegt.';
             $logMessage = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde angelegt.';
+
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierService->addSupplier($requestData);
 
@@ -99,16 +101,16 @@ class Supplier extends AbstractController
 
         $form = $this->supplierFormHelper->editSupplierForm($supplier);
         $form->handleRequest($request);
-        $requestData = $form->getData();
-        $supplierNr = $requestData->getSupplierNr();
-
-        $responseData = $this->supplierValidationService->validateSupplierData($requestData);
-        $responseData['message'] = '';
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $requestData = $form->getData();
+            $supplierNr = $requestData->getSupplierNr();
+            $responseData = $this->supplierValidationService->validateSupplierData($requestData);
+
             if ($responseData['success']) {
                 $responseData['message'] = 'Die Änderungen am Lieferanten ' . $supplierNr . ' wurden erfolgreich gespeichert.';
                 $logMessage = 'Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde geändert.';
+
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->supplierService->updateSupplier($requestData);
 
@@ -145,12 +147,14 @@ class Supplier extends AbstractController
 
         $form = $this->supplierFormHelper->deleteSupplierForm($supplier);
         $form->handleRequest($request);
-        $requestData = $form->getData();
-        $supplierNr = $requestData->getSupplierNr();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $requestData = $form->getData();
+            $supplierNr = $requestData->getSupplierNr();
+
             $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde gelöscht.';
+
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierService->deleteSupplier($requestData);
 
@@ -161,7 +165,7 @@ class Supplier extends AbstractController
             'supplier/supplier_delete_ask.html.twig',
             [
                 'supplierForm' => $form->createView(),
-                'supplierNr' => $supplierNr,
+                'supplierNr' => $supplier->getSupplierNr(),
             ]
         );
     }

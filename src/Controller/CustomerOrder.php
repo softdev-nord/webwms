@@ -99,12 +99,6 @@ class CustomerOrder extends AbstractController
         return $this->render(
             'customer_order/customer_order_add.html.twig',
             [
-                'appName' => $this->requirementsService->getAppName(),
-                'appVersion' => $this->requirementsService->getAppVersion(),
-                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
-                'appCopyright' => $this->requirementsService->getAppCopyright(),
-                'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Auftrag anlegen',
                 'article' => $this->getAllArticleAjax(),
                 'lastId' => $this->getLastCustomerOrderId()[0],
                 'editCustomerOrder' => false,
@@ -129,13 +123,15 @@ class CustomerOrder extends AbstractController
         }
 
         $customerOrderForm = $this->customerOrderFormHelper->editCustomerOrderForm($customerOrder);
-
         $customerOrderForm->handleRequest($request);
+
         if ($customerOrderForm->isSubmitted() && $customerOrderForm->isValid()) {
             $customerOrderRequestData = $customerOrderForm->getData();
             $customerOrderNr = $customerOrderRequestData->getCustomerOrderNr();
+
             $responseData['message'] = 'Der Auftrag mit der Auftrags-Nr. ' . $customerOrderNr . ' wurde erfolgreich geändert.';
             $logMessage = 'Der Auftrag mit der Auftrags-Nr. ' . $customerOrderNr . ' wurde geändert.';
+
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->customerOrderService->updateCustomerOrder($customerOrderRequestData);
 
@@ -143,8 +139,8 @@ class CustomerOrder extends AbstractController
         }
 
         $customerOrderPosForm = $this->customerOrderFormHelper->editCustomerOrderPosForm($customerOrderPos);
-
         $customerOrderPosForm->handleRequest($request);
+
         if ($customerOrderPosForm->isSubmitted() && $customerOrderPosForm->isValid()) {
             $customerOrderPosRequestData = $customerOrderPosForm->getData();
             $customerOrderNr = $customerOrderPosRequestData->getCustomerOrderNr();
@@ -167,7 +163,8 @@ class CustomerOrder extends AbstractController
                 'customerOrderPos' => $customerOrder->getCustomerOrderPos()->toArray(),
                 'lastId' => $this->customerOrderService->getLastCustomerOrderId()[0],
                 'editCustomerOrder' => true,
-        ]);
+            ]
+        );
     }
 
     #[Route('/auftrag_löschen/customerOrderId/{customerOrderId}', name: 'delete_customer_order')]
@@ -187,10 +184,10 @@ class CustomerOrder extends AbstractController
         $customerOrderForm = $this->customerOrderFormHelper->deleteCustomerOrderForm($customerOrder);
 
         $customerOrderForm->handleRequest($request);
-        $customerOrderRequestData = $customerOrderForm->getData();
-        $customerOrderNr = $customerOrderRequestData->getCustomerOrderNr();
-
         if ($customerOrderForm->isSubmitted() && $customerOrderForm->isValid()) {
+            $customerOrderRequestData = $customerOrderForm->getData();
+            $customerOrderNr = $customerOrderRequestData->getCustomerOrderNr();
+
             $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. ' . $customerOrderNr . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Die Bestellung mit der Bestell-Nr. ' . $customerOrderNr . ' wurde gelöscht.';
 
@@ -220,7 +217,7 @@ class CustomerOrder extends AbstractController
             'customer_order/customer_order_delete_ask.html.twig',
             [
                 'customerOrderForm' => $customerOrderForm->createView(),
-                'customerOrderNr' => $customerOrderNr,
+                'customerOrderNr' => $customerOrder->getCustomerOrderNr(),
             ]
         );
     }

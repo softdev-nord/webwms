@@ -71,14 +71,14 @@ class User extends AbstractController
 
         $form = $this->userFormHelper->addUserForm();
         $form->handleRequest($request);
-        $requestData = $form->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $logMessage = 'Der Benutzer ' . $requestData['username'] . ' wurde angelegt.';
+            $userRequestData = $form->getData();
+            $logMessage = 'Der Benutzer ' . $userRequestData->getUsername() . ' wurde angelegt.';
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->userService->addUser($request);
 
-            return new JsonResponse($requestData);
+            return new JsonResponse($userRequestData);
         }
 
         return $this->render(
@@ -212,6 +212,7 @@ class User extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $responseData['message'] = 'Der Benutzer ' . $username . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Der Benutzer ' . $username . ' wurde gelöscht.';
+
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->userService->deleteUser($username);
 

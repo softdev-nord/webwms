@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\Service\Stock;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\StockLocation;
@@ -21,7 +20,6 @@ use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 class StockLocationService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private StockLocationDataHandler $stockLocationDataHandler
     ) {
     }
@@ -34,12 +32,12 @@ class StockLocationService
         return $this->stockLocationDataHandler->getAllStockLocation();
     }
 
-    /**
-     * @return array<int, StockLocation|null>
-     */
-    public function getSockLocationDetailsByCoordinate(string $coordinate): array
+    public function getStockLocationByCoordinate(int $stockLocationCoordinate): ?StockLocation
     {
-        return $this->stockLocationDataHandler->getSockLocationDetailsByCoordinate($coordinate);
+        return $this->stockLocationDataHandler
+            ->getStockLocationByCoordinate(
+                $stockLocationCoordinate
+            );
     }
 
     /**
@@ -51,6 +49,21 @@ class StockLocationService
         return $this->stockLocationDataHandler->getSockLocationDetailsById($stockLocationId);
     }
 
+    public function addStockLocation(Request $request): void
+    {
+        $this->stockLocationDataHandler->addStockLocation($request);
+    }
+
+    public function updateStockLocation(Request $request): ?StockLocation
+    {
+        return $this->stockLocationDataHandler->updateStockLocation($request);
+    }
+
+    public function deleteStockLocation(StockLocation $stockLocation): void
+    {
+        $this->stockLocationDataHandler->deletestockLocation($stockLocation);
+    }
+
     /**
      * @throws Exception
      * @return array<string|int|mixed>
@@ -60,26 +73,13 @@ class StockLocationService
         return $this->stockLocationDataHandler->getAllStockLocationsForSelect();
     }
 
-    public function generateStockLocation(Request $request): void
-    {
-        $this->stockLocationDataHandler->generateStockLocation($request);
-    }
-
     /**
      * @throws NotFoundException
      * @return object[]
      */
     public function getAllStockLocationsAjax(): array
     {
-        $stockLocation = $this->entityManager
-            ->getRepository(StockLocation::class)
-            ->findAll();
-
-        if (!$stockLocation) {
-            throw new NotFoundException('Keine Lagerorte gefunden');
-        }
-
-        return $stockLocation;
+        return $this->stockLocationDataHandler->getAllStockLocationsAjax();
     }
 
     /**
@@ -116,19 +116,6 @@ class StockLocationService
         }
 
         return $freeStockLocation;
-    }
-
-    public function updateStockLocation(Request $request): ?StockLocation
-    {
-        return $this->stockLocationDataHandler->updateStockLocation($request);
-    }
-
-    public function getStockLocationByCoordinate(int $stockLocationCoordinate): ?StockLocation
-    {
-        return $this->stockLocationDataHandler
-            ->getStockLocationByCoordinate(
-                $stockLocationCoordinate
-            );
     }
 
     /**
