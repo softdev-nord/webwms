@@ -1,0 +1,24 @@
+<form id="stock-location-modal-delete-ask" class="form-horizontal" role="form">
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div id="flash-message-overlay">
+                <div class="col">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center alert alert-danger shadow" style="margin: 20px">
+                    <svg width="3em" height="3em" viewBox="0 0 16 16" class="m-1 bi bi-exclamation-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                    </svg>
+                    <p>Wollen Sie den Lagerplatz mit der Lagerplatz-Nr. {{ stockLocation }} wirklich löschen?</p>
+                </div>
+                    {{ form_start(stockLocationForm) }}
+                    <div class="text-center">
+                        {{ form_widget(stockLocationForm.delete) }} {{ form_widget(stockLocationForm.abort) }}
+                    </div>
+                    {{ form_end(stockLocationForm) }}
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+</form>

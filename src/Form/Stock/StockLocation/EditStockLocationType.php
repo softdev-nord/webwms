@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Form\Stock;
+namespace WebWMS\Form\Stock\StockLocation;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -15,12 +16,12 @@ use WebWMS\Entity\StockLocation;
 use WebWMS\Entity\StockZone;
 
 /**
- * @package:    WebWMS\Form
+ * @package:    WebWMS\Form\Stock\StockLocation
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        StockLocationType
+ * Class        EditStockLocationType
  */
-class StockLocationType extends AbstractType
+class EditStockLocationType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
@@ -28,83 +29,103 @@ class StockLocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('stock_location_ln', TextType::class, [
+            ->add('stockLocationLn', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'data-type' => 'stock_location_ln',
+                    'data-type' => 'stockLocationLn',
                 ],
             ])
-            ->add('stock_location_fb', TextType::class, [
+            ->add('stockLocationFb', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'data-type' => 'stock_location_fb',
+                    'data-type' => 'stockLocationFb',
                 ],
             ])
-            ->add('stock_location_sp', TextType::class, [
+            ->add('stockLocationSp', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'data-type' => 'stock_location_sp',
+                    'data-type' => 'stockLocationSp',
                 ],
             ])
-            ->add('stock_location_tf', TextType::class, [
+            ->add('stockLocationTf', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'data-type' => 'stock_location_tf',
+                    'data-type' => 'stockLocationTf',
                 ],
             ])
-            ->add('stock_location_desc', TextType::class, [
+            ->add('stockLocationCoordinate', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'data-type' => 'stock_location_desc',
+                    'data-type' => 'stockLocationCoordinate',
                 ],
             ])
-            ->add('stock_location_width', TextType::class, [
+            ->add('stockLocationDesc', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'data-type' => 'stock_location_width',
+                    'data-type' => 'stockLocationDesc',
                 ],
             ])
-            ->add('stock_location_depth', TextType::class, [
+            ->add('stockLocationWidth', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'data-type' => 'stock_location_depth',
+                    'data-type' => 'stockLocationWidth',
                 ],
             ])
-            ->add('stock_location_height', TextType::class, [
+            ->add('stockLocationDepth', TextType::class, [
+                'empty_data' => '',
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'data-type' => 'stockLocationDepth',
+                ],
+            ])
+            ->add('stockLocationHeight', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'data-type' => 'stock_location_height',
                 ],
             ])
-            ->add('stock_location_zone', EntityType::class, [
+            ->add('stockLocationZone', EntityType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'class' => StockZone::class,
-                'choice_label' => 'zone_short_desc',
-            ])
-            /*->add('stock_location_zone', TextType::class, [
-                'label' => false,
+                'choice_label' => 'stockZoneShortDesc',
+                'mapped' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'data-type' => 'stock_location_zone',
                 ],
-            ])*/
+            ])
             ->add('stock_location_check', CheckboxType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
             ])
-            ->add('add_stock_location', SubmitType::class, [
-                'label' => 'Lagerplatz anlegen',
+            ->add('save', SubmitType::class, [
+                'label' => 'Änderungen speichern',
                 'attr' => [
-                    'class' => 'btn btn-secondary btn-lg',
+                    'class' => 'btn btn-lg',
+                ],
+            ])
+            ->add('back_to_stock_location_overview', ButtonType::class, [
+                'label' => 'Zurück zur Übersicht',
+                'attr' => [
+                    'class' => 'btn btn-lg',
                 ],
             ])
         ;
