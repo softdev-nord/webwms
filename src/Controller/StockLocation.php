@@ -202,9 +202,9 @@ class StockLocation extends AbstractController
      * @return array|object[]
      */
     #[Route('/lagerplatz_details/{stock_location_coordinate}', name: 'show_stock_location_details')]
-    public function getSockLocationDetailsById(string $coordinate): array
+    public function getStockLocationDetailsById(string $coordinate): array
     {
-        return $this->stockLocationService->getSockLocationDetailsById($coordinate);
+        return $this->stockLocationService->getStockLocationDetailsById($coordinate);
     }
 
     /**

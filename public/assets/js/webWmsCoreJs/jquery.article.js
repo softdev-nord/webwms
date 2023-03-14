@@ -6,34 +6,34 @@
         retrieve: true,
 
         ajax: {
-            'url': '/article_ajax',
-            'dataSrc': ''
+            url: '/article_ajax',
+            dataSrc: ''
         },
         // Seitenlänge max. 10 Einträge
         pageLength: 10,
-        'language': {
-            'url': './resources/dataTable.German.json'
+        language: {
+            url: './resources/dataTable.German.json'
         },
         // Initialisierung der DataTables Select-Erweiterung
         select: {
             style: 'single'
         },
         columns: [
-            {'data': 'article_nr'},
-            {'data': 'article_name'},
-            {'data': 'article_category'},
-            {'data': 'article_weight'},
-            {'data': 'article_ean'},
-            {'data': 'article_unit'},
-            {'data': 'article_depth'},
-            {'data': 'article_width'},
-            {'data': 'article_height'},
+            { data: 'article_nr' },
+            { data: 'article_name' },
+            { data: 'article_category' },
+            { data: 'article_weight' },
+            { data: 'article_ean' },
+            { data: 'article_unit' },
+            { data: 'article_depth' },
+            { data: 'article_width' },
+            { data: 'article_height' },
             {
-                'data': 'lbw_menge',
-                'defaultContent': 0
+                data: 'lbw_menge',
+                defaultContent: 0
             },
             {
-                "data": null,
+                data: null,
                 render: function (data, type, row) {
                     if (row.updated_at != null) {
                         return row.updated_at;
@@ -45,7 +45,8 @@
         ],
         columnDefs: [
             {
-                className: 'text-center', targets: '_all'
+                className: 'text-center',
+                targets: '_all'
             },
             {
                 render: $.fn.dataTable.render.number('.'),
@@ -103,14 +104,20 @@
             }
         },
         items: {
-            'edit': {name: 'Bearbeiten', icon: 'edit'},
-            'delete': {name: 'Löschen', icon: 'delete'},
+            edit: {
+                name: 'Bearbeiten',
+                icon: 'edit'
+            },
+            delete: {
+                name: 'Löschen',
+                icon: 'delete'
+            },
         }
     });
 
     $(function(){
         // Ändern der Standardbreite des Modals
-        $("#modalCenter .modal-dialog").css('max-width', '90%');
+        $('#modalCenter .modal-dialog').css('max-width', '90%');
     });
 
     $.ajaxSetup({
@@ -129,7 +136,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#article-form-new').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -153,7 +160,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#article-form-edit').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -179,7 +186,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },

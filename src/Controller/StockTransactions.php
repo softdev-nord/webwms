@@ -35,7 +35,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_in', name: 'stock_in')]
-    public function stockIn(Request $request): RedirectResponse|Response
+    public function stockIn(Request $request): RedirectResponse|Response|null
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -52,7 +52,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_in_from_goods_receipt', name: 'stock_in_from_goods_receipt')]
-    public function stockInFromGoodsReceipt(Request $request): RedirectResponse|Response
+    public function stockInFromGoodsReceipt(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -65,7 +65,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_in_from_production', name: 'stock_in_from_production')]
-    public function stockInFromProduction(Request $request): RedirectResponse|Response
+    public function stockInFromProduction(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -78,7 +78,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_in_from_cost_centre', name: 'stock_in_from_cost_centre')]
-    public function stockInFromCostCentre(Request $request): RedirectResponse|Response
+    public function stockInFromCostCentre(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -91,7 +91,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_in_into_container', name: 'stock_in_into_container')]
-    public function stockInIntoContainer(Request $request): RedirectResponse|Response
+    public function stockInIntoContainer(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -104,7 +104,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_in_for_supplier_order', name: 'stock_in_for_supplier_order')]
-    public function stockInForSupplierOrder(Request $request): RedirectResponse|Response
+    public function stockInForSupplierOrder(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -117,7 +117,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_in_using_loading_equipment', name: 'stock_in_using_loading_equipment')]
-    public function stockInUsingLoadingEquipment(Request $request): RedirectResponse|Response
+    public function stockInUsingLoadingEquipment(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -130,7 +130,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_in_into_receiving_area', name: 'stock_in_into_receiving_area')]
-    public function stockInIntoReceivingArea(Request $request): RedirectResponse|Response
+    public function stockInIntoReceivingArea(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -143,7 +143,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_transfer_from_cost_centre', name: 'stock_transfer_from_cost_centre')]
-    public function stockTransferFromCostCentre(Request $request): RedirectResponse|Response
+    public function stockTransferFromCostCentre(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -156,7 +156,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_in_into_cost_centre', name: 'stock_in_into_cost_centre')]
-    public function stockInIntoCostCentre(Request $request): RedirectResponse|Response
+    public function stockInIntoCostCentre(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -169,7 +169,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_in_into_dispatch_area', name: 'stock_in_into_dispatch_area')]
-    public function stockInIntoDispatchArea(Request $request): RedirectResponse|Response
+    public function stockInIntoDispatchArea(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -182,7 +182,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_out', name: 'stock_out')]
-    public function stockOut(Request $request): RedirectResponse|Response
+    public function stockOut(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -195,7 +195,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_out_to_cost_centre', name: 'stock_out_to_cost_centre')]
-    public function stockOutToCostCentre(Request $request): RedirectResponse|Response
+    public function stockOutToCostCentre(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -208,7 +208,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/lending_to_cost_centre', name: 'lending_to_cost_centre')]
-    public function lendingToCostCentre(Request $request): RedirectResponse|Response
+    public function lendingToCostCentre(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -221,7 +221,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_out_from_container', name: 'stock_out_from_container')]
-    public function stockOutFromContainer(Request $request): RedirectResponse|Response
+    public function stockOutFromContainer(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -234,7 +234,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_out_from_cost_centre', name: 'stock_out_from_cost_centre')]
-    public function stockOutFromCostCentre(Request $request): RedirectResponse|Response
+    public function stockOutFromCostCentre(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -247,7 +247,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_out_from_dispatch_area', name: 'stock_out_from_dispatch_area')]
-    public function stockOutFromDispatchArea(Request $request): RedirectResponse|Response
+    public function stockOutFromDispatchArea(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -260,7 +260,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_out_by_order', name: 'stock_out_by_order')]
-    public function stockOutByOrder(Request $request): RedirectResponse|Response
+    public function stockOutByOrder(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -273,7 +273,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_out_from_receiving_area', name: 'stock_out_from_receiving_area')]
-    public function stockOutFromReceivingArea(Request $request): RedirectResponse|Response
+    public function stockOutFromReceivingArea(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -286,7 +286,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_out_order_list', name: 'stock_out_order_list')]
-    public function stockOutOrderList(Request $request): RedirectResponse|Response
+    public function stockOutOrderList(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -299,7 +299,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_out_using_cost_centre', name: 'stock_out_using_cost_centre')]
-    public function stockOutUsingCostCentre(Request $request): RedirectResponse|Response
+    public function stockOutUsingCostCentre(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -312,7 +312,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_transfer_to_cost_centre', name: 'stock_transfer_to_cost_centre')]
-    public function stockTransferToCostCentre(Request $request): RedirectResponse|Response
+    public function stockTransferToCostCentre(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -325,7 +325,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_out_to_dispatch_area', name: 'stock_out_to_dispatch_area')]
-    public function stockOutToDispatchArea(Request $request): RedirectResponse|Response
+    public function stockOutToDispatchArea(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -338,7 +338,7 @@ class StockTransactions extends AbstractController
      * @throws EntityNotFoundException
      */
     #[Route('/stock_out_order_consolidation_to_cost_centre', name: 'stock_out_order_consolidation_to_cost_centre')]
-    public function stockOutOrderConsolidationToCostCentre(Request $request): RedirectResponse|Response
+    public function stockOutOrderConsolidationToCostCentre(Request $request): RedirectResponse|Response|null
     {
         $bookingMethod = $request->attributes->get('_route');
 
@@ -379,7 +379,7 @@ class StockTransactions extends AbstractController
     {
         $stockLocationId = $request->attributes->get('stockLocationId');
         /* @var $stockSystem \WebWMS\Entity\StockLocation */
-        $stockSystem = $this->stockLocationService->getSockLocationDetailsById($stockLocationId);
+        $stockSystem = $this->stockLocationService->getStockLocationDetailsById($stockLocationId);
 
         /**
          * @phpstan-ignore-next-line

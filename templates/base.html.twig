@@ -8,26 +8,26 @@
             <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
         {% endblock %}
         {% block javascripts %}
-            <script type="text/javascript" src="{{ asset('assets/js/jquery-3.6.3.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/jquery-ui.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/jquery.dataTables.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/dataTables.buttons.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/dataTables.select.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/moment.WithLocales.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/dataTables.sum.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/jszip.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/pdfmake.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/vfs_fonts.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/buttons.html5.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/buttons.print.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/jAlert.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/ajax_1.0.1.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/settings.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jquery-3.6.3.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jquery-ui.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jquery.dataTables.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/dataTables.buttons.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/dataTables.select.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/moment.WithLocales.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/dataTables.sum.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jszip.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/pdfmake.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/vfs_fonts.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/buttons.html5.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/buttons.print.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/bootstrap.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jAlert.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/ajax_1.0.1.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/scripts.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/settings.js') }}"></script>
             <script type="text/javascript" src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
-{#            <script type="text/javascript" src="{{ asset('assets/js/switch.js') }}"></script>#}
-            <script type="text/javascript" src="{{ asset('assets/js/jquery.contextMenu.js') }}"></script>
+{#            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/switch.js') }}"></script>#}
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jquery.contextMenu.js') }}"></script>
             <script>
                 $(document).ready(function () {
                     const delegate = (element, type, selector, handler) => {

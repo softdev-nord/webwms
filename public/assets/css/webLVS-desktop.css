@@ -1225,7 +1225,10 @@
     .stock-details-content-inner-desc {
         font-size: 18px;
         font-weight: bold;
-        padding: 15px 10px 0;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .stock-details-content-inner-space {
@@ -1240,7 +1243,7 @@
     }
 
     .stock-details-badge-occupancy.stock-details-occupied {
-        background: rgb(var(--bs-danger-rgb) var(--bs-text-opacity));
+        background: #cd0200;
     }
 
     .stock-details-badge-occupancy.stock-details-occupied:hover {
@@ -1248,7 +1251,7 @@
     }
 
     .stock-details-badge-occupancy.stock-details-not-occupied {
-        background: rgb(var(--bs-success-rgb) var(--bs-text-opacity));
+        background: #3cb521;
     }
 
     .stock-details-badge-occupancy.stock-details-not-occupied:hover {

@@ -1,0 +1,11 @@
+# Global patterns, re-using existing config.
+#
+# The pre commit hook will be called in the root directory instead of the theme folder, therefore we have to define
+# them twice with the "themes" directory as prefix
+assets/js/webWmsExternJs/**/*.js
+
+
+# Distinct files
+assets/js/app.js
+assets/js/bootstrap.js
+assets/js/webWms.js

@@ -49,7 +49,7 @@ class StockLocationDataHandler
      * @throws NotFoundException
      * @return object[]
      */
-    public function getSockLocationDetailsById(string $stockLocationId): array
+    public function getStockLocationDetailsById(string $stockLocationId): array
     {
         $stockLocation = $this->entityManager
             ->getRepository(StockLocation::class)

@@ -4,30 +4,30 @@
         createdRow: function (row, data, dataIndex) {
             $(row).attr('data-supplier-order-id', data.supplier_order_id);
         },
-        "lengthChange": false,
-        // Ajax-Anfrage via PHP (Json)
+        lengthChange: false,
+
         ajax: {
-            'url': '/supplier_orders_ajax',
-            'dataSrc': ''
+            url: '/supplier_orders_ajax',
+            dataSrc: ''
         },
         // Seitenlänge max. 10 Einträge
         pageLength: 10,
         language: {
-            "url": "./resources/dataTable.German.json"
+            url: './resources/dataTable.German.json'
         },
         // Initialisierung der DataTables Select-Erweiterung
         select: {
             style: 'single'
         },
         columns: [
-            {"data": "supplier_order_nr"},
-            {"data": "supplier_order_reference"},
-            {"data": "supplier_nr"},
-            {"data": "supplier_name"},
-            {"data": "supplier_order_creation_date"},
-            {"data": "username"},
+            { data: 'supplier_order_nr' },
+            { data: 'supplier_order_reference' },
+            { data: 'supplier_nr' },
+            { data: 'supplier_name' },
+            { data: 'supplier_order_creation_date' },
+            { data: 'username' },
             {
-                "data": null,
+                data: null,
                 render: function (data, type, row) {
                     if (row.updated_at != null) {
                         return row.updated_at;
@@ -39,12 +39,13 @@
         ],
         columnDefs: [
             {
-                className: 'text-center', targets: "_all"
+                className: 'text-center',
+                targets: '_all'
             },
             {
                 targets: [4], render: function (data) {
-                    moment.locale("de");
-                    return moment(data).format("L");
+                    moment.locale('de');
+                    return moment(data).format('L');
                 },
                 createdCell:  function (tr, cellData, rowData, row, col) {
                     $(tr).attr('data-supplier-order-id', rowData);
@@ -105,14 +106,20 @@
             }
         },
         items: {
-            "edit": {name: "Bearbeiten", icon: "edit"},
-            'delete': {name: 'Löschen', icon: 'delete'},
+            edit: {
+                name: 'Bearbeiten',
+                icon: 'edit'
+            },
+            delete: {
+                name: 'Löschen',
+                icon: 'delete'
+            },
         }
     });
 
     $(function(){
         // Ändern der Standardbreite des Modals
-        $("#modalCenter .modal-dialog").css('max-width', '98%');
+        $('#modalCenter .modal-dialog').css('max-width', '98%');
     });
 
     $.ajaxSetup({
@@ -130,7 +137,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#supplier-order-form-new').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -148,14 +155,14 @@
         const url = '/bestellung_bearbeiten/supplierOrderId/' + supplierOrderId;
         const content = '<div class="modal-body"></div>';
 
-        $('#modalCenter .modal-title').text("Bestellung bearbeiten");
+        $('#modalCenter .modal-title').text('Bestellung bearbeiten');
         $("#modal-content-ajax").html(content);
         $('#modalCenter').modal('show');
 
         $.ajax({
             url: url,
             type: "get",
-            data: ($("#supplier-order-form-edit").serialize()),
+            data: ($('#supplier-order-form-edit').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
@@ -179,7 +186,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
@@ -330,15 +337,15 @@
     });
 
     const posTable = $('#posTable').DataTable({
-        "lengthChange": false,
-        "searching": false,
-        "info": false,
-        "language": {
-            "url": "./resources/dataTable.German.json",
+        lengthChange: false,
+        searching: false,
+        info: false,
+        language: {
+            url: './resources/dataTable.German.json',
         },
         // Ajax-Anfrage via PHP (Json)
         ajax: {
-            'url': '/supplier_order_pos_ajax',
+            url: '/supplier_order_pos_ajax',
 
             // Es werden nur die Daten in der Positions-Tabelle geladen,
             // die mit der ID in der Bestellungs-Tabelle übereinstimmen.
@@ -361,24 +368,24 @@
         // Seitenlänge max. 5 Einträge
         pageLength: 5,
         columns: [
-            {"data": "supplier_order_nr"},
-            {"data": "article_nr"},
-            {"data": "article_name"},
-            {"data": "supplier_order_pos_quantity",
+            { data: 'supplier_order_nr' },
+            { data: 'article_nr' },
+            { data: 'article_name' },
+            { data: 'supplier_order_pos_quantity',
                 render: $.fn.dataTable.render.number('.')
             },
             {
-                "data": null,
+                data: null,
                 render: function (data, type, row) {
                     if (row.lbw_menge != null) {
                         return numberWithCommas(row.lbw_menge);
                     } else {
-                        return "0";
+                        return '0';
                     }
                 },
             },
             {
-                "data": null,
+                data: null,
                 render: function (data, type, row) {
                     if (row.lbw_menge != null) {
                         return numberWithCommas(parseInt(row.supplier_order_pos_quantity) - parseInt(row.lbw_menge));
@@ -390,7 +397,8 @@
         ],
         columnDefs: [
             {
-                className: 'text-center', targets: [0, 1, 3, 4, 5]
+                className: 'text-center',
+                targets: [0, 1, 3, 4, 5]
             }
         ],
         dom: 'Bfrtip',
@@ -416,7 +424,7 @@
 
     function numberWithCommas(number) {
         const formatConfig = {
-            style: "decimal",
+            style: 'decimal',
             minimumFractionDigits: 0,
         };
         return new Intl.NumberFormat('de-DE', formatConfig).format(number);

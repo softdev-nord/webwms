@@ -3,31 +3,31 @@ $(function() {
         createdRow: function (row, data, dataIndex) {
             $(row).attr('data-customer-order-id', data.customer_order_id);
         },
-        "lengthChange": false,
-        // Ajax-Anfrage via PHP (Json)
+        lengthChange: false,
+
         ajax: {
-            'url': '/customer_order_ajax',
-            'dataSrc': ''
+            url: '/customer_order_ajax',
+            dataSrc: ''
         },
         // Seitenlänge max. 10 Einträge
         pageLength: 10,
-        "language": {
-            "url": "./resources/dataTable.German.json"
+        language: {
+            url: "./resources/dataTable.German.json"
         },
         // Initialisierung der DataTables Select-Erweiterung
         select: {
             style: 'single'
         },
         columns: [
-            {"data": "customer_order_nr"},
-            {"data": "customer_nr"},
-            {"data": "customer_name"},
-            {"data": "customer_order_reference"},
-            {"data": "customer_order_date"},
-            {"data": "customer_order_creation_date"},
-            {"data": "username"},
+            { data: 'customer_order_nr' },
+            { data: 'customer_nr' },
+            { data: 'customer_name' },
+            { data: 'customer_order_reference' },
+            { data: 'customer_order_date' },
+            { data: 'customer_order_creation_date' },
+            { data: 'username' },
             {
-                "data": null,
+                data: null,
                 render: function (data, type, row) {
                     if (row.updated_at != null) {
                         return row.updated_at;
@@ -39,12 +39,12 @@ $(function() {
         ],
         columnDefs: [
             {
-                className: 'text-center', targets: "_all"
+                className: 'text-center', targets: '_all'
             },
             {
                 targets: [4, 5], render: function (data) {
-                    moment.locale("de");
-                    return moment(data).format("L");
+                    moment.locale('de');
+                    return moment(data).format('L');
                 },
                 createdCell:  function (tr, cellData, rowData, row, col) {
                     $(tr).attr('data-customer-order-id', rowData);
@@ -101,18 +101,24 @@ $(function() {
                     deleteCustomerOrder(customerOrderId);
                     break;
                 default :
-                    break
+                    break;
             }
         },
         items: {
-            "edit": {name: "Bearbeiten", icon: "edit"},
-            'delete': {name: 'Löschen', icon: 'delete'},
+            edit: {
+                name: 'Bearbeiten',
+                icon: 'edit'
+            },
+            delete: {
+                name: 'Löschen',
+                icon: 'delete'
+            },
         }
     });
 
     $(function(){
         // Ändern der Standardbreite des Modals
-        $("#modalCenter .modal-dialog").css('max-width', '98%');
+        $('#modalCenter .modal-dialog').css('max-width', '98%');
     });
 
     $.ajaxSetup({
@@ -130,7 +136,7 @@ $(function() {
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#customer-order-form-new').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -148,14 +154,14 @@ $(function() {
         const url = '/auftrag_bearbeiten/customerOrderId/' + customerOrderId;
         const content = '<div class="modal-body"></div>';
 
-        $('#modalCenter .modal-title').text("Auftrag bearbeiten");
+        $('#modalCenter .modal-title').text('Auftrag bearbeiten');
         $("#modal-content-ajax").html(content);
         $('#modalCenter').modal('show');
 
         $.ajax({
             url: url,
             type: "get",
-            data: ($("#customer-order-form-edit").serialize()),
+            data: ($('#customer-order-form-edit').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
@@ -179,7 +185,7 @@ $(function() {
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
@@ -331,16 +337,16 @@ $(function() {
 
     // JS Funktion Ajax Daten für Auftragspositionen
     const posTable = $('#posTable').DataTable({
-        "searching": false,
-        "lengthChange": false,
-        "info": false,
-        "language": {
-            "url": "./resources/dataTable.German.json",
+        searching: false,
+        lengthChange: false,
+        info: false,
+        language: {
+            url: './resources/dataTable.German.json',
         },
 
         // Ajax-Anfrage via PHP (Json)
         ajax: {
-            'url': '/customer_order_pos',
+            url: '/customer_order_pos',
 
             // Es werden nur die Daten in der Positions-Tabelle geladen,
             // die mit der ID in der Auftrags-Tabelle übereinstimmen.
@@ -364,29 +370,29 @@ $(function() {
         // Seitenlänge max. 5 Einträge
         pageLength: 5,
         columns: [
-            {"data": "customer_order_nr"},
-            {"data": "article_nr"},
-            {"data": "article_name"},
-            {"data": "quantity",
-                render: $.fn.dataTable.render.number( '.')
+            { data: 'customer_order_nr'},
+            { data: 'article_nr'},
+            { data: 'article_name'},
+            { data: 'quantity',
+                render: $.fn.dataTable.render.number('.')
             },
             {
                 "data": "lbw_menge",
                 render: function (data, type, row) {
-                    if (row["lbw_menge"] != null) {
-                        return numberWithCommas(row["lbw_menge"]);
+                    if (row.lbw_menge != null) {
+                        return numberWithCommas(row.lbw_menge);
                     } else {
-                        return "0";
+                        return '0';
                     }
                 },
             },
             {
-                "data": "lbw_menge",
+                data: 'lbw_menge',
                 render: function (data, type, row) {
-                    if (row["lbw_menge"] != null) {
-                        return numberWithCommas(parseInt(row["quantity"]) - parseInt(row["lbw_menge"]));
+                    if (row.lbw_menge != null) {
+                        return numberWithCommas(parseInt(row.quantity) - parseInt(row.lbw_menge));
                     } else {
-                        return numberWithCommas(row["quantity"]);
+                        return numberWithCommas(row.quantity);
                     }
                 },
             }
@@ -399,19 +405,18 @@ $(function() {
     });
 
     // Bei Auswahl einer Zeile in der Auftrags-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.
-    customerOrderTable.on( 'select', function () {
+    customerOrderTable.on('select', function () {
         posTable.ajax.reload();
-
     });
 
     // Beim Abwählen der Zeile in der Auftrags-Tabelle wird die Positions-Tabelle wieder geleert.
-    customerOrderTable.on( 'deselect', function () {
+    customerOrderTable.on('deselect', function () {
         posTable.ajax.reload();
     });
 
     function numberWithCommas(number) {
         const formatConfig = {
-            style: "decimal",
+            style: 'decimal',
             minimumFractionDigits: 0,
         };
         return new Intl.NumberFormat('de-DE', formatConfig).format(number);

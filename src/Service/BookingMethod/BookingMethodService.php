@@ -40,34 +40,38 @@ class BookingMethodService
     /**
      * @throws EntityNotFoundException
      */
-    public function getBookingMethod(string $bookingMethod, Request $request): RedirectResponse|Response
+    public function getBookingMethod(string $bookingMethod, Request $request): RedirectResponse|Response|null
     {
         return match ($bookingMethod) {
             'stock_in' => $this->stockIn($request), // SI101 Einlagern direkt
-//            $this->bookingMethodConstants::SI102 => $this->stockInFromGoodsReceipt(), // SI102 Zugang aus Wareneingang
-//            $this->bookingMethodConstants::SI103 => $this->stockInFromProduction(), // SI103 Zugang aus Produktion
-//            $this->bookingMethodConstants::SI104 => $this->stockInFromCostCentre(), // SI104 Rückgabe von Kostenstelle
-//            $this->bookingMethodConstants::SI105 => $this->stockInIntoContainer(), // SI105 Einlagern in Container
-//            $this->bookingMethodConstants::SI106 => $this->stockInForSupplierOrder(), // SI106 WE zur Bestellung
-//            $this->bookingMethodConstants::SI107 => $this->stockInUsingLoadingEquipment(), // SI107 Einlagern mit Ladehilfsmittel
-//            $this->bookingMethodConstants::SI111 => $this->stockInIntoReceivingArea(), // SI111 Einlagern direkt in WE-Zone
-//            $this->bookingMethodConstants::ST112 => $this->stockTransferFromCostCentre(), // ST112 Rückgabe von Kostenstelle
-//            $this->bookingMethodConstants::SI113 => $this->stockInIntoCostCentre(), // SI113 Einlagern direkt in Kostenstelle
-//            $this->bookingMethodConstants::SI114 => $this->stockInIntoDispatchArea(), // SI114 Einlagern direkt in WA-Zone
-//            $this->bookingMethodConstants::SO151 => $this->stockOut(), // SO151 Auslagern direkt
-//            $this->bookingMethodConstants::SO152 => $this->stockOutToCostCentre(), // SO152 Auslagern auf Kostenstelle
-//            $this->bookingMethodConstants::SO153 => $this->lendingToCostCentre(), // SO153 Ausleihen auf Kostenstelle
-//            $this->bookingMethodConstants::SO155 => $this->stockOutFromContainer(), // SO155 Auslagern aus Container
-//            $this->bookingMethodConstants::SO156 => $this->stockOutFromCostCentre(), // SO156 Auslagern aus Kostenstelle
-//            $this->bookingMethodConstants::SO157 => $this->stockOutFromDispatchArea(), // SO157 Auslagern direkt aus WA-Zone
-//            $this->bookingMethodConstants::SO158 => $this->stockOutByOrder(), // SO158 Auftrag auslagern
-//            $this->bookingMethodConstants::SO159 => $this->stockOutFromReceivingArea(), // SO159 Auslagern direkt aus WE-Zone
-//            $this->bookingMethodConstants::SO181 => $this->stockOutOrderList(), // SO181 Auftrag auslagern (Auftrag-Liste)
-//            $this->bookingMethodConstants::SO182 => $this->stockOutUsingCostCentre(), // SO182 Auftrag auslagern mit Kostenstelle (Auftrag-Liste)
-//            $this->bookingMethodConstants::ST183 => $this->stockTransferToCostCentre(), // ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste)
-//            $this->bookingMethodConstants::SO187 => $this->stockOutToDispatchArea(), // SO187 Auftrag auslagern in WA-Zone
-//            $this->bookingMethodConstants::SO188 => $this->stockOutOrderConsolidationToCostCentre(), // SO188 Sammelkommissionierung auf Kostenstelle
-            default => throw new EntityNotFoundException('Buchungsmethode mit der Nr. ' . $bookingMethod . ' wurde nicht gefunden!'),
+            'stock_in_from_goods_receipt' => $this->stockInFromGoodsReceipt(), // SI102 Zugang aus Wareneingang
+            'stock_in_from_production' => $this->stockInFromProduction(), // SI103 Zugang aus Produktion
+            'stock_in_from_cost_centre' => $this->stockInFromCostCentre(), // SI104 Rückgabe von Kostenstelle
+            'stock_in_into_container' => $this->stockInIntoContainer(), // SI105 Einlagern in Container
+            'stock_in_for_supplier_order' => $this->stockInForSupplierOrder(), // SI106 WE zur Bestellung
+            'stock_in_using_loading_equipment' => $this->stockInUsingLoadingEquipment(), // SI107 Einlagern mit Ladehilfsmittel
+            'stock_in_into_receiving_area' => $this->stockInIntoReceivingArea(), // SI111 Einlagern direkt in WE-Zone
+            'stock_transfer_from_cost_centre' => $this->stockTransferFromCostCentre(), // ST112 Rückgabe von Kostenstelle
+            'stock_in_into_cost_centre' => $this->stockInIntoCostCentre(), // SI113 Einlagern direkt in Kostenstelle
+            'stock_in_into_dispatch_area' => $this->stockInIntoDispatchArea(), // SI114 Einlagern direkt in WA-Zone
+            'stock_out' => $this->stockOut(), // SO151 Auslagern direkt
+            'stock_out_to_cost_centre' => $this->stockOutToCostCentre(), // SO152 Auslagern auf Kostenstelle
+            'lending_to_cost_centre' => $this->lendingToCostCentre(), // SO153 Ausleihen auf Kostenstelle
+            'stock_out_from_container' => $this->stockOutFromContainer(), // SO155 Auslagern aus Container
+            'stock_out_from_cost_centre' => $this->stockOutFromCostCentre(), // SO156 Auslagern aus Kostenstelle
+            'stock_out_from_dispatch_area' => $this->stockOutFromDispatchArea(), // SO157 Auslagern direkt aus WA-Zone
+            'stock_out_by_customer_order' => $this->stockOutByOrder(), // SO158 Auftrag auslagern
+            'stock_out_from_receiving_area' => $this->stockOutFromReceivingArea(), // SO159 Auslagern direkt aus WE-Zone
+            'stock_out_customer_order_list' => $this->stockOutOrderList(), // SO181 Auftrag auslagern (Auftrag-Liste)
+            'stock_out_using_cost_centre' => $this->stockOutUsingCostCentre(), // SO182 Auftrag auslagern mit Kostenstelle (Auftrag-Liste)
+            'stock_transfer_to_cost_centre' => $this->stockTransferToCostCentre(), // ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste)
+            'stock_out_to_dispatch_area' => $this->stockOutToDispatchArea(), // SO187 Auftrag auslagern in WA-Zone
+            'stock_out_customer_order_consolidation_to_cost_centre' => $this->stockOutOrderConsolidationToCostCentre(), // SO188 Sammelkommissionierung auf Kostenstelle
+            'stock_transfer_between' => $this->stockTransferBetween(), // ST201 Umlagern
+            'stock_correction' => $this->stockCorrection(), // ST203 Bestandskorrektur
+            'stock_transfer_from_receiving_area_to_stock' => $this->stockTransferFromReceivingAreaToStock(), // ST207 Umlagerung aus WE-Zone ins LV-Lager (aus Artikelbelegung)
+            'stockTransferFromStockToDispatchArea' => $this->stockTransferFromStockToDispatchArea(), // ST208 Umlagerung aus LV-Lager in WA-Zone (aus Artikelbelegung)
+            default => throw new EntityNotFoundException('Buchungsmethode ' . $bookingMethod . ' wurde nicht gefunden!'),
         };
     }
 
@@ -102,7 +106,12 @@ class BookingMethodService
 
             foreach ($stockLocations as $key => $stockLocation) {
                 if ((string) $fullPal <= $stockUnits) {
-                    $quantity = $key === array_key_last($stockLocations) ? number_format($remainder, 2, '.', '') : $requestData['le_quantity'];
+                    $quantity = $key === array_key_last($stockLocations) ? number_format(
+                        $remainder,
+                        2,
+                        '.',
+                        ''
+                    ) : $requestData['le_quantity'];
 
                     $freeStockLocations[] = [
                         'id' => $stockLocation['id'],
@@ -168,221 +177,246 @@ class BookingMethodService
     /**
      * SI102 Zugang aus Wareneingang.
      */
-    public function stockInFromGoodsReceipt(): void
+    public function stockInFromGoodsReceipt(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SI103 Zugang aus Produktion.
      */
-    public function stockInFromProduction(): void
+    public function stockInFromProduction(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SI104 Rückgabe von Kostenstelle.
      */
-    public function stockInFromCostCentre(): void
+    public function stockInFromCostCentre(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SI105 Einlagern in Container.
      */
-    public function stockInIntoContainer(): void
+    public function stockInIntoContainer(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SI106 WE zur Bestellung.
      */
-    public function stockInForSupplierOrder(): void
+    public function stockInForSupplierOrder(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SI107 Einlagern mit Ladehilfsmittel.
      */
-    public function stockInUsingLoadingEquipment(): void
+    public function stockInUsingLoadingEquipment(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SI111 Einlagern direkt in WE-Zone.
      */
-    public function stockInIntoReceivingArea(): void
+    public function stockInIntoReceivingArea(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * ST112 Rückgabe von Kostenstelle.
      */
-    public function stockTransferFromCostCentre(): void
+    public function stockTransferFromCostCentre(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SI113 Einlagern direkt in Kostenstelle.
      */
-    public function stockInIntoCostCentre(): void
+    public function stockInIntoCostCentre(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SI114 Einlagern direkt in WA-Zone.
      */
-    public function stockInIntoDispatchArea(): void
+    public function stockInIntoDispatchArea(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO151 Auslagern direkt.
      */
-    public function stockOut(): void
+    public function stockOut(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO152 Auslagern auf Kostenstelle.
      */
-    public function stockOutToCostCentre(): void
+    public function stockOutToCostCentre(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO153 Ausleihen auf Kostenstelle.
      */
-    public function lendingToCostCentre(): void
+    public function lendingToCostCentre(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO155 Auslagern aus Container.
      */
-    public function stockOutFromContainer(): void
+    public function stockOutFromContainer(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO156 Auslagern aus Kostenstelle.
      */
-    public function stockOutFromCostCentre(): void
+    public function stockOutFromCostCentre(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO157 Auslagern direkt aus WA-Zone.
      */
-    public function stockOutFromDispatchArea(): void
+    public function stockOutFromDispatchArea(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO158 Auftrag auslagern.
      */
-    public function stockOutByOrder(): void
+    public function stockOutByOrder(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO159 Auslagern direkt aus WE-Zone.
      */
-    public function stockOutFromReceivingArea(): void
+    public function stockOutFromReceivingArea(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO181 Auftrag auslagern (Auftrag-Liste).
      */
-    public function stockOutOrderList(): void
+    public function stockOutOrderList(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO182 Auftrag auslagern mit Kostenstelle (Auftrag-Liste).
      */
-    public function stockOutUsingCostCentre(): void
+    public function stockOutUsingCostCentre(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste).
      */
-    public function stockTransferToCostCentre(): void
+    public function stockTransferToCostCentre(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO187 Auftrag auslagern in WA-Zone.
      */
-    public function stockOutToDispatchArea(): void
+    public function stockOutToDispatchArea(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * SO188 Sammelkommissionierung auf Kostenstelle.
      */
-    public function stockOutOrderConsolidationToCostCentre(): void
+    public function stockOutOrderConsolidationToCostCentre(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * ST201 Umlagern.
      */
-    public function stockTransferBetween(): void
+    public function stockTransferBetween(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * ST203 Bestandskorrektur.
      */
-    public function stockCorrection(): void
+    public function stockCorrection(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * ST207 Umlagerung aus WE-Zone ins LV-Lager (aus Artikelbelegung).
      */
-    public function stockTransferFromReceivingAreaToStock(): void
+    public function stockTransferFromReceivingAreaToStock(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
     /**
      * ST208 Umlagerung aus LV-Lager in WA-Zone (aus Artikelbelegung).
      */
-    public function stockTransferFromStockToDispatchArea(): void
+    public function stockTransferFromStockToDispatchArea(): RedirectResponse|Response|null
     {
         // TODO: Implement logic
+        return null;
     }
 
-// 207,  'move receicvings to storage'              bfid_uml_we_lv      207   // umlagerung aus we-zone ins lv-lager (aus artikelbelegung)
-// 208,  'move storage to dispatch'                 bfid_uml_lv_wa      208   // umlagerung aus lv-lager in wa-zone
 // 209,  'move between cost centres'                bfid_uml_kst_kst    209   // umlagern von kst nach kst
 // 210,  'move between stock units'                 bfid_uml_con_con    210   // umlagern container -> container
 // 211,  'move storage to stock units'              bfid_uml_lv_con     211   // umlagern lv-lager -> container

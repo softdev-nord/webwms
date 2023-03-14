@@ -44,9 +44,9 @@ class StockLocationService
      * @throws NotFoundException
      * @return object[]
      */
-    public function getSockLocationDetailsById(string $stockLocationId): array
+    public function getStockLocationDetailsById(string $stockLocationId): array
     {
-        return $this->stockLocationDataHandler->getSockLocationDetailsById($stockLocationId);
+        return $this->stockLocationDataHandler->getStockLocationDetailsById($stockLocationId);
     }
 
     public function addStockLocation(Request $request): void

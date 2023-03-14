@@ -2,31 +2,35 @@
     // Kunden Tabelle
     const customerTable = $('#customerTable').DataTable({
         lengthChange: false,
+
         ajax: {
-            'url': '/customer_ajax',
-            'dataSrc': ''
+            url: '/customer_ajax',
+            dataSrc: ''
         },
         // Seitenlänge max. 10 Einträge
         pageLength: 10,
-        'language': {
-            'url': './resources/dataTable.German.json'
+        language: {
+            url: './resources/dataTable.German.json'
         },
         // Initialisierung der DataTables Select-Erweiterung
         select: {
             style: 'single'
         },
         columns: [
-            {'data': 'customer_nr'},
-            {'data': 'customer_name'},
-            {'data': 'customer_address_addition'},
-            {'data': 'customer_address_street'},
-            {'data': 'customer_address_street_nr'},
-            {'data': 'customer_country_code'},
-            {'data': 'customer_zip_code'},
-            {'data': 'customer_city'}
+            { data: 'customer_nr' },
+            { data: 'customer_name' },
+            { data: 'customer_address_addition' },
+            { data: 'customer_address_street' },
+            { data: 'customer_address_street_nr' },
+            { data: 'customer_country_code' },
+            { data: 'customer_zip_code' },
+            { data: 'customer_city' }
         ],
         columnDefs: [
-            {className: 'text-center', targets: '_all'},
+            {
+                className: 'text-center',
+                targets: '_all'
+            },
         ],
         dom: 'Bfrtip',
         buttons: [
@@ -88,8 +92,14 @@
             }
         },
         items: {
-            'edit': {name: 'Bearbeiten', icon: 'edit'},
-            'delete': {name: 'Löschen', icon: 'delete'},
+            edit: {
+                name: 'Bearbeiten',
+                icon: 'edit'
+            },
+            delete: {
+                name: 'Löschen',
+                icon: 'delete'
+            },
         }
     });
 
@@ -113,7 +123,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#customer-form-new').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -137,7 +147,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#customer-form-edit').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -162,7 +172,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },

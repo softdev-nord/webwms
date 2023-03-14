@@ -1,33 +1,34 @@
 (function($){
     // StockLocation table
     const stockLocationTable = $('#stockLocationTable').DataTable({
-        "lengthChange": false,
-        "bDestroy": true,
+        lengthChange: false,
+        bDestroy: true,
+
         ajax: {
-            'url': '/stock_location_ajax',
-            'dataSrc': ''
+            url: '/stock_location_ajax',
+            dataSrc: ''
         },
-        // Page length max. 10 entries
+        // Seitenlänge max. 10 Einträge
         pageLength: 10,
-        "language": {
-            "url": "./resources/dataTable.German.json"
+        language: {
+            url: './resources/dataTable.German.json'
         },
-        // Initialisation of the DataTables Select extension
+        // Initialisierung der DataTables Select-Erweiterung
         select: {
             style: 'single'
         },
         columns: [
-            {"data": "stock_location_ln"},
-            {"data": "stock_location_fb"},
-            {"data": "stock_location_sp"},
-            {"data": "stock_location_tf"},
-            {"data": "stock_location_coordinate"},
-            {"data": "stock_location_desc"},
-            {"data": "stock_location_width"},
-            {"data": "stock_location_depth"},
-            {"data": "stock_location_height"},
+            { data: 'stock_location_ln' },
+            { data: 'stock_location_fb' },
+            { data: 'stock_location_sp' },
+            { data: 'stock_location_tf' },
+            { data: 'stock_location_coordinate' },
+            { data: 'stock_location_desc' },
+            { data: 'stock_location_width' },
+            { data: 'stock_location_depth' },
+            { data: 'stock_location_height' },
             {
-                "data": null,
+                data: null,
                 render: function (data, type, row) {
                     if (row.updated_at != null) {
                         return row.updated_at;
@@ -38,7 +39,10 @@
             }
         ],
         columnDefs: [
-            {className: 'text-center', targets: "_all"},
+            {
+                className: 'text-center',
+                targets: '_all'
+            },
         ],
         dom: 'Bfrtip',
         buttons: [
@@ -100,14 +104,20 @@
             }
         },
         items: {
-            "edit": {name: "Bearbeiten", icon: "edit"},
-            'delete': {name: 'Löschen', icon: 'delete'},
+            edit: {
+                name: 'Bearbeiten',
+                icon: 'edit'
+            },
+            delete: {
+                name: 'Löschen',
+                icon: 'delete'
+            },
         }
     });
 
     $(function(){
         // Ändern der Standardbreite des Modals
-        $("#modalCenter .modal-dialog").css('max-width', '98%');
+        $('#modalCenter .modal-dialog').css('max-width', '98%');
     });
 
     $.ajaxSetup({
@@ -125,7 +135,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#stock-location-form-new').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -143,19 +153,19 @@
         const url = '/lagerplatz_bearbeiten/koordinate/' + stockLocationCoordinate;
         const content = '<div class="modal-body"></div>';
 
-        $('#modalCenter .modal-title').text("Lagerplatz bearbeiten");
-        $("#modal-content-ajax").html(content);
+        $('#modalCenter .modal-title').text('Lagerplatz bearbeiten');
+        $('#modal-content-ajax').html(content);
         $('#modalCenter').modal('show');
 
         $.ajax({
             url: url,
-            type: "get",
+            type: 'GET',
             data: ($("#stock-location-form-edit").serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
             success: function (data) {
-                $("#modal-content-ajax").html(data);
+                $('#modal-content-ajax').html(data);
             }
         });
 
@@ -174,7 +184,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
@@ -279,10 +289,10 @@
     });
 
     // Lagerplatz löschen
-    $(document).on('click','button#delete_supplier_order_delete',function(event) {
-        const supplierOrderId = $('#delete_stock_location_stockLocationCoordinate').val();
-        const $form = $('form#supplier-order-modal-delete-ask');
-        const url = '/lagerplatz_löschen/koordinate/' + supplierOrderId;
+    $(document).on('click','button#delete_stock_location_delete',function(event) {
+        const stockLocationCoordinate = $('#delete_stock_location_stockLocationCoordinate').val();
+        const $form = $('form#stock-location-modal-delete-ask');
+        const url = '/lagerplatz_löschen/koordinate/' + stockLocationCoordinate;
         event.preventDefault();
 
         $.ajax({
@@ -326,6 +336,6 @@
 
     // Back to stock location overview
     $(document).on('click','#edit_stock_location_back_to_stock_location_overview',function() {
-        window.location.href = '/lagerplatz'
+        window.location.href = '/lagerplatz';
     });
 })(jQuery);

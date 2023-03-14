@@ -69,7 +69,7 @@
          * @returns {EventEmitter}
          */
         off: function (eventName, callback, context) {
-            var webWms = this,
+            let webWms = this,
                 events = webWms._events || (webWms._events = {}),
                 eventNames = eventName ? [eventName] : Object.keys(events),
                 eventList,
@@ -119,7 +119,7 @@
          * @returns {EventEmitter}
          */
         trigger: function (eventName) {
-            var webWms = this,
+            let webWms = this,
                 events = webWms._events || (webWms._events = {}),
                 eventList = events[eventName],
                 event,
@@ -189,21 +189,21 @@
 
             if ($el.length > 0) {
                 $('<script>').on('load',
-                        function() {
-                            console.log( 'Successfully loaded '+ pluginName +'' );
-                        }
-                    )
-                    .prop( 'src', '/assets/js/webWmsCoreJs/jquery.'+ pluginName +'.js' )
+                    function() {
+                        console.log('Successfully loaded '+ pluginName +'');
+                    }
+                )
+                    .prop('src', '/assets/js/webWmsCoreJs/jquery.'+ pluginName +'.js')
                     .each(
                         function() {
                             // We used jQuery to construct and configure the Script Element,
                             // but we're appending it using a vanilla DOM method.
-                            document.body.appendChild( this );
+                            document.body.appendChild(this);
                         }
                     );
             }
 
             return webWms;
         },
-    })
+    });
 })(jQuery);
