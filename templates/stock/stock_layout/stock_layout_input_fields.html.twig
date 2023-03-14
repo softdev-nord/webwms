@@ -1,0 +1,66 @@
+<div class="row">
+    {% block webwms_stock_layout_form %}
+        <div class="card">
+            {{ form_start(stockLayoutForm) }}
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Lagernummer</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(stockLayoutForm.stockNr) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Fachboden</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(stockLayoutForm.stockDescription) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Fachboden</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(stockLayoutForm.stockLevel1) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Stellplatz</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(stockLayoutForm.stockLevel2) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Tiefe</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(stockLayoutForm.stockLevel3) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">X-Koordinate</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(stockLayoutForm.stockLevel4) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Lager-Modell</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(stockLayoutForm.stockModel) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Lager-Typ</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(stockLayoutForm.stockTyp) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="text" class="control-label col-xs-4">Bezeichnung Lang</label>
+                <div class="col-xs-8" style="margin-bottom: 5px;">
+                    {{ form_row(stockLayoutForm.stockLongDescription) }}
+                </div>
+            </div>
+
+            <div class="text-center">
+                {{ form_widget(stockLayoutForm.save) }} {{ form_widget(stockLayoutForm.back_to_stock_layout_overview) }}
+            </div>
+            {{ form_end(stockLayoutForm) }}
+        </div>
+    {% endblock %}
+</div>
