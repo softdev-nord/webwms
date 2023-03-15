@@ -1,11 +1,5 @@
 {# templates/menu_vertical.html.twig #}
 
-{% block javascripts %}
-    {% if configuration.name == 'vertical_menu' and configuration.value == 'true' %}
-        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/sidebars.js') }}"></script>
-    {% endif %}
-{% endblock %}
-
 {% block webwms_header_menu_vertical_navigation %}
     <!-- Sidebar -->
     <nav id="sidebar" class="sidebar-wrapper navbar-dark bg-dark">
@@ -187,18 +181,6 @@
                                         Übersicht Bestellungen
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="{{ path('add_supplier_order') }}">
-                                        <i class="mdi mdi-file-plus" style="font-size: 16px"></i>
-                                        Bestellung anlegen
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="mdi mdi-file-edit" style="font-size: 16px"></i>
-                                        Bestellung ändern/stornieren
-                                    </a>
-                                </li>
                             </ul>
                         </div>
                     </li>
@@ -213,18 +195,6 @@
                                     <a href="{{ path('customer_orders') }}">
                                         <i class="mdi mdi-file-search-outline" style="font-size: 16px"></i>
                                         Übersicht Aufträge
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ path('add_customer_order') }}">
-                                        <i class="mdi mdi-file-plus-outline" style="font-size: 16px"></i>
-                                        Auftrag anlegen
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="mdi mdi-file-edit-outline" style="font-size: 16px"></i>
-                                        Auftrag ändern/stornieren
                                     </a>
                                 </li>
                             </ul>
@@ -244,11 +214,9 @@
                                     </a>
                                     <div class="sidebar-submenu-sub">
                                         <ul>
-                                            <li><a href="{{ path('article') }}">Übersicht Artikel</a></li>
-                                            <li><a id="add_article">Artikel Anlegen</a></li>
-                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
-                                                <li><a href="#">Sachmerkmale zuordnen</a></li>
-                                            {% endif %}
+                                            <li>
+                                                <a href="{{ path('article') }}">Übersicht Artikel</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
@@ -259,12 +227,15 @@
                                     </a>
                                     <div class="sidebar-submenu-sub">
                                         <ul>
-                                            <li><a href="{{ path('stock_location') }}">Übersicht Lagerplätze</a></li>
-                                            <li><a href="{{ path('stock_layout') }}">Lagerlayout</a></li>
-                                            <li><a href="#">Lagerzonen</a></li>
-                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
-                                                <li><a href="{{ path('add_stock_location') }}">Lager anlegen</a></li>
-                                            {% endif %}
+                                            <li>
+                                                <a href="{{ path('stock_location') }}">Übersicht Lagerplätze</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path('stock_layout') }}">Lagerlayout</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Lagerzonen</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
@@ -275,10 +246,9 @@
                                     </a>
                                     <div class="sidebar-submenu-sub">
                                         <ul>
-                                            <li><a href="{{ path('customer') }}">Übersicht Kunden</a></li>
-                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
-                                                <li><a href="{{ path('add_customer') }}">Kunden Anlegen</a></li>
-                                            {% endif %}
+                                            <li>
+                                                <a href="{{ path('customer') }}">Übersicht Kunden</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
@@ -289,10 +259,9 @@
                                     </a>
                                     <div class="sidebar-submenu-sub">
                                         <ul>
-                                            <li><a href="{{ path('supplier') }}">Übersicht Lieferanten</a></li>
-                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
-                                                <li><a href="{{ path('add_supplier') }}">Lieferanten Anlegen</a></li>
-                                            {% endif %}
+                                            <li>
+                                                <a href="{{ path('supplier') }}">Übersicht Lieferanten</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
@@ -309,11 +278,9 @@
                                     </a>
                                     <div class="sidebar-submenu-sub">
                                         <ul>
-                                            <li><a href="{{ path('user') }}">Übersicht Benutzer</a></li>
-                                            {% if has_role(app.user, 'ROLE_SUPER_ADMIN') %}
-                                                <li><a href="#">Benutzer anlegen</a></li>
-                                                <li><a href="#">Benutzerpasswort zurücksetzen</a></li>
-                                            {% endif %}
+                                            <li>
+                                                <a href="{{ path('user') }}">Übersicht Benutzer</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
