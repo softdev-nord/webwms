@@ -6,7 +6,7 @@ namespace WebWMS\Form\CustomerOrder;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,36 +30,27 @@ class EditCustomerOrderType extends AbstractType
             ->add('customerOrderId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'inputAftNr',
-                    'id' => 'customerOrderId',
-                    'data-type' => 'customerOrderId',
+                    'id' => 'customer_order_id',
                 ],
             ])
-            ->add('customerId', HiddenType::class, [
-                'label' => false,
+            ->add('customerOrderNr', TextType::class, [
+                'label' => 'Auftrags-Nr',
                 'attr' => [
-                    'class' => 'form-control autocomplete_customers',
-                    'id' => 'customerId',
-                    'data-type' => 'customerId',
+                    'class' => 'form-control is--transparent',
+                    'id' => 'customer_order_nr',
                 ],
             ])
             ->add('usrId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'form-control autocomplete_customers',
-                    'id' => 'usrId',
-                    'data-type' => 'usrId',
+                    'id' => 'user_id',
+                    'data-type' => 'user_id',
                 ],
             ])
-            ->add('customerOrderNr', TextType::class, [
-                'empty_data' => '',
-                'label' => 'Auftrags-Nr',
+            ->add('customerId', HiddenType::class, [
+                'label' => false,
                 'attr' => [
-                    'class' => 'form-control',
-                    'id' => 'customerOrderNr',
-                    'data-type' => 'customerOrderNr',
-                    'style' => 'background-color: transparent',
-                    'readonly' => true,
+                    'id' => 'customer_id',
                 ],
             ])
             ->add('customerOrderReference', TextType::class, [
@@ -71,7 +62,7 @@ class EditCustomerOrderType extends AbstractType
                     'placeholder' => 'Auftrags-Referenz',
                 ],
             ])
-            ->add('customerOrderDate', DateType::class, [
+            ->add('customerOrderDate', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'dd.MM.yyyy',
@@ -81,7 +72,7 @@ class EditCustomerOrderType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('customerOrderCreationDate', DateType::class, [
+            ->add('customerOrderCreationDate', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'dd.MM.yyyy',

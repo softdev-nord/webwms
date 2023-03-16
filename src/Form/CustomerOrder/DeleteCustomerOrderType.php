@@ -28,7 +28,7 @@ class DeleteCustomerOrderType extends AbstractType
             ->add('customerOrderId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'form-control',
+                    'id' => 'customer_order_id',
                 ],
             ])
             ->add('delete', ButtonType::class, [

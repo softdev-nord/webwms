@@ -81,7 +81,7 @@ const suppliersAutofill = (function () {
             minLength: 1,
             select: function (event, ui) {
                 let resArraySupplier;
-
+                //Splittung des resArraySupplier Arrays
                 resArraySupplier = ui.item.data.split("|");
 
                 $('#supplier_nr').val(resArraySupplier[0]);

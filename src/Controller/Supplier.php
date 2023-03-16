@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Entity\Supplier as SupplierEntity;
 use WebWMS\Helper\FormHelper\SupplierFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
@@ -36,7 +37,7 @@ class Supplier extends AbstractController
     #[Route('/lieferanten', name: 'supplier')]
     public function index(): Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -56,7 +57,7 @@ class Supplier extends AbstractController
     #[Route('/lieferant_anlegen', name: 'add_supplier')]
     public function addSupplier(Request $request): RedirectResponse|Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -64,8 +65,10 @@ class Supplier extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var SupplierEntity $requestData */
             $requestData = $form->getData();
             $supplierNr = $requestData->getSupplierNr();
+            $responseData = [];
 
             $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde erfolgreich angelegt.';
             $logMessage = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde angelegt.';
@@ -89,13 +92,13 @@ class Supplier extends AbstractController
     #[Route('/lieferant_bearbeiten/supplierId/{supplierId}', name: 'edit_supplier')]
     public function editSupplier(Request $request, int $supplierId): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $supplier = $this->supplierService->getSupplierById($supplierId);
 
-        if (!$supplier) {
+        if ($supplier === null) {
             return null;
         }
 
@@ -103,11 +106,12 @@ class Supplier extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var SupplierEntity $requestData */
             $requestData = $form->getData();
             $supplierNr = $requestData->getSupplierNr();
             $responseData = $this->supplierValidationService->validateSupplierData($requestData);
 
-            if ($responseData['success']) {
+            if (isset($responseData['success'])) {
                 $responseData['message'] = 'Die Änderungen am Lieferanten ' . $supplierNr . ' wurden erfolgreich gespeichert.';
                 $logMessage = 'Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde geändert.';
 
@@ -135,13 +139,13 @@ class Supplier extends AbstractController
     #[Route('/lieferant_löschen/supplierId/{supplierId}', name: 'delete_supplier')]
     public function deleteSupplier(Request $request, int $supplierId): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $supplier = $this->supplierService->getSupplierById($supplierId);
 
-        if (!$supplier) {
+        if ($supplier === null) {
             return null;
         }
 
@@ -149,8 +153,10 @@ class Supplier extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var SupplierEntity $requestData */
             $requestData = $form->getData();
             $supplierNr = $requestData->getSupplierNr();
+            $responseData = [];
 
             $responseData['message'] = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Der Lieferant mit der Lieferanten-Nr. ' . $supplierNr . ' wurde gelöscht.';

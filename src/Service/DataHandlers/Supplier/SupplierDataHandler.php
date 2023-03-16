@@ -52,7 +52,7 @@ class SupplierDataHandler
     public function getSuppliers(): JsonResponse
     {
         $connection = $this->entityManager->getConnection();
-        $numOfBoxSupplier = !empty(filter_input(INPUT_GET, 'numOfBoxSupplier')) ? filter_input(INPUT_GET, 'numOfBoxSupplier') : '';
+        $numOfBoxSupplier = filter_input(INPUT_GET, 'numOfBoxSupplier') !== null ? filter_input(INPUT_GET, 'numOfBoxSupplier') : '';
 
         $boxName = match ($numOfBoxSupplier) {
             'supplier_name' => 'supplier_name',
@@ -66,8 +66,8 @@ class SupplierDataHandler
         };
 
         $data = [];
-        if (!empty(filter_input(INPUT_GET, 'name_supplier'))) {
-            $nameSupplier = strtolower(trim(filter_input(INPUT_GET, 'name_supplier')));
+        if (filter_input(INPUT_GET, 'name_supplier') !== null) {
+            $nameSupplier = strtolower(trim(strval(filter_input(INPUT_GET, 'name_supplier'))));
 
             $sql = "SELECT supplier_nr, supplier_name, supplier_address_addition, supplier_address_street,
                             supplier_address_street_nr, supplier_address_country_code, supplier_address_zipcode,

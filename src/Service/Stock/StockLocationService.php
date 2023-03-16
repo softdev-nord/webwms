@@ -32,7 +32,7 @@ class StockLocationService
         return $this->stockLocationDataHandler->getAllStockLocation();
     }
 
-    public function getStockLocationByCoordinate(int $stockLocationCoordinate): ?StockLocation
+    public function getStockLocationByCoordinate(string $stockLocationCoordinate): ?StockLocation
     {
         return $this->stockLocationDataHandler
             ->getStockLocationByCoordinate(
@@ -61,7 +61,7 @@ class StockLocationService
 
     public function deleteStockLocation(StockLocation $stockLocation): void
     {
-        $this->stockLocationDataHandler->deletestockLocation($stockLocation);
+        $this->stockLocationDataHandler->deleteStockLocation($stockLocation);
     }
 
     /**
@@ -102,7 +102,7 @@ class StockLocationService
 
     /**
      * @throws Exception
-     * @return object[]
+     * @return array<int, mixed>
      */
     public function getFirstFreeStockLocation(string $stockSystem, int $limit): array
     {

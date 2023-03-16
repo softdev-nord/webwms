@@ -30,7 +30,7 @@ class Configuration extends AbstractController
     {
         $generalConfiguration = $this->createForm(GeneralConfigurationType::class);
 
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 

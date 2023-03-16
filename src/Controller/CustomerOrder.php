@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Entity\CustomerOrder as CustomerOrderEntity;
+use WebWMS\Entity\CustomerOrderPos as CustomerOrderPosEntity;
 use WebWMS\Helper\FormHelper\CustomerOrderFormHelper;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\Customer\CustomerService;
@@ -40,7 +42,7 @@ class CustomerOrder extends AbstractController
     #[Route('/auftrag', name: 'customer_orders')]
     public function index(): Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -60,7 +62,7 @@ class CustomerOrder extends AbstractController
     #[Route('/auftrag_anlegen', name: 'add_customer_order')]
     public function addCustomerOrder(Request $request): RedirectResponse|Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -68,8 +70,10 @@ class CustomerOrder extends AbstractController
 
         $customerOrderForm->handleRequest($request);
         if ($customerOrderForm->isSubmitted() && $customerOrderForm->isValid()) {
+            /** @var CustomerOrderEntity $customerOrderRequestData */
             $customerOrderRequestData = $customerOrderForm->getData();
             $customerOrderNr = $customerOrderRequestData->getCustomerOrderNr();
+            $responseData = [];
 
             $responseData['message'] = 'Der Auftrag mit der Auftrags-Nr. ' . $customerOrderNr . ' wurde erfolgreich angelegt.';
             $logMessage = 'Der Auftrag mit der Auftrags-Nr. ' . $customerOrderNr . ' wurde angelegt.';
@@ -84,8 +88,10 @@ class CustomerOrder extends AbstractController
 
         $customerOrderPosForm->handleRequest($request);
         if ($customerOrderPosForm->isSubmitted() && $customerOrderPosForm->isValid()) {
+            /** @var CustomerOrderEntity $customerOrderRequestData */
             $customerOrderRequestData = $customerOrderPosForm->getData();
             $customerOrderNr = $customerOrderRequestData->getCustomerOrderNr();
+            $responseData = [];
 
             $responseData['message'] = 'Die Position(en) für die Auftrags-Nr. ' . $customerOrderNr . ' wurde(n) erfolgreich angelegt.';
             $logMessage = 'Die Position(en) für die Auftrags-Nr. ' . $customerOrderNr . ' wurde(n) angelegt.';
@@ -111,14 +117,14 @@ class CustomerOrder extends AbstractController
     #[Route('/auftrag_bearbeiten/customerOrderId/{customerOrderId}', name: 'edit_customer_order')]
     public function editCustomerOrder(Request $request, int $customerOrderId): RedirectResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $customerOrder = $this->customerOrderService->getCustomerOrderById($customerOrderId);
         $customerOrderPos = $this->customerOrderPosService->getCustomerOrderPosByCustomerOrderId($customerOrderId);
 
-        if (!$customerOrder) {
+        if ($customerOrder === null) {
             return null;
         }
 
@@ -126,8 +132,10 @@ class CustomerOrder extends AbstractController
         $customerOrderForm->handleRequest($request);
 
         if ($customerOrderForm->isSubmitted() && $customerOrderForm->isValid()) {
+            /** @var CustomerOrderEntity $customerOrderRequestData */
             $customerOrderRequestData = $customerOrderForm->getData();
             $customerOrderNr = $customerOrderRequestData->getCustomerOrderNr();
+            $responseData = [];
 
             $responseData['message'] = 'Der Auftrag mit der Auftrags-Nr. ' . $customerOrderNr . ' wurde erfolgreich geändert.';
             $logMessage = 'Der Auftrag mit der Auftrags-Nr. ' . $customerOrderNr . ' wurde geändert.';
@@ -142,11 +150,13 @@ class CustomerOrder extends AbstractController
         $customerOrderPosForm->handleRequest($request);
 
         if ($customerOrderPosForm->isSubmitted() && $customerOrderPosForm->isValid()) {
+            /** @var CustomerOrderPosEntity $customerOrderPosRequestData */
             $customerOrderPosRequestData = $customerOrderPosForm->getData();
-            $customerOrderNr = $customerOrderPosRequestData->getCustomerOrderNr();
+            $customerOrderId = $customerOrderPosRequestData->getCustomerOrderId();
+            $responseData = [];
 
-            $responseData['message'] = 'Die Position(en) für die Auftrags-Nr. ' . $customerOrderNr . ' wurde(n) erfolgreich angelegt.';
-            $logMessage = 'Die Position(en) für die Auftrags-Nr. ' . $customerOrderNr . ' wurde(n) angelegt.';
+            $responseData['message'] = 'Die Position(en) für die Auftrags-Nr. VLS-01-' . $customerOrderId . ' wurde(n) erfolgreich angelegt.';
+            $logMessage = 'Die Position(en) für die Auftrags-Nr. VLS-01-' . $customerOrderId . ' wurde(n) angelegt.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->customerOrderPosService->updateCustomerOrderPos($customerOrderPosRequestData);
@@ -170,14 +180,14 @@ class CustomerOrder extends AbstractController
     #[Route('/auftrag_löschen/customerOrderId/{customerOrderId}', name: 'delete_customer_order')]
     public function deleteCustomerOrder(Request $request, int $customerOrderId): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $customerOrder = $this->customerOrderService->getCustomerOrderById($customerOrderId);
         $customerOrderPos = $this->customerOrderPosService->getCustomerOrderPosByCustomerOrderId($customerOrderId);
 
-        if (!$customerOrder) {
+        if ($customerOrder === null) {
             return null;
         }
 
@@ -185,11 +195,13 @@ class CustomerOrder extends AbstractController
 
         $customerOrderForm->handleRequest($request);
         if ($customerOrderForm->isSubmitted() && $customerOrderForm->isValid()) {
+            /** @var CustomerOrderEntity $customerOrderRequestData */
             $customerOrderRequestData = $customerOrderForm->getData();
             $customerOrderNr = $customerOrderRequestData->getCustomerOrderNr();
+            $responseData = [];
 
-            $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. ' . $customerOrderNr . ' wurde erfolgreich gelöscht.';
-            $logMessage = 'Die Bestellung mit der Bestell-Nr. ' . $customerOrderNr . ' wurde gelöscht.';
+            $responseData['message'] = 'Der Auftrag mit der Auftrags-Nr. ' . $customerOrderNr . ' wurde erfolgreich gelöscht.';
+            $logMessage = 'Der Auftrag mit der Auftrags-Nr. ' . $customerOrderNr . ' wurde gelöscht.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->customerOrderService->deleteCustomerOrder($customerOrderRequestData);
@@ -201,11 +213,13 @@ class CustomerOrder extends AbstractController
 
         $customerOrderPosForm->handleRequest($request);
         if ($customerOrderPosForm->isSubmitted() && $customerOrderPosForm->isValid()) {
+            /** @var CustomerOrderPosEntity $customerOrderPosRequestData */
             $customerOrderPosRequestData = $customerOrderPosForm->getData();
-            $customerOrderNr = $customerOrderPosRequestData->getCustomerOrderNr();
+            $customerOrderId = $customerOrderPosRequestData->getCustomerOrderId();
+            $responseData = [];
 
-            $responseData['message'] = 'Die Position(en) für die Auftrags-Nr. ' . $customerOrderNr . ' wurde(n) erfolgreich gelöscht.';
-            $logMessage = 'Die Position(en) für die Auftrags-Nr. ' . $customerOrderNr . ' wurde(n) gelöscht.';
+            $responseData['message'] = 'Die Position(en) für die Auftrags-Nr. VLS-01-' . $customerOrderId . ' wurde(n) erfolgreich gelöscht.';
+            $logMessage = 'Die Position(en) für die Auftrags-Nr. VLS-01-' . $customerOrderId . ' wurde(n) gelöscht.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->customerOrderPosService->deleteCustomerOrderPos($customerOrderPosRequestData);

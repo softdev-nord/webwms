@@ -37,7 +37,7 @@ class StockTransactions extends AbstractController
     #[Route('/stock_in', name: 'stock_in')]
     public function stockIn(Request $request): RedirectResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -377,7 +377,7 @@ class StockTransactions extends AbstractController
     #[Route('/edit_pre_selected_stock_location/id/{stockLocationId}', name: 'edit_pre_selected_stock_location')]
     public function editPreSelectedStockLocation(Request $request): Response
     {
-        $stockLocationId = $request->attributes->get('stockLocationId');
+        $stockLocationId = strval($request->attributes->get('stockLocationId'));
         /* @var $stockSystem \WebWMS\Entity\StockLocation */
         $stockSystem = $this->stockLocationService->getStockLocationDetailsById($stockLocationId);
 

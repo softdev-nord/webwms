@@ -53,7 +53,7 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
             new UserBadge($username, function ($userIdentifier) {
                 $user = $this->userRepository->findOneBy(['username' => $userIdentifier]);
 
-                if (!$user) {
+                if ($user === null) {
                     throw new UserNotFoundException();
                 }
 

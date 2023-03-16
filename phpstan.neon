@@ -1,20 +1,21 @@
 includes:
     - phpstan-baseline.neon
+    - ./vendor/phpstan/phpstan-doctrine/extension.neon
     - ./vendor/phpstan/phpstan-symfony/extension.neon
+    - ./vendor/phpstan/phpstan-strict-rules/rules.neon
+    - rules.neon
 
 parameters:
 
     #  max or choose from 10 levels (0 is the loosest, 9 is the strictest).
-    level: 8
-
-#    symfony:
-#        container_xml_path: var/cache/dev/WebWMS_KernelDevDebugContainer.xml
+    level: max
 
     paths:
         - src
 
     ignoreErrors:
     	- '#Cannot access offset#'
+    	- '#Argument of an invalid type mixed supplied for foreach, only iterables are supported.#'
 
     reportUnmatchedIgnoredErrors: false
     checkGenericClassInNonGenericObjectType: false

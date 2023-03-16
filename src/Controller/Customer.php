@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Entity\Customer as CustomerEntity;
 use WebWMS\Helper\FormHelper\CustomerFormHelper;
 use WebWMS\Service\Customer\CustomerService;
 use WebWMS\Service\LoggingService;
@@ -36,7 +37,7 @@ class Customer extends AbstractController
     #[Route('/kunden', name: 'customer')]
     public function index(): Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -56,7 +57,7 @@ class Customer extends AbstractController
     #[Route('/kunden_anlegen', name: 'add_customer')]
     public function addCustomer(Request $request): RedirectResponse|Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -64,14 +65,20 @@ class Customer extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var CustomerEntity $requestData */
             $requestData = $form->getData();
             $customerNr = $requestData->getCustomerNr();
+            $responseData = $this->customerValidationService->validateCustomerData($requestData);
 
-            $responseData['message'] = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde erfolgreich angelegt.';
-            $logMessage = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde angelegt.';
+            if (isset($responseData['success'])) {
+                $responseData['message'] = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde erfolgreich angelegt.';
+                $logMessage = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde angelegt.';
 
-            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->customerService->addCustomer($requestData);
+                $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
+                $this->customerService->addCustomer($requestData);
+
+                return new JsonResponse($responseData);
+            }
 
             return new JsonResponse($responseData);
         }
@@ -89,13 +96,13 @@ class Customer extends AbstractController
     #[Route('kunden_bearbeiten/customerId/{customerId}', name: 'edit_customer')]
     public function editCustomer(Request $request, int $customerId): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $customer = $this->customerService->getCustomerById($customerId);
 
-        if (!$customer) {
+        if ($customer === null) {
             return null;
         }
 
@@ -103,11 +110,12 @@ class Customer extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var CustomerEntity $requestData */
             $requestData = $form->getData();
             $customerNr = $requestData->getCustomerNr();
             $responseData = $this->customerValidationService->validateCustomerData($requestData);
 
-            if ($responseData['success']) {
+            if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurden erfolgreich geändert.';
                 $logMessage = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde geändert.';
 
@@ -116,8 +124,6 @@ class Customer extends AbstractController
 
                 return new JsonResponse($responseData);
             }
-
-            $responseData['message'] = 'Die Änderungen der Kundendaten konnten nicht gespeichert werden.';
 
             return new JsonResponse($responseData);
         }
@@ -135,13 +141,13 @@ class Customer extends AbstractController
     #[Route('/kunden_löschen/customerId/{customerId}', name: 'delete_customer')]
     public function deleteCustomer(Request $request, int $customerId): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $customer = $this->customerService->getCustomerById($customerId);
 
-        if (!$customer) {
+        if ($customer === null) {
             return null;
         }
 
@@ -149,8 +155,10 @@ class Customer extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var CustomerEntity $requestData */
             $requestData = $form->getData();
             $customerNr = $requestData->getCustomerNr();
+            $responseData = [];
 
             $responseData['message'] = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde gelöscht.';

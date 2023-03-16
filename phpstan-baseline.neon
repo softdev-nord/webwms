@@ -1,6 +1,2 @@
 parameters:
-	ignoreErrors:
-		-
-			message: "#^Property WebWMS\\\\Entity\\\\User\\:\\:\\$roles type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Entity/User.php
+	ignoreErrors: []

@@ -75,11 +75,11 @@ class SupplierOrderPosDataHandler
         $requestData = $request->request->all()['supplier_order_pos'];
         $supplierOrderPos = new SupplierOrderPos();
 
-        $supplierOrderPos->setSupplierOrderId((int) $requestData['supplierOrderId']);
-        $supplierOrderPos->setSupplierOrderPosQuantity((int) $requestData['supplierOrderPosQuantity']);
-        $supplierOrderPos->setArticleId((int) $requestData['articleId']);
-        $supplierOrderPos->setArticleNr((string) $requestData['articleNr']);
-        $supplierOrderPos->setArticleName((string) $requestData['articleName']);
+        $supplierOrderPos->setSupplierOrderId(intval($requestData['supplierOrderId']));
+        $supplierOrderPos->setSupplierOrderPosQuantity(intval($requestData['supplierOrderPosQuantity']));
+        $supplierOrderPos->setArticleId(intval($requestData['articleId']));
+        $supplierOrderPos->setArticleNr(strval($requestData['articleNr']));
+        $supplierOrderPos->setArticleName(strval($requestData['articleName']));
         $supplierOrderPos->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($supplierOrderPos);

@@ -30,7 +30,6 @@ class AddSupplierOrderType extends AbstractType
             ->add('supplierOrderId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'inputOrderNr',
                     'id' => 'supplier_order_id',
                 ],
             ])
@@ -38,13 +37,12 @@ class AddSupplierOrderType extends AbstractType
                 'label' => 'Bestellungs-Nr',
                 'attr' => [
                     'class' => 'form-control is--transparent',
-                    'data-type' => 'supplier_order_nr',
+                    'id' => 'supplier_order_nr',
                 ],
             ])
             ->add('usrId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'form-control',
                     'id' => 'user_id',
                     'data-type' => 'user_id',
                 ],
@@ -52,13 +50,15 @@ class AddSupplierOrderType extends AbstractType
             ->add('supplierId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'form-control',
+                    'id' => 'supplier_id',
                 ],
             ])
             ->add('supplierOrderReference', TextType::class, [
                 'label' => 'Bestellungs-Referenz',
                 'attr' => [
                     'class' => 'form-control',
+                    'id' => 'supplier_order_reference',
+                    'placeholder' => 'Bestellungs-Referenz',
                 ],
             ])
             ->add('supplierOrderDate', DateTimeType::class, [

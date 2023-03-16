@@ -92,6 +92,8 @@
             const row = stockLocationTable.row(options.$trigger),
                 stockLocationCoordinate = row.data().stock_location_coordinate;
 
+            console.log(stockLocationCoordinate);
+
             switch (key) {
                 case 'edit' :
                     editStockLocation(stockLocationCoordinate);

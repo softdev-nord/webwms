@@ -6,7 +6,6 @@ namespace WebWMS\Controller;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,7 +45,7 @@ class StockOccupancy extends AbstractController
     #[Route('/grafische_lagerbelegung', name: 'stock_occupancy_graphical')]
     public function stockOccupancyGraphical(Request $request): Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -55,9 +54,10 @@ class StockOccupancy extends AbstractController
 
     /**
      * @throws Exception
+     * @return array<int, array<string, mixed>>
      */
     #[Route('/stock_occupancy_ajax', name: 'stock_occupancy_ajax')]
-    public function getAllStockOccupancy(): JsonResponse
+    public function getAllStockOccupancy(): array
     {
         return $this->stockOccupancyService->getAllStockOccupancy();
     }
@@ -94,22 +94,22 @@ class StockOccupancy extends AbstractController
      */
     public function getStockOccupancyResults(Request $request): Response
     {
-        $stock = [];
-
-        if ($request->attributes->get('stock_location_ln')) {
+        if ($request->attributes->get('stock_location_ln') !== null) {
             $stockLocationLn = $request->attributes->get('stock_location_ln');
         } else {
             $stockLocationLn = $this->stockLocationService->getAllStockLocationsForSelect()[0]['stock_location_ln'];
         }
 
-        $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn((int) $stockLocationLn);
+        $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn(intval($stockLocationLn));
         $stockResults = [];
+        $stock = [];
 
-        foreach ($allStockOccupancy as $stock) {
-            match ($stock['system']) {
-                'Block-Lager' => $stockResults[$stock['sp']][] = $stock,
-                default => $stockResults[$stock['fb']][] = $stock,
+        foreach ($allStockOccupancy as $stockOccupancy) {
+            match ($stockOccupancy['system']) {
+                'Block-Lager' => $stockResults[$stockOccupancy['sp']][] = $stockOccupancy,
+                default => $stockResults[$stockOccupancy['fb']][] = $stockOccupancy,
             };
+            $stock[] = $stockOccupancy['system'];
         }
 
         return $this->render(
@@ -123,7 +123,7 @@ class StockOccupancy extends AbstractController
                 'page' => 'Lagerbelegungen',
                 'stockSelect' => $this->stockLocationService->getAllStockLocationsForSelect(),
                 'stockResults' => array_reverse($stockResults, true),
-                'stockSystem' => $stock['system'],
+                'stockSystem' => $stock,
             ]
         );
     }
@@ -136,7 +136,7 @@ class StockOccupancy extends AbstractController
     {
         $article = $this->stockOccupancyService
             ->getStockOccupancyByArticleNr(
-                $request->attributes->get('article_nr')
+                intval($request->attributes->get('article_nr'))
             );
 
         return $this->render(

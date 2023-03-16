@@ -40,7 +40,7 @@ class BookingMethodService
     /**
      * @throws EntityNotFoundException
      */
-    public function getBookingMethod(string $bookingMethod, Request $request): RedirectResponse|Response|null
+    public function getBookingMethod(mixed $bookingMethod, Request $request): RedirectResponse|Response|null
     {
         return match ($bookingMethod) {
             'stock_in' => $this->stockIn($request), // SI101 Einlagern direkt
@@ -88,7 +88,7 @@ class BookingMethodService
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
             $stockUnits = (int) ceil(
-                (int) $requestData['quantity'] / (int) $requestData['le_quantity'],
+                intval($requestData['quantity']) / intval($requestData['le_quantity']),
             );
 
             $stockSystem = match ($requestData['standard_loading_equipment']) {
@@ -98,8 +98,8 @@ class BookingMethodService
                 default => 'KST',
             };
 
-            $fullPal = intdiv((int) $requestData['quantity'], (int) $requestData['le_quantity']);
-            $remainder = fmod((float) $requestData['quantity'], (float) $requestData['le_quantity']);
+            $fullPal = intdiv(intval($requestData['quantity']), intval($requestData['le_quantity']));
+            $remainder = fmod(floatval($requestData['quantity']), floatval($requestData['le_quantity']));
 
             $stockLocations = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $stockUnits);
             $suId = $this->transportRequestService->getLastStockUnit();

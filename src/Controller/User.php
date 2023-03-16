@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Entity\User as UserEntity;
 use WebWMS\Form\User\Model\ChangePassword;
 use WebWMS\Helper\FormHelper\UserFormHelper;
 use WebWMS\Service\DateTimeService;
@@ -45,7 +46,7 @@ class User extends AbstractController
     #[Route('/benutzer', name: 'user')]
     public function index(): Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -65,7 +66,7 @@ class User extends AbstractController
     #[Route('/benutzer_anlegen', name: 'add_user')]
     public function addUser(Request $request): RedirectResponse|Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -73,8 +74,11 @@ class User extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UserEntity $userRequestData */
             $userRequestData = $form->getData();
+
             $logMessage = 'Der Benutzer ' . $userRequestData->getUsername() . ' wurde angelegt.';
+
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->userService->addUser($request);
 
@@ -97,26 +101,26 @@ class User extends AbstractController
     #[Route('benutzer_bearbeiten/benutzername/{username}', name: 'edit_user')]
     public function editUser(Request $request, string $username): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $user = $this->userService->getUserByUsername($username);
 
-        if (!$user) {
+        if ($user === null) {
             return null;
         }
 
         $form = $this->userFormHelper->editUserForm($user);
         $form->handleRequest($request);
-        $username = $user->getUserIdentifier();
-        $requestData = $form->getData();
-
-        $responseData = $this->userValidationService->validateUserData($requestData);
-        $responseData['message'] = '';
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($responseData['success']) {
+            /** @var UserEntity $userRequestData */
+            $userRequestData = $form->getData();
+            $username = $user->getUserIdentifier();
+            $responseData = $this->userValidationService->validateUserData($userRequestData);
+
+            if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Benutzer ' . $username . ' wurde erfolgreich geändert.';
                 $logMessage = 'Der Benutzer ' . $username . ' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
@@ -145,27 +149,28 @@ class User extends AbstractController
     #[Route('benutzer_passwort_bearbeiten/benutzername/{username}', name: 'edit_user_password')]
     public function editUserPassword(Request $request, string $username): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $user = $this->userService->getUserByUsername($username);
 
-        if (!$user) {
+        if ($user === null) {
             return null;
         }
 
         $changePasswordModel = new ChangePassword();
         $form = $this->userFormHelper->changePasswordForm($changePasswordModel);
         $form->handleRequest($request);
-        $username = $user->getUserIdentifier();
-        $newPassword = $form->getData()->getNewPassword();
-
-        $responseData = $this->passwordValidationService->validateChangePasswordData($user, $form);
-        $responseData['message'] = '';
 
         if ($form->isSubmitted()) {
-            if ($responseData['success']) {
+            /** @var ChangePassword $changeRequestData */
+            $changeRequestData = $form->getData();
+            $username = $user->getUserIdentifier();
+            $newPassword = $changeRequestData->getNewPassword();
+            $responseData = $this->passwordValidationService->validateChangePasswordData($user, $form);
+
+            if (isset($responseData['success'])) {
                 $responseData['message'] = 'Das Passwort für den Benutzer ' . $username . ' wurde erfolgreich geändert.';
                 $logMessage = 'Das Passwort für den Benutzer ' . $username . ' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
@@ -196,13 +201,13 @@ class User extends AbstractController
     #[Route('/benutzer_löschen/benutzername/{username}', name: 'delete_user')]
     public function deleteArticle(Request $request, string $username): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $user = $this->userService->getUserByUsername($username);
 
-        if (!$user) {
+        if ($user === null) {
             return null;
         }
 
@@ -210,6 +215,9 @@ class User extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $username = $user->getUserIdentifier();
+            $responseData = [];
+
             $responseData['message'] = 'Der Benutzer ' . $username . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Der Benutzer ' . $username . ' wurde gelöscht.';
 

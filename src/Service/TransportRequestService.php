@@ -48,7 +48,7 @@ class TransportRequestService
 
     public function createTransportRequest(Request $request, string $user): void
     {
-        $requestData = $request->request->all()['stock_in_final'];
+        $requestData = (array) $request->request->all()['stock_in_final'];
         $articleNr = $requestData['article_nr'];
         $bookingMethod = $requestData['booking_method'];
         $charge = $requestData['charge'];
@@ -57,26 +57,26 @@ class TransportRequestService
         $transportRequest = new TransportRequest();
 
         foreach ($requestData['stock_in_final'] as $key => $data) {
-            $transportRequest->setSuId((int) $data['stock_su_id']);
+            $transportRequest->setSuId(intval($data['stock_su_id']));
             $transportRequest->setTrNr($this->getLastTransportRequestNr() + 1);
             $transportRequest->setTrPos($key + 1);
             $transportRequest->setTrPrio(0);
-            $transportRequest->setArtNr($articleNr);
-            $transportRequest->setTrQuantity((float) $data['stock_quantity']);
-            $transportRequest->setStockCoordinate($data['stock_coordinate']);
-            $transportRequest->setStockNr((int) $data['stock_ln']);
-            $transportRequest->setStockLevel1((int) $data['stock_fb']);
-            $transportRequest->setStockLevel2((int) $data['stock_sp']);
-            $transportRequest->setStockLevel3((int) $data['stock_tf']);
+            $transportRequest->setArtNr(strval($articleNr));
+            $transportRequest->setTrQuantity(floatval($data['stock_quantity']));
+            $transportRequest->setStockCoordinate(strval($data['stock_coordinate']));
+            $transportRequest->setStockNr(intval($data['stock_ln']));
+            $transportRequest->setStockLevel1(intval($data['stock_fb']));
+            $transportRequest->setStockLevel2(intval($data['stock_sp']));
+            $transportRequest->setStockLevel3(intval($data['stock_tf']));
             $transportRequest->setStockLevel4(1);
             $transportRequest->setTrAccess($this->dateTimeService->createDateTime());
             $transportRequest->setTrState(0);
             $transportRequest->setOrderUsername($user);
-            $transportRequest->setBookingMethod($bookingMethod);
+            $transportRequest->setBookingMethod(strval($bookingMethod));
             $transportRequest->setDocId(null);
-            $transportRequest->setCharge($charge);
-            $transportRequest->setTrComputerIp((string) $clientIp);
-            $transportRequest->setLoadingEquipment($loadingEquipment);
+            $transportRequest->setCharge(strval($charge));
+            $transportRequest->setTrComputerIp(strval($clientIp));
+            $transportRequest->setLoadingEquipment(strval($loadingEquipment));
             $transportRequest->setTrType(1);
         }
 
@@ -158,7 +158,7 @@ class TransportRequestService
             ->getRepository(TransportRequest::class)
             ->findBy([], ['trNr' => 'DESC'], 1, 0);
 
-        if (!$result) {
+        if ($result == null) {
             $result = $this->entityManager
                 ->getRepository(TransportHistory::class)
                 ->findBy([], ['trNr' => 'DESC'], 1, 0);

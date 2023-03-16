@@ -73,7 +73,7 @@ class CustomerDataHandler
     public function getCustomers(): JsonResponse
     {
         $connection = $this->entityManager->getConnection();
-        $numOfBoxCustomer = !empty(filter_input(INPUT_GET, 'numOfBoxCustomer')) ? filter_input(INPUT_GET, 'numOfBoxCustomer') : '';
+        $numOfBoxCustomer = filter_input(INPUT_GET, 'numOfBoxCustomer') !== null ? filter_input(INPUT_GET, 'numOfBoxCustomer') : '';
 
         $boxName = match ($numOfBoxCustomer) {
             'customer_name' => 'customer_name',
@@ -87,8 +87,8 @@ class CustomerDataHandler
         };
 
         $data = [];
-        if (!empty(filter_input(INPUT_GET, 'name_customer'))) {
-            $nameCustomer = strtolower(trim(filter_input(INPUT_GET, 'name_customer')));
+        if (filter_input(INPUT_GET, 'name_customer') !== null) {
+            $nameCustomer = strtolower(trim(strval(filter_input(INPUT_GET, 'name_customer'))));
 
             $sqlKd = "SELECT customer_nr, customer_name, customer_address_addition, 
                         customer_address_street, customer_address_street_nr, customer_country_code, 

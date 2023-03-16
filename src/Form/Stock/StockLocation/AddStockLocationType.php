@@ -89,6 +89,10 @@ class AddStockLocationType extends AbstractType
                 'label' => false,
                 'class' => StockZone::class,
                 'choice_label' => 'stockZoneShortDesc',
+                'choice_value' => function (?StockZone $stockZone) {
+                    return $stockZone?->getStockZoneShortDesc();
+                },
+                'mapped' => false,
                 'attr' => [
                     'class' => 'form-control',
                 ],

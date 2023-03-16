@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\CustomerOrderPos;
 
 /**
- * @package:    WebWMS\Form
+ * @package:    WebWMS\Form\CustomerOrder
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        CustomerOrderPosType
@@ -37,36 +37,36 @@ class CustomerOrderPosType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'customerOrderId',
-                    'data-type' => 'customerOrderId',
+                    'id' => 'customer_order_id',
+                    'data-type' => 'customer_order_id',
                 ],
             ])
             ->add('quantity', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'data-type' => 'quantity',
+                    'data-type' => 'customer_order_pos_quantity',
                 ],
             ])
             ->add('articleId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control autocomplete_items',
-                    'data-type' => 'articleId',
+                    'data-type' => 'article_id',
                 ],
             ])
             ->add('articleNr', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control autocomplete_items',
-                    'data-type' => 'articleNr',
+                    'data-type' => 'article_nr',
                 ],
             ])
             ->add('articleName', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control autocomplete_items',
-                    'data-type' => 'articleName',
+                    'data-type' => 'article_name',
                 ],
             ])
         ;

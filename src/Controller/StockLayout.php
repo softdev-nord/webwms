@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Entity\StockLayout as StockLayoutEntity;
 use WebWMS\Helper\FormHelper\StockLayoutFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
@@ -52,7 +53,7 @@ class StockLayout extends AbstractController
     #[Route('/lagerlayout_anlegen', name: 'add_stock_layout')]
     public function addStockLayout(Request $request): RedirectResponse|Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -60,7 +61,9 @@ class StockLayout extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var StockLayoutEntity $stockLayoutRequestData */
             $stockLayoutRequestData = $form->getData();
+            $responseData = [];
 
             $responseData['message'] = 'Das Lagerlayout für das Lager ' . $stockLayoutRequestData->getStockNr() . ' wurde erfolgreich angelegt.';
             $logMessage = 'Das Lagerlayout für das Lager ' . $stockLayoutRequestData->getStockNr() . ' wurde angelegt.';
@@ -83,13 +86,13 @@ class StockLayout extends AbstractController
     #[Route('/lagerlayout_bearbeiten/stockLayoutId/{stockLayoutId}', name: 'edit_stock_layout')]
     public function editStockLayout(Request $request, int $stockLayoutId): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $stockLayout = $this->stockLayoutService->getStockLayoutById($stockLayoutId);
 
-        if (!$stockLayout) {
+        if ($stockLayout === null) {
             return null;
         }
 
@@ -97,10 +100,11 @@ class StockLayout extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var StockLayoutEntity $stockLayoutRequestData */
             $stockLayoutRequestData = $form->getData();
             $responseData = $this->stockLayoutValidationService->validateStockLayoutData($stockLayoutRequestData);
 
-            if ($responseData['success']) {
+            if (isset($responseData['success'])) {
                 $responseData['message'] = 'Das Lagerlayout für das Lager ' . $stockLayoutRequestData->getStockNr() . ' wurde erfolgreich geändert.';
                 $logMessage = 'Der Lagerplatz ' . $stockLayoutRequestData->getStockNr() . ' wurde geändert.';
 
@@ -127,13 +131,13 @@ class StockLayout extends AbstractController
     #[Route('/lagerlayout_löschen/stockLayoutId/{stockLayoutId}', name: 'delete_stock_layout')]
     public function deleteStockLayout(Request $request, int $stockLayoutId): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $stockLayout = $this->stockLayoutService->getStockLayoutById($stockLayoutId);
 
-        if (!$stockLayout) {
+        if ($stockLayout === null) {
             return null;
         }
 
@@ -141,7 +145,9 @@ class StockLayout extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var StockLayoutEntity $stockLayoutRequestData */
             $stockLayoutRequestData = $form->getData();
+            $responseData = [];
 
             $responseData['message'] = 'Das Lagerlayout für das Lager ' . $stockLayoutRequestData->getStockNr() . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Das Lagerlayout für das Lager ' . $stockLayoutRequestData->getStockNr() . ' wurde gelöscht.';
