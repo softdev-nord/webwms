@@ -25,3 +25,11 @@ stock_in_final:
 dashboard:
     path: /dashboard
     controller: WebWMS\Controller\Dashboard::index
+
+web_wms_log_viewer:
+    path: /logs
+    controller: WebWMS\Bundles\LogViewerBundle\Controller\LogViewerController::index
+
+web_wms_log_viewer_logs:
+    path: /logs/{file}
+    controller: WebWMS\Bundles\LogViewerBundle\Controller\LogViewerController::logs
