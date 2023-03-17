@@ -11,7 +11,6 @@ use WebWMS\Form\Stock\StockZone\AddStockZoneType;
 use WebWMS\Form\Stock\StockZone\DeleteStockZoneType;
 use WebWMS\Form\Stock\StockZone\EditStockZoneType;
 
-
 /**
  * @package:    WebWMS\Helper\FormHelper
  * @author:     SoftDev Nord, Rene Irrgang

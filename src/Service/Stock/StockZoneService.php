@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\Service\Stock;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockLayout;
 use WebWMS\Entity\StockZone;
 use WebWMS\Service\DataHandlers\Stock\StockZoneDataHandler;
 
