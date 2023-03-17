@@ -336,8 +336,8 @@
         });
     });
 
-    // Back to stock location overview
-    $(document).on('click','#edit_stock_location_back_to_stock_location_overview',function() {
-        window.location.href = '/lagerplatz';
+    $(document).on('click','.abort',function() {
+        $('#modalCenter').modal('hide');
     });
+
 })(jQuery);

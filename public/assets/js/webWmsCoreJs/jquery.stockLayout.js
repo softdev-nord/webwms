@@ -326,7 +326,7 @@
         });
     });
 
-    $(document).on('click','#edit_stock_layout_back_to_stock_layout_overview',function() {
+    $(document).on('click','.abort',function() {
         $('#modalCenter').modal('hide');
     });
 

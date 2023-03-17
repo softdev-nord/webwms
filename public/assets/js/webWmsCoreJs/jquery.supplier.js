@@ -325,11 +325,8 @@
         });
     });
 
-    // Back to stock location overview
-    $(document).on('click','#edit_supplier_back_to_supplier_overview',function() {
-        window.location.href = '/lieferanten';
-    });
-    $(document).on('click','button#delete_supplier_abort',function() {
+    $(document).on('click','.abort',function() {
         $('#modalCenter').modal('hide');
     });
+
 })(jQuery);

@@ -335,14 +335,8 @@
         });
     });
 
-    // Zurück zur Artikelübersicht
-    $(document).on('click','#edit_article_back_to_article_overview',function() {
+    $(document).on('click','.abort',function() {
         $('#modalCenter').modal('hide');
     });
-    $(document).on('click','#add_article_back_to_article_overview',function() {
-        $('#modalCenter').modal('hide');
-    });
-    $(document).on('click','button#delete_article_abort',function() {
-        $('#modalCenter').modal('hide');
-    });
+
 })(jQuery);

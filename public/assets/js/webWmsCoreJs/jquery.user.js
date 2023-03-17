@@ -391,12 +391,8 @@
         });
     });
 
-    // Zurück zur Kundenübersicht
-    $(document).on('click','#edit_user_back_to_user_overview',function() {
-        window.location.href = '/benutzer';
-    });
-
-    $(document).on('click','button#delete_user_abort',function() {
+    $(document).on('click','.abort',function() {
         $('#modalCenter').modal('hide');
     });
+
 })(jQuery);

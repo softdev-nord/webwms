@@ -421,4 +421,9 @@ $(function() {
         };
         return new Intl.NumberFormat('de-DE', formatConfig).format(number);
     }
+
+    $(document).on('click','.abort',function() {
+        $('#modalCenter').modal('hide');
+    });
+
 });

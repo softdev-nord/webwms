@@ -323,14 +323,8 @@
         });
     });
 
-    // Zurück zur Kundenübersicht
-    $(document).on('click','#edit_customer_back_to_customer_overview',function() {
+    $(document).on('click','.abort',function() {
         $('#modalCenter').modal('hide');
     });
-    $(document).on('click','#add_customer_back_to_customer_overview',function() {
-        $('#modalCenter').modal('hide');
-    });
-    $(document).on('click','button#delete_customer_abort',function() {
-        $('#modalCenter').modal('hide');
-    });
+
 })(jQuery);
