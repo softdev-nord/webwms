@@ -38,7 +38,7 @@ jobs:
           command: |
             cd webwms/  
             composer install --ignore-platform-reqs --no-scripts
-            vendor/bin/phpmd ./src/ ansi rulesets.xml
+            vendor/bin/phpmd './src/,./bundles/' ansi rulesets.xml
       - run:
           name: "PHP CS Fixer"
           command: |
