@@ -29,9 +29,10 @@ class LogViewerController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
 
-        $logDir = $this->getParameter('kernel.logs_dir');
-        $environment = $this->getParameter('kernel.environment');
-        $logFiles = glob($logDir . DIRECTORY_SEPARATOR . $environment . '*.log');
+        $logFiles = [];
+        $logDir = strval($this->getParameter('kernel.logs_dir'));
+        $environment = strval($this->getParameter('kernel.environment'));
+        $logFiles[] = $logDir . DIRECTORY_SEPARATOR . $environment . '.log';
 
         return $this->render(
             '@LogViewer/index.html.twig',
@@ -42,19 +43,23 @@ class LogViewerController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Lagerlayout',
+                'page' => 'Logs Übersicht',
             ]
         );
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     #[Route('/logs/{file}', name: 'web_wms_log_viewer_logs')]
     public function logs(string $file, Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
 
-        $logDir = $this->getParameter('kernel.logs_dir');
-        $environment = $this->getParameter('kernel.environment');
-        $logFiles = glob($logDir . DIRECTORY_SEPARATOR . $environment . '*.log');
+        $logFiles = [];
+        $logDir = strval($this->getParameter('kernel.logs_dir'));
+        $environment = strval($this->getParameter('kernel.environment'));
+        $logFiles[] = $logDir . DIRECTORY_SEPARATOR . $environment . '.log';
 
         $filename = realpath($logDir . DIRECTORY_SEPARATOR . $file);
         if (!$filename || !in_array($filename, $logFiles, true)) {
@@ -70,8 +75,11 @@ class LogViewerController extends AbstractController
         $messages = [];
         $logs = [];
 
-        $lines = array_reverse(file($filename, FILE_SKIP_EMPTY_LINES));
+        $lines = array_reverse((array) file($filename, FILE_SKIP_EMPTY_LINES));
         foreach ($lines as $line) {
+            if ($line === false) {
+                continue;
+            }
             preg_match('/^\[([0-9- :T\.\+]+)\] ([a-z_]+).([A-Z]+): (.*) ([\{|\[].*[\}\]]) (\[\])$/', $line, $matches);
             $date = new \DateTime($matches[1]);
             $channel = $matches[2];

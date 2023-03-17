@@ -12,6 +12,7 @@ parameters:
 
     paths:
         - src
+        - bundles
 
     ignoreErrors:
     	- '#Cannot access offset#'
