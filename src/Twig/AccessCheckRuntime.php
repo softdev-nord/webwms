@@ -1,6 +1,5 @@
 <?php
 
-// /src/Twig/AccessCheckRuntime.php
 declare(strict_types=1);
 
 namespace WebWMS\Twig;
@@ -11,9 +10,6 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class AccessCheckRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * this uses PHP 8.0 constructor property promotion to reduce the needed lines.
-     **/
     public function __construct(
         protected RoleHierarchyInterface $roleHierarchy
     ) {
@@ -21,6 +17,6 @@ class AccessCheckRuntime implements RuntimeExtensionInterface
 
     public function hasRole(UserInterface $user, string $role): bool
     {
-        return in_array($role, $this->roleHierarchy->getReachableRoleNames($user->getRoles()));
+        return in_array($role, $this->roleHierarchy->getReachableRoleNames($user->getRoles()), true);
     }
 }

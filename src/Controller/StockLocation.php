@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Entity\StockLocation as StockLocationEntity;
 use WebWMS\Exception\NotFoundException;
 use WebWMS\Helper\FormHelper\StockLocationFormHelper;
 use WebWMS\Service\LoggingService;
@@ -38,7 +39,7 @@ class StockLocation extends AbstractController
     #[Route('/lagerplatz', name: 'stock_location')]
     public function index(): Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -61,7 +62,7 @@ class StockLocation extends AbstractController
     #[Route('/lagerplatz_anlegen', name: 'add_stock_location')]
     public function addStockLocation(Request $request): RedirectResponse|Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -69,7 +70,9 @@ class StockLocation extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var StockLocationEntity $stockLocationRequestData */
             $stockLocationRequestData = $form->getData();
+            $responseData = [];
 
             if (isset($request->request->all()['add_stock_location']['stock_location_check'])) {
                 $responseData['message'] = 'Die Lagerplätze für das Lager ' . $stockLocationRequestData->getStockLocationLn() . 'wurden erfolgreich angelegt.';
@@ -95,15 +98,15 @@ class StockLocation extends AbstractController
     }
 
     #[Route('lagerplatz_bearbeiten/koordinate/{stockLocationCoordinate}', name: 'edit_stock_location')]
-    public function editStockLocation(Request $request, int $stockLocationCoordinate): RedirectResponse|JsonResponse|Response|null
+    public function editStockLocation(Request $request, string $stockLocationCoordinate): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $stockLocation = $this->stockLocationService->getStockLocationByCoordinate($stockLocationCoordinate);
 
-        if (!$stockLocation) {
+        if ($stockLocation === null) {
             return null;
         }
 
@@ -111,6 +114,7 @@ class StockLocation extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var StockLocationEntity $stockLocationRequestData */
             $stockLocationRequestData = $form->getData();
             $responseData = $this->stockLocationValidationService->validateStockLocationData($stockLocationRequestData);
             $selectedStockLocation = $stockLocationRequestData->getStockLocationLn()
@@ -118,7 +122,7 @@ class StockLocation extends AbstractController
                 . '-' . $stockLocationRequestData->getStockLocationSp()
                 . '-' . $stockLocationRequestData->getStockLocationTf();
 
-            if ($responseData['success']) {
+            if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Lagerplatz ' . $selectedStockLocation . ' wurde erfolgreich geändert.';
                 $logMessage = 'Der Lagerplatz ' . $selectedStockLocation . ' wurde geändert.';
 
@@ -144,15 +148,15 @@ class StockLocation extends AbstractController
     }
 
     #[Route('lagerplatz_löschen/koordinate/{stockLocationCoordinate}', name: 'delete_stock_location')]
-    public function deleteStockLocation(Request $request, int $stockLocationCoordinate): RedirectResponse|JsonResponse|Response|null
+    public function deleteStockLocation(Request $request, string $stockLocationCoordinate): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $stockLocation = $this->stockLocationService->getStockLocationByCoordinate($stockLocationCoordinate);
 
-        if (!$stockLocation) {
+        if ($stockLocation === null) {
             return null;
         }
 
@@ -160,11 +164,13 @@ class StockLocation extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var StockLocationEntity $stockLocationRequestData */
             $stockLocationRequestData = $form->getData();
             $selectedStockLocation = $stockLocationRequestData->getStockLocationLn()
                 . '-' . $stockLocationRequestData->getStockLocationFb()
                 . '-' . $stockLocationRequestData->getStockLocationSp()
                 . '-' . $stockLocationRequestData->getStockLocationTf();
+            $responseData = [];
 
             $responseData['message'] = 'Der Lagerplatz ' . $selectedStockLocation . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Der Lagerplatz ' . $selectedStockLocation . ' wurde geändert.';
@@ -202,9 +208,9 @@ class StockLocation extends AbstractController
      * @return array|object[]
      */
     #[Route('/lagerplatz_details/{stock_location_coordinate}', name: 'show_stock_location_details')]
-    public function getSockLocationDetailsById(string $coordinate): array
+    public function getStockLocationDetailsById(string $coordinate): array
     {
-        return $this->stockLocationService->getSockLocationDetailsById($coordinate);
+        return $this->stockLocationService->getStockLocationDetailsById($coordinate);
     }
 
     /**

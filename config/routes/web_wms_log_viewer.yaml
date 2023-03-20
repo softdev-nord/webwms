@@ -1,0 +1,2 @@
+web_wms_log_viewer:
+  resource: "@LogViewerBundle/Resources/config/routing.yaml"

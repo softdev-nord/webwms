@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page }}{{ appName }}{% endblock %}
+
+{% block body %}
+    {% block webwms_header %}
+        {{ include('header.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_content %}
+        {% block webwms_stock_layout_overview %}
+            <div id="webWMS-stock-layout-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
+                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
+                        <div class="webwms-page">{{ page }}</div>
+                    {% endif %}
+                    {% block webwms_stock_layout_overview_table %}
+                        <div class="card">
+                            <div class="card-content">
+                                <table id="stockLayoutTable" class="table table-striped table-bordered table-hover compact">
+                                    <thead style="text-align: center;">
+                                    <tr>
+                                        <th style="text-align: center" scope="col">Lagernummer</th>
+                                        <th style="text-align: center" scope="col">Bezeichnung</th>
+                                        <th style="text-align: center" scope="col">Fachboden</th>
+                                        <th style="text-align: center" scope="col">Stellplatz</th>
+                                        <th style="text-align: center" scope="col">Tiefe</th>
+                                        <th style="text-align: center" scope="col">Lager-Model</th>
+                                        <th style="text-align: center" scope="col">Lager-Typ</th>
+                                        <th style="text-align: center" scope="col">Bezeichnung Lang</th>
+                                        <th scope="col" style="text-align: center">Letzte Änderung</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        {% endblock %}
+    {% endblock %}
+    {% block bodyjs %}
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockLayout.js') }}"></script>
+    {% endblock %}
+{% endblock %}

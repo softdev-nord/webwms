@@ -1,36 +1,39 @@
 // JS Funktion Ajax Daten für Übersicht Lagerbewegungen
 $(function() {
     const strTable = $('#strTable').DataTable({
-        "lengthChange": false,
-        // Ajax-Anfrage via PHP (Json)
+        lengthChange: false,
+
         ajax: {
-            'url': '/stock_rotation_ajax',
-            'dataSrc': ''
+            url: '/stock_rotation_ajax',
+            dataSrc: ''
         },
         // Seitenlänge max. 10 Einträge
         pageLength: 10,
-        "language": {
-            "url": "./resources/dataTable.German.json"
+        language: {
+            url: './resources/dataTable.German.json'
         },
         // Initialisierung der DataTables Select-Erweiterung
         select: {
             style: 'single'
         },
         columns: [
-            {"data": "id"},
-            {"data": "movement_type"},
-            {"data": "description"},
-            {"data": "stock_location"},
-            {"data": "stock_location_desc"},
-            {"data": "article_nr"},
-            {"data": "article_name"},
-            {"data": "pos_quantity"},
-            {"data": "username"},
-            {"data": "access_date"},
-            {"data": "dispatch_date"}
+            { data: 'id' },
+            { data: 'movement_type' },
+            { data: 'description' },
+            { data: 'stock_location' },
+            { data: 'stock_location_desc' },
+            { data: 'article_nr' },
+            { data: 'article_name' },
+            { data: 'pos_quantity' },
+            { data: 'username' },
+            { data: 'access_date' },
+            { data: 'dispatch_date' }
         ],
-        "columnDefs": [
-            {className: 'text-center', targets: "_all"}
+        columnDefs: [
+            {
+                className: 'text-center',
+                targets: '_all'
+            }
         ],
         dom: 'Bfrtip',
         buttons: [
@@ -65,4 +68,4 @@ $(function() {
             }
         ]
     });
-})
+});

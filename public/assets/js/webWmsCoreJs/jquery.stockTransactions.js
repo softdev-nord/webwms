@@ -77,7 +77,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
@@ -87,7 +87,6 @@
         });
 
         return false;
-
     });
 
     $(document).ready(function () {
@@ -96,8 +95,8 @@
         });
 
         $('#editStockLocationTable tbody').on('dblclick','tr',function(e){
-            dataTable.rows(this).select()
-        })
+            dataTable.rows(this).select();
+        });
     });
 })(jQuery);
 

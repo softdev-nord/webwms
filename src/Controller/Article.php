@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Entity\Article as ArticleEntity;
 use WebWMS\Helper\FormHelper\ArticleFormHelper;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\LoggingService;
@@ -36,7 +37,7 @@ class Article extends AbstractController
     #[Route('/artikel', name: 'article')]
     public function index(): Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -56,7 +57,7 @@ class Article extends AbstractController
     #[Route('/artikel_anlegen', name: 'add_article')]
     public function addArticle(Request $request): Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -64,16 +65,20 @@ class Article extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var ArticleEntity $requestData */
             $requestData = $form->getData();
             $articleNr = $requestData->getArticleNr();
+            $responseData = $this->articleValidationService->validateArticleData($requestData);
 
-            $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich angelegt.';
-            $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde angelegt.';
+            if (isset($responseData['success'])) {
+                $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich angelegt.';
+                $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde angelegt.';
 
-            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->articleService->addArticle($requestData);
+                $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
+                $this->articleService->addArticle($requestData);
 
-            return new JsonResponse($responseData);
+                return new JsonResponse($responseData);
+            }
         }
 
         return $this->render(
@@ -89,13 +94,13 @@ class Article extends AbstractController
     #[Route('artikel_bearbeiten/articleId/{articleId}', name: 'edit_article')]
     public function editArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $article = $this->articleService->getArticleById($articleId);
 
-        if (!$article) {
+        if ($article === null) {
             return null;
         }
 
@@ -103,11 +108,12 @@ class Article extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var ArticleEntity $requestData */
             $requestData = $form->getData();
             $articleNr = $article->getArticleNr();
             $responseData = $this->articleValidationService->validateArticleData($requestData);
 
-            if ($responseData['success']) {
+            if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich geändert.';
                 $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde geändert.';
 
@@ -116,8 +122,6 @@ class Article extends AbstractController
 
                 return new JsonResponse($responseData);
             }
-
-            $responseData['message'] = 'Die Änderungen am Artikel konnten nicht gespeichert werden.';
 
             return new JsonResponse($responseData);
         }
@@ -135,13 +139,13 @@ class Article extends AbstractController
     #[Route('/artikel_löschen/articleId/{articleId}', name: 'delete_article')]
     public function deleteArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $article = $this->articleService->getArticleById($articleId);
 
-        if (!$article) {
+        if ($article === null) {
             return null;
         }
 
@@ -149,8 +153,10 @@ class Article extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var ArticleEntity $requestData */
             $requestData = $form->getData();
             $articleNr = $article->getArticleNr();
+            $responseData = [];
 
             $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde gelöscht.';

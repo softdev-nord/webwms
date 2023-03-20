@@ -1,9 +1,9 @@
 const itemsAddNewRow = (function () {
     let rowcount, html, addButton, tableBody;
 
-    addButton = $("#addNewButton");
-    rowcount = $("#autocomplete_table tbody tr").length + 1;
-    tableBody = $("#autocomplete_table tbody");
+    addButton = $('#addNewButton');
+    rowcount = $('#autocomplete_table tbody tr').length + 1;
+    tableBody = $('#autocomplete_table tbody');
 
     function formHtml() {
         html = '<tr id="row_' + rowcount + '">';
@@ -118,12 +118,12 @@ const itemsAddNewRow = (function () {
         let currentElement, numOfRow;
         currentElement = $(this);
         numOfRow = getId(currentElement);
-        $("#row_" + numOfRow).remove();
+        $('#row_' + numOfRow).remove();
     }
 
     // Events registrieren
     function registerEventsArt() {
-        addButton.on("click", addNewRow);
+        addButton.on('click', addNewRow);
         $(document).on('click', '.delete_row', deleteRow);
         $(document).on('focus', '.autocomplete_items', autocompleteHandleArt);
     }

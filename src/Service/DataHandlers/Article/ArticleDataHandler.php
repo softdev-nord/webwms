@@ -84,8 +84,7 @@ class ArticleDataHandler
     {
         $connection = $this->entityManager->getConnection();
 
-        $numOfBoxArt = !empty(filter_input(INPUT_GET, 'numOfBoxArt')) ? filter_input(INPUT_GET, 'numOfBoxArt') : '';
-        $name = !empty(filter_input(INPUT_GET, 'article_nr')) ? strtolower(trim(filter_input(INPUT_GET, 'article_nr'))) : '';
+        $numOfBoxArt = filter_input(INPUT_GET, 'numOfBoxArt') !== null ? filter_input(INPUT_GET, 'numOfBoxArt') : '';
 
         $boxName = match ($numOfBoxArt) {
             'article_id' => 'article_id',
@@ -94,8 +93,8 @@ class ArticleDataHandler
         };
 
         $data = [];
-        if (!empty(filter_input(INPUT_GET, 'name_art'))) {
-            $name = strtolower(trim(filter_input(INPUT_GET, 'name_art')));
+        if (filter_input(INPUT_GET, 'name_art') !== null) {
+            $name = strtolower(trim(strval(filter_input(INPUT_GET, 'name_art'))));
 
             $sqlArt = "SELECT * FROM article where LOWER($boxName) LIKE '" . $name . "%'";
 

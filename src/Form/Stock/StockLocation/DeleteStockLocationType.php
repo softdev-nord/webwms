@@ -26,12 +26,12 @@ class DeleteStockLocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('stockLocationId', HiddenType::class, [
+            ->add('stockLocationCoordinate', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'stockLocationId',
-                    'data-type' => 'stockLocationId',
+                    'id' => 'stockLocationCoordinate',
+                    'data-type' => 'stockLocationCoordinate',
                 ],
             ])
             ->add('delete', ButtonType::class, [
@@ -43,9 +43,10 @@ class DeleteStockLocationType extends AbstractType
             ->add('abort', ButtonType::class, [
                 'label' => 'Abbrechen',
                 'attr' => [
-                    'class' => 'btn btn-lg',
+                    'class' => 'btn btn-lg abort',
                 ],
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

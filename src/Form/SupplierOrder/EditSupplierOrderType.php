@@ -91,10 +91,10 @@ class EditSupplierOrderType extends AbstractType
                     'class' => 'btn btn-lg',
                 ],
             ])
-            ->add('back_to_supplier_order_overview', ButtonType::class, [
-                'label' => 'Zurück zur Übersicht',
+            ->add('abort', ButtonType::class, [
+                'label' => 'Abbrechen',
                 'attr' => [
-                    'class' => 'btn btn-lg',
+                    'class' => 'btn btn-lg abort',
                 ],
             ])
         ;

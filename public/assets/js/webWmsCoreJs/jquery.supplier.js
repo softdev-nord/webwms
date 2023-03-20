@@ -1,32 +1,40 @@
 (function($){
     // Lieferanten Tabelle
     const supplierTable = $('#supplierTable').DataTable({
-        "lengthChange": false,
+        searchPanes: {
+            cascadePanes: true,
+            viewTotal: true
+        },
+        lengthChange: false,
+
         ajax: {
-            'url': '/supplier_ajax',
-            'dataSrc': ''
+            url: '/supplier_ajax',
+            dataSrc: ''
         },
         // Seitenlänge max. 10 Einträge
         pageLength: 10,
-        "language": {
-            "url": "./resources/dataTable.German.json"
+        language: {
+            url: './resources/dataTable.German.json'
         },
         // Initialisierung der DataTables Select-Erweiterung
         select: {
             style: 'single'
         },
         columns: [
-            {"data": "supplier_nr"},
-            {"data": "supplier_name"},
-            {"data": "supplier_address_addition"},
-            {"data": "supplier_address_street"},
-            {"data": "supplier_address_street_nr"},
-            {"data": "supplier_address_country_code"},
-            {"data": "supplier_address_zipcode"},
-            {"data": "supplier_address_city"},
+            { data: 'supplier_nr' },
+            { data: 'supplier_name' },
+            { data: 'supplier_address_addition' },
+            { data: 'supplier_address_street' },
+            { data: 'supplier_address_street_nr' },
+            { data: 'supplier_address_country_code' },
+            { data: 'supplier_address_zipcode' },
+            { data: 'supplier_address_city' },
         ],
         columnDefs: [
-            {className: 'text-center', targets: "_all"},
+            {
+                className: 'text-center',
+                targets: '_all'
+            },
         ],
         dom: 'Bfrtip',
         buttons: [
@@ -88,8 +96,14 @@
             }
         },
         items: {
-            'edit': {name: 'Bearbeiten', icon: 'edit'},
-            'delete': {name: 'Löschen', icon: 'delete'},
+            edit: {
+                name: 'Bearbeiten',
+                icon: 'edit'
+            },
+            delete: {
+                name: 'Löschen',
+                icon: 'delete'
+            },
         }
     });
 
@@ -113,7 +127,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#supplier-form-new').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -137,7 +151,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#supplier-form-edit').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -162,7 +176,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
@@ -311,11 +325,8 @@
         });
     });
 
-    // Back to stock location overview
-    $(document).on('click','#edit_supplier_back_to_supplier_overview',function() {
-        window.location.href = '/lieferanten';
-    });
-    $(document).on('click','button#delete_supplier_abort',function() {
+    $(document).on('click','.abort',function() {
         $('#modalCenter').modal('hide');
     });
+
 })(jQuery);

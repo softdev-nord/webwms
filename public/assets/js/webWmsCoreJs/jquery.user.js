@@ -3,27 +3,30 @@
     const userTable = $('#userTable').DataTable({
         lengthChange: false,
         ajax: {
-            'url': '/user_ajax',
-            'dataSrc': ''
+            url: '/user_ajax',
+            dataSrc: ''
         },
         // Seitenlänge max. 10 Einträge
         pageLength: 10,
-        'language': {
-            'url': './resources/dataTable.German.json'
+        language: {
+            url: './resources/dataTable.German.json'
         },
         // Initialisierung der DataTables Select-Erweiterung
         select: {
             style: 'single'
         },
         columns: [
-            {'data': 'username'},
-            {'data': 'firstname'},
-            {'data': 'lastname'},
-            {'data': 'created_at'},
-            {'data': 'updated_at'}
+            { data: 'username' },
+            { data: 'firstname' },
+            { data: 'lastname' },
+            { data: 'created_at' },
+            { data: 'updated_at' }
         ],
         columnDefs: [
-            {className: 'text-center', targets: '_all'},
+            {
+                className: 'text-center',
+                targets: '_all'
+            },
         ],
         dom: 'Bfrtip',
         buttons: [
@@ -88,9 +91,18 @@
                 }
             },
             items: {
-                'edit': {name: 'Bearbeiten', icon: 'edit'},
-                'editPassword': {name: 'Passwort ändern', icon: 'edit'},
-                'delete': {name: 'Löschen', icon: 'delete'}
+                edit: {
+                    name: 'Bearbeiten',
+                    icon: 'edit'
+                },
+                editPassword: {
+                    name: 'Passwort ändern',
+                    icon: 'edit'
+                },
+                delete: {
+                    name: 'Löschen',
+                    icon: 'delete'
+                }
             }
         });
     }
@@ -114,7 +126,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#user-form-edit').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -137,7 +149,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#user-form-edit').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -160,7 +172,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             data: ($('#user-form-new').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -184,7 +196,7 @@
 
         $.ajax({
             url: url,
-            type: 'get',
+            type: 'GET',
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
@@ -379,12 +391,8 @@
         });
     });
 
-    // Zurück zur Kundenübersicht
-    $(document).on('click','#edit_user_back_to_user_overview',function() {
-        window.location.href = '/benutzer';
-    });
-
-    $(document).on('click','button#delete_user_abort',function() {
+    $(document).on('click','.abort',function() {
         $('#modalCenter').modal('hide');
     });
+
 })(jQuery);

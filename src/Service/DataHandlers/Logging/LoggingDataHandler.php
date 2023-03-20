@@ -35,7 +35,7 @@ class LoggingDataHandler
             );
 
         $logEntry = new Logging();
-        $logEntry->setRoute($request->attributes->get('_route'));
+        $logEntry->setRoute(strval($request->attributes->get('_route')));
         $logEntry->setMessage($message);
         $logEntry->setDate($this->dateTimeService->createDateTime());
         $logEntry->setUser($user->getFirstname() . ' ' . $user->getLastname());

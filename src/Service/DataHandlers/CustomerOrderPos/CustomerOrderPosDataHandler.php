@@ -47,7 +47,7 @@ class CustomerOrderPosDataHandler
     {
         return $this->entityManager
             ->getRepository(CustomerOrderPos::class)
-            ->find(['customerOrderId' => $customerOrderId]);
+            ->find($customerOrderId);
     }
 
     public function getAllCustomerOrderPos(): JsonResponse
@@ -70,11 +70,11 @@ class CustomerOrderPosDataHandler
         $requestData = $request->request->all()['customer_orders_pos'];
         $customerOrderPos = new CustomerOrderPos();
 
-        $customerOrderPos->setCustomerOrderId((int) $requestData['customerOrderId']);
-        $customerOrderPos->setQuantity((int) $requestData['quantity']);
-        $customerOrderPos->setArticleId((int) $requestData['articleId']);
-        $customerOrderPos->setArticleNr((string) $requestData['articleNr']);
-        $customerOrderPos->setArticleName((string) $requestData['articleName']);
+        $customerOrderPos->setCustomerOrderId(intval($requestData['customerOrderId']));
+        $customerOrderPos->setQuantity(intval($requestData['quantity']));
+        $customerOrderPos->setArticleId(intval($requestData['articleId']));
+        $customerOrderPos->setArticleNr(strval($requestData['articleNr']));
+        $customerOrderPos->setArticleName(strval($requestData['articleName']));
         $customerOrderPos->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($customerOrderPos);

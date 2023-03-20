@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use WebWMS\Entity\Role;
 use WebWMS\Entity\User;
 use WebWMS\Service\DateTimeService;
 
@@ -76,10 +77,10 @@ class UserDataHandler implements PasswordUpgraderInterface
         $requestData = $request->request->all()['add_user'];
         $user = new User();
 
-        $user->setUsername((string) $requestData['username']);
-        $user->setFirstname((string) $requestData['firstname']);
-        $user->setLastname((string) $requestData['firstname']);
-        $user->setPassword((string) $requestData['password']);
+        $user->setUsername(strval($requestData['username']));
+        $user->setFirstname(strval($requestData['firstname']));
+        $user->setLastname(strval($requestData['firstname']));
+        $user->setPassword(strval($requestData['password']));
         $user->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($user);
@@ -94,14 +95,17 @@ class UserDataHandler implements PasswordUpgraderInterface
             ->getRepository(User::class)
             ->findOneBy(['username' => $requestData['username']]);
 
-        if (!$user) {
+        if ($user === null) {
             return null;
         }
 
-        $user->setUsername((string) $requestData['username']);
-        $user->setRole($requestData['roles']);
-        $user->setFirstname((string) $requestData['firstname']);
-        $user->setLastname((string) $requestData['lastname']);
+        /** @var Role $roles */
+        $roles = $requestData['roles'];
+
+        $user->setUsername(strval($requestData['username']));
+        $user->setRole($roles);
+        $user->setFirstname(strval($requestData['firstname']));
+        $user->setLastname(strval($requestData['lastname']));
         $user->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($user);
@@ -113,7 +117,7 @@ class UserDataHandler implements PasswordUpgraderInterface
     {
         $user = $this->getUserByUsername($username);
 
-        if ($user) {
+        if ($user !== null) {
             $this->delete($user);
         }
     }
@@ -147,7 +151,7 @@ class UserDataHandler implements PasswordUpgraderInterface
             ->getRepository(User::class)
             ->find($user->getId());
 
-        if (!$selectedUser) {
+        if ($selectedUser === null) {
             return;
         }
 

@@ -7,7 +7,7 @@ namespace WebWMS\Service\Validation;
 use WebWMS\Entity\Article;
 
 /**
- * @package:    WebWMS\Service
+ * @package:    WebWMS\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        ArticleValidationService
@@ -20,78 +20,80 @@ class ArticleValidationService
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateArticleData(Article $requestData): array
+    public function validateArticleData(Article $article): array
     {
         $responseData = [];
 
         // Validation of the request data from the article data change
-        if (empty($requestData->getArticleNr())) {
+        if (!$article->getArticleNr()) {
             $responseData['error']['articleNr'] = 'Die Artikel-Nr. darf nicht leer sein.';
         } else {
-            $responseData['articleNr'] = $requestData->getArticleNr();
+            $responseData['articleNr'] = $article->getArticleNr();
         }
 
-        if (empty($requestData->getArticleName())) {
+        if (!$article->getArticleName()) {
             $responseData['error']['articleName'] = 'Die Artikel Bezeichnung darf nicht leer sein.';
         } else {
-            $responseData['articleName'] = $requestData->getArticleName();
+            $responseData['articleName'] = $article->getArticleName();
         }
 
-        if (empty($requestData->getArticleCategory())) {
+        if (!$article->getArticleCategory()) {
             $responseData['error']['articleCategory'] = 'Die Artikel Kategorie darf nicht leer sein.';
         } else {
-            $responseData['articleCategory'] = $requestData->getArticleCategory();
+            $responseData['articleCategory'] = $article->getArticleCategory();
         }
 
-        if (empty($requestData->getArticleWeight())) {
+        if (!$article->getArticleWeight()) {
             $responseData['error']['articleWeight'] = 'Das Artikel Gewicht darf nicht leer sein.';
         } else {
-            $responseData['articleWeight'] = $requestData->getArticleWeight();
+            $responseData['articleWeight'] = $article->getArticleWeight();
         }
 
-        if (empty($requestData->getArticleEan())) {
+        if (!$article->getArticleEan()) {
             $responseData['error']['articleEan'] = 'Die EAN-Nummer darf nicht leer sein.';
         } else {
-            $responseData['articleEan'] = $requestData->getArticleEan();
+            $responseData['articleEan'] = $article->getArticleEan();
         }
 
-        if (empty($requestData->getArticleUnit())) {
+        if (!$article->getArticleUnit()) {
             $responseData['error']['articleUnit'] = 'Die Einheit darf nicht leer sein.';
         } else {
-            $responseData['articleUnit'] = $requestData->getArticleUnit();
+            $responseData['articleUnit'] = $article->getArticleUnit();
         }
 
-        if (empty($requestData->getArticleDepth())) {
+        if (!$article->getArticleDepth()) {
             $responseData['error']['articleDepth'] = 'Die Breite darf nicht leer sein.';
         } else {
-            $responseData['articleDepth'] = $requestData->getArticleDepth();
+            $responseData['articleDepth'] = $article->getArticleDepth();
         }
 
-        if (empty($requestData->getArticleWidth())) {
+        if (!$article->getArticleWidth()) {
             $responseData['error']['articleWidth'] = 'Die Tiefe darf nicht leer sein.';
         } else {
-            $responseData['articleWidth'] = $requestData->getArticleWidth();
+            $responseData['articleWidth'] = $article->getArticleWidth();
         }
 
-        if (empty($requestData->getArticleHeight())) {
+        if (!$article->getArticleHeight()) {
             $responseData['error']['articleHeight'] = 'Die Höhe darf nicht leer sein.';
         } else {
-            $responseData['articleHeight'] = $requestData->getArticleHeight();
+            $responseData['articleHeight'] = $article->getArticleHeight();
         }
 
-        if (empty($requestData->getStockOutStrategy())) {
+        if (!$article->getStockOutStrategy()) {
             $responseData['error']['stockOutStrategy'] = 'Die Auslagerungsstrategie darf nicht leer sein.';
         } else {
-            $responseData['stockOutStrategy'] = $requestData->getStockOutStrategy();
+            $responseData['stockOutStrategy'] = $article->getStockOutStrategy();
         }
 
-        if (empty($requestData->getStandardLoadingEquipment())) {
+        if (!$article->getStandardLoadingEquipment()) {
             $responseData['error']['standardLoadingEquipment'] = 'Das Standard-Ladehilfsmittel darf nicht leer sein.';
         } else {
-            $responseData['standardLoadingEquipment'] = $requestData->getStandardLoadingEquipment();
+            $responseData['standardLoadingEquipment'] = $article->getStandardLoadingEquipment();
         }
 
-        $responseData['success'] = empty($responseData['error']);
+        if (!isset($responseData['error'])) {
+            $responseData['success'] = true;
+        }
 
         return $responseData;
     }

@@ -10,7 +10,7 @@ use WebWMS\Entity\User;
 use WebWMS\Form\User\Model\ChangePassword;
 
 /**
- * @package:    WebWMS\Service
+ * @package:    WebWMS\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        ChangePasswordValidationService
@@ -43,19 +43,21 @@ class ChangePasswordValidationService
 
         if (!$hashedPassword) {
             $responseData['error']['oldPassword'] = 'Ihr aktuelles Passwort stimmt nicht mit Ihrer Eingabe überein.';
-        } elseif (empty($requestData->getOldPassword())) {
+        } elseif (!$requestData->getOldPassword()) {
             $responseData['error']['oldPassword'] = 'Sie müssen Ihr aktuelles Passwort eingeben.';
         } else {
             $responseData['oldPassword'] = $requestData->getOldPassword();
         }
 
-        if (empty($requestData->getNewPassword())) {
+        if (!$requestData->getNewPassword()) {
             $responseData['error']['newPassword'] = 'Das neue Passwort darf nicht leer sein.';
         } else {
             $responseData['newPassword'] = $requestData->getNewPassword();
         }
 
-        $responseData['success'] = empty($responseData['error']);
+        if (!isset($responseData['error'])) {
+            $responseData['success'] = true;
+        }
 
         return $responseData;
     }

@@ -28,7 +28,7 @@ class DeleteCustomerOrderType extends AbstractType
             ->add('customerOrderId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'form-control',
+                    'id' => 'customer_order_id',
                 ],
             ])
             ->add('delete', ButtonType::class, [
@@ -40,9 +40,10 @@ class DeleteCustomerOrderType extends AbstractType
             ->add('abort', ButtonType::class, [
                 'label' => 'Abbrechen',
                 'attr' => [
-                    'class' => 'btn btn-lg',
+                    'class' => 'btn btn-lg abort',
                 ],
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

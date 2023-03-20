@@ -38,28 +38,25 @@ class RequirementsService
     public function checkDiskFreeSpace(): bool|string
     {
         if (function_exists('disk_free_space')) {
-            // Prevent Warning: disk_free_space() [function.disk-free-space]: Value too large for defined data type
             $freeSpace = disk_free_space(__DIR__);
 
-            /*
-             * @phpstan-ignore-next-line
-             */
-            return $this->encodeSize($freeSpace);
+            return $this->formatBytes($freeSpace);
         }
 
         return false;
     }
 
-    /**
-     * Encode byte size format.
-     */
-    public function encodeSize(float $bytes): string
+    public function formatBytes(false|float $bytes, int $precision = 2): string
     {
-        $types = ['B', 'KB', 'MB', 'GB', 'TB'];
-        for ($i = 0; $bytes >= 1024 && $i < (count($types) - 1); $bytes /= 1024, $i++) {
-        }
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
 
-        return round($bytes, 2) . ' ' . $types[$i];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+
+        $bytes /= pow(1024, $pow);
+
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 
     public function getAppName(): string

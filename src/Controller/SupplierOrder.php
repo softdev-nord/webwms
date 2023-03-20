@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Entity\SupplierOrder as SupplierOrderEntity;
+use WebWMS\Entity\SupplierOrderPos as SupplierOrderPosEntity;
 use WebWMS\Form\SupplierOrder\DeleteSupplierOrderType;
 use WebWMS\Helper\FormHelper\SupplierOrderFormHelper;
 use WebWMS\Service\LoggingService;
@@ -39,7 +41,7 @@ class SupplierOrder extends AbstractController
     #[Route('/bestellungen', name: 'supplier_orders')]
     public function index(): Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -59,7 +61,7 @@ class SupplierOrder extends AbstractController
     #[Route('/bestellung_anlegen', name: 'add_supplier_order')]
     public function addSupplierOrder(Request $request): RedirectResponse|Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -67,8 +69,10 @@ class SupplierOrder extends AbstractController
         $supplierOrderForm->handleRequest($request);
 
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
+            /** @var SupplierOrderEntity $supplierOrderRequestData */
             $supplierOrderRequestData = $supplierOrderForm->getData();
             $supplierOrderNr = $supplierOrderRequestData->getSupplierOrderNr();
+            $responseData = [];
 
             $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde erfolgreich angelegt.';
             $logMessage = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde angelegt.';
@@ -83,11 +87,13 @@ class SupplierOrder extends AbstractController
         $supplierOrderPosForm->handleRequest($request);
 
         if ($supplierOrderPosForm->isSubmitted() && $supplierOrderPosForm->isValid()) {
+            /** @var SupplierOrderPosEntity $supplierOrderPosRequestData */
             $supplierOrderPosRequestData = $supplierOrderPosForm->getData();
-            $supplierOrderNr = $supplierOrderPosRequestData->getSupplierOrderNr();
+            $supplierOrderId = $supplierOrderPosRequestData->getSupplierOrderId();
+            $responseData = [];
 
-            $responseData['message'] = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) erfolgreich angelegt.';
-            $logMessage = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) angelegt.';
+            $responseData['message'] = 'Die Position(en) für die Bestell-Nr. EBE-01-' . $supplierOrderId . ' wurde(n) erfolgreich angelegt.';
+            $logMessage = 'Die Position(en) für die Bestell-Nr. EBE-01-' . $supplierOrderId . ' wurde(n) angelegt.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierOrderPosService->addSupplierOrderPos($request);
@@ -110,14 +116,14 @@ class SupplierOrder extends AbstractController
     #[Route('/bestellung_bearbeiten/supplierOrderId/{supplierOrderId}', name: 'edit_supplier_order')]
     public function editSupplierOrder(Request $request, int $supplierOrderId): RedirectResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $supplierOrder = $this->supplierOrderService->getSupplierOrderById($supplierOrderId);
         $supplierOrderPos = $this->supplierOrderPosService->getSupplierOrderPosBySupplierOrderId($supplierOrderId);
 
-        if (!$supplierOrder) {
+        if ($supplierOrder === null) {
             return null;
         }
 
@@ -125,8 +131,10 @@ class SupplierOrder extends AbstractController
         $supplierOrderForm->handleRequest($request);
 
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
+            /** @var SupplierOrderEntity $supplierOrderRequestData */
             $supplierOrderRequestData = $supplierOrderForm->getData();
             $supplierOrderNr = $supplierOrderRequestData->getSupplierOrderNr();
+            $responseData = [];
 
             $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde erfolgreich geändert.';
             $logMessage = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde geändert.';
@@ -141,11 +149,13 @@ class SupplierOrder extends AbstractController
         $supplierOrderPosForm->handleRequest($request);
 
         if ($supplierOrderPosForm->isSubmitted() && $supplierOrderPosForm->isValid()) {
+            /** @var SupplierOrderPosEntity $supplierOrderPosRequestData */
             $supplierOrderPosRequestData = $supplierOrderPosForm->getData();
-            $supplierOrderNr = $supplierOrderPosRequestData->getSupplierOrderNr();
+            $supplierOrderId = $supplierOrderPosRequestData->getSupplierOrderId();
+            $responseData = [];
 
-            $responseData['message'] = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) erfolgreich geändert.';
-            $logMessage = 'Die Position(en) für die Bestell-Nr. ' . $supplierOrderNr . ' wurde(n) geändert.';
+            $responseData['message'] = 'Die Position(en) für die Bestell-Nr. EBE-01-' . $supplierOrderId . ' wurde(n) erfolgreich geändert.';
+            $logMessage = 'Die Position(en) für die Bestell-Nr. EBE-01-' . $supplierOrderId . ' wurde(n) geändert.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->supplierOrderPosService->updateSupplierOrder($supplierOrderPosRequestData);
@@ -169,13 +179,13 @@ class SupplierOrder extends AbstractController
     #[Route('/bestellung_löschen/supplierOrderId/{supplierOrderId}', name: 'delete_supplier_order')]
     public function deleteSupplierOrder(Request $request, int $supplierOrderId): RedirectResponse|JsonResponse|Response|null
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $supplierOrder = $this->supplierOrderService->getSupplierOrderById($supplierOrderId);
 
-        if (!$supplierOrder) {
+        if ($supplierOrder === null) {
             return null;
         }
 
@@ -183,8 +193,10 @@ class SupplierOrder extends AbstractController
         $supplierOrderForm->handleRequest($request);
 
         if ($supplierOrderForm->isSubmitted() && $supplierOrderForm->isValid()) {
+            /** @var SupplierOrderEntity $supplierOrderRequestData */
             $supplierOrderRequestData = $supplierOrderForm->getData();
             $supplierOrderNr = $supplierOrderRequestData->getSupplierOrderNr();
+            $responseData = [];
 
             $responseData['message'] = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde erfolgreich gelöscht.';
             $logMessage = 'Die Bestellung mit der Bestell-Nr. ' . $supplierOrderNr . ' wurde gelöscht.';

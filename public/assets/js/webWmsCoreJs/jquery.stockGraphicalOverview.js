@@ -1,12 +1,13 @@
-"use strict";
+'use strict';
 
 (function($){
     $(document).on('change','#selectStock',function(event) {
         const select = $('#selectStock option:selected').text().substring(0,3);
         const url = '/stock_occupancy_ajax/stock_location_ln/' + select;
-        console.log(select);
 
-        $.ajaxSetup({ cache: false });
+        $.ajaxSetup(
+            { cache: false }
+        );
 
         $.ajax({
             method: 'GET',
@@ -22,15 +23,15 @@
     $(document).on('click','#stockCoordinate',function(event) {
         $(function(){
             // Changed the default modal width
-            $("#modalCenter .modal-dialog").css('max-width', '70%');
+            $('#modalCenter .modal-dialog').css('max-width', '70%');
         });
 
         const url = '/stock_occupancy_ajax/' + $(event.currentTarget).attr('data-target');
-        const $el = $(event.currentTarget)
+        const $el = $(event.currentTarget);
         const currentCoordinate =  $el.attr('data-target');
         const desc = 'Lagerplatz Details ';
         const stockComplete = $(event.currentTarget).attr('data-ln-komplett');
-        $("#currentCoordinate").val(currentCoordinate);
+        $('#currentCoordinate').val(currentCoordinate);
         $('#modalCenter .modal-title').html(desc + stockComplete);
         $('#modalCenter').modal('show');
 
@@ -39,7 +40,7 @@
             url: url,
             dataType: 'html',
             success: function (data) {
-                $("#modal-content-ajax").html(data);
+                $('#modal-content-ajax').html(data);
                 $('#stockLocationTable').load(url + ' #stockLocationTable');
                 $('#stockSystem').load(url + ' #stockSystem');
             }
@@ -58,11 +59,14 @@
                     getStockOccupancyByArticle(row.data()[1]);
                     break;
                 default :
-                    break
+                    break;
             }
         },
         items: {
-            "show": {name: "Artikel Lagerbelegungen", icon: "loading"},
+            show: {
+                name: 'Artikel Lagerbelegungen',
+                icon: 'loading'
+            },
         }
     });
 
@@ -71,7 +75,7 @@
         const content = '<div class="modal-body"></div>';
         $("#modalCenter .modal-dialog").css('max-width', '90%');
 
-        $('#modalCenter .modal-title').text("Artikel Lagerbelegungen");
+        $('#modalCenter .modal-title').text('Artikel Lagerbelegungen');
         $("#modal-content-ajax").html(content);
         $('#modalCenter').modal('show');
 
@@ -80,7 +84,7 @@
             url: url,
             dataType: 'html',
             success: function (data) {
-                $("#modal-content-ajax").html(data);
+                $('#modal-content-ajax').html(data);
             }
         });
     }

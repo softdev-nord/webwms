@@ -27,6 +27,11 @@ class StockZone
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt;
 
+    public function __toString()
+    {
+        return $this->stockZoneShortDesc;
+    }
+
     public function getId(): int
     {
         return $this->id;

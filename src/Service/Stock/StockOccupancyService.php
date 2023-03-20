@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\Service\Stock;
 
 use Doctrine\DBAL\Exception;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Service\DataHandlers\Stock\StockOccupancyDataHandler;
 
@@ -24,22 +23,23 @@ class StockOccupancyService
 
     /**
      * @throws Exception
+     * @return array<int, array<string, mixed>>
      */
-    public function getAllStockOccupancy(): JsonResponse
+    public function getAllStockOccupancy(): array
     {
         return $this->stockOccupancyDataHandler->getAllStockOccupancy();
     }
 
     /**
      * @throws Exception
-     * @return array<string>
+     * @return array<int, array<string, mixed>>
      */
     public function getStockOccupancyByCoordinate(Request $request): array
     {
         $stockLocationCoordinate = $request->attributes->get('stock_location_coordinate');
         $stockOccupancyDetail = [];
-        $getAllStockOccupancy = $this->getAllStockOccupancy();
-        $stockOccupancies = json_decode((string) $getAllStockOccupancy->getContent(), true);
+        $stockOccupancies = $this->getAllStockOccupancy();
+        // $stockOccupancies = json_decode((string) $getAllStockOccupancy->getContent(), true);
 
         foreach ($stockOccupancies as $stockOccupancy) {
             if ($stockOccupancy['koordinate'] === $stockLocationCoordinate) {
@@ -52,7 +52,7 @@ class StockOccupancyService
 
     /**
      * @throws Exception
-     * @return array<int|mixed>
+     * @return array<int, array<string, mixed>>
      */
     public function getAllStockOccupancyByLn(int $stockLocationLn): array
     {
@@ -63,7 +63,7 @@ class StockOccupancyService
      * @throws Exception
      * @return array<int|mixed|string>
      */
-    public function getStockOccupancyByArticleNr(mixed $articleNr): array
+    public function getStockOccupancyByArticleNr(int $articleNr): array
     {
         return $this->stockOccupancyDataHandler->getStockOccupancyByArticleNr($articleNr);
     }

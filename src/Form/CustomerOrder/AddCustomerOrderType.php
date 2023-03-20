@@ -6,7 +6,7 @@ namespace WebWMS\Form\CustomerOrder;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,7 +17,7 @@ use WebWMS\Entity\CustomerOrder;
  * @package:    WebWMS\Form\CustomerOrder
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        CustomerOrderType
+ * Class        AddCustomerOrderType
  */
 class AddCustomerOrderType extends AbstractType
 {
@@ -30,46 +30,38 @@ class AddCustomerOrderType extends AbstractType
             ->add('customerOrderId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'class' => 'inputAftNr',
-                    'id' => 'customerOrderId',
-                    'data-type' => 'customerOrderId',
-                ],
-            ])
-            ->add('customerId', HiddenType::class, [
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control autocomplete_customers',
-                    'id' => 'customerId',
-                    'data-type' => 'customerId',
-                ],
-            ])
-            ->add('usrId', HiddenType::class, [
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control autocomplete_customers',
-                    'id' => 'usrId',
-                    'data-type' => 'usrId',
+                    'id' => 'customer_order_id',
                 ],
             ])
             ->add('customerOrderNr', TextType::class, [
                 'label' => 'Auftrags-Nr',
                 'attr' => [
-                    'class' => 'form-control',
-                    'id' => 'customerOrderNr',
-                    'data-type' => 'customerOrderNr',
-                    'style' => 'background-color: transparent',
-                    'readonly' => true,
+                    'class' => 'form-control is--transparent',
+                    'id' => 'customer_order_nr',
+                ],
+            ])
+            ->add('usrId', HiddenType::class, [
+                'label' => false,
+                'attr' => [
+                    'id' => 'user_id',
+                    'data-type' => 'user_id',
+                ],
+            ])
+            ->add('customerId', HiddenType::class, [
+                'label' => false,
+                'attr' => [
+                    'id' => 'customer_id',
                 ],
             ])
             ->add('customerOrderReference', TextType::class, [
                 'label' => 'Auftrags-Referenz',
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'customerOrderReference',
+                    'id' => 'customer_order_reference',
                     'placeholder' => 'Auftrags-Referenz',
                 ],
             ])
-            ->add('customerOrderDate', DateType::class, [
+            ->add('customerOrderDate', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'dd.MM.yyyy',
@@ -79,7 +71,7 @@ class AddCustomerOrderType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('customerOrderCreationDate', DateType::class, [
+            ->add('customerOrderCreationDate', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'dd.MM.yyyy',
@@ -97,10 +89,10 @@ class AddCustomerOrderType extends AbstractType
                     'class' => 'btn btn-lg',
                 ],
             ])
-            ->add('back_to_customer_order_overview', ButtonType::class, [
-                'label' => 'Zurück zur Übersicht',
+            ->add('abort', ButtonType::class, [
+                'label' => 'Abbrechen',
                 'attr' => [
-                    'class' => 'btn btn-lg',
+                    'class' => 'btn btn-lg abort',
                 ],
             ])
         ;

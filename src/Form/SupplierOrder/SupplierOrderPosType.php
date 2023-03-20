@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\SupplierOrderPos;
 
 /**
- * @package:    WebWMS\Form
+ * @package:    WebWMS\Form\SupplierOrder
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
  * Class        SupplierOrderPosType

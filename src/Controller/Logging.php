@@ -29,7 +29,7 @@ class Logging extends AbstractController
     #[Route('/logging', name: 'logging')]
     public function index(): Response
     {
-        if (!$this->getUser()) {
+        if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 

@@ -10,18 +10,6 @@ article_ajax:
     path: /article_ajax
     controller: WebWMS\Controller\Article::getAllArticles
 
-customer_orders:
-    path: /auftrag
-    controller: WebWMS\Controller\CustomerOrder::index
-
-customer_order_ajax:
-    path: /customer_order_ajax
-    controller: WebWMS\Controller\CustomerOrder::getAllCustomerOrders
-
-customer_order_pos_ajax:
-    path: /customer_order_pos_ajax
-    controller: WebWMS\Controller\CustomerOrder::getAllCustomerOrdersPos
-
 show_stock_location_details:
     path: /show_stock_location_details
     controller: WebWMS\Controller\Stock::getSockLocationDetailsById
@@ -37,3 +25,11 @@ stock_in_final:
 dashboard:
     path: /dashboard
     controller: WebWMS\Controller\Dashboard::index
+
+web_wms_log_viewer:
+    path: /logs
+    controller: WebWMS\Bundles\LogViewerBundle\Controller\LogViewerController::index
+
+web_wms_log_viewer_logs:
+    path: /logs/{file}
+    controller: WebWMS\Bundles\LogViewerBundle\Controller\LogViewerController::logs

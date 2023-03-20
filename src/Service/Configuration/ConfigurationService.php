@@ -21,7 +21,7 @@ class ConfigurationService
 
     /**
      * @throws \Exception
-     * @return array<string>
+     * @return array<string|int|mixed>
      */
     public function getAllConfigurations(): array
     {

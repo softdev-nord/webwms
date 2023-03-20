@@ -4,45 +4,48 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
+use WebWMS\Entity\SupplierOrder;
+
 /**
- * @package:    WebWMS\Service
+ * @package:    WebWMS\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2022, SoftDev Nord
- * Class        ArticleValidationService
+ * Class        SupplierOrderValidationService
  */
 class SupplierOrderValidationService
 {
     /**
-     * @param  array<string|int|mixed> $requestData
-     * @return array<string>
+     * @return array<string, array<string, string>|bool|\DateTimeInterface|string>
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateSupplierOrderData(array $requestData): array
+    public function validateSupplierOrderData(SupplierOrder $supplierOrder): array
     {
         $responseData = [];
 
         // Validation of the request data from the supplier order data change
-        if (empty($requestData['supplierOrderNr'])) {
+        if (!$supplierOrder->getSupplierOrderNr()) {
             $responseData['error']['supplierOrderNr'] = 'Die Lieferanten-Nr. darf nicht leer sein.';
         } else {
-            $responseData['supplierOrderNr'] = $requestData['supplierOrderNr'];
+            $responseData['supplierOrderNr'] = $supplierOrder->getSupplierOrderNr();
         }
 
-        if (empty($requestData['supplierOrderDate'])) {
+        if (!$supplierOrder->getSupplierOrderDate()) {
             $responseData['error']['supplierOrderDate'] = 'Das Bestelldatum darf nicht leer sein.';
         } else {
-            $responseData['supplierOrderDate'] = $requestData['supplierOrderDate'];
+            $responseData['supplierOrderDate'] = $supplierOrder->getSupplierOrderDate();
         }
 
-        if (empty($requestData['supplierOrderCreationDate'])) {
+        if (!$supplierOrder->getSupplierOrderCreationDate()) {
             $responseData['error']['supplierOrderCreationDate'] = 'Das Erstellungsdatum der Bestellung darf nicht leer sein.';
         } else {
-            $responseData['supplierOrderCreationDate'] = $requestData['supplierOrderCreationDate'];
+            $responseData['supplierOrderCreationDate'] = $supplierOrder->getSupplierOrderCreationDate();
         }
 
-        $responseData['success'] = empty($responseData['error']);
+        if (!isset($responseData['error'])) {
+            $responseData['success'] = true;
+        }
 
         return $responseData;
     }

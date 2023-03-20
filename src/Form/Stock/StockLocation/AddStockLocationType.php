@@ -89,6 +89,10 @@ class AddStockLocationType extends AbstractType
                 'label' => false,
                 'class' => StockZone::class,
                 'choice_label' => 'stockZoneShortDesc',
+                'choice_value' => function (?StockZone $stockZone) {
+                    return $stockZone?->getStockZoneShortDesc();
+                },
+                'mapped' => false,
                 'attr' => [
                     'class' => 'form-control',
                 ],
@@ -104,10 +108,10 @@ class AddStockLocationType extends AbstractType
                     'class' => 'btn btn-lg',
                 ],
             ])
-            ->add('back_to_stock_location_overview', ButtonType::class, [
-                'label' => 'Zurück zur Übersicht',
+            ->add('abort', ButtonType::class, [
+                'label' => 'Abbrechen',
                 'attr' => [
-                    'class' => 'btn btn-lg',
+                    'class' => 'btn btn-lg abort',
                 ],
             ])
         ;

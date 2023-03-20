@@ -41,8 +41,7 @@
                 </div>
             {% endif %}
             <div class="text-center">
-                {{ form_widget(userForm.save) }}
-                {{ form_widget(userForm.back_to_user_overview) }}
+                {{ form_widget(userForm.save) }} {{ form_widget(userForm.abort) }}
             </div>
             {{ form_end(userForm) }}
         </div>
