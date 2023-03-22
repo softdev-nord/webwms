@@ -15,7 +15,7 @@
 * NodeJs
 
 ## Tech-Stack:
-* Symfony 6.1
+* Symfony 6.2
 * jQuery
 * Twig
 * NodeJs
