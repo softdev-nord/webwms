@@ -153,8 +153,8 @@ workflows:
       jobs:
         - build
         - deploy-development:
-            context:
-              - secrets
+#            context:
+#              - secrets
             filters:
               branches:
                 only:
