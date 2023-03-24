@@ -83,11 +83,13 @@ jobs:
           command: |
             cd webwms/
             ci/set-env.sh
-            echo ${SSH_USER}
+            echo $SSH_USER
       - add_ssh_keys:
           fingerprints:
             - 94:eb:8f:f3:8f:62:12:f3:22:04:c7:61:7e:5f:01:34
-      - run: ssh-keyscan -H 178.20.100.70 >> ~/.ssh/authorized_keys
+            - be:55:0b:e0:ad:c0:9a:e0:ca:da:f4:9d:6f:b1:7b:65
+            - 54:58:0b:a3:93:c1:9b:30:fd:59:a0:2b:8b:4b:f7:0d
+            - bc:f3:4f:ba:71:fc:98:65:cb:03:c9:81:d8:7d:fb:f1
       - run:
           name: Deploy development over SSH
           command: |
@@ -151,10 +153,10 @@ jobs:
 workflows:
     build-deploy:
       jobs:
-        - build
+        - build:
+          context:
+            - secrets
         - deploy-development:
-#            context:
-#              - secrets
             filters:
               branches:
                 only:
@@ -162,8 +164,6 @@ workflows:
             requires:
               - build
         - deploy-production:
-            context:
-              - secrets
             filters:
               branches:
                 only:
