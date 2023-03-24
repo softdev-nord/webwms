@@ -85,8 +85,8 @@ jobs:
             ci/set-env.sh
       - add_ssh_keys:
           fingerprints:
-            - $SSH_FINGERPRINT
-#      - run: ssh-keyscan webwms-dev.softdev-nord.de >> ~/.ssh/known_hosts
+            - 94:eb:8f:f3:8f:62:12:f3:22:04:c7:61:7e:5f:01:34
+      - run: ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
       - run:
           name: Deploy development over SSH
           command: |
