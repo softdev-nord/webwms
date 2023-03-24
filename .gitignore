@@ -21,6 +21,7 @@ package-lock.json
 !.docker/logs/.gitkeep
 .docker/sql/backup/*
 !.docker/sql/backup/.gitkeep
+!.docker/sql/docker-entrypoint-initdb.d/*
 
 # Unit test reports
 TEST*.xml
