@@ -86,6 +86,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - $SSH_FINGERPRINT
+#      - run: ssh-keyscan webwms-dev.softdev-nord.de >> ~/.ssh/known_hosts
       - run:
           name: Deploy development over SSH
           command: |
