@@ -30,6 +30,7 @@ class RequirementsService
         if (function_exists('disk_free_space')) {
             $freeSpace = disk_free_space(__DIR__);
         }
+
         return $this->formatBytes($freeSpace);
     }
 
