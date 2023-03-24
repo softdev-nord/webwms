@@ -69,10 +69,6 @@ jobs:
       - image: cimg/php:8.1.9
     environment:
       CIRCLE_REPOSITORY_URL: https://softdev-nord:${BITBUCKET_PASSWORD}@bitbucket.org/softdev-nord/webwms.git
-      SSH_FINGERPRINT: ${SSH_FINGERPRINT}
-      SSH_USER: ${SSH_USER}
-      SSH_HOST: ${SSH_HOST}
-      HOST_DIR: ${HOST_DIR}
     steps:
       - envsubst/install
       - run: sudo apt update
@@ -90,13 +86,13 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - $SSH_FINGERPRINT
-      - run: ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+      - run: ssh-keyscan -H ${SSH_HOST} >> ~/.ssh/known_hosts
       - run:
           name: Deploy development over SSH
           command: |
             rsync -ae ssh --exclude 'ci/rsync.exclude' \
             /home/circleci/webwms/ \
-            $SSH_USER@$SSH_HOST:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
+            ${SSH_USER}@${SSH_HOST}:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
       - run:
           name: Composer install
           command: |
