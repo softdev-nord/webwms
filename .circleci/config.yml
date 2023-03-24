@@ -151,22 +151,22 @@ jobs:
 # Aufträge über Workflows aufrufen
 # Siehe: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-    build-deploy:
-      jobs:
-        - build:
+  build:
+    jobs:
+      - build:
           context:
             - secrets
-        - deploy-development:
-            filters:
-              branches:
-                only:
-                  - development
-            requires:
-              - build
-        - deploy-production:
-            filters:
-              branches:
-                only:
-                  - master
-            requires:
-              - build
+      - deploy-development:
+          filters:
+            branches:
+              only:
+                - development
+          requires:
+            - build
+      - deploy-production:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - build
