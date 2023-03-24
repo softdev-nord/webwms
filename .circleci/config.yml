@@ -27,6 +27,10 @@ jobs:
     environment:
       CIRCLE_REPOSITORY_URL: https://softdev-nord:${BITBUCKET_PASSWORD}@bitbucket.org/softdev-nord/webwms.git
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
+      - run: ssh-keyscan -H 178.20.100.70 >> ~/.ssh/known_hosts
       - php/install-composer
       - run:
           name: "Checkout code"
