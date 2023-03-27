@@ -87,9 +87,9 @@ jobs:
           name: Deploy development over SSH
           command: |
             ssh $SSH_USER@$SSH_HOST \
-            "rsync --recursive --times --compress --human-readable --delete --verbose --stats \
+            rsync --recursive --times --compress --human-readable --delete --verbose --stats \
             --exclude-from "${RSYNC_EXCLUDE}" \
-            "${SRC_DIR} "${$SSH_USER}@${$SSH_HOST}:${DEV_DIR}" | egrep -v '/$' "
+            "${SRC_DIR} "${$SSH_USER}@${$SSH_HOST}:${DEV_DIR}" | egrep -v '/$'
       - run:
           name: Composer install
           command: |
