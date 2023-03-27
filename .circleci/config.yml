@@ -87,15 +87,12 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - 94:eb:8f:f3:8f:62:12:f3:22:04:c7:61:7e:5f:01:34
-            - be:55:0b:e0:ad:c0:9a:e0:ca:da:f4:9d:6f:b1:7b:65
-            - 54:58:0b:a3:93:c1:9b:30:fd:59:a0:2b:8b:4b:f7:0d
-            - bc:f3:4f:ba:71:fc:98:65:cb:03:c9:81:d8:7d:fb:f1
       - run:
           name: Deploy development over SSH
           command: |
             rsync -ae ssh --exclude 'ci/rsync.exclude' \
             /home/circleci/webwms/ \
-            $SSH_USER@$SSH_HOST:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
+            "$SSH_USER"@"$SSH_HOST":"$DEV_DIR"
       - run:
           name: Composer install
           command: |
