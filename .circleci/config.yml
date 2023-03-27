@@ -85,8 +85,7 @@ jobs:
             ci/set-env.sh
       - add_ssh_keys:
           fingerprints:
-            - bc:f3:4f:ba:71:fc:98:65:cb:03:c9:81:d8:7d:fb:f1
-      - run: ssh-keyscan -H ${SSH_HOST} >> ~/.ssh/known_hosts
+            - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
       - run:
           name: Deploy development over SSH
           command: |
