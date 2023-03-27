@@ -86,9 +86,10 @@ jobs:
       - run:
           name: Deploy development over SSH
           command: |
-            rsync -ae ssh --exclude 'ci/rsync.exclude' \
-            /home/circleci/webwms/ \
-            ssh $SSH_USER@$SSH_HOST:$HOST_DIR
+            ssh $SSH_USER@$SSH_HOST \
+            "rsync --recursive --times --compress --human-readable --delete --verbose --stats \
+            --exclude-from "${RSYNC_EXCLUDE}" \
+            "${SRC_DIR} "${$SSH_USER}@${$SSH_HOST}:${DEV_DIR}" | egrep -v '/$' "
       - run:
           name: Composer install
           command: |
