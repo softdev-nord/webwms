@@ -83,10 +83,10 @@ jobs:
           command: |
             cd webwms/
             ci/set-env.sh
-            echo $SSH_USER
+            echo "$DEV_DIR"
       - add_ssh_keys:
           fingerprints:
-            - 94:eb:8f:f3:8f:62:12:f3:22:04:c7:61:7e:5f:01:34
+            - bf:39:00:aa:7e:57:15:c7:e7:af:7e:c8:c1:5c:11:65
       - run:
           name: Deploy development over SSH
           command: |
