@@ -92,7 +92,7 @@ jobs:
           command: |
             rsync -ae ssh --exclude 'ci/rsync.exclude' \
             /home/circleci/webwms/ \
-            "$SSH_USER"@"$SSH_HOST":"$DEV_DIR"
+            ${SSH_USER}@${SSH_HOST}:${HOST_DIR}
       - run:
           name: Composer install
           command: |
