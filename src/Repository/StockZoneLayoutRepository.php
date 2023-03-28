@@ -11,7 +11,7 @@ use WebWMS\Entity\StockZoneLayout;
 /**
  * @package:    WebWMS\Repository
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockZoneLayoutRepository
  *
  * @method StockZoneLayout|null find($id, $lockMode = null, $lockVersion = null)

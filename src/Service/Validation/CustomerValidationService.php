@@ -9,13 +9,14 @@ use WebWMS\Entity\Customer;
 /**
  * @package:    WebWMS\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerValidationService
  */
 class CustomerValidationService
 {
     /**
      * @return array<string, array<string, string>|bool|int|string>
+     *
      * @SuppressWarnings(PHPMD.ElseExpression)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */

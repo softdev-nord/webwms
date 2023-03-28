@@ -13,6 +13,12 @@ use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Stock\StockOccupancyService;
 
+/**
+ * @package:    WebWMS\Controller
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        StockOccupancy
+ */
 class StockOccupancy extends AbstractController
 {
     public function __construct(

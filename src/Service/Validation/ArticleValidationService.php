@@ -9,13 +9,14 @@ use WebWMS\Entity\Article;
 /**
  * @package:    WebWMS\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ArticleValidationService
  */
 class ArticleValidationService
 {
     /**
      * @return array<string, array<string, string>|bool|float|string>
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)

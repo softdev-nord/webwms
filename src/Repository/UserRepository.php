@@ -9,6 +9,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use WebWMS\Entity\User;
 
 /**
+ * @package:    WebWMS\Repository
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        UserRepository
+ *
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
  * @method User[]    findAll()

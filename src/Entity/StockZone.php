@@ -6,6 +6,12 @@ namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @package:    WebWMS\Entity
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        StockZone
+ */
 #[ORM\Table(name: 'stock_zone')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\StockZoneRepository')]
 class StockZone

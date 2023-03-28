@@ -20,7 +20,7 @@ use WebWMS\Service\Validation\StockLayoutValidationService;
 /**
  * @package:    WebWMS\Controller
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockLayout
  */
 class StockLayout extends AbstractController

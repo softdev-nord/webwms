@@ -12,7 +12,7 @@ use WebWMS\Service\DataHandlers\CustomerOrderPos\CustomerOrderPosDataHandler;
 /**
  * @package:    WebWMS\Service\CustomerOrderPos
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerOrderPosService
  */
 class CustomerOrderPosService

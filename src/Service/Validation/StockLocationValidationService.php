@@ -9,13 +9,14 @@ use WebWMS\Entity\StockLocation;
 /**
  * @package:    WebWMS\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockLocationValidationService
  */
 class StockLocationValidationService
 {
     /**
      * @return array<string, array<string, string>|bool|float|int|string>
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)

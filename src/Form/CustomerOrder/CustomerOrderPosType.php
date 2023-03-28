@@ -14,7 +14,7 @@ use WebWMS\Entity\CustomerOrderPos;
 /**
  * @package:    WebWMS\Form\CustomerOrder
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerOrderPosType
  */
 class CustomerOrderPosType extends AbstractType

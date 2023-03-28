@@ -11,7 +11,7 @@ use WebWMS\Entity\CustomerOrderPos;
 /**
  * @package:    WebWMS\Repository
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerOrderPosRepository
  *
  * @method CustomerOrderPos|null find($id, $lockMode = null, $lockVersion = null)
