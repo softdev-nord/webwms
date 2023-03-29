@@ -83,12 +83,10 @@ jobs:
           command: |
             cd webwms/
             ci/set-env.sh
-      - add_ssh_keys:
-          fingerprints:
-            - 70:fd:ea:1f:01:b9:8f:85:7f:f1:75:e1:24:37:a3:1e
       - run:
           name: Deploy development over SSH
           command: |
+            ssh -o StrictHostKeyChecking=no info@softdev-nord.de exit
             rsync --recursive --times --compress --human-readable --delete --verbose --stats --exclude ${RSYNC_EXCLUDE} \
             /home/circleci/webwms/ \
             ${SSH_USER}@${SSH_HOST}:${DEV_DIR}
