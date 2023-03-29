@@ -83,10 +83,11 @@ jobs:
           command: |
             cd webwms/
             ci/set-env.sh
+      - run: ssh-keyscan -H 178.20.100.70 >> ~/.ssh/known_hosts
       - run:
           name: Deploy development over SSH
           command: |
-            echo '178.20.100.70 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILrRflbiDPg7WkFbnesOiKHtfrZxSETvDing7wFcOSH3' >> ~/.ssh/known_hosts
+#            echo '178.20.100.70 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILrRflbiDPg7WkFbnesOiKHtfrZxSETvDing7wFcOSH3' >> ~/.ssh/known_hosts
             rsync --recursive --times --compress --human-readable --delete --verbose --stats --exclude ${RSYNC_EXCLUDE} \
             /home/circleci/webwms/ \
             ${SSH_USER}@${SSH_HOST}:${DEV_DIR}
