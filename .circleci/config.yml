@@ -93,7 +93,7 @@ jobs:
             ssh admin_sodeno@$178.20.100.70 \
             rsync --recursive --times --compress --human-readable --delete --verbose --stats --exclude 'ci/rsync.exclude' \
             /home/circleci/webwms/ \
-            /var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
+            admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
       - run:
           name: Composer install
           command: |
