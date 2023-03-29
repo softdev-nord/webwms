@@ -88,9 +88,13 @@ jobs:
             - 70:fd:ea:1f:01:b9:8f:85:7f:f1:75:e1:24:37:a3:1e
             - 31:35:5f:11:a2:52:03:20:4d:03:6c:95:9e:72:0b:3a
       - run:
+          name: Add to known hosts
+          command: |
+            ssh-keyscan -H 178.20.100.70 >> ~/.ssh/known_hosts
+            echo "178.20.100.70 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILrRflbiDPg7WkFbnesOiKHtfrZxSETvDing7wFcOSH3" >> ~/.ssh/known_hosts
+      - run:
           name: Deploy development over SSH
           command: |
-            ssh -o StrictHostKeyChecking=no exit
             rsync ssh --recursive --times --compress --human-readable --delete --verbose --stats --exclude 'ci/rsync.exclude' \
             /home/circleci/webwms/ \
             admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
