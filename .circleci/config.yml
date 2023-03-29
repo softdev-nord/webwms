@@ -83,7 +83,6 @@ jobs:
           command: |
             cd webwms/
             ci/set-env.sh
-      - run: add_ssh_keys
       - run:
           name: Deploy development over SSH
           command: |
