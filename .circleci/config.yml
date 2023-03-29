@@ -83,6 +83,7 @@ jobs:
           command: |
             cd webwms/
             ci/set-env.sh
+      - run: ssh-keyscan -H ${SSH_HOST} >> ~/.ssh/known_hosts
       - run:
           name: Deploy development over SSH
           command: |
