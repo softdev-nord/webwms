@@ -83,13 +83,15 @@ jobs:
           command: |
             cd webwms/
             ci/set-env.sh
+      - add_ssh_keys:
+          fingerprints:
+            - 29:cc:ed:c7:83:a8:49:bb:bf:4d:8a:02:4a:5a:6a:d7
       - run:
           name: Deploy development over SSH
           command: |
-            ssh $SSH_USER@$SSH_HOST \
-            "rsync --recursive --times --compress --human-readable --delete --verbose --stats \
-            --exclude ${RSYNC_EXCLUDE} \
-            ${SRC_DIR} ${$SSH_USER}@${$SSH_HOST}:${DEV_DIR}"
+            rsync --recursive --times --compress --human-readable --delete --verbose --stats --exclude ${RSYNC_EXCLUDE} \
+            /home/circleci/webwms/ \
+            ${$SSH_USER}@${$SSH_HOST}:${DEV_DIR}"
       - run:
           name: Composer install
           command: |
