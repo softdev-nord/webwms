@@ -86,7 +86,6 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - 70:fd:ea:1f:01:b9:8f:85:7f:f1:75:e1:24:37:a3:1e
-      - run: ssh-keyscan -H 178.20.100.70 >> ~/.ssh/known_hosts
       - run:
           name: Deploy development over SSH
           command: |
