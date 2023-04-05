@@ -109,7 +109,8 @@ class Supplier extends AbstractController
             /** @var SupplierEntity $requestData */
             $requestData = $form->getData();
             $supplierNr = $requestData->getSupplierNr();
-            $responseData = $this->supplierValidationService->validateSupplierData($requestData);
+            $responseData = $this->supplierValidationService
+                ->validateSupplierData((array) $request->request->all()['edit_customer']);
 
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Die Änderungen am Lieferanten ' . $supplierNr . ' wurden erfolgreich gespeichert.';

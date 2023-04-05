@@ -63,13 +63,21 @@ class StockLayout extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var StockLayoutEntity $stockLayoutRequestData */
             $stockLayoutRequestData = $form->getData();
-            $responseData = [];
+            $stockNr = $stockLayoutRequestData->getStockNr();
+            $responseData = $this->stockLayoutValidationService
+                ->validateStockLayoutData(
+                    (array) $request->request->all()['add_stock_layout']
+                );
 
-            $responseData['message'] = 'Das Lagerlayout für das Lager ' . $stockLayoutRequestData->getStockNr() . ' wurde erfolgreich angelegt.';
-            $logMessage = 'Das Lagerlayout für das Lager ' . $stockLayoutRequestData->getStockNr() . ' wurde angelegt.';
+            if (isset($responseData['success'])) {
+                $responseData['message'] = 'Das Lagerlayout für das Lager ' . $stockNr . ' wurde erfolgreich angelegt.';
+                $logMessage = 'Das Lagerlayout für das Lager ' . $stockNr . ' wurde angelegt.';
 
-            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->stockLayoutService->addStockLayout($stockLayoutRequestData);
+                $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
+                $this->stockLayoutService->addStockLayout($stockLayoutRequestData);
+
+                return new JsonResponse($responseData);
+            }
 
             return new JsonResponse($responseData);
         }
@@ -102,19 +110,21 @@ class StockLayout extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var StockLayoutEntity $stockLayoutRequestData */
             $stockLayoutRequestData = $form->getData();
-            $responseData = $this->stockLayoutValidationService->validateStockLayoutData($stockLayoutRequestData);
+            $stockNr = $stockLayoutRequestData->getStockNr();
+            $responseData = $this->stockLayoutValidationService
+                ->validateStockLayoutData(
+                    (array) $request->request->all()['edit_stock_layout']
+                );
 
             if (isset($responseData['success'])) {
-                $responseData['message'] = 'Das Lagerlayout für das Lager ' . $stockLayoutRequestData->getStockNr() . ' wurde erfolgreich geändert.';
-                $logMessage = 'Der Lagerplatz ' . $stockLayoutRequestData->getStockNr() . ' wurde geändert.';
+                $responseData['message'] = 'Das Lagerlayout für das Lager ' . $stockNr . ' wurde erfolgreich geändert.';
+                $logMessage = 'Der Lagerplatz ' . $stockNr . ' wurde geändert.';
 
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->stockLayoutService->updateStockLayout($stockLayoutRequestData);
 
                 return new JsonResponse($responseData);
             }
-
-            $responseData['message'] = 'Die Änderungen am Lagerplatz konnten nicht gespeichert werden.';
 
             return new JsonResponse($responseData);
         }
@@ -147,10 +157,11 @@ class StockLayout extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var StockLayoutEntity $stockLayoutRequestData */
             $stockLayoutRequestData = $form->getData();
+            $stockNr = $stockLayout->getStockNr();
             $responseData = [];
 
-            $responseData['message'] = 'Das Lagerlayout für das Lager ' . $stockLayoutRequestData->getStockNr() . ' wurde erfolgreich gelöscht.';
-            $logMessage = 'Das Lagerlayout für das Lager ' . $stockLayoutRequestData->getStockNr() . ' wurde gelöscht.';
+            $responseData['message'] = 'Das Lagerlayout für das Lager ' . $stockNr . ' wurde erfolgreich gelöscht.';
+            $logMessage = 'Das Lagerlayout für das Lager ' . $stockNr . ' wurde gelöscht.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
             $this->stockLayoutService->deleteStockLayout($stockLayoutRequestData);

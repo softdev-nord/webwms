@@ -4,67 +4,65 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
-use WebWMS\Entity\Customer;
-
 /**
  * @package:    WebWMS\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerValidationService
  */
-class CustomerValidationService
+class CustomerValidationService extends BaseValidationService
 {
     /**
+     * @param array<mixed> $requestData
      * @return array<string, array<string, string>|bool|int|string>
      *
      * @SuppressWarnings(PHPMD.ElseExpression)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function validateCustomerData(Customer $customer): array
+    public function validateCustomerData(array $requestData): array
     {
         $responseData = [];
 
-        // Validation of the request data from the customer data change
-        if (!$customer->getCustomerNr()) {
+        if (!$this->getValue($requestData, '[customerNr]')) {
             $responseData['error']['customerNr'] = 'Die Kunden-Nr. darf nicht leer sein.';
         } else {
-            $responseData['customerNr'] = $customer->getCustomerNr();
+            $responseData['customerNr'] = $this->getValue($requestData, '[customerNr]');
         }
 
-        if (!$customer->getCustomerName()) {
+        if (!$this->getValue($requestData, '[customerName]')) {
             $responseData['error']['customerName'] = 'Der Kunden-Name darf nicht leer sein.';
         } else {
-            $responseData['customerName'] = $customer->getCustomerName();
+            $responseData['customerName'] = $this->getValue($requestData, '[customerName]');
         }
 
-        if (!$customer->getCustomerAddressStreet()) {
+        if (!$this->getValue($requestData, '[customerAddressStreet]')) {
             $responseData['error']['customerAddressStreet'] = 'Die Straße darf nicht leer sein.';
         } else {
-            $responseData['customerAddressStreet'] = $customer->getCustomerAddressStreet();
+            $responseData['customerAddressStreet'] = $this->getValue($requestData, '[customerAddressStreet]');
         }
 
-        if (!$customer->getCustomerAddressStreetNr()) {
+        if (!$this->getValue($requestData, '[customerAddressStreetNr]')) {
             $responseData['error']['customerAddressStreetNr'] = 'Die Hausnummer darf nicht leer sein.';
         } else {
-            $responseData['customerAddressStreetNr'] = $customer->getCustomerAddressStreetNr();
+            $responseData['customerAddressStreetNr'] = $this->getValue($requestData, '[customerAddressStreetNr]');
         }
 
-        if (!$customer->getCustomerCountryCode()) {
+        if (!$this->getValue($requestData, '[customerCountryCode]')) {
             $responseData['error']['customerCountryCode'] = 'Das Land darf nicht leer sein.';
         } else {
-            $responseData['customerCountryCode'] = $customer->getCustomerCountryCode();
+            $responseData['customerCountryCode'] = $this->getValue($requestData, '[customerCountryCode]');
         }
 
-        if (!$customer->getCustomerZipCode()) {
+        if (!$this->getValue($requestData, '[customerZipCode]')) {
             $responseData['error']['customerZipCode'] = 'Die Postleitzahl darf nicht leer sein.';
         } else {
-            $responseData['customerZipCode'] = $customer->getCustomerZipCode();
+            $responseData['customerZipCode'] = $this->getValue($requestData, '[customerZipCode]');
         }
 
-        if (!$customer->getCustomerCity()) {
+        if (!$this->getValue($requestData, '[customerCity]')) {
             $responseData['error']['customerCity'] = 'Die Stadt darf nicht leer sein.';
         } else {
-            $responseData['customerCity'] = $customer->getCustomerCity();
+            $responseData['customerCity'] = $this->getValue($requestData, '[customerCity]');
         }
 
         if (!isset($responseData['error'])) {
