@@ -29,7 +29,7 @@
             { data: 'stock_location_height' },
             {
                 data: null,
-                render: function (data, type, row) {
+                render: function(data, type, row) {
                     if (row.updated_at != null) {
                         return row.updated_at;
                     } else {
@@ -78,7 +78,7 @@
             {
                 text: 'Lagerplatz anlegen',
                 className: 'btn-add-new',
-                action: function (e, dt, node, config) {
+                action: function(e, dt, node, config) {
                     addStockLocation();
                 }
             }
@@ -128,215 +128,69 @@
 
     // Modal für Lagerplatz anlegen
     function addStockLocation() {
-        const url = '/lagerplatz_anlegen';
-        const content = '<div class="modal-body"></div>';
+        const url = '/lagerplatz_anlegen',
+            $form = $('form#stock-location-form-new'),
+            title = 'Lagerplatz anlegen';
 
-        $('#modalCenter .modal-title').text('Lagerplatz anlegen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($('#stock-location-form-new').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Modal für Lagerplatz bearbeiten
     function editStockLocation(stockLocationCoordinate) {
-        const url = '/lagerplatz_bearbeiten/koordinate/' + stockLocationCoordinate;
-        const content = '<div class="modal-body"></div>';
+        const url = '/lagerplatz_bearbeiten/koordinate/' + stockLocationCoordinate,
+            $form = $('form#stock-location-form-edit'),
+            title = 'Lagerplatz bearbeiten';
 
-        $('#modalCenter .modal-title').text('Lagerplatz bearbeiten');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($("#stock-location-form-edit").serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Modal für Lagerplatz löschen
     function deleteStockLocation(stockLocationCoordinate) {
-        const url = '/lagerplatz_löschen/koordinate/' + stockLocationCoordinate;
-        const content = '<div class="modal-body"></div>';
+        const url = '/lagerplatz_löschen/koordinate/' + stockLocationCoordinate,
+            $form = $('form#stock-location-modal-delete-ask'),
+            title = 'Lagerplatz löschen';
 
         $('#modalCenter .modal-dialog').css('max-width', '30%');
-        $('#modalCenter .modal-title').text('Lagerplatz löschen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Neuen Lagerplatz speichern
-    $(document).on('click','button#add_stock_location_save',function(event) {
-        const $form = $('form#stock-location-form-new');
-        const url = '/lagerplatz_anlegen';
+    $(document).on('click', 'button#add_stock_location_save', function(event) {
+        const $form = $('form#stock-location-form-new'),
+            url = '/lagerplatz_anlegen',
+            errorMessage = 'Lagerplatz konnte nicht gespeichert werden',
+            successMessage = 'Lagerplatz erfolgreich gespeichert';
         event.preventDefault();
 
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Lagerplatz konnte nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Lagerplatz erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    stockLocationTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, stockLocationTable);
     });
 
     // Geänderten Lagerplatz speichern
-    $(document).on('click','button#edit_stock_location_save',function(event) {
-        const stockLocationCoordinate = $('#edit_stock_location_stockLocationCoordinate').val();
-        const $form = $('form#stock-location-form-edit');
-        const url = '/lagerplatz_bearbeiten/koordinate/' + stockLocationCoordinate;
+    $(document).on('click', 'button#edit_stock_location_save', function(event) {
+        const stockLocationCoordinate = $('#edit_stock_location_stockLocationCoordinate').val(),
+            $form = $('form#stock-location-form-edit'),
+            url = 'lagerplatz_bearbeiten/koordinate/' + stockLocationCoordinate,
+            errorMessage = 'Lagerplatz konnte nicht gespeichert werden',
+            successMessage = 'Lagerplatz erfolgreich gespeichert';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Lagerplatz konnte nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Lagerplatz erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    stockLocationTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, stockLocationTable);
     });
 
     // Lagerplatz löschen
-    $(document).on('click','button#delete_stock_location_delete',function(event) {
-        const stockLocationCoordinate = $('#delete_stock_location_stockLocationCoordinate').val();
-        const $form = $('form#stock-location-modal-delete-ask');
-        const url = '/lagerplatz_löschen/koordinate/' + stockLocationCoordinate;
+    $(document).on('click', 'button#delete_stock_location_delete', function(event) {
+        const stockLocationCoordinate = $('#delete_stock_location_stockLocationCoordinate').val(),
+            $form = $('form#stock-location-modal-delete-ask'),
+            url = '/lagerplatz_löschen/koordinate/' + stockLocationCoordinate,
+            successMessage = 'Lagerplatz erfolgreich gelöscht',
+            errorMessage = 'Lagerplatz konnten nicht gelöscht werden';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Lagerplatz konnten nicht gelöscht werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Lagerplatz erfolgreich gelöscht',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    stockLocationTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, stockLocationTable);
     });
 
-    $(document).on('click','.abort',function() {
+    $(document).on('click', '.abort', function() {
         $('#modalCenter').modal('hide');
     });
 

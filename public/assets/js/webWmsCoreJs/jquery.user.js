@@ -116,279 +116,85 @@
         cache: false
     });
 
+    function addUser() {
+        const url = '/benutzer_anlegen',
+            $form = $('form#user-form-new'),
+            title = 'Benutzer anlegen';
+
+        getContentForModal(url, title, $form);
+    }
+
     function editUser(username) {
-        const url = 'benutzer_bearbeiten/benutzername/' + username;
-        const content = '<div class="modal-body"></div>';
+        const url = 'benutzer_bearbeiten/benutzername/' + username,
+            $form = $('form#user-form-edit'),
+            title = 'Benutzer bearbeiten';
 
-        $('#modalCenter .modal-title').text('Benutzer bearbeiten');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($('#user-form-edit').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     function editUserPassword(username) {
-        const url = 'benutzer_passwort_bearbeiten/benutzername/' + username;
-        const content = '<div class="modal-body"></div>';
+        const url = 'benutzer_passwort_aendern/benutzername/' + username,
+            $form = $('form#user-password-form-edit'),
+            title = 'Benutzerpasswort ändern';
 
-        $('#modalCenter .modal-title').text('Benutzerpasswort ändern');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($('#user-form-edit').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
-    }
-
-    function addUser() {
-        const url = '/benutzer_anlegen';
-        const content = '<div class="modal-body"></div>';
-
-        $('#modalCenter .modal-title').text('Benutzer anlegen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($('#user-form-new').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     function deleteUser(username) {
-        const url = '/benutzer_löschen/benutzername/' + username;
-        const content = '<div class="modal-body"></div>';
+        const url = '/benutzer_löschen/benutzername/' + username,
+            $form = $('form#user-modal-delete-ask'),
+            title = 'Benutzerpasswort ändern';
 
         $('#modalCenter .modal-dialog').css('max-width', '30%');
-        $('#modalCenter .modal-title').text('Benutzer löschen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Neuen Benutzer speichern
     $(document).on('click','button#add_user_save',function(event) {
-        const $form = $('form#user-form-new');
-        const url = '/benutzer_anlegen';
+        const $form = $('form#user-form-new'),
+            url = '/benutzer_anlegen',
+            errorMessage = 'Benutzer konnte nicht gespeichert werden',
+            successMessage = 'Benutzer erfolgreich gespeichert';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Benutzer konnten nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Benutzer erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    userTable.ajax.reload();
-                }
-            }
-        });
-    });
-
-    // Geändertes Benutzerpasswort speichern
-    $(document).on('click','button#change_password_save',function(event) {
-        const username = $('#change_password_username').val();
-        const $form = $('form#user-password-form-edit');
-        const url = '/benutzer_passwort_bearbeiten/benutzername/' + username;
-        event.preventDefault();
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Benutzerpasswort konnten nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Benutzerpasswort erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    userTable.ajax.reload();
-                }
-            }
-        });
-    });
-
-    // Benutzer löschen
-    $(document).on('click','button#delete_user_delete',function(event) {
-        const username = $('#delete_user_username').val();
-        const $form = $('form#user-modal-delete-ask');
-        const url = '/benutzer_löschen/benutzername/' + username;
-        event.preventDefault();
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Benutzer konnten nicht gelöscht werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Benutzer erfolgreich gelöscht',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    userTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, userTable);
     });
 
     // Geänderten Benutzer speichern
     $(document).on('click','button#edit_user_save',function(event) {
-        const username = $('#edit_user_username').val();
-        const $form = $('form#user-form-edit');
-        const url = '/benutzer_bearbeiten/benutzername/' + username;
+        const username = $('#edit_user_username').val(),
+            $form = $('form#user-form-edit'),
+            url = '/benutzer_bearbeiten/benutzername/' + username,
+            errorMessage = 'Benutzer konnte nicht gespeichert werden',
+            successMessage = 'Benutzer erfolgreich gespeichert';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Benutzer konnte nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Benutzer erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    userTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, userTable);
+    });
+
+    // Geändertes Benutzerpasswort speichern
+    $(document).on('click','button#change_password_save',function(event) {
+        const username = $('#change_password_username').val(),
+            $form = $('form#user-password-form-edit'),
+            url = '/benutzer_passwort_bearbeiten/benutzername/' + username,
+            errorMessage = 'Benutzerpasswort konnte nicht gespeichert werden',
+            successMessage = 'Benutzerpasswort erfolgreich gespeichert';
+        event.preventDefault();
+
+        _doRequest('POST', url, $form, errorMessage, successMessage, userTable);
+    });
+
+    // Benutzer löschen
+    $(document).on('click','button#delete_user_delete',function(event) {
+        const username = $('#delete_user_username').val(),
+            $form = $('form#user-modal-delete-ask'),
+            url = '/benutzer_löschen/benutzername/' + username,
+            errorMessage = 'Benutzer konnte nicht gelöscht werden',
+            successMessage = 'Benutzer erfolgreich gelöscht';
+        event.preventDefault();
+
+        _doRequest('POST', url, $form, errorMessage, successMessage, userTable);
     });
 
     $(document).on('click','.abort',function() {

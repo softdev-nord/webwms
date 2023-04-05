@@ -66,7 +66,7 @@
             {
                 text: 'Kunde anlegen',
                 className: 'btn-add-new',
-                action: function (e, dt, node, config) {
+                action: function(e, dt, node, config) {
                     addCustomer();
                 }
             }
@@ -105,7 +105,7 @@
 
     $(function(){
         // Ändern der Standardbreite des Modals
-        $('#modalCenter .modal-dialog').css('max-width', '90%');
+        $('#modalCenter .modal-dialog').css('max-width', '98%');
     });
 
     $.ajaxSetup({
@@ -114,213 +114,66 @@
 
     // Modal für Kunden anlegen
     function addCustomer() {
-        const url = '/kunden_anlegen';
-        const content = '<div class="modal-body"></div>';
+        const url = '/kunden_anlegen',
+            $form = $('form#customer-form-new'),
+            title = 'Kunden anlegen';
 
-        $('#modalCenter .modal-title').text('Kunden anlegen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($('#customer-form-new').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Modal für Kunden bearbeiten
     function editCustomer(customerId) {
-        const url = 'kunden_bearbeiten/customerId/' + customerId;
-        const content = '<div class="modal-body"></div>';
+        const url = 'kunden_bearbeiten/customerId/' + customerId,
+            $form = $('form#customer-form-edit'),
+            title = 'Kunden bearbeiten';
 
-        $('#modalCenter .modal-title').text('Kunden bearbeiten');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($('#customer-form-edit').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Modal für Kunden löschen
-    function deleteCustomer(articleId) {
-        const url = '/kunden_löschen/customerId/' + articleId;
-        const content = '<div class="modal-body"></div>';
+    function deleteCustomer(customerId) {
+        const url = '/kunden_löschen/customerId/' + customerId,
+            $form = $('form#customer-modal-delete-ask'),
+            title = 'Kunden löschen';
 
         $('#modalCenter .modal-dialog').css('max-width', '30%');
-        $('#modalCenter .modal-title').text('Kunden löschen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Neuen Kunden speichern
-    $(document).on('click','button#add_customer_save',function(event) {
-        const $form = $('form#customer-form-new');
-        const url = '/kunden_anlegen';
+    $(document).on('click', 'button#add_customer_save', function(event) {
+        const $form = $('form#customer-form-new'),
+            url = '/kunden_anlegen',
+            errorMessage = 'Kunde konnte nicht gespeichert werden',
+            successMessage = 'Kunde erfolgreich gespeichert';
         event.preventDefault();
 
-        console.log($form.serialize());
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Kundendaten konnten nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Kundendaten erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    customerTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, customerTable);
     });
 
     // Geänderten Kunden speichern
-    $(document).on('click','button#edit_customer_save',function(event) {
-        const customer_id = $('#edit_customer_customerId').val();
-        const $form = $('form#customer-form-edit');
-        const url = '/kunden_bearbeiten/customerId/' + customer_id;
+    $(document).on('click', 'button#edit_customer_save', function(event) {
+        const customer_id = $('#edit_customer_customerId').val(),
+            $form = $('form#customer-form-edit'),
+            url = '/kunden_bearbeiten/customerId/' + customer_id,
+            errorMessage = 'Kunde konnte nicht gespeichert werden',
+            successMessage = 'Kunde erfolgreich gespeichert';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Kundendaten konnten nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Kundendaten erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    customerTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, customerTable);
     });
 
-    // Artikel löschen
-    $(document).on('click','button#delete_customer_delete',function(event) {
-        const customerId = $('#delete_customer_customerId').val();
-        const $form = $('form#customer-modal-delete-ask');
-        const url = '/kunden_löschen/customerId/' + customerId;
+    // Kunden löschen
+    $(document).on('click', 'button#delete_customer_delete', function(event) {
+        const customerId = $('#delete_customer_customerId').val(),
+            $form = $('form#customer-modal-delete-ask'),
+            url = '/kunden_löschen/customerId/' + customerId,
+            errorMessage = 'Kunde konnte nicht gelöscht werden',
+            successMessage = 'Kunde erfolgreich gelöscht';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Kunde konnte nicht gelöscht werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Kunde erfolgreich gelöscht',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    customerTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, customerTable);
     });
 
     $(document).on('click','.abort',function() {
