@@ -12,7 +12,7 @@ use WebWMS\Service\DataHandlers\SupplierOrderPos\SupplierOrderPosDataHandler;
 /**
  * @package:    WebWMS\Service\SupplierOrderPos
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        SupplierOrderPosService
  */
 class SupplierOrderPosService

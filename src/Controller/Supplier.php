@@ -20,7 +20,7 @@ use WebWMS\Service\Validation\SupplierValidationService;
 /**
  * @package:    WebWMS\Controller
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        Supplier
  */
 class Supplier extends AbstractController
@@ -109,7 +109,8 @@ class Supplier extends AbstractController
             /** @var SupplierEntity $requestData */
             $requestData = $form->getData();
             $supplierNr = $requestData->getSupplierNr();
-            $responseData = $this->supplierValidationService->validateSupplierData($requestData);
+            $responseData = $this->supplierValidationService
+                ->validateSupplierData((array) $request->request->all()['edit_customer']);
 
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Die Änderungen am Lieferanten ' . $supplierNr . ' wurden erfolgreich gespeichert.';

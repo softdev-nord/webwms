@@ -17,7 +17,7 @@ use WebWMS\Service\DateTimeService;
 /**
  * @package:    WebWMS\Service\DataHandlers\User
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserDataHandler
  */
 class UserDataHandler implements PasswordUpgraderInterface

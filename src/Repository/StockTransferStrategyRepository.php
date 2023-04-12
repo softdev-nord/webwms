@@ -9,6 +9,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use WebWMS\Entity\StockTransferStrategy;
 
 /**
+ * @package:    WebWMS\Repository
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        StockTransferStrategyRepository
+ *
  * @method StockTransferStrategy|null find($id, $lockMode = null, $lockVersion = null)
  * @method StockTransferStrategy|null findOneBy(array $criteria, array $orderBy = null)
  * @method StockTransferStrategy[]    findAll()

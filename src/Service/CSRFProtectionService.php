@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * @package:    WebWMS\Service
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CSRFProtectionService
  *
  * CSRFProtectionService is a Service to provide simple

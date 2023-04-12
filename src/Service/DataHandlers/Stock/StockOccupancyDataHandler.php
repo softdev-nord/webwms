@@ -11,7 +11,7 @@ use WebWMS\Entity\StockOccupancy;
 /**
  * @package:    WebWMS\Service\DataHandlers\Stock
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockOccupancyDataHandler
  */
 class StockOccupancyDataHandler
@@ -42,6 +42,7 @@ class StockOccupancyDataHandler
     /**
      * @throws Exception
      * @return array<int, array<string, mixed>>
+     *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function getStockOccupancy(int $stockLocationLn): array
@@ -100,6 +101,7 @@ class StockOccupancyDataHandler
     /**
      * @throws Exception
      * @return array<string|int|mixed>
+     *
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function getStockOccupancyByArticleNr(int $articleNr): array

@@ -12,7 +12,7 @@ use WebWMS\Service\DateTimeService;
 /**
  * @package:    WebWMS\Service\DataHandlers
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ArticleDataHandler
  */
 class ArticleDataHandler
@@ -69,7 +69,7 @@ class ArticleDataHandler
         $sql = "SELECT art.article_id, art.article_nr, art.article_name, art.article_category, art.article_weight, art.article_ean, art.article_unit, art.article_depth, art.article_width, art.article_height, art.created_at, art.updated_at,
                 (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) - (SUM(IF(transport_history.tr_type = '2', transport_history.tr_quantity, 0.000)))
 
-                    FROM transport_history WHERE transport_history.article_nr = art.article_nr GROUP BY transport_history.article_nr LIMIT 1) AS lbw_menge
+                FROM transport_history WHERE transport_history.article_nr = art.article_nr GROUP BY transport_history.article_nr LIMIT 1) AS lbw_menge
                 FROM transport_history AS tph
                 RIGHT OUTER JOIN article AS art
                     ON tph.article_nr = art.article_nr

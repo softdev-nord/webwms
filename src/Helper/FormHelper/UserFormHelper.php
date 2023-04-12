@@ -14,7 +14,7 @@ use WebWMS\Form\User\EditUserType;
 /**
  * @package:    WebWMS\Helper\FormHelper
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserFormHelper
  */
 class UserFormHelper

@@ -6,6 +6,12 @@ namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @package:    WebWMS\Entity
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        CustomerOrderPos
+ */
 #[ORM\Table(name: 'customer_orders_pos')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderPosRepository')]
 class CustomerOrderPos

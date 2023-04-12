@@ -1,6 +1,6 @@
 $(function() {
     const customerOrderTable = $('#customerOrderTable').DataTable({
-        createdRow: function (row, data, dataIndex) {
+        createdRow: function(row, data, dataIndex) {
             $(row).attr('data-customer-order-id', data.customer_order_id);
         },
         lengthChange: false,
@@ -28,7 +28,7 @@ $(function() {
             { data: 'username' },
             {
                 data: null,
-                render: function (data, type, row) {
+                render: function(data, type, row) {
                     if (row.updated_at != null) {
                         return row.updated_at;
                     } else {
@@ -42,11 +42,11 @@ $(function() {
                 className: 'text-center', targets: '_all'
             },
             {
-                targets: [4, 5], render: function (data) {
+                targets: [4, 5], render: function(data) {
                     moment.locale('de');
                     return moment(data).format('L');
                 },
-                createdCell:  function (tr, cellData, rowData, row, col) {
+                createdCell:  function(tr, cellData, rowData, row, col) {
                     $(tr).attr('data-customer-order-id', rowData);
                 }
             }
@@ -79,7 +79,7 @@ $(function() {
             {
                 text: 'Auftrag anlegen',
                 className: 'btn-add-new',
-                action: function (e, dt, node, config) {
+                action: function(e, dt, node, config) {
                     addCustomerOrder();
                 }
             }
@@ -127,212 +127,66 @@ $(function() {
 
     // Modal für Auftrag anlegen
     function addCustomerOrder() {
-        const url = '/auftrag_anlegen';
-        const content = '<div class="modal-body"></div>';
+        const url = '/auftrag_anlegen',
+            $form = $('form#customer-order-form-new'),
+            title = 'Auftrag anlegen';
 
-        $('#modalCenter .modal-title').text('Auftrag anlegen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($('#customer-order-form-new').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Modal für Auftrag bearbeiten
     function editCustomerOrder(customerOrderId) {
-        const url = '/auftrag_bearbeiten/customerOrderId/' + customerOrderId;
-        const content = '<div class="modal-body"></div>';
+        const url = '/auftrag_bearbeiten/customerOrderId/' + customerOrderId,
+            $form = $('form#customer-order-form-edit'),
+            title = 'Auftrag bearbeiten';
 
-        $('#modalCenter .modal-title').text('Auftrag bearbeiten');
-        $("#modal-content-ajax").html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: "get",
-            data: ($('#customer-order-form-edit').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $("#modal-content-ajax").html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Modal für Auftrag löschen
     function deleteCustomerOrder(customerOrderId) {
-        const url = '/auftrag_löschen/customerOrderId/' + customerOrderId;
-        const content = '<div class="modal-body"></div>';
+        const url = '/auftrag_löschen/customerOrderId/' + customerOrderId,
+            $form = $('form#customer-order-modal-delete-ask'),
+            title = 'Auftrag löschen';
 
         $('#modalCenter .modal-dialog').css('max-width', '30%');
-        $('#modalCenter .modal-title').text('Auftrag löschen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Neuen Auftrag speichern
-    $(document).on('click','button#customer_order_save',function(event) {
-        const $form = $('form#customer-order-form-new');
-        const url = '/auftrag_anlegen';
+    $(document).on('click', 'button#customer_order_save', function(event) {
+        const $form = $('form#customer-order-form-new'),
+            url = '/auftrag_anlegen',
+            errorMessage = 'Auftrag konnte nicht gespeichert werden',
+            successMessage = 'Auftrag erfolgreich gespeichert';
         event.preventDefault();
 
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Auftrag konnte nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Auftrag erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    customerOrderTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, customerOrderTable);
     });
 
     // Geänderten Auftrag speichern
-    $(document).on('click','button#edit_customer_order_save',function(event) {
-        const customerOrderId = $('#edit_customerOrder_customerOrderId').val();
-        const $form = $('form#customer-order-form-edit');
-        const url = '/auftrag_bearbeiten/customerOrderId/' + customerOrderId;
+    $(document).on('click', 'button#edit_customer_order_save', function(event) {
+        const customerOrderId = $('#edit_customerOrder_customerOrderId').val(),
+            $form = $('form#customer-order-form-edit'),
+            url = '/auftrag_bearbeiten/customerOrderId/' + customerOrderId,
+            errorMessage = 'Auftrag konnte nicht gespeichert werden',
+            successMessage = 'Auftrag erfolgreich gespeichert';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Auftrag konnte nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Auftrag erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    customerOrderTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, customerOrderTable);
     });
 
     // Auftrag löschen
-    $(document).on('click','button#delete_customer_order_delete',function(event) {
-        const customerOrderId = $('#delete_customer_order_customerOrderId').val();
-        const $form = $('form#customer-order-modal-delete-ask');
-        const url = '/auftrag_löschen/customerOrderId/' + customerOrderId;
+    $(document).on('click', 'button#delete_customer_order_delete', function(event) {
+        const customerOrderId = $('#delete_customer_order_customerOrderId').val(),
+            $form = $('form#customer-order-modal-delete-ask'),
+            url = '/auftrag_löschen/customerOrderId/' + customerOrderId,
+            errorMessage = 'Auftrag konnte nicht gelöscht werden',
+            successMessage = 'Auftrag erfolgreich gelöscht';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Auftrag konnten nicht gelöscht werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Auftrag erfolgreich gelöscht',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    customerOrderTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, customerOrderTable);
     });
 
     // JS Funktion Ajax Daten für Auftragspositionen
@@ -350,7 +204,7 @@ $(function() {
 
             // Es werden nur die Daten in der Positions-Tabelle geladen,
             // die mit der ID in der Auftrags-Tabelle übereinstimmen.
-            dataSrc: function (data) {
+            dataSrc: function(data) {
                 const selected = customerOrderTable.row({selected: true});
                 const rows = [];
 
@@ -378,7 +232,7 @@ $(function() {
             },
             {
                 "data": "lbw_menge",
-                render: function (data, type, row) {
+                render: function(data, type, row) {
                     if (row.lbw_menge != null) {
                         return numberWithCommas(row.lbw_menge);
                     } else {
@@ -388,7 +242,7 @@ $(function() {
             },
             {
                 data: 'lbw_menge',
-                render: function (data, type, row) {
+                render: function(data, type, row) {
                     if (row.lbw_menge != null) {
                         return numberWithCommas(parseInt(row.quantity) - parseInt(row.lbw_menge));
                     } else {
@@ -405,12 +259,12 @@ $(function() {
     });
 
     // Bei Auswahl einer Zeile in der Auftrags-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.
-    customerOrderTable.on('select', function () {
+    customerOrderTable.on('select', function() {
         posTable.ajax.reload();
     });
 
     // Beim Abwählen der Zeile in der Auftrags-Tabelle wird die Positions-Tabelle wieder geleert.
-    customerOrderTable.on('deselect', function () {
+    customerOrderTable.on('deselect', function() {
         posTable.ajax.reload();
     });
 
@@ -422,7 +276,7 @@ $(function() {
         return new Intl.NumberFormat('de-DE', formatConfig).format(number);
     }
 
-    $(document).on('click','.abort',function() {
+    $(document).on('click', '.abort' ,function() {
         $('#modalCenter').modal('hide');
     });
 

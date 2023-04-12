@@ -9,6 +9,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\Configuration;
 
+/**
+ * @package:    WebWMS\Form\Configuration
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        GeneralConfigurationType
+ */
 class GeneralConfigurationType extends AbstractType
 {
     /**

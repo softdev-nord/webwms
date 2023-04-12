@@ -89,14 +89,14 @@ jobs:
             ci/set-env.sh
       - add_ssh_keys:
           fingerprints:
-            - 33:9a:1d:5a:5c:6e:a4:0f:5f:ac:3c:83:8c:46:3c:fc
-      - run: ssh-keyscan -H 178.20.100.70 >> ~/.ssh/known_hosts
+            - $SSH_FINGERPRINT
+      - run: ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
       - run:
           name: Deploy development over SSH
           command: |
             rsync -ae ssh --exclude 'ci/rsync.exclude' \
             /home/circleci/webwms/ \
-            admin_sodeno@178.20.100.70:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
+            $SSH_USER@$SSH_HOST:/var/www/vhosts/softdev-nord.de/webwms-dev.softdev-nord.de
       - run:
           name: Composer install
           command: |
@@ -162,10 +162,10 @@ workflows:
                   - development
             requires:
               - build
-        - deploy-production:
-            filters:
-              branches:
-                only:
-                  - master
-            requires:
-              - build
+#        - deploy-production:
+#            filters:
+#              branches:
+#                only:
+#                  - master
+#            requires:
+#              - build

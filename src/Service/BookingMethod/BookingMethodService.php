@@ -19,7 +19,7 @@ use WebWMS\Service\TransportRequestService;
 /**
  * @package:    WebWMS\Service\BookingMethod
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        BookingMethod
  */
 class BookingMethodService

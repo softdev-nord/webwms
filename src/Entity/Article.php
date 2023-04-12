@@ -8,6 +8,12 @@ use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use WebWMS\Repository\ArticleRepository;
 
+/**
+ * @package:    WebWMS\Entity
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        Article
+ */
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ApiResource(
     extraProperties: [

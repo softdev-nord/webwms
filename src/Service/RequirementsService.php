@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace WebWMS\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
-
 /**
  * @package:    WebWMS\Service
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        RequirementsService
  */
 class RequirementsService
@@ -19,31 +17,21 @@ class RequirementsService
         private string $appVersion,
         private string $appVersionNumber,
         private string $appCopyright,
-        private string $appLizenz,
-        private EntityManagerInterface $entityManager
+        private string $appLizenz
     ) {
-    }
-
-    public function __toString()
-    {
-        /*
-         * @phpstan-ignore-next-line
-         */
-        return $this->checkDiskFreeSpace();
     }
 
     /**
      * Checks the disk free space.
      */
-    public function checkDiskFreeSpace(): bool|string
+    public function checkDiskFreeSpace(): string
     {
+        $freeSpace = 0.000;
         if (function_exists('disk_free_space')) {
             $freeSpace = disk_free_space(__DIR__);
-
-            return $this->formatBytes($freeSpace);
         }
 
-        return false;
+        return $this->formatBytes($freeSpace);
     }
 
     public function formatBytes(false|float $bytes, int $precision = 2): string
@@ -82,13 +70,5 @@ class RequirementsService
     public function getAppLizenz(): string
     {
         return $this->appLizenz;
-    }
-
-    public function getServerVersion(): string
-    {
-        /*
-         * @phpstan-ignore-next-line
-         */
-        return $this->entityManager->getConnection()->getParams()['serverVersion'];
     }
 }

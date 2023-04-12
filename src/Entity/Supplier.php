@@ -7,6 +7,12 @@ namespace WebWMS\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @package:    WebWMS\Entity
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        Supplier
+ */
 #[ORM\Table(name: 'supplier')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\SupplierRepository')]
 #[ApiResource(

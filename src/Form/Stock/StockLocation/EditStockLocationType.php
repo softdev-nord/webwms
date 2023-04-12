@@ -7,7 +7,7 @@ namespace WebWMS\Form\Stock\StockLocation;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,7 +18,7 @@ use WebWMS\Entity\StockZone;
 /**
  * @package:    WebWMS\Form\Stock\StockLocation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        EditStockLocationType
  */
 class EditStockLocationType extends AbstractType
@@ -61,7 +61,7 @@ class EditStockLocationType extends AbstractType
                     'data-type' => 'stockLocationTf',
                 ],
             ])
-            ->add('stockLocationCoordinate', TextType::class, [
+            ->add('stockLocationCoordinate', HiddenType::class, [
                 'empty_data' => '',
                 'label' => false,
                 'attr' => [
@@ -110,11 +110,6 @@ class EditStockLocationType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-            ])
-            ->add('stock_location_check', CheckboxType::class, [
-                'label' => false,
-                'mapped' => false,
-                'required' => false,
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Änderungen speichern',

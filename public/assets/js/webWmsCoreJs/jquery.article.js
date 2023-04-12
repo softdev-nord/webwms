@@ -34,7 +34,7 @@
             },
             {
                 data: null,
-                render: function (data, type, row) {
+                render: function(data, type, row) {
                     if (row.updated_at != null) {
                         return row.updated_at;
                     } else {
@@ -78,7 +78,7 @@
             {
                 text: 'Artikel anlegen',
                 className: 'btn-add-new',
-                action: function (e, dt, node, config) {
+                action: function(e, dt, node, config) {
                     addArticle();
                 }
             }
@@ -117,7 +117,7 @@
 
     $(function(){
         // Ändern der Standardbreite des Modals
-        $('#modalCenter .modal-dialog').css('max-width', '90%');
+        $('#modalCenter .modal-dialog').css('max-width', '98%');
     });
 
     $.ajaxSetup({
@@ -126,216 +126,69 @@
 
     // Modal für Artikel anlegen
     function addArticle() {
-        const url = '/artikel_anlegen';
-        const content = '<div class="modal-body"></div>';
+        const url = '/artikel_anlegen',
+            $form = $('form#article-form-new'),
+            title = 'Artikel anlegen';
 
-        $('#modalCenter .modal-dialog').css('max-width', '90%');
-        $('#modalCenter .modal-title').text('Artikel anlegen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($('#article-form-new').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Modal für Artikel bearbeiten
     function editArticle(id) {
-        const url = '/artikel_bearbeiten/articleId/' + id;
-        const content = '<div class="modal-body"></div>';
+        const url = '/artikel_bearbeiten/articleId/' + id,
+            $form = $('form#article-form-edit'),
+            title = 'Artikel bearbeiten';
 
-        $('#modalCenter .modal-title').text('Artikel bearbeiten');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($('#article-form-edit').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $("#modal-content-ajax").html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Modal für Artikel löschen
     function deleteArticle(articleId) {
-        console.log(articleId);
-        const url = '/artikel_löschen/articleId/' + articleId;
-        const content = '<div class="modal-body"></div>';
+        const url = '/artikel_löschen/articleId/' + articleId,
+            $form = $('form#article-modal-delete-ask'),
+            title = 'Artikel löschen';
 
         $('#modalCenter .modal-dialog').css('max-width', '30%');
-        $('#modalCenter .modal-title').text('Artikel löschen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Neuen Artikel speichern
-    $(document).on('click','button#add_article_save',function(event) {
-        const $form = $('form#article-form-new');
-        const url = '/artikel_anlegen';
+    $(document).on('click', 'button#add_article_save', function(event) {
+        const $form = $('form#article-form-new'),
+            url = '/artikel_anlegen',
+            errorMessage = 'Artikel konnte nicht gespeichert werden',
+            successMessage = 'Artikel erfolgreich gespeichert';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Artikeldaten konnten nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Artikeldaten erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    artTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, artTable);
     });
 
     // Geänderten Artikel speichern
-    $(document).on('click','button#edit_article_save',function(event) {
-        const articleId = $('#edit_article_articleId').val();
-        const $form = $('form#article-form-edit');
-        const url = '/artikel_bearbeiten/articleId/' + articleId;
+    $(document).on('click', 'button#edit_article_save', function(event) {
+        const articleId = $('#edit_article_articleId').val(),
+            $form = $('form#article-form-edit'),
+            url = '/artikel_bearbeiten/articleId/' + articleId,
+            errorMessage = 'Artikel konnte nicht gespeichert werden',
+            successMessage = 'Artikel erfolgreich gespeichert';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, " ");
-                    $.jAlert({
-                        'title': 'Artikeldaten konnten nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Artikeldaten erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    artTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, artTable);
     });
 
     // Artikel löschen
-    $(document).on('click','button#delete_article_delete',function(event) {
-        const articleId = $('#delete_article_articleId').val();
-        const $form = $('form#article-modal-delete-ask');
-        const url = '/artikel_löschen/articleId/' + articleId;
+    $(document).on('click', 'button#delete_article_delete', function(event) {
+        const articleId = $('#delete_article_articleId').val(),
+            $form = $('form#article-modal-delete-ask'),
+            url = '/artikel_löschen/articleId/' + articleId,
+            errorMessage = 'Artikel konnte nicht gelöscht werden',
+            successMessage = 'Artikel erfolgreich gelöscht';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Artikel konnten nicht gelöscht werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Artikel erfolgreich gelöscht',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    artTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, artTable);
     });
 
-    $(document).on('click','.abort',function() {
+    $(document).on('click', '.abort', function() {
         $('#modalCenter').modal('hide');
     });
 

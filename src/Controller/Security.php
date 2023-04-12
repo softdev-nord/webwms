@@ -14,7 +14,7 @@ use WebWMS\Service\RequirementsService;
 /**
  * @package:    WebWMS\Controller
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        Security
  */
 class Security extends AbstractController
@@ -35,7 +35,6 @@ class Security extends AbstractController
         $webServer = $request->server->get('SERVER_SOFTWARE');
         $serverIp = $request->server->get('REMOTE_ADDR');
         $serverName = $request->server->get('SERVER_NAME');
-        $phpVersion = $request->server->get('PHP_VERSION');
 
         $freeDiskSpace = $this->requirementsService->checkDiskFreeSpace();
         $mySqlVersion = $request->server->get('DATABASE');
@@ -49,7 +48,7 @@ class Security extends AbstractController
                 'serverIp' => $serverIp,
                 'serverName' => $serverName,
                 'freeDiskSpace' => $freeDiskSpace,
-                'phpVersion' => $phpVersion,
+                'phpVersion' => phpversion(),
                 'mySqlVersion' => $mySqlVersion,
                 'appVersion' => $this->requirementsService->getAppVersion(),
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),

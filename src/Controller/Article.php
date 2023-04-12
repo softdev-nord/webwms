@@ -20,7 +20,7 @@ use WebWMS\Service\Validation\ArticleValidationService;
 /**
  * @package:    WebWMS\Controller
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        Article
  */
 class Article extends AbstractController
@@ -68,7 +68,10 @@ class Article extends AbstractController
             /** @var ArticleEntity $requestData */
             $requestData = $form->getData();
             $articleNr = $requestData->getArticleNr();
-            $responseData = $this->articleValidationService->validateArticleData($requestData);
+            $responseData = $this->articleValidationService
+                ->validateArticleData(
+                    (array) $request->request->all()['add_article']
+                );
 
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich angelegt.';
@@ -79,6 +82,8 @@ class Article extends AbstractController
 
                 return new JsonResponse($responseData);
             }
+
+            return new JsonResponse($responseData);
         }
 
         return $this->render(
@@ -111,7 +116,10 @@ class Article extends AbstractController
             /** @var ArticleEntity $requestData */
             $requestData = $form->getData();
             $articleNr = $article->getArticleNr();
-            $responseData = $this->articleValidationService->validateArticleData($requestData);
+            $responseData = $this->articleValidationService
+                ->validateArticleData(
+                    (array) $request->request->all()['edit_article']
+                );
 
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich geändert.';

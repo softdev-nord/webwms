@@ -14,7 +14,7 @@ use WebWMS\Entity\StockLocation;
 /**
  * @package:    WebWMS\Form\Stock\StockLocation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        DeleteStockLocationType
  */
 class DeleteStockLocationType extends AbstractType

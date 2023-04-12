@@ -6,6 +6,12 @@ namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @package:    WebWMS\Entity
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        TransportRequest
+ */
 #[ORM\Table(name: 'transport_request')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\TransportRequestRepository')]
 class TransportRequest

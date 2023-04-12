@@ -9,6 +9,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @package:    WebWMS\Entity
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        CustomerOrder
+ */
 #[ORM\Table(name: 'customer_orders')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderRepository')]
 #[ApiResource(
