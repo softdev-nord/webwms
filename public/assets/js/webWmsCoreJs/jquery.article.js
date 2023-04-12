@@ -154,7 +154,7 @@
     }
 
     // Neuen Artikel speichern
-    $(document).on('click','button#add_article_save', function(event) {
+    $(document).on('click', 'button#add_article_save', function(event) {
         const $form = $('form#article-form-new'),
             url = '/artikel_anlegen',
             errorMessage = 'Artikel konnte nicht gespeichert werden',
@@ -165,7 +165,7 @@
     });
 
     // Geänderten Artikel speichern
-    $(document).on('click','button#edit_article_save', function(event) {
+    $(document).on('click', 'button#edit_article_save', function(event) {
         const articleId = $('#edit_article_articleId').val(),
             $form = $('form#article-form-edit'),
             url = '/artikel_bearbeiten/articleId/' + articleId,
@@ -177,7 +177,7 @@
     });
 
     // Artikel löschen
-    $(document).on('click','button#delete_article_delete', function(event) {
+    $(document).on('click', 'button#delete_article_delete', function(event) {
         const articleId = $('#delete_article_articleId').val(),
             $form = $('form#article-modal-delete-ask'),
             url = '/artikel_löschen/articleId/' + articleId,
@@ -188,7 +188,7 @@
         _doRequest('POST', url, $form, errorMessage, successMessage, artTable);
     });
 
-    $(document).on('click','.abort', function() {
+    $(document).on('click', '.abort', function() {
         $('#modalCenter').modal('hide');
     });
 

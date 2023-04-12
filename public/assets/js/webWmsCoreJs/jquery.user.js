@@ -151,7 +151,7 @@
     }
 
     // Neuen Benutzer speichern
-    $(document).on('click','button#add_user_save',function(event) {
+    $(document).on('click', 'button#add_user_save', function(event) {
         const $form = $('form#user-form-new'),
             url = '/benutzer_anlegen',
             errorMessage = 'Benutzer konnte nicht gespeichert werden',
@@ -162,7 +162,7 @@
     });
 
     // Geänderten Benutzer speichern
-    $(document).on('click','button#edit_user_save',function(event) {
+    $(document).on('click', 'button#edit_user_save', function(event) {
         const username = $('#edit_user_username').val(),
             $form = $('form#user-form-edit'),
             url = '/benutzer_bearbeiten/benutzername/' + username,
@@ -174,7 +174,7 @@
     });
 
     // Geändertes Benutzerpasswort speichern
-    $(document).on('click','button#change_password_save',function(event) {
+    $(document).on('click', 'button#change_password_save', function(event) {
         const username = $('#change_password_username').val(),
             $form = $('form#user-password-form-edit'),
             url = '/benutzer_passwort_bearbeiten/benutzername/' + username,
@@ -186,7 +186,7 @@
     });
 
     // Benutzer löschen
-    $(document).on('click','button#delete_user_delete',function(event) {
+    $(document).on('click', 'button#delete_user_delete', function(event) {
         const username = $('#delete_user_username').val(),
             $form = $('form#user-modal-delete-ask'),
             url = '/benutzer_löschen/benutzername/' + username,
@@ -197,7 +197,7 @@
         _doRequest('POST', url, $form, errorMessage, successMessage, userTable);
     });
 
-    $(document).on('click','.abort',function() {
+    $(document).on('click', '.abort', function() {
         $('#modalCenter').modal('hide');
     });
 

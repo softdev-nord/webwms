@@ -165,7 +165,7 @@
     });
 
     // Kunden löschen
-    $(document).on('click', 'button#delete_customer_delete', function(event) {
+    $(document).on('click', 'button#delete_customer_delete', function (event) {
         const customerId = $('#delete_customer_customerId').val(),
             $form = $('form#customer-modal-delete-ask'),
             url = '/kunden_löschen/customerId/' + customerId,
@@ -176,7 +176,7 @@
         _doRequest('POST', url, $form, errorMessage, successMessage, customerTable);
     });
 
-    $(document).on('click','.abort',function() {
+    $(document).on('click', '.abort', function() {
         $('#modalCenter').modal('hide');
     });
 
