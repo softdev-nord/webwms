@@ -66,6 +66,7 @@ jobs:
             name: "PHP Tests"
             command: |
               cd webwms/
+              composer install --ignore-platform-reqs --no-scripts
               vendor/bin/phpunit --coverage-text
       
 
