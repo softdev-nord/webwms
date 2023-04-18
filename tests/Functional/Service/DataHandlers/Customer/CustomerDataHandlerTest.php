@@ -1,15 +1,17 @@
 <?php
+
+declare(strict_types=1);
 //
-//declare(strict_types=1);
+// declare(strict_types=1);
 //
-//namespace WebWMS\Tests\Functional\Service\DataHandlers\Customer;
+// namespace WebWMS\Tests\Functional\Service\DataHandlers\Customer;
 //
-//use Doctrine\ORM\EntityManagerInterface;
-//use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-//use WebWMS\Entity\Article;
-//use WebWMS\Entity\Customer;
+// use Doctrine\ORM\EntityManagerInterface;
+// use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+// use WebWMS\Entity\Article;
+// use WebWMS\Entity\Customer;
 //
-///**
+// /**
 // * @package:    WebWMS\Tests\Unit\Entity
 // * @author:     SoftDev Nord, Rene Irrgang
 // * @copyright:  Copyright © 2019-2023, SoftDev Nord
@@ -17,8 +19,8 @@
 // *
 // * @covers \WebWMS\Service\DataHandlers\Customer\CustomerDataHandler
 // */
-//final class CustomerDataHandlerTest extends KernelTestCase
-//{
+// final class CustomerDataHandlerTest extends KernelTestCase
+// {
 //    private EntityManagerInterface $entityManager;
 //
 //    public function setUp(): void
@@ -74,4 +76,4 @@
 //
 //        $this->assertNotEmpty($articles);
 //    }
-//}
+// }
