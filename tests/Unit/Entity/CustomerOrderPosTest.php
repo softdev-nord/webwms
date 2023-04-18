@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\CustomerOrder;
 use WebWMS\Entity\CustomerOrderPos;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @package:    WebWMS\Tests\Unit\Entity

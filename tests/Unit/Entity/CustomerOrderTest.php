@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\Customer;
 use WebWMS\Entity\CustomerOrder;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @package:    WebWMS\Tests\Unit\Entity

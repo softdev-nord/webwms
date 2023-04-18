@@ -3,4 +3,9 @@ parameters:
 		-
 			message: "#^Cannot call method getManager\\(\\) on object\\|null\\.$#"
 			count: 1
-			path: tests/functional/Service/DataHandlers/Article/ArticleDataHandlerTest.php
+			path: tests/Functional/Service/DataHandlers/Article/ArticleDataHandlerTest.php
+
+		-
+			message: "#^Cannot call method getManager\\(\\) on object\\|null\\.$#"
+			count: 1
+			path: tests/Functional/Service/DataHandlers/Customer/CustomerDataHandlerTest.php

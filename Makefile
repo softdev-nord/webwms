@@ -84,7 +84,7 @@ phpcs-fix: ## run code style fix
 	 -vvv --show-progress=dots --allow-risky=yes';
 
 phpmd: ## run code check (phpmd)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./bundles/' ansi rulesets.xml';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./bundles/,./tests/' ansi rulesets.xml';
 
 phpqa: ## run code check (phpmd)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src';

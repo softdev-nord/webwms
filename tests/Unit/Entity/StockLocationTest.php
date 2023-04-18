@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
-use WebWMS\Entity\StockLocation;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Entity\StockLocation;
 
 /**
  * @package:    WebWMS\Tests\Unit\Entity

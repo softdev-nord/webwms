@@ -99,4 +99,3 @@ final class MailAttachmentTest extends TestCase
         $this->assertSame($expected, $property->getValue($this->mailAttachment));
     }
 }
-
