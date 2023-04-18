@@ -62,6 +62,12 @@ jobs:
                   | xargs -I % curl %  -L --output local-php-security-checker
                 chmod +x local-php-security-checker
                 ./local-php-security-checker
+      - run:
+            name: "PHP Tests"
+            command: |
+              cd webwms/
+              vendor/bin/phpunit --coverage-text
+      
 
   deploy-development:
     working_directory: /home/circleci

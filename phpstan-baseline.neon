@@ -1,2 +1,6 @@
 parameters:
-	ignoreErrors: []
+	ignoreErrors:
+		-
+			message: "#^Cannot call method getManager\\(\\) on object\\|null\\.$#"
+			count: 1
+			path: tests/functional/Service/DataHandlers/Article/ArticleDataHandlerTest.php

@@ -186,28 +186,6 @@ class CustomerOrder
         return $this->customerOrderPos;
     }
 
-    public function addCustomerOrderPos(CustomerOrderPos $customerOrderPos): self
-    {
-        if (!$this->customerOrderPos->contains($customerOrderPos)) {
-            $this->customerOrderPos->add($customerOrderPos);
-            $customerOrderPos->setCustomerOrder($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCustomerOrderPos(CustomerOrderPos $customerOrderPos): self
-    {
-        if ($this->customerOrderPos->removeElement($customerOrderPos)) {
-            // set the owning side to null (unless already changed)
-            if ($customerOrderPos->getCustomerOrder() === $this) {
-                $customerOrderPos->setCustomerOrder(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;

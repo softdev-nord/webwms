@@ -114,7 +114,7 @@ js-eslint-fix: ## Runs ESLint with --fix flag (Runs on the host system)
 #	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/codecept run';
 
 run-tests-unit: ## run unit tests
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-text';
 
 #run-tests-api: ## run api tests
 #	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/codecept run api';

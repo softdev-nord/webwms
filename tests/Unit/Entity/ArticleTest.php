@@ -1,42 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Tests\Unit\Entity;
 
-use DateTimeInterface;
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\Article;
 
 /**
+ * @package:    WebWMS\Tests\Unit\Entity
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        ArticleTest
+ *
  * @covers \WebWMS\Entity\Article
  */
 final class ArticleTest extends TestCase
 {
     private Article $article;
 
-    /**
-     * {@inheritdoc}
-     */
+    private \DateTimeImmutable $dateTime;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->article = new Article();
+        $this->dateTime = new \DateTimeImmutable();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function tearDown(): void
     {
         parent::tearDown();
 
         unset($this->article);
+        unset($this->dateTime);
     }
 
     public function testGetArticleId(): void
     {
-        $expected = 42;
+        $expected = 2019;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleId');
         $property->setValue($this->article, $expected);
@@ -45,7 +48,7 @@ final class ArticleTest extends TestCase
 
     public function testSetArticleId(): void
     {
-        $expected = 42;
+        $expected = 2019;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleId');
         $this->article->setArticleId($expected);
@@ -54,7 +57,7 @@ final class ArticleTest extends TestCase
 
     public function testGetArticleNr(): void
     {
-        $expected = '42';
+        $expected = 'articleNr';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleNr');
         $property->setValue($this->article, $expected);
@@ -63,7 +66,7 @@ final class ArticleTest extends TestCase
 
     public function testSetArticleNr(): void
     {
-        $expected = '42';
+        $expected = 'articleNr';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleNr');
         $this->article->setArticleNr($expected);
@@ -72,7 +75,7 @@ final class ArticleTest extends TestCase
 
     public function testGetArticleName(): void
     {
-        $expected = '42';
+        $expected = 'articleName';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleName');
         $property->setValue($this->article, $expected);
@@ -81,7 +84,7 @@ final class ArticleTest extends TestCase
 
     public function testSetArticleName(): void
     {
-        $expected = '42';
+        $expected = 'articleName';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleName');
         $this->article->setArticleName($expected);
@@ -90,7 +93,7 @@ final class ArticleTest extends TestCase
 
     public function testGetArticleCategory(): void
     {
-        $expected = '42';
+        $expected = 'articleCategory';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleCategory');
         $property->setValue($this->article, $expected);
@@ -99,7 +102,7 @@ final class ArticleTest extends TestCase
 
     public function testSetArticleCategory(): void
     {
-        $expected = '42';
+        $expected = 'articleCategory';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleCategory');
         $this->article->setArticleCategory($expected);
@@ -108,7 +111,7 @@ final class ArticleTest extends TestCase
 
     public function testGetArticleWeight(): void
     {
-        $expected = 42.42;
+        $expected = 2019.00;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleWeight');
         $property->setValue($this->article, $expected);
@@ -117,7 +120,7 @@ final class ArticleTest extends TestCase
 
     public function testSetArticleWeight(): void
     {
-        $expected = 42.42;
+        $expected = 2019.00;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleWeight');
         $this->article->setArticleWeight($expected);
@@ -126,7 +129,7 @@ final class ArticleTest extends TestCase
 
     public function testGetArticleEan(): void
     {
-        $expected = '42';
+        $expected = 'articleEan';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleEan');
         $property->setValue($this->article, $expected);
@@ -135,7 +138,7 @@ final class ArticleTest extends TestCase
 
     public function testSetArticleEan(): void
     {
-        $expected = '42';
+        $expected = 'articleEan';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleEan');
         $this->article->setArticleEan($expected);
@@ -144,7 +147,7 @@ final class ArticleTest extends TestCase
 
     public function testGetArticleUnit(): void
     {
-        $expected = '42';
+        $expected = 'articleUnit';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleUnit');
         $property->setValue($this->article, $expected);
@@ -153,7 +156,7 @@ final class ArticleTest extends TestCase
 
     public function testSetArticleUnit(): void
     {
-        $expected = '42';
+        $expected = 'articleUnit';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleUnit');
         $this->article->setArticleUnit($expected);
@@ -162,7 +165,7 @@ final class ArticleTest extends TestCase
 
     public function testGetArticleDepth(): void
     {
-        $expected = 42.42;
+        $expected = 2019.00;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleDepth');
         $property->setValue($this->article, $expected);
@@ -171,7 +174,7 @@ final class ArticleTest extends TestCase
 
     public function testSetArticleDepth(): void
     {
-        $expected = 42.42;
+        $expected = 2019.00;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleDepth');
         $this->article->setArticleDepth($expected);
@@ -180,7 +183,7 @@ final class ArticleTest extends TestCase
 
     public function testGetArticleWidth(): void
     {
-        $expected = 42.42;
+        $expected = 2019.00;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleWidth');
         $property->setValue($this->article, $expected);
@@ -189,7 +192,7 @@ final class ArticleTest extends TestCase
 
     public function testSetArticleWidth(): void
     {
-        $expected = 42.42;
+        $expected = 2019.00;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleWidth');
         $this->article->setArticleWidth($expected);
@@ -198,7 +201,7 @@ final class ArticleTest extends TestCase
 
     public function testGetArticleHeight(): void
     {
-        $expected = 42.42;
+        $expected = 2019.00;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleHeight');
         $property->setValue($this->article, $expected);
@@ -207,7 +210,7 @@ final class ArticleTest extends TestCase
 
     public function testSetArticleHeight(): void
     {
-        $expected = 42.42;
+        $expected = 2019.00;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('articleHeight');
         $this->article->setArticleHeight($expected);
@@ -216,7 +219,7 @@ final class ArticleTest extends TestCase
 
     public function testGetStockOutStrategy(): void
     {
-        $expected = '42';
+        $expected = 'stockOutStrategy';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('stockOutStrategy');
         $property->setValue($this->article, $expected);
@@ -225,7 +228,7 @@ final class ArticleTest extends TestCase
 
     public function testSetStockOutStrategy(): void
     {
-        $expected = '42';
+        $expected = 'stockOutStrategy';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('stockOutStrategy');
         $this->article->setStockOutStrategy($expected);
@@ -234,7 +237,7 @@ final class ArticleTest extends TestCase
 
     public function testGetLeQuantity(): void
     {
-        $expected = 42.42;
+        $expected = 2019.00;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('leQuantity');
         $property->setValue($this->article, $expected);
@@ -243,7 +246,7 @@ final class ArticleTest extends TestCase
 
     public function testSetLeQuantity(): void
     {
-        $expected = 42.42;
+        $expected = 2019.00;
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('leQuantity');
         $this->article->setLeQuantity($expected);
@@ -252,7 +255,7 @@ final class ArticleTest extends TestCase
 
     public function testGetStandardLoadingEquipment(): void
     {
-        $expected = '42';
+        $expected = 'standardLoadingEquipment';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('standardLoadingEquipment');
         $property->setValue($this->article, $expected);
@@ -261,46 +264,46 @@ final class ArticleTest extends TestCase
 
     public function testSetStandardLoadingEquipment(): void
     {
-        $expected = '42';
+        $expected = 'standardLoadingEquipment';
         $property = (new \ReflectionClass(Article::class))
             ->getProperty('standardLoadingEquipment');
         $this->article->setStandardLoadingEquipment($expected);
         $this->assertSame($expected, $property->getValue($this->article));
     }
 
-//    public function testGetCreatedAt(): void
-//    {
-//        $expected = Mockery::mock(DateTimeInterface::class);
-//        $property = (new \ReflectionClass(Article::class))
-//            ->getProperty('createdAt');
-//        $property->setValue($this->article, $expected);
-//        $this->assertSame($expected, $this->article->getCreatedAt());
-//    }
-//
-//    public function testSetCreatedAt(): void
-//    {
-//        $expected = Mockery::mock(DateTimeInterface::class);
-//        $property = (new \ReflectionClass(Article::class))
-//            ->getProperty('createdAt');
-//        $this->article->setCreatedAt($expected);
-//        $this->assertSame($expected, $property->getValue($this->article));
-//    }
-//
-//    public function testGetUpdatedAt(): void
-//    {
-//        $expected = Mockery::mock(DateTimeInterface::class);
-//        $property = (new \ReflectionClass(Article::class))
-//            ->getProperty('updatedAt');
-//        $property->setValue($this->article, $expected);
-//        $this->assertSame($expected, $this->article->getUpdatedAt());
-//    }
-//
-//    public function testSetUpdatedAt(): void
-//    {
-//        $expected = Mockery::mock(DateTimeInterface::class);
-//        $property = (new \ReflectionClass(Article::class))
-//            ->getProperty('updatedAt');
-//        $this->article->setUpdatedAt($expected);
-//        $this->assertSame($expected, $property->getValue($this->article));
-//    }
+    public function testGetCreatedAt(): void
+    {
+        $expected = $this->dateTime;
+        $property = (new \ReflectionClass(Article::class))
+            ->getProperty('createdAt');
+        $property->setValue($this->article, $expected);
+        $this->assertSame($expected, $this->article->getCreatedAt());
+    }
+
+    public function testSetCreatedAt(): void
+    {
+        $expected = $this->dateTime;
+        $property = (new \ReflectionClass(Article::class))
+            ->getProperty('createdAt');
+        $this->article->setCreatedAt($expected);
+        $this->assertSame($expected, $property->getValue($this->article));
+    }
+
+    public function testGetUpdatedAt(): void
+    {
+        $expected = $this->dateTime;
+        $property = (new \ReflectionClass(Article::class))
+            ->getProperty('updatedAt');
+        $property->setValue($this->article, $expected);
+        $this->assertSame($expected, $this->article->getUpdatedAt());
+    }
+
+    public function testSetUpdatedAt(): void
+    {
+        $expected = $this->dateTime;
+        $property = (new \ReflectionClass(Article::class))
+            ->getProperty('updatedAt');
+        $this->article->setUpdatedAt($expected);
+        $this->assertSame($expected, $property->getValue($this->article));
+    }
 }
