@@ -171,15 +171,15 @@ class Customer
     public function toArray(): array
     {
         return [
-            'customer_id' => $this->customerId,
-            'customer_nr' => $this->customerNr,
-            'customer_name' => $this->customerName,
-            'customer_address_addition' => $this->customerAddressAddition,
-            'customer_address_street' => $this->customerAddressStreet,
-            'customer_address_street_nr' => $this->customerAddressStreetNr,
-            'customer_country_code' => $this->customerCountryCode,
-            'customer_zip_code' => $this->customerZipCode,
-            'customer_city' => $this->customerCity,
+            'customerId' => $this->customerId,
+            'customerNr' => $this->customerNr,
+            'customerName' => $this->customerName,
+            'customerAddressAddition' => $this->customerAddressAddition,
+            'customerAddressStreet' => $this->customerAddressStreet,
+            'customerAddressStreetNr' => $this->customerAddressStreetNr,
+            'customerCountryCode' => $this->customerCountryCode,
+            'customerZipCode' => $this->customerZipCode,
+            'customerCity' => $this->customerCity,
         ];
     }
 

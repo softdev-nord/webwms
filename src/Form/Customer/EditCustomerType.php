@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use WebWMS\Entity\Customer;
 
 /**
@@ -21,14 +20,8 @@ use WebWMS\Entity\Customer;
  */
 class EditCustomerType extends AbstractType
 {
-    public function __construct(
-        private AuthorizationCheckerInterface $authorizationChecker
-    ) {
-    }
-
     /**
      * @SuppressWarnings("unused")
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -40,34 +33,17 @@ class EditCustomerType extends AbstractType
                     'id' => 'customerId',
                     'data-type' => 'customerId',
                 ],
-            ]);
-        if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            $builder
-                ->add('customerNr', TextType::class, [
-                    'empty_data' => '',
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerNr',
-                        'data-type' => 'customerNr',
-                        'style' => 'background-color: transparent',
-                        'readonly' => 'readonly',
-                    ],
-                ]);
-        } else {
-            $builder
-                ->add('customerNr', TextType::class, [
-                    'empty_data' => '',
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerNr',
-                        'data-type' => 'customerNr',
-                        'style' => 'background-color: transparent',
-                    ],
-                ]);
-        }
-        $builder
+            ])
+            ->add('customerNr', TextType::class, [
+                'empty_data' => '',
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'id' => 'customerNr',
+                    'data-type' => 'customerNr',
+                    'style' => 'background-color: transparent',
+                ],
+            ])
             ->add('customerName', TextType::class, [
                 'empty_data' => '',
                 'label' => false,

@@ -199,28 +199,6 @@ class SupplierOrder
         return $this->supplierOrderPos;
     }
 
-    public function addSupplierOrderPos(SupplierOrderPos $supplierOrderPos): self
-    {
-        if (!$this->supplierOrderPos->contains($supplierOrderPos)) {
-            $this->supplierOrderPos->add($supplierOrderPos);
-            $supplierOrderPos->setSupplierOrder($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSupplierOrderPos(SupplierOrderPos $supplierOrderPos): self
-    {
-        if ($this->supplierOrderPos->removeElement($supplierOrderPos)) {
-            // set the owning side to null (unless already changed)
-            if ($supplierOrderPos->getSupplierOrder() === $this) {
-                $supplierOrderPos->setSupplierOrder(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getSupplier(): ?Supplier
     {
         return $this->supplier;
