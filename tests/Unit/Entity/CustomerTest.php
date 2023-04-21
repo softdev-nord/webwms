@@ -201,27 +201,29 @@ final class CustomerTest extends TestCase
 
     public function testToArray(): void
     {
-        $property = (new \ReflectionClass(Customer::class));
+        $this->customer->setCustomerId(1);
+        $this->customer->setCustomerNr(12345);
+        $this->customer->setCustomerName('Rene Irrgang');
+        $this->customer->setCustomerAddressAddition('Adresszusatz');
+        $this->customer->setCustomerAddressStreet('Spreenweg');
+        $this->customer->setCustomerAddressStreetNr('23a');
+        $this->customer->setCustomerCountryCode('DE');
+        $this->customer->setCustomerZipCode('21698');
+        $this->customer->setCustomerCity('Harsefeld');
+
         $expected = [
-        'customerId' => $property->getProperty('customerId'),
-        'customerNr' => $property->getProperty('customerNr'),
-        'customerName' => $property->getProperty('customerName'),
-        'customerAddressAddition' => $property->getProperty('customerAddressAddition'),
-        'customerAddressStreet' => $property->getProperty('customerAddressStreet'),
-        'customerAddressStreetNr' => $property->getProperty('customerAddressStreetNr'),
-        'customerCountryCode' => $property->getProperty('customerCountryCode'),
-        'customerZipCode' => $property->getProperty('customerZipCode'),
-        'customerCity' => $property->getProperty('customerCity'),
-    ];
-        $this->assertArrayHasKey('customerId', $expected);
-        $this->assertArrayHasKey('customerNr', $expected);
-        $this->assertArrayHasKey('customerName', $expected);
-        $this->assertArrayHasKey('customerAddressAddition', $expected);
-        $this->assertArrayHasKey('customerAddressStreet', $expected);
-        $this->assertArrayHasKey('customerAddressStreetNr', $expected);
-        $this->assertArrayHasKey('customerCountryCode', $expected);
-        $this->assertArrayHasKey('customerZipCode', $expected);
-        $this->assertArrayHasKey('customerCity', $expected);
+            'customerId' => 1,
+            'customerNr' => '12345',
+            'customerName' => 'Rene Irrgang',
+            'customerAddressAddition' => 'Adresszusatz',
+            'customerAddressStreet' => 'Spreenweg',
+            'customerAddressStreetNr' => '23a',
+            'customerCountryCode' => 'DE',
+            'customerZipCode' => '21698',
+            'customerCity' => 'Harsefeld',
+        ];
+
+        $this->assertEquals($expected, $this->customer->toArray());
     }
 
     public function testGetCreatedAt(): void

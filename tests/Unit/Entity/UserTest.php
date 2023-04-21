@@ -20,6 +20,8 @@ final class UserTest extends TestCase
 {
     private User $user;
 
+    private Role $role;
+
     private \DateTimeImmutable $dateTime;
 
     protected function setUp(): void
@@ -27,6 +29,7 @@ final class UserTest extends TestCase
         parent::setUp();
 
         $this->user = new User();
+        $this->role = new Role();
         $this->dateTime = new \DateTimeImmutable();
     }
 
@@ -35,6 +38,7 @@ final class UserTest extends TestCase
         parent::tearDown();
 
         unset($this->user);
+        unset($this->role);
         unset($this->dateTime);
     }
 
@@ -72,6 +76,13 @@ final class UserTest extends TestCase
             ->getProperty('username');
         $this->user->setUsername($expected);
         $this->assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testEraseCredentials(): void
+    {
+        $plainPassword = null;
+        $this->user->eraseCredentials();
+        $this->assertNull($plainPassword);
     }
 
     public function testGetFirstname(): void
@@ -199,6 +210,24 @@ final class UserTest extends TestCase
         $this->assertSame($expected, $property->getValue($this->user));
     }
 
+    public function testSerialize(): void
+    {
+        $expected = serialize([1, 'test', 'password']);
+        $this->user->setId(1);
+        $this->user->setUsername('test');
+        $this->user->setPassword('password');
+        $this->assertEquals($expected, $this->user->serialize());
+    }
+
+    public function testGetUserIdentifier(): void
+    {
+        $expected = 'username';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('username');
+        $property->setValue($this->user, $expected);
+        $this->assertEquals($expected, $this->user->getUserIdentifier());
+    }
+
     public function testGetPassword(): void
     {
         $expected = 'Password';
@@ -219,7 +248,7 @@ final class UserTest extends TestCase
 
     public function testGetRole(): void
     {
-        $expected = $this->createMock(Role::class);
+        $expected = $this->role;
         $property = (new \ReflectionClass(User::class))
             ->getProperty('role');
         $property->setValue($this->user, $expected);
@@ -228,10 +257,44 @@ final class UserTest extends TestCase
 
     public function testSetRole(): void
     {
-        $expected = $this->createMock(Role::class);
+        $expected = $this->role;
         $property = (new \ReflectionClass(User::class))
             ->getProperty('role');
         $this->user->setRole($expected);
+        $this->assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testGetRoles(): void
+    {
+        $expected = ['ROLE_ADMIN', 'ROLE_USER'];
+        $this->user->setRoles($expected);
+        $this->assertSame($expected, $this->user->getRoles());
+    }
+
+    public function testSetRoles(): void
+    {
+        $expected = ['ROLE_USER'];
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('roles');
+        $this->user->setRoles($expected);
+        $this->assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testGetPlainPassword(): void
+    {
+        $expected = 'plainPassword';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('plainPassword');
+        $property->setValue($this->user, $expected);
+        $this->assertSame($expected, $this->user->getPlainPassword());
+    }
+
+    public function testSetPlainPassword(): void
+    {
+        $expected = 'plainPassword';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('plainPassword');
+        $this->user->setPlainPassword($expected);
         $this->assertSame($expected, $property->getValue($this->user));
     }
 
