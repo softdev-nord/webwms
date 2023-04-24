@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Entity\StockLocation as StockLocationEntity;
-use WebWMS\Exception\NotFoundException;
 use WebWMS\Helper\FormHelper\StockLocationFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;

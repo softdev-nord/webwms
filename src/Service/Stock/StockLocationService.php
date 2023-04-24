@@ -8,7 +8,6 @@ use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\StockLocation;
-use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 
 /**
