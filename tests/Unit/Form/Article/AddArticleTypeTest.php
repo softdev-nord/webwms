@@ -172,7 +172,7 @@ final class AddArticleTypeTest extends TestCase
                         'class' => 'btn btn-lg abort',
                     ],
                 ]],
-        );
+            );
 
         $optionsResolver = $this->createMock(OptionsResolver::class);
 

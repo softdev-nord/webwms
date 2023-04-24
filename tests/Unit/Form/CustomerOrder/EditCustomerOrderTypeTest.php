@@ -12,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\CustomerOrder;
-use WebWMS\Form\CustomerOrder\AddCustomerOrderType;
 use WebWMS\Form\CustomerOrder\EditCustomerOrderType;
 
 /**

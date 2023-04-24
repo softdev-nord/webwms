@@ -212,7 +212,7 @@ class StockLocation extends AbstractController
     }
 
     /**
-     * @throws NotFoundException
+     * @throws \Exception
      * @return array|object[]
      */
     #[Route('/lagerplatz_details/{stock_location_coordinate}', name: 'show_stock_location_details')]

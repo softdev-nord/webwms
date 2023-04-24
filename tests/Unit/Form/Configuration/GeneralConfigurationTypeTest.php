@@ -42,12 +42,12 @@ final class GeneralConfigurationTypeTest extends TestCase
         $builder->expects($this->exactly(1))
            ->method('add')
            ->withConsecutive(
-                ['name'],
-                ['value'],
-                ['label'],
-                ['description'],
-                ['type']
-        );
+               ['name'],
+               ['value'],
+               ['label'],
+               ['description'],
+               ['type']
+           );
 
         $optionsResolver = $this->createMock(OptionsResolver::class);
 

@@ -41,7 +41,7 @@ class StockLocationService
     }
 
     /**
-     * @throws NotFoundException
+     * @throws \Exception
      * @return object[]
      */
     public function getStockLocationDetailsById(string $stockLocationId): array
@@ -74,7 +74,7 @@ class StockLocationService
     }
 
     /**
-     * @throws NotFoundException
+     * @throws \Exception
      * @return object[]
      */
     public function getAllStockLocationsAjax(): array

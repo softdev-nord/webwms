@@ -6,14 +6,11 @@ namespace WebWMS\Tests\Unit\Form\CustomerOrder;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\CustomerOrder;
 use WebWMS\Form\CustomerOrder\DeleteCustomerOrderType;
-use WebWMS\Form\CustomerOrder\EditCustomerOrderType;
 
 /**
  * @package:    WebWMS\Tests\Unit\Form\CustomerOrder

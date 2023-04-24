@@ -41,8 +41,6 @@ final class DeleteCustomerTypeTest extends TestCase
 
     public function testBuildForm(): void
     {
-
-
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder->expects($this->exactly(1))
             ->method('add')

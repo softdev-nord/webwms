@@ -283,4 +283,3 @@ final class SupplierTest extends TestCase
         $this->assertSame($expected, $property->getValue($this->supplier));
     }
 }
-

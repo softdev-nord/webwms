@@ -23,7 +23,6 @@ use WebWMS\Form\Customer\AddCustomerType;
  */
 final class AddCustomerTypeTest extends TestCase
 {
-
     private AddCustomerType $addCustomerType;
 
     protected function setUp(): void

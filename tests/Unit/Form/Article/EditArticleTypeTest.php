@@ -40,6 +40,7 @@ final class EditArticleTypeTest extends TestCase
 
         unset($this->editArticleType);
     }
+
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
@@ -183,7 +184,7 @@ final class EditArticleTypeTest extends TestCase
                         'class' => 'btn btn-lg abort',
                     ],
                 ]],
-        );
+            );
 
         $optionsResolver = $this->createMock(OptionsResolver::class);
 
