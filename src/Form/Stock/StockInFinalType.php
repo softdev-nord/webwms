@@ -24,7 +24,8 @@ class StockInFinalType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        foreach ($options['data']['freeStockLocations'] as $key => $value) {
+        $freeStockLocations = (array) $options['data']['freeStockLocations'];
+        foreach ($freeStockLocations as $key => $value) {
             $builder
                 ->add('stock_su_id_' . $key, TextType::class, [
                     'label' => false,

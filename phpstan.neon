@@ -17,8 +17,6 @@ parameters:
 
     ignoreErrors:
     	- '#Cannot access offset#'
-    	- '#Argument of an invalid type mixed supplied for foreach, only iterables are supported.#'
-    	- '#Dynamic call to static method PHPUnit\\Framework\\.*#'
 
     reportUnmatchedIgnoredErrors: false
     checkGenericClassInNonGenericObjectType: false
