@@ -14,6 +14,8 @@ use WebWMS\Entity\TransportRequest;
  * Class        TransportRequestTest
  *
  * @covers \WebWMS\Entity\TransportRequest
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 final class TransportRequestTest extends TestCase
 {
@@ -42,7 +44,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('id');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getId());
+        self::assertSame($expected, $this->transportRequest->getId());
     }
 
     public function testSetId(): void
@@ -51,7 +53,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('id');
         $this->transportRequest->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetSuId(): void
@@ -60,7 +62,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('suId');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getSuId());
+        self::assertSame($expected, $this->transportRequest->getSuId());
     }
 
     public function testSetSuId(): void
@@ -69,7 +71,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('suId');
         $this->transportRequest->setSuId($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrNr(): void
@@ -78,7 +80,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trNr');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrNr());
+        self::assertSame($expected, $this->transportRequest->getTrNr());
     }
 
     public function testSetTrNr(): void
@@ -87,7 +89,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trNr');
         $this->transportRequest->setTrNr($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrPos(): void
@@ -96,7 +98,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trPos');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrPos());
+        self::assertSame($expected, $this->transportRequest->getTrPos());
     }
 
     public function testSetTrPos(): void
@@ -105,7 +107,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trPos');
         $this->transportRequest->setTrPos($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrPrio(): void
@@ -114,7 +116,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trPrio');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrPrio());
+        self::assertSame($expected, $this->transportRequest->getTrPrio());
     }
 
     public function testSetTrPrio(): void
@@ -123,7 +125,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trPrio');
         $this->transportRequest->setTrPrio($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetArtNr(): void
@@ -132,7 +134,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('articleNr');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getArtNr());
+        self::assertSame($expected, $this->transportRequest->getArtNr());
     }
 
     public function testSetArtNr(): void
@@ -141,7 +143,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('articleNr');
         $this->transportRequest->setArtNr($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrQuantity(): void
@@ -150,7 +152,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trQuantity');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrQuantity());
+        self::assertSame($expected, $this->transportRequest->getTrQuantity());
     }
 
     public function testSetTrQuantity(): void
@@ -159,7 +161,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trQuantity');
         $this->transportRequest->setTrQuantity($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetStockCoordinate(): void
@@ -168,7 +170,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockCoordinate');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getStockCoordinate());
+        self::assertSame($expected, $this->transportRequest->getStockCoordinate());
     }
 
     public function testSetStockCoordinate(): void
@@ -177,7 +179,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockCoordinate');
         $this->transportRequest->setStockCoordinate($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetStockNr(): void
@@ -186,7 +188,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockNr');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getStockNr());
+        self::assertSame($expected, $this->transportRequest->getStockNr());
     }
 
     public function testSetStockNr(): void
@@ -195,7 +197,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockNr');
         $this->transportRequest->setStockNr($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetStockLevel1(): void
@@ -204,7 +206,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockLevel1');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getStockLevel1());
+        self::assertSame($expected, $this->transportRequest->getStockLevel1());
     }
 
     public function testSetStockLevel1(): void
@@ -213,7 +215,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockLevel1');
         $this->transportRequest->setStockLevel1($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetStockLevel2(): void
@@ -222,7 +224,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockLevel2');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getStockLevel2());
+        self::assertSame($expected, $this->transportRequest->getStockLevel2());
     }
 
     public function testSetStockLevel2(): void
@@ -231,7 +233,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockLevel2');
         $this->transportRequest->setStockLevel2($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetStockLevel3(): void
@@ -240,7 +242,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockLevel3');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getStockLevel3());
+        self::assertSame($expected, $this->transportRequest->getStockLevel3());
     }
 
     public function testSetStockLevel3(): void
@@ -249,7 +251,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockLevel3');
         $this->transportRequest->setStockLevel3($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetStockLevel4(): void
@@ -258,7 +260,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockLevel4');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getStockLevel4());
+        self::assertSame($expected, $this->transportRequest->getStockLevel4());
     }
 
     public function testSetStockLevel4(): void
@@ -267,7 +269,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('stockLevel4');
         $this->transportRequest->setStockLevel4($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrAccess(): void
@@ -276,7 +278,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trAccess');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrAccess());
+        self::assertSame($expected, $this->transportRequest->getTrAccess());
     }
 
     public function testSetTrAccess(): void
@@ -285,7 +287,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trAccess');
         $this->transportRequest->setTrAccess($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrDispatch(): void
@@ -294,7 +296,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trDispatch');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrDispatch());
+        self::assertSame($expected, $this->transportRequest->getTrDispatch());
     }
 
     public function testSetTrDispatch(): void
@@ -303,7 +305,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trDispatch');
         $this->transportRequest->setTrDispatch($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrState(): void
@@ -312,7 +314,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trState');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrState());
+        self::assertSame($expected, $this->transportRequest->getTrState());
     }
 
     public function testSetTrState(): void
@@ -321,7 +323,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trState');
         $this->transportRequest->setTrState($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetOrderUsername(): void
@@ -330,7 +332,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('orderUsername');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getOrderUsername());
+        self::assertSame($expected, $this->transportRequest->getOrderUsername());
     }
 
     public function testSetOrderUsername(): void
@@ -339,7 +341,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('orderUsername');
         $this->transportRequest->setOrderUsername($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetBookingMethod(): void
@@ -348,7 +350,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('bookingMethod');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getBookingMethod());
+        self::assertSame($expected, $this->transportRequest->getBookingMethod());
     }
 
     public function testSetBookingMethod(): void
@@ -357,7 +359,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('bookingMethod');
         $this->transportRequest->setBookingMethod($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetDocId(): void
@@ -366,7 +368,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('docId');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getDocId());
+        self::assertSame($expected, $this->transportRequest->getDocId());
     }
 
     public function testSetDocId(): void
@@ -375,7 +377,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('docId');
         $this->transportRequest->setDocId($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetOrderNr(): void
@@ -384,7 +386,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('orderNr');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getOrderNr());
+        self::assertSame($expected, $this->transportRequest->getOrderNr());
     }
 
     public function testSetOrderNr(): void
@@ -393,7 +395,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('orderNr');
         $this->transportRequest->setOrderNr($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetOrderPos(): void
@@ -402,7 +404,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('orderPos');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getOrderPos());
+        self::assertSame($expected, $this->transportRequest->getOrderPos());
     }
 
     public function testSetOrderPos(): void
@@ -411,7 +413,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('orderPos');
         $this->transportRequest->setOrderPos($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetCharge(): void
@@ -420,7 +422,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('charge');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getCharge());
+        self::assertSame($expected, $this->transportRequest->getCharge());
     }
 
     public function testSetCharge(): void
@@ -429,7 +431,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('charge');
         $this->transportRequest->setCharge($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetLoadingEquipment(): void
@@ -438,7 +440,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('loadingEquipment');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getLoadingEquipment());
+        self::assertSame($expected, $this->transportRequest->getLoadingEquipment());
     }
 
     public function testSetLoadingEquipment(): void
@@ -447,7 +449,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('loadingEquipment');
         $this->transportRequest->setLoadingEquipment($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetConfirmationState(): void
@@ -456,7 +458,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('confirmationState');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getConfirmationState());
+        self::assertSame($expected, $this->transportRequest->getConfirmationState());
     }
 
     public function testSetConfirmationState(): void
@@ -465,7 +467,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('confirmationState');
         $this->transportRequest->setConfirmationState($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrUsername(): void
@@ -474,7 +476,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trUsername');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrUsername());
+        self::assertSame($expected, $this->transportRequest->getTrUsername());
     }
 
     public function testSetTrUsername(): void
@@ -483,7 +485,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trUsername');
         $this->transportRequest->setTrUsername($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrComputerIp(): void
@@ -492,7 +494,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trComputerIp');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrComputerIp());
+        self::assertSame($expected, $this->transportRequest->getTrComputerIp());
     }
 
     public function testSetTrComputerIp(): void
@@ -501,7 +503,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trComputerIp');
         $this->transportRequest->setTrComputerIp($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrBlocked(): void
@@ -510,7 +512,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trBlocked');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrBlocked());
+        self::assertSame($expected, $this->transportRequest->getTrBlocked());
     }
 
     public function testSetTrBlocked(): void
@@ -519,7 +521,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trBlocked');
         $this->transportRequest->setTrBlocked($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrStartDate(): void
@@ -528,7 +530,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trStartDate');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrStartDate());
+        self::assertSame($expected, $this->transportRequest->getTrStartDate());
     }
 
     public function testSetTrStartDate(): void
@@ -537,7 +539,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trStartDate');
         $this->transportRequest->setTrStartDate($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrEdited(): void
@@ -546,7 +548,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trEdited');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrEdited());
+        self::assertSame($expected, $this->transportRequest->getTrEdited());
     }
 
     public function testSetTrEdited(): void
@@ -555,7 +557,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trEdited');
         $this->transportRequest->setTrEdited($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetTrType(): void
@@ -564,7 +566,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trType');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getTrType());
+        self::assertSame($expected, $this->transportRequest->getTrType());
     }
 
     public function testSetTrType(): void
@@ -573,7 +575,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('trType');
         $this->transportRequest->setTrType($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetCreatedAt(): void
@@ -582,7 +584,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('createdAt');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getCreatedAt());
+        self::assertSame($expected, $this->transportRequest->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -591,7 +593,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('createdAt');
         $this->transportRequest->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 
     public function testGetUpdatedAt(): void
@@ -600,7 +602,7 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('updatedAt');
         $property->setValue($this->transportRequest, $expected);
-        $this->assertSame($expected, $this->transportRequest->getUpdatedAt());
+        self::assertSame($expected, $this->transportRequest->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -609,6 +611,6 @@ final class TransportRequestTest extends TestCase
         $property = (new \ReflectionClass(TransportRequest::class))
             ->getProperty('updatedAt');
         $this->transportRequest->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->transportRequest));
+        self::assertSame($expected, $property->getValue($this->transportRequest));
     }
 }

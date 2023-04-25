@@ -47,7 +47,7 @@ final class CustomerOrderPosTypeTest extends TestCase
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects($this->exactly(1))
+        $builder->expects(self::exactly(1))
             ->method('add')
             ->withConsecutive(
                 ['id', HiddenType::class, [
@@ -107,7 +107,7 @@ final class CustomerOrderPosTypeTest extends TestCase
         $addCustomerOrderType = $this->customerOrderPosType;
         $resolver = $this->createMock(OptionsResolver::class);
 
-        $resolver->expects($this->once())
+        $resolver->expects(self::once())
             ->method('setDefaults')
             ->with([
                     'data_class' => CustomerOrderPos::class,

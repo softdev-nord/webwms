@@ -39,7 +39,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('id');
         $property->setValue($this->bookingMethod, $expected);
-        $this->assertSame($expected, $this->bookingMethod->getId());
+        self::assertSame($expected, $this->bookingMethod->getId());
     }
 
     public function testSetId(): void
@@ -48,7 +48,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('id');
         $this->bookingMethod->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->bookingMethod));
+        self::assertSame($expected, $property->getValue($this->bookingMethod));
     }
 
     public function testGetConfirmation(): void
@@ -57,7 +57,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('confirmation');
         $property->setValue($this->bookingMethod, $expected);
-        $this->assertSame($expected, $this->bookingMethod->getConfirmation());
+        self::assertSame($expected, $this->bookingMethod->getConfirmation());
     }
 
     public function testSetConfirmation(): void
@@ -66,7 +66,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('confirmation');
         $this->bookingMethod->setConfirmation($expected);
-        $this->assertSame($expected, $property->getValue($this->bookingMethod));
+        self::assertSame($expected, $property->getValue($this->bookingMethod));
     }
 
     public function testGetMovementType(): void
@@ -75,7 +75,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('movementType');
         $property->setValue($this->bookingMethod, $expected);
-        $this->assertSame($expected, $this->bookingMethod->getMovementType());
+        self::assertSame($expected, $this->bookingMethod->getMovementType());
     }
 
     public function testSetMovementType(): void
@@ -84,7 +84,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('movementType');
         $this->bookingMethod->setMovementType($expected);
-        $this->assertSame($expected, $property->getValue($this->bookingMethod));
+        self::assertSame($expected, $property->getValue($this->bookingMethod));
     }
 
     public function testGetDescription(): void
@@ -93,7 +93,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('description');
         $property->setValue($this->bookingMethod, $expected);
-        $this->assertSame($expected, $this->bookingMethod->getDescription());
+        self::assertSame($expected, $this->bookingMethod->getDescription());
     }
 
     public function testSetDescription(): void
@@ -102,7 +102,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('description');
         $this->bookingMethod->setDescription($expected);
-        $this->assertSame($expected, $property->getValue($this->bookingMethod));
+        self::assertSame($expected, $property->getValue($this->bookingMethod));
     }
 
     public function testGetAnsteuerung(): void
@@ -111,7 +111,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('ansteuerung');
         $property->setValue($this->bookingMethod, $expected);
-        $this->assertSame($expected, $this->bookingMethod->getAnsteuerung());
+        self::assertSame($expected, $this->bookingMethod->getAnsteuerung());
     }
 
     public function testSetAnsteuerung(): void
@@ -120,7 +120,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('ansteuerung');
         $this->bookingMethod->setAnsteuerung($expected);
-        $this->assertSame($expected, $property->getValue($this->bookingMethod));
+        self::assertSame($expected, $property->getValue($this->bookingMethod));
     }
 
     public function testGetUpload(): void
@@ -129,7 +129,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('upload');
         $property->setValue($this->bookingMethod, $expected);
-        $this->assertSame($expected, $this->bookingMethod->getUpload());
+        self::assertSame($expected, $this->bookingMethod->getUpload());
     }
 
     public function testSetUpload(): void
@@ -138,7 +138,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('upload');
         $this->bookingMethod->setUpload($expected);
-        $this->assertSame($expected, $property->getValue($this->bookingMethod));
+        self::assertSame($expected, $property->getValue($this->bookingMethod));
     }
 
     public function testGetStatistics(): void
@@ -147,7 +147,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('statistics');
         $property->setValue($this->bookingMethod, $expected);
-        $this->assertSame($expected, $this->bookingMethod->getStatistics());
+        self::assertSame($expected, $this->bookingMethod->getStatistics());
     }
 
     public function testSetStatistics(): void
@@ -156,7 +156,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('statistics');
         $this->bookingMethod->setStatistics($expected);
-        $this->assertSame($expected, $property->getValue($this->bookingMethod));
+        self::assertSame($expected, $property->getValue($this->bookingMethod));
     }
 
     public function testGetPriority(): void
@@ -165,7 +165,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('priority');
         $property->setValue($this->bookingMethod, $expected);
-        $this->assertSame($expected, $this->bookingMethod->getPriority());
+        self::assertSame($expected, $this->bookingMethod->getPriority());
     }
 
     public function testSetPriority(): void
@@ -174,7 +174,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('priority');
         $this->bookingMethod->setPriority($expected);
-        $this->assertSame($expected, $property->getValue($this->bookingMethod));
+        self::assertSame($expected, $property->getValue($this->bookingMethod));
     }
 
     public function testGetTidDescription(): void
@@ -183,7 +183,7 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('tidDescription');
         $property->setValue($this->bookingMethod, $expected);
-        $this->assertSame($expected, $this->bookingMethod->getTidDescription());
+        self::assertSame($expected, $this->bookingMethod->getTidDescription());
     }
 
     public function testSetTidDescription(): void
@@ -192,6 +192,6 @@ final class BookingMethodTest extends TestCase
         $property = (new \ReflectionClass(BookingMethod::class))
             ->getProperty('tidDescription');
         $this->bookingMethod->setTidDescription($expected);
-        $this->assertSame($expected, $property->getValue($this->bookingMethod));
+        self::assertSame($expected, $property->getValue($this->bookingMethod));
     }
 }

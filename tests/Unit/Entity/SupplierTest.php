@@ -43,7 +43,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierId');
         $property->setValue($this->supplier, $expected);
-        $this->assertSame($expected, $this->supplier->getSupplierId());
+        self::assertSame($expected, $this->supplier->getSupplierId());
     }
 
     public function testSetSupplierId(): void
@@ -52,7 +52,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierId');
         $this->supplier->setSupplierId($expected);
-        $this->assertSame($expected, $property->getValue($this->supplier));
+        self::assertSame($expected, $property->getValue($this->supplier));
     }
 
     public function testGetSupplierNr(): void
@@ -61,7 +61,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierNr');
         $property->setValue($this->supplier, $expected);
-        $this->assertSame($expected, $this->supplier->getSupplierNr());
+        self::assertSame($expected, $this->supplier->getSupplierNr());
     }
 
     public function testSetSupplierNr(): void
@@ -70,7 +70,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierNr');
         $this->supplier->setSupplierNr($expected);
-        $this->assertSame($expected, $property->getValue($this->supplier));
+        self::assertSame($expected, $property->getValue($this->supplier));
     }
 
     public function testGetSupplierName(): void
@@ -79,7 +79,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierName');
         $property->setValue($this->supplier, $expected);
-        $this->assertSame($expected, $this->supplier->getSupplierName());
+        self::assertSame($expected, $this->supplier->getSupplierName());
     }
 
     public function testSetSupplierName(): void
@@ -88,7 +88,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierName');
         $this->supplier->setSupplierName($expected);
-        $this->assertSame($expected, $property->getValue($this->supplier));
+        self::assertSame($expected, $property->getValue($this->supplier));
     }
 
     public function testGetSupplierAddressAddition(): void
@@ -97,7 +97,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressAddition');
         $property->setValue($this->supplier, $expected);
-        $this->assertSame($expected, $this->supplier->getSupplierAddressAddition());
+        self::assertSame($expected, $this->supplier->getSupplierAddressAddition());
     }
 
     public function testSetSupplierAddressAddition(): void
@@ -106,7 +106,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressAddition');
         $this->supplier->setSupplierAddressAddition($expected);
-        $this->assertSame($expected, $property->getValue($this->supplier));
+        self::assertSame($expected, $property->getValue($this->supplier));
     }
 
     public function testGetSupplierAddressStreet(): void
@@ -115,7 +115,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressStreet');
         $property->setValue($this->supplier, $expected);
-        $this->assertSame($expected, $this->supplier->getSupplierAddressStreet());
+        self::assertSame($expected, $this->supplier->getSupplierAddressStreet());
     }
 
     public function testSetSupplierAddressStreet(): void
@@ -124,7 +124,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressStreet');
         $this->supplier->setSupplierAddressStreet($expected);
-        $this->assertSame($expected, $property->getValue($this->supplier));
+        self::assertSame($expected, $property->getValue($this->supplier));
     }
 
     public function testGetSupplierAddressStreetNr(): void
@@ -133,7 +133,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressStreetNr');
         $property->setValue($this->supplier, $expected);
-        $this->assertSame($expected, $this->supplier->getSupplierAddressStreetNr());
+        self::assertSame($expected, $this->supplier->getSupplierAddressStreetNr());
     }
 
     public function testSetSupplierAddressStreetNr(): void
@@ -142,7 +142,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressStreetNr');
         $this->supplier->setSupplierAddressStreetNr($expected);
-        $this->assertSame($expected, $property->getValue($this->supplier));
+        self::assertSame($expected, $property->getValue($this->supplier));
     }
 
     public function testGetSupplierAddressCountryCode(): void
@@ -151,7 +151,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressCountryCode');
         $property->setValue($this->supplier, $expected);
-        $this->assertSame($expected, $this->supplier->getSupplierAddressCountryCode());
+        self::assertSame($expected, $this->supplier->getSupplierAddressCountryCode());
     }
 
     public function testSetSupplierAddressCountryCode(): void
@@ -160,7 +160,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressCountryCode');
         $this->supplier->setSupplierAddressCountryCode($expected);
-        $this->assertSame($expected, $property->getValue($this->supplier));
+        self::assertSame($expected, $property->getValue($this->supplier));
     }
 
     public function testGetSupplierAddressZipcode(): void
@@ -169,7 +169,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressZipcode');
         $property->setValue($this->supplier, $expected);
-        $this->assertSame($expected, $this->supplier->getSupplierAddressZipcode());
+        self::assertSame($expected, $this->supplier->getSupplierAddressZipcode());
     }
 
     public function testSetSupplierAddressZipcode(): void
@@ -178,7 +178,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressZipcode');
         $this->supplier->setSupplierAddressZipcode($expected);
-        $this->assertSame($expected, $property->getValue($this->supplier));
+        self::assertSame($expected, $property->getValue($this->supplier));
     }
 
     public function testGetSupplierAddressCity(): void
@@ -187,7 +187,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressCity');
         $property->setValue($this->supplier, $expected);
-        $this->assertSame($expected, $this->supplier->getSupplierAddressCity());
+        self::assertSame($expected, $this->supplier->getSupplierAddressCity());
     }
 
     public function testSetSupplierAddressCity(): void
@@ -196,7 +196,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('supplierAddressCity');
         $this->supplier->setSupplierAddressCity($expected);
-        $this->assertSame($expected, $property->getValue($this->supplier));
+        self::assertSame($expected, $property->getValue($this->supplier));
     }
 
     public function testToArray(): void
@@ -223,7 +223,7 @@ final class SupplierTest extends TestCase
             'supplierAddressCity' => 'Harsefeld',
         ];
 
-        $this->assertEquals($expected, $this->supplier->toArray());
+        self::assertEquals($expected, $this->supplier->toArray());
         $property = (new \ReflectionClass(Supplier::class));
         $expected = [
             'supplierId' => $property->getProperty('supplierId'),
@@ -236,15 +236,15 @@ final class SupplierTest extends TestCase
             'supplierAddressZipcode' => $property->getProperty('supplierAddressZipcode'),
             'supplierAddressCity' => $property->getProperty('supplierAddressCity'),
         ];
-        $this->assertArrayHasKey('supplierId', $expected);
-        $this->assertArrayHasKey('supplierNr', $expected);
-        $this->assertArrayHasKey('supplierName', $expected);
-        $this->assertArrayHasKey('supplierAddressAddition', $expected);
-        $this->assertArrayHasKey('supplierAddressStreet', $expected);
-        $this->assertArrayHasKey('supplierAddressStreetNr', $expected);
-        $this->assertArrayHasKey('supplierAddressCountryCode', $expected);
-        $this->assertArrayHasKey('supplierAddressZipcode', $expected);
-        $this->assertArrayHasKey('supplierAddressCity', $expected);
+        self::assertArrayHasKey('supplierId', $expected);
+        self::assertArrayHasKey('supplierNr', $expected);
+        self::assertArrayHasKey('supplierName', $expected);
+        self::assertArrayHasKey('supplierAddressAddition', $expected);
+        self::assertArrayHasKey('supplierAddressStreet', $expected);
+        self::assertArrayHasKey('supplierAddressStreetNr', $expected);
+        self::assertArrayHasKey('supplierAddressCountryCode', $expected);
+        self::assertArrayHasKey('supplierAddressZipcode', $expected);
+        self::assertArrayHasKey('supplierAddressCity', $expected);
     }
 
     public function testGetCreatedAt(): void
@@ -253,7 +253,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('createdAt');
         $property->setValue($this->supplier, $expected);
-        $this->assertSame($expected, $this->supplier->getCreatedAt());
+        self::assertSame($expected, $this->supplier->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -262,7 +262,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('createdAt');
         $this->supplier->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->supplier));
+        self::assertSame($expected, $property->getValue($this->supplier));
     }
 
     public function testGetUpdatedAt(): void
@@ -271,7 +271,7 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('updatedAt');
         $property->setValue($this->supplier, $expected);
-        $this->assertSame($expected, $this->supplier->getUpdatedAt());
+        self::assertSame($expected, $this->supplier->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -280,6 +280,6 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('updatedAt');
         $this->supplier->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->supplier));
+        self::assertSame($expected, $property->getValue($this->supplier));
     }
 }

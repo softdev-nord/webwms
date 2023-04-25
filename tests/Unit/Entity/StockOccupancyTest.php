@@ -43,7 +43,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('id');
         $property->setValue($this->stockOccupancy, $expected);
-        $this->assertSame($expected, $this->stockOccupancy->getId());
+        self::assertSame($expected, $this->stockOccupancy->getId());
     }
 
     public function testSetId(): void
@@ -52,7 +52,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('id');
         $this->stockOccupancy->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockOccupancy));
+        self::assertSame($expected, $property->getValue($this->stockOccupancy));
     }
 
     public function testGetStockLocationId(): void
@@ -61,7 +61,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('stockLocationId');
         $property->setValue($this->stockOccupancy, $expected);
-        $this->assertSame($expected, $this->stockOccupancy->getStockLocationId());
+        self::assertSame($expected, $this->stockOccupancy->getStockLocationId());
     }
 
     public function testSetStockLocationId(): void
@@ -70,7 +70,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('stockLocationId');
         $this->stockOccupancy->setStockLocationId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockOccupancy));
+        self::assertSame($expected, $property->getValue($this->stockOccupancy));
     }
 
     public function testGetArticleId(): void
@@ -79,7 +79,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('articleId');
         $property->setValue($this->stockOccupancy, $expected);
-        $this->assertSame($expected, $this->stockOccupancy->getArticleId());
+        self::assertSame($expected, $this->stockOccupancy->getArticleId());
     }
 
     public function testSetArticleId(): void
@@ -88,7 +88,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('articleId');
         $this->stockOccupancy->setArticleId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockOccupancy));
+        self::assertSame($expected, $property->getValue($this->stockOccupancy));
     }
 
     public function testGetInStock(): void
@@ -97,7 +97,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('inStock');
         $property->setValue($this->stockOccupancy, $expected);
-        $this->assertSame($expected, $this->stockOccupancy->getInStock());
+        self::assertSame($expected, $this->stockOccupancy->getInStock());
     }
 
     public function testSetInStock(): void
@@ -106,7 +106,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('inStock');
         $this->stockOccupancy->setInStock($expected);
-        $this->assertSame($expected, $property->getValue($this->stockOccupancy));
+        self::assertSame($expected, $property->getValue($this->stockOccupancy));
     }
 
     public function testGetIncomingStock(): void
@@ -115,7 +115,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('incomingStock');
         $property->setValue($this->stockOccupancy, $expected);
-        $this->assertSame($expected, $this->stockOccupancy->getIncomingStock());
+        self::assertSame($expected, $this->stockOccupancy->getIncomingStock());
     }
 
     public function testSetIncomingStock(): void
@@ -124,7 +124,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('incomingStock');
         $this->stockOccupancy->setIncomingStock($expected);
-        $this->assertSame($expected, $property->getValue($this->stockOccupancy));
+        self::assertSame($expected, $property->getValue($this->stockOccupancy));
     }
 
     public function testGetReservedStock(): void
@@ -133,7 +133,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('reservedStock');
         $property->setValue($this->stockOccupancy, $expected);
-        $this->assertSame($expected, $this->stockOccupancy->getReservedStock());
+        self::assertSame($expected, $this->stockOccupancy->getReservedStock());
     }
 
     public function testSetReservedStock(): void
@@ -142,7 +142,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('reservedStock');
         $this->stockOccupancy->setReservedStock($expected);
-        $this->assertSame($expected, $property->getValue($this->stockOccupancy));
+        self::assertSame($expected, $property->getValue($this->stockOccupancy));
     }
 
     public function testGetCreatedAt(): void
@@ -151,7 +151,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('createdAt');
         $property->setValue($this->stockOccupancy, $expected);
-        $this->assertSame($expected, $this->stockOccupancy->getCreatedAt());
+        self::assertSame($expected, $this->stockOccupancy->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -160,7 +160,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('createdAt');
         $this->stockOccupancy->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->stockOccupancy));
+        self::assertSame($expected, $property->getValue($this->stockOccupancy));
     }
 
     public function testGetUpdatedAt(): void
@@ -169,7 +169,7 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('updatedAt');
         $property->setValue($this->stockOccupancy, $expected);
-        $this->assertSame($expected, $this->stockOccupancy->getUpdatedAt());
+        self::assertSame($expected, $this->stockOccupancy->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -178,6 +178,6 @@ final class StockOccupancyTest extends TestCase
         $property = (new \ReflectionClass(StockOccupancy::class))
             ->getProperty('updatedAt');
         $this->stockOccupancy->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->stockOccupancy));
+        self::assertSame($expected, $property->getValue($this->stockOccupancy));
     }
 }

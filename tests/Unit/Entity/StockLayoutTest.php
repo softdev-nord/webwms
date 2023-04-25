@@ -43,7 +43,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('id');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getId());
+        self::assertSame($expected, $this->stockLayout->getId());
     }
 
     public function testSetId(): void
@@ -52,7 +52,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('id');
         $this->stockLayout->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 
     public function testGetStockNr(): void
@@ -61,7 +61,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockNr');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getStockNr());
+        self::assertSame($expected, $this->stockLayout->getStockNr());
     }
 
     public function testSetStockNr(): void
@@ -70,7 +70,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockNr');
         $this->stockLayout->setStockNr($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 
     public function testGetStockDescription(): void
@@ -79,7 +79,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockDescription');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getStockDescription());
+        self::assertSame($expected, $this->stockLayout->getStockDescription());
     }
 
     public function testSetStockDescription(): void
@@ -88,7 +88,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockDescription');
         $this->stockLayout->setStockDescription($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 
     public function testGetStockLevel1(): void
@@ -97,7 +97,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockLevel1');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getStockLevel1());
+        self::assertSame($expected, $this->stockLayout->getStockLevel1());
     }
 
     public function testSetStockLevel1(): void
@@ -106,7 +106,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockLevel1');
         $this->stockLayout->setStockLevel1($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 
     public function testGetStockLevel2(): void
@@ -115,7 +115,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockLevel2');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getStockLevel2());
+        self::assertSame($expected, $this->stockLayout->getStockLevel2());
     }
 
     public function testSetStockLevel2(): void
@@ -124,7 +124,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockLevel2');
         $this->stockLayout->setStockLevel2($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 
     public function testGetStockLevel3(): void
@@ -133,7 +133,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockLevel3');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getStockLevel3());
+        self::assertSame($expected, $this->stockLayout->getStockLevel3());
     }
 
     public function testSetStockLevel3(): void
@@ -142,7 +142,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockLevel3');
         $this->stockLayout->setStockLevel3($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 
     public function testGetStockLevel4(): void
@@ -151,7 +151,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockLevel4');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getStockLevel4());
+        self::assertSame($expected, $this->stockLayout->getStockLevel4());
     }
 
     public function testSetStockLevel4(): void
@@ -160,7 +160,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockLevel4');
         $this->stockLayout->setStockLevel4($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 
     public function testGetStockModel(): void
@@ -169,7 +169,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockModel');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getStockModel());
+        self::assertSame($expected, $this->stockLayout->getStockModel());
     }
 
     public function testSetStockModel(): void
@@ -178,7 +178,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockModel');
         $this->stockLayout->setStockModel($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 
     public function testGetStockTyp(): void
@@ -187,7 +187,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockTyp');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getStockTyp());
+        self::assertSame($expected, $this->stockLayout->getStockTyp());
     }
 
     public function testSetStockTyp(): void
@@ -196,7 +196,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockTyp');
         $this->stockLayout->setStockTyp($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 
     public function testGetStockLongDescription(): void
@@ -205,7 +205,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockLongDescription');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getStockLongDescription());
+        self::assertSame($expected, $this->stockLayout->getStockLongDescription());
     }
 
     public function testSetStockLongDescription(): void
@@ -214,7 +214,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('stockLongDescription');
         $this->stockLayout->setStockLongDescription($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 
     public function testGetCreatedAt(): void
@@ -223,7 +223,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('createdAt');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getCreatedAt());
+        self::assertSame($expected, $this->stockLayout->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -232,7 +232,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('createdAt');
         $this->stockLayout->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 
     public function testGetUpdatedAt(): void
@@ -241,7 +241,7 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('updatedAt');
         $property->setValue($this->stockLayout, $expected);
-        $this->assertSame($expected, $this->stockLayout->getUpdatedAt());
+        self::assertSame($expected, $this->stockLayout->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -250,6 +250,6 @@ final class StockLayoutTest extends TestCase
         $property = (new \ReflectionClass(StockLayout::class))
             ->getProperty('updatedAt');
         $this->stockLayout->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLayout));
+        self::assertSame($expected, $property->getValue($this->stockLayout));
     }
 }

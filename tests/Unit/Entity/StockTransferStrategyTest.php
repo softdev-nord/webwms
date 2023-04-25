@@ -43,7 +43,7 @@ final class StockTransferStrategyTest extends TestCase
         $property = (new \ReflectionClass(StockTransferStrategy::class))
             ->getProperty('id');
         $property->setValue($this->stockTransferStrategy, $expected);
-        $this->assertSame($expected, $this->stockTransferStrategy->getId());
+        self::assertSame($expected, $this->stockTransferStrategy->getId());
     }
 
     public function testSetId(): void
@@ -52,7 +52,7 @@ final class StockTransferStrategyTest extends TestCase
         $property = (new \ReflectionClass(StockTransferStrategy::class))
             ->getProperty('id');
         $this->stockTransferStrategy->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockTransferStrategy));
+        self::assertSame($expected, $property->getValue($this->stockTransferStrategy));
     }
 
     public function testGetShortCode(): void
@@ -61,7 +61,7 @@ final class StockTransferStrategyTest extends TestCase
         $property = (new \ReflectionClass(StockTransferStrategy::class))
             ->getProperty('shortCode');
         $property->setValue($this->stockTransferStrategy, $expected);
-        $this->assertSame($expected, $this->stockTransferStrategy->getShortCode());
+        self::assertSame($expected, $this->stockTransferStrategy->getShortCode());
     }
 
     public function testSetShortCode(): void
@@ -70,7 +70,7 @@ final class StockTransferStrategyTest extends TestCase
         $property = (new \ReflectionClass(StockTransferStrategy::class))
             ->getProperty('shortCode');
         $this->stockTransferStrategy->setShortCode($expected);
-        $this->assertSame($expected, $property->getValue($this->stockTransferStrategy));
+        self::assertSame($expected, $property->getValue($this->stockTransferStrategy));
     }
 
     public function testGetDescription(): void
@@ -79,7 +79,7 @@ final class StockTransferStrategyTest extends TestCase
         $property = (new \ReflectionClass(StockTransferStrategy::class))
             ->getProperty('description');
         $property->setValue($this->stockTransferStrategy, $expected);
-        $this->assertSame($expected, $this->stockTransferStrategy->getDescription());
+        self::assertSame($expected, $this->stockTransferStrategy->getDescription());
     }
 
     public function testSetDescription(): void
@@ -88,7 +88,7 @@ final class StockTransferStrategyTest extends TestCase
         $property = (new \ReflectionClass(StockTransferStrategy::class))
             ->getProperty('description');
         $this->stockTransferStrategy->setDescription($expected);
-        $this->assertSame($expected, $property->getValue($this->stockTransferStrategy));
+        self::assertSame($expected, $property->getValue($this->stockTransferStrategy));
     }
 
     public function testGetCreatedAt(): void
@@ -97,7 +97,7 @@ final class StockTransferStrategyTest extends TestCase
         $property = (new \ReflectionClass(StockTransferStrategy::class))
             ->getProperty('createdAt');
         $property->setValue($this->stockTransferStrategy, $expected);
-        $this->assertSame($expected, $this->stockTransferStrategy->getCreatedAt());
+        self::assertSame($expected, $this->stockTransferStrategy->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -106,7 +106,7 @@ final class StockTransferStrategyTest extends TestCase
         $property = (new \ReflectionClass(StockTransferStrategy::class))
             ->getProperty('createdAt');
         $this->stockTransferStrategy->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->stockTransferStrategy));
+        self::assertSame($expected, $property->getValue($this->stockTransferStrategy));
     }
 
     public function testGetUpdatedAt(): void
@@ -115,7 +115,7 @@ final class StockTransferStrategyTest extends TestCase
         $property = (new \ReflectionClass(StockTransferStrategy::class))
             ->getProperty('updatedAt');
         $property->setValue($this->stockTransferStrategy, $expected);
-        $this->assertSame($expected, $this->stockTransferStrategy->getUpdatedAt());
+        self::assertSame($expected, $this->stockTransferStrategy->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -124,6 +124,6 @@ final class StockTransferStrategyTest extends TestCase
         $property = (new \ReflectionClass(StockTransferStrategy::class))
             ->getProperty('updatedAt');
         $this->stockTransferStrategy->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->stockTransferStrategy));
+        self::assertSame($expected, $property->getValue($this->stockTransferStrategy));
     }
 }

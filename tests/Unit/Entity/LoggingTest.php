@@ -43,7 +43,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('id');
         $property->setValue($this->logging, $expected);
-        $this->assertSame($expected, $this->logging->getId());
+        self::assertSame($expected, $this->logging->getId());
     }
 
     public function testSetId(): void
@@ -52,7 +52,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('id');
         $this->logging->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->logging));
+        self::assertSame($expected, $property->getValue($this->logging));
     }
 
     public function testGetRoute(): void
@@ -61,7 +61,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('route');
         $property->setValue($this->logging, $expected);
-        $this->assertSame($expected, $this->logging->getRoute());
+        self::assertSame($expected, $this->logging->getRoute());
     }
 
     public function testSetRoute(): void
@@ -70,7 +70,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('route');
         $this->logging->setRoute($expected);
-        $this->assertSame($expected, $property->getValue($this->logging));
+        self::assertSame($expected, $property->getValue($this->logging));
     }
 
     public function testGetMessage(): void
@@ -79,7 +79,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('message');
         $property->setValue($this->logging, $expected);
-        $this->assertSame($expected, $this->logging->getMessage());
+        self::assertSame($expected, $this->logging->getMessage());
     }
 
     public function testSetMessage(): void
@@ -88,7 +88,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('message');
         $this->logging->setMessage($expected);
-        $this->assertSame($expected, $property->getValue($this->logging));
+        self::assertSame($expected, $property->getValue($this->logging));
     }
 
     public function testGetDate(): void
@@ -97,7 +97,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('date');
         $property->setValue($this->logging, $expected);
-        $this->assertSame($expected, $this->logging->getDate());
+        self::assertSame($expected, $this->logging->getDate());
     }
 
     public function testSetDate(): void
@@ -106,7 +106,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('date');
         $this->logging->setDate($expected);
-        $this->assertSame($expected, $property->getValue($this->logging));
+        self::assertSame($expected, $property->getValue($this->logging));
     }
 
     public function testGetUser(): void
@@ -115,7 +115,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('user');
         $property->setValue($this->logging, $expected);
-        $this->assertSame($expected, $this->logging->getUser());
+        self::assertSame($expected, $this->logging->getUser());
     }
 
     public function testSetUser(): void
@@ -124,7 +124,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('user');
         $this->logging->setUser($expected);
-        $this->assertSame($expected, $property->getValue($this->logging));
+        self::assertSame($expected, $property->getValue($this->logging));
     }
 
     public function testGetIpAddress(): void
@@ -133,7 +133,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('ipAddress');
         $property->setValue($this->logging, $expected);
-        $this->assertSame($expected, $this->logging->getIpAddress());
+        self::assertSame($expected, $this->logging->getIpAddress());
     }
 
     public function testSetIpAddress(): void
@@ -142,7 +142,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('ipAddress');
         $this->logging->setIpAddress($expected);
-        $this->assertSame($expected, $property->getValue($this->logging));
+        self::assertSame($expected, $property->getValue($this->logging));
     }
 
     public function testGetUserAgent(): void
@@ -151,7 +151,7 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('userAgent');
         $property->setValue($this->logging, $expected);
-        $this->assertSame($expected, $this->logging->getUserAgent());
+        self::assertSame($expected, $this->logging->getUserAgent());
     }
 
     public function testSetUserAgent(): void
@@ -160,6 +160,6 @@ final class LoggingTest extends TestCase
         $property = (new \ReflectionClass(Logging::class))
             ->getProperty('userAgent');
         $this->logging->setUserAgent($expected);
-        $this->assertSame($expected, $property->getValue($this->logging));
+        self::assertSame($expected, $property->getValue($this->logging));
     }
 }

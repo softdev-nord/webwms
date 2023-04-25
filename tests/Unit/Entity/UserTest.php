@@ -48,7 +48,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('id');
         $property->setValue($this->user, $expected);
-        $this->assertSame($expected, $this->user->getId());
+        self::assertSame($expected, $this->user->getId());
     }
 
     public function testSetId(): void
@@ -57,7 +57,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('id');
         $this->user->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testGetUsername(): void
@@ -66,7 +66,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('username');
         $property->setValue($this->user, $expected);
-        $this->assertSame($expected, $this->user->getUsername());
+        self::assertSame($expected, $this->user->getUsername());
     }
 
     public function testSetUsername(): void
@@ -75,14 +75,14 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('username');
         $this->user->setUsername($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testEraseCredentials(): void
     {
         $plainPassword = null;
         $this->user->eraseCredentials();
-        $this->assertNull($plainPassword);
+        self::assertNull($plainPassword);
     }
 
     public function testGetFirstname(): void
@@ -91,7 +91,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('firstname');
         $property->setValue($this->user, $expected);
-        $this->assertSame($expected, $this->user->getFirstname());
+        self::assertSame($expected, $this->user->getFirstname());
     }
 
     public function testSetFirstname(): void
@@ -100,7 +100,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('firstname');
         $this->user->setFirstname($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testGetLastname(): void
@@ -109,7 +109,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('lastname');
         $property->setValue($this->user, $expected);
-        $this->assertSame($expected, $this->user->getLastname());
+        self::assertSame($expected, $this->user->getLastname());
     }
 
     public function testSetLastname(): void
@@ -118,7 +118,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('lastname');
         $this->user->setLastname($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testGetEmail(): void
@@ -127,7 +127,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('email');
         $property->setValue($this->user, $expected);
-        $this->assertSame($expected, $this->user->getEmail());
+        self::assertSame($expected, $this->user->getEmail());
     }
 
     public function testSetEmail(): void
@@ -136,7 +136,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('email');
         $this->user->setEmail($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testGetLastLogin(): void
@@ -145,7 +145,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('lastLogin');
         $property->setValue($this->user, $expected);
-        $this->assertSame($expected, $this->user->getLastLogin());
+        self::assertSame($expected, $this->user->getLastLogin());
     }
 
     public function testSetLastLogin(): void
@@ -154,7 +154,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('lastLogin');
         $this->user->setLastLogin($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testIsEnabled(): void
@@ -162,7 +162,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('enabled');
         $property->setValue($this->user, true);
-        $this->assertSame(true, $this->user->isEnabled());
+        self::assertSame(true, $this->user->isEnabled());
     }
 
     public function testSetEnabled(): void
@@ -171,7 +171,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('enabled');
         $this->user->setEnabled($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testGetCreatedAt(): void
@@ -180,7 +180,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('createdAt');
         $property->setValue($this->user, $expected);
-        $this->assertSame($expected, $this->user->getCreatedAt());
+        self::assertSame($expected, $this->user->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -189,7 +189,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('createdAt');
         $this->user->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testGetUpdatedAt(): void
@@ -198,7 +198,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('updatedAt');
         $property->setValue($this->user, $expected);
-        $this->assertSame($expected, $this->user->getUpdatedAt());
+        self::assertSame($expected, $this->user->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -207,7 +207,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('updatedAt');
         $this->user->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testSerialize(): void
@@ -216,7 +216,7 @@ final class UserTest extends TestCase
         $this->user->setId(1);
         $this->user->setUsername('test');
         $this->user->setPassword('password');
-        $this->assertEquals($expected, $this->user->serialize());
+        self::assertEquals($expected, $this->user->serialize());
     }
 
     public function testGetUserIdentifier(): void
@@ -225,7 +225,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('username');
         $property->setValue($this->user, $expected);
-        $this->assertEquals($expected, $this->user->getUserIdentifier());
+        self::assertEquals($expected, $this->user->getUserIdentifier());
     }
 
     public function testGetPassword(): void
@@ -234,7 +234,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('password');
         $property->setValue($this->user, $expected);
-        $this->assertSame($expected, $this->user->getPassword());
+        self::assertSame($expected, $this->user->getPassword());
     }
 
     public function testSetPassword(): void
@@ -243,7 +243,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('password');
         $this->user->setPassword($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testGetRole(): void
@@ -252,7 +252,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('role');
         $property->setValue($this->user, $expected);
-        $this->assertSame($expected, $this->user->getRole());
+        self::assertSame($expected, $this->user->getRole());
     }
 
     public function testSetRole(): void
@@ -261,14 +261,14 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('role');
         $this->user->setRole($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testGetRoles(): void
     {
         $expected = ['ROLE_ADMIN', 'ROLE_USER'];
         $this->user->setRoles($expected);
-        $this->assertSame($expected, $this->user->getRoles());
+        self::assertSame($expected, $this->user->getRoles());
     }
 
     public function testSetRoles(): void
@@ -277,7 +277,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('roles');
         $this->user->setRoles($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testGetPlainPassword(): void
@@ -286,7 +286,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('plainPassword');
         $property->setValue($this->user, $expected);
-        $this->assertSame($expected, $this->user->getPlainPassword());
+        self::assertSame($expected, $this->user->getPlainPassword());
     }
 
     public function testSetPlainPassword(): void
@@ -295,7 +295,7 @@ final class UserTest extends TestCase
         $property = (new \ReflectionClass(User::class))
             ->getProperty('plainPassword');
         $this->user->setPlainPassword($expected);
-        $this->assertSame($expected, $property->getValue($this->user));
+        self::assertSame($expected, $property->getValue($this->user));
     }
 
     public function testAddUser(): void
@@ -308,9 +308,9 @@ final class UserTest extends TestCase
         $user->setLastname('TestLastname');
         $user->setPassword('password');
 
-        $this->assertEquals('TestUser', $user->getUsername());
-        $this->assertEquals('TestFirstname', $user->getFirstname());
-        $this->assertEquals('TestLastname', $user->getLastname());
-        $this->assertEquals('password', $user->getPassword());
+        self::assertEquals('TestUser', $user->getUsername());
+        self::assertEquals('TestFirstname', $user->getFirstname());
+        self::assertEquals('TestLastname', $user->getLastname());
+        self::assertEquals('password', $user->getPassword());
     }
 }

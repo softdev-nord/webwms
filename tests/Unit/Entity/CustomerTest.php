@@ -43,7 +43,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerId');
         $property->setValue($this->customer, $expected);
-        $this->assertSame($expected, $this->customer->getCustomerId());
+        self::assertSame($expected, $this->customer->getCustomerId());
     }
 
     public function testSetCustomerId(): void
@@ -52,7 +52,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerId');
         $this->customer->setCustomerId($expected);
-        $this->assertSame($expected, $property->getValue($this->customer));
+        self::assertSame($expected, $property->getValue($this->customer));
     }
 
     public function testGetCustomerNr(): void
@@ -61,7 +61,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerNr');
         $property->setValue($this->customer, $expected);
-        $this->assertSame($expected, $this->customer->getCustomerNr());
+        self::assertSame($expected, $this->customer->getCustomerNr());
     }
 
     public function testSetCustomerNr(): void
@@ -70,7 +70,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerNr');
         $this->customer->setCustomerNr($expected);
-        $this->assertSame($expected, $property->getValue($this->customer));
+        self::assertSame($expected, $property->getValue($this->customer));
     }
 
     public function testGetCustomerName(): void
@@ -79,7 +79,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerName');
         $property->setValue($this->customer, $expected);
-        $this->assertSame($expected, $this->customer->getCustomerName());
+        self::assertSame($expected, $this->customer->getCustomerName());
     }
 
     public function testSetCustomerName(): void
@@ -88,7 +88,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerName');
         $this->customer->setCustomerName($expected);
-        $this->assertSame($expected, $property->getValue($this->customer));
+        self::assertSame($expected, $property->getValue($this->customer));
     }
 
     public function testGetCustomerAddressAddition(): void
@@ -97,7 +97,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerAddressAddition');
         $property->setValue($this->customer, $expected);
-        $this->assertSame($expected, $this->customer->getCustomerAddressAddition());
+        self::assertSame($expected, $this->customer->getCustomerAddressAddition());
     }
 
     public function testSetCustomerAddressAddition(): void
@@ -106,7 +106,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerAddressAddition');
         $this->customer->setCustomerAddressAddition($expected);
-        $this->assertSame($expected, $property->getValue($this->customer));
+        self::assertSame($expected, $property->getValue($this->customer));
     }
 
     public function testGetCustomerAddressStreet(): void
@@ -115,7 +115,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerAddressStreet');
         $property->setValue($this->customer, $expected);
-        $this->assertSame($expected, $this->customer->getCustomerAddressStreet());
+        self::assertSame($expected, $this->customer->getCustomerAddressStreet());
     }
 
     public function testSetCustomerAddressStreet(): void
@@ -124,7 +124,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerAddressStreet');
         $this->customer->setCustomerAddressStreet($expected);
-        $this->assertSame($expected, $property->getValue($this->customer));
+        self::assertSame($expected, $property->getValue($this->customer));
     }
 
     public function testGetCustomerAddressStreetNr(): void
@@ -133,7 +133,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerAddressStreetNr');
         $property->setValue($this->customer, $expected);
-        $this->assertSame($expected, $this->customer->getCustomerAddressStreetNr());
+        self::assertSame($expected, $this->customer->getCustomerAddressStreetNr());
     }
 
     public function testSetCustomerAddressStreetNr(): void
@@ -142,7 +142,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerAddressStreetNr');
         $this->customer->setCustomerAddressStreetNr($expected);
-        $this->assertSame($expected, $property->getValue($this->customer));
+        self::assertSame($expected, $property->getValue($this->customer));
     }
 
     public function testGetCustomerCountryCode(): void
@@ -151,7 +151,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerCountryCode');
         $property->setValue($this->customer, $expected);
-        $this->assertSame($expected, $this->customer->getCustomerCountryCode());
+        self::assertSame($expected, $this->customer->getCustomerCountryCode());
     }
 
     public function testSetCustomerCountryCode(): void
@@ -160,7 +160,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerCountryCode');
         $this->customer->setCustomerCountryCode($expected);
-        $this->assertSame($expected, $property->getValue($this->customer));
+        self::assertSame($expected, $property->getValue($this->customer));
     }
 
     public function testGetCustomerZipCode(): void
@@ -169,7 +169,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerZipCode');
         $property->setValue($this->customer, $expected);
-        $this->assertSame($expected, $this->customer->getCustomerZipCode());
+        self::assertSame($expected, $this->customer->getCustomerZipCode());
     }
 
     public function testSetCustomerZipCode(): void
@@ -178,7 +178,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerZipCode');
         $this->customer->setCustomerZipCode($expected);
-        $this->assertSame($expected, $property->getValue($this->customer));
+        self::assertSame($expected, $property->getValue($this->customer));
     }
 
     public function testGetCustomerCity(): void
@@ -187,7 +187,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerCity');
         $property->setValue($this->customer, $expected);
-        $this->assertSame($expected, $this->customer->getCustomerCity());
+        self::assertSame($expected, $this->customer->getCustomerCity());
     }
 
     public function testSetCustomerCity(): void
@@ -196,7 +196,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('customerCity');
         $this->customer->setCustomerCity($expected);
-        $this->assertSame($expected, $property->getValue($this->customer));
+        self::assertSame($expected, $property->getValue($this->customer));
     }
 
     public function testToArray(): void
@@ -223,7 +223,7 @@ final class CustomerTest extends TestCase
             'customerCity' => 'Harsefeld',
         ];
 
-        $this->assertEquals($expected, $this->customer->toArray());
+        self::assertEquals($expected, $this->customer->toArray());
     }
 
     public function testGetCreatedAt(): void
@@ -232,7 +232,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('createdAt');
         $property->setValue($this->customer, $expected);
-        $this->assertSame($expected, $this->customer->getCreatedAt());
+        self::assertSame($expected, $this->customer->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -241,7 +241,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('createdAt');
         $this->customer->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->customer));
+        self::assertSame($expected, $property->getValue($this->customer));
     }
 
     public function testGetUpdatedAt(): void
@@ -250,7 +250,7 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('updatedAt');
         $property->setValue($this->customer, $expected);
-        $this->assertSame($expected, $this->customer->getUpdatedAt());
+        self::assertSame($expected, $this->customer->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -259,6 +259,6 @@ final class CustomerTest extends TestCase
         $property = (new \ReflectionClass(Customer::class))
             ->getProperty('updatedAt');
         $this->customer->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->customer));
+        self::assertSame($expected, $property->getValue($this->customer));
     }
 }

@@ -45,7 +45,7 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('id');
         $property->setValue($this->configuration, $expected);
-        $this->assertSame($expected, $this->configuration->getId());
+        self::assertSame($expected, $this->configuration->getId());
     }
 
     public function testSetId(): void
@@ -54,7 +54,7 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('id');
         $this->configuration->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->configuration));
+        self::assertSame($expected, $property->getValue($this->configuration));
     }
 
     public function testGetName(): void
@@ -63,7 +63,7 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('name');
         $property->setValue($this->configuration, $expected);
-        $this->assertSame($expected, $this->configuration->getName());
+        self::assertSame($expected, $this->configuration->getName());
     }
 
     public function testSetName(): void
@@ -72,7 +72,7 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('name');
         $this->configuration->setName($expected);
-        $this->assertSame($expected, $property->getValue($this->configuration));
+        self::assertSame($expected, $property->getValue($this->configuration));
     }
 
     public function testGetValue(): void
@@ -81,7 +81,7 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('value');
         $property->setValue($this->configuration, $expected);
-        $this->assertSame($expected, $this->configuration->getValue());
+        self::assertSame($expected, $this->configuration->getValue());
     }
 
     public function testSetValue(): void
@@ -90,7 +90,7 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('value');
         $this->configuration->setValue($expected);
-        $this->assertSame($expected, $property->getValue($this->configuration));
+        self::assertSame($expected, $property->getValue($this->configuration));
     }
 
     public function testGetLabel(): void
@@ -99,7 +99,7 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('label');
         $property->setValue($this->configuration, $expected);
-        $this->assertSame($expected, $this->configuration->getLabel());
+        self::assertSame($expected, $this->configuration->getLabel());
     }
 
     public function testSetLabel(): void
@@ -108,7 +108,7 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('label');
         $this->configuration->setLabel($expected);
-        $this->assertSame($expected, $property->getValue($this->configuration));
+        self::assertSame($expected, $property->getValue($this->configuration));
     }
 
     public function testGetDescription(): void
@@ -117,7 +117,7 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('description');
         $property->setValue($this->configuration, $expected);
-        $this->assertSame($expected, $this->configuration->getDescription());
+        self::assertSame($expected, $this->configuration->getDescription());
     }
 
     public function testSetDescription(): void
@@ -126,7 +126,7 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('description');
         $this->configuration->setDescription($expected);
-        $this->assertSame($expected, $property->getValue($this->configuration));
+        self::assertSame($expected, $property->getValue($this->configuration));
     }
 
     public function testGetType(): void
@@ -135,7 +135,7 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('type');
         $property->setValue($this->configuration, $expected);
-        $this->assertSame($expected, $this->configuration->getType());
+        self::assertSame($expected, $this->configuration->getType());
     }
 
     public function testSetType(): void
@@ -144,6 +144,6 @@ final class ConfigurationTest extends TestCase
         $property = (new \ReflectionClass(Configuration::class))
             ->getProperty('type');
         $this->configuration->setType($expected);
-        $this->assertSame($expected, $property->getValue($this->configuration));
+        self::assertSame($expected, $property->getValue($this->configuration));
     }
 }

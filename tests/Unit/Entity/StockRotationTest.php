@@ -46,7 +46,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('id');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getId());
+        self::assertSame($expected, $this->stockRotation->getId());
     }
 
     public function testSetId(): void
@@ -55,7 +55,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('id');
         $this->stockRotation->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 
     public function testGetStockLocationId(): void
@@ -64,7 +64,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('stockLocationId');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getStockLocationId());
+        self::assertSame($expected, $this->stockRotation->getStockLocationId());
     }
 
     public function testSetStockLocationId(): void
@@ -73,7 +73,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('stockLocationId');
         $this->stockRotation->setStockLocationId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 
     public function testGetArticleId(): void
@@ -82,7 +82,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('articleId');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getArticleId());
+        self::assertSame($expected, $this->stockRotation->getArticleId());
     }
 
     public function testSetArticleId(): void
@@ -91,7 +91,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('articleId');
         $this->stockRotation->setArticleId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 
     public function testGetUsrId(): void
@@ -100,7 +100,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('usrId');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getUsrId());
+        self::assertSame($expected, $this->stockRotation->getUsrId());
     }
 
     public function testSetUsrId(): void
@@ -109,7 +109,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('usrId');
         $this->stockRotation->setUsrId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 
     public function testGetCustomerOrderId(): void
@@ -118,7 +118,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('customerOrderId');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getCustomerOrderId());
+        self::assertSame($expected, $this->stockRotation->getCustomerOrderId());
     }
 
     public function testSetCustomerOrderId(): void
@@ -127,7 +127,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('customerOrderId');
         $this->stockRotation->setCustomerOrderId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 
     public function testGetSupplierOrderId(): void
@@ -136,7 +136,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('supplierOrderId');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getSupplierOrderId());
+        self::assertSame($expected, $this->stockRotation->getSupplierOrderId());
     }
 
     public function testSetSupplierOrderId(): void
@@ -145,7 +145,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('supplierOrderId');
         $this->stockRotation->setSupplierOrderId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 
     public function testGetMovementId(): void
@@ -154,7 +154,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('movementId');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getMovementId());
+        self::assertSame($expected, $this->stockRotation->getMovementId());
     }
 
     public function testSetMovementId(): void
@@ -163,7 +163,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('movementId');
         $this->stockRotation->setMovementId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 
     public function testGetPosQuantity(): void
@@ -172,7 +172,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('posQuantity');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getPosQuantity());
+        self::assertSame($expected, $this->stockRotation->getPosQuantity());
     }
 
     public function testSetPosQuantity(): void
@@ -181,7 +181,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('posQuantity');
         $this->stockRotation->setPosQuantity($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 
     public function testGetAccessDate(): void
@@ -190,7 +190,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('accessDate');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getAccessDate());
+        self::assertSame($expected, $this->stockRotation->getAccessDate());
     }
 
     public function testSetAccessDate(): void
@@ -199,7 +199,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('accessDate');
         $this->stockRotation->setAccessDate($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 
     public function testGetDispatchDate(): void
@@ -208,7 +208,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('dispatchDate');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getDispatchDate());
+        self::assertSame($expected, $this->stockRotation->getDispatchDate());
     }
 
     public function testSetDispatchDate(): void
@@ -217,7 +217,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('dispatchDate');
         $this->stockRotation->setDispatchDate($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 
     public function testGetTrType(): void
@@ -226,7 +226,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('trType');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getTrType());
+        self::assertSame($expected, $this->stockRotation->getTrType());
     }
 
     public function testSetTrType(): void
@@ -235,7 +235,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('trType');
         $this->stockRotation->setTrType($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 
     public function testGetCreatedAt(): void
@@ -244,7 +244,7 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('createdAt');
         $property->setValue($this->stockRotation, $expected);
-        $this->assertSame($expected, $this->stockRotation->getCreatedAt());
+        self::assertSame($expected, $this->stockRotation->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -253,6 +253,6 @@ final class StockRotationTest extends TestCase
         $property = (new \ReflectionClass(StockRotation::class))
             ->getProperty('createdAt');
         $this->stockRotation->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->stockRotation));
+        self::assertSame($expected, $property->getValue($this->stockRotation));
     }
 }

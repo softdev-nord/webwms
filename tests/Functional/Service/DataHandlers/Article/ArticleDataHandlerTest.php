@@ -48,7 +48,7 @@ declare(strict_types=1);
 //            ->findOneBy(['articleId' => $articleId]);
 //
 //        if ($article !== null) {
-//            $this->assertEquals($articleId, $article->getArticleId());
+//            self::assertEquals($articleId, $article->getArticleId());
 //        }
 //    }
 //
@@ -63,7 +63,7 @@ declare(strict_types=1);
 //            return;
 //        }
 //
-//        $this->assertEquals($articleNr, $article->getArticleNr());
+//        self::assertEquals($articleNr, $article->getArticleNr());
 //    }
 //
 //    public function testGetAllArticles(): void

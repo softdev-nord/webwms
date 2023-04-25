@@ -44,7 +44,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('id');
         $property->setValue($this->supplierOrderPos, $expected);
-        $this->assertSame($expected, $this->supplierOrderPos->getId());
+        self::assertSame($expected, $this->supplierOrderPos->getId());
     }
 
     public function testSetId(): void
@@ -53,7 +53,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('id');
         $this->supplierOrderPos->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->supplierOrderPos));
+        self::assertSame($expected, $property->getValue($this->supplierOrderPos));
     }
 
     public function testGetSupplierOrderId(): void
@@ -62,7 +62,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('supplierOrderId');
         $property->setValue($this->supplierOrderPos, $expected);
-        $this->assertSame($expected, $this->supplierOrderPos->getSupplierOrderId());
+        self::assertSame($expected, $this->supplierOrderPos->getSupplierOrderId());
     }
 
     public function testSetSupplierOrderId(): void
@@ -71,7 +71,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('supplierOrderId');
         $this->supplierOrderPos->setSupplierOrderId($expected);
-        $this->assertSame($expected, $property->getValue($this->supplierOrderPos));
+        self::assertSame($expected, $property->getValue($this->supplierOrderPos));
     }
 
     public function testGetArticleId(): void
@@ -80,7 +80,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('articleId');
         $property->setValue($this->supplierOrderPos, $expected);
-        $this->assertSame($expected, $this->supplierOrderPos->getArticleId());
+        self::assertSame($expected, $this->supplierOrderPos->getArticleId());
     }
 
     public function testSetArticleId(): void
@@ -89,7 +89,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('articleId');
         $this->supplierOrderPos->setArticleId($expected);
-        $this->assertSame($expected, $property->getValue($this->supplierOrderPos));
+        self::assertSame($expected, $property->getValue($this->supplierOrderPos));
     }
 
     public function testGetArticleNr(): void
@@ -98,7 +98,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('articleNr');
         $property->setValue($this->supplierOrderPos, $expected);
-        $this->assertSame($expected, $this->supplierOrderPos->getArticleNr());
+        self::assertSame($expected, $this->supplierOrderPos->getArticleNr());
     }
 
     public function testSetArticleNr(): void
@@ -107,7 +107,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('articleNr');
         $this->supplierOrderPos->setArticleNr($expected);
-        $this->assertSame($expected, $property->getValue($this->supplierOrderPos));
+        self::assertSame($expected, $property->getValue($this->supplierOrderPos));
     }
 
     public function testGetArticleName(): void
@@ -116,7 +116,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('articleName');
         $property->setValue($this->supplierOrderPos, $expected);
-        $this->assertSame($expected, $this->supplierOrderPos->getArticleName());
+        self::assertSame($expected, $this->supplierOrderPos->getArticleName());
     }
 
     public function testSetArticleName(): void
@@ -125,7 +125,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('articleName');
         $this->supplierOrderPos->setArticleName($expected);
-        $this->assertSame($expected, $property->getValue($this->supplierOrderPos));
+        self::assertSame($expected, $property->getValue($this->supplierOrderPos));
     }
 
     public function testGetQuantity(): void
@@ -134,7 +134,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('supplierOrderPosQuantity');
         $property->setValue($this->supplierOrderPos, $expected);
-        $this->assertSame($expected, $this->supplierOrderPos->getSupplierOrderPosQuantity());
+        self::assertSame($expected, $this->supplierOrderPos->getSupplierOrderPosQuantity());
     }
 
     public function testSetQuantity(): void
@@ -143,7 +143,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('supplierOrderPosQuantity');
         $this->supplierOrderPos->setSupplierOrderPosQuantity($expected);
-        $this->assertSame($expected, $property->getValue($this->supplierOrderPos));
+        self::assertSame($expected, $property->getValue($this->supplierOrderPos));
     }
 
     public function testGetSupplierOrder(): void
@@ -152,7 +152,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('supplierOrder');
         $property->setValue($this->supplierOrderPos, $expected);
-        $this->assertSame($expected, $this->supplierOrderPos->getSupplierOrder());
+        self::assertSame($expected, $this->supplierOrderPos->getSupplierOrder());
     }
 
     public function testSetSupplierOrder(): void
@@ -161,7 +161,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('supplierOrder');
         $this->supplierOrderPos->setSupplierOrder($expected);
-        $this->assertSame($expected, $property->getValue($this->supplierOrderPos));
+        self::assertSame($expected, $property->getValue($this->supplierOrderPos));
     }
 
     public function testGetCreatedAt(): void
@@ -170,7 +170,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('createdAt');
         $property->setValue($this->supplierOrderPos, $expected);
-        $this->assertSame($expected, $this->supplierOrderPos->getCreatedAt());
+        self::assertSame($expected, $this->supplierOrderPos->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -179,7 +179,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('createdAt');
         $this->supplierOrderPos->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->supplierOrderPos));
+        self::assertSame($expected, $property->getValue($this->supplierOrderPos));
     }
 
     public function testGetUpdatedAt(): void
@@ -188,7 +188,7 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('updatedAt');
         $property->setValue($this->supplierOrderPos, $expected);
-        $this->assertSame($expected, $this->supplierOrderPos->getUpdatedAt());
+        self::assertSame($expected, $this->supplierOrderPos->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -197,6 +197,6 @@ final class SupplierOrderPosTest extends TestCase
         $property = (new \ReflectionClass(SupplierOrderPos::class))
             ->getProperty('updatedAt');
         $this->supplierOrderPos->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->supplierOrderPos));
+        self::assertSame($expected, $property->getValue($this->supplierOrderPos));
     }
 }

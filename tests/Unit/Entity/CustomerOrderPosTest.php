@@ -44,7 +44,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('id');
         $property->setValue($this->customerOrderPos, $expected);
-        $this->assertSame($expected, $this->customerOrderPos->getId());
+        self::assertSame($expected, $this->customerOrderPos->getId());
     }
 
     public function testSetId(): void
@@ -53,7 +53,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('id');
         $this->customerOrderPos->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->customerOrderPos));
+        self::assertSame($expected, $property->getValue($this->customerOrderPos));
     }
 
     public function testGetCustomerOrderId(): void
@@ -62,7 +62,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('customerOrderId');
         $property->setValue($this->customerOrderPos, $expected);
-        $this->assertSame($expected, $this->customerOrderPos->getCustomerOrderId());
+        self::assertSame($expected, $this->customerOrderPos->getCustomerOrderId());
     }
 
     public function testSetCustomerOrderId(): void
@@ -71,7 +71,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('customerOrderId');
         $this->customerOrderPos->setCustomerOrderId($expected);
-        $this->assertSame($expected, $property->getValue($this->customerOrderPos));
+        self::assertSame($expected, $property->getValue($this->customerOrderPos));
     }
 
     public function testGetArticleId(): void
@@ -80,7 +80,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('articleId');
         $property->setValue($this->customerOrderPos, $expected);
-        $this->assertSame($expected, $this->customerOrderPos->getArticleId());
+        self::assertSame($expected, $this->customerOrderPos->getArticleId());
     }
 
     public function testSetArticleId(): void
@@ -89,7 +89,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('articleId');
         $this->customerOrderPos->setArticleId($expected);
-        $this->assertSame($expected, $property->getValue($this->customerOrderPos));
+        self::assertSame($expected, $property->getValue($this->customerOrderPos));
     }
 
     public function testGetArticleNr(): void
@@ -98,7 +98,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('articleNr');
         $property->setValue($this->customerOrderPos, $expected);
-        $this->assertSame($expected, $this->customerOrderPos->getArticleNr());
+        self::assertSame($expected, $this->customerOrderPos->getArticleNr());
     }
 
     public function testSetArticleNr(): void
@@ -107,7 +107,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('articleNr');
         $this->customerOrderPos->setArticleNr($expected);
-        $this->assertSame($expected, $property->getValue($this->customerOrderPos));
+        self::assertSame($expected, $property->getValue($this->customerOrderPos));
     }
 
     public function testGetArticleName(): void
@@ -116,7 +116,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('articleName');
         $property->setValue($this->customerOrderPos, $expected);
-        $this->assertSame($expected, $this->customerOrderPos->getArticleName());
+        self::assertSame($expected, $this->customerOrderPos->getArticleName());
     }
 
     public function testSetArticleName(): void
@@ -125,7 +125,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('articleName');
         $this->customerOrderPos->setArticleName($expected);
-        $this->assertSame($expected, $property->getValue($this->customerOrderPos));
+        self::assertSame($expected, $property->getValue($this->customerOrderPos));
     }
 
     public function testGetQuantity(): void
@@ -134,7 +134,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('quantity');
         $property->setValue($this->customerOrderPos, $expected);
-        $this->assertSame($expected, $this->customerOrderPos->getQuantity());
+        self::assertSame($expected, $this->customerOrderPos->getQuantity());
     }
 
     public function testSetQuantity(): void
@@ -143,7 +143,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('quantity');
         $this->customerOrderPos->setQuantity($expected);
-        $this->assertSame($expected, $property->getValue($this->customerOrderPos));
+        self::assertSame($expected, $property->getValue($this->customerOrderPos));
     }
 
     public function testGetCustomerOrder(): void
@@ -152,7 +152,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('customerOrder');
         $property->setValue($this->customerOrderPos, $expected);
-        $this->assertSame($expected, $this->customerOrderPos->getCustomerOrder());
+        self::assertSame($expected, $this->customerOrderPos->getCustomerOrder());
     }
 
     public function testSetCustomerOrder(): void
@@ -161,7 +161,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('customerOrder');
         $this->customerOrderPos->setCustomerOrder($expected);
-        $this->assertSame($expected, $property->getValue($this->customerOrderPos));
+        self::assertSame($expected, $property->getValue($this->customerOrderPos));
     }
 
     public function testGetCreatedAt(): void
@@ -170,7 +170,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('createdAt');
         $property->setValue($this->customerOrderPos, $expected);
-        $this->assertSame($expected, $this->customerOrderPos->getCreatedAt());
+        self::assertSame($expected, $this->customerOrderPos->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -179,7 +179,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('createdAt');
         $this->customerOrderPos->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->customerOrderPos));
+        self::assertSame($expected, $property->getValue($this->customerOrderPos));
     }
 
     public function testGetUpdatedAt(): void
@@ -188,7 +188,7 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('updatedAt');
         $property->setValue($this->customerOrderPos, $expected);
-        $this->assertSame($expected, $this->customerOrderPos->getUpdatedAt());
+        self::assertSame($expected, $this->customerOrderPos->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -197,6 +197,6 @@ final class CustomerOrderPosTest extends TestCase
         $property = (new \ReflectionClass(CustomerOrderPos::class))
             ->getProperty('updatedAt');
         $this->customerOrderPos->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->customerOrderPos));
+        self::assertSame($expected, $property->getValue($this->customerOrderPos));
     }
 }

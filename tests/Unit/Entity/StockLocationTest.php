@@ -43,7 +43,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationId');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getStockLocationId());
+        self::assertSame($expected, $this->stockLocation->getStockLocationId());
     }
 
     public function testSetStockLocationId(): void
@@ -52,7 +52,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationId');
         $this->stockLocation->setStockLocationId($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetStockLocationLn(): void
@@ -61,7 +61,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationLn');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getStockLocationLn());
+        self::assertSame($expected, $this->stockLocation->getStockLocationLn());
     }
 
     public function testSetStockLocationLn(): void
@@ -70,7 +70,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationLn');
         $this->stockLocation->setStockLocationLn($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetStockLocationFb(): void
@@ -79,7 +79,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationFb');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getStockLocationFb());
+        self::assertSame($expected, $this->stockLocation->getStockLocationFb());
     }
 
     public function testSetStockLocationFb(): void
@@ -88,7 +88,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationFb');
         $this->stockLocation->setStockLocationFb($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetStockLocationSp(): void
@@ -97,7 +97,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationSp');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getStockLocationSp());
+        self::assertSame($expected, $this->stockLocation->getStockLocationSp());
     }
 
     public function testSetStockLocationSp(): void
@@ -106,7 +106,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationSp');
         $this->stockLocation->setStockLocationSp($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetStockLocationTf(): void
@@ -115,7 +115,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationTf');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getStockLocationTf());
+        self::assertSame($expected, $this->stockLocation->getStockLocationTf());
     }
 
     public function testSetStockLocationTf(): void
@@ -124,7 +124,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationTf');
         $this->stockLocation->setStockLocationTf($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetStockLocationCoordinate(): void
@@ -133,7 +133,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationCoordinate');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getStockLocationCoordinate());
+        self::assertSame($expected, $this->stockLocation->getStockLocationCoordinate());
     }
 
     public function testSetStockLocationCoordinate(): void
@@ -142,7 +142,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationCoordinate');
         $this->stockLocation->setStockLocationCoordinate($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetStockLocationDesc(): void
@@ -151,7 +151,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationDesc');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getStockLocationDesc());
+        self::assertSame($expected, $this->stockLocation->getStockLocationDesc());
     }
 
     public function testSetStockLocationDesc(): void
@@ -160,7 +160,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationDesc');
         $this->stockLocation->setStockLocationDesc($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetStockLocationWidth(): void
@@ -169,7 +169,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationWidth');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getStockLocationWidth());
+        self::assertSame($expected, $this->stockLocation->getStockLocationWidth());
     }
 
     public function testSetStockLocationWidth(): void
@@ -178,7 +178,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationWidth');
         $this->stockLocation->setStockLocationWidth($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetStockLocationDepth(): void
@@ -187,7 +187,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationDepth');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getStockLocationDepth());
+        self::assertSame($expected, $this->stockLocation->getStockLocationDepth());
     }
 
     public function testSetStockLocationDepth(): void
@@ -196,7 +196,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationDepth');
         $this->stockLocation->setStockLocationDepth($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetStockLocationHeight(): void
@@ -205,7 +205,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationHeight');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getStockLocationHeight());
+        self::assertSame($expected, $this->stockLocation->getStockLocationHeight());
     }
 
     public function testSetStockLocationHeight(): void
@@ -214,7 +214,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationHeight');
         $this->stockLocation->setStockLocationHeight($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetStockLocationZone(): void
@@ -223,7 +223,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationZone');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getStockLocationZone());
+        self::assertSame($expected, $this->stockLocation->getStockLocationZone());
     }
 
     public function testSetStockLocationZone(): void
@@ -232,7 +232,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('stockLocationZone');
         $this->stockLocation->setStockLocationZone($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetCreatedAt(): void
@@ -241,7 +241,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('createdAt');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getCreatedAt());
+        self::assertSame($expected, $this->stockLocation->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -250,7 +250,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('createdAt');
         $this->stockLocation->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 
     public function testGetUpdatedAt(): void
@@ -259,7 +259,7 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('updatedAt');
         $property->setValue($this->stockLocation, $expected);
-        $this->assertSame($expected, $this->stockLocation->getUpdatedAt());
+        self::assertSame($expected, $this->stockLocation->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -268,6 +268,6 @@ final class StockLocationTest extends TestCase
         $property = (new \ReflectionClass(StockLocation::class))
             ->getProperty('updatedAt');
         $this->stockLocation->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->stockLocation));
+        self::assertSame($expected, $property->getValue($this->stockLocation));
     }
 }

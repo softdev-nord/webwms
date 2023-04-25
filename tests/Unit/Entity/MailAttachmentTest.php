@@ -51,7 +51,7 @@ final class MailAttachmentTest extends TestCase
         $property = (new \ReflectionClass(MailAttachment::class))
             ->getProperty('body');
         $property->setValue($this->mailAttachment, $expected);
-        $this->assertSame($expected, $this->mailAttachment->getBody());
+        self::assertSame($expected, $this->mailAttachment->getBody());
     }
 
     public function testSetBody(): void
@@ -60,7 +60,7 @@ final class MailAttachmentTest extends TestCase
         $property = (new \ReflectionClass(MailAttachment::class))
             ->getProperty('body');
         $this->mailAttachment->setBody($expected);
-        $this->assertSame($expected, $property->getValue($this->mailAttachment));
+        self::assertSame($expected, $property->getValue($this->mailAttachment));
     }
 
     public function testGetName(): void
@@ -69,7 +69,7 @@ final class MailAttachmentTest extends TestCase
         $property = (new \ReflectionClass(MailAttachment::class))
             ->getProperty('name');
         $property->setValue($this->mailAttachment, $expected);
-        $this->assertSame($expected, $this->mailAttachment->getName());
+        self::assertSame($expected, $this->mailAttachment->getName());
     }
 
     public function testSetName(): void
@@ -78,7 +78,7 @@ final class MailAttachmentTest extends TestCase
         $property = (new \ReflectionClass(MailAttachment::class))
             ->getProperty('name');
         $this->mailAttachment->setName($expected);
-        $this->assertSame($expected, $property->getValue($this->mailAttachment));
+        self::assertSame($expected, $property->getValue($this->mailAttachment));
     }
 
     public function testGetContentType(): void
@@ -87,7 +87,7 @@ final class MailAttachmentTest extends TestCase
         $property = (new \ReflectionClass(MailAttachment::class))
             ->getProperty('contentType');
         $property->setValue($this->mailAttachment, $expected);
-        $this->assertSame($expected, $this->mailAttachment->getContentType());
+        self::assertSame($expected, $this->mailAttachment->getContentType());
     }
 
     public function testSetContentType(): void
@@ -96,6 +96,6 @@ final class MailAttachmentTest extends TestCase
         $property = (new \ReflectionClass(MailAttachment::class))
             ->getProperty('contentType');
         $this->mailAttachment->setContentType($expected);
-        $this->assertSame($expected, $property->getValue($this->mailAttachment));
+        self::assertSame($expected, $property->getValue($this->mailAttachment));
     }
 }

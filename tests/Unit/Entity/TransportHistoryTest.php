@@ -14,6 +14,8 @@ use WebWMS\Entity\TransportHistory;
  * Class        TransportHistoryTest
  *
  * @covers \WebWMS\Entity\TransportHistory
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 final class TransportHistoryTest extends TestCase
 {
@@ -42,7 +44,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('id');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getId());
+        self::assertSame($expected, $this->transportHistory->getId());
     }
 
     public function testSetId(): void
@@ -51,7 +53,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('id');
         $this->transportHistory->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetSuId(): void
@@ -60,7 +62,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('suId');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getSuId());
+        self::assertSame($expected, $this->transportHistory->getSuId());
     }
 
     public function testSetSuId(): void
@@ -69,7 +71,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('suId');
         $this->transportHistory->setSuId($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrNr(): void
@@ -78,7 +80,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trNr');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrNr());
+        self::assertSame($expected, $this->transportHistory->getTrNr());
     }
 
     public function testSetTrNr(): void
@@ -87,7 +89,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trNr');
         $this->transportHistory->setTrNr($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrPos(): void
@@ -96,7 +98,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trPos');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrPos());
+        self::assertSame($expected, $this->transportHistory->getTrPos());
     }
 
     public function testSetTrPos(): void
@@ -105,7 +107,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trPos');
         $this->transportHistory->setTrPos($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrPrio(): void
@@ -114,7 +116,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trPrio');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrPrio());
+        self::assertSame($expected, $this->transportHistory->getTrPrio());
     }
 
     public function testSetTrPrio(): void
@@ -123,7 +125,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trPrio');
         $this->transportHistory->setTrPrio($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetArtNr(): void
@@ -132,7 +134,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('articleNr');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getArtNr());
+        self::assertSame($expected, $this->transportHistory->getArtNr());
     }
 
     public function testSetArtNr(): void
@@ -141,7 +143,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('articleNr');
         $this->transportHistory->setArtNr($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrQuantity(): void
@@ -150,7 +152,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trQuantity');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrQuantity());
+        self::assertSame($expected, $this->transportHistory->getTrQuantity());
     }
 
     public function testSetTrQuantity(): void
@@ -159,7 +161,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trQuantity');
         $this->transportHistory->setTrQuantity($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetStockCoordinate(): void
@@ -168,7 +170,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockCoordinate');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getStockCoordinate());
+        self::assertSame($expected, $this->transportHistory->getStockCoordinate());
     }
 
     public function testSetStockCoordinate(): void
@@ -177,7 +179,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockCoordinate');
         $this->transportHistory->setStockCoordinate($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetStockNr(): void
@@ -186,7 +188,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockNr');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getStockNr());
+        self::assertSame($expected, $this->transportHistory->getStockNr());
     }
 
     public function testSetStockNr(): void
@@ -195,7 +197,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockNr');
         $this->transportHistory->setStockNr($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetStockLevel1(): void
@@ -204,7 +206,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockLevel1');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getStockLevel1());
+        self::assertSame($expected, $this->transportHistory->getStockLevel1());
     }
 
     public function testSetStockLevel1(): void
@@ -213,7 +215,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockLevel1');
         $this->transportHistory->setStockLevel1($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetStockLevel2(): void
@@ -222,7 +224,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockLevel2');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getStockLevel2());
+        self::assertSame($expected, $this->transportHistory->getStockLevel2());
     }
 
     public function testSetStockLevel2(): void
@@ -231,7 +233,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockLevel2');
         $this->transportHistory->setStockLevel2($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetStockLevel3(): void
@@ -240,7 +242,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockLevel3');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getStockLevel3());
+        self::assertSame($expected, $this->transportHistory->getStockLevel3());
     }
 
     public function testSetStockLevel3(): void
@@ -249,7 +251,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockLevel3');
         $this->transportHistory->setStockLevel3($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetStockLevel4(): void
@@ -258,7 +260,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockLevel4');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getStockLevel4());
+        self::assertSame($expected, $this->transportHistory->getStockLevel4());
     }
 
     public function testSetStockLevel4(): void
@@ -267,7 +269,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('stockLevel4');
         $this->transportHistory->setStockLevel4($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrAccess(): void
@@ -276,7 +278,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trAccess');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrAccess());
+        self::assertSame($expected, $this->transportHistory->getTrAccess());
     }
 
     public function testSetTrAccess(): void
@@ -285,7 +287,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trAccess');
         $this->transportHistory->setTrAccess($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrDispatch(): void
@@ -294,7 +296,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trDispatch');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrDispatch());
+        self::assertSame($expected, $this->transportHistory->getTrDispatch());
     }
 
     public function testSetTrDispatch(): void
@@ -303,7 +305,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trDispatch');
         $this->transportHistory->setTrDispatch($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrState(): void
@@ -312,7 +314,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trState');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrState());
+        self::assertSame($expected, $this->transportHistory->getTrState());
     }
 
     public function testSetTrState(): void
@@ -321,7 +323,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trState');
         $this->transportHistory->setTrState($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetOrderUsername(): void
@@ -330,7 +332,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('orderUsername');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getOrderUsername());
+        self::assertSame($expected, $this->transportHistory->getOrderUsername());
     }
 
     public function testSetOrderUsername(): void
@@ -339,7 +341,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('orderUsername');
         $this->transportHistory->setOrderUsername($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetBookingMethod(): void
@@ -348,7 +350,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('bookingMethod');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getBookingMethod());
+        self::assertSame($expected, $this->transportHistory->getBookingMethod());
     }
 
     public function testSetBookingMethod(): void
@@ -357,7 +359,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('bookingMethod');
         $this->transportHistory->setBookingMethod($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetDocId(): void
@@ -366,7 +368,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('docId');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getDocId());
+        self::assertSame($expected, $this->transportHistory->getDocId());
     }
 
     public function testSetDocId(): void
@@ -375,7 +377,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('docId');
         $this->transportHistory->setDocId($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetOrderNr(): void
@@ -384,7 +386,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('orderNr');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getOrderNr());
+        self::assertSame($expected, $this->transportHistory->getOrderNr());
     }
 
     public function testSetOrderNr(): void
@@ -393,7 +395,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('orderNr');
         $this->transportHistory->setOrderNr($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetOrderPos(): void
@@ -402,7 +404,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('orderPos');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getOrderPos());
+        self::assertSame($expected, $this->transportHistory->getOrderPos());
     }
 
     public function testSetOrderPos(): void
@@ -411,7 +413,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('orderPos');
         $this->transportHistory->setOrderPos($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetCharge(): void
@@ -420,7 +422,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('charge');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getCharge());
+        self::assertSame($expected, $this->transportHistory->getCharge());
     }
 
     public function testSetCharge(): void
@@ -429,7 +431,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('charge');
         $this->transportHistory->setCharge($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetLoadingEquipment(): void
@@ -438,7 +440,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('loadingEquipment');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getLoadingEquipment());
+        self::assertSame($expected, $this->transportHistory->getLoadingEquipment());
     }
 
     public function testSetLoadingEquipment(): void
@@ -447,7 +449,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('loadingEquipment');
         $this->transportHistory->setLoadingEquipment($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetConfirmationState(): void
@@ -456,7 +458,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('confirmationState');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getConfirmationState());
+        self::assertSame($expected, $this->transportHistory->getConfirmationState());
     }
 
     public function testSetConfirmationState(): void
@@ -465,7 +467,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('confirmationState');
         $this->transportHistory->setConfirmationState($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrUsername(): void
@@ -474,7 +476,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trUsername');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrUsername());
+        self::assertSame($expected, $this->transportHistory->getTrUsername());
     }
 
     public function testSetTrUsername(): void
@@ -483,7 +485,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trUsername');
         $this->transportHistory->setTrUsername($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrComputerIp(): void
@@ -492,7 +494,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trComputerIp');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrComputerIp());
+        self::assertSame($expected, $this->transportHistory->getTrComputerIp());
     }
 
     public function testSetTrComputerIp(): void
@@ -501,7 +503,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trComputerIp');
         $this->transportHistory->setTrComputerIp($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrBlocked(): void
@@ -510,7 +512,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trBlocked');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrBlocked());
+        self::assertSame($expected, $this->transportHistory->getTrBlocked());
     }
 
     public function testSetTrBlocked(): void
@@ -519,7 +521,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trBlocked');
         $this->transportHistory->setTrBlocked($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrStartDate(): void
@@ -528,7 +530,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trStartDate');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrStartDate());
+        self::assertSame($expected, $this->transportHistory->getTrStartDate());
     }
 
     public function testSetTrStartDate(): void
@@ -537,7 +539,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trStartDate');
         $this->transportHistory->setTrStartDate($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrEdited(): void
@@ -546,7 +548,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trEdited');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrEdited());
+        self::assertSame($expected, $this->transportHistory->getTrEdited());
     }
 
     public function testSetTrEdited(): void
@@ -555,7 +557,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trEdited');
         $this->transportHistory->setTrEdited($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetTrType(): void
@@ -564,7 +566,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trType');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getTrType());
+        self::assertSame($expected, $this->transportHistory->getTrType());
     }
 
     public function testSetTrType(): void
@@ -573,7 +575,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('trType');
         $this->transportHistory->setTrType($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetCreatedAt(): void
@@ -582,7 +584,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('createdAt');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getCreatedAt());
+        self::assertSame($expected, $this->transportHistory->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -591,7 +593,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('createdAt');
         $this->transportHistory->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 
     public function testGetUpdatedAt(): void
@@ -600,7 +602,7 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('updatedAt');
         $property->setValue($this->transportHistory, $expected);
-        $this->assertSame($expected, $this->transportHistory->getUpdatedAt());
+        self::assertSame($expected, $this->transportHistory->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -609,6 +611,6 @@ final class TransportHistoryTest extends TestCase
         $property = (new \ReflectionClass(TransportHistory::class))
             ->getProperty('updatedAt');
         $this->transportHistory->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->transportHistory));
+        self::assertSame($expected, $property->getValue($this->transportHistory));
     }
 }

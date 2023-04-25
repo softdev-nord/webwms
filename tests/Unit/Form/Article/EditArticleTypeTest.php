@@ -22,6 +22,8 @@ use WebWMS\Form\Article\EditArticleType;
  * Class        EditArticleTypeTest
  *
  * @covers \WebWMS\Form\Article\EditArticleType
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
  */
 final class EditArticleTypeTest extends TestCase
 {
@@ -44,7 +46,7 @@ final class EditArticleTypeTest extends TestCase
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects($this->exactly(1))
+        $builder->expects(self::exactly(1))
             ->method('add')
             ->withConsecutive(
                 ['articleId', HiddenType::class, [
@@ -197,7 +199,7 @@ final class EditArticleTypeTest extends TestCase
         $addArticleType = $this->editArticleType;
         $resolver = $this->createMock(OptionsResolver::class);
 
-        $resolver->expects($this->once())
+        $resolver->expects(self::once())
             ->method('setDefaults')
             ->with([
                 'data_class' => Article::class,

@@ -51,7 +51,7 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('id');
         $property->setValue($this->role, $expected);
-        $this->assertSame($expected, $this->role->getId());
+        self::assertSame($expected, $this->role->getId());
     }
 
     public function testSetId(): void
@@ -60,7 +60,7 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('id');
         $this->role->setId($expected);
-        $this->assertSame($expected, $property->getValue($this->role));
+        self::assertSame($expected, $property->getValue($this->role));
     }
 
     public function testGetName(): void
@@ -69,7 +69,7 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('name');
         $property->setValue($this->role, $expected);
-        $this->assertSame($expected, $this->role->getName());
+        self::assertSame($expected, $this->role->getName());
     }
 
     public function testSetName(): void
@@ -78,7 +78,7 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('name');
         $this->role->setName($expected);
-        $this->assertSame($expected, $property->getValue($this->role));
+        self::assertSame($expected, $property->getValue($this->role));
     }
 
     public function testGetRole(): void
@@ -87,7 +87,7 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('role');
         $property->setValue($this->role, $expected);
-        $this->assertSame($expected, $this->role->getRole());
+        self::assertSame($expected, $this->role->getRole());
     }
 
     public function testSetRole(): void
@@ -96,7 +96,7 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('role');
         $this->role->setRole($expected);
-        $this->assertSame($expected, $property->getValue($this->role));
+        self::assertSame($expected, $property->getValue($this->role));
     }
 
     public function testGetUsers(): void
@@ -105,7 +105,7 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('user');
         $property->setValue($this->role, $expected);
-        $this->assertSame($expected, $this->role->getUsers());
+        self::assertSame($expected, $this->role->getUsers());
     }
 
     public function testSetUsers(): void
@@ -114,7 +114,7 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('user');
         $this->role->setUsers($expected);
-        $this->assertSame($expected, $property->getValue($this->role));
+        self::assertSame($expected, $property->getValue($this->role));
     }
 
     public function testGetCreatedAt(): void
@@ -123,7 +123,7 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('createdAt');
         $property->setValue($this->role, $expected);
-        $this->assertSame($expected, $this->role->getCreatedAt());
+        self::assertSame($expected, $this->role->getCreatedAt());
     }
 
     public function testSetCreatedAt(): void
@@ -132,7 +132,7 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('createdAt');
         $this->role->setCreatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->role));
+        self::assertSame($expected, $property->getValue($this->role));
     }
 
     public function testGetUpdatedAt(): void
@@ -141,7 +141,7 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('updatedAt');
         $property->setValue($this->role, $expected);
-        $this->assertSame($expected, $this->role->getUpdatedAt());
+        self::assertSame($expected, $this->role->getUpdatedAt());
     }
 
     public function testSetUpdatedAt(): void
@@ -150,6 +150,6 @@ final class RoleTest extends TestCase
         $property = (new \ReflectionClass(Role::class))
             ->getProperty('updatedAt');
         $this->role->setUpdatedAt($expected);
-        $this->assertSame($expected, $property->getValue($this->role));
+        self::assertSame($expected, $property->getValue($this->role));
     }
 }

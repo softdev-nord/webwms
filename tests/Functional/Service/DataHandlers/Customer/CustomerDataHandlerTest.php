@@ -50,7 +50,7 @@ declare(strict_types=1);
 //            ->findOneBy(['customerId' => $customerId]);
 //
 //        if ($customer !== null) {
-//            $this->assertEquals($customerId, $customer->getCustomerId());
+//            self::assertEquals($customerId, $customer->getCustomerId());
 //        }
 //    }
 //
@@ -65,7 +65,7 @@ declare(strict_types=1);
 //            return;
 //        }
 //
-//        $this->assertEquals($customerNr, $customer->getCustomerNr());
+//        self::assertEquals($customerNr, $customer->getCustomerNr());
 //    }
 //
 //    public function testGetAllArticles(): void
