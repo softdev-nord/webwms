@@ -10,7 +10,6 @@ package-lock.json
 
 # Environment files
 .env
-.env.test
 
 # JetBrains IDE
 .idea/

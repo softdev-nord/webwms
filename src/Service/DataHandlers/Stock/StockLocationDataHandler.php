@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\StockLocation;
-use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\DateTimeService;
 
 /**
@@ -46,7 +45,7 @@ class StockLocationDataHandler
     }
 
     /**
-     * @throws NotFoundException
+     * @throws \Exception
      * @return object[]
      */
     public function getStockLocationDetailsById(string $stockLocationId): array
@@ -56,7 +55,7 @@ class StockLocationDataHandler
             ->findBy(['stockLocationId' => $stockLocationId]);
 
         if ($stockLocation == null) {
-            throw new NotFoundException('Keine Details für den gewählten Lagerort gefunden.');
+            throw new \Exception('Keine Details für den gewählten Lagerort gefunden.');
         }
 
         return $stockLocation;
@@ -204,7 +203,7 @@ class StockLocationDataHandler
     }
 
     /**
-     * @throws NotFoundException
+     * @throws \Exception
      * @return object[]
      */
     public function getAllStockLocationsAjax(): array
@@ -214,7 +213,7 @@ class StockLocationDataHandler
             ->findAll();
 
         if ($stockLocation == null) {
-            throw new NotFoundException('Keine Lagerorte gefunden');
+            throw new \Exception('Keine Lagerorte gefunden');
         }
 
         return $stockLocation;

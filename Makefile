@@ -84,7 +84,7 @@ phpcs-fix: ## run code style fix
 	 -vvv --show-progress=dots --allow-risky=yes';
 
 phpmd: ## run code check (phpmd)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./bundles/' ansi rulesets.xml';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./bundles/,./tests/' ansi rulesets.xml';
 
 phpqa: ## run code check (phpmd)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src';
@@ -114,7 +114,8 @@ js-eslint-fix: ## Runs ESLint with --fix flag (Runs on the host system)
 #	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/codecept run';
 
 run-tests-unit: ## run unit tests
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit';
+	@#docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-text';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-html var/reports/ ';
 
 #run-tests-api: ## run api tests
 #	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/codecept run api';

@@ -13,10 +13,10 @@ parameters:
     paths:
         - src
         - bundles
+        - tests
 
     ignoreErrors:
     	- '#Cannot access offset#'
-    	- '#Argument of an invalid type mixed supplied for foreach, only iterables are supported.#'
 
     reportUnmatchedIgnoredErrors: false
     checkGenericClassInNonGenericObjectType: false

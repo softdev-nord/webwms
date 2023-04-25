@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Entity\StockLocation as StockLocationEntity;
-use WebWMS\Exception\NotFoundException;
 use WebWMS\Helper\FormHelper\StockLocationFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
@@ -212,7 +211,7 @@ class StockLocation extends AbstractController
     }
 
     /**
-     * @throws NotFoundException
+     * @throws \Exception
      * @return array|object[]
      */
     #[Route('/lagerplatz_details/{stock_location_coordinate}', name: 'show_stock_location_details')]

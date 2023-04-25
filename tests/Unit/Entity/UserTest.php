@@ -5,10 +5,299 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Entity;
 
 use PHPUnit\Framework\TestCase;
+use WebWMS\Entity\Role;
 use WebWMS\Entity\User;
 
-class UserTest extends TestCase
+/**
+ * @package:    WebWMS\Tests\Unit\Entity
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        UserTest
+ *
+ * @covers \WebWMS\Entity\User
+ */
+final class UserTest extends TestCase
 {
+    private User $user;
+
+    private Role $role;
+
+    private \DateTimeImmutable $dateTime;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = new User();
+        $this->role = new Role();
+        $this->dateTime = new \DateTimeImmutable();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        unset($this->user);
+        unset($this->role);
+        unset($this->dateTime);
+    }
+
+    public function testGetId(): void
+    {
+        $expected = 2019;
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('id');
+        $property->setValue($this->user, $expected);
+        self::assertSame($expected, $this->user->getId());
+    }
+
+    public function testSetId(): void
+    {
+        $expected = 2019;
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('id');
+        $this->user->setId($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testGetUsername(): void
+    {
+        $expected = 'Username';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('username');
+        $property->setValue($this->user, $expected);
+        self::assertSame($expected, $this->user->getUsername());
+    }
+
+    public function testSetUsername(): void
+    {
+        $expected = 'Username';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('username');
+        $this->user->setUsername($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testEraseCredentials(): void
+    {
+        $plainPassword = null;
+        $this->user->eraseCredentials();
+        self::assertNull($plainPassword);
+    }
+
+    public function testGetFirstname(): void
+    {
+        $expected = 'Firstname';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('firstname');
+        $property->setValue($this->user, $expected);
+        self::assertSame($expected, $this->user->getFirstname());
+    }
+
+    public function testSetFirstname(): void
+    {
+        $expected = 'Firstname';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('firstname');
+        $this->user->setFirstname($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testGetLastname(): void
+    {
+        $expected = 'Lastname';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('lastname');
+        $property->setValue($this->user, $expected);
+        self::assertSame($expected, $this->user->getLastname());
+    }
+
+    public function testSetLastname(): void
+    {
+        $expected = 'Lastname';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('lastname');
+        $this->user->setLastname($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testGetEmail(): void
+    {
+        $expected = 'Email';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('email');
+        $property->setValue($this->user, $expected);
+        self::assertSame($expected, $this->user->getEmail());
+    }
+
+    public function testSetEmail(): void
+    {
+        $expected = 'Email';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('email');
+        $this->user->setEmail($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testGetLastLogin(): void
+    {
+        $expected = $this->dateTime;
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('lastLogin');
+        $property->setValue($this->user, $expected);
+        self::assertSame($expected, $this->user->getLastLogin());
+    }
+
+    public function testSetLastLogin(): void
+    {
+        $expected = $this->dateTime;
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('lastLogin');
+        $this->user->setLastLogin($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testIsEnabled(): void
+    {
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('enabled');
+        $property->setValue($this->user, true);
+        self::assertSame(true, $this->user->isEnabled());
+    }
+
+    public function testSetEnabled(): void
+    {
+        $expected = true;
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('enabled');
+        $this->user->setEnabled($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testGetCreatedAt(): void
+    {
+        $expected = $this->dateTime;
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('createdAt');
+        $property->setValue($this->user, $expected);
+        self::assertSame($expected, $this->user->getCreatedAt());
+    }
+
+    public function testSetCreatedAt(): void
+    {
+        $expected = $this->dateTime;
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('createdAt');
+        $this->user->setCreatedAt($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testGetUpdatedAt(): void
+    {
+        $expected = $this->dateTime;
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('updatedAt');
+        $property->setValue($this->user, $expected);
+        self::assertSame($expected, $this->user->getUpdatedAt());
+    }
+
+    public function testSetUpdatedAt(): void
+    {
+        $expected = $this->dateTime;
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('updatedAt');
+        $this->user->setUpdatedAt($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testSerialize(): void
+    {
+        $expected = serialize([1, 'test', 'password']);
+        $this->user->setId(1);
+        $this->user->setUsername('test');
+        $this->user->setPassword('password');
+        self::assertEquals($expected, $this->user->serialize());
+    }
+
+    public function testGetUserIdentifier(): void
+    {
+        $expected = 'username';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('username');
+        $property->setValue($this->user, $expected);
+        self::assertEquals($expected, $this->user->getUserIdentifier());
+    }
+
+    public function testGetPassword(): void
+    {
+        $expected = 'Password';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('password');
+        $property->setValue($this->user, $expected);
+        self::assertSame($expected, $this->user->getPassword());
+    }
+
+    public function testSetPassword(): void
+    {
+        $expected = 'Password';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('password');
+        $this->user->setPassword($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testGetRole(): void
+    {
+        $expected = $this->role;
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('role');
+        $property->setValue($this->user, $expected);
+        self::assertSame($expected, $this->user->getRole());
+    }
+
+    public function testSetRole(): void
+    {
+        $expected = $this->role;
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('role');
+        $this->user->setRole($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testGetRoles(): void
+    {
+        $expected = ['ROLE_ADMIN', 'ROLE_USER'];
+        $this->user->setRoles($expected);
+        self::assertSame($expected, $this->user->getRoles());
+    }
+
+    public function testSetRoles(): void
+    {
+        $expected = ['ROLE_USER'];
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('roles');
+        $this->user->setRoles($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
+    public function testGetPlainPassword(): void
+    {
+        $expected = 'plainPassword';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('plainPassword');
+        $property->setValue($this->user, $expected);
+        self::assertSame($expected, $this->user->getPlainPassword());
+    }
+
+    public function testSetPlainPassword(): void
+    {
+        $expected = 'plainPassword';
+        $property = (new \ReflectionClass(User::class))
+            ->getProperty('plainPassword');
+        $this->user->setPlainPassword($expected);
+        self::assertSame($expected, $property->getValue($this->user));
+    }
+
     public function testAddUser(): void
     {
         $this->setName('AddUser');
@@ -19,9 +308,9 @@ class UserTest extends TestCase
         $user->setLastname('TestLastname');
         $user->setPassword('password');
 
-        $this->assertEquals('TestUser', $user->getUsername());
-        $this->assertEquals('TestFirstname', $user->getFirstname());
-        $this->assertEquals('TestLastname', $user->getLastname());
-        $this->assertEquals('password', $user->getPassword());
+        self::assertEquals('TestUser', $user->getUsername());
+        self::assertEquals('TestFirstname', $user->getFirstname());
+        self::assertEquals('TestLastname', $user->getLastname());
+        self::assertEquals('password', $user->getPassword());
     }
 }

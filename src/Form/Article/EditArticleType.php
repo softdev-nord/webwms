@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use WebWMS\Entity\Article;
 
 /**
@@ -22,11 +21,6 @@ use WebWMS\Entity\Article;
  */
 class EditArticleType extends AbstractType
 {
-    public function __construct(
-        private AuthorizationCheckerInterface $authorizationChecker
-    ) {
-    }
-
     /**
      * @SuppressWarnings("unused")
      * @SuppressWarnings(PHPMD.ElseExpression)
@@ -40,22 +34,8 @@ class EditArticleType extends AbstractType
                 'id' => 'articleId',
                 'data-type' => 'articleId',
             ],
-        ]);
-        if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            $builder
-                ->add('articleNr', TextType::class, [
-                    'empty_data' => '',
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'articleNr',
-                        'data-type' => 'articleNr',
-                        'style' => 'background-color: transparent',
-                        'readonly' => 'readonly',
-                    ],
-                ]);
-        } else {
-            $builder->add('articleNr', TextType::class, [
+        ])
+        ->add('articleNr', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -63,9 +43,8 @@ class EditArticleType extends AbstractType
                     'data-type' => 'articleNr',
                     'style' => 'background-color: transparent',
                 ],
-            ]);
-        }
-        $builder->add('articleName', TextType::class, [
+            ])
+        ->add('articleName', TextType::class, [
             'empty_data' => '',
             'label' => false,
             'attr' => [
@@ -73,8 +52,8 @@ class EditArticleType extends AbstractType
                 'id' => 'articleName',
                 'data-type' => 'articleName',
             ],
-        ]);
-        $builder->add('articleCategory', TextType::class, [
+        ])
+        ->add('articleCategory', TextType::class, [
             'empty_data' => '',
             'label' => false,
             'attr' => [
@@ -82,8 +61,8 @@ class EditArticleType extends AbstractType
                 'id' => 'articleCategory',
                 'data-type' => 'articleCategory',
             ],
-        ]);
-        $builder->add('articleWeight', TextType::class, [
+        ])
+        ->add('articleWeight', TextType::class, [
             'empty_data' => '',
             'label' => false,
             'attr' => [
@@ -91,8 +70,8 @@ class EditArticleType extends AbstractType
                 'id' => 'articleWeight',
                 'data-type' => 'articleWeight',
             ],
-        ]);
-        $builder->add('articleEan', TextType::class, [
+        ])
+        ->add('articleEan', TextType::class, [
             'empty_data' => '',
             'label' => false,
             'attr' => [
@@ -100,8 +79,8 @@ class EditArticleType extends AbstractType
                 'id' => 'articleEan',
                 'data-type' => 'articleEan',
             ],
-        ]);
-        $builder->add('articleUnit', TextType::class, [
+        ])
+        ->add('articleUnit', TextType::class, [
             'empty_data' => '',
             'label' => false,
             'attr' => [
@@ -109,8 +88,8 @@ class EditArticleType extends AbstractType
                 'id' => 'articleUnit',
                 'data-type' => 'articleUnit',
             ],
-        ]);
-        $builder->add('articleDepth', TextType::class, [
+        ])
+        ->add('articleDepth', TextType::class, [
             'empty_data' => '',
             'label' => false,
             'attr' => [
@@ -118,8 +97,8 @@ class EditArticleType extends AbstractType
                 'id' => 'articleDepth',
                 'data-type' => 'articleDepth',
             ],
-        ]);
-        $builder->add('articleWidth', TextType::class, [
+        ])
+        ->add('articleWidth', TextType::class, [
             'empty_data' => '',
             'label' => false,
             'attr' => [
@@ -127,8 +106,8 @@ class EditArticleType extends AbstractType
                 'id' => 'articleWidth',
                 'data-type' => 'articleWidth',
             ],
-        ]);
-        $builder->add('articleHeight', TextType::class, [
+        ])
+        ->add('articleHeight', TextType::class, [
             'empty_data' => '',
             'label' => false,
             'attr' => [
@@ -136,8 +115,8 @@ class EditArticleType extends AbstractType
                 'id' => 'articleHeight',
                 'data-type' => 'articleHeight',
             ],
-        ]);
-        $builder->add('stockOutStrategy', TextType::class, [
+        ])
+        ->add('stockOutStrategy', TextType::class, [
             'empty_data' => '',
             'label' => false,
             'attr' => [
@@ -145,8 +124,8 @@ class EditArticleType extends AbstractType
                 'id' => 'stockOutStrategy',
                 'data-type' => 'stockOutStrategy',
             ],
-        ]);
-        $builder->add('leQuantity', TextType::class, [
+        ])
+        ->add('leQuantity', TextType::class, [
             'empty_data' => '',
             'label' => false,
             'attr' => [
@@ -154,8 +133,8 @@ class EditArticleType extends AbstractType
                 'id' => 'leQuantity	',
                 'data-type' => 'leQuantity',
             ],
-        ]);
-        $builder->add('standardLoadingEquipment', TextType::class, [
+        ])
+        ->add('standardLoadingEquipment', TextType::class, [
             'empty_data' => '',
             'label' => false,
             'attr' => [
@@ -163,14 +142,14 @@ class EditArticleType extends AbstractType
                 'id' => 'standardLoadingEquipment	',
                 'data-type' => 'standardLoadingEquipment',
             ],
-        ]);
-        $builder->add('save', SubmitType::class, [
+        ])
+        ->add('save', SubmitType::class, [
             'label' => 'Änderungen speichern',
             'attr' => [
                 'class' => 'btn btn-lg',
             ],
-        ]);
-        $builder->add('abort', ButtonType::class, [
+        ])
+        ->add('abort', ButtonType::class, [
             'label' => 'Abbrechen',
             'attr' => [
                 'class' => 'btn btn-lg abort',

@@ -57,24 +57,6 @@ class TransportRequest
     #[ORM\Column(name: 'stock_level4', type: 'integer', nullable: false)]
     private int $stockLevel4;
 
-//    #[ORM\Column(name: 'to_stock_coordinate', type: 'string', length: 25, nullable: false)]
-//    private string $toStockCoordinate;
-//
-//    #[ORM\Column(name: 'to_stock_nr', type: 'integer', nullable: false)]
-//    private int $toStockNr;
-//
-//    #[ORM\Column(name: 'to_stock_level1', type: 'integer', nullable: false)]
-//    private int $toStockLevel1;
-//
-//    #[ORM\Column(name: 'to_stock_level2', type: 'integer', nullable: false)]
-//    private int $toStockLevel2;
-//
-//    #[ORM\Column(name: 'to_stock_level3', type: 'integer', nullable: false)]
-//    private int $toStockLevel3;
-//
-//    #[ORM\Column(name: 'to_stock_level4', type: 'integer', nullable: false)]
-//    private int $toStockLevel4;
-
     #[ORM\Column(name: 'tr_access', type: 'datetime', nullable: true, options: ['default' => null])]
     private ?\DateTimeInterface $trAccess;
 
@@ -94,10 +76,10 @@ class TransportRequest
     private ?int $docId;
 
     #[ORM\Column(name: 'order_nr', type: 'string', length: 30, nullable: true)]
-    private ?string $orderNr;
+    private string $orderNr;
 
     #[ORM\Column(name: 'order_pos', type: 'integer', nullable: true)]
-    private ?string $orderPos;
+    private int $orderPos;
 
     #[ORM\Column(name: 'charge', type: 'string', length: 30, nullable: true, options: ['default' => null])]
     private string $charge;
@@ -444,12 +426,12 @@ class TransportRequest
         return $this;
     }
 
-    public function getOrderPos(): ?string
+    public function getOrderPos(): int
     {
         return $this->orderPos;
     }
 
-    public function setOrderPos(null|string $orderPos): self
+    public function setOrderPos(int $orderPos): self
     {
         $this->orderPos = $orderPos;
 
