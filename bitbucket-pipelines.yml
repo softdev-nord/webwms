@@ -99,6 +99,7 @@ pipelines:
         caches:
           - composer
         script:
+          - ci/set-env.sh
           - apt-get update && apt-get install unzip php8.1-opcache -y
           - composer install --ignore-platform-req=ext-zend-opcache
     - parallel:
