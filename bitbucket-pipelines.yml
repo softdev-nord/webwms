@@ -97,7 +97,7 @@ pipelines:
         caches:
           - composer
         script:
-          - apt-get update && apt-get install -y unzip php-opcache
+          - apt-get update && apt-get install -y unzip pdo pdo_mysql mysqli curl zip intl mbstring gettext exif xml opcache
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - composer install
     - parallel:
