@@ -100,7 +100,7 @@ pipelines:
           - composer
         script:
           - ci/set-env.sh
-          - apt-get update && apt-get install unzip gettext-base -y
+          - apt-get update && apt-get install unzip gettext -y
           - composer install --ignore-platform-reqs
     - parallel:
         - step: *code-style
