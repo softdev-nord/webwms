@@ -88,7 +88,7 @@ definitions:
           - ci/set-env.sh
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           # install application dependencies
-          - APP_ENV=prod composer install --prefer-dist --optimize-autoloader --ignore-platform-reqs
+          - APP_ENV=${BITBUCKET_DEPLOYMENT_ENVIRONMENT} composer install --prefer-dist --optimize-autoloader --ignore-platform-reqs
         artifacts:
           - app/.env.*
 pipelines:
@@ -100,8 +100,8 @@ pipelines:
           - composer
         script:
           - ci/set-env.sh
-          - apt-get update && apt-get install unzip php8.1-opcache -y
-          - composer install --ignore-platform-req=ext-zend-opcache
+          - apt-get update && apt-get install unzip gettext-base -y
+          - composer install --ignore-platform-reqs
     - parallel:
         - step: *code-style
         - step: *code-analysis
