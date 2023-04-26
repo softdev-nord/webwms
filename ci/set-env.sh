@@ -7,7 +7,7 @@ shopt -s inherit_errexit
 
 ###> webWMS ###
 
-if [ "$CIRCLE_BRANCH" == "master" ]
+if [ "$BITBUCKET_BRANCH" == "master" ]
 then
   export APP_ENV=prod
   export DATABASE_URL=mysql://webwms:${DATABASE_PASSWORD}@127.0.0.1:3306/webwms?serverVersion=5.7
