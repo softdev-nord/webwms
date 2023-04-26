@@ -99,7 +99,7 @@ pipelines:
         caches:
           - composer
         script:
-          - apt-get update && apt-get install unzip gettext-base -y
+          - apt-get update && apt-get install gettext-base
           - ci/set-env.sh
           - composer install --ignore-platform-reqs
     - parallel:
