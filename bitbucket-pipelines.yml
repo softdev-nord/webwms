@@ -8,7 +8,7 @@ definitions:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - cd /var/www/html/
+          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer:2
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots --allow-risky=yes
