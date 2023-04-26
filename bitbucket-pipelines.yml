@@ -94,10 +94,11 @@ definitions:
 pipelines:
   default:
     - step:
+        name: PHP Mess Detector (phpmd)
         caches:
           - composer
         script:
-          - apt-get update && apt-get install php-cli php-opcache php-mysql php-zip php-gd php-mbstring php-curl php-xml -y
+          - apt-get update && apt-get install php81-php-opcache -y
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - composer install
     - parallel:
