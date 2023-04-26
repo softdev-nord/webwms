@@ -1,4 +1,4 @@
-image: php:8.1
+image: php:8.1.19
 
 definitions:
   steps:
@@ -9,6 +9,7 @@ definitions:
         script:
           - echo ${BITBUCKET_CLONE_DIR}
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
+          - cd ${BITBUCKET_CLONE_DIR}/
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots --allow-risky=yes
         artifacts:
@@ -20,7 +21,7 @@ definitions:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - cd /var/www/html/
+          - cd ${BITBUCKET_CLONE_DIR}/
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - php -d memory_limit=-1 vendor/bin/phpstan analyse --configuration ./phpstan.neon --error-format=junit > ${BITBUCKET_CLONE_DIR}/test-reports/code-analysis-junit.xml
@@ -33,7 +34,7 @@ definitions:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - cd /var/www/html/
+          - cd ${BITBUCKET_CLONE_DIR}/
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor .
@@ -43,7 +44,7 @@ definitions:
         caches:
           - composer
         script:
-          - cd /var/www/html/
+          - cd ${BITBUCKET_CLONE_DIR}/
           - >
             curl -s https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest \
                 | grep "browser_download_url.*_linux_amd64" \
@@ -59,7 +60,7 @@ definitions:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - cd /var/www/html/
+          - cd ${BITBUCKET_CLONE_DIR}/
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/phpmd './src/,./bundles/' ansi rulesets.xml
@@ -72,7 +73,7 @@ definitions:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - cd /var/www/html/
+          - cd ${BITBUCKET_CLONE_DIR}/
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/phpunit --coverage-html="./test-reports"
@@ -81,16 +82,20 @@ definitions:
 
     - step: &build-deploy
         name: Build and Deploy
-        caches:
-          - composer
         script:
-          # set environment variables and export it to `.env.{stage}`
-          - ci/set-env.sh
-          - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
-          # install application dependencies
-          - APP_ENV=${BITBUCKET_DEPLOYMENT_ENVIRONMENT} composer install --prefer-dist --optimize-autoloader --ignore-platform-reqs
-        artifacts:
-          - app/.env.*
+          - rsync -rzhv --delete --stats ssh --exclude 'ci/rsync.exclude' $SSH_USER@$SSH_HOST:$HOST_DIR
+          - pipe: atlassian/rsync-deploy:0.8.1
+            variables:
+              USER: $SSH_USER
+              SERVER: $SSH_HOST
+              REMOTE_PATH: $HOST_DIR
+              LOCAL_PATH: ${BITBUCKET_CLONE_DIR}/
+              # SSH_KEY: '<string>' # Optional.
+              # SSH_PORT: '<string>' # Optional.
+              # SSH_ARGS: '<string>' # Optional.
+              # EXTRA_ARGS: '<string>' # Optional.
+              # DEBUG: '<boolean>' # Optional.
+              # DELETE_FLAG: '<boolean>' # Optional.
 pipelines:
   default:
     - step:
@@ -116,9 +121,9 @@ pipelines:
   branches:
     main:
       - step: *code-style
-      #- step: *unit-tests
       - step: *code-analysis
-      #- step: *var-dump-find
+      - step: *var-dump-find
+      - step: *unit-tests
       - step:
           <<: *build-deploy
           deployment: stg
@@ -128,17 +133,14 @@ pipelines:
     vulnerability-scan:
       - step:
           <<: *vulnerability-scan
-    
     production:
       - step:
           <<: *build-deploy
           deployment: prod
-    
     staging:
       - step:
           <<: *build-deploy
           deployment: stg
-    
     development:
       - step:
           <<: *build-deploy
