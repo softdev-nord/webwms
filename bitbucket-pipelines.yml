@@ -8,7 +8,7 @@ definitions:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - cd webwms/
+          - cd /var/www/html/
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots --allow-risky=yes
@@ -21,7 +21,7 @@ definitions:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - cd webwms/
+          - cd /var/www/html/
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - php -d memory_limit=-1 vendor/bin/phpstan analyse --configuration ./phpstan.neon --error-format=junit > ${BITBUCKET_CLONE_DIR}/test-reports/code-analysis-junit.xml
@@ -34,7 +34,7 @@ definitions:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - cd webwms/
+          - cd /var/www/html/
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor .
@@ -44,7 +44,7 @@ definitions:
         caches:
           - composer
         script:
-          - cd webwms/
+          - cd /var/www/html/
           - >
             curl -s https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest \
                 | grep "browser_download_url.*_linux_amd64" \
@@ -60,7 +60,7 @@ definitions:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - cd webwms/
+          - cd /var/www/html/
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/phpmd './src/,./bundles/' ansi rulesets.xml
@@ -73,7 +73,7 @@ definitions:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - cd webwms/
+          - cd /var/www/html/
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/phpunit --coverage-html="./test-reports"
