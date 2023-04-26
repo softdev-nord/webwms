@@ -95,11 +95,11 @@ pipelines:
   default:
     - step:
         name: Composer
+        image: composer:2
         caches:
           - composer
         script:
-          - apt-get update && apt-get install unzip -y
-          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - apt-get update && apt-get install unzip php8.1-opcache -y
           - composer install
     - parallel:
         - step: *code-style

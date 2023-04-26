@@ -14,7 +14,7 @@
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "ext-simplexml": "*",
-
+        "ext-zend-opcache": "*",
         "api-platform/core": "^3.1",
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^1.0",
