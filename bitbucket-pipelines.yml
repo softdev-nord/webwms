@@ -1,4 +1,4 @@
-image: php:8.1.19
+image: atlassian/default-image:latest
 
 definitions:
   steps:
