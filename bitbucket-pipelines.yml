@@ -110,6 +110,8 @@ pipelines:
           - echo APP_ENV=${BITBUCKET_DEPLOYMENT_ENVIRONMENT}
           - ci/set-env.sh
           - composer install --ignore-platform-reqs
+        artifacts:
+          - .env
     - parallel:
         - step: *code-style
         - step: *code-analysis
