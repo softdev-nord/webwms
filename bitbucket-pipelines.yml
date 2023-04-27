@@ -94,14 +94,19 @@ definitions:
           - echo $BITBUCKET_CLONE_DIR
           - apk update && apk add -y openssh-client rsync
           # We can't use the rsync pipe here. There is a bug with the --rsync-path argument (https://community.atlassian.com/t5/Bitbucket-Pipelines-questions/Escape-quote-in-extra-args/qaq-p/1105670)
-          - rsync -rzhv --delete --stats -e ''ssh'' --rsync-path=''sudo /usr/bin/rsync'' --exclude=/var/ --exclude=/vendor/ --exclude=*.dist --exclude=/.git/ $BITBUCKET_CLONE_DIR $SSH_USER@$SERVER:$HOST_DIR
-          - pipe: atlassian/ssh-run:0.2.2
+          #- rsync -rzhv --delete --stats -e ''ssh'' --rsync-path=''sudo /usr/bin/rsync'' --exclude=/var/ --exclude=/vendor/ --exclude=*.dist --exclude=/.git/ $BITBUCKET_CLONE_DIR $SSH_USER@$SERVER:$HOST_DIR
+          - pipe: atlassian/rsync-deploy:0.8.1
             variables:
-              SSH_USER: $SSH_USER
+              USER: $SSH_USER
               SERVER: $SSH_HOST
-              HOST_DIR: $HOST_DIR
-        artifacts:
-          - .env
+              REMOTE_PATH: $HOST_DIR
+              LOCAL_PATH: ${BITBUCKET_CLONE_DIR}/
+              # SSH_KEY: '<string>' # Optional.
+              # SSH_PORT: '<string>' # Optional.
+              # SSH_ARGS: '<string>' # Optional.
+              # EXTRA_ARGS: '<string>' # Optional.
+              # DEBUG: '<boolean>' # Optional.
+              # DELETE_FLAG: '<boolean>' # Optional.
 pipelines:
   default:
     - parallel:
