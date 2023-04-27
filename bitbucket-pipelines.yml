@@ -104,6 +104,7 @@ pipelines:
         caches:
           - composer
         script:
+          - cd ${BITBUCKET_CLONE_DIR}/
           - apk update && apk add gettext
           - ci/set-env.sh
           - composer install --ignore-platform-reqs
