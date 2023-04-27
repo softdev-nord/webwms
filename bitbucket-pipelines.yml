@@ -111,7 +111,7 @@ definitions:
             variables:
               SSH_USER: $SSH_USER
               SERVER: $SSH_HOST
-              COMMAND: '/opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install --ignore-platform-reqs --no-scripts'
+              COMMAND: 'cd $ENVIRONMENT_DIR && /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install --ignore-platform-reqs --no-scripts'
               DEBUG: 'true'
 pipelines:
   default:
