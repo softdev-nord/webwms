@@ -110,7 +110,7 @@ pipelines:
           - ci/set-env.sh
           - composer install --ignore-platform-reqs
         artifacts:
-          - .env
+          - ${BITBUCKET_CLONE_DIR}/.env
     - parallel:
         - step: *code-style
         - step: *code-analysis
