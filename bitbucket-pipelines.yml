@@ -94,12 +94,12 @@ definitions:
           - echo $BITBUCKET_CLONE_DIR
           - apk update && apk add -y openssh-client rsync
           # We can't use the rsync pipe here. There is a bug with the --rsync-path argument (https://community.atlassian.com/t5/Bitbucket-Pipelines-questions/Escape-quote-in-extra-args/qaq-p/1105670)
+          - rsync -rzhv --delete --stats -e ''ssh'' --rsync-path=''sudo /usr/bin/rsync'' --exclude=/var/ --exclude=/vendor/ --exclude=*.dist --exclude=/.git/ $BITBUCKET_CLONE_DIR $SSH_USER@$SERVER:$HOST_DIR
           - pipe: atlassian/ssh-run:0.2.2
             variables:
               SSH_USER: $SSH_USER
               SERVER: $SSH_HOST
               HOST_DIR: $HOST_DIR
-              COMMAND: 'rsync -rzhv --delete --stats -e ''ssh'' --rsync-path=''sudo /usr/bin/rsync'' --exclude=/var/ --exclude=/vendor/ --exclude=*.dist --exclude=/.git/ $BITBUCKET_CLONE_DIR $SSH_USER@$SERVER:$HOST_DIR'
         artifacts:
           - .env
 pipelines:
