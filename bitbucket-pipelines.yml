@@ -92,7 +92,6 @@ definitions:
         name: Build and Deploy
         script:
           - echo $BITBUCKET_CLONE_DIR
-          - ci/set-env.sh
           - apk update && apk add -y openssh-client rsync
           # We can't use the rsync pipe here. There is a bug with the --rsync-path argument (https://community.atlassian.com/t5/Bitbucket-Pipelines-questions/Escape-quote-in-extra-args/qaq-p/1105670)
           - pipe: atlassian/ssh-run:0.2.2
