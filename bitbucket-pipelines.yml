@@ -10,7 +10,9 @@ definitions:
           - echo ${BITBUCKET_CLONE_DIR}
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
           - cd ${BITBUCKET_CLONE_DIR}/
+          - apk update && apk add gettext
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
+          - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots --allow-risky=yes
         artifacts:
           - test-reports/**
@@ -98,19 +100,19 @@ definitions:
               # DELETE_FLAG: '<boolean>' # Optional.
 pipelines:
   default:
-    - step:
-        name: Composer
-        image: composer:2
-        caches:
-          - composer
-        script:
-          - cd ${BITBUCKET_CLONE_DIR}/
-          - apk update && apk add gettext
-          - echo ${DATABASE_URL} >> .env
-          - ci/set-env.sh
-          - composer install --ignore-platform-reqs
-        artifacts:
-          - ${BITBUCKET_CLONE_DIR}/.env
+#    - step:
+#        name: Composer
+#        image: composer:2
+#        caches:
+#          - composer
+#        script:
+#          - cd ${BITBUCKET_CLONE_DIR}/
+#          - apk update && apk add gettext
+#          - echo ${DATABASE_URL} >> .env
+#          - ci/set-env.sh
+#          - composer install --ignore-platform-reqs
+#        artifacts:
+#          - ${BITBUCKET_CLONE_DIR}/.env
     - parallel:
         - step: *code-style
         - step: *code-analysis
