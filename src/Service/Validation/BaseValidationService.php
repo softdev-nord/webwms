@@ -18,7 +18,7 @@ class BaseValidationService
      * @param string $path
      * @return string|null
      */
-    public function getValue(array $entity, string $path): ?string
+    protected function getValue(array $entity, string $path): ?string
     {
         $value = strval($this->propertyAccessor->getValue($entity, $path));
 

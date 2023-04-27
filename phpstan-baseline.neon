@@ -1,2 +1,46 @@
 parameters:
-	ignoreErrors: []
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Component\\\\Form\\\\FormFactoryInterface\\:\\:create\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<mixed\\>\\>, string given\\.$#"
+			count: 1
+			path: src/Helper/FormHelper/ArticleFormHelper.php
+
+		-
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Component\\\\Form\\\\FormFactoryInterface\\:\\:create\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<mixed\\>\\>, string given\\.$#"
+			count: 1
+			path: src/Helper/FormHelper/CustomerFormHelper.php
+
+		-
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Component\\\\Form\\\\FormFactoryInterface\\:\\:create\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<mixed\\>\\>, string given\\.$#"
+			count: 1
+			path: src/Helper/FormHelper/CustomerOrderFormHelper.php
+
+		-
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Component\\\\Form\\\\FormFactoryInterface\\:\\:create\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<mixed\\>\\>, string given\\.$#"
+			count: 1
+			path: src/Helper/FormHelper/StockLayoutFormHelper.php
+
+		-
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Component\\\\Form\\\\FormFactoryInterface\\:\\:create\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<mixed\\>\\>, string given\\.$#"
+			count: 1
+			path: src/Helper/FormHelper/StockLocationFormHelper.php
+
+		-
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Component\\\\Form\\\\FormFactoryInterface\\:\\:create\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<mixed\\>\\>, string given\\.$#"
+			count: 1
+			path: src/Helper/FormHelper/StockZoneFormHelper.php
+
+		-
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Component\\\\Form\\\\FormFactoryInterface\\:\\:create\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<mixed\\>\\>, string given\\.$#"
+			count: 1
+			path: src/Helper/FormHelper/SupplierFormHelper.php
+
+		-
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Component\\\\Form\\\\FormFactoryInterface\\:\\:create\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<mixed\\>\\>, string given\\.$#"
+			count: 1
+			path: src/Helper/FormHelper/SupplierOrderFormHelper.php
+
+		-
+			message: "#^Parameter \\#1 \\$type of method Symfony\\\\Component\\\\Form\\\\FormFactoryInterface\\:\\:create\\(\\) expects class\\-string\\<Symfony\\\\Component\\\\Form\\\\FormTypeInterface\\<mixed\\>\\>, string given\\.$#"
+			count: 1
+			path: src/Helper/FormHelper/UserFormHelper.php

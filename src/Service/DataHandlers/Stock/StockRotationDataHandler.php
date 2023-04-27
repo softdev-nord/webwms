@@ -69,11 +69,11 @@ class StockRotationDataHandler
             ->innerJoin('str', 'booking_method', 'bm', 'bm.id = str.movement_id')
             ->groupBy('str.id');
 
-//        $queryBuilder
-//            ->select('*')
-//            ->from('transport_history', 'tph')
-//            ->innerJoin('tph', 'booking_method', 'bm', 'bm.movement_type = tph.booking_method')
-//            ->groupBy('stock_coordinate');
+        //        $queryBuilder
+        //            ->select('*')
+        //            ->from('transport_history', 'tph')
+        //            ->innerJoin('tph', 'booking_method', 'bm', 'bm.movement_type = tph.booking_method')
+        //            ->groupBy('stock_coordinate');
 
         $stmt = $queryBuilder->executeQuery();
 
