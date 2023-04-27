@@ -1,5 +1,5 @@
-APP_CONTAINER_NAME = "webWMS-php8.1"
-DB_CONTAINER_NAME = "webWMS-MariaDB10.5"
+APP_CONTAINER_NAME = "webwms-php8.1"
+DB_CONTAINER_NAME = "webwms-MariaDB10.5"
 
 help: ## Display this help
 	@printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"

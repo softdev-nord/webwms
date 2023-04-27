@@ -17,7 +17,7 @@
         "ext-zend-opcache": "*",
         "api-platform/core": "^3.1",
         "composer/package-versions-deprecated": "^1.11",
-        "doctrine/annotations": "^1.0",
+        "doctrine/annotations": "^2",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",
@@ -124,7 +124,7 @@
         }
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^v3.8.0",
+        "friendsofphp/php-cs-fixer": "^v3.16.0",
         "mockery/mockery": "^1.5",
         "php-parallel-lint/php-var-dump-check": "~0.4",
         "phpmd/phpmd": "^2.12",
