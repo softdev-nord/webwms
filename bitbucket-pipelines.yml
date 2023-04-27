@@ -1,4 +1,4 @@
-image: atlassian/default-image:latest
+image: php
 
 definitions:
   steps:
@@ -106,7 +106,6 @@ pipelines:
         script:
           - apk update && apk add gettext
           - ci/set-env.sh
-          - envsubst < .env.template > .env
           - composer install --ignore-platform-reqs
     - parallel:
         - step: *code-style
