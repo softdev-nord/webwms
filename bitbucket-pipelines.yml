@@ -106,6 +106,8 @@ pipelines:
         script:
           - cd ${BITBUCKET_CLONE_DIR}/
           - apk update && apk add gettext
+          - echo DATABASE_URL=${DATABASE_URL}
+          - echo APP_ENV=${BITBUCKET_DEPLOYMENT_ENVIRONMENT}
           - ci/set-env.sh
           - composer install --ignore-platform-reqs
     - parallel:
