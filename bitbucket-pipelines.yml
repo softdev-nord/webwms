@@ -104,7 +104,7 @@ pipelines:
         caches:
           - composer
         script:
-          - apt-get update && apt-get install -y gettext
+          - apk update && apk add gettext
           - ci/set-env.sh
           - envsubst < .env.template > .env
           - composer install --ignore-platform-reqs
