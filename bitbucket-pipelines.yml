@@ -1,4 +1,4 @@
-image: php
+image: php:8.1
 
 definitions:
   steps:
@@ -20,6 +20,7 @@ definitions:
 
     - step: &code-analysis
         name: Code Analysis
+        image: composer:2
         caches:
           - composer
         script:
@@ -33,6 +34,7 @@ definitions:
 
     - step: &var-dump-find
         name: Find dump messages
+        image: composer:2
         caches:
           - composer
         script:
@@ -44,6 +46,7 @@ definitions:
     
     - step: &vulnerability-scan
         name: Dependency Vulnerability Scan
+        image: composer:2
         caches:
           - composer
         script:
@@ -59,6 +62,7 @@ definitions:
     
     - step: &mess-detector
         name: PHP Mess Detector (phpmd)
+        image: composer:2
         caches:
           - composer
         script:
@@ -72,6 +76,7 @@ definitions:
     
     - step: &unit-tests
         name: Unit Tests
+        image: composer:2
         caches:
           - composer
         script:
