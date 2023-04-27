@@ -42,4 +42,3 @@ export MAILER_DSN=null://localhost
 ###< symfony/mailer ###
 
 # Datei mit Umgebungsvariablen generieren
-envsubst < .env.template > .env

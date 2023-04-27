@@ -104,8 +104,9 @@ pipelines:
         caches:
           - composer
         script:
-          - apt-get update && apt-get install -y gettext-base
+          - apt-get update && apt-get install -y gettext
           - ci/set-env.sh
+          - envsubst < .env.template > .env
           - composer install --ignore-platform-reqs
     - parallel:
         - step: *code-style
