@@ -8,7 +8,7 @@ shopt -s inherit_errexit
 ###> webWMS ###
 
 export DATABASE_URL=${DATABASE_URL}
-export APP_ENV=${APP_ENV}
+export APP_ENV=${BITBUCKET_DEPLOYMENT_ENVIRONMENT}
 export APP_NAME=' | webWMS Das webbasierte Lagerverwaltungssystem'
 export APP_VERSION='Enterprise Version'
 export APP_VERSION_NUMBER='1.2.0'
