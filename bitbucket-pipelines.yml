@@ -4,6 +4,7 @@ definitions:
   steps:
     - step: &code-style
         name: Code Style Check (PHP CS)
+        image: composer:2
         caches:
           - composer
         script:
