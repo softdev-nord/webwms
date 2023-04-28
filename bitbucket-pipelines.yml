@@ -87,7 +87,7 @@ definitions:
         script:
           - echo ${BITBUCKET_CLONE_DIR}
           - apt-get update && apt-get install -y openssh-client rsync
-          - rsync -rzhv --delete --stats -e ssh --exclude-from='ci/rsync.exclude' $BITBUCKET_CLONE_DIR/ $SSH_USER@$SSH_HOST:$HOST_DIR
+          - rsync -avuP -e ssh --exclude-from='ci/rsync.exclude' $BITBUCKET_CLONE_DIR/ $SSH_USER@$SSH_HOST:$HOST_DIR
           - pipe: atlassian/ssh-run:0.4.2
             variables:
               SSH_USER: $SSH_USER
