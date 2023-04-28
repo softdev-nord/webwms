@@ -1,5 +1,5 @@
-APP_CONTAINER_NAME = "webWMS-php8.1"
-DB_CONTAINER_NAME = "webWMS-MariaDB10.5"
+APP_CONTAINER_NAME = "webwms-php8.1"
+DB_CONTAINER_NAME = "webwms-MariaDB10.5"
 
 help: ## Display this help
 	@printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"
@@ -114,8 +114,8 @@ js-eslint-fix: ## Runs ESLint with --fix flag (Runs on the host system)
 #	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/codecept run';
 
 run-tests-unit: ## run unit tests
-	@#docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-text';
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-html var/reports/ ';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-text';
+	@#docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-html var/reports/ ';
 
 #run-tests-api: ## run api tests
 #	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/codecept run api';

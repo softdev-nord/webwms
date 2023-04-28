@@ -1,0 +1,136 @@
+image: php:8.1.18-fpm
+
+definitions:
+  steps:
+    - step: &code-style
+        name: Code Style Check (PHP CS)
+        image: composer:2
+        caches:
+          - composer
+        script:
+          - echo ${BITBUCKET_CLONE_DIR}
+          - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
+          - apk update && apk add gettext
+          - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
+          - composer install --ignore-platform-reqs --no-scripts
+          - vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots --allow-risky=yes
+        artifacts:
+          - test-reports/**
+
+    - step: &code-analysis
+        name: Code Analysis
+        image: composer:2
+        caches:
+          - composer
+        script:
+          - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
+          - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
+          - composer install --ignore-platform-reqs --no-scripts
+          - php -d memory_limit=-1 vendor/bin/phpstan analyse --configuration ./phpstan.neon --error-format=junit > ${BITBUCKET_CLONE_DIR}/test-reports/code-analysis-junit.xml
+        artifacts:
+          - test-reports/**
+
+    - step: &var-dump-find
+        name: Find dump messages
+        image: composer:2
+        caches:
+          - composer
+        script:
+          - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
+          - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
+          - composer install --ignore-platform-reqs --no-scripts
+          - vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor .
+    
+    - step: &vulnerability-scan
+        name: Dependency Vulnerability Scan
+        image: composer:2
+        caches:
+          - composer
+        script:
+          - >
+            curl -s https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest \
+                | grep "browser_download_url.*_linux_amd64" \
+                | cut -d: -f 2,3 \
+                | tr -d \" \
+                | xargs -I % curl %  -L --output local-php-security-checker
+          - chmod +x local-php-security-checker
+          - ./local-php-security-checker
+    
+    - step: &mess-detector
+        name: PHP Mess Detector (phpmd)
+        image: composer:2
+        caches:
+          - composer
+        script:
+          - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
+          - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
+          - composer install --ignore-platform-reqs --no-scripts
+          - vendor/bin/phpmd './src/,./bundles/' ansi rulesets.xml
+        artifacts:
+          - test-reports/**
+    
+    - step: &unit-tests
+        name: Unit Tests
+        image: composer:2
+        caches:
+          - composer
+        script:
+          - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
+          - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
+          - composer install --ignore-platform-reqs --no-scripts
+          - vendor/bin/phpunit --coverage-html="./test-reports"
+        artifacts:
+          - test-reports/**
+
+    - step: &build-deploy
+        name: Build and Deploy
+        script:
+          - echo ${BITBUCKET_CLONE_DIR}
+          - apt-get update && apt-get install -y openssh-client rsync
+          - rsync -avu --delete --stats -e ssh --exclude-from='ci/rsync.exclude' $BITBUCKET_CLONE_DIR/ $SSH_USER@$SSH_HOST:$HOST_DIR
+          - pipe: atlassian/ssh-run:0.4.2
+            variables:
+              SSH_USER: $SSH_USER
+              SERVER: $SSH_HOST
+              COMMAND: 'cd $ENVIRONMENT_DIR && /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install --ignore-platform-reqs --no-scripts'
+              DEBUG: 'true'
+pipelines:
+  default:
+    - parallel:
+        - step: *code-style
+        - step: *code-analysis
+        - step: *var-dump-find
+        - step: *vulnerability-scan
+        - step: *mess-detector
+        - step: *unit-tests
+    - step:
+        <<: *build-deploy
+        deployment: dev
+        trigger: manual
+  branches:
+    main:
+      - step: *code-style
+      - step: *code-analysis
+      - step: *var-dump-find
+      - step: *unit-tests
+      - step:
+          <<: *build-deploy
+          deployment: stg
+          trigger: manual
+  # CUSTOM Pipelines: Only triggered manually
+  custom:
+    vulnerability-scan:
+      - step:
+          <<: *vulnerability-scan
+    production:
+      - step:
+          <<: *build-deploy
+          deployment: prod
+    staging:
+      - step:
+          <<: *build-deploy
+          deployment: stg
+    development:
+      - step:
+          <<: *build-deploy
+          deployment: dev

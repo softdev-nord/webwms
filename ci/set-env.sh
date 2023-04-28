@@ -7,15 +7,8 @@ shopt -s inherit_errexit
 
 ###> webWMS ###
 
-if [ "$CIRCLE_BRANCH" == "master" ]
-then
-  export APP_ENV=prod
-  export DATABASE_URL=mysql://webwms:${DATABASE_PASSWORD}@127.0.0.1:3306/webwms?serverVersion=5.7
-else
-  export APP_ENV=dev
-  export DATABASE_URL=mysql://webwms-dev:${DATABASE_PASSWORD}@127.0.0.1:3306/webwms-dev?serverVersion=5.7
-fi
-
+export DATABASE_URL=${DATABASE_URL}
+export APP_ENV=${BITBUCKET_DEPLOYMENT_ENVIRONMENT}
 export APP_NAME=' | webWMS Das webbasierte Lagerverwaltungssystem'
 export APP_VERSION='Enterprise Version'
 export APP_VERSION_NUMBER='1.2.0'
