@@ -1,6 +1,7 @@
-/var/log
-/var/cache
+var/log/*
+var/cache/*
 .git
-/node_modules
-/public
-/vendor
+node_modules/*
+public/*
+vendor/*
+.env
