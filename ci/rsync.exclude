@@ -8,7 +8,6 @@
 /.docker
 /.env.*
 /.php_cs.dist
-/Makefile
 /package*
 /phpstan*
 /.php-cs-fixer.*
