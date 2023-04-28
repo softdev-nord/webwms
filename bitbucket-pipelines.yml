@@ -92,8 +92,9 @@ definitions:
         name: Build and Deploy
         script:
           - echo $BITBUCKET_CLONE_DIR
+          - ls -la
           - apt-get update && apt-get install -y openssh-client rsync
-          - rsync -av --progress --delete --update --stats -e ssh --exclude 'ci/rsync.exclude' $BITBUCKET_CLONE_DIR $SSH_USER@$SSH_HOST:$HOST_DIR
+          - rsync -av --delete --update --stats -e ssh --exclude 'ci/rsync.exclude' $BITBUCKET_CLONE_DIR $SSH_USER@$SSH_HOST:$HOST_DIR
           - pipe: atlassian/ssh-run:0.2.2
             variables:
               SSH_USER: $SSH_USER
