@@ -2,3 +2,5 @@
 /var/cache
 .git
 /node_modules
+/public
+/vendor
