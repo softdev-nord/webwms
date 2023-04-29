@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ENV_FILE=.env.local
+ENV_FILE=.env
 
 cat > $ENV_FILE << EOF
 # In all environments, the following files are loaded if they exist,
