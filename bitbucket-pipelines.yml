@@ -83,6 +83,7 @@ definitions:
         script:
           - /bin/bash ci/webwms-env.sh
           - echo ${BITBUCKET_CLONE_DIR}
+          - ls -la
           - apt-get update && apt-get install -y openssh-client rsync
           - rsync -avu --delete --stats -e ssh --exclude-from='ci/rsync.exclude' $BITBUCKET_CLONE_DIR/* $SSH_USER@$SSH_HOST:$HOST_DIR
           - pipe: atlassian/ssh-run:0.4.2
@@ -91,6 +92,8 @@ definitions:
               SERVER: $SSH_HOST
               COMMAND: 'cd $ENVIRONMENT_DIR && /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install --ignore-platform-reqs --no-scripts'
               DEBUG: 'true'
+        artifacts:
+          - .env
 pipelines:
   default:
     - parallel:
