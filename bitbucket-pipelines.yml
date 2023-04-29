@@ -9,13 +9,10 @@ definitions:
           - composer
         script:
           - echo ${BITBUCKET_CLONE_DIR}
-          - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
           - apk update && apk add gettext
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots --allow-risky=yes
-        artifacts:
-          - test-reports/**
 
     - step: &code-analysis
         name: Code Analysis
@@ -36,7 +33,6 @@ definitions:
         caches:
           - composer
         script:
-          - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor .
@@ -85,9 +81,10 @@ definitions:
     - step: &build-deploy
         name: Build and Deploy
         script:
+          - /bin/bash ci/webwms-env.sh
           - echo ${BITBUCKET_CLONE_DIR}
           - apt-get update && apt-get install -y openssh-client rsync
-          - rsync -avu --delete --stats -e ssh --exclude-from='ci/rsync.exclude' $BITBUCKET_CLONE_DIR/ $SSH_USER@$SSH_HOST:$HOST_DIR
+          - rsync -avu --delete --stats -e ssh --exclude-from='ci/rsync.exclude' $BITBUCKET_CLONE_DIR/* $SSH_USER@$SSH_HOST:$HOST_DIR
           - pipe: atlassian/ssh-run:0.4.2
             variables:
               SSH_USER: $SSH_USER

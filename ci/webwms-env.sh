@@ -1,3 +1,8 @@
+#!/usr/bin/env bash
+
+ENV_FILE=.env.local
+
+cat > $ENV_FILE << EOF
 # In all environments, the following files are loaded if they exist,
 # the latter taking precedence over the former:
 #
@@ -20,27 +25,36 @@ LOCALE=${LOCALE}
 # otherwise the host name of your web server must be set, e.g. https://pve
 WEB_HOST=${WEB_HOST}
 
+EOF
+
+cat > $ENV_FILE << EOF
 ###> symfony/framework-bundle ###
 APP_ENV=${APP_ENV}
 APP_SECRET=af2b45ff237087d068938bb0858bddff
+APP_DEBUG=${APP_DEBUG}
 ###< symfony/framework-bundle ###
 
 ###> webWMS ###
-APP_NAME='${APP_NAME}'
-APP_VERSION='${APP_VERSION}'
-APP_VERSION_NUMBER='${APP_VERSION_NUMBER}'
-APP_COPYRIGHT='${APP_COPYRIGHT}'
-APP_LIZENZ='${APP_LIZENZ}'
+APP_NAME=${APP_NAME}
+APP_VERSION=${APP_VERSION}
+APP_VERSION_NUMBER=${APP_VERSION_NUMBER}
+APP_COPYRIGHT=${APP_COPYRIGHT}
+APP_LIZENZ=${APP_LIZENZ}
 ###< webWMS ###
 
+EOF
+
+cat >> $ENV_FILE << EOF
 ###> doctrine/doctrine-bundle ###
-#DATABASE_URL=mysql://root:sdndocker@database:3306/webWMS?serverVersion=5.7
 DATABASE_URL=${DATABASE_URL}
 ###< doctrine/doctrine-bundle ###
 
+EOF
+
+cat >> $ENV_FILE << EOF
 ### mailer settings ###
 FROM_MAIL=${FROM_MAIL}
-FROM_NAME='${FROM_NAME}'
+FROM_NAME=${FROM_NAME}
 RETURN_PATH=${RETURN_PATH}
 # sent copy of mail to the address specified in FROM_MAIL
 MAIL_COPY=${MAIL_COPY}
@@ -56,3 +70,5 @@ MAIL_ENCRYPTION=null
 # e.g. smtp://username:password@yourdomain.tld:port
 MAILER_DSN=${MAILER_DSN}
 ###< symfony/mailer ###
+
+EOF
