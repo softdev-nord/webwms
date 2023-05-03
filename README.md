@@ -20,17 +20,17 @@
 * Twig
 * NodeJs
 * API-Platform/Core `Hauptmenu >>> API Dokumentation`
-* Nelmio/Cors-Bundle
-* Symfony/UX-Chart `Dashboard`
+* Symfony/UX-Chart `Auswertungen >>> Dashboard`
 
 ## CI / CD:
-* CircleCI
+* Bitbucket Pipelines
 
 ## QA-Tools:
 * PHP CS Fixer
 * PHP Static Analysis
 * PHP Mess Detector
 * Dependency Vulnerability Scan
+* PHPUnit
 
 ## Lokale Entwicklungsumgebung:
 * PHP 8.1
@@ -68,7 +68,7 @@ Die folgenden Programme müssen auf Ihrem System vorhanden sein:
 git clone https://bitbucket.org/softdev-nord/webwms.git
 cd webwms/
 # Erstellung der .env
-cp .env.template .env
+cp .env.local .env
 # .env nach Bedarf konfigurieren
 docker-compose up -d
 # Besuchen Sie http://webwms.local
