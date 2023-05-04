@@ -221,13 +221,13 @@ api_platform:
   formats:
     json:
       mime_types: [ 'application/json' ]
-      
+
     jsonld:
       mime_types: [ 'application/ld+json' ]
-  
+
     html:
       mime_types: [ 'text/html' ]
-    
+
     jsonhal:
       mime_types: [ 'application/hal+json' ]
   

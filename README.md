@@ -122,7 +122,7 @@ openssl x509 -req -in $NAME.csr -CA $NAME.rootCA.pem -CAkey $NAME.rootCA.key -CA
 3. Importieren Sie "webwms.local.rootCA.pem" als "Autorität" (nicht in "Ihre Zertifikate") in Ihren Chrome-Einstellungen (Einstellungen > Zertifikate verwalten > Autoritäten > Importieren)
 4. Verwenden Sie die Dateien `webwms.local.crt` und `webwms.local.key` auf Ihrer Umgebung
 
-##### Mit folgenden Befehl können Sie sicherstellen, dass das Zertifikat korrekt erstellt wurde:
+##### Mit folgendem Befehl können Sie sicherstellen, dass das Zertifikat korrekt erstellt wurde:
 
 ```shell
 openssl verify -CAfile webwms.local.rootCA.pem -verify_hostname bar.webwms.local webwms.local.crt

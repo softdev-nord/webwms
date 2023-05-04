@@ -5,7 +5,14 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use WebWMS\Repository\ArticleRepository;
 
 /**
@@ -16,57 +23,106 @@ use WebWMS\Repository\ArticleRepository;
  */
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ApiResource(
-    extraProperties: [
-        'standard_put' => true,
+    operations: [
+        new Get(
+            normalizationContext: [
+                'skip_null_values' => false,
+                'groups' => ['article:read'],
+            ]
+        ),
+        new GetCollection(
+            normalizationContext: [
+                'skip_null_values' => false,
+                'groups' => ['article:read'],
+            ]
+        ),
+        new Post(
+            denormalizationContext: [
+                'groups' => ['article:write'],
+            ]
+        ),
+        new Put(
+            denormalizationContext: [
+                'groups' => ['article:write'],
+            ]
+        ),
+        new Patch(
+            denormalizationContext: [
+                'groups' => ['article:write'],
+            ]
+        ),
+        new Delete(
+            denormalizationContext: [
+                'groups' => ['article:write'],
+            ]
+        ),
     ],
+    formats: ['json'],
+    normalizationContext: ['groups' => ['article:read']],
+    denormalizationContext: ['groups' => ['article:write']]
 )]
 class Article
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['article:read', 'article:write'])]
     private int $articleId;
 
     #[ORM\Column(name: 'article_nr', type: 'string', length: 255, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private string $articleNr;
 
     #[ORM\Column(name: 'article_name', type: 'string', length: 255, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private string $articleName;
 
     #[ORM\Column(name: 'article_category', type: 'string', length: 255, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private string $articleCategory;
 
     #[ORM\Column(name: 'article_weight', type: 'decimal', precision: 10, scale: 2, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private float $articleWeight;
 
     #[ORM\Column(name: 'article_ean', type: 'string', length: 15, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private string $articleEan;
 
     #[ORM\Column(name: 'article_unit', type: 'string', length: 10, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private string $articleUnit;
 
     #[ORM\Column(name: 'article_depth', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private float $articleDepth;
 
     #[ORM\Column(name: 'article_width', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private float $articleWidth;
 
     #[ORM\Column(name: 'article_height', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private float $articleHeight;
 
     #[ORM\Column(name: 'stock_out_strategy', type: 'string', length: 10, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private string $stockOutStrategy;
 
     #[ORM\Column(name: 'standard_loading_equipment', type: 'string', length: 10, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private string $standardLoadingEquipment;
 
     #[ORM\Column(name: 'le_quantity', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[Groups(['article:read', 'article:write'])]
     private float $leQuantity;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    #[Groups(['article:read', 'article:write'])]
     private ?\DateTimeInterface $createdAt;
 
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    #[Groups(['article:read', 'article:write'])]
     private ?\DateTimeInterface $updatedAt;
 
     public function getArticleId(): int
