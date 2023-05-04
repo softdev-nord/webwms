@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="webwms" default="build">
+
+    <!-- Determine real Project basedir -->
+    <php function="realpath" returnProperty="base.path">
+        <param value="${project.basedir}/.." />
+    </php>
+
+    <!-- Sets the DSTAMP, TSTAMP and TODAY properties -->
+    <tstamp/>
+
+    <property name="build.path" value="${base.path}/build/" />
+
+    <!-- ============================================ -->
+    <!-- Target: development                                 -->
+    <!-- ============================================ -->
+    <target name="development">
+        <property name="environment" value="development" />
+        <property file="${build.path}build.common.properties" />
+        <property file="${build.path}build.test.properties" />
+    </target>
+
+    <!-- ============================================ -->
+    <!-- Target: staging                              -->
+    <!-- ============================================ -->
+    <target name="staging">
+        <property name="environment" value="staging" />
+        <property file="${build.path}build.common.properties" />
+        <property file="${build.path}build.staging.properties" />
+    </target>
+
+    <!-- ============================================ -->
+    <!-- Target: production                           -->
+    <!-- ============================================ -->
+    <target name="production">
+        <property name="environment" value="production" />
+        <property file="${build.path}build.common.properties" />
+        <property file="${build.path}build.production.properties" />
+    </target>
+
+
+    <!-- ============================================ -->
+    <!-- Target: build                                -->
+    <!-- ============================================ -->
+    <target name="build" description="Build the project" if="environment">
+        <if>
+            <equals arg1="${checkInit}" arg2="1" />
+            <then>
+
+                <echo message="Installing composer dependencies..." />
+                <exec checkreturn="true" passthru="true" command="cd &quot;${base.path}/&quot; &amp;&amp; composer install --no-dev --optimize-autoloader --no-scripts" />
+
+                <foreach list="${rsync.hosts}" param="host" target="deploy" />
+
+            </then>
+            <else>
+                <fail message="Build abgebrochen! Nicht initialisiert." />
+            </else>
+        </if>
+    </target>
+
+
+    <!-- ============================================ -->
+    <!-- Target: deploy                               -->
+    <!-- ============================================ -->
+    <target name="deploy" description="Deploy Service" if="checkInit">
+        <echo message="Syncing files to ${host}" />
+        <exec checkreturn="true" passthru="true" command="rsync --recursive --times --compress --human-readable --delete --verbose --stats --exclude-from &quot;${build.path}rsync.exclude&quot; &quot;${rsync.src.dir}&quot; &quot;${ssh.user}@${host}:${rsync.dst.dir}&quot; | egrep -v '/$' " />
+    </target>
+
+</project>
+

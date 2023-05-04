@@ -13,7 +13,7 @@ use WebWMS\Service\DataHandlers\User\UserDataHandler;
 /**
  * @package:    WebWMS\Service\User
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserService
  */
 class UserService

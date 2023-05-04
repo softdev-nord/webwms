@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @package:    WebWMS\Form\Stock
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockInFinalType
  */
 class StockInFinalType extends AbstractType
@@ -24,7 +24,8 @@ class StockInFinalType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        foreach ($options['data']['freeStockLocations'] as $key => $value) {
+        $freeStockLocations = (array) $options['data']['freeStockLocations'];
+        foreach ($freeStockLocations as $key => $value) {
             $builder
                 ->add('stock_su_id_' . $key, TextType::class, [
                     'label' => false,

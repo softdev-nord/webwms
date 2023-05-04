@@ -16,6 +16,7 @@ class StockZoneValidationService
 {
     /**
      * @return array<string, array<string, string>|bool|int|string|null>
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)

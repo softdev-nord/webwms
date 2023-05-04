@@ -12,7 +12,7 @@ use WebWMS\Entity\TransportRequest;
 /**
  * @package:    WebWMS\Service
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        TransportRequestService
  */
 class TransportRequestService
@@ -56,7 +56,7 @@ class TransportRequestService
         $clientIp = $request->getClientIp();
         $transportRequest = new TransportRequest();
 
-        foreach ($requestData['stock_in_final'] as $key => $data) {
+        foreach ($requestData as $key => $data) {
             $transportRequest->setSuId(intval($data['stock_su_id']));
             $transportRequest->setTrNr($this->getLastTransportRequestNr() + 1);
             $transportRequest->setTrPos($key + 1);

@@ -4,79 +4,72 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
-use WebWMS\Entity\StockLocation;
-
 /**
  * @package:    WebWMS\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockLocationValidationService
  */
-class StockLocationValidationService
+class StockLocationValidationService extends BaseValidationService
 {
     /**
+     * @param array<mixed> $requestData
      * @return array<string, array<string, string>|bool|float|int|string>
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateStockLocationData(StockLocation $stockLocation): array
+    public function validateStockLocationData(array $requestData): array
     {
         $responseData = [];
 
-        // Validation of the request data from the stock location data change
-        if (!$stockLocation->getStockLocationLn()) {
-            $responseData['error']['stock_location_ln'] = 'Die Lagernummer darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLocationLn]')) {
+            $responseData['error']['stockLocationLn'] = 'Die Lagernummer darf nicht leer sein.';
         } else {
-            $responseData['stock_location_ln'] = $stockLocation->getStockLocationLn();
+            $responseData['stockLocationLn'] = $this->getValue($requestData, '[stockLocationLn]');
         }
 
-        if (!$stockLocation->getStockLocationFb()) {
-            $responseData['error']['stock_location_fb'] = 'Der Fachboden darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLocationFb]')) {
+            $responseData['error']['stockLocationFb'] = 'Der Fachboden darf nicht leer sein.';
         } else {
-            $responseData['stock_location_fb'] = $stockLocation->getStockLocationFb();
+            $responseData['stockLocationFb'] = $this->getValue($requestData, '[stockLocationFb]');
         }
 
-        if (!$stockLocation->getStockLocationSp()) {
-            $responseData['error']['stock_location_sp'] = 'Der Stellplatz darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLocationSp]')) {
+            $responseData['error']['stockLocationSp'] = 'Der Stellplatz darf nicht leer sein.';
         } else {
-            $responseData['stock_location_sp'] = $stockLocation->getStockLocationSp();
+            $responseData['stockLocationSp'] = $this->getValue($requestData, '[stockLocationSp]');
         }
 
-        if (!$stockLocation->getStockLocationTf()) {
-            $responseData['error']['stock_location_tf'] = 'Die Tiefe darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLocationTf]')) {
+            $responseData['error']['stockLocationTf'] = 'Die Lagerplatz Tiefe darf nicht leer sein.';
         } else {
-            $responseData['stock_location_tf'] = $stockLocation->getStockLocationTf();
+            $responseData['stockLocationTf'] = $this->getValue($requestData, '[stockLocationTf]');
         }
 
-        if (!$stockLocation->getStockLocationCoordinate()) {
-            $responseData['error']['stock_location_coordinate'] = 'Die Bezeichnung darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLocationDesc]')) {
+            $responseData['error']['stockLocationDesc'] = 'Die Einheit darf nicht leer sein.';
         } else {
-            $responseData['stock_location_coordinate'] = $stockLocation->getStockLocationCoordinate();
+            $responseData['stockLocationDesc'] = $this->getValue($requestData, '[stockLocationDesc]');
         }
 
-        if (!$stockLocation->getStockLocationDesc()) {
-            $responseData['error']['stock_location_desc'] = 'Die Einheit darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLocationWidth]')) {
+            $responseData['error']['stockLocationWidth'] = 'Die Breite darf nicht leer sein.';
         } else {
-            $responseData['stock_location_desc'] = $stockLocation->getStockLocationDesc();
+            $responseData['stockLocationWidth'] = $this->getValue($requestData, '[stockLocationWidth]');
         }
 
-        if (!$stockLocation->getStockLocationWidth()) {
-            $responseData['error']['stock_location_width'] = 'Die Breite darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLocationDepth]')) {
+            $responseData['error']['stockLocationDepth'] = 'Die Tiefe darf nicht leer sein.';
         } else {
-            $responseData['stock_location_width'] = $stockLocation->getStockLocationWidth();
+            $responseData['stockLocationDepth'] = $this->getValue($requestData, '[stockLocationDepth]');
         }
 
-        if (!$stockLocation->getStockLocationDepth()) {
-            $responseData['error']['stock_location_depth'] = 'Die Tiefe darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLocationHeight]')) {
+            $responseData['error']['stockLocationHeight'] = 'Die Höhe darf nicht leer sein.';
         } else {
-            $responseData['stock_location_depth'] = $stockLocation->getStockLocationDepth();
-        }
-
-        if (!$stockLocation->getStockLocationHeight()) {
-            $responseData['error']['stock_location_height'] = 'Die Höhe darf nicht leer sein.';
-        } else {
-            $responseData['stock_location_height'] = $stockLocation->getStockLocationHeight();
+            $responseData['stockLocationHeight'] = $this->getValue($requestData, '[stockLocationHeight]');
         }
 
         if (!isset($responseData['error'])) {

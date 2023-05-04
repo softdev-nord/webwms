@@ -4,10 +4,61 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+/**
+ * @package:    WebWMS\Entity
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        CustomerOrderPos
+ */
 #[ORM\Table(name: 'customer_orders_pos')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderPosRepository')]
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: [
+                'groups' => ['customerOrderPos:read'],
+            ]
+        ),
+        new GetCollection(
+            normalizationContext: [
+                'groups' => ['customerOrderPos:read'],
+            ]
+        ),
+        new Post(
+            denormalizationContext: [
+                'groups' => ['customerOrderPos:write'],
+            ]
+        ),
+        new Put(
+            denormalizationContext: [
+                'groups' => ['customerOrderPos:write'],
+            ]
+        ),
+        new Patch(
+            denormalizationContext: [
+                'groups' => ['customerOrderPos:write'],
+            ]
+        ),
+        new Delete(
+            denormalizationContext: [
+                'groups' => ['customerOrderPos:write'],
+            ]
+        ),
+    ],
+    formats: ['json'],
+    normalizationContext: ['groups' => ['customerOrderPos:read']],
+    denormalizationContext: ['groups' => ['customerOrderPos:write']]
+)]
 class CustomerOrderPos
 {
     #[ORM\Id]
@@ -16,30 +67,36 @@ class CustomerOrderPos
     private int $id;
 
     #[ORM\Column(name: 'customer_order_id', type: 'integer', nullable: false)]
+    #[Groups(['customerOrderPos:read', 'customerOrderPos:write'])]
     private int $customerOrderId;
 
     #[ORM\Column(name: 'article_id', type: 'integer', nullable: false)]
+    #[Groups(['customerOrderPos:read', 'customerOrderPos:write'])]
     private int $articleId;
 
     #[ORM\Column(name: 'article_nr', type: 'string', length: 50, nullable: false)]
+    #[Groups(['customerOrderPos:read', 'customerOrderPos:write'])]
     private string $articleNr;
 
     #[ORM\Column(name: 'article_name', type: 'string', length: 255, nullable: false)]
+    #[Groups(['customerOrderPos:read', 'customerOrderPos:write'])]
     private string $articleName;
 
     #[ORM\Column(name: 'quantity', type: 'integer', nullable: false)]
+    #[Groups(['customerOrderPos:read', 'customerOrderPos:write'])]
     private int $quantity;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    #[Groups(['customerOrderPos:read', 'customerOrderPos:write'])]
     private ?\DateTimeInterface $createdAt;
 
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    #[Groups(['customerOrderPos:read', 'customerOrderPos:write'])]
     private ?\DateTimeInterface $updatedAt;
 
     /** Many Customer Order Positions have one Customer Order. This is the owning side. */
-    #[ORM\ManyToOne(inversedBy: 'customerOrderPos')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?CustomerOrder $customerOrder = null;
+    #[ORM\ManyToOne(targetEntity: CustomerOrder::class, inversedBy: 'customerOrderPos')]
+    private CustomerOrder $customerOrder;
 
     public function getId(): int
     {
@@ -113,12 +170,12 @@ class CustomerOrderPos
         return $this;
     }
 
-    public function getCustomerOrder(): ?CustomerOrder
+    public function getCustomerOrder(): CustomerOrder
     {
         return $this->customerOrder;
     }
 
-    public function setCustomerOrder(?CustomerOrder $customerOrder): self
+    public function setCustomerOrder(CustomerOrder $customerOrder): self
     {
         $this->customerOrder = $customerOrder;
 

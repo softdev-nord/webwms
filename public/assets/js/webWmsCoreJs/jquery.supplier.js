@@ -70,7 +70,7 @@
             {
                 text: 'Lieferant anlegen',
                 className: 'btn-add-new',
-                action: function (e, dt, node, config) {
+                action: function(e, dt, node, config) {
                     addSupplier();
                 }
             }
@@ -109,7 +109,7 @@
 
     $(function(){
         // Ändern der Standardbreite des Modals
-        $('#modalCenter .modal-dialog').css('max-width', '90%');
+        $('#modalCenter .modal-dialog').css('max-width', '98%');
     });
 
     $.ajaxSetup({
@@ -118,214 +118,69 @@
 
     // Modal für Lieferanten anlegen
     function addSupplier() {
-        const url = '/lieferant_anlegen';
-        const content = '<div class="modal-body"></div>';
+        const url = '/lieferant_anlegen',
+            $form = $('form#supplier-form-new'),
+            title = 'Lieferanten anlegen';
 
-        $('#modalCenter .modal-title').text('Lieferanten anlegen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($('#supplier-form-new').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Modal für Lieferanten bearbeiten
     function editSupplier(supplierId) {
-        const url = '/lieferant_bearbeiten/supplierId/' + supplierId;
-        const content = '<div class="modal-body"></div>';
+        const url = '/lieferant_bearbeiten/supplierId/' + supplierId,
+            $form = $('form#supplier-form-edit'),
+            title = 'Lieferanten bearbeiten';
 
-        $('#modalCenter .modal-title').text('Lieferanten bearbeiten');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            data: ($('#supplier-form-edit').serialize()),
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Modal für Lieferanten löschen
     function deleteSupplier(supplierId) {
-        const url = '/lieferant_löschen/supplierId/' + supplierId;
-        const content = '<div class="modal-body"></div>';
+        const url = '/lieferant_löschen/supplierId/' + supplierId,
+            $form = $('form#supplier-modal-delete-ask'),
+            title = 'Lieferanten löschen';
 
         $('#modalCenter .modal-dialog').css('max-width', '30%');
-        $('#modalCenter .modal-title').text('Lieferanten löschen');
-        $('#modal-content-ajax').html(content);
-        $('#modalCenter').modal('show');
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-            },
-            success: function (data) {
-                $('#modal-content-ajax').html(data);
-            }
-        });
-
-        return false;
+        getContentForModal(url, title, $form);
     }
 
     // Neuen Lieferanten speichern
-    $(document).on('click','button#add_supplier_save',function(event) {
-        const $form = $('form#supplier-form-new');
-        const url = '/lieferant_anlegen';
+    $(document).on('click', 'button#add_supplier_save', function(event) {
+        const $form = $('form#supplier-form-new'),
+            url = '/lieferant_anlegen',
+            errorMessage = 'Lieferant konnte nicht gespeichert werden',
+            successMessage = 'Lieferant erfolgreich gespeichert';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Lieferantendaten konnten nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Lieferantendaten erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    supplierTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, supplierTable);
     });
 
     // Geänderten Lieferanten speichern
-    $(document).on('click','button#edit_supplier_save',function(event) {
+    $(document).on('click', 'button#edit_supplier_save', function(event) {
         const supplierId = $('#edit_supplier_supplierId').val();
-        const $form = $('form#supplier-form-edit');
-        const url = '/lieferant_bearbeiten/supplierId/' + supplierId;
+        const $form = $('form#supplier-form-edit'),
+            url = '/lieferant_bearbeiten/supplierId/' + supplierId,
+            errorMessage = 'Lieferant konnte nicht gespeichert werden',
+            successMessage = 'Lieferant erfolgreich gespeichert';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Lieferantendaten konnten nicht gespeichert werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Lieferantendaten erfolgreich gespeichert',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    supplierTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, supplierTable);
     });
 
     // Lieferanten löschen
-    $(document).on('click','button#delete_supplier_delete',function(event) {
+    $(document).on('click', 'button#delete_supplier_delete', function(event) {
         const supplierId = $('#delete_supplier_supplierId').val();
-        const $form = $('form#supplier-modal-delete-ask');
-        const url = '/lieferant_löschen/supplierId/' + supplierId;
+        const $form = $('form#supplier-modal-delete-ask'),
+            url = '/lieferant_löschen/supplierId/' + supplierId,
+            errorMessage = 'Lieferant konnte nicht gelöscht werden',
+            successMessage = 'Lieferant erfolgreich gelöscht';
         event.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: $form.serialize(),
-            success: function(data) {
-                if (data.error) {
-                    const errors = [];
-                    let i = 0;
-                    $.each(data.error, function(key, value) {
-                        errors[i++] = value + '</br>';
-                    });
-                    const arrayString = errors.join();
-                    const error = arrayString.replace(/,/g, ' ');
-                    $.jAlert({
-                        'title': 'Lieferant konnten nicht gelöscht werden',
-                        'content': error,
-                        'theme': 'red',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                } else {
-                    $.jAlert({
-                        'title': 'Lieferant erfolgreich gelöscht',
-                        'content': data.message,
-                        'theme': 'green',
-                        'size': 'md',
-                        'showAnimation': 'fadeInUp',
-                        'hideAnimation': 'fadeOutDown',
-                        'autoClose': 5000
-                    });
-                    $('#modalCenter').modal('hide');
-                    supplierTable.ajax.reload();
-                }
-            }
-        });
+        _doRequest('POST', url, $form, errorMessage, successMessage, supplierTable);
     });
 
-    $(document).on('click','.abort',function() {
+    $(document).on('click', '.abort', function() {
         $('#modalCenter').modal('hide');
     });
 

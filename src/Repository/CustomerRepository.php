@@ -11,7 +11,7 @@ use WebWMS\Entity\Customer;
 /**
  * @package:    WebWMS\Repository
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerRepository
  *
  * @method Customer|null find($id, $lockMode = null, $lockVersion = null)

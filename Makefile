@@ -1,5 +1,5 @@
-APP_CONTAINER_NAME = "webWMS-php8.1"
-DB_CONTAINER_NAME = "webWMS-MariaDB10.5"
+APP_CONTAINER_NAME = "webwms-php8.1"
+DB_CONTAINER_NAME = "webwms-MariaDB10.5"
 
 help: ## Display this help
 	@printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"
@@ -70,20 +70,21 @@ phpstan-baseline: ## Run code analyse (phpstan) incl. baseline
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpstan analyse --generate-baseline';
 
 var-dump-check: ## Find var_dump, dd, etc.
-	@docker exec -t $(APP_CONTAINER_NAME) vendor/bin/var-dump-check --symfony --laravel --doctrine \
-		--exclude vendor .
+	@docker exec -t $(APP_CONTAINER_NAME) vendor/bin/var-dump-check --symfony --doctrine --exclude vendor .
 
 ######################################################################
 ########################## Code Style Check ##########################
 ######################################################################
 php-cs: ## run code style check
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --dry-run --using-cache=no -vvv --show-progress=dots --allow-risky=yes';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --dry-run --using-cache=no \
+	 -vvv --show-progress=dots --allow-risky=yes';
 
 phpcs-fix: ## run code style fix
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --using-cache=no -vvv --show-progress=dots --allow-risky=yes';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --using-cache=no \
+	 -vvv --show-progress=dots --allow-risky=yes';
 
 phpmd: ## run code check (phpmd)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./bundles/' ansi rulesets.xml';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./bundles/,./tests/' ansi rulesets.xml';
 
 phpqa: ## run code check (phpmd)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src';
@@ -109,11 +110,5 @@ js-eslint-fix: ## Runs ESLint with --fix flag (Runs on the host system)
 ######################################################################
 ############################### Tests ################################
 ######################################################################
-#run-tests-all: ## run all tests
-#	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/codecept run';
-
 run-tests-unit: ## run unit tests
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit';
-
-#run-tests-api: ## run api tests
-#	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/codecept run api';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-html var/reports/ ';

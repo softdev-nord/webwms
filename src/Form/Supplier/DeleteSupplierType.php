@@ -14,7 +14,7 @@ use WebWMS\Entity\Supplier;
 /**
  * @package:    WebWMS\Form\Supplier
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        DeleteSupplierType
  */
 class DeleteSupplierType extends AbstractType

@@ -4,79 +4,78 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
-use WebWMS\Entity\StockLayout;
-
 /**
  * @package:    WebWMS\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockLayoutValidationService
  */
-class StockLayoutValidationService
+class StockLayoutValidationService extends BaseValidationService
 {
     /**
+     * @param array<mixed> $requestData
      * @return array<string, array<string, string>|bool|int|string|null>
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateStockLayoutData(StockLayout $stockLayout): array
+    public function validateStockLayoutData(array $requestData): array
     {
         $responseData = [];
 
-        // Validation of the request data from the stock location data change
-        if (!$stockLayout->getStockNr()) {
-            $responseData['error']['stock_location_ln'] = 'Die Lagernummer darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockNr]')) {
+            $responseData['error']['stockNr'] = 'Die Lagernummer darf nicht leer sein.';
         } else {
-            $responseData['stockNr'] = $stockLayout->getStockNr();
+            $responseData['stockNr'] = $this->getValue($requestData, '[stockNr]');
         }
 
-        if (!$stockLayout->getStockDescription()) {
+        if (!$this->getValue($requestData, '[stockDescription]')) {
             $responseData['error']['stockDescription'] = 'Die Beschreibung darf nicht leer sein.';
         } else {
-            $responseData['stockDescription'] = $stockLayout->getStockDescription();
+            $responseData['stockDescription'] = $this->getValue($requestData, '[stockDescription]');
         }
 
-        if (!$stockLayout->getStockLevel1()) {
-            $responseData['error']['stockLevel1'] = 'Der Fachboden darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLevel1]')) {
+            $responseData['error']['stockLevel1'] = 'Die Ebene 1 darf nicht leer sein.';
         } else {
-            $responseData['stockLevel1'] = $stockLayout->getStockLevel1();
+            $responseData['stockLevel1'] = $this->getValue($requestData, '[stockLevel1]');
         }
 
-        if (!$stockLayout->getStockLevel2()) {
-            $responseData['error']['stockLevel2'] = 'Der Stellplatz darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLevel2]')) {
+            $responseData['error']['stockLevel2'] = 'Die Ebene 2 darf nicht leer sein.';
         } else {
-            $responseData['stockLevel2'] = $stockLayout->getStockLevel2();
+            $responseData['stockLevel2'] = $this->getValue($requestData, '[stockLevel2]');
         }
 
-        if (!$stockLayout->getStockLevel3()) {
-            $responseData['error']['stockLevel3'] = 'Die Tiefe darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLevel3]')) {
+            $responseData['error']['stockLevel3'] = 'Die Ebene 3 darf nicht leer sein.';
         } else {
-            $responseData['stockLevel3'] = $stockLayout->getStockLevel3();
+            $responseData['stockLevel3'] = $this->getValue($requestData, '[stockLevel3]');
         }
 
-        if (!$stockLayout->getStockLevel4()) {
-            $responseData['error']['stockLevel4'] = 'Die Tiefe 2 darf nicht leer sein.';
+        if (!$this->getValue($requestData, '[stockLevel4]')) {
+            $responseData['error']['stockLevel4'] = 'Die Ebene 4 darf nicht leer sein.';
         } else {
-            $responseData['stockLevel3'] = $stockLayout->getStockLevel4();
+            $responseData['stockLevel3'] = $this->getValue($requestData, '[stockLevel4]');
         }
 
-        if (!$stockLayout->getStockModel()) {
+        if (!$this->getValue($requestData, '[stockModel]')) {
             $responseData['error']['stockModel'] = 'Das Lagermodell darf nicht leer sein.';
         } else {
-            $responseData['stockModel'] = $stockLayout->getStockModel();
+            $responseData['stockModel'] = $this->getValue($requestData, '[stockModel]');
         }
 
-        if (!$stockLayout->getStockTyp()) {
+        if (!$this->getValue($requestData, '[stockTyp]')) {
             $responseData['error']['stockTyp'] = 'Der Lagertyp darf nicht leer sein.';
         } else {
-            $responseData['stockTyp'] = $stockLayout->getStockTyp();
+            $responseData['stockTyp'] = $this->getValue($requestData, '[stockTyp]');
         }
 
-        if (!$stockLayout->getStockLongDescription()) {
+        if (!$this->getValue($requestData, '[stockLongDescription]')) {
             $responseData['error']['stockLongDescription'] = 'Die Lang-Beschreibung darf nicht leer sein.';
         } else {
-            $responseData['stock_location_width'] = $stockLayout->getStockLongDescription();
+            $responseData['stock_location_width'] = $this->getValue($requestData, '[stockLongDescription]');
         }
 
         if (!isset($responseData['error'])) {

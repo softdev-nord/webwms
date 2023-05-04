@@ -8,13 +8,12 @@ use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\StockLocation;
-use WebWMS\Exception\NotFoundException;
 use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 
 /**
  * @package:    WebWMS\Service\Stock
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockLocationService
  */
 class StockLocationService
@@ -41,7 +40,7 @@ class StockLocationService
     }
 
     /**
-     * @throws NotFoundException
+     * @throws \Exception
      * @return object[]
      */
     public function getStockLocationDetailsById(string $stockLocationId): array
@@ -74,7 +73,7 @@ class StockLocationService
     }
 
     /**
-     * @throws NotFoundException
+     * @throws \Exception
      * @return object[]
      */
     public function getAllStockLocationsAjax(): array

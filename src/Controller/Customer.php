@@ -20,7 +20,7 @@ use WebWMS\Service\Validation\CustomerValidationService;
 /**
  * @package:    WebWMS\Controller
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        Customer
  */
 class Customer extends AbstractController
@@ -68,7 +68,10 @@ class Customer extends AbstractController
             /** @var CustomerEntity $requestData */
             $requestData = $form->getData();
             $customerNr = $requestData->getCustomerNr();
-            $responseData = $this->customerValidationService->validateCustomerData($requestData);
+            $responseData = $this->customerValidationService
+                ->validateCustomerData(
+                    (array) $request->request->all()['add_customer']
+                );
 
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurde erfolgreich angelegt.';
@@ -113,7 +116,10 @@ class Customer extends AbstractController
             /** @var CustomerEntity $requestData */
             $requestData = $form->getData();
             $customerNr = $requestData->getCustomerNr();
-            $responseData = $this->customerValidationService->validateCustomerData($requestData);
+            $responseData = $this->customerValidationService
+                ->validateCustomerData(
+                    (array) $request->request->all()['edit_customer']
+                );
 
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Kunde mit der Kunden-Nr. ' . $customerNr . ' wurden erfolgreich geändert.';

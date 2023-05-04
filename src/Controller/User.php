@@ -27,6 +27,7 @@ use WebWMS\Service\Validation\UserValidationService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        User
+ *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class User extends AbstractController

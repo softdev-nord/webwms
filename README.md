@@ -20,17 +20,17 @@
 * Twig
 * NodeJs
 * API-Platform/Core `Hauptmenu >>> API Dokumentation`
-* Nelmio/Cors-Bundle
-* Symfony/UX-Chart `Dashboard`
+* Symfony/UX-Chart `Auswertungen >>> Dashboard`
 
 ## CI / CD:
-* CircleCI
+* Bitbucket Pipelines
 
 ## QA-Tools:
 * PHP CS Fixer
 * PHP Static Analysis
 * PHP Mess Detector
 * Dependency Vulnerability Scan
+* PHPUnit
 
 ## Lokale Entwicklungsumgebung:
 * PHP 8.1
@@ -68,7 +68,7 @@ Die folgenden Programme müssen auf Ihrem System vorhanden sein:
 git clone https://bitbucket.org/softdev-nord/webwms.git
 cd webwms/
 # Erstellung der .env
-cp .env.template .env
+cp .env.local .env
 # .env nach Bedarf konfigurieren
 docker-compose up -d
 # Besuchen Sie http://webwms.local
@@ -122,7 +122,7 @@ openssl x509 -req -in $NAME.csr -CA $NAME.rootCA.pem -CAkey $NAME.rootCA.key -CA
 3. Importieren Sie "webwms.local.rootCA.pem" als "Autorität" (nicht in "Ihre Zertifikate") in Ihren Chrome-Einstellungen (Einstellungen > Zertifikate verwalten > Autoritäten > Importieren)
 4. Verwenden Sie die Dateien `webwms.local.crt` und `webwms.local.key` auf Ihrer Umgebung
 
-##### Mit folgenden Befehl können Sie sicherstellen, dass das Zertifikat korrekt erstellt wurde:
+##### Mit folgendem Befehl können Sie sicherstellen, dass das Zertifikat korrekt erstellt wurde:
 
 ```shell
 openssl verify -CAfile webwms.local.rootCA.pem -verify_hostname bar.webwms.local webwms.local.crt

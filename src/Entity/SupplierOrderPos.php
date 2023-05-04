@@ -4,42 +4,99 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+/**
+ * @package:    WebWMS\Entity
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        SupplierOrderPos
+ */
 #[ORM\Table(name: 'supplier_order_pos')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\SupplierOrderPosRepository')]
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: [
+                'groups' => ['supplierOrderPos:read'],
+            ]
+        ),
+        new GetCollection(
+            normalizationContext: [
+                'groups' => ['supplierOrderPos:read'],
+            ]
+        ),
+        new Post(
+            denormalizationContext: [
+                'groups' => ['supplierOrderPos:write'],
+            ]
+        ),
+        new Put(
+            denormalizationContext: [
+                'groups' => ['supplierOrderPos:write'],
+            ]
+        ),
+        new Patch(
+            denormalizationContext: [
+                'groups' => ['supplierOrderPos:write'],
+            ]
+        ),
+        new Delete(
+            denormalizationContext: [
+                'groups' => ['supplierOrderPos:write'],
+            ]
+        ),
+    ],
+    formats: ['json'],
+    normalizationContext: ['groups' => ['supplierOrderPos:read']],
+    denormalizationContext: ['groups' => ['supplierOrderPos:write']]
+)]
 class SupplierOrderPos
 {
-    /** Many Supplier Order Positions have one Supplier Order. This is the owning side. */
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
     private int $id;
 
     #[ORM\Column(name: 'supplier_order_id', type: 'integer', nullable: false)]
-    private ?int $supplierOrderId;
+    #[Groups(['supplierOrderPos:read', 'supplierOrderPos:write'])]
+    private int $supplierOrderId;
 
     #[ORM\Column(name: 'article_id', type: 'integer', nullable: false)]
-    private ?int $articleId;
+    #[Groups(['supplierOrderPos:read', 'supplierOrderPos:write'])]
+    private int $articleId;
 
     #[ORM\Column(name: 'article_nr', type: 'string', length: 50, nullable: false)]
+    #[Groups(['supplierOrderPos:read', 'supplierOrderPos:write'])]
     private string $articleNr;
 
     #[ORM\Column(name: 'article_name', type: 'string', length: 255, nullable: false)]
+    #[Groups(['supplierOrderPos:read', 'supplierOrderPos:write'])]
     private string $articleName;
 
     #[ORM\Column(name: 'supplier_order_pos_quantity', type: 'integer', nullable: false)]
-    private ?int $supplierOrderPosQuantity;
+    #[Groups(['supplierOrderPos:read', 'supplierOrderPos:write'])]
+    private int $supplierOrderPosQuantity;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    #[Groups(['supplierOrderPos:read', 'supplierOrderPos:write'])]
     private ?\DateTimeInterface $createdAt;
 
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    #[Groups(['supplierOrderPos:read', 'supplierOrderPos:write'])]
     private ?\DateTimeInterface $updatedAt;
 
-    #[ORM\ManyToOne(inversedBy: 'supplierOrderPos')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?SupplierOrder $supplierOrder = null;
+    /** Many Supplier Order Positions have one Supplier Order. This is the owning side. */
+    #[ORM\ManyToOne(targetEntity: SupplierOrder::class, inversedBy: 'supplierOrderPos')]
+    private SupplierOrder $supplierOrder;
 
     public function getId(): int
     {
@@ -53,7 +110,7 @@ class SupplierOrderPos
         return $this;
     }
 
-    public function getSupplierOrderId(): ?int
+    public function getSupplierOrderId(): int
     {
         return $this->supplierOrderId;
     }
@@ -65,7 +122,7 @@ class SupplierOrderPos
         return $this;
     }
 
-    public function getArticleId(): ?int
+    public function getArticleId(): int
     {
         return $this->articleId;
     }
@@ -101,7 +158,7 @@ class SupplierOrderPos
         return $this;
     }
 
-    public function getSupplierOrderPosQuantity(): ?int
+    public function getSupplierOrderPosQuantity(): int
     {
         return $this->supplierOrderPosQuantity;
     }
@@ -137,12 +194,12 @@ class SupplierOrderPos
         return $this;
     }
 
-    public function getSupplierOrder(): ?SupplierOrder
+    public function getSupplierOrder(): SupplierOrder
     {
         return $this->supplierOrder;
     }
 
-    public function setSupplierOrder(?SupplierOrder $supplierOrder): self
+    public function setSupplierOrder(SupplierOrder $supplierOrder): self
     {
         $this->supplierOrder = $supplierOrder;
 

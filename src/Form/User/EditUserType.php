@@ -17,7 +17,7 @@ use WebWMS\Entity\User;
 /**
  * @package:    WebWMS\Form
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        EditUserType
  */
 class EditUserType extends AbstractType
@@ -74,18 +74,18 @@ class EditUserType extends AbstractType
             ])
         ;
 
-//        $builder->get('roles')
-//            ->addModelTransformer(new CallbackTransformer(
-//                function ($tagsAsArray) {
-//                    // transform the array to a string
-//                    return implode(', ', $tagsAsArray);
-//                },
-//                function ($tagsAsString) {
-//                    // transform the string back to an array
-//                    return explode(', ', $tagsAsString);
-//                }
-//            ))
-//        ;
+        //        $builder->get('roles')
+        //            ->addModelTransformer(new CallbackTransformer(
+        //                function ($tagsAsArray) {
+        //                    // transform the array to a string
+        //                    return implode(', ', $tagsAsArray);
+        //                },
+        //                function ($tagsAsString) {
+        //                    // transform the string back to an array
+        //                    return explode(', ', $tagsAsString);
+        //                }
+        //            ))
+        //        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -5,16 +5,63 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+/**
+ * @package:    WebWMS\Entity
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        SupplierOrder
+ */
 #[ORM\Table(name: 'supplier_orders')]
 #[ORM\Entity(repositoryClass: 'WebWMS\Repository\SupplierOrderRepository')]
 #[ApiResource(
-    extraProperties: [
-        'standard_put' => true,
+    operations: [
+        new Get(
+            normalizationContext: [
+                'skip_null_values' => false,
+                'groups' => ['supplierOrder:read', 'supplierOrderPos:read', 'supplier:read'],
+            ]
+        ),
+        new GetCollection(
+            normalizationContext: [
+                'skip_null_values' => false,
+                'groups' => ['supplierOrder:read', 'supplierOrderPos:read', 'supplier:read'],
+            ]
+        ),
+        new Post(
+            denormalizationContext: [
+                'groups' => ['supplierOrder:write', 'supplierOrderPos:write', 'supplier:write'],
+            ]
+        ),
+        new Put(
+            denormalizationContext: [
+                'groups' => ['supplierOrder:write', 'supplierOrderPos:write', 'supplier:write'],
+            ]
+        ),
+        new Patch(
+            denormalizationContext: [
+                'groups' => ['supplierOrder:write', 'supplierOrderPos:write', 'supplier:write'],
+            ]
+        ),
+        new Delete(
+            denormalizationContext: [
+                'groups' => ['supplierOrder:write', 'supplierOrderPos:write', 'supplier:write'],
+            ]
+        ),
     ],
+    formats: ['json'],
+    normalizationContext: ['groups' => ['supplierOrder:read']],
+    denormalizationContext: ['groups' => ['supplierOrder:write']]
 )]
 class SupplierOrder
 {
@@ -24,30 +71,39 @@ class SupplierOrder
     private int $id;
 
     #[ORM\Column(name: 'supplier_order_id', type: 'integer', nullable: false)]
+    #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private int $supplierOrderId;
 
     #[ORM\Column(name: 'usr_id', type: 'integer', nullable: false)]
+    #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private int $usrId;
 
     #[ORM\Column(name: 'supplier_id', type: 'integer', nullable: false)]
+    #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private int $supplierId;
 
     #[ORM\Column(name: 'supplier_order_nr', type: 'string', length: 255, nullable: false)]
+    #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private string $supplierOrderNr;
 
     #[ORM\Column(name: 'supplier_order_reference', type: 'string', length: 255, nullable: true)]
+    #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private ?string $supplierOrderReference;
 
     #[ORM\Column(name: 'supplier_order_date', type: 'datetime', nullable: true)]
+    #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private ?\DateTimeInterface $supplierOrderDate;
 
     #[ORM\Column(name: 'supplier_order_creation_date', type: 'datetime', nullable: true)]
+    #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private ?\DateTimeInterface $supplierOrderCreationDate;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private ?\DateTimeInterface $createdAt;
 
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private ?\DateTimeInterface $updatedAt;
 
     /** One Supplier Order has many Supplier Order Positions. This is the inverse side. */
@@ -55,13 +111,17 @@ class SupplierOrder
         mappedBy: 'supplierOrder',
         targetEntity: SupplierOrderPos::class,
         cascade: ['persist'],
-        fetch: 'EAGER'
+        fetch: 'EAGER',
+        orphanRemoval: true
     )]
-    private Collection|ArrayCollection $supplierOrderPos;
+    #[Groups(['supplierOrder:read'])]
+    private Collection $supplierOrderPos;
 
-    #[ORM\OneToOne(targetEntity: Supplier::class)]
+    /** Many Supplier Orders has one Supplier. This is the owning side. */
+    #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'supplierOrder')]
     #[ORM\JoinColumn(name: 'supplier_id', referencedColumnName: 'supplier_id')]
-    private ?Supplier $supplier;
+    #[Groups(['supplierOrder:read'])]
+    private Supplier $supplier;
 
     public function __construct()
     {
@@ -193,34 +253,12 @@ class SupplierOrder
         return $this->supplierOrderPos;
     }
 
-    public function addSupplierOrderPos(SupplierOrderPos $supplierOrderPos): self
-    {
-        if (!$this->supplierOrderPos->contains($supplierOrderPos)) {
-            $this->supplierOrderPos->add($supplierOrderPos);
-            $supplierOrderPos->setSupplierOrder($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSupplierOrderPos(SupplierOrderPos $supplierOrderPos): self
-    {
-        if ($this->supplierOrderPos->removeElement($supplierOrderPos)) {
-            // set the owning side to null (unless already changed)
-            if ($supplierOrderPos->getSupplierOrder() === $this) {
-                $supplierOrderPos->setSupplierOrder(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getSupplier(): ?Supplier
+    public function getSupplier(): Supplier
     {
         return $this->supplier;
     }
 
-    public function setSupplier(?Supplier $supplier): self
+    public function setSupplier(Supplier $supplier): self
     {
         $this->supplier = $supplier;
 

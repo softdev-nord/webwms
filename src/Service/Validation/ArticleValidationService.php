@@ -4,91 +4,90 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
-use WebWMS\Entity\Article;
-
 /**
  * @package:    WebWMS\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ArticleValidationService
  */
-class ArticleValidationService
+class ArticleValidationService extends BaseValidationService
 {
     /**
+     * @param array<mixed> $requestData
      * @return array<string, array<string, string>|bool|float|string>
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateArticleData(Article $article): array
+    public function validateArticleData(array $requestData): array
     {
         $responseData = [];
 
-        // Validation of the request data from the article data change
-        if (!$article->getArticleNr()) {
+        if (!$this->getValue($requestData, '[articleNr]')) {
             $responseData['error']['articleNr'] = 'Die Artikel-Nr. darf nicht leer sein.';
         } else {
-            $responseData['articleNr'] = $article->getArticleNr();
+            $responseData['articleNr'] = $this->getValue($requestData, '[articleNr]');
         }
 
-        if (!$article->getArticleName()) {
+        if (!$this->getValue($requestData, '[articleName]')) {
             $responseData['error']['articleName'] = 'Die Artikel Bezeichnung darf nicht leer sein.';
         } else {
-            $responseData['articleName'] = $article->getArticleName();
+            $responseData['articleName'] = $this->getValue($requestData, '[articleName]');
         }
 
-        if (!$article->getArticleCategory()) {
+        if (!$this->getValue($requestData, '[articleCategory]')) {
             $responseData['error']['articleCategory'] = 'Die Artikel Kategorie darf nicht leer sein.';
         } else {
-            $responseData['articleCategory'] = $article->getArticleCategory();
+            $responseData['articleCategory'] = $this->getValue($requestData, '[articleCategory]');
         }
 
-        if (!$article->getArticleWeight()) {
+        if (!$this->getValue($requestData, '[articleWeight]')) {
             $responseData['error']['articleWeight'] = 'Das Artikel Gewicht darf nicht leer sein.';
         } else {
-            $responseData['articleWeight'] = $article->getArticleWeight();
+            $responseData['articleWeight'] = $this->getValue($requestData, '[articleWeight]');
         }
 
-        if (!$article->getArticleEan()) {
+        if (!$this->getValue($requestData, '[articleEan]')) {
             $responseData['error']['articleEan'] = 'Die EAN-Nummer darf nicht leer sein.';
         } else {
-            $responseData['articleEan'] = $article->getArticleEan();
+            $responseData['articleEan'] = $this->getValue($requestData, '[articleEan]');
         }
 
-        if (!$article->getArticleUnit()) {
+        if (!$this->getValue($requestData, '[articleUnit]')) {
             $responseData['error']['articleUnit'] = 'Die Einheit darf nicht leer sein.';
         } else {
-            $responseData['articleUnit'] = $article->getArticleUnit();
+            $responseData['articleUnit'] = $this->getValue($requestData, '[articleUnit]');
         }
 
-        if (!$article->getArticleDepth()) {
+        if (!$this->getValue($requestData, '[articleDepth]')) {
             $responseData['error']['articleDepth'] = 'Die Breite darf nicht leer sein.';
         } else {
-            $responseData['articleDepth'] = $article->getArticleDepth();
+            $responseData['articleDepth'] = $this->getValue($requestData, '[articleDepth]');
         }
 
-        if (!$article->getArticleWidth()) {
+        if (!$this->getValue($requestData, '[articleWidth]')) {
             $responseData['error']['articleWidth'] = 'Die Tiefe darf nicht leer sein.';
         } else {
-            $responseData['articleWidth'] = $article->getArticleWidth();
+            $responseData['articleWidth'] = $this->getValue($requestData, '[articleWidth]');
         }
 
-        if (!$article->getArticleHeight()) {
+        if (!$this->getValue($requestData, '[articleHeight]')) {
             $responseData['error']['articleHeight'] = 'Die Höhe darf nicht leer sein.';
         } else {
-            $responseData['articleHeight'] = $article->getArticleHeight();
+            $responseData['articleHeight'] = $this->getValue($requestData, '[articleHeight]');
         }
 
-        if (!$article->getStockOutStrategy()) {
+        if (!$this->getValue($requestData, '[stockOutStrategy]')) {
             $responseData['error']['stockOutStrategy'] = 'Die Auslagerungsstrategie darf nicht leer sein.';
         } else {
-            $responseData['stockOutStrategy'] = $article->getStockOutStrategy();
+            $responseData['stockOutStrategy'] = $this->getValue($requestData, '[stockOutStrategy]');
         }
 
-        if (!$article->getStandardLoadingEquipment()) {
+        if (!$this->getValue($requestData, '[standardLoadingEquipment]')) {
             $responseData['error']['standardLoadingEquipment'] = 'Das Standard-Ladehilfsmittel darf nicht leer sein.';
         } else {
-            $responseData['standardLoadingEquipment'] = $article->getStandardLoadingEquipment();
+            $responseData['standardLoadingEquipment'] = $this->getValue($requestData, '[standardLoadingEquipment]');
         }
 
         if (!isset($responseData['error'])) {

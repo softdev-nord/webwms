@@ -22,12 +22,8 @@ module.exports = {
         'keyword-spacing': [
             'warn'
         ],
-        'padded-blocks': [
-            'warn'
-        ],
-        'space-in-parens': [
-            'warn'
-        ],
+        'padded-blocks': 0,
+        'space-in-parens': 'warn',
         'spaced-comment': 0,
         'camelcase': 0,
         'no-undef': 0,

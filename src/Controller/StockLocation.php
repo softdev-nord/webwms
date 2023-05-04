@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use WebWMS\Entity\StockLocation as StockLocationEntity;
-use WebWMS\Exception\NotFoundException;
 use WebWMS\Helper\FormHelper\StockLocationFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
@@ -22,7 +21,7 @@ use WebWMS\Service\Validation\StockLocationValidationService;
 /**
  * @package:    WebWMS\Controller
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2022, SoftDev Nord
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockLocation
  */
 class StockLocation extends AbstractController
@@ -72,18 +71,20 @@ class StockLocation extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var StockLocationEntity $stockLocationRequestData */
             $stockLocationRequestData = $form->getData();
-            $responseData = [];
+            $responseData = $this->stockLocationValidationService
+                ->validateStockLocationData(
+                    (array) $request->request->all()['add_stock_location']
+                );
 
-            if (isset($request->request->all()['add_stock_location']['stock_location_check'])) {
+            if (isset($responseData['success'])) {
                 $responseData['message'] = 'Die Lagerplätze für das Lager ' . $stockLocationRequestData->getStockLocationLn() . 'wurden erfolgreich angelegt.';
                 $logMessage = 'Die Lagerplätze für das Lager ' . $stockLocationRequestData->getStockLocationLn() . ' wurden angelegt.';
-            } else {
-                $responseData['message'] = 'Der Lagerplatz für das Lager ' . $stockLocationRequestData->getStockLocationLn() . ' wurde erfolgreich angelegt.';
-                $logMessage = 'Der Lagerplatz für das Lager ' . $stockLocationRequestData->getStockLocationLn() . ' wurde angelegt.';
-            }
 
-            $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->stockLocationService->addStockLocation($request);
+                $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
+                $this->stockLocationService->addStockLocation($request);
+
+                return new JsonResponse($responseData);
+            }
 
             return new JsonResponse($responseData);
         }
@@ -100,11 +101,14 @@ class StockLocation extends AbstractController
     #[Route('lagerplatz_bearbeiten/koordinate/{stockLocationCoordinate}', name: 'edit_stock_location')]
     public function editStockLocation(Request $request, string $stockLocationCoordinate): RedirectResponse|JsonResponse|Response|null
     {
+        // dd($stockLocationCoordinate);
         if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $stockLocation = $this->stockLocationService->getStockLocationByCoordinate($stockLocationCoordinate);
+
+        // dd($stockLocation);
 
         if ($stockLocation === null) {
             return null;
@@ -113,10 +117,15 @@ class StockLocation extends AbstractController
         $form = $this->stockLocationFormHelper->editStockLocationForm($stockLocation);
         $form->handleRequest($request);
 
+        // dd($form->getData());
+
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var StockLocationEntity $stockLocationRequestData */
             $stockLocationRequestData = $form->getData();
-            $responseData = $this->stockLocationValidationService->validateStockLocationData($stockLocationRequestData);
+            $responseData = $this->stockLocationValidationService
+                ->validateStockLocationData(
+                    (array) $request->request->all()['edit_stock_location']
+                );
             $selectedStockLocation = $stockLocationRequestData->getStockLocationLn()
                 . '-' . $stockLocationRequestData->getStockLocationFb()
                 . '-' . $stockLocationRequestData->getStockLocationSp()
@@ -131,8 +140,6 @@ class StockLocation extends AbstractController
 
                 return new JsonResponse($responseData);
             }
-
-            $responseData['message'] = 'Die Änderungen am Lagerplatz konnten nicht gespeichert werden.';
 
             return new JsonResponse($responseData);
         }
@@ -204,7 +211,7 @@ class StockLocation extends AbstractController
     }
 
     /**
-     * @throws NotFoundException
+     * @throws \Exception
      * @return array|object[]
      */
     #[Route('/lagerplatz_details/{stock_location_coordinate}', name: 'show_stock_location_details')]
