@@ -115,6 +115,7 @@ header #logo img {
 }
 
 .swagger-ui section.models {
+  display: none;
   border: 1px solid #dee2e6;
   border-radius: 4px;
   margin: 30px 0;

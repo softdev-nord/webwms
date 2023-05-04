@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use WebWMS\Repository\UserRepository;
 
 /**
@@ -18,13 +27,60 @@ use WebWMS\Repository\UserRepository;
  */
 #[ORM\Table(name: 'user')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: [
+                'skip_null_values' => false,
+                'groups' => ['user:read'],
+            ]
+        ),
+        new GetCollection(
+            normalizationContext: [
+                'skip_null_values' => false,
+                'groups' => ['user:read'],
+            ]
+        ),
+        new Post(
+            denormalizationContext: [
+                'groups' => ['user:write'],
+            ]
+        ),
+        new Put(
+            denormalizationContext: [
+                'groups' => ['user:write'],
+            ]
+        ),
+        new Patch(
+            denormalizationContext: [
+                'groups' => ['user:write'],
+            ]
+        ),
+        new Delete(
+            denormalizationContext: [
+                'groups' => ['user:write'],
+            ]
+        ),
+    ],
+    formats: ['json'],
+    normalizationContext: [
+        'skip_null_values' => false,
+        'groups' => ['user:read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['user:write'],
+    ],
+)]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
     public ?string $firstname;
 
     #[ORM\Column(name: 'lastname', type: 'string', length: 255, nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
     public ?string $lastname;
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -32,33 +88,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private int $id;
 
     #[ORM\Column(name: 'username', type: 'string', length: 255, unique: true)]
+    #[Groups(['user:read', 'user:write'])]
     private string $username;
 
     #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'user')]
+    #[Groups(['user:read', 'user:write'])]
     private Role $role;
 
     /**
      * @var string[]|null
      */
     #[ORM\Column(name: 'roles', type: 'json', nullable: true)]
-    private array|null $roles = [];
+    #[Groups(['user:read', 'user:write'])]
+    private ?array $roles = [];
 
-    #[ORM\Column(name: 'password', type: 'string', length: 255, nullable: false)]
-    private string $password;
+    #[ORM\Column(name: 'password', type: 'string', length: 255)]
+    #[Groups(['user:write'])]
+    private ?string $password = null;
 
-    #[ORM\Column(name: 'email', type: 'string', length: 255)]
-    private ?string $email;
+    #[ORM\Column(name: 'email', type: 'string', length: 255, unique: true)]
+    #[Groups(['user:read', 'user:write'])]
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    private ?string $email = null;
 
     #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
     private ?\DateTimeInterface $lastLogin;
 
     #[ORM\Column(name: 'enabled', type: 'boolean')]
+    #[Groups(['user:read', 'user:write'])]
     private bool $enabled;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
     private ?\DateTimeInterface $createdAt;
 
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
     private ?\DateTimeInterface $updatedAt;
 
     private ?string $plainPassword = '';

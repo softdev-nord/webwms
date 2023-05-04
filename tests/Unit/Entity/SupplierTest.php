@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\Supplier;
 
@@ -21,12 +22,15 @@ final class SupplierTest extends TestCase
 
     private \DateTimeImmutable $dateTime;
 
+    private ArrayCollection $collection;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->supplier = new Supplier();
         $this->dateTime = new \DateTimeImmutable();
+        $this->collection = new ArrayCollection();
     }
 
     protected function tearDown(): void
@@ -280,6 +284,24 @@ final class SupplierTest extends TestCase
         $property = (new \ReflectionClass(Supplier::class))
             ->getProperty('updatedAt');
         $this->supplier->setUpdatedAt($expected);
+        self::assertSame($expected, $property->getValue($this->supplier));
+    }
+
+    public function testGetSupplierOrder(): void
+    {
+        $expected = $this->collection;
+        $property = (new \ReflectionClass(Supplier::class))
+            ->getProperty('supplierOrder');
+        $property->setValue($this->supplier, $expected);
+        self::assertSame($expected, $this->supplier->getSupplierOrders());
+    }
+
+    public function testSetSupplierAddressOrder(): void
+    {
+        $expected = $this->collection;
+        $property = (new \ReflectionClass(Supplier::class))
+            ->getProperty('supplierOrder');
+        $this->supplier->setSupplierOrders($expected);
         self::assertSame($expected, $property->getValue($this->supplier));
     }
 }
