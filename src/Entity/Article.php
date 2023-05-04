@@ -27,33 +27,33 @@ use WebWMS\Repository\ArticleRepository;
         new Get(
             normalizationContext: [
                 'skip_null_values' => false,
-                'groups' => ['article:read']
+                'groups' => ['article:read'],
             ]
         ),
         new GetCollection(
             normalizationContext: [
                 'skip_null_values' => false,
-                'groups' => ['article:read']
+                'groups' => ['article:read'],
             ]
         ),
         new Post(
             denormalizationContext: [
-                'groups' => ['article:write']
+                'groups' => ['article:write'],
             ]
         ),
         new Put(
             denormalizationContext: [
-                'groups' => ['article:write']
+                'groups' => ['article:write'],
             ]
         ),
         new Patch(
             denormalizationContext: [
-                'groups' => ['article:write']
+                'groups' => ['article:write'],
             ]
         ),
         new Delete(
             denormalizationContext: [
-                'groups' => ['article:write']
+                'groups' => ['article:write'],
             ]
         ),
     ],
