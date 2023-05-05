@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{# templates/configuration/index.html.twig #}
 
-{% block title %}{{ page }}{{ appName }}{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
     {% block webwms_header %}
@@ -70,6 +70,7 @@
             </div>
         {% endblock %}
     {% endblock %}
+
     {% block bodyjs %}
         <script type="text/javascript" src="{{ asset('doku_weblvs/assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
         <script>
@@ -79,4 +80,5 @@
             });
         </script>
     {% endblock %}
+
 {% endblock %}

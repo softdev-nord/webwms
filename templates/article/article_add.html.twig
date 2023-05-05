@@ -1,12 +1,16 @@
-<form id="article-form-new" class="form-horizontal" role="form">
-    <div class="modal-body">
-        <div class="container-fluid">
-            <div id="flash-message-overlay">
-                <div class="col">
+{# templates/article/article_add.html.twig #}
+
+{% block webwms_article_add_form %}
+    <form id="article-form-new" class="form-horizontal" role="form">
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div id="flash-message-overlay">
+                    <div class="col">
+                    </div>
                 </div>
+                {% include 'article/article_input_fields.html.twig' %}
             </div>
-            {% include 'article/article_input_fields.html.twig' %}
         </div>
-    </div>
-    <div class="modal-footer"></div>
-</form>
+        <div class="modal-footer"></div>
+    </form>
+{% endblock %}

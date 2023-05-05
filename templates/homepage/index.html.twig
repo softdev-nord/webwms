@@ -1,8 +1,11 @@
+{# templates/homepage/index.html.twig #}
+
 {% block body %}
     {% block webwms_header %}
         {{ include('header.html.twig') }}
     {% endblock %}
     <!-- Beginn Seite -->
+    {{ dump(page) }}
 
     <div class="text-center">
         <div class="container-fluid">

@@ -1,12 +1,16 @@
-<form id="customer-order-form-new" class="form-horizontal" role="form">
-    <div class="modal-body">
-        <div class="container-fluid">
-            <div id="flash-message-overlay">
-                <div class="col">
+{# templates/customer_order/customer_order_add.html.twig #}
+
+{% block webwms_customer_order_add_form %}
+    <form id="customer-order-form-new" class="form-horizontal" role="form">
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div id="flash-message-overlay">
+                    <div class="col">
+                    </div>
                 </div>
+                {% include 'customer_order/customer_order_input_fields.html.twig' %}
             </div>
-            {% include 'customer_order/customer_order_input_fields.html.twig' %}
         </div>
-    </div>
-    <div class="modal-footer"></div>
-</form>
+        <div class="modal-footer"></div>
+    </form>
+{% endblock %}

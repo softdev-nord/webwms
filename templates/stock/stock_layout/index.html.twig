@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{# templates/stock/stock_layout/index.html.twig #}
 
-{% block title %}{{ page }}{{ appName }}{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
     {% block webwms_header %}
@@ -38,7 +38,9 @@
             </div>
         {% endblock %}
     {% endblock %}
+
     {% block bodyjs %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockLayout.js') }}"></script>
     {% endblock %}
+
 {% endblock %}

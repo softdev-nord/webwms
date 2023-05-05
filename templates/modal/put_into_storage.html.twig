@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{# templates/logging/index.html.twig #}
 
-{% block title %}{{ page }}{{ appName }}{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
     {% block webwms_header %}
@@ -174,11 +174,12 @@
             </div>
         {% endblock %}
     {% endblock %}
-{% endblock %}
 
-{% block bodyjs %}
-    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockInItemsAutofill.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockTransactions.js') }}"></script>
+    {% block bodyjs %}
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockInItemsAutofill.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockTransactions.js') }}"></script>
+    {% endblock %}
+
 {% endblock %}
 
 

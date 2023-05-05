@@ -1,12 +1,16 @@
-<form id=stock-layout-form-edit" class="form-horizontal" role="form">
-    <div class="modal-body">
-        <div class="container-fluid">
-            <div id="flash-message-overlay">
-                <div class="col">
+{# templates/stock/stock_layout/stock_layout_edit.html.twig #}
+
+{% block webwms_stock_layout_edit_form %}
+    <form id=stock-layout-form-edit" class="form-horizontal" role="form">
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div id="flash-message-overlay">
+                    <div class="col">
+                    </div>
                 </div>
+                {% include 'stock/stock_layout/stock_layout_input_fields.html.twig' %}
             </div>
-            {% include 'stock/stock_layout/stock_layout_input_fields.html.twig' %}
         </div>
-    </div>
-    <div class="modal-footer"></div>
-</form>
+        <div class="modal-footer"></div>
+    </form>
+{% endblock %}
