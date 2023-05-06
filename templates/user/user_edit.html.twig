@@ -1,12 +1,16 @@
-<form id="user-form-edit" class="form-horizontal" role="form">
-    <div class="modal-body">
-        <div class="container-fluid">
-            <div id="flash-message-overlay">
-                <div class="col">
+{# templates/user/user_edit.html.twig #}
+
+{% block webwms_user_edit_form %}
+    <form id="user-form-edit" class="form-horizontal" role="form">
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div id="flash-message-overlay">
+                    <div class="col">
+                    </div>
                 </div>
+                {% include 'user/user_input_fields.html.twig' %}
             </div>
-            {% include 'user/user_input_fields.html.twig' %}
         </div>
-    </div>
-    <div class="modal-footer"></div>
-</form>
+        <div class="modal-footer"></div>
+    </form>
+{% endblock %}
