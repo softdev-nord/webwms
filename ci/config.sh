@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Shared configs for CI scripts
 set -Eeuo pipefail
 shopt -s inherit_errexit
