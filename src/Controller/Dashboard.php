@@ -51,7 +51,7 @@ class Dashboard extends AbstractController
         }
 
         return $this->render(
-            'dashboard/index_new.html.twig',
+            'dashboard/index.html.twig',
             [
                 'appName' => $this->requirementsService->getAppName(),
                 'appVersion' => $this->requirementsService->getAppVersion(),
@@ -66,38 +66,6 @@ class Dashboard extends AbstractController
                 'allTransportRequests' => $this->getAllTransportRequest(),
             ]
         );
-    }
-
-    /**
-     * @Route("/calendar", name="calendar")
-     */
-    public function calendar(): Response
-    {
-        return $this->render('dashboard/apps-calendar.html.twig');
-    }
-
-    /**
-     * @Route("/chat", name="chat")
-     */
-    public function chat(): Response
-    {
-        return $this->render('dashboard/apps-chat.html.twig');
-    }
-
-    /**
-     * @Route("/lock_screen", name="chat")
-     */
-    public function lockScreen(): Response
-    {
-        return $this->render('dashboard/auth-lock-screen.html.twig');
-    }
-
-    /**
-     * @Route("/login_test", name="chat")
-     */
-    public function loginTest(): Response
-    {
-        return $this->render('dashboard/auth-lock-screen.html.twig');
     }
 
     /**
