@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{# templates/customer_order/index.html.twig #}
 
-{% block title %}{{ page }}{{ appName }}{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
     {% block webwms_header %}
@@ -55,7 +55,9 @@
             </div>
         {% endblock %}
     {% endblock %}
+
     {% block bodyjs %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.customerOrder.js') }}"></script>
     {% endblock %}
+
 {% endblock %}

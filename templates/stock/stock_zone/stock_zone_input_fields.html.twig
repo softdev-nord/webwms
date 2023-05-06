@@ -1,24 +1,28 @@
-<div class="row">
-    {% block webwms_stock_zone_form %}
-        <div class="card">
-            {{ form_start(stockZoneForm) }}
-            <div class="form-group">
-                <label for="text" class="control-label col-xs-4">Kurz-Bezeichnung</label>
-                <div class="col-xs-8" style="margin-bottom: 5px;">
-                    {{ form_row(stockZoneForm.stockZoneShortDesc) }}
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="text" class="control-label col-xs-4">Bezeichnung</label>
-                <div class="col-xs-8" style="margin-bottom: 5px;">
-                    {{ form_row(stockZoneForm.stockZoneDescription) }}
-                </div>
-            </div>
+{# templates/stock/stock_zone/stock_zone_input_fields.html.twig #}
 
-            <div class="text-center">
-                {{ form_widget(stockZoneForm.save) }} {{ form_widget(stockZoneForm.abort) }}
+{% block webwms_stock_zone_input_fields_form %}
+    <div class="row">
+        {% block webwms_stock_zone_input_fields_form_inner %}
+            <div class="card">
+                {{ form_start(stockZoneForm) }}
+                <div class="form-group">
+                    <label for="text" class="control-label col-xs-4">Kurz-Bezeichnung</label>
+                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                        {{ form_row(stockZoneForm.stockZoneShortDesc) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="text" class="control-label col-xs-4">Bezeichnung</label>
+                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                        {{ form_row(stockZoneForm.stockZoneDescription) }}
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    {{ form_widget(stockZoneForm.save) }} {{ form_widget(stockZoneForm.abort) }}
+                </div>
+                {{ form_end(stockZoneForm) }}
             </div>
-            {{ form_end(stockZoneForm) }}
-        </div>
-    {% endblock %}
-</div>
+        {% endblock %}
+    </div>
+{% endblock %}

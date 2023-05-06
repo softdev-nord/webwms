@@ -1,271 +1,275 @@
-<div class="row">
-    {% block webwms_edit_customer_order_form_order %}
-        <div class="card">
-            {{ form_start(customerOrderForm) }}
-            <div class="card-content">
-                <div class="row col-md-6">
-                    <div class="form-row col-md-12">
-                        <div class="form-group col-md-8">
-                            <label for="inputCustomer">Kunden suchen</label>
-                            <input
-                                    type="text"
-                                    id="customer_customerNr"
-                                    name="customer[customerNr]"
-                                    required="required"
-                                    placeholder="Über Kunden-Nr suchen"
-                                    class="form-control autocomplete_customers ui-autocomplete-input"
-                                    data-type="customer_nr"
-                                    style="background-color:
-                                        transparent" autocomplete="off"
-                                    value="{% if editCustomerOrder %}{{ customerData.customerNr }}{% endif %}"
-                            >
-                            <input
-                                    type="hidden"
-                                    id="customer_customerId"
-                                    name="customer[customerId]"
-                                    data-type="customerId"
-                                    value="{% if editCustomerOrder %}{{ customerData.customerId }}{% endif %}"
-                            >
-                        </div>
-                        <div class="form-group col-md-12"></div>
-                        <div class="form-group col-md-12"></div>
-                        <div class="form-group col-md-8">
-                            <input
-                                    type="text"
-                                    id="customer_customerName"
-                                    name="customer[customerName]"
-                                    required="required"
-                                    placeholder="Kunden Name"
-                                    class="form-control autocomplete_customers ui-autocomplete-input"
-                                    data-type="customer_name"
-                                    autocomplete="off"
-                                    value="{% if editCustomerOrder %}{{ customerData.customerName }}{% endif %}"
-                            >
-                        </div>
-                        <div class="form-group col-md-8">
-                            <input
-                                    type="text"
-                                    id="customer_customerAddressAddition"
-                                    name="customer[customerAddressAddition]"
-                                    placeholder="Anschrift Zusatz"
-                                    class="form-control autocomplete_customers ui-autocomplete-input"
-                                    data-type="customer_address_addition"
-                                    autocomplete="off"
-                                    value="{% if editCustomerOrder %}{{ customerData.customerAddressAddition }}{% endif %}"
-                            >
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input
-                                    type="text"
-                                    id="customer_customerAddressStreet"
-                                    name="customer[customerAddressStreet]"
-                                    required="required"
-                                    placeholder="Straße"
-                                    class="form-control autocomplete_customers ui-autocomplete-input"
-                                    data-type="customer_address_street"
-                                    autocomplete="off"
-                                    value="{% if editCustomerOrder %}{{ customerData.customerAddressStreet }}{% endif %}"
-                            >
-                        </div>
-                        <div class="form-group col-md-2">
-                            <input
-                                    type="text"
-                                    id="customer_customerAddressStreetNr"
-                                    name="customer[customerAddressStreetNr]"
-                                    required="required"
-                                    placeholder="Haus-Nr."
-                                    class="form-control autocomplete_customers ui-autocomplete-input"
-                                    data-type="customer_address_street_nr"
-                                    autocomplete="off"
-                                    value="{% if editCustomerOrder %}{{ customerData.customerAddressStreetNr }}{% endif %}"
-                            >
-                        </div>
-                        <div class="form-group col-md-4"></div>
-                        <div class="form-group col-md-1">
-                            <input
-                                    type="text"
-                                    id="customer_customerAddressCountryCode"
-                                    name="customer[customerAddressCountryCode]"
-                                    required="required"
-                                    placeholder="Land"
-                                    class="form-control autocomplete_customers ui-autocomplete-input"
-                                    data-type="customer_country_code"
-                                    autocomplete="off"
-                                    value="{% if editCustomerOrder %}{{ customerData.customerCountryCode }}{% endif %}"
-                            >
-                        </div>
-                        <div class="form-group col-md-2">
-                            <input
-                                    type="text"
-                                    id="customer_customerAddressZipcode"
-                                    name="customer[customerAddressZipcode]"
-                                    required="required"
-                                    placeholder="PLZ"
-                                    class="form-control autocomplete_customers ui-autocomplete-input"
-                                    data-type="customer_zip_code"
-                                    autocomplete="off"
-                                    value="{% if editCustomerOrder %}{{ customerData.customerZipcode }}{% endif %}"
-                            >
-                        </div>
-                        <div class="form-group col-md-5">
-                            <input
-                                    type="text"
-                                    id="customer_customerAddressCity"
-                                    name="customer[customerAddressCity]"
-                                    required="required"
-                                    placeholder="Ort"
-                                    class="form-control autocomplete_customers ui-autocomplete-input"
-                                    data-type="customer_city"
-                                    autocomplete="off"
-                                    value="{% if editCustomerOrder %}{{ customerData.customerCity }}{% endif %}"
-                            >
-                        </div>
-                    </div>
-                </div>
-                <div class="row col-md-6">
-                    <div class="form-row col-md-12">
-                        <div class="form-group col-md-6">
-                            {% set newCustomerOrderId = lastId.id +1 %}
-                            {% set newCustomerOrderNr =  "VLS-01-#{lastId.id +1}" %}
+{# templates/customer_order/customer_order_input_fields.html.twig #}
 
-                            {% if editCustomerOrder %}
-                                {{ form_row(customerOrderForm.customerOrderNr) }}
-                            {% else %}
-                                {{ form_row(customerOrderForm.customerOrderNr, {'value' : newCustomerOrderNr }) }}
-                            {% endif %}
-                            {{ form_row(customerOrderForm.customerId) }}
-                            {{ form_row(customerOrderForm.customerOrderId, {'value' : newCustomerOrderId }) }}
-                            {{ form_row(customerOrderForm.usrId, {'value' : app.user.id }) }}
-                        </div>
-                        <div class="form-group col-md-6">
-                            {{ form_row(customerOrderForm.customerOrderReference) }}
+{% block webwms_customer_order_input_fields_form %}
+    <div class="row">
+        {% block webwms_customer_order_input_fields_form_inner %}
+            <div class="card">
+                {{ form_start(customerOrderForm) }}
+                <div class="card-content">
+                    <div class="row col-md-6">
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-8">
+                                <label for="inputCustomer">Kunden suchen</label>
+                                <input
+                                        type="text"
+                                        id="customer_customerNr"
+                                        name="customer[customerNr]"
+                                        required="required"
+                                        placeholder="Über Kunden-Nr suchen"
+                                        class="form-control autocomplete_customers ui-autocomplete-input"
+                                        data-type="customer_nr"
+                                        style="background-color:
+                                            transparent" autocomplete="off"
+                                        value="{% if editCustomerOrder %}{{ customerData.customerNr }}{% endif %}"
+                                >
+                                <input
+                                        type="hidden"
+                                        id="customer_customerId"
+                                        name="customer[customerId]"
+                                        data-type="customerId"
+                                        value="{% if editCustomerOrder %}{{ customerData.customerId }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-12"></div>
+                            <div class="form-group col-md-12"></div>
+                            <div class="form-group col-md-8">
+                                <input
+                                        type="text"
+                                        id="customer_customerName"
+                                        name="customer[customerName]"
+                                        required="required"
+                                        placeholder="Kunden Name"
+                                        class="form-control autocomplete_customers ui-autocomplete-input"
+                                        data-type="customer_name"
+                                        autocomplete="off"
+                                        value="{% if editCustomerOrder %}{{ customerData.customerName }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-8">
+                                <input
+                                        type="text"
+                                        id="customer_customerAddressAddition"
+                                        name="customer[customerAddressAddition]"
+                                        placeholder="Anschrift Zusatz"
+                                        class="form-control autocomplete_customers ui-autocomplete-input"
+                                        data-type="customer_address_addition"
+                                        autocomplete="off"
+                                        value="{% if editCustomerOrder %}{{ customerData.customerAddressAddition }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input
+                                        type="text"
+                                        id="customer_customerAddressStreet"
+                                        name="customer[customerAddressStreet]"
+                                        required="required"
+                                        placeholder="Straße"
+                                        class="form-control autocomplete_customers ui-autocomplete-input"
+                                        data-type="customer_address_street"
+                                        autocomplete="off"
+                                        value="{% if editCustomerOrder %}{{ customerData.customerAddressStreet }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-2">
+                                <input
+                                        type="text"
+                                        id="customer_customerAddressStreetNr"
+                                        name="customer[customerAddressStreetNr]"
+                                        required="required"
+                                        placeholder="Haus-Nr."
+                                        class="form-control autocomplete_customers ui-autocomplete-input"
+                                        data-type="customer_address_street_nr"
+                                        autocomplete="off"
+                                        value="{% if editCustomerOrder %}{{ customerData.customerAddressStreetNr }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-4"></div>
+                            <div class="form-group col-md-1">
+                                <input
+                                        type="text"
+                                        id="customer_customerAddressCountryCode"
+                                        name="customer[customerAddressCountryCode]"
+                                        required="required"
+                                        placeholder="Land"
+                                        class="form-control autocomplete_customers ui-autocomplete-input"
+                                        data-type="customer_country_code"
+                                        autocomplete="off"
+                                        value="{% if editCustomerOrder %}{{ customerData.customerCountryCode }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-2">
+                                <input
+                                        type="text"
+                                        id="customer_customerAddressZipcode"
+                                        name="customer[customerAddressZipcode]"
+                                        required="required"
+                                        placeholder="PLZ"
+                                        class="form-control autocomplete_customers ui-autocomplete-input"
+                                        data-type="customer_zip_code"
+                                        autocomplete="off"
+                                        value="{% if editCustomerOrder %}{{ customerData.customerZipcode }}{% endif %}"
+                                >
+                            </div>
+                            <div class="form-group col-md-5">
+                                <input
+                                        type="text"
+                                        id="customer_customerAddressCity"
+                                        name="customer[customerAddressCity]"
+                                        required="required"
+                                        placeholder="Ort"
+                                        class="form-control autocomplete_customers ui-autocomplete-input"
+                                        data-type="customer_city"
+                                        autocomplete="off"
+                                        value="{% if editCustomerOrder %}{{ customerData.customerCity }}{% endif %}"
+                                >
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row col-md-6">
-                    <div class="form-row col-md-12">
-                        <div class="form-group col-md-4">
-                            {% if editCustomerOrder %}
-                                {{ form_row(customerOrderForm.customerOrderDate, {'attr': {'class': 'form-control', 'style': 'background-color: transparent', 'readonly': 'true' }}) }}
-                            {% else %}
-                                {{ form_row(customerOrderForm.customerOrderDate) }}
-                            {% endif %}
-                        </div>
-                        <div class="form-group col-md-2"></div>
-                        <div class="form-group col-md-4">
-                            {% if editCustomerOrder %}
-                                {{ form_row(customerOrderForm.customerOrderCreationDate, {'attr': {'class': 'form-control', 'style': 'background-color: transparent', 'readonly': 'true' }}) }}
-                            {% else %}
-                                {{ form_row(customerOrderForm.customerOrderCreationDate, {'value' : "now"|date("d.m.Y") }) }}
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class="row col-md-6">
-                    <div class="form-row col-md-12">
-                        <div class="form-group col-md-4">
-                            <label for="inputOrderDat">Bearbeiter</label>
-                            <input class="form-control" type="text" placeholder="{{ app.user.firstname }} {{ app.user.lastname }}" readonly="" style="background-color: transparent;">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12"></div>
-                <div class="form-group col-md-12"></div>
-                {% block webwms_edit_customer_order_form_order_table_pos %}
-                    {{ form_start(customerOrderPosForm) }}
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            <table id="autocomplete_table" class="table table-hover">
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th width="1%" style="text-align:center;">#</th>
-                                    <th width="15%" scope="col">Artikel-Nr</th>
-                                    <th width="35%" style="text-align:center;">Artikel Bezeichnung</th>
-                                    <th width="10%" style="text-align:center;">Menge</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                    <div class="row col-md-6">
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-6">
+                                {% set newCustomerOrderId = lastId.id +1 %}
+                                {% set newCustomerOrderNr =  "VLS-01-#{lastId.id +1}" %}
+
                                 {% if editCustomerOrder %}
-                                    {% for key, position in customerOrderPos %}
-                                        <tr id="row_{{ key }}">
-                                            <th id="delete_{{ key }}" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
+                                    {{ form_row(customerOrderForm.customerOrderNr) }}
+                                {% else %}
+                                    {{ form_row(customerOrderForm.customerOrderNr, {'value' : newCustomerOrderNr }) }}
+                                {% endif %}
+                                {{ form_row(customerOrderForm.customerId) }}
+                                {{ form_row(customerOrderForm.customerOrderId, {'value' : newCustomerOrderId }) }}
+                                {{ form_row(customerOrderForm.usrId, {'value' : app.user.id }) }}
+                            </div>
+                            <div class="form-group col-md-6">
+                                {{ form_row(customerOrderForm.customerOrderReference) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-6">
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-4">
+                                {% if editCustomerOrder %}
+                                    {{ form_row(customerOrderForm.customerOrderDate, {'attr': {'class': 'form-control', 'style': 'background-color: transparent', 'readonly': 'true' }}) }}
+                                {% else %}
+                                    {{ form_row(customerOrderForm.customerOrderDate) }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-2"></div>
+                            <div class="form-group col-md-4">
+                                {% if editCustomerOrder %}
+                                    {{ form_row(customerOrderForm.customerOrderCreationDate, {'attr': {'class': 'form-control', 'style': 'background-color: transparent', 'readonly': 'true' }}) }}
+                                {% else %}
+                                    {{ form_row(customerOrderForm.customerOrderCreationDate, {'value' : "now"|date("d.m.Y") }) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-6">
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-4">
+                                <label for="inputOrderDat">Bearbeiter</label>
+                                <input class="form-control" type="text" placeholder="{{ app.user.firstname }} {{ app.user.lastname }}" readonly="" style="background-color: transparent;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12"></div>
+                    <div class="form-group col-md-12"></div>
+                    {% block webwms_edit_customer_order_form_order_table_pos %}
+                        {{ form_start(customerOrderPosForm) }}
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table id="autocomplete_table" class="table table-hover">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th width="1%" style="text-align:center;">#</th>
+                                        <th width="15%" scope="col">Artikel-Nr</th>
+                                        <th width="35%" style="text-align:center;">Artikel Bezeichnung</th>
+                                        <th width="10%" style="text-align:center;">Menge</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if editCustomerOrder %}
+                                        {% for key, position in customerOrderPos %}
+                                            <tr id="row_{{ key }}">
+                                                <th id="delete_{{ key }}" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
+                                                <td>
+                                                    <input id="customer_order_pos_articleNr_{{ key }}" type="text" data-type="article_nr" name="customer_order_pos[articleNr]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleId }}">
+                                                    <input id="customer_order_pos_articleId_{{ key }}" type="hidden" data-type="article_id" name="customer_order_pos[articleId]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.id }}">
+                                                </td>
+                                                <td>
+                                                    <input id="customer_order_pos_articleName_{{ key }}" type="text" data-type="article_name" name="customer_order_pos[articleName]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleName }}">
+                                                </td>
+                                                <td>
+                                                    <input id="customer_order_pos_quantity_{{ key }}" type="text" data-type="quantity" name="customer_order_pos[quantity]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.quantity }}">
+                                                    <input id="customer_order_pos_customerOrderId_{{ key }}" type="hidden" data-type="customer_order_id" name="customer_order_pos[customerOrderId]" class="inputOrderId2" autocomplete="off" value="{{ position.customerOrderId }}">
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr id="row_1">
+                                            <th id="delete_1" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
                                             <td>
-                                                <input id="customer_order_pos_articleNr_{{ key }}" type="text" data-type="article_nr" name="customer_order_pos[articleNr]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleId }}">
-                                                <input id="customer_order_pos_articleId_{{ key }}" type="hidden" data-type="article_id" name="customer_order_pos[articleId]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.id }}">
+                                                {{ form_row(customerOrderPosForm.articleNr, {'id': 'customer_order_pos_articleNr_1'}) }}
+                                                {{ form_row(customerOrderPosForm.articleId, {'id': 'customer_order_pos_articleId_1'}) }}
                                             </td>
                                             <td>
-                                                <input id="customer_order_pos_articleName_{{ key }}" type="text" data-type="article_name" name="customer_order_pos[articleName]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleName }}">
+                                                {{ form_row(customerOrderPosForm.articleName, {'id': 'customer_order_pos_articleName_1'}) }}
+                                                {{ form_row(customerOrderPosForm.customerOrderId, {
+                                                    'attr':
+                                                    {
+                                                        'id': 'customer_order_pos_customerOrderId_1',
+                                                        'value' : newCustomerOrderId
+                                                    }
+                                                }) }}
                                             </td>
                                             <td>
-                                                <input id="customer_order_pos_quantity_{{ key }}" type="text" data-type="quantity" name="customer_order_pos[quantity]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.quantity }}">
-                                                <input id="customer_order_pos_customerOrderId_{{ key }}" type="hidden" data-type="customer_order_id" name="customer_order_pos[customerOrderId]" class="inputOrderId2" autocomplete="off" value="{{ position.customerOrderId }}">
+                                                {{ form_row(customerOrderPosForm.quantity, {'id': 'customer_order_pos_quantity_1'}) }}
                                             </td>
                                         </tr>
-                                    {% endfor %}
-                                {% else %}
-                                    <tr id="row_1">
-                                        <th id="delete_1" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
-                                        <td>
-                                            {{ form_row(customerOrderPosForm.articleNr, {'id': 'customer_order_pos_articleNr_1'}) }}
-                                            {{ form_row(customerOrderPosForm.articleId, {'id': 'customer_order_pos_articleId_1'}) }}
-                                        </td>
-                                        <td>
-                                            {{ form_row(customerOrderPosForm.articleName, {'id': 'customer_order_pos_articleName_1'}) }}
-                                            {{ form_row(customerOrderPosForm.customerOrderId, {
-                                                'attr':
-                                                {
-                                                    'id': 'customer_order_pos_customerOrderId_1',
-                                                    'value' : newCustomerOrderId
-                                                }
-                                            }) }}
-                                        </td>
-                                        <td>
-                                            {{ form_row(customerOrderPosForm.quantity, {'id': 'customer_order_pos_quantity_1'}) }}
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                                </tbody>
-                            </table>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="btn-container">
+                                <button id="addNewButton" class="btn btn-sm" value="Neue Position">Neue Position</button>
+                            </div>
+                            <input
+                                    type="hidden"
+                                    id="editCustomerOrder"
+                                    name="customerOrder[editCustomerOrder]"
+                                    value="{{ editCustomerOrder|json_encode() }}"
+                            >
                         </div>
-                        <div class="btn-container">
-                            <button id="addNewButton" class="btn btn-sm" value="Neue Position">Neue Position</button>
-                        </div>
-                        <input
-                                type="hidden"
-                                id="editCustomerOrder"
-                                name="customerOrder[editCustomerOrder]"
-                                value="{{ editCustomerOrder|json_encode() }}"
-                        >
-                    </div>
-                    {{ form_end(customerOrderPosForm) }}
-                {% endblock %}
+                        {{ form_end(customerOrderPosForm) }}
+                    {% endblock %}
+                </div>
+
+                <div class="text-center">
+                    {{ form_widget(customerOrderForm.save) }} {{ form_widget(customerOrderForm.abort) }}
+                </div>
+                {{ form_end(customerOrderForm) }}
             </div>
+        {% endblock %}
 
-            <div class="text-center">
-                {{ form_widget(customerOrderForm.save) }} {{ form_widget(customerOrderForm.abort) }}
-            </div>
-            {{ form_end(customerOrderForm) }}
-        </div>
-    {% endblock %}
+        {% block bodyjs %}
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.customersAutofill.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.itemsCustomerOrderPosAutofill.js') }}"></script>
+            <script>
+                {% set newCustomerOrderId = lastId.id +1 %}
+                {% set editOrder = editCustomerOrder|json_encode() %}
 
-    {% block bodyjs %}
-        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.customersAutofill.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.itemsCustomerOrderPosAutofill.js') }}"></script>
-        <script>
-            {% set newCustomerOrderId = lastId.id +1 %}
-            {% set editOrder = editCustomerOrder|json_encode() %}
+                const orderId = {{ newCustomerOrderId }};
+                const editOrder = {{ editOrder }};
 
-            const orderId = {{ newCustomerOrderId }};
-            const editOrder = {{ editOrder }};
+                if (!editOrder) {
+                    $.getScript( '{{ asset('assets/js/webWmsCoreJs/jquery.modalDatePicker.js') }}' );
+                }
 
-            if (!editOrder) {
-                $.getScript( '{{ asset('assets/js/webWmsCoreJs/jquery.modalDatePicker.js') }}' );
-            }
+                $("#customer_customerNr").change(function() {
+                    $('#customer_order_customerId').val($('#customer_customerId').val());
+                });
 
-            $("#customer_customerNr").change(function() {
-                $('#customer_order_customerId').val($('#customer_customerId').val());
-            });
-
-        </script>
-    {% endblock %}
-</div>
+            </script>
+        {% endblock %}
+    </div>
+{% endblock %}

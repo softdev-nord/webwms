@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Helper script to run ESLint that differ from the master.
 
 set -Eeuo pipefail

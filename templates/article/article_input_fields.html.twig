@@ -1,36 +1,70 @@
-<div class="row">
-    {% block webwms_article_form %}
-        <div class="card">
-            <div class="card-content">
-                <div class="card">
-                    {{ form_start(articleForm) }}
-                    <div class="row" style="margin-bottom: 25px">
-                        <div class="col-xl-6 col-md-6">
-                            <div class="card" style="height: 100%">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-xxl-12">
-                                            <span class="text-muted mb-3 lh-1 text-truncate">Allgemeine Daten</span>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
-                                                <div class="col-xs-8">
-                                                    {% if editArticle %}
-                                                        {{ form_row(articleForm.articleNr) }}
-                                                    {% else %}
-                                                        {{ form_row(articleForm.articleNr, {'value' : "#{lastId.articleNr +1}"}) }}
-                                                    {% endif %}
+{# templates/article/article_input_fields.html.twig #}
+
+{% block webwms_article_input_fields_form %}
+    <div class="row">
+        {% block webwms_article_input_fields_form_inner %}
+            <div class="card">
+                <div class="card-content">
+                    <div class="card">
+                        {{ form_start(articleForm) }}
+                        <div class="row" style="margin-bottom: 25px">
+                            <div class="col-xl-6 col-md-6">
+                                <div class="card" style="height: 100%">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-xxl-12">
+                                                <span class="text-muted mb-3 lh-1 text-truncate">Allgemeine Daten</span>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
+                                                    <div class="col-xs-8">
+                                                        {% if editArticle %}
+                                                            {{ form_row(articleForm.articleNr) }}
+                                                        {% else %}
+                                                            {{ form_row(articleForm.articleNr, {'value' : "#{lastId.articleNr +1}"}) }}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Artikelname</label>
+                                                    <div class="col-xs-8">
+                                                        {{ form_row(articleForm.articleName) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Kategorie</label>
+                                                    <div class="col-xs-8">
+                                                        {{ form_row(articleForm.articleCategory) }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Artikelname</label>
-                                                <div class="col-xs-8">
-                                                    {{ form_row(articleForm.articleName) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 col-md-6">
+                                <div class="card" style="height: 100%">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-xxl-12">
+                                                <span class="text-muted mb-3 lh-1 text-truncate">Artikel Details</span>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Gewicht</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(articleForm.articleWeight) }}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Kategorie</label>
-                                                <div class="col-xs-8">
-                                                    {{ form_row(articleForm.articleCategory) }}
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">EAN-Nr.</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(articleForm.articleEan) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Einheit (Stk, kg, etc)</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(articleForm.articleUnit) }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -39,28 +73,60 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-md-6">
-                            <div class="card" style="height: 100%">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-xxl-12">
-                                            <span class="text-muted mb-3 lh-1 text-truncate">Artikel Details</span>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Gewicht</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(articleForm.articleWeight) }}
+                        <div class="row">
+                            <div class="col-xl-6 col-md-6">
+                                <div class="card" style="height: 100%">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-xxl-12">
+                                                <span class="text-muted mb-3 lh-1 text-truncate">Artikel Abmessungen</span>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Tiefe</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(articleForm.articleDepth) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Breite</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(articleForm.articleWidth) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Höhe</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(articleForm.articleHeight) }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">EAN-Nr.</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(articleForm.articleEan) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 col-md-6">
+                                <div class="card" style="height: 100%">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-xxl-12">
+                                                <span class="text-muted mb-3 lh-1 text-truncate">Logistik</span>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Auslagerungsstrategie</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(articleForm.stockOutStrategy) }}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Einheit (Stk, kg, etc)</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(articleForm.articleUnit) }}
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">LE-Menge</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(articleForm.leQuantity) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Standard Ladehilfsmittel</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(articleForm.standardLoadingEquipment) }}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -68,76 +134,14 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="text-center">
+                            {{ form_widget(articleForm.save) }} {{ form_widget(articleForm.abort) }}
+                        </div>
+                        {{ form_end(articleForm) }}
                     </div>
-
-                    <div class="row">
-                        <div class="col-xl-6 col-md-6">
-                            <div class="card" style="height: 100%">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-xxl-12">
-                                            <span class="text-muted mb-3 lh-1 text-truncate">Artikel Abmessungen</span>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Tiefe</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(articleForm.articleDepth) }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Breite</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(articleForm.articleWidth) }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Höhe</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(articleForm.articleHeight) }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xl-6 col-md-6">
-                            <div class="card" style="height: 100%">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-xxl-12">
-                                            <span class="text-muted mb-3 lh-1 text-truncate">Logistik</span>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Auslagerungsstrategie</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(articleForm.stockOutStrategy) }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">LE-Menge</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(articleForm.leQuantity) }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Standard Ladehilfsmittel</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(articleForm.standardLoadingEquipment) }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="text-center">
-                        {{ form_widget(articleForm.save) }} {{ form_widget(articleForm.abort) }}
-                    </div>
-                    {{ form_end(articleForm) }}
                 </div>
             </div>
-        </div>
-    {% endblock %}
-</div>
+        {% endblock %}
+    </div>
+{% endblock %}

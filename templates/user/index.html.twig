@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{# templates/user/index.html.twig #}
 
-{% block title %}{{ page }}{{ appName }}{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
     {% block webwms_header %}
@@ -33,6 +33,7 @@
             </div>
         {% endblock %}
     {% endblock %}
+
     {% block bodyjs %}
         <script>
             {% set user_role = app.user.roles.0 %}
@@ -40,4 +41,5 @@
         </script>
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.user.js') }}"></script>
     {% endblock %}
+
 {% endblock %}

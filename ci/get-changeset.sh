@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Calculate the changeset of the current branch or PR.
 set -Eeuo pipefail
 shopt -s inherit_errexit

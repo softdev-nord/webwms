@@ -1,21 +1,25 @@
-<div class="modal" id="stock_in_for_supplier_order_modal" tabindex="-1" role="dialog" aria-labelledby="stock_in_for_supplier_order_modal"
-     aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title"></h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="white-text">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="text-center">
-                    Logik und Design implementieren!
+{# templates/modal/stock_in_for_supplier_order_modal.html.twig #}
+
+{% block webwms_stock_in_for_supplier_order_modal %}
+    <div class="modal" id="stock_in_for_supplier_order_modal" tabindex="-1" role="dialog" aria-labelledby="stock_in_for_supplier_order_modal"
+         aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title"></h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="white-text">&times;</span>
+                    </button>
                 </div>
-                <input id="currentCoordinate" type="hidden">
-            </div>
-            <div class="modal-footer justify-content-center">
+                <div class="modal-body">
+                    <div class="text-center">
+                        Logik und Design implementieren!
+                    </div>
+                    <input id="currentCoordinate" type="hidden">
+                </div>
+                <div class="modal-footer justify-content-center">
+                </div>
             </div>
         </div>
     </div>
-</div>
+{% endblock %}

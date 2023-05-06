@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{# templates/stock/stock_rotation.html.twig #}
 
-{% block title %}{{ page }}{{ appName }}{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
     {% block webwms_header %}
@@ -41,7 +41,9 @@
             </div>
         {% endblock %}
     {% endblock %}
+
     {% block bodyjs %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockRotation.js') }}"></script>
     {% endblock %}
+
 {% endblock %}
