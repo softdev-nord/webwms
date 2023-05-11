@@ -252,6 +252,7 @@ final class ArticleDataHandlerTest extends KernelTestCase
         self::assertInstanceOf(JsonResponse::class, $output);
         self::assertEquals([], json_decode((string) $output->getContent(), true));
     }
+
     public function testAddArticle(): void
     {
         $createdAt = new \DateTime();
