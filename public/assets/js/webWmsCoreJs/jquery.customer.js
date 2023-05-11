@@ -17,14 +17,14 @@
             style: 'single'
         },
         columns: [
-            { data: 'customer_nr' },
-            { data: 'customer_name' },
-            { data: 'customer_address_addition' },
-            { data: 'customer_address_street' },
-            { data: 'customer_address_street_nr' },
-            { data: 'customer_country_code' },
-            { data: 'customer_zip_code' },
-            { data: 'customer_city' }
+            { data: 'customerNr' },
+            { data: 'customerName' },
+            { data: 'customerAddressAddition' },
+            { data: 'customerAddressStreet' },
+            { data: 'customerAddressStreetNr' },
+            { data: 'customerCountryCode' },
+            { data: 'customerZipCode' },
+            { data: 'customerCity' }
         ],
         columnDefs: [
             {

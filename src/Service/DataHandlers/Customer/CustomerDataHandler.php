@@ -52,19 +52,17 @@ class CustomerDataHandler
             ->findOneBy(['customerNr' => $customerNr]);
     }
 
-    public function getAllCustomers(): JsonResponse
+    /**
+     * @return array<mixed>
+     */
+    public function getAllCustomers(): array
     {
-        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
-
-        $queryBuilder
-            ->select('*')
-            ->from('customer');
-
-        $stmt = $queryBuilder->executeQuery();
-
-        $results = $stmt->fetchAllAssociative();
-
-        return new JsonResponse($results);
+        return $this->entityManager
+            ->createQueryBuilder()
+            ->select('c')
+            ->from(Customer::class, 'c')
+            ->getQuery()
+            ->getArrayResult();
     }
 
     /**
@@ -133,12 +131,17 @@ class CustomerDataHandler
         $this->delete($customer);
     }
 
-    /**
-     * @return object[]
-     */
-    public function getLastCustomer(): array
+    public function getLastCustomer(): int
     {
-        return $this->entityManager
-            ->getRepository(Customer::class)->findBy([], ['customerNr' => 'DESC'], 1, 0);
+        $result = $this->entityManager
+            ->createQueryBuilder()
+            ->select('c.customerId')
+            ->from(Customer::class, 'c')
+            ->addOrderBy('c.customerId', 'DESC')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getArrayResult();
+
+        return intval($result[0]['customerId']);
     }
 }

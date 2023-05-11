@@ -196,10 +196,7 @@ class Customer extends AbstractController
         return $this->customerService->getAllCustomersAjax();
     }
 
-    /**
-     * @return object[]
-     */
-    public function getLastCustomer(): array
+    public function getLastCustomer(): int
     {
         return $this->customerService->getLastCustomer();
     }

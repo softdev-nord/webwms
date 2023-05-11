@@ -33,7 +33,7 @@ class CustomerService
 
     public function getAllCustomers(): JsonResponse
     {
-        return $this->customerDataHandler->getAllCustomers();
+        return new JsonResponse($this->customerDataHandler->getAllCustomers());
     }
 
     public function getAllCustomersAjax(): JsonResponse
@@ -56,10 +56,7 @@ class CustomerService
         $this->customerDataHandler->deleteCustomer($customer);
     }
 
-    /**
-     * @return object[]
-     */
-    public function getLastCustomer(): array
+    public function getLastCustomer(): int
     {
         return $this->customerDataHandler->getLastCustomer();
     }

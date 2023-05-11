@@ -23,9 +23,18 @@ class TwigGlobalSubscriber implements EventSubscriberInterface
     ) {
     }
 
+    /**
+     * @throws \Exception
+     */
     public function injectGlobalVariables(): void
     {
+
         $configurations = $this->configurationService->getAllConfigurations();
+
+        if (!$configurations) {
+            return;
+        }
+
         $this->twig->addGlobal('configurations', $configurations['configuration']);
     }
 
