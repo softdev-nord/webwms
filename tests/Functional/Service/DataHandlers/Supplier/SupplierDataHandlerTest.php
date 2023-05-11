@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Functional\Service\DataHandlers\Customer;
+namespace WebWMS\Tests\Functional\Service\DataHandlers\Supplier;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
@@ -11,20 +11,20 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\Customer;
-use WebWMS\Repository\CustomerRepository;
-use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
+use WebWMS\Entity\Supplier;
+use WebWMS\Repository\SupplierRepository;
+use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Tests\Functional\Service\DataHandlers\Customer
+ * @package:    WebWMS\Tests\Functional\Service\DataHandlers\Supplier
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerDataHandlerTest.
+ * Class        SupplierDataHandlerTest.
  *
- * @covers \WebWMS\Service\DataHandlers\Customer\CustomerDataHandler
+ * @covers \WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler
  */
-final class CustomerDataHandlerTest extends KernelTestCase
+final class SupplierDataHandlerTest extends KernelTestCase
 {
     /**
      * @var (EntityManagerInterface&MockObject)|MockObject
@@ -36,7 +36,7 @@ final class CustomerDataHandlerTest extends KernelTestCase
      */
     private MockObject|DateTimeService $dateTimeServiceMock;
 
-    private CustomerDataHandler $customerDataHandler;
+    private SupplierDataHandler $supplierDataHandler;
 
     public function setUp(): void
     {
@@ -48,7 +48,7 @@ final class CustomerDataHandlerTest extends KernelTestCase
         $this->dateTimeServiceMock = $this->getMockBuilder(DateTimeService::class)
             ->getMock();
 
-        $this->customerDataHandler = new CustomerDataHandler(
+        $this->supplierDataHandler = new SupplierDataHandler(
             $this->entityManagerMock,
             $this->dateTimeServiceMock,
         );
@@ -59,139 +59,139 @@ final class CustomerDataHandlerTest extends KernelTestCase
         parent::tearDown();
         unset($this->entityManagerMock);
         unset($this->dateTimeServiceMock);
-        unset($this->customerDataHandler);
+        unset($this->supplierDataHandler);
     }
 
     public function testSave(): void
     {
-        $customer = new Customer();
+        $supplier = new Supplier();
 
         $this->entityManagerMock
             ->expects(self::exactly(1))
             ->method('persist')
-            ->with($customer);
+            ->with($supplier);
         $this->entityManagerMock
             ->expects(self::exactly(1))
             ->method('flush');
 
-        $this->customerDataHandler->save($customer);
+        $this->supplierDataHandler->save($supplier);
     }
 
     public function testDelete(): void
     {
-        $customer = new Customer();
+        $supplier = new Supplier();
 
         $this->entityManagerMock
             ->expects(self::exactly(1))
             ->method('remove')
-            ->with($customer);
+            ->with($supplier);
         $this->entityManagerMock
             ->expects(self::exactly(1))
             ->method('flush');
 
-        $this->customerDataHandler->delete($customer);
+        $this->supplierDataHandler->delete($supplier);
     }
 
-    public function testGetCustomerById(): void
+    public function testGetSupplierById(): void
     {
-        $customer = new Customer();
-        $customerId = 1;
-        $customer->setCustomerId($customerId);
+        $supplier = new Supplier();
+        $supplierId = 1;
+        $supplier->setSupplierId($supplierId);
 
-        $repositoryMock = $this->createMock(CustomerRepository::class);
-        $repositoryMock->expects(self::once())
-            ->method('find')
-            ->with($customerId)
-            ->willReturn($customer);
-
-        $this->entityManagerMock->expects(self::once())
-            ->method('getRepository')
-            ->with(Customer::class)
-            ->willReturn($repositoryMock);
-
-        $result = $this->customerDataHandler->getCustomerById($customerId);
-
-        self::assertSame($customer, $result);
-    }
-
-    public function testGetCustomerByNr(): void
-    {
-        $customer = new Customer();
-        $customerNr = 60000;
-        $customer->setCustomerNr($customerNr);
-
-        $repositoryMock = $this->createMock(CustomerRepository::class);
+        $repositoryMock = self::createMock(SupplierRepository::class);
         $repositoryMock->expects(self::once())
             ->method('findOneBy')
-            ->with(['customerNr' => $customerNr])
-            ->willReturn($customer);
+            ->with(['supplierId' => $supplierId])
+            ->willReturn($supplier);
 
         $this->entityManagerMock->expects(self::once())
             ->method('getRepository')
-            ->with(Customer::class)
+            ->with(Supplier::class)
             ->willReturn($repositoryMock);
 
-        $result = $this->customerDataHandler->getCustomerByNr($customerNr);
+        $result = $this->supplierDataHandler->getSupplierById($supplierId);
 
-        self::assertSame($customer, $result);
+        self::assertSame($supplier, $result);
     }
 
-    public function testGetCustomersReturnsJsonResponse(): void
+    public function testGetSupplierByNr(): void
     {
-        $_GET['name_customer'] = 'John';
-        $_GET['numOfBoxCustomer'] = 'customer_name';
+        $supplier = new Supplier();
+        $supplierNr = 60000;
+        $supplier->setSupplierNr($supplierNr);
+
+        $repositoryMock = $this->createMock(SupplierRepository::class);
+        $repositoryMock->expects(self::once())
+            ->method('findOneBy')
+            ->with(['supplierNr' => $supplierNr])
+            ->willReturn($supplier);
+
+        $this->entityManagerMock->expects(self::once())
+            ->method('getRepository')
+            ->with(Supplier::class)
+            ->willReturn($repositoryMock);
+
+        $result = $this->supplierDataHandler->getSupplierByNr($supplierNr);
+
+        self::assertSame($supplier, $result);
+    }
+
+    public function testGetSuppliersReturnsJsonResponse(): void
+    {
+        $_GET['name_supplier'] = 'John';
+        $_GET['numOfBoxSupplier'] = 'supplier_name';
 
         $stmt = $this->createMock(Result::class);
         $stmt->method('fetchAssociative')
             ->willReturn([
-                'customer_nr' => '1',
-                'customer_name' => 'John Doe',
-                'customer_address_addition' => '',
-                'customer_address_street' => '123 Main St',
-                'customer_address_street_nr' => '1A',
-                'customer_country_code' => 'US',
-                'customer_zip_code' => '12345',
-                'customer_city' => 'Anytown',
-                'customer_id' => 'abc123',
+                'supplier_nr' => '1',
+                'supplier_name' => 'John Doe',
+                'supplier_address_addition' => '',
+                'supplier_address_street' => '123 Main St',
+                'supplier_address_street_nr' => '1A',
+                'supplier_country_code' => 'US',
+                'supplier_zip_code' => '12345',
+                'supplier_city' => 'Anytown',
+                'supplier_id' => 'abc123',
             ]);
         $connection = $this->createMock(Connection::class);
         $connection->method('executeQuery')
-            ->with(self::stringContains('SELECT customer_nr'))
+            ->with(self::stringContains('SELECT supplier_nr'))
             ->willReturn($stmt);
         $this->entityManagerMock->method('getConnection')
             ->willReturn($connection);
 
-        $response = $this->customerDataHandler->getCustomers();
+        $response = $this->supplierDataHandler->getSuppliers();
         self::assertInstanceOf(JsonResponse::class, $response);
 
         $data = json_decode((string) $response->getContent(), true);
         self::assertIsArray($data);
     }
 
-    public function testGetAllCustomers(): void
+    public function testGetAllSuppliers(): void
     {
-        $customers = [
-            ['customerId' => 1, 'name' => 'Customer A'],
-            ['customerId' => 2, 'name' => 'Customer B'],
+        $suppliers = [
+            ['supplierId' => 1, 'name' => 'Supplier A'],
+            ['supplierId' => 2, 'name' => 'Supplier B'],
         ];
 
         $queryMock = $this->createMock(AbstractQuery::class);
-        $queryMock->method('getArrayResult')->willReturn($customers);
+        $queryMock->method('getArrayResult')->willReturn($suppliers);
         $queryBuilderMock = $this->createMock(\Doctrine\ORM\QueryBuilder::class);
         $queryBuilderMock->method('select')->willReturnSelf();
         $queryBuilderMock->method('from')->willReturnSelf();
         $queryBuilderMock->method('getQuery')->willReturn($queryMock);
         $this->entityManagerMock->method('createQueryBuilder')->willReturn($queryBuilderMock);
 
-        $result = $this->customerDataHandler->getAllCustomers();
+        $result = $this->supplierDataHandler->getAllSuppliers();
 
         self::assertIsArray($result);
         self::assertCount(2, $result);
-        self::assertEquals('Customer A', $result[0]['name']);
-        self::assertEquals('Customer B', $result[1]['name']);
+        self::assertEquals('Supplier A', $result[0]['name']);
+        self::assertEquals('Supplier B', $result[1]['name']);
     }
 
-    public function testAddCustomer(): void
+    public function testAddSupplier(): void
     {
         $createdAt = new \DateTime();
         $this->dateTimeServiceMock
@@ -199,9 +199,9 @@ final class CustomerDataHandlerTest extends KernelTestCase
             ->method('createDateTime')
             ->willReturn($createdAt);
 
-        $customerMock = $this->getMockBuilder(Customer::class)
+        $supplierMock = $this->getMockBuilder(Supplier::class)
             ->getMock();
-        $customerMock
+        $supplierMock
             ->expects(self::once())
             ->method('setCreatedAt')
             ->with($createdAt);
@@ -209,15 +209,15 @@ final class CustomerDataHandlerTest extends KernelTestCase
         $this->entityManagerMock
             ->expects(self::once())
             ->method('persist')
-            ->with($customerMock);
+            ->with($supplierMock);
         $this->entityManagerMock
             ->expects(self::once())
             ->method('flush');
 
-        $this->customerDataHandler->addCustomer($customerMock);
+        $this->supplierDataHandler->addSupplier($supplierMock);
     }
 
-    public function testUpdateCustomer(): void
+    public function testUpdateSupplier(): void
     {
         $updatedAt = new \DateTime();
         $this->dateTimeServiceMock
@@ -225,9 +225,9 @@ final class CustomerDataHandlerTest extends KernelTestCase
             ->method('createDateTime')
             ->willReturn($updatedAt);
 
-        $customerMock = $this->getMockBuilder(Customer::class)
+        $supplierMock = $this->getMockBuilder(Supplier::class)
             ->getMock();
-        $customerMock
+        $supplierMock
             ->expects(self::once())
             ->method('setUpdatedAt')
             ->with($updatedAt);
@@ -235,27 +235,46 @@ final class CustomerDataHandlerTest extends KernelTestCase
         $this->entityManagerMock
             ->expects(self::once())
             ->method('persist')
-            ->with($customerMock);
+            ->with($supplierMock);
         $this->entityManagerMock
             ->expects(self::once())
             ->method('flush');
 
-        $this->customerDataHandler->updateCustomer($customerMock);
+        $this->supplierDataHandler->updateSupplier($supplierMock);
     }
 
-    public function testDeleteCustomer(): void
+    public function testDeleteSupplier(): void
     {
-        $customerMock = $this->getMockBuilder(Customer::class)
+        $supplierMock = $this->getMockBuilder(Supplier::class)
             ->getMock();
 
         $this->entityManagerMock
             ->expects(self::once())
             ->method('remove')
-            ->with($customerMock);
+            ->with($supplierMock);
         $this->entityManagerMock
             ->expects(self::once())
             ->method('flush');
 
-        $this->customerDataHandler->deleteCustomer($customerMock);
+        $this->supplierDataHandler->deleteSupplier($supplierMock);
     }
+
+//    public function testGetLastSupplierReturnsInt(): void
+//    {
+//        $result = [['supplierId' => '5']];
+//        $queryMock = $this->createMock(AbstractQuery::class);
+//        $queryMock->method('getArrayResult')->willReturn($result);
+//        $queryBuilderMock = $this->createMock(\Doctrine\ORM\QueryBuilder::class);
+//        $queryBuilderMock->method('select')->willReturnSelf();
+//        $queryBuilderMock->method('from')->willReturnSelf();
+//        $queryBuilderMock->method('addOrderBy')->with('')->willReturnSelf();
+//        $queryBuilderMock->method('setMaxResults')->willReturnSelf();
+//        $queryBuilderMock->method('getQuery')->willReturn($queryMock);
+//        $this->entityManagerMock->method('createQueryBuilder')->willReturn($queryBuilderMock);
+//
+//        $lastSupplierId = $this->supplierDataHandler->getLastSupplier();
+//
+//        self::assertIsInt($lastSupplierId);
+//        self::assertEquals(5, $lastSupplierId);
+//    }
 }

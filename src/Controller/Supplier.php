@@ -83,7 +83,7 @@ class Supplier extends AbstractController
             'supplier/supplier_add.html.twig',
             [
                 'supplierForm' => $form->createView(),
-                'lastId' => $this->getLastSupplier()[0],
+                'lastId' => $this->getLastSupplier(),
                 'editSupplier' => false,
             ]
         );
@@ -189,10 +189,7 @@ class Supplier extends AbstractController
         return $this->supplierService->getAllSuppliersAjax();
     }
 
-    /**
-     * @return object[]
-     */
-    public function getLastSupplier(): array
+    public function getLastSupplier(): int
     {
         return $this->supplierService->getLastSupplier();
     }

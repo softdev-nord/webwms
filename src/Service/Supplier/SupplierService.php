@@ -33,7 +33,7 @@ class SupplierService
 
     public function getAllSuppliers(): JsonResponse
     {
-        return $this->supplierDataHandler->getAllSuppliers();
+        return new JsonResponse($this->supplierDataHandler->getAllSuppliers());
     }
 
     public function getAllSuppliersAjax(): JsonResponse
@@ -56,10 +56,7 @@ class SupplierService
         $this->supplierDataHandler->deleteSupplier($supplier);
     }
 
-    /**
-     * @return object[]
-     */
-    public function getLastSupplier(): array
+    public function getLastSupplier(): int
     {
         return $this->supplierDataHandler->getLastSupplier();
     }

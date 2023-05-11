@@ -93,19 +93,17 @@ class SupplierDataHandler
         return new JsonResponse($data);
     }
 
-    public function getAllSuppliers(): JsonResponse
+    /**
+     * @return array<mixed>
+     */
+    public function getAllSuppliers(): array
     {
-        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
-
-        $queryBuilder
-            ->select('*')
-            ->from('supplier');
-
-        $stmt = $queryBuilder->executeQuery();
-
-        $results = $stmt->fetchAllAssociative();
-
-        return new JsonResponse($results);
+        return $this->entityManager
+            ->createQueryBuilder()
+            ->select('c')
+            ->from(Supplier::class, 'c')
+            ->getQuery()
+            ->getArrayResult();
     }
 
     public function addSupplier(Supplier $supplier): void
@@ -127,13 +125,17 @@ class SupplierDataHandler
         $this->delete($supplier);
     }
 
-    /**
-     * @return object[]
-     */
-    public function getLastSupplier(): array
+    public function getLastSupplier(): int
     {
-        return $this->entityManager
-            ->getRepository(Supplier::class)
-            ->findBy([], ['supplierNr' => 'DESC'], 1, 0);
+        $result = $this->entityManager
+            ->createQueryBuilder()
+            ->select('c.supplierId')
+            ->from(Supplier::class, 'c')
+            ->addOrderBy('c.supplierId', 'DESC')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getArrayResult();
+
+        return intval($result[0]['supplierId']);
     }
 }

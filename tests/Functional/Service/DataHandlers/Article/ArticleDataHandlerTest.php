@@ -16,7 +16,7 @@ use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Tests\Unit\Entity
+ * @package:    WebWMS\Tests\Functional\Service\DataHandlers\Article
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ArticleDataHandlerTest.
