@@ -90,6 +90,12 @@ phpqa: ## run code check (phpmd)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src';
 
 ######################################################################
+############################ Twig Linter #############################
+######################################################################
+twig-lint: ## Runs twig lint.
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'bin/console lint:twig templates';
+
+######################################################################
 ############################# CSS Linter #############################
 ######################################################################
 css-stylelint: ## Runs stylelint.

@@ -90,7 +90,7 @@ class Customer extends AbstractController
             'customer/customer_add.html.twig',
             [
                 'customerForm' => $form->createView(),
-                'lastId' => $this->getLastCustomer()[0],
+                'lastId' => $this->getLastCustomer(),
                 'editCustomer' => false,
             ]
         );
@@ -196,10 +196,7 @@ class Customer extends AbstractController
         return $this->customerService->getAllCustomersAjax();
     }
 
-    /**
-     * @return object[]
-     */
-    public function getLastCustomer(): array
+    public function getLastCustomer(): int
     {
         return $this->customerService->getLastCustomer();
     }

@@ -36,7 +36,7 @@ definitions:
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - vendor/bin/var-dump-check --symfony --laravel --doctrine --exclude vendor .
-    
+
     - step: &vulnerability-scan
         name: Dependency Vulnerability Scan
         image: composer:2
@@ -51,7 +51,7 @@ definitions:
                 | xargs -I % curl %  -L --output local-php-security-checker
           - chmod +x local-php-security-checker
           - ./local-php-security-checker
-    
+
     - step: &mess-detector
         name: PHP Mess Detector (phpmd)
         image: composer:2
@@ -64,7 +64,20 @@ definitions:
           - vendor/bin/phpmd './src/,./bundles/' ansi rulesets.xml
         artifacts:
           - test-reports/**
-    
+
+    - step: &twit-lint
+        name: Check Templates
+        image: composer:2
+        caches:
+          - composer
+        script:
+          - /bin/bash ci/webwms-env.sh
+          - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
+          - composer install --ignore-platform-reqs --no-scripts
+          - bin/console lint:twig templates
+        artifacts:
+          - .env
+
     - step: &unit-tests
         name: Unit Tests
         image: composer:2
@@ -102,6 +115,7 @@ pipelines:
         - step: *var-dump-find
         - step: *vulnerability-scan
         - step: *mess-detector
+        - step: *twit-lint
         - step: *unit-tests
     - step:
         <<: *build-deploy

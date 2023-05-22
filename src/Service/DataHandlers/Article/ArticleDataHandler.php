@@ -64,7 +64,7 @@ class ArticleDataHandler
 
     public function getAllArticlesWithJoin(): JsonResponse
     {
-        $conn = $this->entityManager->getConnection();
+        $connection = $this->entityManager->getConnection();
 
         $sql = "SELECT art.article_id, art.article_nr, art.article_name, art.article_category, art.article_weight, art.article_ean, art.article_unit, art.article_depth, art.article_width, art.article_height, art.created_at, art.updated_at,
                 (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) - (SUM(IF(transport_history.tr_type = '2', transport_history.tr_quantity, 0.000)))
@@ -75,7 +75,7 @@ class ArticleDataHandler
                     ON tph.article_nr = art.article_nr
                 GROUP BY art.article_nr";
 
-        $data = $conn->fetchAllAssociative($sql);
+        $data = $connection->fetchAllAssociative($sql);
 
         return new JsonResponse($data);
     }
@@ -140,5 +140,12 @@ class ArticleDataHandler
     public function deleteArticle(Article $article): void
     {
         $this->delete($article);
+    }
+
+    public function getLastArticle(): ?Article
+    {
+        return $this->entityManager
+            ->getRepository(Article::class)
+            ->findOneBy([], ['articleNr' => 'DESC']);
     }
 }
