@@ -77,6 +77,19 @@ definitions:
           - bin/console lint:twig templates
         artifacts:
           - .env
+    
+    - step: &yaml-lint
+        name: Yaml lint
+        caches:
+          - composer
+        script:
+          - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
+          - cd app/
+          - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
+          - composer install
+          - bin/console lint:yaml config --parse-tags
+        artifacts:
+          - test-reports/**
 
     - step: &unit-tests
         name: Unit Tests
@@ -116,6 +129,7 @@ pipelines:
         - step: *vulnerability-scan
         - step: *mess-detector
         - step: *twit-lint
+        - step: *yaml-lint
         - step: *unit-tests
     - step:
         <<: *build-deploy

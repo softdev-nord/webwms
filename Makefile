@@ -114,6 +114,12 @@ js-eslint-fix: ## Runs ESLint with --fix flag (Runs on the host system)
 	@npm run eslint-changed -- -d public -r
 
 ######################################################################
+############################ Yaml Linter #############################
+######################################################################
+yaml-lint: ## lints the yaml files (config folder)
+	@docker exec -t $(APP_CONTAINER_NAME) bin/console lint:yaml config --parse-tags
+
+######################################################################
 ############################### Tests ################################
 ######################################################################
 run-tests-unit: ## run unit tests
