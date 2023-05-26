@@ -61,7 +61,7 @@ class TransportRequestService
             $transportRequest->setTrNr($this->getLastTransportRequestNr() + 1);
             $transportRequest->setTrPos($key + 1);
             $transportRequest->setTrPrio(0);
-            $transportRequest->setArtNr(strval($articleNr));
+            $transportRequest->setArticleNr(strval($articleNr));
             $transportRequest->setTrQuantity(floatval($data['stock_quantity']));
             $transportRequest->setStockCoordinate(strval($data['stock_coordinate']));
             $transportRequest->setStockNr(intval($data['stock_ln']));

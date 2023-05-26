@@ -19,147 +19,51 @@ final class LoggingTest extends TestCase
 {
     private Logging $logging;
 
-    private \DateTimeImmutable $dateTime;
+    private \DateTime $dateTime;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->logging = new Logging();
-        $this->dateTime = new \DateTimeImmutable();
+        $this->dateTime = new \DateTime();
     }
 
-    protected function tearDown(): void
+    public function testGetterAndSetterMethods(): void
     {
-        parent::tearDown();
+        // Test setId() and getId()
+        $id = 1;
+        $this->logging->setId($id);
+        self::assertEquals($id, $this->logging->getId());
 
-        unset($this->logging);
-        unset($this->dateTime);
-    }
+        // Test setRoute() and getRoute()
+        $route = 'route';
+        $this->logging->setRoute($route);
+        self::assertEquals($route, $this->logging->getRoute());
 
-    public function testGetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('id');
-        $property->setValue($this->logging, $expected);
-        self::assertSame($expected, $this->logging->getId());
-    }
+        // Test setMessage() and getMessage()
+        $message = 'Test Message';
+        $this->logging->setMessage($message);
+        self::assertEquals($message, $this->logging->getMessage());
 
-    public function testSetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('id');
-        $this->logging->setId($expected);
-        self::assertSame($expected, $property->getValue($this->logging));
-    }
+        // Test setDate() and getDate()
+        $date = $this->dateTime;
+        $this->logging->setDate($date);
+        self::assertEquals($date, $this->logging->getDate());
 
-    public function testGetRoute(): void
-    {
-        $expected = 'route';
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('route');
-        $property->setValue($this->logging, $expected);
-        self::assertSame($expected, $this->logging->getRoute());
-    }
+        // Test setUser() and getUser()
+        $articleName = 'Rene Irrgang';
+        $this->logging->setUser($articleName);
+        self::assertEquals($articleName, $this->logging->getUser());
 
-    public function testSetRoute(): void
-    {
-        $expected = 'route';
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('route');
-        $this->logging->setRoute($expected);
-        self::assertSame($expected, $property->getValue($this->logging));
-    }
+        // Test setIpAddress() and getIpAddress()
+        $quantity = '123.123.123.123';
+        $this->logging->setIpAddress($quantity);
+        self::assertEquals($quantity, $this->logging->getIpAddress());
 
-    public function testGetMessage(): void
-    {
-        $expected = 'message';
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('message');
-        $property->setValue($this->logging, $expected);
-        self::assertSame($expected, $this->logging->getMessage());
-    }
-
-    public function testSetMessage(): void
-    {
-        $expected = 'message';
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('message');
-        $this->logging->setMessage($expected);
-        self::assertSame($expected, $property->getValue($this->logging));
-    }
-
-    public function testGetDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('date');
-        $property->setValue($this->logging, $expected);
-        self::assertSame($expected, $this->logging->getDate());
-    }
-
-    public function testSetDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('date');
-        $this->logging->setDate($expected);
-        self::assertSame($expected, $property->getValue($this->logging));
-    }
-
-    public function testGetUser(): void
-    {
-        $expected = 'user';
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('user');
-        $property->setValue($this->logging, $expected);
-        self::assertSame($expected, $this->logging->getUser());
-    }
-
-    public function testSetUser(): void
-    {
-        $expected = 'user';
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('user');
-        $this->logging->setUser($expected);
-        self::assertSame($expected, $property->getValue($this->logging));
-    }
-
-    public function testGetIpAddress(): void
-    {
-        $expected = 'ipAddress';
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('ipAddress');
-        $property->setValue($this->logging, $expected);
-        self::assertSame($expected, $this->logging->getIpAddress());
-    }
-
-    public function testSetIpAddress(): void
-    {
-        $expected = 'ipAddress';
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('ipAddress');
-        $this->logging->setIpAddress($expected);
-        self::assertSame($expected, $property->getValue($this->logging));
-    }
-
-    public function testGetUserAgent(): void
-    {
-        $expected = 'userAgent';
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('userAgent');
-        $property->setValue($this->logging, $expected);
-        self::assertSame($expected, $this->logging->getUserAgent());
-    }
-
-    public function testSetUserAgent(): void
-    {
-        $expected = 'userAgent';
-        $property = (new \ReflectionClass(Logging::class))
-            ->getProperty('userAgent');
-        $this->logging->setUserAgent($expected);
-        self::assertSame($expected, $property->getValue($this->logging));
+        // Test setUserAgent() and getUserAgent()
+        $userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36';
+        $this->logging->setUserAgent($userAgent);
+        self::assertEquals($userAgent, $this->logging->getUserAgent());
     }
 }

@@ -28,31 +28,13 @@ class TwigGlobalSubscriber implements EventSubscriberInterface
      */
     public function injectGlobalVariables(): void
     {
-
         $configurations = $this->configurationService->getAllConfigurations();
-
-        if (!$configurations) {
-            return;
-        }
 
         $this->twig->addGlobal('configurations', $configurations['configuration']);
     }
 
-    /*public function injectGlobalVariables()
-    {
-        $base_params = $this->configurationService->getAllConfigurations();
-        $this->twig->addGlobal('config', $base_params);
-        foreach ($base_params as $key => $value) {
-            $this->twig->addGlobal('config', $base_params);
-        }
-    }*/
-
     public static function getSubscribedEvents(): array
     {
         return [KernelEvents::CONTROLLER => 'injectGlobalVariables'];
-    }
-
-    public function onKernelRequest(): void
-    {
     }
 }
