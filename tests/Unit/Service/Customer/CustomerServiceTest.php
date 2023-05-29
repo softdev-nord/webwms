@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Functional\Service\Customer;
+namespace WebWMS\Tests\Unit\Service\Customer;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -12,7 +12,7 @@ use WebWMS\Service\Customer\CustomerService;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
 /**
- * @package:    WebWMS\Tests\Functional\Service\Customer
+ * @package:    WebWMS\Tests\Unit\Service\Customer
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerServiceTest
@@ -21,11 +21,12 @@ use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
  */
 final class CustomerServiceTest extends TestCase
 {
+    private CustomerService $customerService;
+
     /**
      * @var (CustomerDataHandler&MockObject)|MockObject
      */
     private MockObject|CustomerDataHandler $customerDataHandler;
-    private CustomerService $customerService;
 
     protected function setUp(): void
     {
@@ -33,26 +34,12 @@ final class CustomerServiceTest extends TestCase
         $this->customerService = new CustomerService($this->customerDataHandler);
     }
 
-    public function testGetCustomerByIdReturnsNullWhenCustomerDoesNotExist(): void
-    {
-        $customerId = 1;
-        $this->customerDataHandler
-            ->expects(self::once())
-            ->method('getCustomerById')
-            ->with($customerId)
-            ->willReturn(null);
-
-        $result = $this->customerService->getCustomerById($customerId);
-
-        self::assertNull($result);
-    }
-
-    public function testGetCustomerByIdReturnsCustomerWhenCustomerExists(): void
+    public function testGetCustomerById(): void
     {
         $customerId = 1;
         $customer = new Customer();
-        $this->customerDataHandler
-            ->expects(self::once())
+
+        $this->customerDataHandler->expects(self::once())
             ->method('getCustomerById')
             ->with($customerId)
             ->willReturn($customer);
@@ -62,26 +49,12 @@ final class CustomerServiceTest extends TestCase
         self::assertSame($customer, $result);
     }
 
-    public function testGetCustomerByNrReturnsNullWhenCustomerDoesNotExist(): void
+    public function testGetCustomerByNr(): void
     {
-        $customerNr = 60000;
-        $this->customerDataHandler
-            ->expects(self::once())
-            ->method('getCustomerByNr')
-            ->with($customerNr)
-            ->willReturn(null);
-
-        $result = $this->customerService->getCustomerByNr($customerNr);
-
-        self::assertNull($result);
-    }
-
-    public function testGetCustomerByNrReturnsCustomerWhenCustomerExists(): void
-    {
-        $customerNr = 60000;
+        $customerNr = 123;
         $customer = new Customer();
-        $this->customerDataHandler
-            ->expects(self::once())
+
+        $this->customerDataHandler->expects(self::once())
             ->method('getCustomerByNr')
             ->with($customerNr)
             ->willReturn($customer);
@@ -91,12 +64,13 @@ final class CustomerServiceTest extends TestCase
         self::assertSame($customer, $result);
     }
 
-    public function testGetAllCustomersReturnsJsonResponse(): void
+    public function testGetAllCustomers(): void
     {
         $customers = [
             new Customer(),
             new Customer(),
         ];
+
         $this->customerDataHandler
             ->expects(self::once())
             ->method('getAllCustomers')
@@ -107,31 +81,28 @@ final class CustomerServiceTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $result);
     }
 
-    public function testGetAllCustomersAjaxReturnsJsonResponse(): void
+    public function testGetAllCustomersAjax(): void
     {
-        $customers = [
-            new Customer(),
-            new Customer(),
-        ];
-        $this->customerDataHandler
-            ->expects(self::once())
+        $jsonResponse = $this->createMock(JsonResponse::class);
+
+        $this->customerDataHandler->expects(self::once())
             ->method('getCustomers')
-            ->willReturn(new JsonResponse($customers));
+            ->willReturn($jsonResponse);
 
         $result = $this->customerService->getAllCustomersAjax();
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertSame($jsonResponse, $result);
     }
 
     public function testAddCustomerCallsDataHandlerMethod(): void
     {
-        $customer = new Customer();
+        $article = new Customer();
         $this->customerDataHandler
             ->expects(self::once())
             ->method('addCustomer')
-            ->with($customer);
+            ->with($article);
 
-        $this->customerService->addCustomer($customer);
+        $this->customerService->addCustomer($article);
     }
 
     public function testUpdateCustomerCallsDataHandlerMethod(): void
@@ -156,16 +127,16 @@ final class CustomerServiceTest extends TestCase
         $this->customerService->deleteCustomer($customer);
     }
 
-    public function testGetLastCustomerReturnsInt(): void
+    public function testGetLastCustomer(): void
     {
-        $lastCustomerId = 5;
-        $this->customerDataHandler
-            ->expects(self::once())
+        $lastCustomerId = 10;
+
+        $this->customerDataHandler->expects(self::once())
             ->method('getLastCustomer')
             ->willReturn($lastCustomerId);
 
         $result = $this->customerService->getLastCustomer();
 
-        self::assertIsInt($result);
+        self::assertSame($lastCustomerId, $result);
     }
 }

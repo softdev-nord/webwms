@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Functional\Service\Article;
+namespace WebWMS\Tests\Unit\Service\Article;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -12,7 +12,7 @@ use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 
 /**
- * @package:    WebWMS\Tests\Functional\Service\Article
+ * @package:    WebWMS\Tests\Unit\Service\Article
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ArticleServiceTest
@@ -25,6 +25,7 @@ final class ArticleServiceTest extends TestCase
      * @var (ArticleDataHandler&MockObject)|MockObject
      */
     private MockObject|ArticleDataHandler $articleDataHandler;
+
     private ArticleService $articleService;
 
     protected function setUp(): void
@@ -120,7 +121,7 @@ final class ArticleServiceTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $result);
     }
 
-    public function testAddArticleCallsDataHandlerMethod(): void
+    public function testAddArticle(): void
     {
         $article = new Article();
         $this->articleDataHandler
@@ -131,7 +132,7 @@ final class ArticleServiceTest extends TestCase
         $this->articleService->addArticle($article);
     }
 
-    public function testUpdateArticleCallsDataHandlerMethod(): void
+    public function testUpdateArticle(): void
     {
         $article = new Article();
         $this->articleDataHandler
@@ -142,7 +143,7 @@ final class ArticleServiceTest extends TestCase
         $this->articleService->updateArticle($article);
     }
 
-    public function testDeleteArticleCallsDataHandlerMethod(): void
+    public function testDeleteArticle(): void
     {
         $article = new Article();
         $this->articleDataHandler

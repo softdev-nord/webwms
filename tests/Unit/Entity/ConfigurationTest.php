@@ -44,31 +44,31 @@ final class ConfigurationTest extends TestCase
         // Test setId() and getId()
         $id = 1;
         $this->configuration->setId($id);
-        $this->assertEquals($id, $this->configuration->getId());
+        self::assertEquals($id, $this->configuration->getId());
 
         // Test setName() and getName()
         $name = 'test_name';
         $this->configuration->setName($name);
-        $this->assertEquals($name, $this->configuration->getName());
+        self::assertEquals($name, $this->configuration->getName());
 
         // Test setValue() and getValue()
         $value = 'test_value';
         $this->configuration->setValue($value);
-        $this->assertEquals($value, $this->configuration->getValue());
+        self::assertEquals($value, $this->configuration->getValue());
 
         // Test setLabel() and getLabel()
         $label = 'test_label';
         $this->configuration->setLabel($label);
-        $this->assertEquals($label, $this->configuration->getLabel());
+        self::assertEquals($label, $this->configuration->getLabel());
 
         // Test setDescription() and getDescription()
         $description = 'test_description';
         $this->configuration->setDescription($description);
-        $this->assertEquals($description, $this->configuration->getDescription());
+        self::assertEquals($description, $this->configuration->getDescription());
 
         // Test setType() and getType()
         $type = 'test_type';
         $this->configuration->setType($type);
-        $this->assertEquals($type, $this->configuration->getType());
+        self::assertEquals($type, $this->configuration->getType());
     }
 }

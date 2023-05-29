@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Configuration;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Service\Configuration\ConfigurationService;
 use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
@@ -18,8 +19,12 @@ use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
  */
 final class ConfigurationServiceTest extends TestCase
 {
-    private ConfigurationDataHandler $configurationDataHandler;
     private ConfigurationService $configurationService;
+
+    /**
+     * @var (ConfigurationDataHandler&MockObject)|MockObject
+     */
+    private MockObject|ConfigurationDataHandler $configurationDataHandler;
 
     protected function setUp(): void
     {
