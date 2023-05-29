@@ -79,75 +79,18 @@ class StockLocationDataHandler
         return new JsonResponse($results);
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     */
-    public function addStockLocation(Request $request): void
+    public function addStockLocation(StockLocation $stockLocation): void
     {
-        $stockLocations = $this->generateStockLocationValues($request);
-        $setStockLocations = new StockLocation();
+        $stockLocation->setCreatedAt($this->dateTimeService->createDateTime());
 
-        if (isset($request->request->all()['add_stock_location']['stock_location_check'])) {
-            foreach ($stockLocations as $stockLocation) {
-                $setStockLocations->setStockLocationLn((int) $stockLocation['stockLocationLn']);
-                $setStockLocations->setStockLocationFb((int) $stockLocation['stockLocationFb']);
-                $setStockLocations->setStockLocationSp((int) $stockLocation['stockLocationSp']);
-                $setStockLocations->setStockLocationTf((int) $stockLocation['stockLocationTf']);
-                $setStockLocations->setStockLocationCoordinate((string) $stockLocation['stockLocationCoordinate']);
-                $setStockLocations->setStockLocationDesc((string) $stockLocation['stockLocationDesc']);
-                $setStockLocations->setStockLocationWidth((float) $stockLocation['stockLocationWidth']);
-                $setStockLocations->setStockLocationDepth((float) $stockLocation['stockLocationDepth']);
-                $setStockLocations->setStockLocationHeight((float) $stockLocation['stockLocationHeight']);
-                $setStockLocations->setStockLocationZone((string) $stockLocation['stockLocationZone']);
-                $setStockLocations->setCreatedAt($this->dateTimeService->createDateTime());
-
-                $this->entityManager->persist($setStockLocations);
-                $this->entityManager->flush();
-            }
-        } else {
-            $setStockLocations->setStockLocationLn((int) $stockLocations['stockLocationLn']);
-            $setStockLocations->setStockLocationFb((int) $stockLocations['stockLocationFb']);
-            $setStockLocations->setStockLocationSp((int) $stockLocations['stockLocationSp']);
-            $setStockLocations->setStockLocationTf((int) $stockLocations['stockLocationTf']);
-            $setStockLocations->setStockLocationCoordinate(strval($stockLocations['stockLocationCoordinate']));
-            $setStockLocations->setStockLocationDesc(strval($stockLocations['stockLocationDesc']));
-            $setStockLocations->setStockLocationWidth((float) $stockLocations['stockLocationWidth']);
-            $setStockLocations->setStockLocationDepth((float) $stockLocations['stockLocationDepth']);
-            $setStockLocations->setStockLocationHeight((float) $stockLocations['stockLocationHeight']);
-            $setStockLocations->setStockLocationZone(strval($stockLocations['stockLocationZone']));
-            $setStockLocations->setCreatedAt($this->dateTimeService->createDateTime());
-
-            $this->entityManager->persist($setStockLocations);
-            $this->entityManager->flush();
-        }
+        $this->save($stockLocation);
     }
 
-    public function updateStockLocation(Request $request): ?StockLocation
+    public function updateStockLocation(StockLocation $stockLocation): void
     {
-        $requestData = $request->request->all()['edit_stock_location'];
-        $stockLocation = $this->entityManager
-            ->getRepository(StockLocation::class)
-            ->findOneBy(['stockLocationCoordinate' => $requestData['stockLocationCoordinate']]);
-
-        if ($stockLocation === null) {
-            return null;
-        }
-
-        $stockLocation->setStockLocationLn(intval($requestData['stockLocationLn']));
-        $stockLocation->setStockLocationFb(intval($requestData['stockLocationFb']));
-        $stockLocation->setStockLocationSp(intval($requestData['stockLocationSp']));
-        $stockLocation->setStockLocationTf(intval($requestData['stockLocationTf']));
-        $stockLocation->setStockLocationCoordinate(strval($requestData['stockLocationCoordinate']));
-        $stockLocation->setStockLocationDesc(strval($requestData['stockLocationDesc']));
-        $stockLocation->setStockLocationWidth(floatval($requestData['stockLocationWidth']));
-        $stockLocation->setStockLocationDepth(floatval($requestData['stockLocationDepth']));
-        $stockLocation->setStockLocationHeight(floatval($requestData['stockLocationHeight']));
-        $stockLocation->setStockLocationZone(strval($requestData['stockLocationZone']));
         $stockLocation->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($stockLocation);
-
-        return $stockLocation;
     }
 
     public function deleteStockLocation(StockLocation $stockLocation): void
