@@ -65,7 +65,7 @@ definitions:
         artifacts:
           - test-reports/**
 
-    - step: &twit-lint
+    - step: &twig-lint
         name: Check Templates
         image: composer:2
         caches:
@@ -84,7 +84,6 @@ definitions:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - cd app/
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install
           - bin/console lint:yaml config --parse-tags
@@ -128,7 +127,7 @@ pipelines:
         - step: *var-dump-find
         - step: *vulnerability-scan
         - step: *mess-detector
-        - step: *twit-lint
+        - step: *twig-lint
         - step: *yaml-lint
         - step: *unit-tests
     - step:
