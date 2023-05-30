@@ -80,11 +80,13 @@ definitions:
     
     - step: &yaml-lint
         name: Yaml lint
+        image: composer:2
         caches:
           - composer
         script:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
-          - composer install
+          - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
+          - composer install --ignore-platform-reqs --no-scripts
           - bin/console lint:yaml config --parse-tags
         artifacts:
           - test-reports/**
