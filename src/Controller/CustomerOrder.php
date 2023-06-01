@@ -105,7 +105,7 @@ class CustomerOrder extends AbstractController
         return $this->render(
             'customer_order/customer_order_add.html.twig',
             [
-                'article' => $this->getAllArticleAjax(),
+                'article' => $this->getAllArticleAjax($request),
                 'lastId' => $this->getLastCustomerOrderId()[0],
                 'editCustomerOrder' => false,
                 'customerOrderForm' => $customerOrderForm->createView(),
@@ -255,9 +255,9 @@ class CustomerOrder extends AbstractController
     }
 
     #[Route('/article_order_ajax', name: 'article_order_ajax')]
-    public function getAllArticleAjax(): JsonResponse
+    public function getAllArticleAjax(Request $request): JsonResponse
     {
-        return $this->articleService->getArticle();
+        return $this->articleService->getArticle($request);
     }
 
     /**

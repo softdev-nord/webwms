@@ -61,13 +61,9 @@ class ConfigurationDataHandler
             ->from('configuration', 'config');
 
         $stmt = $queryBuilder->executeQuery();
-        $results = $stmt->fetchAllAssociative();
+        $configurations['configuration'] = $stmt->fetchAllAssociative();
 
-        foreach ($results as $result) {
-            if ($result['type'] === 'layout') {
-                $configurations['configuration']['layout'] = $results;
-            }
-        }
+        // dd($configurations);
 
         return $configurations;
     }

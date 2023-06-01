@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Service\Article;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Article;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 
@@ -36,9 +37,9 @@ class ArticleService
         return $this->articleDataHandler->getAllArticlesWithJoin();
     }
 
-    public function getArticle(): JsonResponse
+    public function getArticle(Request $request): JsonResponse
     {
-        return $this->articleDataHandler->getArticle();
+        return $this->articleDataHandler->getArticle($request);
     }
 
     public function addArticle(Article $article): void

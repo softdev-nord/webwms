@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\User;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -52,7 +52,7 @@ class AddUserType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('role', EntityType::class, [
+            ->add('role', ChoiceType::class, [
                 'empty_data' => '',
                 'label' => false,
                 'multiple' => true,
@@ -60,9 +60,22 @@ class AddUserType extends AbstractType
                     'class' => 'form-control',
                 ],
                 'class' => Role::class,
-                'choice_label' => function ($role) {
-                    return $role->getName();
-                },
+                'choices' => [
+                    'Superadministrator' => 'ROLE_SUPER_ADMIN',
+                    'Administrator' => 'ROLE_ADMIN',
+                    'Leitung Logistik' => 'ROLE_LOGISTICS_MANAGER',
+                    'Leitung Lager' => 'ROLE_WAREHOUSE_MANAGER',
+                    'Teamleiter Wareneingang' => 'ROLE_TEAMLEAD_STOCK_IN',
+                    'Teamleiter Nachschub' => 'ROLE_TEAMLEAD_REPLENISHMENT',
+                    'Teamleiter Warenausgang' => 'ROLE_TEAMLEAD_STOCK_OUT',
+                    'Teamleiter Kommissionierung' => 'ROLE_TEAMLEAD_ORDER_PICKING',
+                    'Teamleiter Versand' => 'ROLE_TEAMLEAD_SHIPPING',
+                    'Mitarbeiter Wareneingang' => 'ROLE_EMPLOYEE_STOCK_IN',
+                    'Mitarbeiter Nachschub' => 'ROLE_EMPLOYE_REPLENISHMENT',
+                    'Mitarbeiter Warenausgang' => 'ROLE_EMPLOYE_STOCK_OUT',
+                    'Mitarbeiter Kommissionierung' => 'ROLE_EMPLOYE_ORDER_PICKING',
+                    'Mitarbeiter Versand' => 'ROLE_EMPLOYE_SHIPPING',
+                ],
             ])
             ->add('password', RepeatedType::class, [
                 'empty_data' => '',

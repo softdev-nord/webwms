@@ -42,7 +42,7 @@ class SupplierOrderDataHandler
             ->findOneBy(['supplierOrderId' => $supplierOrderId]);
     }
 
-    public function getSupplierOrderByNr(int $supplierOrderNr): ?SupplierOrder
+    public function getSupplierOrderByNr(string $supplierOrderNr): ?SupplierOrder
     {
         return $this->entityManager
             ->getRepository(SupplierOrder::class)
@@ -105,5 +105,15 @@ class SupplierOrderDataHandler
     public function deleteSupplierOrder(SupplierOrder $supplierOrder): void
     {
         $this->delete($supplierOrder);
+    }
+
+    /**
+     * @return array<int, SupplierOrder>
+     */
+    public function getLastSupplierOrderId(): array
+    {
+        return $this->entityManager
+            ->getRepository(SupplierOrder::class)
+            ->findBy([], ['supplierOrderId' => 'DESC'], 1, 0);
     }
 }
