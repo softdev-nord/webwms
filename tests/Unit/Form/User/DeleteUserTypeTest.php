@@ -2,23 +2,25 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Unit\Form\Configuration;
+namespace WebWMS\Tests\Unit\Form\User;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\Configuration;
-use WebWMS\Form\Configuration\GeneralConfigurationType;
+use WebWMS\Entity\User;
+use WebWMS\Form\User\DeleteUserType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\Configuration
+ * @package:    WebWMS\Tests\Unit\Form\User
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        GeneralConfigurationTypeTest
+ * Class        DeleteUserTypeTest
  *
- * @covers \WebWMS\Form\Configuration\GeneralConfigurationType
+ * @covers \WebWMS\Form\User\DeleteUserType
  */
-final class GeneralConfigurationTypeTest extends TestCase
+final class DeleteUserTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
@@ -27,14 +29,12 @@ final class GeneralConfigurationTypeTest extends TestCase
             ->expects(self::exactly(1))
             ->method('add')
             ->withConsecutive(
-                ['name'],
-                ['value'],
-                ['label'],
-                ['description'],
-                ['type']
+                ['username', HiddenType::class, self::anything()],
+                ['save', ButtonType::class, self::anything()],
+                ['abort', ButtonType::class, self::anything()]
             );
 
-        $type = new GeneralConfigurationType();
+        $type = new DeleteUserType();
         $type->buildForm($builder, []);
     }
 
@@ -44,9 +44,9 @@ final class GeneralConfigurationTypeTest extends TestCase
         $resolverMock
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => Configuration::class]);
+            ->with(['data_class' => User::class]);
 
-        $type = new GeneralConfigurationType();
+        $type = new DeleteUserType();
         $type->configureOptions($resolverMock);
     }
 }

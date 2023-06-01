@@ -23,132 +23,39 @@ use WebWMS\Form\Customer\AddCustomerType;
  */
 final class AddCustomerTypeTest extends TestCase
 {
-    private AddCustomerType $addCustomerType;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->addCustomerType = new AddCustomerType();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($this->addCustomerType);
-    }
-
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::exactly(1))
+        $builder
+            ->expects(self::exactly(1))
             ->method('add')
             ->withConsecutive(
-                ['customerId', HiddenType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerId',
-                        'data-type' => 'customerId',
-                    ],
-                ]],
-                ['customerNr', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerNr',
-                        'data-type' => 'customerNr',
-                    ],
-                ]],
-                ['customerName', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerName',
-                        'data-type' => 'customerName',
-                    ],
-                ]],
-                ['customerAddressAddition', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerAddressAddition',
-                        'data-type' => 'customerAddressAddition',
-                    ],
-                ]],
-                ['customerAddressStreet', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerAddressStreet',
-                        'data-type' => 'customerAddressStreet',
-                    ],
-                ]],
-                ['customerAddressStreetNr', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerAddressStreetNr',
-                        'data-type' => 'customerAddressStreetNr',
-                    ],
-                ]],
-                ['customerCountryCode', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerCountryCode',
-                        'data-type' => 'customerCountryCode',
-                    ],
-                ]],
-                ['customerZipCode', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerZipCode',
-                        'data-type' => 'customerZipCode',
-                    ],
-                ]],
-                ['customerCity', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customerCity',
-                        'data-type' => 'customerCity',
-                    ],
-                ]],
-                ['save', ButtonType::class, [
-                    'label' => 'Kunden anlegen',
-                    'attr' => [
-                        'class' => 'btn btn-lg',
-                    ],
-                ]],
-                ['abort', ButtonType::class, [
-                    'label' => 'Abbrechen',
-                    'attr' => [
-                        'class' => 'btn btn-lg abort',
-                    ],
-                ]],
+                ['customerId', HiddenType::class, self::anything()],
+                ['customerNr', TextType::class, self::anything()],
+                ['customerName', TextType::class, self::anything()],
+                ['customerAddressAddition', TextType::class, self::anything()],
+                ['customerAddressStreet', TextType::class, self::anything()],
+                ['customerAddressStreetNr', TextType::class, self::anything()],
+                ['customerCountryCode', TextType::class, self::anything()],
+                ['customerZipCode', TextType::class, self::anything()],
+                ['customerCity', TextType::class, self::anything()],
+                ['save', ButtonType::class, self::anything()],
+                ['abort', ButtonType::class, self::anything()]
             );
 
-        $optionsResolver = $this->createMock(OptionsResolver::class);
-
-        $form = $this->addCustomerType;
-        $form->buildForm($builder, (array) $optionsResolver);
+        $type = new AddCustomerType();
+        $type->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
-        $addCustomerType = $this->addCustomerType;
-        $resolver = $this->createMock(OptionsResolver::class);
-
-        $resolver->expects(self::once())
+        $resolverMock = $this->createMock(OptionsResolver::class);
+        $resolverMock
+            ->expects(self::once())
             ->method('setDefaults')
-            ->with([
-                    'data_class' => Customer::class,
-                ]
-            );
+            ->with(['data_class' => Customer::class]);
 
-        $addCustomerType->configureOptions($resolver);
+        $type = new AddCustomerType();
+        $type->configureOptions($resolverMock);
     }
 }

@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Unit\Form\CustomerOrder;
+namespace WebWMS\Tests\Unit\Form\SupplierOrder;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\CustomerOrderPos;
-use WebWMS\Form\CustomerOrder\CustomerOrderPosType;
+use WebWMS\Entity\SupplierOrderPos;
+use WebWMS\Form\SupplierOrder\SupplierOrderPosType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\CustomerOrder
+ * @package:    WebWMS\Tests\Unit\Form\SupplierOrder
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderPosTypeTest
+ * Class        SupplierOrderPosTypeTest
  *
- * @covers \WebWMS\Form\CustomerOrder\CustomerOrderPosType
+ * @covers \WebWMS\Form\SupplierOrder\SupplierOrderPosType
  */
-final class CustomerOrderPosTypeTest extends TestCase
+final class SupplierOrderPosTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
@@ -30,14 +30,14 @@ final class CustomerOrderPosTypeTest extends TestCase
             ->method('add')
             ->withConsecutive(
                 ['id', HiddenType::class, self::anything()],
-                ['customerOrderId', HiddenType::class, self::anything()],
-                ['quantity', TextType::class, self::anything()],
+                ['supplierOrderId', HiddenType::class, self::anything()],
+                ['supplierOrderPosQuantity', TextType::class, self::anything()],
                 ['articleId', HiddenType::class, self::anything()],
                 ['articleNr', TextType::class, self::anything()],
                 ['articleName', TextType::class, self::anything()],
             );
 
-        $type = new CustomerOrderPosType();
+        $type = new SupplierOrderPosType();
         $type->buildForm($builder, []);
     }
 
@@ -47,9 +47,9 @@ final class CustomerOrderPosTypeTest extends TestCase
         $resolver
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => CustomerOrderPos::class]);
+            ->with(['data_class' => SupplierOrderPos::class]);
 
-        $type = new CustomerOrderPosType();
+        $type = new SupplierOrderPosType();
         $type->configureOptions($resolver);
     }
 }

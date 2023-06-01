@@ -2,25 +2,27 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Unit\Form\Article;
+namespace WebWMS\Tests\Unit\Form\User;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\Article;
-use WebWMS\Form\Article\DeleteArticleType;
+use WebWMS\Entity\User;
+use WebWMS\Form\User\EditUserType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\Article
+ * @package:    WebWMS\Tests\Unit\Form\User
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        DeleteArticleTypeTest
+ * Class        EditUserTypeTest
  *
- * @covers \WebWMS\Form\Article\DeleteArticleType
+ * @covers \WebWMS\Form\User\EditUserType
  */
-final class DeleteArticleTypeTest extends TestCase
+final class EditUserTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
@@ -29,12 +31,16 @@ final class DeleteArticleTypeTest extends TestCase
             ->expects(self::exactly(1))
             ->method('add')
             ->withConsecutive(
-                ['articleId', HiddenType::class, self::anything()],
+                ['username', TextType::class, self::anything()],
+                ['firstname', TextType::class, self::anything()],
+                ['lastname', TextType::class, self::anything()],
+                ['role', ChoiceType::class, self::anything()],
+                ['password', RepeatedType::class, self::anything()],
                 ['save', ButtonType::class, self::anything()],
                 ['abort', ButtonType::class, self::anything()]
             );
 
-        $type = new DeleteArticleType();
+        $type = new EditUserType();
         $type->buildForm($builder, []);
     }
 
@@ -44,9 +50,9 @@ final class DeleteArticleTypeTest extends TestCase
         $resolverMock
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => Article::class]);
+            ->with(['data_class' => User::class]);
 
-        $type = new DeleteArticleType();
+        $type = new EditUserType();
         $type->configureOptions($resolverMock);
     }
 }

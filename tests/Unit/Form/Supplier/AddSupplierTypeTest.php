@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Unit\Form\Customer;
+namespace WebWMS\Tests\Unit\Form\Supplier;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -10,18 +10,18 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\Customer;
-use WebWMS\Form\Customer\EditCustomerType;
+use WebWMS\Entity\Supplier;
+use WebWMS\Form\Supplier\AddSupplierType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\Customer
+ * @package:    WebWMS\Tests\Unit\Form\Supplier
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        EditCustomerTypeTest
+ * Class        AddSupplierTypeTest
  *
- * @covers \WebWMS\Form\Customer\EditCustomerType
+ * @covers \WebWMS\Form\Supplier\AddSupplierType
  */
-final class EditCustomerTypeTest extends TestCase
+final class AddSupplierTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
@@ -30,20 +30,20 @@ final class EditCustomerTypeTest extends TestCase
             ->expects(self::exactly(1))
             ->method('add')
             ->withConsecutive(
-                ['customerId', HiddenType::class, self::anything()],
-                ['customerNr', TextType::class, self::anything()],
-                ['customerName', TextType::class, self::anything()],
-                ['customerAddressAddition', TextType::class, self::anything()],
-                ['customerAddressStreet', TextType::class, self::anything()],
-                ['customerAddressStreetNr', TextType::class, self::anything()],
-                ['customerCountryCode', TextType::class, self::anything()],
-                ['customerZipCode', TextType::class, self::anything()],
-                ['customerCity', TextType::class, self::anything()],
+                ['supplierId', HiddenType::class, self::anything()],
+                ['supplierNr', TextType::class, self::anything()],
+                ['supplierName', TextType::class, self::anything()],
+                ['supplierAddressAddition', TextType::class, self::anything()],
+                ['supplierAddressStreet', TextType::class, self::anything()],
+                ['supplierAddressStreetNr', TextType::class, self::anything()],
+                ['supplierAddressCountryCode', TextType::class, self::anything()],
+                ['supplierAddressZipcode', TextType::class, self::anything()],
+                ['supplierAddressCity', TextType::class, self::anything()],
                 ['save', ButtonType::class, self::anything()],
                 ['abort', ButtonType::class, self::anything()]
             );
 
-        $type = new EditCustomerType();
+        $type = new AddSupplierType();
         $type->buildForm($builder, []);
     }
 
@@ -53,9 +53,9 @@ final class EditCustomerTypeTest extends TestCase
         $resolverMock
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => Customer::class]);
+            ->with(['data_class' => Supplier::class]);
 
-        $type = new EditCustomerType();
+        $type = new AddSupplierType();
         $type->configureOptions($resolverMock);
     }
 }
