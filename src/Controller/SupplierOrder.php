@@ -158,7 +158,7 @@ class SupplierOrder extends AbstractController
             $logMessage = 'Die Position(en) für die Bestell-Nr. EBE-01-' . $supplierOrderId . ' wurde(n) geändert.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->supplierOrderPosService->updateSupplierOrder($supplierOrderPosRequestData);
+            $this->supplierOrderPosService->updateSupplierOrderPos($supplierOrderPosRequestData);
 
             return new JsonResponse($responseData);
         }
