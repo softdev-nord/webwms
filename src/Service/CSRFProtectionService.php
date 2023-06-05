@@ -13,8 +13,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CSRFProtectionService
  *
- * CSRFProtectionService is a Service to provide simple
- * generation and validation of tokens for CSRF Protection.
+ * CSRFProtectionService ist ein Service, der die einfache
+ * Generierung und Validierung von Token für CSRF Protection übernimmt.
  */
 class CSRFProtectionService
 {
@@ -24,9 +24,9 @@ class CSRFProtectionService
     }
 
     /**
-     * Saves a generated token into session and returns the generated token for csrf protection
-     * The form must have a hidden input field where the token can be used
-     * This hidden input field will be validated against the saved token (funtion: validateCSRFToken).
+     * Speichert ein generiertes Token in der Sitzung und gibt das generierte Token für CSRF Protection zurück
+     * Das Formular muss ein Hidden Input Feld haben, in dem das Token verwendet werden kann.
+     * Dieses Hidden Input Feld wird anhand des gespeicherten Tokens validiert (Funktion: validateCSRFToken).
      */
     public function getCSRFTokenForForm(): string
     {
@@ -37,10 +37,10 @@ class CSRFProtectionService
     }
 
     /**
-     * Validates the submitted csrf token against the token saved in the session.
+     * Überprüft das übermittelte CSRF-Token anhand des in der Sitzung gespeicherten Tokens.
      *
-     * @param bool   $invalidateToken token is only valid for one submit
-     * @param string $fieldName       Set the name of the hidden input field default='_csrf_token'
+     * @param bool   $invalidateToken Token ist nur für eine Übermittlung gültig
+     * @param string $fieldName       Legen Sie den Namen des Hidden Input Feld fest. default='_csrf_token'
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
@@ -53,8 +53,8 @@ class CSRFProtectionService
         $submittedToken = $request->request->get($fieldName);
         $result = ($savedToken == $submittedToken);
 
-        // generate and save new token
-        // token is only valid for one submit
+        // Neues Token generieren und speichern
+        // Token ist nur für eine Übermittlung gültig
         if ($invalidateToken) {
             $this->getCSRFTokenForForm();
         }

@@ -8,9 +8,9 @@ namespace WebWMS\Service\Validation;
  * @package:    WebWMS\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerValidationService
+ * Class        SupplierValidationService
  */
-class SupplierValidationService extends BaseValidationService
+class SupplierValidationService
 {
     /**
      * @param array<mixed> $requestData
@@ -23,46 +23,46 @@ class SupplierValidationService extends BaseValidationService
     {
         $responseData = [];
 
-        if (!$this->getValue($requestData, '[supplierNr]')) {
+        if (!$requestData['supplierNr']) {
             $responseData['error']['supplierNr'] = 'Die Lieferanten-Nr. darf nicht leer sein.';
         } else {
-            $responseData['supplierNr'] = $this->getValue($requestData, '[supplierNr]');
+            $responseData['supplierNr'] = $requestData['supplierNr'];
         }
 
-        if (!$this->getValue($requestData, '[supplierName]')) {
+        if (!$requestData['supplierName']) {
             $responseData['error']['supplierName'] = 'Der Lieferanten-Name darf nicht leer sein.';
         } else {
-            $responseData['supplierName'] = $this->getValue($requestData, '[supplierName]');
+            $responseData['supplierName'] = $requestData['supplierName'];
         }
 
-        if (!$this->getValue($requestData, '[supplierAddressStreet]')) {
+        if (!$requestData['supplierAddressStreet']) {
             $responseData['error']['supplierAddressStreet'] = 'Die Straße darf nicht leer sein.';
         } else {
-            $responseData['supplierAddressStreet'] = $this->getValue($requestData, '[supplierAddressStreet]');
+            $responseData['supplierAddressStreet'] = $requestData['supplierAddressStreet'];
         }
 
-        if (!$this->getValue($requestData, '[supplierAddressStreetNr]')) {
+        if (!$requestData['supplierAddressStreetNr']) {
             $responseData['error']['supplierAddressStreetNr'] = 'Die Hausnummer darf nicht leer sein.';
         } else {
-            $responseData['supplierAddressStreetNr'] = $this->getValue($requestData, '[supplierAddressStreetNr]');
+            $responseData['supplierAddressStreetNr'] = $requestData['supplierAddressStreetNr'];
         }
 
-        if (!$this->getValue($requestData, '[supplierAddressCountryCode]')) {
+        if (!$requestData['supplierAddressCountryCode']) {
             $responseData['error']['supplierAddressCountryCode'] = 'Das Land darf nicht leer sein.';
         } else {
-            $responseData['supplierAddressCountryCode'] = $this->getValue($requestData, '[supplierAddressCountryCode]');
+            $responseData['supplierAddressCountryCode'] = $requestData['supplierAddressCountryCode'];
         }
 
-        if (!$this->getValue($requestData, '[supplierAddressZipcode]')) {
+        if (!$requestData['supplierAddressZipcode']) {
             $responseData['error']['supplierAddressZipcode'] = 'Die Postleitzahl darf nicht leer sein.';
         } else {
-            $responseData['supplierAddressZipcode'] = $this->getValue($requestData, '[supplierAddressZipcode]');
+            $responseData['supplierAddressZipcode'] = $requestData['supplierAddressZipcode'];
         }
 
-        if (!$this->getValue($requestData, '[supplierAddressCity]')) {
+        if (!$requestData['supplierAddressCity']) {
             $responseData['error']['supplierAddressCity'] = 'Die Stadt darf nicht leer sein.';
         } else {
-            $responseData['supplierAddressCity'] = $this->getValue($requestData, '[supplierAddressCity]');
+            $responseData['supplierAddressCity'] = $requestData['supplierAddressCity'];
         }
 
         if (!isset($responseData['error'])) {

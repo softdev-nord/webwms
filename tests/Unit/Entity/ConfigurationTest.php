@@ -39,111 +39,36 @@ final class ConfigurationTest extends TestCase
         unset($this->configuration);
     }
 
-    public function testGetId(): void
+    public function testGetterAndSetterMethods(): void
     {
-        $expected = 2019;
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('id');
-        $property->setValue($this->configuration, $expected);
-        self::assertSame($expected, $this->configuration->getId());
-    }
+        // Test setId() and getId()
+        $id = 1;
+        $this->configuration->setId($id);
+        self::assertEquals($id, $this->configuration->getId());
 
-    public function testSetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('id');
-        $this->configuration->setId($expected);
-        self::assertSame($expected, $property->getValue($this->configuration));
-    }
+        // Test setName() and getName()
+        $name = 'test_name';
+        $this->configuration->setName($name);
+        self::assertEquals($name, $this->configuration->getName());
 
-    public function testGetName(): void
-    {
-        $expected = 'name';
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('name');
-        $property->setValue($this->configuration, $expected);
-        self::assertSame($expected, $this->configuration->getName());
-    }
+        // Test setValue() and getValue()
+        $value = 'test_value';
+        $this->configuration->setValue($value);
+        self::assertEquals($value, $this->configuration->getValue());
 
-    public function testSetName(): void
-    {
-        $expected = 'name';
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('name');
-        $this->configuration->setName($expected);
-        self::assertSame($expected, $property->getValue($this->configuration));
-    }
+        // Test setLabel() and getLabel()
+        $label = 'test_label';
+        $this->configuration->setLabel($label);
+        self::assertEquals($label, $this->configuration->getLabel());
 
-    public function testGetValue(): void
-    {
-        $expected = 'value';
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('value');
-        $property->setValue($this->configuration, $expected);
-        self::assertSame($expected, $this->configuration->getValue());
-    }
+        // Test setDescription() and getDescription()
+        $description = 'test_description';
+        $this->configuration->setDescription($description);
+        self::assertEquals($description, $this->configuration->getDescription());
 
-    public function testSetValue(): void
-    {
-        $expected = 'value';
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('value');
-        $this->configuration->setValue($expected);
-        self::assertSame($expected, $property->getValue($this->configuration));
-    }
-
-    public function testGetLabel(): void
-    {
-        $expected = 'label';
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('label');
-        $property->setValue($this->configuration, $expected);
-        self::assertSame($expected, $this->configuration->getLabel());
-    }
-
-    public function testSetLabel(): void
-    {
-        $expected = 'label';
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('label');
-        $this->configuration->setLabel($expected);
-        self::assertSame($expected, $property->getValue($this->configuration));
-    }
-
-    public function testGetDescription(): void
-    {
-        $expected = 'description';
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('description');
-        $property->setValue($this->configuration, $expected);
-        self::assertSame($expected, $this->configuration->getDescription());
-    }
-
-    public function testSetDescription(): void
-    {
-        $expected = 'description';
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('description');
-        $this->configuration->setDescription($expected);
-        self::assertSame($expected, $property->getValue($this->configuration));
-    }
-
-    public function testGetType(): void
-    {
-        $expected = 'type';
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('type');
-        $property->setValue($this->configuration, $expected);
-        self::assertSame($expected, $this->configuration->getType());
-    }
-
-    public function testSetType(): void
-    {
-        $expected = 'type';
-        $property = (new \ReflectionClass(Configuration::class))
-            ->getProperty('type');
-        $this->configuration->setType($expected);
-        self::assertSame($expected, $property->getValue($this->configuration));
+        // Test setType() and getType()
+        $type = 'test_type';
+        $this->configuration->setType($type);
+        self::assertEquals($type, $this->configuration->getType());
     }
 }

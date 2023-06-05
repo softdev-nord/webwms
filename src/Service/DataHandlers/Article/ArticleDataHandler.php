@@ -6,6 +6,7 @@ namespace WebWMS\Service\DataHandlers\Article;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Article;
 use WebWMS\Service\DateTimeService;
 
@@ -80,42 +81,35 @@ class ArticleDataHandler
         return new JsonResponse($data);
     }
 
-    public function getArticle(): JsonResponse
+    public function getArticle(Request $request): JsonResponse
     {
-        $connection = $this->entityManager->getConnection();
-
-        $numOfBoxArt = filter_input(INPUT_GET, 'numOfBoxArt') !== null ? filter_input(INPUT_GET, 'numOfBoxArt') : '';
-
-        $boxName = match ($numOfBoxArt) {
-            'article_id' => 'article_id',
-            'article_name' => 'article_name',
-            default => 'article_nr',
-        };
+        $articleNrInput = $request->query->get('name_art');
 
         $data = [];
-        if (filter_input(INPUT_GET, 'name_art') !== null) {
-            $name = strtolower(trim(strval(filter_input(INPUT_GET, 'name_art'))));
+        if ($articleNrInput !== null) {
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder
+                ->select('art')
+                ->from(Article::class, 'art')
+                ->where('art.articleNr LIKE :article_nr')
+                ->setParameter(':article_nr', '' . $articleNrInput . '%');
 
-            $sqlArt = "SELECT * FROM article where LOWER($boxName) LIKE '" . $name . "%'";
+            $articles = $queryBuilder->getQuery()->getArrayResult();
 
-            $stmt = $connection->executeQuery($sqlArt);
-
-            while ($row = $stmt->fetchAssociative()) {
-                $name = $row['article_id']
-                    . '|' . $row['article_nr']
-                    . '|' . $row['article_name']
-                    . '|' . $row['article_category']
-                    . '|' . $row['article_weight']
-                    . '|' . $row['article_ean']
-                    . '|' . $row['article_unit']
-                    . '|' . $row['article_depth']
-                    . '|' . $row['article_width']
-                    . '|' . $row['article_height']
-                    . '|' . $row['stock_out_strategy']
-                    . '|' . $row['le_quantity']
-                    . '|' . $row['standard_loading_equipment']
-                    . '|' . $row['created_at']
-                    . '|' . $row['updated_at'];
+            foreach ($articles as $article) {
+                $name = $article['articleId'] . '|' .
+                    $article['articleNr'] . '|' .
+                    $article['articleName'] . '|' .
+                    $article['articleCategory'] . '|' .
+                    $article['articleWeight'] . '|' .
+                    $article['articleEan'] . '|' .
+                    $article['articleUnit'] . '|' .
+                    $article['articleDepth'] . '|' .
+                    $article['articleWidth'] . '|' .
+                    $article['articleHeight'] . '|' .
+                    $article['stockOutStrategy'] . '|' .
+                    $article['standardLoadingEquipment'] . '|' .
+                    $article['leQuantity'];
                 $data[] = $name;
             }
         }

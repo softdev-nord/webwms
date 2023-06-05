@@ -6,7 +6,6 @@ namespace WebWMS\Service\DataHandlers\CustomerOrderPos;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\CustomerOrderPos;
 use WebWMS\Service\DateTimeService;
 
@@ -65,16 +64,8 @@ class CustomerOrderPosDataHandler
         return new JsonResponse($results);
     }
 
-    public function addCustomerOrderPos(Request $request): void
+    public function addCustomerOrderPos(CustomerOrderPos $customerOrderPos): void
     {
-        $requestData = $request->request->all()['customer_orders_pos'];
-        $customerOrderPos = new CustomerOrderPos();
-
-        $customerOrderPos->setCustomerOrderId(intval($requestData['customerOrderId']));
-        $customerOrderPos->setQuantity(intval($requestData['quantity']));
-        $customerOrderPos->setArticleId(intval($requestData['articleId']));
-        $customerOrderPos->setArticleNr(strval($requestData['articleNr']));
-        $customerOrderPos->setArticleName(strval($requestData['articleName']));
         $customerOrderPos->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($customerOrderPos);

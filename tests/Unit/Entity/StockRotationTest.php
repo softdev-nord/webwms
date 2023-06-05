@@ -19,240 +19,76 @@ final class StockRotationTest extends TestCase
 {
     private StockRotation $stockRotation;
 
-    private \DateTimeImmutable $dateTime;
+    private \DateTime $dateTime;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->stockRotation = new StockRotation();
-        $this->dateTime = new \DateTimeImmutable();
+        $this->dateTime = new \DateTime();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
+    public function testGetterAndSetterMethods(): void
     {
-        parent::tearDown();
+        // Test setId() and getId()
+        $id = 1;
+        $this->stockRotation->setId($id);
+        self::assertEquals($id, $this->stockRotation->getId());
 
-        unset($this->stockRotation);
-        unset($this->dateTime);
-    }
+        // Test setStockLocationId() and getStockLocationId()
+        $stockLocationId = 1;
+        $this->stockRotation->setStockLocationId($stockLocationId);
+        self::assertEquals($stockLocationId, $this->stockRotation->getStockLocationId());
 
-    public function testGetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('id');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getId());
-    }
+        // Test setArticleId() and getArticleId()
+        $articleId = 1;
+        $this->stockRotation->setArticleId($articleId);
+        self::assertEquals($articleId, $this->stockRotation->getArticleId());
 
-    public function testSetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('id');
-        $this->stockRotation->setId($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
-    }
+        // Test setUsrId() and getUsrId()
+        $usrId = 1;
+        $this->stockRotation->setUsrId($usrId);
+        self::assertEquals($usrId, $this->stockRotation->getUsrId());
 
-    public function testGetStockLocationId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('stockLocationId');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getStockLocationId());
-    }
+        // Test setCustomerOrderId() and getCustomerOrderId()
+        $customerOrderId = 710000;
+        $this->stockRotation->setCustomerOrderId($customerOrderId);
+        self::assertEquals($customerOrderId, $this->stockRotation->getCustomerOrderId());
 
-    public function testSetStockLocationId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('stockLocationId');
-        $this->stockRotation->setStockLocationId($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
-    }
+        // Test setSupplierOrderId() and getSupplierOrderId()
+        $supplierOrderId = 100000;
+        $this->stockRotation->setSupplierOrderId($supplierOrderId);
+        self::assertEquals($supplierOrderId, $this->stockRotation->getSupplierOrderId());
 
-    public function testGetArticleId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('articleId');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getArticleId());
-    }
+        // Test setMovementId() and getMovementId()
+        $movementId = 1;
+        $this->stockRotation->setMovementId($movementId);
+        self::assertEquals($movementId, $this->stockRotation->getMovementId());
 
-    public function testSetArticleId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('articleId');
-        $this->stockRotation->setArticleId($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
-    }
+        // Test setPosQuantity() and getPosQuantity()
+        $incomingStock = 150;
+        $this->stockRotation->setPosQuantity($incomingStock);
+        self::assertEquals($incomingStock, $this->stockRotation->getPosQuantity());
 
-    public function testGetUsrId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('usrId');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getUsrId());
-    }
+        // Test setAccessDate() and getAccessDate()
+        $accessDate = $this->dateTime;
+        $this->stockRotation->setAccessDate($accessDate);
+        self::assertEquals($accessDate, $this->stockRotation->getAccessDate());
 
-    public function testSetUsrId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('usrId');
-        $this->stockRotation->setUsrId($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
-    }
+        // Test setDispatchDate() and getDispatchDate()
+        $dispatchDate = $this->dateTime;
+        $this->stockRotation->setDispatchDate($dispatchDate);
+        self::assertEquals($dispatchDate, $this->stockRotation->getDispatchDate());
 
-    public function testGetCustomerOrderId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('customerOrderId');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getCustomerOrderId());
-    }
+        // Test setTrType() and getTrType()
+        $updatedAt = 'in';
+        $this->stockRotation->setTrType($updatedAt);
+        self::assertEquals($updatedAt, $this->stockRotation->getTrType());
 
-    public function testSetCustomerOrderId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('customerOrderId');
-        $this->stockRotation->setCustomerOrderId($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
-    }
-
-    public function testGetSupplierOrderId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('supplierOrderId');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getSupplierOrderId());
-    }
-
-    public function testSetSupplierOrderId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('supplierOrderId');
-        $this->stockRotation->setSupplierOrderId($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
-    }
-
-    public function testGetMovementId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('movementId');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getMovementId());
-    }
-
-    public function testSetMovementId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('movementId');
-        $this->stockRotation->setMovementId($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
-    }
-
-    public function testGetPosQuantity(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('posQuantity');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getPosQuantity());
-    }
-
-    public function testSetPosQuantity(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('posQuantity');
-        $this->stockRotation->setPosQuantity($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
-    }
-
-    public function testGetAccessDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('accessDate');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getAccessDate());
-    }
-
-    public function testSetAccessDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('accessDate');
-        $this->stockRotation->setAccessDate($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
-    }
-
-    public function testGetDispatchDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('dispatchDate');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getDispatchDate());
-    }
-
-    public function testSetDispatchDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('dispatchDate');
-        $this->stockRotation->setDispatchDate($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
-    }
-
-    public function testGetTrType(): void
-    {
-        $expected = 'trType';
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('trType');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getTrType());
-    }
-
-    public function testSetTrType(): void
-    {
-        $expected = 'trType';
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('trType');
-        $this->stockRotation->setTrType($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
-    }
-
-    public function testGetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('createdAt');
-        $property->setValue($this->stockRotation, $expected);
-        self::assertSame($expected, $this->stockRotation->getCreatedAt());
-    }
-
-    public function testSetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockRotation::class))
-            ->getProperty('createdAt');
-        $this->stockRotation->setCreatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->stockRotation));
+        // Test setCreatedAt() and getCreatedAt()
+        $createdAt = $this->dateTime;
+        $this->stockRotation->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->stockRotation->getCreatedAt());
     }
 }

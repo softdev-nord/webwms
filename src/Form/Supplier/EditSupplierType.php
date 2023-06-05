@@ -10,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use WebWMS\Entity\Supplier;
 
 /**
@@ -21,14 +20,8 @@ use WebWMS\Entity\Supplier;
  */
 class EditSupplierType extends AbstractType
 {
-    public function __construct(
-        private AuthorizationCheckerInterface $authorizationChecker
-    ) {
-    }
-
     /**
      * @SuppressWarnings("unused")
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -40,23 +33,8 @@ class EditSupplierType extends AbstractType
                     'id' => 'supplierId',
                     'data-type' => 'supplierId',
                 ],
-            ]);
-        if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
-            $builder
-                ->add('supplierNr', TextType::class, [
-                    'empty_data' => '',
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'supplierNr',
-                        'data-type' => 'supplierNr',
-                        'style' => 'background-color: transparent',
-                        'readonly' => 'readonly',
-                    ],
-                ]);
-        } else {
-            $builder
-                ->add('supplierNr', TextType::class, [
+            ])
+            ->add('supplierNr', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -64,9 +42,7 @@ class EditSupplierType extends AbstractType
                     'data-type' => 'supplierNr',
                     'style' => 'background-color: transparent',
                 ],
-            ]);
-        }
-        $builder
+            ])
             ->add('supplierName', TextType::class, [
                 'empty_data' => '',
                 'label' => false,

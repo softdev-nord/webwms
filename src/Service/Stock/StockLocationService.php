@@ -6,7 +6,6 @@ namespace WebWMS\Service\Stock;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\StockLocation;
 use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 
@@ -48,14 +47,14 @@ class StockLocationService
         return $this->stockLocationDataHandler->getStockLocationDetailsById($stockLocationId);
     }
 
-    public function addStockLocation(Request $request): void
+    public function addStockLocation(StockLocation $stockLocation): void
     {
-        $this->stockLocationDataHandler->addStockLocation($request);
+        $this->stockLocationDataHandler->addStockLocation($stockLocation);
     }
 
-    public function updateStockLocation(Request $request): ?StockLocation
+    public function updateStockLocation(StockLocation $stockLocation): void
     {
-        return $this->stockLocationDataHandler->updateStockLocation($request);
+        $this->stockLocationDataHandler->updateStockLocation($stockLocation);
     }
 
     public function deleteStockLocation(StockLocation $stockLocation): void

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\Service\CustomerOrderPos;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\CustomerOrderPos;
 use WebWMS\Service\DataHandlers\CustomerOrderPos\CustomerOrderPosDataHandler;
 
@@ -37,9 +36,9 @@ class CustomerOrderPosService
         return $this->customerOrderPosDataHandler->getAllCustomerOrderPos();
     }
 
-    public function addCustomerOrderPos(Request $request): void
+    public function addCustomerOrderPos(CustomerOrderPos $supplierOrderPos): void
     {
-        $this->customerOrderPosDataHandler->addCustomerOrderPos($request);
+        $this->customerOrderPosDataHandler->addCustomerOrderPos($supplierOrderPos);
     }
 
     public function updateCustomerOrderPos(CustomerOrderPos $supplierOrderPos): void

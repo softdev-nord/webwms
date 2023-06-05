@@ -21,8 +21,18 @@ class ChangePassword
         return $this->oldPassword;
     }
 
+    public function setOldPassword(string $oldPassword): void
+    {
+        $this->oldPassword = $oldPassword;
+    }
+
     public function getNewPassword(): string
     {
         return $this->newPassword;
+    }
+
+    public function setNewPassword(string $newPassword): void
+    {
+        $this->newPassword = $newPassword;
     }
 }

@@ -6,6 +6,7 @@ namespace WebWMS\Helper\FormHelper;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use WebWMS\Form\Supplier\AddSupplierType;
 use WebWMS\Form\Supplier\DeleteSupplierType;
 use WebWMS\Form\Supplier\EditSupplierType;
@@ -24,7 +25,7 @@ class SupplierFormHelper
     }
 
     /**
-     * @param string $type
+     * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
      * @return FormInterface

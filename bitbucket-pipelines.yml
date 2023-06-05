@@ -65,7 +65,7 @@ definitions:
         artifacts:
           - test-reports/**
 
-    - step: &twit-lint
+    - step: &twig-lint
         name: Check Templates
         image: composer:2
         caches:
@@ -77,6 +77,21 @@ definitions:
           - bin/console lint:twig templates
         artifacts:
           - .env
+    
+    - step: &yaml-lint
+        name: Yaml lint
+        image: composer:2
+        caches:
+          - composer
+        script:
+          - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
+          - /bin/bash ci/webwms-env.sh
+          - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
+          - composer install --ignore-platform-reqs --no-scripts
+          - bin/console lint:yaml config --parse-tags
+        artifacts:
+          - .env
+          - test-reports/**
 
     - step: &unit-tests
         name: Unit Tests
@@ -115,7 +130,8 @@ pipelines:
         - step: *var-dump-find
         - step: *vulnerability-scan
         - step: *mess-detector
-        - step: *twit-lint
+        - step: *twig-lint
+        - step: *yaml-lint
         - step: *unit-tests
     - step:
         <<: *build-deploy

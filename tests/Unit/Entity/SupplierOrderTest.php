@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\Supplier;
 use WebWMS\Entity\SupplierOrder;
@@ -21,228 +21,81 @@ final class SupplierOrderTest extends TestCase
 {
     private SupplierOrder $supplierOrder;
 
-    private \DateTimeImmutable $dateTime;
+    private \DateTime $dateTime;
+
+    private ArrayCollection $collection;
+
+    private Supplier $supplier;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->supplierOrder = new SupplierOrder();
-        $this->dateTime = new \DateTimeImmutable();
+        $this->dateTime = new \DateTime();
+        $this->collection = new ArrayCollection();
+        $this->supplier = new Supplier();
     }
 
-    protected function tearDown(): void
+    public function testGetterAndSetterMethods(): void
     {
-        parent::tearDown();
+        // Test setId() and getId()
+        $id = 710000;
+        $this->supplierOrder->setId($id);
+        self::assertEquals($id, $this->supplierOrder->getId());
 
-        unset($this->supplierOrder);
-        unset($this->dateTime);
-    }
+        // Test setSupplierOrderId() and getSupplierOrderId()
+        $supplierOrderId = 100000;
+        $this->supplierOrder->setSupplierOrderId($supplierOrderId);
+        self::assertEquals($supplierOrderId, $this->supplierOrder->getSupplierOrderId());
 
-    public function testGetSupplier(): void
-    {
-        $expected = $this->createMock(Supplier::class);
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplier');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getSupplier());
-    }
+        // Test setUsrId() and getUsrId()
+        $usrId = 1;
+        $this->supplierOrder->setUsrId($usrId);
+        self::assertEquals($usrId, $this->supplierOrder->getUsrId());
 
-    public function testSetSupplier(): void
-    {
-        $expected = $this->createMock(Supplier::class);
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplier');
-        $this->supplierOrder->setSupplier($expected);
-        self::assertSame($expected, $property->getValue($this->supplierOrder));
-    }
+        // Test setSupplierId() and getSupplierId()
+        $supplierId = 1;
+        $this->supplierOrder->setSupplierId($supplierId);
+        self::assertEquals($supplierId, $this->supplierOrder->getSupplierId());
 
-    public function testGetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('id');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getId());
-    }
+        // Test setSupplierOrderNr() and getSupplierOrderNr()
+        $supplierOrderNr = 'EBE-01-100000';
+        $this->supplierOrder->setSupplierOrderNr($supplierOrderNr);
+        self::assertEquals($supplierOrderNr, $this->supplierOrder->getSupplierOrderNr());
 
-    public function testSetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('id');
-        $this->supplierOrder->setId($expected);
-        self::assertSame($expected, $property->getValue($this->supplierOrder));
-    }
+        // Test setSupplierOrderReference() and getSupplierOrderReference()
+        $supplierOrderReference = 'Test Referenz';
+        $this->supplierOrder->setSupplierOrderReference($supplierOrderReference);
+        self::assertEquals($supplierOrderReference, $this->supplierOrder->getSupplierOrderReference());
 
-    public function testGetUsrId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('usrId');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getUsrId());
-    }
+        // Test setSupplierOrderCreationDate() and getSupplierOrderCreationDate()
+        $supplierOrderCreationDate = $this->dateTime;
+        $this->supplierOrder->setSupplierOrderCreationDate($supplierOrderCreationDate);
+        self::assertEquals($supplierOrderCreationDate, $this->supplierOrder->getSupplierOrderCreationDate());
 
-    public function testSetUsrId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('usrId');
-        $this->supplierOrder->setUsrId($expected);
-        self::assertSame($expected, $property->getValue($this->supplierOrder));
-    }
+        // Test setSupplierOrderDate() and getSupplierOrderDate()
+        $supplierOrderDate = $this->dateTime;
+        $this->supplierOrder->setSupplierOrderDate($supplierOrderDate);
+        self::assertEquals($supplierOrderDate, $this->supplierOrder->getSupplierOrderDate());
 
-    public function testGetSupplierId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierId');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getSupplierId());
-    }
+        // Test setCreatedAt() and getCreatedAt()
+        $createdAt = $this->dateTime;
+        $this->supplierOrder->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->supplierOrder->getCreatedAt());
 
-    public function testSetSupplierId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierId');
-        $this->supplierOrder->setSupplierId($expected);
-        self::assertSame($expected, $property->getValue($this->supplierOrder));
-    }
+        // Test setUpdatedAt() and getUpdatedAt()
+        $updatedAt = $this->dateTime;
+        $this->supplierOrder->setUpdatedAt($updatedAt);
+        self::assertEquals($updatedAt, $this->supplierOrder->getUpdatedAt());
 
-    public function testGetSupplierOrderId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierOrderId');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getSupplierOrderId());
-    }
+        // Test getSupplierOrderPos()
+        $supplierOrderPos = $this->collection;
+        self::assertEquals($supplierOrderPos, $this->supplierOrder->getSupplierOrderPos());
 
-    public function testSetSupplierOrderId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierOrderId');
-        $this->supplierOrder->setSupplierOrderId($expected);
-        self::assertSame($expected, $property->getValue($this->supplierOrder));
-    }
-
-    public function testGetSupplierOrderNr(): void
-    {
-        $expected = 'supplierOrderNr';
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierOrderNr');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getSupplierOrderNr());
-    }
-
-    public function testSetSupplierOrderNr(): void
-    {
-        $expected = 'supplierOrderNr';
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierOrderNr');
-        $this->supplierOrder->setSupplierOrderNr($expected);
-        self::assertSame($expected, $property->getValue($this->supplierOrder));
-    }
-
-    public function testGetSupplierOrderReference(): void
-    {
-        $expected = 'supplierOrderReference';
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierOrderReference');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getSupplierOrderReference());
-    }
-
-    public function testSetSupplierOrderReference(): void
-    {
-        $expected = 'supplierOrderReference';
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierOrderReference');
-        $this->supplierOrder->setSupplierOrderReference($expected);
-        self::assertSame($expected, $property->getValue($this->supplierOrder));
-    }
-
-    public function testGetSupplierOrderDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierOrderDate');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getSupplierOrderDate());
-    }
-
-    public function testSetSupplierOrderDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierOrderDate');
-        $this->supplierOrder->setSupplierOrderDate($expected);
-        self::assertSame($expected, $property->getValue($this->supplierOrder));
-    }
-
-    public function testGetSupplierOrderCreationDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierOrderCreationDate');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getSupplierOrderCreationDate());
-    }
-
-    public function testSetSupplierOrderCreationDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierOrderCreationDate');
-        $this->supplierOrder->setSupplierOrderCreationDate($expected);
-        self::assertSame($expected, $property->getValue($this->supplierOrder));
-    }
-
-    public function testGetSupplierOrderPos(): void
-    {
-        $expected = $this->createMock(Collection::class);
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('supplierOrderPos');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getSupplierOrderPos());
-    }
-
-    public function testGetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('createdAt');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getCreatedAt());
-    }
-
-    public function testSetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('createdAt');
-        $this->supplierOrder->setCreatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->supplierOrder));
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('updatedAt');
-        $property->setValue($this->supplierOrder, $expected);
-        self::assertSame($expected, $this->supplierOrder->getUpdatedAt());
-    }
-
-    public function testSetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(SupplierOrder::class))
-            ->getProperty('updatedAt');
-        $this->supplierOrder->setUpdatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->supplierOrder));
+        // Test setSupplier() and getSupplier()
+        $supplier = $this->supplier;
+        $this->supplierOrder->setSupplier($supplier);
+        self::assertEquals($supplier, $this->supplierOrder->getSupplier());
     }
 }

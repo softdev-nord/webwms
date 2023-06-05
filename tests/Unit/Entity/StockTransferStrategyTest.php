@@ -19,111 +19,41 @@ final class StockTransferStrategyTest extends TestCase
 {
     private StockTransferStrategy $stockTransferStrategy;
 
-    private \DateTimeImmutable $dateTime;
+    private \DateTime $dateTime;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->stockTransferStrategy = new StockTransferStrategy();
-        $this->dateTime = new \DateTimeImmutable();
+        $this->dateTime = new \DateTime();
     }
 
-    protected function tearDown(): void
+    public function testGetterAndSetterMethods(): void
     {
-        parent::tearDown();
+        // Test setId() and getId()
+        $id = 1;
+        $this->stockTransferStrategy->setId($id);
+        self::assertEquals($id, $this->stockTransferStrategy->getId());
 
-        unset($this->stockTransferStrategy);
-        unset($this->dateTime);
-    }
+        // Test setShortCode() and getShortCode()
+        $shortCode = 'FIFO';
+        $this->stockTransferStrategy->setShortCode($shortCode);
+        self::assertEquals($shortCode, $this->stockTransferStrategy->getShortCode());
 
-    public function testGetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockTransferStrategy::class))
-            ->getProperty('id');
-        $property->setValue($this->stockTransferStrategy, $expected);
-        self::assertSame($expected, $this->stockTransferStrategy->getId());
-    }
+        // Test setDescription() and getDescription()
+        $description = 'FIFO';
+        $this->stockTransferStrategy->setDescription($description);
+        self::assertEquals($description, $this->stockTransferStrategy->getDescription());
 
-    public function testSetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockTransferStrategy::class))
-            ->getProperty('id');
-        $this->stockTransferStrategy->setId($expected);
-        self::assertSame($expected, $property->getValue($this->stockTransferStrategy));
-    }
+        // Test setCreatedAt() and getCreatedAt()
+        $createdAt = $this->dateTime;
+        $this->stockTransferStrategy->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->stockTransferStrategy->getCreatedAt());
 
-    public function testGetShortCode(): void
-    {
-        $expected = 'shortCode';
-        $property = (new \ReflectionClass(StockTransferStrategy::class))
-            ->getProperty('shortCode');
-        $property->setValue($this->stockTransferStrategy, $expected);
-        self::assertSame($expected, $this->stockTransferStrategy->getShortCode());
-    }
-
-    public function testSetShortCode(): void
-    {
-        $expected = 'shortCode';
-        $property = (new \ReflectionClass(StockTransferStrategy::class))
-            ->getProperty('shortCode');
-        $this->stockTransferStrategy->setShortCode($expected);
-        self::assertSame($expected, $property->getValue($this->stockTransferStrategy));
-    }
-
-    public function testGetDescription(): void
-    {
-        $expected = 'description';
-        $property = (new \ReflectionClass(StockTransferStrategy::class))
-            ->getProperty('description');
-        $property->setValue($this->stockTransferStrategy, $expected);
-        self::assertSame($expected, $this->stockTransferStrategy->getDescription());
-    }
-
-    public function testSetDescription(): void
-    {
-        $expected = 'description';
-        $property = (new \ReflectionClass(StockTransferStrategy::class))
-            ->getProperty('description');
-        $this->stockTransferStrategy->setDescription($expected);
-        self::assertSame($expected, $property->getValue($this->stockTransferStrategy));
-    }
-
-    public function testGetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockTransferStrategy::class))
-            ->getProperty('createdAt');
-        $property->setValue($this->stockTransferStrategy, $expected);
-        self::assertSame($expected, $this->stockTransferStrategy->getCreatedAt());
-    }
-
-    public function testSetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockTransferStrategy::class))
-            ->getProperty('createdAt');
-        $this->stockTransferStrategy->setCreatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->stockTransferStrategy));
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockTransferStrategy::class))
-            ->getProperty('updatedAt');
-        $property->setValue($this->stockTransferStrategy, $expected);
-        self::assertSame($expected, $this->stockTransferStrategy->getUpdatedAt());
-    }
-
-    public function testSetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockTransferStrategy::class))
-            ->getProperty('updatedAt');
-        $this->stockTransferStrategy->setUpdatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->stockTransferStrategy));
+        // Test setUpdatedAt() and getUpdatedAt()
+        $updatedAt = $this->dateTime;
+        $this->stockTransferStrategy->setUpdatedAt($updatedAt);
+        self::assertEquals($updatedAt, $this->stockTransferStrategy->getUpdatedAt());
     }
 }
