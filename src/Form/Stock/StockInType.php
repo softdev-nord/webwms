@@ -73,8 +73,8 @@ class StockInType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_ean',
-                    'data-type' => 'article_ean',
+                    'id' => 'charge',
+                    'data-type' => 'charge',
                 ],
             ])
             ->add('save', ButtonType::class, [

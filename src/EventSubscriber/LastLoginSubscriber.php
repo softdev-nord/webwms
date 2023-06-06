@@ -40,7 +40,7 @@ class LastLoginSubscriber implements EventSubscriberInterface
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function updateLastLogin(FinishRequestEvent $event): void
+    public function updateLastLogin(): void
     {
         $accessToken = $this->tokenStorage->getToken();
         if ($accessToken !== null) {
