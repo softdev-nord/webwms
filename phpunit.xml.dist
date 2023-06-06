@@ -30,8 +30,6 @@
         </include>
         <exclude>
             <directory suffix=".php">src/Components</directory> <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
-            <directory suffix=".php">src/EventListener</directory> <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
-            <directory suffix=".php">src/EventSubscriber</directory> <!-- Lösung für die Tests finden -->
             <directory suffix=".php">src/Security</directory>
             <directory suffix=".php">vendor/</directory>
             <file>src/Kernel.php</file>

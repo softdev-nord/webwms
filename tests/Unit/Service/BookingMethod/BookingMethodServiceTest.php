@@ -4,10 +4,18 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\BookingMethod;
 
+use Doctrine\ORM\EntityNotFoundException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use WebWMS\Form\Stock\StockInFinalType;
+use WebWMS\Form\Stock\StockInType;
 use WebWMS\Service\BookingMethod\BookingMethodService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
@@ -25,18 +33,32 @@ final class BookingMethodServiceTest extends TestCase
 {
     private RequirementsService $requirementsService;
 
-    private StockLocationService $stockLocationService;
-
-    private TransportRequestService $transportRequestService;
-
-    private FormFactoryInterface $formFactory;
+    /**
+     * @var (StockLocationService&MockObject)|MockObject
+     */
+    private MockObject|StockLocationService $stockLocationService;
 
     /**
-     * @var Environment|MockObject
+     * @var (TransportRequestService&MockObject)|MockObject
+     */
+    private MockObject|TransportRequestService $transportRequestService;
+
+    /**
+     * @var (FormFactoryInterface&MockObject)|MockObject
+     */
+    private MockObject|FormFactoryInterface $formFactory;
+
+    /**
+     * @var (Environment&MockObject)|MockObject
      */
     private MockObject|Environment $twig;
 
     private BookingMethodService $bookingMethodService;
+
+    /**
+     * @var (FormInterface&MockObject)|MockObject
+     */
+    private MockObject|FormInterface $form;
 
     protected function setUp(): void
     {
@@ -45,6 +67,7 @@ final class BookingMethodServiceTest extends TestCase
         $this->transportRequestService = $this->createMock(TransportRequestService::class);
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
         $this->twig = $this->createMock(Environment::class);
+        $this->form = $this->createMock(FormInterface::class);
 
         $this->bookingMethodService = new BookingMethodService(
             $this->requirementsService,
@@ -53,6 +76,144 @@ final class BookingMethodServiceTest extends TestCase
             $this->formFactory,
             $this->twig
         );
+    }
+
+    public function testStockInReturnsResponseWhenFormSubmittedAndValid(): void
+    {
+        $request = $this->createMock(Request::class);
+
+        $requestData = [
+            'quantity' => 1000,
+            'le_quantity' => 500,
+            'standard_loading_equipment' => 'Pal Regal',
+            'charge' => 0,
+            'article_nr' => '60004'
+        ];
+
+        $stockLocations = [
+            [
+                'id' => 1,
+                'ln' => '101',
+                'fb' => '1',
+                'sp' => '1',
+                'tf' => '1',
+                'koordinate' => '101000100010001',
+                'system' => 'BLOCK',
+                'quantity' => '500'
+            ],
+            [
+                'id' => 2,
+                'ln' => '101',
+                'fb' => '1',
+                'sp' => '1',
+                'tf' => '2',
+                'koordinate' => '101000100010002',
+                'system' => 'BLOCK',
+                'quantity' => '500'
+            ],
+        ];
+
+        $this->formFactory
+            ->expects(self::exactly(1))
+            ->method('create')
+            ->withConsecutive([StockInType::class], [StockInFinalType::class])
+            ->willReturn($this->form);
+
+        $this->form
+            ->expects(self::once())
+            ->method('handleRequest')
+            ->with($request);
+
+        $this->form
+            ->expects(self::once())
+            ->method('isSubmitted')
+            ->willReturn(true);
+
+        $this->form
+            ->expects(self::once())
+            ->method('isValid')
+            ->willReturn(true);
+
+        $this->form
+            ->expects(self::once())
+            ->method('getData')
+            ->willReturn($requestData);
+
+        $this->stockLocationService
+            ->expects(self::once())
+            ->method('getAllFreeStockLocationsWithLimit')
+            ->with('KST', 2)
+            ->willReturn($stockLocations);
+
+        $this->transportRequestService
+            ->expects(self::once())
+            ->method('getLastStockUnit')
+            ->willReturn(1);
+
+        $this->twig
+            ->expects(self::exactly(1))
+            ->method('render')
+            ->withConsecutive(
+                ['modal/put_into_storage.html.twig', self::anything()],
+                ['modal/stock_in_modal.html.twig', self::anything()]
+            )
+            ->willReturn('');
+
+        $expectedResponse = new Response('');
+
+        self::assertEquals($expectedResponse, $this->bookingMethodService->stockIn($request));
+    }
+    public function testStockInWithInvalidForm(): void
+    {
+        $request = $this->createMock(Request::class);
+
+        $this->form
+            ->expects(self::once())
+            ->method('handleRequest')
+            ->with($request);
+        $this->form
+            ->expects(self::once())
+            ->method('isSubmitted')
+            ->willReturn(true);
+        $this->form
+            ->expects(self::once())
+            ->method('isValid')
+            ->willReturn(false);
+
+        $this->formFactory
+            ->expects(self::once())
+            ->method('create')
+            ->with(StockInType::class)
+            ->willReturn($this->form);
+
+        // Mock the Twig environment
+        $this->twig
+            ->expects(self::once())
+            ->method('render')
+            ->willReturn('Rendered HTML');
+
+        $response = $this->bookingMethodService->stockIn($request);
+
+        self::assertInstanceOf(Response::class, $response);
+    }
+
+    public function testGetBookingMethodReturnsRedirectResponseWhenBookingMethodIsStockIn(): void
+    {
+        $bookingMethod = 'stock_in';
+        $request = $this->createMock(Request::class);
+
+        self::assertInstanceOf(Response::class, $this->bookingMethodService->getBookingMethod($bookingMethod, $request));
+    }
+
+    public function testGetBookingMethodThrowsEntityNotFoundException(): void
+    {
+        $bookingMethod = 'invalid_booking_method';
+        $request = $this->createMock(Request::class);
+
+        $this->expectException(EntityNotFoundException::class);
+        $this->expectExceptionMessage('Buchungsmethode ' . $bookingMethod . ' wurde nicht gefunden!');
+
+        $this->bookingMethodService->getBookingMethod($bookingMethod, $request);
     }
 
     public function testStockInFromGoodsReceipt(): void
