@@ -9,11 +9,9 @@
 
     {% block webwms_content %}
         {% block webwms_stock_occupancy_graphical_overview %}
-            <div id="webWMS-stock-occupancies-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
-                        <div class="webwms-page">{{ page }}</div>
-                    {% endif %}
+            <div id="webWMS-stock-occupancies-overview" class="wrapper-form vertical-theme">
+                <div class="wrapper-form-content vertical-theme">
+                    <div class="webwms-page">{{ page }}</div>
                     {% block webwms_stock_occupancy_graphical_overview_table %}
                         <div class="card">
                             <div class="card-content">

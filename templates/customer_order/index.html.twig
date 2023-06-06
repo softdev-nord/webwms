@@ -9,11 +9,9 @@
 
     {% block webwms_content %}
         {% block webwms_customer_orders_overview %}
-            <div id="webWMS-customer-orders-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
-                        <div class="webwms-page">{{ page }}</div>
-                    {% endif %}
+            <div id="webWMS-customer-orders-overview" class="wrapper-form vertical-theme">
+                <div class="wrapper-form-content vertical-theme">
+                    <div class="webwms-page">{{ page }}</div>
                     <div class="card bg-dark">
                         <div class="card-content">
                             {% block webwms_customer_order_overview_table_customer_orders %}

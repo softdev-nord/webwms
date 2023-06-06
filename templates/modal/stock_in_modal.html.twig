@@ -9,11 +9,9 @@
 
     {% block webwms_content %}
         {% block webwms_stock_in %}
-            <div id="webWMS-stock-in" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
-                        <div class="webwms-page">{{ page }}</div>
-                    {% endif %}
+            <div id="webWMS-stock-in" class="wrapper-form vertical-theme">
+                <div class="wrapper-form-content vertical-theme">
+                    <div class="webwms-page">{{ page }}</div>
                     <div class="card">
                         <div class="card-content">
                             {% block webwms_stock_in_form %}
@@ -59,7 +57,7 @@
                                                 {% endfor %}
                                             </div>
                                             <div class="text-center">
-                                                {{ form_widget(stockInForm.post) }} {{ form_widget(stockInForm.clear_form) }}
+                                                {{ form_widget(stockInForm.save) }} {{ form_widget(stockInForm.abort) }}
                                             </div>
                                             {{ form_end(stockInForm) }}
                                         </div>
