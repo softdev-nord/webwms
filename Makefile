@@ -28,7 +28,6 @@ bash: ## Connect with app container
 
 composer-install: ## Composer install
 	@docker exec -it $(APP_CONTAINER_NAME) composer install
-	@make chown-www-data
 
 composer-update: ## Composer update
 	@docker exec -it $(APP_CONTAINER_NAME) composer update

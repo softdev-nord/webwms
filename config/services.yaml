@@ -65,11 +65,6 @@ services:
         arguments: [ "@security.authorization_checker" ]
         tags:
             - { name: form.type }
-
-    web_wms.event_listener.controller_listener:
-        class: WebWMS\EventListener\ControllerListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller }
     
     web_wms.service.booking_methode.booking_methode_service:
         class: WebWMS\Service\BookingMethod\BookingMethodService
