@@ -358,7 +358,7 @@ class StockTransactions extends AbstractController
             $user = $this->getUser()->getUserIdentifier();
         }
 
-        $this->transportRequestService->createTransportRequest($request, $user);
+        $this->transportRequestService->createTransportRequest($request, $user, $clientIp);
     }
 
     /**

@@ -50,11 +50,6 @@ final class LastLoginSubscriberTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $subscriber = new LastLoginSubscriber(
-            $this->createMock(TokenStorageInterface::class),
-            $this->createMock(UserService::class)
-        );
-
         $subscribedEvents = LastLoginSubscriber::getSubscribedEvents();
 
         self::assertArrayHasKey(KernelEvents::FINISH_REQUEST, $subscribedEvents);

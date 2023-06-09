@@ -9,12 +9,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
-use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
 use WebWMS\Service\BookingMethod\BookingMethodService;
 use WebWMS\Service\RequirementsService;
@@ -78,123 +75,78 @@ final class BookingMethodServiceTest extends TestCase
         );
     }
 
-    public function testStockInReturnsResponseWhenFormSubmittedAndValid(): void
+    public function testStockInReturnsResponseWhenFormIsNotSubmitted(): void
     {
         $request = $this->createMock(Request::class);
-
-        $requestData = [
-            'quantity' => 1000,
-            'le_quantity' => 500,
-            'standard_loading_equipment' => 'Pal Regal',
-            'charge' => 0,
-            'article_nr' => '60004'
-        ];
-
-        $stockLocations = [
-            [
-                'id' => 1,
-                'ln' => '101',
-                'fb' => '1',
-                'sp' => '1',
-                'tf' => '1',
-                'koordinate' => '101000100010001',
-                'system' => 'BLOCK',
-                'quantity' => '500'
-            ],
-            [
-                'id' => 2,
-                'ln' => '101',
-                'fb' => '1',
-                'sp' => '1',
-                'tf' => '2',
-                'koordinate' => '101000100010002',
-                'system' => 'BLOCK',
-                'quantity' => '500'
-            ],
-        ];
-
-        $this->formFactory
-            ->expects(self::exactly(1))
-            ->method('create')
-            ->withConsecutive([StockInType::class], [StockInFinalType::class])
-            ->willReturn($this->form);
-
-        $this->form
-            ->expects(self::once())
-            ->method('handleRequest')
-            ->with($request);
-
-        $this->form
-            ->expects(self::once())
-            ->method('isSubmitted')
-            ->willReturn(true);
-
-        $this->form
-            ->expects(self::once())
-            ->method('isValid')
-            ->willReturn(true);
-
-        $this->form
-            ->expects(self::once())
-            ->method('getData')
-            ->willReturn($requestData);
-
-        $this->stockLocationService
-            ->expects(self::once())
-            ->method('getAllFreeStockLocationsWithLimit')
-            ->with('KST', 2)
-            ->willReturn($stockLocations);
-
-        $this->transportRequestService
-            ->expects(self::once())
-            ->method('getLastStockUnit')
-            ->willReturn(1);
-
-        $this->twig
-            ->expects(self::exactly(1))
-            ->method('render')
-            ->withConsecutive(
-                ['modal/put_into_storage.html.twig', self::anything()],
-                ['modal/stock_in_modal.html.twig', self::anything()]
-            )
-            ->willReturn('');
-
-        $expectedResponse = new Response('');
-
-        self::assertEquals($expectedResponse, $this->bookingMethodService->stockIn($request));
-    }
-    public function testStockInWithInvalidForm(): void
-    {
-        $request = $this->createMock(Request::class);
-
-        $this->form
-            ->expects(self::once())
-            ->method('handleRequest')
-            ->with($request);
-        $this->form
-            ->expects(self::once())
-            ->method('isSubmitted')
-            ->willReturn(true);
-        $this->form
-            ->expects(self::once())
-            ->method('isValid')
-            ->willReturn(false);
 
         $this->formFactory
             ->expects(self::once())
             ->method('create')
             ->with(StockInType::class)
-            ->willReturn($this->form);
+            ->willReturn($this->createMock(FormInterface::class));
 
-        // Mock the Twig environment
         $this->twig
             ->expects(self::once())
             ->method('render')
-            ->willReturn('Rendered HTML');
+            ->willReturn('rendered html');
 
         $response = $this->bookingMethodService->stockIn($request);
 
         self::assertInstanceOf(Response::class, $response);
+        self::assertEquals('rendered html', $response->getContent());
+    }
+
+    public function testStockInReturnsResponseWhenFormIsSubmittedAndValid(): void
+    {
+        $request = $this->createMock(Request::class);
+
+        $this->form
+            ->expects(self::once())
+            ->method('isSubmitted')
+            ->willReturn(true);
+        $this->form
+            ->expects(self::once())
+            ->method('isValid')
+            ->willReturn(true);
+        $this->form
+            ->expects(self::once())
+            ->method('getData')
+            ->willReturn([
+            'quantity' => 10,
+            'le_quantity' => 2,
+            'standard_loading_equipment' => 'KARTON',
+            'charge' => 'ABC123',
+            'article_nr' => '12345',
+        ]);
+
+        $this->formFactory
+            ->expects(self::exactly(2))
+            ->method('create')
+            ->willReturnOnConsecutiveCalls($this->form, $this->createMock(FormInterface::class));
+
+        $this->stockLocationService
+            ->expects(self::once())
+            ->method('getAllFreeStockLocationsWithLimit')
+            ->with('Durchlaufregal', 5)
+            ->willReturn([
+                ['id' => 1, 'ln' => 'ln1', 'fb' => 'fb1', 'sp' => 'sp1', 'tf' => 'tf1', 'koordinate' => '1-1-1-1', 'system' => 'Durchlaufregal'],
+                ['id' => 2, 'ln' => 'ln2', 'fb' => 'fb2', 'sp' => 'sp2', 'tf' => 'tf2', 'koordinate' => '2-2-2-2', 'system' => 'Durchlaufregal'],
+            ]);
+
+        $this->transportRequestService
+            ->expects(self::once())
+            ->method('getLastStockUnit')
+            ->willReturn(100);
+
+        $this->twig
+            ->expects(self::once())
+            ->method('render')
+            ->willReturn('rendered html');
+
+        $response = $this->bookingMethodService->stockIn($request);
+
+        self::assertInstanceOf(Response::class, $response);
+        self::assertEquals('rendered html', $response->getContent());
     }
 
     public function testGetBookingMethodReturnsRedirectResponseWhenBookingMethodIsStockIn(): void

@@ -191,12 +191,14 @@ class Customer extends AbstractController
     }
 
     #[Route('/order_customer_ajax', name: 'order_customer_ajax')]
-    public function getAllCustomersAjax(): JsonResponse
+    public function getAllCustomersAjax(Request $request): JsonResponse
     {
-        return $this->customerService->getAllCustomersAjax();
+
+        $customerNrInput = (string) $request->query->get('name_customer');
+        return $this->customerService->getAllCustomersAjax($customerNrInput);
     }
 
-    public function getLastCustomer(): int
+    public function getLastCustomer(): \WebWMS\Entity\Customer
     {
         return $this->customerService->getLastCustomer();
     }

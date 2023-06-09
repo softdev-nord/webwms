@@ -142,18 +142,9 @@ class CustomerOrderDataHandler
 
     public function addCustomerOrder(CustomerOrder $customerOrder): void
     {
-        $newCustomerOrder = new CustomerOrder();
+        $customerOrder->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $newCustomerOrder->setCustomerOrderId($customerOrder->getCustomerOrderId());
-        $newCustomerOrder->setUsrId($customerOrder->getUsrId());
-        $newCustomerOrder->setCustomerId($customerOrder->getCustomerId());
-        $newCustomerOrder->setCustomerOrderNr($customerOrder->getCustomerOrderNr());
-        $newCustomerOrder->setCustomerOrderReference($customerOrder->getCustomerOrderReference());
-        $newCustomerOrder->setCustomerOrderDate($customerOrder->getCustomerOrderDate());
-        $newCustomerOrder->setCustomerOrderCreationDate($customerOrder->getCustomerOrderCreationDate());
-        $newCustomerOrder->setCreatedAt($this->dateTimeService->createDateTime());
-
-        $this->save($newCustomerOrder);
+        $this->save($customerOrder);
     }
 
     public function updateCustomerOrder(CustomerOrder $customerOrder): void

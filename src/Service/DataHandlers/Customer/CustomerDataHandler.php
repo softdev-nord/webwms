@@ -35,9 +35,6 @@ class CustomerDataHandler
         $this->entityManager->flush();
     }
 
-    /**
-     * @return Customer|null Returns an array of Customer objects
-     */
     public function getCustomerById(int $customerId): ?Customer
     {
         return $this->entityManager
@@ -68,43 +65,30 @@ class CustomerDataHandler
     /**
      * Get all Customers for Ajax-Request.
      */
-    public function getCustomers(): JsonResponse
+    public function getCustomers(string|null $customerNrInput): JsonResponse
     {
-        $connection = $this->entityManager->getConnection();
-        $numOfBoxCustomer = filter_input(INPUT_GET, 'numOfBoxCustomer') !== null ? filter_input(INPUT_GET, 'numOfBoxCustomer') : '';
-
-        $boxName = match ($numOfBoxCustomer) {
-            'customer_name' => 'customer_name',
-            'customer_address_addition' => 'customer_address_addition',
-            'customer_address_street' => 'customer_address_street',
-            'customer_address_street_nr' => 'customer_address_street_nr',
-            'customer_country_code' => 'customer_country_code',
-            'customer_zip_code' => 'customer_zip_code',
-            'customer_city' => 'customer_city',
-            default => 'customer_nr',
-        };
-
         $data = [];
-        if (filter_input(INPUT_GET, 'name_customer') !== null) {
-            $nameCustomer = strtolower(trim(strval(filter_input(INPUT_GET, 'name_customer'))));
+        if ($customerNrInput !== null) {
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder
+                ->select('c')
+                ->from(Customer::class, 'c')
+                ->where('c.customerNr LIKE :customer_nr')
+                ->setParameter(':customer_nr', '' . $customerNrInput . '%');
 
-            $sqlKd = "SELECT customer_nr, customer_name, customer_address_addition, 
-                        customer_address_street, customer_address_street_nr, customer_country_code, 
-                        customer_zip_code, customer_city, customer_id FROM customer WHERE LOWER($boxName) LIKE '" . $nameCustomer . "%'";
-            $stmt = $connection->executeQuery($sqlKd);
+            $customers = $queryBuilder->getQuery()->getArrayResult();
 
-            while ($rowCustomer = $stmt->fetchAssociative()) {
-                $nameCustomer = $rowCustomer['customer_nr'] . '|' .
-                    $rowCustomer['customer_name'] . '|' .
-                    $rowCustomer['customer_address_addition'] . '|' .
-                    $rowCustomer['customer_address_street'] . '|' .
-                    $rowCustomer['customer_address_street_nr'] . '|' .
-                    $rowCustomer['customer_country_code'] . '|' .
-                    $rowCustomer['customer_zip_code'] . '|' .
-                    $rowCustomer['customer_city'] . '|' .
-                    $rowCustomer['customer_id']
+            foreach ($customers as $customer) {
+                $nameCustomer = $customer['customerNr'] . '|' .
+                    $customer['customerName'] . '|' .
+                    $customer['customerAddressAddition'] . '|' .
+                    $customer['customerAddressStreet'] . '|' .
+                    $customer['customerAddressStreetNr'] . '|' .
+                    $customer['customerCountryCode'] . '|' .
+                    $customer['customerZipCode'] . '|' .
+                    $customer['customerCity'] . '|' .
+                    $customer['customerId']
                 ;
-
                 $data[] = $nameCustomer;
             }
         }
@@ -131,17 +115,12 @@ class CustomerDataHandler
         $this->delete($customer);
     }
 
-    public function getLastCustomer(): int
+    public function getLastCustomer(): Customer
     {
-        $result = $this->entityManager
-            ->createQueryBuilder()
-            ->select('c.customerId')
-            ->from(Customer::class, 'c')
-            ->addOrderBy('c.customerId', 'DESC')
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getArrayResult();
+        $lastCustomer = $this->entityManager
+            ->getRepository(Customer::class)
+            ->findBy([], ['customerId' => 'DESC'],1, 0);
 
-        return intval($result[0]['customerId']);
+        return $lastCustomer[0];
     }
 }

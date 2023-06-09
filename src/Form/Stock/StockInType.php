@@ -57,8 +57,8 @@ class StockInType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'loading_equipment',
-                    'data-type' => 'loading_equipment',
+                    'id' => 'le_quantity',
+                    'data-type' => 'le_quantity',
                 ],
             ])
             ->add('quantity', TextType::class, [

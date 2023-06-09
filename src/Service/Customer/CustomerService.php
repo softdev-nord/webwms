@@ -36,9 +36,9 @@ class CustomerService
         return new JsonResponse($this->customerDataHandler->getAllCustomers());
     }
 
-    public function getAllCustomersAjax(): JsonResponse
+    public function getAllCustomersAjax(null|string $customerNrInput): JsonResponse
     {
-        return $this->customerDataHandler->getCustomers();
+        return $this->customerDataHandler->getCustomers($customerNrInput);
     }
 
     public function addCustomer(Customer $customer): void
@@ -56,7 +56,7 @@ class CustomerService
         $this->customerDataHandler->deleteCustomer($customer);
     }
 
-    public function getLastCustomer(): int
+    public function getLastCustomer(): Customer
     {
         return $this->customerDataHandler->getLastCustomer();
     }

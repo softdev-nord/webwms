@@ -7,7 +7,6 @@ namespace WebWMS\Tests\Unit\Service\Article;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Article;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
@@ -112,13 +111,13 @@ final class ArticleServiceTest extends TestCase
     public function testGetArticle(): void
     {
         $article = new Article();
-        $request = new Request();
+        $articleNrInput = '123';
         $this->articleDataHandler
             ->expects(self::once())
             ->method('getArticle')
             ->willReturn(new JsonResponse($article));
 
-        $result = $this->articleService->getArticle($request);
+        $result = $this->articleService->getArticle($articleNrInput);
 
         self::assertInstanceOf(JsonResponse::class, $result);
     }
