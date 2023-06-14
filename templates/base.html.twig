@@ -57,7 +57,6 @@
         {% endblock %}
     </head>
     <body class="bg-dark text-light">
-    {% for configuration in configurations.layout %}
         <div class="page-wrapper webwms-theme toggled">
             {% block webwms_header_navigation %}
                 {{ include('menu_vertical.html.twig') }}
@@ -118,6 +117,5 @@
             </div>
         </div>
         {% endblock %}
-    {% endfor %}
     </body>
 </html>

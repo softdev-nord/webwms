@@ -129,20 +129,18 @@ class StockLocationDataHandler
 
     /**
      * @throws Exception
-     * @return array<string|int|mixed>
+     * @return array<object>
      */
     public function getAllStockLocationsForSelect(): array
     {
-        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+        $queryBuilder = $this->entityManager->createQueryBuilder();
 
         $queryBuilder
-            ->select('stock_location_ln, stock_location_desc')
-            ->from('stock_location')
-            ->groupBy('stock_location_ln');
+            ->select('sl.stockLocationLn, sl.stockLocationDesc')
+            ->from(StockLocation::class, 'sl')
+            ->groupBy('sl.stockLocationLn');
 
-        $stmt = $queryBuilder->executeQuery();
-
-        return $stmt->fetchAllAssociative();
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**

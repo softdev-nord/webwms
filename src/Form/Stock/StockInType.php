@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -57,8 +58,8 @@ class StockInType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'loading_equipment',
-                    'data-type' => 'loading_equipment',
+                    'id' => 'le_quantity',
+                    'data-type' => 'le_quantity',
                 ],
             ])
             ->add('quantity', TextType::class, [
@@ -73,11 +74,11 @@ class StockInType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_ean',
-                    'data-type' => 'article_ean',
+                    'id' => 'charge',
+                    'data-type' => 'charge',
                 ],
             ])
-            ->add('save', ButtonType::class, [
+            ->add('save', SubmitType::class, [
                 'label' => 'Buchen',
                 'attr' => [
                     'class' => 'btn btn-lg',

@@ -22,10 +22,7 @@ final class StockOccupancyServiceTest extends TestCase
 {
     private StockOccupancyService $stockOccupancyService;
 
-    /**
-     * @var (StockOccupancyDataHandler&MockObject)|MockObject
-     */
-    private MockObject|StockOccupancyDataHandler $stockOccupancyDataHandler;
+    private MockObject $stockOccupancyDataHandler;
 
     protected function setUp(): void
     {

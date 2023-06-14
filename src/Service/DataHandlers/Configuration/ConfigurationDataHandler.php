@@ -26,12 +26,6 @@ class ConfigurationDataHandler
         $this->entityManager->flush();
     }
 
-    public function update(Configuration $configuration): void
-    {
-        $this->entityManager->persist($configuration);
-        $this->entityManager->flush();
-    }
-
     public function delete(Configuration $configuration): void
     {
         $this->entityManager->remove($configuration);
@@ -55,15 +49,9 @@ class ConfigurationDataHandler
     public function getAllConfigurations(): array
     {
         $configurations = [];
-        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
-        $queryBuilder
-            ->select('*')
-            ->from('configuration', 'config');
-
-        $stmt = $queryBuilder->executeQuery();
-        $configurations['configuration'] = $stmt->fetchAllAssociative();
-
-        // dd($configurations);
+        $configurations['configuration'] = $this->entityManager
+            ->getRepository(Configuration::class)
+            ->findAll();
 
         return $configurations;
     }

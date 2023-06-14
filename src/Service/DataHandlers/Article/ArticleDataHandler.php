@@ -6,7 +6,6 @@ namespace WebWMS\Service\DataHandlers\Article;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\Article;
 use WebWMS\Service\DateTimeService;
 
@@ -36,9 +35,6 @@ class ArticleDataHandler
         $this->entityManager->flush();
     }
 
-    /**
-     * @return Article|null Returns an array of Article objects
-     */
     public function getArticleById(int $articleId): ?Article
     {
         return $this->entityManager
@@ -81,10 +77,8 @@ class ArticleDataHandler
         return new JsonResponse($data);
     }
 
-    public function getArticle(Request $request): JsonResponse
+    public function getArticle(string|null $articleNrInput): JsonResponse
     {
-        $articleNrInput = $request->query->get('name_art');
-
         $data = [];
         if ($articleNrInput !== null) {
             $queryBuilder = $this->entityManager->createQueryBuilder();
@@ -136,10 +130,12 @@ class ArticleDataHandler
         $this->delete($article);
     }
 
-    public function getLastArticle(): ?Article
+    public function getLastArticle(): Article
     {
-        return $this->entityManager
+        $lastArticle = $this->entityManager
             ->getRepository(Article::class)
-            ->findOneBy([], ['articleNr' => 'DESC']);
+            ->findBy([], ['articleId' => 'DESC'], 1, 0);
+
+        return $lastArticle[0];
     }
 }

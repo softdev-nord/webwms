@@ -23,10 +23,7 @@ final class StockZoneServiceTest extends TestCase
 {
     private StockZoneService $stockZoneService;
 
-    /**
-     * @var (StockZoneDataHandler&MockObject)|MockObject
-     */
-    private MockObject|StockZoneDataHandler $stockZoneDataHandler;
+    private MockObject $stockZoneDataHandler;
 
     protected function setUp(): void
     {

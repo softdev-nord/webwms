@@ -23,10 +23,7 @@ final class CustomerServiceTest extends TestCase
 {
     private CustomerService $customerService;
 
-    /**
-     * @var (CustomerDataHandler&MockObject)|MockObject
-     */
-    private MockObject|CustomerDataHandler $customerDataHandler;
+    private MockObject $customerDataHandler;
 
     protected function setUp(): void
     {
@@ -84,17 +81,18 @@ final class CustomerServiceTest extends TestCase
     public function testGetAllCustomersAjax(): void
     {
         $jsonResponse = $this->createMock(JsonResponse::class);
+        $customerNrInput = '123';
 
         $this->customerDataHandler->expects(self::once())
             ->method('getCustomers')
             ->willReturn($jsonResponse);
 
-        $result = $this->customerService->getAllCustomersAjax();
+        $result = $this->customerService->getAllCustomersAjax($customerNrInput);
 
         self::assertSame($jsonResponse, $result);
     }
 
-    public function testAddCustomerCallsDataHandlerMethod(): void
+    public function testAddCustomer(): void
     {
         $article = new Customer();
         $this->customerDataHandler
@@ -105,7 +103,7 @@ final class CustomerServiceTest extends TestCase
         $this->customerService->addCustomer($article);
     }
 
-    public function testUpdateCustomerCallsDataHandlerMethod(): void
+    public function testUpdateCustomer(): void
     {
         $customer = new Customer();
         $this->customerDataHandler
@@ -116,7 +114,7 @@ final class CustomerServiceTest extends TestCase
         $this->customerService->updateCustomer($customer);
     }
 
-    public function testDeleteCustomerCallsDataHandlerMethod(): void
+    public function testDeleteCustomer(): void
     {
         $customer = new Customer();
         $this->customerDataHandler
@@ -129,14 +127,14 @@ final class CustomerServiceTest extends TestCase
 
     public function testGetLastCustomer(): void
     {
-        $lastCustomerId = 10;
+        $lastCustomer = new Customer();
 
         $this->customerDataHandler->expects(self::once())
             ->method('getLastCustomer')
-            ->willReturn($lastCustomerId);
+            ->willReturn($lastCustomer);
 
         $result = $this->customerService->getLastCustomer();
 
-        self::assertSame($lastCustomerId, $result);
+        self::assertSame($lastCustomer, $result);
     }
 }

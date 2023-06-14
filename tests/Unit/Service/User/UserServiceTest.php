@@ -24,10 +24,7 @@ final class UserServiceTest extends TestCase
 {
     private UserService $userService;
 
-    /**
-     * @var (UserDataHandler&MockObject)|MockObject
-     */
-    private MockObject|UserDataHandler $userDataHandler;
+    private MockObject $userDataHandler;
 
     protected function setUp(): void
     {

@@ -15,11 +15,11 @@
 * NodeJs
 
 ## Tech-Stack:
-* Symfony 6.2
-* jQuery
+* Symfony **6.3.***
+* jQuery **3.6.3**
 * Twig
-* NodeJs
-* API-Platform/Core `Hauptmenu >>> API Dokumentation`
+* NodeJs **v12**
+* API-Platform/Core **3.1** `Hauptmenu >>> API Dokumentation`
 * Symfony/UX-Chart `Auswertungen >>> Dashboard`
 
 ## CI / CD:
@@ -27,10 +27,20 @@
 
 ## QA-Tools:
 * PHP CS Fixer
+    + `friendsofphp/php-cs-fixer`
 * PHP Static Analysis
+    + `phpstan/phpstan`
+    + `phpstan/phpstan-doctrine`
+    + `phpstan/phpstan-strict-rules`
+    + `phpstan/phpstan-symfony`
 * PHP Mess Detector
+    + `phpmd/phpmd`
 * Dependency Vulnerability Scan
+    + `php-parallel-lint/php-var-dump-check`
 * PHPUnit
+  + `phpunit/phpunit`
+* Rector - Instant Upgrades and Automated Refactoring
+  + `rector/rector`
 
 ## Lokale Entwicklungsumgebung:
 * PHP 8.1

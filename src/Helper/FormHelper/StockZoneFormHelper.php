@@ -6,6 +6,7 @@ namespace WebWMS\Helper\FormHelper;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use WebWMS\Entity\StockZone;
 use WebWMS\Form\Stock\StockZone\AddStockZoneType;
 use WebWMS\Form\Stock\StockZone\DeleteStockZoneType;
@@ -25,7 +26,7 @@ class StockZoneFormHelper
     }
 
     /**
-     * @param string $type
+     * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
      * @return FormInterface

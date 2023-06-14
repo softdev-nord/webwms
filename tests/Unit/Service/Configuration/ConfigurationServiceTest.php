@@ -21,10 +21,7 @@ final class ConfigurationServiceTest extends TestCase
 {
     private ConfigurationService $configurationService;
 
-    /**
-     * @var (ConfigurationDataHandler&MockObject)|MockObject
-     */
-    private MockObject|ConfigurationDataHandler $configurationDataHandler;
+    private MockObject $configurationDataHandler;
 
     protected function setUp(): void
     {

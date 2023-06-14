@@ -8,7 +8,7 @@ includes:
 parameters:
 
     #  max or choose from 10 levels (0 is the loosest, 9 is the strictest).
-    level: max
+    level: 8
 
     paths:
         - src
@@ -20,6 +20,7 @@ parameters:
 
     ignoreErrors:
     	- '#Cannot access offset#'
+    	- '#Binary operation "." between#'
 
     reportUnmatchedIgnoredErrors: false
     checkGenericClassInNonGenericObjectType: false

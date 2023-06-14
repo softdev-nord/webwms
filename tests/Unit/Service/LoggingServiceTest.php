@@ -23,10 +23,7 @@ final class LoggingServiceTest extends TestCase
 {
     private LoggingService $loggingService;
 
-    /**
-     * @var (LoggingDataHandler&MockObject)|MockObject
-     */
-    private MockObject|LoggingDataHandler $loggingDataHandler;
+    private MockObject $loggingDataHandler;
 
     protected function setUp(): void
     {

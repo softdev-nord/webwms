@@ -257,7 +257,9 @@ class CustomerOrder extends AbstractController
     #[Route('/article_order_ajax', name: 'article_order_ajax')]
     public function getAllArticleAjax(Request $request): JsonResponse
     {
-        return $this->articleService->getArticle($request);
+        $articleNrInput = (string) $request->query->get('name_art');
+
+        return $this->articleService->getArticle($articleNrInput);
     }
 
     /**

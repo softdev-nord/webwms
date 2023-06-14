@@ -28,7 +28,6 @@ bash: ## Connect with app container
 
 composer-install: ## Composer install
 	@docker exec -it $(APP_CONTAINER_NAME) composer install
-	@make chown-www-data
 
 composer-update: ## Composer update
 	@docker exec -it $(APP_CONTAINER_NAME) composer update
@@ -124,3 +123,6 @@ yaml-lint: ## lints the yaml files (config folder)
 ######################################################################
 run-tests-unit: ## run unit tests
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-html var/reports/ ';
+
+run-rector: ## run automated refactoring
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process src --dry-run';

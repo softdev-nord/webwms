@@ -74,13 +74,13 @@ class UserDataHandler implements PasswordUpgraderInterface
 
     public function addUser(Request $request): ?User
     {
-        $requestData = $request->request->all()['add_user'];
+        $addUser = $request->request->getIterator()->getArrayCopy();
         $user = new User();
 
-        $user->setUsername(strval($requestData['username']));
-        $user->setFirstname(strval($requestData['firstname']));
-        $user->setLastname(strval($requestData['firstname']));
-        $user->setPassword(strval($requestData['password']));
+        $user->setUsername($addUser['username']);
+        $user->setFirstname($addUser['firstname']);
+        $user->setLastname($addUser['firstname']);
+        $user->setPassword($addUser['password']);
         $user->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($user);
