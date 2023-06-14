@@ -20,6 +20,7 @@ class AddTransportRequestType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

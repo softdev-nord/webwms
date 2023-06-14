@@ -14,7 +14,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use WebWMS\Entity\Role;
 use WebWMS\Entity\User;
 
 /**
@@ -59,7 +58,6 @@ class AddUserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'class' => Role::class,
                 'choices' => [
                     'Superadministrator' => 'ROLE_SUPER_ADMIN',
                     'Administrator' => 'ROLE_ADMIN',

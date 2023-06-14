@@ -30,8 +30,8 @@ class LogViewerController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
 
         $logFiles = [];
-        $logDir = strval($this->getParameter('kernel.logs_dir'));
-        $environment = strval($this->getParameter('kernel.environment'));
+        $logDir = $this->getParameter('kernel.logs_dir');
+        $environment = $this->getParameter('kernel.environment');
         $logFiles[] = $logDir . DIRECTORY_SEPARATOR . $environment . '.log';
 
         return $this->render(
@@ -57,8 +57,8 @@ class LogViewerController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
 
         $logFiles = [];
-        $logDir = strval($this->getParameter('kernel.logs_dir'));
-        $environment = strval($this->getParameter('kernel.environment'));
+        $logDir = $this->getParameter('kernel.logs_dir');
+        $environment = $this->getParameter('kernel.environment');
         $logFiles[] = $logDir . DIRECTORY_SEPARATOR . $environment . '.log';
 
         $filename = realpath($logDir . DIRECTORY_SEPARATOR . $file);

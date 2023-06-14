@@ -119,7 +119,7 @@ class CustomerDataHandler
     {
         $lastCustomer = $this->entityManager
             ->getRepository(Customer::class)
-            ->findBy([], ['customerId' => 'DESC'],1, 0);
+            ->findBy([], ['customerId' => 'DESC'], 1, 0);
 
         return $lastCustomer[0];
     }

@@ -134,7 +134,7 @@ class ArticleDataHandler
     {
         $lastArticle = $this->entityManager
             ->getRepository(Article::class)
-            ->findBy([], ['articleId' => 'DESC'],1, 0);
+            ->findBy([], ['articleId' => 'DESC'], 1, 0);
 
         return $lastArticle[0];
     }

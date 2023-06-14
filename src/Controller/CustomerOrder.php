@@ -251,7 +251,6 @@ class CustomerOrder extends AbstractController
     #[Route('/customer_order_pos/customerOrderId/{customerOrderId}', name: 'customer_order_pos_by_customer_order_id')]
     public function getCustomerOrderPosByOrderId(int $customerOrderId): JsonResponse
     {
-        dd($this->customerOrderService->getCustomerOrderPosByOrderId($customerOrderId));
         return $this->customerOrderService->getCustomerOrderPosByOrderId($customerOrderId);
     }
 

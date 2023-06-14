@@ -20,10 +20,10 @@
                                     <select id="selectStock" class="form-control col-md-1 stock-select" style="width: 10%">
                                         {% for oneStockSelected in stockSelect|sort %}
                                             {% set selected = '' %}
-                                            {% if (oneStockSelected.stock_location_ln) == stockSelect %}
+                                            {% if (oneStockSelected.stockLocationLn) == stockSelect %}
                                                 {% set selected = 'selected' %}
                                             {% endif %}
-                                            <option value="{{oneStockSelected.stock_location_ln}}" {{ selected }}>{{oneStockSelected.stock_location_ln}} {{oneStockSelected.stock_location_desc}}</option>
+                                            <option value="{{oneStockSelected.stockLocationLn}}" {{ selected }}>{{oneStockSelected.stockLocationLn}} {{oneStockSelected.stockLocationDesc}}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

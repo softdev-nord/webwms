@@ -6,6 +6,7 @@ namespace WebWMS\Helper\FormHelper;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use WebWMS\Entity\Customer;
 use WebWMS\Form\Customer\AddCustomerType;
 use WebWMS\Form\Customer\DeleteCustomerType;
@@ -25,7 +26,7 @@ class CustomerFormHelper
     }
 
     /**
-     * @param string $type
+     * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
      * @return FormInterface

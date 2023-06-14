@@ -58,7 +58,7 @@ class TransportRequestDataHandler
 
     public function createTransportRequest(Request $request, string $user, string $clientIp): void
     {
-        $requestData = $request->request->all()['stock_in_final'];
+        $requestData = (array) $request->request->all()['stock_in_final'];
         $articleNr = $requestData['article_nr'];
         $bookingMethod = $requestData['booking_method'];
         $charge = $requestData['charge'];

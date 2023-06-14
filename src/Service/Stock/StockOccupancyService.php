@@ -52,7 +52,7 @@ class StockOccupancyService
 
     /**
      * @throws Exception
-     * @return array<int, array<string, mixed>>
+     * @return array<mixed>
      */
     public function getAllStockOccupancyByLn(int $stockLocationLn): array
     {

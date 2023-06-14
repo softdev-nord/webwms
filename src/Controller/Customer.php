@@ -195,6 +195,7 @@ class Customer extends AbstractController
     {
 
         $customerNrInput = (string) $request->query->get('name_customer');
+
         return $this->customerService->getAllCustomersAjax($customerNrInput);
     }
 

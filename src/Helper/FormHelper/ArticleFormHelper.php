@@ -6,6 +6,7 @@ namespace WebWMS\Helper\FormHelper;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use WebWMS\Entity\Article;
 use WebWMS\Form\Article\AddArticleType;
 use WebWMS\Form\Article\DeleteArticleType;
@@ -25,7 +26,7 @@ class ArticleFormHelper
     }
 
     /**
-     * @param string $type
+     * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
      * @return FormInterface
