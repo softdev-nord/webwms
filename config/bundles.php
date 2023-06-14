@@ -18,4 +18,5 @@ return [
     Webbamboo\MaterialDashboard\MaterialDashboardBundle::class => ['all' => true],
     ApiPlatform\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
     WebWMS\Bundles\LogViewerBundle\LogViewerBundle::class => ['all' => true],
+    Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
 ];
