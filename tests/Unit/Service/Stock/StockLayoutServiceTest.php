@@ -23,10 +23,7 @@ final class StockLayoutServiceTest extends TestCase
 {
     private StockLayoutService $stockLayoutService;
 
-    /**
-     * @var (StockLayoutDataHandler&MockObject)|MockObject
-     */
-    private MockObject|StockLayoutDataHandler $stockLayoutDataHandler;
+    private MockObject $stockLayoutDataHandler;
 
     protected function setUp(): void
     {

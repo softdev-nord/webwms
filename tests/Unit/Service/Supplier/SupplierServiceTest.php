@@ -23,10 +23,7 @@ final class SupplierServiceTest extends TestCase
 {
     private SupplierService $supplierService;
 
-    /**
-     * @var (SupplierDataHandler&MockObject)|MockObject
-     */
-    private MockObject|SupplierDataHandler $supplierDataHandler;
+    private MockObject $supplierDataHandler;
 
     protected function setUp(): void
     {

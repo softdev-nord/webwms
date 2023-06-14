@@ -23,10 +23,7 @@ final class StockLocationServiceTest extends TestCase
 {
     private StockLocationService $stockLocationService;
 
-    /**
-     * @var (StockLocationDataHandler&MockObject)|MockObject
-     */
-    private MockObject|StockLocationDataHandler $stockLocationDataHandler;
+    private MockObject $stockLocationDataHandler;
 
     protected function setUp(): void
     {

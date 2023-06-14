@@ -23,10 +23,7 @@ final class CustomerServiceTest extends TestCase
 {
     private CustomerService $customerService;
 
-    /**
-     * @var (CustomerDataHandler&MockObject)|MockObject
-     */
-    private MockObject|CustomerDataHandler $customerDataHandler;
+    private MockObject $customerDataHandler;
 
     protected function setUp(): void
     {

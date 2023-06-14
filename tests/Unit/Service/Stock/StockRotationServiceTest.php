@@ -22,10 +22,7 @@ final class StockRotationServiceTest extends TestCase
 {
     private StockRotationService $stockRotationService;
 
-    /**
-     * @var (StockRotationDataHandler&MockObject)|MockObject
-     */
-    private MockObject|StockRotationDataHandler $stockRotationDataHandler;
+    private MockObject $stockRotationDataHandler;
 
     protected function setUp(): void
     {

@@ -28,15 +28,9 @@ final class ArticleDataHandlerTest extends TestCase
 {
     private ArticleDataHandler $articleDataHandler;
 
-    /**
-     * @var (EntityManagerInterface&MockObject)|MockObject
-     */
-    private MockObject|EntityManagerInterface $entityManager;
+    private MockObject $entityManager;
 
-    /**
-     * @var (DateTimeService&MockObject)|MockObject
-     */
-    private MockObject|DateTimeService $dateTimeService;
+    private MockObject $dateTimeService;
 
     protected function setUp(): void
     {

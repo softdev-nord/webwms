@@ -27,15 +27,9 @@ final class CustomerDataHandlerTest extends TestCase
 {
     private CustomerDataHandler $customerDataHandler;
 
-    /**
-     * @var (EntityManagerInterface&MockObject)|MockObject
-     */
-    private MockObject|EntityManagerInterface $entityManager;
+    private MockObject $entityManager;
 
-    /**
-     * @var (DateTimeService&MockObject)|MockObject
-     */
-    private MockObject|DateTimeService $dateTimeService;
+    private MockObject $dateTimeService;
 
     protected function setUp(): void
     {
@@ -208,7 +202,7 @@ final class CustomerDataHandlerTest extends TestCase
                     'customerCountryCode' => 'DE',
                     'customerZipCode' => '27404',
                     'customerCity' => 'Zeven',
-                    'customerId' => 1
+                    'customerId' => 1,
                 ],
                 [
                     'customerNr' => '60001',
@@ -219,7 +213,7 @@ final class CustomerDataHandlerTest extends TestCase
                     'customerCountryCode' => 'DE',
                     'customerZipCode' => '21614',
                     'customerCity' => 'Buxtehude',
-                    'customerId' => 2
+                    'customerId' => 2,
                 ],
             ]);
 

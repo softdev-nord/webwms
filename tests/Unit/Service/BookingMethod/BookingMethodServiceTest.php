@@ -30,32 +30,17 @@ final class BookingMethodServiceTest extends TestCase
 {
     private RequirementsService $requirementsService;
 
-    /**
-     * @var (StockLocationService&MockObject)|MockObject
-     */
-    private MockObject|StockLocationService $stockLocationService;
+    private MockObject $stockLocationService;
 
-    /**
-     * @var (TransportRequestService&MockObject)|MockObject
-     */
-    private MockObject|TransportRequestService $transportRequestService;
+    private MockObject $transportRequestService;
 
-    /**
-     * @var (FormFactoryInterface&MockObject)|MockObject
-     */
-    private MockObject|FormFactoryInterface $formFactory;
+    private MockObject $formFactory;
 
-    /**
-     * @var (Environment&MockObject)|MockObject
-     */
-    private MockObject|Environment $twig;
+    private MockObject $twig;
 
     private BookingMethodService $bookingMethodService;
 
-    /**
-     * @var (FormInterface&MockObject)|MockObject
-     */
-    private MockObject|FormInterface $form;
+    private MockObject $form;
 
     protected function setUp(): void
     {

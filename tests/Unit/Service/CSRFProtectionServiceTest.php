@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -21,7 +22,7 @@ final class CSRFProtectionServiceTest extends TestCase
 {
     private CSRFProtectionService $cSRFProtectionService;
 
-    private RequestStack $requestStack;
+    private MockObject $requestStack;
 
     protected function setUp(): void
     {

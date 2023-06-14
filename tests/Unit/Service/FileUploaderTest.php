@@ -28,10 +28,7 @@ final class FileUploaderTest extends TestCase
 
     private FileUploader $fileUploader;
 
-    /**
-     * @var (ValidatorInterface&MockObject)|MockObject
-     */
-    private MockObject|ValidatorInterface $validator;
+    private MockObject $validator;
 
     protected function setUp(): void
     {

@@ -21,10 +21,7 @@ final class StockOutStrategyServiceTest extends TestCase
 {
     private StockOutStrategyService $stockOutStrategyService;
 
-    /**
-     * @var (StockOutStrategyDataHandler&MockObject)|MockObject
-     */
-    private MockObject|StockOutStrategyDataHandler $stockOutStrategyDataHandler;
+    private MockObject $stockOutStrategyDataHandler;
 
     protected function setUp(): void
     {

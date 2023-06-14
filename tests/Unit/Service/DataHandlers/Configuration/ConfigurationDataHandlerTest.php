@@ -23,10 +23,7 @@ final class ConfigurationDataHandlerTest extends TestCase
 {
     private ConfigurationDataHandler $configurationDataHandler;
 
-    /**
-     * @var (EntityManagerInterface&MockObject)|MockObject
-     */
-    private MockObject|EntityManagerInterface $entityManager;
+    private MockObject $entityManager;
 
     protected function setUp(): void
     {
