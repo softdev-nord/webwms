@@ -1,4 +1,4 @@
-![CircleCI](https://img.shields.io/bitbucket/pipelines/softdev-nord/webwms/master)
+![Bitbucket pipelines](https://img.shields.io/bitbucket/pipelines/softdev-nord/webwms/master)
 
 # webWMS
 **Das webbasierte Lagerverwaltungssystem**
