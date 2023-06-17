@@ -6,12 +6,11 @@ namespace WebWMS\Service\DataHandlers\TransportRequest;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\TransportHistory;
 use WebWMS\Entity\TransportRequest;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Service\DataHandlers
+ * @package:    WebWMS\Service\DataHandlers\TransportRequest
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        TransportRequestDataHandler
