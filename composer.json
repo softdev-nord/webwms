@@ -126,7 +126,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^v3.17",
-        "mockery/mockery": "^1.6",
+        "oro/twig-inspector": "~1.1.0",
         "php-parallel-lint/php-var-dump-check": "^0.5",
         "phpmd/phpmd": "^2.13",
         "phpstan/phpstan": "^1.10",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92f83e2c08101377bce64236cc29c8d8",
+    "content-hash": "051c3f2c25ff4909fb4dcb63184d7313",
     "packages": [
         {
             "name": "api-platform/core",
@@ -9457,6 +9457,68 @@
                 }
             ],
             "time": "2023-03-08T13:26:56+00:00"
+        },
+        {
+            "name": "oro/twig-inspector",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/oroinc/twig-inspector.git",
+                "reference": "1d17b5590be7939b94d80658193f8418c3c248bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/oroinc/twig-inspector/zipball/1d17b5590be7939b94d80658193f8418c3c248bc",
+                "reference": "1d17b5590be7939b94d80658193f8418c3c248bc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4",
+                "symfony/config": "^4.4.1 | ^5.0 | ^6.0",
+                "symfony/dependency-injection": "^4.4.1 | ^5.0 | ^6.0",
+                "symfony/http-foundation": "^4.4.1 | ^5.0 | ^6.0",
+                "symfony/http-kernel": "^4.4.1 | ^5.0 | ^6.0",
+                "symfony/routing": "^4.4.1 | ^5.0 | ^6.0",
+                "symfony/web-profiler-bundle": "^4.4.1 | ^5.0 | ^6.0",
+                "twig/twig": "^1.38 | ^2.7 | ^3.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Oro\\TwigInspector\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocrm.com"
+                }
+            ],
+            "description": "Oro Twig Inspector adds the possibility to find twig templates and blocks used for rendering HTML pages faster during development",
+            "homepage": "https://github.com/oroinc/twig-inspector",
+            "keywords": [
+                "ORO",
+                "debug",
+                "inspect",
+                "symfony",
+                "template",
+                "toolbar-extension",
+                "twig"
+            ],
+            "support": {
+                "issues": "https://github.com/oroinc/twig-inspector/issues",
+                "source": "https://github.com/oroinc/twig-inspector/tree/1.1.0"
+            },
+            "time": "2022-01-08T13:54:33+00:00"
         },
         {
             "name": "pdepend/pdepend",
