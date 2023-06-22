@@ -493,6 +493,14 @@
         background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
     }
 
+    .form-check {
+        display: block;
+        min-height: unset;
+        padding-left: unset;
+        margin-bottom: unset;
+        text-align: -webkit-center;
+    }
+
     .form-check-input:checked[type="checkbox"] {
         background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
     }
@@ -815,6 +823,7 @@
     .table-bordered > thead > tr > th,
     .table-bordered > thead > tr > td {
         border-bottom-width: 1px;
+        vertical-align: middle;
     }
 
     .table-striped > tbody > tr:nth-of-type(odd) {
@@ -857,7 +866,7 @@
     .table > tfoot > tr > td {
         padding: 8px;
         line-height: 1.4286;
-        vertical-align: top;
+        vertical-align: middle;
         border: 1px solid #2e3436;
     }
 
@@ -869,6 +878,7 @@
     .table-striped > tbody > tr:nth-of-type(odd) > * {
         background-color: #49515a;
         color: #c7cbcc;
+        vertical-align: middle;
     }
 
     .table-striped-columns > :not(caption) > tr > :nth-child(even) {

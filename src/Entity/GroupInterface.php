@@ -1,0 +1,28 @@
+<?php
+
+declare(strict_types=1);
+
+namespace WebWMS\Entity;
+
+interface GroupInterface
+{
+    public function addRole(string $role): void;
+
+    public function getGroup(): string;
+
+    public function setGroup(string $group): void;
+
+    public function hasRole(string $role): bool;
+
+    /**
+     * @return string[]
+     */
+    public function getRoles(): array;
+
+    /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles): void;
+
+    public function removeRole(string $role): void;
+}

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\Role;
 use WebWMS\Entity\User;
+use WebWMS\Entity\UserGroup;
+use WebWMS\Entity\UserInterface;
 
 /**
  * @package:    WebWMS\Tests\Unit\Entity
@@ -20,8 +22,6 @@ final class UserTest extends TestCase
 {
     private User $user;
 
-    private Role $role;
-
     private \DateTime $dateTime;
 
     protected function setUp(): void
@@ -29,7 +29,6 @@ final class UserTest extends TestCase
         parent::setUp();
 
         $this->user = new User();
-        $this->role = new Role();
         $this->dateTime = new \DateTime();
     }
 
@@ -100,11 +99,6 @@ final class UserTest extends TestCase
         $this->user->setPassword($expected);
         self::assertSame($expected, $this->user->getPassword());
 
-        // Test setRole() and getRole()
-        $role = $this->role;
-        $this->user->setRole($role);
-        self::assertEquals($role, $this->user->getRole());
-
         // Test setRoles() and getRoles()
         $roles = ['ROLE_ADMIN', 'ROLE_USER'];
         $this->user->setRoles($roles);
@@ -130,5 +124,198 @@ final class UserTest extends TestCase
         self::assertEquals('TestFirstname', $user->getFirstname());
         self::assertEquals('TestLastname', $user->getLastname());
         self::assertEquals('password', $user->getPassword());
+    }
+
+    public function testToStringReturnsUsername(): void
+    {
+        $user = new User();
+        $username = 'rirrgang';
+        $user->setUsername($username);
+
+        $result = (string) $user;
+
+        self::assertSame($username, $result);
+    }
+
+    public function testIsEqualToReturnsFalseIfUserIsNotInstanceOfSelf(): void
+    {
+        $user = new User();
+        $otherUser = $this->createMock(UserInterface::class);
+
+        self::assertFalse($user->isEqualTo($otherUser));
+    }
+
+    public function testIsEqualToReturnsTrueForEqualUser(): void
+    {
+        $user = new User();
+        $user->setPassword('password');
+        $user->setUsername('username');
+
+        $otherUser = new User();
+        $otherUser->setPassword('password');
+        $otherUser->setUsername('username');
+
+        $isEqual = $user->isEqualTo($otherUser);
+
+        self::assertTrue($isEqual);
+    }
+
+    public function testIsEqualToReturnsFalseForDifferentPassword(): void
+    {
+        $user = new User();
+        $user->setPassword('password');
+        $user->setUsername('username');
+
+        $otherUser = new User();
+        $otherUser->setPassword('different_password');
+        $otherUser->setUsername('username');
+
+        $isEqual = $user->isEqualTo($otherUser);
+
+        self::assertFalse($isEqual);
+    }
+
+    public function testIsEqualToReturnsFalseForDifferentUsername(): void
+    {
+        $user = new User();
+        $user->setPassword('password');
+        $user->setUsername('username');
+
+        $otherUser = new User();
+        $otherUser->setPassword('password');
+        $otherUser->setUsername('different_username');
+
+        $isEqual = $user->isEqualTo($otherUser);
+
+        self::assertFalse($isEqual);
+    }
+
+    public function testGetRolesReturnsDefaultRoleWhenNoRolesSet(): void
+    {
+        $user = new User();
+
+        $roles = $user->getRoles();
+
+        self::assertContains(User::ROLE_DEFAULT, $roles);
+    }
+
+    public function testGetRolesReturnsUniqueRoles(): void
+    {
+        $user = new User();
+        $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+
+        $roles = $user->getRoles();
+
+        self::assertEquals(['ROLE_USER', 'ROLE_ADMIN'], $roles);
+    }
+
+    public function testGetRoles(): void
+    {
+        $user = new User();
+        $user->setRoles(['ROLE_USER']);
+
+        $roles = $user->getRoles();
+
+        self::assertEquals(['ROLE_USER'], $roles);
+    }
+
+    public function testIsSuperAdminReturnsFalseByDefault(): void
+    {
+        $user = new User();
+
+        $isSuperAdmin = $user->isSuperAdmin();
+
+        self::assertFalse($isSuperAdmin);
+    }
+
+    public function testSetSuperAdminAddsSuperAdminRole(): void
+    {
+        $user = new User();
+        $user->setSuperAdmin(true);
+
+        $roles = $user->getRoles();
+
+        self::assertContains(User::ROLE_SUPER_ADMIN, $roles);
+    }
+
+    public function testSetSuperAdminRemovesSuperAdminRole(): void
+    {
+        $user = new User();
+        $user->setRoles(['ROLE_USER', 'ROLE_SUPER_ADMIN']);
+        $user->setSuperAdmin(false);
+
+        $roles = $user->getRoles();
+
+        self::assertNotContains(User::ROLE_SUPER_ADMIN, $roles);
+    }
+
+    public function testAddRole(): void
+    {
+        $user = new User();
+        $user->setRoles(['ROLE_USER']);
+        $user->addRole('ROLE_ADMIN');
+
+        $roles = $user->getRoles();
+
+        self::assertContains('ROLE_USER', $roles);
+        self::assertContains('ROLE_ADMIN', $roles);
+    }
+
+    public function testIsAccountNonLockedReturnsTrue(): void
+    {
+        $user = new User();
+        $result = $user->isAccountNonLocked();
+
+        self::assertTrue($result);
+    }
+
+    public function testGetGroupsReturnsNewArrayCollectionWhenNotSet(): void
+    {
+        $user = new User();
+        $groups = $user->getGroups();
+
+        self::assertIsArray($groups);
+        self::assertCount(0, $groups);
+    }
+
+    public function testGetGroupsReturnsExistingCollectionWhenGroupsSet(): void
+    {
+        $existingGroups = new ArrayCollection();
+        $existingGroups->add('Group 1');
+
+        self::assertInstanceOf(ArrayCollection::class, $existingGroups);
+    }
+
+    public function testGetUserGroups(): void
+    {
+        $userGroups = [
+            ['group' => 'Group 1'],
+            ['group' => 'Group 2'],
+        ];
+
+        $this->user->setUserGroups($userGroups);
+        self::assertEquals($userGroups, $this->user->getUserGroups());
+    }
+
+    public function testGetGroupNames(): void
+    {
+        $user = new User();
+        $userGroups = [
+            ['group' => 'Group 1'],
+            ['group' => 'Group 2'],
+        ];
+        $user->setUserGroups($userGroups);
+
+        $groupNames = ['Group 1', 'Group 2'];
+
+        self::assertEquals($groupNames, $user->getGroupNames());
+    }
+
+    public function testHasGroup(): void
+    {
+        $userGroups = new UserGroup();
+        $userGroups->setGroup('Group 1');
+
+        self::assertFalse($this->user->hasGroup('Group 3'));
     }
 }

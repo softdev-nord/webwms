@@ -1,0 +1,54 @@
+{# templates/user/user_group/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% block webwms_header %}
+        {{ include('header.html.twig') }}
+    {% endblock %}
+
+    {% block webwms_content %}
+        {% block webwms_user_group_overview %}
+            <div id="webWMS-user-group-overview" class="wrapper-form vertical-theme">
+                <div class="wrapper-form-content vertical-theme">
+                    <div class="webwms-page">{{ page }}</div>
+                    <div class="card">
+                        <div class="card-content">
+                            <table class="table table-striped table-bordered table-hover compact">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Gruppe</th>
+                                        <th>Beschreibung</th>
+                                        <th>Rollen</th>
+                                        <th>Erstellt am</th>
+                                        <th>Bearbeitet am</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user_group in user_groups %}
+                                        <tr>
+                                            <td>{{user_group.id}}</td>
+                                            <td>{{user_group.group}}</td>
+                                            <td>{{user_group.description}}</td>
+                                            <td>
+                                                {% for role in user_group.roles %}
+                                                    <p style="font-weight: bold">{{ role }},</p>
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{user_group.createdAt|date('d.m.Y H:i:s')}}</td>
+                                            <td>{{user_group.updatedAt|date('d.m.Y H:i:s')}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endblock %}
+
+    {% block bodyjs %}{% endblock %}
+
+{% endblock %}
