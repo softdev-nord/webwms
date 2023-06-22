@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\Stock\StockOccupancyDataHandler;
 class StockOccupancyService
 {
     public function __construct(
-        private StockOccupancyDataHandler $stockOccupancyDataHandler
+        private readonly StockOccupancyDataHandler $stockOccupancyDataHandler
     ) {
     }
 

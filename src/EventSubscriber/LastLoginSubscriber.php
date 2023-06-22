@@ -21,8 +21,8 @@ use WebWMS\Service\User\UserService;
 class LastLoginSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private TokenStorageInterface $tokenStorage,
-        private UserService $userService
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly UserService $userService
     ) {
     }
 

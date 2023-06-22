@@ -21,10 +21,7 @@ use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
  */
 final class ArticleServiceTest extends TestCase
 {
-    /**
-     * @var (ArticleDataHandler&MockObject)|MockObject
-     */
-    private MockObject|ArticleDataHandler $articleDataHandler;
+    private MockObject $articleDataHandler;
 
     private ArticleService $articleService;
 

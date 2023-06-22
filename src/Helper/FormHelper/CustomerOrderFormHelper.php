@@ -23,7 +23,7 @@ use WebWMS\Form\CustomerOrder\EditCustomerOrderType;
 class CustomerOrderFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 

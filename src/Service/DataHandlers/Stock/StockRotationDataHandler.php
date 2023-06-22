@@ -18,7 +18,7 @@ use WebWMS\Entity\StockRotation;
 class StockRotationDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager
     ) {
     }
 

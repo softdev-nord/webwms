@@ -23,7 +23,7 @@ use WebWMS\Form\SupplierOrder\SupplierOrderPosType;
 class SupplierOrderFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 

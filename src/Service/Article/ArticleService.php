@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 class ArticleService
 {
     public function __construct(
-        private ArticleDataHandler $articleDataHandler
+        private readonly ArticleDataHandler $articleDataHandler
     ) {
     }
 

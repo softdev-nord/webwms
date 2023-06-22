@@ -29,12 +29,12 @@ use WebWMS\Service\SupplierOrderPos\SupplierOrderPosService;
 class SupplierOrder extends AbstractController
 {
     public function __construct(
-        private SupplierOrderService $supplierOrderService,
-        private SupplierOrderPosService $supplierOrderPosService,
-        private SupplierService $supplierService,
-        private RequirementsService $requirementsService,
-        private LoggingService $loggingService,
-        private SupplierOrderFormHelper $supplierOrderFormHelper
+        private readonly SupplierOrderService $supplierOrderService,
+        private readonly SupplierOrderPosService $supplierOrderPosService,
+        private readonly SupplierService $supplierService,
+        private readonly RequirementsService $requirementsService,
+        private readonly LoggingService $loggingService,
+        private readonly SupplierOrderFormHelper $supplierOrderFormHelper
     ) {
     }
 

@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\SupplierOrderPos\SupplierOrderPosDataHandler;
 class SupplierOrderPosService
 {
     public function __construct(
-        private SupplierOrderPosDataHandler $supplierOrderPosDataHandler
+        private readonly SupplierOrderPosDataHandler $supplierOrderPosDataHandler
     ) {
     }
 

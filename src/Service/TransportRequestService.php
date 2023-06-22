@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\TransportRequest\TransportRequestDataHandler;
 class TransportRequestService
 {
     public function __construct(
-        private TransportRequestDataHandler $transportRequestDataHandler
+        private readonly TransportRequestDataHandler $transportRequestDataHandler
     ) {
     }
 

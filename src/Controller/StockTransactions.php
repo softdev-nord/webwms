@@ -23,9 +23,9 @@ use WebWMS\Service\TransportRequestService;
 class StockTransactions extends AbstractController
 {
     public function __construct(
-        private BookingMethodService $bookingMethodService,
-        private TransportRequestService $transportRequestService,
-        private StockLocationService $stockLocationService
+        private readonly BookingMethodService $bookingMethodService,
+        private readonly TransportRequestService $transportRequestService,
+        private readonly StockLocationService $stockLocationService
     ) {
     }
 

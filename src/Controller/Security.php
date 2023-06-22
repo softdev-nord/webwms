@@ -20,7 +20,7 @@ use WebWMS\Service\RequirementsService;
 class Security extends AbstractController
 {
     public function __construct(
-        private RequirementsService $requirementsService
+        private readonly RequirementsService $requirementsService
     ) {
     }
 

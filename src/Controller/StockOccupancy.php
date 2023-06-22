@@ -22,9 +22,9 @@ use WebWMS\Service\Stock\StockOccupancyService;
 class StockOccupancy extends AbstractController
 {
     public function __construct(
-        private StockOccupancyService $stockOccupancyService,
-        private StockLocationService $stockLocationService,
-        private RequirementsService $requirementsService
+        private readonly StockOccupancyService $stockOccupancyService,
+        private readonly StockLocationService $stockLocationService,
+        private readonly RequirementsService $requirementsService
     ) {
     }
 

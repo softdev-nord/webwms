@@ -10,8 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\Role;
 use WebWMS\Entity\User;
+use WebWMS\Entity\UserRole;
 
 /**
  * @package:    WebWMS\Form
@@ -40,7 +40,7 @@ class EditUserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'class' => Role::class,
+                'class' => UserRole::class,
                 'choices' => [
                     'Superadministrator' => 'ROLE_SUPER_ADMIN',
                     'Administrator' => 'ROLE_ADMIN',

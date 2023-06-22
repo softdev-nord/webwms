@@ -21,7 +21,7 @@ use WebWMS\Form\User\EditUserType;
 class UserFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 

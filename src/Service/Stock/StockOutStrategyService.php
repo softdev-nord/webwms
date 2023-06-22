@@ -15,7 +15,7 @@ use WebWMS\Service\DataHandlers\StockOutStrategyDataHandler;
 class StockOutStrategyService
 {
     public function __construct(
-        private StockOutStrategyDataHandler $stockOutStrategyDataHandler
+        private readonly StockOutStrategyDataHandler $stockOutStrategyDataHandler
     ) {
     }
 

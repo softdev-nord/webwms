@@ -21,7 +21,7 @@ use WebWMS\Form\Stock\StockLocation\EditStockLocationType;
 class StockLocationFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 

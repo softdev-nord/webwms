@@ -18,7 +18,7 @@ use WebWMS\Service\RequirementsService;
 class Homepage extends AbstractController
 {
     public function __construct(
-        private RequirementsService $requirementsService
+        private readonly RequirementsService $requirementsService
     ) {
     }
 

@@ -20,7 +20,7 @@ use WebWMS\Form\Supplier\EditSupplierType;
 class SupplierFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 

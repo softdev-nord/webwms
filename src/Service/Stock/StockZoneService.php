@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\Stock\StockZoneDataHandler;
 class StockZoneService
 {
     public function __construct(
-        private StockZoneDataHandler $stockZoneDataHandler
+        private readonly StockZoneDataHandler $stockZoneDataHandler
     ) {
     }
 

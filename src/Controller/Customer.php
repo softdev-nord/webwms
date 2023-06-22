@@ -26,11 +26,11 @@ use WebWMS\Service\Validation\CustomerValidationService;
 class Customer extends AbstractController
 {
     public function __construct(
-        private CustomerService $customerService,
-        private RequirementsService $requirementsService,
-        private CustomerValidationService $customerValidationService,
-        private LoggingService $loggingService,
-        private CustomerFormHelper $customerFormHelper
+        private readonly CustomerService $customerService,
+        private readonly RequirementsService $requirementsService,
+        private readonly CustomerValidationService $customerValidationService,
+        private readonly LoggingService $loggingService,
+        private readonly CustomerFormHelper $customerFormHelper
     ) {
     }
 
