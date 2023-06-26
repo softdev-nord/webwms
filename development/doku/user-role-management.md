@@ -25,9 +25,10 @@ public function __construct(UserRoleRight $userRoleRight)
     }
 }
 ```
-Sie können dies entweder in den Controllern `__construct()` tun, <br>
-so dass es für jede Route funktioniert, oder Sie können es in einer einzigen Funktion verwenden.<br>
-Die `UserRole` funktioniert genau auf die gleiche Weise.<br><br>
+Die Logik kann entweder in den Controllern `__construct()` implementiert werden, <br>
+sodass es für jede Route funktioniert, oder in einzelnen Funktionen.<br>
+
+Die `UserRole` funktioniert genau auf die gleiche Weise.<br>
 **Ersetze einfach**:
 ```php
 if (!$userRoleRight->hasUserRight('manage-users'))

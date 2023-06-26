@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use WebWMS\Repository\GroupRepository;
+use WebWMS\Repository\UserGroupRepository;
 
 #[ORM\Table(name: 'user_group')]
-#[ORM\Entity(repositoryClass: GroupRepository::class)]
+#[ORM\Entity(repositoryClass: UserGroupRepository::class)]
 class UserGroup implements GroupInterface
 {
     #[ORM\Id]

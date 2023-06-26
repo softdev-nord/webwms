@@ -124,5 +124,11 @@ yaml-lint: ## lints the yaml files (config folder)
 run-tests-unit: ## run unit tests
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-html var/reports/ ';
 
+######################################################################
+####################### Automated Refactoring ########################
+######################################################################
+run-rector-dry: ## run automated refactoring (dry-run)
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process --dry-run';
+
 run-rector: ## run automated refactoring
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process src --dry-run';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process';
