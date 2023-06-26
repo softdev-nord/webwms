@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Service;
+namespace WebWMS\Service\TransportRequest;
 
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\TransportRequest;
 use WebWMS\Service\DataHandlers\TransportRequest\TransportRequestDataHandler;
 
 /**
- * @package:    WebWMS\Service
+ * @package:    WebWMS\Service\TransportRequest
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        TransportRequestService

@@ -19,4 +19,5 @@ return [
     ApiPlatform\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
     WebWMS\Bundles\LogViewerBundle\LogViewerBundle::class => ['all' => true],
     Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
+    Oro\TwigInspector\Bundle\OroTwigInspectorBundle::class => ['dev' => true]
 ];

@@ -24,6 +24,8 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    
+    ide: phpstorm # to open files in a PhpStorm IDE
 
 when@test:
     framework:

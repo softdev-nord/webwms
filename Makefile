@@ -62,7 +62,7 @@ db-logs: ## Tail database container logs
 ######################################################################
 ########################### Code Analysis ############################
 ######################################################################
-phpstan: ## run code analyse for src and bundles folder (phpstan)
+phpstan: ## Run code analyse for src and bundles folder (phpstan)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpstan analyse';
 
 phpstan-baseline: ## Run code analyse (phpstan) incl. baseline
@@ -74,61 +74,61 @@ var-dump-check: ## Find var_dump, dd, etc.
 ######################################################################
 ########################## Code Style Check ##########################
 ######################################################################
-php-cs: ## run code style check
+php-cs: ## Run code style check
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --dry-run --using-cache=no \
 	 -vvv --show-progress=dots --allow-risky=yes';
 
-phpcs-fix: ## run code style fix
+phpcs-fix: ## Run code style fix
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --using-cache=no \
 	 -vvv --show-progress=dots --allow-risky=yes';
 
-phpmd: ## run code check (phpmd)
+phpmd: ## Run code check (phpmd)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./bundles/,./tests/' ansi rulesets.xml';
 
-phpqa: ## run code check (phpmd)
+phpqa: ## Run code check (phpmd)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src';
 
 ######################################################################
 ############################ Twig Linter #############################
 ######################################################################
-twig-lint: ## Runs twig lint.
+twig-lint: ## Run twig lint.
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'bin/console lint:twig templates';
 
 ######################################################################
 ############################# CSS Linter #############################
 ######################################################################
-css-stylelint: ## Runs stylelint.
+css-stylelint: ## Run stylelint.
 	@docker exec -t $(APP_CONTAINER_NAME) npm run stylelint-changed
 
-css-stylelint-fix: ## Rus with --fix flag (Runs on the host system)
+css-stylelint-fix: ## Run with --fix flag (Runs on the host system)
 	@npm run stylelint-changed -- -r
 
 ######################################################################
 ############################# JS Linter ##############################
 ######################################################################
-js-eslint: ## Runs ESLint.
+js-eslint: ## Run ESLint.
 	@docker exec -t $(APP_CONTAINER_NAME) npm run eslint-changed -- d
 
-js-eslint-fix: ## Runs ESLint with --fix flag (Runs on the host system)
+js-eslint-fix: ## Run ESLint with --fix flag (Runs on the host system)
 	@npm run eslint-changed -- -d public -r
 
 ######################################################################
 ############################ Yaml Linter #############################
 ######################################################################
-yaml-lint: ## lints the yaml files (config folder)
+yaml-lint: ## Lints the yaml files (config folder)
 	@docker exec -t $(APP_CONTAINER_NAME) bin/console lint:yaml config --parse-tags
 
 ######################################################################
 ############################### Tests ################################
 ######################################################################
-run-tests-unit: ## run unit tests
+run-tests-unit: ## Run unit tests
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-html var/reports/ ';
 
 ######################################################################
-####################### Automated Refactoring ########################
+##################### Automated Code Refactoring #####################
 ######################################################################
-run-rector-dry: ## run automated refactoring (dry-run)
+run-rector: ## Run automated refactoring dry run
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process --dry-run';
 
-run-rector: ## run automated refactoring
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process';
+run-rector-refactoring: ## Run automated refactoring
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process --dry-run';

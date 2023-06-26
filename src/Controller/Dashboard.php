@@ -17,7 +17,7 @@ use WebWMS\Repository\TransportHistoryRepository;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Stock\StockRotationService;
-use WebWMS\Service\TransportRequestService;
+use WebWMS\Service\TransportRequest\TransportRequestService;
 
 /**
  * @package:    WebWMS\Controller

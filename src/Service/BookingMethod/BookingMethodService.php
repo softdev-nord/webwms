@@ -14,7 +14,7 @@ use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
-use WebWMS\Service\TransportRequestService;
+use WebWMS\Service\TransportRequest\TransportRequestService;
 
 /**
  * @package:    WebWMS\Service\BookingMethod

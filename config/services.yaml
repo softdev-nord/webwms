@@ -70,7 +70,7 @@ services:
         class: WebWMS\Service\BookingMethod\BookingMethodService
     
     web_wms.service.transport_request_service:
-        class: WebWMS\Service\TransportRequestService
+        class: WebWMS\Service\TransportRequest\TransportRequestService
     
     web_wms.service.data_handlers.configuration.configuration_data_handler:
         class: WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler
