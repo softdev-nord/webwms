@@ -16,7 +16,7 @@ use WebWMS\Entity\Configuration;
 class ConfigurationDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager
     ) {
     }
 

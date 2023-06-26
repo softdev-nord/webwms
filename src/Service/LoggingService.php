@@ -18,7 +18,7 @@ use WebWMS\Service\DataHandlers\Logging\LoggingDataHandler;
 class LoggingService
 {
     public function __construct(
-        private LoggingDataHandler $loggingDataHandler
+        private readonly LoggingDataHandler $loggingDataHandler
     ) {
     }
 

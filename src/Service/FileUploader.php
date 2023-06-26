@@ -17,9 +17,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class FileUploader
 {
     public function __construct(
-        private string $targetDirectory,
-        private string $publicDirectory,
-        private ValidatorInterface $validator
+        private readonly string $targetDirectory,
+        private readonly string $publicDirectory,
+        private readonly ValidatorInterface $validator
     ) {
     }
 

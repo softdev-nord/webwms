@@ -21,7 +21,7 @@ use WebWMS\Form\Stock\StockLayout\EditStockLayoutType;
 class StockLayoutFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 

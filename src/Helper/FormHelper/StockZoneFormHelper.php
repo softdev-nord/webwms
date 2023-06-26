@@ -21,7 +21,7 @@ use WebWMS\Form\Stock\StockZone\EditStockZoneType;
 class StockZoneFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 

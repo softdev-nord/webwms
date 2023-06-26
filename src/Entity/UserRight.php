@@ -4,32 +4,29 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Repository\UserRightRepository;
 
 /**
  * @package:    WebWMS\Entity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Role
+ * Class        UserRight
  */
-#[ORM\Entity]
-#[ORM\Table(name: 'roles')]
-class Role
+#[ORM\Table(name: 'user_right')]
+#[ORM\Entity(repositoryClass: UserRightRepository::class)]
+class UserRight
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
     private int $id;
 
-    #[ORM\Column(name: 'name', type: 'string', length: 30)]
-    private string $name;
+    #[ORM\Column(name: 'user_right', type: 'string', length: 40)]
+    private ?string $userRight;
 
-    #[ORM\Column(name: 'role', type: 'string', length: 20, unique: true)]
-    private string $role;
-
-    #[ORM\OneToMany(mappedBy: 'role', targetEntity: User::class)]
-    private Collection $user;
+    #[ORM\Column(name: 'description', type: 'string', length: 150)]
+    private ?string $description;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $createdAt;
@@ -42,45 +39,33 @@ class Role
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    public function getUserRight(): ?string
+    {
+        return $this->userRight;
+    }
+
+    public function setUserRight(string $userRight): self
+    {
+        $this->userRight = $userRight;
 
         return $this;
     }
 
-    public function getName(): string
+    public function getDescription(): ?string
     {
-        return $this->name;
+        return $this->description;
     }
 
-    public function setName(string $name): self
+    public function setDescription(string $description): self
     {
-        $this->name = $name;
+        $this->description = $description;
 
         return $this;
-    }
-
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
-    public function getUsers(): Collection
-    {
-        return $this->user;
-    }
-
-    public function setUsers(Collection $user): void
-    {
-        $this->user = $user;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface

@@ -26,11 +26,11 @@ use WebWMS\Service\Validation\SupplierValidationService;
 class Supplier extends AbstractController
 {
     public function __construct(
-        private SupplierService $supplierService,
-        private RequirementsService $requirementsService,
-        private LoggingService $loggingService,
-        private SupplierValidationService $supplierValidationService,
-        private SupplierFormHelper $supplierFormHelper
+        private readonly SupplierService $supplierService,
+        private readonly RequirementsService $requirementsService,
+        private readonly LoggingService $loggingService,
+        private readonly SupplierValidationService $supplierValidationService,
+        private readonly SupplierFormHelper $supplierFormHelper
     ) {
     }
 

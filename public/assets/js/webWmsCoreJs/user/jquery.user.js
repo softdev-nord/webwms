@@ -17,8 +17,22 @@
         },
         columns: [
             { data: 'username' },
+            { data: 'email' },
             { data: 'firstname' },
             { data: 'lastname' },
+            { data: 'last_login' },
+            { data: 'enabled',
+                "render": function ( data, type, row ) {
+                    if (data === 1) {
+                        data = '<i class="mdi mdi-check-circle-outline"></i>';
+                    }
+                    else {
+                        data = '<i class="mdi mdi-close-circle-outline"></i>';
+                    }
+                    return data
+                }},
+            { data: 'roles' },
+            { data: 'user_groups' },
             { data: 'created_at' },
             { data: 'updated_at' }
         ],
@@ -69,43 +83,41 @@
         ]
     });
 
-    if (user_role === 'ROLE_SUPER_ADMIN') {
-        $.contextMenu({
-            selector: 'tr',
-            trigger: 'right',
-            callback: function(key, options, event) {
-                const row = userTable.row(options.$trigger);
+    $.contextMenu({
+        selector: 'tr',
+        trigger: 'right',
+        callback: function(key, options, event) {
+            const row = userTable.row(options.$trigger);
 
-                switch (key) {
-                    case 'edit' :
-                        editUser(row.data().username);
-                        break;
-                    case 'editPassword' :
-                        editUserPassword(row.data().username);
-                        break;
-                    case 'delete' :
-                        deleteUser(row.data().username);
-                        break;
-                    default :
-                        break;
-                }
-            },
-            items: {
-                edit: {
-                    name: 'Bearbeiten',
-                    icon: 'edit'
-                },
-                editPassword: {
-                    name: 'Passwort ändern',
-                    icon: 'edit'
-                },
-                delete: {
-                    name: 'Löschen',
-                    icon: 'delete'
-                }
+            switch (key) {
+                case 'edit' :
+                    editUser(row.data().username);
+                    break;
+                case 'editPassword' :
+                    editUserPassword(row.data().username);
+                    break;
+                case 'delete' :
+                    deleteUser(row.data().username);
+                    break;
+                default :
+                    break;
             }
-        });
-    }
+        },
+        items: {
+            edit: {
+                name: 'Bearbeiten',
+                icon: 'edit'
+            },
+            editPassword: {
+                name: 'Passwort ändern',
+                icon: 'edit'
+            },
+            delete: {
+                name: 'Löschen',
+                icon: 'delete'
+            }
+        }
+    });
 
     $(function(){
         // Ändern der Standardbreite des Modals

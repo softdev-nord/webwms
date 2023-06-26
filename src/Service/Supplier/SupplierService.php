@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
 class SupplierService
 {
     public function __construct(
-        private SupplierDataHandler $supplierDataHandler
+        private readonly SupplierDataHandler $supplierDataHandler
     ) {
     }
 

@@ -18,7 +18,7 @@ use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 class StockLocationService
 {
     public function __construct(
-        private StockLocationDataHandler $stockLocationDataHandler
+        private readonly StockLocationDataHandler $stockLocationDataHandler
     ) {
     }
 

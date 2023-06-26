@@ -18,8 +18,13 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">Benutzername</th>
+                                    <th scope="col">E-Mail</th>
                                     <th scope="col">Vorname</th>
                                     <th scope="col">Nachname</th>
+                                    <th scope="col">Letzter Login</th>
+                                    <th scope="col">Aktiviert</th>
+                                    <th scope="col">Rollen</th>
+                                    <th scope="col">Gruppen</th>
                                     <th scope="col">Erstellt</th>
                                     <th scope="col">Letzte Änderung</th>
                                 </tr>
@@ -37,7 +42,7 @@
             {% set user_role = app.user.roles.0 %}
             window.user_role = '{{ user_role }}'
         </script>
-        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.user.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/user/jquery.user.js') }}"></script>
     {% endblock %}
 
 {% endblock %}

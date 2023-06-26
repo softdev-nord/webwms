@@ -26,11 +26,11 @@ use WebWMS\Service\Validation\StockZoneValidationService;
 class StockZone extends AbstractController
 {
     public function __construct(
-        private StockZoneService $stockZoneService,
-        private RequirementsService $requirementsService,
-        private LoggingService $loggingService,
-        private StockZoneFormHelper $stockZoneFormHelper,
-        private StockZoneValidationService $stockZoneValidationService
+        private readonly StockZoneService $stockZoneService,
+        private readonly RequirementsService $requirementsService,
+        private readonly LoggingService $loggingService,
+        private readonly StockZoneFormHelper $stockZoneFormHelper,
+        private readonly StockZoneValidationService $stockZoneValidationService
     ) {
     }
 

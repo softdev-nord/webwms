@@ -21,8 +21,8 @@ use WebWMS\Service\RequirementsService;
 class Logging extends AbstractController
 {
     public function __construct(
-        private RequirementsService $requirementsService,
-        private LoggingService $loggingService
+        private readonly RequirementsService $requirementsService,
+        private readonly LoggingService $loggingService
     ) {
     }
 

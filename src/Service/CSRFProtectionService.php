@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class CSRFProtectionService
 {
     public function __construct(
-        private RequestStack $requestStack
+        private readonly RequestStack $requestStack
     ) {
     }
 

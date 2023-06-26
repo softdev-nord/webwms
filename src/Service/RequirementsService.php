@@ -13,11 +13,11 @@ namespace WebWMS\Service;
 class RequirementsService
 {
     public function __construct(
-        private string $appName,
-        private string $appVersion,
-        private string $appVersionNumber,
-        private string $appCopyright,
-        private string $appLizenz
+        private readonly string $appName,
+        private readonly string $appVersion,
+        private readonly string $appVersionNumber,
+        private readonly string $appCopyright,
+        private readonly string $appLizenz
     ) {
     }
 

@@ -20,8 +20,8 @@ use WebWMS\Service\RequirementsService;
 class Configuration extends AbstractController
 {
     public function __construct(
-        private ConfigurationService $configurationService,
-        private RequirementsService $requirementsService,
+        private readonly ConfigurationService $configurationService,
+        private readonly RequirementsService $requirementsService,
     ) {
     }
 

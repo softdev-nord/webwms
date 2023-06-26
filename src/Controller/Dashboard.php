@@ -30,13 +30,13 @@ class Dashboard extends AbstractController
     private LoaderInterface $loader;
 
     public function __construct(
-        private RequirementsService $requirementsService,
-        private Environment $twig,
-        private ChartBuilderInterface $chartBuilder,
-        private TransportHistoryRepository $transportHistoryRepository,
-        private StockRotationService $stockRotationService,
-        private TransportRequestService $transportRequestService,
-        private StockLocationService $stockLocationService
+        private readonly RequirementsService $requirementsService,
+        private readonly Environment $twig,
+        private readonly ChartBuilderInterface $chartBuilder,
+        private readonly TransportHistoryRepository $transportHistoryRepository,
+        private readonly StockRotationService $stockRotationService,
+        private readonly TransportRequestService $transportRequestService,
+        private readonly StockLocationService $stockLocationService
     ) {
         $this->loader = $this->twig->getLoader();
     }

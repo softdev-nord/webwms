@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 class CustomerService
 {
     public function __construct(
-        private CustomerDataHandler $customerDataHandler
+        private readonly CustomerDataHandler $customerDataHandler
     ) {
     }
 

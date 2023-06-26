@@ -21,8 +21,8 @@ use WebWMS\Service\Stock\StockRotationService;
 class StockRotation extends AbstractController
 {
     public function __construct(
-        private StockRotationService $stockRotationService,
-        private RequirementsService $requirementsService
+        private readonly StockRotationService $stockRotationService,
+        private readonly RequirementsService $requirementsService
     ) {
     }
 

@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\Stock\StockRotationDataHandler;
 class StockRotationService
 {
     public function __construct(
-        private StockRotationDataHandler $stockRotationDataHandler
+        private readonly StockRotationDataHandler $stockRotationDataHandler
     ) {
     }
 

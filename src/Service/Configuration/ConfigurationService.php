@@ -15,7 +15,7 @@ use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
 class ConfigurationService
 {
     public function __construct(
-        private ConfigurationDataHandler $configurationDataHandler
+        private readonly ConfigurationDataHandler $configurationDataHandler
     ) {
     }
 

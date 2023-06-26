@@ -21,7 +21,7 @@ use WebWMS\Form\Customer\EditCustomerType;
 class CustomerFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 

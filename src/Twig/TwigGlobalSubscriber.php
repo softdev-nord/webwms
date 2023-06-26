@@ -18,8 +18,8 @@ use WebWMS\Service\Configuration\ConfigurationService;
 class TwigGlobalSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private Environment $twig,
-        private ConfigurationService $configurationService
+        private readonly Environment $twig,
+        private readonly ConfigurationService $configurationService
     ) {
     }
 

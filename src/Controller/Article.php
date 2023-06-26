@@ -26,11 +26,11 @@ use WebWMS\Service\Validation\ArticleValidationService;
 class Article extends AbstractController
 {
     public function __construct(
-        private ArticleService $articleService,
-        private RequirementsService $requirementsService,
-        private ArticleValidationService $articleValidationService,
-        private LoggingService $loggingService,
-        private ArticleFormHelper $articleFormHelper
+        private readonly ArticleService $articleService,
+        private readonly RequirementsService $requirementsService,
+        private readonly ArticleValidationService $articleValidationService,
+        private readonly LoggingService $loggingService,
+        private readonly ArticleFormHelper $articleFormHelper
     ) {
     }
 

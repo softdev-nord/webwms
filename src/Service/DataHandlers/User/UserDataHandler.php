@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use WebWMS\Entity\Role;
 use WebWMS\Entity\User;
+use WebWMS\Entity\UserRole;
 use WebWMS\Service\DateTimeService;
 
 /**
@@ -99,11 +99,11 @@ class UserDataHandler implements PasswordUpgraderInterface
             return null;
         }
 
-        /** @var Role $roles */
+        /** @var UserRole $roles */
         $roles = $requestData['roles'];
 
         $user->setUsername(strval($requestData['username']));
-        $user->setRole($roles);
+        $user->addRole($roles->getUserRole());
         $user->setFirstname(strval($requestData['firstname']));
         $user->setLastname(strval($requestData['lastname']));
         $user->setUpdatedAt($this->dateTimeService->createDateTime());

@@ -27,11 +27,11 @@ use WebWMS\Service\Validation\StockLocationValidationService;
 class StockLocation extends AbstractController
 {
     public function __construct(
-        private StockLocationService $stockLocationService,
-        private RequirementsService $requirementsService,
-        private StockLocationValidationService $stockLocationValidationService,
-        private LoggingService $loggingService,
-        private StockLocationFormHelper $stockLocationFormHelper
+        private readonly StockLocationService $stockLocationService,
+        private readonly RequirementsService $requirementsService,
+        private readonly StockLocationValidationService $stockLocationValidationService,
+        private readonly LoggingService $loggingService,
+        private readonly StockLocationFormHelper $stockLocationFormHelper
     ) {
     }
 

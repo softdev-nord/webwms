@@ -29,13 +29,13 @@ use WebWMS\Service\RequirementsService;
 class CustomerOrder extends AbstractController
 {
     public function __construct(
-        private ArticleService $articleService,
-        private CustomerOrderService $customerOrderService,
-        private CustomerOrderPosService $customerOrderPosService,
-        private RequirementsService $requirementsService,
-        private CustomerService $customerService,
-        private LoggingService $loggingService,
-        private CustomerOrderFormHelper $customerOrderFormHelper
+        private readonly ArticleService $articleService,
+        private readonly CustomerOrderService $customerOrderService,
+        private readonly CustomerOrderPosService $customerOrderPosService,
+        private readonly RequirementsService $requirementsService,
+        private readonly CustomerService $customerService,
+        private readonly LoggingService $loggingService,
+        private readonly CustomerOrderFormHelper $customerOrderFormHelper
     ) {
     }
 

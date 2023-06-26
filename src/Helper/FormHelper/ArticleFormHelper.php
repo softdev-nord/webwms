@@ -21,7 +21,7 @@ use WebWMS\Form\Article\EditArticleType;
 class ArticleFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 

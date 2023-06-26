@@ -26,11 +26,11 @@ use WebWMS\Service\Validation\StockLayoutValidationService;
 class StockLayout extends AbstractController
 {
     public function __construct(
-        private StockLayoutService $stockLayoutService,
-        private RequirementsService $requirementsService,
-        private LoggingService $loggingService,
-        private StockLayoutFormHelper $stockLayoutFormHelper,
-        private StockLayoutValidationService $stockLayoutValidationService
+        private readonly StockLayoutService $stockLayoutService,
+        private readonly RequirementsService $requirementsService,
+        private readonly LoggingService $loggingService,
+        private readonly StockLayoutFormHelper $stockLayoutFormHelper,
+        private readonly StockLayoutValidationService $stockLayoutValidationService
     ) {
     }
 
