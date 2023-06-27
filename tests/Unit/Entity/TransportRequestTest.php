@@ -20,597 +20,177 @@ use WebWMS\Entity\TransportRequest;
 final class TransportRequestTest extends TestCase
 {
     private TransportRequest $transportRequest;
-    private \DateTimeImmutable $dateTime;
+    private \DateTime $dateTime;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->transportRequest = new TransportRequest();
-        $this->dateTime = new \DateTimeImmutable();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($this->transportRequest);
-        unset($this->dateTime);
-    }
-
-    public function testGetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('id');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getId());
-    }
-
-    public function testSetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('id');
-        $this->transportRequest->setId($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetSuId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('suId');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getSuId());
-    }
-
-    public function testSetSuId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('suId');
-        $this->transportRequest->setSuId($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrNr(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trNr');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrNr());
-    }
-
-    public function testSetTrNr(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trNr');
-        $this->transportRequest->setTrNr($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrPos(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trPos');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrPos());
-    }
-
-    public function testSetTrPos(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trPos');
-        $this->transportRequest->setTrPos($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrPrio(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trPrio');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrPrio());
-    }
-
-    public function testSetTrPrio(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trPrio');
-        $this->transportRequest->setTrPrio($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetArtNr(): void
-    {
-        $expected = 'articleNr';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('articleNr');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getArtNr());
-    }
-
-    public function testSetArtNr(): void
-    {
-        $expected = 'articleNr';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('articleNr');
-        $this->transportRequest->setArtNr($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrQuantity(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trQuantity');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrQuantity());
-    }
-
-    public function testSetTrQuantity(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trQuantity');
-        $this->transportRequest->setTrQuantity($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetStockCoordinate(): void
-    {
-        $expected = 'stockCoordinate';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockCoordinate');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getStockCoordinate());
-    }
-
-    public function testSetStockCoordinate(): void
-    {
-        $expected = 'stockCoordinate';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockCoordinate');
-        $this->transportRequest->setStockCoordinate($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetStockNr(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockNr');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getStockNr());
-    }
-
-    public function testSetStockNr(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockNr');
-        $this->transportRequest->setStockNr($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetStockLevel1(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockLevel1');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getStockLevel1());
-    }
-
-    public function testSetStockLevel1(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockLevel1');
-        $this->transportRequest->setStockLevel1($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetStockLevel2(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockLevel2');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getStockLevel2());
-    }
-
-    public function testSetStockLevel2(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockLevel2');
-        $this->transportRequest->setStockLevel2($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetStockLevel3(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockLevel3');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getStockLevel3());
-    }
-
-    public function testSetStockLevel3(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockLevel3');
-        $this->transportRequest->setStockLevel3($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetStockLevel4(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockLevel4');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getStockLevel4());
-    }
-
-    public function testSetStockLevel4(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('stockLevel4');
-        $this->transportRequest->setStockLevel4($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrAccess(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trAccess');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrAccess());
-    }
-
-    public function testSetTrAccess(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trAccess');
-        $this->transportRequest->setTrAccess($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrDispatch(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trDispatch');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrDispatch());
-    }
-
-    public function testSetTrDispatch(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trDispatch');
-        $this->transportRequest->setTrDispatch($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrState(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trState');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrState());
-    }
-
-    public function testSetTrState(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trState');
-        $this->transportRequest->setTrState($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetOrderUsername(): void
-    {
-        $expected = 'orderUsername';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('orderUsername');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getOrderUsername());
-    }
-
-    public function testSetOrderUsername(): void
-    {
-        $expected = 'orderUsername';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('orderUsername');
-        $this->transportRequest->setOrderUsername($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetBookingMethod(): void
-    {
-        $expected = 'bookingMethod';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('bookingMethod');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getBookingMethod());
-    }
-
-    public function testSetBookingMethod(): void
-    {
-        $expected = 'bookingMethod';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('bookingMethod');
-        $this->transportRequest->setBookingMethod($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetDocId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('docId');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getDocId());
-    }
-
-    public function testSetDocId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('docId');
-        $this->transportRequest->setDocId($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetOrderNr(): void
-    {
-        $expected = 'orderNr';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('orderNr');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getOrderNr());
-    }
-
-    public function testSetOrderNr(): void
-    {
-        $expected = 'orderNr';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('orderNr');
-        $this->transportRequest->setOrderNr($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetOrderPos(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('orderPos');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getOrderPos());
-    }
-
-    public function testSetOrderPos(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('orderPos');
-        $this->transportRequest->setOrderPos($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetCharge(): void
-    {
-        $expected = 'charge';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('charge');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getCharge());
-    }
-
-    public function testSetCharge(): void
-    {
-        $expected = 'charge';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('charge');
-        $this->transportRequest->setCharge($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetLoadingEquipment(): void
-    {
-        $expected = 'loadingEquipment';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('loadingEquipment');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getLoadingEquipment());
-    }
-
-    public function testSetLoadingEquipment(): void
-    {
-        $expected = 'loadingEquipment';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('loadingEquipment');
-        $this->transportRequest->setLoadingEquipment($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetConfirmationState(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('confirmationState');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getConfirmationState());
-    }
-
-    public function testSetConfirmationState(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('confirmationState');
-        $this->transportRequest->setConfirmationState($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrUsername(): void
-    {
-        $expected = 'trUsername';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trUsername');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrUsername());
-    }
-
-    public function testSetTrUsername(): void
-    {
-        $expected = 'trUsername';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trUsername');
-        $this->transportRequest->setTrUsername($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrComputerIp(): void
-    {
-        $expected = 'trComputerIp';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trComputerIp');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrComputerIp());
-    }
-
-    public function testSetTrComputerIp(): void
-    {
-        $expected = 'trComputerIp';
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trComputerIp');
-        $this->transportRequest->setTrComputerIp($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrBlocked(): void
-    {
-        $expected = true;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trBlocked');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrBlocked());
-    }
-
-    public function testSetTrBlocked(): void
-    {
-        $expected = false;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trBlocked');
-        $this->transportRequest->setTrBlocked($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrStartDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trStartDate');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrStartDate());
-    }
-
-    public function testSetTrStartDate(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trStartDate');
-        $this->transportRequest->setTrStartDate($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrEdited(): void
-    {
-        $expected = true;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trEdited');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrEdited());
-    }
-
-    public function testSetTrEdited(): void
-    {
-        $expected = true;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trEdited');
-        $this->transportRequest->setTrEdited($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetTrType(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trType');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getTrType());
-    }
-
-    public function testSetTrType(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('trType');
-        $this->transportRequest->setTrType($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('createdAt');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getCreatedAt());
-    }
-
-    public function testSetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('createdAt');
-        $this->transportRequest->setCreatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('updatedAt');
-        $property->setValue($this->transportRequest, $expected);
-        self::assertSame($expected, $this->transportRequest->getUpdatedAt());
-    }
-
-    public function testSetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(TransportRequest::class))
-            ->getProperty('updatedAt');
-        $this->transportRequest->setUpdatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->transportRequest));
+        $this->dateTime = new \DateTime();
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    public function testGettersAndSetters(): void
+    {
+        // Test setId() and getId()
+        $id = 1;
+        $this->transportRequest->setId($id);
+        self::assertEquals($id, $this->transportRequest->getId());
+
+        // Test setSuId() and getSuId()
+        $suId = 1;
+        $this->transportRequest->setSuId($suId);
+        self::assertSame($suId, $this->transportRequest->getSuId());
+
+        // Test setTrNr() and getTrNr()
+        $trNr = 10000;
+        $this->transportRequest->setTrNr($trNr);
+        self::assertSame($trNr, $this->transportRequest->getTrNr());
+
+        // Test setTrPos() and getTrPos()
+        $trPos = 1;
+        $this->transportRequest->setTrPos($trPos);
+        self::assertSame($trPos, $this->transportRequest->getTrPos());
+
+        // Test setTrPrio() and getTrPrio()
+        $trPrio = 1;
+        $this->transportRequest->setTrPrio($trPrio);
+        self::assertSame($trPrio, $this->transportRequest->getTrPrio());
+
+        // Test setArticleNr() and getArticleNr()
+        $articleNr = '12345';
+        $this->transportRequest->setArticleNr($articleNr);
+        self::assertEquals($articleNr, $this->transportRequest->getArticleNr());
+
+        // Test setTrQuantity() and getTrQuantity()
+        $trQuantity = 80.000;
+        $this->transportRequest->setTrQuantity($trQuantity);
+        self::assertEquals($trQuantity, $this->transportRequest->getTrQuantity());
+
+        // Test setStockCoordinate() and getStockCoordinate()
+        $stockCoordinate = '101000100010001';
+        $this->transportRequest->setStockCoordinate($stockCoordinate);
+        self::assertEquals($stockCoordinate, $this->transportRequest->getStockCoordinate());
+
+        // Test setStockNr() and getStockNr()
+        $stockNr = 100;
+        $this->transportRequest->setStockNr($stockNr);
+        self::assertEquals($stockNr, $this->transportRequest->getStockNr());
+
+        // Test setStockLevel1() and getStockLevel1()
+        $stockLevel1 = 1;
+        $this->transportRequest->setStockLevel1($stockLevel1);
+        self::assertEquals($stockLevel1, $this->transportRequest->getStockLevel1());
+
+        // Test setStockLevel2() and getStockLevel2()
+        $stockLevel2 = 1;
+        $this->transportRequest->setStockLevel2($stockLevel2);
+        self::assertEquals($stockLevel2, $this->transportRequest->getStockLevel2());
+
+        // Test setStockLevel3() and getStockLevel3()
+        $stockLevel3 = 1;
+        $this->transportRequest->setStockLevel3($stockLevel3);
+        self::assertEquals($stockLevel3, $this->transportRequest->getStockLevel3());
+
+        // Test setStockLevel4() and getStockLevel4()
+        $stockLevel4 = 1;
+        $this->transportRequest->setStockLevel4($stockLevel4);
+        self::assertEquals($stockLevel4, $this->transportRequest->getStockLevel4());
+
+        // Test setTrAccess() and getTrAccess()
+        $trAccess = $this->dateTime;
+        $this->transportRequest->setTrAccess($trAccess);
+        self::assertEquals($trAccess, $this->transportRequest->getTrAccess());
+
+        // Test setTrDispatch() and getTrDispatch()
+        $trDispatch = $this->dateTime;
+        $this->transportRequest->setTrDispatch($trDispatch);
+        self::assertEquals($trDispatch, $this->transportRequest->getTrDispatch());
+
+        // Test setTrState() and getTrState()
+        $trState = 1;
+        $this->transportRequest->setTrState($trState);
+        self::assertEquals($trState, $this->transportRequest->getTrState());
+
+        // Test setOrderUsername() and getOrderUsername()
+        $orderUsername = 'rirrgang';
+        $this->transportRequest->setOrderUsername($orderUsername);
+        self::assertEquals($orderUsername, $this->transportRequest->getOrderUsername());
+
+        // Test setBookingMethod() and getBookingMethod()
+        $bookingMethod = 'WA202';
+        $this->transportRequest->setBookingMethod($bookingMethod);
+        self::assertEquals($bookingMethod, $this->transportRequest->getBookingMethod());
+
+        // Test setDocId() and getDocId()
+        $docId = 710000;
+        $this->transportRequest->setDocId($docId);
+        self::assertEquals($docId, $this->transportRequest->getDocId());
+
+        // Test setOrderNr() and getOrderNr()
+        $orderNr = 'VLS-01-710000';
+        $this->transportRequest->setOrderNr($orderNr);
+        self::assertEquals($orderNr, $this->transportRequest->getOrderNr());
+
+        // Test setOrderPos() and getOrderPos()
+        $orderPos = 1;
+        $this->transportRequest->setOrderPos($orderPos);
+        self::assertEquals($orderPos, $this->transportRequest->getOrderPos());
+
+        // Test setCharge() and getCharge()
+        $charge = '000-000-000';
+        $this->transportRequest->setCharge($charge);
+        self::assertEquals($charge, $this->transportRequest->getCharge());
+
+        // Test setLoadingEquipment() and getLoadingEquipment()
+        $loadingEquipment = 'PAL200';
+        $this->transportRequest->setLoadingEquipment($loadingEquipment);
+        self::assertEquals($loadingEquipment, $this->transportRequest->getLoadingEquipment());
+
+        // Test setConfirmationState() and getConfirmationState()
+        $confirmationState = 0;
+        $this->transportRequest->setConfirmationState($confirmationState);
+        self::assertEquals($confirmationState, $this->transportRequest->getConfirmationState());
+
+        // Test setTrUsername() and getTrUsername()
+        $trUsername = 'karlfeld';
+        $this->transportRequest->setTrUsername($trUsername);
+        self::assertEquals($trUsername, $this->transportRequest->getTrUsername());
+
+        // Test setTrComputerIp() and getTrComputerIp()
+        $trComputerIp = '123.123.123.123';
+        $this->transportRequest->setTrComputerIp($trComputerIp);
+        self::assertEquals($trComputerIp, $this->transportRequest->getTrComputerIp());
+
+        // Test setTrBlocked() and getTrBlocked()
+        $this->transportRequest->setTrBlocked(true);
+        self::assertTrue($this->transportRequest->getTrBlocked());
+
+        // Test setTrStartDate() and getTrStartDate()
+        $trStartDate = $this->dateTime;
+        $this->transportRequest->setTrStartDate($trStartDate);
+        self::assertEquals($trStartDate, $this->transportRequest->getTrStartDate());
+
+        // Test setTrEdited() and getTrEdited()
+        $this->transportRequest->setTrEdited(false);
+        self::assertFalse($this->transportRequest->getTrEdited());
+
+        // Test setTrType() and getTrType()
+        $trType = 1;
+        $this->transportRequest->setTrType($trType);
+        self::assertEquals($trType, $this->transportRequest->getTrType());
+
+        // Test setCreatedAt() and getCreatedAt()
+        $createdAt = $this->dateTime;
+        $this->transportRequest->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->transportRequest->getCreatedAt());
+
+        // Test setUpdatedAt() and getUpdatedAt()
+        $updatedAt = $this->dateTime;
+        $this->transportRequest->setUpdatedAt($updatedAt);
+        self::assertEquals($updatedAt, $this->transportRequest->getUpdatedAt());
     }
 }

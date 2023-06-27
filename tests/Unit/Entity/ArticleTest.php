@@ -19,291 +19,91 @@ final class ArticleTest extends TestCase
 {
     private Article $article;
 
-    private \DateTimeImmutable $dateTime;
+    private \DateTime $dateTime;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->article = new Article();
-        $this->dateTime = new \DateTimeImmutable();
+        $this->dateTime = new \DateTime();
     }
 
-    protected function tearDown(): void
+    public function testGetterAndSetterMethods(): void
     {
-        parent::tearDown();
+        // Test setArticleId() and getArticleId()
+        $articleId = 1;
+        $this->article->setArticleId($articleId);
+        self::assertEquals($articleId, $this->article->getArticleId());
 
-        unset($this->article);
-        unset($this->dateTime);
-    }
+        // Test setArticleNr() and getArticleNr()
+        $articleNr = '12345';
+        $this->article->setArticleNr($articleNr);
+        self::assertEquals($articleNr, $this->article->getArticleNr());
 
-    public function testGetArticleId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleId');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getArticleId());
-    }
+        // Test setArticleName() and getArticleName()
+        $articleName = 'Test Article Name';
+        $this->article->setArticleName($articleName);
+        self::assertEquals($articleName, $this->article->getArticleName());
 
-    public function testSetArticleId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleId');
-        $this->article->setArticleId($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
+        // Test setArticleCategory() and getArticleCategory()
+        $articleCategory = 'Test Category';
+        $this->article->setArticleCategory($articleCategory);
+        self::assertEquals($articleCategory, $this->article->getArticleCategory());
 
-    public function testGetArticleNr(): void
-    {
-        $expected = 'articleNr';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleNr');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getArticleNr());
-    }
+        // Test setArticleWeight() and getArticleWeight()
+        $articleWeight = 2019.00;
+        $this->article->setArticleWeight($articleWeight);
+        self::assertEquals($articleWeight, $this->article->getArticleWeight());
 
-    public function testSetArticleNr(): void
-    {
-        $expected = 'articleNr';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleNr');
-        $this->article->setArticleNr($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
+        // Test setArticleEan() and getArticleEan()
+        $articleEan = '1234567890';
+        $this->article->setArticleEan($articleEan);
+        self::assertEquals($articleEan, $this->article->getArticleEan());
 
-    public function testGetArticleName(): void
-    {
-        $expected = 'articleName';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleName');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getArticleName());
-    }
+        // Test setArticleUnit() and getArticleUnit()
+        $articleUnit = 'Stk';
+        $this->article->setArticleUnit($articleUnit);
+        self::assertEquals($articleUnit, $this->article->getArticleUnit());
 
-    public function testSetArticleName(): void
-    {
-        $expected = 'articleName';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleName');
-        $this->article->setArticleName($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
+        // Test setArticleDepth() and getArticleDepth()
+        $articleDepth = 2019.00;
+        $this->article->setArticleDepth($articleDepth);
+        self::assertEquals($articleDepth, $this->article->getArticleDepth());
 
-    public function testGetArticleCategory(): void
-    {
-        $expected = 'articleCategory';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleCategory');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getArticleCategory());
-    }
+        // Test setArticleWidth() and getArticleWidth()
+        $articleWidth = 2019.00;
+        $this->article->setArticleWidth($articleWidth);
+        self::assertEquals($articleWidth, $this->article->getArticleWidth());
 
-    public function testSetArticleCategory(): void
-    {
-        $expected = 'articleCategory';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleCategory');
-        $this->article->setArticleCategory($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
+        // Test setArticleHeight() and getArticleHeight()
+        $articleHeight = 2019.00;
+        $this->article->setArticleHeight($articleHeight);
+        self::assertEquals($articleHeight, $this->article->getArticleHeight());
 
-    public function testGetArticleWeight(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleWeight');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getArticleWeight());
-    }
+        // Test setStockOutStrategy() and getStockOutStrategy()
+        $stockOutStrategy = 'FIFO';
+        $this->article->setStockOutStrategy($stockOutStrategy);
+        self::assertEquals($stockOutStrategy, $this->article->getStockOutStrategy());
 
-    public function testSetArticleWeight(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleWeight');
-        $this->article->setArticleWeight($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
+        // Test setLeQuantity() and getLeQuantity()
+        $leQuantity = 2019.00;
+        $this->article->setLeQuantity($leQuantity);
+        self::assertEquals($leQuantity, $this->article->getLeQuantity());
 
-    public function testGetArticleEan(): void
-    {
-        $expected = 'articleEan';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleEan');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getArticleEan());
-    }
+        // Test setStandardLoadingEquipment() and getStandardLoadingEquipment()
+        $standardLoadingEquipment = 'BLOCK';
+        $this->article->setStandardLoadingEquipment($standardLoadingEquipment);
+        self::assertEquals($standardLoadingEquipment, $this->article->getStandardLoadingEquipment());
 
-    public function testSetArticleEan(): void
-    {
-        $expected = 'articleEan';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleEan');
-        $this->article->setArticleEan($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
+        // Test setCreatedAt() and getCreatedAt()
+        $createdAt = $this->dateTime;
+        $this->article->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->article->getCreatedAt());
 
-    public function testGetArticleUnit(): void
-    {
-        $expected = 'articleUnit';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleUnit');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getArticleUnit());
-    }
-
-    public function testSetArticleUnit(): void
-    {
-        $expected = 'articleUnit';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleUnit');
-        $this->article->setArticleUnit($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
-
-    public function testGetArticleDepth(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleDepth');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getArticleDepth());
-    }
-
-    public function testSetArticleDepth(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleDepth');
-        $this->article->setArticleDepth($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
-
-    public function testGetArticleWidth(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleWidth');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getArticleWidth());
-    }
-
-    public function testSetArticleWidth(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleWidth');
-        $this->article->setArticleWidth($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
-
-    public function testGetArticleHeight(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleHeight');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getArticleHeight());
-    }
-
-    public function testSetArticleHeight(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('articleHeight');
-        $this->article->setArticleHeight($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
-
-    public function testGetStockOutStrategy(): void
-    {
-        $expected = 'stockOutStrategy';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('stockOutStrategy');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getStockOutStrategy());
-    }
-
-    public function testSetStockOutStrategy(): void
-    {
-        $expected = 'stockOutStrategy';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('stockOutStrategy');
-        $this->article->setStockOutStrategy($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
-
-    public function testGetLeQuantity(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('leQuantity');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getLeQuantity());
-    }
-
-    public function testSetLeQuantity(): void
-    {
-        $expected = 2019.00;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('leQuantity');
-        $this->article->setLeQuantity($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
-
-    public function testGetStandardLoadingEquipment(): void
-    {
-        $expected = 'standardLoadingEquipment';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('standardLoadingEquipment');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getStandardLoadingEquipment());
-    }
-
-    public function testSetStandardLoadingEquipment(): void
-    {
-        $expected = 'standardLoadingEquipment';
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('standardLoadingEquipment');
-        $this->article->setStandardLoadingEquipment($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
-
-    public function testGetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('createdAt');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getCreatedAt());
-    }
-
-    public function testSetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('createdAt');
-        $this->article->setCreatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->article));
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('updatedAt');
-        $property->setValue($this->article, $expected);
-        self::assertSame($expected, $this->article->getUpdatedAt());
-    }
-
-    public function testSetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(Article::class))
-            ->getProperty('updatedAt');
-        $this->article->setUpdatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->article));
+        // Test setUpdatedAt() and getUpdatedAt()
+        $updatedAt = $this->dateTime;
+        $this->article->setUpdatedAt($updatedAt);
+        self::assertEquals($updatedAt, $this->article->getUpdatedAt());
     }
 }

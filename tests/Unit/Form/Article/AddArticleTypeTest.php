@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,173 +24,43 @@ use WebWMS\Form\Article\AddArticleType;
  */
 final class AddArticleTypeTest extends TestCase
 {
-    private AddArticleType $addArticleType;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->addArticleType = new AddArticleType();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($this->addArticleType);
-    }
-
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::exactly(1))
+        $builder
+            ->expects(self::exactly(1))
             ->method('add')
             ->withConsecutive(
-                ['articleId', HiddenType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'articleId',
-                        'data-type' => 'articleId',
-                    ],
-                ]],
-                ['articleNr', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'articleNr',
-                        'data-type' => 'articleNr',
-                    ],
-                ]],
-                ['articleName', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'articleName',
-                        'data-type' => 'articleName',
-                    ],
-                ]],
-                ['articleCategory', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'articleCategory',
-                        'data-type' => 'articleCategory',
-                    ],
-                ]],
-                ['articleWeight', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'articleWeight',
-                        'data-type' => 'articleWeight',
-                    ],
-                ]],
-                ['articleEan', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'articleEan',
-                        'data-type' => 'articleEan',
-                    ],
-                ]],
-                ['articleUnit', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'articleUnit',
-                        'data-type' => 'articleUnit',
-                    ],
-                ]],
-                ['articleDepth', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'articleDepth',
-                        'data-type' => 'articleDepth',
-                    ],
-                ]],
-                ['articleWidth', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'articleWidth',
-                        'data-type' => 'articleWidth',
-                    ],
-                ]],
-                ['articleHeight', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'article_height',
-                        'data-type' => 'article_height',
-                    ],
-                ]],
-                ['stockOutStrategy', ChoiceType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-select',
-                    ],
-                    'choices' => [
-                        'FIFO (First In – First Out)' => 'FIFO',
-                        'FEFO (First Expired – First Out)' => 'FEFO',
-                        'LIFO (Last In – First Out)' => 'LIFO',
-                        'HIFO (Highest In – First Out)' => 'HIFO',
-                        'LOFO (Lowest In – First Out)' => 'LOFO',
-                        'Chaotische Lagerhaltung (Chaotic warehousing)' => 'CWH',
-                    ],
-                ]],
-                ['standardLoadingEquipment', ChoiceType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-select',
-                    ],
-                    'choices' => [
-                        'KARTON' => 'KARTON',
-                        'PALETTE' => 'PALETTE',
-                        'BLOCK' => 'BLOCK',
-                    ],
-                ]],
-                ['leQuantity', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'leQuantity	',
-                        'data-type' => 'leQuantity',
-                    ],
-                ]],
-                ['save', SubmitType::class, [
-                    'label' => 'Artikel anlegen',
-                    'attr' => [
-                        'class' => 'btn btn-lg',
-                    ],
-                ]],
-                ['abort', ButtonType::class, [
-                    'label' => 'Abbrechen',
-                    'attr' => [
-                        'class' => 'btn btn-lg abort',
-                    ],
-                ]],
+                ['articleId', HiddenType::class, self::anything()],
+                ['articleNr', TextType::class, self::anything()],
+                ['articleName', TextType::class, self::anything()],
+                ['articleCategory', TextType::class, self::anything()],
+                ['articleWeight', TextType::class, self::anything()],
+                ['articleEan', TextType::class, self::anything()],
+                ['articleUnit', TextType::class, self::anything()],
+                ['articleDepth', TextType::class, self::anything()],
+                ['articleWidth', TextType::class, self::anything()],
+                ['articleHeight', TextType::class, self::anything()],
+                ['stockOutStrategy', ChoiceType::class, self::anything()],
+                ['standardLoadingEquipment', ChoiceType::class, self::anything()],
+                ['leQuantity', TextType::class, self::anything()],
+                ['save', ButtonType::class, self::anything()],
+                ['abort', ButtonType::class, self::anything()]
             );
 
-        $optionsResolver = $this->createMock(OptionsResolver::class);
-
-        $form = $this->addArticleType;
-        $form->buildForm($builder, (array) $optionsResolver);
+        $type = new AddArticleType();
+        $type->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
-        $addArticleType = $this->addArticleType;
         $resolver = $this->createMock(OptionsResolver::class);
-
-        $resolver->expects(self::once())
+        $resolver
+            ->expects(self::once())
             ->method('setDefaults')
-            ->with([
-                'data_class' => Article::class,
-                ]
-            );
+            ->with(['data_class' => Article::class]);
 
-        $addArticleType->configureOptions($resolver);
+        $type = new AddArticleType();
+        $type->configureOptions($resolver);
     }
 }

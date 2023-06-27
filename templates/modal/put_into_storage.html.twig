@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{# templates/logging/index.html.twig #}
 
-{% block title %}{{ page }}{{ appName }}{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
     {% block webwms_header %}
@@ -9,11 +9,9 @@
 
     {% block webwms_content %}
         {% block webwms_put_into_storage %}
-            <div id="webwms-put-into-storage" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
-                        <div class="webwms-page">{{ page }}</div>
-                    {% endif %}
+            <div id="webwms-put-into-storage" class="wrapper-form vertical-theme">
+                <div class="wrapper-form-content vertical-theme">
+                    <div class="webwms-page">{{ page }}</div>
                     <div class="card">
                         <div class="card-content">
                             <div class="card">
@@ -174,11 +172,12 @@
             </div>
         {% endblock %}
     {% endblock %}
-{% endblock %}
 
-{% block bodyjs %}
-    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockInItemsAutofill.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockTransactions.js') }}"></script>
+    {% block bodyjs %}
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockInItemsAutofill.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockTransactions.js') }}"></script>
+    {% endblock %}
+
 {% endblock %}
 
 

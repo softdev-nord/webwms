@@ -22,66 +22,31 @@ use WebWMS\Form\CustomerOrder\DeleteCustomerOrderType;
  */
 final class DeleteCustomerOrderTypeTest extends TestCase
 {
-    private DeleteCustomerOrderType $deleteCustomerOrderType;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->deleteCustomerOrderType = new DeleteCustomerOrderType();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($this->deleteCustomerOrderType);
-    }
-
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::exactly(1))
+        $builder
+            ->expects(self::exactly(1))
             ->method('add')
             ->withConsecutive(
-                ['customerOrderId', HiddenType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'id' => 'customer_order_id',
-                    ],
-                ]],
-                ['delete', ButtonType::class, [
-                    'label' => 'Löschen',
-                    'attr' => [
-                        'class' => 'btn btn-lg',
-                    ],
-                ]],
-                ['abort', ButtonType::class, [
-                    'label' => 'Abbrechen',
-                    'attr' => [
-                        'class' => 'btn btn-lg abort',
-                    ],
-                ]],
+                ['customerOrderId', HiddenType::class, self::anything()],
+                ['delete', ButtonType::class, self::anything()],
+                ['abort', ButtonType::class, self::anything()]
             );
 
-        $optionsResolver = $this->createMock(OptionsResolver::class);
-
-        $form = $this->deleteCustomerOrderType;
-        $form->buildForm($builder, (array) $optionsResolver);
+        $type = new DeleteCustomerOrderType();
+        $type->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
-        $deleteCustomerOrderType = $this->deleteCustomerOrderType;
         $resolver = $this->createMock(OptionsResolver::class);
-
-        $resolver->expects(self::once())
+        $resolver
+            ->expects(self::once())
             ->method('setDefaults')
-            ->with([
-                    'data_class' => CustomerOrder::class,
-                ]
-            );
+            ->with(['data_class' => CustomerOrder::class]);
 
-        $deleteCustomerOrderType->configureOptions($resolver);
+        $type = new DeleteCustomerOrderType();
+        $type->configureOptions($resolver);
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\SupplierOrder;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\SupplierOrder;
 use WebWMS\Service\DataHandlers\SupplierOrder\SupplierOrderDataHandler;
@@ -18,8 +17,7 @@ use WebWMS\Service\DataHandlers\SupplierOrder\SupplierOrderDataHandler;
 class SupplierOrderService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private SupplierOrderDataHandler $supplierOrderDataHandler
+        private readonly SupplierOrderDataHandler $supplierOrderDataHandler
     ) {
     }
 
@@ -28,9 +26,9 @@ class SupplierOrderService
         return $this->supplierOrderDataHandler->getSupplierOrderById($supplierId);
     }
 
-    public function getSupplierOrderByNr(int $supplierNr): ?SupplierOrder
+    public function getSupplierOrderByNr(string $supplierNr): ?SupplierOrder
     {
-        return $this->supplierOrderDataHandler->getSupplierOrderById($supplierNr);
+        return $this->supplierOrderDataHandler->getSupplierOrderByNr($supplierNr);
     }
 
     public function getAllSupplierOrder(): JsonResponse
@@ -58,8 +56,6 @@ class SupplierOrderService
      */
     public function getLastSupplierOrderId(): array
     {
-        return $this->entityManager
-            ->getRepository(SupplierOrder::class)
-            ->findBy([], ['supplierOrderId' => 'DESC'], 1, 0);
+        return $this->supplierOrderDataHandler->getLastSupplierOrderId();
     }
 }

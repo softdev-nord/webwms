@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{# templates/stock/stock_location/index.html.twig #}
 
-{% block title %}{{ page }}{{ appName }}{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
     {% block webwms_header %}
@@ -9,11 +9,9 @@
 
     {% block webwms_content %}
         {% block webwms_stock_locations_overview %}
-            <div id="webWMS-stock-locations-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
-                        <div class="webwms-page">{{ page }}</div>
-                    {% endif %}
+            <div id="webWMS-stock-locations-overview" class="wrapper-form vertical-theme">
+                <div class="wrapper-form-content vertical-theme">
+                    <div class="webwms-page">{{ page }}</div>
                     {% block webwms_stock_locations_overview_table %}
                         <div class="card">
                             <div class="card-content">
@@ -39,7 +37,9 @@
             </div>
         {% endblock %}
     {% endblock %}
+
     {% block bodyjs %}
         <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockLocation.js') }}"></script>
     {% endblock %}
+
 {% endblock %}

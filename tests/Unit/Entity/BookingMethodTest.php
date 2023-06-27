@@ -26,172 +26,51 @@ final class BookingMethodTest extends TestCase
         $this->bookingMethod = new BookingMethod();
     }
 
-    protected function tearDown(): void
+    public function testGetterAndSetterMethods(): void
     {
-        parent::tearDown();
+        // Test setId() and getId()
+        $id = 1;
+        $this->bookingMethod->setId($id);
+        self::assertEquals($id, $this->bookingMethod->getId());
 
-        unset($this->bookingMethod);
-    }
+        // Test setConfirmation() and getConfirmation()
+        $confirmation = 2;
+        $this->bookingMethod->setConfirmation($confirmation);
+        self::assertEquals($confirmation, $this->bookingMethod->getConfirmation());
 
-    public function testGetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('id');
-        $property->setValue($this->bookingMethod, $expected);
-        self::assertSame($expected, $this->bookingMethod->getId());
-    }
+        // Test setMovementType() and getMovementType()
+        $movementType = 'inbound';
+        $this->bookingMethod->setMovementType($movementType);
+        self::assertEquals($movementType, $this->bookingMethod->getMovementType());
 
-    public function testSetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('id');
-        $this->bookingMethod->setId($expected);
-        self::assertSame($expected, $property->getValue($this->bookingMethod));
-    }
+        // Test setDescription() and getDescription()
+        $description = 'Test description';
+        $this->bookingMethod->setDescription($description);
+        self::assertEquals($description, $this->bookingMethod->getDescription());
 
-    public function testGetConfirmation(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('confirmation');
-        $property->setValue($this->bookingMethod, $expected);
-        self::assertSame($expected, $this->bookingMethod->getConfirmation());
-    }
+        // Test setAnsteuerung() and getAnsteuerung()
+        $ansteuerung = 3;
+        $this->bookingMethod->setAnsteuerung($ansteuerung);
+        self::assertEquals($ansteuerung, $this->bookingMethod->getAnsteuerung());
 
-    public function testSetConfirmation(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('confirmation');
-        $this->bookingMethod->setConfirmation($expected);
-        self::assertSame($expected, $property->getValue($this->bookingMethod));
-    }
+        // Test setUpload() and getUpload()
+        $upload = 4;
+        $this->bookingMethod->setUpload($upload);
+        self::assertEquals($upload, $this->bookingMethod->getUpload());
 
-    public function testGetMovementType(): void
-    {
-        $expected = 'movementType';
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('movementType');
-        $property->setValue($this->bookingMethod, $expected);
-        self::assertSame($expected, $this->bookingMethod->getMovementType());
-    }
+        // Test setStatistics() and getStatistics()
+        $statistics = 5;
+        $this->bookingMethod->setStatistics($statistics);
+        self::assertEquals($statistics, $this->bookingMethod->getStatistics());
 
-    public function testSetMovementType(): void
-    {
-        $expected = 'movementType';
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('movementType');
-        $this->bookingMethod->setMovementType($expected);
-        self::assertSame($expected, $property->getValue($this->bookingMethod));
-    }
+        // Test setPriority() and getPriority()
+        $priority = 6;
+        $this->bookingMethod->setPriority($priority);
+        self::assertEquals($priority, $this->bookingMethod->getPriority());
 
-    public function testGetDescription(): void
-    {
-        $expected = 'description';
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('description');
-        $property->setValue($this->bookingMethod, $expected);
-        self::assertSame($expected, $this->bookingMethod->getDescription());
-    }
-
-    public function testSetDescription(): void
-    {
-        $expected = 'description';
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('description');
-        $this->bookingMethod->setDescription($expected);
-        self::assertSame($expected, $property->getValue($this->bookingMethod));
-    }
-
-    public function testGetAnsteuerung(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('ansteuerung');
-        $property->setValue($this->bookingMethod, $expected);
-        self::assertSame($expected, $this->bookingMethod->getAnsteuerung());
-    }
-
-    public function testSetAnsteuerung(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('ansteuerung');
-        $this->bookingMethod->setAnsteuerung($expected);
-        self::assertSame($expected, $property->getValue($this->bookingMethod));
-    }
-
-    public function testGetUpload(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('upload');
-        $property->setValue($this->bookingMethod, $expected);
-        self::assertSame($expected, $this->bookingMethod->getUpload());
-    }
-
-    public function testSetUpload(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('upload');
-        $this->bookingMethod->setUpload($expected);
-        self::assertSame($expected, $property->getValue($this->bookingMethod));
-    }
-
-    public function testGetStatistics(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('statistics');
-        $property->setValue($this->bookingMethod, $expected);
-        self::assertSame($expected, $this->bookingMethod->getStatistics());
-    }
-
-    public function testSetStatistics(): void
-    {
-        $expected = 42;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('statistics');
-        $this->bookingMethod->setStatistics($expected);
-        self::assertSame($expected, $property->getValue($this->bookingMethod));
-    }
-
-    public function testGetPriority(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('priority');
-        $property->setValue($this->bookingMethod, $expected);
-        self::assertSame($expected, $this->bookingMethod->getPriority());
-    }
-
-    public function testSetPriority(): void
-    {
-        $expected = 42;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('priority');
-        $this->bookingMethod->setPriority($expected);
-        self::assertSame($expected, $property->getValue($this->bookingMethod));
-    }
-
-    public function testGetTidDescription(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('tidDescription');
-        $property->setValue($this->bookingMethod, $expected);
-        self::assertSame($expected, $this->bookingMethod->getTidDescription());
-    }
-
-    public function testSetTidDescription(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(BookingMethod::class))
-            ->getProperty('tidDescription');
-        $this->bookingMethod->setTidDescription($expected);
-        self::assertSame($expected, $property->getValue($this->bookingMethod));
+        // Test setTidDescription() and getTidDescription()
+        $tidDescription = 7;
+        $this->bookingMethod->setTidDescription($tidDescription);
+        self::assertEquals($tidDescription, $this->bookingMethod->getTidDescription());
     }
 }

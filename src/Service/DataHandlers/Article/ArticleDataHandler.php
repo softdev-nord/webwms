@@ -18,8 +18,8 @@ use WebWMS\Service\DateTimeService;
 class ArticleDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private DateTimeService $dateTimeService
+        private readonly EntityManagerInterface $entityManager,
+        private readonly DateTimeService $dateTimeService
     ) {
     }
 
@@ -35,9 +35,6 @@ class ArticleDataHandler
         $this->entityManager->flush();
     }
 
-    /**
-     * @return Article|null Returns an array of Article objects
-     */
     public function getArticleById(int $articleId): ?Article
     {
         return $this->entityManager
@@ -64,7 +61,7 @@ class ArticleDataHandler
 
     public function getAllArticlesWithJoin(): JsonResponse
     {
-        $conn = $this->entityManager->getConnection();
+        $connection = $this->entityManager->getConnection();
 
         $sql = "SELECT art.article_id, art.article_nr, art.article_name, art.article_category, art.article_weight, art.article_ean, art.article_unit, art.article_depth, art.article_width, art.article_height, art.created_at, art.updated_at,
                 (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) - (SUM(IF(transport_history.tr_type = '2', transport_history.tr_quantity, 0.000)))
@@ -75,47 +72,38 @@ class ArticleDataHandler
                     ON tph.article_nr = art.article_nr
                 GROUP BY art.article_nr";
 
-        $data = $conn->fetchAllAssociative($sql);
+        $data = $connection->fetchAllAssociative($sql);
 
         return new JsonResponse($data);
     }
 
-    public function getArticle(): JsonResponse
+    public function getArticle(string|null $articleNrInput): JsonResponse
     {
-        $connection = $this->entityManager->getConnection();
-
-        $numOfBoxArt = filter_input(INPUT_GET, 'numOfBoxArt') !== null ? filter_input(INPUT_GET, 'numOfBoxArt') : '';
-
-        $boxName = match ($numOfBoxArt) {
-            'article_id' => 'article_id',
-            'article_name' => 'article_name',
-            default => 'article_nr',
-        };
-
         $data = [];
-        if (filter_input(INPUT_GET, 'name_art') !== null) {
-            $name = strtolower(trim(strval(filter_input(INPUT_GET, 'name_art'))));
+        if ($articleNrInput !== null) {
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder
+                ->select('art')
+                ->from(Article::class, 'art')
+                ->where('art.articleNr LIKE :article_nr')
+                ->setParameter(':article_nr', '' . $articleNrInput . '%');
 
-            $sqlArt = "SELECT * FROM article where LOWER($boxName) LIKE '" . $name . "%'";
+            $articles = $queryBuilder->getQuery()->getArrayResult();
 
-            $stmt = $connection->executeQuery($sqlArt);
-
-            while ($row = $stmt->fetchAssociative()) {
-                $name = $row['article_id']
-                    . '|' . $row['article_nr']
-                    . '|' . $row['article_name']
-                    . '|' . $row['article_category']
-                    . '|' . $row['article_weight']
-                    . '|' . $row['article_ean']
-                    . '|' . $row['article_unit']
-                    . '|' . $row['article_depth']
-                    . '|' . $row['article_width']
-                    . '|' . $row['article_height']
-                    . '|' . $row['stock_out_strategy']
-                    . '|' . $row['le_quantity']
-                    . '|' . $row['standard_loading_equipment']
-                    . '|' . $row['created_at']
-                    . '|' . $row['updated_at'];
+            foreach ($articles as $article) {
+                $name = $article['articleId'] . '|' .
+                    $article['articleNr'] . '|' .
+                    $article['articleName'] . '|' .
+                    $article['articleCategory'] . '|' .
+                    $article['articleWeight'] . '|' .
+                    $article['articleEan'] . '|' .
+                    $article['articleUnit'] . '|' .
+                    $article['articleDepth'] . '|' .
+                    $article['articleWidth'] . '|' .
+                    $article['articleHeight'] . '|' .
+                    $article['stockOutStrategy'] . '|' .
+                    $article['standardLoadingEquipment'] . '|' .
+                    $article['leQuantity'];
                 $data[] = $name;
             }
         }
@@ -140,5 +128,14 @@ class ArticleDataHandler
     public function deleteArticle(Article $article): void
     {
         $this->delete($article);
+    }
+
+    public function getLastArticle(): Article
+    {
+        $lastArticle = $this->entityManager
+            ->getRepository(Article::class)
+            ->findBy([], ['articleId' => 'DESC'], 1, 0);
+
+        return $lastArticle[0];
     }
 }

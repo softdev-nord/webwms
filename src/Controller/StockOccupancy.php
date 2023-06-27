@@ -22,9 +22,9 @@ use WebWMS\Service\Stock\StockOccupancyService;
 class StockOccupancy extends AbstractController
 {
     public function __construct(
-        private StockOccupancyService $stockOccupancyService,
-        private StockLocationService $stockLocationService,
-        private RequirementsService $requirementsService
+        private readonly StockOccupancyService $stockOccupancyService,
+        private readonly StockLocationService $stockLocationService,
+        private readonly RequirementsService $requirementsService
     ) {
     }
 
@@ -100,13 +100,14 @@ class StockOccupancy extends AbstractController
      */
     public function getStockOccupancyResults(Request $request): Response
     {
-        if ($request->attributes->get('stock_location_ln') !== null) {
-            $stockLocationLn = $request->attributes->get('stock_location_ln');
+        if ($request->attributes->getInt('stock_location_ln')) {
+            $stockLocationLn = $request->attributes->getInt('stock_location_ln');
         } else {
-            $stockLocationLn = $this->stockLocationService->getAllStockLocationsForSelect()[0]['stock_location_ln'];
+            $selectedStockLocations = $this->stockLocationService->getAllStockLocationsForSelect();
+            $stockLocationLn = $selectedStockLocations[0]['stock_location_ln'];
         }
 
-        $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn(intval($stockLocationLn));
+        $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationLn);
         $stockResults = [];
         $stock = [];
 
@@ -142,7 +143,7 @@ class StockOccupancy extends AbstractController
     {
         $article = $this->stockOccupancyService
             ->getStockOccupancyByArticleNr(
-                intval($request->attributes->get('article_nr'))
+                $request->attributes->getInt('article_nr')
             );
 
         return $this->render(

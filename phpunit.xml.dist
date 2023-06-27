@@ -16,7 +16,6 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
-        <server name="KERNEL_CLASS" value="WebWMS\Kernel" />
     </php>
 
     <testsuites>
@@ -31,9 +30,7 @@
         </include>
         <exclude>
             <directory suffix=".php">src/Components</directory> <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
-            <directory suffix=".php">src/EventListener</directory> <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
-            <directory suffix=".php">src/EventSubscriber</directory> <!-- Lösung für die Tests finden -->
-            <directory suffix=".php">src/Repository</directory>
+            <directory suffix=".php">src/Security</directory>
             <directory suffix=".php">vendor/</directory>
             <file>src/Kernel.php</file>
             <file>src/.preload.php</file>

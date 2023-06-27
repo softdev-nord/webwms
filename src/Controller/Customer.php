@@ -26,11 +26,11 @@ use WebWMS\Service\Validation\CustomerValidationService;
 class Customer extends AbstractController
 {
     public function __construct(
-        private CustomerService $customerService,
-        private RequirementsService $requirementsService,
-        private CustomerValidationService $customerValidationService,
-        private LoggingService $loggingService,
-        private CustomerFormHelper $customerFormHelper
+        private readonly CustomerService $customerService,
+        private readonly RequirementsService $requirementsService,
+        private readonly CustomerValidationService $customerValidationService,
+        private readonly LoggingService $loggingService,
+        private readonly CustomerFormHelper $customerFormHelper
     ) {
     }
 
@@ -90,7 +90,7 @@ class Customer extends AbstractController
             'customer/customer_add.html.twig',
             [
                 'customerForm' => $form->createView(),
-                'lastId' => $this->getLastCustomer()[0],
+                'lastId' => $this->getLastCustomer(),
                 'editCustomer' => false,
             ]
         );
@@ -191,15 +191,15 @@ class Customer extends AbstractController
     }
 
     #[Route('/order_customer_ajax', name: 'order_customer_ajax')]
-    public function getAllCustomersAjax(): JsonResponse
+    public function getAllCustomersAjax(Request $request): JsonResponse
     {
-        return $this->customerService->getAllCustomersAjax();
+
+        $customerNrInput = (string) $request->query->get('name_customer');
+
+        return $this->customerService->getAllCustomersAjax($customerNrInput);
     }
 
-    /**
-     * @return object[]
-     */
-    public function getLastCustomer(): array
+    public function getLastCustomer(): \WebWMS\Entity\Customer
     {
         return $this->customerService->getLastCustomer();
     }

@@ -6,6 +6,7 @@ namespace WebWMS\Helper\FormHelper;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use WebWMS\Entity\StockLayout;
 use WebWMS\Form\Stock\StockLayout\AddStockLayoutType;
 use WebWMS\Form\Stock\StockLayout\DeleteStockLayoutType;
@@ -20,12 +21,12 @@ use WebWMS\Form\Stock\StockLayout\EditStockLayoutType;
 class StockLayoutFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 
     /**
-     * @param string $type
+     * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
      * @return FormInterface

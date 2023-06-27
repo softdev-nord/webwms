@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\Stock\StockLocation;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\StockLocation;
-use WebWMS\Entity\StockZone;
 
 /**
  * @package:    WebWMS\Form\Stock\StockLocation
@@ -85,13 +84,19 @@ class AddStockLocationType extends AbstractType
                     'data-type' => 'stock_location_height',
                 ],
             ])
-            ->add('stockLocationZone', EntityType::class, [
+            ->add('stockLocationZone', ChoiceType::class, [
                 'label' => false,
-                'class' => StockZone::class,
-                'choice_label' => 'stockZoneShortDesc',
-                'choice_value' => function (?StockZone $stockZone) {
-                    return $stockZone?->getStockZoneShortDesc();
-                },
+                'choices' => [
+                    'ANBRUCH' => 'ANBRUCH',
+                    'BLOCK' => 'BLOCK',
+                    'DL REGAL' => 'DL REGAL',
+                    'KOMMI' => 'KOMMI',
+                    'KOMPAL100' => 'KOMPAL100',
+                    'KOMPAL200' => 'KOMPAL200',
+                    'NASPAL100' => 'NASPAL100',
+                    'NASPAL200' => 'NASPAL200',
+                    'WA' => 'WA',
+                ],
                 'mapped' => false,
                 'attr' => [
                     'class' => 'form-control',

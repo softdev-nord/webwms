@@ -29,13 +29,13 @@ use WebWMS\Service\RequirementsService;
 class CustomerOrder extends AbstractController
 {
     public function __construct(
-        private ArticleService $articleService,
-        private CustomerOrderService $customerOrderService,
-        private CustomerOrderPosService $customerOrderPosService,
-        private RequirementsService $requirementsService,
-        private CustomerService $customerService,
-        private LoggingService $loggingService,
-        private CustomerOrderFormHelper $customerOrderFormHelper
+        private readonly ArticleService $articleService,
+        private readonly CustomerOrderService $customerOrderService,
+        private readonly CustomerOrderPosService $customerOrderPosService,
+        private readonly RequirementsService $requirementsService,
+        private readonly CustomerService $customerService,
+        private readonly LoggingService $loggingService,
+        private readonly CustomerOrderFormHelper $customerOrderFormHelper
     ) {
     }
 
@@ -88,16 +88,16 @@ class CustomerOrder extends AbstractController
 
         $customerOrderPosForm->handleRequest($request);
         if ($customerOrderPosForm->isSubmitted() && $customerOrderPosForm->isValid()) {
-            /** @var CustomerOrderEntity $customerOrderRequestData */
-            $customerOrderRequestData = $customerOrderPosForm->getData();
-            $customerOrderNr = $customerOrderRequestData->getCustomerOrderNr();
+            /** @var CustomerOrderPosEntity $customerOrderPosRequestData */
+            $customerOrderPosRequestData = $customerOrderPosForm->getData();
+            $customerOrderId = $customerOrderPosRequestData->getCustomerOrderId();
             $responseData = [];
 
-            $responseData['message'] = 'Die Position(en) für die Auftrags-Nr. ' . $customerOrderNr . ' wurde(n) erfolgreich angelegt.';
-            $logMessage = 'Die Position(en) für die Auftrags-Nr. ' . $customerOrderNr . ' wurde(n) angelegt.';
+            $responseData['message'] = 'Die Position(en) für die Auftrags-Id. ' . $customerOrderId . ' wurde(n) erfolgreich angelegt.';
+            $logMessage = 'Die Position(en) für die Auftrags-Id. ' . $customerOrderId . ' wurde(n) angelegt.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->customerOrderPosService->addCustomerOrderPos($request);
+            $this->customerOrderPosService->addCustomerOrderPos($customerOrderPosRequestData);
 
             return new JsonResponse($responseData);
         }
@@ -105,7 +105,7 @@ class CustomerOrder extends AbstractController
         return $this->render(
             'customer_order/customer_order_add.html.twig',
             [
-                'article' => $this->getAllArticleAjax(),
+                'article' => $this->getAllArticleAjax($request),
                 'lastId' => $this->getLastCustomerOrderId()[0],
                 'editCustomerOrder' => false,
                 'customerOrderForm' => $customerOrderForm->createView(),
@@ -255,9 +255,11 @@ class CustomerOrder extends AbstractController
     }
 
     #[Route('/article_order_ajax', name: 'article_order_ajax')]
-    public function getAllArticleAjax(): JsonResponse
+    public function getAllArticleAjax(Request $request): JsonResponse
     {
-        return $this->articleService->getArticle();
+        $articleNrInput = (string) $request->query->get('name_art');
+
+        return $this->articleService->getArticle($articleNrInput);
     }
 
     /**

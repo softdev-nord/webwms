@@ -13,8 +13,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use WebWMS\Repository\UserRepository;
@@ -73,15 +72,20 @@ use WebWMS\Repository\UserRepository;
 )]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, GroupAwareUser
 {
+    public const ROLE_DEFAULT = 'ROLE_USER';
+
+    public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+
     #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
     #[Groups(['user:read', 'user:write'])]
-    public ?string $firstname;
+    public ?string $firstname = null;
 
     #[ORM\Column(name: 'lastname', type: 'string', length: 255, nullable: true)]
     #[Groups(['user:read', 'user:write'])]
-    public ?string $lastname;
+    public ?string $lastname = null;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
@@ -89,24 +93,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(name: 'username', type: 'string', length: 255, unique: true)]
     #[Groups(['user:read', 'user:write'])]
-    private string $username;
-
-    #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'user')]
-    #[Groups(['user:read', 'user:write'])]
-    private Role $role;
+    private ?string $username = null;
 
     /**
-     * @var string[]|null
+     * @var string[]
      */
-    #[ORM\Column(name: 'roles', type: 'json', nullable: true)]
+    #[ORM\Column(name: 'roles', type: 'json')]
     #[Groups(['user:read', 'user:write'])]
-    private ?array $roles = [];
+    private array $roles = [];
 
     #[ORM\Column(name: 'password', type: 'string', length: 255)]
     #[Groups(['user:write'])]
     private ?string $password = null;
 
-    #[ORM\Column(name: 'email', type: 'string', length: 255, unique: true)]
+    #[ORM\Column(name: 'email', type: 'string', length: 255, unique: true, nullable: true)]
     #[Groups(['user:read', 'user:write'])]
     #[Assert\NotBlank]
     #[Assert\Email]
@@ -114,25 +114,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
     #[Groups(['user:read', 'user:write'])]
-    private ?\DateTimeInterface $lastLogin;
+    private ?\DateTime $lastLogin = null;
 
     #[ORM\Column(name: 'enabled', type: 'boolean')]
     #[Groups(['user:read', 'user:write'])]
-    private bool $enabled;
+    private bool $enabled = false;
 
     #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
     #[Groups(['user:read', 'user:write'])]
-    private ?\DateTimeInterface $createdAt;
+    private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
     #[Groups(['user:read', 'user:write'])]
-    private ?\DateTimeInterface $updatedAt;
+    private ?\DateTimeInterface $updatedAt = null;
 
     private ?string $plainPassword = '';
 
-    public function __construct()
+    /**
+     * @var array<mixed>
+     */
+    #[ORM\Column(name: 'user_groups', type: 'json')]
+    #[Groups(['user:read', 'user:write'])]
+    private array $userGroups = [];
+
+    public function __toString(): string
     {
-        $this->enabled = false;
+        return $this->getUsername();
     }
 
     public function getId(): int
@@ -140,23 +147,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function setId(int $id): void
     {
         $this->id = $id;
-
-        return $this;
     }
 
     public function getUsername(): string
     {
-        return $this->username;
+        return $this->username ?? '';
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(string $username): void
     {
         $this->username = $username;
-
-        return $this;
     }
 
     /**
@@ -168,33 +171,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = null;
     }
 
-    public function getFirstname(): ?string
+    public function getFirstname(): string
     {
-        return $this->firstname;
+        return $this->firstname ?? '';
     }
 
-    public function setFirstname(string $firstname): self
+    public function setFirstname(string $firstname): void
     {
         $this->firstname = $firstname;
-
-        return $this;
     }
 
-    public function getLastname(): ?string
+    public function getLastname(): string
     {
-        return $this->lastname;
+        return $this->lastname ?? '';
     }
 
-    public function setLastname(string $lastname): self
+    public function setLastname(string $lastname): void
     {
         $this->lastname = $lastname;
-
-        return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
-        return $this->email;
+        return $this->email ?? '';
     }
 
     public function setEmail(string $email): void
@@ -202,16 +201,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->email = $email;
     }
 
-    public function getLastLogin(): ?\DateTimeInterface
+    public function getLastLogin(): ?\DateTime
     {
         return $this->lastLogin;
     }
 
-    public function setLastLogin(?\DateTimeInterface $lastLogin): self
+    public function setLastLogin(\DateTime $time = null): void
     {
-        $this->lastLogin = $lastLogin;
-
-        return $this;
+        $this->lastLogin = $time;
     }
 
     public function isEnabled(): bool
@@ -219,11 +216,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->enabled;
     }
 
-    public function setEnabled(bool $enabled): self
+    public function setEnabled(bool $boolean): void
     {
-        $this->enabled = $enabled;
-
-        return $this;
+        $this->enabled = $boolean;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
@@ -231,11 +226,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function setCreatedAt(?\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
@@ -243,19 +236,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
     public function serialize(): string
     {
-        // causes infinite nesting
-        // return $this->serialize(array($this->id, $this->username, $this->password));
-
-        // the fix
         return serialize([$this->id, $this->username, $this->password]);
     }
 
@@ -266,57 +253,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return $this->username;
+        return $this->username ?? '';
     }
 
-    /**
-     * This method can be removed in Symfony 6.0 - is not needed for apps that do not check user passwords.
-     *
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
-        return $this->password;
+        return $this->password ?? '';
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): void
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function getRole(): Role
-    {
-        return $this->role;
-    }
-
-    public function setRole(Role $role): self
-    {
-        $this->role = $role;
-
-        return $this;
     }
 
     /**
-     * @see UserInterface
+     * @return array<string>
      */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
+        // Wir müssen sicherstellen, dass es mindestens eine Rolle gibt.
+        $roles[] = self::ROLE_DEFAULT;
+
+        return array_values(array_unique($roles));
     }
 
-    /**
-     * @param string[] $roles
-     */
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): void
     {
-        $this->roles = $roles;
+        $this->roles = [];
 
-        return $this;
+        foreach ($roles as $role) {
+            $this->addRole($role);
+        }
     }
 
     public function getPlainPassword(): ?string
@@ -327,5 +296,101 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPlainPassword(?string $plainPassword): void
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    public function isEqualTo(BaseUserInterface $user): bool
+    {
+        if (!$user instanceof self) {
+            return false;
+        }
+
+        if ($this->password !== $user->getPassword()) {
+            return false;
+        }
+
+        if ($this->username !== $user->getUsername()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole(static::ROLE_SUPER_ADMIN);
+    }
+
+    public function setSuperAdmin(bool $boolean): void
+    {
+        ($boolean)
+            ? $this->addRole(static::ROLE_SUPER_ADMIN)
+            : $this->removeRole(static::ROLE_SUPER_ADMIN);
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return \in_array(strtoupper($role), $this->getRoles(), true);
+    }
+
+    public function addRole(string $role): void
+    {
+        $role = strtoupper($role);
+
+        if (!\in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+    }
+
+    public function removeRole(string $role): void
+    {
+        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+            unset($this->roles[$key]);
+            $this->roles = array_values($this->roles);
+        }
+    }
+
+    public function isAccountNonLocked(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getUserGroups(): array
+    {
+        return $this->userGroups;
+    }
+
+    /**
+     * @param array<array<string>> $userGroups
+     * @return void
+     */
+    public function setUserGroups(array $userGroups): void
+    {
+        $this->userGroups = $userGroups;
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public function getGroups(): array
+    {
+        return $this->userGroups;
+    }
+
+    public function getGroupNames(): array
+    {
+        $names = [];
+        foreach ($this->getGroups() as $group) {
+            $names[] = $group['group'];
+        }
+
+        return $names;
+    }
+
+    public function hasGroup(string $name): bool
+    {
+        return \in_array($name, $this->getGroupNames(), true);
     }
 }

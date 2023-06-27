@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use WebWMS\Entity\User;
@@ -22,8 +21,8 @@ use WebWMS\Service\User\UserService;
 class LastLoginSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private TokenStorageInterface $tokenStorage,
-        private UserService $userService
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly UserService $userService
     ) {
     }
 
@@ -40,7 +39,7 @@ class LastLoginSubscriber implements EventSubscriberInterface
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function updateLastLogin(FinishRequestEvent $event): void
+    public function updateLastLogin(): void
     {
         $accessToken = $this->tokenStorage->getToken();
         if ($accessToken !== null) {

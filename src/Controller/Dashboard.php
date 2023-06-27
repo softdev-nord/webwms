@@ -17,7 +17,7 @@ use WebWMS\Repository\TransportHistoryRepository;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Stock\StockRotationService;
-use WebWMS\Service\TransportRequestService;
+use WebWMS\Service\TransportRequest\TransportRequestService;
 
 /**
  * @package:    WebWMS\Controller
@@ -30,13 +30,13 @@ class Dashboard extends AbstractController
     private LoaderInterface $loader;
 
     public function __construct(
-        private RequirementsService $requirementsService,
-        private Environment $twig,
-        private ChartBuilderInterface $chartBuilder,
-        private TransportHistoryRepository $transportHistoryRepository,
-        private StockRotationService $stockRotationService,
-        private TransportRequestService $transportRequestService,
-        private StockLocationService $stockLocationService
+        private readonly RequirementsService $requirementsService,
+        private readonly Environment $twig,
+        private readonly ChartBuilderInterface $chartBuilder,
+        private readonly TransportHistoryRepository $transportHistoryRepository,
+        private readonly StockRotationService $stockRotationService,
+        private readonly TransportRequestService $transportRequestService,
+        private readonly StockLocationService $stockLocationService
     ) {
         $this->loader = $this->twig->getLoader();
     }
@@ -51,7 +51,7 @@ class Dashboard extends AbstractController
         }
 
         return $this->render(
-            'dashboard/index_new.html.twig',
+            'dashboard/index.html.twig',
             [
                 'appName' => $this->requirementsService->getAppName(),
                 'appVersion' => $this->requirementsService->getAppVersion(),
@@ -66,38 +66,6 @@ class Dashboard extends AbstractController
                 'allTransportRequests' => $this->getAllTransportRequest(),
             ]
         );
-    }
-
-    /**
-     * @Route("/calendar", name="calendar")
-     */
-    public function calendar(): Response
-    {
-        return $this->render('dashboard/apps-calendar.html.twig');
-    }
-
-    /**
-     * @Route("/chat", name="chat")
-     */
-    public function chat(): Response
-    {
-        return $this->render('dashboard/apps-chat.html.twig');
-    }
-
-    /**
-     * @Route("/lock_screen", name="chat")
-     */
-    public function lockScreen(): Response
-    {
-        return $this->render('dashboard/auth-lock-screen.html.twig');
-    }
-
-    /**
-     * @Route("/login_test", name="chat")
-     */
-    public function loginTest(): Response
-    {
-        return $this->render('dashboard/auth-lock-screen.html.twig');
     }
 
     /**

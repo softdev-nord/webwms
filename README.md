@@ -1,42 +1,71 @@
-![CircleCI](https://img.shields.io/circleci/build/bitbucket/softdev-nord/webwms/master?style=for-the-badge)
+![Bitbucket pipelines](https://img.shields.io/bitbucket/pipelines/softdev-nord/webwms/master)
 
 # webWMS
 **Das webbasierte Lagerverwaltungssystem**
 `https://webwms-dev.softdev-nord.de`
 
-**Test User:**
-* Benutzername: `testAdmin`
-* Passwort: `WebWms2023!#`
+## Test User:
+* ***Benutzername:*** `testAdmin`
+* ***Passwort:*** `WebWms2023!#`
 
 ## Systemvoraussetzung:
-* min. PHP 8.1
-* MySQL, MariaDB
-* Apache/Nginx
-* NodeJs
+* min. **PHP 8.1**
+* **MySQL**, **MariaDB**
+* **Apache**/**Nginx**
+* **NodeJs**
 
 ## Tech-Stack:
-* Symfony 6.2
-* jQuery
-* Twig
-* NodeJs
-* API-Platform/Core `Hauptmenu >>> API Dokumentation`
-* Symfony/UX-Chart `Auswertungen >>> Dashboard`
+* **Symfony** 6.3
+* **jQuery** 3.6
+* **Twig**
+* **NodeJs** v12
+* **API-Platform/Core** 3.1 `Hauptmenu >>> API Dokumentation`
+* **Symfony/UX-Chart** `Auswertungen >>> Dashboard`
 
 ## CI / CD:
-* Bitbucket Pipelines
+### Bitbucket Pipelines
+#### *Folgende Tools sind als Steps in den Pipelines eingebaut:*
+- [x] **PHP CS Fixer**
+- [x] **PHP Static Analysis**
+- [x] **Var Dump Check**
+- [x] **Dependency Vulnerability Scan**
+- [x] **PHP Mess Detector**
+- [x] **Twig Linter**
+- [x] **Yaml Linter**
+- [x] **PHPUnit**
+
 
 ## QA-Tools:
-* PHP CS Fixer
-* PHP Static Analysis
-* PHP Mess Detector
-* Dependency Vulnerability Scan
-* PHPUnit
+- [x] **PHP CS Fixer**
+    + `friendsofphp/php-cs-fixer`
+- [x] **PHP Static Analysis**
+    + `phpstan/phpstan`
+    + `phpstan/phpstan-doctrine`
+    + `phpstan/phpstan-strict-rules`
+    + `phpstan/phpstan-symfony`
+- [x] **PHP Mess Detector**
+    + `phpmd/phpmd`
+- [x] **Dependency Vulnerability Scan**
+    + `https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest`
+* **PHPUnit**
+  + `phpunit/phpunit`
+
+## Dev-Tools:
+- [x] **Symfony Profiler**
+  + `symfony/web-profiler-bundle`
+- [x] **Var Dump Check**
+  + `php-parallel-lint/php-var-dump-check`
+- [x] **Twig Inspector**
+
+  + `oro/twig-inspector`
+- [x] **Rector**
+  + `rector/rector`
 
 ## Lokale Entwicklungsumgebung:
-* PHP 8.1
-* Apache
-* MariaDB 10.5
-* PhpMyAdmin (latest)
+* **PHP 8.1**
+* **Apache**
+* **MariaDB 10.5**
+* **PhpMyAdmin** (latest)
 
 ## Installation:
 Derzeit werden die folgenden Plattformen unterstützt:
@@ -61,7 +90,7 @@ Die folgenden Programme müssen auf Ihrem System vorhanden sein:
 
 ### Git-Repositories klonen/auschecken:
 * Klonen Sie dieses Repository auf Ihrem lokalen Computer
-* Konfigurieren Sie .env nach Bedarf
+* Konfigurieren Sie `.env` nach Bedarf
 * Führen Sie den Befehl `docker-compose up -d` aus.
 
 ```shell
@@ -119,7 +148,7 @@ openssl x509 -req -in $NAME.csr -CA $NAME.rootCA.pem -CAkey $NAME.rootCA.key -CA
 
 1. CA-signierte Zertifikate erstellen
 2. Signieren Sie Ihr Zertifikat mit Ihrem CA cert+key
-3. Importieren Sie "webwms.local.rootCA.pem" als "Autorität" (nicht in "Ihre Zertifikate") in Ihren Chrome-Einstellungen (Einstellungen > Zertifikate verwalten > Autoritäten > Importieren)
+3. Importieren Sie `webwms.local.rootCA.pem` als "Autorität" (nicht in "Ihre Zertifikate") in Ihren Chrome-Einstellungen (Einstellungen > Zertifikate verwalten > Autoritäten > Importieren)
 4. Verwenden Sie die Dateien `webwms.local.crt` und `webwms.local.key` auf Ihrer Umgebung
 
 ##### Mit folgendem Befehl können Sie sicherstellen, dass das Zertifikat korrekt erstellt wurde:

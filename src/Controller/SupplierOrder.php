@@ -29,12 +29,12 @@ use WebWMS\Service\SupplierOrderPos\SupplierOrderPosService;
 class SupplierOrder extends AbstractController
 {
     public function __construct(
-        private SupplierOrderService $supplierOrderService,
-        private SupplierOrderPosService $supplierOrderPosService,
-        private SupplierService $supplierService,
-        private RequirementsService $requirementsService,
-        private LoggingService $loggingService,
-        private SupplierOrderFormHelper $supplierOrderFormHelper
+        private readonly SupplierOrderService $supplierOrderService,
+        private readonly SupplierOrderPosService $supplierOrderPosService,
+        private readonly SupplierService $supplierService,
+        private readonly RequirementsService $requirementsService,
+        private readonly LoggingService $loggingService,
+        private readonly SupplierOrderFormHelper $supplierOrderFormHelper
     ) {
     }
 
@@ -96,7 +96,7 @@ class SupplierOrder extends AbstractController
             $logMessage = 'Die Position(en) für die Bestell-Nr. EBE-01-' . $supplierOrderId . ' wurde(n) angelegt.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->supplierOrderPosService->addSupplierOrderPos($request);
+            $this->supplierOrderPosService->addSupplierOrderPos($supplierOrderPosRequestData);
 
             return new JsonResponse($responseData);
         }
@@ -158,7 +158,7 @@ class SupplierOrder extends AbstractController
             $logMessage = 'Die Position(en) für die Bestell-Nr. EBE-01-' . $supplierOrderId . ' wurde(n) geändert.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->supplierOrderPosService->updateSupplierOrder($supplierOrderPosRequestData);
+            $this->supplierOrderPosService->updateSupplierOrderPos($supplierOrderPosRequestData);
 
             return new JsonResponse($responseData);
         }

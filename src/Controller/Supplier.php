@@ -26,11 +26,11 @@ use WebWMS\Service\Validation\SupplierValidationService;
 class Supplier extends AbstractController
 {
     public function __construct(
-        private SupplierService $supplierService,
-        private RequirementsService $requirementsService,
-        private LoggingService $loggingService,
-        private SupplierValidationService $supplierValidationService,
-        private SupplierFormHelper $supplierFormHelper
+        private readonly SupplierService $supplierService,
+        private readonly RequirementsService $requirementsService,
+        private readonly LoggingService $loggingService,
+        private readonly SupplierValidationService $supplierValidationService,
+        private readonly SupplierFormHelper $supplierFormHelper
     ) {
     }
 
@@ -83,7 +83,7 @@ class Supplier extends AbstractController
             'supplier/supplier_add.html.twig',
             [
                 'supplierForm' => $form->createView(),
-                'lastId' => $this->getLastSupplier()[0],
+                'lastId' => $this->getLastSupplier(),
                 'editSupplier' => false,
             ]
         );
@@ -189,10 +189,7 @@ class Supplier extends AbstractController
         return $this->supplierService->getAllSuppliersAjax();
     }
 
-    /**
-     * @return object[]
-     */
-    public function getLastSupplier(): array
+    public function getLastSupplier(): int
     {
         return $this->supplierService->getLastSupplier();
     }

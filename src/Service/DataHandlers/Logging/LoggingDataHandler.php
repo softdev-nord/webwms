@@ -21,8 +21,8 @@ use WebWMS\Service\DateTimeService;
 class LoggingDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private DateTimeService $dateTimeService
+        private readonly EntityManagerInterface $entityManager,
+        private readonly DateTimeService $dateTimeService
     ) {
     }
 

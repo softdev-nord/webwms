@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 class CustomerService
 {
     public function __construct(
-        private CustomerDataHandler $customerDataHandler
+        private readonly CustomerDataHandler $customerDataHandler
     ) {
     }
 
@@ -33,12 +33,12 @@ class CustomerService
 
     public function getAllCustomers(): JsonResponse
     {
-        return $this->customerDataHandler->getAllCustomers();
+        return new JsonResponse($this->customerDataHandler->getAllCustomers());
     }
 
-    public function getAllCustomersAjax(): JsonResponse
+    public function getAllCustomersAjax(null|string $customerNrInput): JsonResponse
     {
-        return $this->customerDataHandler->getCustomers();
+        return $this->customerDataHandler->getCustomers($customerNrInput);
     }
 
     public function addCustomer(Customer $customer): void
@@ -56,10 +56,7 @@ class CustomerService
         $this->customerDataHandler->deleteCustomer($customer);
     }
 
-    /**
-     * @return object[]
-     */
-    public function getLastCustomer(): array
+    public function getLastCustomer(): Customer
     {
         return $this->customerDataHandler->getLastCustomer();
     }

@@ -14,7 +14,7 @@ use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
-use WebWMS\Service\TransportRequestService;
+use WebWMS\Service\TransportRequest\TransportRequestService;
 
 /**
  * @package:    WebWMS\Service\BookingMethod
@@ -29,11 +29,11 @@ class BookingMethodService
     public const BLOCK = 'Block-Lager';
 
     public function __construct(
-        private RequirementsService $requirementsService,
-        private StockLocationService $stockLocationService,
-        private TransportRequestService $transportRequestService,
-        private FormFactoryInterface $formFactory,
-        private Environment $twig
+        private readonly RequirementsService $requirementsService,
+        private readonly StockLocationService $stockLocationService,
+        private readonly TransportRequestService $transportRequestService,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly Environment $twig
     ) {
     }
 

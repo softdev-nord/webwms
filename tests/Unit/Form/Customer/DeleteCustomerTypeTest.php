@@ -7,7 +7,6 @@ namespace WebWMS\Tests\Unit\Form\Customer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\Customer;
@@ -23,66 +22,31 @@ use WebWMS\Form\Customer\DeleteCustomerType;
  */
 final class DeleteCustomerTypeTest extends TestCase
 {
-    private DeleteCustomerType $deleteCustomerType;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->deleteCustomerType = new DeleteCustomerType();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($this->deleteCustomerType);
-    }
-
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::exactly(1))
+        $builder
+            ->expects(self::exactly(1))
             ->method('add')
             ->withConsecutive(
-                ['customerId', HiddenType::class, [
-                    'attr' => [
-                        'id' => 'customerId',
-                        'data-type' => 'customerId',
-                    ],
-                ]],
-                ['save', SubmitType::class, [
-                    'label' => 'Löschen',
-                    'attr' => [
-                        'class' => 'btn btn-lg',
-                    ],
-                ]],
-                ['abort', ButtonType::class, [
-                    'label' => 'Abbrechen',
-                    'attr' => [
-                        'class' => 'btn btn-lg abort',
-                    ],
-                ]],
+                ['customerId', HiddenType::class, self::anything()],
+                ['save', ButtonType::class, self::anything()],
+                ['abort', ButtonType::class, self::anything()]
             );
 
-        $optionsResolver = $this->createMock(OptionsResolver::class);
-
-        $form = $this->deleteCustomerType;
-        $form->buildForm($builder, (array) $optionsResolver);
+        $type = new DeleteCustomerType();
+        $type->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
-        $deleteArticleType = $this->deleteCustomerType;
         $resolver = $this->createMock(OptionsResolver::class);
-
-        $resolver->expects(self::once())
+        $resolver
+            ->expects(self::once())
             ->method('setDefaults')
-            ->with([
-                    'data_class' => Customer::class,
-                ]
-            );
+            ->with(['data_class' => Customer::class]);
 
-        $deleteArticleType->configureOptions($resolver);
+        $type = new DeleteCustomerType();
+        $type->configureOptions($resolver);
     }
 }

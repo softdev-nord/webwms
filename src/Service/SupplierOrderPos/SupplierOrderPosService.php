@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\Service\SupplierOrderPos;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\SupplierOrderPos;
 use WebWMS\Service\DataHandlers\SupplierOrderPos\SupplierOrderPosDataHandler;
 
@@ -18,7 +17,7 @@ use WebWMS\Service\DataHandlers\SupplierOrderPos\SupplierOrderPosDataHandler;
 class SupplierOrderPosService
 {
     public function __construct(
-        private SupplierOrderPosDataHandler $supplierOrderPosDataHandler
+        private readonly SupplierOrderPosDataHandler $supplierOrderPosDataHandler
     ) {
     }
 
@@ -37,12 +36,12 @@ class SupplierOrderPosService
         return $this->supplierOrderPosDataHandler->getAllSupplierOrderPos();
     }
 
-    public function addSupplierOrderPos(Request $request): void
+    public function addSupplierOrderPos(SupplierOrderPos $supplierOrderPos): void
     {
-        $this->supplierOrderPosDataHandler->addSupplierOrderPos($request);
+        $this->supplierOrderPosDataHandler->addSupplierOrderPos($supplierOrderPos);
     }
 
-    public function updateSupplierOrder(SupplierOrderPos $supplierOrderPos): void
+    public function updateSupplierOrderPos(SupplierOrderPos $supplierOrderPos): void
     {
         $this->supplierOrderPosDataHandler->updateSupplierOrderPos($supplierOrderPos);
     }

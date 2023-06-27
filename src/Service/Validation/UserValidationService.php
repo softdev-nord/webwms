@@ -31,12 +31,6 @@ class UserValidationService
             $responseData['username'] = $user->getUserIdentifier();
         }
 
-        if (!$user->getRoles()) {
-            $responseData['error']['roles'] = 'Die Benutzerrolle darf nicht leer sein.';
-        } else {
-            $responseData['roles'] = $user->getRoles();
-        }
-
         if (!$user->getFirstname()) {
             $responseData['error']['firstname'] = 'Der Vorname darf nicht leer sein.';
         } else {

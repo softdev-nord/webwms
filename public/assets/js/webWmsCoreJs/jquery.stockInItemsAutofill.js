@@ -60,12 +60,12 @@ const stockInItemsAutofill = (function(){
 
                 resArr = ui.item.data.split("|");
 
-                $('#stock_in_le_quantity').val(resArr[11]);
+                $('#stock_in_le_quantity').val(resArr[12]);
                 $('#article_nr_right').val(resArr[1]);
                 $('#article_name_right').val(resArr[2]);
-                $('#article_le_quantity_right').val(resArr[11]);
+                $('#article_le_quantity_right').val(resArr[12]);
                 $('#article_unit_right').val(resArr[6]);
-                $('#standard_loading_equipment_right').val(resArr[12]);
+                $('#standard_loading_equipment_right').val(resArr[11]);
             }
         });
     }

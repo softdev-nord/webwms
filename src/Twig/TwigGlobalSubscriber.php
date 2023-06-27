@@ -18,32 +18,23 @@ use WebWMS\Service\Configuration\ConfigurationService;
 class TwigGlobalSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private Environment $twig,
-        private ConfigurationService $configurationService
+        private readonly Environment $twig,
+        private readonly ConfigurationService $configurationService
     ) {
     }
 
+    /**
+     * @throws \Exception
+     */
     public function injectGlobalVariables(): void
     {
         $configurations = $this->configurationService->getAllConfigurations();
+
         $this->twig->addGlobal('configurations', $configurations['configuration']);
     }
-
-    /*public function injectGlobalVariables()
-    {
-        $base_params = $this->configurationService->getAllConfigurations();
-        $this->twig->addGlobal('config', $base_params);
-        foreach ($base_params as $key => $value) {
-            $this->twig->addGlobal('config', $base_params);
-        }
-    }*/
 
     public static function getSubscribedEvents(): array
     {
         return [KernelEvents::CONTROLLER => 'injectGlobalVariables'];
-    }
-
-    public function onKernelRequest(): void
-    {
     }
 }

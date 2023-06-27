@@ -16,17 +16,11 @@ use WebWMS\Entity\Configuration;
 class ConfigurationDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager
     ) {
     }
 
     public function save(Configuration $configuration): void
-    {
-        $this->entityManager->persist($configuration);
-        $this->entityManager->flush();
-    }
-
-    public function update(Configuration $configuration): void
     {
         $this->entityManager->persist($configuration);
         $this->entityManager->flush();
@@ -55,19 +49,9 @@ class ConfigurationDataHandler
     public function getAllConfigurations(): array
     {
         $configurations = [];
-        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
-        $queryBuilder
-            ->select('*')
-            ->from('configuration', 'config');
-
-        $stmt = $queryBuilder->executeQuery();
-        $results = $stmt->fetchAllAssociative();
-
-        foreach ($results as $result) {
-            if ($result['type'] === 'layout') {
-                $configurations['configuration']['layout'] = $results;
-            }
-        }
+        $configurations['configuration'] = $this->entityManager
+            ->getRepository(Configuration::class)
+            ->findAll();
 
         return $configurations;
     }

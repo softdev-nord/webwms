@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Article;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Article;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
@@ -18,8 +17,7 @@ use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 class ArticleService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private ArticleDataHandler $articleDataHandler
+        private readonly ArticleDataHandler $articleDataHandler
     ) {
     }
 
@@ -38,9 +36,9 @@ class ArticleService
         return $this->articleDataHandler->getAllArticlesWithJoin();
     }
 
-    public function getArticle(): JsonResponse
+    public function getArticle(string|null $articleNrInput): JsonResponse
     {
-        return $this->articleDataHandler->getArticle();
+        return $this->articleDataHandler->getArticle($articleNrInput);
     }
 
     public function addArticle(Article $article): void
@@ -58,10 +56,8 @@ class ArticleService
         $this->articleDataHandler->deleteArticle($article);
     }
 
-    public function getLastArticle(): ?Article
+    public function getLastArticle(): Article
     {
-        return $this->entityManager
-            ->getRepository(Article::class)
-            ->findOneBy([], ['articleNr' => 'DESC']);
+        return $this->articleDataHandler->getLastArticle();
     }
 }

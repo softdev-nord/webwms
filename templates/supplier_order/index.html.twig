@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{# templates/supplier_order/index.html.twig #}
 
-{% block title %}{{ page }}{{ appName }}{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block body %}
     {% block webwms_header %}
@@ -9,11 +9,9 @@
 
     {% block webwms_content %}
         {% block webwms_supplier_order_overview %}
-            <div id="webWMS-supplier-order-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
-                        <div class="webwms-page">{{ page }}</div>
-                    {% endif %}
+            <div id="webWMS-supplier-order-overview" class="wrapper-form vertical-theme">
+                <div class="wrapper-form-content vertical-theme">
+                    <div class="webwms-page">{{ page }}</div>
                     <div class="card">
                         <div class="card-content">
                             {% block webwms_supplier_order_overview_table_orders %}
@@ -54,7 +52,9 @@
             </div>
         {% endblock %}
     {% endblock %}
-    {% block bodyjs %}
-        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.supplierOrder.js') }}"></script>
-    {% endblock %}
+
+{% endblock %}
+
+{% block bodyjs %}
+    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.supplierOrder.js') }}"></script>
 {% endblock %}

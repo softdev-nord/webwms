@@ -10,7 +10,7 @@ namespace WebWMS\Service\Validation;
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockLayoutValidationService
  */
-class StockLayoutValidationService extends BaseValidationService
+class StockLayoutValidationService
 {
     /**
      * @param array<mixed> $requestData
@@ -24,58 +24,58 @@ class StockLayoutValidationService extends BaseValidationService
     {
         $responseData = [];
 
-        if (!$this->getValue($requestData, '[stockNr]')) {
+        if (!$requestData['stockNr']) {
             $responseData['error']['stockNr'] = 'Die Lagernummer darf nicht leer sein.';
         } else {
-            $responseData['stockNr'] = $this->getValue($requestData, '[stockNr]');
+            $responseData['stockNr'] = $requestData['stockNr'];
         }
 
-        if (!$this->getValue($requestData, '[stockDescription]')) {
+        if (!$requestData['stockDescription']) {
             $responseData['error']['stockDescription'] = 'Die Beschreibung darf nicht leer sein.';
         } else {
-            $responseData['stockDescription'] = $this->getValue($requestData, '[stockDescription]');
+            $responseData['stockDescription'] = $requestData['stockDescription'];
         }
 
-        if (!$this->getValue($requestData, '[stockLevel1]')) {
+        if (!$requestData['stockLevel1']) {
             $responseData['error']['stockLevel1'] = 'Die Ebene 1 darf nicht leer sein.';
         } else {
-            $responseData['stockLevel1'] = $this->getValue($requestData, '[stockLevel1]');
+            $responseData['stockLevel1'] = $requestData['stockLevel1'];
         }
 
-        if (!$this->getValue($requestData, '[stockLevel2]')) {
+        if (!$requestData['stockLevel2']) {
             $responseData['error']['stockLevel2'] = 'Die Ebene 2 darf nicht leer sein.';
         } else {
-            $responseData['stockLevel2'] = $this->getValue($requestData, '[stockLevel2]');
+            $responseData['stockLevel2'] = $requestData['stockLevel2'];
         }
 
-        if (!$this->getValue($requestData, '[stockLevel3]')) {
+        if (!$requestData['stockLevel3']) {
             $responseData['error']['stockLevel3'] = 'Die Ebene 3 darf nicht leer sein.';
         } else {
-            $responseData['stockLevel3'] = $this->getValue($requestData, '[stockLevel3]');
+            $responseData['stockLevel3'] = $requestData['stockLevel3'];
         }
 
-        if (!$this->getValue($requestData, '[stockLevel4]')) {
+        if (!$requestData['stockLevel4']) {
             $responseData['error']['stockLevel4'] = 'Die Ebene 4 darf nicht leer sein.';
         } else {
-            $responseData['stockLevel3'] = $this->getValue($requestData, '[stockLevel4]');
+            $responseData['stockLevel4'] = $requestData['stockLevel4'];
         }
 
-        if (!$this->getValue($requestData, '[stockModel]')) {
+        if (!$requestData['stockModel']) {
             $responseData['error']['stockModel'] = 'Das Lagermodell darf nicht leer sein.';
         } else {
-            $responseData['stockModel'] = $this->getValue($requestData, '[stockModel]');
+            $responseData['stockModel'] = $requestData['stockModel'];
         }
 
-        if (!$this->getValue($requestData, '[stockTyp]')) {
+        if (!$requestData['stockTyp']) {
             $responseData['error']['stockTyp'] = 'Der Lagertyp darf nicht leer sein.';
         } else {
-            $responseData['stockTyp'] = $this->getValue($requestData, '[stockTyp]');
+            $responseData['stockTyp'] = $requestData['stockTyp'];
         }
 
-        if (!$this->getValue($requestData, '[stockLongDescription]')) {
+        if (!$requestData['stockLongDescription']) {
             $responseData['error']['stockLongDescription'] = 'Die Lang-Beschreibung darf nicht leer sein.';
         } else {
-            $responseData['stock_location_width'] = $this->getValue($requestData, '[stockLongDescription]');
+            $responseData['stockLongDescription'] = $requestData['stockLongDescription'];
         }
 
         if (!isset($responseData['error'])) {

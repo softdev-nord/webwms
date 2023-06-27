@@ -6,6 +6,7 @@ namespace WebWMS\Helper\FormHelper;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use WebWMS\Entity\SupplierOrder;
 use WebWMS\Entity\SupplierOrderPos;
 use WebWMS\Form\SupplierOrder\AddSupplierOrderType;
@@ -22,12 +23,12 @@ use WebWMS\Form\SupplierOrder\SupplierOrderPosType;
 class SupplierOrderFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 
     /**
-     * @param string $type
+     * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
      * @return FormInterface

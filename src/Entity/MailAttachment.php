@@ -14,6 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MailAttachment
 {
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
+
     #[ORM\Column(name: 'body', type: 'string', length: 255, nullable: false)]
     private string $body;
 
@@ -28,6 +33,18 @@ class MailAttachment
         $this->body = $body;
         $this->name = $name;
         $this->contentType = $contentType;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getBody(): string

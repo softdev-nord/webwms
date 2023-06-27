@@ -6,7 +6,6 @@ namespace WebWMS\Service\DataHandlers\SupplierOrderPos;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\SupplierOrderPos;
 use WebWMS\Service\DateTimeService;
 
@@ -19,8 +18,8 @@ use WebWMS\Service\DateTimeService;
 class SupplierOrderPosDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private DateTimeService $dateTimeService
+        private readonly EntityManagerInterface $entityManager,
+        private readonly DateTimeService $dateTimeService
     ) {
     }
 
@@ -70,16 +69,8 @@ class SupplierOrderPosDataHandler
         return new JsonResponse($data);
     }
 
-    public function addSupplierOrderPos(Request $request): void
+    public function addSupplierOrderPos(SupplierOrderPos $supplierOrderPos): void
     {
-        $requestData = $request->request->all()['supplier_order_pos'];
-        $supplierOrderPos = new SupplierOrderPos();
-
-        $supplierOrderPos->setSupplierOrderId(intval($requestData['supplierOrderId']));
-        $supplierOrderPos->setSupplierOrderPosQuantity(intval($requestData['supplierOrderPosQuantity']));
-        $supplierOrderPos->setArticleId(intval($requestData['articleId']));
-        $supplierOrderPos->setArticleNr(strval($requestData['articleNr']));
-        $supplierOrderPos->setArticleName(strval($requestData['articleName']));
         $supplierOrderPos->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($supplierOrderPos);

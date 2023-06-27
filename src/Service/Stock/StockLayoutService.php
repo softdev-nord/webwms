@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\Stock\StockLayoutDataHandler;
 class StockLayoutService
 {
     public function __construct(
-        private StockLayoutDataHandler $stockLayoutDataHandler
+        private readonly StockLayoutDataHandler $stockLayoutDataHandler
     ) {
     }
 

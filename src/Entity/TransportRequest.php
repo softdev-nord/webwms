@@ -174,12 +174,12 @@ class TransportRequest
         return $this;
     }
 
-    public function getArtNr(): string
+    public function getArticleNr(): string
     {
         return $this->articleNr;
     }
 
-    public function setArtNr(string $articleNr): self
+    public function setArticleNr(string $articleNr): self
     {
         $this->articleNr = $articleNr;
 

@@ -6,8 +6,6 @@ namespace WebWMS\Form\Stock;
 
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -26,10 +24,6 @@ class StockInFinalCollectionType extends CollectionType
         $builder->add('freeStockLocations', CollectionType::class, [
             'entry_type' => StockInFinalType::class,
         ]);
-
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $form = $event->getForm();
-        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

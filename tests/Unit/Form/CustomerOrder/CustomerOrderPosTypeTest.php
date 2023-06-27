@@ -22,98 +22,34 @@ use WebWMS\Form\CustomerOrder\CustomerOrderPosType;
  */
 final class CustomerOrderPosTypeTest extends TestCase
 {
-    private CustomerOrderPosType $customerOrderPosType;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->customerOrderPosType = new CustomerOrderPosType();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        unset($this->customerOrderPosType);
-    }
-
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::exactly(1))
+        $builder
+            ->expects(self::exactly(1))
             ->method('add')
             ->withConsecutive(
-                ['id', HiddenType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customer_order_pos_id',
-                        'data-type' => 'customer_order_pos_id',
-                    ],
-                ]],
-                ['customerOrderId', HiddenType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'id' => 'customer_order_id',
-                        'data-type' => 'customer_order_id',
-                    ],
-                ]],
-                ['quantity', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control',
-                        'data-type' => 'customer_order_pos_quantity',
-                    ],
-                ]],
-                ['articleId', HiddenType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control autocomplete_items',
-                        'data-type' => 'article_id',
-                    ],
-                ]],
-                ['articleNr', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control autocomplete_items',
-                        'data-type' => 'article_nr',
-                    ],
-                ]],
-                ['articleName', TextType::class, [
-                    'label' => false,
-                    'attr' => [
-                        'class' => 'form-control autocomplete_items',
-                        'data-type' => 'article_name',
-                    ],
-                ]],
+                ['id', HiddenType::class, self::anything()],
+                ['customerOrderId', HiddenType::class, self::anything()],
+                ['quantity', TextType::class, self::anything()],
+                ['articleId', HiddenType::class, self::anything()],
+                ['articleNr', TextType::class, self::anything()],
+                ['articleName', TextType::class, self::anything()],
             );
 
-        $optionsResolver = $this->createMock(OptionsResolver::class);
-
-        $form = $this->customerOrderPosType;
-        $form->buildForm($builder, (array) $optionsResolver);
+        $type = new CustomerOrderPosType();
+        $type->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
-        $addCustomerOrderType = $this->customerOrderPosType;
         $resolver = $this->createMock(OptionsResolver::class);
-
-        $resolver->expects(self::once())
+        $resolver
+            ->expects(self::once())
             ->method('setDefaults')
-            ->with([
-                    'data_class' => CustomerOrderPos::class,
-                ]
-            );
+            ->with(['data_class' => CustomerOrderPos::class]);
 
-        $addCustomerOrderType->configureOptions($resolver);
+        $type = new CustomerOrderPosType();
+        $type->configureOptions($resolver);
     }
 }

@@ -19,111 +19,41 @@ final class StockZoneTest extends TestCase
 {
     private StockZone $stockZone;
 
-    private \DateTimeImmutable $dateTime;
+    private \DateTime $dateTime;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->stockZone = new StockZone();
-        $this->dateTime = new \DateTimeImmutable();
+        $this->dateTime = new \DateTime();
     }
 
-    protected function tearDown(): void
+    public function testGetterAndSetterMethods(): void
     {
-        parent::tearDown();
+        // Test setId() and getId()
+        $id = 1;
+        $this->stockZone->setId($id);
+        self::assertEquals($id, $this->stockZone->getId());
 
-        unset($this->stockZone);
-        unset($this->dateTime);
-    }
+        // Test setStockZoneShortDesc() and getStockZoneShortDesc()
+        $stockZoneShortDesc = 'KOMPAL100';
+        $this->stockZone->setStockZoneShortDesc($stockZoneShortDesc);
+        self::assertEquals($stockZoneShortDesc, $this->stockZone->getStockZoneShortDesc());
 
-    public function testGetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockZone::class))
-            ->getProperty('id');
-        $property->setValue($this->stockZone, $expected);
-        self::assertSame($expected, $this->stockZone->getId());
-    }
+        // Test setStockZoneDescription() and getStockZoneDescription()
+        $stockZoneDescription = 'Kommissionierlager für mit Pal. Höhe 100 cm';
+        $this->stockZone->setStockZoneDescription($stockZoneDescription);
+        self::assertEquals($stockZoneDescription, $this->stockZone->getStockZoneDescription());
 
-    public function testSetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockZone::class))
-            ->getProperty('id');
-        $this->stockZone->setId($expected);
-        self::assertSame($expected, $property->getValue($this->stockZone));
-    }
+        // Test setCreatedAt() and getCreatedAt()
+        $createdAt = $this->dateTime;
+        $this->stockZone->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->stockZone->getCreatedAt());
 
-    public function testGetStockZoneShortDesc(): void
-    {
-        $expected = 'stockZoneShortDesc';
-        $property = (new \ReflectionClass(StockZone::class))
-            ->getProperty('stockZoneShortDesc');
-        $property->setValue($this->stockZone, $expected);
-        self::assertSame($expected, $this->stockZone->getStockZoneShortDesc());
-    }
-
-    public function testSetStockZoneShortDesc(): void
-    {
-        $expected = 'stockZoneShortDesc';
-        $property = (new \ReflectionClass(StockZone::class))
-            ->getProperty('stockZoneShortDesc');
-        $this->stockZone->setStockZoneShortDesc($expected);
-        self::assertSame($expected, $property->getValue($this->stockZone));
-    }
-
-    public function testGetStockZoneDescription(): void
-    {
-        $expected = 'stockZoneDescription';
-        $property = (new \ReflectionClass(StockZone::class))
-            ->getProperty('stockZoneDescription');
-        $property->setValue($this->stockZone, $expected);
-        self::assertSame($expected, $this->stockZone->getStockZoneDescription());
-    }
-
-    public function testSetStockZoneDescription(): void
-    {
-        $expected = 'stockZoneDescription';
-        $property = (new \ReflectionClass(StockZone::class))
-            ->getProperty('stockZoneDescription');
-        $this->stockZone->setStockZoneDescription($expected);
-        self::assertSame($expected, $property->getValue($this->stockZone));
-    }
-
-    public function testGetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockZone::class))
-            ->getProperty('createdAt');
-        $property->setValue($this->stockZone, $expected);
-        self::assertSame($expected, $this->stockZone->getCreatedAt());
-    }
-
-    public function testSetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockZone::class))
-            ->getProperty('createdAt');
-        $this->stockZone->setCreatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->stockZone));
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockZone::class))
-            ->getProperty('updatedAt');
-        $property->setValue($this->stockZone, $expected);
-        self::assertSame($expected, $this->stockZone->getUpdatedAt());
-    }
-
-    public function testSetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockZone::class))
-            ->getProperty('updatedAt');
-        $this->stockZone->setUpdatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->stockZone));
+        // Test setUpdatedAt() and getUpdatedAt()
+        $updatedAt = $this->dateTime;
+        $this->stockZone->setUpdatedAt($updatedAt);
+        self::assertEquals($updatedAt, $this->stockZone->getUpdatedAt());
     }
 }

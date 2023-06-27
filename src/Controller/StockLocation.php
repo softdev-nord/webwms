@@ -27,11 +27,11 @@ use WebWMS\Service\Validation\StockLocationValidationService;
 class StockLocation extends AbstractController
 {
     public function __construct(
-        private StockLocationService $stockLocationService,
-        private RequirementsService $requirementsService,
-        private StockLocationValidationService $stockLocationValidationService,
-        private LoggingService $loggingService,
-        private StockLocationFormHelper $stockLocationFormHelper
+        private readonly StockLocationService $stockLocationService,
+        private readonly RequirementsService $requirementsService,
+        private readonly StockLocationValidationService $stockLocationValidationService,
+        private readonly LoggingService $loggingService,
+        private readonly StockLocationFormHelper $stockLocationFormHelper
     ) {
     }
 
@@ -81,7 +81,7 @@ class StockLocation extends AbstractController
                 $logMessage = 'Die Lagerplätze für das Lager ' . $stockLocationRequestData->getStockLocationLn() . ' wurden angelegt.';
 
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-                $this->stockLocationService->addStockLocation($request);
+                $this->stockLocationService->addStockLocation($stockLocationRequestData);
 
                 return new JsonResponse($responseData);
             }
@@ -101,14 +101,11 @@ class StockLocation extends AbstractController
     #[Route('lagerplatz_bearbeiten/koordinate/{stockLocationCoordinate}', name: 'edit_stock_location')]
     public function editStockLocation(Request $request, string $stockLocationCoordinate): RedirectResponse|JsonResponse|Response|null
     {
-        // dd($stockLocationCoordinate);
         if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
 
         $stockLocation = $this->stockLocationService->getStockLocationByCoordinate($stockLocationCoordinate);
-
-        // dd($stockLocation);
 
         if ($stockLocation === null) {
             return null;
@@ -116,8 +113,6 @@ class StockLocation extends AbstractController
 
         $form = $this->stockLocationFormHelper->editStockLocationForm($stockLocation);
         $form->handleRequest($request);
-
-        // dd($form->getData());
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var StockLocationEntity $stockLocationRequestData */
@@ -136,7 +131,7 @@ class StockLocation extends AbstractController
                 $logMessage = 'Der Lagerplatz ' . $selectedStockLocation . ' wurde geändert.';
 
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-                $this->stockLocationService->updateStockLocation($request);
+                $this->stockLocationService->updateStockLocation($stockLocationRequestData);
 
                 return new JsonResponse($responseData);
             }

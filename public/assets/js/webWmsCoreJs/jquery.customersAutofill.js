@@ -84,15 +84,15 @@ const jqueryCustomersAutofill = (function () {
                 //Splittung des resArrKd Arrays
                 resArrCustomer = ui.item.data.split("|");
 
-                $('#customer_nr_1').val(resArrCustomer[0]);
-                $('#customer_name_1').val(resArrCustomer[1]);
-                $('#customer_address_addition_1').val(resArrCustomer[2]);
-                $('#customer_address_street_1').val(resArrCustomer[3]);
-                $('#customer_address_street_nr_1').val(resArrCustomer[4]);
-                $('#customer_country_code_1').val(resArrCustomer[5]);
-                $('#customer_zip_code_1').val(resArrCustomer[6]);
-                $('#customer_city_1').val(resArrCustomer[7]);
-                $('#customer_order_customer_id').val(resArrCustomer[8]);
+                $('#customer_customerNr').val(resArrCustomer[0]);
+                $('#customer_customerName').val(resArrCustomer[1]);
+                $('#customer_customerAddressAddition').val(resArrCustomer[2]);
+                $('#customer_customerAddressStreet').val(resArrCustomer[3]);
+                $('#customer_customerAddressStreetNr').val(resArrCustomer[4]);
+                $('#customer_customerAddressCountryCode').val(resArrCustomer[5]);
+                $('#customer_customerAddressZipcode').val(resArrCustomer[6]);
+                $('#customer_customerAddressCity').val(resArrCustomer[7]);
+                $('#customer_customerId').val(resArrCustomer[8]);
             }
         });
     }

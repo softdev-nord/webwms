@@ -6,6 +6,8 @@ namespace WebWMS\Helper\FormHelper;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
+use WebWMS\Entity\Article;
 use WebWMS\Form\Article\AddArticleType;
 use WebWMS\Form\Article\DeleteArticleType;
 use WebWMS\Form\Article\EditArticleType;
@@ -19,12 +21,12 @@ use WebWMS\Form\Article\EditArticleType;
 class ArticleFormHelper
 {
     public function __construct(
-        private FormFactoryInterface $formFactory
+        private readonly FormFactoryInterface $formFactory
     ) {
     }
 
     /**
-     * @param string $type
+     * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
      * @return FormInterface
@@ -40,19 +42,19 @@ class ArticleFormHelper
     }
 
     /**
-     * @param object $article
+     * @param Article|null $article
      * @return FormInterface
      */
-    public function editArticleForm(object $article): FormInterface
+    public function editArticleForm(?Article $article): FormInterface
     {
         return $this->createForm(EditArticleType::class, $article);
     }
 
     /**
-     * @param object $article
+     * @param Article|null $article
      * @return FormInterface
      */
-    public function deleteArticleForm(object $article): FormInterface
+    public function deleteArticleForm(?Article $article): FormInterface
     {
         return $this->createForm(DeleteArticleType::class, $article);
     }

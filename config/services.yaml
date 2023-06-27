@@ -65,17 +65,12 @@ services:
         arguments: [ "@security.authorization_checker" ]
         tags:
             - { name: form.type }
-
-    web_wms.event_listener.controller_listener:
-        class: WebWMS\EventListener\ControllerListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller }
     
     web_wms.service.booking_methode.booking_methode_service:
         class: WebWMS\Service\BookingMethod\BookingMethodService
     
     web_wms.service.transport_request_service:
-        class: WebWMS\Service\TransportRequestService
+        class: WebWMS\Service\TransportRequest\TransportRequestService
     
     web_wms.service.data_handlers.configuration.configuration_data_handler:
         class: WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler
@@ -88,14 +83,6 @@ services:
         arguments:
             $bookingMethodService: '@web_wms.service.booking_methode.booking_methode_service'
             $transportRequestService: '@web_wms.service.transport_request_service'
-
-    web_wms.service.mail_service:
-        class: WebWMS\Service\MailService
-        arguments:
-            $fromMail: '%fromMail%'
-            $fromName: '%fromName%'
-            $returnPath: '%returnPath%'
-            $mailCopy: '%mailCopy%'
 
     web_wms.service.file_uploader:
         class: WebWMS\Service\FileUploader
@@ -111,8 +98,6 @@ services:
 
     web_wms.twig.twig_global_subscriber:
         class: WebWMS\Twig\TwigGlobalSubscriber
-        tags:
-            - { name: kernel.event_listener, event: kernel.request }
 
     web_wms.service.logging_service:
         class: WebWMS\Service\LoggingService
@@ -133,4 +118,3 @@ services:
         arguments:
             $requirementsService: 'WebWMS\Service\RequirementsService'
             $twig: 'Twig\Environment'
-    

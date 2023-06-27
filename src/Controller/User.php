@@ -33,14 +33,14 @@ use WebWMS\Service\Validation\UserValidationService;
 class User extends AbstractController
 {
     public function __construct(
-        private RequirementsService $requirementsService,
-        private LoggingService $loggingService,
-        private UserService $userService,
-        private UserValidationService $userValidationService,
-        private ChangePasswordValidationService $passwordValidationService,
-        private UserPasswordHasherInterface $passwordHasher,
-        private DateTimeService $dateTimeService,
-        private UserFormHelper $userFormHelper
+        private readonly RequirementsService $requirementsService,
+        private readonly LoggingService $loggingService,
+        private readonly UserService $userService,
+        private readonly UserValidationService $userValidationService,
+        private readonly ChangePasswordValidationService $passwordValidationService,
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly DateTimeService $dateTimeService,
+        private readonly UserFormHelper $userFormHelper
     ) {
     }
 

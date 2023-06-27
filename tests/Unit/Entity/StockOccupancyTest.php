@@ -19,165 +19,56 @@ final class StockOccupancyTest extends TestCase
 {
     private StockOccupancy $stockOccupancy;
 
-    private \DateTimeImmutable $dateTime;
+    private \DateTime $dateTime;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->stockOccupancy = new StockOccupancy();
-        $this->dateTime = new \DateTimeImmutable();
+        $this->dateTime = new \DateTime();
     }
 
-    protected function tearDown(): void
+    public function testGetterAndSetterMethods(): void
     {
-        parent::tearDown();
+        // Test setId() and getId()
+        $id = 1;
+        $this->stockOccupancy->setId($id);
+        self::assertEquals($id, $this->stockOccupancy->getId());
 
-        unset($this->stockOccupancy);
-        unset($this->dateTime);
-    }
+        // Test setStockLocationId() and getStockLocationId()
+        $stockLocationId = 1;
+        $this->stockOccupancy->setStockLocationId($stockLocationId);
+        self::assertEquals($stockLocationId, $this->stockOccupancy->getStockLocationId());
 
-    public function testGetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('id');
-        $property->setValue($this->stockOccupancy, $expected);
-        self::assertSame($expected, $this->stockOccupancy->getId());
-    }
+        // Test setArticleId() and getArticleId()
+        $articleId = 1;
+        $this->stockOccupancy->setArticleId($articleId);
+        self::assertEquals($articleId, $this->stockOccupancy->getArticleId());
 
-    public function testSetId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('id');
-        $this->stockOccupancy->setId($expected);
-        self::assertSame($expected, $property->getValue($this->stockOccupancy));
-    }
+        // Test setInStock() and getInStock()
+        $inStock = 100;
+        $this->stockOccupancy->setInStock($inStock);
+        self::assertEquals($inStock, $this->stockOccupancy->getInStock());
 
-    public function testGetStockLocationId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('stockLocationId');
-        $property->setValue($this->stockOccupancy, $expected);
-        self::assertSame($expected, $this->stockOccupancy->getStockLocationId());
-    }
+        // Test setIncomingStock() and getIncomingStock()
+        $incomingStock = 150;
+        $this->stockOccupancy->setIncomingStock($incomingStock);
+        self::assertEquals($incomingStock, $this->stockOccupancy->getIncomingStock());
 
-    public function testSetStockLocationId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('stockLocationId');
-        $this->stockOccupancy->setStockLocationId($expected);
-        self::assertSame($expected, $property->getValue($this->stockOccupancy));
-    }
+        // Test setReservedStock() and getReservedStock()
+        $reservedStock = 50;
+        $this->stockOccupancy->setReservedStock($reservedStock);
+        self::assertEquals($reservedStock, $this->stockOccupancy->getReservedStock());
 
-    public function testGetArticleId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('articleId');
-        $property->setValue($this->stockOccupancy, $expected);
-        self::assertSame($expected, $this->stockOccupancy->getArticleId());
-    }
+        // Test setCreatedAt() and getCreatedAt()
+        $createdAt = $this->dateTime;
+        $this->stockOccupancy->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->stockOccupancy->getCreatedAt());
 
-    public function testSetArticleId(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('articleId');
-        $this->stockOccupancy->setArticleId($expected);
-        self::assertSame($expected, $property->getValue($this->stockOccupancy));
-    }
-
-    public function testGetInStock(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('inStock');
-        $property->setValue($this->stockOccupancy, $expected);
-        self::assertSame($expected, $this->stockOccupancy->getInStock());
-    }
-
-    public function testSetInStock(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('inStock');
-        $this->stockOccupancy->setInStock($expected);
-        self::assertSame($expected, $property->getValue($this->stockOccupancy));
-    }
-
-    public function testGetIncomingStock(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('incomingStock');
-        $property->setValue($this->stockOccupancy, $expected);
-        self::assertSame($expected, $this->stockOccupancy->getIncomingStock());
-    }
-
-    public function testSetIncomingStock(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('incomingStock');
-        $this->stockOccupancy->setIncomingStock($expected);
-        self::assertSame($expected, $property->getValue($this->stockOccupancy));
-    }
-
-    public function testGetReservedStock(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('reservedStock');
-        $property->setValue($this->stockOccupancy, $expected);
-        self::assertSame($expected, $this->stockOccupancy->getReservedStock());
-    }
-
-    public function testSetReservedStock(): void
-    {
-        $expected = 2019;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('reservedStock');
-        $this->stockOccupancy->setReservedStock($expected);
-        self::assertSame($expected, $property->getValue($this->stockOccupancy));
-    }
-
-    public function testGetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('createdAt');
-        $property->setValue($this->stockOccupancy, $expected);
-        self::assertSame($expected, $this->stockOccupancy->getCreatedAt());
-    }
-
-    public function testSetCreatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('createdAt');
-        $this->stockOccupancy->setCreatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->stockOccupancy));
-    }
-
-    public function testGetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('updatedAt');
-        $property->setValue($this->stockOccupancy, $expected);
-        self::assertSame($expected, $this->stockOccupancy->getUpdatedAt());
-    }
-
-    public function testSetUpdatedAt(): void
-    {
-        $expected = $this->dateTime;
-        $property = (new \ReflectionClass(StockOccupancy::class))
-            ->getProperty('updatedAt');
-        $this->stockOccupancy->setUpdatedAt($expected);
-        self::assertSame($expected, $property->getValue($this->stockOccupancy));
+        // Test setUpdatedAt() and getUpdatedAt()
+        $updatedAt = $this->dateTime;
+        $this->stockOccupancy->setUpdatedAt($updatedAt);
+        self::assertEquals($updatedAt, $this->stockOccupancy->getUpdatedAt());
     }
 }

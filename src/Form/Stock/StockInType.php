@@ -58,8 +58,8 @@ class StockInType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'loading_equipment',
-                    'data-type' => 'loading_equipment',
+                    'id' => 'le_quantity',
+                    'data-type' => 'le_quantity',
                 ],
             ])
             ->add('quantity', TextType::class, [
@@ -74,18 +74,18 @@ class StockInType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_ean',
-                    'data-type' => 'article_ean',
+                    'id' => 'charge',
+                    'data-type' => 'charge',
                 ],
             ])
-            ->add('post', SubmitType::class, [
+            ->add('save', SubmitType::class, [
                 'label' => 'Buchen',
                 'attr' => [
                     'class' => 'btn btn-lg',
                 ],
             ])
-            ->add('clear_form', ButtonType::class, [
-                'label' => 'Formular leeren',
+            ->add('abort', ButtonType::class, [
+                'label' => 'Abbrechen',
                 'attr' => [
                     'class' => 'btn btn-lg',
                 ],
