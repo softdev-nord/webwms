@@ -35,15 +35,15 @@ class UserRightDataHandler
         $this->entityManager->flush();
     }
 
-     /**
-      * @return array<int, UserRight>
-      */
-     public function getAllUserRights(): array
-     {
-         return $this->entityManager
-             ->getRepository(UserRight::class)
-             ->findAll();
-     }
+    /**
+     * @return array<int, UserRight>
+     */
+    public function getAllUserRights(): array
+    {
+        return $this->entityManager
+            ->getRepository(UserRight::class)
+            ->findAll();
+    }
 
     public function getUserRightById(int $userRightId): ?UserRight
     {
