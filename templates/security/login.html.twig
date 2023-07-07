@@ -2,10 +2,12 @@
 
 {% block body %}
 
+    <head>
+        {{ include('partials/head-css.html.twig') }}
+    </head>
+
     <title>{% block title %}Anmelden | webWMS | Das webbasierte Lagerverwaltungssystem{% endblock %}</title>
     {% block stylesheets %}
-        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styles.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/app.css') }}">
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     {% endblock %}
 
@@ -49,14 +51,14 @@
                         name="_csrf_token"
                         value="{{ csrf_token('authenticate') }}"
                 />
-                <div class="checkbox mb-3">
+{#                <div class="checkbox mb-3">
                     <label>
                         <input type="checkbox" name="_remember_me"> Angemeldet bleiben
                     </label>
-                </div>
+                </div>#}
                 <input type="hidden" name="_target_path" value="{{ path('homepage') }}" />
                 <div class="form-group">
-                    <button type="submit" name="anmelden" class="btn btn-lg">Anmelden</button>
+                    <button type="submit" name="anmelden" class="btn btn-dark bg-gradient waves-effect waves-light">Anmelden</button>
                 </div>
                 <div class="signup-form-text-info">
                     &copy; 2019-{{ "now"|date("Y") }} <a href="https://softdev-nord.de"> Softdev Nord Rene Irrgang </a><br>
@@ -64,10 +66,11 @@
                     {{ appLizenz }}
                 </div>
                 <div>
-                    <i class="brands-webLVS mdi mdi-language-php"></i>
-                    <i class="brands-webLVS mdi mdi-language-html5"></i>
-                    <i class="brands-webLVS mdi mdi-language-css3"></i>
-                    <i class="brands-webLVS mdi mdi-language-javascript"></i>
+                    <i class="brands-webWMS mdi mdi-symfony"></i>
+                    <i class="brands-webWMS mdi mdi-language-php"></i>
+                    <i class="brands-webWMS mdi mdi-language-html5"></i>
+                    <i class="brands-webWMS mdi mdi-language-css3"></i>
+                    <i class="brands-webWMS mdi mdi-language-javascript"></i>
                 </div>
                 <div class="signup-form-text-software">
                     Webserver:   {{ webServer }} <br>

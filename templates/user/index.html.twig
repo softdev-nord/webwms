@@ -2,47 +2,49 @@
 
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% block webwms_header %}
-        {{ include('header.html.twig') }}
-    {% endblock %}
-
-    {% block webwms_content %}
-        {% block webwms_user_overview %}
-            <div id="webWMS-user-overview" class="wrapper-form vertical-theme">
-                <div class="wrapper-form-content vertical-theme">
-                    <div class="webwms-page">{{ page }}</div>
-                    <div class="card">
-                        <div class="card-content">
-                            <table id="userTable" class="table table-striped table-bordered table-hover compact">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Benutzername</th>
-                                    <th scope="col">E-Mail</th>
-                                    <th scope="col">Vorname</th>
-                                    <th scope="col">Nachname</th>
-                                    <th scope="col">Letzter Login</th>
-                                    <th scope="col">Aktiviert</th>
-                                    <th scope="col">Rollen</th>
-                                    <th scope="col">Gruppen</th>
-                                    <th scope="col">Erstellt</th>
-                                    <th scope="col">Letzte Änderung</th>
-                                </tr>
-                                </thead>
-                            </table>
+{% block webwms_content %}
+    {% block webwms_user_overview %}
+        <div id="webWMS-user-overview" class="wrapper-form vertical-theme">
+            <div class="wrapper-form-content vertical-theme">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                {% block webwms_user_overview_table_users %}
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <table id="userTable" class="table table-striped table-bordered table-hover compact">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Benutzername</th>
+                                                    <th scope="col">E-Mail</th>
+                                                    <th scope="col">Vorname</th>
+                                                    <th scope="col">Nachname</th>
+                                                    <th scope="col">Letzter Login</th>
+                                                    <th scope="col">Aktiviert</th>
+                                                    <th scope="col">Rollen</th>
+                                                    <th scope="col">Gruppen</th>
+                                                    <th scope="col">Erstellt</th>
+                                                    <th scope="col">Letzte Änderung</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                {% endblock %}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% endblock %}
+        </div>
     {% endblock %}
+{% endblock %}
 
-    {% block bodyjs %}
-        <script>
-            {% set user_role = app.user.roles.0 %}
-            window.user_role = '{{ user_role }}'
-        </script>
-        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/user/jquery.user.js') }}"></script>
-    {% endblock %}
-
+{% block bodyjs %}
+    <script>
+        {% set user_role = app.user.roles.0 %}
+        window.user_role = '{{ user_role }}'
+    </script>
+    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/user/jquery.user.js') }}"></script>
 {% endblock %}

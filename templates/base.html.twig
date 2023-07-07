@@ -1,67 +1,36 @@
 {# templates/base.html.twig #}
 
 <!DOCTYPE html>
-<html lang="{{ app.request.locale|split('_')[0] }}">
+<html lang="{{ app.request.locale|split('_')[0] }}"
+      data-layout="vertical"
+      data-topbar="light"
+      data-sidebar="light"
+      data-sidebar-size="lg"
+      data-sidebar-image="none"
+      data-preloader="disable">
     <head>
-        <meta charset="UTF-8">
-        {% block title %}
-            <title>{{ page }} {{ appName }}</title>
-        {% endblock %}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {% block stylesheets %}
-            <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/app.css') }}">
-            <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-        {% endblock %}
-        {% block javascripts %}
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jquery-3.6.3.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jquery-ui.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jquery.dataTables.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/dataTables.buttons.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/dataTables.select.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/moment.WithLocales.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/dataTables.sum.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jszip.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/pdfmake.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/vfs_fonts.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/buttons.html5.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/buttons.print.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/bootstrap.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jAlert.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/webWmsAjax.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/scripts.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/settings.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/switch.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/sidebars.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jquery.contextMenu.js') }}"></script>
-            <script>
-                $(document).ready(function () {
-                    const delegate = (element, type, selector, handler) => {
-                        if(element){
-                            element.addEventListener(type, (event) => {
-                                if (event.target.closest(selector)) {
-                                    handler(event);
-                                }
-                            });
-                        }
-                    };
+        {{ include('subsections/title-meta.html.twig') }}
 
-                    /**
-                     * Enable click event for copy-to-clipboard function
-                     */
-                    delegate(document.querySelector('#modal-content-ajax'), 'click', '.copy-to-clipboard', (e) => {
-                        copyToClipboard(e.target.closest('.copy-to-clipboard'));
-                    });
-                })
-            </script>
+        {% block stylesheets %}
+            {{ include('subsections/head-css.html.twig') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ include('subsections/head-js.html.twig') }}
         {% endblock %}
     </head>
-    <body class="bg-dark text-light">
-        <div class="page-wrapper webwms-theme toggled">
+    {% block body %}
+        <div id="layout-wrapper">
             {% block webwms_header_navigation %}
-                {{ include('menu_vertical.html.twig') }}
+                {{ include('subsections/menu.html.twig') }}
             {% endblock %}
-            {% block webwms_content %}{% endblock %}
+            <div class="main-content">
+                <div class="page-content">
+                    <div class="container-fluid">
+                        {% block webwms_content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
         </div>
         {% block bodyjs %}
             <script>
@@ -90,32 +59,38 @@
             </div>
         {% endblock %}
         {% block webwms_about_modal %}
-        <div class="modal" id="aboutwebLVS" tabindex="-1" role="dialog" aria-labelledby="aboutwebLVS"
-             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-notify modal-success" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Über webLVS</h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" class="white-text">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="text-center">
-                            <img src="{{ asset('assets/images/webWMS_logo.png') }}" style="width: 30%; margin-bottom: -20px;" alt="" >
-                            <p style="text-align: center; margin-top: 30px; margin-bottom: 50px; font-size: 20px;">Das webbasierte Lagerverwaltungssystem</p>
-                            <p style="margin-bottom: 5px;">{{ appVersion }}</p>
-                            <p style="margin-bottom: 25px;">{{ appVersionNumber }}</p>
-                            <p style="margin-bottom: 30px;">{{ appCopyright }}</p>
-                            <p style="margin-bottom: 10px;">Lizenziert für:</p>
-                            <p>{{ appLizenz }}</p>
+            <div class="modal" id="aboutWebWMS" tabindex="-1" role="dialog" aria-labelledby="aboutWebWMS"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-notify modal-success" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Über webWMS</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="white-text">&times;</span>
+                            </button>
                         </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <span class="text-first">web</span><span class="text-last">WMS</span>
+                                <p class="fs-16" style="text-align: center; font-weight: bold; margin: -20px 0 20px 0;">Das webbasierte Lagerverwaltungssystem</p>
+                                <p style="margin-bottom: 5px;">{{ appVersion }} {{ appVersionNumber }}</p>
+                                <p style="margin-bottom: 20px;">{{ appCopyright }}</p>
+                                <p style="margin-bottom: 5px;">Lizenziert für:</p>
+                                <p>{{ appLizenz }}</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         {% endblock %}
-    </body>
+
+        {{ include('subsections/vendor-scripts.html.twig') }}
+
+        <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
+
+        <!-- App js -->
+        <script src="{{ asset('assets/js/app.js') }}"></script>
+    {% endblock %}
 </html>

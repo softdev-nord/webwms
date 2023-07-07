@@ -2,122 +2,117 @@
 
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% block webwms_header %}
-        {{ include('header.html.twig') }}
-    {% endblock %}
-
-    {% block webwms_content %}
-        {% block webwms_stock_in %}
-            <div id="webWMS-stock-in" class="wrapper-form vertical-theme">
-                <div class="wrapper-form-content vertical-theme">
-                    <div class="webwms-page">{{ page }}</div>
-                    <div class="card">
-                        <div class="card-content">
-                            {% block webwms_stock_in_form %}
-                                <div class="form-row col-md-6">
-                                    <div class="card" style="width: 100%">
-                                        <div class="card-content">
-                                            {{ form_start(stockInForm, {'action' : path('stock_in')}) }}
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(stockInForm.article_nr) }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Ladehilfsmittel</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(stockInForm.standard_loading_equipment) }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Menge / LE</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(stockInForm.le_quantity) }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Menge</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(stockInForm.quantity) }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Charge</label>
-                                                <div class="col-xs-8" style="margin-bottom: 5px;">
-                                                    {{ form_row(stockInForm.charge) }}
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                {% for message in app.flashes('success') %}
-                                                    <div class="alert alert-success">
-                                                        {{ message }}
+{% block webwms_content %}
+    {% block webwms_stock_in %}
+        <div id="webWMS-stock-in" class="wrapper-form vertical-theme">
+            <div class="wrapper-form-content vertical-theme">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                {% block webwms_stock_in_form %}
+                                    <div class="form-row col-md-6">
+                                        <div class="card" style="width: 100%">
+                                            <div class="card-content">
+                                                {{ form_start(stockInForm, {'action' : path('stock_in')}) }}
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(stockInForm.article_nr) }}
                                                     </div>
-                                                {% endfor %}
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Ladehilfsmittel</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(stockInForm.standard_loading_equipment) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Menge / LE</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(stockInForm.le_quantity) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Menge</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(stockInForm.quantity) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Charge</label>
+                                                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                        {{ form_row(stockInForm.charge) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    {% for message in app.flashes('success') %}
+                                                        <div class="alert alert-success">
+                                                            {{ message }}
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
                                             </div>
-                                            <div class="text-center">
-                                                {{ form_widget(stockInForm.save) }} {{ form_widget(stockInForm.abort) }}
+                                        </div>
+                                        <input id="currentCoordinate" type="hidden">
+                                    </div>
+                                    <div class="form-row col-md-6">
+                                        <div class="card" style="width: 100%">
+                                            <div class="card-content">
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
+                                                    <div class="col-xs-8">
+                                                        <div class="form-group">
+                                                            <input type="text" id="article_nr_right" class="form-control" data-type="article_nr_right" readonly style="background-color: transparent" value=""></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Artikelname</label>
+                                                    <div class="col-xs-8">
+                                                        <div class="form-group">
+                                                            <input type="text" id="article_name_right" class="form-control" data-type="article_name_right" readonly style="background-color: transparent" value=""></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">LE-Menge</label>
+                                                    <div class="col-xs-8">
+                                                        <div class="form-group">
+                                                            <input type="text" id="article_le_quantity_right" class="form-control" data-type="le_quantity_right" readonly style="background-color: transparent" value=""></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Einheit</label>
+                                                    <div class="col-xs-8">
+                                                        <div class="form-group">
+                                                            <input type="text" id="article_unit_right" class="form-control" data-type="article_unit_right" readonly style="background-color: transparent" value="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="text" class="control-label col-xs-4">Standard-Ladehilfsmittel</label>
+                                                    <div class="col-xs-8">
+                                                        <div class="form-group">
+                                                            <input type="text" id="standard_loading_equipment_right" class="form-control" data-type="standard_loading_equipment_right" readonly style="background-color: transparent" value="">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            {{ form_end(stockInForm) }}
                                         </div>
                                     </div>
-                                    <input id="currentCoordinate" type="hidden">
-                                </div>
-                                <div class="form-row col-md-6">
-                                    <div class="card" style="width: 100%">
-                                        <div class="card-content">
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
-                                                <div class="col-xs-8">
-                                                    <div class="form-group">
-                                                        <input type="text" id="article_nr_right" class="form-control" data-type="article_nr_right" readonly style="background-color: transparent" value=""></div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Artikelname</label>
-                                                <div class="col-xs-8">
-                                                    <div class="form-group">
-                                                        <input type="text" id="article_name_right" class="form-control" data-type="article_name_right" readonly style="background-color: transparent" value=""></div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">LE-Menge</label>
-                                                <div class="col-xs-8">
-                                                    <div class="form-group">
-                                                        <input type="text" id="article_le_quantity_right" class="form-control" data-type="le_quantity_right" readonly style="background-color: transparent" value=""></div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Einheit</label>
-                                                <div class="col-xs-8">
-                                                    <div class="form-group">
-                                                        <input type="text" id="article_unit_right" class="form-control" data-type="article_unit_right" readonly style="background-color: transparent" value="">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Standard-Ladehilfsmittel</label>
-                                                <div class="col-xs-8">
-                                                    <div class="form-group">
-                                                        <input type="text" id="standard_loading_equipment_right" class="form-control" data-type="standard_loading_equipment_right" readonly style="background-color: transparent" value="">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {{ form_end(stockInForm) }}
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endblock %}
+                                {% endblock %}
+                            </div>
+                            <div class="text-center">
+                                {{ form_widget(stockInForm.save) }} {{ form_widget(stockInForm.abort) }}
+                            </div>
+                            {{ form_end(stockInForm) }}
                         </div>
                     </div>
                 </div>
             </div>
-        {% endblock %}
+        </div>
     {% endblock %}
+{% endblock %}
 
-    {% block bodyjs %}
-        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockInItemsAutofill.js') }}"></script>
-    {% endblock %}
-
+{% block bodyjs %}
+    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockInItemsAutofill.js') }}"></script>
 {% endblock %}

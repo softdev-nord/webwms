@@ -1,24 +1,67 @@
 nav.user.online: Online
 nav.user.admin: Administrator
 nav.user.user: Benutzer
-nav.logictics.headline: Logistik
-nav.logictics.submenu.headline1: Einlagern
-nav.logictics.submenu.headline1.entry1: Einlagern direkt
-nav.logictics.submenu.headline1.entry2: Zugang aus Wareneingang
-nav.logictics.submenu.headline1.entry3: Zugang aus Produktion
-nav.logictics.submenu.headline1.entry4: Einlagern von Kostenstelle
-nav.logictics.submenu.headline1.entry5: Einlagern in Container
-nav.logictics.submenu.headline1.entry6: Einlagern mit Ladehilfsmittel
-nav.logictics.submenu.headline1.entry7: Einlagern direkt in WE-Zone
-nav.logictics.submenu.headline1.entry8: Einlagern direkt in WA-Zone
-nav.logictics.submenu.headline1.entry9: WE zu Bestellung
-nav.logictics.submenu.headline2: Auslagern
-nav.logictics.submenu.headline2.entry1: Auslagern direkt
-nav.logictics.submenu.headline2.entry2: Auslagern auf Kostenstelle
-nav.logictics.submenu.headline2.entry3: Ausleihen auf Kostenstelle
-nav.logictics.submenu.headline2.entry4: Auslagern aus Kostenstelle
-nav.logictics.submenu.headline2.entry5: Auslagern aus Container
-nav.logictics.submenu.headline2.entry6: Auslagern direkt aus WA-Zone
-
-
+nav.headline1: Menu
+nav.headline2: Hilfe
+nav.logistics.headline: Logistik
+nav.logistics.submenu.headline1: Einlagern
+nav.logistics.submenu.headline1.entry1: Einlagern direkt
+nav.logistics.submenu.headline1.entry2: Zugang aus Wareneingang
+nav.logistics.submenu.headline1.entry3: Zugang aus Produktion
+nav.logistics.submenu.headline1.entry4: Einlagern von Kostenstelle
+nav.logistics.submenu.headline1.entry5: Einlagern in Container
+nav.logistics.submenu.headline1.entry6: Einlagern mit Ladehilfsmittel
+nav.logistics.submenu.headline1.entry7: Einlagern direkt in WE-Zone
+nav.logistics.submenu.headline1.entry8: Einlagern direkt in WA-Zone
+nav.logistics.submenu.headline1.entry9: WE zu Bestellung
+nav.logistics.submenu.headline2: Auslagern
+nav.logistics.submenu.headline2.entry1: Auslagern direkt
+nav.logistics.submenu.headline2.entry2: Auslagern auf Kostenstelle
+nav.logistics.submenu.headline2.entry3: Ausleihen auf Kostenstelle
+nav.logistics.submenu.headline2.entry4: Auslagern aus Kostenstelle
+nav.logistics.submenu.headline2.entry5: Auslagern aus Container
+nav.logistics.submenu.headline2.entry6: Auslagern direkt aus WA-Zone
+nav.logistics.submenu.headline2.entry7: Auftrag auslagern
+nav.logistics.submenu.headline2.entry8: Auslagern direkt aus WE-Zone
+nav.logistics.submenu.headline3: Umlagern
+nav.logistics.submenu.headline3.entry1: Umlagern direkt
+nav.logistics.submenu.headline3.entry2: Aus WE-Zone in LV-Lager
+nav.logistics.submenu.headline3.entry3: Aus LV-Lager in WA-Zone
+nav.supplier_order.headline: Bestellungen
+nav.supplier_order.headline.entry1: Übersicht Bestellungen
+nav.customer_order.headline: Aufträge
+nav.customer_order.headline.entry1: Übersicht Aufträge
+nav.master_data.headline: Stammdaten
+nav.master_data.submenu.headline1: Artikel
+nav.master_data.submenu.headline1.entry1: Übersicht Artikel
+nav.master_data.submenu.headline2: Kunden
+nav.master_data.submenu.headline2.entry1: Übersicht Kunden
+nav.master_data.submenu.headline3: Lieferanten
+nav.master_data.submenu.headline3.entry1: Übersicht Lieferanten
+nav.master_data.submenu.headline4: Lager
+nav.master_data.submenu.headline4.entry1: Übersicht Lagerplätze
+nav.master_data.submenu.headline4.entry2: Übersicht Lagerlayout
+nav.master_data.submenu.headline4.entry3: Übersicht Lagerzonen
+nav.master_data.submenu.headline4.entry4: Übersicht Ladehilfsmittel
+nav.evaluations.headline: Auswertungen
+nav.evaluations.submenu.headline1: Lagerbewegungen
+nav.evaluations.submenu.headline2: Lagerbelegung
+nav.evaluations.submenu.headline3: Grafische Lagerbelegung
+nav.evaluations.submenu.headline4: Lagergeld berechnen
+nav.evaluations.submenu.headline5: Dashboard
+nav.evaluations.submenu.headline6: Logs
+nav.inventory.headline: Inventur
+nav.inventory.submenu.headline1: Inventur starten
+nav.inventory.submenu.headline2: Inventur buchen
+nav.inventory.submenu.headline3: Inventur abschließen
+nav.settings.headline: Einstellungen
+nav.settings.submenu.headline1: Übersicht Einstellungen
+nav.settings.submenu.headline2: Benutzerverwaltung
+nav.settings.submenu.headline2.entry1: Übersicht Benutzer
+nav.settings.submenu.headline2.entry2: Benutzergruppen
+nav.settings.submenu.headline2.entry3: Benutzerrollen
+nav.settings.submenu.headline2.entry4: Benutzerrechte
+nav.help.headline1: Dokumentation
+nav.help.headline2: Über webWMS
+nav.help.headline3: API Dokumentation
 

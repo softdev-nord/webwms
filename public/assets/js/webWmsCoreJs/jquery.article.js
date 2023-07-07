@@ -4,6 +4,7 @@
         lengthChange: false,
         paging: false,
         retrieve: true,
+        ordering: false,
 
         ajax: {
             url: '/article_ajax',
@@ -85,7 +86,7 @@
         ],
     });
 
-    $.contextMenu({
+/*    $.contextMenu({
         selector: 'tr',
         trigger: 'right',
         callback: function(key, options, event) {
@@ -113,7 +114,7 @@
                 icon: 'delete'
             },
         }
-    });
+    });*/
 
     $(function(){
         // Ändern der Standardbreite des Modals
