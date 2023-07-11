@@ -382,8 +382,5 @@
     },
     "twig/extra-bundle": {
         "version": "v3.5.0"
-    },
-    "webbamboo/material-dashboard-symfony": {
-        "version": "1.0.11"
     }
 }
