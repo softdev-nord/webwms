@@ -19,7 +19,7 @@
             {{ include('subsections/head-js.html.twig') }}
         {% endblock %}
     </head>
-    {% block body %}
+    <body>
         <div id="layout-wrapper">
             {% block webwms_header_navigation %}
                 {{ include('subsections/menu.html.twig') }}
@@ -92,5 +92,5 @@
 
         <!-- App js -->
         <script src="{{ asset('assets/js/app.js') }}"></script>
-    {% endblock %}
+    </body>
 </html>

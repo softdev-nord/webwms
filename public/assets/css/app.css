@@ -70,7 +70,7 @@
     --webwms-heading-color: #495057;
     --webwms-link-color: #25a0e2;
     --webwms-link-hover-color: #25a0e2;
-    --webwms-border-color: #e9ebec;
+    --webwms-border-color: #475158;
     --webwms-card-bg-custom: #fff;
     --webwms-card-logo-dark: block;
     --webwms-card-logo-light: none;
@@ -288,7 +288,6 @@
     background-color: var(--webwms-header-bg);
     -webkit-transition: all 0.1s ease-out;
     transition: all 0.1s ease-out;
-    border: 1px solid var(--webwms-border-color);
 }
 #page-topbar.topbar-shadow {
     -webkit-box-shadow: 0 1px 2px rgba(56, 65, 74, 0.15);
