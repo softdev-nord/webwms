@@ -1,50 +1,9 @@
-/*
-Template Name: Minia - Admin & Dashboard Template
-Author: Themesbrand
-Version: 1.4.0.
-Website: https://themesbrand.com/
-Contact: themesbrand@gmail.com
-File: Main Css File
-*/
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap");
 body[data-layout-mode="dark"] {
   background-color: #313533;
   color: #ced4da; }
   body[data-layout-mode="dark"] .h1, body[data-layout-mode="dark"] .h2, body[data-layout-mode="dark"] .h3, body[data-layout-mode="dark"] .h4, body[data-layout-mode="dark"] .h5, body[data-layout-mode="dark"] .h6,
   body[data-layout-mode="dark"] h1, body[data-layout-mode="dark"] h2, body[data-layout-mode="dark"] h3, body[data-layout-mode="dark"] h4, body[data-layout-mode="dark"] h5, body[data-layout-mode="dark"] h6 {
     color: #ced4da; }
-
-#page-topbar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 1002;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e9e9ef; }
-
-.navbar-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: justify;
-  -webkit-box-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  margin: 0 auto;
-  padding: 0 20px 0 0; }
-  .navbar-header .dropdown .show.header-item {
-    background-color: #f8f9fa; }
-
-.navbar-brand-box {
-  padding: 0 1.5rem;
-  width: 250px;
-  background: #fbfaff;
-  border-right: 1px solid #e9e9ef;
-  -webkit-box-shadow: 0px 2px 2px #fbfaff;
-          box-shadow: 0px 2px 2px #fbfaff; }
 
 .logo {
   line-height: 69px;
@@ -109,9 +68,6 @@ body[data-layout-mode="dark"] .layout-mode-light {
     display: none; }
   .logo span.logo-sm {
     display: inline-block; } }
-
-.page-content {
-  padding: 15px 0; }
 
 .header-item {
   height: 70px;
@@ -5406,7 +5362,7 @@ ab-box .nav-link.active {
   align-items: center;
   justify-content: center;
   height: 100px;
-  width: 115px;
+  width: inherit;
   margin: 0 10px;
   font-weight: bold;
   font-size: 32px;

@@ -67,10 +67,10 @@ class BookingMethodService
             'stock_transfer_to_cost_centre' => $this->stockTransferToCostCentre(), // ST182 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste)
             'stock_out_to_dispatch_area' => $this->stockOutToDispatchArea(), // SO187 Auftrag auslagern in WA-Zone
             'stock_out_customer_order_consolidation_to_cost_centre' => $this->stockOutOrderConsolidationToCostCentre(), // SO188 Sammelkommissionierung auf Kostenstelle
-            'stock_transfer_between' => $this->stockTransferBetween(), // ST201 Umlagern
+            'stock_transfer_between_stock_locations' => $this->stockTransferBetween(), // ST201 Umlagern
             'stock_correction' => $this->stockCorrection(), // ST203 Bestandskorrektur
             'stock_transfer_from_receiving_area_to_stock' => $this->stockTransferFromReceivingAreaToStock(), // ST207 Umlagerung aus WE-Zone ins LV-Lager (aus Artikelbelegung)
-            'stockTransferFromStockToDispatchArea' => $this->stockTransferFromStockToDispatchArea(), // ST208 Umlagerung aus LV-Lager in WA-Zone (aus Artikelbelegung)
+            'stock_transfer_from_stock_to_dispatch_area' => $this->stockTransferFromStockToDispatchArea(), // ST208 Umlagerung aus LV-Lager in WA-Zone (aus Artikelbelegung)
             default => throw new EntityNotFoundException('Buchungsmethode ' . $bookingMethod . ' wurde nicht gefunden!'),
         };
     }
@@ -417,33 +417,33 @@ class BookingMethodService
         return null;
     }
 
-// 209,  'move between cost centres'                bfid_uml_kst_kst    209   // umlagern von kst nach kst
-// 210,  'move between stock units'                 bfid_uml_con_con    210   // umlagern container -> container
-// 211,  'move storage to stock units'              bfid_uml_lv_con     211   // umlagern lv-lager -> container
-// 212,  'move stock unit to storage'               bfid_uml_con_lv     212   // umlagern container -> lv-lager
-// 213,  'transfer with complete tools'             bfid_uml_lv_set     213   // umlagern in komplettwerkzeug
-// 214,  'transfer from complete tools'             bfid_uml_set_lv     214   // umlagern aus komplettwerkzeug
-// 215,  'inventory'                                bfid_kor_inv        215   // inventurbuchung, falls mengenkorrektur
-//                                                                            // einen lpbestand < 0 ergibt
-//                                                  bfid_uml_lv_kst     216   // umlagerung aus lv-lager in kst
-// 217,  'transfer with balance'                    bfid_uml_waage      217   // umlagern direkt mit waage
-// 218,  'transfer su to dispatch area'             bfid_uml_con_wa     218   // umlagern container -> wa-zone
-// 219,  'transfer dispatch area to su'             bfid_uml_wa_con     219   // umlagern wa-zone -> container
-// 220,  'transfer dispatch area to su'             bfid_kor_vlm        220   // korrektur abbuchung der vorlaufmenge
-// 221,  'transfer cc + su to storage'              bfid_uml_kst_con_lv 221   // lagereinheiten vom kst nach container umlagern und
-//                                                                            // container vom kst nach lv umlagern
-// 222,  'receivings to dispatch 222'               bfid_uml_we_wa      222   // umlagern vom we-zone nach wa-zone
-// 223,  'receivings to dispatch 223'               bfid_uml_we_wa_fol  223   // umlagern vom we-zone nach wa-zone als follower
-//
-// 351,  'quality control tools'                    bfid_iwe            351   // istwertaufnahme (einzelteil-pruefung)
-// 361,  'spontaneous picking'                      bfid_artnr_abruf    361   // artikelnummerabruf am paternoster
-// 365,  'scan to : move carousels'                 bfid_scan_ta_zone   365   // scannen von ta-nummer und zone
-//                                                                            // -> anfahren der paternoster
-// 366                                              bfid_scan_tanr      366   // scannen von ta-nummer
-//
-// 401,  'inventory booking', 32);                  bfid_inventur_sng   401   // einzelne inventurbuchung (stichtag inventur)
-// 402,  'inventory with to', 32);                  bfid_inventur_fahr  402   // inventur über fahrbefehl (permanente inventur)
-// 403,  'inventory for host', 32);                 bfid_inventur_host  403   // host inventur (nur 1 eintrag in historie pro artikel)
-//
-// 501,  'printing client dep. labels'              bfid_versand_eti    501   // druck von versand-etiketten
+    // 209,  'move between cost centres'                bfid_uml_kst_kst    209   // umlagern von kst nach kst
+    // 210,  'move between stock units'                 bfid_uml_con_con    210   // umlagern container -> container
+    // 211,  'move storage to stock units'              bfid_uml_lv_con     211   // umlagern lv-lager -> container
+    // 212,  'move stock unit to storage'               bfid_uml_con_lv     212   // umlagern container -> lv-lager
+    // 213,  'transfer with complete tools'             bfid_uml_lv_set     213   // umlagern in komplettwerkzeug
+    // 214,  'transfer from complete tools'             bfid_uml_set_lv     214   // umlagern aus komplettwerkzeug
+    // 215,  'inventory'                                bfid_kor_inv        215   // inventurbuchung, falls mengenkorrektur
+    //                                                                            // einen lpbestand < 0 ergibt
+    //                                                  bfid_uml_lv_kst     216   // umlagerung aus lv-lager in kst
+    // 217,  'transfer with balance'                    bfid_uml_waage      217   // umlagern direkt mit waage
+    // 218,  'transfer su to dispatch area'             bfid_uml_con_wa     218   // umlagern container -> wa-zone
+    // 219,  'transfer dispatch area to su'             bfid_uml_wa_con     219   // umlagern wa-zone -> container
+    // 220,  'transfer dispatch area to su'             bfid_kor_vlm        220   // korrektur abbuchung der vorlaufmenge
+    // 221,  'transfer cc + su to storage'              bfid_uml_kst_con_lv 221   // lagereinheiten vom kst nach container umlagern und
+    //                                                                            // container vom kst nach lv umlagern
+    // 222,  'receivings to dispatch 222'               bfid_uml_we_wa      222   // umlagern vom we-zone nach wa-zone
+    // 223,  'receivings to dispatch 223'               bfid_uml_we_wa_fol  223   // umlagern vom we-zone nach wa-zone als follower
+    //
+    // 351,  'quality control tools'                    bfid_iwe            351   // istwertaufnahme (einzelteil-pruefung)
+    // 361,  'spontaneous picking'                      bfid_artnr_abruf    361   // artikelnummerabruf am paternoster
+    // 365,  'scan to : move carousels'                 bfid_scan_ta_zone   365   // scannen von ta-nummer und zone
+    //                                                                            // -> anfahren der paternoster
+    // 366                                              bfid_scan_tanr      366   // scannen von ta-nummer
+    //
+    // 401,  'inventory booking', 32);                  bfid_inventur_sng   401   // einzelne inventurbuchung (stichtag inventur)
+    // 402,  'inventory with to', 32);                  bfid_inventur_fahr  402   // inventur über fahrbefehl (permanente inventur)
+    // 403,  'inventory for host', 32);                 bfid_inventur_host  403   // host inventur (nur 1 eintrag in historie pro artikel)
+    //
+    // 501,  'printing client dep. labels'              bfid_versand_eti    501   // druck von versand-etiketten
 }

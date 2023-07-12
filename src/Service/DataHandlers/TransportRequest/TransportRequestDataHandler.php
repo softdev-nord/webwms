@@ -133,50 +133,50 @@ class TransportRequestDataHandler
     }
 
     //    public function moveTransportRequestToTransportHistory(Request $request): void
-//    {
-//        $requestData = $request->request->all();
-//        $trNr = (string) $requestData['tr_nr'];
-//        $transportRequestEntry = $this->entityManager
-//            ->getRepository(TransportRequest::class)
-//            ->findOneBy(['tr_nr' => $trNr]);
-//
-//        $transportHistoryObject = new TransportHistory();
-//        $transportHistoryEntry = $this->setData($transportHistoryObject, $request);
-//
-//        $this->entityManager->persist($transportHistoryEntry);
-//        $this->entityManager->remove($transportRequestEntry);
-//        $this->entityManager->flush();
-//    }
+    //    {
+    //        $requestData = $request->request->all();
+    //        $trNr = (string) $requestData['tr_nr'];
+    //        $transportRequestEntry = $this->entityManager
+    //            ->getRepository(TransportRequest::class)
+    //            ->findOneBy(['tr_nr' => $trNr]);
+    //
+    //        $transportHistoryObject = new TransportHistory();
+    //        $transportHistoryEntry = $this->setData($transportHistoryObject, $request);
+    //
+    //        $this->entityManager->persist($transportHistoryEntry);
+    //        $this->entityManager->remove($transportRequestEntry);
+    //        $this->entityManager->flush();
+    //    }
 
-//    /**
-//     * @param TransportRequest|TransportHistory $object
-//     * @param Request $request
-//     * @return TransportRequest|TransportHistory
-//     */
-//    public function setData(TransportRequest|TransportHistory $object, Request $request): TransportRequest|TransportHistory
-//    {
-//        $requestData = $request->request->all();
-//
-//        $object->setSuId((int) $requestData['suId']);
-//        $object->setTrNr((int) $requestData['trNr']);
-//        $object->setTrPos((int) $requestData['trPos']);
-//        $object->setTrPrio((int) $requestData['trPrio']);
-//        $object->setArtNr((string) $requestData['articleNr']);
-//        $object->setTrQuantity((int) $requestData['trQuantity']);
-//        $object->setStockCoordinate((string) $requestData['stockCoordinate']);
-//        $object->setStockNr((int) $requestData['stockCoordinate']);
-//        $object->setStockLevel1((int) $requestData['stockLevel1']);
-//        $object->setStockLevel2((int) $requestData['stockLevel2']);
-//        $object->setStockLevel3((int) $requestData['stockLevel3']);
-//        $object->setStockLevel4((int) $requestData['stockLevel4']);
-//        $object->setTrAccess($requestData['trAccess']);
-//        $object->setTrState((int) $requestData['trState']);
-//        $object->setOrderUsername((string) $requestData['orderUsername']);
-//        $object->setBookingMethod($requestData['bookingMethod']);
-//        $object->setCharge($requestData['charge']);
-//        $object->setLoadingEquipment($requestData['loadingEquipment']);
-//        $object->setTrType((int) $requestData['trType']);
-//
-//        return $object;
-//    }
+    //    /**
+    //     * @param TransportRequest|TransportHistory $object
+    //     * @param Request $request
+    //     * @return TransportRequest|TransportHistory
+    //     */
+    //    public function setData(TransportRequest|TransportHistory $object, Request $request): TransportRequest|TransportHistory
+    //    {
+    //        $requestData = $request->request->all();
+    //
+    //        $object->setSuId((int) $requestData['suId']);
+    //        $object->setTrNr((int) $requestData['trNr']);
+    //        $object->setTrPos((int) $requestData['trPos']);
+    //        $object->setTrPrio((int) $requestData['trPrio']);
+    //        $object->setArtNr((string) $requestData['articleNr']);
+    //        $object->setTrQuantity((int) $requestData['trQuantity']);
+    //        $object->setStockCoordinate((string) $requestData['stockCoordinate']);
+    //        $object->setStockNr((int) $requestData['stockCoordinate']);
+    //        $object->setStockLevel1((int) $requestData['stockLevel1']);
+    //        $object->setStockLevel2((int) $requestData['stockLevel2']);
+    //        $object->setStockLevel3((int) $requestData['stockLevel3']);
+    //        $object->setStockLevel4((int) $requestData['stockLevel4']);
+    //        $object->setTrAccess($requestData['trAccess']);
+    //        $object->setTrState((int) $requestData['trState']);
+    //        $object->setOrderUsername((string) $requestData['orderUsername']);
+    //        $object->setBookingMethod($requestData['bookingMethod']);
+    //        $object->setCharge($requestData['charge']);
+    //        $object->setLoadingEquipment($requestData['loadingEquipment']);
+    //        $object->setTrType((int) $requestData['trType']);
+    //
+    //        return $object;
+    //    }
 }

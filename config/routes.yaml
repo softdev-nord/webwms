@@ -18,6 +18,14 @@ stock_inventory_start:
     path: /inventur_starten
     controller: WebWMS\Bundles\StockInventoryBundle\Controller\DefaultController::index
 
+stock_inventory_post:
+    path: /inventur_starten
+    controller: WebWMS\Bundles\StockInventoryBundle\Controller\DefaultController::index
+
+stock_inventory_close:
+    path: /inventur_starten
+    controller: WebWMS\Bundles\StockInventoryBundle\Controller\DefaultController::index
+
 stock_in_final:
     path: /stock_in_final
     controller: WebWMS\Controller\StockTransactions::stockInFinal

@@ -61,8 +61,7 @@
         "symfony/webpack-encore-bundle": "^1.17",
         "symfony/yaml": "6.3.*",
         "twig/extra-bundle": "^3.6",
-        "twig/twig": "^3.6",
-        "webbamboo/material-dashboard-symfony": "^1.0"
+        "twig/twig": "^3.6"
     },
     "config": {
         "allow-plugins": {

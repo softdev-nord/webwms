@@ -6,6 +6,7 @@ namespace WebWMS\Controller;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,7 +44,6 @@ class StockOccupancy extends AbstractController
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
                 'page' => 'Lagerbelegungen',
-                'stockOccupancy' => $this->getAllStockOccupancy(),
             ]
         );
     }
@@ -60,10 +60,10 @@ class StockOccupancy extends AbstractController
 
     /**
      * @throws Exception
-     * @return array<int, array<string, mixed>>
+     * @return JsonResponse
      */
     #[Route('/stock_occupancy_ajax', name: 'stock_occupancy_ajax')]
-    public function getAllStockOccupancy(): array
+    public function getAllStockOccupancy(): JsonResponse
     {
         return $this->stockOccupancyService->getAllStockOccupancy();
     }
@@ -104,7 +104,7 @@ class StockOccupancy extends AbstractController
             $stockLocationLn = $request->attributes->getInt('stock_location_ln');
         } else {
             $selectedStockLocations = $this->stockLocationService->getAllStockLocationsForSelect();
-            $stockLocationLn = $selectedStockLocations[0]['stock_location_ln'];
+            $stockLocationLn = $selectedStockLocations[0]['stockLocationLn'];
         }
 
         $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationLn);

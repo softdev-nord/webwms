@@ -1,9 +1,8 @@
 {# templates/homepage/index.html.twig #}
 
-{% block body %}
-    {% block webwms_header %}
-        {{ include('header.html.twig') }}
-    {% endblock %}
+{% extends 'base.html.twig' %}
+
+{% block webwms_content %}
     <!-- Beginn Seite -->
     <div class="text-center">
         <div class="container-fluid">

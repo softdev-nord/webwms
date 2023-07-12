@@ -2,48 +2,48 @@
 
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% block webwms_header %}
-        {{ include('header.html.twig') }}
-    {% endblock %}
-
-    {% block webwms_content %}
-        {% block webwms_stock_occupancies_overview %}
-            <div id="webWMS-stock-occupancies-overview" class="wrapper-form vertical-theme">
-                <div class="wrapper-form-content vertical-theme">
-                    <div class="webwms-page">{{ page }}</div>
-                    {% block webwms_stock_occupancies_overview_table %}
+{% block webwms_content %}
+    {% block webwms_stock_occupancies_overview %}
+        <div id="webWMS-stock-occupancies-overview" class="wrapper-form vertical-theme">
+            <div class="wrapper-form-content vertical-theme">
+                <div class="row">
+                    <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-content">
-                                <table id="stockOccupancyTable" class="table table-striped table-bordered table-hover compact">
-                                    <thead>
-                                    <tr>
-                                        <th style="text-align: center" scope="col">Koordinate</th>
-                                        <th style="text-align: center" scope="col">LagerNr</th>
-                                        <th style="text-align: center" scope="col">FB</th>
-                                        <th style="text-align: center" scope="col">SP</th>
-                                        <th style="text-align: center" scope="col">TF</th>
-                                        <th style="text-align: center" scope="col">Lagereinheit</th>
-                                        <th style="text-align: center" scope="col">Artikel-Nr</th>
-                                        <th style="text-align: center" scope="col">Bezeichnung</th>
-                                        <th style="text-align: center" scope="col">Zugang</th>
-                                        <th style="text-align: center" scope="col">Abgang</th>
-                                        <th style="text-align: center" scope="col">LP Bestand</th>
-                                        <th style="text-align: center" scope="col">Letzter Zugang</th>
-                                        <th style="text-align: center" scope="col">Letzter Abgang</th>
-                                    </tr>
-                                    </thead>
-                                </table>
+                            <div class="card-body">
+                                {% block webwms_stock_occupancies_overview_table %}
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <table id="stockOccupancyTable" class="table table-striped table-bordered table-hover compact">
+                                                <thead>
+                                                <tr>
+                                                    <th style="text-align: center" scope="col">Koordinate</th>
+                                                    <th style="text-align: center" scope="col">LagerNr</th>
+                                                    <th style="text-align: center" scope="col">FB</th>
+                                                    <th style="text-align: center" scope="col">SP</th>
+                                                    <th style="text-align: center" scope="col">TF</th>
+                                                    <th style="text-align: center" scope="col">Lagereinheit</th>
+                                                    <th style="text-align: center" scope="col">Artikel-Nr</th>
+                                                    <th style="text-align: center" scope="col">Bezeichnung</th>
+                                                    <th style="text-align: center" scope="col">Zugang</th>
+                                                    <th style="text-align: center" scope="col">Abgang</th>
+                                                    <th style="text-align: center" scope="col">LP Bestand</th>
+                                                    <th style="text-align: center" scope="col">Letzter Zugang</th>
+                                                    <th style="text-align: center" scope="col">Letzter Abgang</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                {% endblock %}
                             </div>
                         </div>
-                    {% endblock %}
+                    </div>
                 </div>
             </div>
-        {% endblock %}
+        </div>
     {% endblock %}
+{% endblock %}
 
-    {% block bodyjs %}
-        <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockOccupancy.js') }}"></script>
-    {% endblock %}
-
+{% block bodyjs %}
+    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockOccupancy.js') }}"></script>
 {% endblock %}

@@ -6,6 +6,7 @@ namespace WebWMS\Service\DataHandlers\Stock;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\StockOccupancy;
 
 /**
@@ -137,9 +138,9 @@ class StockOccupancyDataHandler
 
     /**
      * @throws Exception
-     * @return array<int, array<string, mixed>>
+     * @return JsonResponse
      */
-    public function getAllStockOccupancy(): array
+    public function getAllStockOccupancy(): JsonResponse
     {
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
 
@@ -165,6 +166,6 @@ class StockOccupancyDataHandler
 
         $stmt = $queryBuilder->executeQuery();
 
-        return $stmt->fetchAllAssociative();
+        return new JsonResponse($stmt->fetchAllAssociative());
     }
 }

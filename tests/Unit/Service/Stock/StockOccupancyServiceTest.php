@@ -6,6 +6,7 @@ namespace WebWMS\Tests\Unit\Service\Stock;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Service\DataHandlers\Stock\StockOccupancyDataHandler;
 use WebWMS\Service\Stock\StockOccupancyService;
@@ -32,7 +33,7 @@ final class StockOccupancyServiceTest extends TestCase
 
     public function testGetAllStockOccupancy(): void
     {
-        $expectedResult = [['id' => 1], ['id' => 2]];
+        $expectedResult = new JsonResponse([['id' => 1], ['id' => 2]]);
 
         $this->stockOccupancyDataHandler
             ->expects(self::once())
@@ -49,11 +50,14 @@ final class StockOccupancyServiceTest extends TestCase
         $stockLocationCoordinate = 'ABC';
         $request = new Request([], [], ['stock_location_coordinate' => $stockLocationCoordinate], [], [], []);
 
-        $stockOccupancies = [
-            ['id' => 1, 'koordinate' => 'XYZ'],
-            ['id' => 2, 'koordinate' => 'ABC'],
-            ['id' => 3, 'koordinate' => 'ABC'],
-        ];
+        $stockOccupancies = new JsonResponse(
+            [
+                ['id' => 1, 'koordinate' => 'XYZ'],
+                ['id' => 2, 'koordinate' => 'ABC'],
+                ['id' => 3, 'koordinate' => 'ABC'],
+            ]
+        );
+
         $expectedResult = [
             ['id' => 2, 'koordinate' => 'ABC'],
             ['id' => 3, 'koordinate' => 'ABC'],

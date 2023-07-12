@@ -35,15 +35,15 @@ class UserRoleDataHandler
         $this->entityManager->flush();
     }
 
-     /**
-      * @return array<int, UserRole>
-      */
-     public function getAllUserRoles(): array
-     {
-         return $this->entityManager
-             ->getRepository(UserRole::class)
-             ->findAll();
-     }
+    /**
+     * @return array<int, UserRole>
+     */
+    public function getAllUserRoles(): array
+    {
+        return $this->entityManager
+            ->getRepository(UserRole::class)
+            ->findAll();
+    }
 
     public function getUserRoleById(int $userRoleId): ?UserRole
     {

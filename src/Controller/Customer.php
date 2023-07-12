@@ -199,7 +199,7 @@ class Customer extends AbstractController
         return $this->customerService->getAllCustomersAjax($customerNrInput);
     }
 
-    public function getLastCustomer(): \WebWMS\Entity\Customer
+    public function getLastCustomer(): CustomerEntity
     {
         return $this->customerService->getLastCustomer();
     }

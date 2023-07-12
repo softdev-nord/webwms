@@ -86,7 +86,7 @@ $(function() {
         ]
     });
 
-    $.contextMenu({
+/*    $.contextMenu({
         selector: 'tr',
         trigger: 'right',
         callback: function(key, options, event) {
@@ -114,7 +114,7 @@ $(function() {
                 icon: 'delete'
             },
         }
-    });
+    });*/
 
     $(function(){
         // Ändern der Standardbreite des Modals

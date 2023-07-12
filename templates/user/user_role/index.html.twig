@@ -2,73 +2,72 @@
 
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% block webwms_header %}
-        {{ include('header.html.twig') }}
-    {% endblock %}
-
-    {% block webwms_content %}
-        {% block webwms_user_role_overview %}
-            <div id="webWMS-user-role-overview" class="wrapper-form vertical-theme">
-                <div class="wrapper-form-content vertical-theme">
-                    <div class="webwms-page">{{ page }}</div>
-                    <div class="card">
-                        <div class="card-content">
-                            <table class="table table-striped table-bordered table-hover compact">
-                                <thead style="text-align: center">
-                                    <tr>
-                                        <th>Id</th>
-                                        <th style="width: 20%">Benutzerrolle</th>
-                                        <th style="width: 20%">Beschreibung</th>
-                                        <th>Rechte</th>
-                                        <th>Erstellt am</th>
-                                        <th>Bearbeitet am</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% for user_role in user_roles %}
-                                    <tr>
-                                        <td>{{user_role.id}}</td>
-                                        <td>{{user_role.userRole}}</td>
-                                        <td>{{user_role.description}}</td>
-                                        <td style="display: flex">
-                                            {% for user_right in user_rights %}
-                                                <table class="table compact" style="background: none">
+{% block webwms_content %}
+    {% block webwms_user_role_overview %}
+        <div id="webWMS-user-role-overview" class="wrapper-form vertical-theme">
+            <div class="wrapper-form-content vertical-theme">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                {% block webwms_user_overview_table_user_role %}
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <table class="table table-striped table-bordered table-hover compact">
+                                                <thead style="text-align: center">
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th style="width: 20%">Benutzerrolle</th>
+                                                    <th style="width: 20%">Beschreibung</th>
+                                                    <th>Rechte</th>
+                                                    <th>Erstellt am</th>
+                                                    <th>Bearbeitet am</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for user_role in user_roles %}
                                                     <tr>
-                                                        <th style="text-align: center">{{user_right.description}}</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            {% if user_right.id in user_role.userRights %}
-                                                                <div class="form-check">
-                                                                    <input class="checkbox" type="checkbox" value="" id="userRight_{{user_right.userRight}}" readonly="readonly" checked>
-                                                                </div>
-                                                            {% else %}
-                                                                <div class="form-check" style="">
-                                                                    <input class="checkbox" type="checkbox" value="" id="userRight_{{user_right.userRight}}"  readonly="readonly">
-                                                                </div>
-                                                            {% endif %}
+                                                        <td>{{user_role.id}}</td>
+                                                        <td>{{user_role.userRole}}</td>
+                                                        <td>{{user_role.description}}</td>
+                                                        <td style="display: flex">
+                                                            {% for user_right in user_rights %}
+                                                                <table class="table compact" style="background: none">
+                                                                    <tr>
+                                                                        <th style="text-align: center">{{user_right.description}}</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            {% if user_right.id in user_role.userRights %}
+                                                                                <div class="form-check">
+                                                                                    <input class="checkbox" type="checkbox" value="" id="userRight_{{user_right.userRight}}" readonly="readonly" checked>
+                                                                                </div>
+                                                                            {% else %}
+                                                                                <div class="form-check" style="">
+                                                                                    <input class="checkbox" type="checkbox" value="" id="userRight_{{user_right.userRight}}"  readonly="readonly">
+                                                                                </div>
+                                                                            {% endif %}
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            {% endfor %}
                                                         </td>
+                                                        <td style="text-align: center">{{user_role.createdAt|date('d.m.Y H:i:s')}}</td>
+                                                        <td style="text-align: center">{{user_role.updatedAt|date('d.m.Y H:i:s')}}</td>
                                                     </tr>
-                                                </table>
-                                            {% endfor %}
-                                        </td>
-                                        <td style="text-align: center">{{user_role.createdAt|date('d.m.Y H:i:s')}}</td>
-                                        <td style="text-align: center">{{user_role.updatedAt|date('d.m.Y H:i:s')}}</td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-
-                            </table>
-
-
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                {% endblock %}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% endblock %}
+        </div>
     {% endblock %}
-
-    {% block bodyjs %}{% endblock %}
-
 {% endblock %}
+
+{% block bodyjs %}{% endblock %}
