@@ -35,8 +35,6 @@ class StockOccupancy extends AbstractController
     #[Route('/lagerbelegung', name: 'stock_occupancy')]
     public function index(): Response
     {
-        // dd($this->getAllStockOccupancy());
-
         return $this->render(
             'stock/stock_occupancy.html.twig',
             [
@@ -106,7 +104,7 @@ class StockOccupancy extends AbstractController
             $stockLocationLn = $request->attributes->getInt('stock_location_ln');
         } else {
             $selectedStockLocations = $this->stockLocationService->getAllStockLocationsForSelect();
-            $stockLocationLn = $selectedStockLocations[0]['stock_location_ln'];
+            $stockLocationLn = $selectedStockLocations[0]['stockLocationLn'];
         }
 
         $allStockOccupancy = $this->stockOccupancyService->getAllStockOccupancyByLn($stockLocationLn);
