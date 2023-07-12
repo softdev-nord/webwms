@@ -1,5 +1,4 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
 /*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -12778,8 +12777,7 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
-}able !important;
-  }
+}
   .d-print-table-row {
     display: table-row !important;
   }
