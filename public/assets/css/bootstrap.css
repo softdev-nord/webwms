@@ -3814,7 +3814,7 @@ textarea.form-control-lg {
   --webwms-dropdown-color: #e9ebec;
   --webwms-dropdown-bg: #343a40;
   --webwms-dropdown-border-color: var(--webwms-border-color);
-  --webwms-dropdown-box-shadow: ;
+  --webwms-dropdown-box-shadow: none;
   --webwms-dropdown-link-color: #e9ebec;
   --webwms-dropdown-link-hover-color: #fff;
   --webwms-dropdown-divider-bg: var(--webwms-border-color);
