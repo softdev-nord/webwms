@@ -1,0 +1,23 @@
+{# templates/configuration/tabs/user.html.twig #}
+
+{% block webwms_configuration_overview_user_content %}
+    <div class="tab-pane form-box" id="user_settings" role="tabpanel">
+        <form action="" method="post">
+            <fieldset class="form-group border p-3">
+                <legend class="w-auto px-2 float-none">
+                    <span class="mdi mdi-minus-box-outline"
+                          data-toggle="collapse"
+                          href="#user_settings"
+                          aria-expanded="true"
+                          aria-controls="user_settings">
+                    </span>Benutzereinstellungen
+                </legend>
+                <div id="user_settings_panel" class="panel-collapse collapse show" role="tabpanel">
+                    <div class="panel-body">
+                        Hier wird der Content für die Benutzereinstellungen platziert.
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

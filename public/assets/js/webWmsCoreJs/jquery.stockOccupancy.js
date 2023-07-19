@@ -38,36 +38,44 @@ $(function() {
             },
         ],
         dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'copyHtml5',
-                text: 'Kopieren',
-                title: 'Export',
-                titleAttr: 'Copy'
-            },
-            {
-                extend: 'excelHtml5',
-                text: 'Excel',
-                title: 'Export',
-                titleAttr: 'Excel'
-            },
-            {
-                extend: 'csvHtml5',
-                text: 'CSV',
-                title: 'Export',
-                titleAttr: 'CSV'
-            },
-            {
-                extend: 'pdfHtml5',
-                text: 'PDF',
-                title: 'Export',
-                titleAttr: 'PDF'
-            },
-            {
-                extend: 'print',
-                text: 'Drucken',
-                autoPrint: false
+        buttons: {
+            buttons: [
+                {
+                    extend:    'copyHtml5',
+                    text:      'Kopieren',
+                    title:     'Export',
+                    titleAttr: 'Copy',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend:    'csvHtml5',
+                    text:      'CSV',
+                    title:     'Export',
+                    titleAttr: 'CSV',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend:    'pdfHtml5',
+                    text:      'PDF',
+                    title:     'Export',
+                    titleAttr: 'PDF',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend: 'print',
+                    text: 'Drucken',
+                    autoPrint: false,
+                    className: 'btn-primary btn-xs btn3d'
+                }
+            ],
+            dom: {
+                button: {
+                    className: 'btn'
+                },
+                buttonLiner: {
+                    tag: null
+                }
             }
-        ]
+        }
     });
 });

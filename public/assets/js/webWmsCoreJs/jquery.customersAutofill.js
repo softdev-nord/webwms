@@ -2,31 +2,31 @@ const jqueryCustomersAutofill = (function () {
     function getNumOfBoxCustomer(type) {
         let numOfBoxCustomer;
         switch (type) {
-            case 'customer_nr':
+            case 'customerNr':
                 numOfBoxCustomer = 0;
                 break;
-            case 'customer_name':
+            case 'customerName':
                 numOfBoxCustomer = 1;
                 break;
-            case 'customer_address_addition':
+            case 'customerAddressAddition':
                 numOfBoxCustomer = 2;
                 break;
-            case 'customer_address_street':
+            case 'customerAddressStreet':
                 numOfBoxCustomer = 3;
                 break;
-            case 'customer_address_street_nr':
+            case 'customerAddressStreetNr':
                 numOfBoxCustomer = 4;
                 break;
-            case 'customer_country_code':
+            case 'customerCountryCode':
                 numOfBoxCustomer = 5;
                 break;
-            case 'customer_zip_code':
+            case 'customerZipCode':
                 numOfBoxCustomer = 6;
                 break;
-            case 'customer_city':
+            case 'customerCity':
                 numOfBoxCustomer = 7;
                 break;
-            case 'customer_id':
+            case 'customerId':
                 numOfBoxCustomer = 8;
                 break;
             default:
@@ -36,7 +36,7 @@ const jqueryCustomersAutofill = (function () {
     }
 
     // Handling der eingegebenen Daten
-    function autocompleteHandleKd() {
+    function autocompleteHandleCustomer() {
         let type, numOfBoxCustomer;
         type = $(this).data('type');
         numOfBoxCustomer = getNumOfBoxCustomer(type);
@@ -98,14 +98,14 @@ const jqueryCustomersAutofill = (function () {
     }
 
     // Funktion Events registrieren
-    function registerEventKd() {
+    function registerEventCustomer() {
         //Registrierung der Autocomplete events
-        $(document).on('focus', '.autocomplete_customers', autocompleteHandleKd);
+        $(document).on('focus', '.autocomplete_customers', autocompleteHandleCustomer);
     }
 
     // Events iniziieren
     function init() {
-        registerEventKd();
+        registerEventCustomer();
     }
 
     return {

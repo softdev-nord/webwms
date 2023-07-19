@@ -48,11 +48,21 @@ class ConfigurationDataHandler
      */
     public function getAllConfigurations(): array
     {
-        $configurations = [];
-        $configurations['configuration'] = $this->entityManager
-            ->getRepository(Configuration::class)
-            ->findAll();
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
 
-        return $configurations;
+        $queryBuilder
+            ->select('*')
+            ->from('configuration');
+
+        $stmt = $queryBuilder->executeQuery();
+        return $stmt->fetchAllAssociative();
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getServerVersion(): array
+    {
+        return $this->entityManager->getConnection()->getParams();
     }
 }

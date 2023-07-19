@@ -17,7 +17,7 @@
                                             required="required"
                                             placeholder="Über Lieferanten-Nr suchen"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
-                                            data-type="supplier_nr"
+                                            data-type="supplierNr"
                                             style="background-color:
                                             transparent" autocomplete="off"
                                             value="{% if editSupplierOrder %}{{ supplierData.supplierNr }}{% endif %}"
@@ -40,7 +40,7 @@
                                             required="required"
                                             placeholder="Lieferanten Name"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
-                                            data-type="supplier_name"
+                                            data-type="supplierName"
                                             autocomplete="off"
                                             value="{% if editSupplierOrder %}{{ supplierData.supplierName }}{% endif %}"
                                     >
@@ -52,7 +52,7 @@
                                             name="supplier[supplierAddressAddition]"
                                             placeholder="Anschrift Zusatz"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
-                                            data-type="supplier_address_addition"
+                                            data-type="supplierAddressAddition"
                                             autocomplete="off"
                                             value="{% if editSupplierOrder %}{{ supplierData.supplierAddressAddition }}{% endif %}"
                                     >
@@ -65,7 +65,7 @@
                                             required="required"
                                             placeholder="Straße"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
-                                            data-type="supplier_address_street"
+                                            data-type="supplierAddressStreet"
                                             autocomplete="off"
                                             value="{% if editSupplierOrder %}{{ supplierData.supplierAddressStreet }}{% endif %}"
                                     >
@@ -78,7 +78,7 @@
                                             required="required"
                                             placeholder="Haus-Nr."
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
-                                            data-type="supplier_address_street_nr"
+                                            data-type="supplierAddressStreetNr"
                                             autocomplete="off"
                                             value="{% if editSupplierOrder %}{{ supplierData.supplierAddressStreetNr }}{% endif %}"
                                     >
@@ -92,7 +92,7 @@
                                             required="required"
                                             placeholder="Land"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
-                                            data-type="supplier_country_code"
+                                            data-type="supplierAddressCountryCode"
                                             autocomplete="off"
                                             value="{% if editSupplierOrder %}{{ supplierData.supplierAddressCountryCode }}{% endif %}"
                                     >
@@ -105,7 +105,7 @@
                                             required="required"
                                             placeholder="PLZ"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
-                                            data-type="supplier_zip_code"
+                                            data-type="supplierAddressZipcode"
                                             autocomplete="off"
                                             value="{% if editSupplierOrder %}{{ supplierData.supplierAddressZipcode }}{% endif %}"
                                     >
@@ -118,7 +118,7 @@
                                             required="required"
                                             placeholder="Ort"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
-                                            data-type="supplier_city"
+                                            data-type="supplierAddressCity"
                                             autocomplete="off"
                                             value="{% if editSupplierOrder %}{{ supplierData.supplierAddressCity }}{% endif %}"
                                     >
@@ -231,7 +231,7 @@
                                 </table>
                             </div>
                             <div class="btn-container">
-                                <button id="addNewButton" class="btn btn-sm" value="Neue Position">Neue Position</button>
+                                <button id="addNewButton" class="btn btn-primary btn-sm btn3d" value="Neue Position">Neue Position</button>
                             </div>
                             <input
                                     type="hidden"

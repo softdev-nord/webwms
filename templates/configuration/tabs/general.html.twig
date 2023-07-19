@@ -1,0 +1,38 @@
+{# templates/configuration/tabs/general.html.twig #}
+
+{% block webwms_configuration_overview_general_content %}
+    <div class="tab-pane form-box active" id="general_settings" role="tabpanel">
+        <form action="" method="post">
+            <fieldset class="form-group border p-3">
+                <legend class="w-auto px-2 float-none">
+                    <span class="mdi mdi-minus-box-outline"
+                          data-toggle="collapse"
+                          href="#general_settings_panel_1"
+                          aria-expanded="true"
+                          aria-controls="general_settings_panel_1">
+                    </span>Allgemeine Einstellungen
+                </legend>
+                <div id="general_settings_panel_1" class="panel-collapse collapse show" role="tabpanel">
+                    <div class="panel-body">
+                        {% for configuration in configurations %}
+                            {% if configuration.type == 'general' %}
+                                <div id="{{ configuration.name }}" class="display-flex">
+                                    <div style="width: 20%">{{ configuration.name }}</div>
+                                    <div class="form-check padding-left-10 display-flex">
+                                        <label for="{{ configuration.label }}"></label>
+                                        <input class="checkbox"
+                                               type="checkbox"
+                                               value="{{ configuration.value }}"
+                                               id="{{ configuration.label }}"
+                                               readonly="readonly"
+                                               {% if configuration.value == 'true' %}checked{% else %}{% endif %}>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

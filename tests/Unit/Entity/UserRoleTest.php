@@ -51,7 +51,9 @@ final class UserRoleTest extends TestCase
         $this->userRole->setUserRole($role);
         self::assertEquals($role, $this->userRole->getUserRole());
 
-        // Test testGetUserRights()
+        // Test setUserRights() and getUserRights()
+        $rights = ["1", "2", "3", "4"];
+        $this->userRole->setUserRights($rights);
         self::assertIsArray($this->userRole->getUserRights());
 
         // Test setCreatedAt() and getCreatedAt()

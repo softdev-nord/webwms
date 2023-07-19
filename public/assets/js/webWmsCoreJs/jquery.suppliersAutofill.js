@@ -3,31 +3,31 @@ const suppliersAutofill = (function () {
     function getNumOfBoxSupplier(type) {
         let numOfBoxSupplier;
         switch (type) {
-            case 'supplier_nr':
+            case 'supplierNr':
                 numOfBoxSupplier = 0;
                 break;
-            case 'supplier_name':
+            case 'supplierName':
                 numOfBoxSupplier = 1;
                 break;
-            case 'supplier_address_addition':
+            case 'supplierAddressAddition':
                 numOfBoxSupplier = 2;
                 break;
-            case 'supplier_address_street':
+            case 'supplierAddressStreet':
                 numOfBoxSupplier = 3;
                 break;
-            case 'supplier_address_street_nr':
+            case 'supplierAddressStreetNr':
                 numOfBoxSupplier = 4;
                 break;
-            case 'supplier_country_code':
+            case 'supplierAddressCountryCode':
                 numOfBoxSupplier = 5;
                 break;
-            case 'supplier_zip_code':
+            case 'supplierAddressZipcode':
                 numOfBoxSupplier = 6;
                 break;
-            case 'supplier_city':
+            case 'supplierAddressCity':
                 numOfBoxSupplier = 7;
                 break;
-            case 'supplier_id':
+            case 'supplierId':
                 numOfBoxSupplier = 8;
                 break;
             default:
@@ -84,7 +84,7 @@ const suppliersAutofill = (function () {
                 //Splittung des resArraySupplier Arrays
                 resArraySupplier = ui.item.data.split("|");
 
-                $('#supplier_nr').val(resArraySupplier[0]);
+                $('#supplier_supplierNr').val(resArraySupplier[0]);
                 $('#supplier_supplierName').val(resArraySupplier[1]);
                 $('#supplier_supplierAddressAddition').val(resArraySupplier[2]);
                 $('#supplier_supplierAddressStreet').val(resArraySupplier[3]);

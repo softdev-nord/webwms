@@ -96,9 +96,6 @@ services:
         arguments:
             $configurationDataHandler: '@web_wms.service.data_handlers.configuration.configuration_data_handler'
 
-    web_wms.twig.twig_global_subscriber:
-        class: WebWMS\Twig\TwigGlobalSubscriber
-
     web_wms.service.logging_service:
         class: WebWMS\Service\LoggingService
 
@@ -118,3 +115,7 @@ services:
         arguments:
             $requirementsService: 'WebWMS\Service\RequirementsService'
             $twig: 'Twig\Environment'
+    
+    twig.extension.debug:
+        class: Twig\Extension\DebugExtension
+        tags: [ { name: 'twig.extension' } ]

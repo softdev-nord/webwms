@@ -21,14 +21,14 @@
             style: 'single'
         },
         columns: [
-            { data: 'supplier_nr' },
-            { data: 'supplier_name' },
-            { data: 'supplier_address_addition' },
-            { data: 'supplier_address_street' },
-            { data: 'supplier_address_street_nr' },
-            { data: 'supplier_address_country_code' },
-            { data: 'supplier_address_zipcode' },
-            { data: 'supplier_address_city' },
+            { data: 'supplierNr' },
+            { data: 'supplierName' },
+            { data: 'supplierAddressAddition' },
+            { data: 'supplierAddressStreet' },
+            { data: 'supplierAddressStreetNr' },
+            { data: 'supplierAddressCountryCode' },
+            { data: 'supplierAddressZipcode' },
+            { data: 'supplierAddressCity' },
         ],
         columnDefs: [
             {
@@ -37,44 +37,52 @@
             },
         ],
         dom: 'Bfrtip',
-        buttons: [
-            {
-                extend:    'copyHtml5',
-                text:      'Kopieren',
-                title:     'Export',
-                titleAttr: 'Copy'
-            },
-            {
-                extend:    'excelHtml5',
-                text:      'Excel',
-                title:     'Export',
-                titleAttr: 'Excel'
-            },
-            {
-                extend:    'csvHtml5',
-                text:      'CSV',
-                title:     'Export',
-                titleAttr: 'CSV'
-            },
-            {
-                extend:    'pdfHtml5',
-                text:      'PDF',
-                title:     'Export',
-                titleAttr: 'PDF'
-            },
-            {
-                extend: 'print',
-                text: 'Drucken',
-                autoPrint: false
-            },
-            {
-                text: 'Lieferant anlegen',
-                className: 'btn-add-new',
-                action: function(e, dt, node, config) {
-                    addSupplier();
+        buttons: {
+            buttons: [
+                {
+                    extend:    'copyHtml5',
+                    text:      'Kopieren',
+                    title:     'Export',
+                    titleAttr: 'Copy',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend:    'csvHtml5',
+                    text:      'CSV',
+                    title:     'Export',
+                    titleAttr: 'CSV',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend:    'pdfHtml5',
+                    text:      'PDF',
+                    title:     'Export',
+                    titleAttr: 'PDF',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend: 'print',
+                    text: 'Drucken',
+                    autoPrint: false,
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    text: 'Lieferant anlegen',
+                    className: 'btn-primary btn-xs btn3d float-start',
+                    action: function(e, dt, node, config) {
+                        addSupplier();
+                    }
+                }
+            ],
+            dom: {
+                button: {
+                    className: 'btn'
+                },
+                buttonLiner: {
+                    tag: null
                 }
             }
-        ]
+        }
     });
 
     $.contextMenu({
@@ -82,7 +90,7 @@
         trigger: 'right',
         callback: function(key, options, event) {
             const row = supplierTable.row(options.$trigger),
-                supplierId = row.data().supplier_id;
+                supplierId = row.data().supplierId;
 
             switch (key) {
                 case 'edit' :

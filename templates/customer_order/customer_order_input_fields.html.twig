@@ -17,7 +17,7 @@
                                         required="required"
                                         placeholder="Über Kunden-Nr suchen"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
-                                        data-type="customer_nr"
+                                        data-type="customerNr"
                                         style="background-color:
                                             transparent" autocomplete="off"
                                         value="{% if editCustomerOrder %}{{ customerData.customerNr }}{% endif %}"
@@ -40,7 +40,7 @@
                                         required="required"
                                         placeholder="Kunden Name"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
-                                        data-type="customer_name"
+                                        data-type="customerName"
                                         autocomplete="off"
                                         value="{% if editCustomerOrder %}{{ customerData.customerName }}{% endif %}"
                                 >
@@ -52,7 +52,7 @@
                                         name="customer[customerAddressAddition]"
                                         placeholder="Anschrift Zusatz"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
-                                        data-type="customer_address_addition"
+                                        data-type="customerAddressAddition"
                                         autocomplete="off"
                                         value="{% if editCustomerOrder %}{{ customerData.customerAddressAddition }}{% endif %}"
                                 >
@@ -65,7 +65,7 @@
                                         required="required"
                                         placeholder="Straße"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
-                                        data-type="customer_address_street"
+                                        data-type="customerAddressStreet"
                                         autocomplete="off"
                                         value="{% if editCustomerOrder %}{{ customerData.customerAddressStreet }}{% endif %}"
                                 >
@@ -78,7 +78,7 @@
                                         required="required"
                                         placeholder="Haus-Nr."
                                         class="form-control autocomplete_customers ui-autocomplete-input"
-                                        data-type="customer_address_street_nr"
+                                        data-type="customerAddressStreetNr"
                                         autocomplete="off"
                                         value="{% if editCustomerOrder %}{{ customerData.customerAddressStreetNr }}{% endif %}"
                                 >
@@ -92,7 +92,7 @@
                                         required="required"
                                         placeholder="Land"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
-                                        data-type="customer_country_code"
+                                        data-type="customerAddressCountryCode"
                                         autocomplete="off"
                                         value="{% if editCustomerOrder %}{{ customerData.customerCountryCode }}{% endif %}"
                                 >
@@ -105,7 +105,7 @@
                                         required="required"
                                         placeholder="PLZ"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
-                                        data-type="customer_zip_code"
+                                        data-type="customerAddressZipcode"
                                         autocomplete="off"
                                         value="{% if editCustomerOrder %}{{ customerData.customerZipcode }}{% endif %}"
                                 >
@@ -118,7 +118,7 @@
                                         required="required"
                                         placeholder="Ort"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
-                                        data-type="customer_city"
+                                        data-type="customerAddressCity"
                                         autocomplete="off"
                                         value="{% if editCustomerOrder %}{{ customerData.customerCity }}{% endif %}"
                                 >

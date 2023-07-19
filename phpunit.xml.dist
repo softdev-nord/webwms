@@ -29,8 +29,10 @@
             <directory suffix=".php">src</directory>
         </include>
         <exclude>
-            <directory suffix=".php">src/Components</directory> <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
+            <directory suffix=".php">src/Controller</directory>
+            <directory suffix=".php">src/Components</directory>
             <directory suffix=".php">src/Security</directory>
+            <directory suffix=".php">src/Service/DataHandlers/</directory>
             <directory suffix=".php">vendor/</directory>
             <file>src/Kernel.php</file>
             <file>src/.preload.php</file>

@@ -103,7 +103,7 @@
   font-style: normal;
   font-weight: normal;
   line-height: 1;
-  color: #c7cbcc;
+  color: var(--webwms-body-color);
   text-align: center;
   -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
@@ -189,12 +189,14 @@
   font-size: inherit;
   list-style-type: none;
   border: 1px solid #bbb;
-  background-color: #484e55;
-  /*background: -webkit-linear-gradient(to bottom, #fff 0%, #e5e5e5 100px, #e5e5e5 100%);*/
-  /*background: linear-gradient(to bottom, #fff 0%, #e5e5e5 100px, #e5e5e5 100%);*/
+  background-color: #e9ebec;
   border-radius: .2em;
   -webkit-box-shadow: 1px 1px 4px rgba(0,0,0,.2);
   box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+
+[data-layout-mode=dark] .context-menu-list {
+    background-color: #292e32;
 }
 
 .context-menu-item {
@@ -203,7 +205,7 @@
   -webkit-box-sizing: content-box;
      -moz-box-sizing: content-box;
           box-sizing: content-box;
-  color: #c7cbcc;
+  color: var(--webwms-body-color);
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -227,7 +229,7 @@
 .context-menu-item.context-menu-hover {
   color: #fff;
   cursor: pointer; 
-  background-color: #2980b9;
+  background-color: rgba(237, 124, 52, 0.5);
 }
 
 .context-menu-item.context-menu-disabled {
