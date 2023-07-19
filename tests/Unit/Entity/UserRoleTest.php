@@ -52,7 +52,7 @@ final class UserRoleTest extends TestCase
         self::assertEquals($role, $this->userRole->getUserRole());
 
         // Test setUserRights() and getUserRights()
-        $rights = ["1", "2", "3", "4"];
+        $rights = ['1', '2', '3', '4'];
         $this->userRole->setUserRights($rights);
         self::assertIsArray($this->userRole->getUserRights());
 

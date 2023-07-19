@@ -60,25 +60,26 @@ class ConfigurationService
     private function getEnvironmentInformation(): array
     {
         $scriptFile = $_SERVER['SCRIPT_FILENAME'] ?? __FILE__;
+
         try {
-            $fileOwner = !function_exists('posix_getpwuid')?null:@posix_getpwuid((int) @fileowner($scriptFile));
+            $fileOwner = !function_exists('posix_getpwuid') ? null : @posix_getpwuid((int) @fileowner($scriptFile));
         } catch (\Throwable $e) {
             $fileOwner = null;
         }
+
         try {
-            $fileGroup = !function_exists('posix_getgrgid')?null:@posix_getgrgid((int) @filegroup($scriptFile));
-        }
-        catch (\Throwable $e) {
+            $fileGroup = !function_exists('posix_getgrgid') ? null : @posix_getgrgid((int) @filegroup($scriptFile));
+        } catch (\Throwable $e) {
             $fileGroup = null;
         }
 
         return [
-            'username'        => getenv('USER_NAME'),
-            'home_dir'        => getenv('WORKING_DIRECTORY'),
-            'document_root'   => $_SERVER['DOCUMENT_ROOT'] ?? null,
+            'username' => getenv('USER_NAME'),
+            'home_dir' => getenv('WORKING_DIRECTORY'),
+            'document_root' => $_SERVER['DOCUMENT_ROOT'] ?? null,
             'script_filename' => $_SERVER['SCRIPT_FILENAME'] ?? null,
-            'script_owner'    => $fileOwner['name'] ?? null,
-            'script_group'    => $fileGroup['name'] ?? null,
+            'script_owner' => $fileOwner['name'] ?? null,
+            'script_group' => $fileGroup['name'] ?? null,
         ];
     }
 
@@ -88,11 +89,11 @@ class ConfigurationService
     private function getServerInformation(): array
     {
         return [
-            'software'  => $_SERVER['SERVER_SOFTWARE'] ?? null,
+            'software' => $_SERVER['SERVER_SOFTWARE'] ?? null,
             'signature' => isset($_SERVER['SERVER_SIGNATURE']) ? strip_tags(trim($_SERVER['SERVER_SIGNATURE'])) : null,
-            'addr'      => $_SERVER['SERVER_ADDR'] ?? null,
-            'name'      => $_SERVER['SERVER_NAME'] ?? null,
-            'port'      => $_SERVER['SERVER_PORT'] ?? null,
+            'addr' => $_SERVER['SERVER_ADDR'] ?? null,
+            'name' => $_SERVER['SERVER_NAME'] ?? null,
+            'port' => $_SERVER['SERVER_PORT'] ?? null,
         ];
     }
 
@@ -102,13 +103,13 @@ class ConfigurationService
     private function getRequestInformation(): array
     {
         return [
-            'is_https'   => $this->isHttpsRequest(),
-            'is_ajax'    => $this->isAjaxRequest(),
-            'time'       => $_SERVER['REQUEST_TIME'] ?? null,
-            'method'     => $_SERVER['REQUEST_METHOD'] ?? null,
-            'scheme'     => $_SERVER['REQUEST_SCHEME'] ?? null,
-            'uri'        => $_SERVER['REQUEST_URI'] ?? null,
-            'referer'    => $_SERVER['HTTP_REFERER'] ?? null,
+            'is_https' => $this->isHttpsRequest(),
+            'is_ajax' => $this->isAjaxRequest(),
+            'time' => $_SERVER['REQUEST_TIME'] ?? null,
+            'method' => $_SERVER['REQUEST_METHOD'] ?? null,
+            'scheme' => $_SERVER['REQUEST_SCHEME'] ?? null,
+            'uri' => $_SERVER['REQUEST_URI'] ?? null,
+            'referer' => $_SERVER['HTTP_REFERER'] ?? null,
             'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
         ];
     }
@@ -119,14 +120,14 @@ class ConfigurationService
     private function getPhpGeneralInformation(): array
     {
         return [
-            'version'         => PHP_VERSION,
-            'version_id'      => PHP_VERSION_ID,
-            'version_major'   => PHP_MAJOR_VERSION,
-            'version_minor'   => PHP_MINOR_VERSION,
+            'version' => PHP_VERSION,
+            'version_id' => PHP_VERSION_ID,
+            'version_major' => PHP_MAJOR_VERSION,
+            'version_minor' => PHP_MINOR_VERSION,
             'version_release' => PHP_RELEASE_VERSION,
-            'server_api'      => PHP_SAPI,
-            'binary_dir'      => PHP_BINDIR,
-            'php_ini_dir'     => php_ini_loaded_file(),
+            'server_api' => PHP_SAPI,
+            'binary_dir' => PHP_BINDIR,
+            'php_ini_dir' => php_ini_loaded_file(),
         ];
     }
 
@@ -149,27 +150,27 @@ class ConfigurationService
     {
         return [
             [
-                'setting'   => 'max_execution_time',
+                'setting' => 'max_execution_time',
                 'raw_value' => $this->getPhpMaxExecutionTimeValue(),
-                'int_value' => (int)$this->getPhpMaxExecutionTimeValue(),
+                'int_value' => (int) $this->getPhpMaxExecutionTimeValue(),
             ],
             [
-                'setting'   => 'max_input_time',
+                'setting' => 'max_input_time',
                 'raw_value' => ini_get('max_input_time'),
                 'int_value' => (int) ini_get('max_input_time'),
             ],
             [
-                'setting'   => 'post_max_size',
+                'setting' => 'post_max_size',
                 'raw_value' => $this->getPostMaxSizeValue(),
                 'int_value' => $this->convertPhpValueToBytes($this->getPostMaxSizeValue()),
             ],
             [
-                'setting'   => 'upload_max_filesize',
+                'setting' => 'upload_max_filesize',
                 'raw_value' => ini_get('upload_max_filesize'),
                 'int_value' => $this->convertPhpValueToBytes(ini_get('upload_max_filesize')),
             ],
             [
-                'setting'   => 'memory_limit',
+                'setting' => 'memory_limit',
                 'raw_value' => ini_get('memory_limit'),
                 'int_value' => $this->convertPhpValueToBytes(ini_get('memory_limit')),
             ],
@@ -188,7 +189,7 @@ class ConfigurationService
 
         return [
             'defined' => $this->getPhpExtensionsDefined(),
-            'other'   => $extensionsOther,
+            'other' => $extensionsOther,
             'loaded' => $extensionsLoaded,
         ];
     }
@@ -277,7 +278,7 @@ class ConfigurationService
                     return false;
                 }
 
-                $ioncubeMajorVersion = (int)@ioncube_loader_version();
+                $ioncubeMajorVersion = (int) @ioncube_loader_version();
 
                 return $ioncubeMajorVersion >= 5;
             },
@@ -343,10 +344,10 @@ class ConfigurationService
         $lastChar = strtoupper(substr(trim($phpValue), -1));
 
         return match ($lastChar) {
-            'G' => (int)$phpValue * 1024 * 1024 * 1024,
-            'M' => (int)$phpValue * 1024 * 1024,
-            'K' => (int)$phpValue * 1024,
-            default => (int)$phpValue,
+            'G' => (int) $phpValue * 1024 * 1024 * 1024,
+            'M' => (int) $phpValue * 1024 * 1024,
+            'K' => (int) $phpValue * 1024,
+            default => (int) $phpValue,
         };
     }
 }

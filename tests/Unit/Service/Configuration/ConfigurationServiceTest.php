@@ -6,7 +6,6 @@ namespace WebWMS\Tests\Unit\Service\Configuration;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Kernel;
 use WebWMS\Service\Configuration\ConfigurationService;
 use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
 
