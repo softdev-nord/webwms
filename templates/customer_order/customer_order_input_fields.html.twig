@@ -181,17 +181,16 @@
                                 <table id="autocomplete_table" class="table table-hover">
                                     <thead class="thead-dark">
                                     <tr>
-                                        <th width="1%" style="text-align:center;">#</th>
                                         <th width="15%" scope="col">Artikel-Nr</th>
                                         <th width="35%" style="text-align:center;">Artikel Bezeichnung</th>
                                         <th width="10%" style="text-align:center;">Menge</th>
+                                        <th width="1%" style="text-align:center;">#</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% if editCustomerOrder %}
                                         {% for key, position in customerOrderPos %}
                                             <tr id="row_{{ key }}">
-                                                <th id="delete_{{ key }}" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
                                                 <td>
                                                     <input id="customer_order_pos_articleNr_{{ key }}" type="text" data-type="article_nr" name="customer_order_pos[articleNr]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleId }}">
                                                     <input id="customer_order_pos_articleId_{{ key }}" type="hidden" data-type="article_id" name="customer_order_pos[articleId]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.id }}">
@@ -203,11 +202,12 @@
                                                     <input id="customer_order_pos_quantity_{{ key }}" type="text" data-type="quantity" name="customer_order_pos[quantity]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.quantity }}">
                                                     <input id="customer_order_pos_customerOrderId_{{ key }}" type="hidden" data-type="customer_order_id" name="customer_order_pos[customerOrderId]" class="inputOrderId2" autocomplete="off" value="{{ position.customerOrderId }}">
                                                 </td>
+                                                <th id="delete_{{ key }}" scope="row" class="delete_row fs-18"><span class="mdi mdi-trash-can-outline"></span></th>
                                             </tr>
                                         {% endfor %}
                                     {% else %}
                                         <tr id="row_1">
-                                            <th id="delete_1" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
+                                            <th id="delete_1" scope="row" class="delete_row fs-18"><span class="mdi mdi-trash-can-outline"></span></th>
                                             <td>
                                                 {{ form_row(customerOrderPosForm.articleNr, {'id': 'customer_order_pos_articleNr_1'}) }}
                                                 {{ form_row(customerOrderPosForm.articleId, {'id': 'customer_order_pos_articleId_1'}) }}
@@ -231,7 +231,7 @@
                                 </table>
                             </div>
                             <div class="btn-container">
-                                <button id="addNewButton" class="btn btn-sm" value="Neue Position">Neue Position</button>
+                                <button id="addNewButton" class="btn btn-primary btn-sm btn3d" value="Neue Position">Neue Position</button>
                             </div>
                             <input
                                     type="hidden"

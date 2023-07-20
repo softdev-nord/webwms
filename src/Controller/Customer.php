@@ -193,7 +193,6 @@ class Customer extends AbstractController
     #[Route('/order_customer_ajax', name: 'order_customer_ajax')]
     public function getAllCustomersAjax(Request $request): JsonResponse
     {
-
         $customerNrInput = (string) $request->query->get('name_customer');
 
         return $this->customerService->getAllCustomersAjax($customerNrInput);

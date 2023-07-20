@@ -6212,8 +6212,14 @@ $.widget( "ui.autocomplete", {
 	},
 
 	_renderItem: function( ul, item ) {
+		if (item.label.includes('Keine Ergebnisse für')) {
+			return $( "<li>" )
+				.append( $( "<div>" ).text( item.label ) )
+				.appendTo( ul );
+		}
+		var itemDetails = item.itemDetail[0] + ' ' + item.itemDetail[1];
 		return $( "<li>" )
-			.append( $( "<div>" ).text( item.label ) )
+			.append( $( "<div>" ).text( itemDetails ) )
 			.appendTo( ul );
 	},
 

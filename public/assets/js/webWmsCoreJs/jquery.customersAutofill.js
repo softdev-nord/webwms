@@ -65,11 +65,12 @@ const jqueryCustomersAutofill = (function () {
 
                         if (res.length) {
                             result = $.map(res, function (obj) {
-                                const arr = obj.split("|");
+                                const arr = obj.split(' | ');
                                 return {
                                     label: arr[numOfBoxCustomer],
                                     value: arr[numOfBoxCustomer],
-                                    data: obj
+                                    data: obj,
+                                    itemDetail: obj.split(' | ', 2)
                                 };
                             });
                         }

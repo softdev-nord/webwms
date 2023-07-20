@@ -7,7 +7,7 @@ const itemsAddNewRow = (function () {
 
     function formHtml() {
         html = '<tr id="row_' + rowcount + '">';
-        html += '<th id="delete_' + rowcount + '" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>';
+        html += '<th id="delete_' + rowcount + '" scope="row" class="delete_row fs-22"><span class="mdi mdi-trash-can-outline"></span></th>';
         html += '<td>';
         html += '<input id="customer_order_pos_articleNr_' + rowcount + '" type="text" data-type="article_nr" name="customer_order_pos[articleNr]" class="form-control autocomplete_items" autocomplete="off">';
         html += '<input id="customer_order_pos_articleId_' + rowcount + '" type="hidden" data-type="article_id" name="customer_order_pos[articleId]" class="form-control autocomplete_items" autocomplete="off">';

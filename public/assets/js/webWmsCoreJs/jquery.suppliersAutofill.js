@@ -65,11 +65,12 @@ const suppliersAutofill = (function () {
 
                         if (res.length) {
                             result = $.map(res, function (obj) {
-                                const arr = obj.split("|");
+                                const arr = obj.split(' | ');
                                 return {
                                     label: arr[numOfBoxSupplier],
                                     value: arr[numOfBoxSupplier],
-                                    data: obj
+                                    data: obj,
+                                    itemDetail: obj.split(' | ', 2)
                                 };
                             });
                         }
@@ -82,7 +83,7 @@ const suppliersAutofill = (function () {
             select: function (event, ui) {
                 let resArraySupplier;
                 //Splittung des resArraySupplier Arrays
-                resArraySupplier = ui.item.data.split("|");
+                resArraySupplier = ui.item.data.split(' | ');
 
                 $('#supplier_supplierNr').val(resArraySupplier[0]);
                 $('#supplier_supplierName').val(resArraySupplier[1]);

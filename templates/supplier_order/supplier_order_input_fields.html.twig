@@ -181,17 +181,16 @@
                                 <table id="autocomplete_table" class="table table-hover">
                                     <thead class="thead-dark">
                                     <tr>
-                                        <th width="1%" style="text-align:center;">#</th>
                                         <th width="15%" scope="col">Artikel-Nr</th>
                                         <th width="35%" style="text-align:center;">Artikel Bezeichnung</th>
                                         <th width="10%" style="text-align:center;">Menge</th>
+                                        <th width="1%" style="text-align:center;">#</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% if editSupplierOrder %}
                                         {% for key, position in supplierOrderPos %}
                                             <tr id="row_{{ key }}">
-                                                <th id="delete_{{ key }}" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
                                                 <td>
                                                     <input id="supplier_order_pos_articleNr_{{ key }}" type="text" data-type="article_nr" name="supplier_order_pos[articleNr]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleId }}">
                                                     <input id="supplier_order_pos_articleId_{{ key }}" type="hidden" data-type="article_id" name="supplier_order_pos[articleId]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.id }}">
@@ -203,11 +202,12 @@
                                                     <input id="supplier_order_pos_supplierOrderPosQuantity_{{ key }}" type="text" data-type="supplier_order_pos_quantity" name="supplier_order_pos[supplierOrderPosQuantity]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.supplierOrderPosQuantity }}">
                                                     <input id="supplier_order_pos_supplierOrderId_{{ key }}" type="hidden" data-type="supplier_order_id" name="supplier_order_pos[supplierOrderId]" class="inputOrderId2" autocomplete="off" value="{{ position.supplierOrderId }}">
                                                 </td>
+                                                <th id="delete_{{ key }}" scope="row" class="delete_row fs-18"><span class="mdi mdi-trash-can-outline"></span></th>
                                             </tr>
                                         {% endfor %}
                                     {% else %}
                                         <tr id="row_1">
-                                            <th id="delete_1" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>
+                                            <th id="delete_1" scope="row" class="delete_row fs-18"><span class="mdi mdi-trash-can-outline"></span></th>
                                             <td>
                                                 {{ form_row(supplierOrderPosForm.articleNr, {'id': 'supplier_order_pos_articleNr_1'}) }}
                                                 {{ form_row(supplierOrderPosForm.articleId, {'id': 'supplier_order_pos_articleId_1'}) }}
