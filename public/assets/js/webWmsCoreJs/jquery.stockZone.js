@@ -160,7 +160,7 @@
         $.ajax({
             url: url,
             type: 'GET',
-            data: ($("#stock-layout-form-edit").serialize()),
+            data: ($('#stock-layout-form-edit').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },

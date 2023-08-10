@@ -66,7 +66,8 @@ class SupplierDataHandler
             $suppliers = $queryBuilder->getQuery()->getArrayResult();
 
             foreach ($suppliers as $supplier) {
-                $nameSupplier = $supplier['supplierNr'] . ' | ' .
+                $nameSupplier = $supplier['supplierId'] . ' | ' .
+                    $supplier['supplierNr'] . ' | ' .
                     $supplier['supplierName'] . ' | ' .
                     $supplier['supplierAddressAddition'] . ' | ' .
                     $supplier['supplierAddressStreet'] . ' | ' .

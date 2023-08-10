@@ -70,7 +70,7 @@ const jqueryCustomersAutofill = (function () {
                                     label: arr[numOfBoxCustomer],
                                     value: arr[numOfBoxCustomer],
                                     data: obj,
-                                    itemDetail: obj.split(' | ', 2)
+                                    itemDetail: obj.split(' | ', 3)
                                 };
                             });
                         }
@@ -83,17 +83,17 @@ const jqueryCustomersAutofill = (function () {
             select: function (event, ui) {
                 let resArrCustomer;
                 //Splittung des resArrKd Arrays
-                resArrCustomer = ui.item.data.split("|");
+                resArrCustomer = ui.item.data.split('|');
 
-                $('#customer_customerNr').val(resArrCustomer[0]);
-                $('#customer_customerName').val(resArrCustomer[1]);
-                $('#customer_customerAddressAddition').val(resArrCustomer[2]);
-                $('#customer_customerAddressStreet').val(resArrCustomer[3]);
-                $('#customer_customerAddressStreetNr').val(resArrCustomer[4]);
-                $('#customer_customerAddressCountryCode').val(resArrCustomer[5]);
-                $('#customer_customerAddressZipcode').val(resArrCustomer[6]);
-                $('#customer_customerAddressCity').val(resArrCustomer[7]);
-                $('#customer_customerId').val(resArrCustomer[8]);
+                $('#customer_customerNr').val(resArrCustomer[1]);
+                $('#customer_customerName').val(resArrCustomer[2]);
+                $('#customer_customerAddressAddition').val(resArrCustomer[3]);
+                $('#customer_customerAddressStreet').val(resArrCustomer[4]);
+                $('#customer_customerAddressStreetNr').val(resArrCustomer[5]);
+                $('#customer_customerAddressCountryCode').val(resArrCustomer[6]);
+                $('#customer_customerAddressZipcode').val(resArrCustomer[7]);
+                $('#customer_customerAddressCity').val(resArrCustomer[8]);
+                $('#customer_customerId').val(resArrCustomer[9]);
             }
         });
     }

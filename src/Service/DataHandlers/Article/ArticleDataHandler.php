@@ -91,23 +91,24 @@ class ArticleDataHandler
             $articles = $queryBuilder->getQuery()->getArrayResult();
 
             foreach ($articles as $article) {
-                $name = $article['articleId'] . '|' .
-                    $article['articleNr'] . '|' .
-                    $article['articleName'] . '|' .
-                    $article['articleCategory'] . '|' .
-                    $article['articleWeight'] . '|' .
-                    $article['articleEan'] . '|' .
-                    $article['articleUnit'] . '|' .
-                    $article['articleDepth'] . '|' .
-                    $article['articleWidth'] . '|' .
-                    $article['articleHeight'] . '|' .
-                    $article['stockOutStrategy'] . '|' .
-                    $article['standardLoadingEquipment'] . '|' .
+                $name = $article['articleId'] . ' | ' .
+                    $article['articleNr'] . ' | ' .
+                    $article['articleName'] . ' | ' .
+                    $article['articleCategory'] . ' | ' .
+                    $article['articleWeight'] . ' | ' .
+                    $article['articleEan'] . ' | ' .
+                    $article['articleUnit'] . ' | ' .
+                    $article['articleDepth'] . ' | ' .
+                    $article['articleWidth'] . ' | ' .
+                    $article['articleHeight'] . ' | ' .
+                    $article['stockOutStrategy'] . ' | ' .
+                    $article['standardLoadingEquipment'] . ' | ' .
                     $article['leQuantity'];
                 $data[] = $name;
             }
         }
 
+        // dd($data);
         return new JsonResponse($data);
     }
 

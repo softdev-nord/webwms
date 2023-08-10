@@ -12,29 +12,7 @@
 <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jAlert.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/webWmsAjax.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/scripts.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/settings.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/tinymce/tinymce.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/sidebars.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/webWmsExternJs/jquery.contextMenu.js') }}"></script>
-<script>
-    $(document).ready(function () {
-        const delegate = (element, type, selector, handler) => {
-            if(element){
-                element.addEventListener(type, (event) => {
-                    if (event.target.closest(selector)) {
-                        handler(event);
-                    }
-                });
-            }
-        };
-
-        /**
-         * Enable click event for copy-to-clipboard function
-         */
-        delegate(document.querySelector('#modal-content-ajax'), 'click', '.copy-to-clipboard', (e) => {
-            copyToClipboard(e.target.closest('.copy-to-clipboard'));
-        });
-    })
-</script>
-

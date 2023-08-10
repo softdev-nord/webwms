@@ -170,18 +170,18 @@
         const content = '<div class="modal-body"></div>';
 
         $('#modalCenter .modal-title').text('Bestellung bearbeiten');
-        $("#modal-content-ajax").html(content);
+        $('#modal-content-ajax').html(content);
         $('#modalCenter').modal('show');
 
         $.ajax({
             url: url,
-            type: "get",
+            type: 'GET',
             data: ($('#supplier-order-form-edit').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
             success: function (data) {
-                $("#modal-content-ajax").html(data);
+                $('#modal-content-ajax').html(data);
             }
         });
 

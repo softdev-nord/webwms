@@ -2,7 +2,7 @@ const stockInItemsAutofill = (function(){
     function getNumOfBoxArt(type) {
         let numOfBoxArt;
         switch (type) {
-            case 'article_nr':
+            case 'articleNr':
                 numOfBoxArt = 1;
                 break;
             default:
@@ -41,11 +41,12 @@ const stockInItemsAutofill = (function(){
 
                         if (res.length) {
                             result = $.map(res, function (obj) {
-                                const arr = obj.split("|");
+                                const arr = obj.split('|');
                                 return {
                                     label: arr[numOfBoxArt],
                                     value: arr[numOfBoxArt],
-                                    data: obj
+                                    data: obj,
+                                    itemDetail: obj.split('|', 3)
                                 };
                             });
                         }
@@ -58,9 +59,9 @@ const stockInItemsAutofill = (function(){
             select: function (event, ui) {
                 let resArr;
 
-                resArr = ui.item.data.split("|");
+                resArr = ui.item.data.split('|');
 
-                $('#stock_in_le_quantity').val(resArr[12]);
+                $('#stock_in_leQuantity').val(resArr[12]);
                 $('#article_nr_right').val(resArr[1]);
                 $('#article_name_right').val(resArr[2]);
                 $('#article_le_quantity_right').val(resArr[12]);

@@ -6217,7 +6217,7 @@ $.widget( "ui.autocomplete", {
 				.append( $( "<div>" ).text( item.label ) )
 				.appendTo( ul );
 		}
-		var itemDetails = item.itemDetail[0] + ' ' + item.itemDetail[1];
+		const itemDetails = item.itemDetail[1] + ' ' + item.itemDetail[2];
 		return $( "<li>" )
 			.append( $( "<div>" ).text( itemDetails ) )
 			.appendTo( ul );

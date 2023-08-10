@@ -192,22 +192,21 @@
                                         {% for key, position in customerOrderPos %}
                                             <tr id="row_{{ key }}">
                                                 <td>
-                                                    <input id="customer_order_pos_articleNr_{{ key }}" type="text" data-type="article_nr" name="customer_order_pos[articleNr]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleId }}">
-                                                    <input id="customer_order_pos_articleId_{{ key }}" type="hidden" data-type="article_id" name="customer_order_pos[articleId]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.id }}">
+                                                    <input id="customer_order_pos_articleNr_{{ key }}" type="text" data-type="articleNr" name="customer_order_pos[articleNr]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleNr }}">
+                                                    <input id="customer_order_pos_articleId_{{ key }}" type="hidden" data-type="articleNd" name="customer_order_pos[articleId]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.id }}">
                                                 </td>
                                                 <td>
-                                                    <input id="customer_order_pos_articleName_{{ key }}" type="text" data-type="article_name" name="customer_order_pos[articleName]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleName }}">
+                                                    <input id="customer_order_pos_articleName_{{ key }}" type="text" data-type="articleName" name="customer_order_pos[articleName]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.articleName }}">
                                                 </td>
                                                 <td>
                                                     <input id="customer_order_pos_quantity_{{ key }}" type="text" data-type="quantity" name="customer_order_pos[quantity]" class="form-control autocomplete_items" autocomplete="off" value="{{ position.quantity }}">
-                                                    <input id="customer_order_pos_customerOrderId_{{ key }}" type="hidden" data-type="customer_order_id" name="customer_order_pos[customerOrderId]" class="inputOrderId2" autocomplete="off" value="{{ position.customerOrderId }}">
+                                                    <input id="customer_order_pos_customerOrderId_{{ key }}" type="hidden" data-type="customerOrderId" name="customer_order_pos[customerOrderId]" class="inputOrderId2" autocomplete="off" value="{{ position.customerOrderId }}">
                                                 </td>
                                                 <th id="delete_{{ key }}" scope="row" class="delete_row fs-18"><span class="mdi mdi-trash-can-outline"></span></th>
                                             </tr>
                                         {% endfor %}
                                     {% else %}
                                         <tr id="row_1">
-                                            <th id="delete_1" scope="row" class="delete_row fs-18"><span class="mdi mdi-trash-can-outline"></span></th>
                                             <td>
                                                 {{ form_row(customerOrderPosForm.articleNr, {'id': 'customer_order_pos_articleNr_1'}) }}
                                                 {{ form_row(customerOrderPosForm.articleId, {'id': 'customer_order_pos_articleId_1'}) }}
@@ -225,6 +224,7 @@
                                             <td>
                                                 {{ form_row(customerOrderPosForm.quantity, {'id': 'customer_order_pos_quantity_1'}) }}
                                             </td>
+                                            <th id="delete_1" scope="row" class="delete_row fs-18"><span class="mdi mdi-trash-can-outline"></span></th>
                                         </tr>
                                     {% endif %}
                                     </tbody>

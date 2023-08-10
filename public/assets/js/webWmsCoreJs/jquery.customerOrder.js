@@ -12,7 +12,7 @@ $(function() {
         // Seitenlänge max. 10 Einträge
         pageLength: 10,
         language: {
-            url: "./resources/dataTable.German.json"
+            url: './resources/dataTable.German.json'
         },
         // Initialisierung der DataTables Select-Erweiterung
         select: {
@@ -245,7 +245,7 @@ $(function() {
                 render: $.fn.dataTable.render.number('.')
             },
             {
-                "data": "lbw_menge",
+                data: 'lbw_menge',
                 render: function(data, type, row) {
                     if (row.lbw_menge != null) {
                         return numberWithCommas(row.lbw_menge);

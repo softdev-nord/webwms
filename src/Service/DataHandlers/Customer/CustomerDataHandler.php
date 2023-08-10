@@ -79,7 +79,8 @@ class CustomerDataHandler
             $customers = $queryBuilder->getQuery()->getArrayResult();
 
             foreach ($customers as $customer) {
-                $nameCustomer = $customer['customerNr'] . ' | ' .
+                $nameCustomer = $customer['customerId'] . ' | ' .
+                    $customer['customerNr'] . ' | ' .
                     $customer['customerName'] . ' | ' .
                     $customer['customerAddressAddition'] . ' | ' .
                     $customer['customerAddressStreet'] . ' | ' .

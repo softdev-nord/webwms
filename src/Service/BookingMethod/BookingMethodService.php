@@ -88,18 +88,18 @@ class BookingMethodService
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
             $stockUnits = (int) ceil(
-                intval($requestData['quantity']) / intval($requestData['le_quantity']),
+                intval($requestData['quantity']) / intval($requestData['leQuantity']),
             );
 
-            $stockSystem = match ($requestData['standard_loading_equipment']) {
+            $stockSystem = match ($requestData['standardLoadingEquipment']) {
                 'KARTON' => self::KARTON,
                 'PALETTE' => self::PALETTE,
                 'BLOCK' => self::BLOCK,
                 default => 'KST',
             };
 
-            $fullPal = intdiv(intval($requestData['quantity']), intval($requestData['le_quantity']));
-            $remainder = fmod(floatval($requestData['quantity']), floatval($requestData['le_quantity']));
+            $fullPal = intdiv(intval($requestData['quantity']), intval($requestData['leQuantity']));
+            $remainder = fmod(floatval($requestData['quantity']), floatval($requestData['leQuantity']));
 
             $stockLocations = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $stockUnits);
             $suId = $this->transportRequestService->getLastStockUnit();
@@ -111,7 +111,7 @@ class BookingMethodService
                         2,
                         '.',
                         ''
-                    ) : $requestData['le_quantity'];
+                    ) : $requestData['leQuantity'];
 
                     $freeStockLocations[] = [
                         'id' => $stockLocation['id'],
@@ -148,7 +148,7 @@ class BookingMethodService
                     'stockInFinalForm' => $stockInFinal->createView(),
                     'freeStockLocations' => $freeStockLocations,
                     'charge' => $requestData['charge'],
-                    'article_nr' => $requestData['article_nr'],
+                    'article_nr' => $requestData['articleNr'],
                     'booking_method' => $bookingMethod,
                     'loading_equipment' => $stockSystem,
                 ]

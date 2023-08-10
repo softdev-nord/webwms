@@ -20,13 +20,13 @@
                             {% for key, freeStockLocation in freeStockLocations %}
                                 <tr stock-location-id="{{ freeStockLocation.id }}" role="row">
                                     <td>
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin: 0;">
                                             <input type="text"
                                                    id="stock_in_system_{{ key }}"
                                                    name="stock_in[{{ key }}][stock_system]"
                                                    required="required"
                                                    data-type="stock_system_{{ key }}"
-                                                   style="text-align: center; background: #3b4245;"
+                                                   style="text-align: center;"
                                                    readonly="readonly"
                                                    class="form-control"
                                                    value="{{ freeStockLocation.system }}"
@@ -34,13 +34,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin: 0;">
                                             <input type="text"
                                                    id="stock_in_ln_{{ key }}"
                                                    name="stock_in[{{ key }}][stock_ln]"
                                                    required="required"
                                                    data-type="stock_ln_{{ key }}"
-                                                   style="text-align: center; background: #3b4245;"
+                                                   style="text-align: center;"
                                                    readonly="readonly"
                                                    class="form-control"
                                                    value="{{ freeStockLocation.ln }}"
@@ -48,13 +48,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin: 0;">
                                             <input type="text"
                                                    id="stock_in_fb_{{ key }}"
                                                    name="stock_in_[{{ key }}][stock_fb]"
                                                    required="required"
                                                    data-type="stock_fb_{{ key }}"
-                                                   style="text-align: center; background: #3b4245;"
+                                                   style="text-align: center;"
                                                    readonly="readonly"
                                                    class="form-control"
                                                    value="{{ freeStockLocation.fb }}"
@@ -62,13 +62,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin: 0;">
                                             <input type="text"
                                                    id="stock_in_sp_{{ key }}"
                                                    name="stock_in[{{ key }}][stock_sp]"
                                                    required="required"
                                                    data-type="stock_sp_{{ key }}"
-                                                   style="text-align: center; background: #3b4245;"
+                                                   style="text-align: center;"
                                                    readonly="readonly"
                                                    class="form-control"
                                                    value="{{ freeStockLocation.sp }}"
@@ -76,13 +76,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin: 0;">
                                             <input type="text"
                                                    id="stock_in_tf_{{ key }}"
                                                    name="stock_in[{{ key }}][stock_tf]"
                                                    required="required"
                                                    data-type="stock_tf_{{ key }}"
-                                                   style="text-align: center; background: #3b4245;"
+                                                   style="text-align: center; margin: 0;"
                                                    readonly="readonly"
                                                    class="form-control"
                                                    value="{{ freeStockLocation.tf }}"

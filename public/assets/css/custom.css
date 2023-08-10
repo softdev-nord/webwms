@@ -815,22 +815,16 @@ a:hover {
 }
 
 .ui-widget-content {
-    border: 1px solid #2e3436 !important;
+    border: 1px solid var(--webwms-input-border) !important;
     background: var(--webwms-header-bg);
     color: var(--webwms-body-color);
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 .ui-widget.ui-widget-content {
     z-index: 10000;
-    width: 539px;
-}
-
-li.ui-menu-item::marker {
-    display: none;
-}
-
-.ui-widget.ui-widget-content > li.ui-menu-item::marker {
-    display: none;
+    width: fit-content !important;
 }
 
 .ui-menu {

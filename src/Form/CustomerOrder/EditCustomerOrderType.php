@@ -30,27 +30,27 @@ class EditCustomerOrderType extends AbstractType
             ->add('customerOrderId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'id' => 'customer_order_id',
+                    'id' => 'customerOrderId',
                 ],
             ])
             ->add('customerOrderNr', TextType::class, [
                 'label' => 'Auftrags-Nr',
                 'attr' => [
                     'class' => 'form-control is--transparent',
-                    'id' => 'customer_order_nr',
+                    'id' => 'customerOrderNr',
                 ],
             ])
             ->add('usrId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'id' => 'user_id',
-                    'data-type' => 'user_id',
+                    'id' => 'usrId',
+                    'data-type' => 'usrId',
                 ],
             ])
             ->add('customerId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
-                    'id' => 'customer_id',
+                    'id' => 'customerId',
                 ],
             ])
             ->add('customerOrderReference', TextType::class, [
