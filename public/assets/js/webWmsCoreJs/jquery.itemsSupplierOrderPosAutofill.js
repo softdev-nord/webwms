@@ -7,18 +7,18 @@ const itemsAddNewRow = (function () {
 
     function formHtml() {
         html = '<tr id="row_' + rowcount + '">';
-        html += '<th id="delete_' + rowcount + '" scope="row" class="delete_row"><span class="glyphicon glyphicon-minus-sign"></span></th>';
         html += '<td>';
-        html += '<input id="supplier_order_pos_articleNr_' + rowcount + '" type="text" data-type="article_nr" name="supplier_order_pos[articleNr]" class="form-control autocomplete_items" autocomplete="off">';
-        html += '<input id="supplier_order_pos_articleId_' + rowcount + '" type="hidden" data-type="article_id" name="supplier_order_pos[articleId]" class="form-control autocomplete_items" autocomplete="off">';
+        html += '<input id="supplier_order_pos_articleNr_' + rowcount + '" type="text" data-type="article_nr" name="supplier_order_pos[articleNr]" class="form-control autocomplete_items ui-autocomplete-input" autocomplete="off">';
+        html += '<input id="supplier_order_pos_articleId_' + rowcount + '" type="hidden" data-type="article_id" name="supplier_order_pos[articleId]" class="form-control autocomplete_items ui-autocomplete-input" autocomplete="off">';
         html += '</td>';
         html += '<td>';
-        html += '<input id="supplier_order_pos_articleName_' + rowcount + '" type="text" data-type="article_name" name="supplier_order_pos[articleName]" class="form-control autocomplete_items" autocomplete="off">';
+        html += '<input id="supplier_order_pos_articleName_' + rowcount + '" type="text" data-type="article_name" name="supplier_order_pos[articleName]" class="form-control autocomplete_items ui-autocomplete-input" autocomplete="off">';
         html += '<input id="supplier_order_pos_supplierOrderId_' + rowcount + '" type="hidden" data-type="supplier_order_id" name="supplier_order_pos[supplierOrderId]" class="inputOrderId2" autocomplete="off" value="' + orderId + '">';
         html += '</td>';
         html += '<td>';
         html += '<input id="supplier_order_pos_supplierOrderPosQuantity_' + rowcount + '" type="text" data-type="supplier_order_pos_quantity" name="supplier_order_pos[supplierOrderPosQuantity]" class="form-control autocomplete_items" autocomplete="off">';
         html += '</td>';
+        html += '<th id="delete_' + rowcount + '" scope="row" class="delete_row fs-22"><span class="mdi mdi-trash-can-outline"></span></th>';
         html += '</tr>';
         rowcount++;
         return html;
@@ -73,11 +73,12 @@ const itemsAddNewRow = (function () {
 
                         if (res.length) {
                             result = $.map(res, function (obj) {
-                                const arr = obj.split("|");
+                                const arr = obj.split(' | ');
                                 return {
                                     label: arr[numOfBoxArt],
                                     value: arr[numOfBoxArt],
-                                    data: obj
+                                    data: obj,
+                                    itemDetail: obj.split(' | ', 3)
                                 };
                             });
                         }
@@ -91,7 +92,7 @@ const itemsAddNewRow = (function () {
                 let resArr, numOfRow;
 
                 numOfRow = getId(currentElement);
-                resArr = ui.item.data.split("|");
+                resArr = ui.item.data.split('|');
 
                 $('#supplier_order_pos_articleId_' + numOfRow).val(resArr[0]);
                 $('#supplier_order_pos_articleNr_' + numOfRow).val(resArr[1]);
@@ -103,7 +104,7 @@ const itemsAddNewRow = (function () {
     function getId(element) {
         let id, idArr;
         id = element.attr('id');
-        idArr = id.split("_");
+        idArr = id.split('_');
         return idArr[idArr.length - 1];
     }
 

@@ -43,38 +43,52 @@
             },
         ],
         dom: 'Bfrtip',
-        buttons: [
-            {
-                extend:    'copyHtml5',
-                text:      'Kopieren',
-                title:     'Export',
-                titleAttr: 'Copy'
-            },
-            {
-                extend:    'csvHtml5',
-                text:      'CSV',
-                title:     'Export',
-                titleAttr: 'CSV'
-            },
-            {
-                extend:    'pdfHtml5',
-                text:      'PDF',
-                title:     'Export',
-                titleAttr: 'PDF'
-            },
-            {
-                extend: 'print',
-                text: 'Drucken',
-                autoPrint: false
-            },
-            {
-                text: 'Lagerlayout anlegen',
-                className: 'btn-add-new',
-                action: function (e, dt, node, config) {
-                    addStockLayout();
+        buttons: {
+            buttons: [
+                {
+                    extend:    'copyHtml5',
+                    text:      'Kopieren',
+                    title:     'Export',
+                    titleAttr: 'Copy',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend:    'csvHtml5',
+                    text:      'CSV',
+                    title:     'Export',
+                    titleAttr: 'CSV',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend:    'pdfHtml5',
+                    text:      'PDF',
+                    title:     'Export',
+                    titleAttr: 'PDF',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend: 'print',
+                    text: 'Drucken',
+                    autoPrint: false,
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    text: 'Lagerlayout anlegen',
+                    className: 'btn-primary btn-xs btn3d float-start',
+                    action: function (e, dt, node, config) {
+                        addStockLayout();
+                    }
+                }
+            ],
+            dom: {
+                button: {
+                    className: 'btn'
+                },
+                buttonLiner: {
+                    tag: null
                 }
             }
-        ]
+        }
     });
 
     $.contextMenu({

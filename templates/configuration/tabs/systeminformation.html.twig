@@ -1,0 +1,282 @@
+{# templates/configuration/tabs/systeminformation.html.twig #}
+
+{% block webwms_configuration_overview_systeminformation_content %}
+    <div class="tab-pane form-box" id="systeminformation" role="tabpanel">
+        <form action="" method="post">
+            <fieldset class="form-group border p-3">
+                <legend class="w-auto px-2 float-none">
+                    <span class="mdi mdi-minus-box-outline"
+                          data-toggle="collapse"
+                          href="#systeminformation"
+                          aria-expanded="true"
+                          aria-controls="systeminformation">
+                    </span>Systeminformationen
+                </legend>
+                <div id="systeminformation" class="panel-collapse collapse show" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="display-flex" style="position:relative; overflow:auto;">
+                            <div class="col-xl-4 col-md-4" style="display: inline-grid; width: 49%">
+                                <div class="card" style="margin: 5px">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-xxl-12">
+                                                <span class="mb-3 lh-1 fs-26 fw-bold">Software</span>
+                                                <h5>System</h5>
+                                                <ul>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">webWMS Version:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.software.webWms_version }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">webWMS Revision:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.software.webWms_version_number }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Symfony Version:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.software.webWms_symfony_version }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+
+                                                <h5>Datenbank</h5>
+                                                <ul>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Treiber:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.sql.driver }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Server Version:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.sql.server_version }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Datenbank Name:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.sql.database_name }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+
+                                                <h5>Webserver</h5>
+                                                <ul>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Software:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.server.software }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Host:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.server.name }} ({{ systemInformation.server.addr }}:{{ systemInformation.server.port }})
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+
+                                                <h5>Umgebung</h5>
+                                                <ul>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Username:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.env.username }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Home-Directory:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.env.home_dir }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Document-Root:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.env.document_root }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Script-Owner/-Group:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.env.script_owner }}:{{ systemInformation.env.script_group }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-md-4" style="display: inline-grid; width: 49%">
+                                <div class="card" style="margin: 5px">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-xxl-12">
+                                                <span class="mb-3 lh-1 fs-26 fw-bold">PHP</span>
+                                                <h5>Generell</h5>
+                                                <ul>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Version:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.php.general.version }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Version Id:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.php.general.version_id }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Major Version:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.php.general.version_major }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Minor Version:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.php.general.version_minor }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Release Version:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.php.general.version_release }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Server-API:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.php.general.server_api }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">Binary-Pfad:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.php.general.binary_dir }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li style="list-style-type: circle;">
+                                                        <div class="display-flex">
+                                                            <div class="with-40">php.ini Pfad:</div>
+                                                            <div>
+                                                                <code>
+                                                                    {{ systemInformation.php.general.php_ini_dir }}
+                                                                </code>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+
+                                                <h5>Einstellungen</h5>
+                                                <ul>
+                                                    <li><code>{{ systemInformation.php.settings.0.setting }} = {{ systemInformation.php.settings.0.raw_value }}</code></li>
+                                                    <li><code>{{ systemInformation.php.settings.1.setting }} = {{ systemInformation.php.settings.1.raw_value }}</code></li>
+                                                    <li><code>{{ systemInformation.php.settings.2.setting }} = {{ systemInformation.php.settings.2.raw_value }}</code></li>
+                                                    <li><code>{{ systemInformation.php.settings.3.setting }} = {{ systemInformation.php.settings.3.raw_value }}</code></li>
+                                                    <li><code>{{ systemInformation.php.settings.4.setting }} = {{ systemInformation.php.settings.4.raw_value }}</code></li>
+                                                </ul>
+
+                                                <h5>Erweiterungen</h5>
+                                                <p class="padding-top-bottom-20">
+                                                    {% for key, value in systemInformation.php.extensions.loaded %}
+                                                        <code>{{ key }},</code>
+                                                    {% endfor %}
+                                                </p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

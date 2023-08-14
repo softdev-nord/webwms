@@ -81,17 +81,18 @@ final class SupplierServiceTest extends TestCase
     public function testGetAllSuppliersAjax(): void
     {
         $jsonResponse = $this->createMock(JsonResponse::class);
+        $supplierNrInput = '123';
 
         $this->supplierDataHandler->expects(self::once())
             ->method('getSuppliers')
             ->willReturn($jsonResponse);
 
-        $result = $this->supplierService->getAllSuppliersAjax();
+        $result = $this->supplierService->getAllSuppliersAjax($supplierNrInput);
 
         self::assertSame($jsonResponse, $result);
     }
 
-    public function testAddSupplierCallsDataHandlerMethod(): void
+    public function testAddSupplier(): void
     {
         $article = new Supplier();
         $this->supplierDataHandler
@@ -102,7 +103,7 @@ final class SupplierServiceTest extends TestCase
         $this->supplierService->addSupplier($article);
     }
 
-    public function testUpdateSupplierCallsDataHandlerMethod(): void
+    public function testUpdateSupplier(): void
     {
         $supplier = new Supplier();
         $this->supplierDataHandler
@@ -113,7 +114,7 @@ final class SupplierServiceTest extends TestCase
         $this->supplierService->updateSupplier($supplier);
     }
 
-    public function testDeleteSupplierCallsDataHandlerMethod(): void
+    public function testDeleteSupplier(): void
     {
         $supplier = new Supplier();
         $this->supplierDataHandler

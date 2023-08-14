@@ -49,42 +49,33 @@ class SupplierDataHandler
             ->findOneBy(['supplierNr' => $supplierNr]);
     }
 
-    public function getSuppliers(): JsonResponse
+    /**
+     * Get all Customers for Ajax-Request.
+     */
+    public function getSuppliers(string|null $supplierNrInput): JsonResponse
     {
-        $connection = $this->entityManager->getConnection();
-        $numOfBoxSupplier = filter_input(INPUT_GET, 'numOfBoxSupplier') !== null ? filter_input(INPUT_GET, 'numOfBoxSupplier') : '';
-
-        $boxName = match ($numOfBoxSupplier) {
-            'supplier_name' => 'supplier_name',
-            'supplier_address_addition' => 'supplier_address_addition',
-            'supplier_address_street' => 'supplier_address_street',
-            'supplier_address_street_nr' => 'supplier_address_street_nr',
-            'supplier_address_country_code' => 'supplier_address_country_code',
-            'supplier_address_zipcode' => 'supplier_address_zipcode',
-            'supplier_address_city' => 'supplier_address_city',
-            default => 'supplier_nr',
-        };
-
         $data = [];
-        if (filter_input(INPUT_GET, 'name_supplier') !== null) {
-            $nameSupplier = strtolower(trim(strval(filter_input(INPUT_GET, 'name_supplier'))));
+        if ($supplierNrInput !== null) {
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder
+                ->select('s')
+                ->from(Supplier::class, 's')
+                ->where('s.supplierNr LIKE :supplier_nr')
+                ->setParameter(':supplier_nr', '' . $supplierNrInput . '%');
 
-            $sql = "SELECT supplier_nr, supplier_name, supplier_address_addition, supplier_address_street,
-                            supplier_address_street_nr, supplier_address_country_code, supplier_address_zipcode,
-                            supplier_address_city, supplier_id 
-                        FROM supplier where LOWER($boxName) LIKE '" . $nameSupplier . "%'";
-            $stmt = $connection->executeQuery($sql);
+            $suppliers = $queryBuilder->getQuery()->getArrayResult();
 
-            while ($rowSupplier = $stmt->fetchAssociative()) {
-                $nameSupplier = $rowSupplier['supplier_nr'] . '|' .
-                    $rowSupplier['supplier_name'] . '|' .
-                    $rowSupplier['supplier_address_addition'] . '|' .
-                    $rowSupplier['supplier_address_street'] . '|' .
-                    $rowSupplier['supplier_address_street_nr'] . '|' .
-                    $rowSupplier['supplier_address_country_code'] . '|' .
-                    $rowSupplier['supplier_address_zipcode'] . '|' .
-                    $rowSupplier['supplier_address_city'] . '|' .
-                    $rowSupplier['supplier_id'];
+            foreach ($suppliers as $supplier) {
+                $nameSupplier = $supplier['supplierId'] . ' | ' .
+                    $supplier['supplierNr'] . ' | ' .
+                    $supplier['supplierName'] . ' | ' .
+                    $supplier['supplierAddressAddition'] . ' | ' .
+                    $supplier['supplierAddressStreet'] . ' | ' .
+                    $supplier['supplierAddressStreetNr'] . ' | ' .
+                    $supplier['supplierAddressCountryCode'] . ' | ' .
+                    $supplier['supplierAddressZipcode'] . ' | ' .
+                    $supplier['supplierAddressCity'] . ' | ' .
+                    $supplier['supplierId'];
 
                 $data[] = $nameSupplier;
             }
@@ -92,6 +83,52 @@ class SupplierDataHandler
 
         return new JsonResponse($data);
     }
+
+    /*    public function getSuppliers(): JsonResponse
+        {
+            $connection = $this->entityManager->getConnection();
+            $numOfBoxSupplier = filter_input(INPUT_GET, 'numOfBoxSupplier') !== null ? filter_input(INPUT_GET, 'numOfBoxSupplier') : '';
+
+            //dd($numOfBoxSupplier);
+
+            $boxName = match ($numOfBoxSupplier) {
+                'supplier_name' => 'supplier_name',
+                'supplier_address_addition' => 'supplier_address_addition',
+                'supplier_address_street' => 'supplier_address_street',
+                'supplier_address_street_nr' => 'supplier_address_street_nr',
+                'supplier_address_country_code' => 'supplier_address_country_code',
+                'supplier_address_zipcode' => 'supplier_address_zipcode',
+                'supplier_address_city' => 'supplier_address_city',
+                default => 'supplier_nr',
+            };
+
+            $data = [];
+            if (filter_input(INPUT_GET, 'name_supplier') !== null) {
+                $nameSupplier = strtolower(trim(strval(filter_input(INPUT_GET, 'name_supplier'))));
+
+                $sql = "SELECT supplier_nr, supplier_name, supplier_address_addition, supplier_address_street,
+                                supplier_address_street_nr, supplier_address_country_code, supplier_address_zipcode,
+                                supplier_address_city, supplier_id
+                            FROM supplier where LOWER($boxName) LIKE '" . $nameSupplier . "%'";
+                $stmt = $connection->executeQuery($sql);
+
+                while ($rowSupplier = $stmt->fetchAssociative()) {
+                    $nameSupplier = $rowSupplier['supplier_nr'] . ' | ' .
+                        $rowSupplier['supplier_name'] . ' | ' .
+                        $rowSupplier['supplier_address_addition'] . ' | ' .
+                        $rowSupplier['supplier_address_street'] . ' | ' .
+                        $rowSupplier['supplier_address_street_nr'] . ' | ' .
+                        $rowSupplier['supplier_address_country_code'] . ' | ' .
+                        $rowSupplier['supplier_address_zipcode'] . ' | ' .
+                        $rowSupplier['supplier_address_city'] . ' | ' .
+                        $rowSupplier['supplier_id'];
+
+                    $data[] = $nameSupplier;
+                }
+            }
+
+            return new JsonResponse($data);
+        }*/
 
     /**
      * @return array<mixed>

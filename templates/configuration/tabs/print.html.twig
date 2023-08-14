@@ -1,0 +1,23 @@
+{# templates/configuration/tabs/print.html.twig #}
+
+{% block webwms_configuration_overview_print_content %}
+    <div class="tab-pane form-box" id="print_settings" role="tabpanel">
+        <form action="" method="post">
+            <fieldset class="form-group border p-3">
+                <legend class="w-auto px-2 float-none">
+                    <span class="mdi mdi-minus-box-outline"
+                          data-toggle="collapse"
+                          href="#print_settings"
+                          aria-expanded="true"
+                          aria-controls="print_settings">
+                    </span>Druckeinstellungen
+                </legend>
+                <div id="print_settings" class="panel-collapse collapse show" role="tabpanel">
+                    <div class="panel-body">
+                        Hier wird der Content für die Druckeinstellungen platziert.
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

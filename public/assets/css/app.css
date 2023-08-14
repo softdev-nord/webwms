@@ -70,7 +70,7 @@
     --webwms-heading-color: #495057;
     --webwms-link-color: #25a0e2;
     --webwms-link-hover-color: #25a0e2;
-    --webwms-border-color: #475158;
+    --webwms-border-color: #c0c0c0;
     --webwms-card-bg-custom: #fff;
     --webwms-card-logo-dark: block;
     --webwms-card-logo-light: none;
@@ -85,6 +85,7 @@
 }
 :root .nav-tabs {
     --webwms-nav-tabs-link-active-bg: transparent;
+    padding: 0;
 }
 :root .choices, :root .flatpickr-calendar, :root .ck, :root .ql-toolbar, :root .select2-container, :root .menu-dropdown {
     --webwms-choices-bg: #fff;

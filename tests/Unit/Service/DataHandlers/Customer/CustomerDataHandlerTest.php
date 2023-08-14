@@ -161,7 +161,7 @@ final class CustomerDataHandlerTest extends TestCase
         self::assertEquals($customers, $result);
     }
 
-    public function testGetArticle(): void
+    public function testGetCustomer(): void
     {
         $customerNrInput = '12345';
 

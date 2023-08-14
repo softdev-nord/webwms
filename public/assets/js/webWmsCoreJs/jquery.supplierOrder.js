@@ -53,38 +53,52 @@
             }
         ],
         dom: 'Bfrtip',
-        buttons: [
-            {
-                extend:    'copyHtml5',
-                text:      'Kopieren',
-                title:     'Export',
-                titleAttr: 'Copy'
-            },
-            {
-                extend:    'csvHtml5',
-                text:      'CSV',
-                title:     'Export',
-                titleAttr: 'CSV'
-            },
-            {
-                extend:    'pdfHtml5',
-                text:      'PDF',
-                title:     'Export',
-                titleAttr: 'PDF'
-            },
-            {
-                extend: 'print',
-                text: 'Drucken',
-                autoPrint: false
-            },
-            {
-                text: 'Bestellung anlegen',
-                className: 'btn-add-new',
-                action: function (e, dt, node, config) {
-                    addSupplierOrder();
+        buttons: {
+            buttons: [
+                {
+                    extend:    'copyHtml5',
+                    text:      'Kopieren',
+                    title:     'Export',
+                    titleAttr: 'Copy',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend:    'csvHtml5',
+                    text:      'CSV',
+                    title:     'Export',
+                    titleAttr: 'CSV',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend:    'pdfHtml5',
+                    text:      'PDF',
+                    title:     'Export',
+                    titleAttr: 'PDF',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend: 'print',
+                    text: 'Drucken',
+                    autoPrint: false,
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    text: 'Bestellung anlegen',
+                    className: 'btn-primary btn-xs btn3d float-start',
+                    action: function (e, dt, node, config) {
+                        addSupplierOrder();
+                    }
+                }
+            ],
+            dom: {
+                button: {
+                    className: 'btn'
+                },
+                buttonLiner: {
+                    tag: null
                 }
             }
-        ]
+        }
     });
 
     $.contextMenu({
@@ -156,18 +170,18 @@
         const content = '<div class="modal-body"></div>';
 
         $('#modalCenter .modal-title').text('Bestellung bearbeiten');
-        $("#modal-content-ajax").html(content);
+        $('#modal-content-ajax').html(content);
         $('#modalCenter').modal('show');
 
         $.ajax({
             url: url,
-            type: "get",
+            type: 'GET',
             data: ($('#supplier-order-form-edit').serialize()),
             error: function (xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
             },
             success: function (data) {
-                $("#modal-content-ajax").html(data);
+                $('#modal-content-ajax').html(data);
             }
         });
 
@@ -402,14 +416,25 @@
             }
         ],
         dom: 'Bfrtip',
-        buttons: [
-            {
-                extend:    'copyHtml5',
-                text:      'Kopieren',
-                title:     'Export',
-                titleAttr: 'Copy'
+        buttons: {
+            buttons: [
+                {
+                    extend:    'copyHtml5',
+                    text:      'Kopieren',
+                    title:     'Export',
+                    titleAttr: 'Copy',
+                    className: 'btn-primary btn-xs btn3d'
+                }
+            ],
+            dom: {
+                button: {
+                    className: 'btn'
+                },
+                buttonLiner: {
+                    tag: null
+                }
             }
-        ]
+        }
     });
 
     // Durch Auswahl einer Zeile in der Bestellungs-Tabelle wird die Positions-Tabelle mit den entsprechenden Daten geladen.

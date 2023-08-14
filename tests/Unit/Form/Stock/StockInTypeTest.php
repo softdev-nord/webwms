@@ -30,7 +30,7 @@ final class StockInTypeTest extends TestCase
             ->expects(self::exactly(1))
             ->method('add')
             ->withConsecutive(
-                ['article_id', HiddenType::class, self::anything()],
+                ['articleId', HiddenType::class, self::anything()],
                 ['article_nr', TextType::class, self::anything()],
                 ['standard_loading_equipment', ChoiceType::class, self::anything()],
                 ['le_quantity', TextType::class, self::anything()],

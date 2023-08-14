@@ -35,13 +35,13 @@ class DeleteCustomerType extends AbstractType
             ->add('delete', ButtonType::class, [
                 'label' => 'Löschen',
                 'attr' => [
-                    'class' => 'btn btn-lg',
+                    'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
                 'label' => 'Abbrechen',
                 'attr' => [
-                    'class' => 'btn btn-lg abort',
+                    'class' => 'btn btn-primary btn3d abort',
                 ],
             ])
         ;

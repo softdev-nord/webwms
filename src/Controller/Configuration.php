@@ -21,7 +21,7 @@ class Configuration extends AbstractController
 {
     public function __construct(
         private readonly ConfigurationService $configurationService,
-        private readonly RequirementsService $requirementsService,
+        private readonly RequirementsService $requirementsService
     ) {
     }
 
@@ -42,7 +42,8 @@ class Configuration extends AbstractController
             'appLizenz' => $this->requirementsService->getAppLizenz(),
             'generalConfiguration' => $generalConfiguration->createView(),
             'page' => 'Einstellungen',
-            'configuration' => $this->configurationService->getAllConfigurations(),
+            'configurations' => $this->configurationService->getAllConfigurations(),
+            'systemInformation' => $this->configurationService->prepareSystemInformation(),
         ]);
     }
 }

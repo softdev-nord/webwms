@@ -3,32 +3,11 @@ const suppliersAutofill = (function () {
     function getNumOfBoxSupplier(type) {
         let numOfBoxSupplier;
         switch (type) {
-            case 'supplier_nr':
+            case 'supplierNr':
                 numOfBoxSupplier = 0;
                 break;
-            case 'supplier_name':
+            case 'supplierName':
                 numOfBoxSupplier = 1;
-                break;
-            case 'supplier_address_addition':
-                numOfBoxSupplier = 2;
-                break;
-            case 'supplier_address_street':
-                numOfBoxSupplier = 3;
-                break;
-            case 'supplier_address_street_nr':
-                numOfBoxSupplier = 4;
-                break;
-            case 'supplier_country_code':
-                numOfBoxSupplier = 5;
-                break;
-            case 'supplier_zip_code':
-                numOfBoxSupplier = 6;
-                break;
-            case 'supplier_city':
-                numOfBoxSupplier = 7;
-                break;
-            case 'supplier_id':
-                numOfBoxSupplier = 8;
                 break;
             default:
                 break;
@@ -65,11 +44,12 @@ const suppliersAutofill = (function () {
 
                         if (res.length) {
                             result = $.map(res, function (obj) {
-                                const arr = obj.split("|");
+                                const arr = obj.split(' | ');
                                 return {
                                     label: arr[numOfBoxSupplier],
                                     value: arr[numOfBoxSupplier],
-                                    data: obj
+                                    data: obj,
+                                    itemDetail: obj.split(' | ', 3)
                                 };
                             });
                         }
@@ -82,17 +62,17 @@ const suppliersAutofill = (function () {
             select: function (event, ui) {
                 let resArraySupplier;
                 //Splittung des resArraySupplier Arrays
-                resArraySupplier = ui.item.data.split("|");
+                resArraySupplier = ui.item.data.split(' | ');
 
-                $('#supplier_nr').val(resArraySupplier[0]);
-                $('#supplier_supplierName').val(resArraySupplier[1]);
-                $('#supplier_supplierAddressAddition').val(resArraySupplier[2]);
-                $('#supplier_supplierAddressStreet').val(resArraySupplier[3]);
-                $('#supplier_supplierAddressStreetNr').val(resArraySupplier[4]);
-                $('#supplier_supplierAddressCountryCode').val(resArraySupplier[5]);
-                $('#supplier_supplierAddressZipcode').val(resArraySupplier[6]);
-                $('#supplier_supplierAddressCity').val(resArraySupplier[7]);
-                $('#supplier_supplierId').val(resArraySupplier[8]);
+                $('#supplier_supplierNr').val(resArraySupplier[1]);
+                $('#supplier_supplierName').val(resArraySupplier[2]);
+                $('#supplier_supplierAddressAddition').val(resArraySupplier[3]);
+                $('#supplier_supplierAddressStreet').val(resArraySupplier[4]);
+                $('#supplier_supplierAddressStreetNr').val(resArraySupplier[5]);
+                $('#supplier_supplierAddressCountryCode').val(resArraySupplier[6]);
+                $('#supplier_supplierAddressZipcode').val(resArraySupplier[7]);
+                $('#supplier_supplierAddressCity').val(resArraySupplier[8]);
+                $('#supplier_supplierId').val(resArraySupplier[9]);
             }
         });
     }

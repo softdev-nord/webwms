@@ -27,23 +27,23 @@ class StockInType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('article_id', HiddenType::class, [
+            ->add('articleId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'article_id',
-                    'data-type' => 'article_id',
+                    'id' => 'articleId',
+                    'data-type' => 'articleId',
                 ],
             ])
-            ->add('article_nr', TextType::class, [
+            ->add('articleNr', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control autocomplete_items ui-autocomplete-input',
-                    'id' => 'article_nr',
-                    'data-type' => 'article_nr',
+                    'id' => 'articleNr',
+                    'data-type' => 'articleNr',
                 ],
             ])
-            ->add('standard_loading_equipment', ChoiceType::class, [
+            ->add('standardLoadingEquipment', ChoiceType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-select',
@@ -54,7 +54,7 @@ class StockInType extends AbstractType
                     'BLOCK' => 'BLOCK',
                 ],
             ])
-            ->add('le_quantity', TextType::class, [
+            ->add('leQuantity', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',

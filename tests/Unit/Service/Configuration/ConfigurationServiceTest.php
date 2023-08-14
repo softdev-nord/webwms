@@ -23,10 +23,18 @@ final class ConfigurationServiceTest extends TestCase
 
     private MockObject $configurationDataHandler;
 
+    private string $appVersion = 'Enterprise Version';
+
+    private string $appVersionNumber = '2.0.0';
+
     protected function setUp(): void
     {
         $this->configurationDataHandler = $this->createMock(ConfigurationDataHandler::class);
-        $this->configurationService = new ConfigurationService($this->configurationDataHandler);
+        $this->configurationService = new ConfigurationService(
+            $this->configurationDataHandler,
+            $this->appVersion,
+            $this->appVersionNumber
+        );
     }
 
     public function testGetAllConfigurations(): void

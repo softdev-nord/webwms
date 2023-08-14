@@ -55,38 +55,55 @@
             },
         ],
         dom: 'Bfrtip',
-        buttons: [
-            {
-                extend:    'copyHtml5',
-                text:      'Kopieren',
-                title:     'Export',
-            },
-            {
-                extend:    'csvHtml5',
-                text:      'CSV',
-                title:     'Export',
-            },
-            {
-                extend:    'pdfHtml5',
-                text:      'PDF',
-                title:     'Export',
-            },
-            {
-                extend: 'print',
-                text: 'Drucken',
-                autoPrint: false
-            },
-            {
-                text: 'Artikel anlegen',
-                className: 'btn-add-new',
-                action: function(e, dt, node, config) {
-                    addArticle();
+        buttons: {
+            buttons: [
+                {
+                    extend:    'copyHtml5',
+                    text:      'Kopieren',
+                    title:     'Export',
+                    titleAttr: 'Copy',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend:    'csvHtml5',
+                    text:      'CSV',
+                    title:     'Export',
+                    titleAttr: 'CSV',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend:    'pdfHtml5',
+                    text:      'PDF',
+                    title:     'Export',
+                    titleAttr: 'PDF',
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    extend: 'print',
+                    text: 'Drucken',
+                    autoPrint: false,
+                    className: 'btn-primary btn-xs btn3d'
+                },
+                {
+                    text: 'Artikel anlegen',
+                    className: 'btn-primary btn-xs btn3d float-start',
+                    action: function(e, dt, node, config) {
+                        addArticle();
+                    }
+                }
+            ],
+            dom: {
+                button: {
+                    className: 'btn'
+                },
+                buttonLiner: {
+                    tag: null
                 }
             }
-        ],
+        }
     });
 
-/*    $.contextMenu({
+    $.contextMenu({
         selector: 'tr',
         trigger: 'right',
         callback: function(key, options, event) {
@@ -114,7 +131,7 @@
                 icon: 'delete'
             },
         }
-    });*/
+    });
 
     $(function(){
         // Ändern der Standardbreite des Modals

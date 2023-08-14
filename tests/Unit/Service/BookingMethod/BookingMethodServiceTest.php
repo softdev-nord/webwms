@@ -98,10 +98,10 @@ final class BookingMethodServiceTest extends TestCase
             ->method('getData')
             ->willReturn([
             'quantity' => 10,
-            'le_quantity' => 2,
-            'standard_loading_equipment' => 'KARTON',
+            'leQuantity' => 2,
+            'standardLoadingEquipment' => 'KARTON',
             'charge' => 'ABC123',
-            'article_nr' => '12345',
+            'articleNr' => '12345',
         ]);
 
         $this->formFactory

@@ -184,9 +184,12 @@ class Supplier extends AbstractController
     }
 
     #[Route('/order_supplier_ajax', name: 'order_supplier_ajax')]
-    public function getAllSuppliersAjax(): JsonResponse
+    public function getAllSuppliersAjax(Request $request): JsonResponse
     {
-        return $this->supplierService->getAllSuppliersAjax();
+
+        $supplierNrInput = (string) $request->query->get('name_supplier');
+
+        return $this->supplierService->getAllSuppliersAjax($supplierNrInput);
     }
 
     public function getLastSupplier(): int
