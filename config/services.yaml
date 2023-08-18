@@ -37,6 +37,8 @@ services:
             string $returnPath: '%returnPath%'
             string $mailCopy: '%mailCopy%'
             string $webHost: '%webHost%'
+            string $bundleDir: '/var/www/html/module'
+            string $projectDir: '%kernel.project_dir%'
 
     Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 

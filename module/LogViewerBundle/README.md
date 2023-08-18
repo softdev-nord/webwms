@@ -3,7 +3,7 @@
 ## Konfiguration
 
 ```php
-// config/bundles.php
+// config/modules.php
 return [
     ...
     WebWMS\Bundles\LogViewerBundle\LogViewerBundle::class => ['all' => true],

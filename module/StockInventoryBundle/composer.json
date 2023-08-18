@@ -1,8 +1,8 @@
 {
   "name": "webwms/stock-inventory",
-  "description": "Stock inventory",
+  "description": "WebWMS Inventur Modul",
   "version": "1.0.0",
-  "type": "symfony-bundle",
+  "type": "webwms-module",
   "license": "MIT",
   "authors": [
     {
@@ -10,15 +10,15 @@
     }
   ],
   "extra": {
-    "webwms-plugin-class": "WebWMS\\StockInventoryBundle\\StockInventoryBundle",
+    "webwms-module-class": "WebWMS\\StockInventoryBundle\\StockInventoryBundle",
     "copyright": "(c) SoftDev Nord",
     "label": {
-      "de-DE": "Inventur Plugin",
-      "en-GB": "Stock inventory plugin"
+      "de-DE": "WebWMS Inventur Modul",
+      "en-GB": "Stock inventory module"
     },
     "description": {
-      "de-DE": "Inventur plugin für WebWMS",
-      "en-GB": "Stock inventory plugin for WebWMS"
+      "de-DE": "Inventur Modul für WebWMS",
+      "en-GB": "Stock inventory module for WebWMS"
     }
   },
   "autoload": {

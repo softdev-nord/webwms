@@ -15,7 +15,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->phpstanConfig(__DIR__ . '/phpstan.neon');
 
     $rectorConfig->paths([
-        __DIR__ . '/bundles',
+        __DIR__ . '/module',
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ]);

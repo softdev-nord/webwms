@@ -17,6 +17,7 @@
         "ext-simplexml": "*",
         "ext-zend-opcache": "*",
         "api-platform/core": "^3.1",
+        "composer/composer": "^2.4.4",
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.10",
@@ -78,7 +79,7 @@
     "autoload": {
         "psr-4": {
             "WebWMS\\": "src/",
-            "WebWMS\\Bundles\\": "bundles/"
+            "WebWMS\\Bundles\\": "module/"
         }
     },
     "autoload-dev": {
