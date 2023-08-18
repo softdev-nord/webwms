@@ -1076,3 +1076,85 @@ a:hover {
 .sw-field--checkbox.sw-field__checkbox--ghost.is--disabled .sw-field__checkbox input[type=checkbox]:not(:checked)~.sw-field__checkbox-state .sw-icon {
     color: #d1d9e0
 }
+
+
+.module-listing .module-listing-listing-grid .module-card {
+    margin: 0 auto 8px;
+}
+.module-card {
+    max-width: 90%;
+    margin: 0 auto 10px;
+    position: relative;
+    background: var(--webwms-header-bg);
+    color: var(--webwms-body-color);
+    border-radius: 8px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.08), 0 2px 1px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
+}
+
+.module-card .module-card-content {
+    position: relative;
+    line-height: 22px;
+    font-size: 14px;
+}
+
+.module-card-base .module-card-content .module-card-content-wrapper {
+    display: grid;
+    grid-column-gap: 24px;
+    grid-template-columns: 56px 56px 5fr 2fr minmax(min-content,1fr) auto;
+    align-items: center;
+    padding: 16px 32px;
+    border: none;
+}
+
+.module-card .module-card-content-wrapper {
+    padding: 24px 32px;
+}
+
+.module-card-base .module-card-base-info {
+}
+
+.module-card-base .module-card-base-info-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.module-card-base .module-card-base-info-description {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.module-card-base .module-icon {
+    width: 20%;
+}
+
+.module-card-base .module-card-base-meta-info {
+    font-size: 12px;
+    text-align: right;
+}
+
+.module-card-base .module-card-base-main-action {
+    white-space: nowrap;
+    text-align: center;
+}
+
+.module-context-button {
+    display: inline-block;
+    position: relative;
+    color: var(--webwms-body-color);
+}
+
+.module-context-button .module-context-button-button.is--active, .module-context-button .module-context-button-button:hover {
+    border-color: #d1d9e0;
+}
+
+.module-context-button .module-context-button-button {
+    color: var(--webwms-body-color);
+    background: 0 none;
+    border: 1px solid var(--webwms-body-color);
+    border-radius: 4px;
+    cursor: pointer;
+    height: 24px;
+    line-height: 20px;
+    padding: 0 8px;
+    outline: none;
+}
