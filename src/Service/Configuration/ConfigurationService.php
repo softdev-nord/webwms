@@ -4,8 +4,18 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Configuration;
 
+use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Connection;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use WebWMS\Entity\Module as ModuleEntity;
+use WebWMS\Components\Module\Module;
+use WebWMS\Components\YamlReader;
+use WebWMS\Event\Configuration\BeforeSystemConfigChangedEvent;
+use WebWMS\Event\Configuration\SystemConfigChangedEvent;
+use WebWMS\Exception\ModuleConfigNotFoundException;
 use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
+use WebWMS\Service\DateTimeService;
 
 /**
  * @package:    WebWMS\Service
@@ -16,9 +26,14 @@ use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
 class ConfigurationService
 {
     public function __construct(
+        private readonly Connection $connection,
         private readonly ConfigurationDataHandler $configurationDataHandler,
+        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly string $appVersion,
         private readonly string $appVersionNumber,
+        private readonly YamlReader $yamlReader,
+        private readonly ModuleEntity $module,
+        private readonly DateTimeService $dateTimeService
     ) {
     }
 
@@ -349,5 +364,147 @@ class ConfigurationService
             'K' => (int) $phpValue * 1024,
             default => (int) $phpValue,
         };
+    }
+
+    /**
+     * Fetches default values from bundle configuration and saves it to database
+     */
+    public function saveModuleConfiguration(Module $module): void
+    {
+        try {
+            $config = $this->getConfigFromModule($module);
+        } catch (\Exception) {
+            return;
+        }
+
+        $prefix = $module->getName() . '.config.';
+
+        $this->saveConfig($config, $prefix);
+    }
+
+    /**
+     * @param array<mixed> $config
+     */
+    public function saveConfig(array $config, string $prefix): void
+    {
+        foreach ($config as $card) {
+            foreach ($card['elements'] as $element) {
+                $key = $prefix . $element['name'];
+                if (!isset($element['defaultValue'])) {
+                    continue;
+                }
+
+                $this->set($key, $card);
+            }
+        }
+    }
+
+    /**
+     * @throws ModuleConfigNotFoundException
+     * @return array<mixed>
+     */
+    public function getConfigFromModule(Module $module, ?string $moduleConfigName = null): array
+    {
+        if ($moduleConfigName === null) {
+            $moduleConfigName = 'Resources/config/config.yaml';
+        } else {
+            $moduleConfigName = 'Resources/config/' . preg_replace('/\\.yaml$/i', '', $moduleConfigName) . '.yaml';
+        }
+        $configPath = $module->getPath() . '/' . ltrim($moduleConfigName, '/');
+
+        if (!is_file($configPath)) {
+            throw new ModuleConfigNotFoundException($moduleConfigName, $module->getName());
+        }
+
+        return $this->yamlReader->read($configPath);
+    }
+
+    /**
+     * @param float|bool|int|string|array<mixed>|null $value
+     */
+    public function set(string $key, array|float|bool|int|string|null $value): void
+    {
+        $this->setMultiple([$key => $value]);
+    }
+
+    /**
+     * @param array<string, array<mixed>|bool|float|int|string|null> $values
+     */
+    public function setMultiple(array $values): void
+    {
+        $existingIds = $this->connection
+            ->fetchAllKeyValue(
+                'SELECT label, id FROM configuration WHERE label IN (:configurationLabels)',
+                [
+                    'configurationLabels' => array_keys($values),
+                ],
+                [
+                    'configurationLabels' => ArrayParameterType::STRING,
+                ]
+            );
+
+        $events = [];
+
+        foreach ($values as $key => $value) {
+            $key = trim($key);
+
+            if (isset($existingIds[$key])) {
+                $this->connection->update(
+                    'system_config',
+                    [
+                        'configuration_value' => json_encode(['_value' => $value]),
+                        'updated_at' => $this->module->setUpdatedAt($this->dateTimeService->createDateTime())
+                    ],
+                    [
+                        'id' => $existingIds[$key],
+                    ]
+                );
+
+                continue;
+            }
+
+            $insertQueue->addInsert(
+                'system_config',
+                [
+                    'configuration_key' => $key,
+                    'configuration_value' => json_encode(['_value' => $value]),
+                    'created_at' =>$this->module->setCreatedAt($this->dateTimeService->createDateTime()),
+                ],
+            );
+
+            $events[] = new SystemConfigChangedEvent($key, $value);
+        }
+    }
+
+    public function deleteModuleConfiguration(Module $bundle): void
+    {
+        try {
+            $config = $this->getConfigFromModule($bundle);
+        } catch (\Exception) {
+            return;
+        }
+
+        $this->deleteExtensionConfiguration($bundle->getName(), $config);
+    }
+
+    /**
+     * @param array<mixed> $config
+     */
+    public function deleteExtensionConfiguration(string $extensionName, array $config): void
+    {
+        $prefix = $extensionName . '.config.';
+
+        $configKeys = [];
+        foreach ($config as $card) {
+            foreach ($card['elements'] as $element) {
+                $configKeys[] = $prefix . $element['name'];
+            }
+        }
+
+        if (!$configKeys) {
+            return;
+        }
+
+        $this->setMultiple(array_fill_keys($configKeys, null));
     }
 }

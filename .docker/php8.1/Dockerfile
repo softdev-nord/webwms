@@ -26,6 +26,7 @@ RUN apt-get -y update && \
     libsqlite3-dev \
     libsqlite3-0 && \
     apt-get -y --no-install-recommends install default-mysql-client \
+    libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
     zlib1g-dev \
     libzip-dev \
     libxslt-dev \
@@ -88,7 +89,7 @@ RUN if [ ${INSTALL_OPCACHE} = true ]; then \
 ###########################################################################
 # Other PHP Extensions
 ###########################################################################
-RUN PHP_EXTENSIONS="pdo pdo_mysql mysqli curl zip intl mbstring gettext exif xml" \
+RUN PHP_EXTENSIONS="pdo pdo_mysql mysqli curl zip intl mbstring gettext exif xml gd" \
     && docker-php-ext-install ${PHP_EXTENSIONS} \
     && docker-php-ext-enable ${PHP_EXTENSIONS}
 RUN pecl install pcov \

@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace WebWMS\Components\Module;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\Bundle as SymfonyModule;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use WebWMS\Components\Module\Context\ActivateContext;
+use WebWMS\Components\Module\Context\DeactivateContext;
+use WebWMS\Components\Module\Context\InstallContext;
+use WebWMS\Components\Module\Context\UninstallContext;
+use WebWMS\Components\Module\Context\UpdateContext;
 
 /**
  * @package:    WebWMS\Components\Module
@@ -15,8 +22,11 @@ use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter
  */
 abstract class Module extends SymfonyModule
 {
+    final public const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+
+    private bool $active = false;
+
     final public function __construct(
-        private readonly bool $active,
         private string $basePath,
         ?string $projectDir = null
     ) {
@@ -25,6 +35,62 @@ abstract class Module extends SymfonyModule
         }
 
         $this->path = $this->computeModuleClassPath();
+    }
+
+    final public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function install(InstallContext $installContext): void
+    {
+    }
+
+    public function postInstall(InstallContext $installContext): void
+    {
+    }
+
+    public function update(UpdateContext $updateContext): void
+    {
+    }
+
+    public function postUpdate(UpdateContext $updateContext): void
+    {
+    }
+
+    public function activate(ActivateContext $activateContext): void
+    {
+    }
+
+    public function deactivate(DeactivateContext $deactivateContext): void
+    {
+    }
+
+    public function uninstall(UninstallContext $uninstallContext): void
+    {
+    }
+
+    public function configureRoutes(RoutingConfigurator $routes, string $environment): void
+    {
+        $fileSystem = new Filesystem();
+        $confDir = $this->getPath() . '/Resources/config';
+
+        if ($fileSystem->exists($confDir)) {
+            $routes->import($confDir . '/{routes}/*' . self::CONFIG_EXTS, 'glob');
+            $routes->import($confDir . '/{routes}/' . $environment . '/**/*' . self::CONFIG_EXTS, 'glob');
+            $routes->import($confDir . '/{routes}' . self::CONFIG_EXTS, 'glob');
+            $routes->import($confDir . '/{routes}_' . $environment . self::CONFIG_EXTS, 'glob');
+        }
+    }
+
+    public function configureRouteOverwrites(RoutingConfigurator $routes, string $environment): void
+    {
+        $fileSystem = new Filesystem();
+        $confDir = $this->getPath() . '/Resources/config';
+
+        if ($fileSystem->exists($confDir)) {
+            $routes->import($confDir . '/{routes_overwrite}' . self::CONFIG_EXTS, 'glob');
+        }
     }
 
     public function getMigrationNamespace(): string
@@ -46,11 +112,6 @@ abstract class Module extends SymfonyModule
     final public function getContainerPrefix(): string
     {
         return (new CamelCaseToSnakeCaseNameConverter())->normalize($this->getName());
-    }
-
-    final public function isActive(): bool
-    {
-        return $this->active;
     }
 
     public function getBasePath(): string

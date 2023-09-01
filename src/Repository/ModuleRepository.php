@@ -6,6 +6,7 @@ namespace WebWMS\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use WebWMS\Components\Module\ModuleCollection;
 use WebWMS\Entity\Module;
 
 /**
@@ -22,8 +23,14 @@ use WebWMS\Entity\Module;
 class ModuleRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry $registry
+        ManagerRegistry $registry,
+        protected ModuleCollection $entities,
     ) {
         parent::__construct($registry, Module::class);
+    }
+
+    public function getEntities(): ModuleCollection
+    {
+        return $this->entities;
     }
 }

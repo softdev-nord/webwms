@@ -24,11 +24,11 @@ services:
         public: true         // <---- This is the new additional config.
 
         bind:
-            $appName: '%env(APP_NAME)%'
-            $appVersion: '%env(APP_VERSION)%'
-            $appVersionNumber: '%env(APP_VERSION_NUMBER)%'
-            $appCopyright: '%env(APP_COPYRIGHT)%'
-            $appLizenz: '%env(APP_LIZENZ)%'
+            string $appName: '%env(APP_NAME)%'
+            string $appVersion: '%env(APP_VERSION)%'
+            string $appVersionNumber: '%env(APP_VERSION_NUMBER)%'
+            string $appCopyright: '%env(APP_COPYRIGHT)%'
+            string $appLizenz: '%env(APP_LIZENZ)%'
             # Resolve issue:  Cannot autowire service : argument of method "__construct()" is type-hinted "string", you should configure its value explicitly.
             string $publicDirectory: '%publicUploadDirectory%'
             string $targetDirectory: '%uploadDirectory%'
@@ -48,7 +48,6 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
-            - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
 
@@ -121,3 +120,16 @@ services:
     twig.extension.debug:
         class: Twig\Extension\DebugExtension
         tags: [ { name: 'twig.extension' } ]
+    
+    web_wms.components.module.module_config_generator_interface:
+        class: WebWMS\Components\Module\ModuleConfigGeneratorInterface
+    
+    WebWMS\Components\Module\ModuleConfigGeneratorInterface: '@web_wms.components.module.module_config_generator_interface'
+    
+    web_wms.components.module.module:
+        class: WebWMS\Components\Module\Module
+        arguments:
+            $basePath: '%asset.request_context.base_path%'
+        
+    WebWMS\Components\Module\Module: '@web_wms.components.module.module'
+

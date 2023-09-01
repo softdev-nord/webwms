@@ -1,0 +1,852 @@
+config:
+  card:
+    - title:
+        - Header
+      input-field:
+        - name: headerStyle
+          options:
+            option:
+              - id: shopware
+                name:
+                  - Shopware
+              - id: core
+                name:
+                  - Core
+          defaultValue: shopware
+          label:
+            - Header Style
+            - Header-Variante
+        - name: alcoAccountWidget
+          defaultValue: true
+          label:
+            - Enable Login Modal Form
+            - Modales Anmeldeformular aktivieren
+        - name: alcoCartLayout
+          options:
+            option:
+              - id: default
+                name:
+                  - Shopware
+              - id: core
+                name:
+                  - Core Theme
+          defaultValue: core
+          label:
+            - Offcanvas Cart Style
+    - title:
+        - Navigation
+      input-field:
+        - name: dropdown
+          options:
+            option:
+              - id: default
+                name:
+                  - Shopware
+                  - Shopware
+              - id: core
+                name:
+                  - Core
+                  - Core
+          defaultValue: core
+          label:
+            - Dropdown Style
+        - name: headerStickyNav
+          defaultValue: true
+          label:
+            - Enable sticky navigation
+            - Sticky-Navigation aktivieren
+    - title:
+        - After logo text (HEADER)
+      input-field:
+        name: isAfterLogoShow
+        defaultValue: true
+        label:
+          - Show block
+          - Block anzeigen
+      component:
+        - name: afterLogoHead
+          label:
+            - Headline
+            - Headline
+          snippet: alco.header.afterlogo.head
+        - name: afterLogoText
+          label:
+            - Text
+            - Text
+          snippet: alco.header.afterlogo.text
+    - title:
+        - Contact/Locations (HEADER)
+        - Kontakt/Standorte
+      input-field:
+        name: contactHeader
+        defaultValue: true
+        label:
+          - Show block
+          - Block anzeigen
+      component:
+        name: buttonContactText
+        label:
+          - Button text
+          - Schaltflächentext
+        snippet: alco.topbar.contact.buttonContactText
+    - title:
+        - Advertising banner
+        - Werbebanner
+      input-field:
+        name: announcementbanner
+        defaultValue: true
+        label:
+          - Enable ad banner display
+          - Werbebanner aktivieren
+      component:
+        name: announcementbannerText
+        label:
+          - Announcement Banner content
+          - Inhalt des Ankündigungsbanners
+        snippet: alco.announcementbanner.text
+    - title:
+        - Our advantages (HEADER)
+        - Unsere Vorzüge (HEADER)
+      input-field:
+        - name: isUspBarShow
+          options:
+            option:
+              - id: false
+                name:
+                  - Not show
+                  - Nicht zeigen
+              - id: top
+                name:
+                  - Show above Headers
+                  - Top
+              - id: after
+                name:
+                  - Show after Main Menu
+                  - nach Hauptmenü
+          defaultValue: top
+          label:
+            - Activate the block Our advantages in the header of the site?
+            - >-
+              Aktivieren Sie den Block Unsere Vorteile in der Kopfzeile der
+              Seite?
+        - name: uspbaricon1
+          defaultValue: fas fa-truck
+          copyable: true
+          label:
+            - Icon for the first item
+            - Symbol für das erste Element
+          placeholder:
+            - fas fa-truck
+            - fas fa-truck
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: uspbaricon2
+          defaultValue: fas fa-undo-alt
+          copyable: true
+          label:
+            - Icon for the second item
+            - Symbol für das zweite Element
+          placeholder:
+            - fas fa-undo-alt
+            - fas fa-undo-alt
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: uspbaricon3
+          defaultValue: fas fa-hands-helping
+          copyable: true
+          label:
+            - Icon for the third item
+            - Symbol für das dritte Element
+          placeholder:
+            - fas fa-hands-helping
+            - fas fa-hands-helping
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: uspbaricon4
+          defaultValue: fab fa-expeditedssl
+          copyable: true
+          label:
+            - Icon for the fourth item
+            - Symbol für das vierte Element
+          placeholder:
+            - fab fa-expeditedssl
+            - fab fa-expeditedssl
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+      component:
+        - name: uspbartext1
+          label:
+            - Text for the first item
+            - Text für das erste Element
+          snippet: alco.header.usp.usp1
+        - name: uspbartext2
+          label:
+            - Text for the second item
+            - uspbartext 2
+          snippet: alco.header.usp.usp2
+        - name: uspbartext3
+          label:
+            - Text for the third item
+            - Text für das dritte Element
+          snippet: alco.header.usp.usp3
+        - name: uspbartext4
+          label:
+            - Text for the fourth item
+            - Text für das vierte Element
+          snippet: alco.header.usp.usp4
+    - title:
+        - Listing page
+        - Auflistungsseite
+      input-field:
+        - name: alcoSidebarTitleShow
+          defaultValue: true
+          label:
+            - Show title in sidebar
+            - Titel in der Sidebar anzeigen
+        - name: productCard
+          options:
+            option:
+              - id: shopware
+                name:
+                  - Shopware
+                  - Shopware
+              - id: core
+                name:
+                  - Core Theme
+                  - Core Theme
+          defaultValue: core
+          label:
+            - Product Card
+            - Produktkarte
+      component:
+        name: alcoSidebarTitle
+        label:
+          - Title
+          - Title
+        snippet: general.categories
+    - title:
+        - Categories
+        - Kategorien
+      component:
+        name: shopCatalogId
+        entity: category
+        label:
+          - Specify the menu item for the product catalog.
+          - Geben Sie den Menüpunkt für den Produktkatalog an.
+    - title:
+        - Product Card - Core Theme
+        - Produktkarte - Core Theme
+      input-field:
+        - name: productImageRatio
+          options:
+            option:
+              - id: min
+                name:
+                  - Min
+                  - Min.
+              - id: max
+                name:
+                  - Max
+                  - Max.
+              - id: avg
+                name:
+                  - Avg.
+                  - Durchschnitt
+          defaultValue: avg
+          label:
+            - Leveling Height
+            - Nivellierhöhe
+        - name: productImageObjectFit
+          options:
+            option:
+              - id: product-image-cover
+                name:
+                  - cover
+                  - cover
+              - id: product-image-contain
+                name:
+                  - contain
+                  - contain
+          defaultValue: product-image-cover
+          label:
+            - Object-fit
+            - Object-fit
+        - name: productImageObjectPostion
+          options:
+            option:
+              - id: product-image-top
+                name:
+                  - top
+                  - top
+              - id: product-image-center
+                name:
+                  - center
+                  - center
+          defaultValue: product-image-center
+          label:
+            - Object-position
+            - Object-position
+    - title:
+        - Product item
+        - Produktkarte
+      input-field:
+        - name: productBoxHover
+          defaultValue: true
+          label:
+            - Change the product’s image by mouseover?
+            - Produktbild bei Mouseover ändern?
+        - name: isBrandShow
+          defaultValue: true
+          label:
+            - Show product brand
+            - Produktmarke anzeigen
+        - name: productPriceFormat
+          defaultValue: true
+          label:
+            - Enable price formatting
+            - Aktivieren Sie die Preisformatierung
+        - name: isDescriptionShow
+          defaultValue: false
+          label:
+            - Show product description
+            - Produktbeschreibung anzeigen
+        - name: isCharacteristicsShow
+          defaultValue: false
+          label:
+            - Show product characteristics
+            - Produkteigenschaften anzeigen
+        - name: isPriceUnitShow
+          defaultValue: false
+          label:
+            - Show product price unit
+            - Produktpreiseinheit anzeigen
+        - name: isPriceCheapestShow
+          defaultValue: false
+          label:
+            - Show product price cheapest
+            - Produktpreis am günstigsten anzeigen
+    - title:
+        - Product Detail
+        - Produktdetail
+      input-field:
+        - name: isProductDetailCustom
+          defaultValue: true
+          label:
+            - Enable product detail page optimization
+            - Optimierung der Produktdetailseite aktivieren
+        - name: productDetailImageZoom
+          defaultValue: true
+          label:
+            - Deactivate Image Zoom
+            - Bildzoom deaktivieren
+        - name: isBrandLogoShow
+          defaultValue: true
+          label:
+            - Show brand logo
+            - Markenlogo zeigen
+    - title:
+        - Our advantages (FOOTER)
+        - Unsere Vorzüge (FOOTER)
+      input-field:
+        - name: isFooterUspBarShow
+          defaultValue: true
+          label:
+            - Activate the block Our advantages in the footer of the site?
+            - >-
+              Aktivieren Sie den Block Unsere Vorteile in der Fußzeile der
+              Website?
+        - name: uspfooterbaricon1
+          defaultValue: fas fa-star
+          copyable: true
+          label:
+            - Icon for the first item
+            - Symbol für das erste Element
+          placeholder:
+            - fas fa-star
+            - fas fa-star
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: uspfooterbaricon2
+          defaultValue: fas fa-warehouse
+          copyable: true
+          label:
+            - Icon for the second item
+            - Symbol für das zweite Element
+          placeholder:
+            - fas fa-warehouse
+            - fas fa-warehouse
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: uspfooterbaricon3
+          defaultValue: fas fa-shipping-fast
+          copyable: true
+          label:
+            - Icon for the third item
+            - Symbol für das dritte Element
+          placeholder:
+            - fas fa-shipping-fast
+            - fas fa-shipping-fast
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: uspfooterbaricon4
+          defaultValue: fab fa-expeditedssl
+          copyable: true
+          label:
+            - Icon for the fourth item
+            - Symbol für das vierte Elemen
+          placeholder:
+            - fab fa-expeditedssl
+            - fab fa-expeditedssl
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: uspfooterbaricon5
+          defaultValue: fas fa-hands-helping
+          copyable: true
+          label:
+            - Icon for the fifth item
+            - Symbol für das fünfte Element
+          placeholder:
+            - fas fa-hands-helping
+            - fas fa-hands-helping
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+      component:
+        - name: uspfooterbartitle
+          label:
+            - Headline
+            - Überschrift
+          snippet: alco.footer.usp.title
+        - name: uspfooterbaritem1text
+          label:
+            - Headline for the first item
+            - Überschrift für das erste Element
+          snippet: alco.footer.usp.item1.text
+        - name: uspfooterbaritem1desc
+          label:
+            - Text for the first item
+            - Text für das erste Element
+          snippet: alco.footer.usp.item1.desc
+        - name: uspfooterbaritem2text
+          label:
+            - Headline for the second item
+            - Überschrift für das zweite Element
+          snippet: alco.footer.usp.item2.text
+        - name: uspfooterbaritem2desc
+          label:
+            - Text for the second item
+            - Text für das zweite Element
+          snippet: alco.footer.usp.item2.desc
+        - name: uspfooterbaritem3text
+          label:
+            - Headline for the third item
+            - Überschrift für das dritte Element
+          snippet: alco.footer.usp.item3.text
+        - name: uspfooterbaritem3desc
+          label:
+            - Text for the third item
+            - Text für das dritte Element
+          snippet: alco.footer.usp.item3.desc
+        - name: uspfooterbaritem4text
+          label:
+            - Headline for the fourth item
+            - Überschrift für das vierte Element
+          snippet: alco.footer.usp.item4.text
+        - name: uspfooterbaritem4desc
+          label:
+            - Text for the fourth item
+            - Text für das vierte Element
+          snippet: alco.footer.usp.item4.desc
+        - name: uspfooterbaritem5text
+          label:
+            - Headline for the fifth item
+            - Überschrift für das fünfte Element
+          snippet: alco.footer.usp.item5.text
+        - name: uspfooterbaritem5desc
+          label:
+            - Text for the fifth item
+            - Text für das fünfte Element
+          snippet: alco.footer.usp.item5.desc
+    - title:
+        - Contact info (FOOTER)
+        - Kontaktinformation (FOOTER)
+      input-field:
+        - name: isShowFooterContact
+          defaultValue: true
+          label:
+            - Show contact information
+            - Kontaktdaten anzeigen
+        - name: footerContactIcon1
+          defaultValue: fa-solid fa-location-arrow
+          copyable: true
+          label:
+            - Icon for the first item
+            - Symbol für das erste Element
+          placeholder:
+            - fa-solid fa-location-arrow
+            - fa-solid fa-location-arrow
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: footerContactIcon2
+          defaultValue: fa-solid fa-envelope
+          copyable: true
+          label:
+            - Icon for the second item
+            - Symbol für das zweite Element
+          placeholder:
+            - fa-solid fa-envelope
+            - fa-solid fa-envelope
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: footerContactIcon3
+          defaultValue: fa-solid fa-phone
+          copyable: true
+          label:
+            - Icon for the third item
+            - Symbol für das dritte Element
+          placeholder:
+            - fa-solid fa-phone
+            - fa-solid fa-phone
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: footerContactIcon4
+          defaultValue: fa-solid fa-clock
+          copyable: true
+          label:
+            - Icon for the fourth item
+            - Symbol für das vierte Elemen
+          placeholder:
+            - fa-solid fa-clock
+            - fa-solid fa-clock
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: footerContactIcon5
+          defaultValue: fa-solid fa-circle-info
+          copyable: true
+          label:
+            - Icon for the fifth item
+            - Symbol für das fünfte Element
+          placeholder:
+            - fa-solid fa-circle-info
+            - fa-solid fa-circle-info
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+      component:
+        - name: uspfooterbaritem1text
+          label:
+            - Headline for the first item
+            - Überschrift für das erste Element
+          snippet: alco.footer.contact.item1.text
+        - name: uspfooterbaritem2text
+          label:
+            - Headline for the second item
+            - Überschrift für das zweite Element
+          snippet: alco.footer.contact.item2.text
+        - name: uspfooterbaritem3text
+          label:
+            - Headline for the third item
+            - Überschrift für das dritte Element
+          snippet: alco.footer.contact.item3.text
+        - name: uspfooterbaritem4text
+          label:
+            - Headline for the fourth item
+            - Überschrift für das vierte Element
+          snippet: alco.footer.contact.item4.text
+        - name: uspfooterbaritem5text
+          label:
+            - Headline for the fifth item
+            - Überschrift für das fünfte Element
+          snippet: footer.serviceContactLink
+    - title:
+        - Footer Newsletter Block
+        - Footer-Newsletter-Block
+      input-field:
+        name: isShowNewsletterBlock
+        defaultValue: true
+        label:
+          - Show newsletter subscription box?
+          - Newsletter-Anmeldung-Box anzeigen?
+      component:
+        - name: newsletterhelptitle
+          label:
+            - Headline
+            - Überschrift
+          snippet: alco.footer.newsletter.title
+        - name: newsletterhelptext
+          label:
+            - Help text
+            - Hilfstext
+          snippet: alco.footer.newsletter.helptext
+        - name: newslettersubmit
+          label:
+            - Button text
+            - Schaltflächentext
+          snippet: alco.footer.newsletter.submit
+    - title:
+        - Social Configuration
+        - Soziale Konfiguration
+      input-field:
+        - name: youtube
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon1
+          copyable: true
+          label:
+            - Icon for the first item
+            - Symbol für das erste Element
+          placeholder:
+            - fa-brands fa-youtube
+            - fa-brands fa-youtube
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: facebook
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon2
+          copyable: true
+          label:
+            - Icon for the second item
+            - Symbol für das zweite Element
+          placeholder:
+            - fa-brands fa-facebook
+            - fa-brands fa-facebook
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: twitter
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon3
+          copyable: true
+          label:
+            - Icon for the third item
+            - Symbol für das dritte Element
+          placeholder:
+            - fa-brands fa-twitter
+            - fa-brands fa-twitter
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: instagram
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon4
+          copyable: true
+          label:
+            - Icon for the fourth item
+            - Symbol für das vierte Element
+          placeholder:
+            - fa-brands fa-instagram
+            - fa-brands fa-instagram
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: whatsapp
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon5
+          copyable: true
+          label:
+            - Icon for the fifth item
+            - Symbol für das fünfte Element
+          placeholder:
+            - fa-brands fa-whatsapp
+            - fa-brands fa-whatsapp
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: pinterest
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon6
+          copyable: true
+          label:
+            - Icon for the sixth item
+            - Symbol für das sechste Element
+          placeholder:
+            - fa-brands fa-pinterest
+            - fa-brands fa-pinterest
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: google
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon7
+          copyable: true
+          label:
+            - Icon for the seventh item
+            - Symbol für das siebte Element
+          placeholder:
+            - fa-brands fa-google
+            - fa-brands fa-google
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: tiktok
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon8
+          copyable: true
+          label:
+            - Icon for the eighth item
+            - Symbol für das achte Element
+          placeholder:
+            - fa-brands fa-tiktok
+            - fa-brands fa-tiktok
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: linkedin
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon9
+          copyable: true
+          label:
+            - Icon for the ninth item
+            - Symbol für das neunte Element
+          placeholder:
+            - fa-brands fa-linkedin
+            - fa-brands fa-linkedin
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: discord
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon10
+          copyable: true
+          label:
+            - Icon for the tenth item
+            - Symbol für das zehnte Element
+          placeholder:
+            - fa-brands fa-discord
+            - fa-brands fa-discord
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: kickstarter
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon11
+          copyable: true
+          label:
+            - Icon for the eleventh item
+            - Symbol für das elfte Element
+          placeholder:
+            - fa-brands fa-kickstarter
+            - fa-brands fa-kickstarter
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+        - name: facebookmessanger
+          copyable: true
+          label:
+            - Enter your URL
+            - Geben Sie Ihre URL ein
+          placeholder:
+            - '#'
+            - '#'
+        - name: socialicon12
+          copyable: true
+          label:
+            - Icon for the twelfth item
+            - Symbol für das zwölfte Element
+          placeholder:
+            - fa-brands fa-facebook-messenger
+            - fa-brands fa-facebook-messenger
+          helpText:
+            - Specify FontAwesome Classes
+            - Geben Sie FontAwesome-Klassen an
+    - title:
+        - Copyright
+        - Urheberrechte
+      component:
+        name: footercopyrightInfo
+        label:
+          - Copyright
+          - Urheberrechte
+        snippet: footer.copyrightInfo
+      input-field:
+        name: isShowFooterDate
+        defaultValue: true
+        label:
+          - Add a display of the current year
+          - Fügen Sie eine Anzeige des aktuellen Jahres hinzu
+    - title:
+        - Google Tag Manager
+        - Google Tag Manager
+      input-field:
+        - name: alcoGTMHead
+          label: Head
+        - name: alcoGTMBody
+          label: Body
