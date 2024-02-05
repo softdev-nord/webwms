@@ -120,16 +120,4 @@ services:
     twig.extension.debug:
         class: Twig\Extension\DebugExtension
         tags: [ { name: 'twig.extension' } ]
-    
-    web_wms.components.module.module_config_generator_interface:
-        class: WebWMS\Components\Module\ModuleConfigGeneratorInterface
-    
-    WebWMS\Components\Module\ModuleConfigGeneratorInterface: '@web_wms.components.module.module_config_generator_interface'
-    
-    web_wms.components.module.module:
-        class: WebWMS\Components\Module\Module
-        arguments:
-            $basePath: '%asset.request_context.base_path%'
-        
-    WebWMS\Components\Module\Module: '@web_wms.components.module.module'
 

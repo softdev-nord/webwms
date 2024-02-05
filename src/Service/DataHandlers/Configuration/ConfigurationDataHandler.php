@@ -54,9 +54,7 @@ class ConfigurationDataHandler
             ->select('*')
             ->from('configuration');
 
-        $stmt = $queryBuilder->executeQuery();
-
-        return $stmt->fetchAllAssociative();
+        return $queryBuilder->executeQuery()->fetchAllAssociative();
     }
 
     /**
