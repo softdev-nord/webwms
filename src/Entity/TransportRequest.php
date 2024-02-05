@@ -467,7 +467,7 @@ class TransportRequest
         return $this->confirmationState;
     }
 
-    public function setConfirmationState(null|int $confirmationState): self
+    public function setConfirmationState(int|null $confirmationState): self
     {
         $this->confirmationState = $confirmationState;
 
@@ -479,7 +479,7 @@ class TransportRequest
         return $this->trUsername;
     }
 
-    public function setTrUsername(null|string $trUsername): self
+    public function setTrUsername(string|null $trUsername): self
     {
         $this->trUsername = $trUsername;
 
@@ -503,7 +503,7 @@ class TransportRequest
         return $this->trBlocked;
     }
 
-    public function setTrBlocked(null|bool $trBlocked): self
+    public function setTrBlocked(bool|null $trBlocked): self
     {
         $this->trBlocked = $trBlocked;
 
@@ -527,7 +527,7 @@ class TransportRequest
         return $this->trEdited;
     }
 
-    public function setTrEdited(null|bool $trEdited): self
+    public function setTrEdited(bool|null $trEdited): self
     {
         $this->trEdited = $trEdited;
 

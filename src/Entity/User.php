@@ -206,7 +206,7 @@ class User implements UserInterface, GroupAwareUser
         return $this->lastLogin;
     }
 
-    public function setLastLogin(\DateTime $time = null): void
+    public function setLastLogin(?\DateTime $time = null): void
     {
         $this->lastLogin = $time;
     }

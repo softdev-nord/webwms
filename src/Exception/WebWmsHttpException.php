@@ -26,12 +26,12 @@ abstract class WebWmsHttpException extends HttpException implements WebWmsExcept
     public function __construct(
         string $message,
         array $parameters = [],
-        ?\Throwable $e = null
+        ?\Throwable $exeption = null
     ) {
         $this->parameters = $parameters;
         $message = $this->parse($message, $parameters);
 
-        parent::__construct($this->getStatusCode(), $message, $e);
+        parent::__construct($this->getStatusCode(), $message, $exeption);
     }
 
     public function getStatusCode(): int
@@ -39,7 +39,7 @@ abstract class WebWmsHttpException extends HttpException implements WebWmsExcept
         return Response::HTTP_INTERNAL_SERVER_ERROR;
     }
 
-    public function getErrors(bool $withTrace = false): \Generator
+    public function getErrors(bool $withTrace): \Generator
     {
         yield $this->getCommonErrorData($withTrace);
     }
@@ -55,7 +55,7 @@ abstract class WebWmsHttpException extends HttpException implements WebWmsExcept
     /**
      * @return mixed|null
      */
-    public function getParameter(string $key)
+    public function getParameter(string $key): mixed
     {
         return $this->parameters[$key] ?? null;
     }
@@ -63,7 +63,7 @@ abstract class WebWmsHttpException extends HttpException implements WebWmsExcept
     /**
      * @return array{status: numeric-string, code: string, title: mixed, detail: string, meta: array{parameters: array<string, mixed>}, trace?: array<int, mixed>}
      */
-    protected function getCommonErrorData(bool $withTrace = false): array
+    protected function getCommonErrorData(bool $withTrace): array
     {
         $error = [
             'status' => (string) $this->getStatusCode(),

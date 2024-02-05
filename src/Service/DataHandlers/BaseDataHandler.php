@@ -35,6 +35,8 @@ class BaseDataHandler
     }
 
     /**
+     * @SuppressWarnings("unused")
+     *
      * @param array<string, mixed> $criteria
      * @param array<string, string>|null $orderBy
      */
@@ -44,10 +46,12 @@ class BaseDataHandler
     }
 
     /**
+     * @SuppressWarnings("unused")
+     *
      * @param array<string, mixed> $criteria
      * @param array<string, string>|null $orderBy
      */
-    protected function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): object
+    protected function findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): object
     {
         return $this;
     }

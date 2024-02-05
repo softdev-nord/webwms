@@ -68,7 +68,7 @@ interface UserInterface extends PasswordAuthenticatedUserInterface, BaseUserInte
     /**
      * Setzt die letzte Anmeldezeit.
      */
-    public function setLastLogin(\DateTime $time = null): void;
+    public function setLastLogin(?\DateTime $time = null): void;
 
     /**
      * Verwenden Sie dies niemals, um zu prüfen, ob dieser Benutzer Zugriff auf irgendetwas hat!

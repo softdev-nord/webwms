@@ -307,16 +307,6 @@ class ConfigurationService
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 
-    private function getPhpMaxExecutionTimeValue(): string
-    {
-        $maxExecutionTime = @ini_get('fastcgi_read_timeout'); // Nginx
-        if (!$maxExecutionTime) {
-            $maxExecutionTime = @ini_get('max_execution_time');
-        }
-
-        return $maxExecutionTime;
-    }
-
     public function getPostMaxSizeValue(): string
     {
         $postMaxSize = ini_get('client_max_body_size');
@@ -348,5 +338,15 @@ class ConfigurationService
             'K' => (int) $phpValue * 1024,
             default => (int) $phpValue,
         };
+    }
+
+    private function getPhpMaxExecutionTimeValue(): string
+    {
+        $maxExecutionTime = @ini_get('fastcgi_read_timeout'); // Nginx
+        if (!$maxExecutionTime) {
+            $maxExecutionTime = @ini_get('max_execution_time');
+        }
+
+        return $maxExecutionTime;
     }
 }

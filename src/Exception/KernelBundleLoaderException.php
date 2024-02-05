@@ -13,12 +13,12 @@ namespace WebWMS\Exception;
 class KernelBundleLoaderException extends WebWmsHttpException
 {
     public function __construct(
-//        string $bundle,
-//        string $reason
+        //        string $bundle,
+        //        string $reason
     ) {
         parent::__construct(
             'Failed to load bundle "{{ bundle }}". Reason: {{ reason }}',
-//            ['bundle' => $bundle, 'reason' => $reason]
+            //            ['bundle' => $bundle, 'reason' => $reason]
         );
     }
 
