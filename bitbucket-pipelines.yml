@@ -113,19 +113,21 @@ definitions:
           - echo ${BITBUCKET_CLONE_DIR}
           - ls -la
           - apt-get update && apt-get install -y openssh-client rsync
-#          - rsync -avu --delete --stats -e ssh --exclude-from='ci/rsync.exclude' $BITBUCKET_CLONE_DIR/* $SSH_USER@$SSH_HOST:$HOST_DIR
-          - pipe: atlassian/scp-deploy:1.5.0
-            variables:
-              USER: $SSH_USER
-              SERVER: $SSH_HOST
-              REMOTE_PATH: $HOST_DIR
-              LOCAL_PATH: $BITBUCKET_CLONE_DIR/*
-#          - pipe: atlassian/ssh-run:0.4.2
+          - scp -r $BITBUCKET_CLONE_DIR/* $SSH_USER@$SSH_HOST:$HOST_DIR
+#          - pipe: atlassian/scp-deploy:1.5.0
 #            variables:
-#              SSH_USER: $SSH_USER
+#              USER: $SSH_USER
 #              SERVER: $SSH_HOST
-#              COMMAND: 'cd $ENVIRONMENT_DIR && /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install --ignore-platform-reqs --no-scripts'
-#              DEBUG: 'true'
+#              REMOTE_PATH: $HOST_DIR
+#              LOCAL_PATH: $BITBUCKET_CLONE_DIR/*
+          - pipe: atlassian/ssh-run:0.4.2
+            variables:
+              SSH_USER: $SSH_USER
+              SERVER: $SSH_HOST
+              COMMAND: 'cd $ENVIRONMENT_DIR && /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install --ignore-platform-reqs --no-scripts'
+              DEBUG: 'true'
+        artifacts:
+          - build/*
 pipelines:
   default:
     - parallel:
