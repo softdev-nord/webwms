@@ -25,6 +25,9 @@ LOCALE=${LOCALE}
 # otherwise the host name of your web server must be set, e.g. https://pve
 WEB_HOST=${WEB_HOST}
 
+EOF
+
+cat > $ENV_FILE << EOF
 ###> symfony/framework-bundle ###
 APP_ENV=${APP_ENV}
 APP_SECRET=af2b45ff237087d068938bb0858bddff
@@ -39,10 +42,16 @@ APP_COPYRIGHT=${APP_COPYRIGHT}
 APP_LIZENZ=${APP_LIZENZ}
 ###< webWMS ###
 
+EOF
+
+cat >> $ENV_FILE << EOF
 ###> doctrine/doctrine-bundle ###
 DATABASE_URL=${DATABASE_URL}
 ###< doctrine/doctrine-bundle ###
 
+EOF
+
+cat >> $ENV_FILE << EOF
 ### mailer settings ###
 FROM_MAIL=${FROM_MAIL}
 FROM_NAME=${FROM_NAME}
