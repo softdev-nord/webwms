@@ -71,6 +71,7 @@ definitions:
         caches:
           - composer
         script:
+          - apk update && apk add gettext
           - /bin/bash ci/set-env.sh
           - cat .env
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
@@ -86,7 +87,9 @@ definitions:
         caches:
           - composer
         script:
-          - /bin/bash ci/webwms-env.sh
+          - apk update && apk add gettext
+          - /bin/bash ci/set-env.sh
+          - cat .env
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
