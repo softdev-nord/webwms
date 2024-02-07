@@ -109,7 +109,7 @@ definitions:
     - step: &build-deploy
         name: Build and Deploy
         script:
-          - export ENVIRONMENT_DIR="$ENVIRONMENT_DIR"
+          - export ENVIRONMENT_DIR="${ENVIRONMENT_DIR}"
           - echo ${BITBUCKET_CLONE_DIR}
           - echo
           - apt-get update && apt-get install -y openssh-client rsync
