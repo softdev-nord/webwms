@@ -87,9 +87,9 @@ class LogViewerController extends AbstractController
             $message = $matches[4];
             $context = json_decode($matches[5]);
 
-            if ($qChannel && $channel !== $qChannel
-                || $qLevel && $level !== $qLevel
-                || $qDistinct && in_array($message, $messages, true)
+            if (($qChannel && $channel !== $qChannel)
+                || ($qLevel && $level !== $qLevel)
+                || ($qDistinct && in_array($message, $messages, true))
             ) {
                 continue;
             }
