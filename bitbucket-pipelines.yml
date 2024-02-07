@@ -132,6 +132,8 @@ definitions:
               DEBUG: 'true'
               ENV_VARS: >-
                 ENVIRONMENT_DIR=${ENVIRONMENT_DIR}
+                BITBUCKET_BRANCH=${BITBUCKET_BRANCH}
+                BITBUCKET_USER=${BITBUCKET_USER}
         artifacts:
           - build/*
 pipelines:
