@@ -71,6 +71,8 @@ definitions:
         caches:
           - composer
         script:
+          - export APP_ENV="${APP_ENV}"
+          - export APP_DEBUG="${APP_DEBUG}"
           - apk update && apk add gettext
           - /bin/bash ci/set-env.sh
           - cat .env
@@ -87,6 +89,8 @@ definitions:
         caches:
           - composer
         script:
+          - export APP_ENV="${APP_ENV}"
+          - export APP_DEBUG="${APP_DEBUG}"
           - apk update && apk add gettext
           - /bin/bash ci/set-env.sh
           - cat .env
