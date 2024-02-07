@@ -141,10 +141,12 @@ pipelines:
         - step: *unit-tests
     - step:
         <<: *build-deploy
+        name: Deploy to Development
         deployment: dev
         trigger: manual
     - step:
         <<: *build-deploy
+        name: Deploy to Staging
         deployment: stg
         trigger: manual
   branches:
