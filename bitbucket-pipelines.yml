@@ -141,11 +141,11 @@ pipelines:
         - step: *unit-tests
         - step:
             <<: *build-deploy
-            deployment: stg
+            deployment: dev
             trigger: manual
         - step:
             <<: *build-deploy
-            deployment: dev
+            deployment: stg
             trigger: manual
   branches:
     main:
@@ -162,15 +162,15 @@ pipelines:
     vulnerability-scan:
       - step:
           <<: *vulnerability-scan
-    production:
-      - step:
-          <<: *build-deploy
-          deployment: prod
-    staging:
-      - step:
-          <<: *build-deploy
-          deployment: stg
     development:
       - step:
           <<: *build-deploy
           deployment: dev
+    staging:
+      - step:
+          <<: *build-deploy
+          deployment: stg
+    production:
+      - step:
+          <<: *build-deploy
+          deployment: prod
