@@ -119,7 +119,7 @@ definitions:
               USER: $SSH_USER
               SERVER: $SSH_HOST
               REMOTE_PATH: $HOST_DIR
-              LOCAL_PATH: $BITBUCKET_CLONE_DIR/*
+              LOCAL_PATH: 'build/*'
 #          - pipe: atlassian/ssh-run:0.4.2
 #            variables:
 #              SSH_USER: $SSH_USER
@@ -127,7 +127,7 @@ definitions:
 #              COMMAND: 'cd $ENVIRONMENT_DIR && /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install --ignore-platform-reqs --no-scripts'
 #              DEBUG: 'true'
         artifacts:
-          - .env
+          - build/**
 pipelines:
   default:
     - parallel:
