@@ -3,10 +3,12 @@
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-rm -rf ${ENVIRONMENT_DIR}/
-mkdir ${ENVIRONMENT_DIR}
+environment_dir=${ENVIRONMENT_DIR}
 
-cd ${ENVIRONMENT_DIR}
+rm -rf ${environment_dir}/
+mkdir ${environment_dir}
+
+cd ${environment_dir}
 git clone -b ${BITBUCKET_BRANCH} https://${BITBUCKET_USER}@bitbucket.org/softdev-nord/webwms.git
 
 source after-build-deploy.sh
