@@ -110,13 +110,13 @@ definitions:
         name: Build and Deploy
         script:
           - echo ${BITBUCKET_CLONE_DIR}
-          - ls -la
+          - echo
           - apt-get update && apt-get install -y openssh-client rsync
 #          - scp -r $BITBUCKET_CLONE_DIR/* $SSH_USER@$SSH_HOST:$HOST_DIR
-          - ssh $SSH_USER@$SSH_HOST
-          - cd $HOST_DIR
-          - git clone -b $BITBUCKET_BRANCH https://softdev-nord@bitbucket.org/softdev-nord/webwms.git
-          - /bin/bash ci/webwms-env.sh
+#          - ssh $SSH_USER@$SSH_HOST
+#          - cd $HOST_DIR
+#          - git clone -b $BITBUCKET_BRANCH https://$BITBUCKET_USER@bitbucket.org/softdev-nord/webwms.git
+#          - /bin/bash ci/webwms-env.sh
 #          - pipe: atlassian/scp-deploy:1.5.0
 #            variables:
 #              USER: $SSH_USER
@@ -127,7 +127,8 @@ definitions:
             variables:
               SSH_USER: $SSH_USER
               SERVER: $SSH_HOST
-              COMMAND: 'cd $ENVIRONMENT_DIR && /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install --ignore-platform-reqs --no-scripts'
+              MODE: 'script'
+              COMMAND: 'ci/deploy.sh'
               DEBUG: 'true'
         artifacts:
           - build/*
