@@ -109,26 +109,14 @@ definitions:
     - step: &build-deploy
         name: Build and Deploy
         script:
-          - echo ${BITBUCKET_CLONE_DIR}
-          - echo
+          - ls -la
           - apt-get update && apt-get install -y openssh-client rsync
-#          - scp -r $BITBUCKET_CLONE_DIR/* $SSH_USER@$SSH_HOST:$HOST_DIR
-#          - ssh $SSH_USER@$SSH_HOST
-#          - cd $HOST_DIR
-#          - git clone -b $BITBUCKET_BRANCH https://$BITBUCKET_USER@bitbucket.org/softdev-nord/webwms.git
-#          - /bin/bash ci/webwms-env.sh
-#          - pipe: atlassian/scp-deploy:1.5.0
-#            variables:
-#              USER: $SSH_USER
-#              SERVER: $SSH_HOST
-#              REMOTE_PATH: $HOST_DIR
-#              LOCAL_PATH: $BITBUCKET_CLONE_DIR/*
           - pipe: atlassian/ssh-run:0.4.2
             variables:
               SSH_USER: $SSH_USER
               SERVER: $SSH_HOST
               MODE: 'script'
-              COMMAND: 'ci/deploy.sh'
+              COMMAND: 'ci/deploy.sh && ci/webwms-env.sh'
               DEBUG: 'true'
               ENV_VARS: >-
                 ENVIRONMENT_DIR=${ENVIRONMENT_DIR}
@@ -136,7 +124,7 @@ definitions:
                 BITBUCKET_USER=${BITBUCKET_USER}
                 BITBUCKET_PASSWORD=${BITBUCKET_PASSWORD}
         artifacts:
-          - build/*
+          - .env
 pipelines:
   default:
     - parallel:
