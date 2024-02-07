@@ -3,8 +3,6 @@
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-environment_dir=${ENVIRONMENT_DIR}
-
 rm -rf ${ENVIRONMENT_DIR}/
 mkdir ${ENVIRONMENT_DIR}
 
