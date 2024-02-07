@@ -139,14 +139,14 @@ pipelines:
         - step: *twig-lint
         - step: *yaml-lint
         - step: *unit-tests
-        - step:
-            <<: *build-deploy
-            deployment: dev
-            trigger: manual
-        - step:
-            <<: *build-deploy
-            deployment: stg
-            trigger: manual
+    - step:
+        <<: *build-deploy
+        deployment: dev
+        trigger: manual
+    - step:
+        <<: *build-deploy
+        deployment: stg
+        trigger: manual
   branches:
     main:
       - step: *code-style
