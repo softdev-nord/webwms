@@ -134,6 +134,7 @@ definitions:
                 ENVIRONMENT_DIR=${ENVIRONMENT_DIR}
                 BITBUCKET_BRANCH=${BITBUCKET_BRANCH}
                 BITBUCKET_USER=${BITBUCKET_USER}
+                BITBUCKET_PASSWORD=${BITBUCKET_PASSWORD}
         artifacts:
           - build/*
 pipelines:
