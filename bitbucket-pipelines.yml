@@ -71,8 +71,8 @@ definitions:
         caches:
           - composer
         script:
-          - export APP_ENV=$APP_ENV
-          - export APP_DEBUG=$APP_DEBUG
+          - export APP_ENV=${APP_ENV}
+          - export APP_DEBUG=${APP_DEBUG}
           - apk update && apk add gettext
           - envsubst < ci/set-env.sh
           - /bin/bash ci/set-env.sh
@@ -90,8 +90,8 @@ definitions:
         caches:
           - composer
         script:
-          - export APP_ENV=$APP_ENV
-          - export APP_DEBUG=$APP_DEBUG
+          - export APP_ENV=${APP_ENV}
+          - export APP_DEBUG=${APP_DEBUG}
           - apk update && apk add gettext
           - envsubst < ci/set-env.sh
           - /bin/bash ci/set-env.sh
