@@ -67,7 +67,6 @@ definitions:
 
     - step: &twig-lint
         name: Check Templates
-        image: composer:2
         caches:
           - composer
         script:
@@ -86,7 +85,6 @@ definitions:
     
     - step: &yaml-lint
         name: Yaml lint
-        image: composer:2
         caches:
           - composer
         script:
