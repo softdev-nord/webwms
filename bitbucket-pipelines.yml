@@ -67,10 +67,10 @@ definitions:
 
     - step: &twig-lint
         name: Check Templates
-        caches:
-          - composer
+        image: composer:2
         script:
           - apk update && apk add gettext
+          - echo "export APP_ENV=$APP_ENV" >> ci/set-env.sh
           - >-
             /bin/bash ci/set-env.sh
             $APP_ENV
@@ -85,10 +85,10 @@ definitions:
     
     - step: &yaml-lint
         name: Yaml lint
-        caches:
-          - composer
+        image: composer:2
         script:
           - apk update && apk add gettext
+          - echo "export APP_ENV=$APP_ENV" >> ci/set-env.sh
           - >-
             /bin/bash ci/set-env.sh
             $APP_ENV
