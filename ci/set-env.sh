@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 LOCALE=de
 APP_ENV=$1
@@ -33,12 +33,22 @@ WEB_HOST=${WEB_HOST}
 EOF
 
 cat > $ENV_FILE << EOF
+###> composer/composer ###
+COMPOSER_HOME=/var/www/html/var/cache/composer
+###< composer/composer ###
+
+EOF
+
+cat > $ENV_FILE << EOF
 ###> symfony/framework-bundle ###
 APP_ENV=$APP_ENV
 APP_SECRET=af2b45ff237087d068938bb0858bddff
 APP_DEBUG=$APP_DEBUG
 ###< symfony/framework-bundle ###
 
+EOF
+
+cat >> $ENV_FILE << EOF
 ###> webWMS ###
 APP_NAME=$APP_NAME
 APP_VERSION=$APP_VERSION
@@ -71,6 +81,9 @@ MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
 ### mailer settings ###
 
+EOF
+
+cat >> $ENV_FILE << EOF
 ###> symfony/mailer ###
 # e.g. smtp://username:password@yourdomain.tld:port
 MAILER_DSN=${MAILER_DSN}
