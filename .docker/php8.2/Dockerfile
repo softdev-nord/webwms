@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 LABEL maintainer="Rene Irrgang <info@softdev-nord.de>"
 
@@ -53,7 +53,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 ARG INSTALL_XDEBUG=false
 
 RUN if [ ${INSTALL_XDEBUG} = true ]; then \
-    pecl install xdebug-3.1.4 && \
+    pecl install xdebug-3.3.1 && \
     docker-php-ext-enable xdebug \
 ;fi
 
@@ -104,7 +104,7 @@ RUN a2enmod rewrite headers ssl
 # Workdir and user
 ###########################################################################
 WORKDIR /var/www/html
-ENV USER_NAME="webWMS"
+ENV USER_NAME="sdn"
 ENV WORKING_DIRECTORY="/var/www/html"
 
 ###########################################################################
