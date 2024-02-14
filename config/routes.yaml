@@ -4,15 +4,15 @@
 
 article:
     path: /artikel
-    controller: WebWMS\Controller\Article::index
+    controller: WebWMS\Controller\ArticleController::index
 
 article_ajax:
     path: /article_ajax
-    controller: WebWMS\Controller\Article::getAllArticles
+    controller: WebWMS\Controller\ArticleController::getAllArticles
 
 show_stock_location_details:
     path: /show_stock_location_details
-    controller: WebWMS\Controller\Stock::getSockLocationDetailsById
+    controller: WebWMS\Controller\StockController::getSockLocationDetailsById
 
 stock_inventory_start:
     path: /inventur_starten
@@ -28,11 +28,11 @@ stock_inventory_close:
 
 stock_in_final:
     path: /stock_in_final
-    controller: WebWMS\Controller\StockTransactions::stockInFinal
+    controller: WebWMS\Controller\StockTransactionController::stockInFinal
 
 dashboard:
     path: /dashboard
-    controller: WebWMS\Controller\Dashboard::index
+    controller: WebWMS\Controller\DashboardController::index
 
 web_wms_log_viewer:
     path: /logs

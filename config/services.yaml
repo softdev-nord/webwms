@@ -77,7 +77,7 @@ services:
         class: WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler
 
     web_wms.controller.stock_transactions:
-        class: WebWMS\Controller\StockTransactions
+        class: WebWMS\Controller\StockTransactionController
         public: true
         autowire: true
         tags: ['controller.service_arguments']
@@ -101,10 +101,10 @@ services:
         class: WebWMS\Service\LoggingService
 
     web_wms.controller.dashboard_controller:
-        class: WebWMS\Controller\Dashboard
+        class: WebWMS\Controller\DashboardController
         arguments:
             $requirementsService: 'WebWMS\Service\RequirementsService'
-            $twig: 'Twig\Environment'
+            $twigEnvironment: 'Twig\Environment'
             $chartBuilder: 'Symfony\UX\Chartjs\Builder\ChartBuilderInterface'
             $transportHistoryRepository: 'WebWMS\Repository\TransportHistoryRepository'
             $stockRotationService: 'WebWMS\Service\Stock\StockRotationService'
@@ -115,7 +115,7 @@ services:
         class: WebWMS\Service\BookingMethod\BookingMethodService
         arguments:
             $requirementsService: 'WebWMS\Service\RequirementsService'
-            $twig: 'Twig\Environment'
+            $twigEnvironment: 'Twig\Environment'
     
     twig.extension.debug:
         class: Twig\Extension\DebugExtension
