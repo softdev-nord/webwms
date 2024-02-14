@@ -8,7 +8,7 @@ help: ## Display this help
 ######################################################################
 ############################### Docker ###############################
 ######################################################################
-webwms-build: ## Build container image
+build: ## Build container image
 	@docker-compose build
 
 up: ## Starts the full docker-compose stack
@@ -83,7 +83,7 @@ phpcs-fix: ## Run code style fix
 	 -vvv --show-progress=dots --allow-risky=yes';
 
 phpmd: ## Run code check (phpmd)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./bundles/,./tests/' ansi rulesets.xml';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./module/,./tests/' ansi rulesets.xml';
 
 phpqa: ## Run code check (phpmd)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src';
@@ -122,7 +122,7 @@ yaml-lint: ## Lints the yaml files (config folder)
 ############################### Tests ################################
 ######################################################################
 run-tests-unit: ## Run unit tests
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-html var/reports/ ';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --testdox --colors=always --coverage-html var/reports/ ';
 
 ######################################################################
 ##################### Automated Code Refactoring #####################
@@ -131,4 +131,4 @@ run-rector: ## Run automated refactoring dry run
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process --dry-run';
 
 run-rector-refactoring: ## Run automated refactoring
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process --dry-run';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process';

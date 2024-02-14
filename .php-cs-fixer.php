@@ -59,6 +59,7 @@ return (new PhpCsFixer\Config())
         'declare_strict_types' => true,
         'no_superfluous_phpdoc_tags' => false,
         'cast_spaces' => ['space' => 'single'],
+        'global_namespace_import' => true,
     ])
     ->setFinder($finder->append(['.php-cs-fixer.php']))
 ;
