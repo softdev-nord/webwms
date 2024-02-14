@@ -111,7 +111,7 @@ definitions:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
-          - vendor/bin/phpunit --testdox --colors=always --coverage-html="./test-reports"
+          - vendor/bin/phpunit --testdox --colors=always
         artifacts:
           - test-reports/**
 
