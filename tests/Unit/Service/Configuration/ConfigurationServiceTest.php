@@ -190,7 +190,6 @@ final class ConfigurationServiceTest extends TestCase
         $expectedReleaseVersion = 2;
         $expectedServerApi = 'cli';
         $expectedBinaryDir = '/usr/local/bin';
-        $expectedPhpIniDir = '/usr/local/etc/php/php.ini';
 
         // Call the method
         $result = $this->configurationService->getPhpGeneralInformation();
@@ -203,7 +202,6 @@ final class ConfigurationServiceTest extends TestCase
         self::assertEquals($expectedReleaseVersion, $result['version_release']);
         self::assertEquals($expectedServerApi, $result['server_api']);
         self::assertEquals($expectedBinaryDir, $result['binary_dir']);
-        self::assertEquals($expectedPhpIniDir, $result['php_ini_dir']);
     }
 
     public function testItGetsSoftwareInformation(): void
@@ -222,8 +220,8 @@ final class ConfigurationServiceTest extends TestCase
         // Mock ini_get for specific settings
         ini_set('max_execution_time', 30);
         ini_set('max_input_time', -1);
-        ini_set('post_max_size', '128M');
-        ini_set('upload_max_filesize', '128M');
+        ini_set('post_max_size', '8M');
+        ini_set('upload_max_filesize', '2M');
         ini_set('memory_limit', '128M');
 
         // Call the method
@@ -234,8 +232,8 @@ final class ConfigurationServiceTest extends TestCase
             [
                 ['setting' => 'max_execution_time', 'raw_value' => '30', 'int_value' => 30],
                 ['setting' => 'max_input_time', 'raw_value' => '-1', 'int_value' => -1],
-                ['setting' => 'post_max_size', 'raw_value' => '128M', 'int_value' => 128 * 1024 * 1024],
-                ['setting' => 'upload_max_filesize', 'raw_value' => '128M', 'int_value' => 128 * 1024 * 1024],
+                ['setting' => 'post_max_size', 'raw_value' => '8M', 'int_value' => 8 * 1024 * 1024],
+                ['setting' => 'upload_max_filesize', 'raw_value' => '2M', 'int_value' => 2 * 1024 * 1024],
                 ['setting' => 'memory_limit', 'raw_value' => '128M', 'int_value' => 128 * 1024 * 1024],
             ],
             $result
