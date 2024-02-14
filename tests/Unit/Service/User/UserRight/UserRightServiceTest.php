@@ -4,71 +4,73 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\User\UserRight;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\UserRight;
+use WebWMS\Entity\UserRightEntity;
 use WebWMS\Service\DataHandlers\User\UserRight\UserRightDataHandler;
 use WebWMS\Service\User\UserRight\UserRightService;
 
 /**
- * @package:    WebWMS\Tests\Unit\Service\User\UserRight
+ * @package:    WebWMS\Tests\Unit\Service\UserController\UserRightEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserRightServiceTest
- *
- * @covers \WebWMS\Service\User\UserRight\UserRightService
  */
+#[CoversClass(UserRightService::class)]
 final class UserRightServiceTest extends TestCase
 {
     private UserRightService $userRightService;
 
-    private MockObject $userRightDataHandler;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->userRightDataHandler = $this->createMock(UserRightDataHandler::class);
+        $this->mockObject = $this->createMock(UserRightDataHandler::class);
 
-        $this->userRightService = new UserRightService($this->userRightDataHandler);
+        $this->userRightService = new UserRightService($this->mockObject);
     }
 
     public function testGetUserRightByUserRightName(): void
     {
         $userRightName = 'create';
-        $expectedUserRight = new UserRight();
+        $userRightEntity = new UserRightEntity();
 
-        $this->userRightDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getUserRightByUserRightName')
             ->with($userRightName)
-            ->willReturn($expectedUserRight);
+            ->willReturn($userRightEntity);
 
         $result = $this->userRightService->getUserRightByUserRightName($userRightName);
 
-        self::assertSame($expectedUserRight, $result);
+        self::assertSame($userRightEntity, $result);
     }
 
     public function testGetUserRightById(): void
     {
         $userRightId = 1;
-        $expectedUserRight = new UserRight();
+        $userRightEntity = new UserRightEntity();
 
-        $this->userRightDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getUserRightById')
             ->with($userRightId)
-            ->willReturn($expectedUserRight);
+            ->willReturn($userRightEntity);
 
         $result = $this->userRightService->getUserRightById($userRightId);
 
-        self::assertSame($expectedUserRight, $result);
+        self::assertSame($userRightEntity, $result);
     }
 
     public function testGetAllUserRights(): void
     {
-        $expectedUserRights = [new UserRight(), new UserRight()];
+        $expectedUserRights = [new UserRightEntity(), new UserRightEntity()];
 
-        $this->userRightDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllUserRights')
             ->willReturn($expectedUserRights);
@@ -82,7 +84,7 @@ final class UserRightServiceTest extends TestCase
     {
         $request = new Request();
 
-        $this->userRightDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('addUserRight')
             ->with($request);
@@ -93,24 +95,24 @@ final class UserRightServiceTest extends TestCase
     public function testUpdateUserRight(): void
     {
         $request = new Request();
-        $expectedUserRight = new UserRight();
+        $userRightEntity = new UserRightEntity();
 
-        $this->userRightDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('updateUserRight')
             ->with($request)
-            ->willReturn($expectedUserRight);
+            ->willReturn($userRightEntity);
 
         $result = $this->userRightService->updateUserRight($request);
 
-        self::assertSame($expectedUserRight, $result);
+        self::assertSame($userRightEntity, $result);
     }
 
     public function testDeleteUserRight(): void
     {
         $userRightName = 'create';
 
-        $this->userRightDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('deleteUserRight')
             ->with($userRightName);

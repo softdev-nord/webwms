@@ -17,8 +17,6 @@ class BaseDataHandler
 
     /**
      * @param class-string $className
-     * @param mixed $id
-     * @return object|null
      */
     protected function find(string $className, mixed $id): object|null
     {

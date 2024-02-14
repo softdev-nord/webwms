@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
-use WebWMS\Entity\SupplierOrder;
+use DateTimeInterface;
+use WebWMS\Entity\SupplierOrderEntity;
 
 /**
  * @package:    WebWMS\Service\Validation
@@ -15,33 +16,33 @@ use WebWMS\Entity\SupplierOrder;
 class SupplierOrderValidationService
 {
     /**
-     * @return array<string, array<string, string>|bool|\DateTimeInterface|string>
+     * @return array<string, (array<string, string>|bool|DateTimeInterface|string)>
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateSupplierOrderData(SupplierOrder $supplierOrder): array
+    public function validateSupplierOrderData(SupplierOrderEntity $supplierOrderEntity): array
     {
         $responseData = [];
 
         // Validation of the request data from the supplier order data change
-        if (!$supplierOrder->getSupplierOrderNr()) {
+        if ($supplierOrderEntity->getSupplierOrderNr() === '' || $supplierOrderEntity->getSupplierOrderNr() === '0') {
             $responseData['error']['supplierOrderNr'] = 'Die Lieferanten-Nr. darf nicht leer sein.';
         } else {
-            $responseData['supplierOrderNr'] = $supplierOrder->getSupplierOrderNr();
+            $responseData['supplierOrderNr'] = $supplierOrderEntity->getSupplierOrderNr();
         }
 
-        if (!$supplierOrder->getSupplierOrderDate()) {
+        if (!$supplierOrderEntity->getSupplierOrderDate() instanceof DateTimeInterface) {
             $responseData['error']['supplierOrderDate'] = 'Das Bestelldatum darf nicht leer sein.';
         } else {
-            $responseData['supplierOrderDate'] = $supplierOrder->getSupplierOrderDate();
+            $responseData['supplierOrderDate'] = $supplierOrderEntity->getSupplierOrderDate();
         }
 
-        if (!$supplierOrder->getSupplierOrderCreationDate()) {
+        if (!$supplierOrderEntity->getSupplierOrderCreationDate() instanceof DateTimeInterface) {
             $responseData['error']['supplierOrderCreationDate'] = 'Das Erstellungsdatum der Bestellung darf nicht leer sein.';
         } else {
-            $responseData['supplierOrderCreationDate'] = $supplierOrder->getSupplierOrderCreationDate();
+            $responseData['supplierOrderCreationDate'] = $supplierOrderEntity->getSupplierOrderCreationDate();
         }
 
         if (!isset($responseData['error'])) {

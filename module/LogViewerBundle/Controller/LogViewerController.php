@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Bundles\LogViewerBundle\Controller;
 
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,7 @@ use WebWMS\Service\RequirementsService;
 class LogViewerController extends AbstractController
 {
     public function __construct(
-        private RequirementsService $requirementsService
+        private readonly RequirementsService $requirementsService
     ) {
     }
 
@@ -50,6 +51,7 @@ class LogViewerController extends AbstractController
 
     /**
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     #[Route('/logs/{file}', name: 'web_wms_log_viewer_logs')]
     public function logs(string $file, Request $request): Response
@@ -62,7 +64,7 @@ class LogViewerController extends AbstractController
         $logFiles[] = $logDir . DIRECTORY_SEPARATOR . $environment . '.log';
 
         $filename = realpath($logDir . DIRECTORY_SEPARATOR . $file);
-        if (!$filename || !in_array($filename, $logFiles, true)) {
+        if ($filename == '' || $filename == '0' || $filename == false || !in_array($filename, $logFiles, true)) {
             throw new NotFoundHttpException();
         }
 
@@ -80,19 +82,25 @@ class LogViewerController extends AbstractController
             if ($line === false) {
                 continue;
             }
+
             preg_match('/^\[([0-9- :T\.\+]+)\] ([a-z_]+).([A-Z]+): (.*) ([\{|\[].*[\}\]]) (\[\])$/', $line, $matches);
-            $date = new \DateTime($matches[1]);
+            $date = new DateTime($matches[1]);
             $channel = $matches[2];
             $level = strtolower($matches[3]);
             $message = $matches[4];
             $context = json_decode($matches[5]);
-
-            if (($qChannel && $channel !== $qChannel)
-                || ($qLevel && $level !== $qLevel)
-                || ($qDistinct && in_array($message, $messages, true))
-            ) {
+            if ($qChannel && $channel !== $qChannel) {
                 continue;
             }
+
+            if ($qLevel && $level !== $qLevel) {
+                continue;
+            }
+
+            if ($qDistinct && in_array($message, $messages, true)) {
+                continue;
+            }
+
             $channels[] = $channel;
             $messages[] = $message;
 

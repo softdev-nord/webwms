@@ -6,11 +6,11 @@ namespace WebWMS\Service\DataHandlers\TransportHistory;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\TransportHistory;
+use WebWMS\Entity\TransportHistoryEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Service\DataHandlers\TransportHistory
+ * @package:    WebWMS\Service\DataHandlers\TransportHistoryEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        TransportHistoryDataHandler
@@ -18,20 +18,20 @@ use WebWMS\Service\DateTimeService;
 class TransportHistoryDataHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private DateTimeService $dateTimeService,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(TransportHistory $transportHistory): void
+    public function save(TransportHistoryEntity $transportHistoryEntity): void
     {
-        $this->entityManager->persist($transportHistory);
+        $this->entityManager->persist($transportHistoryEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(TransportHistory $transportHistory): void
+    public function delete(TransportHistoryEntity $transportHistoryEntity): void
     {
-        $this->entityManager->remove($transportHistory);
+        $this->entityManager->remove($transportHistoryEntity);
         $this->entityManager->flush();
     }
 
@@ -41,7 +41,7 @@ class TransportHistoryDataHandler
     public function getTransportHistoryById(int $id): array
     {
         return $this->entityManager
-            ->getRepository(TransportHistory::class)
+            ->getRepository(TransportHistoryEntity::class)
             ->findBy(['id' => $id]);
     }
 
@@ -51,7 +51,7 @@ class TransportHistoryDataHandler
     public function getAllTransportHistories(): array
     {
         return $this->entityManager
-            ->getRepository(TransportHistory::class)
+            ->getRepository(TransportHistoryEntity::class)
             ->findAll();
     }
 
@@ -62,39 +62,39 @@ class TransportHistoryDataHandler
         $bookingMethod = $requestData['booking_method'];
         $charge = $requestData['charge'];
         $loadingEquipment = $requestData['loading_equipment'];
-        $transportHistory = new TransportHistory();
+        $transportHistoryEntity = new TransportHistoryEntity();
 
         foreach ($requestData as $key => $data) {
-            $transportHistory->setSuId($this->getLastStockUnit());
-            $transportHistory->setTrNr($this->getLastTransportHistoryNr());
-            $transportHistory->setTrPos($key + 1);
-            $transportHistory->setTrPrio(0);
-            $transportHistory->setArticleNr(strval($articleNr));
-            $transportHistory->setTrQuantity(floatval($data['stock_quantity']));
-            $transportHistory->setStockCoordinate(strval($data['stock_coordinate']));
-            $transportHistory->setStockNr(intval($data['stock_ln']));
-            $transportHistory->setStockLevel1(intval($data['stock_fb']));
-            $transportHistory->setStockLevel2(intval($data['stock_sp']));
-            $transportHistory->setStockLevel3(intval($data['stock_tf']));
-            $transportHistory->setStockLevel4(1);
-            $transportHistory->setTrAccess($this->dateTimeService->createDateTime());
-            $transportHistory->setTrState(0);
-            $transportHistory->setOrderUsername($user);
-            $transportHistory->setBookingMethod(strval($bookingMethod));
-            $transportHistory->setDocId(0);
-            $transportHistory->setCharge(strval($charge));
-            $transportHistory->setTrComputerIp($clientIp);
-            $transportHistory->setLoadingEquipment(strval($loadingEquipment));
-            $transportHistory->setTrType(1);
+            $transportHistoryEntity->setSuId($this->getLastStockUnit());
+            $transportHistoryEntity->setTrNr($this->getLastTransportHistoryNr());
+            $transportHistoryEntity->setTrPos($key + 1);
+            $transportHistoryEntity->setTrPrio(0);
+            $transportHistoryEntity->setArticleNr((string) $articleNr);
+            $transportHistoryEntity->setTrQuantity((float) $data['stock_quantity']);
+            $transportHistoryEntity->setStockCoordinate((string) $data['stock_coordinate']);
+            $transportHistoryEntity->setStockNr((int) $data['stock_ln']);
+            $transportHistoryEntity->setStockLevel1((int) $data['stock_fb']);
+            $transportHistoryEntity->setStockLevel2((int) $data['stock_sp']);
+            $transportHistoryEntity->setStockLevel3((int) $data['stock_tf']);
+            $transportHistoryEntity->setStockLevel4(1);
+            $transportHistoryEntity->setTrAccess($this->dateTimeService->createDateTime());
+            $transportHistoryEntity->setTrState(0);
+            $transportHistoryEntity->setOrderUsername($user);
+            $transportHistoryEntity->setBookingMethod((string) $bookingMethod);
+            $transportHistoryEntity->setDocId(0);
+            $transportHistoryEntity->setCharge((string) $charge);
+            $transportHistoryEntity->setTrComputerIp($clientIp);
+            $transportHistoryEntity->setLoadingEquipment((string) $loadingEquipment);
+            $transportHistoryEntity->setTrType(1);
         }
 
-        $this->save($transportHistory);
+        $this->save($transportHistoryEntity);
     }
 
     public function getLastStockUnit(): int
     {
         $lastStockUnitTr = $this->entityManager
-            ->getRepository(TransportHistory::class)
+            ->getRepository(TransportHistoryEntity::class)
             ->findBy([], ['suId' => 'DESC'], 1, 0);
 
         return $lastStockUnitTr[0]->getSuId();
@@ -103,32 +103,32 @@ class TransportHistoryDataHandler
     public function getLastTransportHistoryNr(): int
     {
         $lastTransportHistoryNr = $this->entityManager
-            ->getRepository(TransportHistory::class)
+            ->getRepository(TransportHistoryEntity::class)
             ->findBy([], ['trNr' => 'DESC'], 1, 0);
 
         return $lastTransportHistoryNr[0]->getTrNr();
     }
 
-    public function addTransportHistory(TransportHistory $transportHistory): void
+    public function addTransportHistory(TransportHistoryEntity $transportHistoryEntity): void
     {
-        $transportHistory->setCreatedAt(
+        $transportHistoryEntity->setCreatedAt(
             $this->dateTimeService->createDateTime()
         );
 
-        $this->save($transportHistory);
+        $this->save($transportHistoryEntity);
     }
 
-    public function updateTransportHistory(TransportHistory $transportHistory): void
+    public function updateTransportHistory(TransportHistoryEntity $transportHistoryEntity): void
     {
-        $transportHistory->setUpdatedAt(
+        $transportHistoryEntity->setUpdatedAt(
             $this->dateTimeService->createDateTime()
         );
 
-        $this->save($transportHistory);
+        $this->save($transportHistoryEntity);
     }
 
-    public function deleteTransportHistory(TransportHistory $transportHistory): void
+    public function deleteTransportHistory(TransportHistoryEntity $transportHistoryEntity): void
     {
-        $this->delete($transportHistory);
+        $this->delete($transportHistoryEntity);
     }
 }

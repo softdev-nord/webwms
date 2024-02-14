@@ -6,16 +6,17 @@ namespace WebWMS\Service\DataHandlers\User;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use WebWMS\Entity\User;
-use WebWMS\Entity\UserRole;
+use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\UserRoleEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Service\DataHandlers\User
+ * @package:    WebWMS\Service\DataHandlers\UserController
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserDataHandler
@@ -23,20 +24,20 @@ use WebWMS\Service\DateTimeService;
 class UserDataHandler implements PasswordUpgraderInterface
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private DateTimeService $dateTimeService
+        private readonly EntityManagerInterface $entityManager,
+        private readonly DateTimeService $dateTimeService
     ) {
     }
 
-    public function save(User $user): void
+    public function save(UserEntity $userEntity): void
     {
-        $this->entityManager->persist($user);
+        $this->entityManager->persist($userEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(User $user): void
+    public function delete(UserEntity $userEntity): void
     {
-        $this->entityManager->remove($user);
+        $this->entityManager->remove($userEntity);
         $this->entityManager->flush();
     }
 
@@ -51,61 +52,61 @@ class UserDataHandler implements PasswordUpgraderInterface
             ->select('*')
             ->from('user');
 
-        $stmt = $queryBuilder->executeQuery();
+        $result = $queryBuilder->executeQuery();
 
-        $results = $stmt->fetchAllAssociative();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }
 
-    public function getUserById(int $userId): ?User
+    public function getUserById(int $userId): ?UserEntity
     {
         return $this->entityManager
-            ->getRepository(User::class)
+            ->getRepository(UserEntity::class)
             ->findOneBy(['userId' => $userId]);
     }
 
-    public function getUserByUsername(string $username): ?User
+    public function getUserByUsername(string $username): ?UserEntity
     {
         return $this->entityManager
-            ->getRepository(User::class)
+            ->getRepository(UserEntity::class)
             ->findOneBy(['username' => $username]);
     }
 
-    public function addUser(Request $request): ?User
+    public function addUser(Request $request): ?UserEntity
     {
         $addUser = $request->request->getIterator()->getArrayCopy();
-        $user = new User();
+        $userEntity = new UserEntity();
 
-        $user->setUsername($addUser['username']);
-        $user->setFirstname($addUser['firstname']);
-        $user->setLastname($addUser['firstname']);
-        $user->setPassword($addUser['password']);
-        $user->setCreatedAt($this->dateTimeService->createDateTime());
+        $userEntity->setUsername($addUser['username']);
+        $userEntity->setFirstname($addUser['firstname']);
+        $userEntity->setLastname($addUser['firstname']);
+        $userEntity->setPassword($addUser['password']);
+        $userEntity->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($user);
+        $this->save($userEntity);
 
-        return $user;
+        return $userEntity;
     }
 
-    public function updateUser(Request $request): ?User
+    public function updateUser(Request $request): ?UserEntity
     {
         $requestData = $request->request->all()['edit_user'];
         $user = $this->entityManager
-            ->getRepository(User::class)
+            ->getRepository(UserEntity::class)
             ->findOneBy(['username' => $requestData['username']]);
 
         if ($user === null) {
             return null;
         }
 
-        /** @var UserRole $roles */
+        /** @var UserRoleEntity $roles */
         $roles = $requestData['roles'];
 
-        $user->setUsername(strval($requestData['username']));
+        $user->setUsername((string) $requestData['username']);
         $user->addRole($roles->getUserRole());
-        $user->setFirstname(strval($requestData['firstname']));
-        $user->setLastname(strval($requestData['lastname']));
+        $user->setFirstname((string) $requestData['firstname']);
+        $user->setLastname((string) $requestData['lastname']);
         $user->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($user);
@@ -117,7 +118,7 @@ class UserDataHandler implements PasswordUpgraderInterface
     {
         $user = $this->getUserByUsername($username);
 
-        if ($user !== null) {
+        if ($user instanceof UserEntity) {
             $this->delete($user);
         }
     }
@@ -125,10 +126,11 @@ class UserDataHandler implements PasswordUpgraderInterface
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
+    #[Override]
     public function upgradePassword($user, string $newHashedPassword): void
     {
-        if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+        if (!$user instanceof UserEntity) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
         $user->setPassword($newHashedPassword);
@@ -141,15 +143,15 @@ class UserDataHandler implements PasswordUpgraderInterface
     public function getLastUser(): array
     {
         return $this->entityManager
-            ->getRepository(User::class)
+            ->getRepository(UserEntity::class)
             ->findBy([], ['id' => 'DESC'], 1, 0);
     }
 
-    public function updateLastLogin(User $user): void
+    public function updateLastLogin(UserEntity $userEntity): void
     {
         $selectedUser = $this->entityManager
-            ->getRepository(User::class)
-            ->find($user->getId());
+            ->getRepository(UserEntity::class)
+            ->find($userEntity->getId());
 
         if ($selectedUser === null) {
             return;

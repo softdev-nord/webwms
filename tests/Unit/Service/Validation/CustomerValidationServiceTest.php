@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Validation;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Service\Validation\CustomerValidationService;
 
@@ -12,13 +14,13 @@ use WebWMS\Service\Validation\CustomerValidationService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerValidationServiceTest
- *
- * @covers \WebWMS\Service\Validation\CustomerValidationService
  */
+#[CoversClass(CustomerValidationService::class)]
 final class CustomerValidationServiceTest extends TestCase
 {
     private CustomerValidationService $customerValidationService;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->customerValidationService = new CustomerValidationService();
@@ -46,7 +48,7 @@ final class CustomerValidationServiceTest extends TestCase
     {
         $requestData = [
             'customerNr' => '123456',
-            'customerName' => 'Test Customer',
+            'customerName' => 'Test CustomerEntity',
             'customerAddressStreet' => 'Test Straße',
             'customerAddressStreetNr' => 'Test Hausnummer',
             'customerCountryCode' => 'DE',

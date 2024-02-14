@@ -4,25 +4,27 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\DataHandlers\Customer;
 
+use DateTime;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\Customer;
+use WebWMS\Entity\CustomerEntity;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Tests\Unit\Service\DataHandlers\Customer
+ * @package:    WebWMS\Tests\Unit\Service\DataHandlers\CustomerEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerDataHandlerTest
- *
- * @covers \WebWMS\Service\DataHandlers\Customer\CustomerDataHandler
  */
+#[CoversClass(CustomerDataHandler::class)]
 final class CustomerDataHandlerTest extends TestCase
 {
     private CustomerDataHandler $customerDataHandler;
@@ -31,6 +33,7 @@ final class CustomerDataHandlerTest extends TestCase
 
     private MockObject $dateTimeService;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
@@ -44,7 +47,7 @@ final class CustomerDataHandlerTest extends TestCase
 
     public function testSave(): void
     {
-        $customer = $this->createMock(Customer::class);
+        $customer = $this->createMock(CustomerEntity::class);
 
         $this->entityManager
             ->expects(self::once())
@@ -59,7 +62,7 @@ final class CustomerDataHandlerTest extends TestCase
 
     public function testDelete(): void
     {
-        $customer = $this->createMock(Customer::class);
+        $customer = $this->createMock(CustomerEntity::class);
 
         $this->entityManager
             ->expects(self::once())
@@ -75,7 +78,7 @@ final class CustomerDataHandlerTest extends TestCase
     public function testGetCustomerById(): void
     {
         $customerId = 123;
-        $expectedCustomer = $this->createMock(Customer::class);
+        $expectedCustomer = $this->createMock(CustomerEntity::class);
         $repository = $this->createMock(EntityRepository::class);
 
         $repository
@@ -87,7 +90,7 @@ final class CustomerDataHandlerTest extends TestCase
         $this->entityManager
             ->expects(self::once())
             ->method('getRepository')
-            ->with(Customer::class)
+            ->with(CustomerEntity::class)
             ->willReturn($repository);
 
         $customer = $this->customerDataHandler->getCustomerById($customerId);
@@ -98,7 +101,7 @@ final class CustomerDataHandlerTest extends TestCase
     public function testGetCustomerByNr(): void
     {
         $customerNr = 12345;
-        $expectedCustomer = $this->createMock(Customer::class);
+        $expectedCustomer = $this->createMock(CustomerEntity::class);
         $repository = $this->createMock(EntityRepository::class);
 
         $repository
@@ -110,7 +113,7 @@ final class CustomerDataHandlerTest extends TestCase
         $this->entityManager
             ->expects(self::once())
             ->method('getRepository')
-            ->with(Customer::class)
+            ->with(CustomerEntity::class)
             ->willReturn($repository);
 
         $customer = $this->customerDataHandler->getCustomerByNr($customerNr);
@@ -120,10 +123,10 @@ final class CustomerDataHandlerTest extends TestCase
 
     public function testGetAllCustomers(): void
     {
-        $customer1 = new Customer();
+        $customer1 = new CustomerEntity();
         $customer1->setCustomerName('Aldi Zeven');
 
-        $customer2 = new Customer();
+        $customer2 = new CustomerEntity();
         $customer2->setCustomerName('Aldi Buxtehude');
 
         $customers = [$customer1, $customer2];
@@ -139,7 +142,7 @@ final class CustomerDataHandlerTest extends TestCase
         $queryBuilder
             ->expects(self::once())
             ->method('from')
-            ->with(Customer::class, 'c')
+            ->with(CustomerEntity::class, 'c')
             ->willReturnSelf();
         $queryBuilder
             ->expects(self::once())
@@ -229,9 +232,9 @@ final class CustomerDataHandlerTest extends TestCase
 
     public function testAddCustomer(): void
     {
-        $customer = new Customer();
+        $customerEntity = new CustomerEntity();
 
-        $dateTime = new \DateTime('2023-06-06 12:00:00');
+        $dateTime = new DateTime('2023-06-06 12:00:00');
         $this->dateTimeService
             ->expects(self::once())
             ->method('createDateTime')
@@ -240,21 +243,21 @@ final class CustomerDataHandlerTest extends TestCase
         $this->entityManager
             ->expects(self::once())
             ->method('persist')
-            ->with($customer);
+            ->with($customerEntity);
         $this->entityManager
             ->expects(self::once())
             ->method('flush');
 
-        $this->customerDataHandler->addCustomer($customer);
+        $this->customerDataHandler->addCustomer($customerEntity);
 
-        self::assertEquals($dateTime, $customer->getCreatedAt());
+        self::assertEquals($dateTime, $customerEntity->getCreatedAt());
     }
 
     public function testUpdateCustomer(): void
     {
-        $customer = new Customer();
+        $customerEntity = new CustomerEntity();
 
-        $dateTime = new \DateTime('2023-06-06 12:00:00');
+        $dateTime = new DateTime('2023-06-06 12:00:00');
         $this->dateTimeService
             ->expects(self::once())
             ->method('createDateTime')
@@ -263,35 +266,35 @@ final class CustomerDataHandlerTest extends TestCase
         $this->entityManager
             ->expects(self::once())
             ->method('persist')
-            ->with($customer);
+            ->with($customerEntity);
         $this->entityManager
             ->expects(self::once())
             ->method('flush');
 
-        $this->customerDataHandler->updateCustomer($customer);
+        $this->customerDataHandler->updateCustomer($customerEntity);
 
-        self::assertEquals($dateTime, $customer->getUpdatedAt());
+        self::assertEquals($dateTime, $customerEntity->getUpdatedAt());
     }
 
     public function testDeleteCustomer(): void
     {
-        $customer = new Customer();
+        $customerEntity = new CustomerEntity();
 
         $this->entityManager
             ->expects(self::once())
             ->method('remove')
-            ->with($customer);
+            ->with($customerEntity);
         $this->entityManager
             ->expects(self::once())
             ->method('flush');
 
-        $this->customerDataHandler->deleteCustomer($customer);
+        $this->customerDataHandler->deleteCustomer($customerEntity);
     }
 
     public function testGetLastCustomer(): void
     {
-        $lastCustomer = new Customer();
-        $lastCustomer->setCustomerId(123);
+        $customerEntity = new CustomerEntity();
+        $customerEntity->setCustomerId(123);
 
         $repository = $this->createMock(EntityRepository::class);
 
@@ -299,16 +302,16 @@ final class CustomerDataHandlerTest extends TestCase
             ->expects(self::once())
             ->method('findBy')
             ->with([], ['customerId' => 'DESC'], 1, 0)
-            ->willReturn([$lastCustomer]);
+            ->willReturn([$customerEntity]);
 
         $this->entityManager
             ->expects(self::once())
             ->method('getRepository')
-            ->with(Customer::class)
+            ->with(CustomerEntity::class)
             ->willReturn($repository);
 
         $result = $this->customerDataHandler->getLastCustomer();
 
-        self::assertSame($lastCustomer, $result);
+        self::assertSame($customerEntity, $result);
     }
 }

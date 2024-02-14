@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Stock;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockZone;
+use WebWMS\Entity\StockZoneEntity;
 use WebWMS\Service\DataHandlers\Stock\StockZoneDataHandler;
 use WebWMS\Service\Stock\StockZoneService;
 
@@ -16,84 +18,84 @@ use WebWMS\Service\Stock\StockZoneService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockZoneServiceTest
- *
- * @covers \WebWMS\Service\Stock\StockZoneService
  */
+#[CoversClass(StockZoneService::class)]
 final class StockZoneServiceTest extends TestCase
 {
     private StockZoneService $stockZoneService;
 
-    private MockObject $stockZoneDataHandler;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->stockZoneDataHandler = $this->createMock(StockZoneDataHandler::class);
-        $this->stockZoneService = new StockZoneService($this->stockZoneDataHandler);
+        $this->mockObject = $this->createMock(StockZoneDataHandler::class);
+        $this->stockZoneService = new StockZoneService($this->mockObject);
     }
 
     public function testGetAllStockZones(): void
     {
-        $expectedResponse = new JsonResponse([]);
+        $jsonResponse = new JsonResponse([]);
 
-        $this->stockZoneDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllStockZones')
-            ->willReturn($expectedResponse);
+            ->willReturn($jsonResponse);
 
         $result = $this->stockZoneService->getAllStockZones();
 
-        self::assertEquals($expectedResponse, $result);
+        self::assertEquals($jsonResponse, $result);
     }
 
     public function testGetStockZoneById(): void
     {
         $stockZoneId = 1;
-        $expectedStockZone = new StockZone();
+        $stockZoneEntity = new StockZoneEntity();
 
-        $this->stockZoneDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getStockZoneById')
             ->with($stockZoneId)
-            ->willReturn($expectedStockZone);
+            ->willReturn($stockZoneEntity);
 
         $result = $this->stockZoneService->getStockZoneById($stockZoneId);
 
-        self::assertEquals($expectedStockZone, $result);
+        self::assertEquals($stockZoneEntity, $result);
     }
 
     public function testAddStockZone(): void
     {
-        $stockZone = new StockZone();
+        $stockZoneEntity = new StockZoneEntity();
 
-        $this->stockZoneDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('addStockZone')
-            ->with($stockZone);
+            ->with($stockZoneEntity);
 
-        $this->stockZoneService->addStockZone($stockZone);
+        $this->stockZoneService->addStockZone($stockZoneEntity);
     }
 
     public function testUpdateStockZone(): void
     {
-        $stockZone = new StockZone();
+        $stockZoneEntity = new StockZoneEntity();
 
-        $this->stockZoneDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('updateStockZone')
-            ->with($stockZone);
+            ->with($stockZoneEntity);
 
-        $this->stockZoneService->updateStockZone($stockZone);
+        $this->stockZoneService->updateStockZone($stockZoneEntity);
     }
 
     public function testDeleteStockZone(): void
     {
-        $stockZone = new StockZone();
+        $stockZoneEntity = new StockZoneEntity();
 
-        $this->stockZoneDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('deleteStockZone')
-            ->with($stockZone);
+            ->with($stockZoneEntity);
 
-        $this->stockZoneService->deleteStockZone($stockZone);
+        $this->stockZoneService->deleteStockZone($stockZoneEntity);
     }
 }

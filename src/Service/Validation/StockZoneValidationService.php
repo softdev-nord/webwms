@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
-use WebWMS\Entity\StockZone;
+use WebWMS\Entity\StockZoneEntity;
 
 /**
  * @package:    WebWMS\Service\Validation
@@ -21,20 +21,20 @@ class StockZoneValidationService
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateStockZoneData(StockZone $stockZone): array
+    public function validateStockZoneData(StockZoneEntity $stockZoneEntity): array
     {
         $responseData = [];
 
-        if (!$stockZone->getStockZoneShortDesc()) {
+        if ($stockZoneEntity->getStockZoneShortDesc() === '' || $stockZoneEntity->getStockZoneShortDesc() === '0') {
             $responseData['error']['stock_zone_short_desc'] = 'Die Kurz-Beschreibung darf nicht leer sein.';
         } else {
-            $responseData['stockNr'] = $stockZone->getStockZoneShortDesc();
+            $responseData['stockNr'] = $stockZoneEntity->getStockZoneShortDesc();
         }
 
-        if (!$stockZone->getStockZoneDescription()) {
+        if ($stockZoneEntity->getStockZoneDescription() === null || $stockZoneEntity->getStockZoneDescription() === '' || $stockZoneEntity->getStockZoneDescription() === '0') {
             $responseData['error']['stock_zone_description'] = 'Die Beschreibung darf nicht leer sein.';
         } else {
-            $responseData['stockDescription'] = $stockZone->getStockZoneDescription();
+            $responseData['stockDescription'] = $stockZoneEntity->getStockZoneDescription();
         }
 
         if (!isset($responseData['error'])) {

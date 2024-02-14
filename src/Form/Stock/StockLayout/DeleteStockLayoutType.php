@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\Stock\StockLayout;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\StockLayout;
+use WebWMS\Entity\StockLayoutEntity;
 
 /**
- * @package:    WebWMS\Form\Stock\StockLayout
+ * @package:    WebWMS\Form\Stock\StockLayoutEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        DeleteStockLayoutType
@@ -22,9 +23,10 @@ class DeleteStockLayoutType extends AbstractType
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    #[Override]
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
+        $formBuilder
             ->add('id', HiddenType::class, [
                 'label' => false,
                 'attr' => [
@@ -48,10 +50,11 @@ class DeleteStockLayoutType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    #[Override]
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => StockLayout::class,
+        $optionsResolver->setDefaults([
+            'data_class' => StockLayoutEntity::class,
         ]);
     }
 }

@@ -4,26 +4,28 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\DataHandlers\Article;
 
+use DateTime;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\Article;
+use WebWMS\Entity\ArticleEntity;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Tests\Unit\Service\DataHandlers\Article
+ * @package:    WebWMS\Tests\Unit\Service\DataHandlers\ArticleController
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ArticleDataHandlerTest
- *
- * @covers \WebWMS\Service\DataHandlers\Article\ArticleDataHandler
  */
+#[CoversClass(ArticleDataHandler::class)]
 final class ArticleDataHandlerTest extends TestCase
 {
     private ArticleDataHandler $articleDataHandler;
@@ -32,6 +34,7 @@ final class ArticleDataHandlerTest extends TestCase
 
     private MockObject $dateTimeService;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
@@ -45,7 +48,7 @@ final class ArticleDataHandlerTest extends TestCase
 
     public function testSave(): void
     {
-        $article = $this->createMock(Article::class);
+        $article = $this->createMock(ArticleEntity::class);
 
         $this->entityManager
             ->expects(self::once())
@@ -60,7 +63,7 @@ final class ArticleDataHandlerTest extends TestCase
 
     public function testDelete(): void
     {
-        $article = $this->createMock(Article::class);
+        $article = $this->createMock(ArticleEntity::class);
 
         $this->entityManager
             ->expects(self::once())
@@ -76,7 +79,7 @@ final class ArticleDataHandlerTest extends TestCase
     public function testGetArticleById(): void
     {
         $articleId = 123;
-        $expectedArticle = $this->createMock(Article::class);
+        $expectedArticle = $this->createMock(ArticleEntity::class);
         $repository = $this->createMock(EntityRepository::class);
 
         $repository
@@ -88,7 +91,7 @@ final class ArticleDataHandlerTest extends TestCase
         $this->entityManager
             ->expects(self::once())
             ->method('getRepository')
-            ->with(Article::class)
+            ->with(ArticleEntity::class)
             ->willReturn($repository);
 
         $article = $this->articleDataHandler->getArticleById($articleId);
@@ -99,7 +102,7 @@ final class ArticleDataHandlerTest extends TestCase
     public function testGetArticleByNr(): void
     {
         $articleNr = 'ABC123';
-        $expectedArticle = $this->createMock(Article::class);
+        $expectedArticle = $this->createMock(ArticleEntity::class);
         $repository = $this->createMock(EntityRepository::class);
 
         $repository
@@ -111,7 +114,7 @@ final class ArticleDataHandlerTest extends TestCase
         $this->entityManager
             ->expects(self::once())
             ->method('getRepository')
-            ->with(Article::class)
+            ->with(ArticleEntity::class)
             ->willReturn($repository);
 
         $article = $this->articleDataHandler->getArticleByNr($articleNr);
@@ -121,7 +124,7 @@ final class ArticleDataHandlerTest extends TestCase
 
     public function testGetAllArticles(): void
     {
-        $expectedArticles = [$this->createMock(Article::class)];
+        $expectedArticles = [$this->createMock(ArticleEntity::class)];
         $repository = $this->createMock(EntityRepository::class);
 
         $repository
@@ -132,7 +135,7 @@ final class ArticleDataHandlerTest extends TestCase
         $this->entityManager
             ->expects(self::once())
             ->method('getRepository')
-            ->with(Article::class)
+            ->with(ArticleEntity::class)
             ->willReturn($repository);
 
         $articles = $this->articleDataHandler->getAllArticles();
@@ -237,9 +240,9 @@ final class ArticleDataHandlerTest extends TestCase
 
     public function testAddArticle(): void
     {
-        $article = new Article();
+        $articleEntity = new ArticleEntity();
 
-        $dateTime = new \DateTime('2023-06-06 12:00:00');
+        $dateTime = new DateTime('2023-06-06 12:00:00');
         $this->dateTimeService
             ->expects(self::once())
             ->method('createDateTime')
@@ -248,21 +251,21 @@ final class ArticleDataHandlerTest extends TestCase
         $this->entityManager
             ->expects(self::once())
             ->method('persist')
-            ->with($article);
+            ->with($articleEntity);
         $this->entityManager
             ->expects(self::once())
             ->method('flush');
 
-        $this->articleDataHandler->addArticle($article);
+        $this->articleDataHandler->addArticle($articleEntity);
 
-        self::assertEquals($dateTime, $article->getCreatedAt());
+        self::assertEquals($dateTime, $articleEntity->getCreatedAt());
     }
 
     public function testUpdateArticle(): void
     {
-        $article = new Article();
+        $articleEntity = new ArticleEntity();
 
-        $dateTime = new \DateTime('2023-06-06 12:00:00');
+        $dateTime = new DateTime('2023-06-06 12:00:00');
         $this->dateTimeService
             ->expects(self::once())
             ->method('createDateTime')
@@ -271,35 +274,35 @@ final class ArticleDataHandlerTest extends TestCase
         $this->entityManager
             ->expects(self::once())
             ->method('persist')
-            ->with($article);
+            ->with($articleEntity);
         $this->entityManager
             ->expects(self::once())
             ->method('flush');
 
-        $this->articleDataHandler->updateArticle($article);
+        $this->articleDataHandler->updateArticle($articleEntity);
 
-        self::assertEquals($dateTime, $article->getUpdatedAt());
+        self::assertEquals($dateTime, $articleEntity->getUpdatedAt());
     }
 
     public function testDeleteArticle(): void
     {
-        $article = new Article();
+        $articleEntity = new ArticleEntity();
 
         $this->entityManager
             ->expects(self::once())
             ->method('remove')
-            ->with($article);
+            ->with($articleEntity);
         $this->entityManager
             ->expects(self::once())
             ->method('flush');
 
-        $this->articleDataHandler->deleteArticle($article);
+        $this->articleDataHandler->deleteArticle($articleEntity);
     }
 
     public function testGetLastArticle(): void
     {
-        $lastArticle = new Article();
-        $lastArticle->setArticleId(123);
+        $articleEntity = new ArticleEntity();
+        $articleEntity->setArticleId(123);
 
         $repository = $this->createMock(EntityRepository::class);
 
@@ -307,16 +310,16 @@ final class ArticleDataHandlerTest extends TestCase
             ->expects(self::once())
             ->method('findBy')
             ->with([], ['articleId' => 'DESC'], 1, 0)
-            ->willReturn([$lastArticle]);
+            ->willReturn([$articleEntity]);
 
         $this->entityManager
             ->expects(self::once())
             ->method('getRepository')
-            ->with(Article::class)
+            ->with(ArticleEntity::class)
             ->willReturn($repository);
 
         $article = $this->articleDataHandler->getLastArticle();
 
-        self::assertSame($lastArticle, $article);
+        self::assertSame($articleEntity, $article);
     }
 }

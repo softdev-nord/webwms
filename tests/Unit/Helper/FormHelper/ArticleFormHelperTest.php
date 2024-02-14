@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Helper\FormHelper;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use WebWMS\Entity\Article;
+use WebWMS\Entity\ArticleEntity;
 use WebWMS\Form\Article\AddArticleType;
 use WebWMS\Form\Article\DeleteArticleType;
 use WebWMS\Form\Article\EditArticleType;
@@ -18,9 +19,8 @@ use WebWMS\Helper\FormHelper\ArticleFormHelper;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ArticleFormHelperTest
- *
- * @covers \WebWMS\Helper\FormHelper\ArticleFormHelper
  */
+#[CoversClass(ArticleFormHelper::class)]
 final class ArticleFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
@@ -37,8 +37,8 @@ final class ArticleFormHelperTest extends TestCase
             ->with($type, $data, $options)
             ->willReturn($formInterface);
 
-        $helper = new ArticleFormHelper($formFactory);
-        $result = $helper->createForm($type, $data, $options);
+        $articleFormHelper = new ArticleFormHelper($formFactory);
+        $result = $articleFormHelper->createForm($type, $data, $options);
 
         self::assertSame($formInterface, $result);
     }
@@ -54,8 +54,8 @@ final class ArticleFormHelperTest extends TestCase
             ->with(AddArticleType::class)
             ->willReturn($formInterface);
 
-        $helper = new ArticleFormHelper($formFactory);
-        $result = $helper->addArticleForm();
+        $articleFormHelper = new ArticleFormHelper($formFactory);
+        $result = $articleFormHelper->addArticleForm();
 
         self::assertSame($formInterface, $result);
     }
@@ -64,7 +64,7 @@ final class ArticleFormHelperTest extends TestCase
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $article = $this->createMock(Article::class);
+        $article = $this->createMock(ArticleEntity::class);
 
         $formFactory
             ->expects(self::once())
@@ -72,8 +72,8 @@ final class ArticleFormHelperTest extends TestCase
             ->with(EditArticleType::class, $article)
             ->willReturn($formInterface);
 
-        $helper = new ArticleFormHelper($formFactory);
-        $result = $helper->editArticleForm($article);
+        $articleFormHelper = new ArticleFormHelper($formFactory);
+        $result = $articleFormHelper->editArticleForm($article);
 
         self::assertSame($formInterface, $result);
     }
@@ -82,7 +82,7 @@ final class ArticleFormHelperTest extends TestCase
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $article = $this->createMock(Article::class);
+        $article = $this->createMock(ArticleEntity::class);
 
         $formFactory
             ->expects(self::once())
@@ -90,8 +90,8 @@ final class ArticleFormHelperTest extends TestCase
             ->with(DeleteArticleType::class, $article)
             ->willReturn($formInterface);
 
-        $helper = new ArticleFormHelper($formFactory);
-        $result = $helper->deleteArticleForm($article);
+        $articleFormHelper = new ArticleFormHelper($formFactory);
+        $result = $articleFormHelper->deleteArticleForm($article);
 
         self::assertSame($formInterface, $result);
     }

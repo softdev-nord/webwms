@@ -6,7 +6,7 @@ namespace WebWMS\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use WebWMS\Entity\Supplier;
+use WebWMS\Entity\SupplierEntity;
 
 /**
  * @package:    WebWMS\Repository
@@ -14,16 +14,16 @@ use WebWMS\Entity\Supplier;
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        SupplierRepository
  *
- * @method Supplier|null find($id, $lockMode = null, $lockVersion = null)
- * @method Supplier|null findOneBy(array $criteria, array $orderBy = null)
- * @method Supplier[]    findAll()
- * @method Supplier[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method SupplierEntity|null find($id, $lockMode = null, $lockVersion = null)
+ * @method SupplierEntity|null findOneBy(array $criteria, array $orderBy = null)
+ * @method SupplierEntity[]    findAll()
+ * @method SupplierEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class SupplierRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry $registry
+        ManagerRegistry $managerRegistry
     ) {
-        parent::__construct($registry, Supplier::class);
+        parent::__construct($managerRegistry, SupplierEntity::class);
     }
 }

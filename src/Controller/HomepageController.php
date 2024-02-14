@@ -1,0 +1,47 @@
+<?php
+
+declare(strict_types=1);
+
+namespace WebWMS\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use WebWMS\Service\RequirementsService;
+
+/**
+ * @package:    WebWMS\Controller
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class       HomepageController
+ */
+class HomepageController extends AbstractController
+{
+    public function __construct(
+        private readonly RequirementsService $requirementsService
+    ) {
+    }
+
+    #[Route('/homepage', name: 'homepage')]
+    public function index(): Response
+    {
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->render(
+            'homepage/index.html.twig',
+            [
+                'appName' => $this->requirementsService->getAppName(),
+                'appVersion' => $this->requirementsService->getAppVersion(),
+                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
+                'appCopyright' => $this->requirementsService->getAppCopyright(),
+                'appLizenz' => $this->requirementsService->getAppLizenz(),
+                'page' => 'Startseite',
+            ]
+        );
+    }
+}

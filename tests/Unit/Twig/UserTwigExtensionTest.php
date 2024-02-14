@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Twig;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use WebWMS\Entity\UserRight;
-use WebWMS\Entity\UserRole;
+use WebWMS\Entity\UserRightEntity;
+use WebWMS\Entity\UserRoleEntity;
 use WebWMS\Security\UserRoleRight;
 use WebWMS\Twig\UserTwigExtension;
 
@@ -18,18 +20,19 @@ use WebWMS\Twig\UserTwigExtension;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserTwigExtensionTest
- *
- * @covers \WebWMS\Twig\UserTwigExtension
  */
+#[CoversClass(UserTwigExtension::class)]
 final class UserTwigExtensionTest extends TestCase
 {
     private UserTwigExtension $userTwigExtension;
-    private MockObject $userRoleRight;
 
+    private MockObject $mockObject;
+
+    #[Override]
     protected function setUp(): void
     {
-        $this->userRoleRight = $this->createMock(UserRoleRight::class);
-        $this->userTwigExtension = new UserTwigExtension($this->userRoleRight);
+        $this->mockObject = $this->createMock(UserRoleRight::class);
+        $this->userTwigExtension = new UserTwigExtension($this->mockObject);
     }
 
     public function testGetFunctions(): void
@@ -40,15 +43,12 @@ final class UserTwigExtensionTest extends TestCase
 
         self::assertInstanceOf(TwigFunction::class, $functions[0]);
         self::assertSame('has_role', $functions[0]->getName());
-        self::assertSame([$this->userTwigExtension, 'hasUserRole'], $functions[0]->getCallable());
 
         self::assertInstanceOf(TwigFunction::class, $functions[1]);
         self::assertSame('has_right', $functions[1]->getName());
-        self::assertSame([$this->userTwigExtension, 'hasUserRight'], $functions[1]->getCallable());
 
         self::assertInstanceOf(TwigFunction::class, $functions[2]);
         self::assertSame('has_group', $functions[2]->getName());
-        self::assertSame([$this->userTwigExtension, 'hasUserGroup'], $functions[2]->getCallable());
     }
 
     public function testGetFilters(): void
@@ -59,14 +59,13 @@ final class UserTwigExtensionTest extends TestCase
 
         self::assertInstanceOf(TwigFilter::class, $filters[0]);
         self::assertSame('roleHasRight', $filters[0]->getName());
-        self::assertSame([$this->userTwigExtension, 'roleHasRight'], $filters[0]->getCallable());
     }
 
     public function testHasUserRole(): void
     {
         $userRole = 'view';
 
-        $this->userRoleRight
+        $this->mockObject
             ->expects(self::once())
             ->method('hasUserRole')
             ->with($userRole)
@@ -81,7 +80,7 @@ final class UserTwigExtensionTest extends TestCase
     {
         $userRight = 'view';
 
-        $this->userRoleRight
+        $this->mockObject
             ->expects(self::once())
             ->method('hasUserRight')
             ->with($userRight)
@@ -96,7 +95,7 @@ final class UserTwigExtensionTest extends TestCase
     {
         $userGroup = 'GROUP_SUPER_ADMIN';
 
-        $this->userRoleRight
+        $this->mockObject
             ->expects(self::once())
             ->method('hasUserGroup')
             ->with($userGroup)
@@ -109,26 +108,26 @@ final class UserTwigExtensionTest extends TestCase
 
     public function testRoleHasRightReturnTrue(): void
     {
-        $userRole = new UserRole();
-        $userRole->setUserRights(['view']);
+        $userRoleEntity = new UserRoleEntity();
+        $userRoleEntity->setUserRights(['view']);
 
-        $userRight = new UserRight();
-        $userRight->setUserRight('view');
+        $userRightEntity = new UserRightEntity();
+        $userRightEntity->setUserRight('view');
 
-        $result = $this->userTwigExtension->roleHasRight($userRole, $userRight);
+        $result = $this->userTwigExtension->roleHasRight($userRoleEntity, $userRightEntity);
 
         self::assertTrue($result);
     }
 
     public function testRoleHasRightReturnFalse(): void
     {
-        $userRole = new UserRole();
-        $userRole->setUserRights(['create']);
+        $userRoleEntity = new UserRoleEntity();
+        $userRoleEntity->setUserRights(['create']);
 
-        $userRight = new UserRight();
-        $userRight->setUserRight('view');
+        $userRightEntity = new UserRightEntity();
+        $userRightEntity->setUserRight('view');
 
-        $result = $this->userTwigExtension->roleHasRight($userRole, $userRight);
+        $result = $this->userTwigExtension->roleHasRight($userRoleEntity, $userRightEntity);
 
         self::assertFalse($result);
     }

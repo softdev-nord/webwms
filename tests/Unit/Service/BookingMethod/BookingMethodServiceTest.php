@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Service\BookingMethod;
 
 use Doctrine\ORM\EntityNotFoundException;
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -23,9 +25,8 @@ use WebWMS\Service\TransportRequest\TransportRequestService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        BookingMethodServiceTest
- *
- * @covers \WebWMS\Service\BookingMethod\BookingMethodService
  */
+#[CoversClass(BookingMethodService::class)]
 final class BookingMethodServiceTest extends TestCase
 {
     private RequirementsService $requirementsService;
@@ -42,6 +43,7 @@ final class BookingMethodServiceTest extends TestCase
 
     private MockObject $form;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->requirementsService = $this->createMock(RequirementsService::class);

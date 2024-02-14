@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Repository\TransportHistoryRepository;
 
@@ -13,16 +14,15 @@ use WebWMS\Repository\TransportHistoryRepository;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        TransportHistoryRepositoryTest
- *
- * @covers \WebWMS\Repository\TransportHistoryRepository
  */
+#[CoversClass(TransportHistoryRepository::class)]
 final class TransportHistoryRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
         $registry = $this->createMock(ManagerRegistry::class);
-        $repository = new TransportHistoryRepository($registry);
+        $transportHistoryRepository = new TransportHistoryRepository($registry);
 
-        self::assertInstanceOf(TransportHistoryRepository::class, $repository);
+        self::assertInstanceOf(TransportHistoryRepository::class, $transportHistoryRepository);
     }
 }

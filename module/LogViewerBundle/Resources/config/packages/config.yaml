@@ -596,7 +596,7 @@ config:
             - Schaltflächentext
           snippet: alco.footer.newsletter.submit
     - title:
-        - Social Configuration
+        - Social ConfigurationController
         - Soziale Konfiguration
       input-field:
         - name: youtube

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\EventSubscriber;
 
+use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use WebWMS\Entity\User;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use WebWMS\Entity\UserEntity;
 use WebWMS\Service\User\UserService;
 
 /**
@@ -26,6 +28,7 @@ class LastLoginSubscriber implements EventSubscriberInterface
     ) {
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         // return the subscribed events, their methods and priorities
@@ -42,10 +45,10 @@ class LastLoginSubscriber implements EventSubscriberInterface
     public function updateLastLogin(): void
     {
         $accessToken = $this->tokenStorage->getToken();
-        if ($accessToken !== null) {
-            /* @var User $user */
+        if ($accessToken instanceof TokenInterface) {
+            /* @var UserEntity $user */
             $user = $accessToken->getUser();
-            if ($user instanceof User) {
+            if ($user instanceof UserEntity) {
                 $this->userService->updateLastLogin($user);
             }
         }

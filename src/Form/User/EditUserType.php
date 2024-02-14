@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\User;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\User;
-use WebWMS\Entity\UserRole;
+use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\UserRoleEntity;
 
 /**
  * @package:    WebWMS\Form
@@ -24,9 +25,10 @@ class EditUserType extends AbstractType
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    #[Override]
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
+        $formBuilder
             ->add('username', TextType::class, [
                 'empty_data' => '',
                 'label' => false,
@@ -40,7 +42,7 @@ class EditUserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'class' => UserRole::class,
+                'class' => UserRoleEntity::class,
                 'choices' => [
                     'Superadministrator' => 'ROLE_SUPER_ADMIN',
                     'Administrator' => 'ROLE_ADMIN',
@@ -87,10 +89,11 @@ class EditUserType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    #[Override]
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
+        $optionsResolver->setDefaults([
+            'data_class' => UserEntity::class,
         ]);
     }
 }

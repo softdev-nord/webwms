@@ -6,7 +6,7 @@ namespace WebWMS\Service\DataHandlers\User\UserRole;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\UserRole;
+use WebWMS\Entity\UserRoleEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
@@ -23,61 +23,61 @@ class UserRoleDataHandler
     ) {
     }
 
-    public function save(UserRole $userRole): void
+    public function save(UserRoleEntity $userRoleEntity): void
     {
-        $this->entityManager->persist($userRole);
+        $this->entityManager->persist($userRoleEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(UserRole $userRole): void
+    public function delete(UserRoleEntity $userRoleEntity): void
     {
-        $this->entityManager->remove($userRole);
+        $this->entityManager->remove($userRoleEntity);
         $this->entityManager->flush();
     }
 
     /**
-     * @return array<int, UserRole>
+     * @return array<int, UserRoleEntity>
      */
     public function getAllUserRoles(): array
     {
         return $this->entityManager
-            ->getRepository(UserRole::class)
+            ->getRepository(UserRoleEntity::class)
             ->findAll();
     }
 
-    public function getUserRoleById(int $userRoleId): ?UserRole
+    public function getUserRoleById(int $userRoleId): ?UserRoleEntity
     {
         return $this->entityManager
-            ->getRepository(UserRole::class)
+            ->getRepository(UserRoleEntity::class)
             ->findOneBy(['id' => $userRoleId]);
     }
 
-    public function getUserRoleByUserRoleName(string $userRoleName): ?UserRole
+    public function getUserRoleByUserRoleName(string $userRoleName): ?UserRoleEntity
     {
         return $this->entityManager
-            ->getRepository(UserRole::class)
+            ->getRepository(UserRoleEntity::class)
             ->findOneBy(['user_role' => $userRoleName]);
     }
 
-    public function addUserRole(Request $request): ?UserRole
+    public function addUserRole(Request $request): ?UserRoleEntity
     {
         $addUserRole = $request->request->getIterator()->getArrayCopy();
-        $userRole = new UserRole();
+        $userRoleEntity = new UserRoleEntity();
 
-        $userRole->setUserRole($addUserRole['user_role']);
-        $userRole->setDescription($addUserRole['description']);
-        $userRole->setCreatedAt($this->dateTimeService->createDateTime());
+        $userRoleEntity->setUserRole($addUserRole['user_role']);
+        $userRoleEntity->setDescription($addUserRole['description']);
+        $userRoleEntity->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($userRole);
+        $this->save($userRoleEntity);
 
-        return $userRole;
+        return $userRoleEntity;
     }
 
-    public function updateUserRole(Request $request): ?UserRole
+    public function updateUserRole(Request $request): ?UserRoleEntity
     {
         $requestData = $request->request->all()['edit_user_role'];
         $userRole = $this->entityManager
-            ->getRepository(UserRole::class)
+            ->getRepository(UserRoleEntity::class)
             ->findOneBy(['user_role' => $requestData['user_role']]);
 
         if ($userRole === null) {
@@ -97,7 +97,7 @@ class UserRoleDataHandler
     {
         $userRole = $this->getUserRoleByUserRoleName($userRoleName);
 
-        if ($userRole !== null) {
+        if ($userRole instanceof UserRoleEntity) {
             $this->delete($userRole);
         }
     }

@@ -6,6 +6,7 @@ namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @package:    WebWMS\Controller
@@ -17,12 +18,10 @@ class BaseController extends AbstractController
 {
     protected function checkUser(): RedirectResponse
     {
-        $redirect = new RedirectResponse('/');
-
-        if ($this->getUser() === null) {
-            $redirect = $this->redirectToRoute('app_login');
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
         }
 
-        return $redirect;
+        return new RedirectResponse('/');
     }
 }

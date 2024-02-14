@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Repository\CustomerOrderRepository;
 
@@ -13,16 +14,15 @@ use WebWMS\Repository\CustomerOrderRepository;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerOrderRepositoryTest
- *
- * @covers \WebWMS\Repository\CustomerOrderRepository
  */
+#[CoversClass(CustomerOrderRepository::class)]
 final class CustomerOrderRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
         $registry = $this->createMock(ManagerRegistry::class);
-        $repository = new CustomerOrderRepository($registry);
+        $customerOrderRepository = new CustomerOrderRepository($registry);
 
-        self::assertInstanceOf(CustomerOrderRepository::class, $repository);
+        self::assertInstanceOf(CustomerOrderRepository::class, $customerOrderRepository);
     }
 }

@@ -7,7 +7,7 @@ namespace WebWMS\Helper\FormHelper;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
-use WebWMS\Entity\Customer;
+use WebWMS\Entity\CustomerEntity;
 use WebWMS\Form\Customer\AddCustomerType;
 use WebWMS\Form\Customer\DeleteCustomerType;
 use WebWMS\Form\Customer\EditCustomerType;
@@ -29,7 +29,6 @@ class CustomerFormHelper
      * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
-     * @return FormInterface
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
     {
@@ -42,20 +41,18 @@ class CustomerFormHelper
     }
 
     /**
-     * @param Customer|null $customer
-     * @return FormInterface
+     * @param CustomerEntity|null $customerEntity
      */
-    public function editCustomerForm(?Customer $customer): FormInterface
+    public function editCustomerForm(?CustomerEntity $customerEntity): FormInterface
     {
-        return $this->createForm(EditCustomerType::class, $customer);
+        return $this->createForm(EditCustomerType::class, $customerEntity);
     }
 
     /**
-     * @param Customer|null $customer
-     * @return FormInterface
+     * @param CustomerEntity|null $customerEntity
      */
-    public function deleteCustomerForm(?Customer $customer): FormInterface
+    public function deleteCustomerForm(?CustomerEntity $customerEntity): FormInterface
     {
-        return $this->createForm(DeleteCustomerType::class, $customer);
+        return $this->createForm(DeleteCustomerType::class, $customerEntity);
     }
 }

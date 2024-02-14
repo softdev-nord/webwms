@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service;
 
+use Exception;
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,19 +19,19 @@ use WebWMS\Service\LoggingService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        LoggingServiceTest
- *
- * @covers \WebWMS\Service\LoggingService
  */
+#[CoversClass(LoggingService::class)]
 final class LoggingServiceTest extends TestCase
 {
     private LoggingService $loggingService;
 
-    private MockObject $loggingDataHandler;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->loggingDataHandler = $this->createMock(LoggingDataHandler::class);
-        $this->loggingService = new LoggingService($this->loggingDataHandler);
+        $this->mockObject = $this->createMock(LoggingDataHandler::class);
+        $this->loggingService = new LoggingService($this->mockObject);
     }
 
     public function testWrite(): void
@@ -37,7 +40,7 @@ final class LoggingServiceTest extends TestCase
         $message = 'Log message';
         $username = 'JohnDoe';
 
-        $this->loggingDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('write')
             ->with($request, $message, $username);
@@ -46,13 +49,13 @@ final class LoggingServiceTest extends TestCase
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function testGetAllLogs(): void
     {
         $jsonResponse = $this->createMock(JsonResponse::class);
 
-        $this->loggingDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllLogs')
             ->willReturn($jsonResponse);

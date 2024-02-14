@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\EventSubscriber;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use WebWMS\Entity\User;
+use WebWMS\Entity\UserEntity;
 use WebWMS\EventSubscriber\LastLoginSubscriber;
 use WebWMS\Service\User\UserService;
 
@@ -17,9 +18,8 @@ use WebWMS\Service\User\UserService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        LastLoginSubscriberTest
- *
- * @covers \WebWMS\EventSubscriber\LastLoginSubscriber
  */
+#[CoversClass(LastLoginSubscriber::class)]
 final class LastLoginSubscriberTest extends TestCase
 {
     public function testUpdateLastLogin(): void
@@ -27,14 +27,14 @@ final class LastLoginSubscriberTest extends TestCase
         $tokenStorage = $this->createMock(TokenStorageInterface::class);
         $userService = $this->createMock(UserService::class);
 
-        $subscriber = new LastLoginSubscriber($tokenStorage, $userService);
+        $lastLoginSubscriber = new LastLoginSubscriber($tokenStorage, $userService);
 
-        $user = new User();
+        $userEntity = new UserEntity();
         $accessToken = $this->createMock(TokenInterface::class);
         $accessToken
             ->expects(self::once())
             ->method('getUser')
-            ->willReturn($user);
+            ->willReturn($userEntity);
 
         $tokenStorage
             ->expects(self::once())
@@ -43,9 +43,9 @@ final class LastLoginSubscriberTest extends TestCase
 
         $userService->expects(self::once())
             ->method('updateLastLogin')
-            ->with($user);
+            ->with($userEntity);
 
-        $subscriber->updateLastLogin();
+        $lastLoginSubscriber->updateLastLogin();
     }
 
     public function testGetSubscribedEvents(): void

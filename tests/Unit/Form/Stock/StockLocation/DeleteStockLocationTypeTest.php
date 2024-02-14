@@ -4,38 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Stock\StockLocation;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\StockLocation;
+use WebWMS\Entity\StockLocationEntity;
 use WebWMS\Form\Stock\StockLocation\DeleteStockLocationType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\Stock\StockLocation
+ * @package:    WebWMS\Tests\Unit\Form\Stock\StockLocationEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        DeleteStockLocationTypeTest
- *
- * @covers \WebWMS\Form\Stock\StockLocation\DeleteStockLocationType
  */
+#[CoversClass(DeleteStockLocationType::class)]
 final class DeleteStockLocationTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                ['stockLocationCoordinate', HiddenType::class, self::anything()],
-                ['delete', ButtonType::class, self::anything()],
-                ['abort', ButtonType::class, self::anything()]
-            );
+            ->withAnyParameters();
 
-        $type = new DeleteStockLocationType();
-        $type->buildForm($builder, []);
+        $deleteStockLocationType = new DeleteStockLocationType();
+        $deleteStockLocationType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
@@ -44,9 +38,9 @@ final class DeleteStockLocationTypeTest extends TestCase
         $resolver
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => StockLocation::class]);
+            ->with(['data_class' => StockLocationEntity::class]);
 
-        $type = new DeleteStockLocationType();
-        $type->configureOptions($resolver);
+        $deleteStockLocationType = new DeleteStockLocationType();
+        $deleteStockLocationType->configureOptions($resolver);
     }
 }

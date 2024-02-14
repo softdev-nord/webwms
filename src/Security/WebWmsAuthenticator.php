@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Security;
 
+use Override;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,11 +41,13 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
     ) {
     }
 
+    #[Override]
     public function supports(Request $request): bool
     {
         return $request->isMethod('POST') && $this->getLoginUrl($request) === $request->getRequestUri();
     }
 
+    #[Override]
     public function authenticate(Request $request): Passport
     {
         $username = (string) $request->request->get('username');
@@ -71,9 +74,10 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
+    #[Override]
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+        if (($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) !== null && ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) !== '' && ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) !== '0') {
             return new RedirectResponse($targetPath);
         }
 
@@ -82,6 +86,7 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
+    #[Override]
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);

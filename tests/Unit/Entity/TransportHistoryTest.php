@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use DateTime;
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\TransportHistory;
+use WebWMS\Entity\TransportHistoryEntity;
 
 /**
  * @package:    WebWMS\Tests\Unit\Entity
@@ -13,21 +16,22 @@ use WebWMS\Entity\TransportHistory;
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        TransportHistoryTest
  *
- * @covers \WebWMS\Entity\TransportHistory
- *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
+#[CoversClass(TransportHistoryEntity::class)]
 final class TransportHistoryTest extends TestCase
 {
-    private TransportHistory $transportHistory;
-    private \DateTime $dateTime;
+    private TransportHistoryEntity $transportHistoryEntity;
 
+    private DateTime $dateTime;
+
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->transportHistory = new TransportHistory();
-        $this->dateTime = new \DateTime();
+        $this->transportHistoryEntity = new TransportHistoryEntity();
+        $this->dateTime = new DateTime();
     }
 
     /**
@@ -37,160 +41,160 @@ final class TransportHistoryTest extends TestCase
     {
         // Test setId() and getId()
         $id = 1;
-        $this->transportHistory->setId($id);
-        self::assertEquals($id, $this->transportHistory->getId());
+        $this->transportHistoryEntity->setId($id);
+        self::assertEquals($id, $this->transportHistoryEntity->getId());
 
         // Test setSuId() and getSuId()
         $suId = 1;
-        $this->transportHistory->setSuId($suId);
-        self::assertSame($suId, $this->transportHistory->getSuId());
+        $this->transportHistoryEntity->setSuId($suId);
+        self::assertSame($suId, $this->transportHistoryEntity->getSuId());
 
         // Test setTrNr() and getTrNr()
         $trNr = 10000;
-        $this->transportHistory->setTrNr($trNr);
-        self::assertSame($trNr, $this->transportHistory->getTrNr());
+        $this->transportHistoryEntity->setTrNr($trNr);
+        self::assertSame($trNr, $this->transportHistoryEntity->getTrNr());
 
         // Test setTrPos() and getTrPos()
         $trPos = 1;
-        $this->transportHistory->setTrPos($trPos);
-        self::assertSame($trPos, $this->transportHistory->getTrPos());
+        $this->transportHistoryEntity->setTrPos($trPos);
+        self::assertSame($trPos, $this->transportHistoryEntity->getTrPos());
 
         // Test setTrPrio() and getTrPrio()
         $trPrio = 1;
-        $this->transportHistory->setTrPrio($trPrio);
-        self::assertSame($trPrio, $this->transportHistory->getTrPrio());
+        $this->transportHistoryEntity->setTrPrio($trPrio);
+        self::assertSame($trPrio, $this->transportHistoryEntity->getTrPrio());
 
         // Test setArticleNr() and getArticleNr()
         $articleNr = '12345';
-        $this->transportHistory->setArticleNr($articleNr);
-        self::assertEquals($articleNr, $this->transportHistory->getArticleNr());
+        $this->transportHistoryEntity->setArticleNr($articleNr);
+        self::assertEquals($articleNr, $this->transportHistoryEntity->getArticleNr());
 
         // Test setTrQuantity() and getTrQuantity()
         $trQuantity = 80.000;
-        $this->transportHistory->setTrQuantity($trQuantity);
-        self::assertEquals($trQuantity, $this->transportHistory->getTrQuantity());
+        $this->transportHistoryEntity->setTrQuantity($trQuantity);
+        self::assertEquals($trQuantity, $this->transportHistoryEntity->getTrQuantity());
 
         // Test setStockCoordinate() and getStockCoordinate()
         $stockCoordinate = '101000100010001';
-        $this->transportHistory->setStockCoordinate($stockCoordinate);
-        self::assertEquals($stockCoordinate, $this->transportHistory->getStockCoordinate());
+        $this->transportHistoryEntity->setStockCoordinate($stockCoordinate);
+        self::assertEquals($stockCoordinate, $this->transportHistoryEntity->getStockCoordinate());
 
         // Test setStockNr() and getStockNr()
         $stockNr = 100;
-        $this->transportHistory->setStockNr($stockNr);
-        self::assertEquals($stockNr, $this->transportHistory->getStockNr());
+        $this->transportHistoryEntity->setStockNr($stockNr);
+        self::assertEquals($stockNr, $this->transportHistoryEntity->getStockNr());
 
         // Test setStockLevel1() and getStockLevel1()
         $stockLevel1 = 1;
-        $this->transportHistory->setStockLevel1($stockLevel1);
-        self::assertEquals($stockLevel1, $this->transportHistory->getStockLevel1());
+        $this->transportHistoryEntity->setStockLevel1($stockLevel1);
+        self::assertEquals($stockLevel1, $this->transportHistoryEntity->getStockLevel1());
 
         // Test setStockLevel2() and getStockLevel2()
         $stockLevel2 = 1;
-        $this->transportHistory->setStockLevel2($stockLevel2);
-        self::assertEquals($stockLevel2, $this->transportHistory->getStockLevel2());
+        $this->transportHistoryEntity->setStockLevel2($stockLevel2);
+        self::assertEquals($stockLevel2, $this->transportHistoryEntity->getStockLevel2());
 
         // Test setStockLevel3() and getStockLevel3()
         $stockLevel3 = 1;
-        $this->transportHistory->setStockLevel3($stockLevel3);
-        self::assertEquals($stockLevel3, $this->transportHistory->getStockLevel3());
+        $this->transportHistoryEntity->setStockLevel3($stockLevel3);
+        self::assertEquals($stockLevel3, $this->transportHistoryEntity->getStockLevel3());
 
         // Test setStockLevel4() and getStockLevel4()
         $stockLevel4 = 1;
-        $this->transportHistory->setStockLevel4($stockLevel4);
-        self::assertEquals($stockLevel4, $this->transportHistory->getStockLevel4());
+        $this->transportHistoryEntity->setStockLevel4($stockLevel4);
+        self::assertEquals($stockLevel4, $this->transportHistoryEntity->getStockLevel4());
 
         // Test setTrAccess() and getTrAccess()
         $trAccess = $this->dateTime;
-        $this->transportHistory->setTrAccess($trAccess);
-        self::assertEquals($trAccess, $this->transportHistory->getTrAccess());
+        $this->transportHistoryEntity->setTrAccess($trAccess);
+        self::assertEquals($trAccess, $this->transportHistoryEntity->getTrAccess());
 
         // Test setTrDispatch() and getTrDispatch()
         $trDispatch = $this->dateTime;
-        $this->transportHistory->setTrDispatch($trDispatch);
-        self::assertEquals($trDispatch, $this->transportHistory->getTrDispatch());
+        $this->transportHistoryEntity->setTrDispatch($trDispatch);
+        self::assertEquals($trDispatch, $this->transportHistoryEntity->getTrDispatch());
 
         // Test setTrState() and getTrState()
         $trState = 1;
-        $this->transportHistory->setTrState($trState);
-        self::assertEquals($trState, $this->transportHistory->getTrState());
+        $this->transportHistoryEntity->setTrState($trState);
+        self::assertEquals($trState, $this->transportHistoryEntity->getTrState());
 
         // Test setOrderUsername() and getOrderUsername()
         $orderUsername = 'rirrgang';
-        $this->transportHistory->setOrderUsername($orderUsername);
-        self::assertEquals($orderUsername, $this->transportHistory->getOrderUsername());
+        $this->transportHistoryEntity->setOrderUsername($orderUsername);
+        self::assertEquals($orderUsername, $this->transportHistoryEntity->getOrderUsername());
 
         // Test setBookingMethod() and getBookingMethod()
         $bookingMethod = 'WA202';
-        $this->transportHistory->setBookingMethod($bookingMethod);
-        self::assertEquals($bookingMethod, $this->transportHistory->getBookingMethod());
+        $this->transportHistoryEntity->setBookingMethod($bookingMethod);
+        self::assertEquals($bookingMethod, $this->transportHistoryEntity->getBookingMethod());
 
         // Test setDocId() and getDocId()
         $docId = 710000;
-        $this->transportHistory->setDocId($docId);
-        self::assertEquals($docId, $this->transportHistory->getDocId());
+        $this->transportHistoryEntity->setDocId($docId);
+        self::assertEquals($docId, $this->transportHistoryEntity->getDocId());
 
         // Test setOrderNr() and getOrderNr()
         $orderNr = 'VLS-01-710000';
-        $this->transportHistory->setOrderNr($orderNr);
-        self::assertEquals($orderNr, $this->transportHistory->getOrderNr());
+        $this->transportHistoryEntity->setOrderNr($orderNr);
+        self::assertEquals($orderNr, $this->transportHistoryEntity->getOrderNr());
 
         // Test setOrderPos() and getOrderPos()
         $orderPos = 1;
-        $this->transportHistory->setOrderPos($orderPos);
-        self::assertEquals($orderPos, $this->transportHistory->getOrderPos());
+        $this->transportHistoryEntity->setOrderPos($orderPos);
+        self::assertEquals($orderPos, $this->transportHistoryEntity->getOrderPos());
 
         // Test setCharge() and getCharge()
         $charge = '000-000-000';
-        $this->transportHistory->setCharge($charge);
-        self::assertEquals($charge, $this->transportHistory->getCharge());
+        $this->transportHistoryEntity->setCharge($charge);
+        self::assertEquals($charge, $this->transportHistoryEntity->getCharge());
 
         // Test setLoadingEquipment() and getLoadingEquipment()
         $loadingEquipment = 'PAL200';
-        $this->transportHistory->setLoadingEquipment($loadingEquipment);
-        self::assertEquals($loadingEquipment, $this->transportHistory->getLoadingEquipment());
+        $this->transportHistoryEntity->setLoadingEquipment($loadingEquipment);
+        self::assertEquals($loadingEquipment, $this->transportHistoryEntity->getLoadingEquipment());
 
         // Test setConfirmationState() and getConfirmationState()
         $confirmationState = 0;
-        $this->transportHistory->setConfirmationState($confirmationState);
-        self::assertEquals($confirmationState, $this->transportHistory->getConfirmationState());
+        $this->transportHistoryEntity->setConfirmationState($confirmationState);
+        self::assertEquals($confirmationState, $this->transportHistoryEntity->getConfirmationState());
 
         // Test setTrUsername() and getTrUsername()
         $trUsername = 'karlfeld';
-        $this->transportHistory->setTrUsername($trUsername);
-        self::assertEquals($trUsername, $this->transportHistory->getTrUsername());
+        $this->transportHistoryEntity->setTrUsername($trUsername);
+        self::assertEquals($trUsername, $this->transportHistoryEntity->getTrUsername());
 
         // Test setTrComputerIp() and getTrComputerIp()
         $trComputerIp = '123.123.123.123';
-        $this->transportHistory->setTrComputerIp($trComputerIp);
-        self::assertEquals($trComputerIp, $this->transportHistory->getTrComputerIp());
+        $this->transportHistoryEntity->setTrComputerIp($trComputerIp);
+        self::assertEquals($trComputerIp, $this->transportHistoryEntity->getTrComputerIp());
 
         // Test setTrBlocked() and getTrBlocked()
-        $this->transportHistory->setTrBlocked(true);
-        self::assertTrue($this->transportHistory->getTrBlocked());
+        $this->transportHistoryEntity->setTrBlocked(true);
+        self::assertTrue($this->transportHistoryEntity->getTrBlocked());
 
         // Test setTrStartDate() and getTrStartDate()
         $trStartDate = $this->dateTime;
-        $this->transportHistory->setTrStartDate($trStartDate);
-        self::assertEquals($trStartDate, $this->transportHistory->getTrStartDate());
+        $this->transportHistoryEntity->setTrStartDate($trStartDate);
+        self::assertEquals($trStartDate, $this->transportHistoryEntity->getTrStartDate());
 
         // Test setTrEdited() and getTrEdited()
-        $this->transportHistory->setTrEdited(false);
-        self::assertFalse($this->transportHistory->getTrEdited());
+        $this->transportHistoryEntity->setTrEdited(false);
+        self::assertFalse($this->transportHistoryEntity->getTrEdited());
 
         // Test setTrType() and getTrType()
         $trType = 1;
-        $this->transportHistory->setTrType($trType);
-        self::assertEquals($trType, $this->transportHistory->getTrType());
+        $this->transportHistoryEntity->setTrType($trType);
+        self::assertEquals($trType, $this->transportHistoryEntity->getTrType());
 
         // Test setCreatedAt() and getCreatedAt()
         $createdAt = $this->dateTime;
-        $this->transportHistory->setCreatedAt($createdAt);
-        self::assertEquals($createdAt, $this->transportHistory->getCreatedAt());
+        $this->transportHistoryEntity->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->transportHistoryEntity->getCreatedAt());
 
         // Test setUpdatedAt() and getUpdatedAt()
         $updatedAt = $this->dateTime;
-        $this->transportHistory->setUpdatedAt($updatedAt);
-        self::assertEquals($updatedAt, $this->transportHistory->getUpdatedAt());
+        $this->transportHistoryEntity->setUpdatedAt($updatedAt);
+        self::assertEquals($updatedAt, $this->transportHistoryEntity->getUpdatedAt());
     }
 }

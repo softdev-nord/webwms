@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Validation;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\User;
+use WebWMS\Entity\UserEntity;
 use WebWMS\Service\Validation\UserValidationService;
 
 /**
@@ -13,28 +15,28 @@ use WebWMS\Service\Validation\UserValidationService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserValidationServiceTest
- *
- * @covers \WebWMS\Service\Validation\UserValidationService
  */
+#[CoversClass(UserValidationService::class)]
 final class UserValidationServiceTest extends TestCase
 {
     private UserValidationService $userValidationService;
 
-    private User $user;
+    private UserEntity $userEntity;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->userValidationService = new UserValidationService();
-        $this->user = new User();
+        $this->userEntity = new UserEntity();
     }
 
     public function testValidateUserDataWithValidUser(): void
     {
-        $this->user->setUsername('testuser');
-        $this->user->setFirstname('John');
-        $this->user->setLastname('Doe');
+        $this->userEntity->setUsername('testuser');
+        $this->userEntity->setFirstname('John');
+        $this->userEntity->setLastname('Doe');
 
-        $result = $this->userValidationService->validateUserData($this->user);
+        $result = $this->userValidationService->validateUserData($this->userEntity);
 
         self::assertTrue($result['success']);
         self::assertEquals('testuser', $result['username']);
@@ -44,11 +46,11 @@ final class UserValidationServiceTest extends TestCase
 
     public function testValidateUserDataWithMissingFields(): void
     {
-        $this->user->setUsername('');
-        $this->user->setFirstname('');
-        $this->user->setLastname('');
+        $this->userEntity->setUsername('');
+        $this->userEntity->setFirstname('');
+        $this->userEntity->setLastname('');
 
-        $result = $this->userValidationService->validateUserData($this->user);
+        $result = $this->userValidationService->validateUserData($this->userEntity);
 
         $expectedResult = [
             'error' => [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\Article;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -11,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\Article;
+use WebWMS\Entity\ArticleEntity;
 
 /**
  * @package:    WebWMS\Form
@@ -25,9 +26,10 @@ class EditArticleType extends AbstractType
      * @SuppressWarnings("unused")
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    #[Override]
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder->add('articleId', HiddenType::class, [
+        $formBuilder->add('articleId', HiddenType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -158,10 +160,11 @@ class EditArticleType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    #[Override]
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => Article::class,
+        $optionsResolver->setDefaults([
+            'data_class' => ArticleEntity::class,
         ]);
     }
 }

@@ -23,20 +23,20 @@ class FileUploader
     ) {
     }
 
-    public function upload(UploadedFile $file): string
+    public function upload(UploadedFile $uploadedFile): string
     {
-        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
 
-        return $originalFilename . '.' . $file->guessExtension();
+        return $originalFilename . '.' . $uploadedFile->guessExtension();
     }
 
-    public function isValidImage(UploadedFile $file): bool
+    public function isValidImage(UploadedFile $uploadedFile): bool
     {
-        $imageConstraint = new Assert\Image([
+        $image = new Assert\Image([
                 'maxSize' => '5m',
             ]);
 
-        $errors = $this->validator->validate($file, $imageConstraint);
+        $errors = $this->validator->validate($uploadedFile, $image);
 
         return $errors->count() === 0;
     }

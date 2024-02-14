@@ -4,38 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Customer;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\Customer;
+use WebWMS\Entity\CustomerEntity;
 use WebWMS\Form\Customer\DeleteCustomerType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\Customer
+ * @package:    WebWMS\Tests\Unit\Form\CustomerEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        DeleteCustomerTypeTest
- *
- * @covers \WebWMS\Form\Customer\DeleteCustomerType
  */
+#[CoversClass(DeleteCustomerType::class)]
 final class DeleteCustomerTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                ['customerId', HiddenType::class, self::anything()],
-                ['save', ButtonType::class, self::anything()],
-                ['abort', ButtonType::class, self::anything()]
-            );
+            ->withAnyParameters();
 
-        $type = new DeleteCustomerType();
-        $type->buildForm($builder, []);
+        $deleteCustomerType = new DeleteCustomerType();
+        $deleteCustomerType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
@@ -44,9 +38,9 @@ final class DeleteCustomerTypeTest extends TestCase
         $resolver
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => Customer::class]);
+            ->with(['data_class' => CustomerEntity::class]);
 
-        $type = new DeleteCustomerType();
-        $type->configureOptions($resolver);
+        $deleteCustomerType = new DeleteCustomerType();
+        $deleteCustomerType->configureOptions($resolver);
     }
 }

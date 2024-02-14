@@ -4,71 +4,74 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\Configuration;
+use WebWMS\Entity\ConfigurationEntity;
 
 /**
  * @package:    WebWMS\Tests\Unit\Entity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ConfigurationTest
- *
- * @covers \WebWMS\Entity\Configuration
  */
+#[CoversClass(ConfigurationEntity::class)]
 final class ConfigurationTest extends TestCase
 {
-    private Configuration $configuration;
+    private ConfigurationEntity $configurationEntity;
 
     /**
      * {@inheritdoc}
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->configuration = new Configuration();
+        $this->configurationEntity = new ConfigurationEntity();
     }
 
     /**
      * {@inheritdoc}
      */
+    #[Override]
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        unset($this->configuration);
+        unset($this->configurationEntity);
     }
 
     public function testGetterAndSetterMethods(): void
     {
         // Test setId() and getId()
         $id = 1;
-        $this->configuration->setId($id);
-        self::assertEquals($id, $this->configuration->getId());
+        $this->configurationEntity->setId($id);
+        self::assertEquals($id, $this->configurationEntity->getId());
 
         // Test setName() and getName()
         $name = 'test_name';
-        $this->configuration->setName($name);
-        self::assertEquals($name, $this->configuration->getName());
+        $this->configurationEntity->setName($name);
+        self::assertEquals($name, $this->configurationEntity->getName());
 
         // Test setValue() and getValue()
         $value = 'test_value';
-        $this->configuration->setValue($value);
-        self::assertEquals($value, $this->configuration->getValue());
+        $this->configurationEntity->setValue($value);
+        self::assertEquals($value, $this->configurationEntity->getValue());
 
         // Test setLabel() and getLabel()
         $label = 'test_label';
-        $this->configuration->setLabel($label);
-        self::assertEquals($label, $this->configuration->getLabel());
+        $this->configurationEntity->setLabel($label);
+        self::assertEquals($label, $this->configurationEntity->getLabel());
 
         // Test setDescription() and getDescription()
         $description = 'test_description';
-        $this->configuration->setDescription($description);
-        self::assertEquals($description, $this->configuration->getDescription());
+        $this->configurationEntity->setDescription($description);
+        self::assertEquals($description, $this->configurationEntity->getDescription());
 
         // Test setType() and getType()
         $type = 'test_type';
-        $this->configuration->setType($type);
-        self::assertEquals($type, $this->configuration->getType());
+        $this->configurationEntity->setType($type);
+        self::assertEquals($type, $this->configurationEntity->getType());
     }
 }

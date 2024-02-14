@@ -6,7 +6,7 @@ namespace WebWMS\Service\Stock;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockLocation;
+use WebWMS\Entity\StockLocationEntity;
 use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 
 /**
@@ -30,7 +30,7 @@ class StockLocationService
         return $this->stockLocationDataHandler->getAllStockLocation();
     }
 
-    public function getStockLocationByCoordinate(string $stockLocationCoordinate): ?StockLocation
+    public function getStockLocationByCoordinate(string $stockLocationCoordinate): ?StockLocationEntity
     {
         return $this->stockLocationDataHandler
             ->getStockLocationByCoordinate(
@@ -47,19 +47,19 @@ class StockLocationService
         return $this->stockLocationDataHandler->getStockLocationDetailsById($stockLocationId);
     }
 
-    public function addStockLocation(StockLocation $stockLocation): void
+    public function addStockLocation(StockLocationEntity $stockLocationEntity): void
     {
-        $this->stockLocationDataHandler->addStockLocation($stockLocation);
+        $this->stockLocationDataHandler->addStockLocation($stockLocationEntity);
     }
 
-    public function updateStockLocation(StockLocation $stockLocation): void
+    public function updateStockLocation(StockLocationEntity $stockLocationEntity): void
     {
-        $this->stockLocationDataHandler->updateStockLocation($stockLocation);
+        $this->stockLocationDataHandler->updateStockLocation($stockLocationEntity);
     }
 
-    public function deleteStockLocation(StockLocation $stockLocation): void
+    public function deleteStockLocation(StockLocationEntity $stockLocationEntity): void
     {
-        $this->stockLocationDataHandler->deleteStockLocation($stockLocation);
+        $this->stockLocationDataHandler->deleteStockLocation($stockLocationEntity);
     }
 
     /**

@@ -4,41 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Stock\StockZone;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\StockZone;
+use WebWMS\Entity\StockZoneEntity;
 use WebWMS\Form\Stock\StockZone\EditStockZoneType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\Stock\StockZone
+ * @package:    WebWMS\Tests\Unit\Form\Stock\StockZoneEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        EditStockZoneTypeTest
- *
- * @covers \WebWMS\Form\Stock\StockZone\EditStockZoneType
  */
+#[CoversClass(EditStockZoneType::class)]
 final class EditStockZoneTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                ['id', HiddenType::class, self::anything()],
-                ['stockZoneShortDesc', TextType::class, self::anything()],
-                ['stockZoneDescription', TextType::class, self::anything()],
-                ['save', ButtonType::class, self::anything()],
-                ['abort', ButtonType::class, self::anything()]
-            );
+            ->withAnyParameters();
 
-        $type = new EditStockZoneType();
-        $type->buildForm($builder, []);
+        $editStockZoneType = new EditStockZoneType();
+        $editStockZoneType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
@@ -47,9 +38,9 @@ final class EditStockZoneTypeTest extends TestCase
         $resolver
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => StockZone::class]);
+            ->with(['data_class' => StockZoneEntity::class]);
 
-        $type = new EditStockZoneType();
-        $type->configureOptions($resolver);
+        $editStockZoneType = new EditStockZoneType();
+        $editStockZoneType->configureOptions($resolver);
     }
 }

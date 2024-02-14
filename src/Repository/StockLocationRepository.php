@@ -6,7 +6,7 @@ namespace WebWMS\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use WebWMS\Entity\StockLocation;
+use WebWMS\Entity\StockLocationEntity;
 
 /**
  * @package:    WebWMS\Repository
@@ -14,16 +14,16 @@ use WebWMS\Entity\StockLocation;
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockLocationRepository
  *
- * @method StockLocation|null find($id, $lockMode = null, $lockVersion = null)
- * @method StockLocation|null findOneBy(array $criteria, array $orderBy = null)
- * @method StockLocation[]    findAll()
- * @method StockLocation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method StockLocationEntity|null find($id, $lockMode = null, $lockVersion = null)
+ * @method StockLocationEntity|null findOneBy(array $criteria, array $orderBy = null)
+ * @method StockLocationEntity[]    findAll()
+ * @method StockLocationEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class StockLocationRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry $registry
+        ManagerRegistry $managerRegistry
     ) {
-        parent::__construct($registry, StockLocation::class);
+        parent::__construct($managerRegistry, StockLocationEntity::class);
     }
 }

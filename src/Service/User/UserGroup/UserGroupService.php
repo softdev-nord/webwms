@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace WebWMS\Service\User\UserGroup;
 
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\UserGroup;
+use WebWMS\Entity\UserGroupEntity;
 use WebWMS\Service\DataHandlers\User\UserGroup\UserGroupDataHandler;
 
 /**
- * @package:    WebWMS\Service\User\UserGroup
+ * @package:    WebWMS\Service\UserController\UserGroupEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserGroupService
@@ -21,18 +21,18 @@ class UserGroupService
     ) {
     }
 
-    public function getUserGroupByUserGroupName(string $userGroupName): ?UserGroup
+    public function getUserGroupByUserGroupName(string $userGroupName): ?UserGroupEntity
     {
         return $this->userGroupDataHandler->getUserGroupByUserGroupName($userGroupName);
     }
 
-    public function getUserGroupById(int $userGroupId): ?UserGroup
+    public function getUserGroupById(int $userGroupId): ?UserGroupEntity
     {
         return $this->userGroupDataHandler->getUserGroupById($userGroupId);
     }
 
     /**
-     * @return array<int, UserGroup>
+     * @return array<int, UserGroupEntity>
      */
     public function getAllUserGroups(): array
     {
@@ -44,7 +44,7 @@ class UserGroupService
         $this->userGroupDataHandler->addUserGroup($request);
     }
 
-    public function updateUserGroup(Request $request): ?UserGroup
+    public function updateUserGroup(Request $request): ?UserGroupEntity
     {
         return $this->userGroupDataHandler->updateUserGroup($request);
     }

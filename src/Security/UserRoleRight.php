@@ -8,10 +8,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\User;
-use WebWMS\Entity\UserGroup;
-use WebWMS\Entity\UserRight;
-use WebWMS\Entity\UserRole;
+use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\UserGroupEntity;
+use WebWMS\Entity\UserRightEntity;
+use WebWMS\Entity\UserRoleEntity;
 
 /**
  * @package:    WebWMS\Security
@@ -29,18 +29,16 @@ class UserRoleRight
 
     /**
      * Prüft, ob der Benutzer die userRight hat.
-     * @param string $userRight
-     * @return bool
      */
     public function hasUserRight(string $userRight): bool
     {
         $user = $this->getCurrentUser();
 
-        if ($user !== null) {
-            /** @var UserRole $role */
+        if ($user instanceof UserInterface) {
+            /** @var UserRoleEntity $role */
             foreach ($user->getRoles() as $role) {
                 foreach ($role->getUserRights() as $right) {
-                    /** @var UserRight $right */
+                    /** @var UserRightEntity $right */
                     if ($userRight === $right->getUserRight()) {
                         return true;
                     }
@@ -53,176 +51,155 @@ class UserRoleRight
 
     /**
      * Prüft, ob der Benutzer die userRole hat
-     * @param string $userRole
-     * @return bool
      */
     public function hasUserRole(string $userRole): bool
     {
         $user = $this->getCurrentUser();
 
-        if ($user !== null) {
-            if (in_array($userRole, $user->getRoles(), true)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $user instanceof UserInterface && in_array($userRole, $user->getRoles(), true);
     }
 
     /**
      * Prüft, ob der Benutzer die userGroupName hat
-     * @param string $userGroupName
-     * @return bool
      */
     public function hasUserGroup(string $userGroupName): bool
     {
-        /** @var User $user */
+        /** @var UserEntity $user */
         $user = $this->getCurrentUser();
-        $userGroup = $this->getUserGroupByGroup($userGroupName);
+        $userGroupEntity = $this->getUserGroupByGroup($userGroupName);
 
-        if (in_array(strval($userGroup->getId()), $user->getUserGroups(), true)) {
-            return true;
-        }
-
-        return false;
+        return in_array((string) $userGroupEntity->getId(), $user->getUserGroups(), true);
     }
 
     /**
-     * Ruft UserRight mit der ID des Rechts ab. z. Bsp. 1.
-     * @param string $userRightId
-     * @return array|UserRight[]
+     * Ruft UserRightEntity mit der ID des Rechts ab. z. Bsp. 1.
+     * @return array|UserRightEntity[]
      */
     public function getUserRightById(string $userRightId): array
     {
-        $query = $this->entityManager->createQueryBuilder();
-        $query->select('ur')
-            ->from(UserRight::class, 'ur')
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('ur')
+            ->from(UserRightEntity::class, 'ur')
             ->where('ur.id = :userRightId')
             ->setParameter('userRightId', $userRightId)
             ->setMaxResults(1)
         ;
 
-        $result = $query->getQuery()->getResult();
+        $result = $queryBuilder->getQuery()->getResult();
 
         if (isset($result)) {
             return $result[0];
         }
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**
-     * Ruft UserRight mit dem Namen des Rechts auf. z. Bsp. manage-users.
-     * @param string $userRight
-     * @return array|UserRight[]
+     * Ruft UserRightEntity mit dem Namen des Rechts auf. z. Bsp. manage-users.
+     * @return array|UserRightEntity[]
      */
     public function getUserRightByRightName(string $userRight): array
     {
-        $query = $this->entityManager->createQueryBuilder();
-        $query->select('ur')
-            ->from(UserRight::class, 'ur')
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('ur')
+            ->from(UserRightEntity::class, 'ur')
             ->where('ur.userRight = :userRight')
             ->setParameter('userRight', $userRight)
             ->setMaxResults(1)
         ;
 
-        $result = $query->getQuery()->getResult();
+        $result = $queryBuilder->getQuery()->getResult();
 
         if (isset($result)) {
             return $result[0];
         }
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**
-     * Ruft UserRole mit der ID der Rolle ab. z. Bsp. 1.
-     * @param int $userRoleId
-     * @return array|UserRole[]
+     * Ruft UserRoleEntity mit der ID der Rolle ab. z. Bsp. 1.
+     * @return array|UserRoleEntity[]
      */
     public function getUserRoleById(int $userRoleId): array
     {
-        $query = $this->entityManager->createQueryBuilder();
-        $query->select('ur')
-            ->from(UserRole::class, 'ur')
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('ur')
+            ->from(UserRoleEntity::class, 'ur')
             ->where('ur.id = :userRoleId')
             ->setParameter('userRoleId', $userRoleId)
             ->setMaxResults(1)
         ;
 
-        $result = $query->getQuery()->getResult();
+        $result = $queryBuilder->getQuery()->getResult();
 
         if (isset($result)) {
             return $result[0];
         }
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**
-     * Ruft UserRole mit dem Namen der Rolle. z. Bsp. SUPER_ADMIN.
-     * @param string $userRole
-     * @return array|UserRole[]
+     * Ruft UserRoleEntity mit dem Namen der Rolle. z. Bsp. SUPER_ADMIN.
+     * @return array|UserRoleEntity[]
      */
     public function getUserRoleByRoleName(string $userRole): array
     {
-        $query = $this->entityManager->createQueryBuilder();
-        $query->select('ur')
-            ->from(UserRole::class, 'ur')
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('ur')
+            ->from(UserRoleEntity::class, 'ur')
             ->where('ev.userRole = :userRole')
             ->setParameter('userRole', $userRole)
             ->setMaxResults(1)
         ;
 
-        $result = $query->getQuery()->getResult();
+        $result = $queryBuilder->getQuery()->getResult();
 
         if (isset($result)) {
             return $result[0];
         }
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**
      * Ruft Group mit der ID der Gruppe ab. z. Bsp. 1.
-     * @param int $userGroupId
-     * @return array|UserGroup[]
+     * @return array|UserGroupEntity[]
      */
     public function getUserGroupById(int $userGroupId): array
     {
-        $query = $this->entityManager->createQueryBuilder();
-        $query->select('ug')
-            ->from(UserGroup::class, 'ug')
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('ug')
+            ->from(UserGroupEntity::class, 'ug')
             ->where('ug.id = :userGroupId')
             ->setParameter('userGroupId', $userGroupId)
             ->setMaxResults(1)
         ;
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**
      * Ruft Group mit dem Namen der Gruppe. z. Bsp. GROUP_SUPER_ADMIN.
-     * @param string $userGroupName
-     * @return UserGroup
      */
-    public function getUserGroupByGroup(string $userGroupName): UserGroup
+    public function getUserGroupByGroup(string $userGroupName): UserGroupEntity
     {
-        $query = $this->entityManager->createQueryBuilder();
-        $query->select('ug')
-            ->from(UserGroup::class, 'ug')
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('ug')
+            ->from(UserGroupEntity::class, 'ug')
             ->where('ug.group = :userGroupName')
             ->setParameter('userGroupName', $userGroupName)
             ->setMaxResults(1)
         ;
 
-        $result = $query->getQuery()->getResult();
+        $result = $queryBuilder->getQuery()->getResult();
 
         if (isset($result)) {
             return $result[0];
         }
 
-        return $query->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 
     /**
@@ -239,7 +216,7 @@ class UserRoleRight
      */
     protected function getUserGroup(): array
     {
-        /** @var User $user */
+        /** @var UserEntity $user */
         $user = $this->getCurrentUser();
 
         return $user->getUserGroups();

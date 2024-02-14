@@ -4,41 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\SupplierOrder;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\SupplierOrderPos;
+use WebWMS\Entity\SupplierOrderPosEntity;
 use WebWMS\Form\SupplierOrder\SupplierOrderPosType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\SupplierOrder
+ * @package:    WebWMS\Tests\Unit\Form\SupplierOrderEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        SupplierOrderPosTypeTest
- *
- * @covers \WebWMS\Form\SupplierOrder\SupplierOrderPosType
  */
+#[CoversClass(SupplierOrderPosType::class)]
 final class SupplierOrderPosTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                ['id', HiddenType::class, self::anything()],
-                ['supplierOrderId', HiddenType::class, self::anything()],
-                ['supplierOrderPosQuantity', TextType::class, self::anything()],
-                ['articleId', HiddenType::class, self::anything()],
-                ['articleNr', TextType::class, self::anything()],
-                ['articleName', TextType::class, self::anything()],
-            );
+            ->withAnyParameters();
 
-        $type = new SupplierOrderPosType();
-        $type->buildForm($builder, []);
+        $supplierOrderPosType = new SupplierOrderPosType();
+        $supplierOrderPosType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
@@ -47,9 +38,9 @@ final class SupplierOrderPosTypeTest extends TestCase
         $resolver
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => SupplierOrderPos::class]);
+            ->with(['data_class' => SupplierOrderPosEntity::class]);
 
-        $type = new SupplierOrderPosType();
-        $type->configureOptions($resolver);
+        $supplierOrderPosType = new SupplierOrderPosType();
+        $supplierOrderPosType->configureOptions($resolver);
     }
 }

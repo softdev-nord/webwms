@@ -7,7 +7,7 @@ namespace WebWMS\Service\DataHandlers\Stock;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockOccupancy;
+use WebWMS\Entity\StockOccupancyEntity;
 
 /**
  * @package:    WebWMS\Service\DataHandlers\Stock
@@ -22,21 +22,21 @@ class StockOccupancyDataHandler
     ) {
     }
 
-    public function save(StockOccupancy $stockOccupancy): void
+    public function save(StockOccupancyEntity $stockOccupancyEntity): void
     {
-        $this->entityManager->persist($stockOccupancy);
+        $this->entityManager->persist($stockOccupancyEntity);
         $this->entityManager->flush();
     }
 
-    public function update(StockOccupancy $stockOccupancy): void
+    public function update(StockOccupancyEntity $stockOccupancyEntity): void
     {
-        $this->entityManager->persist($stockOccupancy);
+        $this->entityManager->persist($stockOccupancyEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(StockOccupancy $stockOccupancy): void
+    public function delete(StockOccupancyEntity $stockOccupancyEntity): void
     {
-        $this->entityManager->remove($stockOccupancy);
+        $this->entityManager->remove($stockOccupancyEntity);
         $this->entityManager->flush();
     }
 
@@ -131,14 +131,11 @@ class StockOccupancyDataHandler
             ->setParameter('article_nr', $articleNr)
             ->groupBy('tph.su_id');
 
-        $stmt = $queryBuilder->executeQuery();
-
-        return $stmt->fetchAllAssociative();
+        return $queryBuilder->executeQuery()->fetchAllAssociative();
     }
 
     /**
      * @throws Exception
-     * @return JsonResponse
      */
     public function getAllStockOccupancy(): JsonResponse
     {
@@ -164,8 +161,8 @@ class StockOccupancyDataHandler
             ->innerJoin('tph', 'article', 'art', 'tph.article_nr = art.article_nr')
             ->groupBy('tph.su_id');
 
-        $stmt = $queryBuilder->executeQuery();
+        $result = $queryBuilder->executeQuery();
 
-        return new JsonResponse($stmt->fetchAllAssociative());
+        return new JsonResponse($result->fetchAllAssociative());
     }
 }

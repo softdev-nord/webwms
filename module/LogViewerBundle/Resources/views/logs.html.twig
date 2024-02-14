@@ -14,11 +14,8 @@
 
     {% block webwms_content %}
         {% block webwms_log_viewer_overview %}
-            <div id="webWMS-log-viewer-overview" class="wrapper-form{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                <div class="wrapper-form-content{% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %} vertical-theme{% endif %}">
-                    {% if (configuration.name == 'vertical_menu') and (configuration.value == 'true') %}
-                        <div class="webwms-page">{{ page }}</div>
-                    {% endif %}
+            <div id="webWMS-log-viewer-overview" class="wrapper-form vertical-theme">
+                <div class="wrapper-form-content vertical-theme">
                     {% block webwms_log_viewer_overview_content %}
                         <div class="card">
                             <div class="card-content">

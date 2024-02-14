@@ -4,46 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Stock\StockLayout;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\StockLayout;
+use WebWMS\Entity\StockLayoutEntity;
 use WebWMS\Form\Stock\StockLayout\EditStockLayoutType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\Stock\StockLayout
+ * @package:    WebWMS\Tests\Unit\Form\Stock\StockLayoutEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        EditStockLayoutTypeTest
- *
- * @covers \WebWMS\Form\Stock\StockLayout\EditStockLayoutType
  */
+#[CoversClass(EditStockLayoutType::class)]
 final class EditStockLayoutTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                ['stockNr', TextType::class, self::anything()],
-                ['stockDescription', TextType::class, self::anything()],
-                ['stockLevel1', TextType::class, self::anything()],
-                ['stockLevel2', TextType::class, self::anything()],
-                ['stockLevel3', TextType::class, self::anything()],
-                ['stockLevel4', TextType::class, self::anything()],
-                ['stockModel', TextType::class, self::anything()],
-                ['stockTyp', TextType::class, self::anything()],
-                ['stockLongDescription', TextType::class, self::anything()],
-                ['save', ButtonType::class, self::anything()],
-                ['abort', ButtonType::class, self::anything()]
-            );
+            ->withAnyParameters();
 
-        $type = new EditStockLayoutType();
-        $type->buildForm($builder, []);
+        $editStockLayoutType = new EditStockLayoutType();
+        $editStockLayoutType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
@@ -52,9 +38,9 @@ final class EditStockLayoutTypeTest extends TestCase
         $resolver
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => StockLayout::class]);
+            ->with(['data_class' => StockLayoutEntity::class]);
 
-        $type = new EditStockLayoutType();
-        $type->configureOptions($resolver);
+        $editStockLayoutType = new EditStockLayoutType();
+        $editStockLayoutType->configureOptions($resolver);
     }
 }

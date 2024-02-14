@@ -6,11 +6,11 @@ namespace WebWMS\Service\DataHandlers\CustomerOrder;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\CustomerOrder;
+use WebWMS\Entity\CustomerOrderEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Service\DataHandlers\CustomerOrder
+ * @package:    WebWMS\Service\DataHandlers\CustomerOrderEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerOrderDataHandler
@@ -23,33 +23,33 @@ class CustomerOrderDataHandler
     ) {
     }
 
-    public function save(CustomerOrder $customerOrder): void
+    public function save(CustomerOrderEntity $customerOrderEntity): void
     {
-        $this->entityManager->persist($customerOrder);
+        $this->entityManager->persist($customerOrderEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(CustomerOrder $customerOrder): void
+    public function delete(CustomerOrderEntity $customerOrderEntity): void
     {
-        $this->entityManager->remove($customerOrder);
+        $this->entityManager->remove($customerOrderEntity);
         $this->entityManager->flush();
     }
 
     /**
-     * @return CustomerOrder|null Returns an array of Customer order objects
+     * @return CustomerOrderEntity|null Returns an array of CustomerEntity order objects
      */
-    public function getCustomerOrderById(int $id): ?CustomerOrder
+    public function getCustomerOrderById(int $id): ?CustomerOrderEntity
     {
         return $this->entityManager
-            ->getRepository(CustomerOrder::class)
+            ->getRepository(CustomerOrderEntity::class)
             ->findOneBy(['id' => $id]);
     }
 
     public function getAllCustomerOrders(): JsonResponse
     {
-        $conn = $this->entityManager->getConnection();
+        $connection = $this->entityManager->getConnection();
 
-        $queryBuilder = $conn->createQueryBuilder();
+        $queryBuilder = $connection->createQueryBuilder();
 
         $queryBuilder
             ->select(
@@ -96,8 +96,8 @@ class CustomerOrderDataHandler
             )
             ->andWhere('tph.article_nr = cop.article_nr');
 
-        $stmt = $queryBuilder->executeQuery();
-        $results = $stmt->fetchAllAssociative();
+        $result = $queryBuilder->executeQuery();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }
@@ -123,8 +123,8 @@ class CustomerOrderDataHandler
             ->andWhere('tph.article_nr = cop.article_nr')
             ->setParameter('customer_order_id', $id);
 
-        $stmt = $queryBuilder->executeQuery();
-        $results = $stmt->fetchAllAssociative();
+        $result = $queryBuilder->executeQuery();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }
@@ -135,27 +135,27 @@ class CustomerOrderDataHandler
     public function getLastCustomerOrderId(): array
     {
         $customerOrderRepository = $this->entityManager
-            ->getRepository(CustomerOrder::class);
+            ->getRepository(CustomerOrderEntity::class);
 
         return $customerOrderRepository->findBy([], ['customerOrderId' => 'DESC'], 1, 0);
     }
 
-    public function addCustomerOrder(CustomerOrder $customerOrder): void
+    public function addCustomerOrder(CustomerOrderEntity $customerOrderEntity): void
     {
-        $customerOrder->setCreatedAt($this->dateTimeService->createDateTime());
+        $customerOrderEntity->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customerOrder);
+        $this->save($customerOrderEntity);
     }
 
-    public function updateCustomerOrder(CustomerOrder $customerOrder): void
+    public function updateCustomerOrder(CustomerOrderEntity $customerOrderEntity): void
     {
-        $customerOrder->setUpdatedAt($this->dateTimeService->createDateTime());
+        $customerOrderEntity->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customerOrder);
+        $this->save($customerOrderEntity);
     }
 
-    public function deleteCustomerOrder(CustomerOrder $customerOrder): void
+    public function deleteCustomerOrder(CustomerOrderEntity $customerOrderEntity): void
     {
-        $this->delete($customerOrder);
+        $this->delete($customerOrderEntity);
     }
 }

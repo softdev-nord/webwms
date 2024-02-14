@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Repository\LoggingRepository;
 
@@ -13,16 +14,15 @@ use WebWMS\Repository\LoggingRepository;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        LoggingRepositoryTest
- *
- * @covers \WebWMS\Repository\LoggingRepository
  */
+#[CoversClass(LoggingRepository::class)]
 final class LoggingRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
         $registry = $this->createMock(ManagerRegistry::class);
-        $repository = new LoggingRepository($registry);
+        $loggingRepository = new LoggingRepository($registry);
 
-        self::assertInstanceOf(LoggingRepository::class, $repository);
+        self::assertInstanceOf(LoggingRepository::class, $loggingRepository);
     }
 }

@@ -4,58 +4,60 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\CustomerOrder;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\CustomerOrder;
-use WebWMS\Entity\CustomerOrderPos;
+use WebWMS\Entity\CustomerOrderEntity;
+use WebWMS\Entity\CustomerOrderPosEntity;
 use WebWMS\Service\CustomerOrder\CustomerOrderService;
 use WebWMS\Service\DataHandlers\CustomerOrder\CustomerOrderDataHandler;
 
 /**
- * @package:    WebWMS\Tests\Unit\Service\CustomerOrder
+ * @package:    WebWMS\Tests\Unit\Service\CustomerOrderEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerOrderServiceTest
- *
- * @covers \WebWMS\Service\CustomerOrder\CustomerOrderService
  */
+#[CoversClass(CustomerOrderService::class)]
 final class CustomerOrderServiceTest extends TestCase
 {
     private CustomerOrderService $customerOrderService;
 
-    private MockObject $customerOrderDataHandler;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->customerOrderDataHandler = $this->createMock(CustomerOrderDataHandler::class);
-        $this->customerOrderService = new CustomerOrderService($this->customerOrderDataHandler);
+        $this->mockObject = $this->createMock(CustomerOrderDataHandler::class);
+        $this->customerOrderService = new CustomerOrderService($this->mockObject);
     }
 
     public function testGetCustomerOrderById(): void
     {
         $orderId = 1;
-        $customerOrder = new CustomerOrder();
+        $customerOrderEntity = new CustomerOrderEntity();
 
-        $this->customerOrderDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getCustomerOrderById')
             ->with($orderId)
-            ->willReturn($customerOrder);
+            ->willReturn($customerOrderEntity);
 
         $result = $this->customerOrderService->getCustomerOrderById($orderId);
 
-        self::assertSame($customerOrder, $result);
+        self::assertSame($customerOrderEntity, $result);
     }
 
     public function testGetAllCustomerOrders(): void
     {
         $customerOrders = [
-            new CustomerOrder(),
-            new CustomerOrder(),
+            new CustomerOrderEntity(),
+            new CustomerOrderEntity(),
         ];
 
-        $this->customerOrderDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllCustomerOrders')
             ->willReturn(new JsonResponse($customerOrders));
@@ -68,11 +70,11 @@ final class CustomerOrderServiceTest extends TestCase
     public function testGetAllCustomerOrderPos(): void
     {
         $customerOrderPos = [
-            new CustomerOrderPos(),
-            new CustomerOrderPos(),
+            new CustomerOrderPosEntity(),
+            new CustomerOrderPosEntity(),
         ];
 
-        $this->customerOrderDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllCustomerOrderPos')
             ->willReturn(new JsonResponse($customerOrderPos));
@@ -87,7 +89,7 @@ final class CustomerOrderServiceTest extends TestCase
         $orderId = 1;
         $customerOrderPos = ['pos1', 'pos2'];
 
-        $this->customerOrderDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getCustomerOrderPosByCustomerOrderId')
             ->with($orderId)
@@ -102,7 +104,7 @@ final class CustomerOrderServiceTest extends TestCase
     {
         $lastCustomerOrderId = [1, 2, 3];
 
-        $this->customerOrderDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getLastCustomerOrderId')
             ->willReturn($lastCustomerOrderId);
@@ -114,34 +116,34 @@ final class CustomerOrderServiceTest extends TestCase
 
     public function testAddCustomerOrder(): void
     {
-        $customerOrder = new CustomerOrder();
-        $this->customerOrderDataHandler
+        $customerOrderEntity = new CustomerOrderEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('addCustomerOrder')
-            ->with($customerOrder);
+            ->with($customerOrderEntity);
 
-        $this->customerOrderService->addCustomerOrder($customerOrder);
+        $this->customerOrderService->addCustomerOrder($customerOrderEntity);
     }
 
     public function testUpdateCustomerOrder(): void
     {
-        $customerOrder = new CustomerOrder();
-        $this->customerOrderDataHandler
+        $customerOrderEntity = new CustomerOrderEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('updateCustomerOrder')
-            ->with($customerOrder);
+            ->with($customerOrderEntity);
 
-        $this->customerOrderService->updateCustomerOrder($customerOrder);
+        $this->customerOrderService->updateCustomerOrder($customerOrderEntity);
     }
 
     public function testDeleteCustomerOrder(): void
     {
-        $customerOrder = new CustomerOrder();
-        $this->customerOrderDataHandler
+        $customerOrderEntity = new CustomerOrderEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('deleteCustomerOrder')
-            ->with($customerOrder);
+            ->with($customerOrderEntity);
 
-        $this->customerOrderService->deleteCustomerOrder($customerOrder);
+        $this->customerOrderService->deleteCustomerOrder($customerOrderEntity);
     }
 }

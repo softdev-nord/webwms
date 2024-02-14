@@ -7,11 +7,11 @@ namespace WebWMS\Service\User;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\User;
+use WebWMS\Entity\UserEntity;
 use WebWMS\Service\DataHandlers\User\UserDataHandler;
 
 /**
- * @package:    WebWMS\Service\User
+ * @package:    WebWMS\Service\UserController
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserService
@@ -19,16 +19,16 @@ use WebWMS\Service\DataHandlers\User\UserDataHandler;
 class UserService
 {
     public function __construct(
-        private UserDataHandler $userDataHandler
+        private readonly UserDataHandler $userDataHandler
     ) {
     }
 
-    public function getUserByUsername(string $username): ?User
+    public function getUserByUsername(string $username): ?UserEntity
     {
         return $this->userDataHandler->getUserByUsername($username);
     }
 
-    public function getUserById(int $userId): ?User
+    public function getUserById(int $userId): ?UserEntity
     {
         return $this->userDataHandler->getUserById($userId);
     }
@@ -54,14 +54,14 @@ class UserService
         return $this->userDataHandler->getLastUser();
     }
 
-    public function updateUser(Request $request): ?User
+    public function updateUser(Request $request): ?UserEntity
     {
         return $this->userDataHandler->updateUser($request);
     }
 
-    public function upgradePassword(User $user, string $newHashedPassword): void
+    public function upgradePassword(UserEntity $userEntity, string $newHashedPassword): void
     {
-        $this->userDataHandler->upgradePassword($user, $newHashedPassword);
+        $this->userDataHandler->upgradePassword($userEntity, $newHashedPassword);
     }
 
     public function deleteUser(string $username): void
@@ -69,8 +69,8 @@ class UserService
         $this->userDataHandler->deleteUser($username);
     }
 
-    public function updateLastLogin(User $user): void
+    public function updateLastLogin(UserEntity $userEntity): void
     {
-        $this->userDataHandler->updateLastLogin($user);
+        $this->userDataHandler->updateLastLogin($userEntity);
     }
 }

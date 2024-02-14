@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Service\Article;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\Article;
+use WebWMS\Entity\ArticleEntity;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 
 /**
@@ -21,12 +21,12 @@ class ArticleService
     ) {
     }
 
-    public function getArticleById(int $articleId): ?Article
+    public function getArticleById(int $articleId): ?ArticleEntity
     {
         return $this->articleDataHandler->getArticleById($articleId);
     }
 
-    public function getArticleByNr(string $articleNr): ?Article
+    public function getArticleByNr(string $articleNr): ?ArticleEntity
     {
         return $this->articleDataHandler->getArticleByNr($articleNr);
     }
@@ -41,22 +41,22 @@ class ArticleService
         return $this->articleDataHandler->getArticle($articleNrInput);
     }
 
-    public function addArticle(Article $article): void
+    public function addArticle(ArticleEntity $articleEntity): void
     {
-        $this->articleDataHandler->addArticle($article);
+        $this->articleDataHandler->addArticle($articleEntity);
     }
 
-    public function updateArticle(Article $article): void
+    public function updateArticle(ArticleEntity $articleEntity): void
     {
-        $this->articleDataHandler->updateArticle($article);
+        $this->articleDataHandler->updateArticle($articleEntity);
     }
 
-    public function deleteArticle(Article $article): void
+    public function deleteArticle(ArticleEntity $articleEntity): void
     {
-        $this->articleDataHandler->deleteArticle($article);
+        $this->articleDataHandler->deleteArticle($articleEntity);
     }
 
-    public function getLastArticle(): Article
+    public function getLastArticle(): ArticleEntity
     {
         return $this->articleDataHandler->getLastArticle();
     }

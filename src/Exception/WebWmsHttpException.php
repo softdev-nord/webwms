@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Exception;
 
+use Generator;
+use Override;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 
 /**
  * @package:    WebWMS\Exception
@@ -16,30 +19,25 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 abstract class WebWmsHttpException extends HttpException implements WebWmsException
 {
     /**
-     * @var array<string, mixed>
-     */
-    protected array $parameters = [];
-
-    /**
      * @param array<string, mixed> $parameters
      */
     public function __construct(
         string $message,
-        array $parameters = [],
-        ?\Throwable $exeption = null
+        protected array $parameters = [],
+        ?Throwable $throwable = null
     ) {
-        $this->parameters = $parameters;
-        $message = $this->parse($message, $parameters);
+        $message = $this->parse($message, $this->parameters);
 
-        parent::__construct($this->getStatusCode(), $message, $exeption);
+        parent::__construct($this->getStatusCode(), $message, $throwable);
     }
 
+    #[Override]
     public function getStatusCode(): int
     {
         return Response::HTTP_INTERNAL_SERVER_ERROR;
     }
 
-    public function getErrors(bool $withTrace): \Generator
+    public function getErrors(bool $withTrace): Generator
     {
         yield $this->getCommonErrorData($withTrace);
     }
@@ -47,6 +45,7 @@ abstract class WebWmsHttpException extends HttpException implements WebWmsExcept
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function getParameters(): array
     {
         return $this->parameters;

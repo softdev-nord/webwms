@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Validation;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Service\Validation\ArticleValidationService;
 
@@ -12,13 +14,13 @@ use WebWMS\Service\Validation\ArticleValidationService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ArticleValidationServiceTest
- *
- * @covers \WebWMS\Service\Validation\ArticleValidationService
  */
+#[CoversClass(ArticleValidationService::class)]
 final class ArticleValidationServiceTest extends TestCase
 {
     private ArticleValidationService $articleValidationService;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->articleValidationService = new ArticleValidationService();
@@ -50,7 +52,7 @@ final class ArticleValidationServiceTest extends TestCase
     {
         $requestData = [
             'articleNr' => '12345',
-            'articleName' => 'Test Article',
+            'articleName' => 'Test ArticleController',
             'articleCategory' => 'Test Category',
             'articleWeight' => '1.2',
             'articleEan' => '1234567890123',

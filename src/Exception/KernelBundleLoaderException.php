@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Exception;
 
+use Override;
+
 /**
  * @package:    WebWMS\Exception
  * @author:     SoftDev Nord, Rene Irrgang
@@ -22,6 +24,7 @@ class KernelBundleLoaderException extends WebWmsHttpException
         );
     }
 
+    #[Override]
     public function getErrorCode(): string
     {
         return 'KERNEL_BUNDLE_LOADER_ERROR';

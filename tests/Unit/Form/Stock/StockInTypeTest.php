@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Stock;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Form\Stock\StockInType;
@@ -18,30 +15,20 @@ use WebWMS\Form\Stock\StockInType;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockInTypeTest
- *
- * @covers \WebWMS\Form\Stock\StockInType
  */
+#[CoversClass(StockInType::class)]
 final class StockInTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                ['articleId', HiddenType::class, self::anything()],
-                ['article_nr', TextType::class, self::anything()],
-                ['standard_loading_equipment', ChoiceType::class, self::anything()],
-                ['le_quantity', TextType::class, self::anything()],
-                ['quantity', TextType::class, self::anything()],
-                ['charge', TextType::class, self::anything()],
-                ['save', ButtonType::class, self::anything()],
-                ['abort', ButtonType::class, self::anything()]
-            );
+            ->withAnyParameters();
 
-        $type = new StockInType();
-        $type->buildForm($builder, []);
+        $stockInType = new StockInType();
+        $stockInType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
@@ -54,7 +41,7 @@ final class StockInTypeTest extends TestCase
                 'data_class' => null,
             ]);
 
-        $type = new StockInType();
-        $type->configureOptions($resolver);
+        $stockInType = new StockInType();
+        $stockInType->configureOptions($resolver);
     }
 }

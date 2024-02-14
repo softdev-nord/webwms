@@ -7,7 +7,7 @@ namespace WebWMS\Service\DataHandlers\Stock;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockRotation;
+use WebWMS\Entity\StockRotationEntity;
 
 /**
  * @package:    WebWMS\Service\DataHandlers\Stock
@@ -22,21 +22,21 @@ class StockRotationDataHandler
     ) {
     }
 
-    public function save(StockRotation $stockRotation): void
+    public function save(StockRotationEntity $stockRotationEntity): void
     {
-        $this->entityManager->persist($stockRotation);
+        $this->entityManager->persist($stockRotationEntity);
         $this->entityManager->flush();
     }
 
-    public function update(StockRotation $stockRotation): void
+    public function update(StockRotationEntity $stockRotationEntity): void
     {
-        $this->entityManager->persist($stockRotation);
+        $this->entityManager->persist($stockRotationEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(StockRotation $stockRotation): void
+    public function delete(StockRotationEntity $stockRotationEntity): void
     {
-        $this->entityManager->remove($stockRotation);
+        $this->entityManager->remove($stockRotationEntity);
         $this->entityManager->flush();
     }
 
@@ -46,7 +46,7 @@ class StockRotationDataHandler
     public function getAllStockRotations(): array
     {
         return $this->entityManager
-            ->getRepository(StockRotation::class)
+            ->getRepository(StockRotationEntity::class)
             ->findAll();
     }
 
@@ -75,8 +75,8 @@ class StockRotationDataHandler
         //            ->innerJoin('tph', 'booking_method', 'bm', 'bm.movement_type = tph.booking_method')
         //            ->groupBy('stock_coordinate');
 
-        $stmt = $queryBuilder->executeQuery();
+        $result = $queryBuilder->executeQuery();
 
-        return new JsonResponse($stmt->fetchAllAssociative());
+        return new JsonResponse($result->fetchAllAssociative());
     }
 }

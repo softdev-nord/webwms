@@ -6,11 +6,11 @@ namespace WebWMS\Service\DataHandlers\User\UserRight;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\UserRight;
+use WebWMS\Entity\UserRightEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Service\DataHandlers\UserRight
+ * @package:    WebWMS\Service\DataHandlers\UserRightEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserRightDataHandler
@@ -23,61 +23,61 @@ class UserRightDataHandler
     ) {
     }
 
-    public function save(UserRight $userRight): void
+    public function save(UserRightEntity $userRightEntity): void
     {
-        $this->entityManager->persist($userRight);
+        $this->entityManager->persist($userRightEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(UserRight $userRight): void
+    public function delete(UserRightEntity $userRightEntity): void
     {
-        $this->entityManager->remove($userRight);
+        $this->entityManager->remove($userRightEntity);
         $this->entityManager->flush();
     }
 
     /**
-     * @return array<int, UserRight>
+     * @return array<int, UserRightEntity>
      */
     public function getAllUserRights(): array
     {
         return $this->entityManager
-            ->getRepository(UserRight::class)
+            ->getRepository(UserRightEntity::class)
             ->findAll();
     }
 
-    public function getUserRightById(int $userRightId): ?UserRight
+    public function getUserRightById(int $userRightId): ?UserRightEntity
     {
         return $this->entityManager
-            ->getRepository(UserRight::class)
+            ->getRepository(UserRightEntity::class)
             ->findOneBy(['id' => $userRightId]);
     }
 
-    public function getUserRightByUserRightName(string $userRightName): ?UserRight
+    public function getUserRightByUserRightName(string $userRightName): ?UserRightEntity
     {
         return $this->entityManager
-            ->getRepository(UserRight::class)
+            ->getRepository(UserRightEntity::class)
             ->findOneBy(['user_right' => $userRightName]);
     }
 
-    public function addUserRight(Request $request): ?UserRight
+    public function addUserRight(Request $request): ?UserRightEntity
     {
         $addUserRight = $request->request->getIterator()->getArrayCopy();
-        $userRight = new UserRight();
+        $userRightEntity = new UserRightEntity();
 
-        $userRight->setUserRight($addUserRight['user_right']);
-        $userRight->setDescription($addUserRight['description']);
-        $userRight->setCreatedAt($this->dateTimeService->createDateTime());
+        $userRightEntity->setUserRight($addUserRight['user_right']);
+        $userRightEntity->setDescription($addUserRight['description']);
+        $userRightEntity->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($userRight);
+        $this->save($userRightEntity);
 
-        return $userRight;
+        return $userRightEntity;
     }
 
-    public function updateUserRight(Request $request): ?UserRight
+    public function updateUserRight(Request $request): ?UserRightEntity
     {
         $requestData = $request->request->all()['edit_user_right'];
         $userRight = $this->entityManager
-            ->getRepository(UserRight::class)
+            ->getRepository(UserRightEntity::class)
             ->findOneBy(['user_right' => $requestData['user_right']]);
 
         if ($userRight === null) {
@@ -97,7 +97,7 @@ class UserRightDataHandler
     {
         $userRight = $this->getUserRightByUserRightName($userRightName);
 
-        if ($userRight !== null) {
+        if ($userRight instanceof UserRightEntity) {
             $this->delete($userRight);
         }
     }

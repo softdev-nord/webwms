@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\EventSubscriber;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -16,9 +17,8 @@ use WebWMS\EventSubscriber\LocaleSubscriber;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        LocaleSubscriberTest
- *
- * @covers \WebWMS\EventSubscriber\LocaleSubscriber
  */
+#[CoversClass(LocaleSubscriber::class)]
 final class LocaleSubscriberTest extends TestCase
 {
     public function testOnKernelRequestWithSessionLocale(): void
@@ -49,8 +49,8 @@ final class LocaleSubscriberTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $subscriber = new LocaleSubscriber();
-        $subscriber->onKernelRequest($event);
+        $localeSubscriber = new LocaleSubscriber();
+        $localeSubscriber->onKernelRequest($event);
     }
 
     public function testGetSubscribedEvents(): void

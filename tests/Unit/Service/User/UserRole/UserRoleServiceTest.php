@@ -4,70 +4,72 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\User\UserRole;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\UserRole;
+use WebWMS\Entity\UserRoleEntity;
 use WebWMS\Service\DataHandlers\User\UserRole\UserRoleDataHandler;
 use WebWMS\Service\User\UserRole\UserRoleService;
 
 /**
- * @package:    WebWMS\Tests\Unit\Service\User\UserRole
+ * @package:    WebWMS\Tests\Unit\Service\UserController\UserRoleEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserRoleServiceTest
- *
- * @covers \WebWMS\Service\User\UserRole\UserRoleService
  */
+#[CoversClass(UserRoleService::class)]
 final class UserRoleServiceTest extends TestCase
 {
     private UserRoleService $userRoleService;
 
-    private MockObject $userRoleDataHandler;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->userRoleDataHandler = $this->createMock(UserRoleDataHandler::class);
-        $this->userRoleService = new UserRoleService($this->userRoleDataHandler);
+        $this->mockObject = $this->createMock(UserRoleDataHandler::class);
+        $this->userRoleService = new UserRoleService($this->mockObject);
     }
 
     public function testGetUserRoleByUserRoleName(): void
     {
         $userRoleName = 'ROLE_USER';
-        $expectedUserRole = new UserRole();
+        $userRoleEntity = new UserRoleEntity();
 
-        $this->userRoleDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getUserRoleByUserRoleName')
             ->with($userRoleName)
-            ->willReturn($expectedUserRole);
+            ->willReturn($userRoleEntity);
 
         $result = $this->userRoleService->getUserRoleByUserRoleName($userRoleName);
 
-        self::assertSame($expectedUserRole, $result);
+        self::assertSame($userRoleEntity, $result);
     }
 
     public function testGetUserRoleById(): void
     {
         $userRoleId = 1;
-        $expectedUserRole = new UserRole();
+        $userRoleEntity = new UserRoleEntity();
 
-        $this->userRoleDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getUserRoleById')
             ->with($userRoleId)
-            ->willReturn($expectedUserRole);
+            ->willReturn($userRoleEntity);
 
         $result = $this->userRoleService->getUserRoleById($userRoleId);
 
-        self::assertSame($expectedUserRole, $result);
+        self::assertSame($userRoleEntity, $result);
     }
 
     public function testGetAllUserRoles(): void
     {
-        $expectedUserRoles = [new UserRole(), new UserRole()];
+        $expectedUserRoles = [new UserRoleEntity(), new UserRoleEntity()];
 
-        $this->userRoleDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllUserRoles')
             ->willReturn($expectedUserRoles);
@@ -81,7 +83,7 @@ final class UserRoleServiceTest extends TestCase
     {
         $request = new Request();
 
-        $this->userRoleDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('addUserRole')
             ->with($request);
@@ -92,24 +94,24 @@ final class UserRoleServiceTest extends TestCase
     public function testUpdateUserRole(): void
     {
         $request = new Request();
-        $expectedUserRole = new UserRole();
+        $userRoleEntity = new UserRoleEntity();
 
-        $this->userRoleDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('updateUserRole')
             ->with($request)
-            ->willReturn($expectedUserRole);
+            ->willReturn($userRoleEntity);
 
         $result = $this->userRoleService->updateUserRole($request);
 
-        self::assertSame($expectedUserRole, $result);
+        self::assertSame($userRoleEntity, $result);
     }
 
     public function testDeleteUserRole(): void
     {
         $userRoleName = 'ROLE_USER';
 
-        $this->userRoleDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('deleteUserRole')
             ->with($userRoleName);

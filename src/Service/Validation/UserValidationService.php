@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
-use WebWMS\Entity\User;
+use WebWMS\Entity\UserEntity;
 
 /**
  * @package:    WebWMS\Service\Validation
@@ -21,26 +21,26 @@ class UserValidationService
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateUserData(User $user): array
+    public function validateUserData(UserEntity $userEntity): array
     {
         $responseData = [];
 
-        if (!$user->getUserIdentifier()) {
+        if ($userEntity->getUserIdentifier() === '' || $userEntity->getUserIdentifier() === '0') {
             $responseData['error']['username'] = 'Der Benutzername darf nicht leer sein.';
         } else {
-            $responseData['username'] = $user->getUserIdentifier();
+            $responseData['username'] = $userEntity->getUserIdentifier();
         }
 
-        if (!$user->getFirstname()) {
+        if ($userEntity->getFirstname() === '' || $userEntity->getFirstname() === '0') {
             $responseData['error']['firstname'] = 'Der Vorname darf nicht leer sein.';
         } else {
-            $responseData['firstname'] = $user->getFirstname();
+            $responseData['firstname'] = $userEntity->getFirstname();
         }
 
-        if (!$user->getLastname()) {
+        if ($userEntity->getLastname() === '' || $userEntity->getLastname() === '0') {
             $responseData['error']['lastname'] = 'Der Nachname darf nicht leer sein.';
         } else {
-            $responseData['lastname'] = $user->getLastname();
+            $responseData['lastname'] = $userEntity->getLastname();
         }
 
         if (!isset($responseData['error'])) {

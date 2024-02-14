@@ -4,71 +4,73 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Customer;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\Customer;
+use WebWMS\Entity\CustomerEntity;
 use WebWMS\Service\Customer\CustomerService;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
 /**
- * @package:    WebWMS\Tests\Unit\Service\Customer
+ * @package:    WebWMS\Tests\Unit\Service\CustomerEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerServiceTest
- *
- * @covers \WebWMS\Service\Customer\CustomerService
  */
+#[CoversClass(CustomerService::class)]
 final class CustomerServiceTest extends TestCase
 {
     private CustomerService $customerService;
 
-    private MockObject $customerDataHandler;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->customerDataHandler = $this->createMock(CustomerDataHandler::class);
-        $this->customerService = new CustomerService($this->customerDataHandler);
+        $this->mockObject = $this->createMock(CustomerDataHandler::class);
+        $this->customerService = new CustomerService($this->mockObject);
     }
 
     public function testGetCustomerById(): void
     {
         $customerId = 1;
-        $customer = new Customer();
+        $customerEntity = new CustomerEntity();
 
-        $this->customerDataHandler->expects(self::once())
+        $this->mockObject->expects(self::once())
             ->method('getCustomerById')
             ->with($customerId)
-            ->willReturn($customer);
+            ->willReturn($customerEntity);
 
         $result = $this->customerService->getCustomerById($customerId);
 
-        self::assertSame($customer, $result);
+        self::assertSame($customerEntity, $result);
     }
 
     public function testGetCustomerByNr(): void
     {
         $customerNr = 123;
-        $customer = new Customer();
+        $customerEntity = new CustomerEntity();
 
-        $this->customerDataHandler->expects(self::once())
+        $this->mockObject->expects(self::once())
             ->method('getCustomerByNr')
             ->with($customerNr)
-            ->willReturn($customer);
+            ->willReturn($customerEntity);
 
         $result = $this->customerService->getCustomerByNr($customerNr);
 
-        self::assertSame($customer, $result);
+        self::assertSame($customerEntity, $result);
     }
 
     public function testGetAllCustomers(): void
     {
         $customers = [
-            new Customer(),
-            new Customer(),
+            new CustomerEntity(),
+            new CustomerEntity(),
         ];
 
-        $this->customerDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllCustomers')
             ->willReturn($customers);
@@ -83,7 +85,7 @@ final class CustomerServiceTest extends TestCase
         $jsonResponse = $this->createMock(JsonResponse::class);
         $customerNrInput = '123';
 
-        $this->customerDataHandler->expects(self::once())
+        $this->mockObject->expects(self::once())
             ->method('getCustomers')
             ->willReturn($jsonResponse);
 
@@ -94,47 +96,47 @@ final class CustomerServiceTest extends TestCase
 
     public function testAddCustomer(): void
     {
-        $article = new Customer();
-        $this->customerDataHandler
+        $customerEntity = new CustomerEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('addCustomer')
-            ->with($article);
+            ->with($customerEntity);
 
-        $this->customerService->addCustomer($article);
+        $this->customerService->addCustomer($customerEntity);
     }
 
     public function testUpdateCustomer(): void
     {
-        $customer = new Customer();
-        $this->customerDataHandler
+        $customerEntity = new CustomerEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('updateCustomer')
-            ->with($customer);
+            ->with($customerEntity);
 
-        $this->customerService->updateCustomer($customer);
+        $this->customerService->updateCustomer($customerEntity);
     }
 
     public function testDeleteCustomer(): void
     {
-        $customer = new Customer();
-        $this->customerDataHandler
+        $customerEntity = new CustomerEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('deleteCustomer')
-            ->with($customer);
+            ->with($customerEntity);
 
-        $this->customerService->deleteCustomer($customer);
+        $this->customerService->deleteCustomer($customerEntity);
     }
 
     public function testGetLastCustomer(): void
     {
-        $lastCustomer = new Customer();
+        $customerEntity = new CustomerEntity();
 
-        $this->customerDataHandler->expects(self::once())
+        $this->mockObject->expects(self::once())
             ->method('getLastCustomer')
-            ->willReturn($lastCustomer);
+            ->willReturn($customerEntity);
 
         $result = $this->customerService->getLastCustomer();
 
-        self::assertSame($lastCustomer, $result);
+        self::assertSame($customerEntity, $result);
     }
 }

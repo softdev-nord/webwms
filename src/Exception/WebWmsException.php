@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace WebWMS\Exception;
 
+use Throwable;
+
 /**
  * @package:    WebWMS\Exception
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        WebWmsException
  */
-interface WebWmsException extends \Throwable
+interface WebWmsException extends Throwable
 {
     public function getErrorCode(): string;
 
