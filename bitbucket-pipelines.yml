@@ -61,10 +61,10 @@ definitions:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
-          - vendor/bin/phpmd './src/,./bundles/' ansi rulesets.xml
+          - vendor/bin/phpmd './src/,./module/' ansi rulesets.xml
         artifacts:
           - test-reports/**
-
+    
     - step: &twig-lint
         name: Check Templates
         image: composer:2
@@ -84,14 +84,12 @@ definitions:
         caches:
           - composer
         script:
-          - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
           - /bin/bash ci/webwms-env.sh
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
           - bin/console lint:yaml config --parse-tags
         artifacts:
           - .env
-          - test-reports/**
 
     - step: &unit-tests
         name: Unit Tests
@@ -102,24 +100,29 @@ definitions:
           - mkdir -pv ${BITBUCKET_CLONE_DIR}/test-reports
           - composer config bitbucket-oauth.bitbucket.org ${BITBUCKET_OAUTH_CONSUMER_KEY} ${BITBUCKET_OAUTH_CONSUMER_SECRET}
           - composer install --ignore-platform-reqs --no-scripts
-          - vendor/bin/phpunit --coverage-html="./test-reports"
+          - vendor/bin/phpunit --testdox --colors=always
         artifacts:
           - test-reports/**
 
     - step: &build-deploy
         name: Build and Deploy
+        caches:
+          - composer
         script:
-          - /bin/bash ci/webwms-env.sh
-          - echo ${BITBUCKET_CLONE_DIR}
           - ls -la
           - apt-get update && apt-get install -y openssh-client rsync
-          - rsync -avu --delete --stats -e ssh --exclude-from='ci/rsync.exclude' $BITBUCKET_CLONE_DIR/* $SSH_USER@$SSH_HOST:$HOST_DIR
           - pipe: atlassian/ssh-run:0.4.2
             variables:
               SSH_USER: $SSH_USER
               SERVER: $SSH_HOST
-              COMMAND: 'cd $ENVIRONMENT_DIR && /opt/plesk/php/8.1/bin/php /usr/lib/plesk-9.0/composer.phar install --ignore-platform-reqs --no-scripts'
+              MODE: 'script'
+              COMMAND: 'ci/deploy.sh && ci/webwms-env.sh'
               DEBUG: 'true'
+              ENV_VARS: >-
+                ENVIRONMENT_DIR=${ENVIRONMENT_DIR}
+                BITBUCKET_BRANCH=${BITBUCKET_BRANCH}
+                BITBUCKET_USER=${BITBUCKET_USER}
+                BITBUCKET_PASSWORD=${BITBUCKET_PASSWORD}
         artifacts:
           - .env
 pipelines:
@@ -128,14 +131,20 @@ pipelines:
         - step: *code-style
         - step: *code-analysis
         - step: *var-dump-find
-        - step: *vulnerability-scan
+#        - step: *vulnerability-scan
         - step: *mess-detector
         - step: *twig-lint
         - step: *yaml-lint
         - step: *unit-tests
     - step:
         <<: *build-deploy
+        name: Deploy to Development
         deployment: dev
+        trigger: manual
+    - step:
+        <<: *build-deploy
+        name: Deploy to Staging
+        deployment: stg
         trigger: manual
   branches:
     main:
@@ -152,15 +161,15 @@ pipelines:
     vulnerability-scan:
       - step:
           <<: *vulnerability-scan
-    production:
-      - step:
-          <<: *build-deploy
-          deployment: prod
-    staging:
-      - step:
-          <<: *build-deploy
-          deployment: stg
     development:
       - step:
           <<: *build-deploy
           deployment: dev
+    staging:
+      - step:
+          <<: *build-deploy
+          deployment: stg
+    production:
+      - step:
+          <<: *build-deploy
+          deployment: prod

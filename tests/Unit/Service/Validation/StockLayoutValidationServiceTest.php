@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Validation;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Service\Validation\StockLayoutValidationService;
 
@@ -12,13 +14,13 @@ use WebWMS\Service\Validation\StockLayoutValidationService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockLayoutValidationServiceTest
- *
- * @covers \WebWMS\Service\Validation\StockLayoutValidationService
  */
+#[CoversClass(StockLayoutValidationService::class)]
 final class StockLayoutValidationServiceTest extends TestCase
 {
     private StockLayoutValidationService $stockLayoutValidationService;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->stockLayoutValidationService = new StockLayoutValidationService();

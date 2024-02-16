@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\User\Model;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Form\User\Model\ChangePassword;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\User\Model
+ * @package:    WebWMS\Tests\Unit\Form\UserController\Model
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ChangePasswordTest
- *
- * @covers \WebWMS\Form\User\Model\ChangePassword
  */
+#[CoversClass(ChangePassword::class)]
 final class ChangePasswordTest extends TestCase
 {
     private ChangePassword $changePassword;
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

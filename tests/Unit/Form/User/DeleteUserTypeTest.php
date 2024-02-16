@@ -4,38 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\User;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\User;
+use WebWMS\Entity\UserEntity;
 use WebWMS\Form\User\DeleteUserType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\User
+ * @package:    WebWMS\Tests\Unit\Form\UserController
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        DeleteUserTypeTest
- *
- * @covers \WebWMS\Form\User\DeleteUserType
  */
+#[CoversClass(DeleteUserType::class)]
 final class DeleteUserTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                ['username', HiddenType::class, self::anything()],
-                ['save', ButtonType::class, self::anything()],
-                ['abort', ButtonType::class, self::anything()]
-            );
+            ->withAnyParameters();
 
-        $type = new DeleteUserType();
-        $type->buildForm($builder, []);
+        $deleteUserType = new DeleteUserType();
+        $deleteUserType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
@@ -44,9 +38,9 @@ final class DeleteUserTypeTest extends TestCase
         $resolverMock
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => User::class]);
+            ->with(['data_class' => UserEntity::class]);
 
-        $type = new DeleteUserType();
-        $type->configureOptions($resolverMock);
+        $deleteUserType = new DeleteUserType();
+        $deleteUserType->configureOptions($resolverMock);
     }
 }

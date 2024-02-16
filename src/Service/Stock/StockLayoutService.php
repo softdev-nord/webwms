@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Service\Stock;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockLayout;
+use WebWMS\Entity\StockLayoutEntity;
 use WebWMS\Service\DataHandlers\Stock\StockLayoutDataHandler;
 
 /**
@@ -26,23 +26,23 @@ class StockLayoutService
         return $this->stockLayoutDataHandler->getAllStockLayouts();
     }
 
-    public function getStockLayoutById(int $stockLayoutId): ?StockLayout
+    public function getStockLayoutById(int $stockLayoutId): ?StockLayoutEntity
     {
         return $this->stockLayoutDataHandler->getStockLayoutById($stockLayoutId);
     }
 
-    public function addStockLayout(StockLayout $stockLayout): void
+    public function addStockLayout(StockLayoutEntity $stockLayoutEntity): void
     {
-        $this->stockLayoutDataHandler->addStockLayout($stockLayout);
+        $this->stockLayoutDataHandler->addStockLayout($stockLayoutEntity);
     }
 
-    public function updateStockLayout(StockLayout $stockLayout): void
+    public function updateStockLayout(StockLayoutEntity $stockLayoutEntity): void
     {
-        $this->stockLayoutDataHandler->updateStockLayout($stockLayout);
+        $this->stockLayoutDataHandler->updateStockLayout($stockLayoutEntity);
     }
 
-    public function deleteStockLayout(StockLayout $stockLayout): void
+    public function deleteStockLayout(StockLayoutEntity $stockLayoutEntity): void
     {
-        $this->stockLayoutDataHandler->deleteStockLayout($stockLayout);
+        $this->stockLayoutDataHandler->deleteStockLayout($stockLayoutEntity);
     }
 }

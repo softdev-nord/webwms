@@ -6,11 +6,11 @@ namespace WebWMS\Service\DataHandlers\SupplierOrderPos;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\SupplierOrderPos;
+use WebWMS\Entity\SupplierOrderPosEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Service\DataHandlers\SupplierOrderPos
+ * @package:    WebWMS\Service\DataHandlers\SupplierOrderPosEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        SupplierOrderPosDataHandler
@@ -23,35 +23,35 @@ class SupplierOrderPosDataHandler
     ) {
     }
 
-    public function save(SupplierOrderPos $supplierOrderPos): void
+    public function save(SupplierOrderPosEntity $supplierOrderPosEntity): void
     {
-        $this->entityManager->persist($supplierOrderPos);
+        $this->entityManager->persist($supplierOrderPosEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(SupplierOrderPos $supplierOrderPos): void
+    public function delete(SupplierOrderPosEntity $supplierOrderPosEntity): void
     {
-        $this->entityManager->remove($supplierOrderPos);
+        $this->entityManager->remove($supplierOrderPosEntity);
         $this->entityManager->flush();
     }
 
-    public function getSupplierOrderPosById(int $supplierOrderPosId): ?SupplierOrderPos
+    public function getSupplierOrderPosById(int $supplierOrderPosId): ?SupplierOrderPosEntity
     {
         return $this->entityManager
-            ->getRepository(SupplierOrderPos::class)
+            ->getRepository(SupplierOrderPosEntity::class)
             ->findOneBy(['id' => $supplierOrderPosId]);
     }
 
-    public function getSupplierOrderPosBySupplierOrderId(int $supplierOrderId): ?SupplierOrderPos
+    public function getSupplierOrderPosBySupplierOrderId(int $supplierOrderId): ?SupplierOrderPosEntity
     {
         return $this->entityManager
-            ->getRepository(SupplierOrderPos::class)
+            ->getRepository(SupplierOrderPosEntity::class)
             ->find($supplierOrderId);
     }
 
     public function getAllSupplierOrderPos(): JsonResponse
     {
-        $conn = $this->entityManager->getConnection();
+        $connection = $this->entityManager->getConnection();
 
         $sql = "SELECT pos.supplier_order_id, ord.supplier_order_nr, art.article_nr, art.article_name, pos.supplier_order_pos_quantity,
                 (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) FROM transport_history WHERE transport_history.article_nr = art.article_nr GROUP BY transport_history.article_nr LIMIT 1) AS lbw_menge
@@ -64,29 +64,29 @@ class SupplierOrderPosDataHandler
                     ON ord.supplier_order_nr = lbw.order_nr
                 GROUP BY pos.article_id ORDER BY pos.article_id";
 
-        $data = $conn->fetchAllAssociative($sql);
+        $data = $connection->fetchAllAssociative($sql);
 
         return new JsonResponse($data);
     }
 
-    public function addSupplierOrderPos(SupplierOrderPos $supplierOrderPos): void
+    public function addSupplierOrderPos(SupplierOrderPosEntity $supplierOrderPosEntity): void
     {
-        $supplierOrderPos->setCreatedAt($this->dateTimeService->createDateTime());
+        $supplierOrderPosEntity->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($supplierOrderPos);
+        $this->save($supplierOrderPosEntity);
     }
 
-    public function updateSupplierOrderPos(SupplierOrderPos $supplierOrder): void
+    public function updateSupplierOrderPos(SupplierOrderPosEntity $supplierOrderPosEntity): void
     {
-        $supplierOrder->setUpdatedAt($this->dateTimeService->createDateTime());
+        $supplierOrderPosEntity->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($supplierOrder);
+        $this->save($supplierOrderPosEntity);
     }
 
-    public function deleteSupplierOrderPos(?SupplierOrderPos $supplierOrderPos): void
+    public function deleteSupplierOrderPos(?SupplierOrderPosEntity $supplierOrderPosEntity): void
     {
-        if ($supplierOrderPos !== null) {
-            $this->delete($supplierOrderPos);
+        if ($supplierOrderPosEntity instanceof SupplierOrderPosEntity) {
+            $this->delete($supplierOrderPosEntity);
         }
     }
 }

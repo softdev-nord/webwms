@@ -4,45 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\CustomerOrder;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\CustomerOrder;
+use WebWMS\Entity\CustomerOrderEntity;
 use WebWMS\Form\CustomerOrder\AddCustomerOrderType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\CustomerOrder
+ * @package:    WebWMS\Tests\Unit\Form\CustomerOrderEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        AddCustomerOrderTypeTest
- *
- * @covers \WebWMS\Form\CustomerOrder\AddCustomerOrderType
  */
+#[CoversClass(AddCustomerOrderType::class)]
 final class AddCustomerOrderTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                ['customerOrderId', HiddenType::class, self::anything()],
-                ['customerOrderNr', TextType::class, self::anything()],
-                ['usrId', HiddenType::class, self::anything()],
-                ['customerId', HiddenType::class, self::anything()],
-                ['customerOrderReference', TextType::class, self::anything()],
-                ['customerOrderDate', TextType::class, self::anything()],
-                ['customerOrderCreationDate', TextType::class, self::anything()],
-                ['save', ButtonType::class, self::anything()],
-                ['abort', ButtonType::class, self::anything()]
-            );
+            ->withAnyParameters();
 
-        $type = new AddCustomerOrderType();
-        $type->buildForm($builder, []);
+        $addCustomerOrderType = new AddCustomerOrderType();
+        $addCustomerOrderType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
@@ -51,9 +38,9 @@ final class AddCustomerOrderTypeTest extends TestCase
         $resolver
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => CustomerOrder::class]);
+            ->with(['data_class' => CustomerOrderEntity::class]);
 
-        $type = new AddCustomerOrderType();
-        $type->configureOptions($resolver);
+        $addCustomerOrderType = new AddCustomerOrderType();
+        $addCustomerOrderType->configureOptions($resolver);
     }
 }

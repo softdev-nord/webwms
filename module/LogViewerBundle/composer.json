@@ -1,0 +1,33 @@
+{
+    "name": "webwms/logviewer",
+    "description": "WebWMS Protokoll-View Modul",
+    "version": "1.0.0",
+    "type": "webwms-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SoftDev Nord, Rene Irrgang"
+        }
+    ],
+    "extra": {
+        "webwms-module-class": "WebWMS\\LogViewerBundle\\LogViewerBundle",
+        "copyright": "(c) SoftDev Nord",
+        "label": {
+            "de-DE": "WebWMS Protokoll-View Modul",
+            "en-GB": "WebWMS Log-viewer module"
+        },
+        "description": {
+            "de-DE": "Protokoll-View Modul für WebWMS",
+            "en-GB": "Log-viewer module for WebWMS"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "WebWMS\\LogViewerBundle\\": ""
+        }
+    },
+    "require": {
+        "monolog/monolog": "^1.22|^2.0",
+        "symfony/monolog-module": "^3.0"
+    }
+}

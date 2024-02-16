@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Twig;
 
+use Override;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use WebWMS\Entity\UserRight;
-use WebWMS\Entity\UserRole;
+use WebWMS\Entity\UserRightEntity;
+use WebWMS\Entity\UserRoleEntity;
 use WebWMS\Security\UserRoleRight;
 
 /**
@@ -24,19 +25,21 @@ class UserTwigExtension extends AbstractExtension
     ) {
     }
 
+    #[Override]
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('has_role', [$this, 'hasUserRole']),
-            new TwigFunction('has_right', [$this, 'hasUserRight']),
-            new TwigFunction('has_group', [$this, 'hasUserGroup']),
+            new TwigFunction('has_role', $this->hasUserRole(...)),
+            new TwigFunction('has_right', $this->hasUserRight(...)),
+            new TwigFunction('has_group', $this->hasUserGroup(...)),
         ];
     }
 
+    #[Override]
     public function getFilters(): array
     {
         return [
-            new TwigFilter('roleHasRight', [$this, 'roleHasRight']),
+            new TwigFilter('roleHasRight', $this->roleHasRight(...)),
         ];
     }
 
@@ -55,12 +58,8 @@ class UserTwigExtension extends AbstractExtension
         return $this->userRoleRight->hasUserGroup($userGroup);
     }
 
-    public function roleHasRight(UserRole $userRole, UserRight $userRight): bool
+    public function roleHasRight(UserRoleEntity $userRoleEntity, UserRightEntity $userRightEntity): bool
     {
-        if (in_array($userRight->getUserRight(), $userRole->getUserRights(), true)) {
-            return true;
-        }
-
-        return false;
+        return in_array($userRightEntity->getUserRight(), $userRoleEntity->getUserRights(), true);
     }
 }

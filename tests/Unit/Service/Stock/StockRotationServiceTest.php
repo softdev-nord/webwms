@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Stock;
 
+use Exception;
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,26 +18,26 @@ use WebWMS\Service\Stock\StockRotationService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockRotationServiceTest
- *
- * @covers \WebWMS\Service\Stock\StockRotationService
  */
+#[CoversClass(StockRotationService::class)]
 final class StockRotationServiceTest extends TestCase
 {
     private StockRotationService $stockRotationService;
 
-    private MockObject $stockRotationDataHandler;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->stockRotationDataHandler = $this->createMock(StockRotationDataHandler::class);
-        $this->stockRotationService = new StockRotationService($this->stockRotationDataHandler);
+        $this->mockObject = $this->createMock(StockRotationDataHandler::class);
+        $this->stockRotationService = new StockRotationService($this->mockObject);
     }
 
     public function testGetAllStockRotations(): void
     {
         $expectedResult = [];
 
-        $this->stockRotationDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllStockRotations')
             ->willReturn($expectedResult);
@@ -46,17 +49,17 @@ final class StockRotationServiceTest extends TestCase
 
     public function testGetAllStockRotationsWithJoin(): void
     {
-        $expectedResponse = new JsonResponse([]);
+        $jsonResponse = new JsonResponse([]);
 
-        $this->stockRotationDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllStockRotationsWithJoin')
-            ->willThrowException(new \Exception());
+            ->willThrowException(new Exception());
 
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $result = $this->stockRotationService->getAllStockRotationsWithJoin();
 
-        self::assertEquals($expectedResponse, $result);
+        self::assertEquals($jsonResponse, $result);
     }
 }

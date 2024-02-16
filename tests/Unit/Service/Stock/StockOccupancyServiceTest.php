@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Stock;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,33 +18,33 @@ use WebWMS\Service\Stock\StockOccupancyService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockOccupancyServiceTest
- *
- * @covers \WebWMS\Service\Stock\StockOccupancyService
  */
+#[CoversClass(StockOccupancyService::class)]
 final class StockOccupancyServiceTest extends TestCase
 {
     private StockOccupancyService $stockOccupancyService;
 
-    private MockObject $stockOccupancyDataHandler;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->stockOccupancyDataHandler = $this->createMock(StockOccupancyDataHandler::class);
-        $this->stockOccupancyService = new StockOccupancyService($this->stockOccupancyDataHandler);
+        $this->mockObject = $this->createMock(StockOccupancyDataHandler::class);
+        $this->stockOccupancyService = new StockOccupancyService($this->mockObject);
     }
 
     public function testGetAllStockOccupancy(): void
     {
-        $expectedResult = new JsonResponse([['id' => 1], ['id' => 2]]);
+        $jsonResponse = new JsonResponse([['id' => 1], ['id' => 2]]);
 
-        $this->stockOccupancyDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllStockOccupancy')
-            ->willReturn($expectedResult);
+            ->willReturn($jsonResponse);
 
         $result = $this->stockOccupancyService->getAllStockOccupancy();
 
-        self::assertSame($expectedResult, $result);
+        self::assertSame($jsonResponse, $result);
     }
 
     public function testGetStockOccupancyByCoordinate(): void
@@ -50,7 +52,7 @@ final class StockOccupancyServiceTest extends TestCase
         $stockLocationCoordinate = 'ABC';
         $request = new Request([], [], ['stock_location_coordinate' => $stockLocationCoordinate], [], [], []);
 
-        $stockOccupancies = new JsonResponse(
+        $jsonResponse = new JsonResponse(
             [
                 ['id' => 1, 'koordinate' => 'XYZ'],
                 ['id' => 2, 'koordinate' => 'ABC'],
@@ -63,10 +65,10 @@ final class StockOccupancyServiceTest extends TestCase
             ['id' => 3, 'koordinate' => 'ABC'],
         ];
 
-        $this->stockOccupancyDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllStockOccupancy')
-            ->willReturn($stockOccupancies);
+            ->willReturn($jsonResponse);
 
         $result = $this->stockOccupancyService->getStockOccupancyByCoordinate($request);
 
@@ -78,7 +80,7 @@ final class StockOccupancyServiceTest extends TestCase
         $stockLocationLn = 123;
         $expectedResult = [['id' => 1], ['id' => 2]];
 
-        $this->stockOccupancyDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getStockOccupancy')
             ->with($stockLocationLn)
@@ -94,7 +96,7 @@ final class StockOccupancyServiceTest extends TestCase
         $articleNr = 456;
         $expectedResult = ['id' => 1, 'articleNr' => 456];
 
-        $this->stockOccupancyDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getStockOccupancyByArticleNr')
             ->with($articleNr)

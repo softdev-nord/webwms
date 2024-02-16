@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace WebWMS\Service\SupplierOrderPos;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\SupplierOrderPos;
+use WebWMS\Entity\SupplierOrderPosEntity;
 use WebWMS\Service\DataHandlers\SupplierOrderPos\SupplierOrderPosDataHandler;
 
 /**
- * @package:    WebWMS\Service\SupplierOrderPos
+ * @package:    WebWMS\Service\SupplierOrderPosEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        SupplierOrderPosService
@@ -21,12 +21,12 @@ class SupplierOrderPosService
     ) {
     }
 
-    public function getSupplierOrderPosById(int $supplierOrderPosId): ?SupplierOrderPos
+    public function getSupplierOrderPosById(int $supplierOrderPosId): ?SupplierOrderPosEntity
     {
         return $this->supplierOrderPosDataHandler->getSupplierOrderPosById($supplierOrderPosId);
     }
 
-    public function getSupplierOrderPosBySupplierOrderId(int $supplierOrderId): ?SupplierOrderPos
+    public function getSupplierOrderPosBySupplierOrderId(int $supplierOrderId): ?SupplierOrderPosEntity
     {
         return $this->supplierOrderPosDataHandler->getSupplierOrderPosBySupplierOrderId($supplierOrderId);
     }
@@ -36,18 +36,18 @@ class SupplierOrderPosService
         return $this->supplierOrderPosDataHandler->getAllSupplierOrderPos();
     }
 
-    public function addSupplierOrderPos(SupplierOrderPos $supplierOrderPos): void
+    public function addSupplierOrderPos(SupplierOrderPosEntity $supplierOrderPosEntity): void
     {
-        $this->supplierOrderPosDataHandler->addSupplierOrderPos($supplierOrderPos);
+        $this->supplierOrderPosDataHandler->addSupplierOrderPos($supplierOrderPosEntity);
     }
 
-    public function updateSupplierOrderPos(SupplierOrderPos $supplierOrderPos): void
+    public function updateSupplierOrderPos(SupplierOrderPosEntity $supplierOrderPosEntity): void
     {
-        $this->supplierOrderPosDataHandler->updateSupplierOrderPos($supplierOrderPos);
+        $this->supplierOrderPosDataHandler->updateSupplierOrderPos($supplierOrderPosEntity);
     }
 
-    public function deleteSupplierOrderPos(?SupplierOrderPos $supplierOrderPos): void
+    public function deleteSupplierOrderPos(?SupplierOrderPosEntity $supplierOrderPosEntity): void
     {
-        $this->supplierOrderPosDataHandler->deleteSupplierOrderPos($supplierOrderPos);
+        $this->supplierOrderPosDataHandler->deleteSupplierOrderPos($supplierOrderPosEntity);
     }
 }

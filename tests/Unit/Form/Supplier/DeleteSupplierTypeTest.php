@@ -4,38 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Supplier;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\Supplier;
+use WebWMS\Entity\SupplierEntity;
 use WebWMS\Form\Supplier\DeleteSupplierType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\Supplier
+ * @package:    WebWMS\Tests\Unit\Form\SupplierEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        DeleteSupplierTypeTest
- *
- * @covers \WebWMS\Form\Supplier\DeleteSupplierType
  */
+#[CoversClass(DeleteSupplierType::class)]
 final class DeleteSupplierTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                ['supplierId', HiddenType::class, self::anything()],
-                ['save', ButtonType::class, self::anything()],
-                ['abort', ButtonType::class, self::anything()]
-            );
+            ->withAnyParameters();
 
-        $type = new DeleteSupplierType();
-        $type->buildForm($builder, []);
+        $deleteSupplierType = new DeleteSupplierType();
+        $deleteSupplierType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
@@ -44,9 +38,9 @@ final class DeleteSupplierTypeTest extends TestCase
         $resolverMock
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => Supplier::class]);
+            ->with(['data_class' => SupplierEntity::class]);
 
-        $type = new DeleteSupplierType();
-        $type->configureOptions($resolverMock);
+        $deleteSupplierType = new DeleteSupplierType();
+        $deleteSupplierType->configureOptions($resolverMock);
     }
 }

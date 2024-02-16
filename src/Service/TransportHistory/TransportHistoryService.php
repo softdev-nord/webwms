@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace WebWMS\Service\TransportHistory;
 
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\TransportHistory;
+use WebWMS\Entity\TransportHistoryEntity;
 use WebWMS\Service\DataHandlers\TransportHistory\TransportHistoryDataHandler;
 
 /**
- * @package:    WebWMS\Service\TransportHistory
+ * @package:    WebWMS\Service\TransportHistoryEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        TransportHistoryService
@@ -17,7 +17,7 @@ use WebWMS\Service\DataHandlers\TransportHistory\TransportHistoryDataHandler;
 class TransportHistoryService
 {
     public function __construct(
-        private TransportHistoryDataHandler $transportHistoryDataHandler
+        private readonly TransportHistoryDataHandler $transportHistoryDataHandler
     ) {
     }
 
@@ -45,22 +45,22 @@ class TransportHistoryService
             ->createTransportHistory($request, $user, $clientIp);
     }
 
-    public function addTransportHistory(TransportHistory $transportHistory): void
+    public function addTransportHistory(TransportHistoryEntity $transportHistoryEntity): void
     {
         $this->transportHistoryDataHandler
-            ->addTransportHistory($transportHistory);
+            ->addTransportHistory($transportHistoryEntity);
     }
 
-    public function updateTransportHistory(TransportHistory $transportHistory): void
+    public function updateTransportHistory(TransportHistoryEntity $transportHistoryEntity): void
     {
         $this->transportHistoryDataHandler
-            ->updateTransportHistory($transportHistory);
+            ->updateTransportHistory($transportHistoryEntity);
     }
 
-    public function deleteTransportHistory(TransportHistory $transportHistory): void
+    public function deleteTransportHistory(TransportHistoryEntity $transportHistoryEntity): void
     {
         $this->transportHistoryDataHandler
-            ->deleteTransportHistory($transportHistory);
+            ->deleteTransportHistory($transportHistoryEntity);
     }
 
     public function getLastStockUnit(): int

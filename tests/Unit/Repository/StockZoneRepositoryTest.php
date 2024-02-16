@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Repository\StockZoneRepository;
 
@@ -13,16 +14,15 @@ use WebWMS\Repository\StockZoneRepository;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockZoneRepositoryTest
- *
- * @covers \WebWMS\Repository\StockZoneRepository
  */
+#[CoversClass(StockZoneRepository::class)]
 final class StockZoneRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
         $registry = $this->createMock(ManagerRegistry::class);
-        $repository = new StockZoneRepository($registry);
+        $stockZoneRepository = new StockZoneRepository($registry);
 
-        self::assertInstanceOf(StockZoneRepository::class, $repository);
+        self::assertInstanceOf(StockZoneRepository::class, $stockZoneRepository);
     }
 }

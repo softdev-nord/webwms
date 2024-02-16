@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\User;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -14,7 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use WebWMS\Entity\User;
+use WebWMS\Entity\UserEntity;
 
 /**
  * @package:    WebWMS\Form
@@ -27,9 +28,10 @@ class AddUserType extends AbstractType
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    #[Override]
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
+        $formBuilder
             ->add('username', TextType::class, [
                 'empty_data' => '',
                 'label' => false,
@@ -115,10 +117,11 @@ class AddUserType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    #[Override]
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
+        $optionsResolver->setDefaults([
+            'data_class' => UserEntity::class,
         ]);
     }
 }

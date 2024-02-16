@@ -29,7 +29,6 @@ class UserFormHelper
      * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
-     * @return FormInterface
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
     {
@@ -41,28 +40,16 @@ class UserFormHelper
         return $this->createForm(AddUserType::class);
     }
 
-    /**
-     * @param object $user
-     * @return FormInterface
-     */
     public function editUserForm(object $user): FormInterface
     {
         return $this->createForm(EditUserType::class, $user);
     }
 
-    /**
-     * @param object $user
-     * @return FormInterface
-     */
     public function deleteUserForm(object $user): FormInterface
     {
         return $this->createForm(DeleteUserType::class, $user);
     }
 
-    /**
-     * @param object $changePasswordModel
-     * @return FormInterface
-     */
     public function changePasswordForm(object $changePasswordModel): FormInterface
     {
         return $this->createForm(ChangePasswordType::class, $changePasswordModel);

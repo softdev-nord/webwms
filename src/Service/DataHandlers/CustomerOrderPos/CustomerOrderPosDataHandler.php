@@ -6,11 +6,11 @@ namespace WebWMS\Service\DataHandlers\CustomerOrderPos;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\CustomerOrderPos;
+use WebWMS\Entity\CustomerOrderPosEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Service\DataHandlers\CustomerOrderPos
+ * @package:    WebWMS\Service\DataHandlers\CustomerOrderPosEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerOrderPosDataHandler
@@ -23,29 +23,29 @@ class CustomerOrderPosDataHandler
     ) {
     }
 
-    public function save(CustomerOrderPos $customerOrderPos): void
+    public function save(CustomerOrderPosEntity $customerOrderPosEntity): void
     {
-        $this->entityManager->persist($customerOrderPos);
+        $this->entityManager->persist($customerOrderPosEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(CustomerOrderPos $customerOrderPos): void
+    public function delete(CustomerOrderPosEntity $customerOrderPosEntity): void
     {
-        $this->entityManager->remove($customerOrderPos);
+        $this->entityManager->remove($customerOrderPosEntity);
         $this->entityManager->flush();
     }
 
-    public function getCustomerOrderPosById(int $customerOrderPosId): ?CustomerOrderPos
+    public function getCustomerOrderPosById(int $customerOrderPosId): ?CustomerOrderPosEntity
     {
         return $this->entityManager
-            ->getRepository(CustomerOrderPos::class)
+            ->getRepository(CustomerOrderPosEntity::class)
             ->findOneBy(['id' => $customerOrderPosId]);
     }
 
-    public function getCustomerOrderPosByCustomerOrderId(int $customerOrderId): ?CustomerOrderPos
+    public function getCustomerOrderPosByCustomerOrderId(int $customerOrderId): ?CustomerOrderPosEntity
     {
         return $this->entityManager
-            ->getRepository(CustomerOrderPos::class)
+            ->getRepository(CustomerOrderPosEntity::class)
             ->find($customerOrderId);
     }
 
@@ -57,31 +57,31 @@ class CustomerOrderPosDataHandler
             ->select('*')
             ->from('customer_orders_pos');
 
-        $stmt = $queryBuilder->executeQuery();
+        $result = $queryBuilder->executeQuery();
 
-        $results = $stmt->fetchAllAssociative();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }
 
-    public function addCustomerOrderPos(CustomerOrderPos $customerOrderPos): void
+    public function addCustomerOrderPos(CustomerOrderPosEntity $customerOrderPosEntity): void
     {
-        $customerOrderPos->setCreatedAt($this->dateTimeService->createDateTime());
+        $customerOrderPosEntity->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customerOrderPos);
+        $this->save($customerOrderPosEntity);
     }
 
-    public function updateCustomerOrderPos(CustomerOrderPos $customerOrderPos): void
+    public function updateCustomerOrderPos(CustomerOrderPosEntity $customerOrderPosEntity): void
     {
-        $customerOrderPos->setUpdatedAt($this->dateTimeService->createDateTime());
+        $customerOrderPosEntity->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customerOrderPos);
+        $this->save($customerOrderPosEntity);
     }
 
-    public function deleteCustomerOrderPos(?CustomerOrderPos $supplierOrderPos): void
+    public function deleteCustomerOrderPos(?CustomerOrderPosEntity $customerOrderPosEntity): void
     {
-        if ($supplierOrderPos !== null) {
-            $this->delete($supplierOrderPos);
+        if ($customerOrderPosEntity instanceof CustomerOrderPosEntity) {
+            $this->delete($customerOrderPosEntity);
         }
     }
 }

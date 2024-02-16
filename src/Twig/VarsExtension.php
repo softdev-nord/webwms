@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Twig;
 
+use Override;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -15,10 +16,11 @@ use Twig\TwigFilter;
  */
 class VarsExtension extends AbstractExtension
 {
+    #[Override]
     public function getFilters(): array
     {
         return [
-            new TwigFilter('json_decode', [$this, 'jsonDecode']),
+            new TwigFilter('json_decode', $this->jsonDecode(...)),
         ];
     }
 

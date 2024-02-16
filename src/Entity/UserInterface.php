@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use DateTime;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
@@ -68,7 +69,7 @@ interface UserInterface extends PasswordAuthenticatedUserInterface, BaseUserInte
     /**
      * Setzt die letzte Anmeldezeit.
      */
-    public function setLastLogin(\DateTime $time = null): void;
+    public function setLastLogin(?DateTime $time = null): void;
 
     /**
      * Verwenden Sie dies niemals, um zu prüfen, ob dieser Benutzer Zugriff auf irgendetwas hat!
@@ -123,8 +124,5 @@ interface UserInterface extends PasswordAuthenticatedUserInterface, BaseUserInte
      */
     public function isEnabled(): bool;
 
-    /**
-     * @param bool $boolean
-     */
     public function setEnabled(bool $boolean): void;
 }

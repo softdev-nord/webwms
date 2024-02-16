@@ -6,7 +6,7 @@ namespace WebWMS\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use WebWMS\Entity\CustomerOrder;
+use WebWMS\Entity\CustomerOrderEntity;
 
 /**
  * @package:    WebWMS\Repository
@@ -14,16 +14,16 @@ use WebWMS\Entity\CustomerOrder;
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerOrderRepository
  *
- * @method CustomerOrder|null find($id, $lockMode = null, $lockVersion = null)
- * @method CustomerOrder|null findOneBy(array $criteria, array $orderBy = null)
- * @method CustomerOrder[]    findAll()
- * @method CustomerOrder[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method CustomerOrderEntity|null find($id, $lockMode = null, $lockVersion = null)
+ * @method CustomerOrderEntity|null findOneBy(array $criteria, array $orderBy = null)
+ * @method CustomerOrderEntity[]    findAll()
+ * @method CustomerOrderEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CustomerOrderRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry $registry
+        ManagerRegistry $managerRegistry
     ) {
-        parent::__construct($registry, CustomerOrder::class);
+        parent::__construct($managerRegistry, CustomerOrderEntity::class);
     }
 }

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Helper\FormHelper;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use WebWMS\Entity\StockLayout;
+use WebWMS\Entity\StockLayoutEntity;
 use WebWMS\Form\Stock\StockLayout\AddStockLayoutType;
 use WebWMS\Form\Stock\StockLayout\DeleteStockLayoutType;
 use WebWMS\Form\Stock\StockLayout\EditStockLayoutType;
@@ -18,9 +19,8 @@ use WebWMS\Helper\FormHelper\StockLayoutFormHelper;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockLayoutFormHelperTest
- *
- * @covers \WebWMS\Helper\FormHelper\StockLayoutFormHelper
  */
+#[CoversClass(StockLayoutFormHelper::class)]
 final class StockLayoutFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
@@ -37,8 +37,8 @@ final class StockLayoutFormHelperTest extends TestCase
             ->with($type, $data, $options)
             ->willReturn($formInterface);
 
-        $helper = new StockLayoutFormHelper($formFactory);
-        $result = $helper->createForm($type, $data, $options);
+        $stockLayoutFormHelper = new StockLayoutFormHelper($formFactory);
+        $result = $stockLayoutFormHelper->createForm($type, $data, $options);
 
         self::assertSame($formInterface, $result);
     }
@@ -54,8 +54,8 @@ final class StockLayoutFormHelperTest extends TestCase
             ->with(AddStockLayoutType::class)
             ->willReturn($formInterface);
 
-        $helper = new StockLayoutFormHelper($formFactory);
-        $result = $helper->addStockLayoutForm();
+        $stockLayoutFormHelper = new StockLayoutFormHelper($formFactory);
+        $result = $stockLayoutFormHelper->addStockLayoutForm();
 
         self::assertSame($formInterface, $result);
     }
@@ -64,7 +64,7 @@ final class StockLayoutFormHelperTest extends TestCase
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $stockLayout = $this->createMock(StockLayout::class);
+        $stockLayout = $this->createMock(StockLayoutEntity::class);
 
         $formFactory
             ->expects(self::once())
@@ -72,8 +72,8 @@ final class StockLayoutFormHelperTest extends TestCase
             ->with(EditStockLayoutType::class, $stockLayout)
             ->willReturn($formInterface);
 
-        $helper = new StockLayoutFormHelper($formFactory);
-        $result = $helper->editStockLayoutForm($stockLayout);
+        $stockLayoutFormHelper = new StockLayoutFormHelper($formFactory);
+        $result = $stockLayoutFormHelper->editStockLayoutForm($stockLayout);
 
         self::assertSame($formInterface, $result);
     }
@@ -82,7 +82,7 @@ final class StockLayoutFormHelperTest extends TestCase
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $stockLayout = $this->createMock(StockLayout::class);
+        $stockLayout = $this->createMock(StockLayoutEntity::class);
 
         $formFactory
             ->expects(self::once())
@@ -90,8 +90,8 @@ final class StockLayoutFormHelperTest extends TestCase
             ->with(DeleteStockLayoutType::class, $stockLayout)
             ->willReturn($formInterface);
 
-        $helper = new StockLayoutFormHelper($formFactory);
-        $result = $helper->deleteStockLayoutForm($stockLayout);
+        $stockLayoutFormHelper = new StockLayoutFormHelper($formFactory);
+        $result = $stockLayoutFormHelper->deleteStockLayoutForm($stockLayout);
 
         self::assertSame($formInterface, $result);
     }

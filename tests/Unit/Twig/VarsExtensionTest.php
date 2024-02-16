@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Twig;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Twig\TwigFilter;
 use WebWMS\Twig\VarsExtension;
@@ -13,15 +14,14 @@ use WebWMS\Twig\VarsExtension;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        VarsExtensionTest
- *
- * @covers \WebWMS\Twig\VarsExtension
  */
+#[CoversClass(VarsExtension::class)]
 final class VarsExtensionTest extends TestCase
 {
     public function testGetFiltersMethod(): void
     {
-        $extension = new VarsExtension();
-        $filters = $extension->getFilters();
+        $varsExtension = new VarsExtension();
+        $filters = $varsExtension->getFilters();
 
         self::assertIsArray($filters);
         self::assertCount(1, $filters);
@@ -29,26 +29,26 @@ final class VarsExtensionTest extends TestCase
         $filter = $filters[0];
         self::assertInstanceOf(TwigFilter::class, $filter);
         self::assertEquals('json_decode', $filter->getName());
-        self::assertEquals([$extension, 'jsonDecode'], $filter->getCallable());
+        self::assertEquals(static fn (string $str): mixed => $varsExtension->jsonDecode($str), $filter->getCallable());
     }
 
     public function testJsonDecode(): void
     {
-        $extension = new VarsExtension();
+        $varsExtension = new VarsExtension();
         $str = '{"name": "John", "age": 30}';
         $expectedResult = json_decode($str);
 
-        $result = $extension->jsonDecode($str);
+        $result = $varsExtension->jsonDecode($str);
 
         self::assertEquals($expectedResult, $result);
     }
 
     public function testGetNameMethod(): void
     {
-        $extension = new VarsExtension();
+        $varsExtension = new VarsExtension();
         $expectedResult = 'vars_extension';
 
-        $result = $extension->getName();
+        $result = $varsExtension->getName();
 
         self::assertEquals($expectedResult, $result);
     }

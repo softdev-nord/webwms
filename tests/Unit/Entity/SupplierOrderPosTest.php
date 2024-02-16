@@ -4,80 +4,83 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use DateTime;
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\SupplierOrder;
-use WebWMS\Entity\SupplierOrderPos;
+use WebWMS\Entity\SupplierOrderEntity;
+use WebWMS\Entity\SupplierOrderPosEntity;
 
 /**
  * @package:    WebWMS\Tests\Unit\Entity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        SupplierOrderPosTest
- *
- * @covers \WebWMS\Entity\SupplierOrderPos
  */
+#[CoversClass(SupplierOrderPosEntity::class)]
 final class SupplierOrderPosTest extends TestCase
 {
-    private SupplierOrderPos $supplierOrderPos;
+    private SupplierOrderPosEntity $supplierOrderPosEntity;
 
-    private SupplierOrder $supplierOrder;
+    private SupplierOrderEntity $supplierOrderEntity;
 
-    private \DateTime $dateTime;
+    private DateTime $dateTime;
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->supplierOrderPos = new SupplierOrderPos();
-        $this->supplierOrder = new SupplierOrder();
-        $this->dateTime = new \DateTime();
+        $this->supplierOrderPosEntity = new SupplierOrderPosEntity();
+        $this->supplierOrderEntity = new SupplierOrderEntity();
+        $this->dateTime = new DateTime();
     }
 
     public function testGetterAndSetterMethods(): void
     {
         // Test setId() and getId()
         $id = 1;
-        $this->supplierOrderPos->setId($id);
-        self::assertEquals($id, $this->supplierOrderPos->getId());
+        $this->supplierOrderPosEntity->setId($id);
+        self::assertEquals($id, $this->supplierOrderPosEntity->getId());
 
         // Test setSupplierOrderId() and getSupplierOrderId()
         $supplierOrderId = 710000;
-        $this->supplierOrderPos->setSupplierOrderId($supplierOrderId);
-        self::assertEquals($supplierOrderId, $this->supplierOrderPos->getSupplierOrderId());
+        $this->supplierOrderPosEntity->setSupplierOrderId($supplierOrderId);
+        self::assertEquals($supplierOrderId, $this->supplierOrderPosEntity->getSupplierOrderId());
 
         // Test setArticleId() and getArticleId()
         $articleId = 1;
-        $this->supplierOrderPos->setArticleId($articleId);
-        self::assertEquals($articleId, $this->supplierOrderPos->getArticleId());
+        $this->supplierOrderPosEntity->setArticleId($articleId);
+        self::assertEquals($articleId, $this->supplierOrderPosEntity->getArticleId());
 
         // Test setArticleNr() and getArticleNr()
         $articleNr = '12345';
-        $this->supplierOrderPos->setArticleNr($articleNr);
-        self::assertEquals($articleNr, $this->supplierOrderPos->getArticleNr());
+        $this->supplierOrderPosEntity->setArticleNr($articleNr);
+        self::assertEquals($articleNr, $this->supplierOrderPosEntity->getArticleNr());
 
         // Test setArticleName() and getArticleName()
-        $articleName = 'Test Article Name';
-        $this->supplierOrderPos->setArticleName($articleName);
-        self::assertEquals($articleName, $this->supplierOrderPos->getArticleName());
+        $articleName = 'Test ArticleController Name';
+        $this->supplierOrderPosEntity->setArticleName($articleName);
+        self::assertEquals($articleName, $this->supplierOrderPosEntity->getArticleName());
 
         // Test setSupplierOrderPosQuantity() and getSupplierOrderPosQuantity()
         $quantity = 100;
-        $this->supplierOrderPos->setSupplierOrderPosQuantity($quantity);
-        self::assertEquals($quantity, $this->supplierOrderPos->getSupplierOrderPosQuantity());
+        $this->supplierOrderPosEntity->setSupplierOrderPosQuantity($quantity);
+        self::assertEquals($quantity, $this->supplierOrderPosEntity->getSupplierOrderPosQuantity());
 
         // Test setCreatedAt() and getCreatedAt()
         $createdAt = $this->dateTime;
-        $this->supplierOrderPos->setCreatedAt($createdAt);
-        self::assertEquals($createdAt, $this->supplierOrderPos->getCreatedAt());
+        $this->supplierOrderPosEntity->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->supplierOrderPosEntity->getCreatedAt());
 
         // Test setUpdatedAt() and getUpdatedAt()
         $updatedAt = $this->dateTime;
-        $this->supplierOrderPos->setUpdatedAt($updatedAt);
-        self::assertEquals($updatedAt, $this->supplierOrderPos->getUpdatedAt());
+        $this->supplierOrderPosEntity->setUpdatedAt($updatedAt);
+        self::assertEquals($updatedAt, $this->supplierOrderPosEntity->getUpdatedAt());
 
         // Test setSupplierOrder() and getSupplierOrder()
-        $supplierOrder = $this->supplierOrder;
-        $this->supplierOrderPos->setSupplierOrder($supplierOrder);
-        self::assertEquals($supplierOrder, $this->supplierOrderPos->getSupplierOrder());
+        $supplierOrder = $this->supplierOrderEntity;
+        $this->supplierOrderPosEntity->setSupplierOrder($supplierOrder);
+        self::assertEquals($supplierOrder, $this->supplierOrderPosEntity->getSupplierOrder());
     }
 }

@@ -7,8 +7,8 @@ namespace WebWMS\Helper\FormHelper;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
-use WebWMS\Entity\CustomerOrder;
-use WebWMS\Entity\CustomerOrderPos;
+use WebWMS\Entity\CustomerOrderEntity;
+use WebWMS\Entity\CustomerOrderPosEntity;
 use WebWMS\Form\CustomerOrder\AddCustomerOrderType;
 use WebWMS\Form\CustomerOrder\CustomerOrderPosType;
 use WebWMS\Form\CustomerOrder\DeleteCustomerOrderType;
@@ -31,7 +31,6 @@ class CustomerOrderFormHelper
      * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
-     * @return FormInterface
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
     {
@@ -44,21 +43,19 @@ class CustomerOrderFormHelper
     }
 
     /**
-     * @param CustomerOrder|null $customerOrder
-     * @return FormInterface
+     * @param CustomerOrderEntity|null $customerOrderEntity
      */
-    public function editCustomerOrderForm(?CustomerOrder $customerOrder): FormInterface
+    public function editCustomerOrderForm(?CustomerOrderEntity $customerOrderEntity): FormInterface
     {
-        return $this->createForm(EditCustomerOrderType::class, $customerOrder);
+        return $this->createForm(EditCustomerOrderType::class, $customerOrderEntity);
     }
 
     /**
-     * @param CustomerOrder|null $customerOrder
-     * @return FormInterface
+     * @param CustomerOrderEntity|null $customerOrderEntity
      */
-    public function deleteCustomerOrderForm(?CustomerOrder $customerOrder): FormInterface
+    public function deleteCustomerOrderForm(?CustomerOrderEntity $customerOrderEntity): FormInterface
     {
-        return $this->createForm(DeleteCustomerOrderType::class, $customerOrder);
+        return $this->createForm(DeleteCustomerOrderType::class, $customerOrderEntity);
     }
 
     public function addCustomerOrderPosForm(): FormInterface
@@ -67,20 +64,18 @@ class CustomerOrderFormHelper
     }
 
     /**
-     * @param CustomerOrderPos|null $customerOrderPos
-     * @return FormInterface
+     * @param CustomerOrderPosEntity|null $customerOrderPosEntity
      */
-    public function editCustomerOrderPosForm(?CustomerOrderPos $customerOrderPos): FormInterface
+    public function editCustomerOrderPosForm(?CustomerOrderPosEntity $customerOrderPosEntity): FormInterface
     {
-        return $this->createForm(CustomerOrderPosType::class, $customerOrderPos);
+        return $this->createForm(CustomerOrderPosType::class, $customerOrderPosEntity);
     }
 
     /**
-     * @param CustomerOrderPos|null $customerOrderPos
-     * @return FormInterface
+     * @param CustomerOrderPosEntity|null $customerOrderPosEntity
      */
-    public function deleteCustomerOrderPosForm(?CustomerOrderPos $customerOrderPos): FormInterface
+    public function deleteCustomerOrderPosForm(?CustomerOrderPosEntity $customerOrderPosEntity): FormInterface
     {
-        return $this->createForm(CustomerOrderPosType::class, $customerOrderPos);
+        return $this->createForm(CustomerOrderPosType::class, $customerOrderPosEntity);
     }
 }

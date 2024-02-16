@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\SupplierOrder;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\SupplierOrder;
+use WebWMS\Entity\SupplierOrderEntity;
 
 /**
- * @package:    WebWMS\Form\SupplierOrder
+ * @package:    WebWMS\Form\SupplierOrderEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        DeleteSupplierOrderType
@@ -23,9 +24,10 @@ class DeleteSupplierOrderType extends AbstractType
      * @SuppressWarnings("unused")
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    #[Override]
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
+        $formBuilder
             ->add('supplierOrderId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
@@ -47,10 +49,11 @@ class DeleteSupplierOrderType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    #[Override]
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => SupplierOrder::class,
+        $optionsResolver->setDefaults([
+            'data_class' => SupplierOrderEntity::class,
         ]);
     }
 }

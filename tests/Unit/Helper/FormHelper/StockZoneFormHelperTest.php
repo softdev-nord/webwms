@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Helper\FormHelper;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use WebWMS\Entity\StockZone;
+use WebWMS\Entity\StockZoneEntity;
 use WebWMS\Form\Stock\StockZone\AddStockZoneType;
 use WebWMS\Form\Stock\StockZone\DeleteStockZoneType;
 use WebWMS\Form\Stock\StockZone\EditStockZoneType;
@@ -18,9 +19,8 @@ use WebWMS\Helper\FormHelper\StockZoneFormHelper;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockZoneFormHelperTest
- *
- * @covers \WebWMS\Helper\FormHelper\StockZoneFormHelper
  */
+#[CoversClass(StockZoneFormHelper::class)]
 final class StockZoneFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
@@ -37,8 +37,8 @@ final class StockZoneFormHelperTest extends TestCase
             ->with($type, $data, $options)
             ->willReturn($formInterface);
 
-        $helper = new StockZoneFormHelper($formFactory);
-        $result = $helper->createForm($type, $data, $options);
+        $stockZoneFormHelper = new StockZoneFormHelper($formFactory);
+        $result = $stockZoneFormHelper->createForm($type, $data, $options);
 
         self::assertSame($formInterface, $result);
     }
@@ -54,8 +54,8 @@ final class StockZoneFormHelperTest extends TestCase
             ->with(AddStockZoneType::class)
             ->willReturn($formInterface);
 
-        $helper = new StockZoneFormHelper($formFactory);
-        $result = $helper->addStockZoneForm();
+        $stockZoneFormHelper = new StockZoneFormHelper($formFactory);
+        $result = $stockZoneFormHelper->addStockZoneForm();
 
         self::assertSame($formInterface, $result);
     }
@@ -64,7 +64,7 @@ final class StockZoneFormHelperTest extends TestCase
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $stockZone = $this->createMock(StockZone::class);
+        $stockZone = $this->createMock(StockZoneEntity::class);
 
         $formFactory
             ->expects(self::once())
@@ -72,8 +72,8 @@ final class StockZoneFormHelperTest extends TestCase
             ->with(EditStockZoneType::class, $stockZone)
             ->willReturn($formInterface);
 
-        $helper = new StockZoneFormHelper($formFactory);
-        $result = $helper->editStockZoneForm($stockZone);
+        $stockZoneFormHelper = new StockZoneFormHelper($formFactory);
+        $result = $stockZoneFormHelper->editStockZoneForm($stockZone);
 
         self::assertSame($formInterface, $result);
     }
@@ -82,7 +82,7 @@ final class StockZoneFormHelperTest extends TestCase
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $stockZone = $this->createMock(StockZone::class);
+        $stockZone = $this->createMock(StockZoneEntity::class);
 
         $formFactory
             ->expects(self::once())
@@ -90,8 +90,8 @@ final class StockZoneFormHelperTest extends TestCase
             ->with(DeleteStockZoneType::class, $stockZone)
             ->willReturn($formInterface);
 
-        $helper = new StockZoneFormHelper($formFactory);
-        $result = $helper->deleteStockZoneForm($stockZone);
+        $stockZoneFormHelper = new StockZoneFormHelper($formFactory);
+        $result = $stockZoneFormHelper->deleteStockZoneForm($stockZone);
 
         self::assertSame($formInterface, $result);
     }

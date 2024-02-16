@@ -1,0 +1,29 @@
+{
+  "name": "webwms/stock-inventory",
+  "description": "WebWMS Inventur Modul",
+  "version": "1.0.0",
+  "type": "webwms-module",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "SoftDev Nord, Rene Irrgang"
+    }
+  ],
+  "extra": {
+    "webwms-module-class": "WebWMS\\StockInventoryBundle\\StockInventoryBundle",
+    "copyright": "(c) SoftDev Nord",
+    "label": {
+      "de-DE": "WebWMS Inventur Modul",
+      "en-GB": "Stock inventory module"
+    },
+    "description": {
+      "de-DE": "Inventur Modul für WebWMS",
+      "en-GB": "Stock inventory module for WebWMS"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "WebWMS\\StockInventoryBundle\\": ""
+    }
+  }
+}

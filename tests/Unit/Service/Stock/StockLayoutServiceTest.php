@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Stock;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockLayout;
+use WebWMS\Entity\StockLayoutEntity;
 use WebWMS\Service\DataHandlers\Stock\StockLayoutDataHandler;
 use WebWMS\Service\Stock\StockLayoutService;
 
@@ -16,26 +18,26 @@ use WebWMS\Service\Stock\StockLayoutService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockLayoutServiceTest
- *
- * @covers \WebWMS\Service\Stock\StockLayoutService
  */
+#[CoversClass(StockLayoutService::class)]
 final class StockLayoutServiceTest extends TestCase
 {
     private StockLayoutService $stockLayoutService;
 
-    private MockObject $stockLayoutDataHandler;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->stockLayoutDataHandler = $this->createMock(StockLayoutDataHandler::class);
-        $this->stockLayoutService = new StockLayoutService($this->stockLayoutDataHandler);
+        $this->mockObject = $this->createMock(StockLayoutDataHandler::class);
+        $this->stockLayoutService = new StockLayoutService($this->mockObject);
     }
 
     public function testGetAllStockLayouts(): void
     {
         $stockLayouts = ['layout1', 'layout2'];
 
-        $this->stockLayoutDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllStockLayouts')
             ->willReturn(new JsonResponse($stockLayouts));
@@ -48,49 +50,49 @@ final class StockLayoutServiceTest extends TestCase
     public function testGetStockLayoutById(): void
     {
         $stockLayoutId = 1;
-        $stockLayout = new StockLayout();
+        $stockLayoutEntity = new StockLayoutEntity();
 
-        $this->stockLayoutDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getStockLayoutById')
             ->with($stockLayoutId)
-            ->willReturn($stockLayout);
+            ->willReturn($stockLayoutEntity);
 
         $result = $this->stockLayoutService->getStockLayoutById($stockLayoutId);
 
-        self::assertSame($stockLayout, $result);
+        self::assertSame($stockLayoutEntity, $result);
     }
 
     public function testAddStockLayout(): void
     {
-        $stockLayout = new StockLayout();
-        $this->stockLayoutDataHandler
+        $stockLayoutEntity = new StockLayoutEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('addStockLayout')
-            ->with($stockLayout);
+            ->with($stockLayoutEntity);
 
-        $this->stockLayoutService->addStockLayout($stockLayout);
+        $this->stockLayoutService->addStockLayout($stockLayoutEntity);
     }
 
     public function testUpdateStockLayout(): void
     {
-        $stockLayout = new StockLayout();
-        $this->stockLayoutDataHandler
+        $stockLayoutEntity = new StockLayoutEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('updateStockLayout')
-            ->with($stockLayout);
+            ->with($stockLayoutEntity);
 
-        $this->stockLayoutService->updateStockLayout($stockLayout);
+        $this->stockLayoutService->updateStockLayout($stockLayoutEntity);
     }
 
     public function testDeleteStockLayout(): void
     {
-        $stockLayout = new StockLayout();
-        $this->stockLayoutDataHandler
+        $stockLayoutEntity = new StockLayoutEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('deleteStockLayout')
-            ->with($stockLayout);
+            ->with($stockLayoutEntity);
 
-        $this->stockLayoutService->deleteStockLayout($stockLayout);
+        $this->stockLayoutService->deleteStockLayout($stockLayoutEntity);
     }
 }

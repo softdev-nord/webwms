@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 $finder = (new PhpCsFixer\Finder())
     ->in(__DIR__ . '/src/')
-    ->in(__DIR__ . '/bundles/')
+    ->in(__DIR__ . '/module/')
     ->in(__DIR__ . '/tests/');
 
 return (new PhpCsFixer\Config())
@@ -59,6 +59,7 @@ return (new PhpCsFixer\Config())
         'declare_strict_types' => true,
         'no_superfluous_phpdoc_tags' => false,
         'cast_spaces' => ['space' => 'single'],
+        'global_namespace_import' => true,
     ])
     ->setFinder($finder->append(['.php-cs-fixer.php']))
 ;

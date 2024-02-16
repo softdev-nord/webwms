@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Service\RequirementsService;
 
@@ -12,9 +14,8 @@ use WebWMS\Service\RequirementsService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        RequirementsServiceTest
- *
- * @covers \WebWMS\Service\RequirementsService
  */
+#[CoversClass(RequirementsService::class)]
 final class RequirementsServiceTest extends TestCase
 {
     private RequirementsService $requirementsService;
@@ -29,6 +30,7 @@ final class RequirementsServiceTest extends TestCase
 
     private string $appLizenz;
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

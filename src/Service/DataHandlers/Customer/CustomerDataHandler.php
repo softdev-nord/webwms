@@ -6,11 +6,11 @@ namespace WebWMS\Service\DataHandlers\Customer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\Customer;
+use WebWMS\Entity\CustomerEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
- * @package:    WebWMS\Service\DataHandlers\Customer
+ * @package:    WebWMS\Service\DataHandlers\CustomerEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerDataHandler
@@ -23,29 +23,29 @@ class CustomerDataHandler
     ) {
     }
 
-    public function save(Customer $customer): void
+    public function save(CustomerEntity $customerEntity): void
     {
-        $this->entityManager->persist($customer);
+        $this->entityManager->persist($customerEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(Customer $customer): void
+    public function delete(CustomerEntity $customerEntity): void
     {
-        $this->entityManager->remove($customer);
+        $this->entityManager->remove($customerEntity);
         $this->entityManager->flush();
     }
 
-    public function getCustomerById(int $customerId): ?Customer
+    public function getCustomerById(int $customerId): ?CustomerEntity
     {
         return $this->entityManager
-            ->getRepository(Customer::class)
+            ->getRepository(CustomerEntity::class)
             ->find($customerId);
     }
 
-    public function getCustomerByNr(int $customerNr): ?Customer
+    public function getCustomerByNr(int $customerNr): ?CustomerEntity
     {
         return $this->entityManager
-            ->getRepository(Customer::class)
+            ->getRepository(CustomerEntity::class)
             ->findOneBy(['customerNr' => $customerNr]);
     }
 
@@ -57,7 +57,7 @@ class CustomerDataHandler
         return $this->entityManager
             ->createQueryBuilder()
             ->select('c')
-            ->from(Customer::class, 'c')
+            ->from(CustomerEntity::class, 'c')
             ->getQuery()
             ->getArrayResult();
     }
@@ -72,9 +72,9 @@ class CustomerDataHandler
             $queryBuilder = $this->entityManager->createQueryBuilder();
             $queryBuilder
                 ->select('c')
-                ->from(Customer::class, 'c')
+                ->from(CustomerEntity::class, 'c')
                 ->where('c.customerNr LIKE :customer_nr')
-                ->setParameter(':customer_nr', '' . $customerNrInput . '%');
+                ->setParameter(':customer_nr', '%' . $customerNrInput . '%');
 
             $customers = $queryBuilder->getQuery()->getArrayResult();
 
@@ -97,29 +97,29 @@ class CustomerDataHandler
         return new JsonResponse($data);
     }
 
-    public function addCustomer(Customer $customer): void
+    public function addCustomer(CustomerEntity $customerEntity): void
     {
-        $customer->setCreatedAt($this->dateTimeService->createDateTime());
+        $customerEntity->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customer);
+        $this->save($customerEntity);
     }
 
-    public function updateCustomer(Customer $customer): void
+    public function updateCustomer(CustomerEntity $customerEntity): void
     {
-        $customer->setUpdatedAt($this->dateTimeService->createDateTime());
+        $customerEntity->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customer);
+        $this->save($customerEntity);
     }
 
-    public function deleteCustomer(Customer $customer): void
+    public function deleteCustomer(CustomerEntity $customerEntity): void
     {
-        $this->delete($customer);
+        $this->delete($customerEntity);
     }
 
-    public function getLastCustomer(): Customer
+    public function getLastCustomer(): CustomerEntity
     {
         $lastCustomer = $this->entityManager
-            ->getRepository(Customer::class)
+            ->getRepository(CustomerEntity::class)
             ->findBy([], ['customerId' => 'DESC'], 1, 0);
 
         return $lastCustomer[0];

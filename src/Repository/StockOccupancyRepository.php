@@ -6,7 +6,7 @@ namespace WebWMS\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use WebWMS\Entity\StockOccupancy;
+use WebWMS\Entity\StockOccupancyEntity;
 
 /**
  * @package:    WebWMS\Repository
@@ -14,17 +14,17 @@ use WebWMS\Entity\StockOccupancy;
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockOccupancyRepository
  *
- * @extends ServiceEntityRepository<StockOccupancy>
+ * @extends ServiceEntityRepository<StockOccupancyEntity>
  *
- * @method StockOccupancy|null find($id, $lockMode = null, $lockVersion = null)
- * @method StockOccupancy|null findOneBy(array $criteria, array $orderBy = null)
- * @method StockOccupancy[]    findAll()
- * @method StockOccupancy[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method StockOccupancyEntity|null find($id, $lockMode = null, $lockVersion = null)
+ * @method StockOccupancyEntity|null findOneBy(array $criteria, array $orderBy = null)
+ * @method StockOccupancyEntity[]    findAll()
+ * @method StockOccupancyEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class StockOccupancyRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, StockOccupancy::class);
+        parent::__construct($managerRegistry, StockOccupancyEntity::class);
     }
 }

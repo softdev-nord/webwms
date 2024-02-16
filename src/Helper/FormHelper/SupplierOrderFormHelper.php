@@ -7,8 +7,8 @@ namespace WebWMS\Helper\FormHelper;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
-use WebWMS\Entity\SupplierOrder;
-use WebWMS\Entity\SupplierOrderPos;
+use WebWMS\Entity\SupplierOrderEntity;
+use WebWMS\Entity\SupplierOrderPosEntity;
 use WebWMS\Form\SupplierOrder\AddSupplierOrderType;
 use WebWMS\Form\SupplierOrder\DeleteSupplierOrderType;
 use WebWMS\Form\SupplierOrder\EditSupplierOrderType;
@@ -31,7 +31,6 @@ class SupplierOrderFormHelper
      * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
-     * @return FormInterface
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
     {
@@ -44,21 +43,19 @@ class SupplierOrderFormHelper
     }
 
     /**
-     * @param SupplierOrder|null $supplierOrder
-     * @return FormInterface
+     * @param SupplierOrderEntity|null $supplierOrderEntity
      */
-    public function editSupplierOrderForm(?SupplierOrder $supplierOrder): FormInterface
+    public function editSupplierOrderForm(?SupplierOrderEntity $supplierOrderEntity): FormInterface
     {
-        return $this->createForm(EditSupplierOrderType::class, $supplierOrder);
+        return $this->createForm(EditSupplierOrderType::class, $supplierOrderEntity);
     }
 
     /**
-     * @param SupplierOrder|null $supplierOrder
-     * @return FormInterface
+     * @param SupplierOrderEntity|null $supplierOrderEntity
      */
-    public function deleteSupplierOrderForm(?SupplierOrder $supplierOrder): FormInterface
+    public function deleteSupplierOrderForm(?SupplierOrderEntity $supplierOrderEntity): FormInterface
     {
-        return $this->createForm(DeleteSupplierOrderType::class, $supplierOrder);
+        return $this->createForm(DeleteSupplierOrderType::class, $supplierOrderEntity);
     }
 
     public function addSupplierOrderPosForm(): FormInterface
@@ -67,20 +64,18 @@ class SupplierOrderFormHelper
     }
 
     /**
-     * @param SupplierOrderPos|null $supplierOrderPos
-     * @return FormInterface
+     * @param SupplierOrderPosEntity|null $supplierOrderPosEntity
      */
-    public function editSupplierOrderPosForm(?SupplierOrderPos $supplierOrderPos): FormInterface
+    public function editSupplierOrderPosForm(?SupplierOrderPosEntity $supplierOrderPosEntity): FormInterface
     {
-        return $this->createForm(SupplierOrderPosType::class, $supplierOrderPos);
+        return $this->createForm(SupplierOrderPosType::class, $supplierOrderPosEntity);
     }
 
     /**
-     * @param SupplierOrderPos|null $supplierOrderPos
-     * @return FormInterface
+     * @param SupplierOrderPosEntity|null $supplierOrderPosEntity
      */
-    public function deleteSupplierOrderPosForm(?SupplierOrderPos $supplierOrderPos): FormInterface
+    public function deleteSupplierOrderPosForm(?SupplierOrderPosEntity $supplierOrderPosEntity): FormInterface
     {
-        return $this->createForm(SupplierOrderPosType::class, $supplierOrderPos);
+        return $this->createForm(SupplierOrderPosType::class, $supplierOrderPosEntity);
     }
 }

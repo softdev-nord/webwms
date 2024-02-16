@@ -6,7 +6,7 @@ namespace WebWMS\Service\DataHandlers\Stock;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockZone;
+use WebWMS\Entity\StockZoneEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
@@ -23,15 +23,15 @@ class StockZoneDataHandler
     ) {
     }
 
-    public function save(StockZone $stockZone): void
+    public function save(StockZoneEntity $stockZoneEntity): void
     {
-        $this->entityManager->persist($stockZone);
+        $this->entityManager->persist($stockZoneEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(StockZone $stockZone): void
+    public function delete(StockZoneEntity $stockZoneEntity): void
     {
-        $this->entityManager->remove($stockZone);
+        $this->entityManager->remove($stockZoneEntity);
         $this->entityManager->flush();
     }
 
@@ -43,35 +43,35 @@ class StockZoneDataHandler
             ->select('*')
             ->from('stock_zone');
 
-        $stmt = $queryBuilder->executeQuery();
-        $results = $stmt->fetchAllAssociative();
+        $result = $queryBuilder->executeQuery();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }
 
-    public function getStockZoneById(int $stockZoneId): ?StockZone
+    public function getStockZoneById(int $stockZoneId): ?StockZoneEntity
     {
         return $this->entityManager
-            ->getRepository(StockZone::class)
+            ->getRepository(StockZoneEntity::class)
             ->findOneBy(['id' => $stockZoneId]);
     }
 
-    public function addStockZone(StockZone $stockZone): void
+    public function addStockZone(StockZoneEntity $stockZoneEntity): void
     {
-        $stockZone->setCreatedAt($this->dateTimeService->createDateTime());
+        $stockZoneEntity->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($stockZone);
+        $this->save($stockZoneEntity);
     }
 
-    public function updateStockZone(StockZone $stockZone): void
+    public function updateStockZone(StockZoneEntity $stockZoneEntity): void
     {
-        $stockZone->setUpdatedAt($this->dateTimeService->createDateTime());
+        $stockZoneEntity->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($stockZone);
+        $this->save($stockZoneEntity);
     }
 
-    public function deleteStockZone(StockZone $stockZone): void
+    public function deleteStockZone(StockZoneEntity $stockZoneEntity): void
     {
-        $this->delete($stockZone);
+        $this->delete($stockZoneEntity);
     }
 }

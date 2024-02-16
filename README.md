@@ -9,13 +9,13 @@
 * ***Passwort:*** `WebWms2023!#`
 
 ## Systemvoraussetzung:
-* min. **PHP 8.1**
+* min. **PHP 8.2**
 * **MySQL**, **MariaDB**
 * **Apache**/**Nginx**
 * **NodeJs**
 
 ## Tech-Stack:
-* **Symfony** 6.3
+* **Symfony** 7.0
 * **jQuery** 3.6
 * **Twig**
 * **NodeJs** v12

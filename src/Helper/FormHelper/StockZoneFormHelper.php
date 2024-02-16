@@ -7,7 +7,7 @@ namespace WebWMS\Helper\FormHelper;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
-use WebWMS\Entity\StockZone;
+use WebWMS\Entity\StockZoneEntity;
 use WebWMS\Form\Stock\StockZone\AddStockZoneType;
 use WebWMS\Form\Stock\StockZone\DeleteStockZoneType;
 use WebWMS\Form\Stock\StockZone\EditStockZoneType;
@@ -29,7 +29,6 @@ class StockZoneFormHelper
      * @param class-string<FormTypeInterface<mixed>> $type
      * @param mixed|null $data
      * @param array<string> $options
-     * @return FormInterface
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
     {
@@ -42,20 +41,18 @@ class StockZoneFormHelper
     }
 
     /**
-     * @param StockZone|null $stockZone
-     * @return FormInterface
+     * @param StockZoneEntity|null $stockZoneEntity
      */
-    public function editStockZoneForm(?StockZone $stockZone): FormInterface
+    public function editStockZoneForm(?StockZoneEntity $stockZoneEntity): FormInterface
     {
-        return $this->createForm(EditStockZoneType::class, $stockZone);
+        return $this->createForm(EditStockZoneType::class, $stockZoneEntity);
     }
 
     /**
-     * @param StockZone|null $stockZone
-     * @return FormInterface
+     * @param StockZoneEntity|null $stockZoneEntity
      */
-    public function deleteStockZoneForm(?StockZone $stockZone): FormInterface
+    public function deleteStockZoneForm(?StockZoneEntity $stockZoneEntity): FormInterface
     {
-        return $this->createForm(DeleteStockZoneType::class, $stockZone);
+        return $this->createForm(DeleteStockZoneType::class, $stockZoneEntity);
     }
 }

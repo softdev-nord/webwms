@@ -6,7 +6,7 @@ namespace WebWMS\Service\DataHandlers\Article;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\Article;
+use WebWMS\Entity\ArticleEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
@@ -23,29 +23,29 @@ class ArticleDataHandler
     ) {
     }
 
-    public function save(Article $article): void
+    public function save(ArticleEntity $articleEntity): void
     {
-        $this->entityManager->persist($article);
+        $this->entityManager->persist($articleEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(Article $article): void
+    public function delete(ArticleEntity $articleEntity): void
     {
-        $this->entityManager->remove($article);
+        $this->entityManager->remove($articleEntity);
         $this->entityManager->flush();
     }
 
-    public function getArticleById(int $articleId): ?Article
+    public function getArticleById(int $articleId): ?ArticleEntity
     {
         return $this->entityManager
-            ->getRepository(Article::class)
+            ->getRepository(ArticleEntity::class)
             ->findOneBy(['articleId' => $articleId]);
     }
 
-    public function getArticleByNr(string $articleNr): ?Article
+    public function getArticleByNr(string $articleNr): ?ArticleEntity
     {
         return $this->entityManager
-            ->getRepository(Article::class)
+            ->getRepository(ArticleEntity::class)
             ->findOneBy(['articleNr' => $articleNr]);
     }
 
@@ -55,7 +55,7 @@ class ArticleDataHandler
     public function getAllArticles(): ?array
     {
         return $this->entityManager
-            ->getRepository(Article::class)
+            ->getRepository(ArticleEntity::class)
             ->findAll();
     }
 
@@ -84,9 +84,9 @@ class ArticleDataHandler
             $queryBuilder = $this->entityManager->createQueryBuilder();
             $queryBuilder
                 ->select('art')
-                ->from(Article::class, 'art')
+                ->from(ArticleEntity::class, 'art')
                 ->where('art.articleNr LIKE :article_nr')
-                ->setParameter(':article_nr', '' . $articleNrInput . '%');
+                ->setParameter(':article_nr', '%' . $articleNrInput . '%');
 
             $articles = $queryBuilder->getQuery()->getArrayResult();
 
@@ -112,29 +112,29 @@ class ArticleDataHandler
         return new JsonResponse($data);
     }
 
-    public function addArticle(Article $article): void
+    public function addArticle(ArticleEntity $articleEntity): void
     {
-        $article->setCreatedAt($this->dateTimeService->createDateTime());
+        $articleEntity->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($article);
+        $this->save($articleEntity);
     }
 
-    public function updateArticle(Article $article): void
+    public function updateArticle(ArticleEntity $articleEntity): void
     {
-        $article->setUpdatedAt($this->dateTimeService->createDateTime());
+        $articleEntity->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($article);
+        $this->save($articleEntity);
     }
 
-    public function deleteArticle(Article $article): void
+    public function deleteArticle(ArticleEntity $articleEntity): void
     {
-        $this->delete($article);
+        $this->delete($articleEntity);
     }
 
-    public function getLastArticle(): Article
+    public function getLastArticle(): ArticleEntity
     {
         $lastArticle = $this->entityManager
-            ->getRepository(Article::class)
+            ->getRepository(ArticleEntity::class)
             ->findBy([], ['articleId' => 'DESC'], 1, 0);
 
         return $lastArticle[0];

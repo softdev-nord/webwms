@@ -24,7 +24,6 @@ class StockOccupancyService
 
     /**
      * @throws Exception
-     * @return JsonResponse
      */
     public function getAllStockOccupancy(): JsonResponse
     {

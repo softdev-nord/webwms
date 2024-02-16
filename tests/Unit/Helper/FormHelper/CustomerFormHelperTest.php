@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Helper\FormHelper;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use WebWMS\Entity\Customer;
+use WebWMS\Entity\CustomerEntity;
 use WebWMS\Form\Customer\AddCustomerType;
 use WebWMS\Form\Customer\DeleteCustomerType;
 use WebWMS\Form\Customer\EditCustomerType;
@@ -18,9 +19,8 @@ use WebWMS\Helper\FormHelper\CustomerFormHelper;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerFormHelperTest
- *
- * @covers \WebWMS\Helper\FormHelper\CustomerFormHelper
  */
+#[CoversClass(CustomerFormHelper::class)]
 final class CustomerFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
@@ -37,8 +37,8 @@ final class CustomerFormHelperTest extends TestCase
             ->with($type, $data, $options)
             ->willReturn($formInterface);
 
-        $helper = new CustomerFormHelper($formFactory);
-        $result = $helper->createForm($type, $data, $options);
+        $customerFormHelper = new CustomerFormHelper($formFactory);
+        $result = $customerFormHelper->createForm($type, $data, $options);
 
         self::assertSame($formInterface, $result);
     }
@@ -54,8 +54,8 @@ final class CustomerFormHelperTest extends TestCase
             ->with(AddCustomerType::class)
             ->willReturn($formInterface);
 
-        $helper = new CustomerFormHelper($formFactory);
-        $result = $helper->addCustomerForm();
+        $customerFormHelper = new CustomerFormHelper($formFactory);
+        $result = $customerFormHelper->addCustomerForm();
 
         self::assertSame($formInterface, $result);
     }
@@ -64,7 +64,7 @@ final class CustomerFormHelperTest extends TestCase
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $customer = $this->createMock(Customer::class);
+        $customer = $this->createMock(CustomerEntity::class);
 
         $formFactory
             ->expects(self::once())
@@ -72,8 +72,8 @@ final class CustomerFormHelperTest extends TestCase
             ->with(EditCustomerType::class, $customer)
             ->willReturn($formInterface);
 
-        $helper = new CustomerFormHelper($formFactory);
-        $result = $helper->editCustomerForm($customer);
+        $customerFormHelper = new CustomerFormHelper($formFactory);
+        $result = $customerFormHelper->editCustomerForm($customer);
 
         self::assertSame($formInterface, $result);
     }
@@ -82,7 +82,7 @@ final class CustomerFormHelperTest extends TestCase
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $customer = $this->createMock(Customer::class);
+        $customer = $this->createMock(CustomerEntity::class);
 
         $formFactory
             ->expects(self::once())
@@ -90,8 +90,8 @@ final class CustomerFormHelperTest extends TestCase
             ->with(DeleteCustomerType::class, $customer)
             ->willReturn($formInterface);
 
-        $helper = new CustomerFormHelper($formFactory);
-        $result = $helper->deleteCustomerForm($customer);
+        $customerFormHelper = new CustomerFormHelper($formFactory);
+        $result = $customerFormHelper->deleteCustomerForm($customer);
 
         self::assertSame($formInterface, $result);
     }

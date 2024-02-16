@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\TransportRequest;
 
+use DateTime;
+use DateTimeZone;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\TransportRequest;
+use WebWMS\Entity\TransportRequestEntity;
 
 /**
- * @package:    WebWMS\Form\TransportRequest
+ * @package:    WebWMS\Form\TransportRequestEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        AddTransportRequestType
@@ -22,9 +25,10 @@ class AddTransportRequestType extends AbstractType
      * @SuppressWarnings("unused")
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    #[Override]
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
+        $formBuilder
             ->add('id', HiddenType::class, [
                 'label' => false,
                 'attr' => [
@@ -122,7 +126,7 @@ class AddTransportRequestType extends AbstractType
                     'id' => 'trAccess',
                     'data-type' => 'trAccess',
                 ],
-                'data' => new \DateTime('NOW', new \DateTimeZone('Europe/Berlin')),
+                'data' => new DateTime('NOW', new DateTimeZone('Europe/Berlin')),
             ])
             ->add('trDispatch', HiddenType::class, [
                 'label' => false,
@@ -221,7 +225,7 @@ class AddTransportRequestType extends AbstractType
                     'id' => 'trStartDate',
                     'data-type' => 'trStartDate',
                 ],
-                'data' => new \DateTime('NOW', new \DateTimeZone('Europe/Berlin')),
+                'data' => new DateTime('NOW', new DateTimeZone('Europe/Berlin')),
             ])
             ->add('trEdited', HiddenType::class, [
                 'label' => false,
@@ -255,10 +259,11 @@ class AddTransportRequestType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    #[Override]
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => TransportRequest::class,
+        $optionsResolver->setDefaults([
+            'data_class' => TransportRequestEntity::class,
         ]);
     }
 }

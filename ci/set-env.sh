@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+
+LOCALE=de
+APP_ENV=$1
+APP_DEBUG=$2
+DATABASE_URL=$3
+
+ENV_FILE=.env
+
+cat > $ENV_FILE << EOF
+# In all environments, the following files are loaded if they exist,
+# the latter taking precedence over the former:
+#
+#  * .env                contains default values for the environment variables needed by the app
+#  * .env.local          uncommitted file with local overrides
+#  * .env.$APP_ENV       committed environment-specific defaults
+#  * .env.$APP_ENV.local uncommitted environment-specific overrides
+#
+# Real environment variables win over .env files.
+#
+# DO NOT DEFINE PRODUCTION SECRETS IN THIS FILE NOR IN ANY OTHER COMMITTED FILES.
+#
+# Run "composer dump-env prod" to compile .env files for production use (requires symfony/flex >=1.2).
+# https://symfony.com/doc/current/best_practices.html#use-environment-variables-for-infrastructure-configuration
+
+LOCALE=$LOCALE
+
+# this is used for loading uploaded files embedded in a PDF Template, the host of the web server must be set
+# in a docker environment the internal host name of the web container must be specified, e.g. "http://web"
+# otherwise the host name of your web server must be set, e.g. https://pve
+WEB_HOST=${WEB_HOST}
+
+EOF
+
+cat > $ENV_FILE << EOF
+###> composer/composer ###
+COMPOSER_HOME=/var/www/html/var/cache/composer
+###< composer/composer ###
+
+EOF
+
+cat > $ENV_FILE << EOF
+###> symfony/framework-bundle ###
+APP_ENV=$APP_ENV
+APP_SECRET=af2b45ff237087d068938bb0858bddff
+APP_DEBUG=$APP_DEBUG
+###< symfony/framework-bundle ###
+
+EOF
+
+cat >> $ENV_FILE << EOF
+###> webWMS ###
+APP_NAME=$APP_NAME
+APP_VERSION=$APP_VERSION
+APP_VERSION_NUMBER=$APP_VERSION_NUMBER
+APP_COPYRIGHT=$APP_COPYRIGHT
+APP_LIZENZ=$APP_LIZENZ
+###< webWMS ###
+
+EOF
+
+cat >> $ENV_FILE << EOF
+###> doctrine/doctrine-bundle ###
+DATABASE_URL=$DATABASE_URL
+###< doctrine/doctrine-bundle ###
+
+EOF
+
+cat >> $ENV_FILE << EOF
+### mailer settings ###
+FROM_MAIL=${FROM_MAIL}
+FROM_NAME=${FROM_NAME}
+RETURN_PATH=${RETURN_PATH}
+# sent copy of mail to the address specified in FROM_MAIL
+MAIL_COPY=${MAIL_COPY}
+MAIL_MAILER=smtp
+MAIL_HOST=127.0.0.1
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+### mailer settings ###
+
+EOF
+
+cat >> $ENV_FILE << EOF
+###> symfony/mailer ###
+# e.g. smtp://username:password@yourdomain.tld:port
+MAILER_DSN=${MAILER_DSN}
+###< symfony/mailer ###
+
+EOF

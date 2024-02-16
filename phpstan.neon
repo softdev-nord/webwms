@@ -12,7 +12,7 @@ parameters:
 
     paths:
         - src
-        - bundles
+        - module
         - tests
 
     excludePaths:

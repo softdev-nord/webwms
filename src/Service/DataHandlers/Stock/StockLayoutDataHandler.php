@@ -6,7 +6,7 @@ namespace WebWMS\Service\DataHandlers\Stock;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockLayout;
+use WebWMS\Entity\StockLayoutEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
@@ -23,15 +23,15 @@ class StockLayoutDataHandler
     ) {
     }
 
-    public function save(StockLayout $stockLayout): void
+    public function save(StockLayoutEntity $stockLayoutEntity): void
     {
-        $this->entityManager->persist($stockLayout);
+        $this->entityManager->persist($stockLayoutEntity);
         $this->entityManager->flush();
     }
 
-    public function delete(StockLayout $stockLayout): void
+    public function delete(StockLayoutEntity $stockLayoutEntity): void
     {
-        $this->entityManager->remove($stockLayout);
+        $this->entityManager->remove($stockLayoutEntity);
         $this->entityManager->flush();
     }
 
@@ -43,35 +43,35 @@ class StockLayoutDataHandler
             ->select('*')
             ->from('stock_layout');
 
-        $stmt = $queryBuilder->executeQuery();
-        $results = $stmt->fetchAllAssociative();
+        $result = $queryBuilder->executeQuery();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }
 
-    public function getStockLayoutById(int $stockLayoutId): ?StockLayout
+    public function getStockLayoutById(int $stockLayoutId): ?StockLayoutEntity
     {
         return $this->entityManager
-            ->getRepository(StockLayout::class)
+            ->getRepository(StockLayoutEntity::class)
             ->findOneBy(['id' => $stockLayoutId]);
     }
 
-    public function addStockLayout(StockLayout $stockLayout): void
+    public function addStockLayout(StockLayoutEntity $stockLayoutEntity): void
     {
-        $stockLayout->setCreatedAt($this->dateTimeService->createDateTime());
+        $stockLayoutEntity->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($stockLayout);
+        $this->save($stockLayoutEntity);
     }
 
-    public function updateStockLayout(StockLayout $stockLayout): void
+    public function updateStockLayout(StockLayoutEntity $stockLayoutEntity): void
     {
-        $stockLayout->setUpdatedAt($this->dateTimeService->createDateTime());
+        $stockLayoutEntity->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($stockLayout);
+        $this->save($stockLayoutEntity);
     }
 
-    public function deleteStockLayout(StockLayout $stockLayout): void
+    public function deleteStockLayout(StockLayoutEntity $stockLayoutEntity): void
     {
-        $this->delete($stockLayout);
+        $this->delete($stockLayoutEntity);
     }
 }

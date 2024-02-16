@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\Stock;
 
+use Override;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,16 +20,18 @@ class StockInFinalCollectionType extends CollectionType
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    #[Override]
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder->add('freeStockLocations', CollectionType::class, [
+        $formBuilder->add('freeStockLocations', CollectionType::class, [
             'entry_type' => StockInFinalType::class,
         ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    #[Override]
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
+        $optionsResolver->setDefaults([
             'data_class' => StockInFinalType::class,
             'allow_add' => true,
             'allow_delete' => true,

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Service\Stock;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockZone;
+use WebWMS\Entity\StockZoneEntity;
 use WebWMS\Service\DataHandlers\Stock\StockZoneDataHandler;
 
 /**
@@ -26,23 +26,23 @@ class StockZoneService
         return $this->stockZoneDataHandler->getAllStockZones();
     }
 
-    public function getStockZoneById(int $stockZoneId): ?StockZone
+    public function getStockZoneById(int $stockZoneId): ?StockZoneEntity
     {
         return $this->stockZoneDataHandler->getStockZoneById($stockZoneId);
     }
 
-    public function addStockZone(StockZone $stockZone): void
+    public function addStockZone(StockZoneEntity $stockZoneEntity): void
     {
-        $this->stockZoneDataHandler->addStockZone($stockZone);
+        $this->stockZoneDataHandler->addStockZone($stockZoneEntity);
     }
 
-    public function updateStockZone(StockZone $stockZone): void
+    public function updateStockZone(StockZoneEntity $stockZoneEntity): void
     {
-        $this->stockZoneDataHandler->updateStockZone($stockZone);
+        $this->stockZoneDataHandler->updateStockZone($stockZoneEntity);
     }
 
-    public function deleteStockZone(StockZone $stockZone): void
+    public function deleteStockZone(StockZoneEntity $stockZoneEntity): void
     {
-        $this->stockZoneDataHandler->deleteStockZone($stockZone);
+        $this->stockZoneDataHandler->deleteStockZone($stockZoneEntity);
     }
 }

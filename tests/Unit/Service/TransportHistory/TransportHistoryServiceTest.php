@@ -4,36 +4,38 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\TransportHistory;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\TransportHistory;
+use WebWMS\Entity\TransportHistoryEntity;
 use WebWMS\Service\DataHandlers\TransportHistory\TransportHistoryDataHandler;
 use WebWMS\Service\TransportHistory\TransportHistoryService;
 
 /**
- * @package:    WebWMS\Tests\Unit\Service\TransportHistory
+ * @package:    WebWMS\Tests\Unit\Service\TransportHistoryEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        TransportHistoryServiceTest
- *
- * @covers \WebWMS\Service\TransportHistory\TransportHistoryService
  */
+#[CoversClass(TransportHistoryService::class)]
 final class TransportHistoryServiceTest extends TestCase
 {
     private TransportHistoryService $transportHistoryService;
 
-    private MockObject $transportHistoryDataHandler;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->transportHistoryDataHandler = $this->createMock(TransportHistoryDataHandler::class);
-        $this->transportHistoryService = new TransportHistoryService($this->transportHistoryDataHandler);
+        $this->mockObject = $this->createMock(TransportHistoryDataHandler::class);
+        $this->transportHistoryService = new TransportHistoryService($this->mockObject);
     }
 
     public function testGetTransportHistoryById(): void
     {
-        $this->transportHistoryDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getTransportHistoryById')
             ->with(1)
@@ -46,7 +48,7 @@ final class TransportHistoryServiceTest extends TestCase
 
     public function testGetAllTransportHistories(): void
     {
-        $this->transportHistoryDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllTransportHistories')
             ->willReturn(
@@ -90,7 +92,7 @@ final class TransportHistoryServiceTest extends TestCase
         $user = 'test_user';
         $clientIp = '127.0.0.1';
 
-        $this->transportHistoryDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('createTransportHistory')
             ->with($request, $user, $clientIp);
@@ -100,7 +102,7 @@ final class TransportHistoryServiceTest extends TestCase
 
     public function testGetLastStockUnit(): void
     {
-        $this->transportHistoryDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getLastStockUnit')
             ->willReturn(20);
@@ -112,41 +114,41 @@ final class TransportHistoryServiceTest extends TestCase
 
     public function testAddTransportHistory(): void
     {
-        $transportHistory = new TransportHistory();
-        $this->transportHistoryDataHandler
+        $transportHistoryEntity = new TransportHistoryEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('addTransportHistory')
-            ->with($transportHistory);
+            ->with($transportHistoryEntity);
 
-        $this->transportHistoryService->addTransportHistory($transportHistory);
+        $this->transportHistoryService->addTransportHistory($transportHistoryEntity);
     }
 
     public function testUpdateTransportHistory(): void
     {
-        $transportHistory = new TransportHistory();
-        $this->transportHistoryDataHandler
+        $transportHistoryEntity = new TransportHistoryEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('updateTransportHistory')
-            ->with($transportHistory);
+            ->with($transportHistoryEntity);
 
-        $this->transportHistoryService->updateTransportHistory($transportHistory);
+        $this->transportHistoryService->updateTransportHistory($transportHistoryEntity);
     }
 
     public function testDeleteTransportHistory(): void
     {
-        $transportHistory = new TransportHistory();
-        $this->transportHistoryDataHandler
+        $transportHistoryEntity = new TransportHistoryEntity();
+        $this->mockObject
             ->expects(self::once())
             ->method('deleteTransportHistory')
-            ->with($transportHistory);
+            ->with($transportHistoryEntity);
 
-        $this->transportHistoryService->deleteTransportHistory($transportHistory);
+        $this->transportHistoryService->deleteTransportHistory($transportHistoryEntity);
     }
 
     public function testGetLastTransportHistoryNr(): void
     {
         $lastTransportHistoryId = 12345;
-        $this->transportHistoryDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getLastTransportHistoryNr')
             ->willReturn($lastTransportHistoryId);

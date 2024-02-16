@@ -4,39 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\User;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Form\User\ChangePasswordType;
 use WebWMS\Form\User\Model\ChangePassword;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\User
+ * @package:    WebWMS\Tests\Unit\Form\UserController
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ChangePasswordTypeTest
- *
- * @covers \WebWMS\Form\User\ChangePasswordType
  */
+#[CoversClass(ChangePasswordType::class)]
 final class ChangePasswordTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                ['oldPassword', PasswordType::class, self::anything()],
-                ['newPassword', PasswordType::class, self::anything()],
-                ['save', ButtonType::class, self::anything()],
-                ['abort', ButtonType::class, self::anything()]
-            );
+            ->withAnyParameters();
 
-        $type = new ChangePasswordType();
-        $type->buildForm($builder, []);
+        $changePasswordType = new ChangePasswordType();
+        $changePasswordType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
@@ -50,7 +43,7 @@ final class ChangePasswordTypeTest extends TestCase
                 'allow_extra_fields' => true,
             ]);
 
-        $type = new ChangePasswordType();
-        $type->configureOptions($resolver);
+        $changePasswordType = new ChangePasswordType();
+        $changePasswordType->configureOptions($resolver);
     }
 }

@@ -4,71 +4,73 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\User\UserGroup;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\UserGroup;
+use WebWMS\Entity\UserGroupEntity;
 use WebWMS\Service\DataHandlers\User\UserGroup\UserGroupDataHandler;
 use WebWMS\Service\User\UserGroup\UserGroupService;
 
 /**
- * @package:    WebWMS\Tests\Unit\Service\User\UserGroup
+ * @package:    WebWMS\Tests\Unit\Service\UserController\UserGroupEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        UserGroupServiceTest
- *
- * @covers \WebWMS\Service\User\UserGroup\UserGroupService
  */
+#[CoversClass(UserGroupService::class)]
 final class UserGroupServiceTest extends TestCase
 {
     private UserGroupService $userGroupService;
 
-    private MockObject $userGroupDataHandler;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->userGroupDataHandler = $this->createMock(UserGroupDataHandler::class);
+        $this->mockObject = $this->createMock(UserGroupDataHandler::class);
 
-        $this->userGroupService = new UserGroupService($this->userGroupDataHandler);
+        $this->userGroupService = new UserGroupService($this->mockObject);
     }
 
     public function testGetUserGroupByUserGroupName(): void
     {
         $userGroupName = 'Group 1';
-        $expectedUserGroup = new UserGroup();
+        $userGroupEntity = new UserGroupEntity();
 
-        $this->userGroupDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getUserGroupByUserGroupName')
             ->with($userGroupName)
-            ->willReturn($expectedUserGroup);
+            ->willReturn($userGroupEntity);
 
         $result = $this->userGroupService->getUserGroupByUserGroupName($userGroupName);
 
-        self::assertSame($expectedUserGroup, $result);
+        self::assertSame($userGroupEntity, $result);
     }
 
     public function testGetUserGroupById(): void
     {
         $userGroupId = 1;
-        $expectedUserGroup = new UserGroup();
+        $userGroupEntity = new UserGroupEntity();
 
-        $this->userGroupDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getUserGroupById')
             ->with($userGroupId)
-            ->willReturn($expectedUserGroup);
+            ->willReturn($userGroupEntity);
 
         $result = $this->userGroupService->getUserGroupById($userGroupId);
 
-        self::assertSame($expectedUserGroup, $result);
+        self::assertSame($userGroupEntity, $result);
     }
 
     public function testGetAllUserGroups(): void
     {
-        $expectedUserGroups = [new UserGroup(), new UserGroup()];
+        $expectedUserGroups = [new UserGroupEntity(), new UserGroupEntity()];
 
-        $this->userGroupDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('getAllUserGroups')
             ->willReturn($expectedUserGroups);
@@ -82,7 +84,7 @@ final class UserGroupServiceTest extends TestCase
     {
         $request = new Request();
 
-        $this->userGroupDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('addUserGroup')
             ->with($request);
@@ -93,24 +95,24 @@ final class UserGroupServiceTest extends TestCase
     public function testUpdateUserGroup(): void
     {
         $request = new Request();
-        $expectedUserGroup = new UserGroup();
+        $userGroupEntity = new UserGroupEntity();
 
-        $this->userGroupDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('updateUserGroup')
             ->with($request)
-            ->willReturn($expectedUserGroup);
+            ->willReturn($userGroupEntity);
 
         $result = $this->userGroupService->updateUserGroup($request);
 
-        self::assertSame($expectedUserGroup, $result);
+        self::assertSame($userGroupEntity, $result);
     }
 
     public function testDeleteUserGroup(): void
     {
         $userGroupName = 'Group 1';
 
-        $this->userGroupDataHandler
+        $this->mockObject
             ->expects(self::once())
             ->method('deleteUserGroup')
             ->with($userGroupName);

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\Customer;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\Customer;
+use WebWMS\Entity\CustomerEntity;
 
 /**
  * @package:    WebWMS\Form
@@ -23,9 +24,10 @@ class EditCustomerType extends AbstractType
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    #[Override]
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
+        $formBuilder
             ->add('customerId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
@@ -122,10 +124,11 @@ class EditCustomerType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    #[Override]
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => Customer::class,
+        $optionsResolver->setDefaults([
+            'data_class' => CustomerEntity::class,
         ]);
     }
 }

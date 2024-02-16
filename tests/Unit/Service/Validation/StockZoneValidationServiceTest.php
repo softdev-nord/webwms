@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Validation;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\StockZone;
+use WebWMS\Entity\StockZoneEntity;
 use WebWMS\Service\Validation\StockZoneValidationService;
 
 /**
@@ -13,13 +15,13 @@ use WebWMS\Service\Validation\StockZoneValidationService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockZoneValidationServiceTest
- *
- * @covers \WebWMS\Service\Validation\StockZoneValidationService
  */
+#[CoversClass(StockZoneValidationService::class)]
 final class StockZoneValidationServiceTest extends TestCase
 {
     private StockZoneValidationService $stockZoneValidationService;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->stockZoneValidationService = new StockZoneValidationService();
@@ -27,11 +29,11 @@ final class StockZoneValidationServiceTest extends TestCase
 
     public function testValidateStockZoneDataWithValidData(): void
     {
-        $stockZone = new StockZone();
-        $stockZone->setStockZoneShortDesc('Short description');
-        $stockZone->setStockZoneDescription('Description');
+        $stockZoneEntity = new StockZoneEntity();
+        $stockZoneEntity->setStockZoneShortDesc('Short description');
+        $stockZoneEntity->setStockZoneDescription('Description');
 
-        $result = $this->stockZoneValidationService->validateStockZoneData($stockZone);
+        $result = $this->stockZoneValidationService->validateStockZoneData($stockZoneEntity);
 
         self::assertTrue($result['success']);
         self::assertEquals('Short description', $result['stockNr']);
@@ -40,11 +42,11 @@ final class StockZoneValidationServiceTest extends TestCase
 
     public function testValidateStockZoneDataWithInvalidData(): void
     {
-        $stockZone = new StockZone();
-        $stockZone->setStockZoneShortDesc('');
-        $stockZone->setStockZoneDescription('');
+        $stockZoneEntity = new StockZoneEntity();
+        $stockZoneEntity->setStockZoneShortDesc('');
+        $stockZoneEntity->setStockZoneDescription('');
 
-        $result = $this->stockZoneValidationService->validateStockZoneData($stockZone);
+        $result = $this->stockZoneValidationService->validateStockZoneData($stockZoneEntity);
 
         self::assertEquals('Die Kurz-Beschreibung darf nicht leer sein.', $result['error']['stock_zone_short_desc']);
         self::assertEquals('Die Beschreibung darf nicht leer sein.', $result['error']['stock_zone_description']);

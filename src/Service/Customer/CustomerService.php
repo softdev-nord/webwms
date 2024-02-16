@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Service\Customer;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\Customer;
+use WebWMS\Entity\CustomerEntity;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
 /**
@@ -21,12 +21,12 @@ class CustomerService
     ) {
     }
 
-    public function getCustomerById(int $customerId): ?Customer
+    public function getCustomerById(int $customerId): ?CustomerEntity
     {
         return $this->customerDataHandler->getCustomerById($customerId);
     }
 
-    public function getCustomerByNr(int $customerNr): ?Customer
+    public function getCustomerByNr(int $customerNr): ?CustomerEntity
     {
         return $this->customerDataHandler->getCustomerByNr($customerNr);
     }
@@ -36,27 +36,27 @@ class CustomerService
         return new JsonResponse($this->customerDataHandler->getAllCustomers());
     }
 
-    public function getAllCustomersAjax(null|string $customerNrInput): JsonResponse
+    public function getAllCustomersAjax(string|null $customerNrInput): JsonResponse
     {
         return $this->customerDataHandler->getCustomers($customerNrInput);
     }
 
-    public function addCustomer(Customer $customer): void
+    public function addCustomer(CustomerEntity $customerEntity): void
     {
-        $this->customerDataHandler->addCustomer($customer);
+        $this->customerDataHandler->addCustomer($customerEntity);
     }
 
-    public function updateCustomer(Customer $customer): void
+    public function updateCustomer(CustomerEntity $customerEntity): void
     {
-        $this->customerDataHandler->updateCustomer($customer);
+        $this->customerDataHandler->updateCustomer($customerEntity);
     }
 
-    public function deleteCustomer(Customer $customer): void
+    public function deleteCustomer(CustomerEntity $customerEntity): void
     {
-        $this->customerDataHandler->deleteCustomer($customer);
+        $this->customerDataHandler->deleteCustomer($customerEntity);
     }
 
-    public function getLastCustomer(): Customer
+    public function getLastCustomer(): CustomerEntity
     {
         return $this->customerDataHandler->getLastCustomer();
     }

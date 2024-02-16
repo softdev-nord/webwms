@@ -6,7 +6,7 @@ namespace WebWMS\Service\Validation;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use WebWMS\Entity\User;
+use WebWMS\Entity\UserEntity;
 use WebWMS\Form\User\Model\ChangePassword;
 
 /**
@@ -18,7 +18,7 @@ use WebWMS\Form\User\Model\ChangePassword;
 class ChangePasswordValidationService
 {
     public function __construct(
-        private UserPasswordHasherInterface $passwordHasher
+        private readonly UserPasswordHasherInterface $userPasswordHasher
     ) {
     }
 
@@ -29,14 +29,14 @@ class ChangePasswordValidationService
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function validateChangePasswordData(User $user, FormInterface $form): array
+    public function validateChangePasswordData(UserEntity $userEntity, FormInterface $form): array
     {
         /** @var ChangePassword $requestData */
         $requestData = $form->getData();
 
-        $hashedPassword = $this->passwordHasher
+        $hashedPassword = $this->userPasswordHasher
             ->isPasswordValid(
-                $user,
+                $userEntity,
                 $requestData->getOldPassword()
             );
 
@@ -44,13 +44,13 @@ class ChangePasswordValidationService
 
         if (!$hashedPassword) {
             $responseData['error']['oldPassword'] = 'Ihr aktuelles Passwort stimmt nicht mit Ihrer Eingabe überein.';
-        } elseif (!$requestData->getOldPassword()) {
+        } elseif ($requestData->getOldPassword() === '' || $requestData->getOldPassword() === '0') {
             $responseData['error']['oldPassword'] = 'Sie müssen Ihr aktuelles Passwort eingeben.';
         } else {
             $responseData['oldPassword'] = $requestData->getOldPassword();
         }
 
-        if (!$requestData->getNewPassword()) {
+        if ($requestData->getNewPassword() === '' || $requestData->getNewPassword() === '0') {
             $responseData['error']['newPassword'] = 'Das neue Passwort darf nicht leer sein.';
         } else {
             $responseData['newPassword'] = $requestData->getNewPassword();

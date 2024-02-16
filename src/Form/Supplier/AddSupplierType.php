@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\Supplier;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\Supplier;
+use WebWMS\Entity\SupplierEntity;
 
 /**
- * @package:    WebWMS\Form\Supplier
+ * @package:    WebWMS\Form\SupplierEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        AddSupplierType
@@ -23,9 +24,10 @@ class AddSupplierType extends AbstractType
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    #[Override]
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
+        $formBuilder
             ->add('supplierId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
@@ -113,10 +115,11 @@ class AddSupplierType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    #[Override]
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => Supplier::class,
+        $optionsResolver->setDefaults([
+            'data_class' => SupplierEntity::class,
         ]);
     }
 }

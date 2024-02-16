@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service;
 
+use Override;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -17,23 +19,23 @@ use WebWMS\Service\FileUploader;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        FileUploaderTest
- *
- * @covers \WebWMS\Service\FileUploader
  */
+#[CoversClass(FileUploader::class)]
 final class FileUploaderTest extends TestCase
 {
-    private const TARGET_DIRECTORY = '/path/to/target/directory';
+    private const string TARGET_DIRECTORY = '/path/to/target/directory';
 
-    private const PUBLIC_DIRECTORY = '/path/to/public/directory';
+    private const string PUBLIC_DIRECTORY = '/path/to/public/directory';
 
     private FileUploader $fileUploader;
 
-    private MockObject $validator;
+    private MockObject $mockObject;
 
+    #[Override]
     protected function setUp(): void
     {
-        $this->validator = $this->createMock(ValidatorInterface::class);
-        $this->fileUploader = new FileUploader(self::TARGET_DIRECTORY, self::PUBLIC_DIRECTORY, $this->validator);
+        $this->mockObject = $this->createMock(ValidatorInterface::class);
+        $this->fileUploader = new FileUploader(self::TARGET_DIRECTORY, self::PUBLIC_DIRECTORY, $this->mockObject);
     }
 
     public function testUpload(): void
@@ -58,13 +60,13 @@ final class FileUploaderTest extends TestCase
     public function testIsValidImageReturnsTrueForValidImage(): void
     {
         $file = $this->createMock(UploadedFile::class);
-        $constraintViolations = new ConstraintViolationList([]);
+        $constraintViolationList = new ConstraintViolationList([]);
 
-        $this->validator
+        $this->mockObject
             ->expects(self::once())
             ->method('validate')
             ->with($file)
-            ->willReturn($constraintViolations);
+            ->willReturn($constraintViolationList);
 
         $result = $this->fileUploader->isValidImage($file);
 
@@ -75,13 +77,13 @@ final class FileUploaderTest extends TestCase
     {
         $file = $this->createMock(UploadedFile::class);
         $constraintViolation = $this->createMock(ConstraintViolationInterface::class);
-        $constraintViolations = new ConstraintViolationList([$constraintViolation]);
+        $constraintViolationList = new ConstraintViolationList([$constraintViolation]);
 
-        $this->validator
+        $this->mockObject
             ->expects(self::once())
             ->method('validate')
             ->with($file)
-            ->willReturn($constraintViolations);
+            ->willReturn($constraintViolationList);
 
         $result = $this->fileUploader->isValidImage($file);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\EventSubscriber;
 
+use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -24,13 +25,14 @@ class LocaleSubscriber implements EventSubscriberInterface
     /**
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    public function onKernelRequest(RequestEvent $event): void
+    public function onKernelRequest(RequestEvent $requestEvent): void
     {
-        $request = $event->getRequest();
+        $request = $requestEvent->getRequest();
         $locale = $request->getSession()->get('_locale', $this->defaultLocale);
-        $request->setLocale(strval($locale));
+        $request->setLocale((string) $locale);
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

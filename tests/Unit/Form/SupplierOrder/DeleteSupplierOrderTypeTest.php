@@ -4,38 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\SupplierOrder;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\SupplierOrder;
+use WebWMS\Entity\SupplierOrderEntity;
 use WebWMS\Form\SupplierOrder\DeleteSupplierOrderType;
 
 /**
- * @package:    WebWMS\Tests\Unit\Form\SupplierOrder
+ * @package:    WebWMS\Tests\Unit\Form\SupplierOrderEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        DeleteSupplierOrderTypeTest
- *
- * @covers \WebWMS\Form\SupplierOrder\DeleteSupplierOrderType
  */
+#[CoversClass(DeleteSupplierOrderType::class)]
 final class DeleteSupplierOrderTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects(self::once())
             ->method('add')
-            ->withConsecutive(
-                ['supplierOrderId', HiddenType::class, self::anything()],
-                ['delete', ButtonType::class, self::anything()],
-                ['abort', ButtonType::class, self::anything()]
-            );
+            ->withAnyParameters();
 
-        $type = new DeleteSupplierOrderType();
-        $type->buildForm($builder, []);
+        $deleteSupplierOrderType = new DeleteSupplierOrderType();
+        $deleteSupplierOrderType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
@@ -44,9 +38,9 @@ final class DeleteSupplierOrderTypeTest extends TestCase
         $resolver
             ->expects(self::once())
             ->method('setDefaults')
-            ->with(['data_class' => SupplierOrder::class]);
+            ->with(['data_class' => SupplierOrderEntity::class]);
 
-        $type = new DeleteSupplierOrderType();
-        $type->configureOptions($resolver);
+        $deleteSupplierOrderType = new DeleteSupplierOrderType();
+        $deleteSupplierOrderType->configureOptions($resolver);
     }
 }

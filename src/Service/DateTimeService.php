@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Service;
 
+use DateTime;
+use DateTimeZone;
+
 /**
  * @package:    WebWMS\Service
  * @author:     SoftDev Nord, Rene Irrgang
@@ -12,8 +15,8 @@ namespace WebWMS\Service;
  */
 class DateTimeService
 {
-    public function createDateTime(): \DateTime
+    public function createDateTime(): DateTime
     {
-        return new \DateTime('NOW', new \DateTimeZone('Europe/Berlin'));
+        return new DateTime('NOW', new DateTimeZone('Europe/Berlin'));
     }
 }

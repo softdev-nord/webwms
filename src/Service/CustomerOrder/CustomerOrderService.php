@@ -6,11 +6,11 @@ namespace WebWMS\Service\CustomerOrder;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use WebWMS\Entity\CustomerOrder;
+use WebWMS\Entity\CustomerOrderEntity;
 use WebWMS\Service\DataHandlers\CustomerOrder\CustomerOrderDataHandler;
 
 /**
- * @package:    WebWMS\Service\CustomerOrder
+ * @package:    WebWMS\Service\CustomerOrderEntity
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        CustomerOrderService
@@ -22,13 +22,13 @@ class CustomerOrderService
     ) {
     }
 
-    public function getCustomerOrderById(int $id): ?CustomerOrder
+    public function getCustomerOrderById(int $id): ?CustomerOrderEntity
     {
         return $this->customerOrderDataHandler->getCustomerOrderById($id);
     }
 
     /**
-     * Get all Customer Orders for Ajax-Request.
+     * Get all CustomerEntity Orders for Ajax-Request.
      */
     public function getAllCustomerOrders(): JsonResponse
     {
@@ -36,7 +36,7 @@ class CustomerOrderService
     }
 
     /**
-     * Get all Customer Order Pos for Ajax-Request.
+     * Get all CustomerEntity Order Pos for Ajax-Request.
      */
     public function getAllCustomerOrderPos(): JsonResponse
     {
@@ -56,18 +56,18 @@ class CustomerOrderService
         return $this->customerOrderDataHandler->getLastCustomerOrderId();
     }
 
-    public function addCustomerOrder(CustomerOrder $customerOrder): void
+    public function addCustomerOrder(CustomerOrderEntity $customerOrderEntity): void
     {
-        $this->customerOrderDataHandler->addCustomerOrder($customerOrder);
+        $this->customerOrderDataHandler->addCustomerOrder($customerOrderEntity);
     }
 
-    public function updateCustomerOrder(CustomerOrder $customerOrder): void
+    public function updateCustomerOrder(CustomerOrderEntity $customerOrderEntity): void
     {
-        $this->customerOrderDataHandler->updateCustomerOrder($customerOrder);
+        $this->customerOrderDataHandler->updateCustomerOrder($customerOrderEntity);
     }
 
-    public function deleteCustomerOrder(CustomerOrder $customerOrder): void
+    public function deleteCustomerOrder(CustomerOrderEntity $customerOrderEntity): void
     {
-        $this->customerOrderDataHandler->deleteCustomerOrder($customerOrder);
+        $this->customerOrderDataHandler->deleteCustomerOrder($customerOrderEntity);
     }
 }
