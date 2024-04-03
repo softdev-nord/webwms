@@ -24,6 +24,10 @@ div.dt-buttons {
             rgb(16 16 16 / 40%) 1px 22px 65px;
 }
 
+.image-webLVS {
+    opacity: 0.25;
+}
+
 [data-topbar=dark] .webwms-page {
     color: var(--webwms-body-color);
 }
@@ -40,7 +44,10 @@ div.dt-buttons {
 
     button.dt-button.btn-add-new {
         float: right;
-        padding: 0 10px;
+    }
+
+    button.dt-button {
+        padding: 2px 5px;
     }
 }
 
@@ -58,6 +65,7 @@ table.table-bordered.dataTable {
 
 table.table-bordered.dataTable th, table.table-bordered.dataTable td {
     border-bottom-width: 1px;
+    padding: 10px 0 0 0 !important;
     border-color: var(--webwms-border-color);
 }
 
@@ -74,55 +82,6 @@ table.dataTable.table-striped > tbody > tr.odd.selected > * {
 /* ########################################################################################## */
 /* ##########                              Beginn form                             ########## */
 /* ########################################################################################## */
-
-.form-switch {
-    padding: 0;
-}
-
-.form-switch > .form-check-input {
-    margin-top: .75em;
-    margin-right: .75em;
-    margin-left: .75em;
-    background-color: transparent;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%239d9fa2'/%3e%3c/svg%3e");
-    border: 1px solid rgb(255 255 255 / 55%);
-}
-
-.form-switch > .form-check-label {
-    color: #c7cbcc;
-    font-size: 25px;
-}
-
-.form-switch .form-check-label .mdi {
-    font-size: 25px;
-}
-
-.form-switch .form-check-input:focus {
-    background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
-}
-
-.form-check {
-    display: contents;
-    min-height: unset;
-    padding-left: unset;
-    margin-bottom: unset;
-    text-align: -webkit-center;
-}
-
-.form-check-input:checked[type="checkbox"] {
-    background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
-}
-
-.form-check-input:focus {
-    border-color: transparent;
-    outline: 0;
-    box-shadow: none;
-}
-
-.form-check-input:checked {
-    background-color: #808080;
-    border-color: #808080;
-}
 
 .form-control.is--transparent {
     background-color: transparent !important;
@@ -525,7 +484,7 @@ textarea.form-control {
     top: 0;
     border: 0;
     transition: all 40ms linear;
-    margin: 10px 2px;
+    padding: 2px 10px;
 }
 
 .btn3d:active:focus,
@@ -615,6 +574,10 @@ textarea.form-control {
             0 3px 0 0 #31373c,
             0 1px 3px 1px rgba(0, 0, 0, 0.5);
     background-color: #212529;
+}
+
+.swal2-styled.swal2-confirm {
+    background-color: #ed7c34 !important;
 }
 
 /* ########################################################################################## */
@@ -786,8 +749,8 @@ a:hover {
 
 .sf-toolbarreset {
     background-color: #414a50;
-    background-image: -webkit-linear-gradient(top, #475158 2%, #373e44 98%);
-    background-image: linear-gradient(to bottom,#475158 2%, #373e44 98%);
+    background-image: -webkit-linear-gradient(top, #2a2f34 2%, #282828 98%);
+    background-image: linear-gradient(to bottom,#2a2f34 2%, #282828 98%);
     -webkit-box-shadow: inset 0 1px 0 #636367, inset 0 -1px 0 #353c41, 0 2px 3px rgb(0 0 0 / 8%);
     box-shadow: none !important;
     text-shadow: 0 -1px 0 rgb(0 0 0 / 8%);
@@ -796,6 +759,10 @@ a:hover {
 
 .sf-toolbarreset .hide-button {
     top: 0 !important;
+}
+
+.sf-toolbar-block:hover .sf-toolbar-icon {
+    box-shadow: none !important;
 }
 
 .padding-left-10 {
@@ -840,321 +807,14 @@ a:hover {
     text-align: center;
 }
 
+.form-control {
 
-
-.sw-card:not(.sw-card--hero) {
-    border-radius: 8px;
-    box-shadow: 0 1px 1px rgba(0,0,0,.08), 0 2px 1px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
-}
-.sw-card {
-    max-width: 960px;
-    margin: 0 auto 40px;
-    position: relative;
-    color: #52667a;
 }
 
-.sw-card .sw-card__header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px;
-    background-color: #fff;
-    padding: 24px 24px 20px;
-    border-radius: 8px 8px 0 0;
-    border-bottom: 1px solid #d1d9e0;
+input[id^="edit_user_userGroups"] {
+
 }
 
-.sw-card.has--header .sw-card__content {
-    border-top: none;
-    border-radius: 0 0 8px 8px;
-}
+label[for^=edit_user_userGroups] {
 
-.sw-card .sw-card__content {
-    display: flow-root;
-    padding: 30px;
-    background: #fff;
-    background-clip: padding-box;
-    border-radius: 8px;
-    position: relative;
-}
-
-.sw-users-permissions-detailed-permissions-grid .sw-users-permissions-detailed-permissions-grid__grid {
-    display: flex;
-    flex-direction: column;
-}
-
-.sw-users-permissions-detailed-permissions-grid .sw-users-permissions-detailed-permissions-grid__entry-header {
-    font-weight: 700;
-}
-
-.sw-users-permissions-detailed-permissions-grid .sw-users-permissions-detailed-permissions-grid__entry {
-    display: flex;
-    justify-content: flex-end;
-    border-bottom: 1px solid #d1d9e0;
-    padding-left: 20px;
-    background: #fff;
-}
-
-.sw-users-permissions-detailed-permissions-grid .sw-users-permissions-detailed-permissions-grid__entry:nth-child(2n) {
-    background: #f0f2f5;
-}
-
-.sw-users-permissions-detailed-permissions-grid .sw-users-permissions-detailed-permissions-grid__title {
-    margin-right: auto;
-    width: auto;
-    justify-content: left;
-    padding-left: 10px;
-}
-
-.sw-users-permissions-detailed-permissions-grid .sw-users-permissions-detailed-permissions-grid__title {
-    min-width: 100px;
-    min-height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-}
-
-.sw-users-permissions-detailed-permissions-grid .sw-users-permissions-detailed-permissions-grid__all, .sw-users-permissions-detailed-permissions-grid .sw-users-permissions-detailed-permissions-grid__checkbox-wrapper, .sw-users-permissions-detailed-permissions-grid .sw-users-permissions-detailed-permissions-grid__title {
-    min-width: 100px;
-    min-height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-}
-
-.sw-users-permissions-detailed-permissions-grid .sw-users-permissions-detailed-permissions-grid__checkbox-wrapper .sw-field--checkbox {
-    margin-bottom: 0;
-}
-
-.sw-field--checkbox {
-    margin-bottom: 22px
-}
-
-.sw-field--checkbox .sw-field--checkbox__content {
-    display: grid;
-    grid-template-columns: 16px 1fr;
-    align-items: center
-}
-
-.sw-field--checkbox .sw-field--checkbox__content.is--padded {
-    margin-top: 24px;
-    padding: 16px
-}
-
-.sw-field--checkbox .sw-field--checkbox__content.is--bordered {
-    margin-top: 24px;
-    border-radius: 4px;
-    border: 1px solid #d1d9e0;
-    padding: 15px
-}
-
-.sw-field--checkbox .sw-field {
-    margin-bottom: 0
-}
-
-.sw-field--checkbox .sw-field__hint,.sw-field--checkbox .sw-field__label {
-    margin-bottom: 0;
-    margin-left: 10px
-}
-
-.sw-field--checkbox .sw-field__checkbox {
-    width: 16px;
-    height: 16px;
-    position: relative
-}
-
-.sw-field--checkbox .sw-field__checkbox input[type=checkbox] {
-    opacity: 0;
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border: 0;
-    background: none;
-    -webkit-appearance: none;
-    cursor: pointer;
-    z-index: 2
-}
-
-.sw-field--checkbox .sw-field__checkbox input[type=checkbox]:disabled {
-    cursor: not-allowed
-}
-
-.sw-field--checkbox .sw-field__checkbox input[type=checkbox]:disabled~.sw-field__checkbox-state {
-    background: #f0f2f5;
-    border-color: #d1d9e0;
-    color: #c2ccd6
-}
-
-.sw-field--checkbox .sw-field__checkbox input[type=checkbox]:checked~.sw-field__checkbox-state {
-    background: #189eff;
-    border-color: #189eff
-}
-
-.sw-field--checkbox .sw-field__checkbox input[type=checkbox]:checked~.sw-field__checkbox-state .sw-icon {
-    display: inline-block
-}
-
-.sw-field--checkbox .sw-field__checkbox input[type=checkbox]:checked:disabled~.sw-field__checkbox-state {
-    background: #f0f2f5;
-    border-color: #d1d9e0;
-    color: #c2ccd6
-}
-
-.sw-field--checkbox .sw-field__checkbox input[type=checkbox]:checked:disabled~.sw-field__checkbox-state .sw-icon {
-    display: inline-block;
-    color: #c2ccd6
-}
-
-.sw-field--checkbox .sw-field__checkbox .sw-field__checkbox-state {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    text-align: center;
-    background: #fff;
-    color: #52667a;
-    border: 1px solid #d1d9e0;
-    border-radius: 4px
-}
-
-.sw-field--checkbox .sw-field__checkbox .sw-field__checkbox-state .sw-icon {
-    width: 16px;
-    height: 16px;
-    padding: 5px 4px;
-    display: none;
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    color: #fff
-}
-
-.sw-field--checkbox.has--error .sw-field__checkbox-state,.sw-field--checkbox.has--error input[type=checkbox]:disabled~.sw-field__checkbox-state {
-    border: 1px solid #de294c
-}
-
-.sw-field--checkbox.has--error input[type=checkbox]:checked~.sw-field__checkbox-state {
-    border: 1px solid #de294c;
-    background-color: #de294c
-}
-
-.sw-field--checkbox.has--error input[type=checkbox]:checked:disabled~.sw-field__checkbox-state {
-    border: 1px solid #de294c
-}
-
-.sw-field--checkbox.has--error .sw-field__label {
-    color: #de294c
-}
-
-.sw-field--checkbox.is--inherited input[type=checkbox]:checked~.sw-field__checkbox-state {
-    border-color: #d1d9e0;
-    background: #d1d9e0
-}
-
-.sw-field--checkbox.is--disabled .sw-field__hint,.sw-field--checkbox.is--disabled .sw-field__label label {
-    cursor: not-allowed
-}
-
-.sw-field--checkbox.sw-field__checkbox--ghost .sw-field__checkbox input[type=checkbox]:not(:checked)~.sw-field__checkbox-state {
-    background-color: transparent;
-    border: 1px solid #189eff
-}
-
-.sw-field--checkbox.sw-field__checkbox--ghost .sw-field__checkbox input[type=checkbox]:not(:checked)~.sw-field__checkbox-state .sw-icon {
-    display: inline-block;
-    color: #189eff
-}
-
-.sw-field--checkbox.sw-field__checkbox--ghost.is--disabled .sw-field__checkbox input[type=checkbox]:not(:checked)~.sw-field__checkbox-state {
-    border: 1px solid #d1d9e0
-}
-
-.sw-field--checkbox.sw-field__checkbox--ghost.is--disabled .sw-field__checkbox input[type=checkbox]:not(:checked)~.sw-field__checkbox-state .sw-icon {
-    color: #d1d9e0
-}
-
-
-.module-listing .module-listing-listing-grid .module-card {
-    margin: 0 auto 8px;
-}
-.module-card {
-    max-width: 90%;
-    margin: 0 auto 10px;
-    position: relative;
-    background: var(--webwms-header-bg);
-    color: var(--webwms-body-color);
-    border-radius: 8px;
-    box-shadow: 0 1px 1px rgba(0,0,0,.08), 0 2px 1px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
-}
-
-.module-card .module-card-content {
-    position: relative;
-    line-height: 22px;
-    font-size: 14px;
-}
-
-.module-card-base .module-card-content .module-card-content-wrapper {
-    display: grid;
-    grid-column-gap: 24px;
-    grid-template-columns: 56px 56px 5fr 2fr minmax(min-content,1fr) auto;
-    align-items: center;
-    padding: 16px 32px;
-    border: none;
-}
-
-.module-card .module-card-content-wrapper {
-    padding: 24px 32px;
-}
-
-.module-card-base .module-card-base-info {
-}
-
-.module-card-base .module-card-base-info-name {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.module-card-base .module-card-base-info-description {
-    font-size: 12px;
-    font-weight: normal;
-}
-
-.module-card-base .module-icon {
-    width: 20%;
-}
-
-.module-card-base .module-card-base-meta-info {
-    font-size: 12px;
-    text-align: right;
-}
-
-.module-card-base .module-card-base-main-action {
-    white-space: nowrap;
-    text-align: center;
-}
-
-.module-context-button {
-    display: inline-block;
-    position: relative;
-    color: var(--webwms-body-color);
-}
-
-.module-context-button .module-context-button-button.is--active, .module-context-button .module-context-button-button:hover {
-    border-color: #d1d9e0;
-}
-
-.module-context-button .module-context-button-button {
-    color: var(--webwms-body-color);
-    background: 0 none;
-    border: 1px solid var(--webwms-body-color);
-    border-radius: 4px;
-    cursor: pointer;
-    height: 24px;
-    line-height: 20px;
-    padding: 0 8px;
-    outline: none;
 }

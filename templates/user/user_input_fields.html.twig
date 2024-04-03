@@ -12,12 +12,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">Benutzerrolle(n)</label>
-                    <div class="col-xs-8" style="margin-bottom: 5px;">
-                        {{ form_row(userForm.role) }}
-                    </div>
-                </div>
-                <div class="form-group">
                     <label for="text" class="control-label col-xs-4">Vorname</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(userForm.firstname) }}
@@ -27,6 +21,30 @@
                     <label for="text" class="control-label col-xs-4">Nachname</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(userForm.lastname) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="text" class="control-label col-xs-4">E-Mail</label>
+                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                        {{ form_row(userForm.email) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="text" class="control-label col-xs-4">Aktiv</label>
+                    <div class="form-check form-switch" style="margin-bottom: 5px;">
+                        {{ form_row(userForm.enabled) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="text" class="control-label col-xs-4">Benutzerrolle(n)</label>
+                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                        {{ form_row(userForm.role) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="text" class="control-label col-xs-4">Benutzergruppe(n)</label>
+                    <div class="col-xs-8" style="margin-bottom: 5px;">
+                        {{ form_row(userForm.userGroups) }}
                     </div>
                 </div>
                 {% if addUser %}

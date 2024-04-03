@@ -62,31 +62,31 @@
                     text:      'Kopieren',
                     title:     'Export',
                     titleAttr: 'Copy',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend:    'csvHtml5',
                     text:      'CSV',
                     title:     'Export',
                     titleAttr: 'CSV',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend:    'pdfHtml5',
                     text:      'PDF',
                     title:     'Export',
                     titleAttr: 'PDF',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend: 'print',
                     text: 'Drucken',
                     autoPrint: false,
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     text: 'Artikel anlegen',
-                    className: 'btn-primary btn-xs btn3d float-start',
+                    className: 'btn-primary btn-xm btn3d float-start',
                     action: function(e, dt, node, config) {
                         addArticle();
                     }
