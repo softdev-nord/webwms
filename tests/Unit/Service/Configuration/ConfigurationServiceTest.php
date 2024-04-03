@@ -183,11 +183,11 @@ final class ConfigurationServiceTest extends TestCase
     public function testItGetsPhpGeneralInformation(): void
     {
         // Define expected values based on your current PHP environment
-        $expectedVersion = '8.3.2';
-        $expectedVersionId = 80302;
+        $expectedVersion = '8.3.4';
+        $expectedVersionId = 80304;
         $expectedMajorVersion = 8;
         $expectedMinorVersion = 3;
-        $expectedReleaseVersion = 2;
+        $expectedReleaseVersion = 4;
         $expectedServerApi = 'cli';
         $expectedBinaryDir = '/usr/local/bin';
 
@@ -212,7 +212,7 @@ final class ConfigurationServiceTest extends TestCase
         // Assert the results
         self::assertEquals('Enterprise Version', $result['webWms_version']);
         self::assertEquals('2.0.0', $result['webWms_version_number']);
-        self::assertEquals('7.0.3', $result['webWms_symfony_version']);
+        self::assertEquals('7.0.5', $result['webWms_symfony_version']);
     }
 
     public function testItGetsPhpImportantSettings(): void
@@ -232,8 +232,8 @@ final class ConfigurationServiceTest extends TestCase
             [
                 ['setting' => 'max_execution_time', 'raw_value' => '30', 'int_value' => 30],
                 ['setting' => 'max_input_time', 'raw_value' => '-1', 'int_value' => -1],
-                ['setting' => 'post_max_size', 'raw_value' => '8M', 'int_value' => 8 * 1024 * 1024],
-                ['setting' => 'upload_max_filesize', 'raw_value' => '2M', 'int_value' => 2 * 1024 * 1024],
+                ['setting' => 'post_max_size', 'raw_value' => '128M', 'int_value' => 128 * 1024 * 1024],
+                ['setting' => 'upload_max_filesize', 'raw_value' => '128M', 'int_value' => 128 * 1024 * 1024],
                 ['setting' => 'memory_limit', 'raw_value' => '128M', 'int_value' => 128 * 1024 * 1024],
             ],
             $result

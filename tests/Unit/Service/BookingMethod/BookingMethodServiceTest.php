@@ -99,12 +99,12 @@ final class BookingMethodServiceTest extends TestCase
             ->expects(self::once())
             ->method('getData')
             ->willReturn([
-            'quantity' => 10,
-            'leQuantity' => 2,
-            'standardLoadingEquipment' => 'KARTON',
-            'charge' => 'ABC123',
-            'articleNr' => '12345',
-        ]);
+                'quantity' => 10,
+                'leQuantity' => 2,
+                'standardLoadingEquipment' => 'KARTON',
+                'charge' => 'ABC123',
+                'articleNr' => '12345',
+            ]);
 
         $this->formFactory
             ->expects(self::exactly(2))

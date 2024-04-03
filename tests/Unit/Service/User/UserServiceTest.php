@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\User;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\UserEntity;
 use WebWMS\Service\DataHandlers\User\UserDataHandler;
 use WebWMS\Service\User\UserService;
@@ -27,7 +25,6 @@ final class UserServiceTest extends TestCase
 
     private MockObject $mockObject;
 
-    #[Override]
     protected function setUp(): void
     {
         $this->mockObject = $this->createMock(UserDataHandler::class);
@@ -83,14 +80,14 @@ final class UserServiceTest extends TestCase
 
     public function testAddUser(): void
     {
-        $request = new Request();
+        $userEntity = new UserEntity();
 
         $this->mockObject
             ->expects(self::once())
             ->method('addUser')
-            ->with($request);
+            ->with($userEntity);
 
-        $this->userService->addUser($request);
+        $this->userService->addUser($userEntity);
     }
 
     public function testGetLastUser(): void
@@ -109,18 +106,14 @@ final class UserServiceTest extends TestCase
 
     public function testUpdateUser(): void
     {
-        $request = new Request();
         $userEntity = new UserEntity();
 
         $this->mockObject
             ->expects(self::once())
             ->method('updateUser')
-            ->with($request)
-            ->willReturn($userEntity);
+            ->with($userEntity);
 
-        $result = $this->userService->updateUser($request);
-
-        self::assertEquals($userEntity, $result);
+        $this->userService->updateUser($userEntity);
     }
 
     public function testUpgradePassword(): void
