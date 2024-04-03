@@ -124,7 +124,7 @@ class EditUserType extends AbstractType
             ])
             ->add('userGroups', EntityType::class, [
                 'class' => UserGroupEntity::class,
-                'query_builder' => static fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('uge')
+                'query_builder' => static fn (EntityRepository $er): QueryBuilder => $er->createQueryBuilder('uge')
                     ->orderBy('uge.description', 'ASC'),
                 'choice_label' => 'description',
                 'mapped' => false,
