@@ -232,8 +232,8 @@ final class ConfigurationServiceTest extends TestCase
             [
                 ['setting' => 'max_execution_time', 'raw_value' => '30', 'int_value' => 30],
                 ['setting' => 'max_input_time', 'raw_value' => '-1', 'int_value' => -1],
-                ['setting' => 'post_max_size', 'raw_value' => '128M', 'int_value' => 128 * 1024 * 1024],
-                ['setting' => 'upload_max_filesize', 'raw_value' => '128M', 'int_value' => 128 * 1024 * 1024],
+                ['setting' => 'post_max_size', 'raw_value' => '8M', 'int_value' => 8 * 1024 * 1024],
+                ['setting' => 'upload_max_filesize', 'raw_value' => '2M', 'int_value' => 2 * 1024 * 1024],
                 ['setting' => 'memory_limit', 'raw_value' => '128M', 'int_value' => 128 * 1024 * 1024],
             ],
             $result
