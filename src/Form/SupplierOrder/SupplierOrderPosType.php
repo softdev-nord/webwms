@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\SupplierOrder;
 
-use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,10 +22,9 @@ class SupplierOrderPosType extends AbstractType
     /**
      * @SuppressWarnings("unused")
      */
-    #[Override]
-    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formBuilder
+        $builder
             ->add('id', HiddenType::class, [
                 'label' => false,
                 'attr' => [
@@ -74,10 +72,9 @@ class SupplierOrderPosType extends AbstractType
         ;
     }
 
-    #[Override]
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver->setDefaults([
+        $resolver->setDefaults([
             'data_class' => SupplierOrderPosEntity::class,
         ]);
     }

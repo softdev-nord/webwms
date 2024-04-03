@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LanguageController extends AbstractController
 {
-    #[Route(path: '/lang/{_locale}', requirements: ['_locale' => 'en|es|de|it|ru'])]
+    #[Route(path: '/lang/{_locale}', requirements: ['_locale' => 'en|es|de|it'])]
     public function index(Request $request): RedirectResponse
     {
         $referer = '';

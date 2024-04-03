@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\User;
 
-use Override;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -16,22 +19,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\UserGroupEntity;
 
 /**
  * @package:    WebWMS\Form
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        AddUserType
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class AddUserType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
      */
-    #[Override]
-    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formBuilder
+        $builder
             ->add('username', TextType::class, [
                 'empty_data' => '',
                 'label' => false,
@@ -51,6 +56,19 @@ class AddUserType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
+                ],
+            ])
+            ->add('email', TextType::class, [
+                'empty_data' => '',
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+            ])
+            ->add('enabled', CheckboxType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-check-input',
                 ],
             ])
             ->add('role', ChoiceType::class, [
@@ -75,6 +93,19 @@ class AddUserType extends AbstractType
                     'Mitarbeiter Warenausgang' => 'ROLE_EMPLOYE_STOCK_OUT',
                     'Mitarbeiter Kommissionierung' => 'ROLE_EMPLOYE_ORDER_PICKING',
                     'Mitarbeiter Versand' => 'ROLE_EMPLOYE_SHIPPING',
+                ],
+            ])
+            ->add('userGroups', EntityType::class, [
+                'class' => UserGroupEntity::class,
+                'query_builder' => static fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('uge')
+                    ->orderBy('uge.description', 'ASC'),
+                'choice_label' => 'description',
+                'mapped' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control',
                 ],
             ])
             ->add('password', RepeatedType::class, [
@@ -117,10 +148,9 @@ class AddUserType extends AbstractType
         ;
     }
 
-    #[Override]
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver->setDefaults([
+        $resolver->setDefaults([
             'data_class' => UserEntity::class,
         ]);
     }

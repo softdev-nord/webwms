@@ -120,7 +120,7 @@ class StockLocationService
      * @param  array<string> $stockLocation
      * @return array<int, array<string, int|string>>
      */
-    public function getRemainder(array $stockLocation, int|null $remainder): array
+    public function getRemainder(array $stockLocation, ?int $remainder): array
     {
         $freeStockLocations = [];
 

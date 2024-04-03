@@ -6,7 +6,6 @@ namespace WebWMS\Form\TransportRequest;
 
 use DateTime;
 use DateTimeZone;
-use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,10 +24,9 @@ class AddTransportRequestType extends AbstractType
      * @SuppressWarnings("unused")
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    #[Override]
-    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formBuilder
+        $builder
             ->add('id', HiddenType::class, [
                 'label' => false,
                 'attr' => [
@@ -259,10 +257,9 @@ class AddTransportRequestType extends AbstractType
         ;
     }
 
-    #[Override]
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver->setDefaults([
+        $resolver->setDefaults([
             'data_class' => TransportRequestEntity::class,
         ]);
     }

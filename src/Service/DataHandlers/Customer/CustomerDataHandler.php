@@ -65,7 +65,7 @@ class CustomerDataHandler
     /**
      * Get all Customers for Ajax-Request.
      */
-    public function getCustomers(string|null $customerNrInput): JsonResponse
+    public function getCustomers(?string $customerNrInput): JsonResponse
     {
         $data = [];
         if ($customerNrInput !== null) {

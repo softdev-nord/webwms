@@ -97,7 +97,7 @@ class SupplierOrderPosEntity
     #[Groups(['supplierOrderPos:read', 'supplierOrderPos:write'])]
     private ?DateTimeInterface $updatedAt = null;
 
-    /** Many SupplierEntity Order Positions have one SupplierEntity Order. This is the owning side. */
+    /** Many Supplier Order Positions have one Supplier Order. This is the owning side. */
     #[ORM\ManyToOne(targetEntity: SupplierOrderEntity::class, inversedBy: 'supplierOrderPos')]
     private SupplierOrderEntity $supplierOrder;
 

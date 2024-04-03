@@ -33,9 +33,9 @@ class LastLoginSubscriber implements EventSubscriberInterface
     {
         // return the subscribed events, their methods and priorities
         return [
-           KernelEvents::FINISH_REQUEST => [
-               ['updateLastLogin', -10],
-           ],
+            KernelEvents::FINISH_REQUEST => [
+                ['updateLastLogin', -10],
+            ],
         ];
     }
 

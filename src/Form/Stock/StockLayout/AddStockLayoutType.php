@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\Stock\StockLayout;
 
-use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,10 +22,9 @@ class AddStockLayoutType extends AbstractType
     /**
      * @SuppressWarnings("unused")
      */
-    #[Override]
-    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formBuilder
+        $builder
             ->add('stockNr', TextType::class, [
                 'label' => false,
                 'attr' => [
@@ -105,10 +103,9 @@ class AddStockLayoutType extends AbstractType
         ;
     }
 
-    #[Override]
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver->setDefaults([
+        $resolver->setDefaults([
             'data_class' => StockLayoutEntity::class,
         ]);
     }

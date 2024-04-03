@@ -22,9 +22,9 @@ class GeneralConfigurationType extends AbstractType
      * @SuppressWarnings("unused")
      */
     #[Override]
-    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formBuilder
+        $builder
             ->add('name')
             ->add('value')
             ->add('label')
@@ -34,9 +34,9 @@ class GeneralConfigurationType extends AbstractType
     }
 
     #[Override]
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver->setDefaults([
+        $resolver->setDefaults([
             'data_class' => ConfigurationEntity::class,
         ]);
     }

@@ -15,7 +15,6 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Override;
 use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
@@ -100,9 +99,7 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
     #[Groups(['user:read', 'user:write'])]
     private ?string $username = null;
 
-    /**
-     * @var string[]
-     */
+    /** @var array<string> */
     #[ORM\Column(name: 'roles', type: Types::JSON)]
     #[Groups(['user:read', 'user:write'])]
     private array $roles = [];
@@ -135,14 +132,11 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
 
     private ?string $plainPassword = '';
 
-    /**
-     * @var array<mixed>
-     */
+    /** @var array<array<string>> */
     #[ORM\Column(name: 'user_groups', type: Types::JSON)]
     #[Groups(['user:read', 'user:write'])]
     private array $userGroups = [];
 
-    #[Override]
     public function __toString(): string
     {
         return $this->getUsername();
@@ -158,13 +152,11 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         $this->id = $id;
     }
 
-    #[Override]
     public function getUsername(): string
     {
         return $this->username ?? '';
     }
 
-    #[Override]
     public function setUsername(string $username): void
     {
         $this->username = $username;
@@ -173,7 +165,6 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
     /**
      * @see UserInterface
      */
-    #[Override]
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
@@ -200,13 +191,11 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         $this->lastname = $lastname;
     }
 
-    #[Override]
     public function getEmail(): string
     {
         return $this->email ?? '';
     }
 
-    #[Override]
     public function setEmail(string $email): void
     {
         $this->email = $email;
@@ -217,19 +206,16 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         return $this->lastLogin;
     }
 
-    #[Override]
     public function setLastLogin(?DateTime $time = null): void
     {
         $this->lastLogin = $time;
     }
 
-    #[Override]
     public function isEnabled(): bool
     {
         return $this->enabled;
     }
 
-    #[Override]
     public function setEnabled(bool $boolean): void
     {
         $this->enabled = $boolean;
@@ -265,28 +251,22 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
      *
      * @see UserInterface
      */
-    #[Override]
     public function getUserIdentifier(): string
     {
         return $this->username ?? '';
     }
 
-    #[Override]
     public function getPassword(): string
     {
         return $this->password ?? '';
     }
 
-    #[Override]
     public function setPassword(string $password): void
     {
         $this->password = $password;
     }
 
-    /**
-     * @return array<string>
-     */
-    #[Override]
+    /** @return array<string> */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -297,7 +277,6 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         return array_values(array_unique($roles));
     }
 
-    #[Override]
     public function setRoles(array $roles): void
     {
         $this->roles = [];
@@ -307,39 +286,34 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         }
     }
 
-    #[Override]
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    #[Override]
     public function setPlainPassword(?string $plainPassword): void
     {
         $this->plainPassword = $plainPassword;
     }
 
-    #[Override]
-    public function isEqualTo(BaseUserInterface $baseUser): bool
+    public function isEqualTo(BaseUserInterface $user): bool
     {
-        if (!$baseUser instanceof self) {
+        if (!$user instanceof self) {
             return false;
         }
 
-        if ($this->password !== $baseUser->getPassword()) {
+        if ($this->password !== $user->getPassword()) {
             return false;
         }
 
-        return $this->username === $baseUser->getUsername();
+        return $this->username === $user->getUsername();
     }
 
-    #[Override]
     public function isSuperAdmin(): bool
     {
         return $this->hasRole(static::ROLE_SUPER_ADMIN);
     }
 
-    #[Override]
     public function setSuperAdmin(bool $boolean): void
     {
         ($boolean)
@@ -352,7 +326,6 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         return \in_array(strtoupper($role), $this->getRoles(), true);
     }
 
-    #[Override]
     public function addRole(string $role): void
     {
         $role = strtoupper($role);
@@ -362,7 +335,6 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         }
     }
 
-    #[Override]
     public function removeRole(string $role): void
     {
         if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
@@ -371,38 +343,29 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         }
     }
 
-    #[Override]
     public function isAccountNonLocked(): bool
     {
         return true;
     }
 
-    /**
-     * @return array<string>
-     */
+    /** @return array<array<string>> */
     public function getUserGroups(): array
     {
         return $this->userGroups;
     }
 
-    /**
-     * @param array<array<string>> $userGroups
-     */
+    /** @param array<array<string>> $userGroups */
     public function setUserGroups(array $userGroups): void
     {
         $this->userGroups = $userGroups;
     }
 
-    /**
-     * @return array<array<string>>
-     */
-    #[Override]
+    /** @return array<array<string>> */
     public function getGroups(): array
     {
         return $this->userGroups;
     }
 
-    #[Override]
     public function getGroupNames(): array
     {
         $names = [];
@@ -413,7 +376,6 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         return $names;
     }
 
-    #[Override]
     public function hasGroup(string $name): bool
     {
         return \in_array($name, $this->getGroupNames(), true);

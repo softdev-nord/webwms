@@ -6,7 +6,6 @@ namespace WebWMS\Service\User;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\UserEntity;
 use WebWMS\Service\DataHandlers\User\UserDataHandler;
 
@@ -41,9 +40,9 @@ class UserService
         return $this->userDataHandler->getAllUsers();
     }
 
-    public function addUser(Request $request): void
+    public function addUser(UserEntity $userEntity): void
     {
-        $this->userDataHandler->addUser($request);
+        $this->userDataHandler->addUser($userEntity);
     }
 
     /**
@@ -54,9 +53,9 @@ class UserService
         return $this->userDataHandler->getLastUser();
     }
 
-    public function updateUser(Request $request): ?UserEntity
+    public function updateUser(UserEntity $userEntity): void
     {
-        return $this->userDataHandler->updateUser($request);
+        $this->userDataHandler->updateUser($userEntity);
     }
 
     public function upgradePassword(UserEntity $userEntity, string $newHashedPassword): void

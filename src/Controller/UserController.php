@@ -82,7 +82,7 @@ class UserController extends AbstractController
             $logMessage = 'Der Benutzer ' . $userRequestData->getUsername() . ' wurde angelegt.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->userService->addUser($request);
+            $this->userService->addUser($userRequestData);
 
             return new JsonResponse($userRequestData);
         }
@@ -120,18 +120,20 @@ class UserController extends AbstractController
             /** @var UserEntity $userRequestData */
             $userRequestData = $form->getData();
             $username = $user->getUserIdentifier();
-            $responseData = $this->userValidationService->validateUserData($userRequestData);
+            $responseData = $this->userValidationService
+                ->validateUserData(
+                    (array) $request->request->all()['edit_user']
+                );
 
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Benutzer ' . $username . ' wurde erfolgreich geändert.';
                 $logMessage = 'Der Benutzer ' . $username . ' wurde geändert.';
+
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-                $this->userService->updateUser($request);
+                $this->userService->updateUser($userRequestData);
 
                 return new JsonResponse($responseData);
             }
-
-            $responseData['message'] = 'Der Benutzer konnte nicht gespeichert werden.';
 
             return new JsonResponse($responseData);
         }
@@ -175,6 +177,7 @@ class UserController extends AbstractController
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Das Passwort für den Benutzer ' . $username . ' wurde erfolgreich geändert.';
                 $logMessage = 'Das Passwort für den Benutzer ' . $username . ' wurde geändert.';
+
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $newHashedPassword = $this->userPasswordHasher->hashPassword(
                     $user,
@@ -247,11 +250,32 @@ class UserController extends AbstractController
         return $this->userService->getAllUsers();
     }
 
-    /**
-     * @return array<object>
-     */
+    /** @return array<object> */
     public function getLastUser(): array
     {
         return $this->userService->getLastUser();
     }
+
+    //    private function getErrorsFromForm(FormInterface $form, bool $child = false): array
+    //    {
+    //        $errors = [];
+    //
+    //        foreach ($form->getErrors() as $error) {
+    //            if ($child) {
+    //                $errors[] = $error->getMessage();
+    //            } else {
+    //                $errors[$error->getOrigin()?->getName()][] = $error->getMessage();
+    //            }
+    //        }
+    //
+    //        foreach ($form->all() as $childForm) {
+    //            if ($childForm instanceof FormInterface) {
+    //                if ($childErrors = $this->getErrorsFromForm($childForm, true)) {
+    //                    $errors[$childForm->getName()] = $childErrors;
+    //                }
+    //            }
+    //        }
+    //
+    //        return $errors;
+    //    }
 }

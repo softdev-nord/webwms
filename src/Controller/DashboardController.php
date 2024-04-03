@@ -57,7 +57,7 @@ class DashboardController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'DashboardController',
+                'page' => 'Dashboard',
                 'incomingGoods' => $this->getAllIncomingGoods(),
                 'outgoingGoods' => $this->getAllOutgoingGoods(),
                 'allTransportRequestsForChart' => $this->getAllTransportRequestsForChart(),

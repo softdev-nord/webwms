@@ -109,7 +109,7 @@ class SupplierOrderEntity
     #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private ?DateTimeInterface $updatedAt = null;
 
-    /** One SupplierEntity Order has many SupplierEntity Order Positions. This is the inverse side.
+    /** One Supplier Order has many Supplier Order Positions. This is the inverse side.
      * @var Collection<int, SupplierOrderPosEntity> */
     #[ORM\OneToMany(
         mappedBy: 'supplierOrder',
@@ -121,7 +121,7 @@ class SupplierOrderEntity
     #[Groups(['supplierOrder:read'])]
     private Collection $supplierOrderPos;
 
-    /** Many SupplierEntity Orders has one SupplierEntity. This is the owning side. */
+    /** Many Supplier Orders has one Supplier. This is the owning side. */
     #[ORM\ManyToOne(targetEntity: SupplierEntity::class, inversedBy: 'supplierOrder')]
     #[ORM\JoinColumn(name: 'supplier_id', referencedColumnName: 'supplier_id')]
     #[Groups(['supplierOrder:read'])]

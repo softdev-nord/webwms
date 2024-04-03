@@ -7,7 +7,6 @@ namespace WebWMS\Entity;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Override;
 use Stringable;
 use WebWMS\Repository\UserGroupRepository;
 
@@ -26,11 +25,9 @@ class UserGroupEntity implements GroupInterface, Stringable
     #[ORM\Column(name: 'description', type: Types::STRING, length: 150)]
     private ?string $description = null;
 
-    /**
-     * @var string[]
-     */
+    /** @var array<string> */
     #[ORM\Column(name: 'roles', type: Types::JSON)]
-    private array $roles;
+    private array $roles = [];
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $createdAt = null;
@@ -38,7 +35,6 @@ class UserGroupEntity implements GroupInterface, Stringable
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $updatedAt = null;
 
-    #[Override]
     public function __toString(): string
     {
         return $this->getGroup();
@@ -54,13 +50,11 @@ class UserGroupEntity implements GroupInterface, Stringable
         $this->id = $id;
     }
 
-    #[Override]
     public function getGroup(): string
     {
         return $this->group;
     }
 
-    #[Override]
     public function setGroup(string $group): void
     {
         $this->group = $group;
@@ -78,25 +72,23 @@ class UserGroupEntity implements GroupInterface, Stringable
         return $this;
     }
 
-    #[Override]
+    /** @return array<string> */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
-    #[Override]
+    /** @param array<string> $roles */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
 
-    #[Override]
     public function hasRole(string $role): bool
     {
         return in_array(strtoupper($role), $this->roles, true);
     }
 
-    #[Override]
     public function addRole(string $role): void
     {
         if (!$this->hasRole($role)) {
@@ -104,7 +96,6 @@ class UserGroupEntity implements GroupInterface, Stringable
         }
     }
 
-    #[Override]
     public function removeRole(string $role): void
     {
         if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {

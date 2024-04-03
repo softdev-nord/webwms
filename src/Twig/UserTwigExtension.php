@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Twig;
 
-use Override;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -25,7 +24,6 @@ class UserTwigExtension extends AbstractExtension
     ) {
     }
 
-    #[Override]
     public function getFunctions(): array
     {
         return [
@@ -35,7 +33,6 @@ class UserTwigExtension extends AbstractExtension
         ];
     }
 
-    #[Override]
     public function getFilters(): array
     {
         return [

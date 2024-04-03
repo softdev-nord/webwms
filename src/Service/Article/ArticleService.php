@@ -36,7 +36,7 @@ class ArticleService
         return $this->articleDataHandler->getAllArticlesWithJoin();
     }
 
-    public function getArticle(string|null $articleNrInput): JsonResponse
+    public function getArticle(?string $articleNrInput): JsonResponse
     {
         return $this->articleDataHandler->getArticle($articleNrInput);
     }
