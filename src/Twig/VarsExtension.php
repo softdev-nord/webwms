@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Twig;
 
-use Override;
+use JsonException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -16,7 +16,6 @@ use Twig\TwigFilter;
  */
 class VarsExtension extends AbstractExtension
 {
-    #[Override]
     public function getFilters(): array
     {
         return [
@@ -24,9 +23,12 @@ class VarsExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @throws JsonException
+     */
     public function jsonDecode(string $str): mixed
     {
-        return json_decode($str);
+        return json_decode($str, false, 512, JSON_THROW_ON_ERROR);
     }
 
     /**

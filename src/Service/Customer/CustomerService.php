@@ -36,7 +36,7 @@ class CustomerService
         return new JsonResponse($this->customerDataHandler->getAllCustomers());
     }
 
-    public function getAllCustomersAjax(string|null $customerNrInput): JsonResponse
+    public function getAllCustomersAjax(?string $customerNrInput): JsonResponse
     {
         return $this->customerDataHandler->getCustomers($customerNrInput);
     }

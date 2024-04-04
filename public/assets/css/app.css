@@ -82,6 +82,7 @@
     --webwms-input-group-addon-bg: #eff2f7;
     --webwms-input-check-border: var(--webwms-input-border);
     --webwms-modal-bg-custom: #e9ebec;
+    --webwms-box-shadow-color-primary: rgb(176 176 176 / 0%);
 }
 :root .nav-tabs {
     --webwms-nav-tabs-link-active-bg: transparent;
@@ -89,14 +90,14 @@
 }
 :root .choices, :root .flatpickr-calendar, :root .ck, :root .ql-toolbar, :root .select2-container, :root .menu-dropdown {
     --webwms-choices-bg: #fff;
-    --webwms-choices-link-color: #212529;
+    --webwms-choices-link-color: #282828;
     --webwms-choices-link-hover-bg: #f3f6f9;
     --webwms-choices-link-active-color: #1e2125;
 }
 
 [data-layout-mode=dark] {
     --webwms-gray-100: #1a1d21;
-    --webwms-gray-200: #212529;
+    --webwms-gray-200: #282828;
     --webwms-gray-300: #2a2f34;
     --webwms-gray-400: #878a99;
     --webwms-gray-500: #adb5bd;
@@ -104,7 +105,7 @@
     --webwms-gray-700: #ced4da;
     --webwms-gray-800: #eff2f7;
     --webwms-gray-900: #f3f6f9;
-    --webwms-body-bg: #1a1d21;
+    --webwms-body-bg: #282828;
     --webwms-body-bg-rgb: 26, 29, 33;
     --webwms-body-color: #ced4da;
     --webwms-body-color-rgb: 206, 212, 218;
@@ -124,14 +125,14 @@
     --webwms-vertical-menu-sub-item-hover-color-dark: #fff;
     --webwms-vertical-menu-sub-item-active-color-dark: #fff;
     --webwms-vertical-menu-title-color-dark: #aeafaf;
-    --webwms-header-bg: #292e32;
+    --webwms-header-bg: #232323;
     --webwms-header-item-color: #e9ecef;
     --webwms-header-bg-dark: #2a2f34;
     --webwms-header-item-color-dark: #b0c4d9;
     --webwms-topbar-search-bg: #1a1d21;
     --webwms-topbar-user-bg: #31373c;
     --webwms-topbar-user-bg-dark: #31373c;
-    --webwms-footer-bg: #212529;
+    --webwms-footer-bg: #282828;
     --webwms-footer-color: #878a99;
     --webwms-topnav-bg: #272b30;
     --webwms-topnav-item-color: #878a99;
@@ -152,16 +153,17 @@
     --webwms-link-color: #ced4da;
     --webwms-link-hover-color: #ced4da;
     --webwms-border-color: #32383e;
-    --webwms-card-bg-custom: #212529;
+    --webwms-card-bg-custom: #232323;
     --webwms-card-logo-dark: none;
     --webwms-card-logo-light: block;
     --webwms-list-group-hover-bg: #272b30;
-    --webwms-input-bg: #262a2f;
+    --webwms-input-bg: #282828;
     --webwms-input-border: #2a2f34;
     --webwms-input-focus-border: #33393f;
-    --webwms-input-disabled-bg: #212529;
+    --webwms-input-disabled-bg: #282828;
     --webwms-input-group-addon-bg: #2a2f34;
     --webwms-input-check-border: #33393f;
+    --webwms-box-shadow-color-primary: rgb(0 0 0 / 0%);
 }
 [data-layout-mode=dark] .dropdown-menu {
     --webwms-dropdown-bg: #292e33;
@@ -209,11 +211,11 @@
     --webwms-btn-hover-border-color: rgba(var(--webwms-dark-rgb), 0.75);
 }
 [data-layout-mode=dark] .card {
-    --webwms-card-bg: #212529;
-    --webwms-card-cap-bg: #212529;
+    --webwms-card-bg: #232323;
+    --webwms-card-cap-bg: #232323;
 }
 [data-layout-mode=dark] .modal {
-    --webwms-modal-bg-custom: #212529;
+    --webwms-modal-bg-custom: #232323;
 }
 [data-layout-mode=dark] .nav-tabs {
     --webwms-nav-tabs-link-active-color: #f3f6f9;
@@ -221,11 +223,11 @@
 }
 [data-layout-mode=dark] .accordion {
     --webwms-accordion-button-active-color: #fff;
-    --webwms-accordion-bg: #212529;
-    --webwms-accordion-btn-bg: #212529;
+    --webwms-accordion-bg: #282828;
+    --webwms-accordion-btn-bg: #282828;
 }
 [data-layout-mode=dark] :is(.offcanvas, .offcanvas-lg, .offcanvas-md, .offcanvas-sm, .offcanvas-xl, .offcanvas-xxl) {
-    --webwms-offcanvas-bg: #212529;
+    --webwms-offcanvas-bg: #282828;
 }
 [data-layout-mode=dark] .progress {
     --webwms-progress-bg: #2a2f34;
@@ -314,6 +316,7 @@
     margin: 0 auto;
     height: 50px;
     padding: 0 1.5rem 0 calc(1.5rem / 2);
+    box-shadow: 0 0 6px var(--webwms-box-shadow-color-primary),0 1px 2px var(--webwms-box-shadow-color-primary);
 }
 @media (max-width: 768px) {
     .navbar-header {
@@ -5841,7 +5844,7 @@ a {
 }
 
 .card-drop {
-    color: #212529;
+    color: #282828;
 }
 
 .card-title {
@@ -14905,7 +14908,7 @@ span.flatpickr-weekday {
 .chat-conversation .right .conversation-list .ctext-wrap .ctext-wrap-content .replymessage-block {
     background-color: rgba(255, 255, 255, 0.5);
     border-color: rgba(var(--webwms-success-rgb), 1);
-    color: #212529;
+    color: #282828;
 }
 .chat-conversation .right .conversation-list .ctext-wrap .ctext-wrap-content .replymessage-block .conversation-name {
     color: rgba(var(--webwms-success-rgb), 1);

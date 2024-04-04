@@ -23,6 +23,7 @@ use WebWMS\Repository\ArticleRepository;
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        ArticleEntity
  */
+#[ORM\Table('article')]
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ApiResource(
     operations: [

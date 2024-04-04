@@ -77,7 +77,7 @@ class ArticleDataHandler
         return new JsonResponse($data);
     }
 
-    public function getArticle(string|null $articleNrInput): JsonResponse
+    public function getArticle(?string $articleNrInput): JsonResponse
     {
         $data = [];
         if ($articleNrInput !== null) {

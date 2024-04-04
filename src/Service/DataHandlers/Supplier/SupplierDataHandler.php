@@ -52,7 +52,7 @@ class SupplierDataHandler
     /**
      * Get all Customers for Ajax-Request.
      */
-    public function getSuppliers(string|null $supplierNrInput): JsonResponse
+    public function getSuppliers(?string $supplierNrInput): JsonResponse
     {
         $data = [];
         if ($supplierNrInput !== null) {

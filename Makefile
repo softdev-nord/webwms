@@ -1,4 +1,4 @@
-APP_CONTAINER_NAME = "webwms-php8.1"
+APP_CONTAINER_NAME = "webwms-php8.3"
 DB_CONTAINER_NAME = "webwms-MariaDB10.5"
 
 help: ## Display this help
@@ -12,7 +12,7 @@ build: ## Build container image
 	@docker-compose build
 
 up: ## Starts the full docker-compose stack
-	@docker-compose up -d
+	@docker-compose up -d --build
 
 stop: ## Stops the full docker-compose stack, but keeps containers
 	@docker-compose stop

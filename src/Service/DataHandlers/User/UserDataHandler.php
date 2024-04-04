@@ -8,11 +8,9 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use WebWMS\Entity\UserEntity;
-use WebWMS\Entity\UserRoleEntity;
 use WebWMS\Service\DateTimeService;
 
 /**
@@ -73,45 +71,18 @@ class UserDataHandler implements PasswordUpgraderInterface
             ->findOneBy(['username' => $username]);
     }
 
-    public function addUser(Request $request): ?UserEntity
+    public function addUser(UserEntity $userEntity): void
     {
-        $addUser = $request->request->getIterator()->getArrayCopy();
-        $userEntity = new UserEntity();
-
-        $userEntity->setUsername($addUser['username']);
-        $userEntity->setFirstname($addUser['firstname']);
-        $userEntity->setLastname($addUser['firstname']);
-        $userEntity->setPassword($addUser['password']);
         $userEntity->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userEntity);
-
-        return $userEntity;
     }
 
-    public function updateUser(Request $request): ?UserEntity
+    public function updateUser(UserEntity $userEntity): void
     {
-        $requestData = $request->request->all()['edit_user'];
-        $user = $this->entityManager
-            ->getRepository(UserEntity::class)
-            ->findOneBy(['username' => $requestData['username']]);
+        $userEntity->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        if ($user === null) {
-            return null;
-        }
-
-        /** @var UserRoleEntity $roles */
-        $roles = $requestData['roles'];
-
-        $user->setUsername((string) $requestData['username']);
-        $user->addRole($roles->getUserRole());
-        $user->setFirstname((string) $requestData['firstname']);
-        $user->setLastname((string) $requestData['lastname']);
-        $user->setUpdatedAt($this->dateTimeService->createDateTime());
-
-        $this->save($user);
-
-        return $user;
+        $this->save($userEntity);
     }
 
     public function deleteUser(string $username): void

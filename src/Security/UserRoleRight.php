@@ -212,7 +212,7 @@ class UserRoleRight
 
     /**
      * Get the user groups from current user
-     * @return array<string>
+     * @return array<array<string>>
      */
     protected function getUserGroup(): array
     {

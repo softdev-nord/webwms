@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Twig;
 
-use Override;
 use Symfony\Component\VarDumper\VarDumper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -17,7 +16,6 @@ use Twig\TwigFunction;
  */
 class DebugExtension extends AbstractExtension
 {
-    #[Override]
     public function getFunctions(): array
     {
         return [

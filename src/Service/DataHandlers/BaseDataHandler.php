@@ -18,7 +18,7 @@ class BaseDataHandler
     /**
      * @param class-string $className
      */
-    protected function find(string $className, mixed $id): object|null
+    protected function find(string $className, mixed $id): ?object
     {
         return $this->entityManager->getRepository($className)->find($id);
     }
@@ -38,7 +38,7 @@ class BaseDataHandler
      * @param array<string, mixed> $criteria
      * @param array<string, string>|null $orderBy
      */
-    protected function findOneBy(array $criteria, ?array $orderBy = null): object|null
+    protected function findOneBy(array $criteria, ?array $orderBy = null): ?object
     {
         return $this;
     }

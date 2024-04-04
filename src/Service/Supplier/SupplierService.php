@@ -36,7 +36,7 @@ class SupplierService
         return new JsonResponse($this->supplierDataHandler->getAllSuppliers());
     }
 
-    public function getAllSuppliersAjax(string|null $supplierNrInput): JsonResponse
+    public function getAllSuppliersAjax(?string $supplierNrInput): JsonResponse
     {
         return $this->supplierDataHandler->getSuppliers($supplierNrInput);
     }

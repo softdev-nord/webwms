@@ -411,7 +411,7 @@ class TransportRequestEntity
         return $this->docId;
     }
 
-    public function setDocId(int|null $docId): self
+    public function setDocId(?int $docId): self
     {
         $this->docId = $docId;
 
@@ -471,7 +471,7 @@ class TransportRequestEntity
         return $this->confirmationState;
     }
 
-    public function setConfirmationState(int|null $confirmationState): self
+    public function setConfirmationState(?int $confirmationState): self
     {
         $this->confirmationState = $confirmationState;
 
@@ -483,7 +483,7 @@ class TransportRequestEntity
         return $this->trUsername;
     }
 
-    public function setTrUsername(string|null $trUsername): self
+    public function setTrUsername(?string $trUsername): self
     {
         $this->trUsername = $trUsername;
 
@@ -507,7 +507,7 @@ class TransportRequestEntity
         return $this->trBlocked;
     }
 
-    public function setTrBlocked(bool|null $trBlocked): self
+    public function setTrBlocked(?bool $trBlocked): self
     {
         $this->trBlocked = $trBlocked;
 
@@ -531,7 +531,7 @@ class TransportRequestEntity
         return $this->trEdited;
     }
 
-    public function setTrEdited(bool|null $trEdited): self
+    public function setTrEdited(?bool $trEdited): self
     {
         $this->trEdited = $trEdited;
 

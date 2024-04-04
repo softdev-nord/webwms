@@ -114,9 +114,7 @@ class SupplierEntity
     #[Groups(['supplier:read', 'supplier:write'])]
     private ?DateTimeInterface $updatedAt = null;
 
-    /**
-     * @var Collection<int, SupplierOrderEntity>
-     */
+    /** @var Collection<int, SupplierOrderEntity> */
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: SupplierOrderEntity::class)]
     #[Groups(['supplier:read'])]
     private Collection $supplierOrder;
@@ -216,9 +214,7 @@ class SupplierEntity
         $this->supplierAddressCity = $supplierAddressCity;
     }
 
-    /**
-     * @return array<string, int|string|null>
-     */
+    /** @return array<string, int|string|null> */
     public function toArray(): array
     {
         return [
@@ -258,17 +254,13 @@ class SupplierEntity
         return $this;
     }
 
-    /**
-     * @return Collection<SupplierOrderEntity>
-     */
+    /** @return Collection<SupplierOrderEntity> */
     public function getSupplierOrders(): Collection
     {
         return $this->supplierOrder;
     }
 
-    /**
-     * @param Collection<SupplierOrderEntity> $supplierOrder
-     */
+    /** @param Collection<SupplierOrderEntity> $supplierOrder */
     public function setSupplierOrders(Collection $supplierOrder): SupplierEntity
     {
         $this->supplierOrder = $supplierOrder;

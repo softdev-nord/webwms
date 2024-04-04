@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\Stock;
 
-use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -25,10 +24,9 @@ class StockInType extends AbstractType
     /**
      * @SuppressWarnings("unused")
      */
-    #[Override]
-    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formBuilder
+        $builder
             ->add('articleId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
@@ -95,10 +93,9 @@ class StockInType extends AbstractType
         ;
     }
 
-    #[Override]
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver->setDefaults([
+        $resolver->setDefaults([
             'data_class' => null,
         ]);
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\Article;
 
-use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -26,10 +25,9 @@ class EditArticleType extends AbstractType
      * @SuppressWarnings("unused")
      * @SuppressWarnings(PHPMD.ElseExpression)
      */
-    #[Override]
-    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formBuilder->add('articleId', HiddenType::class, [
+        $builder->add('articleId', HiddenType::class, [
             'label' => false,
             'attr' => [
                 'class' => 'form-control',
@@ -38,14 +36,14 @@ class EditArticleType extends AbstractType
             ],
         ])
         ->add('articleNr', TextType::class, [
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'id' => 'articleNr',
-                    'data-type' => 'articleNr',
-                    'style' => 'background-color: transparent',
-                ],
-            ])
+            'label' => false,
+            'attr' => [
+                'class' => 'form-control',
+                'id' => 'articleNr',
+                'data-type' => 'articleNr',
+                'style' => 'background-color: transparent',
+            ],
+        ])
         ->add('articleName', TextType::class, [
             'empty_data' => '',
             'label' => false,
@@ -160,10 +158,9 @@ class EditArticleType extends AbstractType
         ;
     }
 
-    #[Override]
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver->setDefaults([
+        $resolver->setDefaults([
             'data_class' => ArticleEntity::class,
         ]);
     }
