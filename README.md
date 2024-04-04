@@ -9,17 +9,17 @@
 * ***Passwort:*** `WebWms2023!#`
 
 ## Systemvoraussetzung:
-* min. **PHP 8.2**
+* min. **PHP** `8.2`
 * **MySQL**, **MariaDB**
 * **Apache**/**Nginx**
 * **NodeJs**
 
 ## Tech-Stack:
-* **Symfony** 7.0
-* **jQuery** 3.6
-* **Twig**
-* **NodeJs** v12
-* **API-Platform/Core** 3.1 `Hauptmenu >>> API Dokumentation`
+* **Symfony** `7.0`
+* **jQuery** `3.6`
+* **Twig** `3.8`
+* **NodeJs** `v18`
+* **API-Platform/Core** `3.2` `Hauptmenu >>> API Dokumentation`
 * **Symfony/UX-Chart** `Auswertungen >>> Dashboard`
 
 ## CI / CD:
@@ -56,16 +56,15 @@
 - [x] **Var Dump Check**
   + `php-parallel-lint/php-var-dump-check`
 - [x] **Twig Inspector**
-
   + `oro/twig-inspector`
 - [x] **Rector**
   + `rector/rector`
 
 ## Lokale Entwicklungsumgebung:
-* **PHP 8.1**
-* **Apache**
-* **MariaDB 10.5**
-* **PhpMyAdmin** (latest)
+* **PHP** `8.3`
+* **Apache** `2.4`
+* **MariaDB** `10.5`
+* **PhpMyAdmin** `latest`
 
 ## Installation:
 Derzeit werden die folgenden Plattformen unterstützt:
