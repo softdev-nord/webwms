@@ -8,6 +8,7 @@ use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpKernel\Kernel as KernelAlias;
 use WebWMS\Service\Configuration\ConfigurationService;
 use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
 
@@ -57,24 +58,23 @@ final class ConfigurationServiceTest extends TestCase
         self::assertSame($configurations, $result);
     }
 
-    //    public function testPrepareSystemInformation(): void
-    //    {
-    //        $systemInformation = $this->configurationService->prepareSystemInformation();
-    //        //dd($systemInformation);
-    //
-    //        // Assert structure and content of the returned array
-    //        self::assertArrayHasKey('php', $systemInformation);
-    // #        self::assertArrayHasKey('sql', $systemInformation);
-    //        self::assertArrayHasKey('software', $systemInformation);
-    //        self::assertArrayHasKey('env', $systemInformation);
-    //        self::assertArrayHasKey('server', $systemInformation);
-    //        self::assertArrayHasKey('request', $systemInformation);
-    //
-    //        // Assert expected values within the array
-    //        self::assertSame('Enterprise Version', $systemInformation['software']['webWms_version']);
-    //        self::assertSame('2.0.0', $systemInformation['software']['webWms_version_number']);
-    //        self::assertSame(Kernel::VERSION, $systemInformation['software']['webWms_symfony_version']);
-    //    }
+        public function testPrepareSystemInformation(): void
+        {
+            $systemInformation = $this->configurationService->prepareSystemInformation();
+
+            // Assert structure and content of the returned array
+            self::assertArrayHasKey('php', $systemInformation);
+            self::assertArrayHasKey('sql', $systemInformation);
+            self::assertArrayHasKey('software', $systemInformation);
+            self::assertArrayHasKey('env', $systemInformation);
+            self::assertArrayHasKey('server', $systemInformation);
+            self::assertArrayHasKey('request', $systemInformation);
+
+            // Assert expected values within the array
+            self::assertSame('Enterprise Version', $systemInformation['software']['webWms_version']);
+            self::assertSame('2.0.0', $systemInformation['software']['webWms_version_number']);
+            self::assertSame(KernelAlias::VERSION, $systemInformation['software']['webWms_symfony_version']);
+        }
 
     public function testItGetsEnvironmentInformation(): void
     {
@@ -212,7 +212,7 @@ final class ConfigurationServiceTest extends TestCase
         // Assert the results
         self::assertEquals('Enterprise Version', $result['webWms_version']);
         self::assertEquals('2.0.0', $result['webWms_version_number']);
-        self::assertEquals('7.0.6', $result['webWms_symfony_version']);
+        self::assertEquals(KernelAlias::VERSION, $result['webWms_symfony_version']);
     }
 
     public function testItGetsPhpImportantSettings(): void
