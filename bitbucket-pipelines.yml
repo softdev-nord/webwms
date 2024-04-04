@@ -131,7 +131,7 @@ pipelines:
         - step: *code-style
         - step: *code-analysis
         - step: *var-dump-find
-#        - step: *vulnerability-scan
+        - step: *vulnerability-scan
         - step: *mess-detector
         - step: *twig-lint
         - step: *yaml-lint
