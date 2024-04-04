@@ -212,7 +212,7 @@ final class ConfigurationServiceTest extends TestCase
         // Assert the results
         self::assertEquals('Enterprise Version', $result['webWms_version']);
         self::assertEquals('2.0.0', $result['webWms_version_number']);
-        self::assertEquals('7.0.5', $result['webWms_symfony_version']);
+        self::assertEquals('7.0.6', $result['webWms_symfony_version']);
     }
 
     public function testItGetsPhpImportantSettings(): void
