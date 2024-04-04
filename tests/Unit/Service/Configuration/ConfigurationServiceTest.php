@@ -58,23 +58,23 @@ final class ConfigurationServiceTest extends TestCase
         self::assertSame($configurations, $result);
     }
 
-        public function testPrepareSystemInformation(): void
-        {
-            $systemInformation = $this->configurationService->prepareSystemInformation();
+    public function testPrepareSystemInformation(): void
+    {
+        $systemInformation = $this->configurationService->prepareSystemInformation();
 
-            // Assert structure and content of the returned array
-            self::assertArrayHasKey('php', $systemInformation);
-            self::assertArrayHasKey('sql', $systemInformation);
-            self::assertArrayHasKey('software', $systemInformation);
-            self::assertArrayHasKey('env', $systemInformation);
-            self::assertArrayHasKey('server', $systemInformation);
-            self::assertArrayHasKey('request', $systemInformation);
+        // Assert structure and content of the returned array
+        self::assertArrayHasKey('php', $systemInformation);
+        self::assertArrayHasKey('sql', $systemInformation);
+        self::assertArrayHasKey('software', $systemInformation);
+        self::assertArrayHasKey('env', $systemInformation);
+        self::assertArrayHasKey('server', $systemInformation);
+        self::assertArrayHasKey('request', $systemInformation);
 
-            // Assert expected values within the array
-            self::assertSame('Enterprise Version', $systemInformation['software']['webWms_version']);
-            self::assertSame('2.0.0', $systemInformation['software']['webWms_version_number']);
-            self::assertSame(KernelAlias::VERSION, $systemInformation['software']['webWms_symfony_version']);
-        }
+        // Assert expected values within the array
+        self::assertSame('Enterprise Version', $systemInformation['software']['webWms_version']);
+        self::assertSame('2.0.0', $systemInformation['software']['webWms_version_number']);
+        self::assertSame(KernelAlias::VERSION, $systemInformation['software']['webWms_symfony_version']);
+    }
 
     public function testItGetsEnvironmentInformation(): void
     {
