@@ -61,6 +61,9 @@ const stockInItemsAutofill = (function(){
 
                 resArr = ui.item.data.split('|');
 
+                console.log(resArr);
+
+                $('#stock_in_articleId').val(resArr[0]);
                 $('#stock_in_leQuantity').val(resArr[12]);
                 $('#article_nr_right').val(resArr[1]);
                 $('#article_name_right').val(resArr[2]);
@@ -89,7 +92,7 @@ const stockInItemsAutofill = (function(){
 $(document).ready(function(){
     stockInItemsAutofill.init();
 
-    /*$('#stock_in_post_final').on( 'click', function (e) {
+    $('#stock_in_post_final').on( 'click', function (e) {
         e.preventDefault();
         const form = $(this).closest('form');
         const formData = form.serialize();
@@ -102,5 +105,5 @@ $(document).ready(function(){
                 console.log(formData);
             }
         });
-    });*/
+    });
 });

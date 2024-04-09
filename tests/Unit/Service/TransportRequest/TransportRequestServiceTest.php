@@ -105,11 +105,11 @@ final class TransportRequestServiceTest extends TestCase
         $this->mockObject
             ->expects(self::once())
             ->method('getLastStockUnit')
-            ->willReturn(20);
+            ->willReturn([]);
 
         $result = $this->transportRequestService->getLastStockUnit();
 
-        self::assertEquals(20, $result);
+        self::assertIsArray($result);
     }
 
     public function testAddTransportRequest(): void

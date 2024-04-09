@@ -132,3 +132,6 @@ run-rector: ## Run automated refactoring dry run
 
 run-rector-refactoring: ## Run automated refactoring
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process';
+
+report-metrics: ## Run the phpmetrics report
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmetrics --config=config.yml';

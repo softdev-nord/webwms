@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Service\Stock;
 
 use Doctrine\DBAL\Exception;
+use JsonException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Service\DataHandlers\Stock\StockOccupancyDataHandler;
@@ -31,14 +32,14 @@ class StockOccupancyService
     }
 
     /**
-     * @throws Exception
+     *@throws Exception|JsonException
      * @return array<int, array<string, mixed>>
      */
     public function getStockOccupancyByCoordinate(Request $request): array
     {
         $stockLocationCoordinate = $request->attributes->get('stock_location_coordinate');
         $stockOccupancyDetail = [];
-        $stockOccupancies = json_decode((string) $this->getAllStockOccupancy()->getContent(), true);
+        $stockOccupancies = json_decode((string) $this->getAllStockOccupancy()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         foreach ($stockOccupancies as $stockOccupancy) {
             if ($stockOccupancy['koordinate'] === $stockLocationCoordinate) {
@@ -65,5 +66,14 @@ class StockOccupancyService
     public function getStockOccupancyByArticleNr(int $articleNr): array
     {
         return $this->stockOccupancyDataHandler->getStockOccupancyByArticleNr($articleNr);
+    }
+
+    /**
+     * @throws Exception
+     * @return array<int|mixed|string>
+     */
+    public function getStockOccupancyByArticleId(int $articleId): array
+    {
+        return $this->stockOccupancyDataHandler->getStockOccupancyByArticleId($articleId);
     }
 }

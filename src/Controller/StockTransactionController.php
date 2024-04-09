@@ -7,13 +7,21 @@ namespace WebWMS\Controller;
 use Doctrine\ORM\EntityNotFoundException;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Twig\Environment;
+use WebWMS\Event\Stock\StockInEvent;
+use WebWMS\Event\Stock\StockInFromGoodsReceiptEvent;
+use WebWMS\Event\Stock\StockInFromProductionEvent;
 use WebWMS\Service\BookingMethod\BookingMethodService;
+use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
+use WebWMS\Service\TransportHistory\TransportHistoryService;
 use WebWMS\Service\TransportRequest\TransportRequestService;
 
 /**
@@ -21,20 +29,25 @@ use WebWMS\Service\TransportRequest\TransportRequestService;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        StockTransactionController
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class StockTransactionController extends AbstractController
 {
     public function __construct(
         private readonly BookingMethodService $bookingMethodService,
+        private readonly RequirementsService $requirementsService,
+        private readonly StockLocationService $stockLocationService,
         private readonly TransportRequestService $transportRequestService,
-        private readonly StockLocationService $stockLocationService
+        private readonly TransportHistoryService $transportHistoryService,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly Environment $twigEnvironment,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
     /**
      * SI101 Einlagern direkt.
-     *
-     * @throws EntityNotFoundException
      */
     #[Route('/stock_in', name: 'stock_in')]
     public function stockIn(Request $request): RedirectResponse|Response|null
@@ -43,9 +56,20 @@ class StockTransactionController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $bookingMethod = $request->attributes->getString('_route');
+        $event = new StockInEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
-        return $this->bookingMethodService->getBookingMethod($bookingMethod, $request);
+        $this->eventDispatcher->dispatch(
+            $event, StockInEvent::EVENT_NAME
+        );
+
+        return $event->stockIn($request);
     }
 
     /**
@@ -56,9 +80,13 @@ class StockTransactionController extends AbstractController
     #[Route('/stock_in_from_goods_receipt', name: 'stock_in_from_goods_receipt')]
     public function stockInFromGoodsReceipt(Request $request): RedirectResponse|Response|null
     {
-        $bookingMethod = $request->attributes->getString('_route');
+        $event = new StockInFromGoodsReceiptEvent();
 
-        return $this->bookingMethodService->getBookingMethod($bookingMethod, $request);
+        $this->eventDispatcher->dispatch(
+            $event, StockInFromGoodsReceiptEvent::EVENT_NAME
+        );
+
+        return $event->stockInFromGoodsReceipt($request);
     }
 
     /**
@@ -69,9 +97,13 @@ class StockTransactionController extends AbstractController
     #[Route('/stock_in_from_production', name: 'stock_in_from_production')]
     public function stockInFromProduction(Request $request): RedirectResponse|Response|null
     {
-        $bookingMethod = $request->attributes->getString('_route');
+        $event = new StockInFromProductionEvent();
 
-        return $this->bookingMethodService->getBookingMethod($bookingMethod, $request);
+        $this->eventDispatcher->dispatch(
+            $event, StockInFromProductionEvent::EVENT_NAME
+        );
+
+        return $event->stockInFromProduction($request);
     }
 
     /**
@@ -371,7 +403,7 @@ class StockTransactionController extends AbstractController
     public function generateSuId(array $stockLocations): int
     {
         $count = count(array_keys($stockLocations));
-        $suId = $this->transportRequestService->getLastStockUnit();
+        $suId = $this->transportRequestService->getLastStockUnit()[0]->getSuId();
         for ($i = 0; $i <= $count; ++$i) {
             $suId += $i;
         }

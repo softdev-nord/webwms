@@ -39,6 +39,15 @@ class StockLocationService
     }
 
     /**
+     * @throws Exception
+     * @return array<string|int|mixed>
+     */
+    public function getStockLocationById(int $stockLocationId): array
+    {
+        return $this->stockLocationDataHandler->getStockLocationById($stockLocationId);
+    }
+
+    /**
      * @throws \Exception
      * @return object[]
      */
@@ -138,5 +147,14 @@ class StockLocationService
         }
 
         return $freeStockLocations;
+    }
+
+    /**
+     * @throws Exception
+     * @return array<int, array<string, int|string>>
+     */
+    public function getOccupiedStockLocationsByArticleId(int $articleId): array
+    {
+        return $this->stockLocationDataHandler->getOccupiedStockLocationsByArticleId($articleId);
     }
 }

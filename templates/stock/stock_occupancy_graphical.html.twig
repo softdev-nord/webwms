@@ -13,7 +13,7 @@
                                 {% block webwms_stock_occupancy_graphical_overview_table %}
                                     <div class="row">
                                         <span class="text-truncate" style="float: left; padding-top: 8px;padding-right: 10px; width: auto">Lagerbereich auswählen</span>
-                                        <select id="selectStock" class="form-control col-md-1 stock-select" style="width: 10%">
+                                        <select id="selectStock" class="form-select col-md-1 stock-select" style="width: 10%">
                                             {% for oneStockSelected in stockSelect|sort %}
                                                 {% set selected = '' %}
                                                 {% if (oneStockSelected.stockLocationLn) == stockSelect %}

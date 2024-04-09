@@ -17,6 +17,8 @@ use WebWMS\Repository\StockOccupancyRepository;
  */
 #[ORM\Table(name: 'stock_occupancy')]
 #[ORM\Entity(repositoryClass: StockOccupancyRepository::class)]
+#[ORM\Index(columns: ['stock_location_id'], name: 'stock_location_id_idx')]
+#[ORM\Index(columns: ['article_id'], name: 'article_id_idx')]
 class StockOccupancyEntity
 {
     #[ORM\Id]
@@ -30,17 +32,23 @@ class StockOccupancyEntity
     #[ORM\Column(name: 'stock_location_id', type: Types::INTEGER, nullable: false)]
     private int $stockLocationId;
 
-    #[ORM\Column(name: 'article_id', type: Types::INTEGER, nullable: false)]
-    private int $articleId;
+    #[ORM\Column(name: 'article_id', type: Types::INTEGER, nullable: true, options: ['default' => null])]
+    private ?int $articleId;
 
-    #[ORM\Column(name: 'in_stock', type: Types::INTEGER, nullable: false)]
-    private int $inStock;
+    #[ORM\Column(name: 'in_stock', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true, options: ['default' => null])]
+    private ?float $inStock;
 
-    #[ORM\Column(name: 'incoming_stock', type: Types::INTEGER, nullable: false)]
-    private int $incomingStock;
+    #[ORM\Column(name: 'incoming_stock', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true, options: ['default' => null])]
+    private ?float $incomingStock;
 
-    #[ORM\Column(name: 'reserved_stock', type: Types::INTEGER, nullable: false)]
-    private int $reservedStock;
+    #[ORM\Column(name: 'reserved_stock', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true, options: ['default' => null])]
+    private ?float $reservedStock;
+
+    #[ORM\Column(name: 'last_incoming', type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => null])]
+    private ?DateTimeInterface $lastIncoming = null;
+
+    #[ORM\Column(name: 'last_outgoing', type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => null])]
+    private ?DateTimeInterface $lastOutgoing = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $createdAt = null;
@@ -72,52 +80,72 @@ class StockOccupancyEntity
         return $this;
     }
 
-    public function getArticleId(): int
+    public function getArticleId(): ?int
     {
         return $this->articleId;
     }
 
-    public function setArticleId(int $articleId): self
+    public function setArticleId(?int $articleId): self
     {
         $this->articleId = $articleId;
 
         return $this;
     }
 
-    public function getInStock(): int
+    public function getInStock(): ?float
     {
         return $this->inStock;
     }
 
-    public function setInStock(int $inStock): self
+    public function setInStock(?float $inStock): self
     {
         $this->inStock = $inStock;
 
         return $this;
     }
 
-    public function getIncomingStock(): int
+    public function getIncomingStock(): ?float
     {
         return $this->incomingStock;
     }
 
-    public function setIncomingStock(int $incomingStock): self
+    public function setIncomingStock(?float $incomingStock): self
     {
         $this->incomingStock = $incomingStock;
 
         return $this;
     }
 
-    public function getReservedStock(): int
+    public function getReservedStock(): ?float
     {
         return $this->reservedStock;
     }
 
-    public function setReservedStock(int $reservedStock): self
+    public function setReservedStock(?float $reservedStock): self
     {
         $this->reservedStock = $reservedStock;
 
         return $this;
+    }
+
+    public function getLastIncoming(): ?DateTimeInterface
+    {
+        return $this->lastIncoming;
+    }
+
+    public function setLastIncoming(?DateTimeInterface $lastIncoming): void
+    {
+        $this->lastIncoming = $lastIncoming;
+    }
+
+    public function getLastOutgoing(): ?DateTimeInterface
+    {
+        return $this->lastOutgoing;
+    }
+
+    public function setLastOutgoing(?DateTimeInterface $lastOutgoing): void
+    {
+        $this->lastOutgoing = $lastOutgoing;
     }
 
     public function getCreatedAt(): ?DateTimeInterface

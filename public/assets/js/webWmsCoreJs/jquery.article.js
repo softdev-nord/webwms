@@ -29,10 +29,9 @@
             { data: 'article_depth' },
             { data: 'article_width' },
             { data: 'article_height' },
-            {
-                data: 'lbw_menge',
-                defaultContent: 0
-            },
+            { data: 'in_stock' },
+            { data: 'incoming_stock' },
+            { data: 'reserved_stock' },
             {
                 data: null,
                 render: function(data, type, row) {
@@ -51,7 +50,7 @@
             },
             {
                 render: $.fn.dataTable.render.number('.'),
-                'targets': [9],
+                'targets': [9,10,11],
             },
         ],
         dom: 'Bfrtip',

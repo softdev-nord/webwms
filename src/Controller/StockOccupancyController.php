@@ -73,10 +73,14 @@ class StockOccupancyController extends AbstractController
     {
         $stockResults = $this->stockOccupancyService->getStockOccupancyByCoordinate($request);
 
+        if ($stockResults === []) {
+            $stockResults['info'] = 'Keine Details vorhanden, da der Lagerplatz aktuell nicht belegt ist.';
+        }
+
         return $this->render(
             'modal/show_stock_details_modal.html.twig',
             [
-                'stockDetails' => $stockResults[0], true,
+                'stockDetails' => $stockResults, true,
             ]
         );
     }
@@ -140,7 +144,7 @@ class StockOccupancyController extends AbstractController
     {
         $article = $this->stockOccupancyService
             ->getStockOccupancyByArticleNr(
-                $request->attributes->getInt('article_nr')
+                (int) $request->attributes->get('article_nr')
             );
 
         return $this->render(

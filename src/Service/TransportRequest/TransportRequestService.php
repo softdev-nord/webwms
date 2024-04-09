@@ -63,7 +63,8 @@ class TransportRequestService
             ->deleteTransportRequest($transportRequestEntity);
     }
 
-    public function getLastStockUnit(): int
+    /** @return TransportRequestEntity[] */
+    public function getLastStockUnit(): array
     {
         return $this->transportRequestDataHandler
             ->getLastStockUnit();

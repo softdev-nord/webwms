@@ -91,18 +91,18 @@ final class StockOccupancyServiceTest extends TestCase
         self::assertSame($expectedResult, $result);
     }
 
-    public function testGetStockOccupancyByArticleNr(): void
+    public function testGetStockOccupancyByArticleId(): void
     {
-        $articleNr = 456;
+        $articleId = 1;
         $expectedResult = ['id' => 1, 'articleNr' => 456];
 
         $this->mockObject
             ->expects(self::once())
-            ->method('getStockOccupancyByArticleNr')
-            ->with($articleNr)
+            ->method('getStockOccupancyByArticleId')
+            ->with($articleId)
             ->willReturn($expectedResult);
 
-        $result = $this->stockOccupancyService->getStockOccupancyByArticleNr($articleNr);
+        $result = $this->stockOccupancyService->getStockOccupancyByArticleId($articleId);
 
         self::assertSame($expectedResult, $result);
     }

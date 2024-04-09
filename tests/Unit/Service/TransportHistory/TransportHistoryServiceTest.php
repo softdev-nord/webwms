@@ -105,11 +105,11 @@ final class TransportHistoryServiceTest extends TestCase
         $this->mockObject
             ->expects(self::once())
             ->method('getLastStockUnit')
-            ->willReturn(20);
+            ->willReturn([]);
 
         $result = $this->transportHistoryService->getLastStockUnit();
 
-        self::assertEquals(20, $result);
+        self::assertIsArray($result);
     }
 
     public function testAddTransportHistory(): void

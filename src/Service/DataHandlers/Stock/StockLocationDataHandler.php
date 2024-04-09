@@ -45,6 +45,24 @@ class StockLocationDataHandler
     }
 
     /**
+     * @throws Exception
+     * @return array<string|int|mixed>
+     */
+    public function getStockLocationById(int $stockLocationId): array
+    {
+
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('*')
+            ->from('stock_location', 'so')
+            ->where('so.stock_location_id = :stock_location_id')
+            ->setParameter('stock_location_id', $stockLocationId);
+
+        return $queryBuilder->executeQuery()->fetchAllAssociative();
+    }
+
+    /**
      * @throws \Exception
      * @return object[]
      */
@@ -216,6 +234,34 @@ class StockLocationDataHandler
         }
 
         return array_slice($allResults, 0, $limit);
+    }
+
+    /**
+     * @throws Exception
+     * @return array<int, array<string, int|string>>
+     */
+    public function getOccupiedStockLocationsByArticleId(int $articleId): array
+    {
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('
+            sl.stock_location_id AS id,
+            sl.stock_location_coordinate AS koordinate,
+            sl.stock_location_ln AS ln,
+            sl.stock_location_fb AS fb,
+            sl.stock_location_sp AS sp,
+            sl.stock_location_tf AS tf,
+            sl.stock_location_desc,
+            so.in_stock,
+            so.incoming_stock,
+            so.reserved_stock')
+            ->from('stock_occupancy', 'so')
+            ->rightJoin('so', 'stock_location', 'sl', 'so.stock_location_id = sl.stock_location_id')
+            ->where('so.article_id = :article_id')
+            ->setParameter('article_id', $articleId);
+
+        return $queryBuilder->executeQuery()->fetchAllAssociative();
     }
 
     /**

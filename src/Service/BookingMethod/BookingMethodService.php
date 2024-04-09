@@ -5,16 +5,9 @@ declare(strict_types=1);
 namespace WebWMS\Service\BookingMethod;
 
 use Doctrine\ORM\EntityNotFoundException;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
-use WebWMS\Form\Stock\StockInFinalType;
-use WebWMS\Form\Stock\StockInType;
-use WebWMS\Service\RequirementsService;
-use WebWMS\Service\Stock\StockLocationService;
-use WebWMS\Service\TransportRequest\TransportRequestService;
 
 /**
  * @package:    WebWMS\Service\BookingMethod
@@ -25,27 +18,18 @@ use WebWMS\Service\TransportRequest\TransportRequestService;
 class BookingMethodService
 {
     public const KARTON = 'Durchlaufregal';
-
     public const PALETTE = 'Pal Regal';
-
     public const BLOCK = 'Block-Lager';
-
-    public function __construct(
-        private readonly RequirementsService $requirementsService,
-        private readonly StockLocationService $stockLocationService,
-        private readonly TransportRequestService $transportRequestService,
-        private readonly FormFactoryInterface $formFactory,
-        private readonly Environment $twigEnvironment
-    ) {
-    }
 
     /**
      * @throws EntityNotFoundException
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function getBookingMethod(mixed $bookingMethod, Request $request): RedirectResponse|Response|null
     {
         return match ($bookingMethod) {
-            'stock_in' => $this->stockIn($request), // SI101 Einlagern direkt
+            'stock_in' => $this->stockIn(), // SI101 Einlagern direkt
             'stock_in_from_goods_receipt' => $this->stockInFromGoodsReceipt(), // SI102 Zugang aus Wareneingang
             'stock_in_from_production' => $this->stockInFromProduction(), // SI103 Zugang aus Produktion
             'stock_in_from_cost_centre' => $this->stockInFromCostCentre(), // SI104 Rückgabe von Kostenstelle
@@ -80,100 +64,10 @@ class BookingMethodService
     /**
      * SI101 Einlagern direkt.
      */
-    public function stockIn(Request $request): RedirectResponse|Response
+    public function stockIn(): RedirectResponse|Response|null
     {
-        $bookingMethod = 'SI101';
-        $freeStockLocations = [];
-
-        $form = $this->formFactory->create(StockInType::class);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $requestData = $form->getData();
-            $stockUnits = (int) ceil(
-                (int) $requestData['quantity'] / (int) $requestData['leQuantity'],
-            );
-
-            $stockSystem = match ($requestData['standardLoadingEquipment']) {
-                'KARTON' => self::KARTON,
-                'PALETTE' => self::PALETTE,
-                'BLOCK' => self::BLOCK,
-                default => 'KST',
-            };
-
-            $fullPal = intdiv((int) $requestData['quantity'], (int) $requestData['leQuantity']);
-            $remainder = fmod((float) $requestData['quantity'], (float) $requestData['leQuantity']);
-
-            $stockLocations = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $stockUnits);
-            $suId = $this->transportRequestService->getLastStockUnit();
-
-            foreach ($stockLocations as $key => $stockLocation) {
-                if ((string) $fullPal <= $stockUnits) {
-                    $quantity = $key === array_key_last($stockLocations) ? number_format(
-                        $remainder,
-                        2,
-                        '.',
-                        ''
-                    ) : $requestData['leQuantity'];
-
-                    $freeStockLocations[] = [
-                        'id' => $stockLocation['id'],
-                        'su_id' => ++$suId,
-                        'ln' => $stockLocation['ln'],
-                        'fb' => $stockLocation['fb'],
-                        'sp' => $stockLocation['sp'],
-                        'tf' => $stockLocation['tf'],
-                        'ln_komplett' => $stockLocation['ln'] . '-' . $stockLocation['fb'] . '-' . $stockLocation['sp'] . '-' . $stockLocation['tf'],
-                        'koordinate' => $stockLocation['koordinate'],
-                        'system' => $stockLocation['system'],
-                        'quantity' => $quantity,
-                    ];
-                }
-            }
-
-            $stockInFinal = $this->formFactory
-                ->create(
-                    StockInFinalType::class,
-                    ['freeStockLocations' => $freeStockLocations]
-                );
-
-            // @TODO Eine Option finden, um im Formular mehrere Spalten zu nutzen!
-
-            $html = $this->twigEnvironment->render(
-                'modal/put_into_storage.html.twig',
-                [
-                    'appName' => $this->requirementsService->getAppName(),
-                    'appVersion' => $this->requirementsService->getAppVersion(),
-                    'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
-                    'appCopyright' => $this->requirementsService->getAppCopyright(),
-                    'appLizenz' => $this->requirementsService->getAppLizenz(),
-                    'page' => 'Einlagern direkt',
-                    'stockInFinalForm' => $stockInFinal->createView(),
-                    'freeStockLocations' => $freeStockLocations,
-                    'charge' => $requestData['charge'],
-                    'article_nr' => $requestData['articleNr'],
-                    'booking_method' => $bookingMethod,
-                    'loading_equipment' => $stockSystem,
-                ]
-            );
-
-            return new Response($html);
-        }
-
-        $html = $this->twigEnvironment->render(
-            'modal/stock_in_modal.html.twig',
-            [
-                'appName' => $this->requirementsService->getAppName(),
-                'appVersion' => $this->requirementsService->getAppVersion(),
-                'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
-                'appCopyright' => $this->requirementsService->getAppCopyright(),
-                'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Einlagern direkt',
-                'stockInForm' => $form->createView(),
-                'selectedStockLocations' => $freeStockLocations,
-            ]
-        );
-
-        return new Response($html);
+        // TODO: Implement logic
+        return null;
     }
 
     /**

@@ -65,7 +65,7 @@ class TransportHistoryDataHandler
         $transportHistoryEntity = new TransportHistoryEntity();
 
         foreach ($requestData as $key => $data) {
-            $transportHistoryEntity->setSuId($this->getLastStockUnit());
+            $transportHistoryEntity->setSuId($this->getLastStockUnit()[0]->getSuId());
             $transportHistoryEntity->setTrNr($this->getLastTransportHistoryNr());
             $transportHistoryEntity->setTrPos($key + 1);
             $transportHistoryEntity->setTrPrio(0);
@@ -91,13 +91,17 @@ class TransportHistoryDataHandler
         $this->save($transportHistoryEntity);
     }
 
-    public function getLastStockUnit(): int
+    /** @return TransportHistoryEntity[] */
+    public function getLastStockUnit(): array
     {
-        $lastStockUnitTr = $this->entityManager
-            ->getRepository(TransportHistoryEntity::class)
-            ->findBy([], ['suId' => 'DESC'], 1, 0);
-
-        return $lastStockUnitTr[0]->getSuId();
+        return $this->entityManager
+            ->createQueryBuilder()
+            ->select('the')
+            ->from(TransportHistoryEntity::class, 'the')
+            ->setMaxResults(1)
+            ->addOrderBy('the.suId', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     public function getLastTransportHistoryNr(): int

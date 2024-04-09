@@ -26,11 +26,12 @@
             $('#modalCenter .modal-dialog').css('max-width', '70%');
         });
 
-        const url = '/stock_occupancy_ajax/' + $(event.currentTarget).attr('data-target');
         const $el = $(event.currentTarget);
         const currentCoordinate =  $el.attr('data-target');
+        const url = '/stock_occupancy_ajax/' + currentCoordinate;
+        const stockComplete = $el.attr('data-ln-komplett');
         const desc = 'Lagerplatz Details ';
-        const stockComplete = $(event.currentTarget).attr('data-ln-komplett');
+
         $('#currentCoordinate').val(currentCoordinate);
         $('#modalCenter .modal-title').html(desc + stockComplete);
         $('#modalCenter').modal('show');

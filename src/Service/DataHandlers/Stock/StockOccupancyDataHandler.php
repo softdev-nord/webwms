@@ -136,6 +136,28 @@ class StockOccupancyDataHandler
 
     /**
      * @throws Exception
+     * @return array<string|int|mixed>
+     *
+     * @SuppressWarnings(PHPMD.ElseExpression)
+     */
+    public function getStockOccupancyByArticleId(int $articleId): array
+    {
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('so.stock_location_id,
+            so.in_stock,
+            so.incoming_stock,
+            so.reserved_stock')
+            ->from('stock_occupancy', 'so')
+            ->where('so.article_id = :article_id')
+            ->setParameter('article_id', $articleId);
+
+        return $queryBuilder->executeQuery()->fetchAllAssociative();
+    }
+
+    /**
+     * @throws Exception
      */
     public function getAllStockOccupancy(): JsonResponse
     {
