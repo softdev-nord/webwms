@@ -24,7 +24,7 @@ class BaseEvent extends Event
     public function __construct(
         protected RequirementsService $requirementsService,
         protected StockLocationService $stockLocationService,
-#        protected StockOccupancyService $stockOccupancyService,
+        //        protected StockOccupancyService $stockOccupancyService,
         protected TransportRequestService $transportRequestService,
         protected TransportHistoryService $transportHistoryService,
         protected FormFactoryInterface $formFactory,

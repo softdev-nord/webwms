@@ -16,7 +16,7 @@ class StockOccupancyUpdateEvent extends BaseEvent
 {
     final public const EVENT_NAME = 'stock_occupancy.update';
 
-    public function updateStockOccupancy(int $id, ): void
+    public function updateStockOccupancy(int $id): void
     {
         $stockOccupancy = $this->stockOccupancyService->getStockOccupancyById($id);
 

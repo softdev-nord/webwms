@@ -50,7 +50,7 @@ class StockInEvent extends BaseEvent
                 default => 'KST',
             };
 
-            $fullPal = intdiv((int)$stockIn->getQuantity(), (int) $stockIn->getLeQuantity());
+            $fullPal = intdiv((int) $stockIn->getQuantity(), (int) $stockIn->getLeQuantity());
             $remainder = fmod((float) $stockIn->getQuantity(), (float) $stockIn->getLeQuantity());
             $suId = $this->getLastStockUnit();
             $quantity = ($stockIn->getQuantity() - $stockIn->getLeQuantity() !== 0) ? $stockIn->getLeQuantity() : $remainder;
