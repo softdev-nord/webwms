@@ -1,0 +1,196 @@
+{# templates/transport_request/transport_request_input_fields.html.twig #}
+
+{% block webwms_transport_request_input_fields_form %}
+    <div class="row">
+        {% block webwms_transport_request_input_fields_form_inner %}
+            <div class="card">
+                {{ form_start(transportRequestForm) }}
+{#                <div class="form-group">#}
+{#                    <label for="text" class="control-label col-xs-4">TA-Nr</label>#}
+{#                    <div class="col-xs-8" style="margin-bottom: 5px;">#}
+{#                        {% if editTransportRequest %}#}
+{#                            {{ form_row(transportRequestForm.trNr) }}#}
+{#                        {% else %}#}
+{#                            {{ form_row(transportRequestForm.trNr, {'value' : "#{lastId.trNr +1}"}) }}#}
+{#                        {% endif %}#}
+{#                    </div>#}
+{#                </div>#}
+                <div class="row" style="margin-bottom: 25px">
+                    <div class="col-xl-6 col-md-6" style="padding: 10px">
+                        <div class="card" style="height: 100%">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-xxl-12">
+                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">Allgemeine Daten</span>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">TA-Nr</label>
+                                            <div class="col-xs-8">
+                                                {% if editTransportRequest %}
+                                                    {{ form_row(transportRequestForm.trNr) }}
+                                                {% else %}
+                                                    {{ form_row(transportRequestForm.trNr, {'value' : "#{lastId.trNr +1}"}) }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">TA-Position</label>
+                                            <div class="col-xs-8">
+                                                {{ form_row(transportRequestForm.trPos) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">TA-Priorität</label>
+                                            <div class="col-xs-8">
+                                                {{ form_row(transportRequestForm.trPrio) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Buchungsmethode</label>
+                                            <div class="col-xs-8">
+                                                {{ form_row(transportRequestForm.bookingMethod) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Anlagedatum</label>
+                                            <div class="col-xs-8">
+                                                {{ form_row(transportRequestForm.createdAt) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Status</label>
+                                            <div class="col-xs-8">
+                                                {{ form_row(transportRequestForm.trState) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">TA Typ</label>
+                                            <div class="col-xs-8">
+                                                {{ form_row(transportRequestForm.trType) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 col-md-6" style="padding: 10px">
+                        <div class="card" style="height: 100%">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-xxl-12">
+                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">TA-Position Details</span>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Artikel</label>
+                                            <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                {{ form_row(transportRequestForm.articleNr) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Menge</label>
+                                            <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                {{ form_row(transportRequestForm.trQuantity) }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Lagerplatz</label>
+                                            <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                {% set stockLocation = transportRequest.stockNr ~ '-' ~ transportRequest.stockLevel1 ~ '-' ~ transportRequest.stockLevel2 ~ '-' ~ transportRequest.stockLevel3 %}
+                                                <input
+                                                        type="text"
+                                                        id="edit_transport_request_stockLocation"
+                                                        name="edit_transport_request[stockLocation]"
+                                                        class="form-control"
+                                                        style="background-color: transparent"
+                                                        readonly="readonly"
+                                                        value="{{ stockLocation }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Koordinate</label>
+                                            <div class="col-xs-8" style="margin-bottom: 5px;">
+                                                {{ form_row(transportRequestForm.stockCoordinate) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 col-md-6" style="padding: 10px">
+                        <div class="card" style="height: 100%">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-xxl-12">
+                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">Artikel Abmessungen</span>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Tiefe</label>
+                                            <div class="col-xs-8" style="margin-bottom: 5px;">
+{#                                                {{ form_row(articleForm.articleDepth) }}#}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Breite</label>
+                                            <div class="col-xs-8" style="margin-bottom: 5px;">
+{#                                                {{ form_row(articleForm.articleWidth) }}#}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Höhe</label>
+                                            <div class="col-xs-8" style="margin-bottom: 5px;">
+{#                                                {{ form_row(articleForm.articleHeight) }}#}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 col-md-6" style="padding: 10px">
+                        <div class="card" style="height: 100%">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-xxl-12">
+                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">Logistik</span>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Auslagerungsstrategie</label>
+                                            <div class="col-xs-8" style="margin-bottom: 5px;">
+{#                                                {{ form_row(articleForm.stockOutStrategy) }}#}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">LE-Menge</label>
+                                            <div class="col-xs-8" style="margin-bottom: 5px;">
+{#                                                {{ form_row(articleForm.leQuantity) }}#}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="text" class="control-label col-xs-4">Standard Ladehilfsmittel</label>
+                                            <div class="col-xs-8" style="margin-bottom: 5px;">
+{#                                                {{ form_row(articleForm.standardLoadingEquipment) }}#}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    {{ form_widget(transportRequestForm.save) }} {{ form_widget(transportRequestForm.abort) }}
+                </div>
+
+                {{ form_end(transportRequestForm) }}
+        {% endblock %}
+
+        {% block bodyjs %}
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.suppliersAutofill.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.itemsSupplierOrderPosAutofill.js') }}"></script>
+        {% endblock %}
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{# templates/transport_request/transport_request_add.html.twig #}
+
+{% block webwms_transport_request_add_form %}
+    <form id="transport-request-form-new" class="form-horizontal" role="form">
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div id="flash-message-overlay">
+                    <div class="col">
+                    </div>
+                </div>
+                {% include 'transport_request/transport_request_input_fields.html.twig' %}
+            </div>
+        </div>
+        <div class="modal-footer"></div>
+    </form>
+{% endblock %}
