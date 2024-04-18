@@ -8,6 +8,10 @@ use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use WebWMS\Dto\FreeStockLocationDto;
+use WebWMS\Dto\OccupiedStockLocationDto;
+use WebWMS\Dto\StockInDto;
+use WebWMS\Dto\StockLocationDto;
 use WebWMS\Event\BaseEvent;
 use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
@@ -33,28 +37,29 @@ class StockInEvent extends BaseEvent
         $form = $this->formFactory->create(StockInType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $requestData = $form->getData();
+            $stockIn = StockInDto::hydrate($form->getData());
+
             $stockUnits = (int) ceil(
-                (int) $requestData['quantity'] / (int) $requestData['leQuantity'],
+                (int) $stockIn->getQuantity() / (int) $stockIn->getLeQuantity(),
             );
 
-            $stockSystem = match ($requestData['standardLoadingEquipment']) {
+            $stockSystem = match ($stockIn->getStandardLoadingEquipment()) {
                 'KARTON' => StockEvents::KARTON,
                 'PALETTE' => StockEvents::PALETTE,
                 'BLOCK' => StockEvents::BLOCK,
                 default => 'KST',
             };
 
-            $fullPal = intdiv((int) $requestData['quantity'], (int) $requestData['leQuantity']);
-            $remainder = fmod((float) $requestData['quantity'], (float) $requestData['leQuantity']);
+            $fullPal = intdiv((int)$stockIn->getQuantity(), (int) $stockIn->getLeQuantity());
+            $remainder = fmod((float) $stockIn->getQuantity(), (float) $stockIn->getLeQuantity());
             $suId = $this->getLastStockUnit();
-            $quantity = ($requestData['quantity'] - $requestData['leQuantity'] !== 0) ? $requestData['leQuantity'] : $remainder;
+            $quantity = ($stockIn->getQuantity() - $stockIn->getLeQuantity() !== 0) ? $stockIn->getLeQuantity() : $remainder;
             $stockLocations = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $fullPal);
 
             if ((int) $remainder !== 0) {
                 $stockLocationsNew = $this->stockLocationHasSpaceForAddingRemainder(
-                    (int) $requestData['articleId'],
-                    (int) $requestData['leQuantity'],
+                    (int) $stockIn->getArticleId(),
+                    (int) $stockIn->getLeQuantity(),
                     $remainder,
                     $suId,
                 );
@@ -63,28 +68,29 @@ class StockInEvent extends BaseEvent
             }
 
             foreach ($stockLocations as $key => $stockLocation) {
+                $stockLocation = StockLocationDto::hydrate($stockLocation);
                 if ((int) $remainder !== 0) {
                     $quantity = $key === array_key_last($stockLocations) ? number_format(
                         $remainder,
                         2,
                         '.',
                         ''
-                    ) : $requestData['leQuantity'];
+                    ) : $stockIn->getLeQuantity();
                 }
 
                 if ($fullPal <= $stockUnits) {
-                    $freeStockLocations[] = [
-                        'id' => (int) $stockLocation['id'],
-                        'su_id' => ++$suId,
-                        'ln' => (int) $stockLocation['ln'],
-                        'fb' => (int) $stockLocation['fb'],
-                        'sp' => (int) $stockLocation['sp'],
-                        'tf' => (int) $stockLocation['tf'],
-                        'ln_komplett' => (int) $stockLocation['ln'] . '-' . (int) $stockLocation['fb'] . '-' . (int) $stockLocation['sp'] . '-' . (int) $stockLocation['tf'],
-                        'koordinate' => $stockLocation['koordinate'],
-                        'system' => $stockLocation['system'],
-                        'quantity' => $quantity,
-                    ];
+                    $freeStockLocations[] = (new FreeStockLocationDto())
+                        ->setId($stockLocation->getId())
+                        ->setSuId(++$suId)
+                        ->setLn((int) $stockLocation->getLn())
+                        ->setFb((int) $stockLocation->getFb())
+                        ->setSp((int) $stockLocation->getSp())
+                        ->setTf((int) $stockLocation->getTf())
+                        ->setLnKomplett($stockLocation->getLnKomplett())
+                        ->setKoordinate($stockLocation->getKoordinate())
+                        ->setSystem($stockLocation->getSystem())
+                        ->setQuantity($quantity)
+                        ->setLeQuantity($stockIn->getLeQuantity());
                 }
             }
 
@@ -93,8 +99,6 @@ class StockInEvent extends BaseEvent
                     StockInFinalType::class,
                     ['freeStockLocations' => $freeStockLocations]
                 );
-
-            // @TODO Eine Option finden, um im Formular mehrere Spalten zu nutzen!
 
             $html = $this->twigEnvironment->render(
                 'modal/put_into_storage.html.twig',
@@ -107,8 +111,10 @@ class StockInEvent extends BaseEvent
                     'page' => 'Einlagern direkt',
                     'stockInFinalForm' => $stockInFinal->createView(),
                     'freeStockLocations' => $freeStockLocations,
-                    'charge' => $requestData['charge'],
-                    'article_nr' => $requestData['articleNr'],
+                    'charge' => $stockIn->getCharge(),
+                    'article_nr' => $stockIn->getArticleNr(),
+                    'article_id' => $stockIn->getArticleId(),
+                    'stock_location_id' => $stockIn->getStockLocationId(),
                     'booking_method' => $bookingMethod,
                     'loading_equipment' => $stockSystem,
                 ]
@@ -144,22 +150,24 @@ class StockInEvent extends BaseEvent
         $occupiedStockLocations = $this->stockLocationService->getOccupiedStockLocationsByArticleId($articleId);
 
         foreach ($occupiedStockLocations as $occupiedStockLocation) {
-            $sumLeQuantity = $occupiedStockLocation['in_stock'] + $occupiedStockLocation['incoming_stock'] + $occupiedStockLocation['reserved_stock'];
+            $occupiedStockLocation = OccupiedStockLocationDto::hydrate($occupiedStockLocation);
+            $sumLeQuantity = $occupiedStockLocation->getInStock() + $occupiedStockLocation->getIncomingStock() + $occupiedStockLocation->getReservedStock();
             if (($sumLeQuantity + $remainder) <= $leQuantity) {
-                $withSpaceForAddingRemainder = $this->stockLocationService->getStockLocationById((int) $occupiedStockLocation['id']);
+                $withSpaceForAddingRemainder = $this->stockLocationService->getStockLocationById((int) $occupiedStockLocation->getId());
+
                 $freeStockLocations[] = [
-                    'id' => $withSpaceForAddingRemainder[0]['stock_location_id'],
+                    'id' => $withSpaceForAddingRemainder->getStockLocationId(),
                     'su_id' => ++$suId,
-                    'ln' => $withSpaceForAddingRemainder[0]['stock_location_ln'],
-                    'fb' => $withSpaceForAddingRemainder[0]['stock_location_fb'],
-                    'sp' => $withSpaceForAddingRemainder[0]['stock_location_sp'],
-                    'tf' => $withSpaceForAddingRemainder[0]['stock_location_tf'],
-                    'ln_komplett' => $withSpaceForAddingRemainder[0]['stock_location_ln'] . '-' .
-                        $withSpaceForAddingRemainder[0]['stock_location_fb'] . '-' .
-                        $withSpaceForAddingRemainder[0]['stock_location_sp'] . '-' .
-                        $withSpaceForAddingRemainder[0]['stock_location_tf'],
-                    'koordinate' => $withSpaceForAddingRemainder[0]['stock_location_coordinate'],
-                    'system' => $withSpaceForAddingRemainder[0]['stock_location_desc'],
+                    'ln' => $withSpaceForAddingRemainder->getStockLocationLn(),
+                    'fb' => $withSpaceForAddingRemainder->getStockLocationFb(),
+                    'sp' => $withSpaceForAddingRemainder->getStockLocationSp(),
+                    'tf' => $withSpaceForAddingRemainder->getStockLocationTf(),
+                    'ln_komplett' => $withSpaceForAddingRemainder->getStockLocationLn() . '-' .
+                        $withSpaceForAddingRemainder->getStockLocationFb() . '-' .
+                        $withSpaceForAddingRemainder->getStockLocationSp() . '-' .
+                        $withSpaceForAddingRemainder->getStockLocationTf(),
+                    'koordinate' => $withSpaceForAddingRemainder->getStockLocationCoordinate(),
+                    'system' => $withSpaceForAddingRemainder->getStockLocationDesc(),
                     'quantity' => $remainder,
                 ];
             }
