@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\ArticleEntity;
 
 /**
- * @package:    WebWMS\Form
+ * @package:    WebWMS\Form\Article
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        EditArticleType

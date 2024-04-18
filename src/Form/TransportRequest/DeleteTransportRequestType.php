@@ -2,36 +2,34 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Form\Article;
+namespace WebWMS\Form\TransportRequest;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\ArticleEntity;
+use WebWMS\Entity\TransportRequestEntity;
 
 /**
- * @package:    WebWMS\Form\Article
+ * @package:    WebWMS\Form\TransportRequest
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        DeleteArticleType
+ * Class        DeleteTransportRequestType
  */
-class DeleteArticleType extends AbstractType
+class DeleteTransportRequestType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
-     * @SuppressWarnings(PHPMD.ElseExpression)
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('articleId', HiddenType::class, [
+            ->add('id', HiddenType::class, [
                 'label' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'id' => 'articleNr',
-                    'data-type' => 'articleNr',
+                    'id' => 'id',
                 ],
             ])
             ->add('delete', ButtonType::class, [
@@ -52,7 +50,7 @@ class DeleteArticleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ArticleEntity::class,
+            'data_class' => TransportRequestEntity::class,
         ]);
     }
 }
