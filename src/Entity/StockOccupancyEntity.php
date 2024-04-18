@@ -32,6 +32,9 @@ class StockOccupancyEntity
     #[ORM\Column(name: 'stock_location_id', type: Types::INTEGER, nullable: false)]
     private int $stockLocationId;
 
+    #[ORM\Column(name: 'stock_coordinate', type: Types::STRING, length: 25, nullable: false)]
+    private string $stockCoordinate;
+
     #[ORM\Column(name: 'article_id', type: Types::INTEGER, nullable: true, options: ['default' => null])]
     private ?int $articleId;
 
@@ -76,6 +79,18 @@ class StockOccupancyEntity
     public function setStockLocationId(int $stockLocationId): self
     {
         $this->stockLocationId = $stockLocationId;
+
+        return $this;
+    }
+
+    public function getStockCoordinate(): string
+    {
+        return $this->stockCoordinate;
+    }
+
+    public function setStockCoordinate(string $stockCoordinate): self
+    {
+        $this->stockCoordinate = $stockCoordinate;
 
         return $this;
     }
