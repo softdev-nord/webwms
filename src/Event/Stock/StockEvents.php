@@ -13,6 +13,8 @@ namespace WebWMS\Event\Stock;
 class StockEvents
 {
     public const KARTON = 'Durchlaufregal';
+
     public const PALETTE = 'Pal Regal';
+
     public const BLOCK = 'Block-Lager';
 }

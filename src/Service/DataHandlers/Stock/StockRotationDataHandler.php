@@ -59,21 +59,29 @@ class StockRotationDataHandler
     {
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
         $queryBuilder
-            ->select('str.id, bm.movement_type, bm.description, str.stock_location_id,
-                    CONCAT(stl.stock_location_ln, "-", stl.stock_location_fb, "-", stl.stock_location_sp, "-", stl.stock_location_tf) AS stock_location,
-                    stl.stock_location_desc, art.article_nr, art.article_name, str.pos_quantity, usr.username, str.access_date, str.dispatch_date')
+            ->select(
+                'str.id,
+                 bm.movement_type,
+                 bm.description,
+                 str.stock_location_id,
+                 CONCAT(stl.stock_location_ln, "-", stl.stock_location_fb, "-", stl.stock_location_sp, "-", stl.stock_location_tf) AS stock_location,
+                 stl.stock_location_desc,
+                 art.article_nr,
+                 art.article_name,
+                 str.pos_quantity,
+                 usr.username,
+                 str.access_date,
+                 str.dispatch_date,
+                 co.customer_order_nr,
+                 so.supplier_order_nr')
             ->from('stock_rotation', 'str')
-            ->innerJoin('str', 'stock_location', 'stl', 'stl.stock_location_id = str.stock_location_id')
-            ->innerJoin('str', 'article', 'art', 'art.article_id = str.article_id')
-            ->innerJoin('str', 'user', 'usr', 'usr.id = str.usr_id')
-            ->innerJoin('str', 'booking_method', 'bm', 'bm.id = str.movement_id')
+            ->leftJoin('str', 'stock_location', 'stl', 'str.stock_location_id = stl.stock_location_id')
+            ->leftJoin('str', 'article', 'art', 'str.article_id = art.article_id')
+            ->leftJoin('str', 'user', 'usr', 'str.usr_id = usr.id')
+            ->leftJoin('str', 'booking_method', 'bm', 'bm.id = str.movement_id')
+            ->leftJoin('str', 'supplier_orders', 'so', 'str.supplier_order_id = so.supplier_order_id')
+            ->leftJoin('str', 'customer_orders', 'co', 'str.customer_order_id = co.customer_order_id')
             ->groupBy('str.id');
-
-        //        $queryBuilder
-        //            ->select('*')
-        //            ->from('transport_history', 'tph')
-        //            ->innerJoin('tph', 'booking_method', 'bm', 'bm.movement_type = tph.booking_method')
-        //            ->groupBy('stock_coordinate');
 
         $result = $queryBuilder->executeQuery();
 

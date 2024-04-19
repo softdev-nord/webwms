@@ -38,11 +38,7 @@ class StockLocationService
             );
     }
 
-    /**
-     * @throws Exception
-     * @return array<string|int|mixed>
-     */
-    public function getStockLocationById(int $stockLocationId): array
+    public function getStockLocationById(int $stockLocationId): ?StockLocationEntity
     {
         return $this->stockLocationDataHandler->getStockLocationById($stockLocationId);
     }

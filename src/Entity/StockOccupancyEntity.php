@@ -36,16 +36,16 @@ class StockOccupancyEntity
     private string $stockCoordinate;
 
     #[ORM\Column(name: 'article_id', type: Types::INTEGER, nullable: true, options: ['default' => null])]
-    private ?int $articleId;
+    private ?int $articleId = null;
 
     #[ORM\Column(name: 'in_stock', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true, options: ['default' => null])]
-    private ?float $inStock;
+    private ?float $inStock = null;
 
     #[ORM\Column(name: 'incoming_stock', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true, options: ['default' => null])]
-    private ?float $incomingStock;
+    private ?float $incomingStock = null;
 
     #[ORM\Column(name: 'reserved_stock', type: Types::DECIMAL, precision: 10, scale: 2, nullable: true, options: ['default' => null])]
-    private ?float $reservedStock;
+    private ?float $reservedStock = null;
 
     #[ORM\Column(name: 'last_incoming', type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => null])]
     private ?DateTimeInterface $lastIncoming = null;

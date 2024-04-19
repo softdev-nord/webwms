@@ -73,8 +73,12 @@ class StockOccupancyController extends AbstractController
     {
         $stockResults = $this->stockOccupancyService->getStockOccupancyByCoordinate($request);
 
-        if ($stockResults === []) {
-            $stockResults['info'] = 'Keine Details vorhanden, da der Lagerplatz aktuell nicht belegt ist.';
+        foreach ($stockResults as $stockResult) {
+            if ($stockResult['in_stock'] === null && $stockResult['incoming_stock'] === null && $stockResult['reserved_stock'] === null) {
+                $stockResult['info'] = 'Keine Details vorhanden, da der Lagerplatz aktuell nicht belegt ist.';
+            }
+
+            $stockResults = $stockResult;
         }
 
         return $this->render(

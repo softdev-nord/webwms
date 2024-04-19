@@ -11,6 +11,8 @@ use WebWMS\Helper\HydrateStaticTrait;
  * @author:     SoftDev Nord, Rene Irrgang
  * @copyright:  Copyright © 2019-2023, SoftDev Nord
  * Class        OccupiedStockLocationDto
+ *
+ * @SuppressWarnings(PHPMD.ShortVariable)
  */
 class OccupiedStockLocationDto
 {

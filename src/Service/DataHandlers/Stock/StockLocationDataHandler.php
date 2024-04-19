@@ -44,22 +44,11 @@ class StockLocationDataHandler
             ->findOneBy(['stockLocationCoordinate' => $stockLocationCoordinate]);
     }
 
-    /**
-     * @throws Exception
-     * @return array<string|int|mixed>
-     */
-    public function getStockLocationById(int $stockLocationId): array
+    public function getStockLocationById(int $stockLocationId): ?StockLocationEntity
     {
-
-        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
-
-        $queryBuilder
-            ->select('*')
-            ->from('stock_location', 'so')
-            ->where('so.stock_location_id = :stock_location_id')
-            ->setParameter('stock_location_id', $stockLocationId);
-
-        return $queryBuilder->executeQuery()->fetchAllAssociative();
+        return $this->entityManager
+            ->getRepository(StockLocationEntity::class)
+            ->findOneBy(['stockLocationId' => $stockLocationId]);
     }
 
     /**
@@ -72,7 +61,7 @@ class StockLocationDataHandler
             ->getRepository(StockLocationEntity::class)
             ->findBy(['stockLocationId' => $stockLocationId]);
 
-        if ($stockLocation == null) {
+        if ($stockLocation === null) {
             throw new \Exception('Keine Details für den gewählten Lagerort gefunden.');
         }
 
@@ -144,7 +133,6 @@ class StockLocationDataHandler
     }
 
     /**
-     * @throws Exception
      * @return array<object>
      */
     public function getAllStockLocationsForSelect(): array
@@ -169,7 +157,7 @@ class StockLocationDataHandler
             ->getRepository(StockLocationEntity::class)
             ->findAll();
 
-        if ($stockLocation == null) {
+        if ($stockLocation === null) {
             throw new \Exception('Keine Lagerorte gefunden');
         }
 
@@ -252,10 +240,10 @@ class StockLocationDataHandler
             sl.stock_location_fb AS fb,
             sl.stock_location_sp AS sp,
             sl.stock_location_tf AS tf,
-            sl.stock_location_desc,
-            so.in_stock,
-            so.incoming_stock,
-            so.reserved_stock')
+            sl.stock_location_desc AS stockLocationDesc,
+            so.in_stock AS inStock,
+            so.incoming_stock AS incomingStock,
+            so.reserved_stock AS reservedStock')
             ->from('stock_occupancy', 'so')
             ->rightJoin('so', 'stock_location', 'sl', 'so.stock_location_id = sl.stock_location_id')
             ->where('so.article_id = :article_id')

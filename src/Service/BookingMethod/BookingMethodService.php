@@ -18,7 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
 class BookingMethodService
 {
     public const KARTON = 'Durchlaufregal';
+
     public const PALETTE = 'Pal Regal';
+
     public const BLOCK = 'Block-Lager';
 
     /**

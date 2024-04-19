@@ -20,17 +20,17 @@ class StockOccupancyEventSubscriber implements EventSubscriberInterface
     {
         return [
             StockOccupancyCreateEvent::EVENT_NAME => 'onStockOccupancyCreate',
-            StockOccupancyUpdateEvent::EVENT_NAME => 'onStockOccupancyDelete',
+            StockOccupancyUpdateEvent::EVENT_NAME => 'onStockOccupancyUpdate',
         ];
     }
 
-    public function onStockOccupancyCreate(StockOccupancyCreateEvent $event)
+    public function onStockOccupancyCreate(StockOccupancyCreateEvent $event): StockOccupancyCreateEvent
     {
-
+        return $event;
     }
 
-    public function onStockOccupancyDelete(StockOccupancyCreateEvent $event)
+    public function onStockOccupancyUpdate(StockOccupancyUpdateEvent $event): StockOccupancyUpdateEvent
     {
-
+        return $event;
     }
 }

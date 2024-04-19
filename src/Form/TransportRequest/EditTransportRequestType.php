@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebWMS\Form\TransportRequest;
 
 use Symfony\Component\Form\AbstractType;
@@ -16,6 +18,10 @@ use WebWMS\Entity\TransportRequestEntity;
 
 class EditTransportRequestType extends AbstractType
 {
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var TransportRequestEntity $formData */

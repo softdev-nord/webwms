@@ -12,6 +12,7 @@ use WebWMS\Dto\FreeStockLocationDto;
 use WebWMS\Dto\OccupiedStockLocationDto;
 use WebWMS\Dto\StockInDto;
 use WebWMS\Dto\StockLocationDto;
+use WebWMS\Entity\StockLocationEntity;
 use WebWMS\Event\BaseEvent;
 use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
@@ -89,7 +90,7 @@ class StockInEvent extends BaseEvent
                         ->setLnKomplett($stockLocation->getLnKomplett())
                         ->setKoordinate($stockLocation->getKoordinate())
                         ->setSystem($stockLocation->getSystem())
-                        ->setQuantity($quantity)
+                        ->setQuantity((string) $quantity)
                         ->setLeQuantity($stockIn->getLeQuantity());
                 }
             }
@@ -155,21 +156,23 @@ class StockInEvent extends BaseEvent
             if (($sumLeQuantity + $remainder) <= $leQuantity) {
                 $withSpaceForAddingRemainder = $this->stockLocationService->getStockLocationById((int) $occupiedStockLocation->getId());
 
-                $freeStockLocations[] = [
-                    'id' => $withSpaceForAddingRemainder->getStockLocationId(),
-                    'su_id' => ++$suId,
-                    'ln' => $withSpaceForAddingRemainder->getStockLocationLn(),
-                    'fb' => $withSpaceForAddingRemainder->getStockLocationFb(),
-                    'sp' => $withSpaceForAddingRemainder->getStockLocationSp(),
-                    'tf' => $withSpaceForAddingRemainder->getStockLocationTf(),
-                    'ln_komplett' => $withSpaceForAddingRemainder->getStockLocationLn() . '-' .
-                        $withSpaceForAddingRemainder->getStockLocationFb() . '-' .
-                        $withSpaceForAddingRemainder->getStockLocationSp() . '-' .
-                        $withSpaceForAddingRemainder->getStockLocationTf(),
-                    'koordinate' => $withSpaceForAddingRemainder->getStockLocationCoordinate(),
-                    'system' => $withSpaceForAddingRemainder->getStockLocationDesc(),
-                    'quantity' => $remainder,
-                ];
+                if ($withSpaceForAddingRemainder instanceof StockLocationEntity) {
+                    $freeStockLocations[] = [
+                        'id' => $withSpaceForAddingRemainder->getStockLocationId(),
+                        'su_id' => ++$suId,
+                        'ln' => $withSpaceForAddingRemainder->getStockLocationLn(),
+                        'fb' => $withSpaceForAddingRemainder->getStockLocationFb(),
+                        'sp' => $withSpaceForAddingRemainder->getStockLocationSp(),
+                        'tf' => $withSpaceForAddingRemainder->getStockLocationTf(),
+                        'ln_komplett' => $withSpaceForAddingRemainder->getStockLocationLn() . '-' .
+                            $withSpaceForAddingRemainder->getStockLocationFb() . '-' .
+                            $withSpaceForAddingRemainder->getStockLocationSp() . '-' .
+                            $withSpaceForAddingRemainder->getStockLocationTf(),
+                        'koordinate' => $withSpaceForAddingRemainder->getStockLocationCoordinate(),
+                        'system' => $withSpaceForAddingRemainder->getStockLocationDesc(),
+                        'quantity' => $remainder,
+                    ];
+                }
             }
         }
 

@@ -9,6 +9,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,7 @@ use WebWMS\Event\Stock\StockInEvent;
 use WebWMS\Event\Stock\StockInFromGoodsReceiptEvent;
 use WebWMS\Event\Stock\StockInFromProductionEvent;
 use WebWMS\Service\BookingMethod\BookingMethodService;
+use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\TransportHistory\TransportHistoryService;
@@ -42,7 +44,8 @@ class StockTransactionController extends AbstractController
         private readonly TransportHistoryService $transportHistoryService,
         private readonly FormFactoryInterface $formFactory,
         private readonly Environment $twigEnvironment,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly LoggingService $loggingService
     ) {
     }
 
@@ -385,7 +388,7 @@ class StockTransactionController extends AbstractController
      * @SuppressWarnings(PHPMD.ExitExpression)
      */
     #[Route('/stock_in_final', name: 'stock_in_final')]
-    public function stockInFinal(Request $request): void
+    public function stockInFinal(Request $request): ?JsonResponse
     {
         $user = '';
         $clientIp = $request->getClientIp() ?? '';
@@ -394,7 +397,21 @@ class StockTransactionController extends AbstractController
             $user = $this->getUser()->getUserIdentifier();
         }
 
-        $this->transportRequestService->createTransportRequest($request, $user, $clientIp);
+        $responseData = [];
+
+        $response = $this->transportRequestService->createTransportRequest($request, $user, $clientIp);
+        $responseData['message'] = 'Der Transportauftrag wurde erfolgreich erstellt.';
+
+        if ($response?->getContent() === 'success') {
+            $responseData['message'] = 'Der Transportauftrag wurde erfolgreich erstellt.';
+            $logMessage = 'Der Transportauftrag wurde erfolgreich erstellt.';
+
+            $this->loggingService->write($request, $logMessage, $user);
+
+            return new JsonResponse($responseData);
+        }
+
+        return new JsonResponse($responseData);
     }
 
     /**
