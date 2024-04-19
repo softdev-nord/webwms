@@ -8,6 +8,7 @@ use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\TransportRequestEntity;
 use WebWMS\Service\DataHandlers\TransportRequest\TransportRequestDataHandler;
@@ -33,17 +34,33 @@ final class TransportRequestServiceTest extends TestCase
         $this->transportRequestService = new TransportRequestService($this->mockObject);
     }
 
-    public function testGetTransportRequestById(): void
+    public function testGetTransportRequestByIdReturnsNull(): void
     {
+        $transportRequestId = 1;
         $this->mockObject
             ->expects(self::once())
             ->method('getTransportRequestById')
-            ->with(1)
-            ->willReturn(['id' => 1, 'name' => 'Transport Request']);
+            ->with($transportRequestId)
+            ->willReturn(null);
 
         $result = $this->transportRequestService->getTransportRequestById(1);
 
-        self::assertEquals(['id' => 1, 'name' => 'Transport Request'], $result);
+        self::assertNull($result);
+    }
+
+    public function testGetTransportRequestById(): void
+    {
+        $transportRequestId = 1;
+        $transportRequest = new TransportRequestEntity();
+        $this->mockObject
+            ->expects(self::once())
+            ->method('getTransportRequestById')
+            ->with($transportRequestId)
+            ->willReturn($transportRequest);
+
+        $result = $this->transportRequestService->getTransportRequestById(1);
+
+        self::assertSame($transportRequest, $result);
     }
 
     public function testGetAllOpenTransportRequests(): void
@@ -52,15 +69,13 @@ final class TransportRequestServiceTest extends TestCase
             ->expects(self::once())
             ->method('getAllOpenTransportRequests')
             ->willReturn(
-                [
-                    ['id' => 1, 'name' => 'Transport Request 1'],
-                    ['id' => 2, 'name' => 'Transport Request 2'],
-                ]
+                new JsonResponse()
             );
 
         $result = $this->transportRequestService->getAllOpenTransportRequests();
 
-        self::assertEquals([['id' => 1, 'name' => 'Transport Request 1'], ['id' => 2, 'name' => 'Transport Request 2']], $result);
+        self::assertInstanceOf(JsonResponse::class, $result);
+        // self::assertEquals([['id' => 1, 'name' => 'Transport Request 1'], ['id' => 2, 'name' => 'Transport Request 2']], $result);
     }
 
     public function testCreateTransportRequest(): void

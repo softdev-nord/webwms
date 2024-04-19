@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Stock;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Service\DataHandlers\Stock\StockOccupancyDataHandler;
+use WebWMS\Service\DateTimeService;
 use WebWMS\Service\Stock\StockOccupancyService;
 
 /**
@@ -24,13 +24,15 @@ final class StockOccupancyServiceTest extends TestCase
 {
     private StockOccupancyService $stockOccupancyService;
 
+    private DateTimeService $dateTimeService;
+
     private MockObject $mockObject;
 
-    #[Override]
     protected function setUp(): void
     {
         $this->mockObject = $this->createMock(StockOccupancyDataHandler::class);
-        $this->stockOccupancyService = new StockOccupancyService($this->mockObject);
+        $this->dateTimeService = new DateTimeService();
+        $this->stockOccupancyService = new StockOccupancyService($this->mockObject, $this->dateTimeService);
     }
 
     public function testGetAllStockOccupancy(): void
@@ -49,26 +51,36 @@ final class StockOccupancyServiceTest extends TestCase
 
     public function testGetStockOccupancyByCoordinate(): void
     {
-        $stockLocationCoordinate = 'ABC';
-        $request = new Request([], [], ['stock_location_coordinate' => $stockLocationCoordinate], [], [], []);
-
-        $jsonResponse = new JsonResponse(
+        $stockLocationCoordinate = '101000100010001';
+        $request = new Request(
+            [],
+            [],
             [
-                ['id' => 1, 'koordinate' => 'XYZ'],
-                ['id' => 2, 'koordinate' => 'ABC'],
-                ['id' => 3, 'koordinate' => 'ABC'],
-            ]
+                'stock_location_coordinate' => $stockLocationCoordinate,
+            ],
+            [],
+            [],
+            []
         );
 
-        $expectedResult = [
-            ['id' => 2, 'koordinate' => 'ABC'],
-            ['id' => 3, 'koordinate' => 'ABC'],
-        ];
+        $expectedResult =
+            [
+                [
+                    'article_nr' => '60004',
+                    'stock_coordinate' => '101000100010001',
+                    'article_name' => 'Telefon MBO Alpha 1600 CT',
+                    'incoming_stock' => '480.00',
+                    'reserved_stock' => '0.00',
+                    'in_stock' => '0.00',
+                    'last_incoming' => '2024-04-10 17:08:33',
+                    'last_outgoing' => null,
+                ],
+            ];
 
         $this->mockObject
             ->expects(self::once())
-            ->method('getAllStockOccupancy')
-            ->willReturn($jsonResponse);
+            ->method('getStockOccupancyByCoordinate')
+            ->willReturn($expectedResult);
 
         $result = $this->stockOccupancyService->getStockOccupancyByCoordinate($request);
 

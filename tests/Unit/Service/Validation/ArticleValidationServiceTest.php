@@ -7,6 +7,7 @@ namespace WebWMS\Tests\Unit\Service\Validation;
 use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Entity\ArticleEntity;
 use WebWMS\Service\Validation\ArticleValidationService;
 
 /**
@@ -28,21 +29,20 @@ final class ArticleValidationServiceTest extends TestCase
 
     public function testValidateArticleDataReturnsErrorWhenRequiredFieldsAreEmpty(): void
     {
-        $requestData = [
-            'articleNr' => '',
-            'articleName' => '',
-            'articleCategory' => '',
-            'articleWeight' => '',
-            'articleEan' => '',
-            'articleUnit' => '',
-            'articleDepth' => '',
-            'articleWidth' => '',
-            'articleHeight' => '',
-            'stockOutStrategy' => '',
-            'standardLoadingEquipment' => '',
-        ];
+        $articleEntity = (new ArticleEntity())
+            ->setArticleNr('')
+            ->setArticleName('')
+            ->setArticleCategory('')
+            ->setArticleWeight(0.00)
+            ->setArticleEan('')
+            ->setArticleUnit('')
+            ->setArticleDepth(0.00)
+            ->setArticleWidth(0.00)
+            ->setArticleHeight(0.00)
+            ->setStockOutStrategy('')
+            ->setStandardLoadingEquipment('');
 
-        $responseData = $this->articleValidationService->validateArticleData($requestData);
+        $responseData = $this->articleValidationService->validateArticleData($articleEntity);
 
         self::assertArrayHasKey('error', $responseData);
         self::assertIsArray($responseData['error']);
@@ -50,21 +50,20 @@ final class ArticleValidationServiceTest extends TestCase
 
     public function testValidateArticleDataReturnsSuccessWhenAllFieldsAreValid(): void
     {
-        $requestData = [
-            'articleNr' => '12345',
-            'articleName' => 'Test ArticleController',
-            'articleCategory' => 'Test Category',
-            'articleWeight' => '1.2',
-            'articleEan' => '1234567890123',
-            'articleUnit' => 'Stk',
-            'articleDepth' => '100',
-            'articleWidth' => '200',
-            'articleHeight' => '300',
-            'stockOutStrategy' => 'FIFO',
-            'standardLoadingEquipment' => 'BLOCK',
-        ];
+        $articleEntity = (new ArticleEntity())
+            ->setArticleNr('12345')
+            ->setArticleName('Test Article')
+            ->setArticleCategory('Test Category')
+            ->setArticleWeight(1.2)
+            ->setArticleEan('1234567890123')
+            ->setArticleUnit('Stk')
+            ->setArticleDepth(100.00)
+            ->setArticleWidth(200.00)
+            ->setArticleHeight(300.00)
+            ->setStockOutStrategy('FIFO')
+            ->setStandardLoadingEquipment('BLOCK');
 
-        $responseData = $this->articleValidationService->validateArticleData($requestData);
+        $responseData = $this->articleValidationService->validateArticleData($articleEntity);
 
         self::assertArrayHasKey('success', $responseData);
         self::assertTrue($responseData['success']);
