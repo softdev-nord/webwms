@@ -183,11 +183,11 @@ final class ConfigurationServiceTest extends TestCase
     public function testItGetsPhpGeneralInformation(): void
     {
         // Define expected values based on your current PHP environment
-        $expectedVersion = '8.3.4';
-        $expectedVersionId = 80304;
+        $expectedVersion = '8.3.6';
+        $expectedVersionId = 80306;
         $expectedMajorVersion = 8;
         $expectedMinorVersion = 3;
-        $expectedReleaseVersion = 4;
+        $expectedReleaseVersion = 6;
         $expectedServerApi = 'cli';
         $expectedBinaryDir = '/usr/local/bin';
 
