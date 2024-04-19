@@ -88,6 +88,9 @@ phpmd: ## Run code check (phpmd)
 phpqa: ## Run code check (phpmd)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src';
 
+php-compatibility-check:
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'composer sniffer:php83';
+
 ######################################################################
 ############################ Twig Linter #############################
 ######################################################################
