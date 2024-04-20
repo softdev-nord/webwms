@@ -161,6 +161,7 @@ final class StockLocationServiceTest extends TestCase
     {
         $stockSystem = 'system1';
         $limit = 10;
+        $leQuantity = 500.00;
         $expectedResult = ['location1', 'location2'];
 
         $this->mockObject
@@ -169,7 +170,7 @@ final class StockLocationServiceTest extends TestCase
             ->with($stockSystem, $limit)
             ->willReturn($expectedResult);
 
-        $result = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $limit);
+        $result = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $limit, $leQuantity);
 
         self::assertSame($expectedResult, $result);
     }
@@ -178,6 +179,7 @@ final class StockLocationServiceTest extends TestCase
     {
         $stockSystem = 'Block-Lager';
         $limit = 10;
+        $leQuantity = 500.00;
         $stockLocations = [
             ['location1', 'belegt' => false],
             ['location2', 'belegt' => true],
@@ -191,7 +193,7 @@ final class StockLocationServiceTest extends TestCase
             ->with($stockSystem, $limit)
             ->willReturn($stockLocations);
 
-        $result = $this->stockLocationService->getFirstFreeStockLocation($stockSystem, $limit);
+        $result = $this->stockLocationService->getFirstFreeStockLocation($stockSystem, $limit, $leQuantity);
 
         self::assertSame($expectedResult, $result);
     }

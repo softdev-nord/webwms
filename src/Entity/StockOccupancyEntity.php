@@ -148,9 +148,11 @@ class StockOccupancyEntity
         return $this->lastIncoming;
     }
 
-    public function setLastIncoming(?DateTimeInterface $lastIncoming): void
+    public function setLastIncoming(?DateTimeInterface $lastIncoming): self
     {
         $this->lastIncoming = $lastIncoming;
+
+        return $this;
     }
 
     public function getLastOutgoing(): ?DateTimeInterface
@@ -158,9 +160,11 @@ class StockOccupancyEntity
         return $this->lastOutgoing;
     }
 
-    public function setLastOutgoing(?DateTimeInterface $lastOutgoing): void
+    public function setLastOutgoing(?DateTimeInterface $lastOutgoing): self
     {
         $this->lastOutgoing = $lastOutgoing;
+
+        return $this;
     }
 
     public function getCreatedAt(): ?DateTimeInterface

@@ -42,6 +42,8 @@ class StockInFinalDto
 
     public ?string $article_nr = null;
 
+    public ?string $article_id = null;
+
     public ?string $booking_method = null;
 
     public ?string $loading_equipment = null;
@@ -178,6 +180,18 @@ class StockInFinalDto
     public function setArticleNr(?string $article_nr): self
     {
         $this->article_nr = $article_nr;
+
+        return $this;
+    }
+
+    public function getArticleId(): ?string
+    {
+        return $this->article_id;
+    }
+
+    public function setArticleId(?string $article_id): self
+    {
+        $this->article_id = $article_id;
 
         return $this;
     }

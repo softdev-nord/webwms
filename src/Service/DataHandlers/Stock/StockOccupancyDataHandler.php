@@ -225,8 +225,6 @@ class StockOccupancyDataHandler
 
         $result = $queryBuilder->executeQuery();
 
-        // dd($result->fetchAllAssociative());
-
         return new JsonResponse($result->fetchAllAssociative());
     }
 }

@@ -98,19 +98,24 @@ class StockLocationService
      * @throws Exception
      * @return array<string|int|mixed>
      */
-    public function getAllFreeStockLocationsWithLimit(string $stockSystem, int $limit): array
+    public function getAllFreeStockLocationsWithLimit(string $stockSystem, int $limit, float $leQuantity): array
     {
-        return $this->stockLocationDataHandler->getAllFreeStockLocationsWithLimit($stockSystem, $limit);
+        return $this->stockLocationDataHandler
+            ->getAllFreeStockLocationsWithLimit(
+                $stockSystem,
+                $limit,
+                $leQuantity
+            );
     }
 
     /**
      * @throws Exception
      * @return array<int, mixed>
      */
-    public function getFirstFreeStockLocation(string $stockSystem, int $limit): array
+    public function getFirstFreeStockLocation(string $stockSystem, int $limit, float $leQuantity): array
     {
         $freeStockLocation = [];
-        $stockLocations = $this->getAllFreeStockLocationsWithLimit($stockSystem, $limit);
+        $stockLocations = $this->getAllFreeStockLocationsWithLimit($stockSystem, $limit, $leQuantity);
 
         foreach ($stockLocations as $stockLocation) {
             if ($stockLocation['belegt'] !== true) {

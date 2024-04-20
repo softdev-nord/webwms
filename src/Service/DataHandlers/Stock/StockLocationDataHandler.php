@@ -122,9 +122,11 @@ class StockLocationDataHandler
             sl.stock_location_sp AS sp,
             sl.stock_location_tf AS tf,
             sl.stock_location_desc,
-            (SELECT SUM((SELECT IF(tr_type = 1, tr_quantity, 0.000))) FROM transport_history WHERE stock_coordinate = tph.stock_coordinate GROUP BY stock_coordinate LIMIT 1) - (SELECT SUM((SELECT IF(tr_type = 2, tr_quantity, 0.000))) FROM transport_history WHERE stock_coordinate = tph.stock_coordinate GROUP BY stock_coordinate LIMIT 1) AS lp_bestand')
-            ->from('transport_history', 'tph')
-            ->rightJoin('tph', 'stock_location', 'sl', 'tph.stock_coordinate = sl.stock_location_coordinate')
+            so.in_stock,
+            so.incoming_stock,
+            so.reserved_stock')
+            ->from('stock_location', 'sl')
+            ->join('sl', 'stock_occupancy', 'so', 'sl.stock_location_coordinate = so.stock_coordinate')
             ->where('sl.stock_location_desc = :system')
             ->setParameter('system', $stockSystem)
             ->groupBy('sl.stock_location_coordinate');
@@ -198,13 +200,14 @@ class StockLocationDataHandler
      * @throws Exception
      * @return array<string|int|mixed>
      */
-    public function getAllFreeStockLocationsWithLimit(string $stockSystem, int $limit): array
+    public function getAllFreeStockLocationsWithLimit(string $stockSystem, int $limit, float $leQuantity): array
     {
         $allResults = [];
         $results = $this->getAllStockLocationsQuery($stockSystem);
 
         foreach ($results as $result) {
-            if ($result['lp_bestand'] !== null) {
+            $sumInventory = $result['in_stock'] + $result['incoming_stock'] + $result['reserved_stock'];
+            if ($sumInventory === $leQuantity) {
                 continue;
             }
 

@@ -120,7 +120,6 @@ class ArticleDataHandler
             }
         }
 
-        // dd($data);
         return new JsonResponse($data);
     }
 

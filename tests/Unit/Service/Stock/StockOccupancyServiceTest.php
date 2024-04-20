@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Service\DataHandlers\Stock\StockOccupancyDataHandler;
-use WebWMS\Service\DateTimeService;
 use WebWMS\Service\Stock\StockOccupancyService;
 
 /**
@@ -24,15 +23,12 @@ final class StockOccupancyServiceTest extends TestCase
 {
     private StockOccupancyService $stockOccupancyService;
 
-    private DateTimeService $dateTimeService;
-
     private MockObject $mockObject;
 
     protected function setUp(): void
     {
         $this->mockObject = $this->createMock(StockOccupancyDataHandler::class);
-        $this->dateTimeService = new DateTimeService();
-        $this->stockOccupancyService = new StockOccupancyService($this->mockObject, $this->dateTimeService);
+        $this->stockOccupancyService = new StockOccupancyService($this->mockObject);
     }
 
     public function testGetAllStockOccupancy(): void

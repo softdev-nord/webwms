@@ -55,7 +55,7 @@ class StockInEvent extends BaseEvent
             $remainder = fmod((float) $stockIn->getQuantity(), (float) $stockIn->getLeQuantity());
             $suId = $this->getLastStockUnit();
             $quantity = ($stockIn->getQuantity() - $stockIn->getLeQuantity() !== 0) ? $stockIn->getLeQuantity() : $remainder;
-            $stockLocations = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $fullPal);
+            $stockLocations = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $fullPal, (float) $stockIn->getLeQuantity());
 
             if ((int) $remainder !== 0) {
                 $stockLocationsNew = $this->stockLocationHasSpaceForAddingRemainder(

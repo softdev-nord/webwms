@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Stock;
 
+use DateTime;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use WebWMS\Dto\StockInFinalDto;
 use WebWMS\Entity\StockOccupancyEntity;
 use WebWMS\Service\DataHandlers\Stock\StockOccupancyDataHandler;
-use WebWMS\Service\DateTimeService;
 
 /**
  * @package:    WebWMS\Service\Stock
@@ -20,8 +21,7 @@ use WebWMS\Service\DateTimeService;
 class StockOccupancyService
 {
     public function __construct(
-        private readonly StockOccupancyDataHandler $stockOccupancyDataHandler,
-        private readonly DateTimeService $dateTimeService
+        private readonly StockOccupancyDataHandler $stockOccupancyDataHandler
     ) {
     }
 
@@ -98,27 +98,38 @@ class StockOccupancyService
         return $this->stockOccupancyDataHandler->getStockOccupancyByArticleId($articleId);
     }
 
-    public function updateStockOccupancy(StockOccupancyEntity $stockOccupancyEntity): void
+    public function updateStockOccupancy(StockInFinalDto $data, DateTime $actualDateTime): void
     {
-        $stockOccupancyEntity->setUpdatedAt($this->dateTimeService->createDateTime());
+        $stockOccupancy = $this
+            ->getStockOccupancyByStockLocationId(
+                (int) $data->getStockLocationId()
+            );
 
-        $this->save($stockOccupancyEntity);
-    }
+        if ($stockOccupancy instanceof StockOccupancyEntity) {
+            $stockOccupancy->setArticleId((int) $data->getArticleId());
 
-    public function deleteArticle(StockOccupancyEntity $stockOccupancyEntity): void
-    {
-        $this->delete($stockOccupancyEntity);
+            $stockOccupancy->getIncomingStock() === null || $stockOccupancy->getIncomingStock() === 0.00
+                ? $stockOccupancy->setIncomingStock((float) $stockOccupancy->getIncomingStock() + (float) $data->getStockQuantity())
+                : $stockOccupancy->setIncomingStock($stockOccupancy->getIncomingStock());
+
+            $stockOccupancy->setLastIncoming($actualDateTime);
+            $stockOccupancy->setCreatedAt($actualDateTime);
+            $stockOccupancy->setUpdatedAt($actualDateTime);
+
+            $this->save($stockOccupancy);
+        }
     }
 
     public function checkStockLocationFreeSpace(int $stockLocationId, string $leQuantity): float
     {
         $stockOccupancy = $this->stockOccupancyDataHandler->getStockOccupancyByStockLocationId($stockLocationId);
 
-        // dd($stockOccupancy);
-
-        if ($stockOccupancy instanceof StockOccupancyEntity && $stockOccupancy->getInStock() !== null && $stockOccupancy->getIncomingStock() !== null && $stockOccupancy->getReservedStock() !== null) {
+        if (
+            $stockOccupancy instanceof StockOccupancyEntity && $stockOccupancy->getInStock() !== null
+            && $stockOccupancy->getIncomingStock() !== null
+            && $stockOccupancy->getReservedStock() !== null
+        ) {
             $sumInventory = $stockOccupancy->getInStock() + $stockOccupancy->getIncomingStock() + $stockOccupancy->getReservedStock();
-            // dd((float) $leQuantity);
             if ($sumInventory != null && $sumInventory < $leQuantity) {
                 return $sumInventory;
             }

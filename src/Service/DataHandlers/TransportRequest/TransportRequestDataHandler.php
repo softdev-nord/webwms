@@ -86,49 +86,41 @@ class TransportRequestDataHandler
     {
         $requestData = (array) $request->request->all()['stock_in_final'];
         $entities = [];
+        $actualDateTime = $this->dateTimeService->createDateTime();
 
         try {
             foreach ($requestData as $key => $data) {
+                $data = StockInFinalDto::hydrate($data);
+
                 $entities[] = (new TransportRequestEntity())
-                    ->setSuId((int) $data['stock_su_id'])
+                    ->setSuId((int) $data->getStockSuId())
                     ->setTrNr($this->getLastTransportRequestNr() + 1)
                     ->setTrPos($key + 1)
                     ->setTrPrio(0)
-                    ->setArticleNr($data['article_nr'])
-                    ->setTrQuantity((float) $data['stock_quantity'])
-                    ->setStockCoordinate((string) $data['stock_coordinate'])
-                    ->setStockNr((int) $data['stock_ln'])
-                    ->setStockLevel1((int) $data['stock_fb'])
-                    ->setStockLevel2((int) $data['stock_sp'])
-                    ->setStockLevel3((int) $data['stock_tf'])
+                    ->setArticleNr((string) $data->getArticleNr())
+                    ->setTrQuantity((float) $data->getStockQuantity())
+                    ->setStockCoordinate((string) $data->getStockCoordinate())
+                    ->setStockNr((int) $data->getStockLn())
+                    ->setStockLevel1((int) $data->getStockFb())
+                    ->setStockLevel2((int) $data->getStockSp())
+                    ->setStockLevel3((int) $data->getStockTf())
                     ->setStockLevel4(1)
-                    ->setTrAccess($this->dateTimeService->createDateTime())
+                    ->setTrAccess($actualDateTime)
                     ->setTrState(0)
                     ->setOrderUsername($user)
-                    ->setBookingMethod((string) $data['booking_method'])
+                    ->setBookingMethod((string) $data->getBookingMethod())
                     ->setDocId(null)
-                    ->setCharge($data['charge'])
+                    ->setCharge((string) $data->getCharge())
                     ->setTrComputerIp($clientIp)
-                    ->setLoadingEquipment((string) $data['loading_equipment'])
+                    ->setLoadingEquipment((string) $data->getLoadingEquipment())
                     ->setTrType(1)
-                    ->setCreatedAt($this->dateTimeService->createDateTime());
+                    ->setCreatedAt($actualDateTime);
+
+                $this->stockOccupancyService->updateStockOccupancy($data, $actualDateTime);
             }
 
-            //            foreach ($entities as $entity) {
-            //                $test = $this->stockOccupancyService->getStockOccupancyByStockLocationId($entity->getStockCoordinate());
-            //                dd($test);
-            //
-            //                $this->entityManager->persist($entity);
-            //
-            //            }
-
-            foreach ($requestData as $data) {
-                $data = StockInFinalDto::hydrate($data);
-
-                $this->stockOccupancyService->checkStockLocationFreeSpace(
-                    (int) $data->getStockLocationId(),
-                    (string) $data->getLeQuantity()
-                );
+            foreach ($entities as $entity) {
+                $this->entityManager->persist($entity);
             }
 
             $this->entityManager->flush();
