@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\User\UserGroup;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +15,7 @@ use WebWMS\Service\User\UserGroup\UserGroupService;
 /**
  * @package:    WebWMS\Tests\Unit\Service\UserController\UserGroupEntity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        UserGroupServiceTest
  */
 #[CoversClass(UserGroupService::class)]
@@ -26,7 +25,6 @@ final class UserGroupServiceTest extends TestCase
 
     private MockObject $mockObject;
 
-    #[Override]
     protected function setUp(): void
     {
         $this->mockObject = $this->createMock(UserGroupDataHandler::class);

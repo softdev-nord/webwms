@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\BookingMethodEntity;
@@ -12,7 +11,7 @@ use WebWMS\Entity\BookingMethodEntity;
 /**
  * @package:    WebWMS\Tests\Unit\Entity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        BookingMethodTest
  */
 #[CoversClass(BookingMethodEntity::class)]
@@ -20,7 +19,6 @@ final class BookingMethodTest extends TestCase
 {
     private BookingMethodEntity $bookingMethodEntity;
 
-    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

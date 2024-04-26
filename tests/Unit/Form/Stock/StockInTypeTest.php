@@ -13,7 +13,7 @@ use WebWMS\Form\Stock\StockInType;
 /**
  * @package:    WebWMS\Tests\Unit\Form\Stock
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        StockInTypeTest
  */
 #[CoversClass(StockInType::class)]

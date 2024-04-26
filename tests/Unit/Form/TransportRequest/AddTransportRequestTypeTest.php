@@ -14,7 +14,7 @@ use WebWMS\Form\TransportRequest\AddTransportRequestType;
 /**
  * @package:    WebWMS\Tests\Unit\Form\TransportRequestEntity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        AddTransportRequestTypeTest
  */
 #[CoversClass(AddTransportRequestType::class)]

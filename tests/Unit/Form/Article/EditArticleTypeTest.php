@@ -14,7 +14,7 @@ use WebWMS\Form\Article\EditArticleType;
 /**
  * @package:    WebWMS\Tests\Unit\Form\ArticleController
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        EditArticleTypeTest
  *
  * @SuppressWarnings(PHPMD.ExcessiveMethodLength)

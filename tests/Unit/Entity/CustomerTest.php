@@ -6,7 +6,6 @@ namespace WebWMS\Tests\Unit\Entity;
 
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\CustomerEntity;
@@ -14,7 +13,7 @@ use WebWMS\Entity\CustomerEntity;
 /**
  * @package:    WebWMS\Tests\Unit\Entity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        CustomerTest
  */
 #[CoversClass(CustomerEntity::class)]
@@ -26,7 +25,6 @@ final class CustomerTest extends TestCase
 
     private ArrayCollection $collection;
 
-    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

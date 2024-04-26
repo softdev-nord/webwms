@@ -14,7 +14,7 @@ use WebWMS\Form\Supplier\EditSupplierType;
 /**
  * @package:    WebWMS\Tests\Unit\Form\SupplierEntity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        EditSupplierTypeTest
  */
 #[CoversClass(EditSupplierType::class)]

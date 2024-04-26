@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Entity;
 
 use DateTime;
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\TransportRequestEntity;
@@ -13,7 +12,7 @@ use WebWMS\Entity\TransportRequestEntity;
 /**
  * @package:    WebWMS\Tests\Unit\Entity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        TransportRequestTest
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -25,7 +24,6 @@ final class TransportRequestTest extends TestCase
 
     private DateTime $dateTime;
 
-    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

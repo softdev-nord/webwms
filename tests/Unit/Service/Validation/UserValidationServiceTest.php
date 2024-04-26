@@ -12,7 +12,7 @@ use WebWMS\Service\Validation\UserValidationService;
 /**
  * @package:    WebWMS\Tests\Unit\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        UserValidationServiceTest
  */
 #[CoversClass(UserValidationService::class)]

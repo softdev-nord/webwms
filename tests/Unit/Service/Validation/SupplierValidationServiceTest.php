@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Validation;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Service\Validation\SupplierValidationService;
@@ -12,7 +11,7 @@ use WebWMS\Service\Validation\SupplierValidationService;
 /**
  * @package:    WebWMS\Tests\Unit\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        SupplierValidationServiceTest
  */
 #[CoversClass(SupplierValidationService::class)]
@@ -20,7 +19,6 @@ final class SupplierValidationServiceTest extends TestCase
 {
     private SupplierValidationService $supplierValidationService;
 
-    #[Override]
     protected function setUp(): void
     {
         $this->supplierValidationService = new SupplierValidationService();

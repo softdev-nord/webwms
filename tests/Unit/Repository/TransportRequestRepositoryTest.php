@@ -12,7 +12,7 @@ use WebWMS\Repository\TransportRequestRepository;
 /**
  * @package:    WebWMS\Tests\Unit\Repository
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        TransportRequestRepositoryTest
  */
 #[CoversClass(TransportRequestRepository::class)]

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Service\Validation;
 
 use DateTimeImmutable;
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\SupplierOrderEntity;
@@ -14,7 +13,7 @@ use WebWMS\Service\Validation\SupplierOrderValidationService;
 /**
  * @package:    WebWMS\Tests\Unit\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        SupplierOrderValidationServiceTest
  */
 #[CoversClass(SupplierOrderValidationService::class)]
@@ -24,7 +23,6 @@ final class SupplierOrderValidationServiceTest extends TestCase
 
     private SupplierOrderEntity $supplierOrderEntity;
 
-    #[Override]
     protected function setUp(): void
     {
         $this->supplierOrderValidationService = new SupplierOrderValidationService();

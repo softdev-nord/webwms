@@ -14,7 +14,7 @@ use WebWMS\Form\User\Model\ChangePassword;
 /**
  * @package:    WebWMS\Tests\Unit\Form\UserController
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        ChangePasswordTypeTest
  */
 #[CoversClass(ChangePasswordType::class)]

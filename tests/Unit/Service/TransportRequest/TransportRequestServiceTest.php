@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\TransportRequest;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +16,7 @@ use WebWMS\Service\TransportRequest\TransportRequestService;
 /**
  * @package:    WebWMS\Tests\Unit\Service\TransportRequestEntity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        TransportRequestServiceTest
  */
 #[CoversClass(TransportRequestService::class)]
@@ -27,7 +26,6 @@ final class TransportRequestServiceTest extends TestCase
 
     private MockObject $mockObject;
 
-    #[Override]
     protected function setUp(): void
     {
         $this->mockObject = $this->createMock(TransportRequestDataHandler::class);

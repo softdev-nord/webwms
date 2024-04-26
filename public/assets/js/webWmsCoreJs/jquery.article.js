@@ -2,9 +2,6 @@
     // Artikel Tabelle
     const artTable = $('#artTable').DataTable({
         lengthChange: false,
-        paging: false,
-        retrieve: true,
-        ordering: false,
 
         ajax: {
             url: '/article_ajax',
@@ -71,6 +68,21 @@
                     className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
+                    text:       'JSON',
+                    title:      'Export',
+                    action: function (e, dt, button, config) {
+                        DataTable.fileSave(
+                            new Blob(
+                                [
+                                    JSON.stringify(convertArticleOverviewToJson())
+                                ]
+                            ),
+                            'export_article_overview.json'
+                        );
+                    },
+                    className: 'btn btn-primary btn-xm btn3d'
+                },
+                {
                     extend:    'pdfHtml5',
                     text:      'PDF',
                     title:     'Export',
@@ -107,7 +119,8 @@
         trigger: 'right',
         callback: function(key, options, event) {
             const row = artTable.row(options.$trigger),
-                articleId = row.data().article_id;
+                articleId = row.data().article_id,
+                articleNr = row.data().article_nr;
 
             switch (key) {
                 case 'edit' :
@@ -115,6 +128,9 @@
                     break;
                 case 'delete' :
                     deleteArticle(articleId);
+                    break;
+                case 'show' :
+                    getStockOccupancyByArticleNr(articleNr);
                     break;
                 default :
                     break;
@@ -129,8 +145,44 @@
                 name: 'Löschen',
                 icon: 'delete'
             },
+            show: {
+                name: 'Artikel Lagerbelegungen',
+                icon: 'paste'
+            },
         }
     });
+
+    // Artikel als Json exportieren
+    function convertArticleOverviewToJson() {
+        const objects = [];
+        const data = artTable.rows().data();
+
+        for (let i = 0; i < data.length; i++) {
+            objects.push(data[i]);
+        }
+
+        return objects;
+    }
+
+    function getStockOccupancyByArticleNr(article_nr) {
+        const url = '/stock_occupancy_ajax_article/' + article_nr;
+        const content = '<div class="modal-body"></div>';
+        const headerText = 'Lagerbelegungen für Artikel-Nr. ' + article_nr;
+        $("#modalCenter .modal-dialog").css('max-width', '90%');
+
+        $('#modalCenter .modal-title').text(headerText);
+        $("#modal-content-ajax").html(content);
+        $('#modalCenter').modal('show');
+
+        $.ajax({
+            method: 'GET',
+            url: url,
+            dataType: 'html',
+            success: function (data) {
+                $('#modal-content-ajax').html(data);
+            }
+        });
+    }
 
     $(function(){
         // Ändern der Standardbreite des Modals
@@ -178,7 +230,7 @@
             successMessage = 'Artikel erfolgreich gespeichert';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, artTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, artTable, false);
     });
 
     // Geänderten Artikel speichern
@@ -190,7 +242,7 @@
             successMessage = 'Artikel erfolgreich gespeichert';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, artTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, artTable, false);
     });
 
     // Artikel löschen
@@ -202,7 +254,7 @@
             successMessage = 'Artikel erfolgreich gelöscht';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, artTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, artTable, false);
     });
 
     $(document).on('click', '.abort', function() {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Event\Stock;
+namespace WebWMS\Event\Stock\In;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,18 +14,21 @@ use WebWMS\Dto\StockInDto;
 use WebWMS\Dto\StockLocationDto;
 use WebWMS\Entity\StockLocationEntity;
 use WebWMS\Event\BaseEvent;
+use WebWMS\Event\Stock\StockEvents;
 use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
 
 /**
- * @package:    WebWMS\Event\Stock
+ * @package:    WebWMS\Event\Stock\In
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        StockInEvent
  */
 class StockInEvent extends BaseEvent
 {
     final public const EVENT_NAME = 'stock.stock_in';
+
+    final public const EVENT = 'SI101';
 
     /**
      * SI101 Einlagern direkt.
@@ -38,6 +41,7 @@ class StockInEvent extends BaseEvent
         $form = $this->formFactory->create(StockInType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            // dd($form->getData());
             $stockIn = StockInDto::hydrate($form->getData());
 
             $stockUnits = (int) ceil(
@@ -181,11 +185,18 @@ class StockInEvent extends BaseEvent
 
     private function getLastStockUnit(): int
     {
+        $lastStockUnit = 0;
         $lastStockUnitFromTransportRequest = $this->transportRequestService->getLastStockUnit();
         $lastStockUnitFromTransportHistory = $this->transportHistoryService->getLastStockUnit();
 
-        return ($lastStockUnitFromTransportRequest !== []) ?
-            $lastStockUnitFromTransportRequest[0]->getSuId() :
-            $lastStockUnitFromTransportHistory[0]->getSuId();
+        if ($lastStockUnitFromTransportRequest !== []) {
+            $lastStockUnit = $lastStockUnitFromTransportRequest[0]->getSuId();
+        }
+
+        if ($lastStockUnitFromTransportHistory !== []) {
+            return $lastStockUnitFromTransportHistory[0]->getSuId();
+        }
+
+        return $lastStockUnit;
     }
 }

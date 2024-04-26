@@ -89,21 +89,63 @@ const stockInItemsAutofill = (function(){
     };
 })();
 
-$(document).ready(function(){
+(function($){
     stockInItemsAutofill.init();
 
     $('#stock_in_post_final').on( 'click', function (e) {
         e.preventDefault();
-        const form = $(this).closest('form');
-        const formData = form.serialize();
-        alert("save button clicked");
+        const form = $(this).closest('form'),
+            errorMessage = 'Der Transportauftrag konnte nicht erstellt werden.',
+            successMessage = 'Der Transportauftrag wurde erfolgreich erstellt.';
         $.ajax({
-            method:'POST',
-            url:'/stock_in_final',
-            data: formData,
-            success: function(data){
-                console.log(formData);
+            type: 'POST',
+            url: '/stock_in_final',
+            data: form.serialize(),
+            success: function(data) {
+                console.log(data);
+                if (data.error) {
+                    const errors = [];
+                    let i = 0;
+                    $.each(data.error, function(key, value) {
+                        errors[i++] = value + '</br>';
+                    });
+                    const arrayString = errors.join();
+                    const error = arrayString.replace(/,/g, ' ');
+                    Swal.fire({
+                        title: errorMessage,
+                        text: error,
+                        icon: "error",
+                        timer: 5000
+                    });
+                } else {
+                    Swal.fire({
+                        title: successMessage,
+                        text: data.message,
+                        icon: "success",
+                        timer: 5000
+                    });
+                    $('#modalCenter').modal('hide');
+                    redirectTo();
+                }
             }
         });
     });
-});
+
+    function redirectTo() {
+        setTimeout(function(){
+            window.location.assign("/stock_in")
+        },4000)
+    }
+
+    // // Neuen Artikel speichern
+    // $(document).on('click', 'button#stock_in_post_final', function(event) {
+    //     const $form = $('form#article-form-new'),
+    //         url = '/artikel_anlegen',
+    //         errorMessage = 'Artikel konnte nicht gespeichert werden',
+    //         successMessage = 'Artikel erfolgreich gespeichert';
+    //     event.preventDefault();
+    //
+    //     _doRequest('POST', url, $form, errorMessage, successMessage);
+    // });
+    //
+})(jQuery);

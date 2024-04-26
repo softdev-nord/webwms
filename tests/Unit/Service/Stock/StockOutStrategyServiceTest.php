@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Stock;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -14,7 +13,7 @@ use WebWMS\Service\Stock\StockOutStrategyService;
 /**
  * @package:    WebWMS\Tests\Unit\Service\Stock
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        StockOutStrategyServiceTest
  */
 #[CoversClass(StockOutStrategyService::class)]
@@ -24,7 +23,6 @@ final class StockOutStrategyServiceTest extends TestCase
 
     private MockObject $mockObject;
 
-    #[Override]
     protected function setUp(): void
     {
         $this->mockObject = $this->createMock(StockOutStrategyDataHandler::class);

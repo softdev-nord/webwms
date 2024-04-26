@@ -43,7 +43,7 @@ class ArticleValidationService
             $responseData['articleCategory'] = $articleEntity->getArticleCategory();
         }
 
-        if ($articleEntity->getArticleWeight() === 0.0) {
+        if ($articleEntity->getArticleWeight() === '') {
             $responseData['error']['articleWeight'] = 'Das Artikel Gewicht darf nicht leer sein.';
         } else {
             $responseData['articleWeight'] = $articleEntity->getArticleWeight();
@@ -61,19 +61,19 @@ class ArticleValidationService
             $responseData['articleUnit'] = $articleEntity->getArticleUnit();
         }
 
-        if ($articleEntity->getArticleDepth() === 0.0) {
+        if ($articleEntity->getArticleDepth() === '') {
             $responseData['error']['articleDepth'] = 'Die Breite darf nicht leer sein.';
         } else {
             $responseData['articleDepth'] = $articleEntity->getArticleDepth();
         }
 
-        if ($articleEntity->getArticleWidth() === 0.0) {
+        if ($articleEntity->getArticleWidth() === '') {
             $responseData['error']['articleWidth'] = 'Die Tiefe darf nicht leer sein.';
         } else {
             $responseData['articleWidth'] = $articleEntity->getArticleWidth();
         }
 
-        if ($articleEntity->getArticleHeight() === 0.0) {
+        if ($articleEntity->getArticleHeight() === '') {
             $responseData['error']['articleHeight'] = 'Die Höhe darf nicht leer sein.';
         } else {
             $responseData['articleHeight'] = $articleEntity->getArticleHeight();

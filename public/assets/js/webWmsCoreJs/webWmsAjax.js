@@ -36,8 +36,9 @@ function getContentForModal(url, title, $form) {
  * @param errorMessage
  * @param successMessage
  * @param table
+ * @param redirectUrl
  */
-function _doRequest(type, url, $form, errorMessage, successMessage, table) {
+function _doRequest(type, url, $form, errorMessage, successMessage, table = null, isRedirect = false, redirectUrl = null) {
     $.ajax({
         type: type,
         url: url,
@@ -67,7 +68,16 @@ function _doRequest(type, url, $form, errorMessage, successMessage, table) {
                 });
                 $('#modalCenter').modal('hide');
                 table.ajax.reload();
+
+                if (isRedirect !== false) {
+                    redirect();
+                }
+
             }
         }
     });
+
+    function redirect() {
+        window.location.assign(redirectUrl)
+    }
 }

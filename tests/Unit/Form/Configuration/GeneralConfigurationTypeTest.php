@@ -14,7 +14,7 @@ use WebWMS\Form\Configuration\GeneralConfigurationType;
 /**
  * @package:    WebWMS\Tests\Unit\Form\ConfigurationController
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        GeneralConfigurationTypeTest
  */
 #[CoversClass(GeneralConfigurationType::class)]

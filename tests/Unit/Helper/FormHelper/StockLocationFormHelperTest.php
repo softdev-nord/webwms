@@ -17,7 +17,7 @@ use WebWMS\Helper\FormHelper\StockLocationFormHelper;
 /**
  * @package:    WebWMS\Tests\Unit\Helper\FormHelper
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        StockLocationFormHelperTest
  */
 #[CoversClass(StockLocationFormHelper::class)]
