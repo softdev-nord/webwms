@@ -126,7 +126,9 @@
         }
     },
     "require-dev": {
+        "edgedesign/phpqa": "^1.26",
         "friendsofphp/php-cs-fixer": "^v3.45",
+        "icanhazstring/composer-unused": "^0.8.11",
         "php-parallel-lint/php-var-dump-check": "^0.5",
         "phpcompatibility/php-compatibility": "^9.3",
         "phpmd/phpmd": "^2.15",
@@ -144,6 +146,8 @@
         "symfony/maker-bundle": "^1.52",
         "symfony/phpunit-bridge": "^6.2",
         "symfony/stopwatch": "7.0.*",
-        "symfony/web-profiler-bundle": "7.0.*"
+        "symfony/web-profiler-bundle": "7.0.*",
+        "tomasvotruba/class-leak": "^0.2.13",
+        "tomasvotruba/lines": "^0.5.1"
     }
 }

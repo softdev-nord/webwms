@@ -71,6 +71,9 @@ phpstan-baseline: ## Run code analyse (phpstan) incl. baseline
 var-dump-check: ## Find var_dump, dd, etc.
 	@docker exec -t $(APP_CONTAINER_NAME) vendor/bin/var-dump-check --symfony --doctrine --exclude vendor .
 
+php-compatibility-check:
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'composer sniffer:php83';
+
 ######################################################################
 ########################## Code Style Check ##########################
 ######################################################################
@@ -86,10 +89,7 @@ phpmd: ## Run code check (phpmd)
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./module/,./tests/' ansi rulesets.xml';
 
 phpqa: ## Run code check (phpmd)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src';
-
-php-compatibility-check:
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'composer sniffer:php83';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src --execution no-parallel';
 
 ######################################################################
 ############################ Twig Linter #############################
@@ -137,4 +137,16 @@ run-rector-refactoring: ## Run automated refactoring
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process';
 
 report-metrics: ## Run the phpmetrics report
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmetrics --config=config.yml';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmetrics --config=php_metrics_config.yml';
+
+######################################################################
+#################### Developer Information Tools #####################
+######################################################################
+find-leaking-classes: ## Find leaking classes that you never use... and get rid of them. | https://github.com/TomasVotruba/class-leak
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/class-leak check bin src';
+
+lines-of-code: ## Run the lines of code command | https://github.com/TomasVotruba/lines
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/lines measure src';
+
+composer-unused: ## Show unused composer dependencies by scanning code | https://github.com/TomasVotruba/composer-unused
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/composer-unused';
