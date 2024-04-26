@@ -161,7 +161,7 @@
             successMessage = 'Lieferant erfolgreich gespeichert';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, supplierTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, supplierTable, false);
     });
 
     // Geänderten Lieferanten speichern
@@ -173,7 +173,7 @@
             successMessage = 'Lieferant erfolgreich gespeichert';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, supplierTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, supplierTable, false);
     });
 
     // Lieferanten löschen
@@ -185,7 +185,7 @@
             successMessage = 'Lieferant erfolgreich gelöscht';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, supplierTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, supplierTable, false);
     });
 
     $(document).on('click', '.abort', function() {

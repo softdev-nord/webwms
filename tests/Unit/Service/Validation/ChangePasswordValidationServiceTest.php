@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Validation;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormInterface;
@@ -16,7 +15,7 @@ use WebWMS\Service\Validation\ChangePasswordValidationService;
 /**
  * @package:    WebWMS\Tests\Unit\Service\Validation
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        ChangePasswordValidationServiceTest
  */
 #[CoversClass(ChangePasswordValidationService::class)]
@@ -24,7 +23,6 @@ final class ChangePasswordValidationServiceTest extends TestCase
 {
     private ChangePasswordValidationService $changePasswordValidationService;
 
-    #[Override]
     protected function setUp(): void
     {
         $passwordHasherMock = $this->createMock(UserPasswordHasherInterface::class);

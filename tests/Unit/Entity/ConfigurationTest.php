@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\ConfigurationEntity;
@@ -12,7 +11,7 @@ use WebWMS\Entity\ConfigurationEntity;
 /**
  * @package:    WebWMS\Tests\Unit\Entity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        ConfigurationTest
  */
 #[CoversClass(ConfigurationEntity::class)]
@@ -20,10 +19,6 @@ final class ConfigurationTest extends TestCase
 {
     private ConfigurationEntity $configurationEntity;
 
-    /**
-     * {@inheritdoc}
-     */
-    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -31,10 +26,6 @@ final class ConfigurationTest extends TestCase
         $this->configurationEntity = new ConfigurationEntity();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    #[Override]
     protected function tearDown(): void
     {
         parent::tearDown();

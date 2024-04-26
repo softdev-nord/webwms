@@ -26,7 +26,7 @@ RUN apt-get -y update && \
     libsqlite3-dev \
     libsqlite3-0 && \
     apt-get -y --no-install-recommends install default-mysql-client \
-    libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
+    libfreetype6-dev libjpeg62-turbo-dev libpng-dev libyaml-dev \
     zlib1g-dev \
     libzip-dev \
     libxslt-dev \
@@ -94,6 +94,8 @@ RUN PHP_EXTENSIONS="pdo pdo_mysql mysqli curl zip intl mbstring gettext exif xml
     && docker-php-ext-enable ${PHP_EXTENSIONS}
 RUN pecl install pcov \
     && docker-php-ext-enable pcov
+RUN pecl install yaml \
+    && docker-php-ext-enable yaml
 
 ###########################################################################
 # Enable apache modules

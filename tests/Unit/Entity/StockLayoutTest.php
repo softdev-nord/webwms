@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Entity;
 
 use DateTime;
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\StockLayoutEntity;
@@ -13,7 +12,7 @@ use WebWMS\Entity\StockLayoutEntity;
 /**
  * @package:    WebWMS\Tests\Unit\Entity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        StockLayoutTest
  */
 #[CoversClass(StockLayoutEntity::class)]
@@ -23,7 +22,6 @@ final class StockLayoutTest extends TestCase
 
     private DateTime $dateTime;
 
-    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

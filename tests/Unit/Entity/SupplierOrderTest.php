@@ -6,7 +6,6 @@ namespace WebWMS\Tests\Unit\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\SupplierEntity;
@@ -15,7 +14,7 @@ use WebWMS\Entity\SupplierOrderEntity;
 /**
  * @package:    WebWMS\Tests\Unit\Entity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        SupplierOrderTest
  */
 #[CoversClass(SupplierOrderEntity::class)]
@@ -29,7 +28,6 @@ final class SupplierOrderTest extends TestCase
 
     private SupplierEntity $supplierEntity;
 
-    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

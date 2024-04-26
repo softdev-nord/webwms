@@ -63,7 +63,8 @@ class TransportHistoryService
             ->deleteTransportHistory($transportHistoryEntity);
     }
 
-    public function getLastStockUnit(): int
+    /** @return TransportHistoryEntity[] */
+    public function getLastStockUnit(): array
     {
         return $this->transportHistoryDataHandler
             ->getLastStockUnit();

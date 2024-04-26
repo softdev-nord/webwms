@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +14,7 @@ use WebWMS\Service\CSRFProtectionService;
 /**
  * @package:    WebWMS\Tests\Unit\Service
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        CSRFProtectionServiceTest
  */
 #[CoversClass(CSRFProtectionService::class)]
@@ -25,7 +24,6 @@ final class CSRFProtectionServiceTest extends TestCase
 
     private MockObject $mockObject;
 
-    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -34,7 +32,6 @@ final class CSRFProtectionServiceTest extends TestCase
         $this->csrfProtectionService = new CSRFProtectionService($this->mockObject);
     }
 
-    #[Override]
     protected function tearDown(): void
     {
         parent::tearDown();

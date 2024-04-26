@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\ArticleEntity;
 use WebWMS\Service\DateTimeService;
+use WebWMS\Service\Stock\StockOccupancyService;
 
 /**
  * @package:    WebWMS\Service\DataHandlers
@@ -19,6 +20,7 @@ class ArticleDataHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
+        private readonly StockOccupancyService $stockOccupancyService,
         private readonly DateTimeService $dateTimeService
     ) {
     }
@@ -61,20 +63,30 @@ class ArticleDataHandler
 
     public function getAllArticlesWithJoin(): JsonResponse
     {
-        $connection = $this->entityManager->getConnection();
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+        $queryBuilder
+            ->select('art.article_id, art.article_nr, art.article_name, art.article_category, art.article_weight, art.article_ean, art.article_unit, art.article_depth, art.article_width, art.article_height, art.created_at, art.updated_at')
+            ->from('article', 'art');
 
-        $sql = "SELECT art.article_id, art.article_nr, art.article_name, art.article_category, art.article_weight, art.article_ean, art.article_unit, art.article_depth, art.article_width, art.article_height, art.created_at, art.updated_at,
-                (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) - (SUM(IF(transport_history.tr_type = '2', transport_history.tr_quantity, 0.000)))
+        $results = $queryBuilder->executeQuery()->fetchAllAssociative();
 
-                FROM transport_history WHERE transport_history.article_nr = art.article_nr GROUP BY transport_history.article_nr LIMIT 1) AS lbw_menge
-                FROM transport_history AS tph
-                RIGHT OUTER JOIN article AS art
-                    ON tph.article_nr = art.article_nr
-                GROUP BY art.article_nr";
+        foreach ($results as $key => $result) {
+            $results[$key]['in_stock'] = 0.00;
+            $results[$key]['incoming_stock'] = 0.00;
+            $results[$key]['reserved_stock'] = 0.00;
 
-        $data = $connection->fetchAllAssociative($sql);
+            $stockOccupancies = $this->stockOccupancyService->getStockOccupancyByArticleId($result['article_id']);
 
-        return new JsonResponse($data);
+            $inStock = array_column($stockOccupancies, 'in_stock');
+            $incomingStock = array_column($stockOccupancies, 'incoming_stock');
+            $reservedStock = array_column($stockOccupancies, 'reserved_stock');
+
+            $results[$key]['in_stock'] += array_sum($inStock);
+            $results[$key]['incoming_stock'] += array_sum($incomingStock);
+            $results[$key]['reserved_stock'] += array_sum($reservedStock);
+        }
+
+        return new JsonResponse($results);
     }
 
     public function getArticle(?string $articleNrInput): JsonResponse
@@ -108,7 +120,6 @@ class ArticleDataHandler
             }
         }
 
-        // dd($data);
         return new JsonResponse($data);
     }
 

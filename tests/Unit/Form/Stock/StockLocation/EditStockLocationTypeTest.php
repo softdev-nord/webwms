@@ -14,7 +14,7 @@ use WebWMS\Form\Stock\StockLocation\EditStockLocationType;
 /**
  * @package:    WebWMS\Tests\Unit\Form\Stock\StockLocationEntity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        EditStockLocationTypeTest
  */
 #[CoversClass(EditStockLocationType::class)]

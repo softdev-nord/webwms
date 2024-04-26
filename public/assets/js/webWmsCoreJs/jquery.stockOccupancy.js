@@ -1,6 +1,6 @@
 // JS Funktion Ajax Daten für Übersicht Lagerbelegung
 $(function() {
-    const artTable = $('#stockOccupancyTable').DataTable({
+    const stockOccupancyTable = $('#stockOccupancyTable').DataTable({
         lengthChange: false,
 
         ajax: {
@@ -17,19 +17,18 @@ $(function() {
             style: 'single'
         },
         columns: [
-            { data: 'koordinate' },
-            { data: 'ln' },
-            { data: 'fb' },
-            { data: 'sp' },
-            { data: 'tf' },
-            { data: 'lagereinheit' },
+            { data: 'stock_location_coordinate' },
+            { data: 'stock_location_ln' },
+            { data: 'stock_location_fb' },
+            { data: 'stock_location_sp' },
+            { data: 'stock_location_tf' },
             { data: 'article_nr' },
-            { data: 'bezeichnung' },
-            { data: 'trans_ein' },
-            { data: 'trans_aus' },
-            { data: 'lp_bestand' },
-            { data: 'letzter_zugang' },
-            { data: 'letzter_abgang' },
+            { data: 'article_name' },
+            { data: 'in_stock' },
+            { data: 'incoming_stock' },
+            { data: 'reserved_stock' },
+            { data: 'last_incoming' },
+            { data: 'last_outgoing' },
         ],
         columnDefs: [
             {
@@ -45,27 +44,42 @@ $(function() {
                     text:      'Kopieren',
                     title:     'Export',
                     titleAttr: 'Copy',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend:    'csvHtml5',
                     text:      'CSV',
                     title:     'Export',
                     titleAttr: 'CSV',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
+                },
+                {
+                    text:       'JSON',
+                    title:      'Export',
+                    action: function (e, dt, button, config) {
+                        DataTable.fileSave(
+                            new Blob(
+                                [
+                                    JSON.stringify(convertStockOccupancyOverviewToJson())
+                                ]
+                            ),
+                            'export_stock_occupancy_overview.json'
+                        );
+                    },
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend:    'pdfHtml5',
                     text:      'PDF',
                     title:     'Export',
                     titleAttr: 'PDF',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend: 'print',
                     text: 'Drucken',
                     autoPrint: false,
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 }
             ],
             dom: {
@@ -78,4 +92,60 @@ $(function() {
             }
         }
     });
+
+    $.contextMenu({
+        selector: 'tr',
+        trigger: 'right',
+        callback: function(key, options, event) {
+            const row = stockOccupancyTable.row(options.$trigger),
+                stockLocationCoordinate = row.data().stock_location_coordinate;
+
+            console.log(stockLocationCoordinate);
+
+            switch (key) {
+                case 'show' :
+                    getStockOccupancyByCoordinate(stockLocationCoordinate);
+                    break;
+                default :
+                    break;
+            }
+        },
+        items: {
+            show: {
+                name: 'Lagerplatz Details',
+                icon: 'paste'
+            },
+        }
+    });
+
+    function getStockOccupancyByCoordinate(stock_location_coordinate) {
+        const url = '/stock_occupancy_ajax/' + stock_location_coordinate;
+        const content = '<div class="modal-body"></div>';
+        $("#modalCenter .modal-dialog").css('max-width', '70%');
+
+        $('#modalCenter .modal-title').text('Lagerplatz Details');
+        $("#modal-content-ajax").html(content);
+        $('#modalCenter').modal('show');
+
+        $.ajax({
+            method: 'GET',
+            url: url,
+            dataType: 'html',
+            success: function (data) {
+                $('#modal-content-ajax').html(data);
+            }
+        });
+    }
+
+    // Lagerbelegung als Json exportieren
+    function convertStockOccupancyOverviewToJson() {
+        const objects = [];
+        const data = stockOccupancyTable.rows().data();
+
+        for (let i = 0; i < data.length; i++) {
+            objects.push(data[i]);
+        }
+
+        return objects;
+    }
 });

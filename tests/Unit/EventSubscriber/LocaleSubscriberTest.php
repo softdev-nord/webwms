@@ -15,7 +15,7 @@ use WebWMS\EventSubscriber\LocaleSubscriber;
 /**
  * @package:    WebWMS\Tests\Unit\EventSubscriber
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        LocaleSubscriberTest
  */
 #[CoversClass(LocaleSubscriber::class)]

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Configuration;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +14,7 @@ use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
 /**
  * @package:    WebWMS\Tests\Unit\Service\ConfigurationController
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        ConfigurationServiceTest
  */
 #[CoversClass(ConfigurationService::class)]
@@ -29,7 +28,6 @@ final class ConfigurationServiceTest extends TestCase
 
     private string $appVersionNumber = '2.0.0';
 
-    #[Override]
     protected function setUp(): void
     {
         $this->mockObject = $this->createMock(ConfigurationDataHandler::class);
@@ -183,11 +181,11 @@ final class ConfigurationServiceTest extends TestCase
     public function testItGetsPhpGeneralInformation(): void
     {
         // Define expected values based on your current PHP environment
-        $expectedVersion = '8.3.4';
-        $expectedVersionId = 80304;
+        $expectedVersion = '8.3.6';
+        $expectedVersionId = 80306;
         $expectedMajorVersion = 8;
         $expectedMinorVersion = 3;
-        $expectedReleaseVersion = 4;
+        $expectedReleaseVersion = 6;
         $expectedServerApi = 'cli';
         $expectedBinaryDir = '/usr/local/bin';
 

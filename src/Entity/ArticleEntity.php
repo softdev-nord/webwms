@@ -86,7 +86,7 @@ class ArticleEntity
 
     #[ORM\Column(name: 'article_weight', type: Types::DECIMAL, precision: 10, scale: 2, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
-    private float $articleWeight;
+    private string $articleWeight;
 
     #[ORM\Column(name: 'article_ean', type: Types::STRING, length: 15, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
@@ -98,15 +98,15 @@ class ArticleEntity
 
     #[ORM\Column(name: 'article_depth', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
-    private float $articleDepth;
+    private string $articleDepth;
 
     #[ORM\Column(name: 'article_width', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
-    private float $articleWidth;
+    private string $articleWidth;
 
     #[ORM\Column(name: 'article_height', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
-    private float $articleHeight;
+    private string $articleHeight;
 
     #[ORM\Column(name: 'stock_out_strategy', type: Types::STRING, length: 10, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
@@ -118,7 +118,7 @@ class ArticleEntity
 
     #[ORM\Column(name: 'le_quantity', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
-    private float $leQuantity;
+    private string $leQuantity;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['article:read', 'article:write'])]
@@ -176,12 +176,12 @@ class ArticleEntity
         return $this;
     }
 
-    public function getArticleWeight(): float
+    public function getArticleWeight(): string
     {
         return $this->articleWeight;
     }
 
-    public function setArticleWeight(float $articleWeight): self
+    public function setArticleWeight(string $articleWeight): self
     {
         $this->articleWeight = $articleWeight;
 
@@ -212,36 +212,36 @@ class ArticleEntity
         return $this;
     }
 
-    public function getArticleDepth(): float
+    public function getArticleDepth(): string
     {
         return $this->articleDepth;
     }
 
-    public function setArticleDepth(float $articleDepth): self
+    public function setArticleDepth(string $articleDepth): self
     {
         $this->articleDepth = $articleDepth;
 
         return $this;
     }
 
-    public function getArticleWidth(): float
+    public function getArticleWidth(): string
     {
         return $this->articleWidth;
     }
 
-    public function setArticleWidth(float $articleWidth): self
+    public function setArticleWidth(string $articleWidth): self
     {
         $this->articleWidth = $articleWidth;
 
         return $this;
     }
 
-    public function getArticleHeight(): float
+    public function getArticleHeight(): string
     {
         return $this->articleHeight;
     }
 
-    public function setArticleHeight(float $articleHeight): self
+    public function setArticleHeight(string $articleHeight): self
     {
         $this->articleHeight = $articleHeight;
 
@@ -260,12 +260,12 @@ class ArticleEntity
         return $this;
     }
 
-    public function getLeQuantity(): float
+    public function getLeQuantity(): string
     {
         return $this->leQuantity;
     }
 
-    public function setLeQuantity(float $leQuantity): self
+    public function setLeQuantity(string $leQuantity): self
     {
         $this->leQuantity = $leQuantity;
 

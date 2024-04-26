@@ -17,15 +17,15 @@ use WebWMS\Service\FileUploader;
 /**
  * @package:    WebWMS\Tests\Unit\Service
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        FileUploaderTest
  */
 #[CoversClass(FileUploader::class)]
 final class FileUploaderTest extends TestCase
 {
-    private const string TARGET_DIRECTORY = '/path/to/target/directory';
+    private const TARGET_DIRECTORY = '/path/to/target/directory';
 
-    private const string PUBLIC_DIRECTORY = '/path/to/public/directory';
+    private const PUBLIC_DIRECTORY = '/path/to/public/directory';
 
     private FileUploader $fileUploader;
 

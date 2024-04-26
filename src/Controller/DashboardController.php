@@ -13,7 +13,6 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use Twig\Environment;
 use Twig\Loader\LoaderInterface;
-use WebWMS\Entity\TransportRequestEntity;
 use WebWMS\Repository\TransportHistoryRepository;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
@@ -145,9 +144,8 @@ class DashboardController extends AbstractController
     {
         $countTrOpen = [];
         $countTrInProgress = [];
-        $transportRequests = $this->transportRequestService->getAllOpenTransportRequests();
+        $transportRequests = (array) $this->transportRequestService->getAllOpenTransportRequests();
 
-        /** @var TransportRequestEntity $transportRequest */
         foreach ($transportRequests as $transportRequest) {
             if ($transportRequest->getTrState() === 1) {
                 $countTrInProgress[] = $transportRequest->getTrState();

@@ -14,7 +14,7 @@ use WebWMS\Form\SupplierOrder\DeleteSupplierOrderType;
 /**
  * @package:    WebWMS\Tests\Unit\Form\SupplierOrderEntity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        DeleteSupplierOrderTypeTest
  */
 #[CoversClass(DeleteSupplierOrderType::class)]

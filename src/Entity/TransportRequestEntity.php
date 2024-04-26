@@ -237,7 +237,7 @@ class TransportRequestEntity
         return $this;
     }
 
-    public function getStockLevel2(): ?int
+    public function getStockLevel2(): int
     {
         return $this->stockLevel2;
     }

@@ -14,7 +14,7 @@ use WebWMS\Form\Customer\EditCustomerType;
 /**
  * @package:    WebWMS\Tests\Unit\Form\CustomerEntity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        EditCustomerTypeTest
  */
 #[CoversClass(EditCustomerType::class)]

@@ -13,7 +13,7 @@ use WebWMS\Entity\ArticleEntity;
 /**
  * @package:    WebWMS\Tests\Unit\Entity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        ArticleTest
  */
 #[CoversClass(ArticleEntity::class)]
@@ -55,7 +55,7 @@ final class ArticleTest extends TestCase
         self::assertEquals($articleCategory, $this->articleEntity->getArticleCategory());
 
         // Test setArticleWeight() and getArticleWeight()
-        $articleWeight = 2019.00;
+        $articleWeight = '2019.00';
         $this->articleEntity->setArticleWeight($articleWeight);
         self::assertEquals($articleWeight, $this->articleEntity->getArticleWeight());
 
@@ -70,17 +70,17 @@ final class ArticleTest extends TestCase
         self::assertEquals($articleUnit, $this->articleEntity->getArticleUnit());
 
         // Test setArticleDepth() and getArticleDepth()
-        $articleDepth = 2019.00;
+        $articleDepth = '2019.00';
         $this->articleEntity->setArticleDepth($articleDepth);
         self::assertEquals($articleDepth, $this->articleEntity->getArticleDepth());
 
         // Test setArticleWidth() and getArticleWidth()
-        $articleWidth = 2019.00;
+        $articleWidth = '2019.00';
         $this->articleEntity->setArticleWidth($articleWidth);
         self::assertEquals($articleWidth, $this->articleEntity->getArticleWidth());
 
         // Test setArticleHeight() and getArticleHeight()
-        $articleHeight = 2019.00;
+        $articleHeight = '2019.00';
         $this->articleEntity->setArticleHeight($articleHeight);
         self::assertEquals($articleHeight, $this->articleEntity->getArticleHeight());
 
@@ -90,7 +90,7 @@ final class ArticleTest extends TestCase
         self::assertEquals($stockOutStrategy, $this->articleEntity->getStockOutStrategy());
 
         // Test setLeQuantity() and getLeQuantity()
-        $leQuantity = 2019.00;
+        $leQuantity = '2019.00';
         $this->articleEntity->setLeQuantity($leQuantity);
         self::assertEquals($leQuantity, $this->articleEntity->getLeQuantity());
 

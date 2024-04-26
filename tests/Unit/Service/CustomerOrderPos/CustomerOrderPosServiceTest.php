@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\CustomerOrderPos;
 
-use Override;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +15,7 @@ use WebWMS\Service\DataHandlers\CustomerOrderPos\CustomerOrderPosDataHandler;
 /**
  * @package:    WebWMS\Tests\Unit\Service\CustomerOrderPosEntity
  * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        CustomerOrderPosServiceTest
  */
 #[CoversClass(CustomerOrderPosService::class)]
@@ -26,7 +25,6 @@ final class CustomerOrderPosServiceTest extends TestCase
 
     private MockObject $mockObject;
 
-    #[Override]
     protected function setUp(): void
     {
         $this->mockObject = $this->createMock(CustomerOrderPosDataHandler::class);
