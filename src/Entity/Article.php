@@ -11,16 +11,19 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\ArticleRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Article
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Article'
+)]
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ApiResource(
     operations: [
@@ -65,65 +68,65 @@ class Article
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[Groups(['article:read', 'article:write'])]
     private int $articleId;
 
-    #[ORM\Column(name: 'article_nr', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'article_nr', type: Types::STRING, length: 255, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
     private string $articleNr;
 
-    #[ORM\Column(name: 'article_name', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'article_name', type: Types::STRING, length: 255, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
     private string $articleName;
 
-    #[ORM\Column(name: 'article_category', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'article_category', type: Types::STRING, length: 255, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
     private string $articleCategory;
 
-    #[ORM\Column(name: 'article_weight', type: 'decimal', precision: 10, scale: 2, nullable: false)]
+    #[ORM\Column(name: 'article_weight', type: Types::DECIMAL, precision: 10, scale: 2, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
-    private float $articleWeight;
+    private string $articleWeight;
 
-    #[ORM\Column(name: 'article_ean', type: 'string', length: 15, nullable: false)]
+    #[ORM\Column(name: 'article_ean', type: Types::STRING, length: 15, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
     private string $articleEan;
 
-    #[ORM\Column(name: 'article_unit', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'article_unit', type: Types::STRING, length: 10, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
     private string $articleUnit;
 
-    #[ORM\Column(name: 'article_depth', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[ORM\Column(name: 'article_depth', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
-    private float $articleDepth;
+    private string $articleDepth;
 
-    #[ORM\Column(name: 'article_width', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[ORM\Column(name: 'article_width', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
-    private float $articleWidth;
+    private string $articleWidth;
 
-    #[ORM\Column(name: 'article_height', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[ORM\Column(name: 'article_height', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
-    private float $articleHeight;
+    private string $articleHeight;
 
-    #[ORM\Column(name: 'stock_out_strategy', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'stock_out_strategy', type: Types::STRING, length: 10, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
     private string $stockOutStrategy;
 
-    #[ORM\Column(name: 'standard_loading_equipment', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'standard_loading_equipment', type: Types::STRING, length: 10, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
     private string $standardLoadingEquipment;
 
-    #[ORM\Column(name: 'le_quantity', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[ORM\Column(name: 'le_quantity', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     #[Groups(['article:read', 'article:write'])]
-    private float $leQuantity;
+    private string $leQuantity;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['article:read', 'article:write'])]
-    private ?\DateTimeInterface $createdAt;
+    private ?DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['article:read', 'article:write'])]
-    private ?\DateTimeInterface $updatedAt;
+    private ?DateTimeInterface $updatedAt = null;
 
     public function getArticleId(): int
     {
@@ -173,12 +176,12 @@ class Article
         return $this;
     }
 
-    public function getArticleWeight(): float
+    public function getArticleWeight(): string
     {
         return $this->articleWeight;
     }
 
-    public function setArticleWeight(float $articleWeight): self
+    public function setArticleWeight(string $articleWeight): self
     {
         $this->articleWeight = $articleWeight;
 
@@ -209,36 +212,36 @@ class Article
         return $this;
     }
 
-    public function getArticleDepth(): float
+    public function getArticleDepth(): string
     {
         return $this->articleDepth;
     }
 
-    public function setArticleDepth(float $articleDepth): self
+    public function setArticleDepth(string $articleDepth): self
     {
         $this->articleDepth = $articleDepth;
 
         return $this;
     }
 
-    public function getArticleWidth(): float
+    public function getArticleWidth(): string
     {
         return $this->articleWidth;
     }
 
-    public function setArticleWidth(float $articleWidth): self
+    public function setArticleWidth(string $articleWidth): self
     {
         $this->articleWidth = $articleWidth;
 
         return $this;
     }
 
-    public function getArticleHeight(): float
+    public function getArticleHeight(): string
     {
         return $this->articleHeight;
     }
 
-    public function setArticleHeight(float $articleHeight): self
+    public function setArticleHeight(string $articleHeight): self
     {
         $this->articleHeight = $articleHeight;
 
@@ -257,12 +260,12 @@ class Article
         return $this;
     }
 
-    public function getLeQuantity(): float
+    public function getLeQuantity(): string
     {
         return $this->leQuantity;
     }
 
-    public function setLeQuantity(float $leQuantity): self
+    public function setLeQuantity(string $leQuantity): self
     {
         $this->leQuantity = $leQuantity;
 
@@ -281,24 +284,24 @@ class Article
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function setCreatedAt(?DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

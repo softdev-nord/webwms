@@ -4,39 +4,43 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Helper\Attribute\ClassInformation;
+use WebWMS\Repository\LoggingRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Logging
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Logging'
+)]
 #[ORM\Table(name: 'logging')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\LoggingRepository')]
+#[ORM\Entity(repositoryClass: LoggingRepository::class)]
 class Logging
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(name: 'route', type: 'string', length: 100, nullable: false)]
+    #[ORM\Column(name: 'route', type: Types::STRING, length: 100, nullable: false)]
     private string $route;
 
-    #[ORM\Column(name: 'message', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'message', type: Types::STRING, length: 255, nullable: false)]
     private string $message;
 
-    #[ORM\Column(name: 'date', type: 'datetime', nullable: false)]
-    private \DateTimeInterface $date;
+    #[ORM\Column(name: 'date', type: Types::DATETIME_MUTABLE, nullable: false)]
+    private DateTimeInterface $dateTime;
 
-    #[ORM\Column(name: 'user', type: 'string', length: 100, nullable: false)]
+    #[ORM\Column(name: 'user', type: Types::STRING, length: 100, nullable: false)]
     private string $user;
 
-    #[ORM\Column(name: 'ip_address', type: 'string', length: 20, nullable: false)]
+    #[ORM\Column(name: 'ip_address', type: Types::STRING, length: 20, nullable: false)]
     private string $ipAddress;
 
-    #[ORM\Column(name: 'user_agent', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'user_agent', type: Types::STRING, length: 255, nullable: false)]
     private string $userAgent;
 
     public function getId(): int
@@ -75,14 +79,14 @@ class Logging
         return $this;
     }
 
-    public function getDate(): \DateTimeInterface
+    public function getDate(): DateTimeInterface
     {
-        return $this->date;
+        return $this->dateTime;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(DateTimeInterface $date): self
     {
-        $this->date = $date;
+        $this->dateTime = $date;
 
         return $this;
     }

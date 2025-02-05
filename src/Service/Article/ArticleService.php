@@ -6,18 +6,19 @@ namespace WebWMS\Service\Article;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Article;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 
-/**
- * @package:    WebWMS\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ArticleService
- */
-class ArticleService
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ArticleService'
+)]
+readonly class ArticleService
 {
     public function __construct(
-        private readonly ArticleDataHandler $articleDataHandler
+        private ArticleDataHandler $articleDataHandler,
     ) {
     }
 
@@ -36,7 +37,7 @@ class ArticleService
         return $this->articleDataHandler->getAllArticlesWithJoin();
     }
 
-    public function getArticle(string|null $articleNrInput): JsonResponse
+    public function getArticle(?string $articleNrInput): JsonResponse
     {
         return $this->articleDataHandler->getArticle($articleNrInput);
     }

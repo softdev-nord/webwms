@@ -5,21 +5,29 @@ declare(strict_types=1);
 namespace WebWMS\Service\DataHandlers\TransportRequest;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use WebWMS\Dto\StockInFinalDto;
+use WebWMS\Entity\TransportHistory;
 use WebWMS\Entity\TransportRequest;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
+use WebWMS\Service\Stock\StockOccupancyService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\TransportRequest
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        TransportRequestDataHandler
- */
-class TransportRequestDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\TransportRequest',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'TransportRequestDataHandler'
+)]
+readonly class TransportRequestDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService,
+        private EntityManagerInterface $entityManager,
+        private StockOccupancyService $stockOccupancyService,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -35,73 +43,135 @@ class TransportRequestDataHandler
         $this->entityManager->flush();
     }
 
-    /**
-     * @return array<object>
-     */
-    public function getTransportRequestById(int $id): array
+    public function getTransportRequestById(int $id): ?TransportRequest
     {
-        return $this->entityManager
+        /** @var TransportRequest|null $transportRequest */
+        $transportRequest = $this->entityManager
             ->getRepository(TransportRequest::class)
-            ->findBy(['id' => $id]);
+            ->findOneBy(['id' => $id]);
+
+        return $transportRequest;
     }
 
     /**
-     * @return array<object>
+     * @throws \Doctrine\DBAL\Exception
      */
-    public function getAllOpenTransportRequests(): array
+    public function getAllOpenTransportRequests(): JsonResponse
     {
-        return $this->entityManager
-            ->getRepository(TransportRequest::class)
-            ->findAll();
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+        $queryBuilder
+            ->select(
+                '
+                tr.id,
+                tr.su_id,
+                tr.tr_nr,
+                tr.tr_pos,
+                tr.tr_prio,
+                tr.article_nr,
+                tr.tr_quantity,
+                tr.stock_coordinate,
+                CONCAT(tr.stock_nr,"-",tr.stock_level1,"-",tr.stock_level2,"-",tr.stock_level3) AS stock_location,
+#                tr.from_stock_coordinate,
+#                CONCAT(tr.from_stock_nr,"-",tr.from_stock_level1,"-",tr.from_stock_level2,"-",tr.from_stock_level3) AS from_stock_location,
+#                tr.to_stock_coordinate,
+#                CONCAT(tr.to_stock_nr,"-",tr.to_stock_level1,"-",tr.to_stock_level2,"-",tr.to_stock_level3) AS to_stock_location,
+                tr.tr_state,
+                tr.order_username,
+                tr.booking_method,
+                tr.order_nr,
+                tr.loading_equipment,
+                tr.tr_username,
+                tr.tr_computer_ip,
+                tr.tr_blocked,
+                tr.tr_start_date,
+                tr.tr_edited,
+                tr.tr_type'
+            )
+            ->from('transport_request', 'tr');
+
+        $results = $queryBuilder->executeQuery()->fetchAllAssociative();
+
+        return new JsonResponse($results);
     }
 
-    public function createTransportRequest(Request $request, string $user, string $clientIp): void
+    public function createTransportRequest(Request $request, string $user, string $clientIp): ?Response
     {
         $requestData = (array) $request->request->all()['stock_in_final'];
-        $articleNr = $requestData['article_nr'];
-        $bookingMethod = $requestData['booking_method'];
-        $charge = $requestData['charge'];
-        $loadingEquipment = $requestData['loading_equipment'];
-        $transportRequest = new TransportRequest();
+        $entities = [];
+        $actualDateTime = $this->dateTimeService->createDateTime();
 
-        foreach ($requestData as $key => $data) {
-            $transportRequest->setSuId($this->getLastStockUnit());
-            $transportRequest->setTrNr($this->getLastTransportRequestNr());
-            $transportRequest->setTrPos($key + 1);
-            $transportRequest->setTrPrio(0);
-            $transportRequest->setArticleNr(strval($articleNr));
-            $transportRequest->setTrQuantity(floatval($data['stock_quantity']));
-            $transportRequest->setStockCoordinate(strval($data['stock_coordinate']));
-            $transportRequest->setStockNr(intval($data['stock_ln']));
-            $transportRequest->setStockLevel1(intval($data['stock_fb']));
-            $transportRequest->setStockLevel2(intval($data['stock_sp']));
-            $transportRequest->setStockLevel3(intval($data['stock_tf']));
-            $transportRequest->setStockLevel4(1);
-            $transportRequest->setTrAccess($this->dateTimeService->createDateTime());
-            $transportRequest->setTrState(0);
-            $transportRequest->setOrderUsername($user);
-            $transportRequest->setBookingMethod(strval($bookingMethod));
-            $transportRequest->setDocId(null);
-            $transportRequest->setCharge(strval($charge));
-            $transportRequest->setTrComputerIp(strval($clientIp));
-            $transportRequest->setLoadingEquipment(strval($loadingEquipment));
-            $transportRequest->setTrType(1);
+        try {
+            foreach ($requestData as $key => $data) {
+                $data = StockInFinalDto::hydrate((array) $data);
+
+                $entities[] = (new TransportRequest())
+                    ->setSuId($data->getStockSuId())
+                    ->setTrNr($this->getLastTransportRequestNr() + 1)
+                    ->setTrPos($key + 1)
+                    ->setTrPrio(0)
+                    ->setArticleNr($data->getArticleNr())
+                    ->setTrQuantity($data->getStockQuantity())
+                    ->setStockCoordinate($data->getStockCoordinate())
+                    ->setStockNr($data->getStockLn())
+                    ->setStockLevel1($data->getStockFb())
+                    ->setStockLevel2($data->getStockSp())
+                    ->setStockLevel3($data->getStockTf())
+                    ->setStockLevel4(1)
+//                    ->setFromStockCoordinate((string) $data->getStockCoordinate())
+//                    ->setFromStockNr((int) $data->getStockLn())
+//                    ->setFromStockLevel1((int) $data->getStockFb())
+//                    ->setFromStockLevel2((int) $data->getStockSp())
+//                    ->setFromStockLevel3((int) $data->getStockTf())
+//                    ->setFromStockLevel4(1)
+//                    ->setToStockCoordinate((string) $data->getStockCoordinate())
+//                    ->setToStockNr((int) $data->getStockLn())
+//                    ->setToStockLevel1((int) $data->getStockFb())
+//                    ->setToStockLevel2((int) $data->getStockSp())
+//                    ->setToStockLevel3((int) $data->getStockTf())
+//                    ->setToStockLevel4(1)
+                    ->setTrAccess($actualDateTime)
+                    ->setTrState(0)
+                    ->setOrderUsername($user)
+                    ->setBookingMethod($data->getBookingMethod())
+                    ->setDocId(null)
+                    ->setCharge($data->getCharge())
+                    ->setTrComputerIp($clientIp)
+                    ->setLoadingEquipment($data->getLoadingEquipment())
+                    ->setTrType(1)
+                    ->setCreatedAt($actualDateTime);
+
+                //$this->stockOccupancyService->updateStockOccupancy($data, $actualDateTime);
+            }
+
+            foreach ($entities as $entity) {
+                $this->entityManager->persist($entity);
+            }
+
+            $this->entityManager->flush();
+            $this->entityManager->clear();
+
+            return new Response('success');
+        } catch (Exception) {
+            return null;
         }
-
-        $this->save($transportRequest);
     }
 
-    public function getLastStockUnit(): int
+    /** @return TransportRequest[] */
+    public function getLastStockUnit(): array
     {
-        $lastStockUnitTr = $this->entityManager
-            ->getRepository(TransportRequest::class)
-            ->findBy([], ['suId' => 'DESC'], 1, 0);
-
-        return $lastStockUnitTr[0]->getSuId();
+        return $this->entityManager
+            ->createQueryBuilder()
+            ->select('tre')
+            ->from(TransportRequest::class, 'tre')
+            ->setMaxResults(1)
+            ->addOrderBy('tre.suId', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     public function getLastTransportRequestNr(): int
     {
+        /** @var TransportRequest[] $lastTransportRequestNr */
         $lastTransportRequestNr = $this->entityManager
             ->getRepository(TransportRequest::class)
             ->findBy([], ['trNr' => 'DESC'], 1, 0);
@@ -132,51 +202,66 @@ class TransportRequestDataHandler
         $this->delete($transportRequest);
     }
 
-    //    public function moveTransportRequestToTransportHistory(Request $request): void
-    //    {
-    //        $requestData = $request->request->all();
-    //        $trNr = (string) $requestData['tr_nr'];
-    //        $transportRequestEntry = $this->entityManager
-    //            ->getRepository(TransportRequest::class)
-    //            ->findOneBy(['tr_nr' => $trNr]);
-    //
-    //        $transportHistoryObject = new TransportHistory();
-    //        $transportHistoryEntry = $this->setData($transportHistoryObject, $request);
-    //
-    //        $this->entityManager->persist($transportHistoryEntry);
-    //        $this->entityManager->remove($transportRequestEntry);
-    //        $this->entityManager->flush();
-    //    }
+    public function moveTransportRequestToTransportHistory(int $id): void
+    {
+        /** @var TransportRequest|null $transportRequestEntry */
+        $transportRequestEntry = $this->entityManager
+            ->getRepository(TransportRequest::class)
+            ->findOneBy(['id' => $id]);
 
-    //    /**
-    //     * @param TransportRequest|TransportHistory $object
-    //     * @param Request $request
-    //     * @return TransportRequest|TransportHistory
-    //     */
-    //    public function setData(TransportRequest|TransportHistory $object, Request $request): TransportRequest|TransportHistory
-    //    {
-    //        $requestData = $request->request->all();
-    //
-    //        $object->setSuId((int) $requestData['suId']);
-    //        $object->setTrNr((int) $requestData['trNr']);
-    //        $object->setTrPos((int) $requestData['trPos']);
-    //        $object->setTrPrio((int) $requestData['trPrio']);
-    //        $object->setArtNr((string) $requestData['articleNr']);
-    //        $object->setTrQuantity((int) $requestData['trQuantity']);
-    //        $object->setStockCoordinate((string) $requestData['stockCoordinate']);
-    //        $object->setStockNr((int) $requestData['stockCoordinate']);
-    //        $object->setStockLevel1((int) $requestData['stockLevel1']);
-    //        $object->setStockLevel2((int) $requestData['stockLevel2']);
-    //        $object->setStockLevel3((int) $requestData['stockLevel3']);
-    //        $object->setStockLevel4((int) $requestData['stockLevel4']);
-    //        $object->setTrAccess($requestData['trAccess']);
-    //        $object->setTrState((int) $requestData['trState']);
-    //        $object->setOrderUsername((string) $requestData['orderUsername']);
-    //        $object->setBookingMethod($requestData['bookingMethod']);
-    //        $object->setCharge($requestData['charge']);
-    //        $object->setLoadingEquipment($requestData['loadingEquipment']);
-    //        $object->setTrType((int) $requestData['trType']);
-    //
-    //        return $object;
-    //    }
+        if ($transportRequestEntry !== null) {
+            $transportHistoryEntry = $this->setDataToMove($transportRequestEntry);
+
+            $this->entityManager->persist($transportHistoryEntry);
+            $this->entityManager->flush();
+        }
+    }
+
+    public function setDataToMove(TransportRequest $transportRequest): TransportHistory
+    {
+        return (new TransportHistory())
+            ->setSuId($transportRequest->getSuId())
+            ->setTrNr($transportRequest->getTrNr())
+            ->setTrPos($transportRequest->getTrPos())
+            ->setTrPrio($transportRequest->getTrPrio())
+            ->setArticleNr($transportRequest->getArticleNr())
+            ->setTrQuantity($transportRequest->getTrQuantity())
+            ->setStockCoordinate($transportRequest->getStockCoordinate())
+            ->setStockNr($transportRequest->getStockNr())
+            ->setStockLevel1($transportRequest->getStockLevel1())
+            ->setStockLevel2($transportRequest->getStockLevel2())
+            ->setStockLevel3($transportRequest->getStockLevel3())
+            ->setStockLevel4($transportRequest->getStockLevel4())
+//            ->setFromStockCoordinate($transportRequest->getFromStockCoordinate())
+//            ->setFromStockNr($transportRequest->getFromStockNr())
+//            ->setFromStockLevel1($transportRequest->getFromStockLevel1())
+//            ->setFromStockLevel2($transportRequest->getFromStockLevel2())
+//            ->setFromStockLevel3($transportRequest->getFromStockLevel3())
+//            ->setFromStockLevel4($transportRequest->getFromStockLevel4())
+//            ->setToStockCoordinate($transportRequest->getToStockCoordinate())
+//            ->setToStockNr($transportRequest->getToStockNr())
+//            ->setToStockLevel1($transportRequest->getToStockLevel1())
+//            ->setToStockLevel2($transportRequest->getToStockLevel2())
+//            ->setToStockLevel3($transportRequest->getToStockLevel3())
+//            ->setToStockLevel4($transportRequest->getToStockLevel4())
+            ->setTrAccess($transportRequest->getTrAccess())
+            ->setTrDispatch($transportRequest->getTrDispatch())
+            ->setTrState($transportRequest->getTrState())
+            ->setOrderUsername($transportRequest->getOrderUsername())
+            ->setBookingMethod($transportRequest->getBookingMethod())
+            ->setDocId($transportRequest->getDocId())
+            ->setOrderNr($transportRequest->getOrderNr())
+            ->setOrderPos($transportRequest->getOrderPos())
+            ->setCharge($transportRequest->getCharge())
+            ->setLoadingEquipment($transportRequest->getLoadingEquipment())
+            ->setConfirmationState($transportRequest->getConfirmationState())
+            ->setTrUsername($transportRequest->getTrUsername())
+            ->setTrComputerIp($transportRequest->getTrComputerIp())
+            ->setTrBlocked($transportRequest->getTrBlocked())
+            ->setTrStartDate($transportRequest->getTrStartDate())
+            ->setTrEdited($transportRequest->getTrEdited())
+            ->setTrType($transportRequest->getTrType())
+            ->setCreatedAt($transportRequest->getCreatedAt())
+            ->setUpdatedAt($transportRequest->getUpdatedAt());
+    }
 }

@@ -6,18 +6,19 @@ namespace WebWMS\Service\User\UserRole;
 
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\UserRole;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\User\UserRole\UserRoleDataHandler;
 
-/**
- * @package:    WebWMS\Service\User\UserRole
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserRoleService
- */
-class UserRoleService
+#[ClassInformation(
+    package: 'WebWMS\Service\User\UserRole',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserRoleService'
+)]
+readonly class UserRoleService
 {
     public function __construct(
-        private readonly UserRoleDataHandler $userRoleDataHandler
+        private UserRoleDataHandler $userRoleDataHandler,
     ) {
     }
 

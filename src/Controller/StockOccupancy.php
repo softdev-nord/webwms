@@ -4,34 +4,33 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
-use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Exception as DbalException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Stock\StockOccupancyService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockOccupancy
- */
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockOccupancy'
+)]
 class StockOccupancy extends AbstractController
 {
     public function __construct(
         private readonly StockOccupancyService $stockOccupancyService,
         private readonly StockLocationService $stockLocationService,
-        private readonly RequirementsService $requirementsService
+        private readonly RequirementsService $requirementsService,
     ) {
     }
 
-    /**
-     * @throws Exception
-     */
     #[Route('/lagerbelegung', name: 'stock_occupancy')]
     public function index(): Response
     {
@@ -48,20 +47,19 @@ class StockOccupancy extends AbstractController
         );
     }
 
+    /**
+     * @throws DbalException
+     */
     #[Route('/grafische_lagerbelegung', name: 'stock_occupancy_graphical')]
     public function stockOccupancyGraphical(Request $request): Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         return $this->getStockOccupancyResults($request);
     }
 
-    /**
-     * @throws Exception
-     * @return JsonResponse
-     */
     #[Route('/stock_occupancy_ajax', name: 'stock_occupancy_ajax')]
     public function getAllStockOccupancy(): JsonResponse
     {
@@ -69,7 +67,7 @@ class StockOccupancy extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws DbalException
      */
     #[Route('/stock_occupancy_ajax/{stock_location_coordinate}', name: 'stock_occupancy_ajax_coordinate')]
     public function getStockOccupancyByCoordinate(Request $request): Response
@@ -85,7 +83,7 @@ class StockOccupancy extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws DbalException
      */
     #[Route('/stock_occupancy_ajax/stock_location_ln/{stock_location_ln}', name: 'stock_occupancy_ajax_ln')]
     public function getStockOccupancyByLn(Request $request): Response
@@ -94,13 +92,12 @@ class StockOccupancy extends AbstractController
     }
 
     /**
-     * @throws Exception
-     *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(ElseExpression)
+     * @throws DbalException
      */
     public function getStockOccupancyResults(Request $request): Response
     {
-        if ($request->attributes->getInt('stock_location_ln')) {
+        if ($request->attributes->getInt('stock_location_ln') !== 0) {
             $stockLocationLn = $request->attributes->getInt('stock_location_ln');
         } else {
             $selectedStockLocations = $this->stockLocationService->getAllStockLocationsForSelect();
@@ -136,7 +133,7 @@ class StockOccupancy extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws DbalException
      */
     #[Route('/stock_occupancy_ajax_article/{article_nr}', name: 'stock_occupancy_ajax_article')]
     public function getStockOccupancyByArticle(Request $request): Response

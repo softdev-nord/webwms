@@ -9,20 +9,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Entity\Article as ArticleEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\ArticleFormHelper;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Validation\ArticleValidationService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Article
- */
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Article'
+)]
 class Article extends AbstractController
 {
     public function __construct(
@@ -30,14 +32,14 @@ class Article extends AbstractController
         private readonly RequirementsService $requirementsService,
         private readonly ArticleValidationService $articleValidationService,
         private readonly LoggingService $loggingService,
-        private readonly ArticleFormHelper $articleFormHelper
+        private readonly ArticleFormHelper $articleFormHelper,
     ) {
     }
 
     #[Route('/artikel', name: 'article')]
     public function index(): Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -57,7 +59,7 @@ class Article extends AbstractController
     #[Route('/artikel_anlegen', name: 'add_article')]
     public function addArticle(Request $request): Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -99,13 +101,13 @@ class Article extends AbstractController
     #[Route('artikel_bearbeiten/articleId/{articleId}', name: 'edit_article')]
     public function editArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $article = $this->articleService->getArticleById($articleId);
 
-        if ($article === null) {
+        if (!$article instanceof ArticleEntity) {
             return null;
         }
 
@@ -147,13 +149,13 @@ class Article extends AbstractController
     #[Route('/artikel_löschen/articleId/{articleId}', name: 'delete_article')]
     public function deleteArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $article = $this->articleService->getArticleById($articleId);
 
-        if ($article === null) {
+        if (!$article instanceof ArticleEntity) {
             return null;
         }
 

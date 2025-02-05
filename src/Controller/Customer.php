@@ -9,20 +9,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Entity\Customer as CustomerEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\CustomerFormHelper;
 use WebWMS\Service\Customer\CustomerService;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Validation\CustomerValidationService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Customer
- */
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Customer'
+)]
 class Customer extends AbstractController
 {
     public function __construct(
@@ -30,14 +32,14 @@ class Customer extends AbstractController
         private readonly RequirementsService $requirementsService,
         private readonly CustomerValidationService $customerValidationService,
         private readonly LoggingService $loggingService,
-        private readonly CustomerFormHelper $customerFormHelper
+        private readonly CustomerFormHelper $customerFormHelper,
     ) {
     }
 
     #[Route('/kunden', name: 'customer')]
     public function index(): Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -57,7 +59,7 @@ class Customer extends AbstractController
     #[Route('/kunden_anlegen', name: 'add_customer')]
     public function addCustomer(Request $request): RedirectResponse|Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -99,13 +101,13 @@ class Customer extends AbstractController
     #[Route('kunden_bearbeiten/customerId/{customerId}', name: 'edit_customer')]
     public function editCustomer(Request $request, int $customerId): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $customer = $this->customerService->getCustomerById($customerId);
 
-        if ($customer === null) {
+        if (!$customer instanceof CustomerEntity) {
             return null;
         }
 
@@ -147,13 +149,13 @@ class Customer extends AbstractController
     #[Route('/kunden_löschen/customerId/{customerId}', name: 'delete_customer')]
     public function deleteCustomer(Request $request, int $customerId): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $customer = $this->customerService->getCustomerById($customerId);
 
-        if ($customer === null) {
+        if (!$customer instanceof CustomerEntity) {
             return null;
         }
 

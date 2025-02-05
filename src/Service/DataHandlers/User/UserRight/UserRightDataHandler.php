@@ -7,19 +7,20 @@ namespace WebWMS\Service\DataHandlers\User\UserRight;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\UserRight;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\UserRight
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserRightDataHandler
- */
-class UserRightDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\UserRight',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserRightDataHandler'
+)]
+readonly class UserRightDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -40,23 +41,32 @@ class UserRightDataHandler
      */
     public function getAllUserRights(): array
     {
-        return $this->entityManager
+        /** @var UserRight[] $userRights */
+        $userRights = $this->entityManager
             ->getRepository(UserRight::class)
             ->findAll();
+
+        return $userRights;
     }
 
     public function getUserRightById(int $userRightId): ?UserRight
     {
-        return $this->entityManager
+        /** @var UserRight|null $userRight */
+        $userRight = $this->entityManager
             ->getRepository(UserRight::class)
             ->findOneBy(['id' => $userRightId]);
+
+        return $userRight;
     }
 
     public function getUserRightByUserRightName(string $userRightName): ?UserRight
     {
-        return $this->entityManager
+        /** @var UserRight|null $userRight */
+        $userRight = $this->entityManager
             ->getRepository(UserRight::class)
             ->findOneBy(['user_right' => $userRightName]);
+
+        return $userRight;
     }
 
     public function addUserRight(Request $request): ?UserRight
@@ -64,8 +74,8 @@ class UserRightDataHandler
         $addUserRight = $request->request->getIterator()->getArrayCopy();
         $userRight = new UserRight();
 
-        $userRight->setUserRight($addUserRight['user_right']);
-        $userRight->setDescription($addUserRight['description']);
+        $userRight->setUserRight($addUserRight['user_right']); // @phpstan-ignore-line
+        $userRight->setDescription($addUserRight['description']); // @phpstan-ignore-line
         $userRight->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userRight);
@@ -84,8 +94,8 @@ class UserRightDataHandler
             return null;
         }
 
-        $userRight->setUserRight($requestData['user_right']);
-        $userRight->setDescription($requestData['description']);
+        $userRight->setUserRight($requestData['user_right']); // @phpstan-ignore-line
+        $userRight->setDescription($requestData['description']); // @phpstan-ignore-line
         $userRight->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userRight);
@@ -97,7 +107,7 @@ class UserRightDataHandler
     {
         $userRight = $this->getUserRightByUserRightName($userRightName);
 
-        if ($userRight !== null) {
+        if ($userRight instanceof UserRight) {
             $this->delete($userRight);
         }
     }

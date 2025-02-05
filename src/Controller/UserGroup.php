@@ -6,29 +6,31 @@ namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Entity\UserGroup as UserGroupEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\User\UserGroup\UserGroupService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserGroup
- */
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserGroup'
+)]
 class UserGroup extends AbstractController
 {
     public function __construct(
         private readonly RequirementsService $requirementsService,
-        private readonly UserGroupService $userGroupService
+        private readonly UserGroupService $userGroupService,
     ) {
     }
 
     #[Route('/einstellungen/benutzer/benutzergruppen', name: 'configuration_user_groups')]
     public function index(): Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 

@@ -10,19 +10,24 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Entity\StockLocation as StockLocationEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\StockLocationFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Validation\StockLocationValidationService;
 
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLocation'
+)]
 /**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLocation
+ * @SuppressWarnings(CouplingBetweenObjects)
  */
 class StockLocation extends AbstractController
 {
@@ -31,14 +36,14 @@ class StockLocation extends AbstractController
         private readonly RequirementsService $requirementsService,
         private readonly StockLocationValidationService $stockLocationValidationService,
         private readonly LoggingService $loggingService,
-        private readonly StockLocationFormHelper $stockLocationFormHelper
+        private readonly StockLocationFormHelper $stockLocationFormHelper,
     ) {
     }
 
     #[Route('/lagerplatz', name: 'stock_location')]
     public function index(): Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -56,12 +61,12 @@ class StockLocation extends AbstractController
     }
 
     /**
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(ElseExpression)
      */
     #[Route('/lagerplatz_anlegen', name: 'add_stock_location')]
     public function addStockLocation(Request $request): RedirectResponse|Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -101,13 +106,13 @@ class StockLocation extends AbstractController
     #[Route('lagerplatz_bearbeiten/koordinate/{stockLocationCoordinate}', name: 'edit_stock_location')]
     public function editStockLocation(Request $request, string $stockLocationCoordinate): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $stockLocation = $this->stockLocationService->getStockLocationByCoordinate($stockLocationCoordinate);
 
-        if ($stockLocation === null) {
+        if (!$stockLocation instanceof StockLocationEntity) {
             return null;
         }
 
@@ -152,13 +157,13 @@ class StockLocation extends AbstractController
     #[Route('lagerplatz_löschen/koordinate/{stockLocationCoordinate}', name: 'delete_stock_location')]
     public function deleteStockLocation(Request $request, string $stockLocationCoordinate): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $stockLocation = $this->stockLocationService->getStockLocationByCoordinate($stockLocationCoordinate);
 
-        if ($stockLocation === null) {
+        if (!$stockLocation instanceof StockLocationEntity) {
             return null;
         }
 

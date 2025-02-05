@@ -11,19 +11,23 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
+use WebWMS\Repository\CustomerRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Customer
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Customer'
+)]
 #[ORM\Table(name: 'customer')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerRepository')]
+#[ORM\Entity(repositoryClass: CustomerRepository::class)]
 #[ApiResource(
     operations: [
         new Get(
@@ -67,50 +71,53 @@ class Customer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(name: 'customer_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'customer_id', type: Types::INTEGER, nullable: false)]
     #[Groups(['customer:read', 'customer:write'])]
     private int $customerId;
 
-    #[ORM\Column(name: 'customer_nr', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'customer_nr', type: Types::INTEGER, nullable: false)]
     #[Groups(['customer:read', 'customer:write'])]
     private int $customerNr;
 
-    #[ORM\Column(name: 'customer_name', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'customer_name', type: Types::STRING, length: 255, nullable: false)]
     #[Groups(['customer:read', 'customer:write'])]
     private string $customerName;
 
-    #[ORM\Column(name: 'customer_address_addition', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'customer_address_addition', type: Types::STRING, length: 255, nullable: true)]
     #[Groups(['customer:read', 'customer:write'])]
-    private ?string $customerAddressAddition;
+    private ?string $customerAddressAddition = null;
 
-    #[ORM\Column(name: 'customer_address_street', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'customer_address_street', type: Types::STRING, length: 255, nullable: false)]
     #[Groups(['customer:read', 'customer:write'])]
     private string $customerAddressStreet;
 
-    #[ORM\Column(name: 'customer_address_street_nr', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'customer_address_street_nr', type: Types::STRING, length: 10, nullable: false)]
     #[Groups(['customer:read', 'customer:write'])]
     private string $customerAddressStreetNr;
 
-    #[ORM\Column(name: 'customer_country_code', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'customer_country_code', type: Types::STRING, length: 10, nullable: false)]
     #[Groups(['customer:read', 'customer:write'])]
     private string $customerCountryCode;
 
-    #[ORM\Column(name: 'customer_zip_code', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'customer_zip_code', type: Types::STRING, length: 10, nullable: false)]
     #[Groups(['customer:read', 'customer:write'])]
     private string $customerZipCode;
 
-    #[ORM\Column(name: 'customer_city', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'customer_city', type: Types::STRING, length: 255, nullable: false)]
     #[Groups(['customer:read', 'customer:write'])]
     private string $customerCity;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['customer:read', 'customer:write'])]
-    private ?\DateTimeInterface $createdAt;
+    private ?DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['customer:read', 'customer:write'])]
-    private ?\DateTimeInterface $updatedAt;
+    private ?DateTimeInterface $updatedAt = null;
 
+    /**
+     * @var Collection<int, CustomerOrder>
+     */
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerOrder::class)]
     #[Groups(['customer:read'])]
     private Collection $customerOrder;
@@ -246,24 +253,24 @@ class Customer
         ];
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function setCreatedAt(?DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -280,9 +287,8 @@ class Customer
 
     /**
      * @param Collection<CustomerOrder> $customerOrder
-     * @return Customer
      */
-    public function setCustomerOrders(Collection $customerOrder): Customer
+    public function setCustomerOrders(Collection $customerOrder): self
     {
         $this->customerOrder = $customerOrder;
 

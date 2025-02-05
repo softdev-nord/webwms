@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\RequirementsService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Security
- */
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Security'
+)]
 class Security extends AbstractController
 {
     public function __construct(
-        private readonly RequirementsService $requirementsService
+        private readonly RequirementsService $requirementsService,
     ) {
     }
 
@@ -48,7 +50,7 @@ class Security extends AbstractController
                 'serverIp' => $serverIp,
                 'serverName' => $serverName,
                 'freeDiskSpace' => $freeDiskSpace,
-                'phpVersion' => phpversion(),
+                'phpVersion' => PHP_VERSION,
                 'mySqlVersion' => $mySqlVersion,
                 'appVersion' => $this->requirementsService->getAppVersion(),
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
@@ -61,6 +63,6 @@ class Security extends AbstractController
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

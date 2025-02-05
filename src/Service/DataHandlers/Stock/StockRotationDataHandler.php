@@ -8,17 +8,18 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\StockRotation;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockRotationDataHandler
- */
-class StockRotationDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockRotationDataHandler'
+)]
+readonly class StockRotationDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -75,8 +76,8 @@ class StockRotationDataHandler
         //            ->innerJoin('tph', 'booking_method', 'bm', 'bm.movement_type = tph.booking_method')
         //            ->groupBy('stock_coordinate');
 
-        $stmt = $queryBuilder->executeQuery();
+        $result = $queryBuilder->executeQuery();
 
-        return new JsonResponse($stmt->fetchAllAssociative());
+        return new JsonResponse($result->fetchAllAssociative());
     }
 }

@@ -6,18 +6,19 @@ namespace WebWMS\Service\SupplierOrder;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\SupplierOrder;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\SupplierOrder\SupplierOrderDataHandler;
 
-/**
- * @package:    WebWMS\Service\SupplierOrder
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderService
- */
-class SupplierOrderService
+#[ClassInformation(
+    package: 'WebWMS\Service\SupplierOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrderService'
+)]
+readonly class SupplierOrderService
 {
     public function __construct(
-        private readonly SupplierOrderDataHandler $supplierOrderDataHandler
+        private SupplierOrderDataHandler $supplierOrderDataHandler,
     ) {
     }
 

@@ -7,19 +7,20 @@ namespace WebWMS\Service\DataHandlers\CustomerOrderPos;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\CustomerOrderPos;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\CustomerOrderPos
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderPosDataHandler
- */
-class CustomerOrderPosDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\CustomerOrderPos',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrderPosDataHandler'
+)]
+readonly class CustomerOrderPosDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -57,9 +58,9 @@ class CustomerOrderPosDataHandler
             ->select('*')
             ->from('customer_orders_pos');
 
-        $stmt = $queryBuilder->executeQuery();
+        $result = $queryBuilder->executeQuery();
 
-        $results = $stmt->fetchAllAssociative();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }
@@ -78,10 +79,10 @@ class CustomerOrderPosDataHandler
         $this->save($customerOrderPos);
     }
 
-    public function deleteCustomerOrderPos(?CustomerOrderPos $supplierOrderPos): void
+    public function deleteCustomerOrderPos(?CustomerOrderPos $customerOrderPos): void
     {
-        if ($supplierOrderPos !== null) {
-            $this->delete($supplierOrderPos);
+        if ($customerOrderPos instanceof CustomerOrderPos) {
+            $this->delete($customerOrderPos);
         }
     }
 }

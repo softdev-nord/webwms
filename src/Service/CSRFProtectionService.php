@@ -6,20 +6,18 @@ namespace WebWMS\Service;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CSRFProtectionService
- *
- * CSRFProtectionService ist ein Service, der die einfache
- * Generierung und Validierung von Token für CSRF Protection übernimmt.
- */
-class CSRFProtectionService
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CSRFProtectionService'
+)]
+readonly class CSRFProtectionService
 {
     public function __construct(
-        private readonly RequestStack $requestStack
+        private RequestStack $requestStack,
     ) {
     }
 
@@ -42,12 +40,12 @@ class CSRFProtectionService
      * @param bool   $invalidateToken Token ist nur für eine Übermittlung gültig
      * @param string $fieldName       Legen Sie den Namen des Hidden Input Feld fest. default='_csrf_token'
      *
-     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     * @SuppressWarnings(BooleanArgumentFlag)
      */
     public function validateCSRFToken(
         Request $request,
         bool $invalidateToken = false,
-        string $fieldName = '_csrf_token'
+        string $fieldName = '_csrf_token',
     ): bool {
         $savedToken = $this->requestStack->getSession()->get('_csrf_token');
         $submittedToken = $request->request->get($fieldName);
@@ -63,8 +61,8 @@ class CSRFProtectionService
     }
 
     /**
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     * @SuppressWarnings(ElseExpression)
+     * @SuppressWarnings(BooleanArgumentFlag)
      */
     private function generateToken(): string
     {

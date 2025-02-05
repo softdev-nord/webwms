@@ -6,18 +6,19 @@ namespace WebWMS\Service\User\UserGroup;
 
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\UserGroup;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\User\UserGroup\UserGroupDataHandler;
 
-/**
- * @package:    WebWMS\Service\User\UserGroup
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserGroupService
- */
-class UserGroupService
+#[ClassInformation(
+    package: 'WebWMS\Service\User\UserGroup',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserGroupService'
+)]
+readonly class UserGroupService
 {
     public function __construct(
-        private readonly UserGroupDataHandler $userGroupDataHandler
+        private UserGroupDataHandler $userGroupDataHandler,
     ) {
     }
 

@@ -11,19 +11,23 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
+use WebWMS\Repository\SupplierOrderRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrder
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrder'
+)]
 #[ORM\Table(name: 'supplier_orders')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\SupplierOrderRepository')]
+#[ORM\Entity(repositoryClass: SupplierOrderRepository::class)]
 #[ApiResource(
     operations: [
         new Get(
@@ -67,46 +71,47 @@ class SupplierOrder
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(name: 'supplier_order_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'supplier_order_id', type: Types::INTEGER, nullable: false)]
     #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private int $supplierOrderId;
 
-    #[ORM\Column(name: 'usr_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'usr_id', type: Types::INTEGER, nullable: false)]
     #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private int $usrId;
 
-    #[ORM\Column(name: 'supplier_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'supplier_id', type: Types::INTEGER, nullable: false)]
     #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private int $supplierId;
 
-    #[ORM\Column(name: 'supplier_order_nr', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'supplier_order_nr', type: Types::STRING, length: 255, nullable: false)]
     #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
     private string $supplierOrderNr;
 
-    #[ORM\Column(name: 'supplier_order_reference', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'supplier_order_reference', type: Types::STRING, length: 255, nullable: true)]
     #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
-    private ?string $supplierOrderReference;
+    private ?string $supplierOrderReference = null;
 
-    #[ORM\Column(name: 'supplier_order_date', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'supplier_order_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
-    private ?\DateTimeInterface $supplierOrderDate;
+    private ?DateTimeInterface $supplierOrderDate = null;
 
-    #[ORM\Column(name: 'supplier_order_creation_date', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'supplier_order_creation_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
-    private ?\DateTimeInterface $supplierOrderCreationDate;
+    private ?DateTimeInterface $supplierOrderCreationDate = null;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
-    private ?\DateTimeInterface $createdAt;
+    private ?DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['supplierOrder:read', 'supplierOrder:write'])]
-    private ?\DateTimeInterface $updatedAt;
+    private ?DateTimeInterface $updatedAt = null;
 
-    /** One Supplier Order has many Supplier Order Positions. This is the inverse side. */
+    /** One Supplier Order has many Supplier Order Positions. This is the inverse side.
+     * @var Collection<int, SupplierOrderPos> */
     #[ORM\OneToMany(
         mappedBy: 'supplierOrder',
         targetEntity: SupplierOrderPos::class,
@@ -200,48 +205,48 @@ class SupplierOrder
         return $this;
     }
 
-    public function getSupplierOrderDate(): ?\DateTimeInterface
+    public function getSupplierOrderDate(): ?DateTimeInterface
     {
         return $this->supplierOrderDate;
     }
 
-    public function setSupplierOrderDate(?\DateTimeInterface $supplierOrderDate): self
+    public function setSupplierOrderDate(?DateTimeInterface $supplierOrderDate): self
     {
         $this->supplierOrderDate = $supplierOrderDate;
 
         return $this;
     }
 
-    public function getSupplierOrderCreationDate(): ?\DateTimeInterface
+    public function getSupplierOrderCreationDate(): ?DateTimeInterface
     {
         return $this->supplierOrderCreationDate;
     }
 
-    public function setSupplierOrderCreationDate(?\DateTimeInterface $supplierOrderCreationDate): self
+    public function setSupplierOrderCreationDate(?DateTimeInterface $supplierOrderCreationDate): self
     {
         $this->supplierOrderCreationDate = $supplierOrderCreationDate;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function setCreatedAt(?DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

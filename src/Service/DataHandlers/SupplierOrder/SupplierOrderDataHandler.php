@@ -7,19 +7,20 @@ namespace WebWMS\Service\DataHandlers\SupplierOrder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\SupplierOrder;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\SupplierOrder
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderDataHandler
- */
-class SupplierOrderDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\SupplierOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrderDataHandler'
+)]
+readonly class SupplierOrderDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -51,9 +52,9 @@ class SupplierOrderDataHandler
 
     public function getAllSupplierOrder(): JsonResponse
     {
-        $conn = $this->entityManager->getConnection();
+        $connection = $this->entityManager->getConnection();
 
-        $queryBuilder = $conn->createQueryBuilder();
+        $queryBuilder = $connection->createQueryBuilder();
 
         $queryBuilder
             ->select(

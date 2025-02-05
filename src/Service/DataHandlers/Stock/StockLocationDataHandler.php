@@ -8,20 +8,22 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use WebWMS\Dto\StockLocationValuesDto;
 use WebWMS\Entity\StockLocation;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLocationDataHandler
- */
-class StockLocationDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLocationDataHandler'
+)]
+readonly class StockLocationDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -44,8 +46,15 @@ class StockLocationDataHandler
             ->findOneBy(['stockLocationCoordinate' => $stockLocationCoordinate]);
     }
 
+    public function getStockLocationById(int $stockLocationId): ?StockLocation
+    {
+        return $this->entityManager
+            ->getRepository(StockLocation::class)
+            ->findOneBy(['stockLocationId' => $stockLocationId]);
+    }
+
     /**
-     * @throws \Exception
+     * @throws Exception|\Exception
      * @return object[]
      */
     public function getStockLocationDetailsById(string $stockLocationId): array
@@ -54,8 +63,8 @@ class StockLocationDataHandler
             ->getRepository(StockLocation::class)
             ->findBy(['stockLocationId' => $stockLocationId]);
 
-        if ($stockLocation == null) {
-            throw new \Exception('Keine Details für den gewählten Lagerort gefunden.');
+        if ($stockLocation === null) {
+            throw new Exception('Keine Details für den gewählten Lagerort gefunden.');
         }
 
         return $stockLocation;
@@ -72,9 +81,9 @@ class StockLocationDataHandler
             ->select('*')
             ->from('stock_location');
 
-        $stmt = $queryBuilder->executeQuery();
+        $result = $queryBuilder->executeQuery();
 
-        $results = $stmt->fetchAllAssociative();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }
@@ -115,20 +124,19 @@ class StockLocationDataHandler
             sl.stock_location_sp AS sp,
             sl.stock_location_tf AS tf,
             sl.stock_location_desc,
-            (SELECT SUM((SELECT IF(tr_type = 1, tr_quantity, 0.000))) FROM transport_history WHERE stock_coordinate = tph.stock_coordinate GROUP BY stock_coordinate LIMIT 1) - (SELECT SUM((SELECT IF(tr_type = 2, tr_quantity, 0.000))) FROM transport_history WHERE stock_coordinate = tph.stock_coordinate GROUP BY stock_coordinate LIMIT 1) AS lp_bestand')
-            ->from('transport_history', 'tph')
-            ->rightJoin('tph', 'stock_location', 'sl', 'tph.stock_coordinate = sl.stock_location_coordinate')
+            so.in_stock,
+            so.incoming_stock,
+            so.reserved_stock')
+            ->from('stock_location', 'sl')
+            ->join('sl', 'stock_occupancy', 'so', 'sl.stock_location_coordinate = so.stock_coordinate')
             ->where('sl.stock_location_desc = :system')
             ->setParameter('system', $stockSystem)
             ->groupBy('sl.stock_location_coordinate');
 
-        $stmt = $queryBuilder->executeQuery();
-
-        return $stmt->fetchAllAssociative();
+        return $queryBuilder->executeQuery()->fetchAllAssociative();
     }
 
     /**
-     * @throws Exception
      * @return array<object>
      */
     public function getAllStockLocationsForSelect(): array
@@ -144,7 +152,7 @@ class StockLocationDataHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      * @return object[]
      */
     public function getAllStockLocationsAjax(): array
@@ -153,8 +161,8 @@ class StockLocationDataHandler
             ->getRepository(StockLocation::class)
             ->findAll();
 
-        if ($stockLocation == null) {
-            throw new \Exception('Keine Lagerorte gefunden');
+        if ($stockLocation === null) {
+            throw new Exception('Keine Lagerorte gefunden');
         }
 
         return $stockLocation;
@@ -173,6 +181,7 @@ class StockLocationDataHandler
             if ($result['lp_bestand'] !== null) {
                 continue;
             }
+
             $allResults[] = [
                 'id' => $result['id'],
                 'ln' => $result['ln'],
@@ -193,15 +202,17 @@ class StockLocationDataHandler
      * @throws Exception
      * @return array<string|int|mixed>
      */
-    public function getAllFreeStockLocationsWithLimit(string $stockSystem, int $limit): array
+    public function getAllFreeStockLocationsWithLimit(string $stockSystem, int $limit, float $leQuantity): array
     {
         $allResults = [];
         $results = $this->getAllStockLocationsQuery($stockSystem);
 
         foreach ($results as $result) {
-            if ($result['lp_bestand'] !== null) {
+            $sumInventory = $result['in_stock'] + $result['incoming_stock'] + $result['reserved_stock'];
+            if ($sumInventory === $leQuantity) {
                 continue;
             }
+
             $allResults[] = [
                 'id' => $result['id'],
                 'ln' => $result['ln'],
@@ -220,6 +231,34 @@ class StockLocationDataHandler
 
     /**
      * @throws Exception
+     * @return array<int, array<string, mixed>>
+     */
+    public function getOccupiedStockLocationsByArticleId(int $articleId): array
+    {
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('
+            sl.stock_location_id AS id,
+            sl.stock_location_coordinate AS koordinate,
+            sl.stock_location_ln AS ln,
+            sl.stock_location_fb AS fb,
+            sl.stock_location_sp AS sp,
+            sl.stock_location_tf AS tf,
+            sl.stock_location_desc AS stockLocationDesc,
+            so.in_stock AS inStock,
+            so.incoming_stock AS incomingStock,
+            so.reserved_stock AS reservedStock')
+            ->from('stock_occupancy', 'so')
+            ->rightJoin('so', 'stock_location', 'sl', 'so.stock_location_id = sl.stock_location_id')
+            ->where('so.article_id = :article_id')
+            ->setParameter('article_id', $articleId);
+
+        return $queryBuilder->executeQuery()->fetchAllAssociative();
+    }
+
+    /**
+     * @throws Exception
      * @return array<string|int|mixed>
      */
     public function getOccupiedFreeStockLocations(string $stockSystem, int $limit): array
@@ -231,6 +270,7 @@ class StockLocationDataHandler
             if ($result['lp_bestand'] === null) {
                 continue;
             }
+
             $allResults[] = [
                 'ln' => $result['ln'],
                 'fb' => $result['fb'],
@@ -249,29 +289,32 @@ class StockLocationDataHandler
     /**
      * @return array<int|string, array<string, float|string>|float|string>
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(ElseExpression)
      */
     public function generateStockLocationValues(Request $request): array
     {
         $stockLocations = [];
+        /** @var array<string|float> $stockLocation */
         $stockLocation = $request->request->all()['add_stock_location'];
 
+        $stockLocationValuesDto = StockLocationValuesDto::hydrate($stockLocation);
+
         if (!isset($stockLocation['stock_location_check'])) {
-            $stockLocations['stockLocationLn'] = strval($stockLocation['stockLocationLn']);
-            $stockLocations['stockLocationFb'] = strval($stockLocation['stockLocationFb']);
-            $stockLocations['stockLocationSp'] = strval($stockLocation['stockLocationSp']);
-            $stockLocations['stockLocationTf'] = strval($stockLocation['stockLocationTf']);
-            $stockLocations['stockLocationCoordinate'] =
-                $stockLocation['stockLocationLn']
-                . $this->generateStockCoordinateLevel(strval($stockLocation['stockLocationFb']))
-                . $this->generateStockCoordinateLevel(strval($stockLocation['stockLocationSp']))
-                . $this->generateStockCoordinateLevel(strval($stockLocation['stockLocationTf']))
+            $stockLocations['stockLocationLn'] = $stockLocationValuesDto->getStockLocationLn();
+            $stockLocations['stockLocationFb'] = $stockLocationValuesDto->getStockLocationFb();
+            $stockLocations['stockLocationSp'] = $stockLocationValuesDto->getStockLocationSp();
+            $stockLocations['stockLocationTf'] = $stockLocationValuesDto->getStockLocationTf();
+            $stockLocations['stockLocationCoordinate']
+                = $stockLocationValuesDto->getStockLocationLn()
+                . $this->generateStockCoordinateLevel($stockLocationValuesDto->getStockLocationFb())
+                . $this->generateStockCoordinateLevel($stockLocationValuesDto->getStockLocationSp())
+                . $this->generateStockCoordinateLevel($stockLocationValuesDto->getStockLocationTf())
             ;
-            $stockLocations['stockLocationDesc'] = strval($stockLocation['stockLocationDesc']);
-            $stockLocations['stockLocationWidth'] = floatval($stockLocation['stockLocationWidth']);
-            $stockLocations['stockLocationDepth'] = floatval($stockLocation['stockLocationDepth']);
-            $stockLocations['stockLocationHeight'] = floatval($stockLocation['stockLocationHeight']);
-            $stockLocations['stockLocationZone'] = strval($stockLocation['stockLocationZone']);
+            $stockLocations['stockLocationDesc'] = $stockLocationValuesDto->getStockLocationDesc();
+            $stockLocations['stockLocationWidth'] = $stockLocationValuesDto->getStockLocationWidth();
+            $stockLocations['stockLocationDepth'] = $stockLocationValuesDto->getStockLocationDepth();
+            $stockLocations['stockLocationHeight'] = $stockLocationValuesDto->getStockLocationHeight();
+            $stockLocations['stockLocationZone'] = $stockLocationValuesDto->getStockLocationZone();
         } else {
             for ($fbn = 1; $fbn <= $stockLocation['stockLocationFb']; ++$fbn) {
                 for ($spn = 1; $spn <= $stockLocation['stockLocationSp']; ++$spn) {
@@ -282,8 +325,8 @@ class StockLocationDataHandler
                         $generatedStockLocation['stockLocationFb'] = (string) $fbn;
                         $generatedStockLocation['stockLocationSp'] = (string) $spn;
                         $generatedStockLocation['stockLocationTf'] = (string) $tfn;
-                        $generatedStockLocation['stockLocationCoordinate'] =
-                            $stockLocation['stockLocationLn']
+                        $generatedStockLocation['stockLocationCoordinate']
+                            = $stockLocation['stockLocationLn']
                             . $this->generateStockCoordinateLevel((string) $fbn)
                             . $this->generateStockCoordinateLevel((string) $spn)
                             . $this->generateStockCoordinateLevel((string) $tfn)

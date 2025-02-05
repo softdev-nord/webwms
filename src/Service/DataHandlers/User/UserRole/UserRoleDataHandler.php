@@ -7,19 +7,20 @@ namespace WebWMS\Service\DataHandlers\User\UserRole;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\UserRole;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\Role
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserRoleDataHandler
- */
-class UserRoleDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Role',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserRoleDataHandler'
+)]
+readonly class UserRoleDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -64,8 +65,8 @@ class UserRoleDataHandler
         $addUserRole = $request->request->getIterator()->getArrayCopy();
         $userRole = new UserRole();
 
-        $userRole->setUserRole($addUserRole['user_role']);
-        $userRole->setDescription($addUserRole['description']);
+        $userRole->setUserRole($addUserRole['user_role']); // @phpstan-ignore-line
+        $userRole->setDescription($addUserRole['description']); // @phpstan-ignore-line
         $userRole->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userRole);
@@ -84,8 +85,8 @@ class UserRoleDataHandler
             return null;
         }
 
-        $userRole->setUserRole($requestData['user_role']);
-        $userRole->setDescription($requestData['description']);
+        $userRole->setUserRole($requestData['user_role']); // @phpstan-ignore-line
+        $userRole->setDescription($requestData['description']); // @phpstan-ignore-line
         $userRole->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userRole);
@@ -97,7 +98,7 @@ class UserRoleDataHandler
     {
         $userRole = $this->getUserRoleByUserRoleName($userRoleName);
 
-        if ($userRole !== null) {
+        if ($userRole instanceof UserRole) {
             $this->delete($userRole);
         }
     }

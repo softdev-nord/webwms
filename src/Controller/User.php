@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Entity\User as UserEntity;
 use WebWMS\Form\User\Model\ChangePassword;
 use WebWMS\Helper\FormHelper\UserFormHelper;
@@ -23,12 +24,14 @@ use WebWMS\Service\Validation\ChangePasswordValidationService;
 use WebWMS\Service\Validation\UserValidationService;
 
 /**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        User
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @package: WebWMS\Controller
+ * @author: SoftDev Nord, Rene Irrgang
+ * @copyright: Copyright © 2019-2025, SoftDev Nord
+ * Class User
+ */
+
+/**
+ * @SuppressWarnings(CouplingBetweenObjects)
  */
 class User extends AbstractController
 {
@@ -38,16 +41,16 @@ class User extends AbstractController
         private readonly UserService $userService,
         private readonly UserValidationService $userValidationService,
         private readonly ChangePasswordValidationService $passwordValidationService,
-        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
         private readonly DateTimeService $dateTimeService,
-        private readonly UserFormHelper $userFormHelper
+        private readonly UserFormHelper $userFormHelper,
     ) {
     }
 
     #[Route('/benutzer', name: 'user')]
     public function index(): Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -67,7 +70,7 @@ class User extends AbstractController
     #[Route('/benutzer_anlegen', name: 'add_user')]
     public function addUser(Request $request): RedirectResponse|Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -81,7 +84,7 @@ class User extends AbstractController
             $logMessage = 'Der Benutzer ' . $userRequestData->getUsername() . ' wurde angelegt.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->userService->addUser($request);
+            $this->userService->addUser($userRequestData);
 
             return new JsonResponse($userRequestData);
         }
@@ -102,13 +105,13 @@ class User extends AbstractController
     #[Route('benutzer_bearbeiten/benutzername/{username}', name: 'edit_user')]
     public function editUser(Request $request, string $username): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $user = $this->userService->getUserByUsername($username);
 
-        if ($user === null) {
+        if (!$user instanceof UserEntity) {
             return null;
         }
 
@@ -125,7 +128,7 @@ class User extends AbstractController
                 $responseData['message'] = 'Der Benutzer ' . $username . ' wurde erfolgreich geändert.';
                 $logMessage = 'Der Benutzer ' . $username . ' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-                $this->userService->updateUser($request);
+                $this->userService->updateUser($userRequestData);
 
                 return new JsonResponse($responseData);
             }
@@ -150,18 +153,18 @@ class User extends AbstractController
     #[Route('benutzer_passwort_bearbeiten/benutzername/{username}', name: 'edit_user_password')]
     public function editUserPassword(Request $request, string $username): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $user = $this->userService->getUserByUsername($username);
 
-        if ($user === null) {
+        if (!$user instanceof UserEntity) {
             return null;
         }
 
-        $changePasswordModel = new ChangePassword();
-        $form = $this->userFormHelper->changePasswordForm($changePasswordModel);
+        $changePassword = new ChangePassword();
+        $form = $this->userFormHelper->changePasswordForm($changePassword);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -175,7 +178,7 @@ class User extends AbstractController
                 $responseData['message'] = 'Das Passwort für den Benutzer ' . $username . ' wurde erfolgreich geändert.';
                 $logMessage = 'Das Passwort für den Benutzer ' . $username . ' wurde geändert.';
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-                $newHashedPassword = $this->passwordHasher->hashPassword(
+                $newHashedPassword = $this->userPasswordHasher->hashPassword(
                     $user,
                     $newPassword
                 );
@@ -202,13 +205,13 @@ class User extends AbstractController
     #[Route('/benutzer_löschen/benutzername/{username}', name: 'delete_user')]
     public function deleteArticle(Request $request, string $username): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $user = $this->userService->getUserByUsername($username);
 
-        if ($user === null) {
+        if (!$user instanceof UserEntity) {
             return null;
         }
 

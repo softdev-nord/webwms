@@ -6,18 +6,19 @@ namespace WebWMS\Service\TransportHistory;
 
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\TransportHistory;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\TransportHistory\TransportHistoryDataHandler;
 
-/**
- * @package:    WebWMS\Service\TransportHistory
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        TransportHistoryService
- */
-class TransportHistoryService
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'TransportHistoryService'
+)]
+readonly class TransportHistoryService
 {
     public function __construct(
-        private TransportHistoryDataHandler $transportHistoryDataHandler
+        private TransportHistoryDataHandler $transportHistoryDataHandler,
     ) {
     }
 
@@ -63,7 +64,8 @@ class TransportHistoryService
             ->deleteTransportHistory($transportHistory);
     }
 
-    public function getLastStockUnit(): int
+    /** @return TransportHistory[] */
+    public function getLastStockUnit(): array
     {
         return $this->transportHistoryDataHandler
             ->getLastStockUnit();

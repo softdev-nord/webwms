@@ -7,19 +7,20 @@ namespace WebWMS\Service\DataHandlers\Customer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Customer;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\Customer
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerDataHandler
- */
-class CustomerDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Customer',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerDataHandler'
+)]
+readonly class CustomerDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -65,7 +66,7 @@ class CustomerDataHandler
     /**
      * Get all Customers for Ajax-Request.
      */
-    public function getCustomers(string|null $customerNrInput): JsonResponse
+    public function getCustomers(?string $customerNrInput): JsonResponse
     {
         $data = [];
         if ($customerNrInput !== null) {
@@ -79,16 +80,16 @@ class CustomerDataHandler
             $customers = $queryBuilder->getQuery()->getArrayResult();
 
             foreach ($customers as $customer) {
-                $nameCustomer = $customer['customerId'] . ' | ' .
-                    $customer['customerNr'] . ' | ' .
-                    $customer['customerName'] . ' | ' .
-                    $customer['customerAddressAddition'] . ' | ' .
-                    $customer['customerAddressStreet'] . ' | ' .
-                    $customer['customerAddressStreetNr'] . ' | ' .
-                    $customer['customerCountryCode'] . ' | ' .
-                    $customer['customerZipCode'] . ' | ' .
-                    $customer['customerCity'] . ' | ' .
-                    $customer['customerId']
+                $nameCustomer = $customer['customerId'] . ' | '
+                    . $customer['customerNr'] . ' | '
+                    . $customer['customerName'] . ' | '
+                    . $customer['customerAddressAddition'] . ' | '
+                    . $customer['customerAddressStreet'] . ' | '
+                    . $customer['customerAddressStreetNr'] . ' | '
+                    . $customer['customerCountryCode'] . ' | '
+                    . $customer['customerZipCode'] . ' | '
+                    . $customer['customerCity'] . ' | '
+                    . $customer['customerId']
                 ;
                 $data[] = $nameCustomer;
             }

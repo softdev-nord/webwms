@@ -11,19 +11,23 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
+use WebWMS\Repository\SupplierRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Supplier
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Supplier'
+)]
 #[ORM\Table(name: 'supplier')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\SupplierRepository')]
+#[ORM\Entity(repositoryClass: SupplierRepository::class)]
 #[ApiResource(
     operations: [
         new Get(
@@ -67,50 +71,53 @@ class Supplier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(name: 'supplier_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'supplier_id', type: Types::INTEGER, nullable: false)]
     #[Groups(['supplier:read', 'supplier:write'])]
     private int $supplierId;
 
-    #[ORM\Column(name: 'supplier_nr', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'supplier_nr', type: Types::INTEGER, nullable: false)]
     #[Groups(['supplier:read', 'supplier:write'])]
     private int $supplierNr;
 
-    #[ORM\Column(name: 'supplier_name', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'supplier_name', type: Types::STRING, length: 255, nullable: false)]
     #[Groups(['supplier:read', 'supplier:write'])]
     private string $supplierName;
 
-    #[ORM\Column(name: 'supplier_address_addition', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'supplier_address_addition', type: Types::STRING, length: 255, nullable: true)]
     #[Groups(['supplier:read', 'supplier:write'])]
-    private ?string $supplierAddressAddition;
+    private ?string $supplierAddressAddition = null;
 
-    #[ORM\Column(name: 'supplier_address_street', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'supplier_address_street', type: Types::STRING, length: 255, nullable: false)]
     #[Groups(['supplier:read', 'supplier:write'])]
     private string $supplierAddressStreet;
 
-    #[ORM\Column(name: 'supplier_address_street_nr', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'supplier_address_street_nr', type: Types::STRING, length: 10, nullable: false)]
     #[Groups(['supplier:read', 'supplier:write'])]
     private string $supplierAddressStreetNr;
 
-    #[ORM\Column(name: 'supplier_address_country_code', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'supplier_address_country_code', type: Types::STRING, length: 10, nullable: false)]
     #[Groups(['supplier:read', 'supplier:write'])]
     private string $supplierAddressCountryCode;
 
-    #[ORM\Column(name: 'supplier_address_zipcode', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'supplier_address_zipcode', type: Types::STRING, length: 10, nullable: false)]
     #[Groups(['supplier:read', 'supplier:write'])]
     private string $supplierAddressZipcode;
 
-    #[ORM\Column(name: 'supplier_address_city', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'supplier_address_city', type: Types::STRING, length: 255, nullable: false)]
     #[Groups(['supplier:read', 'supplier:write'])]
     private string $supplierAddressCity;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['supplier:read', 'supplier:write'])]
-    private ?\DateTimeInterface $createdAt;
+    private ?DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['supplier:read', 'supplier:write'])]
-    private ?\DateTimeInterface $updatedAt;
+    private ?DateTimeInterface $updatedAt = null;
 
+    /**
+     * @var Collection<int, SupplierOrder>
+     */
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: SupplierOrder::class)]
     #[Groups(['supplier:read'])]
     private Collection $supplierOrder;
@@ -228,24 +235,24 @@ class Supplier
         ];
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function setCreatedAt(?DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -262,9 +269,8 @@ class Supplier
 
     /**
      * @param Collection<SupplierOrder> $supplierOrder
-     * @return Supplier
      */
-    public function setSupplierOrders(Collection $supplierOrder): Supplier
+    public function setSupplierOrders(Collection $supplierOrder): self
     {
         $this->supplierOrder = $supplierOrder;
 

@@ -6,18 +6,19 @@ namespace WebWMS\Service\Stock;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\StockLayout;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Stock\StockLayoutDataHandler;
 
-/**
- * @package:    WebWMS\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLayoutService
- */
-class StockLayoutService
+#[ClassInformation(
+    package: 'WebWMS\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLayoutService'
+)]
+readonly class StockLayoutService
 {
     public function __construct(
-        private readonly StockLayoutDataHandler $stockLayoutDataHandler
+        private StockLayoutDataHandler $stockLayoutDataHandler,
     ) {
     }
 

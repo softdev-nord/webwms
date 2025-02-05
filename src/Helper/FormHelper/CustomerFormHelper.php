@@ -11,25 +11,24 @@ use WebWMS\Entity\Customer;
 use WebWMS\Form\Customer\AddCustomerType;
 use WebWMS\Form\Customer\DeleteCustomerType;
 use WebWMS\Form\Customer\EditCustomerType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerFormHelper
- */
-class CustomerFormHelper
+#[ClassInformation(
+    package: 'WebWMS\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerFormHelper'
+)]
+readonly class CustomerFormHelper
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory
+        private FormFactoryInterface $formFactory,
     ) {
     }
 
     /**
      * @param class-string<FormTypeInterface<mixed>> $type
-     * @param mixed|null $data
      * @param array<string> $options
-     * @return FormInterface
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
     {
@@ -41,19 +40,11 @@ class CustomerFormHelper
         return $this->createForm(AddCustomerType::class);
     }
 
-    /**
-     * @param Customer|null $customer
-     * @return FormInterface
-     */
     public function editCustomerForm(?Customer $customer): FormInterface
     {
         return $this->createForm(EditCustomerType::class, $customer);
     }
 
-    /**
-     * @param Customer|null $customer
-     * @return FormInterface
-     */
     public function deleteCustomerForm(?Customer $customer): FormInterface
     {
         return $this->createForm(DeleteCustomerType::class, $customer);

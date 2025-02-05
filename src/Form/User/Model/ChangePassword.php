@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\User\Model;
 
-/**
- * @package:    WebWMS\Form\User\Model
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ChangePassword
- */
+use WebWMS\Helper\Attribute\ClassInformation;
+
+#[ClassInformation(
+    package: 'WebWMS\Form\User\Model',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ChangePassword'
+)]
 class ChangePassword
 {
     public string $oldPassword = '';

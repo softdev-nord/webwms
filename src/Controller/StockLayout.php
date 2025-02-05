@@ -9,20 +9,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Entity\StockLayout as StockLayoutEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\StockLayoutFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLayoutService;
 use WebWMS\Service\Validation\StockLayoutValidationService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLayout
- */
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLayout'
+)]
 class StockLayout extends AbstractController
 {
     public function __construct(
@@ -30,7 +32,7 @@ class StockLayout extends AbstractController
         private readonly RequirementsService $requirementsService,
         private readonly LoggingService $loggingService,
         private readonly StockLayoutFormHelper $stockLayoutFormHelper,
-        private readonly StockLayoutValidationService $stockLayoutValidationService
+        private readonly StockLayoutValidationService $stockLayoutValidationService,
     ) {
     }
 
@@ -53,7 +55,7 @@ class StockLayout extends AbstractController
     #[Route('/lagerlayout_anlegen', name: 'add_stock_layout')]
     public function addStockLayout(Request $request): RedirectResponse|Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -94,13 +96,13 @@ class StockLayout extends AbstractController
     #[Route('/lagerlayout_bearbeiten/stockLayoutId/{stockLayoutId}', name: 'edit_stock_layout')]
     public function editStockLayout(Request $request, int $stockLayoutId): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $stockLayout = $this->stockLayoutService->getStockLayoutById($stockLayoutId);
 
-        if ($stockLayout === null) {
+        if (!$stockLayout instanceof StockLayoutEntity) {
             return null;
         }
 
@@ -141,13 +143,13 @@ class StockLayout extends AbstractController
     #[Route('/lagerlayout_löschen/stockLayoutId/{stockLayoutId}', name: 'delete_stock_layout')]
     public function deleteStockLayout(Request $request, int $stockLayoutId): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $stockLayout = $this->stockLayoutService->getStockLayoutById($stockLayoutId);
 
-        if ($stockLayout === null) {
+        if (!$stockLayout instanceof StockLayoutEntity) {
             return null;
         }
 

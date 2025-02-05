@@ -5,27 +5,31 @@ declare(strict_types=1);
 namespace WebWMS\Controller;
 
 use Doctrine\ORM\EntityNotFoundException;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
+use WebWMS\Entity\StockLocation;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\BookingMethod\BookingMethodService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\TransportRequest\TransportRequestService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockTransactions
- */
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockTransactions'
+)]
 class StockTransactions extends AbstractController
 {
     public function __construct(
         private readonly BookingMethodService $bookingMethodService,
         private readonly TransportRequestService $transportRequestService,
-        private readonly StockLocationService $stockLocationService
+        private readonly StockLocationService $stockLocationService,
     ) {
     }
 
@@ -37,7 +41,7 @@ class StockTransactions extends AbstractController
     #[Route('/stock_in', name: 'stock_in')]
     public function stockIn(Request $request): RedirectResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -346,17 +350,17 @@ class StockTransactions extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
-     * @SuppressWarnings(PHPMD.ExitExpression)
+     * @SuppressWarnings(ExitExpression)
      */
     #[Route('/stock_in_final', name: 'stock_in_final')]
     public function stockInFinal(Request $request): void
     {
         $user = '';
-        $clientIp = ($request->getClientIp() !== null) ? $request->getClientIp() : '';
+        $clientIp = $request->getClientIp() ?? '';
 
-        if ($this->getUser() !== null) {
+        if ($this->getUser() instanceof UserInterface) {
             $user = $this->getUser()->getUserIdentifier();
         }
 
@@ -381,7 +385,7 @@ class StockTransactions extends AbstractController
     public function editPreSelectedStockLocation(Request $request): Response
     {
         $stockLocationId = $request->attributes->getString('stockLocationId');
-        /* @var $stockSystem \WebWMS\Entity\StockLocation */
+        /** @var StockLocation $stockSystem */
         $stockSystem = $this->stockLocationService->getStockLocationDetailsById($stockLocationId);
 
         /**

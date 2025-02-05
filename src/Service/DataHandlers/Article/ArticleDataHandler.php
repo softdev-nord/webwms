@@ -4,22 +4,26 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\DataHandlers\Article;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Article;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
+use WebWMS\Service\Stock\StockOccupancyService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ArticleDataHandler
- */
-class ArticleDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ArticleDataHandler'
+)]
+readonly class ArticleDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private StockOccupancyService $stockOccupancyService,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -37,16 +41,22 @@ class ArticleDataHandler
 
     public function getArticleById(int $articleId): ?Article
     {
-        return $this->entityManager
+        /** @var Article|null $article */
+        $article = $this->entityManager
             ->getRepository(Article::class)
             ->findOneBy(['articleId' => $articleId]);
+
+        return $article;
     }
 
     public function getArticleByNr(string $articleNr): ?Article
     {
-        return $this->entityManager
+        /** @var Article|null $article */
+        $article = $this->entityManager
             ->getRepository(Article::class)
             ->findOneBy(['articleNr' => $articleNr]);
+
+        return $article;
     }
 
     /**
@@ -59,25 +69,41 @@ class ArticleDataHandler
             ->findAll();
     }
 
+    /**
+     * @throws Exception
+     */
     public function getAllArticlesWithJoin(): JsonResponse
     {
-        $connection = $this->entityManager->getConnection();
+        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
+        $queryBuilder
+            ->select('art.article_id, art.article_nr, art.article_name, art.article_category, art.article_weight, art.article_ean, art.article_unit, art.article_depth, art.article_width, art.article_height, art.created_at, art.updated_at')
+            ->from('article', 'art');
 
-        $sql = "SELECT art.article_id, art.article_nr, art.article_name, art.article_category, art.article_weight, art.article_ean, art.article_unit, art.article_depth, art.article_width, art.article_height, art.created_at, art.updated_at,
-                (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) - (SUM(IF(transport_history.tr_type = '2', transport_history.tr_quantity, 0.000)))
+        $results = $queryBuilder->executeQuery()->fetchAllAssociative();
 
-                FROM transport_history WHERE transport_history.article_nr = art.article_nr GROUP BY transport_history.article_nr LIMIT 1) AS lbw_menge
-                FROM transport_history AS tph
-                RIGHT OUTER JOIN article AS art
-                    ON tph.article_nr = art.article_nr
-                GROUP BY art.article_nr";
+        foreach ($results as $key => $result) {
+            $results[$key]['in_stock'] = 0.00;
+            $results[$key]['incoming_stock'] = 0.00;
+            $results[$key]['reserved_stock'] = 0.00;
 
-        $data = $connection->fetchAllAssociative($sql);
+            /** @var int $articleId */
+            $articleId = $result['article_id'];
 
-        return new JsonResponse($data);
+            $stockOccupancies = $this->stockOccupancyService->getStockOccupancyByArticleId($articleId);
+
+            $inStock = array_column($stockOccupancies, 'in_stock');
+            $incomingStock = array_column($stockOccupancies, 'incoming_stock');
+            $reservedStock = array_column($stockOccupancies, 'reserved_stock');
+
+            $results[$key]['in_stock'] += array_sum($inStock);
+            $results[$key]['incoming_stock'] += array_sum($incomingStock);
+            $results[$key]['reserved_stock'] += array_sum($reservedStock);
+        }
+
+        return new JsonResponse($results);
     }
 
-    public function getArticle(string|null $articleNrInput): JsonResponse
+    public function getArticle(?string $articleNrInput): JsonResponse
     {
         $data = [];
         if ($articleNrInput !== null) {
@@ -86,29 +112,28 @@ class ArticleDataHandler
                 ->select('art')
                 ->from(Article::class, 'art')
                 ->where('art.articleNr LIKE :article_nr')
-                ->setParameter(':article_nr', '' . $articleNrInput . '%');
+                ->setParameter(':article_nr', '%' . $articleNrInput . '%');
 
             $articles = $queryBuilder->getQuery()->getArrayResult();
 
             foreach ($articles as $article) {
-                $name = $article['articleId'] . ' | ' .
-                    $article['articleNr'] . ' | ' .
-                    $article['articleName'] . ' | ' .
-                    $article['articleCategory'] . ' | ' .
-                    $article['articleWeight'] . ' | ' .
-                    $article['articleEan'] . ' | ' .
-                    $article['articleUnit'] . ' | ' .
-                    $article['articleDepth'] . ' | ' .
-                    $article['articleWidth'] . ' | ' .
-                    $article['articleHeight'] . ' | ' .
-                    $article['stockOutStrategy'] . ' | ' .
-                    $article['standardLoadingEquipment'] . ' | ' .
-                    $article['leQuantity'];
+                $name = $article['articleId'] . ' | '
+                    . $article['articleNr'] . ' | '
+                    . $article['articleName'] . ' | '
+                    . $article['articleCategory'] . ' | '
+                    . $article['articleWeight'] . ' | '
+                    . $article['articleEan'] . ' | '
+                    . $article['articleUnit'] . ' | '
+                    . $article['articleDepth'] . ' | '
+                    . $article['articleWidth'] . ' | '
+                    . $article['articleHeight'] . ' | '
+                    . $article['stockOutStrategy'] . ' | '
+                    . $article['standardLoadingEquipment'] . ' | '
+                    . $article['leQuantity'];
                 $data[] = $name;
             }
         }
 
-        // dd($data);
         return new JsonResponse($data);
     }
 
@@ -133,6 +158,7 @@ class ArticleDataHandler
 
     public function getLastArticle(): Article
     {
+        /** @var Article[] $lastArticle */
         $lastArticle = $this->entityManager
             ->getRepository(Article::class)
             ->findBy([], ['articleId' => 'DESC'], 1, 0);

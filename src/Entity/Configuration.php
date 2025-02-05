@@ -4,36 +4,39 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Helper\Attribute\ClassInformation;
+use WebWMS\Repository\ConfigurationRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Configuration
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Configuration'
+)]
 #[ORM\Table(name: 'configuration')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\ConfigurationRepository')]
+#[ORM\Entity(repositoryClass: ConfigurationRepository::class)]
 class Configuration
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: false)]
     private string $name;
 
-    #[ORM\Column(name: 'value', type: 'text', nullable: false)]
+    #[ORM\Column(name: 'value', type: Types::TEXT, nullable: false)]
     private string $value;
 
-    #[ORM\Column(name: 'label', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'label', type: Types::STRING, length: 255, nullable: false)]
     private string $label;
 
-    #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'description', type: Types::STRING, length: 255, nullable: true)]
     private string $description;
 
-    #[ORM\Column(name: 'type', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'type', type: Types::STRING, length: 255, nullable: false)]
     private string $type;
 
     public function getId(): int

@@ -7,19 +7,20 @@ namespace WebWMS\Service\DataHandlers\Stock;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\StockZone;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockZoneDataHandler
- */
-class StockZoneDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockZoneDataHandler'
+)]
+readonly class StockZoneDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -43,8 +44,8 @@ class StockZoneDataHandler
             ->select('*')
             ->from('stock_zone');
 
-        $stmt = $queryBuilder->executeQuery();
-        $results = $stmt->fetchAllAssociative();
+        $result = $queryBuilder->executeQuery();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }

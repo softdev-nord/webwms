@@ -7,38 +7,39 @@ namespace WebWMS\Service;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        FileUploader
- */
-class FileUploader
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'FileUploader'
+)]
+readonly class FileUploader
 {
     public function __construct(
-        private readonly string $targetDirectory,
-        private readonly string $publicDirectory,
-        private readonly ValidatorInterface $validator
+        private string $targetDirectory,
+        private string $publicDirectory,
+        private ValidatorInterface $validator,
     ) {
     }
 
-    public function upload(UploadedFile $file): string
+    public function upload(UploadedFile $uploadedFile): string
     {
-        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
 
-        return $originalFilename . '.' . $file->guessExtension();
+        return $originalFilename . '.' . $uploadedFile->guessExtension();
     }
 
-    public function isValidImage(UploadedFile $file): bool
+    public function isValidImage(UploadedFile $uploadedFile): bool
     {
-        $imageConstraint = new Assert\Image([
-                'maxSize' => '5m',
-            ]);
+        $image = new Assert\Image([
+            'maxSize' => '5m',
+        ]);
 
-        $errors = $this->validator->validate($file, $imageConstraint);
+        $constraintViolationList = $this->validator->validate($uploadedFile, $image);
 
-        return $errors->count() === 0;
+        return $constraintViolationList->count() === 0;
     }
 
     public function getTargetDirectory(): string

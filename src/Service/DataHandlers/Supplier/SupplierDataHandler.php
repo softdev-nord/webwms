@@ -7,19 +7,20 @@ namespace WebWMS\Service\DataHandlers\Supplier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Supplier;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\Supplier
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierDataHandler
- */
-class SupplierDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Supplier',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierDataHandler'
+)]
+readonly class SupplierDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -52,7 +53,7 @@ class SupplierDataHandler
     /**
      * Get all Customers for Ajax-Request.
      */
-    public function getSuppliers(string|null $supplierNrInput): JsonResponse
+    public function getSuppliers(?string $supplierNrInput): JsonResponse
     {
         $data = [];
         if ($supplierNrInput !== null) {
@@ -66,16 +67,16 @@ class SupplierDataHandler
             $suppliers = $queryBuilder->getQuery()->getArrayResult();
 
             foreach ($suppliers as $supplier) {
-                $nameSupplier = $supplier['supplierId'] . ' | ' .
-                    $supplier['supplierNr'] . ' | ' .
-                    $supplier['supplierName'] . ' | ' .
-                    $supplier['supplierAddressAddition'] . ' | ' .
-                    $supplier['supplierAddressStreet'] . ' | ' .
-                    $supplier['supplierAddressStreetNr'] . ' | ' .
-                    $supplier['supplierAddressCountryCode'] . ' | ' .
-                    $supplier['supplierAddressZipcode'] . ' | ' .
-                    $supplier['supplierAddressCity'] . ' | ' .
-                    $supplier['supplierId'];
+                $nameSupplier = $supplier['supplierId'] . ' | '
+                    . $supplier['supplierNr'] . ' | '
+                    . $supplier['supplierName'] . ' | '
+                    . $supplier['supplierAddressAddition'] . ' | '
+                    . $supplier['supplierAddressStreet'] . ' | '
+                    . $supplier['supplierAddressStreetNr'] . ' | '
+                    . $supplier['supplierAddressCountryCode'] . ' | '
+                    . $supplier['supplierAddressZipcode'] . ' | '
+                    . $supplier['supplierAddressCity'] . ' | '
+                    . $supplier['supplierId'];
 
                 $data[] = $nameSupplier;
             }
@@ -173,6 +174,9 @@ class SupplierDataHandler
             ->setMaxResults(1)
             ->getArrayResult();
 
-        return intval($result[0]['supplierId']);
+        /** @var int $supplierId */
+        $supplierId = $result[0]['supplierId'];
+
+        return $supplierId;
     }
 }

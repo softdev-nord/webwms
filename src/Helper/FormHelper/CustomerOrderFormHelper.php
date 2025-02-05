@@ -13,25 +13,24 @@ use WebWMS\Form\CustomerOrder\AddCustomerOrderType;
 use WebWMS\Form\CustomerOrder\CustomerOrderPosType;
 use WebWMS\Form\CustomerOrder\DeleteCustomerOrderType;
 use WebWMS\Form\CustomerOrder\EditCustomerOrderType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderFormHelper
- */
-class CustomerOrderFormHelper
+#[ClassInformation(
+    package: 'WebWMS\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrderFormHelper'
+)]
+readonly class CustomerOrderFormHelper
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory
+        private FormFactoryInterface $formFactory,
     ) {
     }
 
     /**
      * @param class-string<FormTypeInterface<mixed>> $type
-     * @param mixed|null $data
      * @param array<string> $options
-     * @return FormInterface
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
     {
@@ -43,19 +42,11 @@ class CustomerOrderFormHelper
         return $this->createForm(AddCustomerOrderType::class);
     }
 
-    /**
-     * @param CustomerOrder|null $customerOrder
-     * @return FormInterface
-     */
     public function editCustomerOrderForm(?CustomerOrder $customerOrder): FormInterface
     {
         return $this->createForm(EditCustomerOrderType::class, $customerOrder);
     }
 
-    /**
-     * @param CustomerOrder|null $customerOrder
-     * @return FormInterface
-     */
     public function deleteCustomerOrderForm(?CustomerOrder $customerOrder): FormInterface
     {
         return $this->createForm(DeleteCustomerOrderType::class, $customerOrder);
@@ -66,19 +57,11 @@ class CustomerOrderFormHelper
         return $this->createForm(CustomerOrderPosType::class);
     }
 
-    /**
-     * @param CustomerOrderPos|null $customerOrderPos
-     * @return FormInterface
-     */
     public function editCustomerOrderPosForm(?CustomerOrderPos $customerOrderPos): FormInterface
     {
         return $this->createForm(CustomerOrderPosType::class, $customerOrderPos);
     }
 
-    /**
-     * @param CustomerOrderPos|null $customerOrderPos
-     * @return FormInterface
-     */
     public function deleteCustomerOrderPosForm(?CustomerOrderPos $customerOrderPos): FormInterface
     {
         return $this->createForm(CustomerOrderPosType::class, $customerOrderPos);

@@ -9,20 +9,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Entity\Supplier as SupplierEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\SupplierFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Supplier\SupplierService;
 use WebWMS\Service\Validation\SupplierValidationService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Supplier
- */
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Supplier'
+)]
 class Supplier extends AbstractController
 {
     public function __construct(
@@ -30,14 +32,14 @@ class Supplier extends AbstractController
         private readonly RequirementsService $requirementsService,
         private readonly LoggingService $loggingService,
         private readonly SupplierValidationService $supplierValidationService,
-        private readonly SupplierFormHelper $supplierFormHelper
+        private readonly SupplierFormHelper $supplierFormHelper,
     ) {
     }
 
     #[Route('/lieferanten', name: 'supplier')]
     public function index(): Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -57,7 +59,7 @@ class Supplier extends AbstractController
     #[Route('/lieferant_anlegen', name: 'add_supplier')]
     public function addSupplier(Request $request): RedirectResponse|Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -92,13 +94,13 @@ class Supplier extends AbstractController
     #[Route('/lieferant_bearbeiten/supplierId/{supplierId}', name: 'edit_supplier')]
     public function editSupplier(Request $request, int $supplierId): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $supplier = $this->supplierService->getSupplierById($supplierId);
 
-        if ($supplier === null) {
+        if (!$supplier instanceof SupplierEntity) {
             return null;
         }
 
@@ -140,13 +142,13 @@ class Supplier extends AbstractController
     #[Route('/lieferant_löschen/supplierId/{supplierId}', name: 'delete_supplier')]
     public function deleteSupplier(Request $request, int $supplierId): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $supplier = $this->supplierService->getSupplierById($supplierId);
 
-        if ($supplier === null) {
+        if (!$supplier instanceof SupplierEntity) {
             return null;
         }
 
@@ -186,7 +188,6 @@ class Supplier extends AbstractController
     #[Route('/order_supplier_ajax', name: 'order_supplier_ajax')]
     public function getAllSuppliersAjax(Request $request): JsonResponse
     {
-
         $supplierNrInput = (string) $request->query->get('name_supplier');
 
         return $this->supplierService->getAllSuppliersAjax($supplierNrInput);

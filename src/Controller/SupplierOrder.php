@@ -9,10 +9,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Entity\SupplierOrder as SupplierOrderEntity;
 use WebWMS\Entity\SupplierOrderPos as SupplierOrderPosEntity;
 use WebWMS\Form\SupplierOrder\DeleteSupplierOrderType;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\SupplierOrderFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
@@ -20,11 +22,14 @@ use WebWMS\Service\Supplier\SupplierService;
 use WebWMS\Service\SupplierOrder\SupplierOrderService;
 use WebWMS\Service\SupplierOrderPos\SupplierOrderPosService;
 
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrder'
+)]
 /**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrder
+ * @SuppressWarnings(CouplingBetweenObjects)
  */
 class SupplierOrder extends AbstractController
 {
@@ -34,14 +39,14 @@ class SupplierOrder extends AbstractController
         private readonly SupplierService $supplierService,
         private readonly RequirementsService $requirementsService,
         private readonly LoggingService $loggingService,
-        private readonly SupplierOrderFormHelper $supplierOrderFormHelper
+        private readonly SupplierOrderFormHelper $supplierOrderFormHelper,
     ) {
     }
 
     #[Route('/bestellungen', name: 'supplier_orders')]
     public function index(): Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -61,7 +66,7 @@ class SupplierOrder extends AbstractController
     #[Route('/bestellung_anlegen', name: 'add_supplier_order')]
     public function addSupplierOrder(Request $request): RedirectResponse|Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -116,14 +121,14 @@ class SupplierOrder extends AbstractController
     #[Route('/bestellung_bearbeiten/supplierOrderId/{supplierOrderId}', name: 'edit_supplier_order')]
     public function editSupplierOrder(Request $request, int $supplierOrderId): RedirectResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $supplierOrder = $this->supplierOrderService->getSupplierOrderById($supplierOrderId);
         $supplierOrderPos = $this->supplierOrderPosService->getSupplierOrderPosBySupplierOrderId($supplierOrderId);
 
-        if ($supplierOrder === null) {
+        if (!$supplierOrder instanceof SupplierOrderEntity) {
             return null;
         }
 
@@ -179,13 +184,13 @@ class SupplierOrder extends AbstractController
     #[Route('/bestellung_löschen/supplierOrderId/{supplierOrderId}', name: 'delete_supplier_order')]
     public function deleteSupplierOrder(Request $request, int $supplierOrderId): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $supplierOrder = $this->supplierOrderService->getSupplierOrderById($supplierOrderId);
 
-        if ($supplierOrder === null) {
+        if (!$supplierOrder instanceof SupplierOrderEntity) {
             return null;
         }
 

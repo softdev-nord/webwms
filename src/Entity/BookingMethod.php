@@ -4,46 +4,49 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Helper\Attribute\ClassInformation;
+use WebWMS\Repository\BookingMethodRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        BookingMethod
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'BookingMethod'
+)]
 #[ORM\Table(name: 'booking_method')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\BookingMethodRepository')]
+#[ORM\Entity(repositoryClass: BookingMethodRepository::class)]
 class BookingMethod
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(name: 'confirmation', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'confirmation', type: Types::INTEGER, nullable: false)]
     private int $confirmation;
 
-    #[ORM\Column(name: 'movement_type', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'movement_type', type: Types::STRING, length: 10, nullable: false)]
     private string $movementType;
 
-    #[ORM\Column(name: 'description', type: 'string', length: 100, nullable: false)]
+    #[ORM\Column(name: 'description', type: Types::STRING, length: 100, nullable: false)]
     private string $description;
 
-    #[ORM\Column(name: 'ansteuerung', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'ansteuerung', type: Types::INTEGER, nullable: false)]
     private int $ansteuerung;
 
-    #[ORM\Column(name: 'upload', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'upload', type: Types::INTEGER, nullable: false)]
     private int $upload;
 
-    #[ORM\Column(name: 'statistics', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'statistics', type: Types::INTEGER, nullable: false)]
     private int $statistics;
 
-    #[ORM\Column(name: 'priority', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'priority', type: Types::INTEGER, nullable: false)]
     private int $priority;
 
-    #[ORM\Column(name: 'tid_description', type: 'integer', nullable: true)]
-    private ?int $tidDescription;
+    #[ORM\Column(name: 'tid_description', type: Types::INTEGER, nullable: true)]
+    private ?int $tidDescription = null;
 
     public function getId(): int
     {

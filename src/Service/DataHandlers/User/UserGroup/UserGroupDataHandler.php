@@ -7,19 +7,20 @@ namespace WebWMS\Service\DataHandlers\User\UserGroup;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\UserGroup;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\UserGroup
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserGroupDataHandler
- */
-class UserGroupDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserGroupDataHandler'
+)]
+readonly class UserGroupDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -64,9 +65,9 @@ class UserGroupDataHandler
         $addUserGroup = $request->request->getIterator()->getArrayCopy();
         $userGroup = new UserGroup();
 
-        $userGroup->setGroup($addUserGroup['group']);
-        $userGroup->setDescription($addUserGroup['description']);
-        $userGroup->setRoles($addUserGroup['roles']);
+        $userGroup->setGroup($addUserGroup['group']); // @phpstan-ignore-line
+        $userGroup->setDescription($addUserGroup['description']); // @phpstan-ignore-line
+        $userGroup->setRoles($addUserGroup['roles']); // @phpstan-ignore-line
         $userGroup->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userGroup);
@@ -87,9 +88,9 @@ class UserGroupDataHandler
 
         $roles = $requestData['roles'];
 
-        $userGroup->setGroup($requestData['group']);
-        $userGroup->setDescription($requestData['description']);
-        $userGroup->setRoles($roles);
+        $userGroup->setGroup($requestData['group']); // @phpstan-ignore-line
+        $userGroup->setDescription($requestData['description']); // @phpstan-ignore-line
+        $userGroup->setRoles($roles); // @phpstan-ignore-line
         $userGroup->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userGroup);
@@ -101,7 +102,7 @@ class UserGroupDataHandler
     {
         $userGroup = $this->getUserGroupByUserGroupName($userGroupName);
 
-        if ($userGroup !== null) {
+        if ($userGroup instanceof UserGroup) {
             $this->delete($userGroup);
         }
     }

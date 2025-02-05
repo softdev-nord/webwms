@@ -4,26 +4,30 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Configuration;
 
+use Closure;
+use Exception;
 use Symfony\Component\HttpKernel\Kernel;
+use Throwable;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
 
-/**
- * @package:    WebWMS\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ConfigurationService
- */
-class ConfigurationService
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ConfigurationService'
+)]
+readonly class ConfigurationService
 {
     public function __construct(
-        private readonly ConfigurationDataHandler $configurationDataHandler,
-        private readonly string $appVersion,
-        private readonly string $appVersionNumber,
+        private ConfigurationDataHandler $configurationDataHandler,
+        private string $appVersion,
+        private string $appVersionNumber,
     ) {
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      * @return array<string|int|mixed>
      */
     public function getAllConfigurations(): array
@@ -55,21 +59,21 @@ class ConfigurationService
     }
 
     /**
-     * @return array<string, object>
+     * @return array<string, mixed>
      */
-    private function getEnvironmentInformation(): array
+    public function getEnvironmentInformation(): array
     {
         $scriptFile = $_SERVER['SCRIPT_FILENAME'] ?? __FILE__;
 
         try {
-            $fileOwner = !function_exists('posix_getpwuid') ? null : @posix_getpwuid((int) @fileowner($scriptFile));
-        } catch (\Throwable $e) {
+            $fileOwner = function_exists('posix_getpwuid') ? @posix_getpwuid((int) @fileowner((string)$scriptFile)) : null;
+        } catch (Throwable) {
             $fileOwner = null;
         }
 
         try {
-            $fileGroup = !function_exists('posix_getgrgid') ? null : @posix_getgrgid((int) @filegroup($scriptFile));
-        } catch (\Throwable $e) {
+            $fileGroup = function_exists('posix_getgrgid') ? @posix_getgrgid((int) @filegroup($scriptFile)) : null;
+        } catch (Throwable) {
             $fileGroup = null;
         }
 
@@ -86,11 +90,11 @@ class ConfigurationService
     /**
      * @return array<string, string>
      */
-    private function getServerInformation(): array
+    public function getServerInformation(): array
     {
         return [
             'software' => $_SERVER['SERVER_SOFTWARE'] ?? null,
-            'signature' => isset($_SERVER['SERVER_SIGNATURE']) ? strip_tags(trim($_SERVER['SERVER_SIGNATURE'])) : null,
+            'signature' => isset($_SERVER['SERVER_SIGNATURE']) ? strip_tags(trim((string) $_SERVER['SERVER_SIGNATURE'])) : null,
             'addr' => $_SERVER['SERVER_ADDR'] ?? null,
             'name' => $_SERVER['SERVER_NAME'] ?? null,
             'port' => $_SERVER['SERVER_PORT'] ?? null,
@@ -100,7 +104,7 @@ class ConfigurationService
     /**
      * @return array<string, string>
      */
-    private function getRequestInformation(): array
+    public function getRequestInformation(): array
     {
         return [
             'is_https' => $this->isHttpsRequest(),
@@ -117,7 +121,7 @@ class ConfigurationService
     /**
      * @return array<string, int<0, max>|string|false>
      */
-    private function getPhpGeneralInformation(): array
+    public function getPhpGeneralInformation(): array
     {
         return [
             'version' => PHP_VERSION,
@@ -134,7 +138,7 @@ class ConfigurationService
     /**
      * @return array<string, string|null>
      */
-    private function getSoftwareInformation(): array
+    public function getSoftwareInformation(): array
     {
         return [
             'webWms_version' => $this->appVersion,
@@ -146,7 +150,7 @@ class ConfigurationService
     /**
      * @return array<int, array<string, int|string|false>>
      */
-    private function getPhpImportantSetting(): array
+    public function getPhpImportantSetting(): array
     {
         return [
             [
@@ -180,7 +184,7 @@ class ConfigurationService
     /**
      * @return array<mixed>
      */
-    private function getPhpExtensions(): array
+    public function getPhpExtensions(): array
     {
         $extensionsLoaded = $this->getPhpExtensionsLoaded();
         $extensionsDefined = $this->getPhpExtensionsDefined();
@@ -188,7 +192,6 @@ class ConfigurationService
         ksort($extensionsOther);
 
         return [
-            'defined' => $this->getPhpExtensionsDefined(),
             'other' => $extensionsOther,
             'loaded' => $extensionsLoaded,
         ];
@@ -197,7 +200,7 @@ class ConfigurationService
     /**
      * @return array<mixed>
      */
-    private function getPhpExtensionsLoaded(): array
+    public function getPhpExtensionsLoaded(): array
     {
         $extensions = get_loaded_extensions();
 
@@ -207,7 +210,7 @@ class ConfigurationService
     /**
      * @return array<mixed>
      */
-    private function getPhpExtensionsDefined(): array
+    public function getPhpExtensionsDefined(): array
     {
         $extensionsResult = [];
         $extensionsCheck = $this->getPhpExtensionsDefinedCallbacks();
@@ -220,60 +223,28 @@ class ConfigurationService
     }
 
     /**
-     * @return array<string, \Closure>
+     * @return array<string, Closure>
      */
-    private function getPhpExtensionsDefinedCallbacks(): array
+    public function getPhpExtensionsDefinedCallbacks(): array
     {
         return [
-            'mysqli' => function () {
-                return function_exists('mysqli_connect');
-            },
-            'mysqlnd' => function () {
-                return extension_loaded('mysqlnd');
-            },
-            'PDO' => function () {
-                return class_exists('\PDO');
-            },
-            'curl' => function () {
-                return function_exists('curl_init');
-            },
-            'xml' => function () {
-                return function_exists('simplexml_load_string');
-            },
-            'stream_socket_enable_crypto' => function () {
-                return function_exists('stream_socket_enable_crypto');
-            },
-            'fsocket' => function () {
-                return function_exists('fsockopen');
-            },
-            'openssl' => function () {
-                return function_exists('openssl_error_string');
-            },
-            'mbstring' => function () {
-                return function_exists('mb_encode_numericentity');
-            },
-            'json' => function () {
-                return function_exists('json_encode');
-            },
-            'iconv' => function () {
-                return function_exists('iconv');
-            },
-            'soap' => function () {
-                return class_exists('\SoapClient');
-            },
-            'imap' => function () {
-                return function_exists('imap_open');
-            },
-            'zip' => function () {
-                return class_exists('\ZipArchive');
-            },
-            'gd' => function () {
-                return function_exists('imagejpeg');
-            },
-            'ldap' => function () {
-                return function_exists('ldap_connect');
-            },
-            'ioncube' => function () {
+            'mysqli' => static fn (): bool => function_exists('mysqli_connect'),
+            'mysqlnd' => static fn (): bool => extension_loaded('mysqlnd'),
+            'PDO' => static fn (): bool => class_exists('\PDO'),
+            'curl' => static fn (): bool => function_exists('curl_init'),
+            'xml' => static fn (): bool => function_exists('simplexml_load_string'),
+            'stream_socket_enable_crypto' => static fn (): bool => function_exists('stream_socket_enable_crypto'),
+            'fsocket' => static fn (): bool => function_exists('fsockopen'),
+            'openssl' => static fn (): bool => function_exists('openssl_error_string'),
+            'mbstring' => static fn (): bool => function_exists('mb_encode_numericentity'),
+            'json' => static fn (): bool => function_exists('json_encode'),
+            'iconv' => static fn (): bool => function_exists('iconv'),
+            'soap' => static fn (): bool => class_exists('\SoapClient'),
+            'imap' => static fn (): bool => function_exists('imap_open'),
+            'zip' => static fn (): bool => class_exists('\ZipArchive'),
+            'gd' => static fn (): bool => function_exists('imagejpeg'),
+            'ldap' => static fn (): bool => function_exists('ldap_connect'),
+            'ioncube' => static function (): bool {
                 if (!function_exists('ioncube_loader_version')) {
                     return false;
                 }
@@ -285,44 +256,29 @@ class ConfigurationService
         ];
     }
 
-    /**
-     * @return bool
-     */
-    private function isHttpsRequest(): bool
+    public function isHttpsRequest(): bool
     {
         if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
             return true;
         }
+
         if (isset($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] === 'on') {
             return true;
         }
-        if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
-            return true;
-        }
 
-        return false;
+        return isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https';
     }
 
-    private function isAjaxRequest(): bool
+    public function isAjaxRequest(): bool
     {
-        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower((string) $_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 
-    private function getPhpMaxExecutionTimeValue(): string
-    {
-        $maxExecutionTime = @ini_get('fastcgi_read_timeout'); // Nginx
-        if (!$maxExecutionTime) {
-            $maxExecutionTime = @ini_get('max_execution_time');
-        }
-
-        return $maxExecutionTime;
-    }
-
-    private function getPostMaxSizeValue(): string
+    public function getPostMaxSizeValue(): string
     {
         $postMaxSize = ini_get('client_max_body_size');
         if ($postMaxSize === false) {
-            $postMaxSize = strval(ini_get('post_max_size'));
+            return (string) ini_get('post_max_size');
         }
 
         return $postMaxSize;
@@ -330,14 +286,10 @@ class ConfigurationService
 
     /**
      * Converts PHP size value to byte value; e.g. 64K => 65536 Bytes
-     *
-     * @param false|string $phpValue
-     *
-     * @return int
      */
-    private function convertPhpValueToBytes(false|string $phpValue): int
+    public function convertPhpValueToBytes(false|string $phpValue): int
     {
-        if (!$phpValue) {
+        if ($phpValue === '' || $phpValue === '0' || $phpValue === false) {
             return 0;
         }
 
@@ -349,5 +301,15 @@ class ConfigurationService
             'K' => (int) $phpValue * 1024,
             default => (int) $phpValue,
         };
+    }
+
+    private function getPhpMaxExecutionTimeValue(): string
+    {
+        $maxExecutionTime = @ini_get('fastcgi_read_timeout'); // Nginx
+        if ($maxExecutionTime === '' || $maxExecutionTime === '0' || $maxExecutionTime === false) {
+            return @ini_get('max_execution_time');
+        }
+
+        return $maxExecutionTime;
     }
 }

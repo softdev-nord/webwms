@@ -7,22 +7,18 @@ namespace WebWMS\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use WebWMS\Entity\BookingMethod;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Repository
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        BookingMethodRepository
- *
- * @method BookingMethod|null find($id, $lockMode = null, $lockVersion = null)
- * @method BookingMethod|null findOneBy(array $criteria, array $orderBy = null)
- * @method BookingMethod[]    findAll()
- * @method BookingMethod[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
+#[ClassInformation(
+    package: 'WebWMS\Repository',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'BookingMethodRepository'
+)]
 class BookingMethodRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, BookingMethod::class);
+        parent::__construct($managerRegistry, BookingMethod::class);
     }
 }

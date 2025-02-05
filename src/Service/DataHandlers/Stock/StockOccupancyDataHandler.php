@@ -8,17 +8,18 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\StockOccupancy;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockOccupancyDataHandler
- */
-class StockOccupancyDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockOccupancyDataHandler'
+)]
+readonly class StockOccupancyDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -44,7 +45,7 @@ class StockOccupancyDataHandler
      * @throws Exception
      * @return array<int, array<string, mixed>>
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(ElseExpression)
      */
     public function getStockOccupancy(int $stockLocationLn): array
     {
@@ -103,7 +104,7 @@ class StockOccupancyDataHandler
      * @throws Exception
      * @return array<string|int|mixed>
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(ElseExpression)
      */
     public function getStockOccupancyByArticleNr(int $articleNr): array
     {
@@ -131,14 +132,13 @@ class StockOccupancyDataHandler
             ->setParameter('article_nr', $articleNr)
             ->groupBy('tph.su_id');
 
-        $stmt = $queryBuilder->executeQuery();
+        $result = $queryBuilder->executeQuery();
 
-        return $stmt->fetchAllAssociative();
+        return $result->fetchAllAssociative();
     }
 
     /**
      * @throws Exception
-     * @return JsonResponse
      */
     public function getAllStockOccupancy(): JsonResponse
     {
@@ -164,8 +164,8 @@ class StockOccupancyDataHandler
             ->innerJoin('tph', 'article', 'art', 'tph.article_nr = art.article_nr')
             ->groupBy('tph.su_id');
 
-        $stmt = $queryBuilder->executeQuery();
+        $result = $queryBuilder->executeQuery();
 
-        return new JsonResponse($stmt->fetchAllAssociative());
+        return new JsonResponse($result->fetchAllAssociative());
     }
 }

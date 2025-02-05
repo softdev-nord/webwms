@@ -6,20 +6,20 @@ namespace WebWMS\Service\User;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\User;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\User\UserDataHandler;
 
-/**
- * @package:    WebWMS\Service\User
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserService
- */
-class UserService
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserService'
+)]
+readonly class UserService
 {
     public function __construct(
-        private UserDataHandler $userDataHandler
+        private UserDataHandler $userDataHandler,
     ) {
     }
 
@@ -41,9 +41,9 @@ class UserService
         return $this->userDataHandler->getAllUsers();
     }
 
-    public function addUser(Request $request): void
+    public function addUser(User $user): void
     {
-        $this->userDataHandler->addUser($request);
+        $this->userDataHandler->addUser($user);
     }
 
     /**
@@ -54,9 +54,9 @@ class UserService
         return $this->userDataHandler->getLastUser();
     }
 
-    public function updateUser(Request $request): ?User
+    public function updateUser(User $user): void
     {
-        return $this->userDataHandler->updateUser($request);
+        $this->userDataHandler->updateUser($user);
     }
 
     public function upgradePassword(User $user, string $newHashedPassword): void

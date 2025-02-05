@@ -11,19 +11,24 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use DateTime;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\UserRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        User
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'User'
+)]
 #[ORM\Table(name: 'user')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
@@ -71,69 +76,72 @@ use WebWMS\Repository\UserRepository;
     ],
 )]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-class User implements UserInterface, GroupAwareUser
+#[UniqueEntity(
+    fields: ['username'],
+    message: 'There is already an account with this username'
+)]
+class User implements UserInterface, GroupAwareUser, Stringable
 {
     public const ROLE_DEFAULT = 'ROLE_USER';
 
     public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
-    #[ORM\Column(name: 'firstname', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'firstname', type: Types::STRING, length: 255, nullable: true)]
     #[Groups(['user:read', 'user:write'])]
     public ?string $firstname = null;
 
-    #[ORM\Column(name: 'lastname', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'lastname', type: Types::STRING, length: 255, nullable: true)]
     #[Groups(['user:read', 'user:write'])]
     public ?string $lastname = null;
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(name: 'username', type: 'string', length: 255, unique: true)]
+    #[ORM\Column(name: 'username', type: Types::STRING, length: 255, unique: true)]
     #[Groups(['user:read', 'user:write'])]
     private ?string $username = null;
 
     /**
      * @var string[]
      */
-    #[ORM\Column(name: 'roles', type: 'json')]
+    #[ORM\Column(name: 'roles', type: Types::JSON)]
     #[Groups(['user:read', 'user:write'])]
     private array $roles = [];
 
-    #[ORM\Column(name: 'password', type: 'string', length: 255)]
+    #[ORM\Column(name: 'password', type: Types::STRING, length: 255)]
     #[Groups(['user:write'])]
     private ?string $password = null;
 
-    #[ORM\Column(name: 'email', type: 'string', length: 255, unique: true, nullable: true)]
+    #[ORM\Column(name: 'email', type: Types::STRING, length: 255, unique: true, nullable: true)]
     #[Groups(['user:read', 'user:write'])]
     #[Assert\NotBlank]
     #[Assert\Email]
     private ?string $email = null;
 
-    #[ORM\Column(name: 'last_login', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'last_login', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['user:read', 'user:write'])]
-    private ?\DateTime $lastLogin = null;
+    private ?DateTime $lastLogin = null;
 
-    #[ORM\Column(name: 'enabled', type: 'boolean')]
+    #[ORM\Column(name: 'enabled', type: Types::BOOLEAN)]
     #[Groups(['user:read', 'user:write'])]
     private bool $enabled = false;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['user:read', 'user:write'])]
-    private ?\DateTimeInterface $createdAt = null;
+    private ?DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['user:read', 'user:write'])]
-    private ?\DateTimeInterface $updatedAt = null;
+    private ?DateTimeInterface $updatedAt = null;
 
     private ?string $plainPassword = '';
 
     /**
      * @var array<mixed>
      */
-    #[ORM\Column(name: 'user_groups', type: 'json')]
+    #[ORM\Column(name: 'user_groups', type: Types::JSON)]
     #[Groups(['user:read', 'user:write'])]
     private array $userGroups = [];
 
@@ -201,12 +209,12 @@ class User implements UserInterface, GroupAwareUser
         $this->email = $email;
     }
 
-    public function getLastLogin(): ?\DateTime
+    public function getLastLogin(): ?DateTime
     {
         return $this->lastLogin;
     }
 
-    public function setLastLogin(\DateTime $time = null): void
+    public function setLastLogin(?DateTime $time = null): void
     {
         $this->lastLogin = $time;
     }
@@ -221,22 +229,22 @@ class User implements UserInterface, GroupAwareUser
         $this->enabled = $boolean;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): void
+    public function setCreatedAt(?DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -298,21 +306,17 @@ class User implements UserInterface, GroupAwareUser
         $this->plainPassword = $plainPassword;
     }
 
-    public function isEqualTo(BaseUserInterface $user): bool
+    public function isEqualTo(BaseUserInterface $baseUser): bool
     {
-        if (!$user instanceof self) {
+        if (!$baseUser instanceof self) {
             return false;
         }
 
-        if ($this->password !== $user->getPassword()) {
+        if ($this->password !== $baseUser->getPassword()) {
             return false;
         }
 
-        if ($this->username !== $user->getUsername()) {
-            return false;
-        }
-
-        return true;
+        return $this->username === $baseUser->getUsername();
     }
 
     public function isSuperAdmin(): bool
@@ -364,7 +368,6 @@ class User implements UserInterface, GroupAwareUser
 
     /**
      * @param array<array<string>> $userGroups
-     * @return void
      */
     public function setUserGroups(array $userGroups): void
     {

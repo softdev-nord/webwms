@@ -4,115 +4,119 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Helper\Attribute\ClassInformation;
+use WebWMS\Repository\TransportRequestRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        TransportRequest
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'TransportRequest'
+)]
 #[ORM\Table(name: 'transport_request')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\TransportRequestRepository')]
+#[ORM\Entity(repositoryClass: TransportRequestRepository::class)]
 class TransportRequest
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(name: 'su_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'su_id', type: Types::INTEGER, nullable: false)]
     private int $suId;
 
-    #[ORM\Column(name: 'tr_nr', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'tr_nr', type: Types::INTEGER, nullable: false)]
     private int $trNr;
 
-    #[ORM\Column(name: 'tr_pos', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'tr_pos', type: Types::INTEGER, nullable: false)]
     private int $trPos;
 
-    #[ORM\Column(name: 'tr_prio', type: 'integer', nullable: false, options: ['default' => 0])]
+    #[ORM\Column(name: 'tr_prio', type: Types::INTEGER, nullable: false, options: ['default' => 0])]
     private int $trPrio;
 
-    #[ORM\Column(name: 'article_nr', type: 'string', length: 20, nullable: false)]
+    #[ORM\Column(name: 'article_nr', type: Types::STRING, length: 20, nullable: false)]
     private string $articleNr;
 
-    #[ORM\Column(name: 'tr_quantity', type: 'decimal', precision: 11, scale: 3, nullable: false)]
+    #[ORM\Column(name: 'tr_quantity', type: Types::DECIMAL, precision: 11, scale: 3, nullable: false)]
     private float $trQuantity;
 
-    #[ORM\Column(name: 'stock_coordinate', type: 'string', length: 25, nullable: false)]
+    #[ORM\Column(name: 'stock_coordinate', type: Types::STRING, length: 25, nullable: false)]
     private string $stockCoordinate;
 
-    #[ORM\Column(name: 'stock_nr', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'stock_nr', type: Types::INTEGER, nullable: false)]
     private int $stockNr;
 
-    #[ORM\Column(name: 'stock_level1', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'stock_level1', type: Types::INTEGER, nullable: false)]
     private int $stockLevel1;
 
-    #[ORM\Column(name: 'stock_level2', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'stock_level2', type: Types::INTEGER, nullable: false)]
     private int $stockLevel2;
 
-    #[ORM\Column(name: 'stock_level3', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'stock_level3', type: Types::INTEGER, nullable: false)]
     private int $stockLevel3;
 
-    #[ORM\Column(name: 'stock_level4', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'stock_level4', type: Types::INTEGER, nullable: false)]
     private int $stockLevel4;
 
-    #[ORM\Column(name: 'tr_access', type: 'datetime', nullable: true, options: ['default' => null])]
-    private ?\DateTimeInterface $trAccess;
+    #[ORM\Column(name: 'tr_access', type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => null])]
+    private ?DateTimeInterface $trAccess = null;
 
-    #[ORM\Column(name: 'tr_dispatch', type: 'datetime', nullable: true, options: ['default' => null])]
-    private ?\DateTimeInterface $trDispatch;
+    #[ORM\Column(name: 'tr_dispatch', type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => null])]
+    private ?DateTimeInterface $trDispatch = null;
 
-    #[ORM\Column(name: 'tr_state', type: 'integer', nullable: false, options: ['default' => '0'])]
+    #[ORM\Column(name: 'tr_state', type: Types::INTEGER, nullable: false, options: ['default' => '0'])]
     private int $trState;
 
-    #[ORM\Column(name: 'order_username', type: 'string', length: 30, nullable: false)]
+    #[ORM\Column(name: 'order_username', type: Types::STRING, length: 30, nullable: false)]
     private string $orderUsername;
 
-    #[ORM\Column(name: 'booking_method', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'booking_method', type: Types::STRING, length: 10, nullable: false)]
     private string $bookingMethod;
 
-    #[ORM\Column(name: 'doc_id', type: 'integer', nullable: true, options: ['default' => null])]
-    private ?int $docId;
+    #[ORM\Column(name: 'doc_id', type: Types::INTEGER, nullable: true, options: ['default' => null])]
+    private ?int $docId = null;
 
-    #[ORM\Column(name: 'order_nr', type: 'string', length: 30, nullable: true)]
+    #[ORM\Column(name: 'order_nr', type: Types::STRING, length: 30, nullable: true)]
     private string $orderNr;
 
-    #[ORM\Column(name: 'order_pos', type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'order_pos', type: Types::INTEGER, nullable: true)]
     private int $orderPos;
 
-    #[ORM\Column(name: 'charge', type: 'string', length: 30, nullable: true, options: ['default' => null])]
+    #[ORM\Column(name: 'charge', type: Types::STRING, length: 30, nullable: true, options: ['default' => null])]
     private string $charge;
 
-    #[ORM\Column(name: 'loading_equipment', type: 'string', length: 30, nullable: false)]
+    #[ORM\Column(name: 'loading_equipment', type: Types::STRING, length: 30, nullable: false)]
     private string $loadingEquipment;
 
-    #[ORM\Column(name: 'confirmation_state', type: 'integer', nullable: true, options: ['default' => null])]
-    private ?int $confirmationState;
+    #[ORM\Column(name: 'confirmation_state', type: Types::INTEGER, nullable: true, options: ['default' => null])]
+    private ?int $confirmationState = null;
 
-    #[ORM\Column(name: 'tr_username', type: 'string', length: 30, nullable: true)]
-    private ?string $trUsername;
+    #[ORM\Column(name: 'tr_username', type: Types::STRING, length: 30, nullable: true)]
+    private ?string $trUsername = null;
 
-    #[ORM\Column(name: 'tr_computer_ip', type: 'string', length: 30, nullable: false)]
+    #[ORM\Column(name: 'tr_computer_ip', type: Types::STRING, length: 30, nullable: false)]
     private string $trComputerIp;
 
-    #[ORM\Column(name: 'tr_blocked', type: 'boolean', nullable: true, options: ['default' => false])]
-    private ?bool $trBlocked;
+    #[ORM\Column(name: 'tr_blocked', type: Types::BOOLEAN, nullable: true, options: ['default' => false])]
+    private ?bool $trBlocked = null;
 
-    #[ORM\Column(name: 'tr_start_date', type: 'datetime', nullable: true, options: ['default' => null])]
-    private ?\DateTimeInterface $trStartDate;
+    #[ORM\Column(name: 'tr_start_date', type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => null])]
+    private ?DateTimeInterface $trStartDate = null;
 
-    #[ORM\Column(name: 'tr_edited', type: 'boolean', nullable: true, options: ['default' => false])]
-    private ?bool $trEdited;
+    #[ORM\Column(name: 'tr_edited', type: Types::BOOLEAN, nullable: true, options: ['default' => false])]
+    private ?bool $trEdited = null;
 
-    #[ORM\Column(name: 'tr_type', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'tr_type', type: Types::INTEGER, nullable: false)]
     private int $trType;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $updatedAt = null;
 
     public function getId(): int
     {
@@ -269,6 +273,7 @@ class TransportRequest
 
         return $this;
     }
+
     //
     //    public function getToStockCoordinate(): string
     //    {
@@ -342,24 +347,24 @@ class TransportRequest
     //        return $this;
     //    }
 
-    public function getTrAccess(): ?\DateTimeInterface
+    public function getTrAccess(): ?DateTimeInterface
     {
         return $this->trAccess;
     }
 
-    public function setTrAccess(?\DateTimeInterface $trAccess): self
+    public function setTrAccess(?DateTimeInterface $trAccess): self
     {
         $this->trAccess = $trAccess;
 
         return $this;
     }
 
-    public function getTrDispatch(): ?\DateTimeInterface
+    public function getTrDispatch(): ?DateTimeInterface
     {
         return $this->trDispatch;
     }
 
-    public function setTrDispatch(?\DateTimeInterface $trDispatch): self
+    public function setTrDispatch(?DateTimeInterface $trDispatch): self
     {
         $this->trDispatch = $trDispatch;
 
@@ -407,7 +412,7 @@ class TransportRequest
         return $this->docId;
     }
 
-    public function setDocId(int|null $docId): self
+    public function setDocId(?int $docId): self
     {
         $this->docId = $docId;
 
@@ -467,7 +472,7 @@ class TransportRequest
         return $this->confirmationState;
     }
 
-    public function setConfirmationState(null|int $confirmationState): self
+    public function setConfirmationState(?int $confirmationState): self
     {
         $this->confirmationState = $confirmationState;
 
@@ -479,7 +484,7 @@ class TransportRequest
         return $this->trUsername;
     }
 
-    public function setTrUsername(null|string $trUsername): self
+    public function setTrUsername(?string $trUsername): self
     {
         $this->trUsername = $trUsername;
 
@@ -503,19 +508,19 @@ class TransportRequest
         return $this->trBlocked;
     }
 
-    public function setTrBlocked(null|bool $trBlocked): self
+    public function setTrBlocked(?bool $trBlocked): self
     {
         $this->trBlocked = $trBlocked;
 
         return $this;
     }
 
-    public function getTrStartDate(): ?\DateTimeInterface
+    public function getTrStartDate(): ?DateTimeInterface
     {
         return $this->trStartDate;
     }
 
-    public function setTrStartDate(\DateTimeInterface $trStartDate): self
+    public function setTrStartDate(DateTimeInterface $trStartDate): self
     {
         $this->trStartDate = $trStartDate;
 
@@ -527,7 +532,7 @@ class TransportRequest
         return $this->trEdited;
     }
 
-    public function setTrEdited(null|bool $trEdited): self
+    public function setTrEdited(?bool $trEdited): self
     {
         $this->trEdited = $trEdited;
 
@@ -546,24 +551,24 @@ class TransportRequest
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function setCreatedAt(?DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

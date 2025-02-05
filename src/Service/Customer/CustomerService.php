@@ -6,18 +6,19 @@ namespace WebWMS\Service\Customer;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Customer;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
-/**
- * @package:    WebWMS\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerService
- */
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerService'
+)]
 class CustomerService
 {
     public function __construct(
-        private readonly CustomerDataHandler $customerDataHandler
+        private readonly CustomerDataHandler $customerDataHandler,
     ) {
     }
 
@@ -36,7 +37,7 @@ class CustomerService
         return new JsonResponse($this->customerDataHandler->getAllCustomers());
     }
 
-    public function getAllCustomersAjax(null|string $customerNrInput): JsonResponse
+    public function getAllCustomersAjax(?string $customerNrInput): JsonResponse
     {
         return $this->customerDataHandler->getCustomers($customerNrInput);
     }

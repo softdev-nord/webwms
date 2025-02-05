@@ -7,19 +7,20 @@ namespace WebWMS\Service\DataHandlers\CustomerOrder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\CustomerOrder;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\CustomerOrder
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderDataHandler
- */
-class CustomerOrderDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\CustomerOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrderDataHandler'
+)]
+readonly class CustomerOrderDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -47,9 +48,9 @@ class CustomerOrderDataHandler
 
     public function getAllCustomerOrders(): JsonResponse
     {
-        $conn = $this->entityManager->getConnection();
+        $connection = $this->entityManager->getConnection();
 
-        $queryBuilder = $conn->createQueryBuilder();
+        $queryBuilder = $connection->createQueryBuilder();
 
         $queryBuilder
             ->select(
@@ -96,8 +97,8 @@ class CustomerOrderDataHandler
             )
             ->andWhere('tph.article_nr = cop.article_nr');
 
-        $stmt = $queryBuilder->executeQuery();
-        $results = $stmt->fetchAllAssociative();
+        $result = $queryBuilder->executeQuery();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }
@@ -123,8 +124,8 @@ class CustomerOrderDataHandler
             ->andWhere('tph.article_nr = cop.article_nr')
             ->setParameter('customer_order_id', $id);
 
-        $stmt = $queryBuilder->executeQuery();
-        $results = $stmt->fetchAllAssociative();
+        $result = $queryBuilder->executeQuery();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }

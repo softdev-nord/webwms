@@ -4,35 +4,45 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\UserGroupRepository;
 
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserGroup'
+)]
 #[ORM\Table(name: 'user_group')]
 #[ORM\Entity(repositoryClass: UserGroupRepository::class)]
-class UserGroup implements GroupInterface
+class UserGroup implements GroupInterface, Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(name: 'group', type: 'string', length: 100)]
+    #[ORM\Column(name: 'group', type: Types::INTEGER, length: 100)]
     private string $group;
 
-    #[ORM\Column(name: 'description', type: 'string', length: 150)]
-    private ?string $description;
+    #[ORM\Column(name: 'description', type: Types::INTEGER, length: 150)]
+    private ?string $description = null;
 
     /**
      * @var string[]
      */
-    #[ORM\Column(name: 'roles', type: 'json')]
+    #[ORM\Column(name: 'roles', type: Types::JSON)]
     private array $roles;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $updatedAt = null;
 
     public function __toString(): string
     {
@@ -101,24 +111,24 @@ class UserGroup implements GroupInterface
         }
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function setCreatedAt(?DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

@@ -7,46 +7,50 @@ namespace WebWMS\Controller;
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use Twig\Environment;
 use Twig\Loader\LoaderInterface;
+use WebWMS\Entity\TransportHistory;
 use WebWMS\Entity\TransportRequest;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\TransportHistoryRepository;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Stock\StockRotationService;
 use WebWMS\Service\TransportRequest\TransportRequestService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Dashboard
- */
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Dashboard'
+)]
 class Dashboard extends AbstractController
 {
-    private LoaderInterface $loader;
+    private readonly LoaderInterface $loader;
 
     public function __construct(
         private readonly RequirementsService $requirementsService,
-        private readonly Environment $twig,
+        private readonly Environment $twigEnvironment,
         private readonly ChartBuilderInterface $chartBuilder,
         private readonly TransportHistoryRepository $transportHistoryRepository,
         private readonly StockRotationService $stockRotationService,
         private readonly TransportRequestService $transportRequestService,
-        private readonly StockLocationService $stockLocationService
+        private readonly StockLocationService $stockLocationService,
     ) {
-        $this->loader = $this->twig->getLoader();
+        $this->loader = $this->twigEnvironment->getLoader();
     }
 
     /**
-     * @Route("/dashboard", name="dashboard")
+     * @throws Exception
      */
+    #[Route('/dashboard', name: 'dashboard')]
     public function index(): Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -69,14 +73,12 @@ class Dashboard extends AbstractController
     }
 
     /**
-     * @return Response|void
-     *
-     * @SuppressWarnings(PHPMD.ExitExpression)
+     * @SuppressWarnings(ExitExpression)
      */
-    public function root(string $path)
+    public function root(string $path): Response
     {
         if ($this->loader->exists($path . '.html.twig')) {
-            if ($path == '/' || $path == 'admin') {
+            if ($path === '/' || $path === 'admin') {
                 exit('Admin');
             }
 
@@ -92,6 +94,7 @@ class Dashboard extends AbstractController
         $chartType = 'TYPE_LINE';
         $repo = $this->transportHistoryRepository->findBy(['trType' => 1]);
 
+        /** @var TransportHistory $data */
         foreach ($repo as $data) {
             if ($data->getTrAccess() !== null) {
                 $datasets[] = $data->getTrAccess()->format('d.m.Y');
@@ -109,6 +112,7 @@ class Dashboard extends AbstractController
         $chartType = 'TYPE_BAR';
         $repo = $this->transportHistoryRepository->findBy(['trType' => 2]);
 
+        /** @var TransportHistory $data */
         foreach ($repo as $data) {
             if ($data->getTrDispatch() !== null) {
                 $datasets[] = $data->getTrDispatch()->format('d.m.Y');
@@ -126,6 +130,7 @@ class Dashboard extends AbstractController
         $chartType = 'TYPE_BAR';
         $repo = $this->transportHistoryRepository->findAll();
 
+        /** @var TransportHistory $data */
         foreach ($repo as $data) {
             if ($data->getTrType() === 1 && $data->getTrAccess() !== null) {
                 $datasets[] = $data->getTrAccess()->format('d.m.Y');
@@ -142,7 +147,8 @@ class Dashboard extends AbstractController
     /**
      * @return array<int>
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(ElseExpression)
+     * @throws Exception
      */
     public function getAllTransportRequest(): array
     {
@@ -160,7 +166,7 @@ class Dashboard extends AbstractController
         }
 
         return [
-            'TrSum' => count($transportRequests),
+            'TrSum' => count((array) $transportRequests),
             'TrOpen' => count($countTrOpen),
             'TrInProgress' => count($countTrInProgress),
         ];
@@ -172,21 +178,19 @@ class Dashboard extends AbstractController
      */
     public function getWarehouseUtilization(): array
     {
-        $warehouseUtilization = [];
-
-        $warehouseUtilization['allStockLocations'] = count((array)
-            json_decode((string)
+        return ['allStockLocations' => count(
+            (array)
+            json_decode(
+                (string)
                 $this->stockLocationService->getAllStockLocations()->getContent()
             )
-        );
-
-        $warehouseUtilization['occupiedStockLocations'] = count((array)
-            json_decode((string)
+        ), 'occupiedStockLocations' => count(
+            (array)
+            json_decode(
+                (string)
                 $this->stockRotationService->getAllStockRotationsWithJoin()->getContent()
             )
-        );
-
-        return $warehouseUtilization;
+        )];
     }
 
     /**

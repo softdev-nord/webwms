@@ -7,22 +7,18 @@ namespace WebWMS\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use WebWMS\Entity\UserGroup;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Repository
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserGroupRepository
- *
- * @method UserGroup|null find($id, $lockMode = null, $lockVersion = null)
- * @method UserGroup|null findOneBy(array $criteria, array $orderBy = null)
- * @method UserGroup[]    findAll()
- * @method UserGroup[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
+#[ClassInformation(
+    package: 'WebWMS\Repository',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserGroupRepository'
+)]
 class UserGroupRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, UserGroup::class);
+        parent::__construct($managerRegistry, UserGroup::class);
     }
 }

@@ -11,19 +11,23 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
+use WebWMS\Repository\CustomerOrderRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrder
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrder'
+)]
 #[ORM\Table(name: 'customer_orders')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\CustomerOrderRepository')]
+#[ORM\Entity(repositoryClass: CustomerOrderRepository::class)]
 #[ApiResource(
     operations: [
         new Get(
@@ -61,46 +65,47 @@ class CustomerOrder
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(name: 'customer_order_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'customer_order_id', type: Types::INTEGER, nullable: false)]
     #[Groups(['customerOrder:read', 'customerOrder:write'])]
     private int $customerOrderId;
 
-    #[ORM\Column(name: 'usr_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'usr_id', type: Types::INTEGER, nullable: false)]
     #[Groups(['customerOrder:read', 'customerOrder:write'])]
     private int $usrId;
 
-    #[ORM\Column(name: 'customer_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'customer_id', type: Types::INTEGER, nullable: false)]
     #[Groups(['customerOrder:read', 'customerOrder:write'])]
     private int $customerId;
 
-    #[ORM\Column(name: 'customer_order_nr', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'customer_order_nr', type: Types::STRING, length: 255, nullable: false)]
     #[Groups(['customerOrder:read', 'customerOrder:write'])]
     private string $customerOrderNr;
 
-    #[ORM\Column(name: 'customer_order_reference', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'customer_order_reference', type: Types::STRING, length: 255, nullable: true)]
     #[Groups(['customerOrder:read', 'customerOrder:write'])]
-    private ?string $customerOrderReference;
+    private ?string $customerOrderReference = null;
 
-    #[ORM\Column(name: 'customer_order_date', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'customer_order_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['customerOrder:read', 'customerOrder:write'])]
-    private ?\DateTimeInterface $customerOrderDate;
+    private ?DateTimeInterface $customerOrderDate = null;
 
-    #[ORM\Column(name: 'customer_order_creation_date', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'customer_order_creation_date', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['customerOrder:read', 'customerOrder:write'])]
-    private ?\DateTimeInterface $customerOrderCreationDate;
+    private ?DateTimeInterface $customerOrderCreationDate = null;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['customerOrder:read', 'customerOrder:write'])]
-    private ?\DateTimeInterface $createdAt;
+    private ?DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['customerOrder:read', 'customerOrder:write'])]
-    private ?\DateTimeInterface $updatedAt;
+    private ?DateTimeInterface $updatedAt = null;
 
-    /** One Customer Order has many Customer Order Positions. This is the inverse side. */
+    /** One Customer Order has many Customer Order Positions. This is the inverse side.
+     * @var Collection<int, CustomerOrderPos> */
     #[ORM\OneToMany(
         mappedBy: 'customerOrder',
         targetEntity: CustomerOrderPos::class,
@@ -205,24 +210,24 @@ class CustomerOrder
         return $this;
     }
 
-    public function getCustomerOrderDate(): ?\DateTimeInterface
+    public function getCustomerOrderDate(): ?DateTimeInterface
     {
         return $this->customerOrderDate;
     }
 
-    public function setCustomerOrderDate(?\DateTimeInterface $customerOrderDate): self
+    public function setCustomerOrderDate(?DateTimeInterface $customerOrderDate): self
     {
         $this->customerOrderDate = $customerOrderDate;
 
         return $this;
     }
 
-    public function getCustomerOrderCreationDate(): ?\DateTimeInterface
+    public function getCustomerOrderCreationDate(): ?DateTimeInterface
     {
         return $this->customerOrderCreationDate;
     }
 
-    public function setCustomerOrderCreationDate(?\DateTimeInterface $customerOrderCreationDate): self
+    public function setCustomerOrderCreationDate(?DateTimeInterface $customerOrderCreationDate): self
     {
         $this->customerOrderCreationDate = $customerOrderCreationDate;
 
@@ -234,24 +239,24 @@ class CustomerOrder
         return $this->customerOrderPos;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function setCreatedAt(?DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

@@ -7,19 +7,20 @@ namespace WebWMS\Service\DataHandlers\SupplierOrderPos;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\SupplierOrderPos;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\SupplierOrderPos
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderPosDataHandler
- */
-class SupplierOrderPosDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\SupplierOrderPos',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrderPosDataHandler'
+)]
+readonly class SupplierOrderPosDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -51,7 +52,7 @@ class SupplierOrderPosDataHandler
 
     public function getAllSupplierOrderPos(): JsonResponse
     {
-        $conn = $this->entityManager->getConnection();
+        $connection = $this->entityManager->getConnection();
 
         $sql = "SELECT pos.supplier_order_id, ord.supplier_order_nr, art.article_nr, art.article_name, pos.supplier_order_pos_quantity,
                 (SELECT (SUM(IF(transport_history.tr_type = '1', transport_history.tr_quantity, 0.000))) FROM transport_history WHERE transport_history.article_nr = art.article_nr GROUP BY transport_history.article_nr LIMIT 1) AS lbw_menge
@@ -64,7 +65,7 @@ class SupplierOrderPosDataHandler
                     ON ord.supplier_order_nr = lbw.order_nr
                 GROUP BY pos.article_id ORDER BY pos.article_id";
 
-        $data = $conn->fetchAllAssociative($sql);
+        $data = $connection->fetchAllAssociative($sql);
 
         return new JsonResponse($data);
     }
@@ -76,16 +77,16 @@ class SupplierOrderPosDataHandler
         $this->save($supplierOrderPos);
     }
 
-    public function updateSupplierOrderPos(SupplierOrderPos $supplierOrder): void
+    public function updateSupplierOrderPos(SupplierOrderPos $supplierOrderPos): void
     {
-        $supplierOrder->setUpdatedAt($this->dateTimeService->createDateTime());
+        $supplierOrderPos->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($supplierOrder);
+        $this->save($supplierOrderPos);
     }
 
     public function deleteSupplierOrderPos(?SupplierOrderPos $supplierOrderPos): void
     {
-        if ($supplierOrderPos !== null) {
+        if ($supplierOrderPos instanceof SupplierOrderPos) {
             $this->delete($supplierOrderPos);
         }
     }

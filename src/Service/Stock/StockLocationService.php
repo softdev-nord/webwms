@@ -7,18 +7,19 @@ namespace WebWMS\Service\Stock;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\StockLocation;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 
-/**
- * @package:    WebWMS\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLocationService
- */
-class StockLocationService
+#[ClassInformation(
+    package: 'WebWMS\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLocationService'
+)]
+readonly class StockLocationService
 {
     public function __construct(
-        private readonly StockLocationDataHandler $stockLocationDataHandler
+        private StockLocationDataHandler $stockLocationDataHandler,
     ) {
     }
 
@@ -36,6 +37,11 @@ class StockLocationService
             ->getStockLocationByCoordinate(
                 $stockLocationCoordinate
             );
+    }
+
+    public function getStockLocationById(int $stockLocationId): ?StockLocation
+    {
+        return $this->stockLocationDataHandler->getStockLocationById($stockLocationId);
     }
 
     /**
@@ -93,19 +99,24 @@ class StockLocationService
      * @throws Exception
      * @return array<string|int|mixed>
      */
-    public function getAllFreeStockLocationsWithLimit(string $stockSystem, int $limit): array
+    public function getAllFreeStockLocationsWithLimit(string $stockSystem, int $limit, float $leQuantity): array
     {
-        return $this->stockLocationDataHandler->getAllFreeStockLocationsWithLimit($stockSystem, $limit);
+        return $this->stockLocationDataHandler
+            ->getAllFreeStockLocationsWithLimit(
+                $stockSystem,
+                $limit,
+                $leQuantity
+            );
     }
 
     /**
      * @throws Exception
      * @return array<int, mixed>
      */
-    public function getFirstFreeStockLocation(string $stockSystem, int $limit): array
+    public function getFirstFreeStockLocation(string $stockSystem, int $limit, float $leQuantity): array
     {
         $freeStockLocation = [];
-        $stockLocations = $this->getAllFreeStockLocationsWithLimit($stockSystem, $limit);
+        $stockLocations = $this->getAllFreeStockLocationsWithLimit($stockSystem, $limit, $leQuantity);
 
         foreach ($stockLocations as $stockLocation) {
             if ($stockLocation['belegt'] !== true) {
@@ -120,7 +131,7 @@ class StockLocationService
      * @param  array<string> $stockLocation
      * @return array<int, array<string, int|string>>
      */
-    public function getRemainder(array $stockLocation, int|null $remainder): array
+    public function getRemainder(array $stockLocation, ?int $remainder): array
     {
         $freeStockLocations = [];
 
@@ -138,5 +149,14 @@ class StockLocationService
         }
 
         return $freeStockLocations;
+    }
+
+    /**
+     * @throws Exception
+     * @return array<int, array<string, mixed>>
+     */
+    public function getOccupiedStockLocationsByArticleId(int $articleId): array
+    {
+        return $this->stockLocationDataHandler->getOccupiedStockLocationsByArticleId($articleId);
     }
 }

@@ -4,58 +4,62 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Helper\Attribute\ClassInformation;
+use WebWMS\Repository\StockLocationRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLocation
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLocation'
+)]
 #[ORM\Table(name: 'stock_location')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\StockLocationRepository')]
+#[ORM\Entity(repositoryClass: StockLocationRepository::class)]
 class StockLocation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(name: 'stock_location_id', type: 'integer')]
+    #[ORM\Column(name: 'stock_location_id', type: Types::INTEGER)]
     private int $stockLocationId;
 
-    #[ORM\Column(name: 'stock_location_ln', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'stock_location_ln', type: Types::INTEGER, nullable: false)]
     private int $stockLocationLn;
 
-    #[ORM\Column(name: 'stock_location_fb', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'stock_location_fb', type: Types::INTEGER, nullable: false)]
     private int $stockLocationFb;
 
-    #[ORM\Column(name: 'stock_location_sp', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'stock_location_sp', type: Types::INTEGER, nullable: false)]
     private int $stockLocationSp;
 
-    #[ORM\Column(name: 'stock_location_tf', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'stock_location_tf', type: Types::INTEGER, nullable: false)]
     private int $stockLocationTf;
 
-    #[ORM\Column(name: 'stock_location_coordinate', type: 'string', length: 25, nullable: false)]
+    #[ORM\Column(name: 'stock_location_coordinate', type: Types::STRING, length: 25, nullable: false)]
     private string $stockLocationCoordinate;
 
-    #[ORM\Column(name: 'stock_location_desc', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'stock_location_desc', type: Types::STRING, length: 255, nullable: false)]
     private string $stockLocationDesc;
 
-    #[ORM\Column(name: 'stock_location_width', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[ORM\Column(name: 'stock_location_width', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     private float $stockLocationWidth;
 
-    #[ORM\Column(name: 'stock_location_depth', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[ORM\Column(name: 'stock_location_depth', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     private float $stockLocationDepth;
 
-    #[ORM\Column(name: 'stock_location_height', type: 'decimal', precision: 6, scale: 2, nullable: false)]
+    #[ORM\Column(name: 'stock_location_height', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     private float $stockLocationHeight;
 
-    #[ORM\Column(name: 'stock_location_zone', type: 'string', length: 10, nullable: false)]
+    #[ORM\Column(name: 'stock_location_zone', type: Types::STRING, length: 10, nullable: false)]
     private string $stockLocationZone;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $updatedAt = null;
 
     public function getStockLocationId(): int
     {
@@ -185,24 +189,24 @@ class StockLocation
         $this->stockLocationZone = $stockLocationZone;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function setCreatedAt(?DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

@@ -9,9 +9,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Entity\CustomerOrder as CustomerOrderEntity;
-use WebWMS\Entity\CustomerOrderPos as CustomerOrderPosEntity;
+use WebWMS\Entity\CustomerOrderPos;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\CustomerOrderFormHelper;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\Customer\CustomerService;
@@ -19,15 +21,21 @@ use WebWMS\Service\CustomerOrder\CustomerOrderService;
 use WebWMS\Service\CustomerOrderPos\CustomerOrderPosService;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
+use WebWMS\Trait\UserRoleRightTrait;
 
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrder'
+)]
 /**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrder
+ * @SuppressWarnings(CouplingBetweenObjects)
  */
 class CustomerOrder extends AbstractController
 {
+    use UserRoleRightTrait;
+
     public function __construct(
         private readonly ArticleService $articleService,
         private readonly CustomerOrderService $customerOrderService,
@@ -35,14 +43,14 @@ class CustomerOrder extends AbstractController
         private readonly RequirementsService $requirementsService,
         private readonly CustomerService $customerService,
         private readonly LoggingService $loggingService,
-        private readonly CustomerOrderFormHelper $customerOrderFormHelper
+        private readonly CustomerOrderFormHelper $customerOrderFormHelper,
     ) {
     }
 
     #[Route('/auftrag', name: 'customer_orders')]
     public function index(): Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -62,8 +70,12 @@ class CustomerOrder extends AbstractController
     #[Route('/auftrag_anlegen', name: 'add_customer_order')]
     public function addCustomerOrder(Request $request): RedirectResponse|Response
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
+        }
+
+        if (!$this->userRoleRight->hasUserGroup('GROUP_LOGISTICS_MANAGER')) {
+            throw $this->createAccessDeniedException("You don't have the required permissions.");
         }
 
         $customerOrderForm = $this->customerOrderFormHelper->addCustomerOrderForm();
@@ -88,7 +100,7 @@ class CustomerOrder extends AbstractController
 
         $customerOrderPosForm->handleRequest($request);
         if ($customerOrderPosForm->isSubmitted() && $customerOrderPosForm->isValid()) {
-            /** @var CustomerOrderPosEntity $customerOrderPosRequestData */
+            /** @var CustomerOrderPos $customerOrderPosRequestData */
             $customerOrderPosRequestData = $customerOrderPosForm->getData();
             $customerOrderId = $customerOrderPosRequestData->getCustomerOrderId();
             $responseData = [];
@@ -117,14 +129,14 @@ class CustomerOrder extends AbstractController
     #[Route('/auftrag_bearbeiten/customerOrderId/{customerOrderId}', name: 'edit_customer_order')]
     public function editCustomerOrder(Request $request, int $customerOrderId): RedirectResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $customerOrder = $this->customerOrderService->getCustomerOrderById($customerOrderId);
         $customerOrderPos = $this->customerOrderPosService->getCustomerOrderPosByCustomerOrderId($customerOrderId);
 
-        if ($customerOrder === null) {
+        if (!$customerOrder instanceof CustomerOrderEntity) {
             return null;
         }
 
@@ -150,7 +162,7 @@ class CustomerOrder extends AbstractController
         $customerOrderPosForm->handleRequest($request);
 
         if ($customerOrderPosForm->isSubmitted() && $customerOrderPosForm->isValid()) {
-            /** @var CustomerOrderPosEntity $customerOrderPosRequestData */
+            /** @var CustomerOrderPos $customerOrderPosRequestData */
             $customerOrderPosRequestData = $customerOrderPosForm->getData();
             $customerOrderId = $customerOrderPosRequestData->getCustomerOrderId();
             $responseData = [];
@@ -180,14 +192,14 @@ class CustomerOrder extends AbstractController
     #[Route('/auftrag_löschen/customerOrderId/{customerOrderId}', name: 'delete_customer_order')]
     public function deleteCustomerOrder(Request $request, int $customerOrderId): RedirectResponse|JsonResponse|Response|null
     {
-        if ($this->getUser() === null) {
+        if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
         $customerOrder = $this->customerOrderService->getCustomerOrderById($customerOrderId);
         $customerOrderPos = $this->customerOrderPosService->getCustomerOrderPosByCustomerOrderId($customerOrderId);
 
-        if ($customerOrder === null) {
+        if (!$customerOrder instanceof CustomerOrderEntity) {
             return null;
         }
 
@@ -213,7 +225,7 @@ class CustomerOrder extends AbstractController
 
         $customerOrderPosForm->handleRequest($request);
         if ($customerOrderPosForm->isSubmitted() && $customerOrderPosForm->isValid()) {
-            /** @var CustomerOrderPosEntity $customerOrderPosRequestData */
+            /** @var CustomerOrderPos $customerOrderPosRequestData */
             $customerOrderPosRequestData = $customerOrderPosForm->getData();
             $customerOrderId = $customerOrderPosRequestData->getCustomerOrderId();
             $responseData = [];

@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace WebWMS\Service\CustomerOrder;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-
 use WebWMS\Entity\CustomerOrder;
+
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\CustomerOrder\CustomerOrderDataHandler;
 
-/**
- * @package:    WebWMS\Service\CustomerOrder
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderService
- */
-class CustomerOrderService
+#[ClassInformation(
+    package: 'WebWMS\Service\CustomerOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrderService'
+)]
+readonly class CustomerOrderService
 {
     public function __construct(
-        private readonly CustomerOrderDataHandler $customerOrderDataHandler
+        private CustomerOrderDataHandler $customerOrderDataHandler,
     ) {
     }
 

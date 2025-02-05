@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
-/**
- * @package:    WebWMS\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierValidationService
- */
+use WebWMS\Helper\Attribute\ClassInformation;
+
+#[ClassInformation(
+    package: 'WebWMS\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierValidationService'
+)]
 class SupplierValidationService
 {
     /**
      * @param array<mixed> $requestData
-     * @return array<string, array<string, string>|bool|int|string>
+     * @return array<string, mixed>
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(ElseExpression)
+     * @SuppressWarnings(NPathComplexity)
      */
     public function validateSupplierData(array $requestData): array
     {

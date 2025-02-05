@@ -12,20 +12,23 @@ use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\TransportRequest\TransportRequestService;
 
-/**
- * @package:    WebWMS\Service\BookingMethod
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        BookingMethod
- */
+#[ClassInformation(
+    package: 'WebWMS\Service\BookingMethod',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'BookingMethodService'
+)]
 class BookingMethodService
 {
     public const KARTON = 'Durchlaufregal';
+
     public const PALETTE = 'Pal Regal';
+
     public const BLOCK = 'Block-Lager';
 
     public function __construct(
@@ -33,7 +36,7 @@ class BookingMethodService
         private readonly StockLocationService $stockLocationService,
         private readonly TransportRequestService $transportRequestService,
         private readonly FormFactoryInterface $formFactory,
-        private readonly Environment $twig
+        private readonly Environment $twigEnvironment,
     ) {
     }
 
@@ -88,7 +91,7 @@ class BookingMethodService
         if ($form->isSubmitted() && $form->isValid()) {
             $requestData = $form->getData();
             $stockUnits = (int) ceil(
-                intval($requestData['quantity']) / intval($requestData['leQuantity']),
+                (int) ($requestData['quantity']) / (int) ($requestData['leQuantity']),
             );
 
             $stockSystem = match ($requestData['standardLoadingEquipment']) {
@@ -98,8 +101,8 @@ class BookingMethodService
                 default => 'KST',
             };
 
-            $fullPal = intdiv(intval($requestData['quantity']), intval($requestData['leQuantity']));
-            $remainder = fmod(floatval($requestData['quantity']), floatval($requestData['leQuantity']));
+            $fullPal = intdiv((int) ($requestData['quantity']), (int) ($requestData['leQuantity']));
+            $remainder = fmod((float) ($requestData['quantity']), (float) ($requestData['leQuantity']));
 
             $stockLocations = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $stockUnits);
             $suId = $this->transportRequestService->getLastStockUnit();
@@ -136,7 +139,7 @@ class BookingMethodService
 
             // @TODO Eine Option finden, um im Formular mehrere Spalten zu nutzen!
 
-            $html = $this->twig->render(
+            $html = $this->twigEnvironment->render(
                 'modal/put_into_storage.html.twig',
                 [
                     'appName' => $this->requirementsService->getAppName(),
@@ -157,7 +160,7 @@ class BookingMethodService
             return new Response($html);
         }
 
-        $html = $this->twig->render(
+        $html = $this->twigEnvironment->render(
             'modal/stock_in_modal.html.twig',
             [
                 'appName' => $this->requirementsService->getAppName(),

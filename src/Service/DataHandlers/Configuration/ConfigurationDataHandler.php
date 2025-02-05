@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace WebWMS\Service\DataHandlers\Configuration;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use WebWMS\Entity\Configuration;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\CustomerOrder
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ConfigurationDataHandler
- */
-class ConfigurationDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\CustomerOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ConfigurationDataHandler'
+)]
+readonly class ConfigurationDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -43,7 +45,7 @@ class ConfigurationDataHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      * @return array<string|int|mixed>
      */
     public function getAllConfigurations(): array
@@ -54,9 +56,9 @@ class ConfigurationDataHandler
             ->select('*')
             ->from('configuration');
 
-        $stmt = $queryBuilder->executeQuery();
+        $result = $queryBuilder->executeQuery();
 
-        return $stmt->fetchAllAssociative();
+        return $result->fetchAllAssociative();
     }
 
     /**

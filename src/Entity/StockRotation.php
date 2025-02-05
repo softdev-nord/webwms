@@ -4,55 +4,59 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Helper\Attribute\ClassInformation;
+use WebWMS\Repository\StockRotationRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockRotation
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockRotation'
+)]
 #[ORM\Table(name: 'stock_rotation')]
-#[ORM\Entity(repositoryClass: 'WebWMS\Repository\StockRotationRepository')]
+#[ORM\Entity(repositoryClass: StockRotationRepository::class)]
 class StockRotation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(name: 'stock_location_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'stock_location_id', type: Types::INTEGER, nullable: false)]
     private int $stockLocationId;
 
-    #[ORM\Column(name: 'article_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'article_id', type: Types::INTEGER, nullable: false)]
     private int $articleId;
 
-    #[ORM\Column(name: 'usr_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'usr_id', type: Types::INTEGER, nullable: false)]
     private int $usrId;
 
-    #[ORM\Column(name: 'customer_order_id', type: 'integer', nullable: true)]
-    private ?int $customerOrderId;
+    #[ORM\Column(name: 'customer_order_id', type: Types::INTEGER, nullable: true)]
+    private ?int $customerOrderId = null;
 
-    #[ORM\Column(name: 'supplier_order_id', type: 'integer', nullable: true)]
-    private ?int $supplierOrderId;
+    #[ORM\Column(name: 'supplier_order_id', type: Types::INTEGER, nullable: true)]
+    private ?int $supplierOrderId = null;
 
-    #[ORM\Column(name: 'movement_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'movement_id', type: Types::INTEGER, nullable: false)]
     private int $movementId;
 
-    #[ORM\Column(name: 'pos_quantity', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'pos_quantity', type: Types::INTEGER, nullable: false)]
     private int $posQuantity;
 
-    #[ORM\Column(name: 'access_date', type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $accessDate;
+    #[ORM\Column(name: 'access_date', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $accessDate = null;
 
-    #[ORM\Column(name: 'dispatch_date', type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $dispatchDate;
+    #[ORM\Column(name: 'dispatch_date', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $dispatchDate = null;
 
-    #[ORM\Column(name: 'tr_type', type: 'string', length: 8, nullable: false)]
+    #[ORM\Column(name: 'tr_type', type: Types::STRING, length: 8, nullable: false)]
     private string $trType;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $createdAt = null;
 
     public function getId(): int
     {
@@ -150,24 +154,24 @@ class StockRotation
         return $this;
     }
 
-    public function getAccessDate(): ?\DateTimeInterface
+    public function getAccessDate(): ?DateTimeInterface
     {
         return $this->accessDate;
     }
 
-    public function setAccessDate(?\DateTimeInterface $accessDate): self
+    public function setAccessDate(?DateTimeInterface $accessDate): self
     {
         $this->accessDate = $accessDate;
 
         return $this;
     }
 
-    public function getDispatchDate(): ?\DateTimeInterface
+    public function getDispatchDate(): ?DateTimeInterface
     {
         return $this->dispatchDate;
     }
 
-    public function setDispatchDate(?\DateTimeInterface $dispatchDate): self
+    public function setDispatchDate(?DateTimeInterface $dispatchDate): self
     {
         $this->dispatchDate = $dispatchDate;
 
@@ -186,12 +190,12 @@ class StockRotation
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function setCreatedAt(?DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 

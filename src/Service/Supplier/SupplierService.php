@@ -6,18 +6,19 @@ namespace WebWMS\Service\Supplier;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Supplier;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
 
-/**
- * @package:    WebWMS\Service\Supplier
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierService
- */
-class SupplierService
+#[ClassInformation(
+    package: 'WebWMS\Service\Supplier',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierService'
+)]
+readonly class SupplierService
 {
     public function __construct(
-        private readonly SupplierDataHandler $supplierDataHandler
+        private SupplierDataHandler $supplierDataHandler,
     ) {
     }
 
@@ -36,7 +37,7 @@ class SupplierService
         return new JsonResponse($this->supplierDataHandler->getAllSuppliers());
     }
 
-    public function getAllSuppliersAjax(null|string $supplierNrInput): JsonResponse
+    public function getAllSuppliersAjax(?string $supplierNrInput): JsonResponse
     {
         return $this->supplierDataHandler->getSuppliers($supplierNrInput);
     }

@@ -6,18 +6,19 @@ namespace WebWMS\Service\User\UserRight;
 
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\UserRight;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\User\UserRight\UserRightDataHandler;
 
-/**
- * @package:    WebWMS\Service\User\UserRight
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserRightService
- */
-class UserRightService
+#[ClassInformation(
+    package: 'WebWMS\Service\User\UserRight',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserRightService'
+)]
+readonly class UserRightService
 {
     public function __construct(
-        private readonly UserRightDataHandler $userRightDataHandler
+        private UserRightDataHandler $userRightDataHandler,
     ) {
     }
 

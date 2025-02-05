@@ -11,25 +11,24 @@ use WebWMS\Form\User\AddUserType;
 use WebWMS\Form\User\ChangePasswordType;
 use WebWMS\Form\User\DeleteUserType;
 use WebWMS\Form\User\EditUserType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserFormHelper
- */
-class UserFormHelper
+#[ClassInformation(
+    package: 'WebWMS\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserFormHelper'
+)]
+readonly class UserFormHelper
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory
+        private FormFactoryInterface $formFactory,
     ) {
     }
 
     /**
      * @param class-string<FormTypeInterface<mixed>> $type
-     * @param mixed|null $data
      * @param array<string> $options
-     * @return FormInterface
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
     {
@@ -41,28 +40,16 @@ class UserFormHelper
         return $this->createForm(AddUserType::class);
     }
 
-    /**
-     * @param object $user
-     * @return FormInterface
-     */
     public function editUserForm(object $user): FormInterface
     {
         return $this->createForm(EditUserType::class, $user);
     }
 
-    /**
-     * @param object $user
-     * @return FormInterface
-     */
     public function deleteUserForm(object $user): FormInterface
     {
         return $this->createForm(DeleteUserType::class, $user);
     }
 
-    /**
-     * @param object $changePasswordModel
-     * @return FormInterface
-     */
     public function changePasswordForm(object $changePasswordModel): FormInterface
     {
         return $this->createForm(ChangePasswordType::class, $changePasswordModel);

@@ -6,18 +6,19 @@ namespace WebWMS\Service\Stock;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\StockZone;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Stock\StockZoneDataHandler;
 
-/**
- * @package:    WebWMS\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockZoneService
- */
-class StockZoneService
+#[ClassInformation(
+    package: 'WebWMS\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockZoneService'
+)]
+readonly class StockZoneService
 {
     public function __construct(
-        private readonly StockZoneDataHandler $stockZoneDataHandler
+        private StockZoneDataHandler $stockZoneDataHandler,
     ) {
     }
 

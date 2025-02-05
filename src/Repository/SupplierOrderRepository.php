@@ -7,23 +7,19 @@ namespace WebWMS\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use WebWMS\Entity\SupplierOrder;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Repository
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderRepository
- *
- * @method SupplierOrder|null find($id, $lockMode = null, $lockVersion = null)
- * @method SupplierOrder|null findOneBy(array $criteria, array $orderBy = null)
- * @method SupplierOrder[]    findAll()
- * @method SupplierOrder[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
+#[ClassInformation(
+    package: 'WebWMS\Repository',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrderRepository'
+)]
 class SupplierOrderRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry $registry
+        ManagerRegistry $managerRegistry,
     ) {
-        parent::__construct($registry, SupplierOrder::class);
+        parent::__construct($managerRegistry, SupplierOrder::class);
     }
 }

@@ -7,22 +7,22 @@ namespace WebWMS\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use WebWMS\Entity\User;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\User\UserService;
 
-/**
- * @package:    WebWMS\EventSubscriber
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        LastLoginSubscriber
- *
- * Subscriber zur Aktualisierung der letzten Anmeldezeit des Benutzers.
- */
-class LastLoginSubscriber implements EventSubscriberInterface
+#[ClassInformation(
+    package: 'WebWMS\EventSubscriber',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'LastLoginSubscriber'
+)]
+readonly class LastLoginSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly TokenStorageInterface $tokenStorage,
-        private readonly UserService $userService
+        private TokenStorageInterface $tokenStorage,
+        private UserService $userService,
     ) {
     }
 
@@ -30,20 +30,20 @@ class LastLoginSubscriber implements EventSubscriberInterface
     {
         // return the subscribed events, their methods and priorities
         return [
-           KernelEvents::FINISH_REQUEST => [
-               ['updateLastLogin', -10],
-           ],
+            KernelEvents::FINISH_REQUEST => [
+                ['updateLastLogin', -10],
+            ],
         ];
     }
 
     /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function updateLastLogin(): void
     {
         $accessToken = $this->tokenStorage->getToken();
-        if ($accessToken !== null) {
-            /* @var User $user */
+        if ($accessToken instanceof TokenInterface) {
+            /** @var User $user */
             $user = $accessToken->getUser();
             if ($user instanceof User) {
                 $this->userService->updateLastLogin($user);

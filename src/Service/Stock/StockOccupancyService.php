@@ -7,24 +7,24 @@ namespace WebWMS\Service\Stock;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Stock\StockOccupancyDataHandler;
 
-/**
- * @package:    WebWMS\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockOccupancyService
- */
-class StockOccupancyService
+#[ClassInformation(
+    package: 'WebWMS\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockOccupancyService'
+)]
+readonly class StockOccupancyService
 {
     public function __construct(
-        private readonly StockOccupancyDataHandler $stockOccupancyDataHandler
+        private StockOccupancyDataHandler $stockOccupancyDataHandler,
     ) {
     }
 
     /**
      * @throws Exception
-     * @return JsonResponse
      */
     public function getAllStockOccupancy(): JsonResponse
     {
@@ -37,6 +37,7 @@ class StockOccupancyService
      */
     public function getStockOccupancyByCoordinate(Request $request): array
     {
+        /** @var string $stockLocationCoordinate */
         $stockLocationCoordinate = $request->attributes->get('stock_location_coordinate');
         $stockOccupancyDetail = [];
         $stockOccupancies = json_decode((string) $this->getAllStockOccupancy()->getContent(), true);

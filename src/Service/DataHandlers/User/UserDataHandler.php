@@ -7,24 +7,23 @@ namespace WebWMS\Service\DataHandlers\User;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use WebWMS\Entity\User;
-use WebWMS\Entity\UserRole;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\User
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserDataHandler
- */
-class UserDataHandler implements PasswordUpgraderInterface
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\UserController',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserDataHandler'
+)]
+readonly class UserDataHandler implements PasswordUpgraderInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private DateTimeService $dateTimeService
+        private DateTimeService $dateTimeService,
     ) {
     }
 
@@ -51,9 +50,9 @@ class UserDataHandler implements PasswordUpgraderInterface
             ->select('*')
             ->from('user');
 
-        $stmt = $queryBuilder->executeQuery();
+        $result = $queryBuilder->executeQuery();
 
-        $results = $stmt->fetchAllAssociative();
+        $results = $result->fetchAllAssociative();
 
         return new JsonResponse($results);
     }
@@ -72,52 +71,25 @@ class UserDataHandler implements PasswordUpgraderInterface
             ->findOneBy(['username' => $username]);
     }
 
-    public function addUser(Request $request): ?User
+    public function addUser(User $user): void
     {
-        $addUser = $request->request->getIterator()->getArrayCopy();
-        $user = new User();
-
-        $user->setUsername($addUser['username']);
-        $user->setFirstname($addUser['firstname']);
-        $user->setLastname($addUser['firstname']);
-        $user->setPassword($addUser['password']);
         $user->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($user);
-
-        return $user;
     }
 
-    public function updateUser(Request $request): ?User
+    public function updateUser(User $user): void
     {
-        $requestData = $request->request->all()['edit_user'];
-        $user = $this->entityManager
-            ->getRepository(User::class)
-            ->findOneBy(['username' => $requestData['username']]);
-
-        if ($user === null) {
-            return null;
-        }
-
-        /** @var UserRole $roles */
-        $roles = $requestData['roles'];
-
-        $user->setUsername(strval($requestData['username']));
-        $user->addRole($roles->getUserRole());
-        $user->setFirstname(strval($requestData['firstname']));
-        $user->setLastname(strval($requestData['lastname']));
         $user->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($user);
-
-        return $user;
     }
 
     public function deleteUser(string $username): void
     {
         $user = $this->getUserByUsername($username);
 
-        if ($user !== null) {
+        if ($user instanceof User) {
             $this->delete($user);
         }
     }
@@ -128,7 +100,7 @@ class UserDataHandler implements PasswordUpgraderInterface
     public function upgradePassword($user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
         $user->setPassword($newHashedPassword);

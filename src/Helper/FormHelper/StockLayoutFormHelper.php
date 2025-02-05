@@ -11,25 +11,24 @@ use WebWMS\Entity\StockLayout;
 use WebWMS\Form\Stock\StockLayout\AddStockLayoutType;
 use WebWMS\Form\Stock\StockLayout\DeleteStockLayoutType;
 use WebWMS\Form\Stock\StockLayout\EditStockLayoutType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLayoutFormHelper
- */
-class StockLayoutFormHelper
+#[ClassInformation(
+    package: 'WebWMS\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLayoutFormHelper'
+)]
+readonly class StockLayoutFormHelper
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory
+        private FormFactoryInterface $formFactory,
     ) {
     }
 
     /**
      * @param class-string<FormTypeInterface<mixed>> $type
-     * @param mixed|null $data
      * @param array<string> $options
-     * @return FormInterface
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
     {
@@ -41,19 +40,11 @@ class StockLayoutFormHelper
         return $this->createForm(AddStockLayoutType::class);
     }
 
-    /**
-     * @param StockLayout|null $stockLayout
-     * @return FormInterface
-     */
     public function editStockLayoutForm(?StockLayout $stockLayout): FormInterface
     {
         return $this->createForm(EditStockLayoutType::class, $stockLayout);
     }
 
-    /**
-     * @param StockLayout|null $stockLayout
-     * @return FormInterface
-     */
     public function deleteStockLayoutForm(?StockLayout $stockLayout): FormInterface
     {
         return $this->createForm(DeleteStockLayoutType::class, $stockLayout);
