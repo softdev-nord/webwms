@@ -52,31 +52,46 @@
                     text:      'Kopieren',
                     title:     'Export',
                     titleAttr: 'Copy',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend:    'csvHtml5',
                     text:      'CSV',
                     title:     'Export',
                     titleAttr: 'CSV',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
+                },
+                {
+                    text:       'JSON',
+                    title:      'Export',
+                    action: function (e, dt, button, config) {
+                        DataTable.fileSave(
+                            new Blob(
+                                [
+                                    JSON.stringify(convertStockLocationOverviewToJson())
+                                ]
+                            ),
+                            'export_stock_location_overview.json'
+                        );
+                    },
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend:    'pdfHtml5',
                     text:      'PDF',
                     title:     'Export',
                     titleAttr: 'PDF',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend: 'print',
                     text: 'Drucken',
                     autoPrint: false,
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     text: 'Lagerplatz anlegen',
-                    className: 'btn-primary btn-xs btn3d float-start',
+                    className: 'btn btn-primary btn-xm btn3d float-start',
                     action: function(e, dt, node, config) {
                         addStockLocation();
                     }
@@ -100,8 +115,6 @@
             const row = stockLocationTable.row(options.$trigger),
                 stockLocationCoordinate = row.data().stock_location_coordinate;
 
-            console.log(stockLocationCoordinate);
-
             switch (key) {
                 case 'edit' :
                     editStockLocation(stockLocationCoordinate);
@@ -124,6 +137,18 @@
             },
         }
     });
+
+    // Lagerplätze als Json exportieren
+    function convertStockLocationOverviewToJson() {
+        const objects = [];
+        const data = stockLocationTable.rows().data();
+
+        for (let i = 0; i < data.length; i++) {
+            objects.push(data[i]);
+        }
+
+        return objects;
+    }
 
     $(function(){
         // Ändern der Standardbreite des Modals
@@ -171,7 +196,7 @@
             successMessage = 'Lagerplatz erfolgreich gespeichert';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, stockLocationTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, stockLocationTable, false);
     });
 
     // Geänderten Lagerplatz speichern
@@ -183,7 +208,7 @@
             successMessage = 'Lagerplatz erfolgreich gespeichert';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, stockLocationTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, stockLocationTable, false);
     });
 
     // Lagerplatz löschen
@@ -195,7 +220,7 @@
             errorMessage = 'Lagerplatz konnten nicht gelöscht werden';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, stockLocationTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, stockLocationTable, false);
     });
 
     $(document).on('click', '.abort', function() {

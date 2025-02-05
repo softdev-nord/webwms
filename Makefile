@@ -8,11 +8,11 @@ help: ## Display this help
 ######################################################################
 ############################### Docker ###############################
 ######################################################################
-webwms-build: ## Build container image
+build: ## Build container image
 	@docker-compose build
 
 up: ## Starts the full docker-compose stack
-	@docker-compose up -d
+	@docker-compose up -d --build
 
 stop: ## Stops the full docker-compose stack, but keeps containers
 	@docker-compose stop
@@ -71,6 +71,9 @@ phpstan-baseline: ## Run code analyse (phpstan) incl. baseline
 var-dump-check: ## Find var_dump, dd, etc.
 	@docker exec -t $(APP_CONTAINER_NAME) vendor/bin/var-dump-check --symfony --doctrine --exclude vendor .
 
+php-compatibility-check:
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'composer sniffer:php83';
+
 ######################################################################
 ########################## Code Style Check ##########################
 ######################################################################
@@ -83,10 +86,10 @@ phpcs-fix: ## Run code style fix
 	 -vvv --show-progress=dots --allow-risky=yes';
 
 phpmd: ## Run code check (phpmd)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./bundles/,./tests/' ansi rulesets.xml';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./module/,./tests/' ansi rulesets.xml';
 
 phpqa: ## Run code check (phpmd)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src --execution no-parallel';
 
 ######################################################################
 ############################ Twig Linter #############################
@@ -128,7 +131,7 @@ twig-cs-fixer: ## Run twig code style check
 ############################### Tests ################################
 ######################################################################
 run-tests-unit: ## Run unit tests
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --coverage-html var/reports/ ';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c './vendor/bin/phpunit --testdox --colors=always --coverage-html var/reports/ ';
 
 ######################################################################
 ##################### Automated Code Refactoring #####################
@@ -137,4 +140,19 @@ run-rector: ## Run automated refactoring dry run
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process --dry-run';
 
 run-rector-refactoring: ## Run automated refactoring
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process --dry-run';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/rector process';
+
+report-metrics: ## Run the phpmetrics report
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmetrics --config=php_metrics_config.yml';
+
+######################################################################
+#################### Developer Information Tools #####################
+######################################################################
+find-leaking-classes: ## Find leaking classes that you never use... and get rid of them. | https://github.com/TomasVotruba/class-leak
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/class-leak check bin src';
+
+lines-of-code: ## Run the lines of code command | https://github.com/TomasVotruba/lines
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/lines measure src';
+
+composer-unused: ## Show unused composer dependencies by scanning code | https://github.com/TomasVotruba/composer-unused
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/composer-unused';

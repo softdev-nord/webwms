@@ -126,16 +126,16 @@
             "tests/bootstrap.php"
         ]
     },
-    "sensio/framework-extra-bundle": {
-        "version": "6.2",
+    "squizlabs/php_codesniffer": {
+        "version": "3.9",
         "recipe": {
-            "repo": "github.com/symfony/recipes",
+            "repo": "github.com/symfony/recipes-contrib",
             "branch": "main",
-            "version": "5.2",
-            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
+            "version": "3.6",
+            "ref": "1019e5c08d4821cb9b77f4891f8e9c31ff20ac6f"
         },
         "files": [
-            "config/packages/sensio_framework_extra.yaml"
+            "phpcs.xml.dist"
         ]
     },
     "squizlabs/php_codesniffer": {

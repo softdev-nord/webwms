@@ -36,13 +36,15 @@ function getContentForModal(url, title, $form) {
  * @param errorMessage
  * @param successMessage
  * @param table
+ * @param redirectUrl
  */
-function _doRequest(type, url, $form, errorMessage, successMessage, table) {
+function _doRequest(type, url, $form, errorMessage, successMessage, table = null, isRedirect = false, redirectUrl = null) {
     $.ajax({
         type: type,
         url: url,
         data: $form.serialize(),
         success: function(data) {
+            console.log(data);
             if (data.error) {
                 const errors = [];
                 let i = 0;
@@ -51,28 +53,31 @@ function _doRequest(type, url, $form, errorMessage, successMessage, table) {
                 });
                 const arrayString = errors.join();
                 const error = arrayString.replace(/,/g, ' ');
-                $.jAlert({
-                    'title': errorMessage,
-                    'content': error,
-                    'theme': 'red',
-                    'size': 'md',
-                    'showAnimation': 'fadeInUp',
-                    'hideAnimation': 'fadeOutDown',
-                    'autoClose': 5000
+                Swal.fire({
+                    title: errorMessage,
+                    text: error,
+                    icon: "error",
+                    timer: 5000
                 });
             } else {
-                $.jAlert({
-                    'title': successMessage,
-                    'content': data.message,
-                    'theme': 'green',
-                    'size': 'md',
-                    'showAnimation': 'fadeInUp',
-                    'hideAnimation': 'fadeOutDown',
-                    'autoClose': 5000
+                Swal.fire({
+                    title: successMessage,
+                    text: data.message,
+                    icon: "success",
+                    timer: 5000
                 });
                 $('#modalCenter').modal('hide');
                 table.ajax.reload();
+
+                if (isRedirect !== false) {
+                    redirect();
+                }
+
             }
         }
     });
+
+    function redirect() {
+        window.location.assign(redirectUrl)
+    }
 }

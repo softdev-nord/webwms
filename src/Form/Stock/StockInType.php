@@ -82,13 +82,13 @@ class StockInType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Buchen',
                 'attr' => [
-                    'class' => 'btn btn-dark bg-gradient waves-effect waves-light',
+                    'class' => 'btn btn-primary btn-xm btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
                 'label' => 'Abbrechen',
                 'attr' => [
-                    'class' => 'btn btn-dark bg-gradient waves-effect waves-light',
+                    'class' => 'btn btn-primary btn-xm btn3d',
                 ],
             ])
         ;

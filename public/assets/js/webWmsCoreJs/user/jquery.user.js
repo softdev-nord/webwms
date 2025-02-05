@@ -24,10 +24,10 @@
             { data: 'enabled',
                 "render": function ( data, type, row ) {
                     if (data === 1) {
-                        data = '<i class="mdi mdi-check-circle-outline"></i>';
+                        data = '<i class="mdi mdi-checkbox-marked-circle-outline" style="color: forestgreen; font-size: 18px;"></i>';
                     }
                     else {
-                        data = '<i class="mdi mdi-close-circle-outline"></i>';
+                        data = '<i class="mdi mdi-close-circle-outline" style="color: red; font-size: 18px; font-weight: lighter"></i>';
                     }
                     return data
                 }},
@@ -48,34 +48,39 @@
                 extend:    'copyHtml5',
                 text:      'Kopieren',
                 title:     'Export',
-                titleAttr: 'Copy'
+                titleAttr: 'Copy',
+                className: 'btn btn-primary btn-xm btn3d'
             },
             {
                 extend:    'excelHtml5',
                 text:      'Excel',
                 title:     'Export',
-                titleAttr: 'Excel'
+                titleAttr: 'Excel',
+                className: 'btn btn-primary btn-xm btn3d'
             },
             {
                 extend:    'csvHtml5',
                 text:      'CSV',
                 title:     'Export',
-                titleAttr: 'CSV'
+                titleAttr: 'CSV',
+                className: 'btn btn-primary btn-xm btn3d'
             },
             {
                 extend:    'pdfHtml5',
                 text:      'PDF',
                 title:     'Export',
-                titleAttr: 'PDF'
+                titleAttr: 'PDF',
+                className: 'btn btn-primary btn-xm btn3d'
             },
             {
                 extend: 'print',
                 text: 'Drucken',
-                autoPrint: false
+                autoPrint: false,
+                className: 'btn btn-primary btn-xm btn3d'
             },
             {
                 text: 'Benutzer anlegen',
-                className: 'btn-add-new',
+                className: 'btn btn-primary btn-xm btn3d btn-add-new',
                 action: function (e, dt, node, config) {
                     addUser();
                 }
@@ -145,7 +150,7 @@
     }
 
     function editUserPassword(username) {
-        const url = 'benutzer_passwort_aendern/benutzername/' + username,
+        const url = 'benutzer_passwort_bearbeiten/benutzername/' + username,
             $form = $('form#user-password-form-edit'),
             title = 'Benutzerpasswort ändern';
 
@@ -178,8 +183,8 @@
         const username = $('#edit_user_username').val(),
             $form = $('form#user-form-edit'),
             url = '/benutzer_bearbeiten/benutzername/' + username,
-            errorMessage = 'Benutzer konnte nicht gespeichert werden',
-            successMessage = 'Benutzer erfolgreich gespeichert';
+            errorMessage = 'Änderungen am Benutzer konnten nicht gespeichert werden',
+            successMessage = 'Änderungen am Benutzer erfolgreich gespeichert';
         event.preventDefault();
 
         _doRequest('POST', url, $form, errorMessage, successMessage, userTable);
@@ -211,6 +216,16 @@
 
     $(document).on('click', '.abort', function() {
         $('#modalCenter').modal('hide');
+    });
+
+    $(document).on('change', '#edit_user_enabled', function() {
+        const check = $(this).prop("checked");
+
+        if (check === false) {
+            $(this).removeAttr('checked') && $(this).val(0);
+        } else {
+            $(this).attr('checked', true) && $(this).val(1);
+        }
     });
 
 })(jQuery);

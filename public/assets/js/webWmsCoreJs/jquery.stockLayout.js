@@ -50,31 +50,46 @@
                     text:      'Kopieren',
                     title:     'Export',
                     titleAttr: 'Copy',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend:    'csvHtml5',
                     text:      'CSV',
                     title:     'Export',
                     titleAttr: 'CSV',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
+                },
+                {
+                    text:       'JSON',
+                    title:      'Export',
+                    action: function (e, dt, button, config) {
+                        DataTable.fileSave(
+                            new Blob(
+                                [
+                                    JSON.stringify(convertStockLayoutOverviewToJson())
+                                ]
+                            ),
+                            'export_stock_layout_overview.json'
+                        );
+                    },
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend:    'pdfHtml5',
                     text:      'PDF',
                     title:     'Export',
                     titleAttr: 'PDF',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend: 'print',
                     text: 'Drucken',
                     autoPrint: false,
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     text: 'Lagerlayout anlegen',
-                    className: 'btn-primary btn-xs btn3d float-start',
+                    className: 'btn btn-primary btn-xm btn3d float-start',
                     action: function (e, dt, node, config) {
                         addStockLayout();
                     }
@@ -120,6 +135,18 @@
             },
         }
     });
+
+    // Lagerlayout als Json exportieren
+    function convertStockLayoutOverviewToJson() {
+        const objects = [];
+        const data = stockLayoutTable.rows().data();
+
+        for (let i = 0; i < data.length; i++) {
+            objects.push(data[i]);
+        }
+
+        return objects;
+    }
 
     $(function(){
         // Ändern der Standardbreite des Modals

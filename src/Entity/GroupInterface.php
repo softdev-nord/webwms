@@ -22,14 +22,10 @@ interface GroupInterface
 
     public function hasRole(string $role): bool;
 
-    /**
-     * @return string[]
-     */
+    /** @return array<string> */
     public function getRoles(): array;
 
-    /**
-     * @param string[] $roles
-     */
+    /** @param array<string> $roles */
     public function setRoles(array $roles): void;
 
     public function removeRole(string $role): void;

@@ -6,6 +6,7 @@ namespace WebWMS\Form\Stock;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -96,6 +97,12 @@ class StockInFinalType extends AbstractType
                     'data-type' => 'stock_tbe',
                     'style' => 'text-align: center; background: #3b4245;',
                     'readonly' => true,
+                ],
+            ])
+            ->add('article_id', HiddenType::class, [
+                'label' => false,
+                'attr' => [
+                    'id' => 'article_id',
                 ],
             ])
             ->add('stock_in_post_final', SubmitType::class, [

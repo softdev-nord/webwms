@@ -59,31 +59,46 @@ $(function() {
                     text:      'Kopieren',
                     title:     'Export',
                     titleAttr: 'Copy',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend:    'csvHtml5',
                     text:      'CSV',
                     title:     'Export',
                     titleAttr: 'CSV',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
+                },
+                {
+                    text:       'JSON',
+                    title:      'Export',
+                    action: function (e, dt, button, config) {
+                        DataTable.fileSave(
+                            new Blob(
+                                [
+                                    JSON.stringify(convertCustomerOrderOverviewToJson())
+                                ]
+                            ),
+                            'export_customer_order_overview.json'
+                        );
+                    },
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend:    'pdfHtml5',
                     text:      'PDF',
                     title:     'Export',
                     titleAttr: 'PDF',
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     extend: 'print',
                     text: 'Drucken',
                     autoPrint: false,
-                    className: 'btn-primary btn-xs btn3d'
+                    className: 'btn btn-primary btn-xm btn3d'
                 },
                 {
                     text: 'Auftrag anlegen',
-                    className: 'btn-primary btn-xs btn3d float-start',
+                    className: 'btn btn-primary btn-xm btn3d float-start',
                     action: function(e, dt, node, config) {
                         addCustomerOrder();
                     }
@@ -129,6 +144,18 @@ $(function() {
             },
         }
     });
+
+    // Aufträge als Json exportieren
+    function convertCustomerOrderOverviewToJson() {
+        const objects = [];
+        const data = customerOrderTable.rows().data();
+
+        for (let i = 0; i < data.length; i++) {
+            objects.push(data[i]);
+        }
+
+        return objects;
+    }
 
     $(function(){
         // Ändern der Standardbreite des Modals
@@ -176,7 +203,7 @@ $(function() {
             successMessage = 'Auftrag erfolgreich gespeichert';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, customerOrderTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, customerOrderTable, false);
     });
 
     // Geänderten Auftrag speichern
@@ -188,7 +215,7 @@ $(function() {
             successMessage = 'Auftrag erfolgreich gespeichert';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, customerOrderTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, customerOrderTable, false);
     });
 
     // Auftrag löschen
@@ -200,7 +227,7 @@ $(function() {
             successMessage = 'Auftrag erfolgreich gelöscht';
         event.preventDefault();
 
-        _doRequest('POST', url, $form, errorMessage, successMessage, customerOrderTable);
+        _doRequest('POST', url, $form, errorMessage, successMessage, customerOrderTable, false);
     });
 
     // JS Funktion Ajax Daten für Auftragspositionen

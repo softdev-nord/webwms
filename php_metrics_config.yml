@@ -1,0 +1,19 @@
+---
+composer: false  # Analyse the composer.* files
+includes:  #  directory and files to analyze, relative to config file directory
+    - "src"
+excludes: # regex of files (or directory) to exclude from analyze
+#    - ".docker"
+extensions:
+    - php
+    - php8
+report:
+    html: "public/php_metrics/"
+    csv: "public/php_metrics/report.csv"
+    json: "public/php_metrics/report.json"
+    violations: "public/php_metrics/violations.xml"
+groups:
+    - name: Component
+      match: "!component!i"
+    - name: Metric
+      match: "!metric!i"

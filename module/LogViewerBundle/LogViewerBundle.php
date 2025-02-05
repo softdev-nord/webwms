@@ -17,12 +17,12 @@ class LogViewerBundle extends Bundle
 {
     public function getNiceName(): string
     {
-        return 'WebWMS Protokoll-Betrachter';
+        return 'WebWMS Protokoll-View';
     }
 
     public function getDescription(): string
     {
-        return 'Bundle für die WebWMS Protokoll Übersicht';
+        return 'Modul für die WebWMS Protokoll Übersicht';
     }
 
     public function getVersion(): string

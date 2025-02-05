@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Twig;
 
+use JsonException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use WebWMS\Helper\Attribute\ClassInformation;
@@ -23,9 +24,12 @@ class VarsExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @throws JsonException
+     */
     public function jsonDecode(string $str): mixed
     {
-        return json_decode($str);
+        return json_decode($str, false, 512, JSON_THROW_ON_ERROR);
     }
 
     /**

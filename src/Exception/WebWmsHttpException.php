@@ -1,0 +1,102 @@
+<?php
+
+declare(strict_types=1);
+
+namespace WebWMS\Exception;
+
+use Generator;
+use Override;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
+
+/**
+ * @package:    WebWMS\Exception
+ * @author:     SoftDev Nord, Rene Irrgang
+ * @copyright:  Copyright © 2019-2023, SoftDev Nord
+ * Class        WebWmsHttpException
+ */
+abstract class WebWmsHttpException extends HttpException implements WebWmsException
+{
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    public function __construct(
+        string $message,
+        protected array $parameters = [],
+        ?Throwable $throwable = null
+    ) {
+        $message = $this->parse($message, $this->parameters);
+
+        parent::__construct($this->getStatusCode(), $message, $throwable);
+    }
+
+    #[Override]
+    public function getStatusCode(): int
+    {
+        return Response::HTTP_INTERNAL_SERVER_ERROR;
+    }
+
+    public function getErrors(bool $withTrace): Generator
+    {
+        yield $this->getCommonErrorData($withTrace);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    #[Override]
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getParameter(string $key): mixed
+    {
+        return $this->parameters[$key] ?? null;
+    }
+
+    /**
+     * @return array{status: numeric-string, code: string, title: mixed, detail: string, meta: array{parameters: array<string, mixed>}, trace?: array<int, mixed>}
+     */
+    protected function getCommonErrorData(bool $withTrace): array
+    {
+        $error = [
+            'status' => (string) $this->getStatusCode(),
+            'code' => $this->getErrorCode(),
+            'title' => Response::$statusTexts[$this->getStatusCode()] ?? 'unknown status',
+            'detail' => $this->getMessage(),
+            'meta' => [
+                'parameters' => $this->getParameters(),
+            ],
+        ];
+
+        if ($withTrace) {
+            $error['trace'] = $this->getTrace();
+        }
+
+        return $error;
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    protected function parse(string $message, array $parameters = []): string
+    {
+        $regex = [];
+
+        foreach ($parameters as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $formattedKey = preg_replace('/[^a-z]/i', '', $key);
+            $regex[sprintf('/\{\{(\s+)?(%s)(\s+)?\}\}/', $formattedKey)] = $value;
+        }
+
+        return (string) preg_replace(array_keys($regex), array_values($regex), $message);
+    }
+}

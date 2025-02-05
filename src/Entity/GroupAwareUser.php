@@ -23,14 +23,14 @@ interface GroupAwareUser
     /**
      * Gets the groups granted to the user.
      *
-     * @return array<string[]>
+     * @return array<array<string>>
      */
     public function getGroups(): array;
 
     /**
      * Ruft die dem Benutzer zugewiesenen Gruppen ab.
      *
-     * @return string[]
+     * @return array<string>
      */
     public function getGroupNames(): array;
 

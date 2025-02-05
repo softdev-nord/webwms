@@ -51,7 +51,7 @@ yarn-error.log
 
 ###> symfony/framework-bundle ###
 /.env
-/.env.local
+/.env.*.local
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
