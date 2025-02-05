@@ -6,13 +6,14 @@ namespace WebWMS\Service;
 
 use DateTime;
 use DateTimeZone;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        DateTimeService
- */
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'DateTimeService'
+)]
 class DateTimeService
 {
     public function createDateTime(): DateTime

@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\User as UserEntity;
 use WebWMS\Form\User\Model\ChangePassword;
 use WebWMS\Helper\FormHelper\UserFormHelper;
 use WebWMS\Service\DateTimeService;
@@ -24,24 +24,26 @@ use WebWMS\Service\Validation\ChangePasswordValidationService;
 use WebWMS\Service\Validation\UserValidationService;
 
 /**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserController
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @package: WebWMS\Controller
+ * @author: SoftDev Nord, Rene Irrgang
+ * @copyright: Copyright © 2019-2025, SoftDev Nord
+ * Class User
  */
-class UserController extends AbstractController
+
+/**
+ * @SuppressWarnings(CouplingBetweenObjects)
+ */
+class User extends AbstractController
 {
     public function __construct(
         private readonly RequirementsService $requirementsService,
         private readonly LoggingService $loggingService,
         private readonly UserService $userService,
         private readonly UserValidationService $userValidationService,
-        private readonly ChangePasswordValidationService $changePasswordValidationService,
+        private readonly ChangePasswordValidationService $passwordValidationService,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
         private readonly DateTimeService $dateTimeService,
-        private readonly UserFormHelper $userFormHelper
+        private readonly UserFormHelper $userFormHelper,
     ) {
     }
 
@@ -120,20 +122,18 @@ class UserController extends AbstractController
             /** @var UserEntity $userRequestData */
             $userRequestData = $form->getData();
             $username = $user->getUserIdentifier();
-            $responseData = $this->userValidationService
-                ->validateUserData(
-                    (array) $request->request->all()['edit_user']
-                );
+            $responseData = $this->userValidationService->validateUserData($userRequestData);
 
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Benutzer ' . $username . ' wurde erfolgreich geändert.';
                 $logMessage = 'Der Benutzer ' . $username . ' wurde geändert.';
-
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $this->userService->updateUser($userRequestData);
 
                 return new JsonResponse($responseData);
             }
+
+            $responseData['message'] = 'Der Benutzer konnte nicht gespeichert werden.';
 
             return new JsonResponse($responseData);
         }
@@ -172,12 +172,11 @@ class UserController extends AbstractController
             $changeRequestData = $form->getData();
             $username = $user->getUserIdentifier();
             $newPassword = $changeRequestData->getNewPassword();
-            $responseData = $this->changePasswordValidationService->validateChangePasswordData($user, $form);
+            $responseData = $this->passwordValidationService->validateChangePasswordData($user, $form);
 
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Das Passwort für den Benutzer ' . $username . ' wurde erfolgreich geändert.';
                 $logMessage = 'Das Passwort für den Benutzer ' . $username . ' wurde geändert.';
-
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
                 $newHashedPassword = $this->userPasswordHasher->hashPassword(
                     $user,
@@ -250,32 +249,11 @@ class UserController extends AbstractController
         return $this->userService->getAllUsers();
     }
 
-    /** @return array<object> */
+    /**
+     * @return array<object>
+     */
     public function getLastUser(): array
     {
         return $this->userService->getLastUser();
     }
-
-    //    private function getErrorsFromForm(FormInterface $form, bool $child = false): array
-    //    {
-    //        $errors = [];
-    //
-    //        foreach ($form->getErrors() as $error) {
-    //            if ($child) {
-    //                $errors[] = $error->getMessage();
-    //            } else {
-    //                $errors[$error->getOrigin()?->getName()][] = $error->getMessage();
-    //            }
-    //        }
-    //
-    //        foreach ($form->all() as $childForm) {
-    //            if ($childForm instanceof FormInterface) {
-    //                if ($childErrors = $this->getErrorsFromForm($childForm, true)) {
-    //                    $errors[$childForm->getName()] = $childErrors;
-    //                }
-    //            }
-    //        }
-    //
-    //        return $errors;
-    //    }
 }

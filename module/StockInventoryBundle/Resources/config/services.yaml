@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    WebWMS\Bundles\LogViewerBundle\:
+        resource: '../../*'
+        exclude: '../../{Controller,DependencyInjection,Tests,LogViewerBundle.php}'
+
+    WebWMS\Bundles\LogViewerBundle\Controller\:
+        resource: '../../Controller/*'
+        tags: ['controller.service_arguments']

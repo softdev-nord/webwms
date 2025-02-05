@@ -4,27 +4,26 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\Configuration;
 
-use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\ConfigurationEntity;
+use WebWMS\Entity\Configuration;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Form\ConfigurationController
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        GeneralConfigurationType
- */
+#[ClassInformation(
+    package: 'WebWMS\Form\Configuration',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'GeneralConfigurationType'
+)]
 class GeneralConfigurationType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
      */
-    #[Override]
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
+        $formBuilder
             ->add('name')
             ->add('value')
             ->add('label')
@@ -33,11 +32,10 @@ class GeneralConfigurationType extends AbstractType
         ;
     }
 
-    #[Override]
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => ConfigurationEntity::class,
+        $optionsResolver->setDefaults([
+            'data_class' => Configuration::class,
         ]);
     }
 }

@@ -6,14 +6,15 @@ namespace WebWMS\Tests\Unit\Service\Validation;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Validation\StockLayoutValidationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockLayoutValidationServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockLayoutValidationServiceTest'
+)]
 #[CoversClass(StockLayoutValidationService::class)]
 final class StockLayoutValidationServiceTest extends TestCase
 {

@@ -1,0 +1,316 @@
+<?php
+
+declare(strict_types=1);
+
+namespace WebWMS\Tests\Unit\Service\DataHandlers\Customer;
+
+use DateTime;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use WebWMS\Entity\Customer;
+use WebWMS\Helper\Attribute\ClassInformation;
+use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
+use WebWMS\Service\DateTimeService;
+
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\DataHandlers\Customer',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'CustomerDataHandlerTest'
+)]
+#[CoversClass(CustomerDataHandler::class)]
+final class CustomerDataHandlerTest extends TestCase
+{
+    private CustomerDataHandler $customerDataHandler;
+
+    private MockObject $entityManager;
+
+    private MockObject $dateTimeService;
+
+    protected function setUp(): void
+    {
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->dateTimeService = $this->createMock(DateTimeService::class);
+
+        $this->customerDataHandler = new CustomerDataHandler(
+            $this->entityManager,
+            $this->dateTimeService
+        );
+    }
+
+    public function testSave(): void
+    {
+        $customer = $this->createMock(Customer::class);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('persist')
+            ->with($customer);
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->customerDataHandler->save($customer);
+    }
+
+    public function testDelete(): void
+    {
+        $customer = $this->createMock(Customer::class);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('remove')
+            ->with($customer);
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->customerDataHandler->delete($customer);
+    }
+
+    public function testGetCustomerById(): void
+    {
+        $customerId = 123;
+        $expectedCustomer = $this->createMock(Customer::class);
+        $repository = $this->createMock(EntityRepository::class);
+
+        $repository
+            ->expects($this->once())
+            ->method('find')
+            ->with($customerId)
+            ->willReturn($expectedCustomer);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with(Customer::class)
+            ->willReturn($repository);
+
+        $customer = $this->customerDataHandler->getCustomerById($customerId);
+
+        self::assertSame($expectedCustomer, $customer);
+    }
+
+    public function testGetCustomerByNr(): void
+    {
+        $customerNr = 12345;
+        $expectedCustomer = $this->createMock(Customer::class);
+        $repository = $this->createMock(EntityRepository::class);
+
+        $repository
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->with(['customerNr' => $customerNr])
+            ->willReturn($expectedCustomer);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with(Customer::class)
+            ->willReturn($repository);
+
+        $customer = $this->customerDataHandler->getCustomerByNr($customerNr);
+
+        self::assertSame($expectedCustomer, $customer);
+    }
+
+    public function testGetAllCustomers(): void
+    {
+        $customer1 = new Customer();
+        $customer1->setCustomerName('Aldi Zeven');
+
+        $customer2 = new Customer();
+        $customer2->setCustomerName('Aldi Buxtehude');
+
+        $customers = [$customer1, $customer2];
+
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $query = $this->createMock(AbstractQuery::class);
+
+        $queryBuilder
+            ->expects($this->once())
+            ->method('select')
+            ->with('c')
+            ->willReturnSelf();
+        $queryBuilder
+            ->expects($this->once())
+            ->method('from')
+            ->with(Customer::class, 'c')
+            ->willReturnSelf();
+        $queryBuilder
+            ->expects($this->once())
+            ->method('getQuery')
+            ->willReturn($query);
+
+        $query
+            ->expects($this->once())
+            ->method('getArrayResult')
+            ->willReturn($customers);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('createQueryBuilder')
+            ->willReturn($queryBuilder);
+
+        $result = $this->customerDataHandler->getAllCustomers();
+
+        self::assertEquals($customers, $result);
+    }
+
+    public function testGetCustomer(): void
+    {
+        $customerNrInput = '12345';
+
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $query = $this->createMock(AbstractQuery::class);
+
+        $queryBuilder
+            ->expects($this->once())
+            ->method('select')
+            ->willReturnSelf();
+        $queryBuilder
+            ->expects($this->once())
+            ->method('from')
+            ->willReturnSelf();
+        $queryBuilder
+            ->expects($this->once())
+            ->method('where')
+            ->willReturnSelf();
+        $queryBuilder
+            ->expects($this->once())
+            ->method('setParameter')
+            ->willReturnSelf();
+        $queryBuilder
+            ->expects($this->once())
+            ->method('getQuery')
+            ->willReturn($query);
+
+        $query
+            ->expects($this->once())
+            ->method('getArrayResult')
+            ->willReturn([
+                [
+                    'customerNr' => '60000',
+                    'customerName' => 'ALDI Zeven',
+                    'customerAddressAddition' => 'ALDI Zeven',
+                    'customerAddressStreet' => 'Nord-West-Ring',
+                    'customerAddressStreetNr' => '5',
+                    'customerCountryCode' => 'DE',
+                    'customerZipCode' => '27404',
+                    'customerCity' => 'Zeven',
+                    'customerId' => 1,
+                ],
+                [
+                    'customerNr' => '60001',
+                    'customerName' => 'ALDI Buxtehude',
+                    'customerAddressAddition' => 'ALDI Buxtehude',
+                    'customerAddressStreet' => 'Stader Straße',
+                    'customerAddressStreetNr' => '10',
+                    'customerCountryCode' => 'DE',
+                    'customerZipCode' => '21614',
+                    'customerCity' => 'Buxtehude',
+                    'customerId' => 2,
+                ],
+            ]);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('createQueryBuilder')
+            ->willReturn($queryBuilder);
+
+        $jsonResponse = $this->customerDataHandler->getCustomers($customerNrInput);
+
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
+    }
+
+    public function testAddCustomer(): void
+    {
+        $customer = new Customer();
+
+        $dateTime = new DateTime('2023-06-06 12:00:00');
+        $this->dateTimeService
+            ->expects($this->once())
+            ->method('createDateTime')
+            ->willReturn($dateTime);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('persist')
+            ->with($customer);
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->customerDataHandler->addCustomer($customer);
+
+        self::assertEquals($dateTime, $customer->getCreatedAt());
+    }
+
+    public function testUpdateCustomer(): void
+    {
+        $customer = new Customer();
+
+        $dateTime = new DateTime('2023-06-06 12:00:00');
+        $this->dateTimeService
+            ->expects($this->once())
+            ->method('createDateTime')
+            ->willReturn($dateTime);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('persist')
+            ->with($customer);
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->customerDataHandler->updateCustomer($customer);
+
+        self::assertEquals($dateTime, $customer->getUpdatedAt());
+    }
+
+    public function testDeleteCustomer(): void
+    {
+        $customer = new Customer();
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('remove')
+            ->with($customer);
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->customerDataHandler->deleteCustomer($customer);
+    }
+
+    public function testGetLastCustomer(): void
+    {
+        $lastCustomer = new Customer();
+        $lastCustomer->setCustomerId(123);
+
+        $repository = $this->createMock(EntityRepository::class);
+
+        $repository
+            ->expects($this->once())
+            ->method('findBy')
+            ->with([], ['customerId' => 'DESC'], 1, 0)
+            ->willReturn([$lastCustomer]);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with(Customer::class)
+            ->willReturn($repository);
+
+        $customer = $this->customerDataHandler->getLastCustomer();
+
+        self::assertSame($lastCustomer, $customer);
+    }
+}

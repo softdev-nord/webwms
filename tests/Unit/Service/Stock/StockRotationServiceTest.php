@@ -9,15 +9,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Stock\StockRotationDataHandler;
 use WebWMS\Service\Stock\StockRotationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockRotationServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockRotationServiceTest'
+)]
 #[CoversClass(StockRotationService::class)]
 final class StockRotationServiceTest extends TestCase
 {
@@ -36,7 +37,7 @@ final class StockRotationServiceTest extends TestCase
         $expectedResult = [];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllStockRotations')
             ->willReturn($expectedResult);
 
@@ -50,7 +51,7 @@ final class StockRotationServiceTest extends TestCase
         $jsonResponse = new JsonResponse([]);
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllStockRotationsWithJoin')
             ->willThrowException(new Exception());
 

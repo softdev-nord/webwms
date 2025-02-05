@@ -10,15 +10,16 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Logging\LoggingDataHandler;
 use WebWMS\Service\LoggingService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        LoggingServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'LoggingServiceTest'
+)]
 #[CoversClass(LoggingService::class)]
 final class LoggingServiceTest extends TestCase
 {
@@ -39,7 +40,7 @@ final class LoggingServiceTest extends TestCase
         $username = 'JohnDoe';
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('write')
             ->with($request, $message, $username);
 
@@ -54,7 +55,7 @@ final class LoggingServiceTest extends TestCase
         $jsonResponse = $this->createMock(JsonResponse::class);
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllLogs')
             ->willReturn($jsonResponse);
 

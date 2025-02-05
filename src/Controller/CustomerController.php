@@ -9,29 +9,30 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\CustomerEntity;
+use WebWMS\Entity\Customer as CustomerEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\CustomerFormHelper;
 use WebWMS\Service\Customer\CustomerService;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Validation\CustomerValidationService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerController
- */
-class CustomerController extends AbstractController
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Customer'
+)]
+class Customer extends AbstractController
 {
     public function __construct(
         private readonly CustomerService $customerService,
         private readonly RequirementsService $requirementsService,
         private readonly CustomerValidationService $customerValidationService,
         private readonly LoggingService $loggingService,
-        private readonly CustomerFormHelper $customerFormHelper
+        private readonly CustomerFormHelper $customerFormHelper,
     ) {
     }
 

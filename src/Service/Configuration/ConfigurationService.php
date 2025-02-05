@@ -8,20 +8,21 @@ use Closure;
 use Exception;
 use Symfony\Component\HttpKernel\Kernel;
 use Throwable;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
 
-/**
- * @package:    WebWMS\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ConfigurationService
- */
-class ConfigurationService
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ConfigurationService'
+)]
+readonly class ConfigurationService
 {
     public function __construct(
-        private readonly ConfigurationDataHandler $configurationDataHandler,
-        private readonly string $appVersion,
-        private readonly string $appVersionNumber
+        private ConfigurationDataHandler $configurationDataHandler,
+        private string $appVersion,
+        private string $appVersionNumber,
     ) {
     }
 
@@ -58,14 +59,14 @@ class ConfigurationService
     }
 
     /**
-     * @return array<string, object>
+     * @return array<string, mixed>
      */
     public function getEnvironmentInformation(): array
     {
         $scriptFile = $_SERVER['SCRIPT_FILENAME'] ?? __FILE__;
 
         try {
-            $fileOwner = function_exists('posix_getpwuid') ? @posix_getpwuid((int) @fileowner($scriptFile)) : null;
+            $fileOwner = function_exists('posix_getpwuid') ? @posix_getpwuid((int) @fileowner((string)$scriptFile)) : null;
         } catch (Throwable) {
             $fileOwner = null;
         }
@@ -285,8 +286,6 @@ class ConfigurationService
 
     /**
      * Converts PHP size value to byte value; e.g. 64K => 65536 Bytes
-     *
-     * @param false|string $phpValue
      */
     public function convertPhpValueToBytes(false|string $phpValue): int
     {

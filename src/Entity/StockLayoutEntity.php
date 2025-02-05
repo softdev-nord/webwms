@@ -7,17 +7,18 @@ namespace WebWMS\Entity;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\StockLayoutRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLayoutEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLayout'
+)]
 #[ORM\Table(name: 'stock_layout')]
 #[ORM\Entity(repositoryClass: StockLayoutRepository::class)]
-class StockLayoutEntity
+class StockLayout
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]

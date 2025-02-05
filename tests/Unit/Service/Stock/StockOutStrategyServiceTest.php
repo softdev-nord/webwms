@@ -7,15 +7,16 @@ namespace WebWMS\Tests\Unit\Service\Stock;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\StockOutStrategyDataHandler;
 use WebWMS\Service\Stock\StockOutStrategyService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockOutStrategyServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockOutStrategyServiceTest'
+)]
 #[CoversClass(StockOutStrategyService::class)]
 final class StockOutStrategyServiceTest extends TestCase
 {
@@ -32,7 +33,7 @@ final class StockOutStrategyServiceTest extends TestCase
     public function testFiFoStrategy(): void
     {
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('fiFoStrategy');
 
         $this->stockOutStrategyService->fiFoStrategy();
@@ -41,7 +42,7 @@ final class StockOutStrategyServiceTest extends TestCase
     public function testFeFoStrategy(): void
     {
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('feFoStrategy');
 
         $this->stockOutStrategyService->feFoStrategy();
@@ -50,7 +51,7 @@ final class StockOutStrategyServiceTest extends TestCase
     public function testLiFoStrategy(): void
     {
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('liFoStrategy');
 
         $this->stockOutStrategyService->liFoStrategy();
@@ -59,7 +60,7 @@ final class StockOutStrategyServiceTest extends TestCase
     public function testHiFoStrategy(): void
     {
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('hiFoStrategy');
 
         $this->stockOutStrategyService->hiFoStrategy();
@@ -68,7 +69,7 @@ final class StockOutStrategyServiceTest extends TestCase
     public function testLoFoStrategy(): void
     {
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('loFoStrategy');
 
         $this->stockOutStrategyService->loFoStrategy();
@@ -77,7 +78,7 @@ final class StockOutStrategyServiceTest extends TestCase
     public function testChaoticWarehousingStockOutStrategy(): void
     {
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('chaoticStorageStockOutStrategy');
 
         $this->stockOutStrategyService->chaoticWarehousingStockOutStrategy();

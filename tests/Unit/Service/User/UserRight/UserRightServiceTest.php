@@ -8,16 +8,17 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\UserRightEntity;
+use WebWMS\Entity\UserRight;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\User\UserRight\UserRightDataHandler;
 use WebWMS\Service\User\UserRight\UserRightService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\UserController\UserRightEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        UserRightServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\User\UserRight',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserRightServiceTest'
+)]
 #[CoversClass(UserRightService::class)]
 final class UserRightServiceTest extends TestCase
 {
@@ -35,41 +36,41 @@ final class UserRightServiceTest extends TestCase
     public function testGetUserRightByUserRightName(): void
     {
         $userRightName = 'create';
-        $userRightEntity = new UserRightEntity();
+        $expectedUserRight = new UserRight();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUserRightByUserRightName')
             ->with($userRightName)
-            ->willReturn($userRightEntity);
+            ->willReturn($expectedUserRight);
 
         $result = $this->userRightService->getUserRightByUserRightName($userRightName);
 
-        self::assertSame($userRightEntity, $result);
+        self::assertSame($expectedUserRight, $result);
     }
 
     public function testGetUserRightById(): void
     {
         $userRightId = 1;
-        $userRightEntity = new UserRightEntity();
+        $expectedUserRight = new UserRight();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUserRightById')
             ->with($userRightId)
-            ->willReturn($userRightEntity);
+            ->willReturn($expectedUserRight);
 
         $result = $this->userRightService->getUserRightById($userRightId);
 
-        self::assertSame($userRightEntity, $result);
+        self::assertSame($expectedUserRight, $result);
     }
 
     public function testGetAllUserRights(): void
     {
-        $expectedUserRights = [new UserRightEntity(), new UserRightEntity()];
+        $expectedUserRights = [new UserRight(), new UserRight()];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllUserRights')
             ->willReturn($expectedUserRights);
 
@@ -83,7 +84,7 @@ final class UserRightServiceTest extends TestCase
         $request = new Request();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('addUserRight')
             ->with($request);
 
@@ -93,17 +94,17 @@ final class UserRightServiceTest extends TestCase
     public function testUpdateUserRight(): void
     {
         $request = new Request();
-        $userRightEntity = new UserRightEntity();
+        $expectedUserRight = new UserRight();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('updateUserRight')
             ->with($request)
-            ->willReturn($userRightEntity);
+            ->willReturn($expectedUserRight);
 
         $result = $this->userRightService->updateUserRight($request);
 
-        self::assertSame($userRightEntity, $result);
+        self::assertSame($expectedUserRight, $result);
     }
 
     public function testDeleteUserRight(): void
@@ -111,7 +112,7 @@ final class UserRightServiceTest extends TestCase
         $userRightName = 'create';
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('deleteUserRight')
             ->with($userRightName);
 

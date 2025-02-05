@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace WebWMS\Service\TransportHistory;
 
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\TransportHistoryEntity;
+use WebWMS\Entity\TransportHistory;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\TransportHistory\TransportHistoryDataHandler;
 
-/**
- * @package:    WebWMS\Service\TransportHistoryEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        TransportHistoryService
- */
-class TransportHistoryService
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'TransportHistoryService'
+)]
+readonly class TransportHistoryService
 {
     public function __construct(
-        private readonly TransportHistoryDataHandler $transportHistoryDataHandler
+        private TransportHistoryDataHandler $transportHistoryDataHandler,
     ) {
     }
 
@@ -45,25 +46,25 @@ class TransportHistoryService
             ->createTransportHistory($request, $user, $clientIp);
     }
 
-    public function addTransportHistory(TransportHistoryEntity $transportHistoryEntity): void
+    public function addTransportHistory(TransportHistory $transportHistory): void
     {
         $this->transportHistoryDataHandler
-            ->addTransportHistory($transportHistoryEntity);
+            ->addTransportHistory($transportHistory);
     }
 
-    public function updateTransportHistory(TransportHistoryEntity $transportHistoryEntity): void
+    public function updateTransportHistory(TransportHistory $transportHistory): void
     {
         $this->transportHistoryDataHandler
-            ->updateTransportHistory($transportHistoryEntity);
+            ->updateTransportHistory($transportHistory);
     }
 
-    public function deleteTransportHistory(TransportHistoryEntity $transportHistoryEntity): void
+    public function deleteTransportHistory(TransportHistory $transportHistory): void
     {
         $this->transportHistoryDataHandler
-            ->deleteTransportHistory($transportHistoryEntity);
+            ->deleteTransportHistory($transportHistory);
     }
 
-    /** @return TransportHistoryEntity[] */
+    /** @return TransportHistory[] */
     public function getLastStockUnit(): array
     {
         return $this->transportHistoryDataHandler

@@ -8,41 +8,46 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\LoggingEntity;
-use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\Logging;
+use WebWMS\Entity\User;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\LoggingEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        LoggingDataHandler
- */
-class LoggingDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Logging',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'LoggingDataHandler'
+)]
+readonly class LoggingDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
     public function write(Request $request, string $message, string $username): void
     {
-        /** @var UserEntity $user */
+        /** @var User $user */
         $user = $this->entityManager->getRepository(
-            UserEntity::class)->findOneBy(
-                ['username' => $username]
-            );
+            User::class
+        )->findOneBy(
+            ['username' => $username]
+        );
 
-        $loggingEntity = new LoggingEntity();
-        $loggingEntity->setRoute((string) $request->attributes->get('_route'));
-        $loggingEntity->setMessage($message);
-        $loggingEntity->setDate($this->dateTimeService->createDateTime());
-        $loggingEntity->setUser($user->getFirstname() . ' ' . $user->getLastname());
-        $loggingEntity->setIpAddress((string) $request->getClientIp());
-        $loggingEntity->setUserAgent((string) $request->headers->get('UserController-Agent'));
+        /** @var string $route */
+        $route = $request->attributes->get('_route');
 
-        $this->entityManager->persist($loggingEntity);
+        $logging = new Logging();
+        $logging->setRoute($route);
+        $logging->setMessage($message);
+        $logging->setDate($this->dateTimeService->createDateTime());
+        $logging->setUser($user->getFirstname() . ' ' . $user->getLastname());
+        $logging->setIpAddress((string) $request->getClientIp());
+        $logging->setUserAgent((string) $request->headers->get('UserController-Agent'));
+
+        $this->entityManager->persist($logging);
         $this->entityManager->flush();
     }
 

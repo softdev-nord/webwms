@@ -6,17 +6,21 @@ namespace WebWMS\Tests\Unit\Form\Supplier;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\SupplierEntity;
+use WebWMS\Entity\Supplier;
 use WebWMS\Form\Supplier\AddSupplierType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\SupplierEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        AddSupplierTypeTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Supplier',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'AddSupplierTypeTest'
+)]
 #[CoversClass(AddSupplierType::class)]
 final class AddSupplierTypeTest extends TestCase
 {
@@ -24,9 +28,21 @@ final class AddSupplierTypeTest extends TestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::once())
+            ->expects(self::exactly(1))
             ->method('add')
-            ->withAnyParameters();
+            ->willReturnOnConsecutiveCalls(
+                ['supplierId', HiddenType::class, self::anything()],
+                ['supplierNr', TextType::class, self::anything()],
+                ['supplierName', TextType::class, self::anything()],
+                ['supplierAddressAddition', TextType::class, self::anything()],
+                ['supplierAddressStreet', TextType::class, self::anything()],
+                ['supplierAddressStreetNr', TextType::class, self::anything()],
+                ['supplierAddressCountryCode', TextType::class, self::anything()],
+                ['supplierAddressZipcode', TextType::class, self::anything()],
+                ['supplierAddressCity', TextType::class, self::anything()],
+                ['save', ButtonType::class, self::anything()],
+                ['abort', ButtonType::class, self::anything()]
+            );
 
         $addSupplierType = new AddSupplierType();
         $addSupplierType->buildForm($builder, []);
@@ -36,9 +52,9 @@ final class AddSupplierTypeTest extends TestCase
     {
         $resolverMock = $this->createMock(OptionsResolver::class);
         $resolverMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
-            ->with(['data_class' => SupplierEntity::class]);
+            ->with(['data_class' => Supplier::class]);
 
         $addSupplierType = new AddSupplierType();
         $addSupplierType->configureOptions($resolverMock);

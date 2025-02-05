@@ -6,17 +6,18 @@ namespace WebWMS\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\ConfigurationRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ConfigurationEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Configuration'
+)]
 #[ORM\Table(name: 'configuration')]
 #[ORM\Entity(repositoryClass: ConfigurationRepository::class)]
-class ConfigurationEntity
+class Configuration
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]

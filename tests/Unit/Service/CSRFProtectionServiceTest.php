@@ -9,14 +9,15 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\CSRFProtectionService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        CSRFProtectionServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'CSRFProtectionServiceTest'
+)]
 #[CoversClass(CSRFProtectionService::class)]
 final class CSRFProtectionServiceTest extends TestCase
 {

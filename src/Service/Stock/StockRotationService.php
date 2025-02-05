@@ -6,18 +6,19 @@ namespace WebWMS\Service\Stock;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Stock\StockRotationDataHandler;
 
-/**
- * @package:    WebWMS\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockRotationService
- */
-class StockRotationService
+#[ClassInformation(
+    package: 'WebWMS\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockRotationService'
+)]
+readonly class StockRotationService
 {
     public function __construct(
-        private readonly StockRotationDataHandler $stockRotationDataHandler
+        private StockRotationDataHandler $stockRotationDataHandler,
     ) {
     }
 

@@ -17,14 +17,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\SupplierRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Supplier'
+)]
 #[ORM\Table(name: 'supplier')]
 #[ORM\Entity(repositoryClass: SupplierRepository::class)]
 #[ApiResource(
@@ -66,7 +67,7 @@ use WebWMS\Repository\SupplierRepository;
     normalizationContext: ['groups' => ['supplier:read']],
     denormalizationContext: ['groups' => ['supplier:write']]
 )]
-class SupplierEntity
+class Supplier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -114,8 +115,10 @@ class SupplierEntity
     #[Groups(['supplier:read', 'supplier:write'])]
     private ?DateTimeInterface $updatedAt = null;
 
-    /** @var Collection<int, SupplierOrderEntity> */
-    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: SupplierOrderEntity::class)]
+    /**
+     * @var Collection<int, SupplierOrder>
+     */
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: SupplierOrder::class)]
     #[Groups(['supplier:read'])]
     private Collection $supplierOrder;
 
@@ -214,7 +217,9 @@ class SupplierEntity
         $this->supplierAddressCity = $supplierAddressCity;
     }
 
-    /** @return array<string, int|string|null> */
+    /**
+     * @return array<string, int|string|null>
+     */
     public function toArray(): array
     {
         return [
@@ -254,14 +259,18 @@ class SupplierEntity
         return $this;
     }
 
-    /** @return Collection<SupplierOrderEntity> */
+    /**
+     * @return Collection<SupplierOrder>
+     */
     public function getSupplierOrders(): Collection
     {
         return $this->supplierOrder;
     }
 
-    /** @param Collection<SupplierOrderEntity> $supplierOrder */
-    public function setSupplierOrders(Collection $supplierOrder): SupplierEntity
+    /**
+     * @param Collection<SupplierOrder> $supplierOrder
+     */
+    public function setSupplierOrders(Collection $supplierOrder): self
     {
         $this->supplierOrder = $supplierOrder;
 

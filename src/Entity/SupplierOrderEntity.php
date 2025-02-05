@@ -17,14 +17,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\SupplierOrderRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrder'
+)]
 #[ORM\Table(name: 'supplier_orders')]
 #[ORM\Entity(repositoryClass: SupplierOrderRepository::class)]
 #[ApiResource(
@@ -66,7 +67,7 @@ use WebWMS\Repository\SupplierOrderRepository;
     normalizationContext: ['groups' => ['supplierOrder:read']],
     denormalizationContext: ['groups' => ['supplierOrder:write']]
 )]
-class SupplierOrderEntity
+class SupplierOrder
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -110,10 +111,10 @@ class SupplierOrderEntity
     private ?DateTimeInterface $updatedAt = null;
 
     /** One Supplier Order has many Supplier Order Positions. This is the inverse side.
-     * @var Collection<int, SupplierOrderPosEntity> */
+     * @var Collection<int, SupplierOrderPos> */
     #[ORM\OneToMany(
         mappedBy: 'supplierOrder',
-        targetEntity: SupplierOrderPosEntity::class,
+        targetEntity: SupplierOrderPos::class,
         cascade: ['persist'],
         fetch: 'EAGER',
         orphanRemoval: true
@@ -122,10 +123,10 @@ class SupplierOrderEntity
     private Collection $supplierOrderPos;
 
     /** Many Supplier Orders has one Supplier. This is the owning side. */
-    #[ORM\ManyToOne(targetEntity: SupplierEntity::class, inversedBy: 'supplierOrder')]
+    #[ORM\ManyToOne(targetEntity: Supplier::class, inversedBy: 'supplierOrder')]
     #[ORM\JoinColumn(name: 'supplier_id', referencedColumnName: 'supplier_id')]
     #[Groups(['supplierOrder:read'])]
-    private SupplierEntity $supplier;
+    private Supplier $supplier;
 
     public function __construct()
     {
@@ -257,14 +258,14 @@ class SupplierOrderEntity
         return $this->supplierOrderPos;
     }
 
-    public function getSupplier(): SupplierEntity
+    public function getSupplier(): Supplier
     {
         return $this->supplier;
     }
 
-    public function setSupplier(SupplierEntity $supplierEntity): self
+    public function setSupplier(Supplier $supplier): self
     {
-        $this->supplier = $supplierEntity;
+        $this->supplier = $supplier;
 
         return $this;
     }

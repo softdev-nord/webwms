@@ -7,27 +7,27 @@ namespace WebWMS\Helper\FormHelper;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
-use WebWMS\Entity\StockLocationEntity;
+use WebWMS\Entity\StockLocation;
 use WebWMS\Form\Stock\StockLocation\AddStockLocationType;
 use WebWMS\Form\Stock\StockLocation\DeleteStockLocationType;
 use WebWMS\Form\Stock\StockLocation\EditStockLocationType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLocationFormHelper
- */
-class StockLocationFormHelper
+#[ClassInformation(
+    package: 'WebWMS\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLocationFormHelper'
+)]
+readonly class StockLocationFormHelper
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory
+        private FormFactoryInterface $formFactory,
     ) {
     }
 
     /**
      * @param class-string<FormTypeInterface<mixed>> $type
-     * @param mixed|null $data
      * @param array<string> $options
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
@@ -40,19 +40,13 @@ class StockLocationFormHelper
         return $this->createForm(AddStockLocationType::class);
     }
 
-    /**
-     * @param StockLocationEntity|null $stockLocationEntity
-     */
-    public function editStockLocationForm(?StockLocationEntity $stockLocationEntity): FormInterface
+    public function editStockLocationForm(?StockLocation $stockLocation): FormInterface
     {
-        return $this->createForm(EditStockLocationType::class, $stockLocationEntity);
+        return $this->createForm(EditStockLocationType::class, $stockLocation);
     }
 
-    /**
-     * @param StockLocationEntity|null $stockLocationEntity
-     */
-    public function deleteStockLocationForm(?StockLocationEntity $stockLocationEntity): FormInterface
+    public function deleteStockLocationForm(?StockLocation $stockLocation): FormInterface
     {
-        return $this->createForm(DeleteStockLocationType::class, $stockLocationEntity);
+        return $this->createForm(DeleteStockLocationType::class, $stockLocation);
     }
 }

@@ -17,14 +17,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\CustomerRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Customer'
+)]
 #[ORM\Table(name: 'customer')]
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
 #[ApiResource(
@@ -66,7 +67,7 @@ use WebWMS\Repository\CustomerRepository;
     normalizationContext: ['groups' => ['customer:read']],
     denormalizationContext: ['groups' => ['customer:write']]
 )]
-class CustomerEntity
+class Customer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -115,9 +116,9 @@ class CustomerEntity
     private ?DateTimeInterface $updatedAt = null;
 
     /**
-     * @var Collection<int, CustomerOrderEntity>
+     * @var Collection<int, CustomerOrder>
      */
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerOrderEntity::class)]
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerOrder::class)]
     #[Groups(['customer:read'])]
     private Collection $customerOrder;
 
@@ -277,7 +278,7 @@ class CustomerEntity
     }
 
     /**
-     * @return Collection<CustomerOrderEntity>
+     * @return Collection<CustomerOrder>
      */
     public function getCustomerOrders(): Collection
     {
@@ -285,9 +286,9 @@ class CustomerEntity
     }
 
     /**
-     * @param Collection<CustomerOrderEntity> $customerOrder
+     * @param Collection<CustomerOrder> $customerOrder
      */
-    public function setCustomerOrders(Collection $customerOrder): CustomerEntity
+    public function setCustomerOrders(Collection $customerOrder): self
     {
         $this->customerOrder = $customerOrder;
 

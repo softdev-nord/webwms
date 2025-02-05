@@ -6,32 +6,33 @@ namespace WebWMS\Service\DataHandlers\Stock;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockLayoutEntity;
+use WebWMS\Entity\StockLayout;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLayoutDataHandler
- */
-class StockLayoutDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLayoutDataHandler'
+)]
+readonly class StockLayoutDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(StockLayoutEntity $stockLayoutEntity): void
+    public function save(StockLayout $stockLayout): void
     {
-        $this->entityManager->persist($stockLayoutEntity);
+        $this->entityManager->persist($stockLayout);
         $this->entityManager->flush();
     }
 
-    public function delete(StockLayoutEntity $stockLayoutEntity): void
+    public function delete(StockLayout $stockLayout): void
     {
-        $this->entityManager->remove($stockLayoutEntity);
+        $this->entityManager->remove($stockLayout);
         $this->entityManager->flush();
     }
 
@@ -49,29 +50,29 @@ class StockLayoutDataHandler
         return new JsonResponse($results);
     }
 
-    public function getStockLayoutById(int $stockLayoutId): ?StockLayoutEntity
+    public function getStockLayoutById(int $stockLayoutId): ?StockLayout
     {
         return $this->entityManager
-            ->getRepository(StockLayoutEntity::class)
+            ->getRepository(StockLayout::class)
             ->findOneBy(['id' => $stockLayoutId]);
     }
 
-    public function addStockLayout(StockLayoutEntity $stockLayoutEntity): void
+    public function addStockLayout(StockLayout $stockLayout): void
     {
-        $stockLayoutEntity->setCreatedAt($this->dateTimeService->createDateTime());
+        $stockLayout->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($stockLayoutEntity);
+        $this->save($stockLayout);
     }
 
-    public function updateStockLayout(StockLayoutEntity $stockLayoutEntity): void
+    public function updateStockLayout(StockLayout $stockLayout): void
     {
-        $stockLayoutEntity->setUpdatedAt($this->dateTimeService->createDateTime());
+        $stockLayout->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($stockLayoutEntity);
+        $this->save($stockLayout);
     }
 
-    public function deleteStockLayout(StockLayoutEntity $stockLayoutEntity): void
+    public function deleteStockLayout(StockLayout $stockLayout): void
     {
-        $this->delete($stockLayoutEntity);
+        $this->delete($stockLayout);
     }
 }

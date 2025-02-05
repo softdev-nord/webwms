@@ -7,20 +7,21 @@ namespace WebWMS\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use WebWMS\Entity\UserRightEntity;
-use WebWMS\Entity\UserRoleEntity;
+use WebWMS\Entity\UserRight;
+use WebWMS\Entity\UserRole;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Security\UserRoleRight;
 
-/**
- * @package:    WebWMS\Twig
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserTwigExtension
- */
+#[ClassInformation(
+    package: 'WebWMS\Twig',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserTwigExtension'
+)]
 class UserTwigExtension extends AbstractExtension
 {
     public function __construct(
-        private readonly UserRoleRight $userRoleRight
+        private readonly UserRoleRight $userRoleRight,
     ) {
     }
 
@@ -55,8 +56,8 @@ class UserTwigExtension extends AbstractExtension
         return $this->userRoleRight->hasUserGroup($userGroup);
     }
 
-    public function roleHasRight(UserRoleEntity $userRoleEntity, UserRightEntity $userRightEntity): bool
+    public function roleHasRight(UserRole $userRole, UserRight $userRight): bool
     {
-        return in_array($userRightEntity->getUserRight(), $userRoleEntity->getUserRights(), true);
+        return in_array($userRight->getUserRight(), $userRole->getUserRights(), true);
     }
 }

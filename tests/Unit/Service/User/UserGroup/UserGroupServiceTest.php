@@ -8,16 +8,17 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\UserGroupEntity;
+use WebWMS\Entity\UserGroup;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\User\UserGroup\UserGroupDataHandler;
 use WebWMS\Service\User\UserGroup\UserGroupService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\UserController\UserGroupEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        UserGroupServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\User\UserGroup',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserGroupServiceTest'
+)]
 #[CoversClass(UserGroupService::class)]
 final class UserGroupServiceTest extends TestCase
 {
@@ -35,41 +36,41 @@ final class UserGroupServiceTest extends TestCase
     public function testGetUserGroupByUserGroupName(): void
     {
         $userGroupName = 'Group 1';
-        $userGroupEntity = new UserGroupEntity();
+        $expectedUserGroup = new UserGroup();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUserGroupByUserGroupName')
             ->with($userGroupName)
-            ->willReturn($userGroupEntity);
+            ->willReturn($expectedUserGroup);
 
         $result = $this->userGroupService->getUserGroupByUserGroupName($userGroupName);
 
-        self::assertSame($userGroupEntity, $result);
+        self::assertSame($expectedUserGroup, $result);
     }
 
     public function testGetUserGroupById(): void
     {
         $userGroupId = 1;
-        $userGroupEntity = new UserGroupEntity();
+        $expectedUserGroup = new UserGroup();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUserGroupById')
             ->with($userGroupId)
-            ->willReturn($userGroupEntity);
+            ->willReturn($expectedUserGroup);
 
         $result = $this->userGroupService->getUserGroupById($userGroupId);
 
-        self::assertSame($userGroupEntity, $result);
+        self::assertSame($expectedUserGroup, $result);
     }
 
     public function testGetAllUserGroups(): void
     {
-        $expectedUserGroups = [new UserGroupEntity(), new UserGroupEntity()];
+        $expectedUserGroups = [new UserGroup(), new UserGroup()];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllUserGroups')
             ->willReturn($expectedUserGroups);
 
@@ -83,7 +84,7 @@ final class UserGroupServiceTest extends TestCase
         $request = new Request();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('addUserGroup')
             ->with($request);
 
@@ -93,17 +94,17 @@ final class UserGroupServiceTest extends TestCase
     public function testUpdateUserGroup(): void
     {
         $request = new Request();
-        $userGroupEntity = new UserGroupEntity();
+        $expectedUserGroup = new UserGroup();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('updateUserGroup')
             ->with($request)
-            ->willReturn($userGroupEntity);
+            ->willReturn($expectedUserGroup);
 
         $result = $this->userGroupService->updateUserGroup($request);
 
-        self::assertSame($userGroupEntity, $result);
+        self::assertSame($expectedUserGroup, $result);
     }
 
     public function testDeleteUserGroup(): void
@@ -111,7 +112,7 @@ final class UserGroupServiceTest extends TestCase
         $userGroupName = 'Group 1';
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('deleteUserGroup')
             ->with($userGroupName);
 

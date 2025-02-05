@@ -6,36 +6,36 @@ namespace WebWMS\Service\DataHandlers\User;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\User;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\UserController
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserDataHandler
- */
-class UserDataHandler implements PasswordUpgraderInterface
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\UserController',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserDataHandler'
+)]
+readonly class UserDataHandler implements PasswordUpgraderInterface
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(UserEntity $userEntity): void
+    public function save(User $user): void
     {
-        $this->entityManager->persist($userEntity);
+        $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
 
-    public function delete(UserEntity $userEntity): void
+    public function delete(User $user): void
     {
-        $this->entityManager->remove($userEntity);
+        $this->entityManager->remove($user);
         $this->entityManager->flush();
     }
 
@@ -57,39 +57,39 @@ class UserDataHandler implements PasswordUpgraderInterface
         return new JsonResponse($results);
     }
 
-    public function getUserById(int $userId): ?UserEntity
+    public function getUserById(int $userId): ?User
     {
         return $this->entityManager
-            ->getRepository(UserEntity::class)
+            ->getRepository(User::class)
             ->findOneBy(['userId' => $userId]);
     }
 
-    public function getUserByUsername(string $username): ?UserEntity
+    public function getUserByUsername(string $username): ?User
     {
         return $this->entityManager
-            ->getRepository(UserEntity::class)
+            ->getRepository(User::class)
             ->findOneBy(['username' => $username]);
     }
 
-    public function addUser(UserEntity $userEntity): void
+    public function addUser(User $user): void
     {
-        $userEntity->setCreatedAt($this->dateTimeService->createDateTime());
+        $user->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($userEntity);
+        $this->save($user);
     }
 
-    public function updateUser(UserEntity $userEntity): void
+    public function updateUser(User $user): void
     {
-        $userEntity->setUpdatedAt($this->dateTimeService->createDateTime());
+        $user->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($userEntity);
+        $this->save($user);
     }
 
     public function deleteUser(string $username): void
     {
         $user = $this->getUserByUsername($username);
 
-        if ($user instanceof UserEntity) {
+        if ($user instanceof User) {
             $this->delete($user);
         }
     }
@@ -97,10 +97,9 @@ class UserDataHandler implements PasswordUpgraderInterface
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    #[Override]
     public function upgradePassword($user, string $newHashedPassword): void
     {
-        if (!$user instanceof UserEntity) {
+        if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
@@ -114,15 +113,15 @@ class UserDataHandler implements PasswordUpgraderInterface
     public function getLastUser(): array
     {
         return $this->entityManager
-            ->getRepository(UserEntity::class)
+            ->getRepository(User::class)
             ->findBy([], ['id' => 'DESC'], 1, 0);
     }
 
-    public function updateLastLogin(UserEntity $userEntity): void
+    public function updateLastLogin(User $user): void
     {
         $selectedUser = $this->entityManager
-            ->getRepository(UserEntity::class)
-            ->find($userEntity->getId());
+            ->getRepository(User::class)
+            ->find($user->getId());
 
         if ($selectedUser === null) {
             return;

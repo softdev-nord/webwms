@@ -1,13 +1,14 @@
 {
-    "api-platform/core": {
-        "version": "3.1",
+    "api-platform/symfony": {
+        "version": "4.0",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "3.0",
-            "ref": "0330386d716d3eecc52ee5ac66976e733eb8f961"
+            "version": "4.0",
+            "ref": "e9952e9f393c2d048f10a78f272cd35e807d972b"
         },
         "files": [
+            "config/packages/api_platform.yaml",
             "config/routes/api_platform.yaml",
             "src/ApiResource/.gitignore"
         ]
@@ -137,6 +138,18 @@
             "phpcs.xml.dist"
         ]
     },
+    "squizlabs/php_codesniffer": {
+        "version": "3.11",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.6",
+            "ref": "1019e5c08d4821cb9b77f4891f8e9c31ff20ac6f"
+        },
+        "files": [
+            "phpcs.xml.dist"
+        ]
+    },
     "symfony/apache-pack": {
         "version": "1.0",
         "recipe": {
@@ -180,6 +193,18 @@
         },
         "files": [
             ".env"
+        ]
+    },
+    "symfony/form": {
+        "version": "7.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.2",
+            "ref": "7d86a6723f4a623f59e2bf966b6aad2fc461d36b"
+        },
+        "files": [
+            "config/packages/csrf.yaml"
         ]
     },
     "symfony/framework-bundle": {
@@ -333,6 +358,15 @@
             "templates/base.html.twig"
         ]
     },
+    "symfony/uid": {
+        "version": "7.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.0",
+            "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
+        }
+    },
     "symfony/ux-chartjs": {
         "version": "v2.6.1"
     },
@@ -382,5 +416,14 @@
     },
     "twig/extra-bundle": {
         "version": "v3.5.0"
+    },
+    "vincentlanglet/twig-cs-fixer": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.6",
+            "ref": "e4da12a48e8138479bd24a675321bcfd84950266"
+        }
     }
 }

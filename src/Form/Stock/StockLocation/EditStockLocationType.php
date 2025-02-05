@@ -12,124 +12,125 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\StockLocationEntity;
-use WebWMS\Entity\StockZoneEntity;
+use WebWMS\Entity\StockLocation;
+use WebWMS\Entity\StockZone;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Form\Stock\StockLocationEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        EditStockLocationType
- */
+#[ClassInformation(
+    package: 'WebWMS\Form\Stock\StockLocation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'EditStockLocationType'
+)]
 class EditStockLocationType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
-            ->add('stockLocationLn', TextType::class, [
-                'empty_data' => '',
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-type' => 'stockLocationLn',
-                ],
-            ])
-            ->add('stockLocationFb', TextType::class, [
-                'empty_data' => '',
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-type' => 'stockLocationFb',
-                ],
-            ])
-            ->add('stockLocationSp', TextType::class, [
-                'empty_data' => '',
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-type' => 'stockLocationSp',
-                ],
-            ])
-            ->add('stockLocationTf', TextType::class, [
-                'empty_data' => '',
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-type' => 'stockLocationTf',
-                ],
-            ])
-            ->add('stockLocationCoordinate', HiddenType::class, [
-                'empty_data' => '',
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-type' => 'stockLocationCoordinate',
-                ],
-            ])
-            ->add('stockLocationDesc', TextType::class, [
-                'empty_data' => '',
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-type' => 'stockLocationDesc',
-                ],
-            ])
-            ->add('stockLocationWidth', TextType::class, [
-                'empty_data' => '',
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-type' => 'stockLocationWidth',
-                ],
-            ])
-            ->add('stockLocationDepth', TextType::class, [
-                'empty_data' => '',
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-type' => 'stockLocationDepth',
-                ],
-            ])
-            ->add('stockLocationHeight', TextType::class, [
-                'empty_data' => '',
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'data-type' => 'stock_location_height',
-                ],
-            ])
-            ->add('stockLocationZone', EntityType::class, [
-                'empty_data' => '',
-                'label' => false,
-                'class' => StockZoneEntity::class,
-                'choice_label' => 'stockZoneShortDesc',
-                'mapped' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Änderungen speichern',
-                'attr' => [
-                    'class' => 'btn btn-primary btn3d',
-                ],
-            ])
-            ->add('abort', ButtonType::class, [
-                'label' => 'Abbrechen',
-                'attr' => [
-                    'class' => 'btn btn-primary btn3d abort',
-                ],
-            ])
+        $formBuilder
+          ->add('stockLocationLn', TextType::class, [
+            'empty_data' => '',
+            'label' => false,
+            'attr' => [
+              'class' => 'form-control',
+              'data-type' => 'stockLocationLn',
+            ],
+          ])
+          ->add('stockLocationFb', TextType::class, [
+            'empty_data' => '',
+            'label' => false,
+            'attr' => [
+              'class' => 'form-control',
+              'data-type' => 'stockLocationFb',
+            ],
+          ])
+          ->add('stockLocationSp', TextType::class, [
+            'empty_data' => '',
+            'label' => false,
+            'attr' => [
+              'class' => 'form-control',
+              'data-type' => 'stockLocationSp',
+            ],
+          ])
+          ->add('stockLocationTf', TextType::class, [
+            'empty_data' => '',
+            'label' => false,
+            'attr' => [
+              'class' => 'form-control',
+              'data-type' => 'stockLocationTf',
+            ],
+          ])
+          ->add('stockLocationCoordinate', HiddenType::class, [
+            'empty_data' => '',
+            'label' => false,
+            'attr' => [
+              'class' => 'form-control',
+              'data-type' => 'stockLocationCoordinate',
+            ],
+          ])
+          ->add('stockLocationDesc', TextType::class, [
+            'empty_data' => '',
+            'label' => false,
+            'attr' => [
+              'class' => 'form-control',
+              'data-type' => 'stockLocationDesc',
+            ],
+          ])
+          ->add('stockLocationWidth', TextType::class, [
+            'empty_data' => '',
+            'label' => false,
+            'attr' => [
+              'class' => 'form-control',
+              'data-type' => 'stockLocationWidth',
+            ],
+          ])
+          ->add('stockLocationDepth', TextType::class, [
+            'empty_data' => '',
+            'label' => false,
+            'attr' => [
+              'class' => 'form-control',
+              'data-type' => 'stockLocationDepth',
+            ],
+          ])
+          ->add('stockLocationHeight', TextType::class, [
+            'empty_data' => '',
+            'label' => false,
+            'attr' => [
+              'class' => 'form-control',
+              'data-type' => 'stock_location_height',
+            ],
+          ])
+          ->add('stockLocationZone', EntityType::class, [
+            'empty_data' => '',
+            'label' => false,
+            'class' => StockZone::class,
+            'choice_label' => 'stockZoneShortDesc',
+            'mapped' => false,
+            'attr' => [
+              'class' => 'form-control',
+            ],
+          ])
+          ->add('save', SubmitType::class, [
+            'label' => 'Änderungen speichern',
+            'attr' => [
+              'class' => 'btn btn-primary btn3d',
+            ],
+          ])
+          ->add('abort', ButtonType::class, [
+            'label' => 'Abbrechen',
+            'attr' => [
+              'class' => 'btn btn-primary btn3d abort',
+            ],
+          ])
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => StockLocationEntity::class,
+        $optionsResolver->setDefaults([
+          'data_class' => StockLocation::class,
         ]);
     }
 }

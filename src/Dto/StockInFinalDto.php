@@ -4,243 +4,93 @@ declare(strict_types=1);
 
 namespace WebWMS\Dto;
 
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\HydrateStaticTrait;
 
-/**
- * @package:    WebWMS\Dto
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockInFinalDto
- *
- * @SuppressWarnings(PHPMD.CamelCasePropertyName)
- * @SuppressWarnings(PHPMD.CamelCaseVariableName)
- * @SuppressWarnings(PHPMD.CamelCaseParameterName)
- */
+#[ClassInformation(
+    package: 'WebWMS\Dto',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockInFinalDto'
+)]
 class StockInFinalDto
 {
     use HydrateStaticTrait;
 
-    public ?string $stock_su_id = null;
+    private int $stockSuId;
 
-    public ?string $stock_system = null;
+    private string $articleNr;
 
-    public ?string $stock_ln = null;
+    private float $stockQuantity;
 
-    public ?string $stock_fb = null;
+    private string $stockCoordinate;
 
-    public ?string $stock_sp = null;
+    private int $stockLn;
 
-    public ?string $stock_tf = null;
+    private int $stockFb;
 
-    public ?string $stock_quantity = null;
+    private int $stockSp;
 
-    public ?string $stock_tbe = null;
+    private int $stockTf;
 
-    public ?string $stock_coordinate = null;
+    private string $bookingMethod;
 
-    public ?string $charge = null;
+    private string $charge;
 
-    public ?string $article_nr = null;
+    private string $loadingEquipment;
 
-    public ?string $article_id = null;
-
-    public ?string $booking_method = null;
-
-    public ?string $loading_equipment = null;
-
-    public ?string $stock_location_id = null;
-
-    public ?string $le_quantity = null;
-
-    public function getStockSuId(): ?string
+    public function getStockSuId(): int
     {
-        return $this->stock_su_id;
+        return $this->stockSuId;
     }
 
-    public function setStockSuId(?string $stock_su_id): self
+    public function getArticleNr(): string
     {
-        $this->stock_su_id = $stock_su_id;
-
-        return $this;
+        return $this->articleNr;
     }
 
-    public function getStockSystem(): ?string
+    public function getStockQuantity(): float
     {
-        return $this->stock_system;
+        return $this->stockQuantity;
     }
 
-    public function setStockSystem(?string $stock_system): self
+    public function getStockCoordinate(): string
     {
-        $this->stock_system = $stock_system;
-
-        return $this;
+        return $this->stockCoordinate;
     }
 
-    public function getStockLn(): ?string
+    public function getStockLn(): int
     {
-        return $this->stock_ln;
+        return $this->stockLn;
     }
 
-    public function setStockLn(?string $stock_ln): self
+    public function getStockFb(): int
     {
-        $this->stock_ln = $stock_ln;
-
-        return $this;
+        return $this->stockFb;
     }
 
-    public function getStockFb(): ?string
+    public function getStockSp(): int
     {
-        return $this->stock_fb;
+        return $this->stockSp;
     }
 
-    public function setStockFb(?string $stock_fb): self
+    public function getStockTf(): int
     {
-        $this->stock_fb = $stock_fb;
-
-        return $this;
+        return $this->stockTf;
     }
 
-    public function getStockSp(): ?string
+    public function getBookingMethod(): string
     {
-        return $this->stock_sp;
+        return $this->bookingMethod;
     }
 
-    public function setStockSp(?string $stock_sp): self
-    {
-        $this->stock_sp = $stock_sp;
-
-        return $this;
-    }
-
-    public function getStockTf(): ?string
-    {
-        return $this->stock_tf;
-    }
-
-    public function setStockTf(?string $stock_tf): self
-    {
-        $this->stock_tf = $stock_tf;
-
-        return $this;
-    }
-
-    public function getStockQuantity(): ?string
-    {
-        return $this->stock_quantity;
-    }
-
-    public function setStockQuantity(?string $stock_quantity): self
-    {
-        $this->stock_quantity = $stock_quantity;
-
-        return $this;
-    }
-
-    public function getStockTbe(): ?string
-    {
-        return $this->stock_tbe;
-    }
-
-    public function setStockTbe(?string $stock_tbe): self
-    {
-        $this->stock_tbe = $stock_tbe;
-
-        return $this;
-    }
-
-    public function getStockCoordinate(): ?string
-    {
-        return $this->stock_coordinate;
-    }
-
-    public function setStockCoordinate(?string $stock_coordinate): self
-    {
-        $this->stock_coordinate = $stock_coordinate;
-
-        return $this;
-    }
-
-    public function getCharge(): ?string
+    public function getCharge(): string
     {
         return $this->charge;
     }
 
-    public function setCharge(?string $charge): self
+    public function getLoadingEquipment(): string
     {
-        $this->charge = $charge;
-
-        return $this;
-    }
-
-    public function getArticleNr(): ?string
-    {
-        return $this->article_nr;
-    }
-
-    public function setArticleNr(?string $article_nr): self
-    {
-        $this->article_nr = $article_nr;
-
-        return $this;
-    }
-
-    public function getArticleId(): ?string
-    {
-        return $this->article_id;
-    }
-
-    public function setArticleId(?string $article_id): self
-    {
-        $this->article_id = $article_id;
-
-        return $this;
-    }
-
-    public function getBookingMethod(): ?string
-    {
-        return $this->booking_method;
-    }
-
-    public function setBookingMethod(?string $booking_method): self
-    {
-        $this->booking_method = $booking_method;
-
-        return $this;
-    }
-
-    public function getLoadingEquipment(): ?string
-    {
-        return $this->loading_equipment;
-    }
-
-    public function setLoadingEquipment(?string $loading_equipment): self
-    {
-        $this->loading_equipment = $loading_equipment;
-
-        return $this;
-    }
-
-    public function getStockLocationId(): ?string
-    {
-        return $this->stock_location_id;
-    }
-
-    public function setStockLocationId(?string $stock_location_id): self
-    {
-        $this->stock_location_id = $stock_location_id;
-
-        return $this;
-    }
-
-    public function getLeQuantity(): ?string
-    {
-        return $this->le_quantity;
-    }
-
-    public function setLeQuantity(?string $le_quantity): self
-    {
-        $this->le_quantity = $le_quantity;
-
-        return $this;
+        return $this->loadingEquipment;
     }
 }

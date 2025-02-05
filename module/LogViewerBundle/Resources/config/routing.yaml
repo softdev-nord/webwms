@@ -1,4 +1,4 @@
 web_wms_log_viewer:
     resource: ../../Controller/
-    type: annotation
+    type: attribute
 

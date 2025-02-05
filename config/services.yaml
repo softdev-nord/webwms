@@ -97,20 +97,16 @@ services:
     web_wms.service.logging_service:
         class: WebWMS\Service\LoggingService
 
-    web_wms.controller.dashboard_controller:
-        class: WebWMS\Controller\DashboardController
-        arguments:
-            $requirementsService: 'WebWMS\Service\RequirementsService'
-            $twigEnvironment: 'Twig\Environment'
-            $chartBuilder: 'Symfony\UX\Chartjs\Builder\ChartBuilderInterface'
-            $transportHistoryRepository: 'WebWMS\Repository\TransportHistoryRepository'
-            $stockRotationService: 'WebWMS\Service\Stock\StockRotationService'
-            $transportRequestService: 'WebWMS\Service\TransportRequestService'
-            $stockLocationService: 'WebWMS\Service\Stock\StockLocationService'
-
     twig.extension.debug:
         class: Twig\Extension\DebugExtension
         tags: [ { name: 'twig.extension' } ]
 
     Symfony\Component\HttpFoundation\Request:
         autowire: true
+        
+    Symfony\Bundle\FrameworkBundle\Controller\RedirectController:
+        autowire: true
+        public: true
+        tags: ['controller.service_arguments']
+        arguments:
+            $router: '@router'

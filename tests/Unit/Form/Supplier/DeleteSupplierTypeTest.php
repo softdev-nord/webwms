@@ -6,17 +6,20 @@ namespace WebWMS\Tests\Unit\Form\Supplier;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\SupplierEntity;
+use WebWMS\Entity\Supplier;
 use WebWMS\Form\Supplier\DeleteSupplierType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\SupplierEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        DeleteSupplierTypeTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Supplier',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'DeleteSupplierTypeTest'
+)]
 #[CoversClass(DeleteSupplierType::class)]
 final class DeleteSupplierTypeTest extends TestCase
 {
@@ -24,9 +27,13 @@ final class DeleteSupplierTypeTest extends TestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::once())
+            ->expects(self::exactly(1))
             ->method('add')
-            ->withAnyParameters();
+            ->willReturnOnConsecutiveCalls(
+                ['supplierId', HiddenType::class, self::anything()],
+                ['save', ButtonType::class, self::anything()],
+                ['abort', ButtonType::class, self::anything()]
+            );
 
         $deleteSupplierType = new DeleteSupplierType();
         $deleteSupplierType->buildForm($builder, []);
@@ -36,9 +43,9 @@ final class DeleteSupplierTypeTest extends TestCase
     {
         $resolverMock = $this->createMock(OptionsResolver::class);
         $resolverMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
-            ->with(['data_class' => SupplierEntity::class]);
+            ->with(['data_class' => Supplier::class]);
 
         $deleteSupplierType = new DeleteSupplierType();
         $deleteSupplierType->configureOptions($resolverMock);

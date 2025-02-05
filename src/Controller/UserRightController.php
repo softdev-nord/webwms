@@ -6,23 +6,24 @@ namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\UserRightEntity;
+use WebWMS\Entity\UserRight as UserRightEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\User\UserRight\UserRightService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserRightController
- */
-class UserRightController extends AbstractController
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserRight'
+)]
+class UserRight extends AbstractController
 {
     public function __construct(
         private readonly RequirementsService $requirementsService,
-        private readonly UserRightService $userRightService
+        private readonly UserRightService $userRightService,
     ) {
     }
 

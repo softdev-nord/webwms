@@ -5,28 +5,29 @@ declare(strict_types=1);
 namespace WebWMS\Service\CustomerOrderPos;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\CustomerOrderPosEntity;
+use WebWMS\Entity\CustomerOrderPos;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\CustomerOrderPos\CustomerOrderPosDataHandler;
 
-/**
- * @package:    WebWMS\Service\CustomerOrderPosEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderPosService
- */
-class CustomerOrderPosService
+#[ClassInformation(
+    package: 'WebWMS\Service\CustomerOrderPos',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrderPosService'
+)]
+readonly class CustomerOrderPosService
 {
     public function __construct(
-        private readonly CustomerOrderPosDataHandler $customerOrderPosDataHandler
+        private CustomerOrderPosDataHandler $customerOrderPosDataHandler,
     ) {
     }
 
-    public function getCustomerOrderPosById(int $customerOrderPosId): ?CustomerOrderPosEntity
+    public function getCustomerOrderPosById(int $customerOrderPosId): ?CustomerOrderPos
     {
         return $this->customerOrderPosDataHandler->getCustomerOrderPosById($customerOrderPosId);
     }
 
-    public function getCustomerOrderPosByCustomerOrderId(int $customerOrderId): ?CustomerOrderPosEntity
+    public function getCustomerOrderPosByCustomerOrderId(int $customerOrderId): ?CustomerOrderPos
     {
         return $this->customerOrderPosDataHandler->getCustomerOrderPosByCustomerOrderId($customerOrderId);
     }
@@ -36,18 +37,18 @@ class CustomerOrderPosService
         return $this->customerOrderPosDataHandler->getAllCustomerOrderPos();
     }
 
-    public function addCustomerOrderPos(CustomerOrderPosEntity $customerOrderPosEntity): void
+    public function addCustomerOrderPos(CustomerOrderPos $customerOrderPos): void
     {
-        $this->customerOrderPosDataHandler->addCustomerOrderPos($customerOrderPosEntity);
+        $this->customerOrderPosDataHandler->addCustomerOrderPos($customerOrderPos);
     }
 
-    public function updateCustomerOrderPos(CustomerOrderPosEntity $customerOrderPosEntity): void
+    public function updateCustomerOrderPos(CustomerOrderPos $customerOrderPos): void
     {
-        $this->customerOrderPosDataHandler->updateCustomerOrderPos($customerOrderPosEntity);
+        $this->customerOrderPosDataHandler->updateCustomerOrderPos($customerOrderPos);
     }
 
-    public function deleteCustomerOrderPos(?CustomerOrderPosEntity $customerOrderPosEntity): void
+    public function deleteCustomerOrderPos(?CustomerOrderPos $customerOrderPos): void
     {
-        $this->customerOrderPosDataHandler->deleteCustomerOrderPos($customerOrderPosEntity);
+        $this->customerOrderPosDataHandler->deleteCustomerOrderPos($customerOrderPos);
     }
 }

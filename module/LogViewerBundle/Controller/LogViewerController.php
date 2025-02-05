@@ -10,14 +10,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\RequirementsService;
 
-/**
- * @package:    WebWMS\Bundles\LogViewerBundle\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2022, SoftDev Nord
- * Class        LogViewerController
- */
+#[ClassInformation(
+    package: 'WebWMS\Bundles\LogViewerBundle\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'LogViewerController'
+)]
 class LogViewerController extends AbstractController
 {
     public function __construct(

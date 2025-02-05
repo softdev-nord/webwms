@@ -6,17 +6,20 @@ namespace WebWMS\Tests\Unit\Form\Stock\StockLocation;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\StockLocationEntity;
+use WebWMS\Entity\StockLocation;
 use WebWMS\Form\Stock\StockLocation\DeleteStockLocationType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\Stock\StockLocationEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        DeleteStockLocationTypeTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Stock\StockLocation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'DeleteStockLocationTypeTest'
+)]
 #[CoversClass(DeleteStockLocationType::class)]
 final class DeleteStockLocationTypeTest extends TestCase
 {
@@ -24,9 +27,13 @@ final class DeleteStockLocationTypeTest extends TestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::once())
+            ->expects(self::exactly(1))
             ->method('add')
-            ->withAnyParameters();
+            ->willReturnOnConsecutiveCalls(
+                ['stockLocationCoordinate', HiddenType::class, self::anything()],
+                ['delete', ButtonType::class, self::anything()],
+                ['abort', ButtonType::class, self::anything()]
+            );
 
         $deleteStockLocationType = new DeleteStockLocationType();
         $deleteStockLocationType->buildForm($builder, []);
@@ -36,9 +43,9 @@ final class DeleteStockLocationTypeTest extends TestCase
     {
         $resolver = $this->createMock(OptionsResolver::class);
         $resolver
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
-            ->with(['data_class' => StockLocationEntity::class]);
+            ->with(['data_class' => StockLocation::class]);
 
         $deleteStockLocationType = new DeleteStockLocationType();
         $deleteStockLocationType->configureOptions($resolver);

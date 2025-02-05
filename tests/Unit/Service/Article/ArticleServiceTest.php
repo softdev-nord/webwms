@@ -8,16 +8,17 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\ArticleEntity;
+use WebWMS\Entity\Article;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\ArticleController
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        ArticleServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Article',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'ArticleServiceTest'
+)]
 #[CoversClass(ArticleService::class)]
 final class ArticleServiceTest extends TestCase
 {
@@ -35,7 +36,7 @@ final class ArticleServiceTest extends TestCase
     {
         $articleId = 1;
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getArticleById')
             ->with($articleId)
             ->willReturn(null);
@@ -48,23 +49,23 @@ final class ArticleServiceTest extends TestCase
     public function testGetArticleByIdReturnsArticleWhenArticleExists(): void
     {
         $articleId = 1;
-        $articleEntity = new ArticleEntity();
+        $article = new Article();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getArticleById')
             ->with($articleId)
-            ->willReturn($articleEntity);
+            ->willReturn($article);
 
         $result = $this->articleService->getArticleById($articleId);
 
-        self::assertSame($articleEntity, $result);
+        self::assertSame($article, $result);
     }
 
     public function testGetArticleByNrReturnsNullWhenArticleDoesNotExist(): void
     {
         $articleNr = '60000';
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getArticleByNr')
             ->with($articleNr)
             ->willReturn(null);
@@ -77,91 +78,91 @@ final class ArticleServiceTest extends TestCase
     public function testGetArticleByNrReturnsArticleWhenArticleExists(): void
     {
         $articleNr = '60000';
-        $articleEntity = new ArticleEntity();
+        $article = new Article();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getArticleByNr')
             ->with($articleNr)
-            ->willReturn($articleEntity);
+            ->willReturn($article);
 
         $result = $this->articleService->getArticleByNr($articleNr);
 
-        self::assertSame($articleEntity, $result);
+        self::assertSame($article, $result);
     }
 
     public function testGetAllArticlesReturnsJsonResponse(): void
     {
         $articles = [
-            new ArticleEntity(),
-            new ArticleEntity(),
+            new Article(),
+            new Article(),
         ];
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllArticlesWithJoin')
             ->willReturn(new JsonResponse($articles));
 
-        $result = $this->articleService->getAllArticles();
+        $jsonResponse = $this->articleService->getAllArticles();
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testGetArticle(): void
     {
-        $articleEntity = new ArticleEntity();
+        $article = new Article();
         $articleNrInput = '123';
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getArticle')
-            ->willReturn(new JsonResponse($articleEntity));
+            ->willReturn(new JsonResponse($article));
 
-        $result = $this->articleService->getArticle($articleNrInput);
+        $jsonResponse = $this->articleService->getArticle($articleNrInput);
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testAddArticle(): void
     {
-        $articleEntity = new ArticleEntity();
+        $article = new Article();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('addArticle')
-            ->with($articleEntity);
+            ->with($article);
 
-        $this->articleService->addArticle($articleEntity);
+        $this->articleService->addArticle($article);
     }
 
     public function testUpdateArticle(): void
     {
-        $articleEntity = new ArticleEntity();
+        $article = new Article();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('updateArticle')
-            ->with($articleEntity);
+            ->with($article);
 
-        $this->articleService->updateArticle($articleEntity);
+        $this->articleService->updateArticle($article);
     }
 
     public function testDeleteArticle(): void
     {
-        $articleEntity = new ArticleEntity();
+        $article = new Article();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('deleteArticle')
-            ->with($articleEntity);
+            ->with($article);
 
-        $this->articleService->deleteArticle($articleEntity);
+        $this->articleService->deleteArticle($article);
     }
 
     public function testGetLastArticleReturnsArticle(): void
     {
-        $articleEntity = new ArticleEntity();
+        $article = new Article();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getLastArticle')
-            ->willReturn($articleEntity);
+            ->willReturn($article);
 
         $result = $this->articleService->getLastArticle();
 
-        self::assertSame($articleEntity, $result);
+        self::assertSame($article, $result);
     }
 }

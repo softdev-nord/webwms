@@ -7,14 +7,15 @@ namespace WebWMS\Tests\Unit\Twig;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Twig\TwigFilter;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Twig\VarsExtension;
 
-/**
- * @package:    WebWMS\Tests\Unit\Twig
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        VarsExtensionTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Twig',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'VarsExtensionTest'
+)]
 #[CoversClass(VarsExtension::class)]
 final class VarsExtensionTest extends TestCase
 {
@@ -28,8 +29,8 @@ final class VarsExtensionTest extends TestCase
 
         $filter = $filters[0];
         self::assertInstanceOf(TwigFilter::class, $filter);
-        self::assertEquals('json_decode', $filter->getName());
-        self::assertEquals(static fn (string $str): mixed => $varsExtension->jsonDecode($str), $filter->getCallable());
+        self::assertSame('json_decode', $filter->getName());
+        self::assertEquals($varsExtension->jsonDecode(...), $filter->getCallable());
     }
 
     public function testJsonDecode(): void
@@ -50,6 +51,6 @@ final class VarsExtensionTest extends TestCase
 
         $result = $varsExtension->getName();
 
-        self::assertEquals($expectedResult, $result);
+        self::assertSame($expectedResult, $result);
     }
 }

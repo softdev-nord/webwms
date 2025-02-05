@@ -6,28 +6,29 @@ namespace WebWMS\Service\User;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\User;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\User\UserDataHandler;
 
-/**
- * @package:    WebWMS\Service\UserController
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserService
- */
-class UserService
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserService'
+)]
+readonly class UserService
 {
     public function __construct(
-        private readonly UserDataHandler $userDataHandler
+        private UserDataHandler $userDataHandler,
     ) {
     }
 
-    public function getUserByUsername(string $username): ?UserEntity
+    public function getUserByUsername(string $username): ?User
     {
         return $this->userDataHandler->getUserByUsername($username);
     }
 
-    public function getUserById(int $userId): ?UserEntity
+    public function getUserById(int $userId): ?User
     {
         return $this->userDataHandler->getUserById($userId);
     }
@@ -40,9 +41,9 @@ class UserService
         return $this->userDataHandler->getAllUsers();
     }
 
-    public function addUser(UserEntity $userEntity): void
+    public function addUser(User $user): void
     {
-        $this->userDataHandler->addUser($userEntity);
+        $this->userDataHandler->addUser($user);
     }
 
     /**
@@ -53,14 +54,14 @@ class UserService
         return $this->userDataHandler->getLastUser();
     }
 
-    public function updateUser(UserEntity $userEntity): void
+    public function updateUser(User $user): void
     {
-        $this->userDataHandler->updateUser($userEntity);
+        $this->userDataHandler->updateUser($user);
     }
 
-    public function upgradePassword(UserEntity $userEntity, string $newHashedPassword): void
+    public function upgradePassword(User $user, string $newHashedPassword): void
     {
-        $this->userDataHandler->upgradePassword($userEntity, $newHashedPassword);
+        $this->userDataHandler->upgradePassword($user, $newHashedPassword);
     }
 
     public function deleteUser(string $username): void
@@ -68,8 +69,8 @@ class UserService
         $this->userDataHandler->deleteUser($username);
     }
 
-    public function updateLastLogin(UserEntity $userEntity): void
+    public function updateLastLogin(User $user): void
     {
-        $this->userDataHandler->updateLastLogin($userEntity);
+        $this->userDataHandler->updateLastLogin($user);
     }
 }

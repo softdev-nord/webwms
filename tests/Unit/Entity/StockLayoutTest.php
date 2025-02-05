@@ -7,18 +7,19 @@ namespace WebWMS\Tests\Unit\Entity;
 use DateTime;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\StockLayoutEntity;
+use WebWMS\Entity\StockLayout;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockLayoutTest
- */
-#[CoversClass(StockLayoutEntity::class)]
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockLayoutTest'
+)]
+#[CoversClass(StockLayout::class)]
 final class StockLayoutTest extends TestCase
 {
-    private StockLayoutEntity $stockLayoutEntity;
+    private StockLayout $stockLayout;
 
     private DateTime $dateTime;
 
@@ -26,7 +27,7 @@ final class StockLayoutTest extends TestCase
     {
         parent::setUp();
 
-        $this->stockLayoutEntity = new StockLayoutEntity();
+        $this->stockLayout = new StockLayout();
         $this->dateTime = new DateTime();
     }
 
@@ -34,62 +35,62 @@ final class StockLayoutTest extends TestCase
     {
         // Test setId() and getId()
         $id = 1;
-        $this->stockLayoutEntity->setId($id);
-        self::assertEquals($id, $this->stockLayoutEntity->getId());
+        $this->stockLayout->setId($id);
+        self::assertSame($id, $this->stockLayout->getId());
 
         // Test setStockNr() and getStockNr()
         $stockNr = 100;
-        $this->stockLayoutEntity->setStockNr($stockNr);
-        self::assertEquals($stockNr, $this->stockLayoutEntity->getStockNr());
+        $this->stockLayout->setStockNr($stockNr);
+        self::assertSame($stockNr, $this->stockLayout->getStockNr());
 
         // Test setStockDescription() and getStockDescription()
         $stockDescription = 'Pal Regal';
-        $this->stockLayoutEntity->setStockDescription($stockDescription);
-        self::assertEquals($stockDescription, $this->stockLayoutEntity->getStockDescription());
+        $this->stockLayout->setStockDescription($stockDescription);
+        self::assertSame($stockDescription, $this->stockLayout->getStockDescription());
 
         // Test setStockLevel1() and getStockLevel1()
         $stockLevel1 = 1;
-        $this->stockLayoutEntity->setStockLevel1($stockLevel1);
-        self::assertEquals($stockLevel1, $this->stockLayoutEntity->getStockLevel1());
+        $this->stockLayout->setStockLevel1($stockLevel1);
+        self::assertSame($stockLevel1, $this->stockLayout->getStockLevel1());
 
         // Test setStockLevel2() and getStockLevel2()
         $stockLevel2 = 1;
-        $this->stockLayoutEntity->setStockLevel2($stockLevel2);
-        self::assertEquals($stockLevel2, $this->stockLayoutEntity->getStockLevel2());
+        $this->stockLayout->setStockLevel2($stockLevel2);
+        self::assertSame($stockLevel2, $this->stockLayout->getStockLevel2());
 
         // Test setStockLevel3() and getStockLevel3()
         $stockLevel3 = 1;
-        $this->stockLayoutEntity->setStockLevel3($stockLevel3);
-        self::assertEquals($stockLevel3, $this->stockLayoutEntity->getStockLevel3());
+        $this->stockLayout->setStockLevel3($stockLevel3);
+        self::assertSame($stockLevel3, $this->stockLayout->getStockLevel3());
 
         // Test setStockLevel4() and getStockLevel4()
         $stockLevel4 = 1;
-        $this->stockLayoutEntity->setStockLevel4($stockLevel4);
-        self::assertEquals($stockLevel4, $this->stockLayoutEntity->getStockLevel4());
+        $this->stockLayout->setStockLevel4($stockLevel4);
+        self::assertSame($stockLevel4, $this->stockLayout->getStockLevel4());
 
         // Test setStockModel() and getStockModel()
         $stockModel = 'L2';
-        $this->stockLayoutEntity->setStockModel($stockModel);
-        self::assertEquals($stockModel, $this->stockLayoutEntity->getStockModel());
+        $this->stockLayout->setStockModel($stockModel);
+        self::assertSame($stockModel, $this->stockLayout->getStockModel());
 
         // Test setStockTyp() and getStockTyp()
         $stockTyp = 'BLL';
-        $this->stockLayoutEntity->setStockTyp($stockTyp);
-        self::assertEquals($stockTyp, $this->stockLayoutEntity->getStockTyp());
+        $this->stockLayout->setStockTyp($stockTyp);
+        self::assertSame($stockTyp, $this->stockLayout->getStockTyp());
 
         // Test setStockLongDescription() and getStockLongDescription()
         $stockLongDescription = 'Test Stock Long Description';
-        $this->stockLayoutEntity->setStockLongDescription($stockLongDescription);
-        self::assertEquals($stockLongDescription, $this->stockLayoutEntity->getStockLongDescription());
+        $this->stockLayout->setStockLongDescription($stockLongDescription);
+        self::assertSame($stockLongDescription, $this->stockLayout->getStockLongDescription());
 
         // Test setCreatedAt() and getCreatedAt()
         $createdAt = $this->dateTime;
-        $this->stockLayoutEntity->setCreatedAt($createdAt);
-        self::assertEquals($createdAt, $this->stockLayoutEntity->getCreatedAt());
+        $this->stockLayout->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->stockLayout->getCreatedAt());
 
         // Test setUpdatedAt() and getUpdatedAt()
         $updatedAt = $this->dateTime;
-        $this->stockLayoutEntity->setUpdatedAt($updatedAt);
-        self::assertEquals($updatedAt, $this->stockLayoutEntity->getUpdatedAt());
+        $this->stockLayout->setUpdatedAt($updatedAt);
+        self::assertEquals($updatedAt, $this->stockLayout->getUpdatedAt());
     }
 }

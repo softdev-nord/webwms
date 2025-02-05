@@ -5,25 +5,26 @@ declare(strict_types=1);
 namespace WebWMS\Security;
 
 use Doctrine\ORM\EntityManagerInterface;
-
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\UserEntity;
-use WebWMS\Entity\UserGroupEntity;
-use WebWMS\Entity\UserRightEntity;
-use WebWMS\Entity\UserRoleEntity;
 
-/**
- * @package:    WebWMS\Security
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserRoleRight
- */
-class UserRoleRight
+use Symfony\Component\Security\Core\User\UserInterface;
+use WebWMS\Entity\User;
+use WebWMS\Entity\UserGroup;
+use WebWMS\Entity\UserRight;
+use WebWMS\Entity\UserRole;
+use WebWMS\Helper\Attribute\ClassInformation;
+
+#[ClassInformation(
+    package: 'WebWMS\Security',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserRoleRight'
+)]
+readonly class UserRoleRight
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly Security $security
+        private EntityManagerInterface $entityManager,
+        private Security $security,
     ) {
     }
 
@@ -35,10 +36,10 @@ class UserRoleRight
         $user = $this->getCurrentUser();
 
         if ($user instanceof UserInterface) {
-            /** @var UserRoleEntity $role */
+            /** @var UserRole $role */
             foreach ($user->getRoles() as $role) {
                 foreach ($role->getUserRights() as $right) {
-                    /** @var UserRightEntity $right */
+                    /** @var UserRight $right */
                     if ($userRight === $right->getUserRight()) {
                         return true;
                     }
@@ -56,7 +57,11 @@ class UserRoleRight
     {
         $user = $this->getCurrentUser();
 
-        return $user instanceof UserInterface && in_array($userRole, $user->getRoles(), true);
+        if (!$user instanceof UserInterface) {
+            return false;
+        }
+
+        return in_array($userRole, $user->getRoles(), true);
     }
 
     /**
@@ -64,22 +69,22 @@ class UserRoleRight
      */
     public function hasUserGroup(string $userGroupName): bool
     {
-        /** @var UserEntity $user */
+        /** @var User $user */
         $user = $this->getCurrentUser();
-        $userGroupEntity = $this->getUserGroupByGroup($userGroupName);
+        $userGroup = $this->getUserGroupByGroup($userGroupName);
 
-        return in_array((string) $userGroupEntity->getId(), $user->getUserGroups(), true);
+        return in_array((string) ($userGroup->getId()), $user->getUserGroups(), true);
     }
 
     /**
-     * Ruft UserRightEntity mit der ID des Rechts ab. z. Bsp. 1.
-     * @return array|UserRightEntity[]
+     * Ruft UserRight mit der ID des Rechts ab. z. Bsp. 1.
+     * @return array|UserRight[]
      */
     public function getUserRightById(string $userRightId): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('ur')
-            ->from(UserRightEntity::class, 'ur')
+            ->from(UserRight::class, 'ur')
             ->where('ur.id = :userRightId')
             ->setParameter('userRightId', $userRightId)
             ->setMaxResults(1)
@@ -95,14 +100,14 @@ class UserRoleRight
     }
 
     /**
-     * Ruft UserRightEntity mit dem Namen des Rechts auf. z. Bsp. manage-users.
-     * @return array|UserRightEntity[]
+     * Ruft UserRight mit dem Namen des Rechts auf. z. Bsp. manage-users.
+     * @return array|UserRight[]
      */
     public function getUserRightByRightName(string $userRight): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('ur')
-            ->from(UserRightEntity::class, 'ur')
+            ->from(UserRight::class, 'ur')
             ->where('ur.userRight = :userRight')
             ->setParameter('userRight', $userRight)
             ->setMaxResults(1)
@@ -118,14 +123,14 @@ class UserRoleRight
     }
 
     /**
-     * Ruft UserRoleEntity mit der ID der Rolle ab. z. Bsp. 1.
-     * @return array|UserRoleEntity[]
+     * Ruft UserRole mit der ID der Rolle ab. z. Bsp. 1.
+     * @return array|UserRole[]
      */
     public function getUserRoleById(int $userRoleId): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('ur')
-            ->from(UserRoleEntity::class, 'ur')
+            ->from(UserRole::class, 'ur')
             ->where('ur.id = :userRoleId')
             ->setParameter('userRoleId', $userRoleId)
             ->setMaxResults(1)
@@ -141,14 +146,14 @@ class UserRoleRight
     }
 
     /**
-     * Ruft UserRoleEntity mit dem Namen der Rolle. z. Bsp. SUPER_ADMIN.
-     * @return array|UserRoleEntity[]
+     * Ruft UserRole mit dem Namen der Rolle. z. Bsp. SUPER_ADMIN.
+     * @return array|UserRole[]
      */
     public function getUserRoleByRoleName(string $userRole): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('ur')
-            ->from(UserRoleEntity::class, 'ur')
+            ->from(UserRole::class, 'ur')
             ->where('ev.userRole = :userRole')
             ->setParameter('userRole', $userRole)
             ->setMaxResults(1)
@@ -165,13 +170,13 @@ class UserRoleRight
 
     /**
      * Ruft Group mit der ID der Gruppe ab. z. Bsp. 1.
-     * @return array|UserGroupEntity[]
+     * @return array|UserGroup[]
      */
     public function getUserGroupById(int $userGroupId): array
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('ug')
-            ->from(UserGroupEntity::class, 'ug')
+            ->from(UserGroup::class, 'ug')
             ->where('ug.id = :userGroupId')
             ->setParameter('userGroupId', $userGroupId)
             ->setMaxResults(1)
@@ -183,11 +188,11 @@ class UserRoleRight
     /**
      * Ruft Group mit dem Namen der Gruppe. z. Bsp. GROUP_SUPER_ADMIN.
      */
-    public function getUserGroupByGroup(string $userGroupName): UserGroupEntity
+    public function getUserGroupByGroup(string $userGroupName): UserGroup
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('ug')
-            ->from(UserGroupEntity::class, 'ug')
+            ->from(UserGroup::class, 'ug')
             ->where('ug.group = :userGroupName')
             ->setParameter('userGroupName', $userGroupName)
             ->setMaxResults(1)
@@ -212,11 +217,11 @@ class UserRoleRight
 
     /**
      * Get the user groups from current user
-     * @return array<array<string>>
+     * @return array<string>
      */
     protected function getUserGroup(): array
     {
-        /** @var UserEntity $user */
+        /** @var User $user */
         $user = $this->getCurrentUser();
 
         return $user->getUserGroups();

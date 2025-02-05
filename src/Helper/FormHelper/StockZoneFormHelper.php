@@ -7,27 +7,27 @@ namespace WebWMS\Helper\FormHelper;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
-use WebWMS\Entity\StockZoneEntity;
+use WebWMS\Entity\StockZone;
 use WebWMS\Form\Stock\StockZone\AddStockZoneType;
 use WebWMS\Form\Stock\StockZone\DeleteStockZoneType;
 use WebWMS\Form\Stock\StockZone\EditStockZoneType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockZoneFormHelper
- */
-class StockZoneFormHelper
+#[ClassInformation(
+    package: 'WebWMS\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockZoneFormHelper'
+)]
+readonly class StockZoneFormHelper
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory
+        private FormFactoryInterface $formFactory,
     ) {
     }
 
     /**
      * @param class-string<FormTypeInterface<mixed>> $type
-     * @param mixed|null $data
      * @param array<string> $options
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
@@ -40,19 +40,13 @@ class StockZoneFormHelper
         return $this->createForm(AddStockZoneType::class);
     }
 
-    /**
-     * @param StockZoneEntity|null $stockZoneEntity
-     */
-    public function editStockZoneForm(?StockZoneEntity $stockZoneEntity): FormInterface
+    public function editStockZoneForm(?StockZone $stockZone): FormInterface
     {
-        return $this->createForm(EditStockZoneType::class, $stockZoneEntity);
+        return $this->createForm(EditStockZoneType::class, $stockZone);
     }
 
-    /**
-     * @param StockZoneEntity|null $stockZoneEntity
-     */
-    public function deleteStockZoneForm(?StockZoneEntity $stockZoneEntity): FormInterface
+    public function deleteStockZoneForm(?StockZone $stockZone): FormInterface
     {
-        return $this->createForm(DeleteStockZoneType::class, $stockZoneEntity);
+        return $this->createForm(DeleteStockZoneType::class, $stockZone);
     }
 }

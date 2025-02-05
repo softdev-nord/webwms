@@ -6,86 +6,96 @@ namespace WebWMS\Service\DataHandlers\User\UserRight;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\UserRightEntity;
+use WebWMS\Entity\UserRight;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\UserRightEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserRightDataHandler
- */
-class UserRightDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\UserRight',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserRightDataHandler'
+)]
+readonly class UserRightDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(UserRightEntity $userRightEntity): void
+    public function save(UserRight $userRight): void
     {
-        $this->entityManager->persist($userRightEntity);
+        $this->entityManager->persist($userRight);
         $this->entityManager->flush();
     }
 
-    public function delete(UserRightEntity $userRightEntity): void
+    public function delete(UserRight $userRight): void
     {
-        $this->entityManager->remove($userRightEntity);
+        $this->entityManager->remove($userRight);
         $this->entityManager->flush();
     }
 
     /**
-     * @return array<int, UserRightEntity>
+     * @return array<int, UserRight>
      */
     public function getAllUserRights(): array
     {
-        return $this->entityManager
-            ->getRepository(UserRightEntity::class)
+        /** @var UserRight[] $userRights */
+        $userRights = $this->entityManager
+            ->getRepository(UserRight::class)
             ->findAll();
+
+        return $userRights;
     }
 
-    public function getUserRightById(int $userRightId): ?UserRightEntity
+    public function getUserRightById(int $userRightId): ?UserRight
     {
-        return $this->entityManager
-            ->getRepository(UserRightEntity::class)
+        /** @var UserRight|null $userRight */
+        $userRight = $this->entityManager
+            ->getRepository(UserRight::class)
             ->findOneBy(['id' => $userRightId]);
+
+        return $userRight;
     }
 
-    public function getUserRightByUserRightName(string $userRightName): ?UserRightEntity
+    public function getUserRightByUserRightName(string $userRightName): ?UserRight
     {
-        return $this->entityManager
-            ->getRepository(UserRightEntity::class)
+        /** @var UserRight|null $userRight */
+        $userRight = $this->entityManager
+            ->getRepository(UserRight::class)
             ->findOneBy(['user_right' => $userRightName]);
+
+        return $userRight;
     }
 
-    public function addUserRight(Request $request): ?UserRightEntity
+    public function addUserRight(Request $request): ?UserRight
     {
         $addUserRight = $request->request->getIterator()->getArrayCopy();
-        $userRightEntity = new UserRightEntity();
+        $userRight = new UserRight();
 
-        $userRightEntity->setUserRight($addUserRight['user_right']);
-        $userRightEntity->setDescription($addUserRight['description']);
-        $userRightEntity->setCreatedAt($this->dateTimeService->createDateTime());
+        $userRight->setUserRight($addUserRight['user_right']); // @phpstan-ignore-line
+        $userRight->setDescription($addUserRight['description']); // @phpstan-ignore-line
+        $userRight->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($userRightEntity);
+        $this->save($userRight);
 
-        return $userRightEntity;
+        return $userRight;
     }
 
-    public function updateUserRight(Request $request): ?UserRightEntity
+    public function updateUserRight(Request $request): ?UserRight
     {
         $requestData = $request->request->all()['edit_user_right'];
         $userRight = $this->entityManager
-            ->getRepository(UserRightEntity::class)
+            ->getRepository(UserRight::class)
             ->findOneBy(['user_right' => $requestData['user_right']]);
 
         if ($userRight === null) {
             return null;
         }
 
-        $userRight->setUserRight($requestData['user_right']);
-        $userRight->setDescription($requestData['description']);
+        $userRight->setUserRight($requestData['user_right']); // @phpstan-ignore-line
+        $userRight->setDescription($requestData['description']); // @phpstan-ignore-line
         $userRight->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userRight);
@@ -97,7 +107,7 @@ class UserRightDataHandler
     {
         $userRight = $this->getUserRightByUserRightName($userRightName);
 
-        if ($userRight instanceof UserRightEntity) {
+        if ($userRight instanceof UserRight) {
             $this->delete($userRight);
         }
     }

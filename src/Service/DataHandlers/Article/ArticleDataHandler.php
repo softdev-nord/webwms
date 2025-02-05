@@ -4,51 +4,59 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\DataHandlers\Article;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\ArticleEntity;
+use WebWMS\Entity\Article;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 use WebWMS\Service\Stock\StockOccupancyService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ArticleDataHandler
- */
-class ArticleDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ArticleDataHandler'
+)]
+readonly class ArticleDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly StockOccupancyService $stockOccupancyService,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private StockOccupancyService $stockOccupancyService,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(ArticleEntity $articleEntity): void
+    public function save(Article $article): void
     {
-        $this->entityManager->persist($articleEntity);
+        $this->entityManager->persist($article);
         $this->entityManager->flush();
     }
 
-    public function delete(ArticleEntity $articleEntity): void
+    public function delete(Article $article): void
     {
-        $this->entityManager->remove($articleEntity);
+        $this->entityManager->remove($article);
         $this->entityManager->flush();
     }
 
-    public function getArticleById(int $articleId): ?ArticleEntity
+    public function getArticleById(int $articleId): ?Article
     {
-        return $this->entityManager
-            ->getRepository(ArticleEntity::class)
+        /** @var Article|null $article */
+        $article = $this->entityManager
+            ->getRepository(Article::class)
             ->findOneBy(['articleId' => $articleId]);
+
+        return $article;
     }
 
-    public function getArticleByNr(string $articleNr): ?ArticleEntity
+    public function getArticleByNr(string $articleNr): ?Article
     {
-        return $this->entityManager
-            ->getRepository(ArticleEntity::class)
+        /** @var Article|null $article */
+        $article = $this->entityManager
+            ->getRepository(Article::class)
             ->findOneBy(['articleNr' => $articleNr]);
+
+        return $article;
     }
 
     /**
@@ -57,10 +65,13 @@ class ArticleDataHandler
     public function getAllArticles(): ?array
     {
         return $this->entityManager
-            ->getRepository(ArticleEntity::class)
+            ->getRepository(Article::class)
             ->findAll();
     }
 
+    /**
+     * @throws Exception
+     */
     public function getAllArticlesWithJoin(): JsonResponse
     {
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
@@ -75,7 +86,10 @@ class ArticleDataHandler
             $results[$key]['incoming_stock'] = 0.00;
             $results[$key]['reserved_stock'] = 0.00;
 
-            $stockOccupancies = $this->stockOccupancyService->getStockOccupancyByArticleId($result['article_id']);
+            /** @var int $articleId */
+            $articleId = $result['article_id'];
+
+            $stockOccupancies = $this->stockOccupancyService->getStockOccupancyByArticleId($articleId);
 
             $inStock = array_column($stockOccupancies, 'in_stock');
             $incomingStock = array_column($stockOccupancies, 'incoming_stock');
@@ -96,26 +110,26 @@ class ArticleDataHandler
             $queryBuilder = $this->entityManager->createQueryBuilder();
             $queryBuilder
                 ->select('art')
-                ->from(ArticleEntity::class, 'art')
+                ->from(Article::class, 'art')
                 ->where('art.articleNr LIKE :article_nr')
                 ->setParameter(':article_nr', '%' . $articleNrInput . '%');
 
             $articles = $queryBuilder->getQuery()->getArrayResult();
 
             foreach ($articles as $article) {
-                $name = $article['articleId'] . ' | ' .
-                    $article['articleNr'] . ' | ' .
-                    $article['articleName'] . ' | ' .
-                    $article['articleCategory'] . ' | ' .
-                    $article['articleWeight'] . ' | ' .
-                    $article['articleEan'] . ' | ' .
-                    $article['articleUnit'] . ' | ' .
-                    $article['articleDepth'] . ' | ' .
-                    $article['articleWidth'] . ' | ' .
-                    $article['articleHeight'] . ' | ' .
-                    $article['stockOutStrategy'] . ' | ' .
-                    $article['standardLoadingEquipment'] . ' | ' .
-                    $article['leQuantity'];
+                $name = $article['articleId'] . ' | '
+                    . $article['articleNr'] . ' | '
+                    . $article['articleName'] . ' | '
+                    . $article['articleCategory'] . ' | '
+                    . $article['articleWeight'] . ' | '
+                    . $article['articleEan'] . ' | '
+                    . $article['articleUnit'] . ' | '
+                    . $article['articleDepth'] . ' | '
+                    . $article['articleWidth'] . ' | '
+                    . $article['articleHeight'] . ' | '
+                    . $article['stockOutStrategy'] . ' | '
+                    . $article['standardLoadingEquipment'] . ' | '
+                    . $article['leQuantity'];
                 $data[] = $name;
             }
         }
@@ -123,29 +137,30 @@ class ArticleDataHandler
         return new JsonResponse($data);
     }
 
-    public function addArticle(ArticleEntity $articleEntity): void
+    public function addArticle(Article $article): void
     {
-        $articleEntity->setCreatedAt($this->dateTimeService->createDateTime());
+        $article->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($articleEntity);
+        $this->save($article);
     }
 
-    public function updateArticle(ArticleEntity $articleEntity): void
+    public function updateArticle(Article $article): void
     {
-        $articleEntity->setUpdatedAt($this->dateTimeService->createDateTime());
+        $article->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($articleEntity);
+        $this->save($article);
     }
 
-    public function deleteArticle(ArticleEntity $articleEntity): void
+    public function deleteArticle(Article $article): void
     {
-        $this->delete($articleEntity);
+        $this->delete($article);
     }
 
-    public function getLastArticle(): ArticleEntity
+    public function getLastArticle(): Article
     {
+        /** @var Article[] $lastArticle */
         $lastArticle = $this->entityManager
-            ->getRepository(ArticleEntity::class)
+            ->getRepository(Article::class)
             ->findBy([], ['articleId' => 'DESC'], 1, 0);
 
         return $lastArticle[0];

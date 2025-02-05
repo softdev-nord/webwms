@@ -7,14 +7,15 @@ namespace WebWMS\Tests\Unit\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\SupplierRepository;
 
-/**
- * @package:    WebWMS\Tests\Unit\Repository
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        SupplierRepositoryTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Repository',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'SupplierRepositoryTest'
+)]
 #[CoversClass(SupplierRepository::class)]
 final class SupplierRepositoryTest extends TestCase
 {

@@ -6,42 +6,43 @@ namespace WebWMS\Service\DataHandlers\CustomerOrder;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\CustomerOrderEntity;
+use WebWMS\Entity\CustomerOrder;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\CustomerOrderEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderDataHandler
- */
-class CustomerOrderDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\CustomerOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrderDataHandler'
+)]
+readonly class CustomerOrderDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(CustomerOrderEntity $customerOrderEntity): void
+    public function save(CustomerOrder $customerOrder): void
     {
-        $this->entityManager->persist($customerOrderEntity);
+        $this->entityManager->persist($customerOrder);
         $this->entityManager->flush();
     }
 
-    public function delete(CustomerOrderEntity $customerOrderEntity): void
+    public function delete(CustomerOrder $customerOrder): void
     {
-        $this->entityManager->remove($customerOrderEntity);
+        $this->entityManager->remove($customerOrder);
         $this->entityManager->flush();
     }
 
     /**
-     * @return CustomerOrderEntity|null Returns an array of CustomerEntity order objects
+     * @return CustomerOrder|null Returns an array of Customer order objects
      */
-    public function getCustomerOrderById(int $id): ?CustomerOrderEntity
+    public function getCustomerOrderById(int $id): ?CustomerOrder
     {
         return $this->entityManager
-            ->getRepository(CustomerOrderEntity::class)
+            ->getRepository(CustomerOrder::class)
             ->findOneBy(['id' => $id]);
     }
 
@@ -135,27 +136,27 @@ class CustomerOrderDataHandler
     public function getLastCustomerOrderId(): array
     {
         $customerOrderRepository = $this->entityManager
-            ->getRepository(CustomerOrderEntity::class);
+            ->getRepository(CustomerOrder::class);
 
         return $customerOrderRepository->findBy([], ['customerOrderId' => 'DESC'], 1, 0);
     }
 
-    public function addCustomerOrder(CustomerOrderEntity $customerOrderEntity): void
+    public function addCustomerOrder(CustomerOrder $customerOrder): void
     {
-        $customerOrderEntity->setCreatedAt($this->dateTimeService->createDateTime());
+        $customerOrder->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customerOrderEntity);
+        $this->save($customerOrder);
     }
 
-    public function updateCustomerOrder(CustomerOrderEntity $customerOrderEntity): void
+    public function updateCustomerOrder(CustomerOrder $customerOrder): void
     {
-        $customerOrderEntity->setUpdatedAt($this->dateTimeService->createDateTime());
+        $customerOrder->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customerOrderEntity);
+        $this->save($customerOrder);
     }
 
-    public function deleteCustomerOrder(CustomerOrderEntity $customerOrderEntity): void
+    public function deleteCustomerOrder(CustomerOrder $customerOrder): void
     {
-        $this->delete($customerOrderEntity);
+        $this->delete($customerOrder);
     }
 }

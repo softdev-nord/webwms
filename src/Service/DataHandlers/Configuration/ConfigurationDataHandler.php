@@ -6,40 +6,41 @@ namespace WebWMS\Service\DataHandlers\Configuration;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use WebWMS\Entity\ConfigurationEntity;
+use WebWMS\Entity\Configuration;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\CustomerOrderEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ConfigurationDataHandler
- */
-class ConfigurationDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\CustomerOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ConfigurationDataHandler'
+)]
+readonly class ConfigurationDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
-    public function save(ConfigurationEntity $configurationEntity): void
+    public function save(Configuration $configuration): void
     {
-        $this->entityManager->persist($configurationEntity);
+        $this->entityManager->persist($configuration);
         $this->entityManager->flush();
     }
 
-    public function delete(ConfigurationEntity $configurationEntity): void
+    public function delete(Configuration $configuration): void
     {
-        $this->entityManager->remove($configurationEntity);
+        $this->entityManager->remove($configuration);
         $this->entityManager->flush();
     }
 
     /**
-     * @return ConfigurationEntity|null Returns an array of ConfigurationController objects
+     * @return Configuration|null Returns an array of Configuration objects
      */
-    public function getConfigurationById(int $configurationId): ?ConfigurationEntity
+    public function getConfigurationById(int $configurationId): ?Configuration
     {
         return $this->entityManager
-            ->getRepository(ConfigurationEntity::class)
+            ->getRepository(Configuration::class)
             ->find($configurationId);
     }
 
@@ -55,7 +56,9 @@ class ConfigurationDataHandler
             ->select('*')
             ->from('configuration');
 
-        return $queryBuilder->executeQuery()->fetchAllAssociative();
+        $result = $queryBuilder->executeQuery();
+
+        return $result->fetchAllAssociative();
     }
 
     /**

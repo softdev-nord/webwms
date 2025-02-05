@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace WebWMS\Bundles\LogViewerBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Bundles\LogViewerBundle
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        LogViewerBundle
- */
+#[ClassInformation(
+    package: 'WebWMS\Bundles\LogViewerBundle',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'LogViewerBundle'
+)]
 class LogViewerBundle extends Bundle
 {
     public function getNiceName(): string

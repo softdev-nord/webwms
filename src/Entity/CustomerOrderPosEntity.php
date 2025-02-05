@@ -15,14 +15,15 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\CustomerOrderPosRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderPosEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrderPos'
+)]
 #[ORM\Table(name: 'customer_orders_pos')]
 #[ORM\Entity(repositoryClass: CustomerOrderPosRepository::class)]
 #[ApiResource(
@@ -62,7 +63,7 @@ use WebWMS\Repository\CustomerOrderPosRepository;
     normalizationContext: ['groups' => ['customerOrderPos:read']],
     denormalizationContext: ['groups' => ['customerOrderPos:write']]
 )]
-class CustomerOrderPosEntity
+class CustomerOrderPos
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -97,9 +98,9 @@ class CustomerOrderPosEntity
     #[Groups(['customerOrderPos:read', 'customerOrderPos:write'])]
     private ?DateTimeInterface $updatedAt = null;
 
-    /** Many CustomerEntity Order Positions have one CustomerEntity Order. This is the owning side. */
-    #[ORM\ManyToOne(targetEntity: CustomerOrderEntity::class, inversedBy: 'customerOrderPos')]
-    private CustomerOrderEntity $customerOrder;
+    /** Many Customer Order Positions have one Customer Order. This is the owning side. */
+    #[ORM\ManyToOne(targetEntity: CustomerOrder::class, inversedBy: 'customerOrderPos')]
+    private CustomerOrder $customerOrder;
 
     public function getId(): int
     {
@@ -173,14 +174,14 @@ class CustomerOrderPosEntity
         return $this;
     }
 
-    public function getCustomerOrder(): CustomerOrderEntity
+    public function getCustomerOrder(): CustomerOrder
     {
         return $this->customerOrder;
     }
 
-    public function setCustomerOrder(CustomerOrderEntity $customerOrderEntity): self
+    public function setCustomerOrder(CustomerOrder $customerOrder): self
     {
-        $this->customerOrder = $customerOrderEntity;
+        $this->customerOrder = $customerOrder;
 
         return $this;
     }

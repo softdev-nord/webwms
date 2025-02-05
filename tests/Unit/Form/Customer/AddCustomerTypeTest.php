@@ -6,17 +6,21 @@ namespace WebWMS\Tests\Unit\Form\Customer;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\CustomerEntity;
+use WebWMS\Entity\Customer;
 use WebWMS\Form\Customer\AddCustomerType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\CustomerEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        AddCustomerTypeTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Customer',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'AddCustomerTypeTest'
+)]
 #[CoversClass(AddCustomerType::class)]
 final class AddCustomerTypeTest extends TestCase
 {
@@ -24,9 +28,21 @@ final class AddCustomerTypeTest extends TestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::once())
+            ->expects(self::exactly(1))
             ->method('add')
-            ->withAnyParameters();
+            ->willReturnOnConsecutiveCalls(
+                ['customerId', HiddenType::class, self::anything()],
+                ['customerNr', TextType::class, self::anything()],
+                ['customerName', TextType::class, self::anything()],
+                ['customerAddressAddition', TextType::class, self::anything()],
+                ['customerAddressStreet', TextType::class, self::anything()],
+                ['customerAddressStreetNr', TextType::class, self::anything()],
+                ['customerCountryCode', TextType::class, self::anything()],
+                ['customerZipCode', TextType::class, self::anything()],
+                ['customerCity', TextType::class, self::anything()],
+                ['save', ButtonType::class, self::anything()],
+                ['abort', ButtonType::class, self::anything()]
+            );
 
         $addCustomerType = new AddCustomerType();
         $addCustomerType->buildForm($builder, []);
@@ -36,9 +52,9 @@ final class AddCustomerTypeTest extends TestCase
     {
         $resolverMock = $this->createMock(OptionsResolver::class);
         $resolverMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
-            ->with(['data_class' => CustomerEntity::class]);
+            ->with(['data_class' => Customer::class]);
 
         $addCustomerType = new AddCustomerType();
         $addCustomerType->configureOptions($resolverMock);

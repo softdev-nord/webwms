@@ -6,14 +6,15 @@ namespace WebWMS\Tests\Unit\Service\Validation;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Validation\SupplierValidationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        SupplierValidationServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'SupplierValidationServiceTest'
+)]
 #[CoversClass(SupplierValidationService::class)]
 final class SupplierValidationServiceTest extends TestCase
 {
@@ -46,7 +47,7 @@ final class SupplierValidationServiceTest extends TestCase
     {
         $requestData = [
             'supplierNr' => '123456',
-            'supplierName' => 'Test SupplierEntity',
+            'supplierName' => 'Test Supplier',
             'supplierAddressStreet' => 'Test Straße',
             'supplierAddressStreetNr' => 'Test Hausnummer',
             'supplierAddressCountryCode' => 'DE',

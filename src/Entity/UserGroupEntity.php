@@ -8,26 +8,35 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Stringable;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\UserGroupRepository;
 
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserGroup'
+)]
 #[ORM\Table(name: 'user_group')]
 #[ORM\Entity(repositoryClass: UserGroupRepository::class)]
-class UserGroupEntity implements GroupInterface, Stringable
+class UserGroup implements GroupInterface, Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(name: 'group', type: Types::STRING, length: 100)]
+    #[ORM\Column(name: 'group', type: Types::INTEGER, length: 100)]
     private string $group;
 
-    #[ORM\Column(name: 'description', type: Types::STRING, length: 150)]
+    #[ORM\Column(name: 'description', type: Types::INTEGER, length: 150)]
     private ?string $description = null;
 
-    /** @var array<string> */
+    /**
+     * @var string[]
+     */
     #[ORM\Column(name: 'roles', type: Types::JSON)]
-    private array $roles = [];
+    private array $roles;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $createdAt = null;
@@ -72,13 +81,11 @@ class UserGroupEntity implements GroupInterface, Stringable
         return $this;
     }
 
-    /** @return array<string> */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
-    /** @param array<string> $roles */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;

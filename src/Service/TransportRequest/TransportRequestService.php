@@ -4,62 +4,68 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\TransportRequest;
 
+use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use WebWMS\Entity\TransportRequestEntity;
+use WebWMS\Entity\TransportRequest;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\TransportRequest\TransportRequestDataHandler;
 
-/**
- * @package:    WebWMS\Service\TransportRequestEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        TransportRequestService
- */
-class TransportRequestService
+#[ClassInformation(
+    package: 'WebWMS\Service\TransportRequest',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'TransportRequestService'
+)]
+readonly class TransportRequestService
 {
     public function __construct(
-        private readonly TransportRequestDataHandler $transportRequestDataHandler
+        private TransportRequestDataHandler $transportRequestDataHandler,
     ) {
     }
 
-    public function getTransportRequestById(int $id): ?TransportRequestEntity
+    public function getTransportRequestById(int $id): ?TransportRequest
     {
         return $this->transportRequestDataHandler
             ->getTransportRequestById($id);
     }
 
+    /**
+     * @throws Exception
+     */
     public function getAllOpenTransportRequests(): JsonResponse
     {
         return $this->transportRequestDataHandler
             ->getAllOpenTransportRequests();
     }
 
-    public function createTransportRequest(Request $request, string $user, string $clientIp): ?Response
+    public function createTransportRequest(Request $request, string $user, string $clientIp): void
     {
-        return $this->transportRequestDataHandler
+        $this->transportRequestDataHandler
             ->createTransportRequest($request, $user, $clientIp);
     }
 
-    public function addTransportRequest(TransportRequestEntity $transportRequestEntity): void
+    public function addTransportRequest(TransportRequest $transportRequest): void
     {
         $this->transportRequestDataHandler
-            ->addTransportRequest($transportRequestEntity);
+            ->addTransportRequest($transportRequest);
     }
 
-    public function updateTransportRequest(TransportRequestEntity $transportRequestEntity): void
+    public function updateTransportRequest(TransportRequest $transportRequest): void
     {
         $this->transportRequestDataHandler
-            ->updateTransportRequest($transportRequestEntity);
+            ->updateTransportRequest($transportRequest);
     }
 
-    public function deleteTransportRequest(TransportRequestEntity $transportRequestEntity): void
+    public function deleteTransportRequest(TransportRequest $transportRequest): void
     {
         $this->transportRequestDataHandler
-            ->deleteTransportRequest($transportRequestEntity);
+            ->deleteTransportRequest($transportRequest);
     }
 
-    /** @return TransportRequestEntity[] */
+    /**
+     * @return TransportRequest[]
+     */
     public function getLastStockUnit(): array
     {
         return $this->transportRequestDataHandler

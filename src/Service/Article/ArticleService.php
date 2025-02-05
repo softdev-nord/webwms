@@ -5,28 +5,29 @@ declare(strict_types=1);
 namespace WebWMS\Service\Article;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\ArticleEntity;
+use WebWMS\Entity\Article;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 
-/**
- * @package:    WebWMS\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ArticleService
- */
-class ArticleService
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ArticleService'
+)]
+readonly class ArticleService
 {
     public function __construct(
-        private readonly ArticleDataHandler $articleDataHandler
+        private ArticleDataHandler $articleDataHandler,
     ) {
     }
 
-    public function getArticleById(int $articleId): ?ArticleEntity
+    public function getArticleById(int $articleId): ?Article
     {
         return $this->articleDataHandler->getArticleById($articleId);
     }
 
-    public function getArticleByNr(string $articleNr): ?ArticleEntity
+    public function getArticleByNr(string $articleNr): ?Article
     {
         return $this->articleDataHandler->getArticleByNr($articleNr);
     }
@@ -41,22 +42,22 @@ class ArticleService
         return $this->articleDataHandler->getArticle($articleNrInput);
     }
 
-    public function addArticle(ArticleEntity $articleEntity): void
+    public function addArticle(Article $article): void
     {
-        $this->articleDataHandler->addArticle($articleEntity);
+        $this->articleDataHandler->addArticle($article);
     }
 
-    public function updateArticle(ArticleEntity $articleEntity): void
+    public function updateArticle(Article $article): void
     {
-        $this->articleDataHandler->updateArticle($articleEntity);
+        $this->articleDataHandler->updateArticle($article);
     }
 
-    public function deleteArticle(ArticleEntity $articleEntity): void
+    public function deleteArticle(Article $article): void
     {
-        $this->articleDataHandler->deleteArticle($articleEntity);
+        $this->articleDataHandler->deleteArticle($article);
     }
 
-    public function getLastArticle(): ArticleEntity
+    public function getLastArticle(): Article
     {
         return $this->articleDataHandler->getLastArticle();
     }

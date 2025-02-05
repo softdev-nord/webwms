@@ -6,71 +6,72 @@ namespace WebWMS\Tests\Unit\Entity;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\BookingMethodEntity;
+use WebWMS\Entity\BookingMethod;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        BookingMethodTest
- */
-#[CoversClass(BookingMethodEntity::class)]
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'BookingMethodTest'
+)]
+#[CoversClass(BookingMethod::class)]
 final class BookingMethodTest extends TestCase
 {
-    private BookingMethodEntity $bookingMethodEntity;
+    private BookingMethod $bookingMethod;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->bookingMethodEntity = new BookingMethodEntity();
+        $this->bookingMethod = new BookingMethod();
     }
 
     public function testGetterAndSetterMethods(): void
     {
         // Test setId() and getId()
         $id = 1;
-        $this->bookingMethodEntity->setId($id);
-        self::assertEquals($id, $this->bookingMethodEntity->getId());
+        $this->bookingMethod->setId($id);
+        self::assertSame($id, $this->bookingMethod->getId());
 
         // Test setConfirmation() and getConfirmation()
         $confirmation = 2;
-        $this->bookingMethodEntity->setConfirmation($confirmation);
-        self::assertEquals($confirmation, $this->bookingMethodEntity->getConfirmation());
+        $this->bookingMethod->setConfirmation($confirmation);
+        self::assertSame($confirmation, $this->bookingMethod->getConfirmation());
 
         // Test setMovementType() and getMovementType()
         $movementType = 'inbound';
-        $this->bookingMethodEntity->setMovementType($movementType);
-        self::assertEquals($movementType, $this->bookingMethodEntity->getMovementType());
+        $this->bookingMethod->setMovementType($movementType);
+        self::assertSame($movementType, $this->bookingMethod->getMovementType());
 
         // Test setDescription() and getDescription()
         $description = 'Test description';
-        $this->bookingMethodEntity->setDescription($description);
-        self::assertEquals($description, $this->bookingMethodEntity->getDescription());
+        $this->bookingMethod->setDescription($description);
+        self::assertSame($description, $this->bookingMethod->getDescription());
 
         // Test setAnsteuerung() and getAnsteuerung()
         $ansteuerung = 3;
-        $this->bookingMethodEntity->setAnsteuerung($ansteuerung);
-        self::assertEquals($ansteuerung, $this->bookingMethodEntity->getAnsteuerung());
+        $this->bookingMethod->setAnsteuerung($ansteuerung);
+        self::assertSame($ansteuerung, $this->bookingMethod->getAnsteuerung());
 
         // Test setUpload() and getUpload()
         $upload = 4;
-        $this->bookingMethodEntity->setUpload($upload);
-        self::assertEquals($upload, $this->bookingMethodEntity->getUpload());
+        $this->bookingMethod->setUpload($upload);
+        self::assertSame($upload, $this->bookingMethod->getUpload());
 
         // Test setStatistics() and getStatistics()
         $statistics = 5;
-        $this->bookingMethodEntity->setStatistics($statistics);
-        self::assertEquals($statistics, $this->bookingMethodEntity->getStatistics());
+        $this->bookingMethod->setStatistics($statistics);
+        self::assertSame($statistics, $this->bookingMethod->getStatistics());
 
         // Test setPriority() and getPriority()
         $priority = 6;
-        $this->bookingMethodEntity->setPriority($priority);
-        self::assertEquals($priority, $this->bookingMethodEntity->getPriority());
+        $this->bookingMethod->setPriority($priority);
+        self::assertSame($priority, $this->bookingMethod->getPriority());
 
         // Test setTidDescription() and getTidDescription()
         $tidDescription = 7;
-        $this->bookingMethodEntity->setTidDescription($tidDescription);
-        self::assertEquals($tidDescription, $this->bookingMethodEntity->getTidDescription());
+        $this->bookingMethod->setTidDescription($tidDescription);
+        self::assertSame($tidDescription, $this->bookingMethod->getTidDescription());
     }
 }

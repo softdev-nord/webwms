@@ -7,17 +7,18 @@ namespace WebWMS\Entity;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\UserRightRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserRightEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserRight'
+)]
 #[ORM\Table(name: 'user_right')]
 #[ORM\Entity(repositoryClass: UserRightRepository::class)]
-class UserRightEntity
+class UserRight
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]

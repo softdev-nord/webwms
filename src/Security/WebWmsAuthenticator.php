@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Security;
 
-use Override;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,17 +17,15 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\UserRepository;
 
-/**
- * @package:    WebWMS\Security
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        WebWmsAuthenticator
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- * @SuppressWarnings(PHPMD.UnusedFormalParameter)
- */
+#[ClassInformation(
+    package: 'WebWMS\Security',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'WebWmsAuthenticator'
+)]
 class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
@@ -37,17 +34,15 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
 
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly UserRepository $userRepository
+        private readonly UserRepository $userRepository,
     ) {
     }
 
-    #[Override]
     public function supports(Request $request): bool
     {
         return $request->isMethod('POST') && $this->getLoginUrl($request) === $request->getRequestUri();
     }
 
-    #[Override]
     public function authenticate(Request $request): Passport
     {
         $username = (string) $request->request->get('username');
@@ -74,10 +69,12 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
-    #[Override]
+    /**
+     * @SuppressWarnings(UnusedFormalParameter)
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if (($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) !== null && ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) !== '' && ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) !== '0') {
+        if (($this->getTargetPath($request->getSession(), $firewallName)) !== null && ($this->getTargetPath($request->getSession(), $firewallName)) !== '' && ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) !== '0') {
             return new RedirectResponse($targetPath);
         }
 
@@ -86,7 +83,9 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
-    #[Override]
+    /**
+     * @SuppressWarnings(UnusedFormalParameter)
+     */
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);

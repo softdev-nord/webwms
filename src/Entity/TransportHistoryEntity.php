@@ -7,17 +7,18 @@ namespace WebWMS\Entity;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\TransportHistoryRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        TransportHistoryEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'TransportHistory'
+)]
 #[ORM\Table(name: 'transport_history')]
 #[ORM\Entity(repositoryClass: TransportHistoryRepository::class)]
-class TransportHistoryEntity
+class TransportHistory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -75,38 +76,38 @@ class TransportHistoryEntity
     #[ORM\Column(name: 'booking_method', type: Types::STRING, length: 10, nullable: false)]
     private string $bookingMethod;
 
-    #[ORM\Column(name: 'doc_id', type: Types::INTEGER, nullable: true, options: ['default' => null])]
-    private ?int $docId = null;
+    #[ORM\Column(name: 'doc_id', type: Types::INTEGER, nullable: false)]
+    private int $docId;
 
-    #[ORM\Column(name: 'order_nr', type: Types::STRING, length: 30, nullable: true)]
-    private ?string $orderNr = null;
+    #[ORM\Column(name: 'order_nr', type: Types::STRING, length: 30, nullable: false)]
+    private string $orderNr;
 
-    #[ORM\Column(name: 'order_pos', type: Types::INTEGER, nullable: true)]
-    private ?int $orderPos = null;
+    #[ORM\Column(name: 'order_pos', type: Types::INTEGER, nullable: false)]
+    private int $orderPos;
 
     #[ORM\Column(name: 'charge', type: Types::STRING, length: 30, nullable: true, options: ['default' => null])]
-    private ?string $charge = null;
+    private string $charge;
 
     #[ORM\Column(name: 'loading_equipment', type: Types::STRING, length: 30, nullable: false)]
     private string $loadingEquipment;
 
-    #[ORM\Column(name: 'confirmation_state', type: Types::INTEGER, nullable: true, options: ['default' => null])]
-    private ?int $confirmationState = null;
+    #[ORM\Column(name: 'confirmation_state', type: Types::INTEGER, nullable: false, options: ['default' => '0'])]
+    private int $confirmationState;
 
-    #[ORM\Column(name: 'tr_username', type: Types::STRING, length: 30, nullable: true)]
-    private ?string $trUsername = null;
+    #[ORM\Column(name: 'tr_username', type: Types::STRING, length: 30, nullable: false)]
+    private string $trUsername;
 
     #[ORM\Column(name: 'tr_computer_ip', type: Types::STRING, length: 30, nullable: false)]
     private string $trComputerIp;
 
-    #[ORM\Column(name: 'tr_blocked', type: Types::BOOLEAN, nullable: true, options: ['default' => false])]
-    private ?bool $trBlocked = null;
+    #[ORM\Column(name: 'tr_blocked', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
+    private bool $trBlocked;
 
     #[ORM\Column(name: 'tr_start_date', type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => null])]
     private ?DateTimeInterface $trStartDate = null;
 
-    #[ORM\Column(name: 'tr_edited', type: Types::BOOLEAN, nullable: true, options: ['default' => false])]
-    private ?bool $trEdited = null;
+    #[ORM\Column(name: 'tr_edited', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
+    private bool $trEdited;
 
     #[ORM\Column(name: 'tr_type', type: Types::INTEGER, nullable: false)]
     private int $trType;
@@ -333,48 +334,48 @@ class TransportHistoryEntity
         return $this;
     }
 
-    public function getDocId(): ?int
+    public function getDocId(): int
     {
         return $this->docId;
     }
 
-    public function setDocId(?int $docId): self
+    public function setDocId(int $docId): self
     {
         $this->docId = $docId;
 
         return $this;
     }
 
-    public function getOrderNr(): ?string
+    public function getOrderNr(): string
     {
         return $this->orderNr;
     }
 
-    public function setOrderNr(?string $orderNr): self
+    public function setOrderNr(string $orderNr): self
     {
         $this->orderNr = $orderNr;
 
         return $this;
     }
 
-    public function getOrderPos(): ?int
+    public function getOrderPos(): int
     {
         return $this->orderPos;
     }
 
-    public function setOrderPos(?int $orderPos): self
+    public function setOrderPos(int $orderPos): self
     {
         $this->orderPos = $orderPos;
 
         return $this;
     }
 
-    public function getCharge(): ?string
+    public function getCharge(): string
     {
         return $this->charge;
     }
 
-    public function setCharge(?string $charge): self
+    public function setCharge(string $charge): self
     {
         $this->charge = $charge;
 
@@ -393,24 +394,24 @@ class TransportHistoryEntity
         return $this;
     }
 
-    public function getConfirmationState(): ?int
+    public function getConfirmationState(): int
     {
         return $this->confirmationState;
     }
 
-    public function setConfirmationState(?int $confirmationState): self
+    public function setConfirmationState(int $confirmationState): self
     {
         $this->confirmationState = $confirmationState;
 
         return $this;
     }
 
-    public function getTrUsername(): ?string
+    public function getTrUsername(): string
     {
         return $this->trUsername;
     }
 
-    public function setTrUsername(?string $trUsername): self
+    public function setTrUsername(string $trUsername): self
     {
         $this->trUsername = $trUsername;
 
@@ -429,12 +430,12 @@ class TransportHistoryEntity
         return $this;
     }
 
-    public function getTrBlocked(): ?bool
+    public function getTrBlocked(): bool
     {
         return $this->trBlocked;
     }
 
-    public function setTrBlocked(?bool $trBlocked): self
+    public function setTrBlocked(bool $trBlocked): self
     {
         $this->trBlocked = $trBlocked;
 
@@ -446,19 +447,19 @@ class TransportHistoryEntity
         return $this->trStartDate;
     }
 
-    public function setTrStartDate(?DateTimeInterface $trStartDate): self
+    public function setTrStartDate(DateTimeInterface $trStartDate): self
     {
         $this->trStartDate = $trStartDate;
 
         return $this;
     }
 
-    public function getTrEdited(): ?bool
+    public function getTrEdited(): bool
     {
         return $this->trEdited;
     }
 
-    public function setTrEdited(?bool $trEdited): self
+    public function setTrEdited(bool $trEdited): self
     {
         $this->trEdited = $trEdited;
 

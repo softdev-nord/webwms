@@ -6,46 +6,47 @@ namespace WebWMS\Service\DataHandlers\Supplier;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\SupplierEntity;
+use WebWMS\Entity\Supplier;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\SupplierEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierDataHandler
- */
-class SupplierDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Supplier',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierDataHandler'
+)]
+readonly class SupplierDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(SupplierEntity $supplierEntity): void
+    public function save(Supplier $supplier): void
     {
-        $this->entityManager->persist($supplierEntity);
+        $this->entityManager->persist($supplier);
         $this->entityManager->flush();
     }
 
-    public function delete(SupplierEntity $supplierEntity): void
+    public function delete(Supplier $supplier): void
     {
-        $this->entityManager->remove($supplierEntity);
+        $this->entityManager->remove($supplier);
         $this->entityManager->flush();
     }
 
-    public function getSupplierById(int $supplierId): ?SupplierEntity
+    public function getSupplierById(int $supplierId): ?Supplier
     {
         return $this->entityManager
-            ->getRepository(SupplierEntity::class)
+            ->getRepository(Supplier::class)
             ->findOneBy(['supplierId' => $supplierId]);
     }
 
-    public function getSupplierByNr(int $supplierNr): ?SupplierEntity
+    public function getSupplierByNr(int $supplierNr): ?Supplier
     {
         return $this->entityManager
-            ->getRepository(SupplierEntity::class)
+            ->getRepository(Supplier::class)
             ->findOneBy(['supplierNr' => $supplierNr]);
     }
 
@@ -59,23 +60,23 @@ class SupplierDataHandler
             $queryBuilder = $this->entityManager->createQueryBuilder();
             $queryBuilder
                 ->select('s')
-                ->from(SupplierEntity::class, 's')
+                ->from(Supplier::class, 's')
                 ->where('s.supplierNr LIKE :supplier_nr')
                 ->setParameter(':supplier_nr', '' . $supplierNrInput . '%');
 
             $suppliers = $queryBuilder->getQuery()->getArrayResult();
 
             foreach ($suppliers as $supplier) {
-                $nameSupplier = $supplier['supplierId'] . ' | ' .
-                    $supplier['supplierNr'] . ' | ' .
-                    $supplier['supplierName'] . ' | ' .
-                    $supplier['supplierAddressAddition'] . ' | ' .
-                    $supplier['supplierAddressStreet'] . ' | ' .
-                    $supplier['supplierAddressStreetNr'] . ' | ' .
-                    $supplier['supplierAddressCountryCode'] . ' | ' .
-                    $supplier['supplierAddressZipcode'] . ' | ' .
-                    $supplier['supplierAddressCity'] . ' | ' .
-                    $supplier['supplierId'];
+                $nameSupplier = $supplier['supplierId'] . ' | '
+                    . $supplier['supplierNr'] . ' | '
+                    . $supplier['supplierName'] . ' | '
+                    . $supplier['supplierAddressAddition'] . ' | '
+                    . $supplier['supplierAddressStreet'] . ' | '
+                    . $supplier['supplierAddressStreetNr'] . ' | '
+                    . $supplier['supplierAddressCountryCode'] . ' | '
+                    . $supplier['supplierAddressZipcode'] . ' | '
+                    . $supplier['supplierAddressCity'] . ' | '
+                    . $supplier['supplierId'];
 
                 $data[] = $nameSupplier;
             }
@@ -138,28 +139,28 @@ class SupplierDataHandler
         return $this->entityManager
             ->createQueryBuilder()
             ->select('c')
-            ->from(SupplierEntity::class, 'c')
+            ->from(Supplier::class, 'c')
             ->getQuery()
             ->getArrayResult();
     }
 
-    public function addSupplier(SupplierEntity $supplierEntity): void
+    public function addSupplier(Supplier $supplier): void
     {
-        $supplierEntity->setCreatedAt($this->dateTimeService->createDateTime());
+        $supplier->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($supplierEntity);
+        $this->save($supplier);
     }
 
-    public function updateSupplier(SupplierEntity $supplierEntity): void
+    public function updateSupplier(Supplier $supplier): void
     {
-        $supplierEntity->setUpdatedAt($this->dateTimeService->createDateTime());
+        $supplier->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($supplierEntity);
+        $this->save($supplier);
     }
 
-    public function deleteSupplier(SupplierEntity $supplierEntity): void
+    public function deleteSupplier(Supplier $supplier): void
     {
-        $this->delete($supplierEntity);
+        $this->delete($supplier);
     }
 
     public function getLastSupplier(): int
@@ -167,12 +168,15 @@ class SupplierDataHandler
         $result = $this->entityManager
             ->createQueryBuilder()
             ->select('c.supplierId')
-            ->from(SupplierEntity::class, 'c')
+            ->from(Supplier::class, 'c')
             ->addOrderBy('c.supplierId', 'DESC')
             ->getQuery()
             ->setMaxResults(1)
             ->getArrayResult();
 
-        return (int) $result[0]['supplierId'];
+        /** @var int $supplierId */
+        $supplierId = $result[0]['supplierId'];
+
+        return $supplierId;
     }
 }

@@ -4,54 +4,44 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
-/**
- * @package:    WebWMS\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserValidationService
- */
+use WebWMS\Entity\User;
+use WebWMS\Helper\Attribute\ClassInformation;
+
+#[ClassInformation(
+    package: 'WebWMS\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserValidationService'
+)]
 class UserValidationService
 {
     /**
-     * @param array<mixed> $requestData
      * @return array<string, array<string>|bool|string|null>
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(CyclomaticComplexity)
+     * @SuppressWarnings(NPathComplexity)
+     * @SuppressWarnings(ElseExpression)
      */
-    public function validateUserData(array $requestData): array
+    public function validateUserData(User $user): array
     {
         $responseData = [];
 
-        if (!$requestData['username']) {
+        if ($user->getUserIdentifier() === '0') {
             $responseData['error']['username'] = 'Der Benutzername darf nicht leer sein.';
         } else {
-            $responseData['username'] = $requestData['username'];
+            $responseData['username'] = $user->getUserIdentifier();
         }
 
-        if (!$requestData['firstname']) {
+        if ($user->getFirstname() === '' || $user->getFirstname() === '0') {
             $responseData['error']['firstname'] = 'Der Vorname darf nicht leer sein.';
         } else {
-            $responseData['firstname'] = $requestData['firstname'];
+            $responseData['firstname'] = $user->getFirstname();
         }
 
-        if (!$requestData['lastname']) {
+        if ($user->getLastname() === '' || $user->getLastname() === '0') {
             $responseData['error']['lastname'] = 'Der Nachname darf nicht leer sein.';
         } else {
-            $responseData['lastname'] = $requestData['lastname'];
-        }
-
-        if (!$requestData['email']) {
-            $responseData['error']['email'] = 'Die E-Mail-Adresse darf nicht leer sein.';
-        } else {
-            $responseData['email'] = $requestData['email'];
-        }
-
-        if (!$requestData['userGroups']) {
-            $responseData['error']['userGroups'] = 'Sie müssen mindestens eine Benutzergruppe auswählen.';
-        } else {
-            $responseData['userGroups'] = $requestData['userGroups'];
+            $responseData['lastname'] = $user->getLastname();
         }
 
         if (!isset($responseData['error'])) {

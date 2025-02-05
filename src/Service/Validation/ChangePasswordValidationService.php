@@ -6,37 +6,38 @@ namespace WebWMS\Service\Validation;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\User;
 use WebWMS\Form\User\Model\ChangePassword;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ChangePasswordValidationService
- */
-class ChangePasswordValidationService
+#[ClassInformation(
+    package: 'WebWMS\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ChangePasswordValidationService'
+)]
+readonly class ChangePasswordValidationService
 {
     public function __construct(
-        private readonly UserPasswordHasherInterface $userPasswordHasher
+        private UserPasswordHasherInterface $userPasswordHasher,
     ) {
     }
 
     /**
      * @return array<string, array<string, array<string>|string>|bool|string>
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(CyclomaticComplexity)
+     * @SuppressWarnings(NPathComplexity)
+     * @SuppressWarnings(ElseExpression)
      */
-    public function validateChangePasswordData(UserEntity $userEntity, FormInterface $form): array
+    public function validateChangePasswordData(User $user, FormInterface $form): array
     {
         /** @var ChangePassword $requestData */
         $requestData = $form->getData();
 
         $hashedPassword = $this->userPasswordHasher
             ->isPasswordValid(
-                $userEntity,
+                $user,
                 $requestData->getOldPassword()
             );
 

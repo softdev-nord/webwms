@@ -4,30 +4,29 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\Customer;
 
-use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\CustomerEntity;
+use WebWMS\Entity\Customer;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Form
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        EditCustomerType
- */
+#[ClassInformation(
+    package: 'WebWMS\Form\Customer',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'EditCustomerType'
+)]
 class EditCustomerType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
      */
-    #[Override]
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
+        $formBuilder
             ->add('customerId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
@@ -124,11 +123,10 @@ class EditCustomerType extends AbstractType
         ;
     }
 
-    #[Override]
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => CustomerEntity::class,
+        $optionsResolver->setDefaults([
+            'data_class' => Customer::class,
         ]);
     }
 }

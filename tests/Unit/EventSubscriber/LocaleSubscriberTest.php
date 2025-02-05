@@ -11,13 +11,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use WebWMS\EventSubscriber\LocaleSubscriber;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\EventSubscriber
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        LocaleSubscriberTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\EventSubscriber',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'LocaleSubscriberTest'
+)]
 #[CoversClass(LocaleSubscriber::class)]
 final class LocaleSubscriberTest extends TestCase
 {
@@ -29,23 +30,23 @@ final class LocaleSubscriberTest extends TestCase
         $event = $this->createMock(RequestEvent::class);
 
         $request
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getSession')
             ->willReturn($session);
 
         $session
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('get')
             ->with(self::equalTo('_locale'), self::equalTo('de'))
             ->willReturn('fr');
 
         $request
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setLocale')
             ->with(self::equalTo('fr'));
 
         $event
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getRequest')
             ->willReturn($request);
 

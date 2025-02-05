@@ -9,29 +9,30 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\StockLayoutEntity;
+use WebWMS\Entity\StockLayout as StockLayoutEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\StockLayoutFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLayoutService;
 use WebWMS\Service\Validation\StockLayoutValidationService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLayoutController
- */
-class StockLayoutController extends AbstractController
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLayout'
+)]
+class StockLayout extends AbstractController
 {
     public function __construct(
         private readonly StockLayoutService $stockLayoutService,
         private readonly RequirementsService $requirementsService,
         private readonly LoggingService $loggingService,
         private readonly StockLayoutFormHelper $stockLayoutFormHelper,
-        private readonly StockLayoutValidationService $stockLayoutValidationService
+        private readonly StockLayoutValidationService $stockLayoutValidationService,
     ) {
     }
 

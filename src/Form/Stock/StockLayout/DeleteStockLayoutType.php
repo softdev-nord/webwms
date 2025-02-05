@@ -9,49 +9,50 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\StockLayoutEntity;
+use WebWMS\Entity\StockLayout;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Form\Stock\StockLayoutEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        DeleteStockLayoutType
- */
+#[ClassInformation(
+    package: 'WebWMS\Form\Stock\StockLayout',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'DeleteStockLayoutType'
+)]
 class DeleteStockLayoutType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
-            ->add('id', HiddenType::class, [
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'id' => 'stockLocationId',
-                    'data-type' => 'stockLocationId',
-                ],
-            ])
-            ->add('delete', ButtonType::class, [
-                'label' => 'Löschen',
-                'attr' => [
-                    'class' => 'btn btn-primary btn3d',
-                ],
-            ])
-            ->add('abort', ButtonType::class, [
-                'label' => 'Abbrechen',
-                'attr' => [
-                    'class' => 'btn btn-primary btn3d abort',
-                ],
-            ])
+        $formBuilder
+          ->add('id', HiddenType::class, [
+            'label' => false,
+            'attr' => [
+              'class' => 'form-control',
+              'id' => 'stockLocationId',
+              'data-type' => 'stockLocationId',
+            ],
+          ])
+          ->add('delete', ButtonType::class, [
+            'label' => 'Löschen',
+            'attr' => [
+              'class' => 'btn btn-primary btn3d',
+            ],
+          ])
+          ->add('abort', ButtonType::class, [
+            'label' => 'Abbrechen',
+            'attr' => [
+              'class' => 'btn btn-primary btn3d abort',
+            ],
+          ])
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => StockLayoutEntity::class,
+        $optionsResolver->setDefaults([
+          'data_class' => StockLayout::class,
         ]);
     }
 }

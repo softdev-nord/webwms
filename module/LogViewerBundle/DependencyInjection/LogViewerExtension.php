@@ -9,13 +9,14 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Bundles\LogViewerBundle\DependencyInjection
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2022, SoftDev Nord
- * Class        LogViewerExtension
- */
+#[ClassInformation(
+    package: 'WebWMS\Bundles\LogViewerBundle\DependencyInjection',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'LogViewerExtension'
+)]
 class LogViewerExtension extends Extension
 {
     /**

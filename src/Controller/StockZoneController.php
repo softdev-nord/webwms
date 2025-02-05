@@ -9,29 +9,30 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\StockZoneEntity;
+use WebWMS\Entity\StockZone as StockZoneEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\StockZoneFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockZoneService;
 use WebWMS\Service\Validation\StockZoneValidationService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockZoneController
- */
-class StockZoneController extends AbstractController
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockZone'
+)]
+class StockZone extends AbstractController
 {
     public function __construct(
         private readonly StockZoneService $stockZoneService,
         private readonly RequirementsService $requirementsService,
         private readonly LoggingService $loggingService,
         private readonly StockZoneFormHelper $stockZoneFormHelper,
-        private readonly StockZoneValidationService $stockZoneValidationService
+        private readonly StockZoneValidationService $stockZoneValidationService,
     ) {
     }
 

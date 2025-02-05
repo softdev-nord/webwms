@@ -10,23 +10,23 @@ use Symfony\Component\Form\FormTypeInterface;
 use WebWMS\Form\Supplier\AddSupplierType;
 use WebWMS\Form\Supplier\DeleteSupplierType;
 use WebWMS\Form\Supplier\EditSupplierType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierFormHelper
- */
-class SupplierFormHelper
+#[ClassInformation(
+    package: 'WebWMS\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierFormHelper'
+)]
+readonly class SupplierFormHelper
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory
+        private FormFactoryInterface $formFactory,
     ) {
     }
 
     /**
      * @param class-string<FormTypeInterface<mixed>> $type
-     * @param mixed|null $data
      * @param array<string> $options
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface

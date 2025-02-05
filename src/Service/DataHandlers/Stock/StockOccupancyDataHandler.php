@@ -7,84 +7,45 @@ namespace WebWMS\Service\DataHandlers\Stock;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockOccupancyEntity;
+use WebWMS\Entity\StockOccupancy;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockOccupancyDataHandler
- */
-class StockOccupancyDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockOccupancyDataHandler'
+)]
+readonly class StockOccupancyDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
-    public function save(StockOccupancyEntity $stockOccupancyEntity): void
+    public function save(StockOccupancy $stockOccupancy): void
     {
-        $this->entityManager->persist($stockOccupancyEntity);
+        $this->entityManager->persist($stockOccupancy);
         $this->entityManager->flush();
     }
 
-    public function update(StockOccupancyEntity $stockOccupancyEntity): void
+    public function update(StockOccupancy $stockOccupancy): void
     {
-        $this->entityManager->persist($stockOccupancyEntity);
+        $this->entityManager->persist($stockOccupancy);
         $this->entityManager->flush();
     }
 
-    public function delete(StockOccupancyEntity $stockOccupancyEntity): void
+    public function delete(StockOccupancy $stockOccupancy): void
     {
-        $this->entityManager->remove($stockOccupancyEntity);
+        $this->entityManager->remove($stockOccupancy);
         $this->entityManager->flush();
-    }
-
-    public function getStockOccupancyById(int $id): ?StockOccupancyEntity
-    {
-        return $this->entityManager
-            ->getRepository(StockOccupancyEntity::class)
-            ->findOneBy(['id' => $id]);
-    }
-
-    public function getStockOccupancyByStockLocationId(int $stockLocationId): ?StockOccupancyEntity
-    {
-        return $this->entityManager
-            ->getRepository(StockOccupancyEntity::class)
-            ->findOneBy(['stockLocationId' => $stockLocationId]);
-    }
-
-    /**
-     * @throws Exception
-     * @return array<int, array<string, mixed>>
-     */
-    public function getStockOccupancyByCoordinate(string $stockCoordinate): array
-    {
-        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
-
-        $queryBuilder
-            ->select(
-                'art.article_nr,
-                so.stock_coordinate,
-                art.article_name,
-                so.incoming_stock,
-                so.reserved_stock,
-                so.in_stock,
-                so.last_incoming,
-                so.last_outgoing')
-            ->from('stock_occupancy', 'so')
-            ->leftJoin('so', 'article', 'art', 'so.article_id = art.article_id')
-            ->where('so.stock_coordinate = :stock_coordinate')
-            ->setParameter('stock_coordinate', $stockCoordinate);
-
-        return $queryBuilder->executeQuery()->fetchAllAssociative();
     }
 
     /**
      * @throws Exception
      * @return array<int, array<string, mixed>>
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(ElseExpression)
      */
     public function getStockOccupancy(int $stockLocationLn): array
     {
@@ -99,14 +60,16 @@ class StockOccupancyDataHandler
             sl.stock_location_sp AS sp,
             sl.stock_location_tf AS tf,
             sl.stock_location_desc,
-            (COALESCE(in_stock, 0) + COALESCE(incoming_stock, 0) + COALESCE(reserved_stock, 0)) AS lp_bestand')
-            ->from('stock_occupancy', 'so')
-            ->rightJoin('so', 'stock_location', 'sl', 'so.stock_location_id = sl.stock_location_id')
-            ->where('sl.stock_location_ln = :stock_location_ln')
+            (SELECT SUM((SELECT IF(tr_type = 1, tr_quantity, 0.000))) FROM transport_history WHERE stock_coordinate = tph.stock_coordinate GROUP BY stock_coordinate LIMIT 1) - (SELECT SUM((SELECT IF(tr_type = 2, tr_quantity, 0.000))) FROM transport_history WHERE stock_coordinate = tph.stock_coordinate GROUP BY stock_coordinate LIMIT 1) AS lp_bestand')
+            ->from('transport_history', 'tph')
+            ->rightJoin('tph', 'stock_location', 'sl', 'tph.stock_coordinate = sl.stock_location_coordinate')
+            ->andWhere('sl.stock_location_ln = :stock_location_ln')
             ->setParameter('stock_location_ln', $stockLocationLn)
             ->groupBy('sl.stock_location_coordinate');
 
-        $results = $queryBuilder->executeQuery()->fetchAllAssociative();
+        $stmt = $queryBuilder->executeQuery();
+
+        $results = $stmt->fetchAllAssociative();
 
         foreach ($results as $result) {
             if ($result['lp_bestand'] > 0) {
@@ -141,7 +104,7 @@ class StockOccupancyDataHandler
      * @throws Exception
      * @return array<string|int|mixed>
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(ElseExpression)
      */
     public function getStockOccupancyByArticleNr(int $articleNr): array
     {
@@ -169,29 +132,9 @@ class StockOccupancyDataHandler
             ->setParameter('article_nr', $articleNr)
             ->groupBy('tph.su_id');
 
-        return $queryBuilder->executeQuery()->fetchAllAssociative();
-    }
+        $result = $queryBuilder->executeQuery();
 
-    /**
-     * @throws Exception
-     * @return array<string|int|mixed>
-     *
-     * @SuppressWarnings(PHPMD.ElseExpression)
-     */
-    public function getStockOccupancyByArticleId(int $articleId): array
-    {
-        $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
-
-        $queryBuilder
-            ->select('so.stock_location_id,
-            so.in_stock,
-            so.incoming_stock,
-            so.reserved_stock')
-            ->from('stock_occupancy', 'so')
-            ->where('so.article_id = :article_id')
-            ->setParameter('article_id', $articleId);
-
-        return $queryBuilder->executeQuery()->fetchAllAssociative();
+        return $result->fetchAllAssociative();
     }
 
     /**
@@ -202,26 +145,24 @@ class StockOccupancyDataHandler
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
 
         $queryBuilder
-            ->select('
-                sl.stock_location_coordinate,
-                sl.stock_location_ln,
-                sl.stock_location_fb,
-                sl.stock_location_sp,
-                sl.stock_location_tf,
-                art.article_nr,
-                art.article_name,
-                so.in_stock,
-                so.incoming_stock,
-                so.reserved_stock,
-                so.last_incoming,
-                so.last_outgoing
-            ')
-            ->from('stock_occupancy', 'so')
-            ->leftJoin('so', 'stock_location', 'sl', 'so.stock_coordinate = sl.stock_location_coordinate')
-            ->leftJoin('so', 'transport_request', 'tr', 'tr.stock_coordinate = sl.stock_location_coordinate')
-            ->leftJoin('so', 'transport_history', 'th', 'th.stock_coordinate = sl.stock_location_coordinate')
-            ->innerJoin('so', 'article', 'art', 'so.article_id = art.article_id')
-            ->groupBy('sl.stock_location_coordinate');
+            ->select('tph.id AS id,
+            tph.stock_coordinate AS koordinate,
+            tph.stock_nr AS ln,
+            tph.stock_level1 AS fb,
+            tph.stock_level2 AS sp,
+            tph.stock_level3 AS tf,
+            tph.su_id AS lagereinheit,
+            tph.article_nr AS article_nr,
+            art.article_name AS bezeichnung,
+            (SELECT SUM((SELECT IF(stock_coordinate = ta.stock_coordinate AND tr_type = 1, tr_quantity, 0.000))) FROM transport_request GROUP BY stock_coordinate LIMIT 1) AS trans_ein,
+            (SELECT SUM((SELECT IF(stock_coordinate = ta.stock_coordinate AND tr_type = 2, tr_quantity, 0.000))) FROM transport_request GROUP BY stock_coordinate LIMIT 1) AS trans_aus,
+            (SELECT SUM((SELECT IF(tr_type = 1, tr_quantity, 0.000))) FROM transport_history WHERE stock_coordinate = tph.stock_coordinate AND su_id = tph.su_id GROUP BY stock_coordinate LIMIT 1) - (SELECT SUM((SELECT IF(tr_type = 2, tr_quantity, 0.000))) FROM transport_history WHERE stock_coordinate = tph.stock_coordinate AND su_id = tph.su_id GROUP BY stock_coordinate LIMIT 1) AS lp_bestand,
+            (SELECT IF(tr_type = 1, DATE_FORMAT(tr_access,"%d.%m.%Y %T"), "") FROM transport_history WHERE stock_coordinate = tph.stock_coordinate ORDER BY tr_access DESC LIMIT 1) AS letzter_zugang,
+            (SELECT IF(tr_type = 2, DATE_FORMAT(tr_dispatch,"%d.%m.%Y %T"), "") FROM transport_history WHERE stock_coordinate = tph.stock_coordinate ORDER BY tr_dispatch DESC LIMIT 1) AS letzter_abgang')
+            ->from('transport_history', 'tph')
+            ->leftJoin('tph', 'transport_request', 'ta', 'tph.stock_coordinate = ta.stock_coordinate')
+            ->innerJoin('tph', 'article', 'art', 'tph.article_nr = art.article_nr')
+            ->groupBy('tph.su_id');
 
         $result = $queryBuilder->executeQuery();
 

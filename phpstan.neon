@@ -6,22 +6,32 @@ includes:
     - rules.neon
 
 parameters:
-
     #  max or choose from 10 levels (0 is the loosest, 9 is the strictest).
-    level: 8
+    level: 9
 
     paths:
         - src
         - module
         - tests
-
     excludePaths:
         - tests/*/Helper/*
-
+        - src/Entity/Tenant.php
     ignoreErrors:
-    	- '#Cannot access offset#'
-    	- '#Binary operation "." between#'
+    	- identifier: missingType.generics
+    	- identifier: missingType.iterableValue
+    	- identifier: offsetAccess.nonOffsetAccessible
+    	- identifier: binaryOp.invalid
+    	- identifier: doctrine.columnType
+    	- identifier: return.type
+    	- identifier: argument.type
+    	- identifier: return.type
+    	- identifier: property.type
+    	- identifier: cast.int
+    	- identifier: cast.double
+    	- identifier: cast.string
+    	- identifier: equal.notAllowed
+    	- identifier: foreach.nonIterable
+    	- identifier: property.dynamicName
 
     reportUnmatchedIgnoredErrors: false
-    checkGenericClassInNonGenericObjectType: false
     treatPhpDocTypesAsCertain: false

@@ -7,18 +7,19 @@ namespace WebWMS\Service;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Logging\LoggingDataHandler;
 
-/**
- * @package:    WebWMS\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        LoggingService
- */
-class LoggingService
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'LoggingService'
+)]
+readonly class LoggingService
 {
     public function __construct(
-        private readonly LoggingDataHandler $loggingDataHandler
+        private LoggingDataHandler $loggingDataHandler,
     ) {
     }
 

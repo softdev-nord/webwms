@@ -6,46 +6,47 @@ namespace WebWMS\Service\DataHandlers\CustomerOrderPos;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\CustomerOrderPosEntity;
+use WebWMS\Entity\CustomerOrderPos;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\CustomerOrderPosEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderPosDataHandler
- */
-class CustomerOrderPosDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\CustomerOrderPos',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrderPosDataHandler'
+)]
+readonly class CustomerOrderPosDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(CustomerOrderPosEntity $customerOrderPosEntity): void
+    public function save(CustomerOrderPos $customerOrderPos): void
     {
-        $this->entityManager->persist($customerOrderPosEntity);
+        $this->entityManager->persist($customerOrderPos);
         $this->entityManager->flush();
     }
 
-    public function delete(CustomerOrderPosEntity $customerOrderPosEntity): void
+    public function delete(CustomerOrderPos $customerOrderPos): void
     {
-        $this->entityManager->remove($customerOrderPosEntity);
+        $this->entityManager->remove($customerOrderPos);
         $this->entityManager->flush();
     }
 
-    public function getCustomerOrderPosById(int $customerOrderPosId): ?CustomerOrderPosEntity
+    public function getCustomerOrderPosById(int $customerOrderPosId): ?CustomerOrderPos
     {
         return $this->entityManager
-            ->getRepository(CustomerOrderPosEntity::class)
+            ->getRepository(CustomerOrderPos::class)
             ->findOneBy(['id' => $customerOrderPosId]);
     }
 
-    public function getCustomerOrderPosByCustomerOrderId(int $customerOrderId): ?CustomerOrderPosEntity
+    public function getCustomerOrderPosByCustomerOrderId(int $customerOrderId): ?CustomerOrderPos
     {
         return $this->entityManager
-            ->getRepository(CustomerOrderPosEntity::class)
+            ->getRepository(CustomerOrderPos::class)
             ->find($customerOrderId);
     }
 
@@ -64,24 +65,24 @@ class CustomerOrderPosDataHandler
         return new JsonResponse($results);
     }
 
-    public function addCustomerOrderPos(CustomerOrderPosEntity $customerOrderPosEntity): void
+    public function addCustomerOrderPos(CustomerOrderPos $customerOrderPos): void
     {
-        $customerOrderPosEntity->setCreatedAt($this->dateTimeService->createDateTime());
+        $customerOrderPos->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customerOrderPosEntity);
+        $this->save($customerOrderPos);
     }
 
-    public function updateCustomerOrderPos(CustomerOrderPosEntity $customerOrderPosEntity): void
+    public function updateCustomerOrderPos(CustomerOrderPos $customerOrderPos): void
     {
-        $customerOrderPosEntity->setUpdatedAt($this->dateTimeService->createDateTime());
+        $customerOrderPos->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customerOrderPosEntity);
+        $this->save($customerOrderPos);
     }
 
-    public function deleteCustomerOrderPos(?CustomerOrderPosEntity $customerOrderPosEntity): void
+    public function deleteCustomerOrderPos(?CustomerOrderPos $customerOrderPos): void
     {
-        if ($customerOrderPosEntity instanceof CustomerOrderPosEntity) {
-            $this->delete($customerOrderPosEntity);
+        if ($customerOrderPos instanceof CustomerOrderPos) {
+            $this->delete($customerOrderPos);
         }
     }
 }

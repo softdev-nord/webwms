@@ -7,18 +7,19 @@ namespace WebWMS\Tests\Unit\Entity;
 use DateTime;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\LoggingEntity;
+use WebWMS\Entity\Logging;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        LoggingTest
- */
-#[CoversClass(LoggingEntity::class)]
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'LoggingTest'
+)]
+#[CoversClass(Logging::class)]
 final class LoggingTest extends TestCase
 {
-    private LoggingEntity $loggingEntity;
+    private Logging $logging;
 
     private DateTime $dateTime;
 
@@ -26,7 +27,7 @@ final class LoggingTest extends TestCase
     {
         parent::setUp();
 
-        $this->loggingEntity = new LoggingEntity();
+        $this->logging = new Logging();
         $this->dateTime = new DateTime();
     }
 
@@ -34,37 +35,37 @@ final class LoggingTest extends TestCase
     {
         // Test setId() and getId()
         $id = 1;
-        $this->loggingEntity->setId($id);
-        self::assertEquals($id, $this->loggingEntity->getId());
+        $this->logging->setId($id);
+        self::assertSame($id, $this->logging->getId());
 
         // Test setRoute() and getRoute()
         $route = 'route';
-        $this->loggingEntity->setRoute($route);
-        self::assertEquals($route, $this->loggingEntity->getRoute());
+        $this->logging->setRoute($route);
+        self::assertSame($route, $this->logging->getRoute());
 
         // Test setMessage() and getMessage()
         $message = 'Test Message';
-        $this->loggingEntity->setMessage($message);
-        self::assertEquals($message, $this->loggingEntity->getMessage());
+        $this->logging->setMessage($message);
+        self::assertSame($message, $this->logging->getMessage());
 
         // Test setDate() and getDate()
         $date = $this->dateTime;
-        $this->loggingEntity->setDate($date);
-        self::assertEquals($date, $this->loggingEntity->getDate());
+        $this->logging->setDate($date);
+        self::assertEquals($date, $this->logging->getDate());
 
         // Test setUser() and getUser()
         $articleName = 'Rene Irrgang';
-        $this->loggingEntity->setUser($articleName);
-        self::assertEquals($articleName, $this->loggingEntity->getUser());
+        $this->logging->setUser($articleName);
+        self::assertSame($articleName, $this->logging->getUser());
 
         // Test setIpAddress() and getIpAddress()
         $quantity = '123.123.123.123';
-        $this->loggingEntity->setIpAddress($quantity);
-        self::assertEquals($quantity, $this->loggingEntity->getIpAddress());
+        $this->logging->setIpAddress($quantity);
+        self::assertSame($quantity, $this->logging->getIpAddress());
 
         // Test setUserAgent() and getUserAgent()
         $userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36';
-        $this->loggingEntity->setUserAgent($userAgent);
-        self::assertEquals($userAgent, $this->loggingEntity->getUserAgent());
+        $this->logging->setUserAgent($userAgent);
+        self::assertSame($userAgent, $this->logging->getUserAgent());
     }
 }

@@ -6,17 +6,20 @@ namespace WebWMS\Tests\Unit\Form\User;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Form\User\ChangePasswordType;
 use WebWMS\Form\User\Model\ChangePassword;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\UserController
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        ChangePasswordTypeTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\User',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'ChangePasswordTypeTest'
+)]
 #[CoversClass(ChangePasswordType::class)]
 final class ChangePasswordTypeTest extends TestCase
 {
@@ -24,9 +27,14 @@ final class ChangePasswordTypeTest extends TestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::once())
+            ->expects(self::exactly(1))
             ->method('add')
-            ->withAnyParameters();
+            ->willReturnOnConsecutiveCalls(
+                ['oldPassword', PasswordType::class, self::anything()],
+                ['newPassword', PasswordType::class, self::anything()],
+                ['save', ButtonType::class, self::anything()],
+                ['abort', ButtonType::class, self::anything()]
+            );
 
         $changePasswordType = new ChangePasswordType();
         $changePasswordType->buildForm($builder, []);
@@ -36,7 +44,7 @@ final class ChangePasswordTypeTest extends TestCase
     {
         $resolver = $this->createMock(OptionsResolver::class);
         $resolver
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with([
                 'data_class' => ChangePassword::class,

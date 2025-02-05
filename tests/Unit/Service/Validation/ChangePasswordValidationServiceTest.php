@@ -8,16 +8,17 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\User;
 use WebWMS\Form\User\Model\ChangePassword;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Validation\ChangePasswordValidationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        ChangePasswordValidationServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'ChangePasswordValidationServiceTest'
+)]
 #[CoversClass(ChangePasswordValidationService::class)]
 final class ChangePasswordValidationServiceTest extends TestCase
 {
@@ -28,15 +29,15 @@ final class ChangePasswordValidationServiceTest extends TestCase
         $passwordHasherMock = $this->createMock(UserPasswordHasherInterface::class);
         $passwordHasherMock
             ->method('isPasswordValid')
-            ->willReturnCallback(static fn (UserEntity $userEntity, string $password): bool => $userEntity->getPassword() === $password);
+            ->willReturnCallback(fn (User $user, string $password): bool => $user->getPassword() === $password);
 
         $this->changePasswordValidationService = new ChangePasswordValidationService($passwordHasherMock);
     }
 
     public function testValidateChangePasswordDataWithValidData(): void
     {
-        $userEntity = new UserEntity();
-        $userEntity->setPassword('old_password');
+        $user = new User();
+        $user->setPassword('old_password');
 
         $changePassword = new ChangePassword();
         $changePassword->setOldPassword('old_password');
@@ -51,15 +52,15 @@ final class ChangePasswordValidationServiceTest extends TestCase
             'success' => true,
         ];
 
-        $actualResponseData = $this->changePasswordValidationService->validateChangePasswordData($userEntity, $form);
+        $actualResponseData = $this->changePasswordValidationService->validateChangePasswordData($user, $form);
 
         self::assertEquals($expectedResponseData, $actualResponseData);
     }
 
     public function testValidateChangePasswordDataWithIncorrectOldPassword(): void
     {
-        $userEntity = new UserEntity();
-        $userEntity->setPassword('old_password');
+        $user = new User();
+        $user->setPassword('old_password');
 
         $changePassword = new ChangePassword();
         $changePassword->setOldPassword('wrong_password');
@@ -75,15 +76,15 @@ final class ChangePasswordValidationServiceTest extends TestCase
             'newPassword' => 'new_password',
         ];
 
-        $actualResponseData = $this->changePasswordValidationService->validateChangePasswordData($userEntity, $form);
+        $actualResponseData = $this->changePasswordValidationService->validateChangePasswordData($user, $form);
 
-        self::assertEquals($expectedResponseData, $actualResponseData);
+        self::assertSame($expectedResponseData, $actualResponseData);
     }
 
     public function testValidateChangePasswordDataWithEmptyNewPassword(): void
     {
-        $userEntity = new UserEntity();
-        $userEntity->setPassword('old_password');
+        $user = new User();
+        $user->setPassword('old_password');
 
         $changePassword = new ChangePassword();
         $changePassword->setOldPassword('old_password');
@@ -99,15 +100,15 @@ final class ChangePasswordValidationServiceTest extends TestCase
             ],
         ];
 
-        $actualResponseData = $this->changePasswordValidationService->validateChangePasswordData($userEntity, $form);
+        $actualResponseData = $this->changePasswordValidationService->validateChangePasswordData($user, $form);
 
-        self::assertEquals($expectedResponseData, $actualResponseData);
+        self::assertSame($expectedResponseData, $actualResponseData);
     }
 
     public function testValidateChangePasswordDataWithEmptyOldPassword(): void
     {
-        $userEntity = new UserEntity();
-        $userEntity->setPassword('');
+        $user = new User();
+        $user->setPassword('');
 
         $changePassword = new ChangePassword();
         $changePassword->setOldPassword('');
@@ -123,8 +124,8 @@ final class ChangePasswordValidationServiceTest extends TestCase
             'newPassword' => 'new_password',
         ];
 
-        $actualResponseData = $this->changePasswordValidationService->validateChangePasswordData($userEntity, $form);
+        $actualResponseData = $this->changePasswordValidationService->validateChangePasswordData($user, $form);
 
-        self::assertEquals($expectedResponseData, $actualResponseData);
+        self::assertSame($expectedResponseData, $actualResponseData);
     }
 }

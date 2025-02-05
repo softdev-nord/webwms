@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Form\CustomerOrder;
 
-use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -12,23 +11,23 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\CustomerOrderEntity;
+use WebWMS\Entity\CustomerOrder;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Form\CustomerOrderEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        AddCustomerOrderType
- */
+#[ClassInformation(
+    package: 'WebWMS\Form\CustomerOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'AddCustomerOrderType'
+)]
 class AddCustomerOrderType extends AbstractType
 {
     /**
      * @SuppressWarnings("unused")
      */
-    #[Override]
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
-        $builder
+        $formBuilder
             ->add('customerOrderId', HiddenType::class, [
                 'label' => false,
                 'attr' => [
@@ -100,11 +99,10 @@ class AddCustomerOrderType extends AbstractType
         ;
     }
 
-    #[Override]
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => CustomerOrderEntity::class,
+        $optionsResolver->setDefaults([
+            'data_class' => CustomerOrder::class,
         ]);
     }
 }

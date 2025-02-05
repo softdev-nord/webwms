@@ -5,28 +5,29 @@ declare(strict_types=1);
 namespace WebWMS\Service\Supplier;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\SupplierEntity;
+use WebWMS\Entity\Supplier;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
 
-/**
- * @package:    WebWMS\Service\SupplierEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierService
- */
-class SupplierService
+#[ClassInformation(
+    package: 'WebWMS\Service\Supplier',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierService'
+)]
+readonly class SupplierService
 {
     public function __construct(
-        private readonly SupplierDataHandler $supplierDataHandler
+        private SupplierDataHandler $supplierDataHandler,
     ) {
     }
 
-    public function getSupplierById(int $supplierId): ?SupplierEntity
+    public function getSupplierById(int $supplierId): ?Supplier
     {
         return $this->supplierDataHandler->getSupplierById($supplierId);
     }
 
-    public function getSupplierByNr(int $supplierNr): ?SupplierEntity
+    public function getSupplierByNr(int $supplierNr): ?Supplier
     {
         return $this->supplierDataHandler->getSupplierByNr($supplierNr);
     }
@@ -41,19 +42,19 @@ class SupplierService
         return $this->supplierDataHandler->getSuppliers($supplierNrInput);
     }
 
-    public function addSupplier(SupplierEntity $supplierEntity): void
+    public function addSupplier(Supplier $supplier): void
     {
-        $this->supplierDataHandler->addSupplier($supplierEntity);
+        $this->supplierDataHandler->addSupplier($supplier);
     }
 
-    public function updateSupplier(SupplierEntity $supplierEntity): void
+    public function updateSupplier(Supplier $supplier): void
     {
-        $this->supplierDataHandler->updateSupplier($supplierEntity);
+        $this->supplierDataHandler->updateSupplier($supplier);
     }
 
-    public function deleteSupplier(SupplierEntity $supplierEntity): void
+    public function deleteSupplier(Supplier $supplier): void
     {
-        $this->supplierDataHandler->deleteSupplier($supplierEntity);
+        $this->supplierDataHandler->deleteSupplier($supplier);
     }
 
     public function getLastSupplier(): int

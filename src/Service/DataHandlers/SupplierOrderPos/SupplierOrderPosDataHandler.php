@@ -6,46 +6,47 @@ namespace WebWMS\Service\DataHandlers\SupplierOrderPos;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\SupplierOrderPosEntity;
+use WebWMS\Entity\SupplierOrderPos;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\SupplierOrderPosEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderPosDataHandler
- */
-class SupplierOrderPosDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\SupplierOrderPos',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrderPosDataHandler'
+)]
+readonly class SupplierOrderPosDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(SupplierOrderPosEntity $supplierOrderPosEntity): void
+    public function save(SupplierOrderPos $supplierOrderPos): void
     {
-        $this->entityManager->persist($supplierOrderPosEntity);
+        $this->entityManager->persist($supplierOrderPos);
         $this->entityManager->flush();
     }
 
-    public function delete(SupplierOrderPosEntity $supplierOrderPosEntity): void
+    public function delete(SupplierOrderPos $supplierOrderPos): void
     {
-        $this->entityManager->remove($supplierOrderPosEntity);
+        $this->entityManager->remove($supplierOrderPos);
         $this->entityManager->flush();
     }
 
-    public function getSupplierOrderPosById(int $supplierOrderPosId): ?SupplierOrderPosEntity
+    public function getSupplierOrderPosById(int $supplierOrderPosId): ?SupplierOrderPos
     {
         return $this->entityManager
-            ->getRepository(SupplierOrderPosEntity::class)
+            ->getRepository(SupplierOrderPos::class)
             ->findOneBy(['id' => $supplierOrderPosId]);
     }
 
-    public function getSupplierOrderPosBySupplierOrderId(int $supplierOrderId): ?SupplierOrderPosEntity
+    public function getSupplierOrderPosBySupplierOrderId(int $supplierOrderId): ?SupplierOrderPos
     {
         return $this->entityManager
-            ->getRepository(SupplierOrderPosEntity::class)
+            ->getRepository(SupplierOrderPos::class)
             ->find($supplierOrderId);
     }
 
@@ -69,24 +70,24 @@ class SupplierOrderPosDataHandler
         return new JsonResponse($data);
     }
 
-    public function addSupplierOrderPos(SupplierOrderPosEntity $supplierOrderPosEntity): void
+    public function addSupplierOrderPos(SupplierOrderPos $supplierOrderPos): void
     {
-        $supplierOrderPosEntity->setCreatedAt($this->dateTimeService->createDateTime());
+        $supplierOrderPos->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($supplierOrderPosEntity);
+        $this->save($supplierOrderPos);
     }
 
-    public function updateSupplierOrderPos(SupplierOrderPosEntity $supplierOrderPosEntity): void
+    public function updateSupplierOrderPos(SupplierOrderPos $supplierOrderPos): void
     {
-        $supplierOrderPosEntity->setUpdatedAt($this->dateTimeService->createDateTime());
+        $supplierOrderPos->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($supplierOrderPosEntity);
+        $this->save($supplierOrderPos);
     }
 
-    public function deleteSupplierOrderPos(?SupplierOrderPosEntity $supplierOrderPosEntity): void
+    public function deleteSupplierOrderPos(?SupplierOrderPos $supplierOrderPos): void
     {
-        if ($supplierOrderPosEntity instanceof SupplierOrderPosEntity) {
-            $this->delete($supplierOrderPosEntity);
+        if ($supplierOrderPos instanceof SupplierOrderPos) {
+            $this->delete($supplierOrderPos);
         }
     }
 }

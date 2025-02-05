@@ -6,23 +6,24 @@ namespace WebWMS\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Form\Configuration\GeneralConfigurationType;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Configuration\ConfigurationService;
 use WebWMS\Service\RequirementsService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ConfigurationController
- */
-class ConfigurationController extends AbstractController
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Configuration'
+)]
+class Configuration extends AbstractController
 {
     public function __construct(
         private readonly ConfigurationService $configurationService,
-        private readonly RequirementsService $requirementsService
+        private readonly RequirementsService $requirementsService,
     ) {
     }
 

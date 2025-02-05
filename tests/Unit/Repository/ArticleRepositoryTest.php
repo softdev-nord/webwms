@@ -7,14 +7,15 @@ namespace WebWMS\Tests\Unit\Repository;
 use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\ArticleRepository;
 
-/**
- * @package:    WebWMS\Tests\Unit\Repository
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        ArticleRepositoryTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Repository',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'ArticleRepositoryTest'
+)]
 #[CoversClass(ArticleRepository::class)]
 final class ArticleRepositoryTest extends TestCase
 {
@@ -29,12 +30,12 @@ final class ArticleRepositoryTest extends TestCase
     //
     //    public function testFind(): void
     //    {
-    //        $article = new ArticleController();
+    //        $article = new Article();
     //        $entityManager = $this->createMock(EntityManagerInterface::class);
     //        $entityManager
     //            ->expects(self::once())
     //            ->method('find')
-    //            ->with(ArticleController::class, 1)
+    //            ->with(Article::class, 1)
     //            ->willReturn($article);
     //
     //        $registry = $this->createMock(ManagerRegistry::class);
@@ -50,12 +51,12 @@ final class ArticleRepositoryTest extends TestCase
     //
     //    public function testFindOneBy(): void
     //    {
-    //        $article = new ArticleController();
+    //        $article = new Article();
     //        $entityManager = $this->createMock(EntityManagerInterface::class);
     //        $entityManager
     //            ->expects(self::once())
     //            ->method('getRepository')
-    //            ->with(ArticleController::class)
+    //            ->with(Article::class)
     //            ->willReturn($repository = $this->createMock(ArticleRepository::class));
     //        $repository
     //            ->expects(self::once())
@@ -76,13 +77,13 @@ final class ArticleRepositoryTest extends TestCase
     //
     //    public function testFindAll(): void
     //    {
-    //        $articles = [new ArticleController(), new ArticleController()];
+    //        $articles = [new Article(), new Article()];
     //
     //        $entityManager = $this->createMock(EntityManagerInterface::class);
     //        $entityManager
     //            ->expects(self::once())
     //            ->method('getRepository')
-    //            ->with(ArticleController::class)
+    //            ->with(Article::class)
     //            ->willReturn($repository = $this->createMock(ArticleRepository::class));
     //        $repository->expects(self::once())
     //            ->method('findAll')
@@ -101,13 +102,13 @@ final class ArticleRepositoryTest extends TestCase
     //
     //    public function testFindBy(): void
     //    {
-    //        $articles = [new ArticleController(), new ArticleController()];
+    //        $articles = [new Article(), new Article()];
     //
     //        $entityManager = $this->createMock(EntityManagerInterface::class);
     //        $entityManager
     //            ->expects(self::once())
     //            ->method('getRepository')
-    //            ->with(ArticleController::class)
+    //            ->with(Article::class)
     //            ->willReturn($repository = $this->createMock(ArticleRepository::class));
     //        $repository
     //            ->expects(self::once())

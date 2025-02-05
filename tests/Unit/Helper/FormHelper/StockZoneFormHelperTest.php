@@ -8,18 +8,19 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use WebWMS\Entity\StockZoneEntity;
+use WebWMS\Entity\StockZone;
 use WebWMS\Form\Stock\StockZone\AddStockZoneType;
 use WebWMS\Form\Stock\StockZone\DeleteStockZoneType;
 use WebWMS\Form\Stock\StockZone\EditStockZoneType;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\StockZoneFormHelper;
 
-/**
- * @package:    WebWMS\Tests\Unit\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockZoneFormHelperTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockZoneFormHelperTest'
+)]
 #[CoversClass(StockZoneFormHelper::class)]
 final class StockZoneFormHelperTest extends TestCase
 {
@@ -32,15 +33,15 @@ final class StockZoneFormHelperTest extends TestCase
         $options = [];
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with($type, $data, $options)
             ->willReturn($formInterface);
 
         $stockZoneFormHelper = new StockZoneFormHelper($formFactory);
-        $result = $stockZoneFormHelper->createForm($type, $data, $options);
+        $form = $stockZoneFormHelper->createForm($type, $data, $options);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testAddStockZoneForm(): void
@@ -49,50 +50,50 @@ final class StockZoneFormHelperTest extends TestCase
         $formInterface = $this->createMock(FormInterface::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(AddStockZoneType::class)
             ->willReturn($formInterface);
 
         $stockZoneFormHelper = new StockZoneFormHelper($formFactory);
-        $result = $stockZoneFormHelper->addStockZoneForm();
+        $form = $stockZoneFormHelper->addStockZoneForm();
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testEditStockZoneForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $stockZone = $this->createMock(StockZoneEntity::class);
+        $stockZone = $this->createMock(StockZone::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(EditStockZoneType::class, $stockZone)
             ->willReturn($formInterface);
 
         $stockZoneFormHelper = new StockZoneFormHelper($formFactory);
-        $result = $stockZoneFormHelper->editStockZoneForm($stockZone);
+        $form = $stockZoneFormHelper->editStockZoneForm($stockZone);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testDeleteStockZoneForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $stockZone = $this->createMock(StockZoneEntity::class);
+        $stockZone = $this->createMock(StockZone::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(DeleteStockZoneType::class, $stockZone)
             ->willReturn($formInterface);
 
         $stockZoneFormHelper = new StockZoneFormHelper($formFactory);
-        $result = $stockZoneFormHelper->deleteStockZoneForm($stockZone);
+        $form = $stockZoneFormHelper->deleteStockZoneForm($stockZone);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 }

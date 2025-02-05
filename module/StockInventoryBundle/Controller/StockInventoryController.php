@@ -7,26 +7,27 @@ namespace WebWMS\Bundles\StockInventoryBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use WebWMS\Entity\StockLocationEntity;
+use WebWMS\Entity\StockLocation;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\StockLocationRepository;
 use WebWMS\Service\RequirementsService;
 
-/**
- * @package:    WebWMS\Bundles\StockInventoryBundle\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockInventoryController
- */
+#[ClassInformation(
+    package: 'WebWMS\Bundles\StockInventoryBundle\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockInventoryController'
+)]
 class StockInventoryController extends AbstractController
 {
     public function __construct(
-        private readonly StockLocationRepository $stockLocationRepository,
-        private readonly RequirementsService $requirementsService,
+        private StockLocationRepository $stockLocationRepository,
+        private RequirementsService $requirementsService,
     ) {
     }
 
     /**
-     * @return array<StockLocationEntity>
+     * @return array<StockLocation>
      */
     public function getAllStockLocations(): array
     {

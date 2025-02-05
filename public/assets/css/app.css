@@ -23,12 +23,12 @@
     src: local("hkgrotesk semibold"), url("../fonts/hkgrotesk-semibold.woff") format("woff");
     font-weight: 600;
 }
-@font-face {
-    font-family: "hkgrotesk";
-    src: url("../fonts/hkgrotesk-bold.eot");
-    src: local("hkgrotesk bold"), url("../fonts/hkgrotesk-bold.woff") format("woff");
-    font-weight: 700;
-}
+/*@font-face {*/
+/*    font-family: "hkgrotesk";*/
+/*    src: url("../fonts/hkgrotesk-bold.eot");*/
+/*    src: local("hkgrotesk bold"), url("../fonts/hkgrotesk-bold.woff") format("woff");*/
+/*    font-weight: 700;*/
+/*}*/
 :root {
     --webwms-vertical-menu-bg: #e9ebec;
     --webwms-vertical-menu-item-color: var(--webwms-body-color);
@@ -1635,22 +1635,6 @@
     opacity: 0.07;
 }
 
-[data-sidebar-image=img-1] .sidebar-background {
-    background-image: url("../images/sidebar/img-1.jpg");
-}
-
-[data-sidebar-image=img-2] .sidebar-background {
-    background-image: url("../images/sidebar/img-2.jpg");
-}
-
-[data-sidebar-image=img-3] .sidebar-background {
-    background-image: url("../images/sidebar/img-3.jpg");
-}
-
-[data-sidebar-image=img-4] .sidebar-background {
-    background-image: url("../images/sidebar/img-4.jpg");
-}
-
 [data-layout=semibox] .page-title-box {
     padding: 10px 0;
     background-color: transparent;
@@ -3246,7 +3230,7 @@
 }
 
 .bg-pattern {
-    background: url("../images/modal-bg.png") #fff;
+    background: #fff;
 }
 
 .w-xs {
@@ -12526,7 +12510,6 @@ span.flatpickr-weekday {
 
 [data-option-flag-img-name] .flag-input {
     padding-left: 45px;
-    background-image: url("../images/flags/us.svg");
     background-repeat: no-repeat;
     background-position: 14px 8px;
     background-size: 18px;
@@ -12576,11 +12559,6 @@ span.flatpickr-weekday {
     }
 }
 
-.auth-one-bg {
-    background-image: url("../images/auth-one-bg.jpg");
-    background-position: center;
-    background-size: cover;
-}
 .auth-one-bg .bg-overlay {
     background: -webkit-gradient(linear, left top, right top, from(#1b8fcd), to(#25a0e2));
     background: linear-gradient(to right, #1b8fcd, #25a0e2);
@@ -12634,7 +12612,6 @@ span.flatpickr-weekday {
     background: linear-gradient(-45deg, #0d6efd 50%, #198754);
 }
 .auth-bg-cover > .bg-overlay {
-    background-image: url("../images/cover-pattern.png");
     background-position: center;
     background-size: cover;
     opacity: 1;
@@ -12766,11 +12743,6 @@ span.flatpickr-weekday {
 }
 .crypto-widget {
     max-width: 130px !important;
-}
-
-.bg-marketplace {
-    background-image: url(../images/nft/marketplace.png);
-    background-size: cover;
 }
 
 .dash-countdown .countdownlist .count-num {
@@ -14615,7 +14587,6 @@ span.flatpickr-weekday {
 }
 
 .user-chat {
-    background: url("../images/chat-bg-pattern.png");
     -webkit-transition: all 0.4s;
     transition: all 0.4s;
     position: relative;
@@ -15513,7 +15484,6 @@ span.flatpickr-weekday {
     height: 180px;
     width: 270px;
     margin: 0 auto;
-    background-image: url("../images/file.png");
     background-size: cover;
     background-position: center;
 }
@@ -15621,7 +15591,6 @@ span.flatpickr-weekday {
 }
 
 .bg-overlay-pattern {
-    background-image: url("../images/landing/bg-pattern.png");
     background-color: transparent;
     background-position: center;
     background-size: cover;
@@ -15789,7 +15758,6 @@ span.flatpickr-weekday {
 }
 
 .nft-hero {
-    background-image: url("../images/nft/bg-home.jpg");
     background-size: cover;
     background-position: bottom;
     padding: 222px 0 150px 0;
@@ -16002,12 +15970,6 @@ span.flatpickr-weekday {
 
 #task-error-msg {
     display: none;
-}
-
-.bg-job {
-    background-image: url(../images/new.png);
-    background-size: cover;
-    background-position: center;
 }
 
 .job-list-view-card .background {

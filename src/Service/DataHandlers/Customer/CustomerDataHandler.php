@@ -6,46 +6,47 @@ namespace WebWMS\Service\DataHandlers\Customer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\CustomerEntity;
+use WebWMS\Entity\Customer;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\CustomerEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerDataHandler
- */
-class CustomerDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\Customer',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerDataHandler'
+)]
+readonly class CustomerDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(CustomerEntity $customerEntity): void
+    public function save(Customer $customer): void
     {
-        $this->entityManager->persist($customerEntity);
+        $this->entityManager->persist($customer);
         $this->entityManager->flush();
     }
 
-    public function delete(CustomerEntity $customerEntity): void
+    public function delete(Customer $customer): void
     {
-        $this->entityManager->remove($customerEntity);
+        $this->entityManager->remove($customer);
         $this->entityManager->flush();
     }
 
-    public function getCustomerById(int $customerId): ?CustomerEntity
+    public function getCustomerById(int $customerId): ?Customer
     {
         return $this->entityManager
-            ->getRepository(CustomerEntity::class)
+            ->getRepository(Customer::class)
             ->find($customerId);
     }
 
-    public function getCustomerByNr(int $customerNr): ?CustomerEntity
+    public function getCustomerByNr(int $customerNr): ?Customer
     {
         return $this->entityManager
-            ->getRepository(CustomerEntity::class)
+            ->getRepository(Customer::class)
             ->findOneBy(['customerNr' => $customerNr]);
     }
 
@@ -57,7 +58,7 @@ class CustomerDataHandler
         return $this->entityManager
             ->createQueryBuilder()
             ->select('c')
-            ->from(CustomerEntity::class, 'c')
+            ->from(Customer::class, 'c')
             ->getQuery()
             ->getArrayResult();
     }
@@ -72,23 +73,23 @@ class CustomerDataHandler
             $queryBuilder = $this->entityManager->createQueryBuilder();
             $queryBuilder
                 ->select('c')
-                ->from(CustomerEntity::class, 'c')
+                ->from(Customer::class, 'c')
                 ->where('c.customerNr LIKE :customer_nr')
-                ->setParameter(':customer_nr', '%' . $customerNrInput . '%');
+                ->setParameter(':customer_nr', '' . $customerNrInput . '%');
 
             $customers = $queryBuilder->getQuery()->getArrayResult();
 
             foreach ($customers as $customer) {
-                $nameCustomer = $customer['customerId'] . ' | ' .
-                    $customer['customerNr'] . ' | ' .
-                    $customer['customerName'] . ' | ' .
-                    $customer['customerAddressAddition'] . ' | ' .
-                    $customer['customerAddressStreet'] . ' | ' .
-                    $customer['customerAddressStreetNr'] . ' | ' .
-                    $customer['customerCountryCode'] . ' | ' .
-                    $customer['customerZipCode'] . ' | ' .
-                    $customer['customerCity'] . ' | ' .
-                    $customer['customerId']
+                $nameCustomer = $customer['customerId'] . ' | '
+                    . $customer['customerNr'] . ' | '
+                    . $customer['customerName'] . ' | '
+                    . $customer['customerAddressAddition'] . ' | '
+                    . $customer['customerAddressStreet'] . ' | '
+                    . $customer['customerAddressStreetNr'] . ' | '
+                    . $customer['customerCountryCode'] . ' | '
+                    . $customer['customerZipCode'] . ' | '
+                    . $customer['customerCity'] . ' | '
+                    . $customer['customerId']
                 ;
                 $data[] = $nameCustomer;
             }
@@ -97,29 +98,29 @@ class CustomerDataHandler
         return new JsonResponse($data);
     }
 
-    public function addCustomer(CustomerEntity $customerEntity): void
+    public function addCustomer(Customer $customer): void
     {
-        $customerEntity->setCreatedAt($this->dateTimeService->createDateTime());
+        $customer->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customerEntity);
+        $this->save($customer);
     }
 
-    public function updateCustomer(CustomerEntity $customerEntity): void
+    public function updateCustomer(Customer $customer): void
     {
-        $customerEntity->setUpdatedAt($this->dateTimeService->createDateTime());
+        $customer->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($customerEntity);
+        $this->save($customer);
     }
 
-    public function deleteCustomer(CustomerEntity $customerEntity): void
+    public function deleteCustomer(Customer $customer): void
     {
-        $this->delete($customerEntity);
+        $this->delete($customer);
     }
 
-    public function getLastCustomer(): CustomerEntity
+    public function getLastCustomer(): Customer
     {
         $lastCustomer = $this->entityManager
-            ->getRepository(CustomerEntity::class)
+            ->getRepository(Customer::class)
             ->findBy([], ['customerId' => 'DESC'], 1, 0);
 
         return $lastCustomer[0];

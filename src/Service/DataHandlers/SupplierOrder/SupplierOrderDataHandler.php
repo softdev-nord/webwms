@@ -6,46 +6,47 @@ namespace WebWMS\Service\DataHandlers\SupplierOrder;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\SupplierOrderEntity;
+use WebWMS\Entity\SupplierOrder;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\SupplierOrderEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderDataHandler
- */
-class SupplierOrderDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers\SupplierOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrderDataHandler'
+)]
+readonly class SupplierOrderDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(SupplierOrderEntity $supplierOrderEntity): void
+    public function save(SupplierOrder $supplierOrder): void
     {
-        $this->entityManager->persist($supplierOrderEntity);
+        $this->entityManager->persist($supplierOrder);
         $this->entityManager->flush();
     }
 
-    public function delete(SupplierOrderEntity $supplierOrderEntity): void
+    public function delete(SupplierOrder $supplierOrder): void
     {
-        $this->entityManager->remove($supplierOrderEntity);
+        $this->entityManager->remove($supplierOrder);
         $this->entityManager->flush();
     }
 
-    public function getSupplierOrderById(int $supplierOrderId): ?SupplierOrderEntity
+    public function getSupplierOrderById(int $supplierOrderId): ?SupplierOrder
     {
         return $this->entityManager
-            ->getRepository(SupplierOrderEntity::class)
+            ->getRepository(SupplierOrder::class)
             ->findOneBy(['supplierOrderId' => $supplierOrderId]);
     }
 
-    public function getSupplierOrderByNr(string $supplierOrderNr): ?SupplierOrderEntity
+    public function getSupplierOrderByNr(string $supplierOrderNr): ?SupplierOrder
     {
         return $this->entityManager
-            ->getRepository(SupplierOrderEntity::class)
+            ->getRepository(SupplierOrder::class)
             ->findOneBy(['supplierOrderNr' => $supplierOrderNr]);
     }
 
@@ -79,41 +80,41 @@ class SupplierOrderDataHandler
         return new JsonResponse($result);
     }
 
-    public function addSupplierOrder(SupplierOrderEntity $supplierOrderEntity): void
+    public function addSupplierOrder(SupplierOrder $supplierOrder): void
     {
-        $newSupplierOrder = (new SupplierOrderEntity())
-            ->setSupplierOrderId($supplierOrderEntity->getSupplierOrderId())
-            ->setUsrId($supplierOrderEntity->getUsrId())
-            ->setSupplierId($supplierOrderEntity->getSupplierId())
-            ->setSupplierOrderNr($supplierOrderEntity->getSupplierOrderNr())
-            ->setSupplierOrderReference($supplierOrderEntity->getSupplierOrderReference())
-            ->setSupplierOrderDate($supplierOrderEntity->getSupplierOrderDate())
-            ->setSupplierOrderCreationDate($supplierOrderEntity->getSupplierOrderCreationDate())
-            ->setCreatedAt($this->dateTimeService->createDateTime())
-        ;
+        $newSupplierOrder = new SupplierOrder();
+
+        $newSupplierOrder->setSupplierOrderId($supplierOrder->getSupplierOrderId());
+        $newSupplierOrder->setUsrId($supplierOrder->getUsrId());
+        $newSupplierOrder->setSupplierId($supplierOrder->getSupplierId());
+        $newSupplierOrder->setSupplierOrderNr($supplierOrder->getSupplierOrderNr());
+        $newSupplierOrder->setSupplierOrderReference($supplierOrder->getSupplierOrderReference());
+        $newSupplierOrder->setSupplierOrderDate($supplierOrder->getSupplierOrderDate());
+        $newSupplierOrder->setSupplierOrderCreationDate($supplierOrder->getSupplierOrderCreationDate());
+        $newSupplierOrder->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($newSupplierOrder);
     }
 
-    public function updateSupplierOrder(SupplierOrderEntity $supplierOrderEntity): void
+    public function updateSupplierOrder(SupplierOrder $supplierOrder): void
     {
-        $supplierOrderEntity->setUpdatedAt($this->dateTimeService->createDateTime());
+        $supplierOrder->setUpdatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($supplierOrderEntity);
+        $this->save($supplierOrder);
     }
 
-    public function deleteSupplierOrder(SupplierOrderEntity $supplierOrderEntity): void
+    public function deleteSupplierOrder(SupplierOrder $supplierOrder): void
     {
-        $this->delete($supplierOrderEntity);
+        $this->delete($supplierOrder);
     }
 
     /**
-     * @return array<int, SupplierOrderEntity>
+     * @return array<int, SupplierOrder>
      */
     public function getLastSupplierOrderId(): array
     {
         return $this->entityManager
-            ->getRepository(SupplierOrderEntity::class)
+            ->getRepository(SupplierOrder::class)
             ->findBy([], ['supplierOrderId' => 'DESC'], 1, 0);
     }
 }

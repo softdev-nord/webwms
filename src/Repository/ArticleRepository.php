@@ -6,24 +6,20 @@ namespace WebWMS\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use WebWMS\Entity\ArticleEntity;
+use WebWMS\Entity\Article;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Repository
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ArticleRepository
- *
- * @method ArticleEntity|null find($id, $lockMode = null, $lockVersion = null)
- * @method ArticleEntity|null findOneBy(array $criteria, array $orderBy = null)
- * @method ArticleEntity[]    findAll()
- * @method ArticleEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
+#[ClassInformation(
+    package: 'WebWMS\Repository',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ArticleRepository'
+)]
 class ArticleRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry $managerRegistry
+        ManagerRegistry $managerRegistry,
     ) {
-        parent::__construct($managerRegistry, ArticleEntity::class);
+        parent::__construct($managerRegistry, Article::class);
     }
 }

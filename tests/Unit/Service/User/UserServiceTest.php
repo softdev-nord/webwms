@@ -8,16 +8,18 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\UserEntity;
+use Symfony\Component\HttpFoundation\Request;
+use WebWMS\Entity\User;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\User\UserDataHandler;
 use WebWMS\Service\User\UserService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\UserController
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        UserServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\User',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserServiceTest'
+)]
 #[CoversClass(UserService::class)]
 final class UserServiceTest extends TestCase
 {
@@ -35,33 +37,33 @@ final class UserServiceTest extends TestCase
     public function testGetUserByUsername(): void
     {
         $username = 'rirrgang';
-        $userEntity = new UserEntity();
+        $expectedUser = new User();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUserByUsername')
             ->with($username)
-            ->willReturn($userEntity);
+            ->willReturn($expectedUser);
 
         $result = $this->userService->getUserByUsername($username);
 
-        self::assertSame($userEntity, $result);
+        self::assertSame($expectedUser, $result);
     }
 
     public function testGetUserById(): void
     {
         $userId = 123;
-        $userEntity = new UserEntity();
+        $expectedUser = new User();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUserById')
             ->with($userId)
-            ->willReturn($userEntity);
+            ->willReturn($expectedUser);
 
         $result = $this->userService->getUserById($userId);
 
-        self::assertSame($userEntity, $result);
+        self::assertSame($expectedUser, $result);
     }
 
     public function testGetAllUsers(): void
@@ -69,7 +71,7 @@ final class UserServiceTest extends TestCase
         $jsonResponse = new JsonResponse();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllUsers')
             ->willReturn($jsonResponse);
 
@@ -80,22 +82,22 @@ final class UserServiceTest extends TestCase
 
     public function testAddUser(): void
     {
-        $userEntity = new UserEntity();
+        $request = new Request();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('addUser')
-            ->with($userEntity);
+            ->with($request);
 
-        $this->userService->addUser($userEntity);
+        $this->userService->addUser($request);
     }
 
     public function testGetLastUser(): void
     {
-        $expectedUsers = [new UserEntity()];
+        $expectedUsers = [new User()];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getLastUser')
             ->willReturn($expectedUsers);
 
@@ -106,27 +108,31 @@ final class UserServiceTest extends TestCase
 
     public function testUpdateUser(): void
     {
-        $userEntity = new UserEntity();
+        $request = new Request();
+        $expectedUser = new User();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('updateUser')
-            ->with($userEntity);
+            ->with($request)
+            ->willReturn($expectedUser);
 
-        $this->userService->updateUser($userEntity);
+        $result = $this->userService->updateUser($request);
+
+        self::assertEquals($expectedUser, $result);
     }
 
     public function testUpgradePassword(): void
     {
-        $userEntity = new UserEntity();
+        $user = new User();
         $newHashedPassword = 'newhashedpassword';
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('upgradePassword')
-            ->with($userEntity, $newHashedPassword);
+            ->with($user, $newHashedPassword);
 
-        $this->userService->upgradePassword($userEntity, $newHashedPassword);
+        $this->userService->upgradePassword($user, $newHashedPassword);
     }
 
     public function testDeleteUser(): void
@@ -134,7 +140,7 @@ final class UserServiceTest extends TestCase
         $username = 'rirrgang';
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('deleteUser')
             ->with($username);
 
@@ -143,13 +149,13 @@ final class UserServiceTest extends TestCase
 
     public function testUpdateLastLogin(): void
     {
-        $userEntity = new UserEntity();
+        $user = new User();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('updateLastLogin')
-            ->with($userEntity);
+            ->with($user);
 
-        $this->userService->updateLastLogin($userEntity);
+        $this->userService->updateLastLogin($user);
     }
 }

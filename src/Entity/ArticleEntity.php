@@ -15,15 +15,15 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\ArticleRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ArticleEntity
- */
-#[ORM\Table('article')]
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Article'
+)]
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ApiResource(
     operations: [
@@ -64,7 +64,7 @@ use WebWMS\Repository\ArticleRepository;
     normalizationContext: ['groups' => ['article:read']],
     denormalizationContext: ['groups' => ['article:write']]
 )]
-class ArticleEntity
+class Article
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]

@@ -17,14 +17,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\CustomerOrderRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrder'
+)]
 #[ORM\Table(name: 'customer_orders')]
 #[ORM\Entity(repositoryClass: CustomerOrderRepository::class)]
 #[ApiResource(
@@ -60,7 +61,7 @@ use WebWMS\Repository\CustomerOrderRepository;
     normalizationContext: ['groups' => ['customerOrder:read']],
     denormalizationContext: ['groups' => ['customerOrder:write']]
 )]
-class CustomerOrderEntity
+class CustomerOrder
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -103,36 +104,36 @@ class CustomerOrderEntity
     #[Groups(['customerOrder:read', 'customerOrder:write'])]
     private ?DateTimeInterface $updatedAt = null;
 
-    /** One CustomerEntity Order has many CustomerEntity Order Positions. This is the inverse side.
-     * @var Collection<int, CustomerOrderPosEntity> */
+    /** One Customer Order has many Customer Order Positions. This is the inverse side.
+     * @var Collection<int, CustomerOrderPos> */
     #[ORM\OneToMany(
         mappedBy: 'customerOrder',
-        targetEntity: CustomerOrderPosEntity::class,
+        targetEntity: CustomerOrderPos::class,
         cascade: ['persist'],
         fetch: 'EAGER'
     )]
     #[Groups(['customerOrder:read'])]
-    private Collection $customerOrderPos;
+    private Collection|ArrayCollection $customerOrderPos;
 
     /** Many Customer Orders has one Customer. This is the owning side. */
-    #[ORM\ManyToOne(targetEntity: CustomerEntity::class, inversedBy: 'customerOrder')]
+    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'customerOrder')]
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'customer_id')]
     #[Groups(['customerOrder:read'])]
-    private CustomerEntity $customer;
+    private Customer $customer;
 
     public function __construct()
     {
         $this->customerOrderPos = new ArrayCollection();
     }
 
-    public function getCustomer(): CustomerEntity
+    public function getCustomer(): Customer
     {
         return $this->customer;
     }
 
-    public function setCustomer(CustomerEntity $customerEntity): self
+    public function setCustomer(Customer $customer): self
     {
-        $this->customer = $customerEntity;
+        $this->customer = $customer;
 
         return $this;
     }

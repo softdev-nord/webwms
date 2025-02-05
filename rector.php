@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitSelfCallRector;
+use WebWMS\Helper\Development\RectorCustomRule\ConvertPhpDocToClassAttributeRector;
 
 return RectorConfig::configure()
     ->withPreparedSets(
@@ -11,9 +13,13 @@ return RectorConfig::configure()
         codingStyle: true,
         typeDeclarations: true,
         privatization: true,
+        naming: true,
         instanceOf: true,
         earlyReturn: true,
-        strictBooleans: true
+        strictBooleans: true,
+        phpunitCodeQuality: true,
+        doctrineCodeQuality: true,
+        symfonyCodeQuality: true
     )
     ->withAttributesSets(
         symfony: true,
@@ -22,7 +28,13 @@ return RectorConfig::configure()
     )
     ->withPhpSets(
         php83: true
-    )->withPHPStanConfigs(
+    )
+    ->withRules([
+            ConvertPhpDocToClassAttributeRector::class,
+            PreferPHPUnitSelfCallRector::class
+        ]
+    )
+    ->withPHPStanConfigs(
         [
             __DIR__ . '/phpstan.neon'
         ]
@@ -31,7 +43,9 @@ return RectorConfig::configure()
         removeUnusedImports: true
     )
     ->withPaths([
-        __DIR__ . '/src',
         __DIR__ . '/tests',
     ])
-    ->withRootFiles();
+    ->withSkip([
+        __DIR__ . '/src/Kernel.php',
+    ]);
+

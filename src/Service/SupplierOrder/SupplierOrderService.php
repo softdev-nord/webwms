@@ -5,28 +5,29 @@ declare(strict_types=1);
 namespace WebWMS\Service\SupplierOrder;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\SupplierOrderEntity;
+use WebWMS\Entity\SupplierOrder;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\SupplierOrder\SupplierOrderDataHandler;
 
-/**
- * @package:    WebWMS\Service\SupplierOrderEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderService
- */
-class SupplierOrderService
+#[ClassInformation(
+    package: 'WebWMS\Service\SupplierOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrderService'
+)]
+readonly class SupplierOrderService
 {
     public function __construct(
-        private readonly SupplierOrderDataHandler $supplierOrderDataHandler
+        private SupplierOrderDataHandler $supplierOrderDataHandler,
     ) {
     }
 
-    public function getSupplierOrderById(int $supplierId): ?SupplierOrderEntity
+    public function getSupplierOrderById(int $supplierId): ?SupplierOrder
     {
         return $this->supplierOrderDataHandler->getSupplierOrderById($supplierId);
     }
 
-    public function getSupplierOrderByNr(string $supplierNr): ?SupplierOrderEntity
+    public function getSupplierOrderByNr(string $supplierNr): ?SupplierOrder
     {
         return $this->supplierOrderDataHandler->getSupplierOrderByNr($supplierNr);
     }
@@ -36,23 +37,23 @@ class SupplierOrderService
         return $this->supplierOrderDataHandler->getAllSupplierOrder();
     }
 
-    public function addSupplierOrder(SupplierOrderEntity $supplierOrderEntity): void
+    public function addSupplierOrder(SupplierOrder $supplierOrder): void
     {
-        $this->supplierOrderDataHandler->addSupplierOrder($supplierOrderEntity);
+        $this->supplierOrderDataHandler->addSupplierOrder($supplierOrder);
     }
 
-    public function updateSupplierOrder(SupplierOrderEntity $supplierOrderEntity): void
+    public function updateSupplierOrder(SupplierOrder $supplierOrder): void
     {
-        $this->supplierOrderDataHandler->updateSupplierOrder($supplierOrderEntity);
+        $this->supplierOrderDataHandler->updateSupplierOrder($supplierOrder);
     }
 
-    public function deleteSupplierOrder(SupplierOrderEntity $supplierOrderEntity): void
+    public function deleteSupplierOrder(SupplierOrder $supplierOrder): void
     {
-        $this->supplierOrderDataHandler->deleteSupplierOrder($supplierOrderEntity);
+        $this->supplierOrderDataHandler->deleteSupplierOrder($supplierOrder);
     }
 
     /**
-     * @return array<int, SupplierOrderEntity>
+     * @return array<int, SupplierOrder>
      */
     public function getLastSupplierOrderId(): array
     {

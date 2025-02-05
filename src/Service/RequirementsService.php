@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace WebWMS\Service;
 
-/**
- * @package:    WebWMS\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        RequirementsService
- */
-class RequirementsService
+use WebWMS\Helper\Attribute\ClassInformation;
+
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'RequirementsService'
+)]
+readonly class RequirementsService
 {
     public function __construct(
-        private readonly string $appName,
-        private readonly string $appVersion,
-        private readonly string $appVersionNumber,
-        private readonly string $appCopyright,
-        private readonly string $appLizenz
+        private string $appName,
+        private string $appVersion,
+        private string $appVersionNumber,
+        private string $appCopyright,
+        private string $appLizenz,
     ) {
     }
 

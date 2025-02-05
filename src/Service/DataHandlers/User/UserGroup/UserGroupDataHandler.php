@@ -6,79 +6,80 @@ namespace WebWMS\Service\DataHandlers\User\UserGroup;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use WebWMS\Entity\UserGroupEntity;
+use WebWMS\Entity\UserGroup;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Service\DataHandlers\UserGroupEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserGroupDataHandler
- */
-class UserGroupDataHandler
+#[ClassInformation(
+    package: 'WebWMS\Service\DataHandlers',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserGroupDataHandler'
+)]
+readonly class UserGroupDataHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DateTimeService $dateTimeService
+        private EntityManagerInterface $entityManager,
+        private DateTimeService $dateTimeService,
     ) {
     }
 
-    public function save(UserGroupEntity $userGroupEntity): void
+    public function save(UserGroup $userGroup): void
     {
-        $this->entityManager->persist($userGroupEntity);
+        $this->entityManager->persist($userGroup);
         $this->entityManager->flush();
     }
 
-    public function delete(UserGroupEntity $userGroupEntity): void
+    public function delete(UserGroup $userGroup): void
     {
-        $this->entityManager->remove($userGroupEntity);
+        $this->entityManager->remove($userGroup);
         $this->entityManager->flush();
     }
 
     /**
-     * @return array<int, UserGroupEntity>
+     * @return array<int, UserGroup>
      */
     public function getAllUserGroups(): array
     {
         return $this->entityManager
-            ->getRepository(UserGroupEntity::class)
+            ->getRepository(UserGroup::class)
             ->findAll();
     }
 
-    public function getUserGroupById(int $userGroupId): ?UserGroupEntity
+    public function getUserGroupById(int $userGroupId): ?UserGroup
     {
         return $this->entityManager
-            ->getRepository(UserGroupEntity::class)
+            ->getRepository(UserGroup::class)
             ->findOneBy(['id' => $userGroupId]);
     }
 
-    public function getUserGroupByUserGroupName(string $userGroupName): ?UserGroupEntity
+    public function getUserGroupByUserGroupName(string $userGroupName): ?UserGroup
     {
         return $this->entityManager
-            ->getRepository(UserGroupEntity::class)
+            ->getRepository(UserGroup::class)
             ->findOneBy(['group' => $userGroupName]);
     }
 
-    public function addUserGroup(Request $request): ?UserGroupEntity
+    public function addUserGroup(Request $request): ?UserGroup
     {
         $addUserGroup = $request->request->getIterator()->getArrayCopy();
-        $userGroupEntity = new UserGroupEntity();
+        $userGroup = new UserGroup();
 
-        $userGroupEntity->setGroup($addUserGroup['group']);
-        $userGroupEntity->setDescription($addUserGroup['description']);
-        $userGroupEntity->setRoles($addUserGroup['roles']);
-        $userGroupEntity->setCreatedAt($this->dateTimeService->createDateTime());
+        $userGroup->setGroup($addUserGroup['group']); // @phpstan-ignore-line
+        $userGroup->setDescription($addUserGroup['description']); // @phpstan-ignore-line
+        $userGroup->setRoles($addUserGroup['roles']); // @phpstan-ignore-line
+        $userGroup->setCreatedAt($this->dateTimeService->createDateTime());
 
-        $this->save($userGroupEntity);
+        $this->save($userGroup);
 
-        return $userGroupEntity;
+        return $userGroup;
     }
 
-    public function updateUserGroup(Request $request): ?UserGroupEntity
+    public function updateUserGroup(Request $request): ?UserGroup
     {
         $requestData = $request->request->all()['edit_user_group'];
         $userGroup = $this->entityManager
-            ->getRepository(UserGroupEntity::class)
+            ->getRepository(UserGroup::class)
             ->findOneBy(['group' => $requestData['group']]);
 
         if ($userGroup === null) {
@@ -87,9 +88,9 @@ class UserGroupDataHandler
 
         $roles = $requestData['roles'];
 
-        $userGroup->setGroup($requestData['group']);
-        $userGroup->setDescription($requestData['description']);
-        $userGroup->setRoles($roles);
+        $userGroup->setGroup($requestData['group']); // @phpstan-ignore-line
+        $userGroup->setDescription($requestData['description']); // @phpstan-ignore-line
+        $userGroup->setRoles($roles); // @phpstan-ignore-line
         $userGroup->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userGroup);
@@ -101,7 +102,7 @@ class UserGroupDataHandler
     {
         $userGroup = $this->getUserGroupByUserGroupName($userGroupName);
 
-        if ($userGroup instanceof UserGroupEntity) {
+        if ($userGroup instanceof UserGroup) {
             $this->delete($userGroup);
         }
     }

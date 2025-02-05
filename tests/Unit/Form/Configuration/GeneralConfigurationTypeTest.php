@@ -8,15 +8,16 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\ConfigurationEntity;
+use WebWMS\Entity\Configuration;
 use WebWMS\Form\Configuration\GeneralConfigurationType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\ConfigurationController
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        GeneralConfigurationTypeTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Configuration',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'GeneralConfigurationTypeTest'
+)]
 #[CoversClass(GeneralConfigurationType::class)]
 final class GeneralConfigurationTypeTest extends TestCase
 {
@@ -24,9 +25,15 @@ final class GeneralConfigurationTypeTest extends TestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::once())
+            ->expects(self::exactly(1))
             ->method('add')
-            ->withAnyParameters();
+            ->willReturnOnConsecutiveCalls(
+                ['name'],
+                ['value'],
+                ['label'],
+                ['description'],
+                ['type']
+            );
 
         $generalConfigurationType = new GeneralConfigurationType();
         $generalConfigurationType->buildForm($builder, []);
@@ -36,9 +43,9 @@ final class GeneralConfigurationTypeTest extends TestCase
     {
         $resolverMock = $this->createMock(OptionsResolver::class);
         $resolverMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
-            ->with(['data_class' => ConfigurationEntity::class]);
+            ->with(['data_class' => Configuration::class]);
 
         $generalConfigurationType = new GeneralConfigurationType();
         $generalConfigurationType->configureOptions($resolverMock);

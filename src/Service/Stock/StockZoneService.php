@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace WebWMS\Service\Stock;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockZoneEntity;
+use WebWMS\Entity\StockZone;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Stock\StockZoneDataHandler;
 
-/**
- * @package:    WebWMS\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockZoneService
- */
-class StockZoneService
+#[ClassInformation(
+    package: 'WebWMS\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockZoneService'
+)]
+readonly class StockZoneService
 {
     public function __construct(
-        private readonly StockZoneDataHandler $stockZoneDataHandler
+        private StockZoneDataHandler $stockZoneDataHandler,
     ) {
     }
 
@@ -26,23 +27,23 @@ class StockZoneService
         return $this->stockZoneDataHandler->getAllStockZones();
     }
 
-    public function getStockZoneById(int $stockZoneId): ?StockZoneEntity
+    public function getStockZoneById(int $stockZoneId): ?StockZone
     {
         return $this->stockZoneDataHandler->getStockZoneById($stockZoneId);
     }
 
-    public function addStockZone(StockZoneEntity $stockZoneEntity): void
+    public function addStockZone(StockZone $stockZone): void
     {
-        $this->stockZoneDataHandler->addStockZone($stockZoneEntity);
+        $this->stockZoneDataHandler->addStockZone($stockZone);
     }
 
-    public function updateStockZone(StockZoneEntity $stockZoneEntity): void
+    public function updateStockZone(StockZone $stockZone): void
     {
-        $this->stockZoneDataHandler->updateStockZone($stockZoneEntity);
+        $this->stockZoneDataHandler->updateStockZone($stockZone);
     }
 
-    public function deleteStockZone(StockZoneEntity $stockZoneEntity): void
+    public function deleteStockZone(StockZone $stockZone): void
     {
-        $this->stockZoneDataHandler->deleteStockZone($stockZoneEntity);
+        $this->stockZoneDataHandler->deleteStockZone($stockZone);
     }
 }

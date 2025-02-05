@@ -6,14 +6,15 @@ namespace WebWMS\Tests\Unit\Service\Validation;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Validation\CustomerValidationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        CustomerValidationServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'CustomerValidationServiceTest'
+)]
 #[CoversClass(CustomerValidationService::class)]
 final class CustomerValidationServiceTest extends TestCase
 {
@@ -46,7 +47,7 @@ final class CustomerValidationServiceTest extends TestCase
     {
         $requestData = [
             'customerNr' => '123456',
-            'customerName' => 'Test CustomerEntity',
+            'customerName' => 'Test Customer',
             'customerAddressStreet' => 'Test Straße',
             'customerAddressStreetNr' => 'Test Hausnummer',
             'customerCountryCode' => 'DE',

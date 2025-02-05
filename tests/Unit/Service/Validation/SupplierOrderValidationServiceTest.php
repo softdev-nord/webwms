@@ -7,35 +7,36 @@ namespace WebWMS\Tests\Unit\Service\Validation;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\SupplierOrderEntity;
+use WebWMS\Entity\SupplierOrder;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Validation\SupplierOrderValidationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        SupplierOrderValidationServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'SupplierOrderValidationServiceTest'
+)]
 #[CoversClass(SupplierOrderValidationService::class)]
 final class SupplierOrderValidationServiceTest extends TestCase
 {
     private SupplierOrderValidationService $supplierOrderValidationService;
 
-    private SupplierOrderEntity $supplierOrderEntity;
+    private SupplierOrder $supplierOrder;
 
     protected function setUp(): void
     {
         $this->supplierOrderValidationService = new SupplierOrderValidationService();
-        $this->supplierOrderEntity = new SupplierOrderEntity();
+        $this->supplierOrder = new SupplierOrder();
     }
 
     public function testValidateSupplierOrderDataWithValidData(): void
     {
-        $this->supplierOrderEntity->setSupplierOrderNr('123456');
-        $this->supplierOrderEntity->setSupplierOrderDate(new DateTimeImmutable());
-        $this->supplierOrderEntity->setSupplierOrderCreationDate(new DateTimeImmutable());
+        $this->supplierOrder->setSupplierOrderNr('123456');
+        $this->supplierOrder->setSupplierOrderDate(new DateTimeImmutable());
+        $this->supplierOrder->setSupplierOrderCreationDate(new DateTimeImmutable());
 
-        $response = $this->supplierOrderValidationService->validateSupplierOrderData($this->supplierOrderEntity);
+        $response = $this->supplierOrderValidationService->validateSupplierOrderData($this->supplierOrder);
 
         self::assertArrayHasKey('success', $response);
         self::assertTrue($response['success']);
@@ -43,11 +44,11 @@ final class SupplierOrderValidationServiceTest extends TestCase
 
     public function testValidateSupplierOrderDataWithInvalidData(): void
     {
-        $this->supplierOrderEntity->setSupplierOrderNr('');
-        $this->supplierOrderEntity->setSupplierOrderDate(null);
-        $this->supplierOrderEntity->setSupplierOrderCreationDate(null);
+        $this->supplierOrder->setSupplierOrderNr('');
+        $this->supplierOrder->setSupplierOrderDate(null);
+        $this->supplierOrder->setSupplierOrderCreationDate(null);
 
-        $response = $this->supplierOrderValidationService->validateSupplierOrderData($this->supplierOrderEntity);
+        $response = $this->supplierOrderValidationService->validateSupplierOrderData($this->supplierOrder);
 
         self::assertArrayHasKey('error', $response);
         self::assertEquals('Die Lieferanten-Nr. darf nicht leer sein.', $response['error']['supplierOrderNr']);

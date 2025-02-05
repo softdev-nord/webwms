@@ -11,13 +11,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Form\Stock\StockInFinalCollectionType;
 use WebWMS\Form\Stock\StockInFinalType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockInFinalCollectionTypeTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockInFinalCollectionTypeTest'
+)]
 #[CoversClass(StockInFinalCollectionType::class)]
 final class StockInFinalCollectionTypeTest extends TestCase
 {
@@ -25,9 +26,9 @@ final class StockInFinalCollectionTypeTest extends TestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('add')
-            ->with('freeStockLocations', CollectionType::class, self::callback(static fn (array $options): bool => $options['entry_type'] === StockInFinalType::class));
+            ->with('freeStockLocations', CollectionType::class, self::callback(fn (array $options): bool => $options['entry_type'] === StockInFinalType::class));
 
         $stockInFinalCollectionType = new StockInFinalCollectionType();
         $stockInFinalCollectionType->buildForm($builder, []);
@@ -37,7 +38,7 @@ final class StockInFinalCollectionTypeTest extends TestCase
     {
         $resolver = $this->createMock(OptionsResolver::class);
         $resolver
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with([
                 'data_class' => StockInFinalType::class,

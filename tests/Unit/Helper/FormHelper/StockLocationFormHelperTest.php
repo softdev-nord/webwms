@@ -8,18 +8,19 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use WebWMS\Entity\StockLocationEntity;
+use WebWMS\Entity\StockLocation;
 use WebWMS\Form\Stock\StockLocation\AddStockLocationType;
 use WebWMS\Form\Stock\StockLocation\DeleteStockLocationType;
 use WebWMS\Form\Stock\StockLocation\EditStockLocationType;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\StockLocationFormHelper;
 
-/**
- * @package:    WebWMS\Tests\Unit\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockLocationFormHelperTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockLocationFormHelperTest'
+)]
 #[CoversClass(StockLocationFormHelper::class)]
 final class StockLocationFormHelperTest extends TestCase
 {
@@ -32,15 +33,15 @@ final class StockLocationFormHelperTest extends TestCase
         $options = [];
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with($type, $data, $options)
             ->willReturn($formInterface);
 
         $stockLocationFormHelper = new StockLocationFormHelper($formFactory);
-        $result = $stockLocationFormHelper->createForm($type, $data, $options);
+        $form = $stockLocationFormHelper->createForm($type, $data, $options);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testAddStockLocationForm(): void
@@ -49,50 +50,50 @@ final class StockLocationFormHelperTest extends TestCase
         $formInterface = $this->createMock(FormInterface::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(AddStockLocationType::class)
             ->willReturn($formInterface);
 
         $stockLocationFormHelper = new StockLocationFormHelper($formFactory);
-        $result = $stockLocationFormHelper->addStockLocationForm();
+        $form = $stockLocationFormHelper->addStockLocationForm();
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testEditStockLocationForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $stockLocation = $this->createMock(StockLocationEntity::class);
+        $stockLocation = $this->createMock(StockLocation::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(EditStockLocationType::class, $stockLocation)
             ->willReturn($formInterface);
 
         $stockLocationFormHelper = new StockLocationFormHelper($formFactory);
-        $result = $stockLocationFormHelper->editStockLocationForm($stockLocation);
+        $form = $stockLocationFormHelper->editStockLocationForm($stockLocation);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testDeleteStockLocationForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $stockLocation = $this->createMock(StockLocationEntity::class);
+        $stockLocation = $this->createMock(StockLocation::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(DeleteStockLocationType::class, $stockLocation)
             ->willReturn($formInterface);
 
         $stockLocationFormHelper = new StockLocationFormHelper($formFactory);
-        $result = $stockLocationFormHelper->deleteStockLocationForm($stockLocation);
+        $form = $stockLocationFormHelper->deleteStockLocationForm($stockLocation);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 }

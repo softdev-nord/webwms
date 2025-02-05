@@ -6,15 +6,15 @@ namespace WebWMS\Tests\Unit\Service\Validation;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\ArticleEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Validation\ArticleValidationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        ArticleValidationServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'ArticleValidationServiceTest'
+)]
 #[CoversClass(ArticleValidationService::class)]
 final class ArticleValidationServiceTest extends TestCase
 {
@@ -27,20 +27,21 @@ final class ArticleValidationServiceTest extends TestCase
 
     public function testValidateArticleDataReturnsErrorWhenRequiredFieldsAreEmpty(): void
     {
-        $articleEntity = (new ArticleEntity())
-            ->setArticleNr('')
-            ->setArticleName('')
-            ->setArticleCategory('')
-            ->setArticleWeight('0.00')
-            ->setArticleEan('')
-            ->setArticleUnit('')
-            ->setArticleDepth('0.00')
-            ->setArticleWidth('0.00')
-            ->setArticleHeight('0.00')
-            ->setStockOutStrategy('')
-            ->setStandardLoadingEquipment('');
+        $requestData = [
+            'articleNr' => '',
+            'articleName' => '',
+            'articleCategory' => '',
+            'articleWeight' => '',
+            'articleEan' => '',
+            'articleUnit' => '',
+            'articleDepth' => '',
+            'articleWidth' => '',
+            'articleHeight' => '',
+            'stockOutStrategy' => '',
+            'standardLoadingEquipment' => '',
+        ];
 
-        $responseData = $this->articleValidationService->validateArticleData($articleEntity);
+        $responseData = $this->articleValidationService->validateArticleData($requestData);
 
         self::assertArrayHasKey('error', $responseData);
         self::assertIsArray($responseData['error']);
@@ -48,20 +49,21 @@ final class ArticleValidationServiceTest extends TestCase
 
     public function testValidateArticleDataReturnsSuccessWhenAllFieldsAreValid(): void
     {
-        $articleEntity = (new ArticleEntity())
-            ->setArticleNr('12345')
-            ->setArticleName('Test Article')
-            ->setArticleCategory('Test Category')
-            ->setArticleWeight('1.2')
-            ->setArticleEan('1234567890123')
-            ->setArticleUnit('Stk')
-            ->setArticleDepth('100.00')
-            ->setArticleWidth('200.00')
-            ->setArticleHeight('300.00')
-            ->setStockOutStrategy('FIFO')
-            ->setStandardLoadingEquipment('BLOCK');
+        $requestData = [
+            'articleNr' => '12345',
+            'articleName' => 'Test Article',
+            'articleCategory' => 'Test Category',
+            'articleWeight' => '1.2',
+            'articleEan' => '1234567890123',
+            'articleUnit' => 'Stk',
+            'articleDepth' => '100',
+            'articleWidth' => '200',
+            'articleHeight' => '300',
+            'stockOutStrategy' => 'FIFO',
+            'standardLoadingEquipment' => 'BLOCK',
+        ];
 
-        $responseData = $this->articleValidationService->validateArticleData($articleEntity);
+        $responseData = $this->articleValidationService->validateArticleData($requestData);
 
         self::assertArrayHasKey('success', $responseData);
         self::assertTrue($responseData['success']);

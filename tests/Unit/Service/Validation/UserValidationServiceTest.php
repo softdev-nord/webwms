@@ -6,41 +6,36 @@ namespace WebWMS\Tests\Unit\Service\Validation;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\User;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Validation\UserValidationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        UserValidationServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserValidationServiceTest'
+)]
 #[CoversClass(UserValidationService::class)]
 final class UserValidationServiceTest extends TestCase
 {
     private UserValidationService $userValidationService;
 
-    private UserEntity $userEntity;
+    private User $user;
 
     protected function setUp(): void
     {
         $this->userValidationService = new UserValidationService();
-        $this->userEntity = new UserEntity();
+        $this->user = new User();
     }
 
     public function testValidateUserDataWithValidUser(): void
     {
-        $requestData = [
-            'username' => 'testuser',
-            'firstname' => 'John',
-            'lastname' => 'Doe',
-            'email' => 'jdoe@test.com',
-            'userGroups' => [
-                0 => '12',
-            ],
-        ];
+        $this->user->setUsername('testuser');
+        $this->user->setFirstname('John');
+        $this->user->setLastname('Doe');
 
-        $result = $this->userValidationService->validateUserData($requestData);
+        $result = $this->userValidationService->validateUserData($this->user);
 
         self::assertTrue($result['success']);
         self::assertEquals('testuser', $result['username']);
@@ -50,34 +45,22 @@ final class UserValidationServiceTest extends TestCase
 
     public function testValidateUserDataWithMissingFields(): void
     {
-        $this->userEntity->setUsername('');
-        $this->userEntity->setFirstname('');
-        $this->userEntity->setLastname('');
+        $this->user->setUsername('');
+        $this->user->setFirstname('');
+        $this->user->setLastname('');
 
-        $requestData = [
-            'error' => [
-                'username' => '',
-                'firstname' => '',
-                'lastname' => '',
-                'email' => '',
-                'userGroups' => '',
-            ],
-        ];
-
-        $result = $this->userValidationService->validateUserData($requestData);
+        $result = $this->userValidationService->validateUserData($this->user);
 
         $expectedResult = [
             'error' => [
                 'username' => 'Der Benutzername darf nicht leer sein.',
                 'firstname' => 'Der Vorname darf nicht leer sein.',
                 'lastname' => 'Der Nachname darf nicht leer sein.',
-                'email' => 'Die E-Mail-Adresse darf nicht leer sein.',
-                'userGroups' => 'Sie müssen mindestens eine Benutzergruppe auswählen.',
             ],
         ];
 
         self::assertArrayNotHasKey('success', $result);
         self::assertArrayHasKey('error', $result);
-        self::assertEquals($expectedResult, $result);
+        self::assertSame($expectedResult, $result);
     }
 }

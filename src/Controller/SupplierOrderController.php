@@ -9,11 +9,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\SupplierOrderEntity;
-use WebWMS\Entity\SupplierOrderPosEntity;
+use WebWMS\Entity\SupplierOrder as SupplierOrderEntity;
+use WebWMS\Entity\SupplierOrderPos as SupplierOrderPosEntity;
 use WebWMS\Form\SupplierOrder\DeleteSupplierOrderType;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\SupplierOrderFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
@@ -21,15 +22,16 @@ use WebWMS\Service\Supplier\SupplierService;
 use WebWMS\Service\SupplierOrder\SupplierOrderService;
 use WebWMS\Service\SupplierOrderPos\SupplierOrderPosService;
 
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrder'
+)]
 /**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderController
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(CouplingBetweenObjects)
  */
-class SupplierOrderController extends AbstractController
+class SupplierOrder extends AbstractController
 {
     public function __construct(
         private readonly SupplierOrderService $supplierOrderService,
@@ -37,7 +39,7 @@ class SupplierOrderController extends AbstractController
         private readonly SupplierService $supplierService,
         private readonly RequirementsService $requirementsService,
         private readonly LoggingService $loggingService,
-        private readonly SupplierOrderFormHelper $supplierOrderFormHelper
+        private readonly SupplierOrderFormHelper $supplierOrderFormHelper,
     ) {
     }
 

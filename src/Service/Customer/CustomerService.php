@@ -5,28 +5,29 @@ declare(strict_types=1);
 namespace WebWMS\Service\Customer;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\CustomerEntity;
+use WebWMS\Entity\Customer;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
-/**
- * @package:    WebWMS\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerService
- */
+#[ClassInformation(
+    package: 'WebWMS\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerService'
+)]
 class CustomerService
 {
     public function __construct(
-        private readonly CustomerDataHandler $customerDataHandler
+        private readonly CustomerDataHandler $customerDataHandler,
     ) {
     }
 
-    public function getCustomerById(int $customerId): ?CustomerEntity
+    public function getCustomerById(int $customerId): ?Customer
     {
         return $this->customerDataHandler->getCustomerById($customerId);
     }
 
-    public function getCustomerByNr(int $customerNr): ?CustomerEntity
+    public function getCustomerByNr(int $customerNr): ?Customer
     {
         return $this->customerDataHandler->getCustomerByNr($customerNr);
     }
@@ -41,22 +42,22 @@ class CustomerService
         return $this->customerDataHandler->getCustomers($customerNrInput);
     }
 
-    public function addCustomer(CustomerEntity $customerEntity): void
+    public function addCustomer(Customer $customer): void
     {
-        $this->customerDataHandler->addCustomer($customerEntity);
+        $this->customerDataHandler->addCustomer($customer);
     }
 
-    public function updateCustomer(CustomerEntity $customerEntity): void
+    public function updateCustomer(Customer $customer): void
     {
-        $this->customerDataHandler->updateCustomer($customerEntity);
+        $this->customerDataHandler->updateCustomer($customer);
     }
 
-    public function deleteCustomer(CustomerEntity $customerEntity): void
+    public function deleteCustomer(Customer $customer): void
     {
-        $this->customerDataHandler->deleteCustomer($customerEntity);
+        $this->customerDataHandler->deleteCustomer($customer);
     }
 
-    public function getLastCustomer(): CustomerEntity
+    public function getLastCustomer(): Customer
     {
         return $this->customerDataHandler->getLastCustomer();
     }

@@ -7,27 +7,27 @@ namespace WebWMS\Helper\FormHelper;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
-use WebWMS\Entity\ArticleEntity;
+use WebWMS\Entity\Article;
 use WebWMS\Form\Article\AddArticleType;
 use WebWMS\Form\Article\DeleteArticleType;
 use WebWMS\Form\Article\EditArticleType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ArticleFormHelper
- */
-class ArticleFormHelper
+#[ClassInformation(
+    package: 'WebWMS\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ArticleFormHelper'
+)]
+readonly class ArticleFormHelper
 {
     public function __construct(
-        private readonly FormFactoryInterface $formFactory
+        private FormFactoryInterface $formFactory,
     ) {
     }
 
     /**
      * @param class-string<FormTypeInterface<mixed>> $type
-     * @param mixed|null $data
      * @param array<string> $options
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface
@@ -40,13 +40,13 @@ class ArticleFormHelper
         return $this->createForm(AddArticleType::class);
     }
 
-    public function editArticleForm(?ArticleEntity $articleEntity): FormInterface
+    public function editArticleForm(?Article $article): FormInterface
     {
-        return $this->createForm(EditArticleType::class, $articleEntity);
+        return $this->createForm(EditArticleType::class, $article);
     }
 
-    public function deleteArticleForm(?ArticleEntity $articleEntity): FormInterface
+    public function deleteArticleForm(?Article $article): FormInterface
     {
-        return $this->createForm(DeleteArticleType::class, $articleEntity);
+        return $this->createForm(DeleteArticleType::class, $article);
     }
 }

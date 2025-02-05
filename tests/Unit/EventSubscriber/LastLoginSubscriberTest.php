@@ -9,16 +9,17 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use WebWMS\Entity\UserEntity;
+use WebWMS\Entity\User;
 use WebWMS\EventSubscriber\LastLoginSubscriber;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\User\UserService;
 
-/**
- * @package:    WebWMS\Tests\Unit\EventSubscriber
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        LastLoginSubscriberTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\EventSubscriber',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'LastLoginSubscriberTest'
+)]
 #[CoversClass(LastLoginSubscriber::class)]
 final class LastLoginSubscriberTest extends TestCase
 {
@@ -29,21 +30,21 @@ final class LastLoginSubscriberTest extends TestCase
 
         $lastLoginSubscriber = new LastLoginSubscriber($tokenStorage, $userService);
 
-        $userEntity = new UserEntity();
+        $user = new User();
         $accessToken = $this->createMock(TokenInterface::class);
         $accessToken
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getUser')
-            ->willReturn($userEntity);
+            ->willReturn($user);
 
         $tokenStorage
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn($accessToken);
 
-        $userService->expects(self::once())
+        $userService->expects($this->once())
             ->method('updateLastLogin')
-            ->with($userEntity);
+            ->with($user);
 
         $lastLoginSubscriber->updateLastLogin();
     }

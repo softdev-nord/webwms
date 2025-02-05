@@ -8,16 +8,17 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockLocationEntity;
+use WebWMS\Entity\StockLocation;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 use WebWMS\Service\Stock\StockLocationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockLocationServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockLocationServiceTest'
+)]
 #[CoversClass(StockLocationService::class)]
 final class StockLocationServiceTest extends TestCase
 {
@@ -36,30 +37,30 @@ final class StockLocationServiceTest extends TestCase
         $stockLocations = ['location1', 'location2'];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllStockLocation')
             ->willReturn(new JsonResponse($stockLocations));
 
-        $result = $this->stockLocationService->getAllStockLocations();
+        $jsonResponse = $this->stockLocationService->getAllStockLocations();
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testGetStockLocationByCoordinate(): void
     {
         $coordinate = '1,2';
 
-        $stockLocationEntity = new StockLocationEntity();
+        $stockLocation = new StockLocation();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getStockLocationByCoordinate')
             ->with($coordinate)
-            ->willReturn($stockLocationEntity);
+            ->willReturn($stockLocation);
 
         $result = $this->stockLocationService->getStockLocationByCoordinate($coordinate);
 
-        self::assertSame($stockLocationEntity, $result);
+        self::assertSame($stockLocation, $result);
     }
 
     public function testGetStockLocationDetailsById(): void
@@ -68,7 +69,7 @@ final class StockLocationServiceTest extends TestCase
         $stockLocationDetails = ['detail1', 'detail2'];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getStockLocationDetailsById')
             ->with($stockLocationId)
             ->willReturn($stockLocationDetails);
@@ -80,35 +81,35 @@ final class StockLocationServiceTest extends TestCase
 
     public function testAddStockLocation(): void
     {
-        $stockLocationEntity = new StockLocationEntity();
+        $stockLocation = new StockLocation();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('addStockLocation')
-            ->with($stockLocationEntity);
+            ->with($stockLocation);
 
-        $this->stockLocationService->addStockLocation($stockLocationEntity);
+        $this->stockLocationService->addStockLocation($stockLocation);
     }
 
     public function testUpdateStockLocation(): void
     {
-        $stockLocationEntity = new StockLocationEntity();
+        $stockLocation = new StockLocation();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('updateStockLocation')
-            ->with($stockLocationEntity);
+            ->with($stockLocation);
 
-        $this->stockLocationService->updateStockLocation($stockLocationEntity);
+        $this->stockLocationService->updateStockLocation($stockLocation);
     }
 
     public function testDeleteStockLocation(): void
     {
-        $stockLocationEntity = new StockLocationEntity();
+        $stockLocation = new StockLocation();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('deleteStockLocation')
-            ->with($stockLocationEntity);
+            ->with($stockLocation);
 
-        $this->stockLocationService->deleteStockLocation($stockLocationEntity);
+        $this->stockLocationService->deleteStockLocation($stockLocation);
     }
 
     public function testGetAllStockLocationsForSelect(): void
@@ -116,7 +117,7 @@ final class StockLocationServiceTest extends TestCase
         $expectedResult = ['location1', 'location2'];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllStockLocationsForSelect')
             ->willReturn($expectedResult);
 
@@ -130,7 +131,7 @@ final class StockLocationServiceTest extends TestCase
         $expectedResult = ['location1', 'location2'];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllStockLocationsAjax')
             ->willReturn($expectedResult);
 
@@ -145,7 +146,7 @@ final class StockLocationServiceTest extends TestCase
         $expectedResult = ['location1', 'location2'];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllFreeStockLocations')
             ->with($stockSystem)
             ->willReturn($expectedResult);
@@ -159,16 +160,15 @@ final class StockLocationServiceTest extends TestCase
     {
         $stockSystem = 'system1';
         $limit = 10;
-        $leQuantity = 500.00;
         $expectedResult = ['location1', 'location2'];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllFreeStockLocationsWithLimit')
             ->with($stockSystem, $limit)
             ->willReturn($expectedResult);
 
-        $result = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $limit, $leQuantity);
+        $result = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $limit);
 
         self::assertSame($expectedResult, $result);
     }
@@ -177,7 +177,6 @@ final class StockLocationServiceTest extends TestCase
     {
         $stockSystem = 'Block-Lager';
         $limit = 10;
-        $leQuantity = 500.00;
         $stockLocations = [
             ['location1', 'belegt' => false],
             ['location2', 'belegt' => true],
@@ -186,12 +185,12 @@ final class StockLocationServiceTest extends TestCase
         $expectedResult = [['location1', 'belegt' => false], ['location3', 'belegt' => false]];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllFreeStockLocationsWithLimit')
             ->with($stockSystem, $limit)
             ->willReturn($stockLocations);
 
-        $result = $this->stockLocationService->getFirstFreeStockLocation($stockSystem, $limit, $leQuantity);
+        $result = $this->stockLocationService->getFirstFreeStockLocation($stockSystem, $limit);
 
         self::assertSame($expectedResult, $result);
     }

@@ -7,18 +7,19 @@ namespace WebWMS\Tests\Unit\Entity;
 use DateTime;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\UserRoleEntity;
+use WebWMS\Entity\UserRole;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        UserRoleTest
- */
-#[CoversClass(UserRoleEntity::class)]
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserRoleTest'
+)]
+#[CoversClass(UserRole::class)]
 final class UserRoleTest extends TestCase
 {
-    private UserRoleEntity $userRoleEntity;
+    private UserRole $userRole;
 
     private DateTime $dateTime;
 
@@ -26,7 +27,7 @@ final class UserRoleTest extends TestCase
     {
         parent::setUp();
 
-        $this->userRoleEntity = new UserRoleEntity();
+        $this->userRole = new UserRole();
         $this->dateTime = new DateTime();
     }
 
@@ -34,37 +35,37 @@ final class UserRoleTest extends TestCase
     {
         // Test setId() and getId()
         $id = 1;
-        $this->userRoleEntity->setId($id);
-        self::assertEquals($id, $this->userRoleEntity->getId());
+        $this->userRole->setId($id);
+        self::assertSame($id, $this->userRole->getId());
 
         // Test setDescription() and getUsername()
         $description = 'Administrator';
-        $this->userRoleEntity->setDescription($description);
-        self::assertEquals($description, $this->userRoleEntity->getDescription());
+        $this->userRole->setDescription($description);
+        self::assertSame($description, $this->userRole->getDescription());
 
         // Test setUserRole() and getUserRole()
         $role = 'ROLE_ADMIN';
-        $this->userRoleEntity->setUserRole($role);
-        self::assertEquals($role, $this->userRoleEntity->getUserRole());
+        $this->userRole->setUserRole($role);
+        self::assertSame($role, $this->userRole->getUserRole());
 
         // Test setUserRole() and getUserRole()
         $role = 'read';
-        $this->userRoleEntity->setUserRole($role);
-        self::assertEquals($role, $this->userRoleEntity->getUserRole());
+        $this->userRole->setUserRole($role);
+        self::assertSame($role, $this->userRole->getUserRole());
 
         // Test setUserRights() and getUserRights()
         $rights = ['1', '2', '3', '4'];
-        $this->userRoleEntity->setUserRights($rights);
-        self::assertIsArray($this->userRoleEntity->getUserRights());
+        $this->userRole->setUserRights($rights);
+        self::assertIsArray($this->userRole->getUserRights());
 
         // Test setCreatedAt() and getCreatedAt()
         $createdAt = $this->dateTime;
-        $this->userRoleEntity->setCreatedAt($createdAt);
-        self::assertEquals($createdAt, $this->userRoleEntity->getCreatedAt());
+        $this->userRole->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->userRole->getCreatedAt());
 
         // Test setUpdatedAt() and getUpdatedAt()
         $updatedAt = $this->dateTime;
-        $this->userRoleEntity->setUpdatedAt($updatedAt);
-        self::assertEquals($updatedAt, $this->userRoleEntity->getUpdatedAt());
+        $this->userRole->setUpdatedAt($updatedAt);
+        self::assertEquals($updatedAt, $this->userRole->getUpdatedAt());
     }
 }

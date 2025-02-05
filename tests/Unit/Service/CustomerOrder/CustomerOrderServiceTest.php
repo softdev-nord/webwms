@@ -8,17 +8,18 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\CustomerOrderEntity;
-use WebWMS\Entity\CustomerOrderPosEntity;
+use WebWMS\Entity\CustomerOrder;
+use WebWMS\Entity\CustomerOrderPos;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\CustomerOrder\CustomerOrderService;
 use WebWMS\Service\DataHandlers\CustomerOrder\CustomerOrderDataHandler;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\CustomerOrderEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        CustomerOrderServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\CustomerOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'CustomerOrderServiceTest'
+)]
 #[CoversClass(CustomerOrderService::class)]
 final class CustomerOrderServiceTest extends TestCase
 {
@@ -35,51 +36,51 @@ final class CustomerOrderServiceTest extends TestCase
     public function testGetCustomerOrderById(): void
     {
         $orderId = 1;
-        $customerOrderEntity = new CustomerOrderEntity();
+        $customerOrder = new CustomerOrder();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCustomerOrderById')
             ->with($orderId)
-            ->willReturn($customerOrderEntity);
+            ->willReturn($customerOrder);
 
         $result = $this->customerOrderService->getCustomerOrderById($orderId);
 
-        self::assertSame($customerOrderEntity, $result);
+        self::assertSame($customerOrder, $result);
     }
 
     public function testGetAllCustomerOrders(): void
     {
         $customerOrders = [
-            new CustomerOrderEntity(),
-            new CustomerOrderEntity(),
+            new CustomerOrder(),
+            new CustomerOrder(),
         ];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllCustomerOrders')
             ->willReturn(new JsonResponse($customerOrders));
 
-        $result = $this->customerOrderService->getAllCustomerOrders();
+        $jsonResponse = $this->customerOrderService->getAllCustomerOrders();
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testGetAllCustomerOrderPos(): void
     {
         $customerOrderPos = [
-            new CustomerOrderPosEntity(),
-            new CustomerOrderPosEntity(),
+            new CustomerOrderPos(),
+            new CustomerOrderPos(),
         ];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllCustomerOrderPos')
             ->willReturn(new JsonResponse($customerOrderPos));
 
-        $result = $this->customerOrderService->getAllCustomerOrderPos();
+        $jsonResponse = $this->customerOrderService->getAllCustomerOrderPos();
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testGetCustomerOrderPosByOrderId(): void
@@ -88,14 +89,14 @@ final class CustomerOrderServiceTest extends TestCase
         $customerOrderPos = ['pos1', 'pos2'];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCustomerOrderPosByCustomerOrderId')
             ->with($orderId)
             ->willReturn(new JsonResponse($customerOrderPos));
 
-        $result = $this->customerOrderService->getCustomerOrderPosByOrderId($orderId);
+        $jsonResponse = $this->customerOrderService->getCustomerOrderPosByOrderId($orderId);
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testGetLastCustomerOrderId(): void
@@ -103,7 +104,7 @@ final class CustomerOrderServiceTest extends TestCase
         $lastCustomerOrderId = [1, 2, 3];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getLastCustomerOrderId')
             ->willReturn($lastCustomerOrderId);
 
@@ -114,34 +115,34 @@ final class CustomerOrderServiceTest extends TestCase
 
     public function testAddCustomerOrder(): void
     {
-        $customerOrderEntity = new CustomerOrderEntity();
+        $customerOrder = new CustomerOrder();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('addCustomerOrder')
-            ->with($customerOrderEntity);
+            ->with($customerOrder);
 
-        $this->customerOrderService->addCustomerOrder($customerOrderEntity);
+        $this->customerOrderService->addCustomerOrder($customerOrder);
     }
 
     public function testUpdateCustomerOrder(): void
     {
-        $customerOrderEntity = new CustomerOrderEntity();
+        $customerOrder = new CustomerOrder();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('updateCustomerOrder')
-            ->with($customerOrderEntity);
+            ->with($customerOrder);
 
-        $this->customerOrderService->updateCustomerOrder($customerOrderEntity);
+        $this->customerOrderService->updateCustomerOrder($customerOrder);
     }
 
     public function testDeleteCustomerOrder(): void
     {
-        $customerOrderEntity = new CustomerOrderEntity();
+        $customerOrder = new CustomerOrder();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('deleteCustomerOrder')
-            ->with($customerOrderEntity);
+            ->with($customerOrder);
 
-        $this->customerOrderService->deleteCustomerOrder($customerOrderEntity);
+        $this->customerOrderService->deleteCustomerOrder($customerOrder);
     }
 }

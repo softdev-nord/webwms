@@ -6,19 +6,20 @@ namespace WebWMS\Service\Stock;
 
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\StockLocationEntity;
+use WebWMS\Entity\StockLocation;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Stock\StockLocationDataHandler;
 
-/**
- * @package:    WebWMS\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLocationService
- */
-class StockLocationService
+#[ClassInformation(
+    package: 'WebWMS\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLocationService'
+)]
+readonly class StockLocationService
 {
     public function __construct(
-        private readonly StockLocationDataHandler $stockLocationDataHandler
+        private StockLocationDataHandler $stockLocationDataHandler,
     ) {
     }
 
@@ -30,7 +31,7 @@ class StockLocationService
         return $this->stockLocationDataHandler->getAllStockLocation();
     }
 
-    public function getStockLocationByCoordinate(string $stockLocationCoordinate): ?StockLocationEntity
+    public function getStockLocationByCoordinate(string $stockLocationCoordinate): ?StockLocation
     {
         return $this->stockLocationDataHandler
             ->getStockLocationByCoordinate(
@@ -38,7 +39,7 @@ class StockLocationService
             );
     }
 
-    public function getStockLocationById(int $stockLocationId): ?StockLocationEntity
+    public function getStockLocationById(int $stockLocationId): ?StockLocation
     {
         return $this->stockLocationDataHandler->getStockLocationById($stockLocationId);
     }
@@ -52,19 +53,19 @@ class StockLocationService
         return $this->stockLocationDataHandler->getStockLocationDetailsById($stockLocationId);
     }
 
-    public function addStockLocation(StockLocationEntity $stockLocationEntity): void
+    public function addStockLocation(StockLocation $stockLocation): void
     {
-        $this->stockLocationDataHandler->addStockLocation($stockLocationEntity);
+        $this->stockLocationDataHandler->addStockLocation($stockLocation);
     }
 
-    public function updateStockLocation(StockLocationEntity $stockLocationEntity): void
+    public function updateStockLocation(StockLocation $stockLocation): void
     {
-        $this->stockLocationDataHandler->updateStockLocation($stockLocationEntity);
+        $this->stockLocationDataHandler->updateStockLocation($stockLocation);
     }
 
-    public function deleteStockLocation(StockLocationEntity $stockLocationEntity): void
+    public function deleteStockLocation(StockLocation $stockLocation): void
     {
-        $this->stockLocationDataHandler->deleteStockLocation($stockLocationEntity);
+        $this->stockLocationDataHandler->deleteStockLocation($stockLocation);
     }
 
     /**
@@ -152,7 +153,7 @@ class StockLocationService
 
     /**
      * @throws Exception
-     * @return array<int, array<string, int|string>>
+     * @return array<int, array<string, mixed>>
      */
     public function getOccupiedStockLocationsByArticleId(int $articleId): array
     {

@@ -7,25 +7,28 @@ namespace WebWMS\Controller;
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use Twig\Environment;
 use Twig\Loader\LoaderInterface;
+use WebWMS\Entity\TransportHistory;
+use WebWMS\Entity\TransportRequest;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\TransportHistoryRepository;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\Stock\StockRotationService;
 use WebWMS\Service\TransportRequest\TransportRequestService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        DashboardController
- */
-class DashboardController extends AbstractController
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Dashboard'
+)]
+class Dashboard extends AbstractController
 {
     private readonly LoaderInterface $loader;
 
@@ -36,12 +39,15 @@ class DashboardController extends AbstractController
         private readonly TransportHistoryRepository $transportHistoryRepository,
         private readonly StockRotationService $stockRotationService,
         private readonly TransportRequestService $transportRequestService,
-        private readonly StockLocationService $stockLocationService
+        private readonly StockLocationService $stockLocationService,
     ) {
         $this->loader = $this->twigEnvironment->getLoader();
     }
 
-    #[Route(path: '/dashboard', name: 'dashboard')]
+    /**
+     * @throws Exception
+     */
+    #[Route('/dashboard', name: 'dashboard')]
     public function index(): Response
     {
         if (!$this->getUser() instanceof UserInterface) {
@@ -67,7 +73,7 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @SuppressWarnings(PHPMD.ExitExpression)
+     * @SuppressWarnings(ExitExpression)
      */
     public function root(string $path): Response
     {
@@ -88,6 +94,7 @@ class DashboardController extends AbstractController
         $chartType = 'TYPE_LINE';
         $repo = $this->transportHistoryRepository->findBy(['trType' => 1]);
 
+        /** @var TransportHistory $data */
         foreach ($repo as $data) {
             if ($data->getTrAccess() !== null) {
                 $datasets[] = $data->getTrAccess()->format('d.m.Y');
@@ -105,6 +112,7 @@ class DashboardController extends AbstractController
         $chartType = 'TYPE_BAR';
         $repo = $this->transportHistoryRepository->findBy(['trType' => 2]);
 
+        /** @var TransportHistory $data */
         foreach ($repo as $data) {
             if ($data->getTrDispatch() !== null) {
                 $datasets[] = $data->getTrDispatch()->format('d.m.Y');
@@ -122,10 +130,11 @@ class DashboardController extends AbstractController
         $chartType = 'TYPE_BAR';
         $repo = $this->transportHistoryRepository->findAll();
 
+        /** @var TransportHistory $data */
         foreach ($repo as $data) {
             if ($data->getTrType() === 1 && $data->getTrAccess() !== null) {
                 $datasets[] = $data->getTrAccess()->format('d.m.Y');
-            } elseif ($data->getTrType() === 2 && $data->getTrDispatch() !== null) {
+            } elseif ($data->getTrType() == 2 && $data->getTrDispatch() !== null) {
                 $datasets[] = $data->getTrDispatch()->format('d.m.Y');
             }
         }
@@ -138,14 +147,16 @@ class DashboardController extends AbstractController
     /**
      * @return array<int>
      *
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(ElseExpression)
+     * @throws Exception
      */
     public function getAllTransportRequest(): array
     {
         $countTrOpen = [];
         $countTrInProgress = [];
-        $transportRequests = (array) $this->transportRequestService->getAllOpenTransportRequests();
+        $transportRequests = $this->transportRequestService->getAllOpenTransportRequests();
 
+        /** @var TransportRequest $transportRequest */
         foreach ($transportRequests as $transportRequest) {
             if ($transportRequest->getTrState() === 1) {
                 $countTrInProgress[] = $transportRequest->getTrState();
@@ -155,7 +166,7 @@ class DashboardController extends AbstractController
         }
 
         return [
-            'TrSum' => count($transportRequests),
+            'TrSum' => count((array) $transportRequests),
             'TrOpen' => count($countTrOpen),
             'TrInProgress' => count($countTrInProgress),
         ];
@@ -167,12 +178,16 @@ class DashboardController extends AbstractController
      */
     public function getWarehouseUtilization(): array
     {
-        return ['allStockLocations' => count((array)
-            json_decode((string)
+        return ['allStockLocations' => count(
+            (array)
+            json_decode(
+                (string)
                 $this->stockLocationService->getAllStockLocations()->getContent()
             )
-        ), 'occupiedStockLocations' => count((array)
-            json_decode((string)
+        ), 'occupiedStockLocations' => count(
+            (array)
+            json_decode(
+                (string)
                 $this->stockRotationService->getAllStockRotationsWithJoin()->getContent()
             )
         )];

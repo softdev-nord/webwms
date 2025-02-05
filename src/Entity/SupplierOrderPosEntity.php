@@ -15,14 +15,15 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\SupplierOrderPosRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderPosEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'SupplierOrderPos'
+)]
 #[ORM\Table(name: 'supplier_order_pos')]
 #[ORM\Entity(repositoryClass: SupplierOrderPosRepository::class)]
 #[ApiResource(
@@ -62,7 +63,7 @@ use WebWMS\Repository\SupplierOrderPosRepository;
     normalizationContext: ['groups' => ['supplierOrderPos:read']],
     denormalizationContext: ['groups' => ['supplierOrderPos:write']]
 )]
-class SupplierOrderPosEntity
+class SupplierOrderPos
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -98,8 +99,8 @@ class SupplierOrderPosEntity
     private ?DateTimeInterface $updatedAt = null;
 
     /** Many Supplier Order Positions have one Supplier Order. This is the owning side. */
-    #[ORM\ManyToOne(targetEntity: SupplierOrderEntity::class, inversedBy: 'supplierOrderPos')]
-    private SupplierOrderEntity $supplierOrder;
+    #[ORM\ManyToOne(targetEntity: SupplierOrder::class, inversedBy: 'supplierOrderPos')]
+    private SupplierOrder $supplierOrder;
 
     public function getId(): int
     {
@@ -197,14 +198,14 @@ class SupplierOrderPosEntity
         return $this;
     }
 
-    public function getSupplierOrder(): SupplierOrderEntity
+    public function getSupplierOrder(): SupplierOrder
     {
         return $this->supplierOrder;
     }
 
-    public function setSupplierOrder(SupplierOrderEntity $supplierOrderEntity): self
+    public function setSupplierOrder(SupplierOrder $supplierOrder): self
     {
-        $this->supplierOrder = $supplierOrderEntity;
+        $this->supplierOrder = $supplierOrder;
 
         return $this;
     }

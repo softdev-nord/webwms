@@ -8,20 +8,21 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use WebWMS\Entity\SupplierOrderEntity;
-use WebWMS\Entity\SupplierOrderPosEntity;
+use WebWMS\Entity\SupplierOrder;
+use WebWMS\Entity\SupplierOrderPos;
 use WebWMS\Form\SupplierOrder\AddSupplierOrderType;
 use WebWMS\Form\SupplierOrder\DeleteSupplierOrderType;
 use WebWMS\Form\SupplierOrder\EditSupplierOrderType;
 use WebWMS\Form\SupplierOrder\SupplierOrderPosType;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\SupplierOrderFormHelper;
 
-/**
- * @package:    WebWMS\Tests\Unit\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        SupplierOrderFormHelperTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'SupplierOrderFormHelperTest'
+)]
 #[CoversClass(SupplierOrderFormHelper::class)]
 final class SupplierOrderFormHelperTest extends TestCase
 {
@@ -34,15 +35,15 @@ final class SupplierOrderFormHelperTest extends TestCase
         $options = [];
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with($type, $data, $options)
             ->willReturn($formInterface);
 
         $supplierOrderFormHelper = new SupplierOrderFormHelper($formFactory);
-        $result = $supplierOrderFormHelper->createForm($type, $data, $options);
+        $form = $supplierOrderFormHelper->createForm($type, $data, $options);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testAddSupplierOrderForm(): void
@@ -51,51 +52,51 @@ final class SupplierOrderFormHelperTest extends TestCase
         $formInterface = $this->createMock(FormInterface::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(AddSupplierOrderType::class)
             ->willReturn($formInterface);
 
         $supplierOrderFormHelper = new SupplierOrderFormHelper($formFactory);
-        $result = $supplierOrderFormHelper->addSupplierOrderForm();
+        $form = $supplierOrderFormHelper->addSupplierOrderForm();
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testEditSupplierOrderForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $supplierOrder = $this->createMock(SupplierOrderEntity::class);
+        $supplierOrder = $this->createMock(SupplierOrder::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(EditSupplierOrderType::class, $supplierOrder)
             ->willReturn($formInterface);
 
         $supplierOrderFormHelper = new SupplierOrderFormHelper($formFactory);
-        $result = $supplierOrderFormHelper->editSupplierOrderForm($supplierOrder);
+        $form = $supplierOrderFormHelper->editSupplierOrderForm($supplierOrder);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testDeleteSupplierOrderForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $supplierOrder = $this->createMock(SupplierOrderEntity::class);
+        $supplierOrder = $this->createMock(SupplierOrder::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(DeleteSupplierOrderType::class, $supplierOrder)
             ->willReturn($formInterface);
 
         $supplierOrderFormHelper = new SupplierOrderFormHelper($formFactory);
-        $result = $supplierOrderFormHelper->deleteSupplierOrderForm($supplierOrder);
+        $form = $supplierOrderFormHelper->deleteSupplierOrderForm($supplierOrder);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testAddSupplierOrderPosForm(): void
@@ -104,50 +105,50 @@ final class SupplierOrderFormHelperTest extends TestCase
         $formInterface = $this->createMock(FormInterface::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(SupplierOrderPosType::class)
             ->willReturn($formInterface);
 
         $supplierOrderFormHelper = new SupplierOrderFormHelper($formFactory);
-        $result = $supplierOrderFormHelper->addSupplierOrderPosForm();
+        $form = $supplierOrderFormHelper->addSupplierOrderPosForm();
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testEditSupplierOrderPosForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $supplierOrder = $this->createMock(SupplierOrderPosEntity::class);
+        $supplierOrder = $this->createMock(SupplierOrderPos::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(SupplierOrderPosType::class, $supplierOrder)
             ->willReturn($formInterface);
 
         $supplierOrderFormHelper = new SupplierOrderFormHelper($formFactory);
-        $result = $supplierOrderFormHelper->editSupplierOrderPosForm($supplierOrder);
+        $form = $supplierOrderFormHelper->editSupplierOrderPosForm($supplierOrder);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testDeleteSupplierOrderPosForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $supplierOrder = $this->createMock(SupplierOrderPosEntity::class);
+        $supplierOrder = $this->createMock(SupplierOrderPos::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(SupplierOrderPosType::class, $supplierOrder)
             ->willReturn($formInterface);
 
         $supplierOrderFormHelper = new SupplierOrderFormHelper($formFactory);
-        $result = $supplierOrderFormHelper->deleteSupplierOrderPosForm($supplierOrder);
+        $form = $supplierOrderFormHelper->deleteSupplierOrderPosForm($supplierOrder);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 }

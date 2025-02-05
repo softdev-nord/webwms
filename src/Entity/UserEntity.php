@@ -20,14 +20,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\UserRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'User'
+)]
 #[ORM\Table(name: 'user')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
@@ -75,8 +76,11 @@ use WebWMS\Repository\UserRepository;
     ],
 )]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-class UserEntity implements UserInterface, GroupAwareUser, Stringable
+#[UniqueEntity(
+    fields: ['username'],
+    message: 'There is already an account with this username'
+)]
+class User implements UserInterface, GroupAwareUser, Stringable
 {
     public const ROLE_DEFAULT = 'ROLE_USER';
 
@@ -99,7 +103,9 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
     #[Groups(['user:read', 'user:write'])]
     private ?string $username = null;
 
-    /** @var array<string> */
+    /**
+     * @var string[]
+     */
     #[ORM\Column(name: 'roles', type: Types::JSON)]
     #[Groups(['user:read', 'user:write'])]
     private array $roles = [];
@@ -132,7 +138,9 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
 
     private ?string $plainPassword = '';
 
-    /** @var array<array<string>> */
+    /**
+     * @var array<mixed>
+     */
     #[ORM\Column(name: 'user_groups', type: Types::JSON)]
     #[Groups(['user:read', 'user:write'])]
     private array $userGroups = [];
@@ -266,12 +274,14 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         $this->password = $password;
     }
 
-    /** @return array<string> */
+    /**
+     * @return array<string>
+     */
     public function getRoles(): array
     {
         $roles = $this->roles;
 
-        // Sicherstellen, dass es mindestens eine Rolle gibt.
+        // Wir müssen sicherstellen, dass es mindestens eine Rolle gibt.
         $roles[] = self::ROLE_DEFAULT;
 
         return array_values(array_unique($roles));
@@ -296,17 +306,17 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         $this->plainPassword = $plainPassword;
     }
 
-    public function isEqualTo(BaseUserInterface $user): bool
+    public function isEqualTo(BaseUserInterface $baseUser): bool
     {
-        if (!$user instanceof self) {
+        if (!$baseUser instanceof self) {
             return false;
         }
 
-        if ($this->password !== $user->getPassword()) {
+        if ($this->password !== $baseUser->getPassword()) {
             return false;
         }
 
-        return $this->username === $user->getUsername();
+        return $this->username === $baseUser->getUsername();
     }
 
     public function isSuperAdmin(): bool
@@ -348,19 +358,25 @@ class UserEntity implements UserInterface, GroupAwareUser, Stringable
         return true;
     }
 
-    /** @return array<array<string>> */
+    /**
+     * @return array<string>
+     */
     public function getUserGroups(): array
     {
         return $this->userGroups;
     }
 
-    /** @param array<array<string>> $userGroups */
+    /**
+     * @param array<array<string>> $userGroups
+     */
     public function setUserGroups(array $userGroups): void
     {
         $this->userGroups = $userGroups;
     }
 
-    /** @return array<array<string>> */
+    /**
+     * @return array<array<string>>
+     */
     public function getGroups(): array
     {
         return $this->userGroups;

@@ -7,14 +7,15 @@ namespace WebWMS\Tests\Unit\Service;
 use DateTime;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DateTimeService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        DateTimeServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'DateTimeServiceTest'
+)]
 #[CoversClass(DateTimeService::class)]
 final class DateTimeServiceTest extends TestCase
 {
@@ -24,6 +25,6 @@ final class DateTimeServiceTest extends TestCase
         $dateTime = $dateTimeService->createDateTime();
 
         self::assertInstanceOf(DateTime::class, $dateTime);
-        self::assertEquals('Europe/Berlin', $dateTime->getTimezone()->getName());
+        self::assertSame('Europe/Berlin', $dateTime->getTimezone()->getName());
     }
 }

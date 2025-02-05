@@ -4,37 +4,38 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
-use WebWMS\Entity\StockZoneEntity;
+use WebWMS\Entity\StockZone;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockZoneValidationService
- */
+#[ClassInformation(
+    package: 'WebWMS\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockZoneValidationService'
+)]
 class StockZoneValidationService
 {
     /**
      * @return array<string, array<string, string>|bool|int|string|null>
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(CyclomaticComplexity)
+     * @SuppressWarnings(NPathComplexity)
+     * @SuppressWarnings(ElseExpression)
      */
-    public function validateStockZoneData(StockZoneEntity $stockZoneEntity): array
+    public function validateStockZoneData(StockZone $stockZone): array
     {
         $responseData = [];
 
-        if ($stockZoneEntity->getStockZoneShortDesc() === '' || $stockZoneEntity->getStockZoneShortDesc() === '0') {
+        if ($stockZone->getStockZoneShortDesc() === '' || $stockZone->getStockZoneShortDesc() === '0') {
             $responseData['error']['stock_zone_short_desc'] = 'Die Kurz-Beschreibung darf nicht leer sein.';
         } else {
-            $responseData['stockNr'] = $stockZoneEntity->getStockZoneShortDesc();
+            $responseData['stockNr'] = $stockZone->getStockZoneShortDesc();
         }
 
-        if ($stockZoneEntity->getStockZoneDescription() === null || $stockZoneEntity->getStockZoneDescription() === '' || $stockZoneEntity->getStockZoneDescription() === '0') {
+        if (in_array($stockZone->getStockZoneDescription(), [null, '', '0'], true)) {
             $responseData['error']['stock_zone_description'] = 'Die Beschreibung darf nicht leer sein.';
         } else {
-            $responseData['stockDescription'] = $stockZoneEntity->getStockZoneDescription();
+            $responseData['stockDescription'] = $stockZone->getStockZoneDescription();
         }
 
         if (!isset($responseData['error'])) {

@@ -8,16 +8,17 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use WebWMS\Entity\SupplierOrderPosEntity;
+use WebWMS\Entity\SupplierOrderPos;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\SupplierOrderPos\SupplierOrderPosDataHandler;
 use WebWMS\Service\SupplierOrderPos\SupplierOrderPosService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\SupplierOrderPosEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        SupplierOrderPosServiceTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\SupplierOrderPos',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'SupplierOrderPosServiceTest'
+)]
 #[CoversClass(SupplierOrderPosService::class)]
 final class SupplierOrderPosServiceTest extends TestCase
 {
@@ -34,33 +35,33 @@ final class SupplierOrderPosServiceTest extends TestCase
     public function testGetSupplierOrderPosById(): void
     {
         $supplierOrderPosId = 1;
-        $supplierOrderPosEntity = new SupplierOrderPosEntity();
+        $supplierOrderPos = new SupplierOrderPos();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getSupplierOrderPosById')
             ->with($supplierOrderPosId)
-            ->willReturn($supplierOrderPosEntity);
+            ->willReturn($supplierOrderPos);
 
         $result = $this->supplierOrderPosService->getSupplierOrderPosById($supplierOrderPosId);
 
-        self::assertSame($supplierOrderPosEntity, $result);
+        self::assertSame($supplierOrderPos, $result);
     }
 
     public function testGetSupplierOrderPosBySupplierOrderId(): void
     {
         $supplierOrderId = 1;
-        $supplierOrderPosEntity = new SupplierOrderPosEntity();
+        $supplierOrderPos = new SupplierOrderPos();
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getSupplierOrderPosBySupplierOrderId')
             ->with($supplierOrderId)
-            ->willReturn($supplierOrderPosEntity);
+            ->willReturn($supplierOrderPos);
 
         $result = $this->supplierOrderPosService->getSupplierOrderPosBySupplierOrderId($supplierOrderId);
 
-        self::assertSame($supplierOrderPosEntity, $result);
+        self::assertSame($supplierOrderPos, $result);
     }
 
     public function testGetAllSupplierOrderPos(): void
@@ -68,45 +69,45 @@ final class SupplierOrderPosServiceTest extends TestCase
         $supplierOrderPosList = ['pos1', 'pos2'];
 
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllSupplierOrderPos')
             ->willReturn(new JsonResponse($supplierOrderPosList));
 
-        $result = $this->supplierOrderPosService->getAllSupplierOrderPos();
+        $jsonResponse = $this->supplierOrderPosService->getAllSupplierOrderPos();
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testAddSupplierOrderPos(): void
     {
-        $supplierOrderPosEntity = new SupplierOrderPosEntity();
+        $supplierOrderPos = new SupplierOrderPos();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('addSupplierOrderPos')
-            ->with($supplierOrderPosEntity);
+            ->with($supplierOrderPos);
 
-        $this->supplierOrderPosService->addSupplierOrderPos($supplierOrderPosEntity);
+        $this->supplierOrderPosService->addSupplierOrderPos($supplierOrderPos);
     }
 
     public function testUpdateSupplierOrderPos(): void
     {
-        $supplierOrderPosEntity = new SupplierOrderPosEntity();
+        $supplierOrderPos = new SupplierOrderPos();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('updateSupplierOrderPos')
-            ->with($supplierOrderPosEntity);
+            ->with($supplierOrderPos);
 
-        $this->supplierOrderPosService->updateSupplierOrderPos($supplierOrderPosEntity);
+        $this->supplierOrderPosService->updateSupplierOrderPos($supplierOrderPos);
     }
 
     public function testDeleteSupplierOrderPos(): void
     {
-        $supplierOrderPosEntity = new SupplierOrderPosEntity();
+        $supplierOrderPos = new SupplierOrderPos();
         $this->mockObject
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('deleteSupplierOrderPos')
-            ->with($supplierOrderPosEntity);
+            ->with($supplierOrderPos);
 
-        $this->supplierOrderPosService->deleteSupplierOrderPos($supplierOrderPosEntity);
+        $this->supplierOrderPosService->deleteSupplierOrderPos($supplierOrderPos);
     }
 }

@@ -6,24 +6,20 @@ namespace WebWMS\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use WebWMS\Entity\ConfigurationEntity;
+use WebWMS\Entity\Configuration;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Repository
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ConfigurationRepository
- *
- * @method ConfigurationEntity|null find($id, $lockMode = null, $lockVersion = null)
- * @method ConfigurationEntity|null findOneBy(array $criteria, array $orderBy = null)
- * @method ConfigurationEntity[]    findAll()
- * @method ConfigurationEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
+#[ClassInformation(
+    package: 'WebWMS\Repository',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'ConfigurationRepository'
+)]
 class ConfigurationRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry $managerRegistry
+        ManagerRegistry $managerRegistry,
     ) {
-        parent::__construct($managerRegistry, ConfigurationEntity::class);
+        parent::__construct($managerRegistry, Configuration::class);
     }
 }

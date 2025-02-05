@@ -8,18 +8,19 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use WebWMS\Entity\SupplierEntity;
+use WebWMS\Entity\Supplier;
 use WebWMS\Form\Supplier\AddSupplierType;
 use WebWMS\Form\Supplier\DeleteSupplierType;
 use WebWMS\Form\Supplier\EditSupplierType;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\SupplierFormHelper;
 
-/**
- * @package:    WebWMS\Tests\Unit\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        SupplierFormHelperTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'SupplierFormHelperTest'
+)]
 #[CoversClass(SupplierFormHelper::class)]
 final class SupplierFormHelperTest extends TestCase
 {
@@ -32,15 +33,15 @@ final class SupplierFormHelperTest extends TestCase
         $options = [];
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with($type, $data, $options)
             ->willReturn($formInterface);
 
         $supplierFormHelper = new SupplierFormHelper($formFactory);
-        $result = $supplierFormHelper->createForm($type, $data, $options);
+        $form = $supplierFormHelper->createForm($type, $data, $options);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testAddSupplierForm(): void
@@ -49,50 +50,50 @@ final class SupplierFormHelperTest extends TestCase
         $formInterface = $this->createMock(FormInterface::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(AddSupplierType::class)
             ->willReturn($formInterface);
 
         $supplierFormHelper = new SupplierFormHelper($formFactory);
-        $result = $supplierFormHelper->addSupplierForm();
+        $form = $supplierFormHelper->addSupplierForm();
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testEditSupplierForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $supplier = $this->createMock(SupplierEntity::class);
+        $supplier = $this->createMock(Supplier::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(EditSupplierType::class, $supplier)
             ->willReturn($formInterface);
 
         $supplierFormHelper = new SupplierFormHelper($formFactory);
-        $result = $supplierFormHelper->editSupplierForm($supplier);
+        $form = $supplierFormHelper->editSupplierForm($supplier);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testDeleteSupplierForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
         $formInterface = $this->createMock(FormInterface::class);
-        $supplier = $this->createMock(SupplierEntity::class);
+        $supplier = $this->createMock(Supplier::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(DeleteSupplierType::class, $supplier)
             ->willReturn($formInterface);
 
         $supplierFormHelper = new SupplierFormHelper($formFactory);
-        $result = $supplierFormHelper->deleteSupplierForm($supplier);
+        $form = $supplierFormHelper->deleteSupplierForm($supplier);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 }

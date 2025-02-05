@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Stock;
 
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\StockOutStrategyDataHandler;
 
-/**
- * @package:    WebWMS\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockOutStrategyService
- */
-class StockOutStrategyService
+#[ClassInformation(
+    package: 'WebWMS\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockOutStrategyService'
+)]
+readonly class StockOutStrategyService
 {
     public function __construct(
-        private readonly StockOutStrategyDataHandler $stockOutStrategyDataHandler
+        private StockOutStrategyDataHandler $stockOutStrategyDataHandler,
     ) {
     }
 

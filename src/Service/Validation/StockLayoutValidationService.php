@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Validation;
 
-/**
- * @package:    WebWMS\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLayoutValidationService
- */
+use WebWMS\Helper\Attribute\ClassInformation;
+
+#[ClassInformation(
+    package: 'WebWMS\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLayoutValidationService'
+)]
 class StockLayoutValidationService
 {
     /**
      * @param array<mixed> $requestData
-     * @return array<string, array<string, string>|bool|int|string|null>
+     * @returns array<string, mixed>
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ElseExpression)
+     * @SuppressWarnings(CyclomaticComplexity)
+     * @SuppressWarnings(NPathComplexity)
+     * @SuppressWarnings(ElseExpression)
      */
     public function validateStockLayoutData(array $requestData): array
     {

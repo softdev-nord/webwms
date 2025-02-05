@@ -9,13 +9,14 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Bundles\StockInventoryBundle\DependencyInjection
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockInventoryExtension
- */
+#[ClassInformation(
+    package: 'WebWMS\Bundles\StockInventoryBundle\DependencyInjection',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockInventoryExtension'
+)]
 class StockInventoryExtension extends Extension
 {
     /**

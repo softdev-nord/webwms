@@ -7,13 +7,14 @@ namespace WebWMS\Twig;
 use JsonException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Twig
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        VarsExtension
- */
+#[ClassInformation(
+    package: 'WebWMS\Twig',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'VarsExtension'
+)]
 class VarsExtension extends AbstractExtension
 {
     public function getFilters(): array

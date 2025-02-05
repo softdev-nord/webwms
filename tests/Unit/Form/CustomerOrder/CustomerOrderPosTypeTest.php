@@ -6,17 +6,20 @@ namespace WebWMS\Tests\Unit\Form\CustomerOrder;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\CustomerOrderPosEntity;
+use WebWMS\Entity\CustomerOrderPos;
 use WebWMS\Form\CustomerOrder\CustomerOrderPosType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\CustomerOrderEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        CustomerOrderPosTypeTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\CustomerOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'CustomerOrderPosTypeTest'
+)]
 #[CoversClass(CustomerOrderPosType::class)]
 final class CustomerOrderPosTypeTest extends TestCase
 {
@@ -24,9 +27,16 @@ final class CustomerOrderPosTypeTest extends TestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::once())
+            ->expects(self::exactly(1))
             ->method('add')
-            ->withAnyParameters();
+            ->willReturnOnConsecutiveCalls(
+                ['id', HiddenType::class, self::anything()],
+                ['customerOrderId', HiddenType::class, self::anything()],
+                ['quantity', TextType::class, self::anything()],
+                ['articleId', HiddenType::class, self::anything()],
+                ['articleNr', TextType::class, self::anything()],
+                ['articleName', TextType::class, self::anything()],
+            );
 
         $customerOrderPosType = new CustomerOrderPosType();
         $customerOrderPosType->buildForm($builder, []);
@@ -36,9 +46,9 @@ final class CustomerOrderPosTypeTest extends TestCase
     {
         $resolver = $this->createMock(OptionsResolver::class);
         $resolver
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
-            ->with(['data_class' => CustomerOrderPosEntity::class]);
+            ->with(['data_class' => CustomerOrderPos::class]);
 
         $customerOrderPosType = new CustomerOrderPosType();
         $customerOrderPosType->configureOptions($resolver);

@@ -9,29 +9,30 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\SupplierEntity;
+use WebWMS\Entity\Supplier as SupplierEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\SupplierFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Supplier\SupplierService;
 use WebWMS\Service\Validation\SupplierValidationService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierController
- */
-class SupplierController extends AbstractController
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Supplier'
+)]
+class Supplier extends AbstractController
 {
     public function __construct(
         private readonly SupplierService $supplierService,
         private readonly RequirementsService $requirementsService,
         private readonly LoggingService $loggingService,
         private readonly SupplierValidationService $supplierValidationService,
-        private readonly SupplierFormHelper $supplierFormHelper
+        private readonly SupplierFormHelper $supplierFormHelper,
     ) {
     }
 
@@ -187,7 +188,6 @@ class SupplierController extends AbstractController
     #[Route('/order_supplier_ajax', name: 'order_supplier_ajax')]
     public function getAllSuppliersAjax(Request $request): JsonResponse
     {
-
         $supplierNrInput = (string) $request->query->get('name_supplier');
 
         return $this->supplierService->getAllSuppliersAjax($supplierNrInput);

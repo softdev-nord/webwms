@@ -7,18 +7,19 @@ namespace WebWMS\Tests\Unit\Entity;
 use DateTime;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Entity\UserRightEntity;
+use WebWMS\Entity\UserRight;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        UserRightTest
- */
-#[CoversClass(UserRightEntity::class)]
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserRightTest'
+)]
+#[CoversClass(UserRight::class)]
 final class UserRightTest extends TestCase
 {
-    private UserRightEntity $userRightEntity;
+    private UserRight $userRight;
 
     private DateTime $dateTime;
 
@@ -26,7 +27,7 @@ final class UserRightTest extends TestCase
     {
         parent::setUp();
 
-        $this->userRightEntity = new UserRightEntity();
+        $this->userRight = new UserRight();
         $this->dateTime = new DateTime();
     }
 
@@ -34,27 +35,27 @@ final class UserRightTest extends TestCase
     {
         // Test setId() and getId()
         $id = 1;
-        $this->userRightEntity->setId($id);
-        self::assertEquals($id, $this->userRightEntity->getId());
+        $this->userRight->setId($id);
+        self::assertSame($id, $this->userRight->getId());
 
         // Test setUserRight() and getUserRight()
         $right = 'create';
-        $this->userRightEntity->setUserRight($right);
-        self::assertEquals($right, $this->userRightEntity->getUserRight());
+        $this->userRight->setUserRight($right);
+        self::assertSame($right, $this->userRight->getUserRight());
 
         // Test setDescription() and getUsername()
         $description = 'Erstellen';
-        $this->userRightEntity->setDescription($description);
-        self::assertEquals($description, $this->userRightEntity->getDescription());
+        $this->userRight->setDescription($description);
+        self::assertSame($description, $this->userRight->getDescription());
 
         // Test setCreatedAt() and getCreatedAt()
         $createdAt = $this->dateTime;
-        $this->userRightEntity->setCreatedAt($createdAt);
-        self::assertEquals($createdAt, $this->userRightEntity->getCreatedAt());
+        $this->userRight->setCreatedAt($createdAt);
+        self::assertEquals($createdAt, $this->userRight->getCreatedAt());
 
         // Test setUpdatedAt() and getUpdatedAt()
         $updatedAt = $this->dateTime;
-        $this->userRightEntity->setUpdatedAt($updatedAt);
-        self::assertEquals($updatedAt, $this->userRightEntity->getUpdatedAt());
+        $this->userRight->setUpdatedAt($updatedAt);
+        self::assertEquals($updatedAt, $this->userRight->getUpdatedAt());
     }
 }

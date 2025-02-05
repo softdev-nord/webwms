@@ -9,10 +9,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\CustomerOrderEntity;
-use WebWMS\Entity\CustomerOrderPosEntity;
+use WebWMS\Entity\CustomerOrder as CustomerOrderEntity;
+use WebWMS\Entity\CustomerOrderPos;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\CustomerOrderFormHelper;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\Customer\CustomerService;
@@ -20,17 +21,21 @@ use WebWMS\Service\CustomerOrder\CustomerOrderService;
 use WebWMS\Service\CustomerOrderPos\CustomerOrderPosService;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
+use WebWMS\Trait\UserRoleRightTrait;
 
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'CustomerOrder'
+)]
 /**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderController
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(CouplingBetweenObjects)
  */
-class CustomerOrderController extends AbstractController
+class CustomerOrder extends AbstractController
 {
+    use UserRoleRightTrait;
+
     public function __construct(
         private readonly ArticleService $articleService,
         private readonly CustomerOrderService $customerOrderService,
@@ -38,7 +43,7 @@ class CustomerOrderController extends AbstractController
         private readonly RequirementsService $requirementsService,
         private readonly CustomerService $customerService,
         private readonly LoggingService $loggingService,
-        private readonly CustomerOrderFormHelper $customerOrderFormHelper
+        private readonly CustomerOrderFormHelper $customerOrderFormHelper,
     ) {
     }
 
@@ -69,6 +74,10 @@ class CustomerOrderController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        if (!$this->userRoleRight->hasUserGroup('GROUP_LOGISTICS_MANAGER')) {
+            throw $this->createAccessDeniedException("You don't have the required permissions.");
+        }
+
         $customerOrderForm = $this->customerOrderFormHelper->addCustomerOrderForm();
 
         $customerOrderForm->handleRequest($request);
@@ -91,7 +100,7 @@ class CustomerOrderController extends AbstractController
 
         $customerOrderPosForm->handleRequest($request);
         if ($customerOrderPosForm->isSubmitted() && $customerOrderPosForm->isValid()) {
-            /** @var CustomerOrderPosEntity $customerOrderPosRequestData */
+            /** @var CustomerOrderPos $customerOrderPosRequestData */
             $customerOrderPosRequestData = $customerOrderPosForm->getData();
             $customerOrderId = $customerOrderPosRequestData->getCustomerOrderId();
             $responseData = [];
@@ -153,7 +162,7 @@ class CustomerOrderController extends AbstractController
         $customerOrderPosForm->handleRequest($request);
 
         if ($customerOrderPosForm->isSubmitted() && $customerOrderPosForm->isValid()) {
-            /** @var CustomerOrderPosEntity $customerOrderPosRequestData */
+            /** @var CustomerOrderPos $customerOrderPosRequestData */
             $customerOrderPosRequestData = $customerOrderPosForm->getData();
             $customerOrderId = $customerOrderPosRequestData->getCustomerOrderId();
             $responseData = [];
@@ -216,7 +225,7 @@ class CustomerOrderController extends AbstractController
 
         $customerOrderPosForm->handleRequest($request);
         if ($customerOrderPosForm->isSubmitted() && $customerOrderPosForm->isValid()) {
-            /** @var CustomerOrderPosEntity $customerOrderPosRequestData */
+            /** @var CustomerOrderPos $customerOrderPosRequestData */
             $customerOrderPosRequestData = $customerOrderPosForm->getData();
             $customerOrderId = $customerOrderPosRequestData->getCustomerOrderId();
             $responseData = [];

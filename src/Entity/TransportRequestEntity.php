@@ -7,17 +7,18 @@ namespace WebWMS\Entity;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\TransportRequestRepository;
 
-/**
- * @package:    WebWMS\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        TransportRequestEntity
- */
+#[ClassInformation(
+    package: 'WebWMS\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'TransportRequest'
+)]
 #[ORM\Table(name: 'transport_request')]
 #[ORM\Entity(repositoryClass: TransportRequestRepository::class)]
-class TransportRequestEntity
+class TransportRequest
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -237,7 +238,7 @@ class TransportRequestEntity
         return $this;
     }
 
-    public function getStockLevel2(): int
+    public function getStockLevel2(): ?int
     {
         return $this->stockLevel2;
     }

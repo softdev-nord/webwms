@@ -9,13 +9,14 @@ use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        Kernel
- */
+#[ClassInformation(
+    package: 'WebWMS',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Kernel'
+)]
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;

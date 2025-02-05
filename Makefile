@@ -63,7 +63,7 @@ db-logs: ## Tail database container logs
 ########################### Code Analysis ############################
 ######################################################################
 phpstan: ## Run code analyse for src and bundles folder (phpstan)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpstan analyse';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpstan analyse --error-format=table';
 
 phpstan-baseline: ## Run code analyse (phpstan) incl. baseline
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpstan analyse --generate-baseline';
@@ -120,6 +120,12 @@ js-eslint-fix: ## Run ESLint with --fix flag (Runs on the host system)
 ######################################################################
 yaml-lint: ## Lints the yaml files (config folder)
 	@docker exec -t $(APP_CONTAINER_NAME) bin/console lint:yaml config --parse-tags
+
+######################################################################
+######################### Twig Style Check ###########################
+######################################################################
+twig-cs-fixer: ## Run twig code style check
+	@docker exec -t $(APP_CONTAINER_NAME) 'vendor/bin/twig-cs-fixer lint templates/'
 
 ######################################################################
 ############################### Tests ################################

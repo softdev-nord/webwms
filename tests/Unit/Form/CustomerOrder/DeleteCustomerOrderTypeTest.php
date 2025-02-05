@@ -6,17 +6,20 @@ namespace WebWMS\Tests\Unit\Form\CustomerOrder;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\CustomerOrderEntity;
+use WebWMS\Entity\CustomerOrder;
 use WebWMS\Form\CustomerOrder\DeleteCustomerOrderType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\CustomerOrderEntity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        DeleteCustomerOrderTypeTest
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\CustomerOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'DeleteCustomerOrderTypeTest'
+)]
 #[CoversClass(DeleteCustomerOrderType::class)]
 final class DeleteCustomerOrderTypeTest extends TestCase
 {
@@ -24,9 +27,13 @@ final class DeleteCustomerOrderTypeTest extends TestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::once())
+            ->expects(self::exactly(1))
             ->method('add')
-            ->withAnyParameters();
+            ->willReturnOnConsecutiveCalls(
+                ['customerOrderId', HiddenType::class, self::anything()],
+                ['delete', ButtonType::class, self::anything()],
+                ['abort', ButtonType::class, self::anything()]
+            );
 
         $deleteCustomerOrderType = new DeleteCustomerOrderType();
         $deleteCustomerOrderType->buildForm($builder, []);
@@ -36,9 +43,9 @@ final class DeleteCustomerOrderTypeTest extends TestCase
     {
         $resolver = $this->createMock(OptionsResolver::class);
         $resolver
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
-            ->with(['data_class' => CustomerOrderEntity::class]);
+            ->with(['data_class' => CustomerOrder::class]);
 
         $deleteCustomerOrderType = new DeleteCustomerOrderType();
         $deleteCustomerOrderType->configureOptions($resolver);

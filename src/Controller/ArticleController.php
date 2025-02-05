@@ -11,27 +11,28 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\ArticleEntity;
+use WebWMS\Entity\Article as ArticleEntity;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\ArticleFormHelper;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Validation\ArticleValidationService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ArticleController
- */
-class ArticleController extends AbstractController
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'Article'
+)]
+class Article extends AbstractController
 {
     public function __construct(
         private readonly ArticleService $articleService,
         private readonly RequirementsService $requirementsService,
         private readonly ArticleValidationService $articleValidationService,
         private readonly LoggingService $loggingService,
-        private readonly ArticleFormHelper $articleFormHelper
+        private readonly ArticleFormHelper $articleFormHelper,
     ) {
     }
 
@@ -66,17 +67,20 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ArticleEntity $newArticle */
-            $newArticle = $form->getData();
-            $articleNr = $newArticle->getArticleNr();
-            $responseData = $this->articleValidationService->validateArticleData($newArticle);
+            /** @var ArticleEntity $requestData */
+            $requestData = $form->getData();
+            $articleNr = $requestData->getArticleNr();
+            $responseData = $this->articleValidationService
+                ->validateArticleData(
+                    (array) $request->request->all()['add_article']
+                );
 
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich angelegt.';
                 $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde angelegt.';
 
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-                $this->articleService->addArticle($newArticle);
+                $this->articleService->addArticle($requestData);
 
                 return new JsonResponse($responseData);
             }
@@ -111,17 +115,20 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ArticleEntity $updatedArticle */
-            $updatedArticle = $form->getData();
+            /** @var ArticleEntity $requestData */
+            $requestData = $form->getData();
             $articleNr = $article->getArticleNr();
-            $responseData = $this->articleValidationService->validateArticleData($updatedArticle);
+            $responseData = $this->articleValidationService
+                ->validateArticleData(
+                    (array) $request->request->all()['edit_article']
+                );
 
             if (isset($responseData['success'])) {
                 $responseData['message'] = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde erfolgreich geändert.';
                 $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde geändert.';
 
                 $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-                $this->articleService->updateArticle($updatedArticle);
+                $this->articleService->updateArticle($requestData);
 
                 return new JsonResponse($responseData);
             }
@@ -156,8 +163,8 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ArticleEntity $deletedArticle */
-            $deletedArticle = $form->getData();
+            /** @var ArticleEntity $requestData */
+            $requestData = $form->getData();
             $articleNr = $article->getArticleNr();
             $responseData = [];
 
@@ -165,7 +172,7 @@ class ArticleController extends AbstractController
             $logMessage = 'Der Artikel mit der Artikel-Nr. ' . $articleNr . ' wurde gelöscht.';
 
             $this->loggingService->write($request, $logMessage, $this->getUser()->getUserIdentifier());
-            $this->articleService->deleteArticle($deletedArticle);
+            $this->articleService->deleteArticle($requestData);
 
             return new JsonResponse($responseData);
         }

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\Stock;
 
-/**
- * @package:    WebWMS\Service\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockInStrategyService
- */
+use WebWMS\Helper\Attribute\ClassInformation;
+
+#[ClassInformation(
+    package: 'WebWMS\Service\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockInStrategyService'
+)]
 class StockInStrategyService
 {
     /*
