@@ -3,11 +3,11 @@
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         backupGlobals="false"
+         beStrictAboutOutputDuringTests="true"
          colors="true"
-         bootstrap="tests/bootstrap.php"
-         convertDeprecationsToExceptions="false"
->
+         failOnWarning="true"
+         failOnRisky="true"
+         bootstrap="tests/bootstrap.php">
     <php>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
@@ -24,24 +24,16 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
+    <source>
         <include>
-            <directory suffix=".php">src</directory>
+            <directory>src</directory>
         </include>
-        <exclude>
-            <directory suffix=".php">src/Controller</directory>
-            <directory suffix=".php">src/Components</directory>
-            <directory suffix=".php">src/Security</directory>
-            <directory suffix=".php">src/Service/DataHandlers/</directory>
-            <directory suffix=".php">vendor/</directory>
-            <file>src/Kernel.php</file>
-            <file>src/.preload.php</file>
-        </exclude>
-    </coverage>
 
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
+        <exclude>
+            <directory></directory>
+
+        </exclude>
+    </source>
 
     <!-- Run `composer require symfony/panther` before enabling this extension -->
     <!--
