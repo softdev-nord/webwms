@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Customer;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -12,15 +13,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\Customer;
 use WebWMS\Form\Customer\EditCustomerType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\Customer
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        EditCustomerTypeTest
- *
- * @covers \WebWMS\Form\Customer\EditCustomerType
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Customer',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'EditCustomerTypeTest'
+)]
+#[CoversClass(EditCustomerType::class)]
 final class EditCustomerTypeTest extends TestCase
 {
     public function testBuildForm(): void
@@ -29,7 +30,7 @@ final class EditCustomerTypeTest extends TestCase
         $builder
             ->expects(self::exactly(1))
             ->method('add')
-            ->withConsecutive(
+            ->willReturnOnConsecutiveCalls(
                 ['customerId', HiddenType::class, self::anything()],
                 ['customerNr', TextType::class, self::anything()],
                 ['customerName', TextType::class, self::anything()],
@@ -43,19 +44,19 @@ final class EditCustomerTypeTest extends TestCase
                 ['abort', ButtonType::class, self::anything()]
             );
 
-        $type = new EditCustomerType();
-        $type->buildForm($builder, []);
+        $editCustomerType = new EditCustomerType();
+        $editCustomerType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
         $resolverMock = $this->createMock(OptionsResolver::class);
         $resolverMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with(['data_class' => Customer::class]);
 
-        $type = new EditCustomerType();
-        $type->configureOptions($resolverMock);
+        $editCustomerType = new EditCustomerType();
+        $editCustomerType->configureOptions($resolverMock);
     }
 }

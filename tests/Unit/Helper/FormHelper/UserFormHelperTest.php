@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Helper\FormHelper;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -12,16 +13,16 @@ use WebWMS\Form\User\AddUserType;
 use WebWMS\Form\User\ChangePasswordType;
 use WebWMS\Form\User\DeleteUserType;
 use WebWMS\Form\User\EditUserType;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\UserFormHelper;
 
-/**
- * @package:    WebWMS\Tests\Unit\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserFormHelperTest
- *
- * @covers \WebWMS\Helper\FormHelper\UserFormHelper
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserFormHelperTest'
+)]
+#[CoversClass(UserFormHelper::class)]
 final class UserFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
@@ -33,15 +34,15 @@ final class UserFormHelperTest extends TestCase
         $options = [];
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with($type, $data, $options)
             ->willReturn($formInterface);
 
-        $helper = new UserFormHelper($formFactory);
-        $result = $helper->createForm($type, $data, $options);
+        $userFormHelper = new UserFormHelper($formFactory);
+        $form = $userFormHelper->createForm($type, $data, $options);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testAddUserForm(): void
@@ -50,15 +51,15 @@ final class UserFormHelperTest extends TestCase
         $formInterface = $this->createMock(FormInterface::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(AddUserType::class)
             ->willReturn($formInterface);
 
-        $helper = new UserFormHelper($formFactory);
-        $result = $helper->addUserForm();
+        $userFormHelper = new UserFormHelper($formFactory);
+        $form = $userFormHelper->addUserForm();
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testEditUserForm(): void
@@ -68,15 +69,15 @@ final class UserFormHelperTest extends TestCase
         $user = $this->createMock(User::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(EditUserType::class, $user)
             ->willReturn($formInterface);
 
-        $helper = new UserFormHelper($formFactory);
-        $result = $helper->editUserForm($user);
+        $userFormHelper = new UserFormHelper($formFactory);
+        $form = $userFormHelper->editUserForm($user);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testDeleteUserForm(): void
@@ -86,15 +87,15 @@ final class UserFormHelperTest extends TestCase
         $user = $this->createMock(User::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(DeleteUserType::class, $user)
             ->willReturn($formInterface);
 
-        $helper = new UserFormHelper($formFactory);
-        $result = $helper->deleteUserForm($user);
+        $userFormHelper = new UserFormHelper($formFactory);
+        $form = $userFormHelper->deleteUserForm($user);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testChangePasswordForm(): void
@@ -104,14 +105,14 @@ final class UserFormHelperTest extends TestCase
         $user = $this->createMock(User::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(ChangePasswordType::class, $user)
             ->willReturn($formInterface);
 
-        $helper = new UserFormHelper($formFactory);
-        $result = $helper->changePasswordForm($user);
+        $userFormHelper = new UserFormHelper($formFactory);
+        $form = $userFormHelper->changePasswordForm($user);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 }

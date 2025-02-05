@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Configuration;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\Configuration;
 use WebWMS\Form\Configuration\GeneralConfigurationType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\Configuration
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        GeneralConfigurationTypeTest
- *
- * @covers \WebWMS\Form\Configuration\GeneralConfigurationType
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Configuration',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'GeneralConfigurationTypeTest'
+)]
+#[CoversClass(GeneralConfigurationType::class)]
 final class GeneralConfigurationTypeTest extends TestCase
 {
     public function testBuildForm(): void
@@ -26,7 +27,7 @@ final class GeneralConfigurationTypeTest extends TestCase
         $builder
             ->expects(self::exactly(1))
             ->method('add')
-            ->withConsecutive(
+            ->willReturnOnConsecutiveCalls(
                 ['name'],
                 ['value'],
                 ['label'],
@@ -34,19 +35,19 @@ final class GeneralConfigurationTypeTest extends TestCase
                 ['type']
             );
 
-        $type = new GeneralConfigurationType();
-        $type->buildForm($builder, []);
+        $generalConfigurationType = new GeneralConfigurationType();
+        $generalConfigurationType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
         $resolverMock = $this->createMock(OptionsResolver::class);
         $resolverMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with(['data_class' => Configuration::class]);
 
-        $type = new GeneralConfigurationType();
-        $type->configureOptions($resolverMock);
+        $generalConfigurationType = new GeneralConfigurationType();
+        $generalConfigurationType->configureOptions($resolverMock);
     }
 }

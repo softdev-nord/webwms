@@ -4,31 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Supplier;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Supplier;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Supplier\SupplierDataHandler;
 use WebWMS\Service\Supplier\SupplierService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Supplier
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierServiceTest
- *
- * @covers \WebWMS\Service\Supplier\SupplierService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Supplier',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'SupplierServiceTest'
+)]
+#[CoversClass(SupplierService::class)]
 final class SupplierServiceTest extends TestCase
 {
     private SupplierService $supplierService;
 
-    private MockObject $supplierDataHandler;
+    private MockObject $mockObject;
 
     protected function setUp(): void
     {
-        $this->supplierDataHandler = $this->createMock(SupplierDataHandler::class);
-        $this->supplierService = new SupplierService($this->supplierDataHandler);
+        $this->mockObject = $this->createMock(SupplierDataHandler::class);
+        $this->supplierService = new SupplierService($this->mockObject);
     }
 
     public function testGetSupplierById(): void
@@ -36,7 +37,7 @@ final class SupplierServiceTest extends TestCase
         $supplierId = 1;
         $supplier = new Supplier();
 
-        $this->supplierDataHandler->expects(self::once())
+        $this->mockObject->expects($this->once())
             ->method('getSupplierById')
             ->with($supplierId)
             ->willReturn($supplier);
@@ -51,7 +52,7 @@ final class SupplierServiceTest extends TestCase
         $supplierNr = 123;
         $supplier = new Supplier();
 
-        $this->supplierDataHandler->expects(self::once())
+        $this->mockObject->expects($this->once())
             ->method('getSupplierByNr')
             ->with($supplierNr)
             ->willReturn($supplier);
@@ -68,14 +69,14 @@ final class SupplierServiceTest extends TestCase
             new Supplier(),
         ];
 
-        $this->supplierDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getAllSuppliers')
             ->willReturn($suppliers);
 
-        $result = $this->supplierService->getAllSuppliers();
+        $jsonResponse = $this->supplierService->getAllSuppliers();
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testGetAllSuppliersAjax(): void
@@ -83,7 +84,7 @@ final class SupplierServiceTest extends TestCase
         $jsonResponse = $this->createMock(JsonResponse::class);
         $supplierNrInput = '123';
 
-        $this->supplierDataHandler->expects(self::once())
+        $this->mockObject->expects($this->once())
             ->method('getSuppliers')
             ->willReturn($jsonResponse);
 
@@ -94,20 +95,20 @@ final class SupplierServiceTest extends TestCase
 
     public function testAddSupplier(): void
     {
-        $article = new Supplier();
-        $this->supplierDataHandler
-            ->expects(self::once())
+        $supplier = new Supplier();
+        $this->mockObject
+            ->expects($this->once())
             ->method('addSupplier')
-            ->with($article);
+            ->with($supplier);
 
-        $this->supplierService->addSupplier($article);
+        $this->supplierService->addSupplier($supplier);
     }
 
     public function testUpdateSupplier(): void
     {
         $supplier = new Supplier();
-        $this->supplierDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('updateSupplier')
             ->with($supplier);
 
@@ -117,8 +118,8 @@ final class SupplierServiceTest extends TestCase
     public function testDeleteSupplier(): void
     {
         $supplier = new Supplier();
-        $this->supplierDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('deleteSupplier')
             ->with($supplier);
 
@@ -129,7 +130,7 @@ final class SupplierServiceTest extends TestCase
     {
         $lastSupplierId = 10;
 
-        $this->supplierDataHandler->expects(self::once())
+        $this->mockObject->expects($this->once())
             ->method('getLastSupplier')
             ->willReturn($lastSupplierId);
 

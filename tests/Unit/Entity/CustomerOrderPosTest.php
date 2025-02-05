@@ -4,25 +4,27 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use DateTime;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\CustomerOrder;
 use WebWMS\Entity\CustomerOrderPos;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerOrderPosTest
- *
- * @covers \WebWMS\Entity\CustomerOrderPos
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'CustomerOrderPosTest'
+)]
+#[CoversClass(CustomerOrderPos::class)]
 final class CustomerOrderPosTest extends TestCase
 {
     private CustomerOrderPos $customerOrderPos;
 
     private CustomerOrder $customerOrder;
 
-    private \DateTime $dateTime;
+    private DateTime $dateTime;
 
     protected function setUp(): void
     {
@@ -30,7 +32,7 @@ final class CustomerOrderPosTest extends TestCase
 
         $this->customerOrderPos = new CustomerOrderPos();
         $this->customerOrder = new CustomerOrder();
-        $this->dateTime = new \DateTime();
+        $this->dateTime = new DateTime();
     }
 
     public function testGetterAndSetterMethods(): void
@@ -38,32 +40,32 @@ final class CustomerOrderPosTest extends TestCase
         // Test setId() and getId()
         $id = 1;
         $this->customerOrderPos->setId($id);
-        self::assertEquals($id, $this->customerOrderPos->getId());
+        self::assertSame($id, $this->customerOrderPos->getId());
 
         // Test setCustomerOrderId() and getCustomerOrderId()
         $customerOrderId = 710000;
         $this->customerOrderPos->setCustomerOrderId($customerOrderId);
-        self::assertEquals($customerOrderId, $this->customerOrderPos->getCustomerOrderId());
+        self::assertSame($customerOrderId, $this->customerOrderPos->getCustomerOrderId());
 
         // Test setArticleId() and getArticleId()
         $articleId = 1;
         $this->customerOrderPos->setArticleId($articleId);
-        self::assertEquals($articleId, $this->customerOrderPos->getArticleId());
+        self::assertSame($articleId, $this->customerOrderPos->getArticleId());
 
         // Test setArticleNr() and getArticleNr()
         $articleNr = '12345';
         $this->customerOrderPos->setArticleNr($articleNr);
-        self::assertEquals($articleNr, $this->customerOrderPos->getArticleNr());
+        self::assertSame($articleNr, $this->customerOrderPos->getArticleNr());
 
         // Test setArticleName() and getArticleName()
         $articleName = 'Test Article Name';
         $this->customerOrderPos->setArticleName($articleName);
-        self::assertEquals($articleName, $this->customerOrderPos->getArticleName());
+        self::assertSame($articleName, $this->customerOrderPos->getArticleName());
 
         // Test setQuantity() and getQuantity()
         $quantity = 100;
         $this->customerOrderPos->setQuantity($quantity);
-        self::assertEquals($quantity, $this->customerOrderPos->getQuantity());
+        self::assertSame($quantity, $this->customerOrderPos->getQuantity());
 
         // Test setCreatedAt() and getCreatedAt()
         $createdAt = $this->dateTime;

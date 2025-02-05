@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Service\BookingMethod;
 
 use Doctrine\ORM\EntityNotFoundException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -13,23 +14,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use WebWMS\Form\Stock\StockInType;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\BookingMethod\BookingMethodService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\TransportRequest\TransportRequestService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\BookingMethod
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        BookingMethodServiceTest
- *
- * @covers \WebWMS\Service\BookingMethod\BookingMethodService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\BookingMethod',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'BookingMethodServiceTest'
+)]
+#[CoversClass(BookingMethodService::class)]
 final class BookingMethodServiceTest extends TestCase
 {
-    private RequirementsService $requirementsService;
-
     private MockObject $stockLocationService;
 
     private MockObject $transportRequestService;
@@ -44,7 +43,7 @@ final class BookingMethodServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->requirementsService = $this->createMock(RequirementsService::class);
+        $requirementsService = $this->createMock(RequirementsService::class);
         $this->stockLocationService = $this->createMock(StockLocationService::class);
         $this->transportRequestService = $this->createMock(TransportRequestService::class);
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
@@ -52,7 +51,7 @@ final class BookingMethodServiceTest extends TestCase
         $this->form = $this->createMock(FormInterface::class);
 
         $this->bookingMethodService = new BookingMethodService(
-            $this->requirementsService,
+            $requirementsService,
             $this->stockLocationService,
             $this->transportRequestService,
             $this->formFactory,
@@ -65,20 +64,20 @@ final class BookingMethodServiceTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $this->formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(StockInType::class)
             ->willReturn($this->createMock(FormInterface::class));
 
         $this->twig
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('render')
             ->willReturn('rendered html');
 
         $response = $this->bookingMethodService->stockIn($request);
 
         self::assertInstanceOf(Response::class, $response);
-        self::assertEquals('rendered html', $response->getContent());
+        self::assertSame('rendered html', $response->getContent());
     }
 
     public function testStockInReturnsResponseWhenFormIsSubmittedAndValid(): void
@@ -86,23 +85,23 @@ final class BookingMethodServiceTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $this->form
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isSubmitted')
             ->willReturn(true);
         $this->form
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isValid')
             ->willReturn(true);
         $this->form
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getData')
             ->willReturn([
-            'quantity' => 10,
-            'leQuantity' => 2,
-            'standardLoadingEquipment' => 'KARTON',
-            'charge' => 'ABC123',
-            'articleNr' => '12345',
-        ]);
+                'quantity' => 10,
+                'leQuantity' => 2,
+                'standardLoadingEquipment' => 'KARTON',
+                'charge' => 'ABC123',
+                'articleNr' => '12345',
+            ]);
 
         $this->formFactory
             ->expects(self::exactly(2))
@@ -110,7 +109,7 @@ final class BookingMethodServiceTest extends TestCase
             ->willReturnOnConsecutiveCalls($this->form, $this->createMock(FormInterface::class));
 
         $this->stockLocationService
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllFreeStockLocationsWithLimit')
             ->with('Durchlaufregal', 5)
             ->willReturn([
@@ -119,19 +118,19 @@ final class BookingMethodServiceTest extends TestCase
             ]);
 
         $this->transportRequestService
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getLastStockUnit')
             ->willReturn(100);
 
         $this->twig
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('render')
             ->willReturn('rendered html');
 
         $response = $this->bookingMethodService->stockIn($request);
 
         self::assertInstanceOf(Response::class, $response);
-        self::assertEquals('rendered html', $response->getContent());
+        self::assertSame('rendered html', $response->getContent());
     }
 
     public function testGetBookingMethodReturnsRedirectResponseWhenBookingMethodIsStockIn(): void

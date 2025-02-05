@@ -4,50 +4,51 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\TransportRequest;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\TransportRequest;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\TransportRequest\TransportRequestDataHandler;
 use WebWMS\Service\TransportRequest\TransportRequestService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\TransportRequest
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        TransportRequestServiceTest
- *
- * @covers \WebWMS\Service\TransportRequest\TransportRequestService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\TransportRequest',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'TransportRequestServiceTest'
+)]
+#[CoversClass(TransportRequestService::class)]
 final class TransportRequestServiceTest extends TestCase
 {
     private TransportRequestService $transportRequestService;
 
-    private MockObject $transportRequestDataHandler;
+    private MockObject $mockObject;
 
     protected function setUp(): void
     {
-        $this->transportRequestDataHandler = $this->createMock(TransportRequestDataHandler::class);
-        $this->transportRequestService = new TransportRequestService($this->transportRequestDataHandler);
+        $this->mockObject = $this->createMock(TransportRequestDataHandler::class);
+        $this->transportRequestService = new TransportRequestService($this->mockObject);
     }
 
     public function testGetTransportRequestById(): void
     {
-        $this->transportRequestDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getTransportRequestById')
             ->with(1)
             ->willReturn(['id' => 1, 'name' => 'Transport Request']);
 
         $result = $this->transportRequestService->getTransportRequestById(1);
 
-        self::assertEquals(['id' => 1, 'name' => 'Transport Request'], $result);
+        self::assertSame(['id' => 1, 'name' => 'Transport Request'], $result);
     }
 
     public function testGetAllOpenTransportRequests(): void
     {
-        $this->transportRequestDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getAllOpenTransportRequests')
             ->willReturn(
                 [
@@ -58,7 +59,7 @@ final class TransportRequestServiceTest extends TestCase
 
         $result = $this->transportRequestService->getAllOpenTransportRequests();
 
-        self::assertEquals([['id' => 1, 'name' => 'Transport Request 1'], ['id' => 2, 'name' => 'Transport Request 2']], $result);
+        self::assertSame([['id' => 1, 'name' => 'Transport Request 1'], ['id' => 2, 'name' => 'Transport Request 2']], $result);
     }
 
     public function testCreateTransportRequest(): void
@@ -90,8 +91,8 @@ final class TransportRequestServiceTest extends TestCase
         $user = 'test_user';
         $clientIp = '127.0.0.1';
 
-        $this->transportRequestDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('createTransportRequest')
             ->with($request, $user, $clientIp);
 
@@ -100,21 +101,21 @@ final class TransportRequestServiceTest extends TestCase
 
     public function testGetLastStockUnit(): void
     {
-        $this->transportRequestDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getLastStockUnit')
             ->willReturn(20);
 
         $result = $this->transportRequestService->getLastStockUnit();
 
-        self::assertEquals(20, $result);
+        self::assertSame(20, $result);
     }
 
     public function testAddTransportRequest(): void
     {
         $transportRequest = new TransportRequest();
-        $this->transportRequestDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('addTransportRequest')
             ->with($transportRequest);
 
@@ -124,8 +125,8 @@ final class TransportRequestServiceTest extends TestCase
     public function testUpdateTransportRequest(): void
     {
         $transportRequest = new TransportRequest();
-        $this->transportRequestDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('updateTransportRequest')
             ->with($transportRequest);
 
@@ -135,8 +136,8 @@ final class TransportRequestServiceTest extends TestCase
     public function testDeleteTransportRequest(): void
     {
         $transportRequest = new TransportRequest();
-        $this->transportRequestDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('deleteTransportRequest')
             ->with($transportRequest);
 
@@ -146,13 +147,13 @@ final class TransportRequestServiceTest extends TestCase
     public function testGetLastTransportRequestNr(): void
     {
         $lastTransportRequestId = 12345;
-        $this->transportRequestDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getLastTransportRequestNr')
             ->willReturn($lastTransportRequestId);
 
         $result = $this->transportRequestService->getLastTransportRequestNr();
 
-        self::assertEquals($lastTransportRequestId, $result);
+        self::assertSame($lastTransportRequestId, $result);
     }
 }

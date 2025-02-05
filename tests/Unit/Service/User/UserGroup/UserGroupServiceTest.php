@@ -4,32 +4,33 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\User\UserGroup;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\UserGroup;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\User\UserGroup\UserGroupDataHandler;
 use WebWMS\Service\User\UserGroup\UserGroupService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\User\UserGroup
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserGroupServiceTest
- *
- * @covers \WebWMS\Service\User\UserGroup\UserGroupService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\User\UserGroup',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserGroupServiceTest'
+)]
+#[CoversClass(UserGroupService::class)]
 final class UserGroupServiceTest extends TestCase
 {
     private UserGroupService $userGroupService;
 
-    private MockObject $userGroupDataHandler;
+    private MockObject $mockObject;
 
     protected function setUp(): void
     {
-        $this->userGroupDataHandler = $this->createMock(UserGroupDataHandler::class);
+        $this->mockObject = $this->createMock(UserGroupDataHandler::class);
 
-        $this->userGroupService = new UserGroupService($this->userGroupDataHandler);
+        $this->userGroupService = new UserGroupService($this->mockObject);
     }
 
     public function testGetUserGroupByUserGroupName(): void
@@ -37,8 +38,8 @@ final class UserGroupServiceTest extends TestCase
         $userGroupName = 'Group 1';
         $expectedUserGroup = new UserGroup();
 
-        $this->userGroupDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getUserGroupByUserGroupName')
             ->with($userGroupName)
             ->willReturn($expectedUserGroup);
@@ -53,8 +54,8 @@ final class UserGroupServiceTest extends TestCase
         $userGroupId = 1;
         $expectedUserGroup = new UserGroup();
 
-        $this->userGroupDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getUserGroupById')
             ->with($userGroupId)
             ->willReturn($expectedUserGroup);
@@ -68,8 +69,8 @@ final class UserGroupServiceTest extends TestCase
     {
         $expectedUserGroups = [new UserGroup(), new UserGroup()];
 
-        $this->userGroupDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getAllUserGroups')
             ->willReturn($expectedUserGroups);
 
@@ -82,8 +83,8 @@ final class UserGroupServiceTest extends TestCase
     {
         $request = new Request();
 
-        $this->userGroupDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('addUserGroup')
             ->with($request);
 
@@ -95,8 +96,8 @@ final class UserGroupServiceTest extends TestCase
         $request = new Request();
         $expectedUserGroup = new UserGroup();
 
-        $this->userGroupDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('updateUserGroup')
             ->with($request)
             ->willReturn($expectedUserGroup);
@@ -110,8 +111,8 @@ final class UserGroupServiceTest extends TestCase
     {
         $userGroupName = 'Group 1';
 
-        $this->userGroupDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('deleteUserGroup')
             ->with($userGroupName);
 

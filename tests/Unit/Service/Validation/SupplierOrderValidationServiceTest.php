@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Validation;
 
+use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\SupplierOrder;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Validation\SupplierOrderValidationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderValidationServiceTest
- *
- * @covers \WebWMS\Service\Validation\SupplierOrderValidationService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'SupplierOrderValidationServiceTest'
+)]
+#[CoversClass(SupplierOrderValidationService::class)]
 final class SupplierOrderValidationServiceTest extends TestCase
 {
     private SupplierOrderValidationService $supplierOrderValidationService;
@@ -31,8 +33,8 @@ final class SupplierOrderValidationServiceTest extends TestCase
     public function testValidateSupplierOrderDataWithValidData(): void
     {
         $this->supplierOrder->setSupplierOrderNr('123456');
-        $this->supplierOrder->setSupplierOrderDate(new \DateTimeImmutable());
-        $this->supplierOrder->setSupplierOrderCreationDate(new \DateTimeImmutable());
+        $this->supplierOrder->setSupplierOrderDate(new DateTimeImmutable());
+        $this->supplierOrder->setSupplierOrderCreationDate(new DateTimeImmutable());
 
         $response = $this->supplierOrderValidationService->validateSupplierOrderData($this->supplierOrder);
 

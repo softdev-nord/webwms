@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\SupplierOrder;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -11,15 +12,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\SupplierOrderPos;
 use WebWMS\Form\SupplierOrder\SupplierOrderPosType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\SupplierOrder
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderPosTypeTest
- *
- * @covers \WebWMS\Form\SupplierOrder\SupplierOrderPosType
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\SupplierOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'SupplierOrderPosTypeTest'
+)]
+#[CoversClass(SupplierOrderPosType::class)]
 final class SupplierOrderPosTypeTest extends TestCase
 {
     public function testBuildForm(): void
@@ -28,7 +29,7 @@ final class SupplierOrderPosTypeTest extends TestCase
         $builder
             ->expects(self::exactly(1))
             ->method('add')
-            ->withConsecutive(
+            ->willReturnOnConsecutiveCalls(
                 ['id', HiddenType::class, self::anything()],
                 ['supplierOrderId', HiddenType::class, self::anything()],
                 ['supplierOrderPosQuantity', TextType::class, self::anything()],
@@ -37,19 +38,19 @@ final class SupplierOrderPosTypeTest extends TestCase
                 ['articleName', TextType::class, self::anything()],
             );
 
-        $type = new SupplierOrderPosType();
-        $type->buildForm($builder, []);
+        $supplierOrderPosType = new SupplierOrderPosType();
+        $supplierOrderPosType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
         $resolver = $this->createMock(OptionsResolver::class);
         $resolver
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with(['data_class' => SupplierOrderPos::class]);
 
-        $type = new SupplierOrderPosType();
-        $type->configureOptions($resolver);
+        $supplierOrderPosType = new SupplierOrderPosType();
+        $supplierOrderPosType->configureOptions($resolver);
     }
 }

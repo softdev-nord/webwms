@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\RequirementsService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        RequirementsServiceTest
- *
- * @covers \WebWMS\Service\RequirementsService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'RequirementsServiceTest'
+)]
+#[CoversClass(RequirementsService::class)]
 final class RequirementsServiceTest extends TestCase
 {
     private RequirementsService $requirementsService;
@@ -51,29 +52,29 @@ final class RequirementsServiceTest extends TestCase
     {
         $expectedResult = $this->requirementsService->formatBytes(disk_free_space(__DIR__));
 
-        self::assertEquals($expectedResult, $this->requirementsService->checkDiskFreeSpace());
+        self::assertSame($expectedResult, $this->requirementsService->checkDiskFreeSpace());
     }
 
     public function testGetterMethods(): void
     {
         // Test getAppName()
         $appName = $this->appName;
-        self::assertEquals($appName, $this->requirementsService->getAppName());
+        self::assertSame($appName, $this->requirementsService->getAppName());
 
         // Test getAppVersion()
         $appVersion = $this->appVersion;
-        self::assertEquals($appVersion, $this->requirementsService->getAppVersion());
+        self::assertSame($appVersion, $this->requirementsService->getAppVersion());
 
         // Test getAppVersionNumber()
         $appVersionNumber = $this->appVersionNumber;
-        self::assertEquals($appVersionNumber, $this->requirementsService->getAppVersionNumber());
+        self::assertSame($appVersionNumber, $this->requirementsService->getAppVersionNumber());
 
         // Test getAppCopyright()
         $appCopyright = $this->appCopyright;
-        self::assertEquals($appCopyright, $this->requirementsService->getAppCopyright());
+        self::assertSame($appCopyright, $this->requirementsService->getAppCopyright());
 
         // Test getAppLizenz()
         $appLizenz = $this->appLizenz;
-        self::assertEquals($appLizenz, $this->requirementsService->getAppLizenz());
+        self::assertSame($appLizenz, $this->requirementsService->getAppLizenz());
     }
 }

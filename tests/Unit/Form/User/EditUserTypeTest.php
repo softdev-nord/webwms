@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\User;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -13,15 +14,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\User;
 use WebWMS\Form\User\EditUserType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\User
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        EditUserTypeTest
- *
- * @covers \WebWMS\Form\User\EditUserType
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\User',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'EditUserTypeTest'
+)]
+#[CoversClass(EditUserType::class)]
 final class EditUserTypeTest extends TestCase
 {
     public function testBuildForm(): void
@@ -30,7 +31,7 @@ final class EditUserTypeTest extends TestCase
         $builder
             ->expects(self::exactly(1))
             ->method('add')
-            ->withConsecutive(
+            ->willReturnOnConsecutiveCalls(
                 ['username', TextType::class, self::anything()],
                 ['firstname', TextType::class, self::anything()],
                 ['lastname', TextType::class, self::anything()],
@@ -40,19 +41,19 @@ final class EditUserTypeTest extends TestCase
                 ['abort', ButtonType::class, self::anything()]
             );
 
-        $type = new EditUserType();
-        $type->buildForm($builder, []);
+        $editUserType = new EditUserType();
+        $editUserType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
         $resolverMock = $this->createMock(OptionsResolver::class);
         $resolverMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with(['data_class' => User::class]);
 
-        $type = new EditUserType();
-        $type->configureOptions($resolverMock);
+        $editUserType = new EditUserType();
+        $editUserType->configureOptions($resolverMock);
     }
 }

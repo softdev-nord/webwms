@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Stock;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -12,15 +13,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Form\Stock\StockInType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockInTypeTest
- *
- * @covers \WebWMS\Form\Stock\StockInType
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockInTypeTest'
+)]
+#[CoversClass(StockInType::class)]
 final class StockInTypeTest extends TestCase
 {
     public function testBuildForm(): void
@@ -29,7 +30,7 @@ final class StockInTypeTest extends TestCase
         $builder
             ->expects(self::exactly(1))
             ->method('add')
-            ->withConsecutive(
+            ->willReturnOnConsecutiveCalls(
                 ['articleId', HiddenType::class, self::anything()],
                 ['article_nr', TextType::class, self::anything()],
                 ['standard_loading_equipment', ChoiceType::class, self::anything()],
@@ -40,21 +41,21 @@ final class StockInTypeTest extends TestCase
                 ['abort', ButtonType::class, self::anything()]
             );
 
-        $type = new StockInType();
-        $type->buildForm($builder, []);
+        $stockInType = new StockInType();
+        $stockInType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
         $resolver = $this->createMock(OptionsResolver::class);
         $resolver
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with([
                 'data_class' => null,
             ]);
 
-        $type = new StockInType();
-        $type->configureOptions($resolver);
+        $stockInType = new StockInType();
+        $stockInType->configureOptions($resolver);
     }
 }

@@ -4,32 +4,33 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\User\UserRight;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\UserRight;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\User\UserRight\UserRightDataHandler;
 use WebWMS\Service\User\UserRight\UserRightService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\User\UserRight
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserRightServiceTest
- *
- * @covers \WebWMS\Service\User\UserRight\UserRightService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\User\UserRight',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserRightServiceTest'
+)]
+#[CoversClass(UserRightService::class)]
 final class UserRightServiceTest extends TestCase
 {
     private UserRightService $userRightService;
 
-    private MockObject $userRightDataHandler;
+    private MockObject $mockObject;
 
     protected function setUp(): void
     {
-        $this->userRightDataHandler = $this->createMock(UserRightDataHandler::class);
+        $this->mockObject = $this->createMock(UserRightDataHandler::class);
 
-        $this->userRightService = new UserRightService($this->userRightDataHandler);
+        $this->userRightService = new UserRightService($this->mockObject);
     }
 
     public function testGetUserRightByUserRightName(): void
@@ -37,8 +38,8 @@ final class UserRightServiceTest extends TestCase
         $userRightName = 'create';
         $expectedUserRight = new UserRight();
 
-        $this->userRightDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getUserRightByUserRightName')
             ->with($userRightName)
             ->willReturn($expectedUserRight);
@@ -53,8 +54,8 @@ final class UserRightServiceTest extends TestCase
         $userRightId = 1;
         $expectedUserRight = new UserRight();
 
-        $this->userRightDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getUserRightById')
             ->with($userRightId)
             ->willReturn($expectedUserRight);
@@ -68,8 +69,8 @@ final class UserRightServiceTest extends TestCase
     {
         $expectedUserRights = [new UserRight(), new UserRight()];
 
-        $this->userRightDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getAllUserRights')
             ->willReturn($expectedUserRights);
 
@@ -82,8 +83,8 @@ final class UserRightServiceTest extends TestCase
     {
         $request = new Request();
 
-        $this->userRightDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('addUserRight')
             ->with($request);
 
@@ -95,8 +96,8 @@ final class UserRightServiceTest extends TestCase
         $request = new Request();
         $expectedUserRight = new UserRight();
 
-        $this->userRightDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('updateUserRight')
             ->with($request)
             ->willReturn($expectedUserRight);
@@ -110,8 +111,8 @@ final class UserRightServiceTest extends TestCase
     {
         $userRightName = 'create';
 
-        $this->userRightDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('deleteUserRight')
             ->with($userRightName);
 

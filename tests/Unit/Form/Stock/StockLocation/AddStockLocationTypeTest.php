@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Stock\StockLocation;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -14,15 +15,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\StockLocation;
 use WebWMS\Form\Stock\StockLocation\AddStockLocationType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\Stock\StockLocation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        AddStockLocationTypeTest
- *
- * @covers \WebWMS\Form\Stock\StockLocation\AddStockLocationType
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Stock\StockLocation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'AddStockLocationTypeTest'
+)]
+#[CoversClass(AddStockLocationType::class)]
 final class AddStockLocationTypeTest extends TestCase
 {
     public function testBuildForm(): void
@@ -31,7 +32,7 @@ final class AddStockLocationTypeTest extends TestCase
         $builder
             ->expects(self::exactly(1))
             ->method('add')
-            ->withConsecutive(
+            ->willReturnOnConsecutiveCalls(
                 ['stockLocationLn', TextType::class, self::anything()],
                 ['stockLocationFb', TextType::class, self::anything()],
                 ['stockLocationSp', TextType::class, self::anything()],
@@ -46,19 +47,19 @@ final class AddStockLocationTypeTest extends TestCase
                 ['abort', ButtonType::class, self::anything()]
             );
 
-        $type = new AddStockLocationType();
-        $type->buildForm($builder, []);
+        $addStockLocationType = new AddStockLocationType();
+        $addStockLocationType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
         $resolver = $this->createMock(OptionsResolver::class);
         $resolver
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with(['data_class' => StockLocation::class]);
 
-        $type = new AddStockLocationType();
-        $type->configureOptions($resolver);
+        $addStockLocationType = new AddStockLocationType();
+        $addStockLocationType->configureOptions($resolver);
     }
 }

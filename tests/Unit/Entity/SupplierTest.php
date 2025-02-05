@@ -4,23 +4,26 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use WebWMS\Entity\Supplier;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierTest
- *
- * @covers \WebWMS\Entity\Supplier
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'SupplierTest'
+)]
+#[CoversClass(Supplier::class)]
 final class SupplierTest extends TestCase
 {
     private Supplier $supplier;
 
-    private \DateTimeImmutable $dateTime;
+    private DateTimeImmutable $dateTimeImmutable;
 
     private ArrayCollection $collection;
 
@@ -29,7 +32,7 @@ final class SupplierTest extends TestCase
         parent::setUp();
 
         $this->supplier = new Supplier();
-        $this->dateTime = new \DateTimeImmutable();
+        $this->dateTimeImmutable = new DateTimeImmutable();
         $this->collection = new ArrayCollection();
     }
 
@@ -38,55 +41,55 @@ final class SupplierTest extends TestCase
         // Test setSupplierId() and getSupplierId()
         $supplierId = 1;
         $this->supplier->setSupplierId($supplierId);
-        self::assertEquals($supplierId, $this->supplier->getSupplierId());
+        self::assertSame($supplierId, $this->supplier->getSupplierId());
 
         // Test setSupplierNr() and getSupplierNr()
         $supplierNr = 12345;
         $this->supplier->setSupplierNr($supplierNr);
-        self::assertEquals($supplierNr, $this->supplier->getSupplierNr());
+        self::assertSame($supplierNr, $this->supplier->getSupplierNr());
 
         // Test setSupplierName() and getSupplierName()
         $supplierName = 'Rene Irrgang';
         $this->supplier->setSupplierName($supplierName);
-        self::assertEquals($supplierName, $this->supplier->getSupplierName());
+        self::assertSame($supplierName, $this->supplier->getSupplierName());
 
         // Test setSupplierAddressAddition() and getSupplierAddressAddition()
         $supplierAddressAddition = 'Adresszusatz';
         $this->supplier->setSupplierAddressAddition($supplierAddressAddition);
-        self::assertEquals($supplierAddressAddition, $this->supplier->getSupplierAddressAddition());
+        self::assertSame($supplierAddressAddition, $this->supplier->getSupplierAddressAddition());
 
         // Test setSupplierAddressStreet() and getSupplierAddressStreet()
         $supplierAddressStreet = 'Spreenweg';
         $this->supplier->setSupplierAddressStreet($supplierAddressStreet);
-        self::assertEquals($supplierAddressStreet, $this->supplier->getSupplierAddressStreet());
+        self::assertSame($supplierAddressStreet, $this->supplier->getSupplierAddressStreet());
 
         // Test setSupplierAddressStreetNr() and getSupplierAddressStreetNr()
         $supplierAddressStreetNr = '23a';
         $this->supplier->setSupplierAddressStreetNr($supplierAddressStreetNr);
-        self::assertEquals($supplierAddressStreetNr, $this->supplier->getSupplierAddressStreetNr());
+        self::assertSame($supplierAddressStreetNr, $this->supplier->getSupplierAddressStreetNr());
 
         // Test setSupplierAddressCountryCode() and getSupplierAddressCountryCode()
         $supplierAddressCountryCode = 'DE';
         $this->supplier->setSupplierAddressCountryCode($supplierAddressCountryCode);
-        self::assertEquals($supplierAddressCountryCode, $this->supplier->getSupplierAddressCountryCode());
+        self::assertSame($supplierAddressCountryCode, $this->supplier->getSupplierAddressCountryCode());
 
         // Test setSupplierAddressZipcode() and getSupplierAddressZipcode()
         $supplierAddressZipcode = '21698';
         $this->supplier->setSupplierAddressZipcode($supplierAddressZipcode);
-        self::assertEquals($supplierAddressZipcode, $this->supplier->getSupplierAddressZipcode());
+        self::assertSame($supplierAddressZipcode, $this->supplier->getSupplierAddressZipcode());
 
         // Test setSupplierAddressCity() and getSupplierAddressCity()
         $supplierAddressCity = 'Harsefeld';
         $this->supplier->setSupplierAddressCity($supplierAddressCity);
-        self::assertEquals($supplierAddressCity, $this->supplier->getSupplierAddressCity());
+        self::assertSame($supplierAddressCity, $this->supplier->getSupplierAddressCity());
 
         // Test setCreatedAt() and getCreatedAt()
-        $createdAt = $this->dateTime;
+        $createdAt = $this->dateTimeImmutable;
         $this->supplier->setCreatedAt($createdAt);
         self::assertEquals($createdAt, $this->supplier->getCreatedAt());
 
         // Test setUpdatedAt() and getUpdatedAt()
-        $updatedAt = $this->dateTime;
+        $updatedAt = $this->dateTimeImmutable;
         $this->supplier->setUpdatedAt($updatedAt);
         self::assertEquals($updatedAt, $this->supplier->getUpdatedAt());
 
@@ -120,18 +123,18 @@ final class SupplierTest extends TestCase
             'supplierAddressCity' => 'Harsefeld',
         ];
 
-        self::assertEquals($expected, $this->supplier->toArray());
-        $property = (new \ReflectionClass(Supplier::class));
+        self::assertSame($expected, $this->supplier->toArray());
+        $reflectionClass = (new ReflectionClass(Supplier::class));
         $expected = [
-            'supplierId' => $property->getProperty('supplierId'),
-            'supplierNr' => $property->getProperty('supplierNr'),
-            'supplierName' => $property->getProperty('supplierName'),
-            'supplierAddressAddition' => $property->getProperty('supplierAddressAddition'),
-            'supplierAddressStreet' => $property->getProperty('supplierAddressStreet'),
-            'supplierAddressStreetNr' => $property->getProperty('supplierAddressStreetNr'),
-            'supplierAddressCountryCode' => $property->getProperty('supplierAddressCountryCode'),
-            'supplierAddressZipcode' => $property->getProperty('supplierAddressZipcode'),
-            'supplierAddressCity' => $property->getProperty('supplierAddressCity'),
+            'supplierId' => $reflectionClass->getProperty('supplierId'),
+            'supplierNr' => $reflectionClass->getProperty('supplierNr'),
+            'supplierName' => $reflectionClass->getProperty('supplierName'),
+            'supplierAddressAddition' => $reflectionClass->getProperty('supplierAddressAddition'),
+            'supplierAddressStreet' => $reflectionClass->getProperty('supplierAddressStreet'),
+            'supplierAddressStreetNr' => $reflectionClass->getProperty('supplierAddressStreetNr'),
+            'supplierAddressCountryCode' => $reflectionClass->getProperty('supplierAddressCountryCode'),
+            'supplierAddressZipcode' => $reflectionClass->getProperty('supplierAddressZipcode'),
+            'supplierAddressCity' => $reflectionClass->getProperty('supplierAddressCity'),
         ];
         self::assertArrayHasKey('supplierId', $expected);
         self::assertArrayHasKey('supplierNr', $expected);

@@ -4,31 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\SupplierOrder;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\SupplierOrder;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\SupplierOrder\SupplierOrderDataHandler;
 use WebWMS\Service\SupplierOrder\SupplierOrderService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\SupplierOrder
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        SupplierOrderServiceTest
- *
- * @covers \WebWMS\Service\SupplierOrder\SupplierOrderService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\SupplierOrder',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'SupplierOrderServiceTest'
+)]
+#[CoversClass(SupplierOrderService::class)]
 final class SupplierOrderServiceTest extends TestCase
 {
     private SupplierOrderService $supplierOrderService;
 
-    private MockObject $supplierOrderDataHandler;
+    private MockObject $mockObject;
 
     protected function setUp(): void
     {
-        $this->supplierOrderDataHandler = $this->createMock(SupplierOrderDataHandler::class);
-        $this->supplierOrderService = new SupplierOrderService($this->supplierOrderDataHandler);
+        $this->mockObject = $this->createMock(SupplierOrderDataHandler::class);
+        $this->supplierOrderService = new SupplierOrderService($this->mockObject);
     }
 
     public function testGetSupplierOrderById(): void
@@ -36,8 +37,8 @@ final class SupplierOrderServiceTest extends TestCase
         $orderId = 100001;
         $supplierOrder = new SupplierOrder();
 
-        $this->supplierOrderDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getSupplierOrderById')
             ->with($orderId)
             ->willReturn($supplierOrder);
@@ -52,8 +53,8 @@ final class SupplierOrderServiceTest extends TestCase
         $orderNr = '100001';
         $supplierOrder = new SupplierOrder();
 
-        $this->supplierOrderDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getSupplierOrderByNr')
             ->with($orderNr)
             ->willReturn($supplierOrder);
@@ -70,22 +71,22 @@ final class SupplierOrderServiceTest extends TestCase
             new SupplierOrder(),
         ];
 
-        $this->supplierOrderDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getAllSupplierOrder')
             ->willReturn(new JsonResponse($supplierOrders));
 
-        $result = $this->supplierOrderService->getAllSupplierOrder();
+        $jsonResponse = $this->supplierOrderService->getAllSupplierOrder();
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testGetLastSupplierOrderId(): void
     {
         $lastSupplierOrderId = [1, 2, 3];
 
-        $this->supplierOrderDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getLastSupplierOrderId')
             ->willReturn($lastSupplierOrderId);
 
@@ -97,8 +98,8 @@ final class SupplierOrderServiceTest extends TestCase
     public function testAddSupplierOrder(): void
     {
         $supplierOrder = new SupplierOrder();
-        $this->supplierOrderDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('addSupplierOrder')
             ->with($supplierOrder);
 
@@ -108,8 +109,8 @@ final class SupplierOrderServiceTest extends TestCase
     public function testUpdateSupplierOrder(): void
     {
         $supplierOrder = new SupplierOrder();
-        $this->supplierOrderDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('updateSupplierOrder')
             ->with($supplierOrder);
 
@@ -119,8 +120,8 @@ final class SupplierOrderServiceTest extends TestCase
     public function testDeleteSupplierOrder(): void
     {
         $supplierOrder = new SupplierOrder();
-        $this->supplierOrderDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('deleteSupplierOrder')
             ->with($supplierOrder);
 

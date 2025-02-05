@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Validation;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\StockZone;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Validation\StockZoneValidationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockZoneValidationServiceTest
- *
- * @covers \WebWMS\Service\Validation\StockZoneValidationService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockZoneValidationServiceTest'
+)]
+#[CoversClass(StockZoneValidationService::class)]
 final class StockZoneValidationServiceTest extends TestCase
 {
     private StockZoneValidationService $stockZoneValidationService;

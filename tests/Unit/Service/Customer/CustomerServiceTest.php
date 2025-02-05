@@ -4,31 +4,32 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Customer;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Customer;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Customer\CustomerService;
 use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Customer
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerServiceTest
- *
- * @covers \WebWMS\Service\Customer\CustomerService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Customer',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'CustomerServiceTest'
+)]
+#[CoversClass(CustomerService::class)]
 final class CustomerServiceTest extends TestCase
 {
     private CustomerService $customerService;
 
-    private MockObject $customerDataHandler;
+    private MockObject $mockObject;
 
     protected function setUp(): void
     {
-        $this->customerDataHandler = $this->createMock(CustomerDataHandler::class);
-        $this->customerService = new CustomerService($this->customerDataHandler);
+        $this->mockObject = $this->createMock(CustomerDataHandler::class);
+        $this->customerService = new CustomerService($this->mockObject);
     }
 
     public function testGetCustomerById(): void
@@ -36,7 +37,7 @@ final class CustomerServiceTest extends TestCase
         $customerId = 1;
         $customer = new Customer();
 
-        $this->customerDataHandler->expects(self::once())
+        $this->mockObject->expects($this->once())
             ->method('getCustomerById')
             ->with($customerId)
             ->willReturn($customer);
@@ -51,7 +52,7 @@ final class CustomerServiceTest extends TestCase
         $customerNr = 123;
         $customer = new Customer();
 
-        $this->customerDataHandler->expects(self::once())
+        $this->mockObject->expects($this->once())
             ->method('getCustomerByNr')
             ->with($customerNr)
             ->willReturn($customer);
@@ -68,14 +69,14 @@ final class CustomerServiceTest extends TestCase
             new Customer(),
         ];
 
-        $this->customerDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getAllCustomers')
             ->willReturn($customers);
 
-        $result = $this->customerService->getAllCustomers();
+        $jsonResponse = $this->customerService->getAllCustomers();
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testGetAllCustomersAjax(): void
@@ -83,7 +84,7 @@ final class CustomerServiceTest extends TestCase
         $jsonResponse = $this->createMock(JsonResponse::class);
         $customerNrInput = '123';
 
-        $this->customerDataHandler->expects(self::once())
+        $this->mockObject->expects($this->once())
             ->method('getCustomers')
             ->willReturn($jsonResponse);
 
@@ -94,20 +95,20 @@ final class CustomerServiceTest extends TestCase
 
     public function testAddCustomer(): void
     {
-        $article = new Customer();
-        $this->customerDataHandler
-            ->expects(self::once())
+        $customer = new Customer();
+        $this->mockObject
+            ->expects($this->once())
             ->method('addCustomer')
-            ->with($article);
+            ->with($customer);
 
-        $this->customerService->addCustomer($article);
+        $this->customerService->addCustomer($customer);
     }
 
     public function testUpdateCustomer(): void
     {
         $customer = new Customer();
-        $this->customerDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('updateCustomer')
             ->with($customer);
 
@@ -117,8 +118,8 @@ final class CustomerServiceTest extends TestCase
     public function testDeleteCustomer(): void
     {
         $customer = new Customer();
-        $this->customerDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('deleteCustomer')
             ->with($customer);
 
@@ -129,12 +130,12 @@ final class CustomerServiceTest extends TestCase
     {
         $lastCustomer = new Customer();
 
-        $this->customerDataHandler->expects(self::once())
+        $this->mockObject->expects($this->once())
             ->method('getLastCustomer')
             ->willReturn($lastCustomer);
 
-        $result = $this->customerService->getLastCustomer();
+        $customer = $this->customerService->getLastCustomer();
 
-        self::assertSame($lastCustomer, $result);
+        self::assertSame($lastCustomer, $customer);
     }
 }

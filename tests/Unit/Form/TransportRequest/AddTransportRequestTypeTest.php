@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\TransportRequest;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\TransportRequest;
 use WebWMS\Form\TransportRequest\AddTransportRequestType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\TransportRequest
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        AddTransportRequestTypeTest
- *
- * @covers \WebWMS\Form\TransportRequest\AddTransportRequestType
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\TransportRequest',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'AddTransportRequestTypeTest'
+)]
+#[CoversClass(AddTransportRequestType::class)]
 final class AddTransportRequestTypeTest extends TestCase
 {
     public function testBuildForm(): void
@@ -27,7 +28,7 @@ final class AddTransportRequestTypeTest extends TestCase
         $builder
             ->expects(self::exactly(1))
             ->method('add')
-            ->withConsecutive(
+            ->willReturnOnConsecutiveCalls(
                 ['id', HiddenType::class, self::anything()],
                 ['suId', HiddenType::class, self::anything()],
                 ['trNr', HiddenType::class, self::anything()],
@@ -62,19 +63,19 @@ final class AddTransportRequestTypeTest extends TestCase
                 ['updatedAt', HiddenType::class, self::anything()]
             );
 
-        $type = new AddTransportRequestType();
-        $type->buildForm($builder, []);
+        $addTransportRequestType = new AddTransportRequestType();
+        $addTransportRequestType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
         $resolver = $this->createMock(OptionsResolver::class);
         $resolver
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with(['data_class' => TransportRequest::class]);
 
-        $type = new AddTransportRequestType();
-        $type->configureOptions($resolver);
+        $addTransportRequestType = new AddTransportRequestType();
+        $addTransportRequestType->configureOptions($resolver);
     }
 }

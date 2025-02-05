@@ -4,38 +4,39 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Article;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use WebWMS\Entity\Article;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Article\ArticleService;
 use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Article
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ArticleServiceTest
- *
- * @covers \WebWMS\Service\Article\ArticleService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Article',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'ArticleServiceTest'
+)]
+#[CoversClass(ArticleService::class)]
 final class ArticleServiceTest extends TestCase
 {
-    private MockObject $articleDataHandler;
+    private MockObject $mockObject;
 
     private ArticleService $articleService;
 
     protected function setUp(): void
     {
-        $this->articleDataHandler = $this->createMock(ArticleDataHandler::class);
-        $this->articleService = new ArticleService($this->articleDataHandler);
+        $this->mockObject = $this->createMock(ArticleDataHandler::class);
+        $this->articleService = new ArticleService($this->mockObject);
     }
 
     public function testGetArticleByIdReturnsNullWhenArticleDoesNotExist(): void
     {
         $articleId = 1;
-        $this->articleDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getArticleById')
             ->with($articleId)
             ->willReturn(null);
@@ -49,8 +50,8 @@ final class ArticleServiceTest extends TestCase
     {
         $articleId = 1;
         $article = new Article();
-        $this->articleDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getArticleById')
             ->with($articleId)
             ->willReturn($article);
@@ -63,8 +64,8 @@ final class ArticleServiceTest extends TestCase
     public function testGetArticleByNrReturnsNullWhenArticleDoesNotExist(): void
     {
         $articleNr = '60000';
-        $this->articleDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getArticleByNr')
             ->with($articleNr)
             ->willReturn(null);
@@ -78,8 +79,8 @@ final class ArticleServiceTest extends TestCase
     {
         $articleNr = '60000';
         $article = new Article();
-        $this->articleDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getArticleByNr')
             ->with($articleNr)
             ->willReturn($article);
@@ -95,35 +96,35 @@ final class ArticleServiceTest extends TestCase
             new Article(),
             new Article(),
         ];
-        $this->articleDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getAllArticlesWithJoin')
             ->willReturn(new JsonResponse($articles));
 
-        $result = $this->articleService->getAllArticles();
+        $jsonResponse = $this->articleService->getAllArticles();
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testGetArticle(): void
     {
         $article = new Article();
         $articleNrInput = '123';
-        $this->articleDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getArticle')
             ->willReturn(new JsonResponse($article));
 
-        $result = $this->articleService->getArticle($articleNrInput);
+        $jsonResponse = $this->articleService->getArticle($articleNrInput);
 
-        self::assertInstanceOf(JsonResponse::class, $result);
+        self::assertInstanceOf(JsonResponse::class, $jsonResponse);
     }
 
     public function testAddArticle(): void
     {
         $article = new Article();
-        $this->articleDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('addArticle')
             ->with($article);
 
@@ -133,8 +134,8 @@ final class ArticleServiceTest extends TestCase
     public function testUpdateArticle(): void
     {
         $article = new Article();
-        $this->articleDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('updateArticle')
             ->with($article);
 
@@ -144,8 +145,8 @@ final class ArticleServiceTest extends TestCase
     public function testDeleteArticle(): void
     {
         $article = new Article();
-        $this->articleDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('deleteArticle')
             ->with($article);
 
@@ -155,8 +156,8 @@ final class ArticleServiceTest extends TestCase
     public function testGetLastArticleReturnsArticle(): void
     {
         $article = new Article();
-        $this->articleDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getLastArticle')
             ->willReturn($article);
 

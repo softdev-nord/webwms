@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Supplier;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -12,15 +13,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\Supplier;
 use WebWMS\Form\Supplier\AddSupplierType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\Supplier
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        AddSupplierTypeTest
- *
- * @covers \WebWMS\Form\Supplier\AddSupplierType
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Supplier',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'AddSupplierTypeTest'
+)]
+#[CoversClass(AddSupplierType::class)]
 final class AddSupplierTypeTest extends TestCase
 {
     public function testBuildForm(): void
@@ -29,7 +30,7 @@ final class AddSupplierTypeTest extends TestCase
         $builder
             ->expects(self::exactly(1))
             ->method('add')
-            ->withConsecutive(
+            ->willReturnOnConsecutiveCalls(
                 ['supplierId', HiddenType::class, self::anything()],
                 ['supplierNr', TextType::class, self::anything()],
                 ['supplierName', TextType::class, self::anything()],
@@ -43,19 +44,19 @@ final class AddSupplierTypeTest extends TestCase
                 ['abort', ButtonType::class, self::anything()]
             );
 
-        $type = new AddSupplierType();
-        $type->buildForm($builder, []);
+        $addSupplierType = new AddSupplierType();
+        $addSupplierType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
         $resolverMock = $this->createMock(OptionsResolver::class);
         $resolverMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with(['data_class' => Supplier::class]);
 
-        $type = new AddSupplierType();
-        $type->configureOptions($resolverMock);
+        $addSupplierType = new AddSupplierType();
+        $addSupplierType->configureOptions($resolverMock);
     }
 }

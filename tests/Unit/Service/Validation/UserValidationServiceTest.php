@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Validation;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\User;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Validation\UserValidationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserValidationServiceTest
- *
- * @covers \WebWMS\Service\Validation\UserValidationService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserValidationServiceTest'
+)]
+#[CoversClass(UserValidationService::class)]
 final class UserValidationServiceTest extends TestCase
 {
     private UserValidationService $userValidationService;
@@ -60,6 +61,6 @@ final class UserValidationServiceTest extends TestCase
 
         self::assertArrayNotHasKey('success', $result);
         self::assertArrayHasKey('error', $result);
-        self::assertEquals($expectedResult, $result);
+        self::assertSame($expectedResult, $result);
     }
 }

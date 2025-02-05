@@ -4,65 +4,71 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Article;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Entity\Article;
 use WebWMS\Form\Article\EditArticleType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\Article
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        EditArticleTypeTest
- *
- * @covers \WebWMS\Form\Article\EditArticleType
- *
- * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
- */
-final class EditArticleTypeTest extends TestCase
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Article',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'EditArticleTypeTest'
+)]
+#[CoversClass(EditArticleType::class)]
+final class EditArticleTypeTest extends TypeTestCase
 {
-    public function testBuildForm(): void
+    public function testSubmitValidData(): void
     {
-        $builder = $this->createMock(FormBuilderInterface::class);
-        $builder
-            ->expects(self::exactly(1))
-            ->method('add')
-            ->withConsecutive(
-                ['articleId', HiddenType::class, self::anything()],
-                ['articleNr', TextType::class, self::anything()],
-                ['articleName', TextType::class, self::anything()],
-                ['articleCategory', TextType::class, self::anything()],
-                ['articleWeight', TextType::class, self::anything()],
-                ['articleEan', TextType::class, self::anything()],
-                ['articleUnit', TextType::class, self::anything()],
-                ['articleDepth', TextType::class, self::anything()],
-                ['articleWidth', TextType::class, self::anything()],
-                ['articleHeight', TextType::class, self::anything()],
-                ['stockOutStrategy', ChoiceType::class, self::anything()],
-                ['standardLoadingEquipment', ChoiceType::class, self::anything()],
-                ['leQuantity', TextType::class, self::anything()],
-                ['save', ButtonType::class, self::anything()],
-                ['abort', ButtonType::class, self::anything()]
-            );
+        $formData = [
+            'articleId' => '123',
+            'articleNr' => 'A001',
+            'articleName' => 'Testartikel',
+            'articleCategory' => 'Kategorie A',
+            'articleWeight' => 1.0,
+            'articleEan' => '1234567890123',
+            'articleUnit' => 'Stück',
+            'articleDepth' => '10',
+            'articleWidth' => '20',
+            'articleHeight' => '30',
+            'stockOutStrategy' => 'FIFO',
+            'standardLoadingEquipment' => 'KARTON',
+            'leQuantity' => '100',
+        ];
 
-        $type = new EditArticleType();
-        $type->buildForm($builder, []);
+        $form = $this->factory->create(EditArticleType::class);
+        $form->submit($formData);
+
+        self::assertTrue($form->isSynchronized(), 'Das Formular sollte synchronisiert sein.');
+        self::assertTrue($form->isValid(), 'Das Formular sollte gültig sein.');
+        self::assertInstanceOf(Article::class, $form->getData());
+
+        $article = $form->getData();
+        self::assertSame($formData['articleNr'], $article->getArticleNr());
+        self::assertSame($formData['articleName'], $article->getArticleName());
+        self::assertSame($formData['articleCategory'], $article->getArticleCategory());
+        self::assertSame($formData['articleWeight'], $article->getArticleWeight());
+        self::assertSame($formData['articleEan'], $article->getArticleEan());
+        self::assertSame($formData['articleUnit'], $article->getArticleUnit());
+        self::assertSame($formData['articleDepth'], $article->getArticleDepth());
+        self::assertSame($formData['articleWidth'], $article->getArticleWidth());
+        self::assertSame($formData['articleHeight'], $article->getArticleHeight());
+        self::assertSame($formData['stockOutStrategy'], $article->getStockOutStrategy());
+        self::assertSame($formData['standardLoadingEquipment'], $article->getStandardLoadingEquipment());
+        self::assertSame($formData['leQuantity'], $article->getLeQuantity());
     }
 
     public function testConfigureOptions(): void
     {
         $resolverMock = $this->createMock(OptionsResolver::class);
         $resolverMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with(['data_class' => Article::class]);
 
-        $type = new EditArticleType();
-        $type->configureOptions($resolverMock);
+        $editArticleType = new EditArticleType();
+        $editArticleType->configureOptions($resolverMock);
     }
 }

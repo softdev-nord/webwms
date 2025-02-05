@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\Validation;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Validation\CustomerValidationService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\Validation
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerValidationServiceTest
- *
- * @covers \WebWMS\Service\Validation\CustomerValidationService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\Validation',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'CustomerValidationServiceTest'
+)]
+#[CoversClass(CustomerValidationService::class)]
 final class CustomerValidationServiceTest extends TestCase
 {
     private CustomerValidationService $customerValidationService;

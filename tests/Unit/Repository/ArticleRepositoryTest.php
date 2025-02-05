@@ -5,26 +5,28 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Repository\ArticleRepository;
 
-/**
- * @package:    WebWMS\Tests\Unit\Repository
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ArticleRepositoryTest
- *
- * @covers \WebWMS\Repository\ArticleRepository
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Repository',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'ArticleRepositoryTest'
+)]
+#[CoversClass(ArticleRepository::class)]
 final class ArticleRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
         $registry = $this->createMock(ManagerRegistry::class);
-        $repository = new ArticleRepository($registry);
+        $articleRepository = new ArticleRepository($registry);
 
-        self::assertInstanceOf(ArticleRepository::class, $repository);
+        self::assertInstanceOf(ArticleRepository::class, $articleRepository);
     }
+
     //
     //    public function testFind(): void
     //    {

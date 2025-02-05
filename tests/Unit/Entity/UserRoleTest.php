@@ -4,29 +4,31 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use DateTime;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\UserRole;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserRoleTest
- *
- * @covers \WebWMS\Entity\UserRole
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserRoleTest'
+)]
+#[CoversClass(UserRole::class)]
 final class UserRoleTest extends TestCase
 {
     private UserRole $userRole;
 
-    private \DateTime $dateTime;
+    private DateTime $dateTime;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->userRole = new UserRole();
-        $this->dateTime = new \DateTime();
+        $this->dateTime = new DateTime();
     }
 
     public function testGetterAndSetterMethods(): void
@@ -34,22 +36,22 @@ final class UserRoleTest extends TestCase
         // Test setId() and getId()
         $id = 1;
         $this->userRole->setId($id);
-        self::assertEquals($id, $this->userRole->getId());
+        self::assertSame($id, $this->userRole->getId());
 
         // Test setDescription() and getUsername()
         $description = 'Administrator';
         $this->userRole->setDescription($description);
-        self::assertEquals($description, $this->userRole->getDescription());
+        self::assertSame($description, $this->userRole->getDescription());
 
         // Test setUserRole() and getUserRole()
         $role = 'ROLE_ADMIN';
         $this->userRole->setUserRole($role);
-        self::assertEquals($role, $this->userRole->getUserRole());
+        self::assertSame($role, $this->userRole->getUserRole());
 
         // Test setUserRole() and getUserRole()
         $role = 'read';
         $this->userRole->setUserRole($role);
-        self::assertEquals($role, $this->userRole->getUserRole());
+        self::assertSame($role, $this->userRole->getUserRole());
 
         // Test setUserRights() and getUserRights()
         $rights = ['1', '2', '3', '4'];

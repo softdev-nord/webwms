@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\Configuration;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ConfigurationTest
- *
- * @covers \WebWMS\Entity\Configuration
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'ConfigurationTest'
+)]
+#[CoversClass(Configuration::class)]
 final class ConfigurationTest extends TestCase
 {
     private Configuration $configuration;
@@ -44,31 +45,31 @@ final class ConfigurationTest extends TestCase
         // Test setId() and getId()
         $id = 1;
         $this->configuration->setId($id);
-        self::assertEquals($id, $this->configuration->getId());
+        self::assertSame($id, $this->configuration->getId());
 
         // Test setName() and getName()
         $name = 'test_name';
         $this->configuration->setName($name);
-        self::assertEquals($name, $this->configuration->getName());
+        self::assertSame($name, $this->configuration->getName());
 
         // Test setValue() and getValue()
         $value = 'test_value';
         $this->configuration->setValue($value);
-        self::assertEquals($value, $this->configuration->getValue());
+        self::assertSame($value, $this->configuration->getValue());
 
         // Test setLabel() and getLabel()
         $label = 'test_label';
         $this->configuration->setLabel($label);
-        self::assertEquals($label, $this->configuration->getLabel());
+        self::assertSame($label, $this->configuration->getLabel());
 
         // Test setDescription() and getDescription()
         $description = 'test_description';
         $this->configuration->setDescription($description);
-        self::assertEquals($description, $this->configuration->getDescription());
+        self::assertSame($description, $this->configuration->getDescription());
 
         // Test setType() and getType()
         $type = 'test_type';
         $this->configuration->setType($type);
-        self::assertEquals($type, $this->configuration->getType());
+        self::assertSame($type, $this->configuration->getType());
     }
 }

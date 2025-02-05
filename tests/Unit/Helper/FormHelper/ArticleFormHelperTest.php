@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Helper\FormHelper;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -11,16 +12,16 @@ use WebWMS\Entity\Article;
 use WebWMS\Form\Article\AddArticleType;
 use WebWMS\Form\Article\DeleteArticleType;
 use WebWMS\Form\Article\EditArticleType;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\ArticleFormHelper;
 
-/**
- * @package:    WebWMS\Tests\Unit\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        ArticleFormHelperTest
- *
- * @covers \WebWMS\Helper\FormHelper\ArticleFormHelper
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'ArticleFormHelperTest'
+)]
+#[CoversClass(ArticleFormHelper::class)]
 final class ArticleFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
@@ -32,15 +33,15 @@ final class ArticleFormHelperTest extends TestCase
         $options = [];
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with($type, $data, $options)
             ->willReturn($formInterface);
 
-        $helper = new ArticleFormHelper($formFactory);
-        $result = $helper->createForm($type, $data, $options);
+        $articleFormHelper = new ArticleFormHelper($formFactory);
+        $form = $articleFormHelper->createForm($type, $data, $options);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testAddArticleForm(): void
@@ -49,15 +50,15 @@ final class ArticleFormHelperTest extends TestCase
         $formInterface = $this->createMock(FormInterface::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(AddArticleType::class)
             ->willReturn($formInterface);
 
-        $helper = new ArticleFormHelper($formFactory);
-        $result = $helper->addArticleForm();
+        $articleFormHelper = new ArticleFormHelper($formFactory);
+        $form = $articleFormHelper->addArticleForm();
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testEditArticleForm(): void
@@ -67,15 +68,15 @@ final class ArticleFormHelperTest extends TestCase
         $article = $this->createMock(Article::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(EditArticleType::class, $article)
             ->willReturn($formInterface);
 
-        $helper = new ArticleFormHelper($formFactory);
-        $result = $helper->editArticleForm($article);
+        $articleFormHelper = new ArticleFormHelper($formFactory);
+        $form = $articleFormHelper->editArticleForm($article);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 
     public function testDeleteArticleForm(): void
@@ -85,14 +86,14 @@ final class ArticleFormHelperTest extends TestCase
         $article = $this->createMock(Article::class);
 
         $formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(DeleteArticleType::class, $article)
             ->willReturn($formInterface);
 
-        $helper = new ArticleFormHelper($formFactory);
-        $result = $helper->deleteArticleForm($article);
+        $articleFormHelper = new ArticleFormHelper($formFactory);
+        $form = $articleFormHelper->deleteArticleForm($article);
 
-        self::assertSame($formInterface, $result);
+        self::assertSame($formInterface, $form);
     }
 }

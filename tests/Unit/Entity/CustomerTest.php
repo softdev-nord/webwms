@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\Customer;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        CustomerTest
- *
- * @covers \WebWMS\Entity\Customer
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'CustomerTest'
+)]
+#[CoversClass(Customer::class)]
 final class CustomerTest extends TestCase
 {
     private Customer $customer;
 
-    private \DateTimeImmutable $dateTime;
+    private DateTimeImmutable $dateTimeImmutable;
 
     private ArrayCollection $collection;
 
@@ -29,7 +31,7 @@ final class CustomerTest extends TestCase
         parent::setUp();
 
         $this->customer = new Customer();
-        $this->dateTime = new \DateTimeImmutable();
+        $this->dateTimeImmutable = new DateTimeImmutable();
         $this->collection = new ArrayCollection();
     }
 
@@ -38,55 +40,55 @@ final class CustomerTest extends TestCase
         // Test setCustomerId() and getCustomerId()
         $customerId = 1;
         $this->customer->setCustomerId($customerId);
-        self::assertEquals($customerId, $this->customer->getCustomerId());
+        self::assertSame($customerId, $this->customer->getCustomerId());
 
         // Test setCustomerNr() and getCustomerNr()
         $customerNr = 12345;
         $this->customer->setCustomerNr($customerNr);
-        self::assertEquals($customerNr, $this->customer->getCustomerNr());
+        self::assertSame($customerNr, $this->customer->getCustomerNr());
 
         // Test setCustomerName() and getCustomerName()
         $customerName = 'Rene Irrgang';
         $this->customer->setCustomerName($customerName);
-        self::assertEquals($customerName, $this->customer->getCustomerName());
+        self::assertSame($customerName, $this->customer->getCustomerName());
 
         // Test setCustomerAddressAddition() and getCustomerAddressAddition()
         $customerAddressAddition = 'Adresszusatz';
         $this->customer->setCustomerAddressAddition($customerAddressAddition);
-        self::assertEquals($customerAddressAddition, $this->customer->getCustomerAddressAddition());
+        self::assertSame($customerAddressAddition, $this->customer->getCustomerAddressAddition());
 
         // Test setCustomerAddressStreet() and getCustomerAddressStreet()
         $customerAddressStreet = 'Spreenweg';
         $this->customer->setCustomerAddressStreet($customerAddressStreet);
-        self::assertEquals($customerAddressStreet, $this->customer->getCustomerAddressStreet());
+        self::assertSame($customerAddressStreet, $this->customer->getCustomerAddressStreet());
 
         // Test setCustomerAddressStreetNr() and getCustomerAddressStreetNr()
         $customerAddressStreetNr = '23a';
         $this->customer->setCustomerAddressStreetNr($customerAddressStreetNr);
-        self::assertEquals($customerAddressStreetNr, $this->customer->getCustomerAddressStreetNr());
+        self::assertSame($customerAddressStreetNr, $this->customer->getCustomerAddressStreetNr());
 
         // Test setCustomerCountryCode() and getCustomerCountryCode()
         $customerCountryCode = 'DE';
         $this->customer->setCustomerCountryCode($customerCountryCode);
-        self::assertEquals($customerCountryCode, $this->customer->getCustomerCountryCode());
+        self::assertSame($customerCountryCode, $this->customer->getCustomerCountryCode());
 
         // Test setCustomerZipCode() and getCustomerZipCode()
         $customerZipCode = '21698';
         $this->customer->setCustomerZipCode($customerZipCode);
-        self::assertEquals($customerZipCode, $this->customer->getCustomerZipCode());
+        self::assertSame($customerZipCode, $this->customer->getCustomerZipCode());
 
         // Test setCustomerCity() and getCustomerCity()
         $customerCity = 'Harsefeld';
         $this->customer->setCustomerCity($customerCity);
-        self::assertEquals($customerCity, $this->customer->getCustomerCity());
+        self::assertSame($customerCity, $this->customer->getCustomerCity());
 
         // Test setCreatedAt() and getCreatedAt()
-        $createdAt = $this->dateTime;
+        $createdAt = $this->dateTimeImmutable;
         $this->customer->setCreatedAt($createdAt);
         self::assertEquals($createdAt, $this->customer->getCreatedAt());
 
         // Test setUpdatedAt() and getUpdatedAt()
-        $updatedAt = $this->dateTime;
+        $updatedAt = $this->dateTimeImmutable;
         $this->customer->setUpdatedAt($updatedAt);
         self::assertEquals($updatedAt, $this->customer->getUpdatedAt());
 
@@ -120,6 +122,6 @@ final class CustomerTest extends TestCase
             'customerCity' => 'Harsefeld',
         ];
 
-        self::assertEquals($expected, $this->customer->toArray());
+        self::assertSame($expected, $this->customer->toArray());
     }
 }

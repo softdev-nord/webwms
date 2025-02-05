@@ -4,29 +4,31 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Entity;
 
+use DateTime;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Entity\UserGroup;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Entity
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserGroupTest
- *
- * @covers \WebWMS\Entity\UserGroup
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Entity',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserGroupTest'
+)]
+#[CoversClass(UserGroup::class)]
 final class UserGroupTest extends TestCase
 {
     private UserGroup $userGroup;
 
-    private \DateTime $dateTime;
+    private DateTime $dateTime;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->userGroup = new UserGroup();
-        $this->dateTime = new \DateTime();
+        $this->dateTime = new DateTime();
     }
 
     public function testGetterAndSetterMethods(): void
@@ -34,22 +36,22 @@ final class UserGroupTest extends TestCase
         // Test setId() and getId()
         $id = 1;
         $this->userGroup->setId($id);
-        self::assertEquals($id, $this->userGroup->getId());
+        self::assertSame($id, $this->userGroup->getId());
 
         // Test setGroup() and getGroup()
         $group = 'GROUP_SUPER_ADMIN';
         $this->userGroup->setGroup($group);
-        self::assertEquals($group, $this->userGroup->getGroup());
+        self::assertSame($group, $this->userGroup->getGroup());
 
         // Test setDescription() and getUsername()
         $description = 'Administratoren';
         $this->userGroup->setDescription($description);
-        self::assertEquals($description, $this->userGroup->getDescription());
+        self::assertSame($description, $this->userGroup->getDescription());
 
         // Test setRoles() and getRoles()
         $roles = ['ROLE_ADMIN', 'ROLE_USER'];
         $this->userGroup->setRoles($roles);
-        self::assertEquals($roles, $this->userGroup->getRoles());
+        self::assertSame($roles, $this->userGroup->getRoles());
 
         // Test setCreatedAt() and getCreatedAt()
         $createdAt = $this->dateTime;
@@ -67,7 +69,7 @@ final class UserGroupTest extends TestCase
         $group = 'GROUP_SUPER_ADMIN';
         $this->userGroup->setGroup($group);
 
-        self::assertEquals($group, (string) $this->userGroup);
+        self::assertSame($group, (string) $this->userGroup);
     }
 
     public function testHasRole(): void
@@ -89,7 +91,7 @@ final class UserGroupTest extends TestCase
         $userGroup->addRole('ROLE_ADMIN');
 
         $expectedRoles = ['ROLE_ADMIN', 'ROLE_USER'];
-        self::assertEquals($expectedRoles, $userGroup->getRoles());
+        self::assertSame($expectedRoles, $userGroup->getRoles());
     }
 
     public function testRemoveRole(): void
@@ -100,6 +102,6 @@ final class UserGroupTest extends TestCase
         $userGroup->removeRole('ROLE_GUEST');
 
         $expectedRoles = ['ROLE_USER'];
-        self::assertEquals($expectedRoles, $userGroup->getRoles());
+        self::assertSame($expectedRoles, $userGroup->getRoles());
     }
 }

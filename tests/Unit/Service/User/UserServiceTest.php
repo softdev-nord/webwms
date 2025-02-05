@@ -4,33 +4,34 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service\User;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use WebWMS\Entity\User;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\User\UserDataHandler;
 use WebWMS\Service\User\UserService;
 
-/**
- * @package:    WebWMS\Tests\Unit\Service\User
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        UserServiceTest
- *
- * @covers \WebWMS\Service\User\UserService
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Service\User',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'UserServiceTest'
+)]
+#[CoversClass(UserService::class)]
 final class UserServiceTest extends TestCase
 {
     private UserService $userService;
 
-    private MockObject $userDataHandler;
+    private MockObject $mockObject;
 
     protected function setUp(): void
     {
-        $this->userDataHandler = $this->createMock(UserDataHandler::class);
+        $this->mockObject = $this->createMock(UserDataHandler::class);
 
-        $this->userService = new UserService($this->userDataHandler);
+        $this->userService = new UserService($this->mockObject);
     }
 
     public function testGetUserByUsername(): void
@@ -38,8 +39,8 @@ final class UserServiceTest extends TestCase
         $username = 'rirrgang';
         $expectedUser = new User();
 
-        $this->userDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getUserByUsername')
             ->with($username)
             ->willReturn($expectedUser);
@@ -54,8 +55,8 @@ final class UserServiceTest extends TestCase
         $userId = 123;
         $expectedUser = new User();
 
-        $this->userDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getUserById')
             ->with($userId)
             ->willReturn($expectedUser);
@@ -67,24 +68,24 @@ final class UserServiceTest extends TestCase
 
     public function testGetAllUsers(): void
     {
-        $expectedResponse = new JsonResponse();
+        $jsonResponse = new JsonResponse();
 
-        $this->userDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getAllUsers')
-            ->willReturn($expectedResponse);
+            ->willReturn($jsonResponse);
 
         $result = $this->userService->getAllUsers();
 
-        self::assertEquals($expectedResponse, $result);
+        self::assertEquals($jsonResponse, $result);
     }
 
     public function testAddUser(): void
     {
         $request = new Request();
 
-        $this->userDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('addUser')
             ->with($request);
 
@@ -95,8 +96,8 @@ final class UserServiceTest extends TestCase
     {
         $expectedUsers = [new User()];
 
-        $this->userDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('getLastUser')
             ->willReturn($expectedUsers);
 
@@ -110,8 +111,8 @@ final class UserServiceTest extends TestCase
         $request = new Request();
         $expectedUser = new User();
 
-        $this->userDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('updateUser')
             ->with($request)
             ->willReturn($expectedUser);
@@ -126,8 +127,8 @@ final class UserServiceTest extends TestCase
         $user = new User();
         $newHashedPassword = 'newhashedpassword';
 
-        $this->userDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('upgradePassword')
             ->with($user, $newHashedPassword);
 
@@ -138,8 +139,8 @@ final class UserServiceTest extends TestCase
     {
         $username = 'rirrgang';
 
-        $this->userDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('deleteUser')
             ->with($username);
 
@@ -150,8 +151,8 @@ final class UserServiceTest extends TestCase
     {
         $user = new User();
 
-        $this->userDataHandler
-            ->expects(self::once())
+        $this->mockObject
+            ->expects($this->once())
             ->method('updateLastLogin')
             ->with($user);
 

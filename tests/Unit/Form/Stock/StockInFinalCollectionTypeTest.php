@@ -4,42 +4,41 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Form\Stock;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WebWMS\Form\Stock\StockInFinalCollectionType;
 use WebWMS\Form\Stock\StockInFinalType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Tests\Unit\Form\Stock
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockInFinalCollectionTypeTest
- *
- * @covers \WebWMS\Form\Stock\StockInFinalCollectionType
- */
+#[ClassInformation(
+    package: 'WebWMS\Tests\Unit\Form\Stock',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockInFinalCollectionTypeTest'
+)]
+#[CoversClass(StockInFinalCollectionType::class)]
 final class StockInFinalCollectionTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('add')
-            ->with('freeStockLocations', CollectionType::class, self::callback(function ($options) {
-                return $options['entry_type'] === StockInFinalType::class;
-            }));
+            ->with('freeStockLocations', CollectionType::class, self::callback(fn (array $options): bool => $options['entry_type'] === StockInFinalType::class));
 
-        $type = new StockInFinalCollectionType();
-        $type->buildForm($builder, []);
+        $stockInFinalCollectionType = new StockInFinalCollectionType();
+        $stockInFinalCollectionType->buildForm($builder, []);
     }
 
     public function testConfigureOptions(): void
     {
         $resolver = $this->createMock(OptionsResolver::class);
         $resolver
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefaults')
             ->with([
                 'data_class' => StockInFinalType::class,
@@ -47,7 +46,7 @@ final class StockInFinalCollectionTypeTest extends TestCase
                 'allow_delete' => true,
             ]);
 
-        $type = new StockInFinalCollectionType();
-        $type->configureOptions($resolver);
+        $stockInFinalCollectionType = new StockInFinalCollectionType();
+        $stockInFinalCollectionType->configureOptions($resolver);
     }
 }
