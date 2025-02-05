@@ -1,43 +1,4 @@
+# config/routes.yaml
 #index:
 #    path: /
 #    controller: WebWMS\Controller\DefaultController::index
-
-article:
-    path: /artikel
-    controller: WebWMS\Controller\Article::index
-
-article_ajax:
-    path: /article_ajax
-    controller: WebWMS\Controller\Article::getAllArticles
-
-show_stock_location_details:
-    path: /show_stock_location_details
-    controller: WebWMS\Controller\Stock::getSockLocationDetailsById
-
-stock_inventory_start:
-    path: /inventur_starten
-    controller: WebWMS\Bundles\StockInventoryBundle\Controller\DefaultController::index
-
-stock_inventory_post:
-    path: /inventur_starten
-    controller: WebWMS\Bundles\StockInventoryBundle\Controller\DefaultController::index
-
-stock_inventory_close:
-    path: /inventur_starten
-    controller: WebWMS\Bundles\StockInventoryBundle\Controller\DefaultController::index
-
-stock_in_final:
-    path: /stock_in_final
-    controller: WebWMS\Controller\StockTransactions::stockInFinal
-
-dashboard:
-    path: /dashboard
-    controller: WebWMS\Controller\Dashboard::index
-
-web_wms_log_viewer:
-    path: /logs
-    controller: WebWMS\Bundles\LogViewerBundle\Controller\LogViewerController::index
-
-web_wms_log_viewer_logs:
-    path: /logs/{file}
-    controller: WebWMS\Bundles\LogViewerBundle\Controller\LogViewerController::logs

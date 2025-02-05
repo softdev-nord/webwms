@@ -24,11 +24,11 @@ services:
         public: true         // <---- This is the new additional config.
 
         bind:
-            $appName: '%env(APP_NAME)%'
-            $appVersion: '%env(APP_VERSION)%'
-            $appVersionNumber: '%env(APP_VERSION_NUMBER)%'
-            $appCopyright: '%env(APP_COPYRIGHT)%'
-            $appLizenz: '%env(APP_LIZENZ)%'
+            string $appName: '%env(APP_NAME)%'
+            string $appVersion: '%env(APP_VERSION)%'
+            string $appVersionNumber: '%env(APP_VERSION_NUMBER)%'
+            string $appCopyright: '%env(APP_COPYRIGHT)%'
+            string $appLizenz: '%env(APP_LIZENZ)%'
             # Resolve issue:  Cannot autowire service : argument of method "__construct()" is type-hinted "string", you should configure its value explicitly.
             string $publicDirectory: '%publicUploadDirectory%'
             string $targetDirectory: '%uploadDirectory%'
@@ -37,6 +37,8 @@ services:
             string $returnPath: '%returnPath%'
             string $mailCopy: '%mailCopy%'
             string $webHost: '%webHost%'
+            string $bundleDir: '/var/www/html/module'
+            string $projectDir: '%kernel.project_dir%'
 
     Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 
@@ -46,7 +48,6 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
-            - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
 
@@ -66,23 +67,20 @@ services:
         tags:
             - { name: form.type }
     
-    web_wms.service.booking_methode.booking_methode_service:
-        class: WebWMS\Service\BookingMethod\BookingMethodService
-    
     web_wms.service.transport_request_service:
         class: WebWMS\Service\TransportRequest\TransportRequestService
     
     web_wms.service.data_handlers.configuration.configuration_data_handler:
         class: WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler
 
-    web_wms.controller.stock_transactions:
-        class: WebWMS\Controller\StockTransactions
-        public: true
-        autowire: true
-        tags: ['controller.service_arguments']
-        arguments:
-            $bookingMethodService: '@web_wms.service.booking_methode.booking_methode_service'
-            $transportRequestService: '@web_wms.service.transport_request_service'
+#    web_wms.controller.stock_transactions:
+#        class: WebWMS\Controller\StockTransactionController
+#        public: true
+#        autowire: true
+#        tags: ['controller.service_arguments']
+#        arguments:
+#            $bookingMethodService: '@web_wms.service.booking_methode.booking_methode_service'
+#            $transportRequestService: '@web_wms.service.transport_request_service'
 
     web_wms.service.file_uploader:
         class: WebWMS\Service\FileUploader
@@ -99,23 +97,16 @@ services:
     web_wms.service.logging_service:
         class: WebWMS\Service\LoggingService
 
-    web_wms.controller.dashboard_controller:
-        class: WebWMS\Controller\Dashboard
-        arguments:
-            $requirementsService: 'WebWMS\Service\RequirementsService'
-            $twig: 'Twig\Environment'
-            $chartBuilder: 'Symfony\UX\Chartjs\Builder\ChartBuilderInterface'
-            $transportHistoryRepository: 'WebWMS\Repository\TransportHistoryRepository'
-            $stockRotationService: 'WebWMS\Service\Stock\StockRotationService'
-            $transportRequestService: 'WebWMS\Service\TransportRequestService'
-            $stockLocationService: 'WebWMS\Service\Stock\StockLocationService'
-
-    web_wms.service.booking_method.booking_method_service:
-        class: WebWMS\Service\BookingMethod\BookingMethodService
-        arguments:
-            $requirementsService: 'WebWMS\Service\RequirementsService'
-            $twig: 'Twig\Environment'
-    
     twig.extension.debug:
         class: Twig\Extension\DebugExtension
         tags: [ { name: 'twig.extension' } ]
+
+    Symfony\Component\HttpFoundation\Request:
+        autowire: true
+        
+    Symfony\Bundle\FrameworkBundle\Controller\RedirectController:
+        autowire: true
+        public: true
+        tags: ['controller.service_arguments']
+        arguments:
+            $router: '@router'
