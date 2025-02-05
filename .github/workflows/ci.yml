@@ -21,12 +21,12 @@ jobs:
       - name: Add composer auth credentials
         run: echo '${{ secrets.COMPOSER_AUTH_JSON }}' > $GITHUB_WORKSPACE/auth.json
 
-      - name: Setup SSH Keys and known_hosts
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
+#      - name: Setup SSH Keys and known_hosts
+#        env:
+#          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+#        run: |
+#          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+#          ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
 
       # https://github.com/shivammathur/setup-php (community)
       - name: Setup PHP, extensions and composer with shivammathur/setup-php
