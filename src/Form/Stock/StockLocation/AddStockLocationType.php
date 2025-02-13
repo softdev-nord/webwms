@@ -26,9 +26,9 @@ class AddStockLocationType extends AbstractType
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formBuilder
+        $builder
           ->add('stockLocationLn', TextType::class, [
             'label' => false,
             'attr' => [
@@ -123,9 +123,9 @@ class AddStockLocationType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver->setDefaults([
+        $resolver->setDefaults([
           'data_class' => StockLocation::class,
         ]);
     }

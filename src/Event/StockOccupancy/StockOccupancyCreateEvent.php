@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace WebWMS\Event\StockOccupancy;
 
-use WebWMS\Entity\StockOccupancyEntity;
+use WebWMS\Entity\StockOccupancy;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\Stock\StockOccupancyService;
 
-/**
- * @package:    WebWMS\Event\StockOccupancy
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockOccupancyCreateEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\StockOccupancy',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockOccupancyCreateEvent'
+)]
 class StockOccupancyCreateEvent
 {
     final public const EVENT_NAME = 'stock_occupancy.create';
@@ -26,8 +27,8 @@ class StockOccupancyCreateEvent
     {
         $stockOccupancy = $this->stockOccupancyService->getStockOccupancyById($id);
 
-        if ($stockOccupancy instanceof StockOccupancyEntity) {
-            $this->stockOccupancyService->save($stockOccupancy);
+        if ($stockOccupancy instanceof StockOccupancy) {
+            $this->stockOccupancyService->addStockOccupancy($stockOccupancy);
         }
     }
 }

@@ -119,11 +119,12 @@ readonly class UserDataHandler implements PasswordUpgraderInterface
 
     public function updateLastLogin(User $user): void
     {
+        /** @var User|null $selectedUser */
         $selectedUser = $this->entityManager
             ->getRepository(User::class)
             ->find($user->getId());
 
-        if ($selectedUser === null) {
+        if (!$selectedUser instanceof User) {
             return;
         }
 

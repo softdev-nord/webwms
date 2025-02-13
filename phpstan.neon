@@ -32,6 +32,9 @@ parameters:
     	- identifier: equal.notAllowed
     	- identifier: foreach.nonIterable
     	- identifier: property.dynamicName
+    	- identifier: property.onlyWritten
+    	- identifier: varTag.type
+    	- identifier: div.leftNonNumeric
 
     reportUnmatchedIgnoredErrors: false
     treatPhpDocTypesAsCertain: false

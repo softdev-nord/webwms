@@ -17,9 +17,9 @@ use WebWMS\Service\User\UserGroup\UserGroupService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'UserGroup'
+    class: 'UserGroupController'
 )]
-class UserGroup extends AbstractController
+class UserGroupController extends AbstractController
 {
     public function __construct(
         private readonly RequirementsService $requirementsService,

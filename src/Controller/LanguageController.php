@@ -14,9 +14,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'Language'
+    class: 'LanguageController'
 )]
-class Language extends AbstractController
+class LanguageController extends AbstractController
 {
     /**
      * @Route("/lang/{_locale}", requirements={

@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\In
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockInToCostCentreEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\In',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockInToCostCentreEvent'
+)]
 class StockInToCostCentreEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_in_to_cost_centre';
@@ -24,7 +25,7 @@ class StockInToCostCentreEvent extends Event
     /**
      * SI109 Einlagern direkt in Kostenstelle
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockInToCostCentre(Request $request): RedirectResponse|Response
     {

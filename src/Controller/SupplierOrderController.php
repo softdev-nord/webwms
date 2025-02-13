@@ -26,12 +26,12 @@ use WebWMS\Service\SupplierOrderPos\SupplierOrderPosService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'SupplierOrder'
+    class: 'SupplierOrderController'
 )]
 /**
  * @SuppressWarnings(CouplingBetweenObjects)
  */
-class SupplierOrder extends AbstractController
+class SupplierOrderController extends AbstractController
 {
     public function __construct(
         private readonly SupplierOrderService $supplierOrderService,

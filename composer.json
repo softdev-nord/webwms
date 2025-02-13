@@ -93,6 +93,12 @@
             "WebWMS\\Tests\\": "tests/"
         }
     },
+    "repositories": {
+        "mission": {
+            "type": "path",
+            "url": "packages/test-generator"
+        }
+    },
     "replace": {
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",

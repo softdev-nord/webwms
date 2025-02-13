@@ -24,9 +24,9 @@ class DeleteStockLocationType extends AbstractType
      * @SuppressWarnings("unused")
      * @SuppressWarnings(ElseExpression)
      */
-    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formBuilder
+        $builder
           ->add('stockLocationCoordinate', HiddenType::class, [
             'label' => false,
             'attr' => [
@@ -50,9 +50,9 @@ class DeleteStockLocationType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver->setDefaults([
+        $resolver->setDefaults([
           'data_class' => StockLocation::class,
         ]);
     }

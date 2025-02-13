@@ -23,9 +23,9 @@ use WebWMS\Service\Validation\StockZoneValidationService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'StockZone'
+    class: 'StockZoneController'
 )]
-class StockZone extends AbstractController
+class StockZoneController extends AbstractController
 {
     public function __construct(
         private readonly StockZoneService $stockZoneService,

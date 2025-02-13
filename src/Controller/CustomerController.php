@@ -25,7 +25,7 @@ use WebWMS\Service\Validation\CustomerValidationService;
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
     class: 'Customer'
 )]
-class Customer extends AbstractController
+class CustomerController extends AbstractController
 {
     public function __construct(
         private readonly CustomerService $customerService,

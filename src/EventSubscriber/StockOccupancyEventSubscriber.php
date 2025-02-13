@@ -7,13 +7,14 @@ namespace WebWMS\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use WebWMS\Event\StockOccupancy\StockOccupancyCreateEvent;
 use WebWMS\Event\StockOccupancy\StockOccupancyUpdateEvent;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\EventSubscriber
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockOccupancyEventSubscriber
- */
+#[ClassInformation(
+    package: 'WebWMS\EventSubscriber',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'StockOccupancyEventSubscriber'
+)]
 class StockOccupancyEventSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array

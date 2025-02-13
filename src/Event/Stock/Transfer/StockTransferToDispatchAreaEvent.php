@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\Transfer
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockTransferToDispatchAreaEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\Transfer',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockTransferToDispatchAreaEvent'
+)]
 class StockTransferToDispatchAreaEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_transfer_to_dispatch_area';
@@ -24,7 +25,7 @@ class StockTransferToDispatchAreaEvent extends Event
     /**
      * ST104 Umlagerung aus LV-Lager in WA-Zone
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockTransferToDispatchArea(Request $request): RedirectResponse|Response
     {

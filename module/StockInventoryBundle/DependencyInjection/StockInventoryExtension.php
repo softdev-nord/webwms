@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Bundles\StockInventoryBundle\DependencyInjection;
 
-use Override;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
@@ -22,7 +21,6 @@ class StockInventoryExtension extends Extension
     /**
      * @SuppressWarnings("unused")
      */
-    #[Override]
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new Loader\XmlFileLoader(

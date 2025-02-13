@@ -23,9 +23,9 @@ use WebWMS\Service\Validation\SupplierValidationService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'Supplier'
+    class: 'SupplierController'
 )]
-class Supplier extends AbstractController
+class SupplierController extends AbstractController
 {
     public function __construct(
         private readonly SupplierService $supplierService,

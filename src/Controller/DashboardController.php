@@ -28,7 +28,7 @@ use WebWMS\Service\TransportRequest\TransportRequestService;
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
     class: 'Dashboard'
 )]
-class Dashboard extends AbstractController
+class DashboardController extends AbstractController
 {
     private readonly LoaderInterface $loader;
 

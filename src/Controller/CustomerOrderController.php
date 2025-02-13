@@ -32,7 +32,7 @@ use WebWMS\Trait\UserRoleRightTrait;
 /**
  * @SuppressWarnings(CouplingBetweenObjects)
  */
-class CustomerOrder extends AbstractController
+class CustomerOrderController extends AbstractController
 {
     use UserRoleRightTrait;
 

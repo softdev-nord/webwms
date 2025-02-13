@@ -65,9 +65,9 @@ readonly class UserGroupDataHandler
         $addUserGroup = $request->request->getIterator()->getArrayCopy();
         $userGroup = new UserGroup();
 
-        $userGroup->setGroup($addUserGroup['group']); // @phpstan-ignore-line
-        $userGroup->setDescription($addUserGroup['description']); // @phpstan-ignore-line
-        $userGroup->setRoles($addUserGroup['roles']); // @phpstan-ignore-line
+        $userGroup->setGroup($addUserGroup['group']);
+        $userGroup->setDescription($addUserGroup['description']);
+        $userGroup->setRoles($addUserGroup['roles']);
         $userGroup->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userGroup);
@@ -78,6 +78,7 @@ readonly class UserGroupDataHandler
     public function updateUserGroup(Request $request): ?UserGroup
     {
         $requestData = $request->request->all()['edit_user_group'];
+        /** @var UserGroup|null $userGroup */
         $userGroup = $this->entityManager
             ->getRepository(UserGroup::class)
             ->findOneBy(['group' => $requestData['group']]);
@@ -88,9 +89,9 @@ readonly class UserGroupDataHandler
 
         $roles = $requestData['roles'];
 
-        $userGroup->setGroup($requestData['group']); // @phpstan-ignore-line
-        $userGroup->setDescription($requestData['description']); // @phpstan-ignore-line
-        $userGroup->setRoles($roles); // @phpstan-ignore-line
+        $userGroup->setGroup($requestData['group']);
+        $userGroup->setDescription($requestData['description']);
+        $userGroup->setRoles($roles);
         $userGroup->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userGroup);

@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace WebWMS\Dto;
 
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\HydrateStaticTrait;
 
+#[ClassInformation(
+    package: 'WebWMS\Dto',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLocationDto'
+)]
 /**
- * @package:    WebWMS\Dto
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockLocationDto
- *
- * @SuppressWarnings(PHPMD.ShortVariable)
+ * @SuppressWarnings(ShortVariable)
  */
 class StockLocationDto
 {

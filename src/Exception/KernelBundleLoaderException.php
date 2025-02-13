@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace WebWMS\Exception;
 
-use Override;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Exception
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        KernelBundleLoaderException
- */
+#[ClassInformation(
+    package: 'WebWMS\Exception',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'KernelBundleLoaderException'
+)]
 class KernelBundleLoaderException extends WebWmsHttpException
 {
     public function __construct(
@@ -24,7 +24,6 @@ class KernelBundleLoaderException extends WebWmsHttpException
         );
     }
 
-    #[Override]
     public function getErrorCode(): string
     {
         return 'KERNEL_BUNDLE_LOADER_ERROR';

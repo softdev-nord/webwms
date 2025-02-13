@@ -51,8 +51,8 @@ class LogViewerController extends AbstractController
     }
 
     /**
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(CyclomaticComplexity)
+     * @SuppressWarnings(NPathComplexity)
      */
     #[Route('/logs/{file}', name: 'web_wms_log_viewer_logs')]
     public function logs(string $file, Request $request): Response
@@ -65,7 +65,7 @@ class LogViewerController extends AbstractController
         $logFiles[] = $logDir . DIRECTORY_SEPARATOR . $environment . '.log';
 
         $filename = realpath($logDir . DIRECTORY_SEPARATOR . $file);
-        if ($filename == '' || $filename == '0' || $filename == false || !in_array($filename, $logFiles, true)) {
+        if ($filename == '' || $filename == '0' || !$filename || !in_array($filename, $logFiles, true)) {
             throw new NotFoundHttpException();
         }
 

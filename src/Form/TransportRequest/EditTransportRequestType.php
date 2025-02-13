@@ -14,17 +14,17 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\TransportRequestEntity;
+use WebWMS\Entity\TransportRequest;
 
 class EditTransportRequestType extends AbstractType
 {
     /**
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(ExcessiveMethodLength)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var TransportRequestEntity $formData */
+        /** @var TransportRequest $formData */
         $formData = $builder->getForm()->getData();
 
         $builder
@@ -287,7 +287,7 @@ class EditTransportRequestType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => TransportRequestEntity::class,
+            'data_class' => TransportRequest::class,
         ]);
     }
 }

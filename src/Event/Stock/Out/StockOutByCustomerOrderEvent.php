@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\Out
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockOutByCustomerOrderEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\Out',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockOutByCustomerOrderEvent'
+)]
 class StockOutByCustomerOrderEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_out_by_customer_order';
@@ -24,7 +25,7 @@ class StockOutByCustomerOrderEvent extends Event
     /**
      * SO106 Auftrag auslagern
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockOutByCustomerOrder(Request $request): RedirectResponse|Response
     {

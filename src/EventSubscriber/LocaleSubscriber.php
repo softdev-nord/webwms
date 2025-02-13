@@ -22,14 +22,22 @@ readonly class LocaleSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    /**
-     * @SuppressWarnings(ElseExpression)
-     */
     public function onKernelRequest(RequestEvent $requestEvent): void
     {
         $request = $requestEvent->getRequest();
+
+        if (!$request->hasSession()) {
+            return;
+        }
+
+        $session = $request->getSession();
+
+        if (!$session->isStarted()) {
+            $session->start();
+        }
+
         /** @var string $locale */
-        $locale = $request->getSession()->get('_locale', $this->defaultLocale);
+        $locale = $session->get('_locale', $this->defaultLocale);
         $request->setLocale($locale);
     }
 
@@ -37,7 +45,7 @@ readonly class LocaleSubscriber implements EventSubscriberInterface
     {
         return [
             // must be registered before (i.e. with a higher priority than) the default Locale listener
-            KernelEvents::REQUEST => [['onKernelRequest', 20]],
+            KernelEvents::REQUEST => [['onKernelRequest', -10]],
         ];
     }
 }

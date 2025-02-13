@@ -86,10 +86,10 @@ readonly class ArticleDataHandler
             $results[$key]['incoming_stock'] = 0.00;
             $results[$key]['reserved_stock'] = 0.00;
 
-            /** @var int $articleId */
-            $articleId = $result['article_id'];
+            /** @var int $articleNr */
+            $articleNr = $result['article_nr'];
 
-            $stockOccupancies = $this->stockOccupancyService->getStockOccupancyByArticleId($articleId);
+            $stockOccupancies = $this->stockOccupancyService->getStockOccupancyByArticleNr($articleNr);
 
             $inStock = array_column($stockOccupancies, 'in_stock');
             $incomingStock = array_column($stockOccupancies, 'incoming_stock');

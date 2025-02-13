@@ -26,7 +26,7 @@
                         </thead>
                         <tbody>
                             <tr data-article-nr="{{ stockDetails.article_nr }}">
-                                <th style="text-align: center;" scope="col">{{ stockDetails.stock_coordinate }}</th>
+                                <th style="text-align: center;" scope="col">{{ stockDetails.stock_location_coordinate }}</th>
                                 <th style="text-align: center;" scope="col">{{ stockDetails.article_nr }}</th>
                                 <th style="text-align: center;" scope="col">{{ stockDetails.article_name }}</th>
                                 <th style="text-align: center;" scope="col">{% if stockDetails.in_stock is not null %}{{ stockDetails.in_stock }}{% else %}0.00{% endif %}</th>

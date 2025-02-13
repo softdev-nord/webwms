@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\In
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockInFromGoodsReceiptEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\In',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockInFromGoodsReceiptEvent'
+)]
 class StockInFromGoodsReceiptEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_in_from_goods_receipt';
@@ -24,7 +25,7 @@ class StockInFromGoodsReceiptEvent extends Event
     /**
      * SI102 Zugang aus Wareneingang
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockInFromGoodsReceipt(Request $request): RedirectResponse|Response
     {

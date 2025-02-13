@@ -80,7 +80,7 @@ use WebWMS\Repository\UserRepository;
     fields: ['username'],
     message: 'There is already an account with this username'
 )]
-class User implements UserInterface, GroupAwareUser, Stringable
+class User implements UserInterface, Stringable
 {
     public const ROLE_DEFAULT = 'ROLE_USER';
 
@@ -214,9 +214,11 @@ class User implements UserInterface, GroupAwareUser, Stringable
         return $this->lastLogin;
     }
 
-    public function setLastLogin(?DateTime $time = null): void
+    public function setLastLogin(?DateTime $time = null): self
     {
         $this->lastLogin = $time;
+
+        return $this;
     }
 
     public function isEnabled(): bool
@@ -244,9 +246,11 @@ class User implements UserInterface, GroupAwareUser, Stringable
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     public function serialize(): string

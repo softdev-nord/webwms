@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\Out
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockOutToCostCentreEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\Out',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockOutToCostCentreEvent'
+)]
 class StockOutToCostCentreEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_out_to_cost_centre';
@@ -24,7 +25,7 @@ class StockOutToCostCentreEvent extends Event
     /**
      * SO102 Auslagern auf Kostenstelle
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockOutToCostCentre(Request $request): RedirectResponse|Response
     {

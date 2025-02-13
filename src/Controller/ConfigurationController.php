@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,9 +18,9 @@ use WebWMS\Service\RequirementsService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'Configuration'
+    class: 'ConfigurationController'
 )]
-class Configuration extends AbstractController
+class ConfigurationController extends AbstractController
 {
     public function __construct(
         private readonly ConfigurationService $configurationService,
@@ -27,6 +28,9 @@ class Configuration extends AbstractController
     ) {
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/einstellungen', name: 'configuration')]
     public function index(): Response
     {

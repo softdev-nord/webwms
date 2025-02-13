@@ -17,9 +17,9 @@ use WebWMS\Service\User\UserRight\UserRightService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'UserRight'
+    class: 'UserRightController'
 )]
-class UserRight extends AbstractController
+class UserRightController extends AbstractController
 {
     public function __construct(
         private readonly RequirementsService $requirementsService,
