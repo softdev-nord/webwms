@@ -7,6 +7,7 @@ namespace WebWMS\Service\TransportRequest;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use WebWMS\Entity\TransportRequest;
 use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\TransportRequest\TransportRequestDataHandler;
@@ -39,9 +40,9 @@ readonly class TransportRequestService
             ->getAllOpenTransportRequests();
     }
 
-    public function createTransportRequest(Request $request, string $user, string $clientIp): void
+    public function createTransportRequest(Request $request, string $user, string $clientIp): ?Response
     {
-        $this->transportRequestDataHandler
+        return $this->transportRequestDataHandler
             ->createTransportRequest($request, $user, $clientIp);
     }
 

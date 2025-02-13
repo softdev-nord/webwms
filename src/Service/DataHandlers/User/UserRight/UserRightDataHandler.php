@@ -74,8 +74,8 @@ readonly class UserRightDataHandler
         $addUserRight = $request->request->getIterator()->getArrayCopy();
         $userRight = new UserRight();
 
-        $userRight->setUserRight($addUserRight['user_right']); // @phpstan-ignore-line
-        $userRight->setDescription($addUserRight['description']); // @phpstan-ignore-line
+        $userRight->setUserRight($addUserRight['user_right']);
+        $userRight->setDescription($addUserRight['description']);
         $userRight->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userRight);
@@ -86,16 +86,17 @@ readonly class UserRightDataHandler
     public function updateUserRight(Request $request): ?UserRight
     {
         $requestData = $request->request->all()['edit_user_right'];
+        /** @var UserRight|null $userRight */
         $userRight = $this->entityManager
             ->getRepository(UserRight::class)
             ->findOneBy(['user_right' => $requestData['user_right']]);
 
-        if ($userRight === null) {
+        if (!$userRight instanceof UserRight) {
             return null;
         }
 
-        $userRight->setUserRight($requestData['user_right']); // @phpstan-ignore-line
-        $userRight->setDescription($requestData['description']); // @phpstan-ignore-line
+        $userRight->setUserRight($requestData['user_right']);
+        $userRight->setDescription($requestData['description']);
         $userRight->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userRight);

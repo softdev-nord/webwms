@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace WebWMS\Helper;
 
-/**
- * @package: WebWMS\Helper
- * @author: SoftDev Nord, Rene Irrgang
- * @copyright: Copyright © 2019-2025, SoftDev Nord
- * Class HydrateStaticTrait
- */
+use WebWMS\Helper\Attribute\ClassInformation;
+
+#[ClassInformation(
+    package: 'WebWMS\Helper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    trait: 'HydrateStaticTrait'
+)]
 trait HydrateStaticTrait
 {
     public static function hydrate(array $values): self

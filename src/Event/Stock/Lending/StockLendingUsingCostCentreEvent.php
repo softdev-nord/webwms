@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\Lending
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockLendingUsingCostCentreEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\Lending',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockLendingUsingCostCentreEvent'
+)]
 class StockLendingUsingCostCentreEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_lending_using_cost_centre';
@@ -24,7 +25,7 @@ class StockLendingUsingCostCentreEvent extends Event
     /**
      * SL102 Auftrag auslagern mit Kostenstelle (Auftrag-Liste)
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockLendingUsingCostCentre(Request $request): RedirectResponse|Response
     {

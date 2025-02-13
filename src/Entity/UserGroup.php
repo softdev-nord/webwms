@@ -19,7 +19,7 @@ use WebWMS\Repository\UserGroupRepository;
 )]
 #[ORM\Table(name: 'user_group')]
 #[ORM\Entity(repositoryClass: UserGroupRepository::class)]
-class UserGroup implements GroupInterface, Stringable
+class UserGroup implements Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -54,9 +54,11 @@ class UserGroup implements GroupInterface, Stringable
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getGroup(): string
@@ -64,9 +66,11 @@ class UserGroup implements GroupInterface, Stringable
         return $this->group;
     }
 
-    public function setGroup(string $group): void
+    public function setGroup(string $group): self
     {
         $this->group = $group;
+
+        return $this;
     }
 
     public function getDescription(): ?string
@@ -86,9 +90,11 @@ class UserGroup implements GroupInterface, Stringable
         return $this->roles;
     }
 
-    public function setRoles(array $roles): void
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
     }
 
     public function hasRole(string $role): bool
@@ -96,19 +102,23 @@ class UserGroup implements GroupInterface, Stringable
         return in_array(strtoupper($role), $this->roles, true);
     }
 
-    public function addRole(string $role): void
+    public function addRole(string $role): self
     {
         if (!$this->hasRole($role)) {
             $this->roles[] = strtoupper($role);
         }
+
+        return $this;
     }
 
-    public function removeRole(string $role): void
+    public function removeRole(string $role): self
     {
         if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
             unset($this->roles[$key]);
             $this->roles = array_values($this->roles);
         }
+
+        return $this;
     }
 
     public function getCreatedAt(): ?DateTimeInterface

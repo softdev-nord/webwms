@@ -19,9 +19,9 @@ use WebWMS\Service\User\UserRole\UserRoleService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'UserRole'
+    class: 'UserRoleController'
 )]
-class UserRole extends AbstractController
+class UserRoleController extends AbstractController
 {
     public function __construct(
         private readonly RequirementsService $requirementsService,

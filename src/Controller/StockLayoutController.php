@@ -23,9 +23,9 @@ use WebWMS\Service\Validation\StockLayoutValidationService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'StockLayout'
+    class: 'StockLayoutController'
 )]
-class StockLayout extends AbstractController
+class StockLayoutController extends AbstractController
 {
     public function __construct(
         private readonly StockLayoutService $stockLayoutService,

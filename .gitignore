@@ -76,3 +76,5 @@ yarn-error.log
 /.twig-cs-fixer.cache
 /.twigstan
 ###< vincentlanglet/twig-cs-fixer ###
+
+/packages/test-generator/

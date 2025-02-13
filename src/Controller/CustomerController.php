@@ -23,9 +23,9 @@ use WebWMS\Service\Validation\CustomerValidationService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'Customer'
+    class: 'CustomerController'
 )]
-class Customer extends AbstractController
+class CustomerController extends AbstractController
 {
     public function __construct(
         private readonly CustomerService $customerService,

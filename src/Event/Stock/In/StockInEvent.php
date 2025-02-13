@@ -12,18 +12,19 @@ use WebWMS\Dto\FreeStockLocationDto;
 use WebWMS\Dto\OccupiedStockLocationDto;
 use WebWMS\Dto\StockInDto;
 use WebWMS\Dto\StockLocationDto;
-use WebWMS\Entity\StockLocationEntity;
+use WebWMS\Entity\StockLocation;
 use WebWMS\Event\BaseEvent;
 use WebWMS\Event\Stock\StockEvents;
 use WebWMS\Form\Stock\StockInFinalType;
 use WebWMS\Form\Stock\StockInType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\In
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockInEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\In',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockInEvent'
+)]
 class StockInEvent extends BaseEvent
 {
     final public const EVENT_NAME = 'stock.stock_in';
@@ -160,7 +161,7 @@ class StockInEvent extends BaseEvent
             if (($sumLeQuantity + $remainder) <= $leQuantity) {
                 $withSpaceForAddingRemainder = $this->stockLocationService->getStockLocationById((int) $occupiedStockLocation->getId());
 
-                if ($withSpaceForAddingRemainder instanceof StockLocationEntity) {
+                if ($withSpaceForAddingRemainder instanceof StockLocation) {
                     $freeStockLocations[] = [
                         'id' => $withSpaceForAddingRemainder->getStockLocationId(),
                         'su_id' => ++$suId,

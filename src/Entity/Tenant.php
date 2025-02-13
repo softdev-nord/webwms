@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebWMS\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

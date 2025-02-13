@@ -15,11 +15,6 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class LogViewerBundle extends Bundle
 {
-    public function getNiceName(): string
-    {
-        return 'WebWMS Protokoll-View';
-    }
-
     public function getDescription(): string
     {
         return 'Modul für die WebWMS Protokoll Übersicht';

@@ -24,9 +24,9 @@ class StockInFinalType extends AbstractType
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formBuilder
+        $builder
             ->add('stock_su_id_', TextType::class, [
                 'label' => false,
                 'attr' => [
@@ -132,9 +132,9 @@ class StockInFinalType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver
+        $resolver
             ->setDefaults([
                 'data_class' => null,
             ]);

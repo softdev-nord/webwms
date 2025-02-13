@@ -17,27 +17,27 @@ class StockInFinalDto
 {
     use HydrateStaticTrait;
 
-    private int $stockSuId;
+    public int $stockSuId;
 
-    private string $articleNr;
+    public string $articleNr;
 
-    private float $stockQuantity;
+    public float $stockQuantity;
 
-    private string $stockCoordinate;
+    public string $stockCoordinate;
 
-    private int $stockLn;
+    public int $stockLn;
 
-    private int $stockFb;
+    public int $stockFb;
 
-    private int $stockSp;
+    public int $stockSp;
 
-    private int $stockTf;
+    public int $stockTf;
 
-    private string $bookingMethod;
+    public string $bookingMethod;
 
-    private string $charge;
+    public string $charge;
 
-    private string $loadingEquipment;
+    public string $loadingEquipment;
 
     public function getStockSuId(): int
     {

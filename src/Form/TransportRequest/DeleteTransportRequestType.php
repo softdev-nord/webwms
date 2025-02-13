@@ -9,14 +9,15 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use WebWMS\Entity\TransportRequestEntity;
+use WebWMS\Entity\TransportRequest;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Form\TransportRequest
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        DeleteTransportRequestType
- */
+#[ClassInformation(
+    package: 'WebWMS\Form\TransportRequest',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'DeleteTransportRequestType'
+)]
 class DeleteTransportRequestType extends AbstractType
 {
     /**
@@ -50,7 +51,7 @@ class DeleteTransportRequestType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => TransportRequestEntity::class,
+            'data_class' => TransportRequest::class,
         ]);
     }
 }

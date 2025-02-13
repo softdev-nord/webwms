@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\Out
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockOutOrderConsolidationToCostCentreEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\Out',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockOutOrderConsolidationToCostCentreEvent'
+)]
 class StockOutOrderConsolidationToCostCentreEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_out_order_consolidation_to_cost_centre';
@@ -24,7 +25,7 @@ class StockOutOrderConsolidationToCostCentreEvent extends Event
     /**
      * SO111 Sammelkommissionierung auf Kostenstelle
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockOutOrderConsolidationToCostCentre(Request $request): RedirectResponse|Response
     {

@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\Transfer
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockTransferBetweenStockLocationsEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\Transfer',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockTransferBetweenStockLocationsEvent'
+)]
 class StockTransferBetweenStockLocationsEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_transfer_between_stock_locations';
@@ -24,7 +25,7 @@ class StockTransferBetweenStockLocationsEvent extends Event
     /**
      * ST101 Umlagern
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockTransferBetweenStockLocations(Request $request): RedirectResponse|Response
     {

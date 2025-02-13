@@ -17,9 +17,9 @@ use WebWMS\Service\Stock\StockRotationService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'StockRotation'
+    class: 'StockRotationController'
 )]
-class StockRotation extends AbstractController
+class StockRotationController extends AbstractController
 {
     public function __construct(
         private readonly StockRotationService $stockRotationService,

@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use WebWMS\Entity\User as UserEntity;
 use WebWMS\Form\User\Model\ChangePassword;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\UserFormHelper;
 use WebWMS\Service\DateTimeService;
 use WebWMS\Service\LoggingService;
@@ -23,17 +24,16 @@ use WebWMS\Service\User\UserService;
 use WebWMS\Service\Validation\ChangePasswordValidationService;
 use WebWMS\Service\Validation\UserValidationService;
 
-/**
- * @package: WebWMS\Controller
- * @author: SoftDev Nord, Rene Irrgang
- * @copyright: Copyright © 2019-2025, SoftDev Nord
- * Class User
- */
-
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'UserController'
+)]
 /**
  * @SuppressWarnings(CouplingBetweenObjects)
  */
-class User extends AbstractController
+class UserController extends AbstractController
 {
     public function __construct(
         private readonly RequirementsService $requirementsService,

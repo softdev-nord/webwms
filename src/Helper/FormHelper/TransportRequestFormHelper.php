@@ -7,17 +7,18 @@ namespace WebWMS\Helper\FormHelper;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
-use WebWMS\Entity\TransportRequestEntity;
+use WebWMS\Entity\TransportRequest;
 use WebWMS\Form\TransportRequest\AddTransportRequestType;
 use WebWMS\Form\TransportRequest\DeleteTransportRequestType;
 use WebWMS\Form\TransportRequest\EditTransportRequestType;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Helper\FormHelper
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        TransportRequestFormHelper
- */
+#[ClassInformation(
+    package: 'WebWMS\Helper\FormHelper',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'TransportRequestFormHelper'
+)]
 class TransportRequestFormHelper
 {
     public function __construct(
@@ -40,12 +41,12 @@ class TransportRequestFormHelper
         return $this->createForm(AddTransportRequestType::class);
     }
 
-    public function editTransportRequestForm(?TransportRequestEntity $transportRequestEntity): FormInterface
+    public function editTransportRequestForm(?TransportRequest $transportRequestEntity): FormInterface
     {
         return $this->createForm(EditTransportRequestType::class, $transportRequestEntity);
     }
 
-    public function deleteTransportRequestForm(?TransportRequestEntity $transportRequestEntity): FormInterface
+    public function deleteTransportRequestForm(?TransportRequest $transportRequestEntity): FormInterface
     {
         return $this->createForm(DeleteTransportRequestType::class, $transportRequestEntity);
     }

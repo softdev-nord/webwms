@@ -12,9 +12,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'Tenant'
+    class: 'TenantController'
 )]
-class Tenant extends BaseController
+class TenantController extends BaseController
 {
     #[Route('/tenant', name: 'tenant')]
     public function index(): Response

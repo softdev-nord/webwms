@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\Correction
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockCorrectionEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\Correction',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockCorrectionEvent'
+)]
 class StockCorrectionEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_correction';
@@ -24,7 +25,7 @@ class StockCorrectionEvent extends Event
     /**
      * SC101 Bestandskorrektur
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockCorrection(Request $request): RedirectResponse|Response
     {

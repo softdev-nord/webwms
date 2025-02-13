@@ -14,7 +14,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     package: 'WebWMS\Entity',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'UserInterface'
+    interface: 'UserInterface'
 )]
 interface UserInterface extends PasswordAuthenticatedUserInterface, BaseUserInterface, EquatableInterface
 {
@@ -76,7 +76,7 @@ interface UserInterface extends PasswordAuthenticatedUserInterface, BaseUserInte
     /**
      * Setzt die letzte Anmeldezeit.
      */
-    public function setLastLogin(?DateTime $time = null): void;
+    public function setLastLogin(?DateTime $time = null): self;
 
     /**
      * Verwenden Sie dies niemals, um zu prüfen, ob dieser Benutzer Zugriff auf irgendetwas hat!

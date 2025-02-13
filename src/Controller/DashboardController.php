@@ -26,9 +26,9 @@ use WebWMS\Service\TransportRequest\TransportRequestService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'Dashboard'
+    class: 'DashboardController'
 )]
-class Dashboard extends AbstractController
+class DashboardController extends AbstractController
 {
     private readonly LoaderInterface $loader;
 

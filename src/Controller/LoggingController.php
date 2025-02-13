@@ -18,9 +18,9 @@ use WebWMS\Service\RequirementsService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'Logging'
+    class: 'LoggingController'
 )]
-class Logging extends AbstractController
+class LoggingController extends AbstractController
 {
     public function __construct(
         private readonly RequirementsService $requirementsService,

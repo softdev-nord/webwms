@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\Out
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockOutFromDispatchAreaEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\Out',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockOutFromDispatchAreaEvent'
+)]
 class StockOutFromDispatchAreaEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_out_from_dispatch_area';
@@ -24,7 +25,7 @@ class StockOutFromDispatchAreaEvent extends Event
     /**
      * SO105 Auslagern direkt aus WA-Zone
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockOutFromDispatchArea(Request $request): RedirectResponse|Response
     {

@@ -24,9 +24,9 @@ class EditStockZoneType extends AbstractType
     /**
      * @SuppressWarnings("unused")
      */
-    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $formBuilder
+        $builder
           ->add('id', HiddenType::class, [
             'label' => false,
             'attr' => [
@@ -67,9 +67,9 @@ class EditStockZoneType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $optionsResolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $optionsResolver->setDefaults([
+        $resolver->setDefaults([
           'data_class' => StockZone::class,
         ]);
     }

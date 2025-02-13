@@ -65,8 +65,8 @@ readonly class UserRoleDataHandler
         $addUserRole = $request->request->getIterator()->getArrayCopy();
         $userRole = new UserRole();
 
-        $userRole->setUserRole($addUserRole['user_role']); // @phpstan-ignore-line
-        $userRole->setDescription($addUserRole['description']); // @phpstan-ignore-line
+        $userRole->setUserRole($addUserRole['user_role']);
+        $userRole->setDescription($addUserRole['description']);
         $userRole->setCreatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userRole);
@@ -77,16 +77,17 @@ readonly class UserRoleDataHandler
     public function updateUserRole(Request $request): ?UserRole
     {
         $requestData = $request->request->all()['edit_user_role'];
+        /** @var UserRole|null $userRole */
         $userRole = $this->entityManager
             ->getRepository(UserRole::class)
             ->findOneBy(['user_role' => $requestData['user_role']]);
 
-        if ($userRole === null) {
+        if (!$userRole instanceof UserRole) {
             return null;
         }
 
-        $userRole->setUserRole($requestData['user_role']); // @phpstan-ignore-line
-        $userRole->setDescription($requestData['description']); // @phpstan-ignore-line
+        $userRole->setUserRole($requestData['user_role']);
+        $userRole->setDescription($requestData['description']);
         $userRole->setUpdatedAt($this->dateTimeService->createDateTime());
 
         $this->save($userRole);

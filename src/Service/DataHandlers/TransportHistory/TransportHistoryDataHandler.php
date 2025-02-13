@@ -107,7 +107,7 @@ readonly class TransportHistoryDataHandler
                     ->setTrType(1)
                     ->setCreatedAt($actualDateTime);
 
-                $this->stockOccupancyService->updateStockOccupancy($data, $actualDateTime);
+                //$this->stockOccupancyService->updateStockOccupancy($data, $actualDateTime);
             }
 
             foreach ($entities as $entity) {
@@ -142,7 +142,7 @@ readonly class TransportHistoryDataHandler
             ->getRepository(TransportHistory::class)
             ->findBy([], ['trNr' => 'DESC'], 1, 0);
 
-        return $lastTransportHistoryNr[0]->getTrNr();
+        return $lastTransportHistoryNr[0]->getTrNr(); // @phpstan-ignore-line
     }
 
     public function addTransportHistory(TransportHistory $transportHistory): void

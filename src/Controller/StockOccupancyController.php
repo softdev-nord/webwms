@@ -20,9 +20,9 @@ use WebWMS\Service\Stock\StockOccupancyService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'StockOccupancy'
+    class: 'StockOccupancyController'
 )]
-class StockOccupancy extends AbstractController
+class StockOccupancyController extends AbstractController
 {
     public function __construct(
         private readonly StockOccupancyService $stockOccupancyService,

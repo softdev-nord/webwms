@@ -15,11 +15,6 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockInventoryBundle extends Bundle
 {
-    public function getNiceName(): string
-    {
-        return 'webWMS Inventur';
-    }
-
     public function getDescription(): string
     {
         return 'Bundle für das webWMS Inventur Handling';

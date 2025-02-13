@@ -7,6 +7,7 @@ namespace WebWMS\Service\Stock;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use WebWMS\Entity\StockOccupancy;
 use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\DataHandlers\Stock\StockOccupancyDataHandler;
 
@@ -43,7 +44,7 @@ readonly class StockOccupancyService
         $stockOccupancies = json_decode((string) $this->getAllStockOccupancy()->getContent(), true);
 
         foreach ($stockOccupancies as $stockOccupancy) {
-            if ($stockOccupancy['koordinate'] === $stockLocationCoordinate) {
+            if ($stockOccupancy['stock_location_coordinate'] === $stockLocationCoordinate) {
                 $stockOccupancyDetail[] = $stockOccupancy;
             }
         }
@@ -67,5 +68,33 @@ readonly class StockOccupancyService
     public function getStockOccupancyByArticleNr(int $articleNr): array
     {
         return $this->stockOccupancyDataHandler->getStockOccupancyByArticleNr($articleNr);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getStockOccupancyByArticleId(int $articleId): array
+    {
+        return $this->stockOccupancyDataHandler->getStockOccupancyByArticleNr($articleId);
+    }
+
+    public function getStockOccupancyById(int $stockOccupancyId): ?StockOccupancy
+    {
+        return $this->stockOccupancyDataHandler->getStockOccupancyById($stockOccupancyId);
+    }
+
+    public function addStockOccupancy(StockOccupancy $stockOccupancy): void
+    {
+        $this->stockOccupancyDataHandler->save($stockOccupancy);
+    }
+
+    public function updateStockOccupancy(StockOccupancy $stockOccupancy): void
+    {
+        $this->stockOccupancyDataHandler->update($stockOccupancy);
+    }
+
+    public function deleteStockOccupancy(StockOccupancy $stockOccupancy): void
+    {
+        $this->stockOccupancyDataHandler->delete($stockOccupancy);
     }
 }

@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\Out
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockOutFromReceivingAreaEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\Out',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockOutFromReceivingAreaEvent'
+)]
 class StockOutFromReceivingAreaEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_out_from_receiving_area';
@@ -24,7 +25,7 @@ class StockOutFromReceivingAreaEvent extends Event
     /**
      * SO107 Auslagern direkt aus WE-Zone
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockOutFromReceivingArea(Request $request): RedirectResponse|Response
     {

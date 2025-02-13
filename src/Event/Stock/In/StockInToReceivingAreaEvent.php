@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\In
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockInToReceivingAreaEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\In',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockInToReceivingAreaEvent'
+)]
 class StockInToReceivingAreaEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_in_to_receiving_area';
@@ -24,7 +25,7 @@ class StockInToReceivingAreaEvent extends Event
     /**
      * SI108 Einlagern direkt in WE-Zone
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockInToReceivingArea(Request $request): RedirectResponse|Response
     {

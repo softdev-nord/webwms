@@ -21,8 +21,8 @@ use WebWMS\Service\RequirementsService;
 class StockInventoryController extends AbstractController
 {
     public function __construct(
-        private StockLocationRepository $stockLocationRepository,
-        private RequirementsService $requirementsService,
+        private readonly StockLocationRepository $stockLocationRepository,
+        private readonly RequirementsService $requirementsService,
     ) {
     }
 
@@ -34,9 +34,7 @@ class StockInventoryController extends AbstractController
         return $this->stockLocationRepository->findAll();
     }
 
-    /**
-     * @Route("/inventur_starten", name="stock_inventory_start")
-     */
+    #[Route('/inventur_starten', name: 'stock_inventory_start')]
     public function index(): Response
     {
         return $this->render(

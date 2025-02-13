@@ -28,13 +28,9 @@ use WebWMS\Service\TransportRequest\TransportRequestService;
 #[CoversClass(StockInEvent::class)]
 class StockInEventTest extends TestCase
 {
-    private RequirementsService $requirementsService;
-
     private MockObject $stockLocationService;
 
     private MockObject $transportRequestService;
-
-    private MockObject $transportHistoryService;
 
     private MockObject $formFactory;
 
@@ -46,19 +42,19 @@ class StockInEventTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->requirementsService = $this->createMock(RequirementsService::class);
+        $requirementsService = $this->createMock(RequirementsService::class);
         $this->stockLocationService = $this->createMock(StockLocationService::class);
         $this->transportRequestService = $this->createMock(TransportRequestService::class);
-        $this->transportHistoryService = $this->createMock(TransportHistoryService::class);
+        $transportHistoryService = $this->createMock(TransportHistoryService::class);
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
         $this->twig = $this->createMock(Environment::class);
         $this->form = $this->createMock(FormInterface::class);
 
         $this->stockInEvent = new StockInEvent(
-            $this->requirementsService,
+            $requirementsService,
             $this->stockLocationService,
             $this->transportRequestService,
-            $this->transportHistoryService,
+            $transportHistoryService,
             $this->formFactory,
             $this->twig
         );
@@ -69,20 +65,20 @@ class StockInEventTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $this->formFactory
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('create')
             ->with(StockInType::class)
             ->willReturn($this->createMock(FormInterface::class));
 
         $this->twig
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('render')
             ->willReturn('rendered html');
 
         $response = $this->stockInEvent->stockIn($request);
 
         self::assertInstanceOf(Response::class, $response);
-        self::assertEquals('rendered html', $response->getContent());
+        self::assertSame('rendered html', $response->getContent());
     }
 
     public function testStockInReturnsResponseWhenFormIsSubmittedAndValid(): void
@@ -90,15 +86,15 @@ class StockInEventTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $this->form
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isSubmitted')
             ->willReturn(true);
         $this->form
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('isValid')
             ->willReturn(true);
         $this->form
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getData')
             ->willReturn([
                 'quantity' => '10',
@@ -114,7 +110,7 @@ class StockInEventTest extends TestCase
             ->willReturnOnConsecutiveCalls($this->form, $this->createMock(FormInterface::class));
 
         $this->stockLocationService
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAllFreeStockLocationsWithLimit')
             ->with('Durchlaufregal', 5)
             ->willReturn([
@@ -123,18 +119,18 @@ class StockInEventTest extends TestCase
             ]);
 
         $this->transportRequestService
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getLastStockUnit')
             ->willReturn([]);
 
         $this->twig
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('render')
             ->willReturn('rendered html');
 
         $response = $this->stockInEvent->stockIn($request);
 
         self::assertInstanceOf(Response::class, $response);
-        self::assertEquals('rendered html', $response->getContent());
+        self::assertSame('rendered html', $response->getContent());
     }
 }

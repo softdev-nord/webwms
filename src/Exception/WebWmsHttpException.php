@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace WebWMS\Exception;
 
 use Generator;
-use Override;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Exception
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        WebWmsHttpException
- */
+#[ClassInformation(
+    package: 'WebWMS\Exception',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'WebWmsHttpException'
+)]
 abstract class WebWmsHttpException extends HttpException implements WebWmsException
 {
     /**
@@ -31,7 +31,6 @@ abstract class WebWmsHttpException extends HttpException implements WebWmsExcept
         parent::__construct($this->getStatusCode(), $message, $throwable);
     }
 
-    #[Override]
     public function getStatusCode(): int
     {
         return Response::HTTP_INTERNAL_SERVER_ERROR;
@@ -45,7 +44,6 @@ abstract class WebWmsHttpException extends HttpException implements WebWmsExcept
     /**
      * @return array<string, mixed>
      */
-    #[Override]
     public function getParameters(): array
     {
         return $this->parameters;

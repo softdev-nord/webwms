@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Service\BookingMethod;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -41,7 +42,7 @@ class BookingMethodService
     }
 
     /**
-     * @throws EntityNotFoundException
+     * @throws EntityNotFoundException|Exception
      */
     public function getBookingMethod(mixed $bookingMethod, Request $request): RedirectResponse|Response|null
     {
@@ -85,6 +86,7 @@ class BookingMethodService
     {
         $bookingMethod = 'SI101';
         $freeStockLocations = [];
+        $limit = 10;
 
         $form = $this->formFactory->create(StockInType::class);
         $form->handleRequest($request);
@@ -104,7 +106,7 @@ class BookingMethodService
             $fullPal = intdiv((int) ($requestData['quantity']), (int) ($requestData['leQuantity']));
             $remainder = fmod((float) ($requestData['quantity']), (float) ($requestData['leQuantity']));
 
-            $stockLocations = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $stockUnits);
+            $stockLocations = $this->stockLocationService->getAllFreeStockLocationsWithLimit($stockSystem, $limit, $stockUnits);
             $suId = $this->transportRequestService->getLastStockUnit();
 
             foreach ($stockLocations as $key => $stockLocation) {

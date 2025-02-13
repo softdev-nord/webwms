@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
+use WebWMS\Helper\Attribute\ClassInformation;
 
-/**
- * @package:    WebWMS\Event\Stock\Transfer
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2024, SoftDev Nord
- * Class        StockTransferFromCostCentreEvent
- */
+#[ClassInformation(
+    package: 'WebWMS\Event\Stock\Transfer',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockTransferFromCostCentreEvent'
+)]
 class StockTransferFromCostCentreEvent extends Event
 {
     final public const EVENT_NAME = 'stock.stock_transfer_from_cost_centre';
@@ -24,7 +25,7 @@ class StockTransferFromCostCentreEvent extends Event
     /**
      * ST102 Rückgabe von Kostenstelle
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockTransferFromCostCentre(Request $request): RedirectResponse|Response
     {

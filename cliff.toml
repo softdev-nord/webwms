@@ -73,5 +73,5 @@ topo_order = false
 sort_commits = "newest"
 
 commit_preprocessors = [
-    { pattern = '(WEBWMS-[0-9]+)', replace = "[${1}](https://axrogmbh.atlassian.net/browse/${1})" },
+    { pattern = '(WEBWMS-[0-9]+)', replace = "[${1}](https://softdev-nord.atlassian.net/browse/${1})" },
 ]

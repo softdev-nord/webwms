@@ -11,18 +11,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use WebWMS\Entity\TransportRequestEntity;
+use WebWMS\Entity\TransportRequest;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Helper\FormHelper\TransportRequestFormHelper;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\TransportRequest\TransportRequestService;
 
-/**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        TransportRequestController
- */
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2023, SoftDev Nord',
+    class: 'TransportRequestController'
+)]
 class TransportRequestController extends AbstractController
 {
     public function __construct(
@@ -64,7 +65,7 @@ class TransportRequestController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var TransportRequestEntity $newTransportRequest */
+            /** @var TransportRequest $newTransportRequest */
             $newTransportRequest = $form->getData();
             $transportRequestNr = $newTransportRequest->getTrNr();
             $responseData = [];
@@ -97,7 +98,7 @@ class TransportRequestController extends AbstractController
 
         $transportRequest = $this->transportRequestService->getTransportRequestById($id);
 
-        if (!$transportRequest instanceof TransportRequestEntity) {
+        if (!$transportRequest instanceof TransportRequest) {
             return null;
         }
 
@@ -105,7 +106,7 @@ class TransportRequestController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var TransportRequestEntity $updatedTransportRequest */
+            /** @var TransportRequest $updatedTransportRequest */
             $updatedTransportRequest = $form->getData();
             $transportRequestNr = $updatedTransportRequest->getTrNr();
             $responseData = [];
@@ -130,10 +131,10 @@ class TransportRequestController extends AbstractController
     }
 
     /**
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(UnusedFormalParameter)
      */
     #[Route('ta_position_löschen/id/{id}', name: 'delete_ta_position')]
-    public function deleteTransportRequest(Request $request, string $id): RedirectResponse|JsonResponse|Response|null
+    public function deleteTransportRequest(string $id): RedirectResponse|JsonResponse|Response|null
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');

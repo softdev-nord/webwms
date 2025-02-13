@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Environment;
+use WebWMS\Entity\StockLocation;
 use WebWMS\Event\Stock\Correction\StockCorrectionEvent;
 use WebWMS\Event\Stock\In\StockInEvent;
 use WebWMS\Event\Stock\In\StockInForSupplierOrderEvent;
@@ -43,6 +44,7 @@ use WebWMS\Event\Stock\Transfer\StockTransferBetweenStockLocationsEvent;
 use WebWMS\Event\Stock\Transfer\StockTransferFromCostCentreEvent;
 use WebWMS\Event\Stock\Transfer\StockTransferFromReceivingAreaEvent;
 use WebWMS\Event\Stock\Transfer\StockTransferToDispatchAreaEvent;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\LoggingService;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
@@ -50,13 +52,14 @@ use WebWMS\Service\TransportHistory\TransportHistoryService;
 use WebWMS\Service\TransportRequest\TransportRequestService;
 
 /**
- * @package:    WebWMS\Controller
- * @author:     SoftDev Nord, Rene Irrgang
- * @copyright:  Copyright © 2019-2023, SoftDev Nord
- * Class        StockTransactionController
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(CouplingBetweenObjects)
  */
+#[ClassInformation(
+    package: 'WebWMS\Controller',
+    author: 'SoftDev Nord, Rene Irrgang',
+    copyright: 'Copyright © 2019-2025, SoftDev Nord',
+    class: 'StockTransactionsController'
+)]
 class StockTransactionController extends AbstractController
 {
     public function __construct(
@@ -533,7 +536,7 @@ class StockTransactionController extends AbstractController
     /**
      * @throws Exception
      *
-     * @SuppressWarnings(PHPMD.ExitExpression)
+     * @SuppressWarnings(ExitExpression)
      */
     #[Route('/stock_in_final', name: 'stock_in_final')]
     public function stockInFinal(Request $request): ?JsonResponse
@@ -580,7 +583,7 @@ class StockTransactionController extends AbstractController
     public function editPreSelectedStockLocation(Request $request): Response
     {
         $stockLocationId = $request->attributes->getString('stockLocationId');
-        /* @var $stockSystem \WebWMS\Entity\StockLocationEntity */
+        /* @var $stockSystem StockLocation */
         $stockSystem = $this->stockLocationService->getStockLocationDetailsById($stockLocationId);
 
         /**

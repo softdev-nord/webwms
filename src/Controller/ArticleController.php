@@ -23,9 +23,9 @@ use WebWMS\Service\Validation\ArticleValidationService;
     package: 'WebWMS\Controller',
     author: 'SoftDev Nord, Rene Irrgang',
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
-    class: 'Article'
+    class: 'ArticleController'
 )]
-class Article extends AbstractController
+class ArticleController extends AbstractController
 {
     public function __construct(
         private readonly ArticleService $articleService,
