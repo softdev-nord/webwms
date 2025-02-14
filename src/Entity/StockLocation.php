@@ -44,13 +44,13 @@ class StockLocation
     private string $stockLocationDesc;
 
     #[ORM\Column(name: 'stock_location_width', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
-    private float $stockLocationWidth;
+    private string $stockLocationWidth;
 
     #[ORM\Column(name: 'stock_location_depth', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
-    private float $stockLocationDepth;
+    private string $stockLocationDepth;
 
     #[ORM\Column(name: 'stock_location_height', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
-    private float $stockLocationHeight;
+    private string $stockLocationHeight;
 
     #[ORM\Column(name: 'stock_location_zone', type: Types::STRING, length: 10, nullable: false)]
     private string $stockLocationZone;
@@ -143,36 +143,36 @@ class StockLocation
         return $this;
     }
 
-    public function getStockLocationWidth(): float
+    public function getStockLocationWidth(): string
     {
         return $this->stockLocationWidth;
     }
 
-    public function setStockLocationWidth(float $stockLocationWidth): self
+    public function setStockLocationWidth(string $stockLocationWidth): self
     {
         $this->stockLocationWidth = $stockLocationWidth;
 
         return $this;
     }
 
-    public function getStockLocationDepth(): float
+    public function getStockLocationDepth(): string
     {
         return $this->stockLocationDepth;
     }
 
-    public function setStockLocationDepth(float $stockLocationDepth): self
+    public function setStockLocationDepth(string $stockLocationDepth): self
     {
         $this->stockLocationDepth = $stockLocationDepth;
 
         return $this;
     }
 
-    public function getStockLocationHeight(): float
+    public function getStockLocationHeight(): string
     {
         return $this->stockLocationHeight;
     }
 
-    public function setStockLocationHeight(float $stockLocationHeight): self
+    public function setStockLocationHeight(string $stockLocationHeight): self
     {
         $this->stockLocationHeight = $stockLocationHeight;
 
