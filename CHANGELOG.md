@@ -5,15 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.2.1] - 2025-02-14
+## [2.3.1] - 2025-02-14
 
 ### <!-- 1 -->🐛 Bug Fixes
 
+- [WEBWMS-15](https://softdev-nord.atlassian.net/browse/WEBWMS-15) - fix: Fehler beim Setzen des Tags in der Workflow Action behoben
 - [WEBWMS-15](https://softdev-nord.atlassian.net/browse/WEBWMS-15) - fix: Eigenschaftstyp korrekt setzen
 - [WEBWMS-15](https://softdev-nord.atlassian.net/browse/WEBWMS-15) - fix: Eigenschaftstyp korrekt setzen
 
 ### <!-- 7 -->⚙️ Miscellaneous Tasks
 
+- Update changelog for
 - Update changelog for
 
 ## [2.3.0] - 2025-02-14
@@ -216,7 +218,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial Bitbucket Pipelines configuration
 - Initial commit
 
-[2.2.1]: https://github.com/softdev-nord/webwms/compare/2.3.0..2.2.1
+[2.3.1]: https://github.com/softdev-nord/webwms/compare/2.3.0..2.3.1
 [2.3.0]: https://github.com/softdev-nord/webwms/compare/2.2.0..2.3.0
 [2.2.0]: https://github.com/softdev-nord/webwms/compare/v2.1.0..2.2.0
 
