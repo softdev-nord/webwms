@@ -44,10 +44,10 @@ class StockLocation
     private string $stockLocationDesc;
 
     #[ORM\Column(name: 'stock_location_width', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
-    private float $stockLocationWidth;
+    private string $stockLocationWidth;
 
     #[ORM\Column(name: 'stock_location_depth', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
-    private float $stockLocationDepth;
+    private string $stockLocationDepth;
 
     #[ORM\Column(name: 'stock_location_height', type: Types::DECIMAL, precision: 6, scale: 2, nullable: false)]
     private float $stockLocationHeight;
