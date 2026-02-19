@@ -146,11 +146,11 @@
     "rollup-plugin-istanbul": "^3.0.0",
     "rtlcss": "^4.0.0",
     "sass": "^1.55.0",
-    "shelljs": "^0.8.5",
+    "shelljs": "^0.10.0",
     "stylelint": "^14.13.0",
     "stylelint-config-twbs-bootstrap": "^6.0.0",
     "terser": "^5.15.0",
-    "vnu-jar": "22.9.29"
+    "vnu-jar": "26.2.1"
   },
   "files": [
     "dist/{css,js}/*.{css,js,map}",
