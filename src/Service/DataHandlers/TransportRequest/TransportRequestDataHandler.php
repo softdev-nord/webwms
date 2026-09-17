@@ -9,6 +9,7 @@ use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Service\Attribute\Required;
 use WebWMS\Dto\StockInFinalDto;
 use WebWMS\Entity\TransportHistory;
 use WebWMS\Entity\TransportRequest;
@@ -94,6 +95,10 @@ readonly class TransportRequestDataHandler
         return new JsonResponse($results);
     }
 
+    /**
+     * Erstellt mehrere Transportaufträge transaktional.
+     * Bei Fehler wird die gesamte Operation zurückgerollt.
+     */
     public function createTransportRequest(Request $request, string $user, string $clientIp): ?Response
     {
         $requestData = (array) $request->request->all()['stock_in_final'];
@@ -101,10 +106,14 @@ readonly class TransportRequestDataHandler
         $actualDateTime = $this->dateTimeService->createDateTime();
 
         try {
+            if (empty($requestData)) {
+                throw new Exception('Keine Transportdaten vorhanden.');
+            }
+
             foreach ($requestData as $key => $data) {
                 $data = StockInFinalDto::hydrate((array) $data);
 
-                $entities[] = (new TransportRequest())
+                $transportRequest = (new TransportRequest())
                     ->setSuId($data->getStockSuId())
                     ->setTrNr($this->getLastTransportRequestNr() + 1)
                     ->setTrPos($key + 1)
@@ -117,20 +126,8 @@ readonly class TransportRequestDataHandler
                     ->setStockLevel2($data->getStockSp())
                     ->setStockLevel3($data->getStockTf())
                     ->setStockLevel4(1)
-//                    ->setFromStockCoordinate((string) $data->getStockCoordinate())
-//                    ->setFromStockNr((int) $data->getStockLn())
-//                    ->setFromStockLevel1((int) $data->getStockFb())
-//                    ->setFromStockLevel2((int) $data->getStockSp())
-//                    ->setFromStockLevel3((int) $data->getStockTf())
-//                    ->setFromStockLevel4(1)
-//                    ->setToStockCoordinate((string) $data->getStockCoordinate())
-//                    ->setToStockNr((int) $data->getStockLn())
-//                    ->setToStockLevel1((int) $data->getStockFb())
-//                    ->setToStockLevel2((int) $data->getStockSp())
-//                    ->setToStockLevel3((int) $data->getStockTf())
-//                    ->setToStockLevel4(1)
                     ->setTrAccess($actualDateTime)
-                    ->setTrState(0)
+                    ->setTrState('open')
                     ->setOrderUsername($user)
                     ->setBookingMethod($data->getBookingMethod())
                     ->setDocId(null)
@@ -140,7 +137,10 @@ readonly class TransportRequestDataHandler
                     ->setTrType(1)
                     ->setCreatedAt($actualDateTime);
 
-                //$this->stockOccupancyService->updateStockOccupancy($data, $actualDateTime);
+                $entities[] = $transportRequest;
+
+                // TODO: T4.2 Bestandssynchronisierung bei vollständiger Inventur-Integration
+                // $this->stockOccupancyService->updateStockOccupancy($data, $actualDateTime);
             }
 
             foreach ($entities as $entity) {
@@ -151,8 +151,11 @@ readonly class TransportRequestDataHandler
             $this->entityManager->clear();
 
             return new Response('success');
-        } catch (Exception) {
-            return null;
+        } catch (Exception $e) {
+            // Rollback bei Fehler
+            $this->entityManager->rollback();
+            // Fehler wird an Caller propagiert
+            throw $e;
         }
     }
 

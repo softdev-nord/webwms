@@ -127,7 +127,7 @@ class CustomerOrderController extends AbstractController
     }
 
     #[Route('/auftrag_bearbeiten/customerOrderId/{customerOrderId}', name: 'edit_customer_order')]
-    public function editCustomerOrder(Request $request, int $customerOrderId): RedirectResponse|Response|null
+    public function editCustomerOrder(Request $request, int $customerOrderId): RedirectResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -137,7 +137,7 @@ class CustomerOrderController extends AbstractController
         $customerOrderPos = $this->customerOrderPosService->getCustomerOrderPosByCustomerOrderId($customerOrderId);
 
         if (!$customerOrder instanceof CustomerOrderEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $customerOrderForm = $this->customerOrderFormHelper->editCustomerOrderForm($customerOrder);
@@ -190,7 +190,7 @@ class CustomerOrderController extends AbstractController
     }
 
     #[Route('/auftrag_löschen/customerOrderId/{customerOrderId}', name: 'delete_customer_order')]
-    public function deleteCustomerOrder(Request $request, int $customerOrderId): RedirectResponse|JsonResponse|Response|null
+    public function deleteCustomerOrder(Request $request, int $customerOrderId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -200,7 +200,7 @@ class CustomerOrderController extends AbstractController
         $customerOrderPos = $this->customerOrderPosService->getCustomerOrderPosByCustomerOrderId($customerOrderId);
 
         if (!$customerOrder instanceof CustomerOrderEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $customerOrderForm = $this->customerOrderFormHelper->deleteCustomerOrderForm($customerOrder);

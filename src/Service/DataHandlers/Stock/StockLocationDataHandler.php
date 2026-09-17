@@ -54,14 +54,13 @@ readonly class StockLocationDataHandler
     }
 
     /**
-     * @throws Exception|\Exception
-     * @return object[]
+     * @throws Exception
      */
-    public function getStockLocationDetailsById(string $stockLocationId): array
+    public function getStockLocationDetailsById(int $stockLocationId): ?StockLocation
     {
         $stockLocation = $this->entityManager
             ->getRepository(StockLocation::class)
-            ->findBy(['stockLocationId' => $stockLocationId]);
+            ->findOneBy(['stockLocationId' => $stockLocationId]);
 
         if ($stockLocation === null) {
             throw new Exception('Keine Details für den gewählten Lagerort gefunden.');
@@ -178,7 +177,7 @@ readonly class StockLocationDataHandler
         $results = $this->getAllStockLocationsQuery($stockSystem);
 
         foreach ($results as $result) {
-            if ($result['lp_bestand'] !== null) {
+            if ($result['in_stock'] !== null && $result['incoming_stock'] !== null) {
                 continue;
             }
 

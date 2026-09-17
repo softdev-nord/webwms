@@ -4,6 +4,12 @@ controllers:
         namespace: WebWMS\Controller
     type: attribute
 
+modules_controllers:
+    resource:
+        path: ../../src/Modules/
+        namespace: WebWMS\Modules
+    type: attribute
+
 kernel:
     resource: WebWMS\Kernel
     type: attribute

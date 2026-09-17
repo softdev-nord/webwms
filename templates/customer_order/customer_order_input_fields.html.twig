@@ -252,8 +252,8 @@
         {% endblock %}
 
         {% block bodyjs %}
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.customersAutofill.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.itemsCustomerOrderPosAutofill.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/webWmsCoreJs/jquery.customersAutofill.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/webWmsCoreJs/jquery.itemsCustomerOrderPosAutofill.js') }}"></script>
             <script>
                 {% set newCustomerOrderId = lastId.id +1 %}
                 {% set editOrder = editCustomerOrder|json_encode() %}
@@ -262,7 +262,7 @@
                 const editOrder = {{ editOrder }};
 
                 if (!editOrder) {
-                    $.getScript( '{{ asset('assets/js/webWmsCoreJs/jquery.modalDatePicker.js') }}' );
+                    $.getScript( '{{ asset('js/webWmsCoreJs/jquery.modalDatePicker.js') }}' );
                 }
 
                 $("#customer_customerNr").change(function() {

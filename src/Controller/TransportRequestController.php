@@ -131,16 +131,39 @@ class TransportRequestController extends AbstractController
     }
 
     /**
-     * @SuppressWarnings(UnusedFormalParameter)
+     * Storniert einen Transportauftrag statt zu löschen (Workflow-Transition)
      */
     #[Route('ta_position_löschen/id/{id}', name: 'delete_ta_position')]
-    public function deleteTransportRequest(string $id): RedirectResponse|JsonResponse|Response|null
+    public function cancelTransportRequest(string $id): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
         }
 
-        return null;
+        try {
+            $transportRequest = $this->transportRequestService->getTransportRequestById((int) $id);
+            if (!$transportRequest) {
+                return new JsonResponse(['error' => 'Transport request not found'], 404);
+            }
+
+            // Nutze Workflow um zu stornieren statt zu löschen
+            $workflowService = $this->container->get('WebWMS\Service\Workflow\TransportRequestWorkflowService');
+            if ($workflowService->cancel($transportRequest)) {
+                $this->transportRequestService->updateTransportRequest($transportRequest);
+                return new JsonResponse([
+                    'success' => true,
+                    'message' => 'Transport request cancelled (not deleted)',
+                    'state' => $transportRequest->getTrState(),
+                ]);
+            }
+
+            return new JsonResponse(
+                ['error' => 'Cannot cancel transport request from current state'],
+                422
+            );
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 500);
+        }
     }
 
     #[Route('/transport_request_ajax', name: 'transport_request_ajax')]

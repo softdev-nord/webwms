@@ -48,6 +48,9 @@
             </div>
         </div>
     {% endblock %}
+    {% block webwms_table_context_menu %}
+        {{ include('subsections/context-menu.html.twig') }}
+    {% endblock %}
 {% endblock %}
 
 {% block bodyjs %}

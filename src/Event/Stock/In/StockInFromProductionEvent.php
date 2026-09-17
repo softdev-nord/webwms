@@ -7,7 +7,6 @@ namespace WebWMS\Event\Stock\In;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\Event;
 use WebWMS\Helper\Attribute\ClassInformation;
 
 #[ClassInformation(
@@ -16,20 +15,22 @@ use WebWMS\Helper\Attribute\ClassInformation;
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
     class: 'StockInFromProductionEvent'
 )]
-class StockInFromProductionEvent extends Event
+class StockInFromProductionEvent extends StockInBookingMethodEvent
 {
-    final public const EVENT_NAME = 'stock.stock_in_from_production';
+    public const string EVENT_NAME = 'stock.stock_in_from_production';
 
-    final public const EVENT = 'SI103';
+    public const string EVENT = 'SI103';
 
     /**
      * SI103 Zugang aus Produktion
-     *
-     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockInFromProduction(Request $request): RedirectResponse|Response
     {
-        // TODO: Implement logic
-        return new Response('Example Response');
+        return $this->handleStockIn(
+            request: $request,
+            bookingMethod: self::EVENT,
+              pageTitle: 'Zugang aus Produktion',
+            stockInActionRoute: 'stock_in_from_production'
+        );
     }
 }

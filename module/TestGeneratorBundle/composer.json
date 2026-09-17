@@ -1,0 +1,39 @@
+{
+    "name": "softdevnord/test-generator",
+    "version": "1.0.0",
+    "description": "Generate PHPUnit tests via AI",
+    "keywords": ["test", "unit test"],
+    "license": "proprietary",
+    "authors": [
+    {
+      "name": "Rene Irrgang",
+      "homepage": "https://github.com/rirrgang1281",
+      "email": "rene.irrgang@outlook.de",
+      "role": "Project Founder"
+    }
+  ],
+    "require": {
+        "php": "^8.3",
+        "openai-php/symfony": "^0.10.2",
+        "symfony/console": "^6.0|^7.0",
+        "symfony/dependency-injection": "^6.0|^7.0",
+        "symfony/filesystem": "^6.0|^7.0",
+        "symfony/finder": "^6.0|^7.0",
+        "symfony/http-client": "^6.0|^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SoftDevNord\\TestGenerator\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

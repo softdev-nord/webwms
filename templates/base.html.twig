@@ -17,6 +17,10 @@
 
         {% block javascripts %}
             {{ include('subsections/head-js.html.twig') }}
+            <script>
+                const loader = '<img src="{{ asset('assets/images/ajax-loader.gif') }}" />';
+                const modalLoader = '<div class="modal-body">' + loader + '</div>';
+            </script>
         {% endblock %}
     </head>
     <body>
@@ -27,33 +31,22 @@
             <div class="main-content">
                 <div class="page-content">
                     <div class="container-fluid">
+                        {{ include('subsections/page-title.html.twig', {pagetitle: page, title: page}) }}
                         {% block webwms_content %}{% endblock %}
                     </div>
                 </div>
             </div>
         </div>
-        {% block bodyjs %}
-            <script>
-                const loader = '<img src="{{ asset('assets/images/ajax-loader.gif') }}" />';
-                const modalLoader = '<div class="modal-body">' + loader + '</div>';
-            </script>
-        {% endblock %}
+        {% block bodyjs %}{% endblock %}
         {% block modal %}
-            <!-- Modal -->
-            <div class="modal" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+            <div class="modal fade" id="modalCenter" tabindex="-1" aria-labelledby="modalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3 class="modal-title" id="modalCenterTitle"></h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true" class="white-text">&times;</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
                         </div>
-                        <div id="modal-content-ajax">
-                            <div class="modal-body">
-                                <img src="{{ asset('assets/images/ajax-loader.gif') }}" alt=""/>
-                            </div>
-                        </div>
+                        <div id="modal-content-ajax" class="modal-body"></div>
                     </div>
                 </div>
             </div>

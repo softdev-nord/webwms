@@ -1,0 +1,823 @@
+/* ########################################################################################## */
+/* ##########                             Beginn table                             ########## */
+/* ########################################################################################## */
+
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    text-align: right;
+}
+
+div.dt-buttons {
+    position: relative;
+    float: left;
+}
+
+.webwms-page {
+    font-size: 18px;
+    font-weight: bold;
+    float: right;
+    color: var(--webwms-body-color);
+    text-shadow:
+            rgb(16 16 16 / 40%) 1px 10px 6px,
+            rgb(16 16 16 / 20%) 1px 14px 10px,
+            rgb(16 16 16 / 20%) 1px 18px 35px,
+            rgb(16 16 16 / 40%) 1px 22px 65px;
+}
+
+.image-webLVS {
+    opacity: 0.25;
+}
+
+[data-topbar=dark] .webwms-page {
+    color: var(--webwms-body-color);
+}
+
+.table {
+    width: 100% !important;
+}
+
+@media (min-width: 1367px) {
+    .dt-buttons {
+        margin-bottom: 5px;
+        width: 80%;
+    }
+
+    button.dt-button.btn-add-new {
+        float: right;
+    }
+
+    button.dt-button {
+        padding: 2px 5px;
+    }
+}
+
+.row > * {
+    padding: 0;
+}
+
+table.table-bordered.dataTable {
+    border-bottom: #32383e !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    background-color: #fff !important;
+}
+
+table.table-bordered.dataTable th, table.table-bordered.dataTable td {
+    border-bottom-width: 1px;
+    border-color: var(--webwms-border-color);
+}
+
+.table.dataTable > tbody > tr.selected > * {
+    box-shadow: inset 0 0 0 9999px rgba(237, 124, 52, 0.75);
+    color: var(--webwms-body-color) !important;
+}
+
+table.dataTable.table-striped > tbody > tr.odd.selected > * {
+    box-shadow: inset 0 0 0 9999px rgba(237, 124, 52, 0.75);
+    color: var(--webwms-body-color) !important;
+}
+
+/* ########################################################################################## */
+/* ##########                              Beginn form                             ########## */
+/* ########################################################################################## */
+
+.form-control.is--transparent {
+    background-color: transparent !important;
+}
+
+.form-control:focus {
+    border-color: #808080;
+    outline: 0;
+    box-shadow:
+            inset 0 1px 1px rgb(0 0 0 / 7.5%),
+            0 0 8px rgb(247 247 247);
+}
+
+.form-control::placeholder {
+    color: #7a8288;
+    opacity: 1;
+}
+
+.form-control::-ms-expand {
+    background-color: transparent;
+    border: 0;
+}
+
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+    background-color: transparent;
+    opacity: 1;
+}
+
+.form-control[disabled],
+fieldset[disabled] .form-control {
+    cursor: not-allowed;
+}
+
+textarea.form-control {
+    height: auto;
+}
+
+.form-select {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-size: 14px;
+    line-height: 1.4286;
+    border-radius: 4px;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23333' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    appearance: none;
+}
+
+.form-select:focus {
+    border-color: #808080;
+    background-color: #fff;
+    color: #3b4245;
+    outline: 0;
+    box-shadow:
+            inset 0 1px 1px rgb(0 0 0 / 7.5%),
+            0 0 8px rgb(247 247 247);
+}
+
+.form-row > .col, .form-row > [class*="col-"] {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.form-row {
+    display: -webkit-box;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* ########################################################################################## */
+/* ##########                             Beginn modal                             ########## */
+/* ########################################################################################## */
+
+.modal-header {
+    justify-content: unset;
+    padding: 10px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    border-bottom: 1px solid #2e3436;
+    color: var(--webwms-body-color);
+}
+
+.modal-header .close {
+    display: none;
+}
+
+.modal-dialog .form-group {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 15px;
+}
+
+/* ########################################################################################## */
+/* ##########                             Beginn card                              ########## */
+/* ########################################################################################## */
+
+.card {
+    padding: 10px;
+}
+
+.card-body {
+    color: var(--webwms-body-color);
+}
+
+.card-body.card {
+    border-color: transparent;
+}
+
+.col-xl-3 {
+    margin: 5px;
+}
+
+/* ########################################################################################## */
+/* ##########                          Beginn signup-form                          ########## */
+/* ########################################################################################## */
+
+.signup-form {
+    width: 30%;
+    margin: 0 auto;
+    padding-top: 200px;
+}
+
+.signup-form .form-control {
+    width: 75%;
+    margin: 0 auto;
+}
+
+.signup-form h4 {
+    margin: 0 0 15px;
+    position: relative;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.signup-form h4::before {
+    left: 0;
+}
+
+.signup-form h4::after {
+    right: 0;
+}
+
+.signup-form .hint-text {
+    color: #000;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.signup-form form {
+    border-radius: 3px;
+    margin-bottom: 15px;
+    background-color: var(--webwms-header-bg);;
+    box-shadow: 0 0 10px 2px #282828;
+    padding: 50px;
+}
+
+.signup-form-text-info {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.signup-form-text-software {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.signup-form .form-group {
+    margin-bottom: 15px;
+}
+
+/* ########################################################################################## */
+/* ##########                              Beginn nav                              ########## */
+/* ########################################################################################## */
+
+.navbar-brand-box {
+    transition: none;
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link:before {
+    display: none;
+}
+
+.navbar-menu .navbar-nav .nav-link[data-bs-toggle=collapse]:after {
+    display: none;
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link {
+    padding: 3px !important;
+    color:  var(--webwms-vertical-menu-item-color);
+}
+
+.nav .nav-sm .nav-item:hover {
+    color: var(--webwms-vertical-menu-item-hover-color);
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-item-sub {
+    margin: 2px 0;
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link-sub {
+    padding: 10px 20px !important;
+    color:  var(--webwms-vertical-menu-item-color);
+    position: relative;
+    font-size: 12px;
+    font-family: "Open Sans", sans-serif;
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link-sub:hover {
+    color: var(--webwms-vertical-menu-sub-item-hover-color);
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link-sub:before {
+    display: none;
+    content: "";
+    width: 6px;
+    height: 2px;
+    background-color: var(--webwms-vertical-menu-sub-item-color);
+    position: absolute;
+    left: 10px;
+    top: 17px;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+    opacity: 0.5;
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-sm .nav-link-sub:before {
+    height: 5px;
+    width: 5px;
+    left: 5px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1px solid;
+    top: 16px;
+}
+
+.navbar-menu .navbar-nav .nav-sm .nav-link-sub:hover:before {
+    background-color: var(--webwms-vertical-menu-sub-item-hover-color) !important;
+    opacity: 1;
+}
+
+/* ########################################################################################## */
+/* ##########                         Beginn Stock details                         ########## */
+/* ########################################################################################## */
+
+.stock-select::after {
+    font-family: "Material Design Icons", sans-serif;
+    font-weight: 900;
+    content: "\F0CE0";
+    font-style: normal;
+    display: inline-block;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    background: 0 0;
+    position: absolute;
+    right: 8px;
+    top: 16px;
+}
+
+.stock-details {
+    border: 3px solid;
+    padding: 5px;
+    margin-right: 3px;
+}
+
+.stock-details.block {
+    border: 0;
+    padding: 5px;
+    margin-right: 0;
+}
+
+.stock-details.block.section-1-2 {
+    display: flex;
+}
+
+.stock-details.block.section-2-2 {
+    display: flex;
+}
+
+.stock-details-content {
+    display: grid;
+}
+
+.stock-details-content.block {
+    display: flex;
+}
+
+.stock-details-content-inner {
+    display: inline-flex;
+    margin-bottom: 3px;
+    padding: 5px 0;
+}
+
+.stock-details-content-inner.block {
+    border: 3px solid;
+    margin-bottom: 3px;
+}
+
+.stock-details-content-inner-desc {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stock-details-content-inner-space {
+    display: block;
+}
+
+.stock-details-badge-occupancy {
+    display: inline-grid;
+    width: 20px;
+    height: 20px;
+    color: var(--bs-gray-dark);
+}
+
+.stock-details-badge-occupancy.stock-details-occupied {
+    background: #cd0200;
+}
+
+.stock-details-badge-occupancy.stock-details-occupied:hover {
+    opacity: 0.5;
+}
+
+.stock-details-badge-occupancy.stock-details-not-occupied {
+    background: #3cb521;
+}
+
+.stock-details-badge-occupancy.stock-details-not-occupied:hover {
+    opacity: 0.5;
+}
+
+.no-stock-details {
+    margin-left: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #c7cbcc;
+}
+
+/* ########################################################################################## */
+/* ##########                           Beginn form-box                            ########## */
+/* ########################################################################################## */
+
+.form-box {
+    text-align: left;
+}
+
+.form-box legend {
+    font-size: inherit;
+    line-height: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #555;
+}
+
+.form-box .form-check-label {
+    line-height: 1.5;
+    vertical-align: top;
+}
+
+/* ########################################################################################## */
+/* ##########                           Beginn 3D Button                           ########## */
+/* ########################################################################################## */
+
+.btn-xs
+{
+    padding: 1px 5px !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    border-radius: 3px !important;
+}
+
+.btn3d {
+    position: relative;
+    top: 0;
+    border: 0;
+    transition: all 40ms linear;
+    padding: 2px 10px;
+}
+
+.btn3d:active:focus,
+.btn3d:focus:hover,
+.btn3d:focus {
+    -moz-outline-style: none;
+    outline: medium none;
+}
+
+.btn3d:active,
+.btn3d.active {
+    top: 2px;
+}
+
+.btn3d.btn-white {
+    color: #666666;
+    box-shadow:
+            0 0 0 1px #ebebeb inset,
+            0 0 0 2px rgba(255, 255, 255, 0.10) inset,
+            0 8px 0 0 #f5f5f5,
+            0 8px 8px 1px rgba(0, 0, 0, .2);
+    background-color: #fff;
+}
+
+.btn3d.btn-white:active,
+.btn3d.btn-white.active {
+    color: #666666;
+    box-shadow:
+            0 0 0 1px #ebebeb inset,
+            0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+            0 1px 3px 1px rgba(0, 0, 0, .1);
+    background-color: #fff;
+}
+
+.btn3d.btn-default {
+    color: #666666;
+    box-shadow:
+            0 0 0 1px #ebebeb inset,
+            0 0 0 2px rgba(255, 255, 255, 0.10) inset,
+            0 8px 0 0 #BEBEBE,
+            0 8px 8px 1px rgba(0, 0, 0, .2);
+    background-color: #f9f9f9;
+}
+
+.btn3d.btn-default:active {
+    color: #666666;
+    box-shadow:
+            0 0 0 1px #ebebeb inset,
+            0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+            0 1px 3px 1px rgba(0, 0, 0, .1);
+    background-color: #f9f9f9;
+}
+.btn3d.btn-primary {
+    color: #666666;
+    box-shadow:
+            0 0 0 1px #ebebeb inset,
+            0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+            0 3px 0 0 #c0c0c0,
+            0 3px 3px 1px rgba(0, 0, 0, 0.5);
+    background-color: var(--webwms-header-bg);
+}
+.btn3d.btn-primary:active {
+    color: #666666;
+    box-shadow:
+            0 0 0 1px #ebebeb inset,
+            0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+            0 3px 0 0 #c0c0c0,
+            0 1px 3px 1px rgba(0, 0, 0, 0.5);
+    background-color: var(--webwms-header-bg);
+}
+
+[data-bs-theme=dark] .btn3d.btn-primary {
+    color: #f9f9f9;
+    box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+            0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+            0 3px 0 0 #31373c,
+            0 3px 3px 1px rgba(0, 0, 0, 0.5);
+    background-color: #212529;
+}
+
+[data-bs-theme=dark] .btn3d.btn-primary:active {
+    color: #f9f9f9;
+    box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+            0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+            0 3px 0 0 #31373c,
+            0 1px 3px 1px rgba(0, 0, 0, 0.5);
+    background-color: #212529;
+}
+
+.swal2-styled.swal2-confirm {
+    background-color: #ed7c34 !important;
+}
+
+/* ########################################################################################## */
+/* ##########                           Beginn Sonstiges                           ########## */
+/* ########################################################################################## */
+
+a {
+    color: var(--webwms-body-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ed7c34;
+}
+
+.brands-webWMS {
+    color: #ed7c34;
+    padding: 3px;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 30px;
+}
+
+.col-md-12 {
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.col-md-6 {
+    float: left;
+    width: 50%;
+}
+
+.content-webLVS {
+    height: 100%;
+    background-color: #bababa;
+    text-align: center;
+    font: 14px sans-serif;
+}
+
+.p-2 {
+    padding: 0.5rem!important;
+}
+
+.mt-4 {
+    margin-top: 1.5rem!important;
+}
+
+.text-first {
+    position: initial;
+    right: 50%;
+    transform: translate(50%,-30%);
+    margin-bottom: -15px !important;
+    font-size: 40px;
+    font-weight: 700;
+    font-family: hollowpointital, sans-serif;
+    color: #dee2e6;
+    text-shadow:
+            1px 1px 1px #808080,
+            1px 1px 1px #808080,
+            1px 2px 1px #808080,
+            1px 3px 1px #808080,
+            1px 4px 1px #808080,
+            1px 5px 1px #808080,
+            1px 9px 6px rgb(16 16 16 / 40%),
+            1px 13px 10px rgb(16 16 16 / 20%),
+            1px 16px 25px rgb(16 16 16 / 20%),
+            1px 21px 30px rgb(16 16 16 / 40%);
+}
+
+.text-last {
+    position: initial;
+    right: 50%;
+    transform: translate(50%,-30%);
+    margin-bottom: -15px !important;
+    font-size: 60px;
+    font-weight: 700;
+    font-family: hollowpointital, sans-serif;
+    color: #ed7c34;
+    text-shadow:
+            1px 1px 1px #808080,
+            1px 1px 1px #808080,
+            1px 2px 1px #808080,
+            1px 3px 1px #808080,
+            1px 4px 1px #919191,
+            1px 5px 1px #919191,
+            1px 9px 6px rgb(16 16 16 / 40%),
+            1px 13px 10px rgb(16 16 16 / 20%),
+            1px 16px 25px rgb(16 16 16 / 20%),
+            1px 21px 30px rgb(16 16 16 / 40%);
+}
+
+.text-first-small {
+    position: initial;
+    right: 50%;
+    transform: translate(50%,-30%);
+    margin-bottom: -15px !important;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: hollowpointital, sans-serif;
+    color: #dee2e6;
+    text-shadow:
+            1px 1px 1px #808080,
+            1px 1px 1px #808080,
+            1px 2px 1px #808080,
+            1px 3px 1px #808080,
+            1px 4px 1px #808080,
+            1px 5px 1px #808080,
+            1px 9px 6px rgb(16 16 16 / 40%),
+            1px 13px 10px rgb(16 16 16 / 20%),
+            1px 16px 25px rgb(16 16 16 / 20%),
+            1px 21px 30px rgb(16 16 16 / 40%);
+}
+
+.text-last-small {
+    position: initial;
+    right: 50%;
+    transform: translate(50%,-30%);
+    margin-bottom: -15px !important;
+    font-size: 30px;
+    font-weight: 700;
+    font-family: hollowpointital, sans-serif;
+    color: #ed7c34;
+    text-shadow:
+            1px 1px 1px #808080,
+            1px 1px 1px #808080,
+            1px 2px 1px #808080,
+            1px 3px 1px #808080,
+            1px 4px 1px #919191,
+            1px 5px 1px #919191,
+            1px 9px 6px rgb(16 16 16 / 40%),
+            1px 13px 10px rgb(16 16 16 / 20%),
+            1px 16px 25px rgb(16 16 16 / 20%),
+            1px 21px 30px rgb(16 16 16 / 40%);
+}
+
+.text-muted {
+    color: var(--webwms-body-color) !important;
+    text-shadow:
+            rgb(16 16 16 / 40%) 1px 10px 6px,
+            rgb(16 16 16 / 20%) 1px 14px 10px,
+            rgb(16 16 16 / 20%) 1px 18px 35px,
+            rgb(16 16 16 / 40%) 1px 22px 65px;
+}
+
+[data-sidebar=dark] .text-muted {
+    color: var(--webwms-body-color) !important;
+    text-shadow:
+            rgb(16 16 16 / 40%) 1px 10px 6px,
+            rgb(16 16 16 / 20%) 1px 14px 10px,
+            rgb(16 16 16 / 20%) 1px 18px 35px,
+            rgb(16 16 16 / 40%) 1px 22px 65px;
+}
+
+.align-items-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sf-toolbar-logo {
+    display: initial;
+    float: right;
+    margin-right: 10px;
+}
+
+.sf-toolbarreset {
+    background-color: #414a50;
+    background-image: -webkit-linear-gradient(top, #2a2f34 2%, #282828 98%);
+    background-image: linear-gradient(to bottom,#2a2f34 2%, #282828 98%);
+    -webkit-box-shadow: inset 0 1px 0 #636367, inset 0 -1px 0 #353c41, 0 2px 3px rgb(0 0 0 / 8%);
+    box-shadow: none !important;
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 8%);
+    border-bottom: none;
+}
+
+.sf-toolbarreset .hide-button {
+    top: 0 !important;
+}
+
+.sf-toolbar-block:hover .sf-toolbar-icon {
+    box-shadow: none !important;
+}
+
+.padding-left-10 {
+    padding-left: 10px;
+}
+
+.padding-top-bottom-20 {
+    padding: 0 20px;
+}
+
+.display-flex {
+    display: flex;
+}
+
+.with-40 {
+    width: 40%
+}
+
+.ui-widget-content {
+    border: 1px solid var(--webwms-input-border) !important;
+    background: var(--webwms-header-bg);
+    color: var(--webwms-body-color);
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.ui-widget.ui-widget-content {
+    z-index: 10000;
+    width: fit-content !important;
+}
+
+.ui-menu {
+    list-style: none;
+    padding: 0 10px;
+    margin: 0;
+    display: block;
+    outline: 0;
+}
+
+.delete_row {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.form-control {
+
+}
+
+input[id^="edit_user_userGroups"] {
+
+}
+
+label[for^=edit_user_userGroups] {
+
+}
+
+
+[data-bs-theme="dark"] .app-menu.navbar-menu {
+  background-color: var(--vz-header-bg);
+  border-right: 1px solid #32383e;
+}
+
+.badge {
+  line-height: 1.2;
+}
+

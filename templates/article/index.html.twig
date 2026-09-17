@@ -9,27 +9,69 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-header border-0">
+                                <div class="row align-items-center gy-3">
+                                    <div class="col-sm">
+                                        <h5 class="card-title mb-0">Artikelübersicht</h5>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        <div class="d-flex gap-1 flex-wrap">
+                                            <button type="button" class="btn btn-outline-primary btn-sm add-btn" id="create-btn">
+                                                <i class="mdi mdi-plus align-bottom me-1"></i>
+                                                Artikel hinzufügen
+                                            </button>
+                                            <button class="btn btn-soft-danger" id="remove-actions" onclick="deleteMultiple()">
+                                                <i class="ri-delete-bin-2-line"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary btn-sm" id="exportJsonBtn">
+                                                <i class="mdi mdi-code-json align-bottom me-1"></i>
+                                                Artikelliste exportieren
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body border border-dashed border-end-0 border-start-0">
+                                <form>
+                                    <div class="row g-3">
+                                        <div class="col-xxl-5 col-sm-6">
+                                            <div class="search-box">
+                                                <input type="text" class="form-control search" placeholder="Suche nach Artikelnummer, Artikelbezeichnung, EAN-Nummer">
+                                                <i class="ri-search-line search-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-body pt-3">
                                 {% block webwms_article_overview_table %}
-                                    <table id="artTable" class="table table-striped table-bordered table-hover compact">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col" style="text-align: center">Artikel-Nr</th>
-                                            <th scope="col" style="text-align: center">Bezeichnung</th>
-                                            <th scope="col" style="text-align: center">Kategorie</th>
-                                            <th scope="col" style="text-align: center">Gewicht in g</th>
-                                            <th scope="col" style="text-align: center">EAN-Code</th>
-                                            <th scope="col" style="text-align: center">Einheit</th>
-                                            <th scope="col" style="text-align: center">Tiefe (mm)</th>
-                                            <th scope="col" style="text-align: center">Breite (mm)</th>
-                                            <th scope="col" style="text-align: center">Höhe (mm)</th>
-                                            <th scope="col" style="text-align: center">Bestand</th>
-                                            <th scope="col" style="text-align: center">Zugang</th>
-                                            <th scope="col" style="text-align: center">Reserviert</th>
-                                            <th scope="col" style="text-align: center">Letzte Änderung</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
+                                    <div class="table-responsive table-card mb-1">
+                                        <table class="table table-nowrap align-middle" id="articleTable">
+                                            <thead class="table-light">
+                                            <tr>
+                                                <th class="sort" data-sort="articleNr">Artikel-Nr</th>
+                                                <th class="sort" data-sort="articleName">Bezeichnung</th>
+                                                <th class="sort" data-sort="articleWeight">Gewicht in g</th>
+                                                <th class="sort" data-sort="articleEan">EAN-Code</th>
+                                                <th class="sort" data-sort="articleUnit">Einheit</th>
+                                                <th class="sort" data-sort="articleDepth">Tiefe in mm</th>
+                                                <th class="sort" data-sort="articleWidth">Breite in mm</th>
+                                                <th class="sort" data-sort="articleHeight">Höhe in mm</th>
+                                                <th class="sort" data-sort="inStock">Lagerbestand</th>
+                                                <th class="sort" data-sort="incomingStock">Zugang</th>
+                                                <th class="sort" data-sort="reservedStock">Reserviert</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="list form-check-all"></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <div class="pagination-wrap hstack gap-2">
+                                            <a class="page-item pagination-prev disabled" href="#">Vorherige</a>
+                                            <ul class="pagination listjs-pagination mb-0"></ul>
+                                            <a class="page-item pagination-next" href="#">Nächste</a>
+                                        </div>
+                                    </div>
                                 {% endblock %}
                             </div>
                         </div>
@@ -37,9 +79,32 @@
                 </div>
             </div>
         </div>
+        <div class="context-menu d-none" data-context-for="articleTable" data-entity="article">
+            <ul class="context-menu-list">
+                <li class="context-menu-item">
+                    <button class="context-menu-button ps-2" data-action="edit">
+                        <span class="mdi mdi-pencil fs-20 me-2"></span>
+                        <span class="fs-14">Bearbeiten</span>
+                    </button>
+                </li>
+                <li class="context-menu-item">
+                    <button class="context-menu-button ps-2" data-action="delete">
+                        <span class="mdi mdi-delete-outline fs-20 me-2"></span>
+                        <span class="fs-14">Löschen</span>
+                    </button>
+                </li>
+                <li class="context-menu-item">
+                    <button class="context-menu-button ps-2" data-action="stock">
+                        <span class="mdi mdi-database-eye fs-20 me-2"></span>
+                        <span class="fs-14">Lagerbelegung</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
     {% endblock %}
 {% endblock %}
 
 {% block bodyjs %}
-    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.article.js') }}"></script>
+    <script type="module" src="{{ asset('assets/js/webWmsCoreJs/jquery.article.js') }}"></script>
+    <script src="{{ asset('assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>
 {% endblock %}

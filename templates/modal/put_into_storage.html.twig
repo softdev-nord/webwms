@@ -26,9 +26,9 @@
                                                 <th class="editor-edit text-center">Ändern</th> <!-- Logik hierfür muss noch implementiert werden -->
                                             </tr>
                                             </thead>
-                                            <tbody id="myTable" style="text-align: center">
+                                            <tbody id="preSelectedStockLocations" style="text-align: center">
                                             {% for key, freeStockLocation in freeStockLocations %}
-                                                <tr>
+                                                <tr stock-location-id="{{ freeStockLocation.id }}" role="row">
                                                     <td>
                                                         <div class="form-group">
                                                             <input type="text"
@@ -172,6 +172,7 @@
 {% endblock %}
 
 {% block bodyjs %}
-    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockInItemsAutofill.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockTransactions.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/webWmsCoreJs/jquery.stockInItemsAutofill.js') }}"></script>
+{#    <script type="text/javascript" src="{{ asset('js/webWmsCoreJs/jquery.stockTransactions.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('js/webWmsCoreJs/jquery.stockInEditStockLocation.js') }}"></script>
 {% endblock %}

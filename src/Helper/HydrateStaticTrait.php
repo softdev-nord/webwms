@@ -18,8 +18,16 @@ trait HydrateStaticTrait
     {
         $dto = new self();
         foreach ($values as $key => $value) {
-            if (property_exists($dto, $key)) {
-                $dto->$key = $value;
+            // Falls der Key ein Integer ist, direkt als Property-Name verwenden
+            if (is_int($key)) {
+                $property = (string) $key;
+            } else {
+                // Falls der Key ein String ist, in CamelCase umwandeln
+                $property = lcfirst(str_replace('_', '', ucwords($key, '_')));
+            }
+
+            if (property_exists($dto, $property)) {
+                $dto->$property = $value;
             }
         }
 

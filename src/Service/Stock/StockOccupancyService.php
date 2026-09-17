@@ -65,17 +65,9 @@ readonly class StockOccupancyService
      * @throws Exception
      * @return array<int|mixed|string>
      */
-    public function getStockOccupancyByArticleNr(int $articleNr): array
-    {
-        return $this->stockOccupancyDataHandler->getStockOccupancyByArticleNr($articleNr);
-    }
-
-    /**
-     * @throws Exception
-     */
     public function getStockOccupancyByArticleId(int $articleId): array
     {
-        return $this->stockOccupancyDataHandler->getStockOccupancyByArticleNr($articleId);
+        return $this->stockOccupancyDataHandler->getStockOccupancyByArticleId($articleId);
     }
 
     public function getStockOccupancyById(int $stockOccupancyId): ?StockOccupancy

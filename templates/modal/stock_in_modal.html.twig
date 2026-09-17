@@ -14,7 +14,7 @@
                                     <div class="form-row col-md-6">
                                         <div class="card" style="width: 100%">
                                             <div class="card-content">
-                                                {{ form_start(stockInForm, {'action' : path('stock_in')}) }}
+                                                {{ form_start(stockInForm, {'action' : path(stockInActionRoute|default('stock_in'))}) }}
                                                 <div class="form-group">
                                                     <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
                                                     <div class="col-xs-8" style="margin-bottom: 5px;">

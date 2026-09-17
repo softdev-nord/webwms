@@ -12,7 +12,7 @@ use Symfony\Component\Form\Test\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
-use WebWMS\Event\Stock\In\StockInEvent;
+use WebWMS\Event\Stock\In\StockInBookingMethodEvent;
 use WebWMS\Form\Stock\StockInType;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
@@ -25,7 +25,7 @@ use WebWMS\Service\TransportRequest\TransportRequestService;
  * @copyright:  Copyright © 2019-2024, SoftDev Nord
  * Class        StockInEventTest
  */
-#[CoversClass(StockInEvent::class)]
+#[CoversClass(StockInBookingMethodEvent::class)]
 class StockInEventTest extends TestCase
 {
     private MockObject $stockLocationService;
@@ -36,7 +36,7 @@ class StockInEventTest extends TestCase
 
     private MockObject $twig;
 
-    private StockInEvent $stockInEvent;
+    private StockInBookingMethodEvent $stockInEvent;
 
     private MockObject $form;
 
@@ -50,7 +50,7 @@ class StockInEventTest extends TestCase
         $this->twig = $this->createMock(Environment::class);
         $this->form = $this->createMock(FormInterface::class);
 
-        $this->stockInEvent = new StockInEvent(
+        $this->stockInEvent = new StockInBookingMethodEvent(
             $requirementsService,
             $this->stockLocationService,
             $this->transportRequestService,

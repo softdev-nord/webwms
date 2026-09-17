@@ -51,16 +51,13 @@ readonly class CustomerDataHandler
     }
 
     /**
-     * @return array<mixed>
+     * @return Customer[]
      */
     public function getAllCustomers(): array
     {
         return $this->entityManager
-            ->createQueryBuilder()
-            ->select('c')
-            ->from(Customer::class, 'c')
-            ->getQuery()
-            ->getArrayResult();
+            ->getRepository(Customer::class)
+            ->findAll();
     }
 
     /**

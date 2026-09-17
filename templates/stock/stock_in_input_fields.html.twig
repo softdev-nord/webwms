@@ -6,106 +6,32 @@
             <div class="card">
                 <div class="card-content">
                     <div class="card">
-                        <table id="editStockLocationTable" class="table table-striped table-bordered table-hover compact">
-                            <thead>
-                            <tr>
-                                <th scope="col" style="text-align: center">Lagersystem</th>
-                                <th scope="col" style="text-align: center">Lagernummer</th>
-                                <th scope="col" style="text-align: center">Fachboden</th>
-                                <th scope="col" style="text-align: center">Stellplatz</th>
-                                <th scope="col" style="text-align: center">Tiefe</th>
-                            </tr>
-                            </thead>
-                            <tbody style="text-align: center">
-                            {% for key, freeStockLocation in freeStockLocations %}
-                                <tr stock-location-id="{{ freeStockLocation.id }}" role="row">
-                                    <td>
-                                        <div class="form-group" style="margin: 0;">
-                                            <input type="text"
-                                                   id="stock_in_system_{{ key }}"
-                                                   name="stock_in[{{ key }}][stock_system]"
-                                                   required="required"
-                                                   data-type="stock_system_{{ key }}"
-                                                   style="text-align: center;"
-                                                   readonly="readonly"
-                                                   class="form-control"
-                                                   value="{{ freeStockLocation.system }}"
-                                            >
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group" style="margin: 0;">
-                                            <input type="text"
-                                                   id="stock_in_ln_{{ key }}"
-                                                   name="stock_in[{{ key }}][stock_ln]"
-                                                   required="required"
-                                                   data-type="stock_ln_{{ key }}"
-                                                   style="text-align: center;"
-                                                   readonly="readonly"
-                                                   class="form-control"
-                                                   value="{{ freeStockLocation.ln }}"
-                                            >
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group" style="margin: 0;">
-                                            <input type="text"
-                                                   id="stock_in_fb_{{ key }}"
-                                                   name="stock_in_[{{ key }}][stock_fb]"
-                                                   required="required"
-                                                   data-type="stock_fb_{{ key }}"
-                                                   style="text-align: center;"
-                                                   readonly="readonly"
-                                                   class="form-control"
-                                                   value="{{ freeStockLocation.fb }}"
-                                            >
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group" style="margin: 0;">
-                                            <input type="text"
-                                                   id="stock_in_sp_{{ key }}"
-                                                   name="stock_in[{{ key }}][stock_sp]"
-                                                   required="required"
-                                                   data-type="stock_sp_{{ key }}"
-                                                   style="text-align: center;"
-                                                   readonly="readonly"
-                                                   class="form-control"
-                                                   value="{{ freeStockLocation.sp }}"
-                                            >
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="form-group" style="margin: 0;">
-                                            <input type="text"
-                                                   id="stock_in_tf_{{ key }}"
-                                                   name="stock_in[{{ key }}][stock_tf]"
-                                                   required="required"
-                                                   data-type="stock_tf_{{ key }}"
-                                                   style="text-align: center; margin: 0;"
-                                                   readonly="readonly"
-                                                   class="form-control"
-                                                   value="{{ freeStockLocation.tf }}"
-                                            >
-                                        </div>
-                                    </td>
-                                    <input type="hidden" id="stock_location_id" value="{{ freeStockLocation.id }}">
+                        <div class="table-responsive">
+                            <table id="editStockLocationTable" class="table table-striped table-bordered table-hover compact">
+                                <thead>
+                                <tr>
+                                    <th scope="col" style="text-align: center">Lagersystem</th>
+                                    <th scope="col" style="text-align: center">Lagernummer</th>
+                                    <th scope="col" style="text-align: center">Fachboden</th>
+                                    <th scope="col" style="text-align: center">Stellplatz</th>
+                                    <th scope="col" style="text-align: center">Tiefe</th>
                                 </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         {% endblock %}
         {% block bodyjs %}
+            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.stockInEditStockLocation.js') }}"></script>
             <script>
                 $(document).ready(function () {
-                     $('#editStockLocationTable tbody').on('dblclick', 'tr', function (event) {
-                         const $el = $(event.currentTarget)
-                         let currentStockLocationId =  $el.attr('stock-location-id');
-                         console.log(currentStockLocationId);
-                     });
+                    $('#editStockLocationTable tbody').on('dblclick', 'tr', function (event) {
+                        const $el = $(event.currentTarget)
+                        let currentStockLocationId =  $el.attr('stock-location-id');
+                        console.log(currentStockLocationId);
+                    });
                 });
             </script>
         {% endblock %}

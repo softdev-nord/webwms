@@ -1,0 +1,52 @@
+{# templates/modal/stock_out_so101.html.twig #}
+{# SO101: Auslagern direkt #}
+
+{% extends 'base.html.twig' %}
+
+{% block webwms_content %}
+    <div class="wrapper-form vertical-theme">
+        <div class="wrapper-form-content vertical-theme">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>{{ page }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ path('stock_out_final') }}">
+                                <div class="form-group mb-3">
+                                    <label for="articleNr" class="form-label">Artikel-Nummer</label>
+                                    <input type="text" class="form-control autocomplete_items" id="articleNr" name="stock_out[articleNr]" required>
+                                    <input type="hidden" id="articleId" name="stock_out[articleId]">
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="quantity" class="form-label">Auslagermenge</label>
+                                    <input type="number" step="0.001" class="form-control" id="quantity" name="stock_out[quantity]" required>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="stockLocation" class="form-label">Lagerplatz</label>
+                                    <select class="form-select" id="stockLocation" name="stock_out[stockLocation]" required>
+                                        <option value="">-- Wählen --</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="targetCostCentre" class="form-label">Ziel (optional)</label>
+                                    <input type="text" class="form-control" id="targetCostCentre" name="stock_out[targetCostCentre]" placeholder="Kostenstelle/Auftrag">
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Auslagern</button>
+                                    <a href="{{ path('homepage') }}" class="btn btn-secondary">Abbrechen</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

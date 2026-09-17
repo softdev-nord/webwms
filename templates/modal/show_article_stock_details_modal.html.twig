@@ -1,51 +1,40 @@
 {# templates/modal/show_article_stock_details_modal.html.twig #}
-
 {% block webwms_show_article_stock_details_modal %}
     <div id="showArticleStockDetails">
         <div class="modal-body">
-            <div class="card">
-                <div id="flash-message-overlay">
-                    <div class="col">
+            <div class="card p-3">
+                <div id="stockListWrapper">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th class="text-center" data-sort="lagereinheit">Lagereinheit</th>
+                            <th class="text-center" data-sort="lagerplatz">Lagerplatz</th>
+                            <th class="text-center" data-sort="articleNr">Artikel‑Nr</th>
+                            <th class="text-center" data-sort="bezeichnung">Bezeichnung</th>
+                            <th class="text-center" data-sort="transEin">Zugang</th>
+                            <th class="text-center" data-sort="transAus">Abgang</th>
+                            <th class="text-center" data-sort="lpBestand">LP Bestand</th>
+                            <th class="text-center" data-sort="letzterZugang">Letzter Zugang</th>
+                            <th class="text-center" data-sort="letzterAbgang">Letzter Abgang</th>
+                        </tr>
+                        </thead>
+                        <tbody class="list">
+                        {# rows werden per JS befüllt #}
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-end">
+                        <div class="pagination-wrap hstack gap-2">
+                            <a class="page-item pagination-prev disabled" href="#">
+                                {{ 'main.pages.table.pagination.previous'|trans }}
+                            </a>
+                            <ul class="pagination listjs-pagination mb-0"></ul>
+                            <a class="page-item pagination-next" href="#">
+                                {{ 'main.pages.table.pagination.next'|trans }}
+                            </a>
+                        </div>
                     </div>
                 </div>
-                {% if articleStockDetails is empty %}
-                    <div class="no-stock-details">Keine Details für diesen Artikel vorhanden.</div>
-                {% else %}
-                <table id="showStockDetailTable" class="table table-striped table-bordered table-hover compact">
-                    <thead>
-                    <tr>
-                        <th style="text-align: center; width: 7%;" scope="col">Lagereinheit</th>
-                        <th style="text-align: center; width: 7%;" scope="col">Lagerplatz</th>
-                        <th style="text-align: center; width: 7%;" scope="col">Artikel-Nr</th>
-                        <th style="text-align: center; width: 35%;" scope="col">Bezeichnung</th>
-                        <th style="text-align: center; width: 7%;" scope="col">Zugang</th>
-                        <th style="text-align: center; width: 7%;" scope="col">Abgang</th>
-                        <th style="text-align: center; width: 7%;" scope="col">LP Bestand</th>
-                        <th style="text-align: center; width: 10%;" scope="col">Letzter Zugang</th>
-                        <th style="text-align: center; width: 10%;" scope="col">Letzter Abgang</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {% for articleStockDetail in articleStockDetails %}
-                            <tr>
-                                <th style="text-align: center;" scope="col">{{ articleStockDetail.lagereinheit }}</th>
-                                <th style="text-align: center;" scope="col">{{ articleStockDetail.ln }}-{{ articleStockDetail.fb }}-{{ articleStockDetail.sp }}-{{ articleStockDetail.tf }}</th>
-                                <th id="article_nr" style="text-align: center;" scope="col">{{ articleStockDetail.article_nr }}</th>
-                                <th style="text-align: center;" scope="col">{{ articleStockDetail.bezeichnung }}</th>
-                                <th style="text-align: center;" scope="col">{{ articleStockDetail.trans_ein }}</th>
-                                <th style="text-align: center;" scope="col">{{ articleStockDetail.trans_aus }}</th>
-                                <th style="text-align: center;" scope="col">{{ articleStockDetail.lp_bestand }}</th>
-                                <th style="text-align: center;" scope="col">{{ articleStockDetail.letzter_zugang }}</th>
-                                <th style="text-align: center;" scope="col">{{ articleStockDetail.letzter_abgang }}</th>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% endif %}
             </div>
-        </div>
-        <div class="modal-footer">
-            <br/>
         </div>
     </div>
 {% endblock %}

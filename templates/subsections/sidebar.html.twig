@@ -1,38 +1,15 @@
-<!-- ========== App Menu ========== -->
 <div class="app-menu navbar-menu">
     <div class="navbar-brand-box">
         <div class="sidebar-brand">
-            <a
-                href="{{ path('homepage') }}"><span class="text-first">web</span><span class="text-last">WMS</span>
+            <a href="{{ path('homepage') }}">
+                <span class="text-first">web</span>
+                <span class="text-last">WMS</span>
             </a>
             <div class="text-muted sidebar-brand-version">{{ appVersionNumber }} {{ appVersion }}</div>
         </div>
-        <div class="sidebar-header">
-            <div class="user-pic">
-                <img class="img-responsive img-rounded" src="{{ asset('assets/images/user_profile.png') }}"
-                     alt="User picture">
-            </div>
-            <div class="user-info">
-                    <span class="user-name">
-                        {% if app.user != null %}
-                            {{ app.user.firstname }} {{ app.user.lastname }}
-                        {% endif %}
-                    </span>
-                <span class="text-muted user-role">
-                        {% if app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
-                            Superadministrator
-                        {% elseif app.user.roles[0] == 'ROLE_USER' %}
-                            Benutzer
-                        {% endif %}
-                    </span>
-                <span class="user-status">
-                        <i class="mdi mdi-circle"></i>
-                        <span class="text-muted">{{ 'nav.user.online'|trans }}</span>
-                    </span>
-            </div>
-        </div>
+        <div class="sidebar-header"></div>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
-            <i class="ri-record-circle-line"></i>
+            <i class="mdi mdi-record-circle-outline"></i>
         </button>
     </div>
 
@@ -54,52 +31,52 @@
                             <li class="nav-item">
                                 <a href="#sidebarLogisticsStockIn" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLogisticsStockIn">
                                     <i class="mdi mdi-forklift mdi-flip-h fs-18"></i>
-                                    <span>{{ 'nav.logistics.submenu.headline1'|trans }}</span>
+                                    <span>{{ 'nav.logistics.submenu.headline1.main_entry'|trans }}</span>
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarLogisticsStockIn">
                                     <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item-sub">
-                                            <a id="stock_in" class="nav-link-sub" href="{{ path('stock_in') }}">
+                                        <li class="nav-item">
+                                            <a id="stock_in" class="nav-link" href="{{ path('stock_in') }}">
                                                 {{ 'nav.logistics.submenu.headline1.entry1'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_in_from_goods_receipt" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_in_from_goods_receipt" class="nav-link" href="{{ path('stock_in_from_goods_receipt') }}">
                                                 {{ 'nav.logistics.submenu.headline1.entry2'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_in_from_production" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_in_from_production" class="nav-link" href="{{ path('stock_in_from_production') }}">
                                                 {{ 'nav.logistics.submenu.headline1.entry3'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_in_from_cost_centre" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_in_from_cost_centre" class="nav-link" href="{{ path('stock_in_from_cost_centre') }}">
                                                 {{ 'nav.logistics.submenu.headline1.entry4'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_in_into_container" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_in_into_container" class="nav-link" href="{{ path('stock_in_into_container') }}">
                                                 {{ 'nav.logistics.submenu.headline1.entry5'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_in_using_loading_equipment" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_in_using_loading_equipment" class="nav-link" href="{{ path('stock_in_using_loading_equipment') }}">
                                                 {{ 'nav.logistics.submenu.headline1.entry6'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_in_into_receiving_area" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_in_into_receiving_area" class="nav-link" href="{{ path('stock_in_to_receiving_area') }}">
                                                 {{ 'nav.logistics.submenu.headline1.entry7'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_in_into_dispatch_area" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_in_into_dispatch_area" class="nav-link" href="{{ path('stock_in_into_dispatch_area') }}">
                                                 {{ 'nav.logistics.submenu.headline1.entry8'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_in_for_supplier_order" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_in_for_supplier_order" class="nav-link" href="{{ path('stock_in_for_supplier_order') }}">
                                                 {{ 'nav.logistics.submenu.headline1.entry9'|trans }}
                                             </a>
                                         </li>
@@ -109,48 +86,63 @@
                             <li class="nav-item">
                                 <a href="#sidebarLogisticsStockOut" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLogisticsStockOut">
                                     <i class="mdi mdi-forklift fs-18"></i>
-                                    <span>{{ 'nav.logistics.submenu.headline2'|trans }}</span>
+                                    <span>{{ 'nav.logistics.submenu.headline2.main_entry'|trans }}</span>
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarLogisticsStockOut">
                                     <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item-sub">
-                                            <a id="stock_out" class="nav-link-sub" href="#">
+                                        <li class="nav-item">
+                                            <a id="stock_out" class="nav-link" href="{{ path('stock_out') }}">
                                                 {{ 'nav.logistics.submenu.headline2.entry1'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_out_to_cost_centre" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_out_to_cost_centre" class="nav-link" href="{{ path('stock_out_to_cost_centre') }}">
                                                 {{ 'nav.logistics.submenu.headline2.entry2'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="lending_to_cost_centre" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="lending_to_cost_centre" class="nav-link" href="{{ path('stock_lending_to_cost_centre') }}">
                                                 {{ 'nav.logistics.submenu.headline2.entry3'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_out_from_container" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_out_from_container" class="nav-link" href="{{ path('stock_out_from_container') }}">
                                                 {{ 'nav.logistics.submenu.headline2.entry4'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_out_from_cost_centre" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_out_from_cost_centre" class="nav-link" href="{{ path('stock_out_from_cost_centre') }}">
                                                 {{ 'nav.logistics.submenu.headline2.entry5'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_out_from_dispatch_area" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_out_from_dispatch_area" class="nav-link" href="{{ path('stock_out_from_dispatch_area') }}">
                                                 {{ 'nav.logistics.submenu.headline2.entry6'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_out_by_customer_order" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_out_by_customer_order" class="nav-link" href="{{ path('stock_out_by_customer_order') }}">
                                                 {{ 'nav.logistics.submenu.headline2.entry7'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_out_from_receiving_area" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_out_from_receiving_area" class="nav-link" href="{{ path('stock_out_from_receiving_area') }}">
                                                 {{ 'nav.logistics.submenu.headline2.entry8'|trans }}
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a id="stock_out_by_customer_order_list" class="nav-link" href="{{ path('stock_out_by_customer_order_list') }}">
+                                                Auftrag auslagern (Auftrag-Liste)
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a id="stock_out_using_cost_centre" class="nav-link" href="{{ path('stock_out_using_cost_centre') }}">
+                                                Auftrag auslagern mit Kostenstelle
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a id="stock_out_to_dispatch_area" class="nav-link" href="{{ path('stock_out_to_dispatch_area') }}">
+                                                Auftrag auslagern in WA-Zone
                                             </a>
                                         </li>
                                     </ul>
@@ -159,23 +151,28 @@
                             <li class="nav-item">
                                 <a href="#sidebarLogisticsStockTransfer" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLogisticsStockTransfer">
                                     <i class="mdi mdi-swap-horizontal-bold fs-18"></i>
-                                    <span>{{ 'nav.logistics.submenu.headline3'|trans }}</span>
+                                    <span>{{ 'nav.logistics.submenu.headline3.main_entry'|trans }}</span>
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarLogisticsStockTransfer">
                                     <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item-sub">
-                                            <a id="stock_transfer_between_stock_locations" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_transfer_between_stock_locations" class="nav-link" href="{{ path('stock_transfer_between_stock_locations') }}">
                                                 {{ 'nav.logistics.submenu.headline3.entry1'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_transfer_from_receiving_area_to_stock" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_transfer_from_receiving_area_to_stock" class="nav-link" href="{{ path('stock_transfer_from_receiving_area') }}">
                                                 {{ 'nav.logistics.submenu.headline3.entry2'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="stock_transfer_from_stock_to_dispatch_area" class="nav-link-sub">
+                                        <li class="nav-item">
+                                            <a id="stock_transfer_from_stock_to_dispatch_area" class="nav-link" href="{{ path('stock_transfer_to_dispatch_area') }}">
                                                 {{ 'nav.logistics.submenu.headline3.entry3'|trans }}
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a id="stock_transfer_from_cost_centre" class="nav-link" href="{{ path('stock_transfer_from_cost_centre') }}">
+                                                Rückgabe von Kostenstelle
                                             </a>
                                         </li>
                                     </ul>
@@ -188,7 +185,7 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarSupplierOrder" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarSupplierOrder">
                         <i class="mdi mdi-file-search fs-20"></i>
-                        <span>{{ 'nav.supplier_order.headline'|trans }}</span>
+                        <span>{{ 'nav.supplier_order.headline.main_entry'|trans }}</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarSupplierOrder">
                         <ul class="nav nav-sm flex-column">
@@ -205,7 +202,7 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarCustomerOrder" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCustomerOrder">
                         <i class="mdi mdi-file-search-outline fs-20"></i>
-                        <span>{{ 'nav.customer_order.headline'|trans }}</span>
+                        <span>{{ 'nav.customer_order.headline.main_entry'|trans }}</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarCustomerOrder">
                         <ul class="nav nav-sm flex-column">
@@ -222,19 +219,19 @@
                 <li class="nav-item">
                     <a href="#sidebarMasterData" class="nav-link menu-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMasterData">
                         <i class="text-muted-primary mdi mdi-warehouse fs-20"></i>
-                        <span class="text-muted-primary">{{ 'nav.master_data.headline'|trans }}</span>
+                        <span class="text-muted-primary">{{ 'nav.master_data.headline.main_entry'|trans }}</span>
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarMasterData">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a href="#sidebarMasterDataArticle" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMasterDataArticle">
                                     <i class="mdi mdi-archive-cog-outline fs-18"></i>
-                                    <span>{{ 'nav.master_data.submenu.headline1'|trans }}</span>
+                                    <span>{{ 'nav.master_data.submenu.headline1.main_entry'|trans }}</span>
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarMasterDataArticle">
                                     <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item-sub">
-                                            <a id="master_data_article" class="nav-link-sub" href="{{ path('article') }}">
+                                        <li class="nav-item">
+                                            <a id="master_data_article" class="nav-link" href="{{ path('article') }}">
                                                 {{ 'nav.master_data.submenu.headline1.entry1'|trans }}
                                             </a>
                                         </li>
@@ -244,12 +241,12 @@
                             <li class="nav-item">
                                 <a href="#sidebarMasterDataCustomer" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMasterDataCustomer">
                                     <i class="mdi mdi-card-account-details-outline fs-18"></i>
-                                    <span>{{ 'nav.master_data.submenu.headline2'|trans }}</span>
+                                    <span>{{ 'nav.master_data.submenu.headline2.main_entry'|trans }}</span>
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarMasterDataCustomer">
                                     <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item-sub">
-                                            <a id="master_data_customer" class="nav-link-sub" href="{{ path('customer') }}">
+                                        <li class="nav-item">
+                                            <a id="master_data_customer" class="nav-link" href="{{ path('customer') }}">
                                                 {{ 'nav.master_data.submenu.headline2.entry1'|trans }}
                                             </a>
                                         </li>
@@ -259,12 +256,12 @@
                             <li class="nav-item">
                                 <a href="#sidebarMasterDataSupplier" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMasterDataSupplier">
                                     <i class="mdi mdi-card-account-details fs-18"></i>
-                                    <span>{{ 'nav.master_data.submenu.headline3'|trans }}</span>
+                                    <span>{{ 'nav.master_data.submenu.headline3.main_entry'|trans }}</span>
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarMasterDataSupplier">
                                     <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item-sub">
-                                            <a id="master_data_supplier" class="nav-link-sub" href="{{ path('supplier') }}">
+                                        <li class="nav-item">
+                                            <a id="master_data_supplier" class="nav-link" href="{{ path('supplier') }}">
                                                 {{ 'nav.master_data.submenu.headline3.entry1'|trans }}
                                             </a>
                                         </li>
@@ -274,27 +271,27 @@
                             <li class="nav-item">
                                 <a href="#sidebarMasterDataStock" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMasterDataStock">
                                     <i class="mdi mdi-warehouse fs-18"></i>
-                                    <span>{{ 'nav.master_data.submenu.headline4'|trans }}</span>
+                                    <span>{{ 'nav.master_data.submenu.headline4.main_entry'|trans }}</span>
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarMasterDataStock">
                                     <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item-sub">
-                                            <a id="master_data_stock_location" class="nav-link-sub" href="{{ path('stock_location') }}">
+                                        <li class="nav-item">
+                                            <a id="master_data_stock_location" class="nav-link" href="{{ path('stock_location') }}">
                                                 {{ 'nav.master_data.submenu.headline4.entry1'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="master_data_stock_layout" class="nav-link-sub" href="{{ path('stock_layout') }}">
+                                        <li class="nav-item">
+                                            <a id="master_data_stock_layout" class="nav-link" href="{{ path('stock_layout') }}">
                                                 {{ 'nav.master_data.submenu.headline4.entry2'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="master_data_stock_zone" class="nav-link-sub" href="{{ path('stock_zone') }}">
+                                        <li class="nav-item">
+                                            <a id="master_data_stock_zone" class="nav-link" href="{{ path('stock_zone') }}">
                                                 {{ 'nav.master_data.submenu.headline4.entry3'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="master_data_loading_equipment" class="nav-link-sub" href="{{ path('stock_zone') }}">
+                                        <li class="nav-item">
+                                            <a id="master_data_loading_equipment" class="nav-link" href="{{ path('stock_zone') }}">
                                                 {{ 'nav.master_data.submenu.headline4.entry4'|trans }}
                                             </a>
                                         </li>
@@ -312,37 +309,37 @@
                     </a>
                     <div class="collapse menu-dropdown" id="sidebarEvaluations">
                         <ul class="nav nav-sm flex-column">
-                            <li class="nav-item-sub">
+                            <li class="nav-item">
                                 <a href="{{ path('stock_rotation') }}">
                                     <i class="mdi mdi-table-refresh fs-18"></i>
                                     <span>{{ 'nav.evaluations.submenu.headline1'|trans }}</span>
                                 </a>
                             </li>
-                            <li class="nav-item-sub">
+                            <li class="nav-item">
                                 <a href="{{ path('stock_occupancy') }}">
                                     <i class="mdi mdi-view-dashboard-variant-outline fs-18"></i>
                                     <span>{{ 'nav.evaluations.submenu.headline2'|trans }}</span>
                                 </a>
                             </li>
-                            <li class="nav-item-sub">
+                            <li class="nav-item">
                                 <a href="{{ path('stock_occupancy_graphical') }}">
                                     <i class="mdi mdi-monitor-dashboard fs-18"></i>
                                     <span>{{ 'nav.evaluations.submenu.headline3'|trans }}</span>
                                 </a>
                             </li>
-                            <li class="nav-item-sub">
+                            <li class="nav-item">
                                 <a href="{{ path('stock_occupancy_graphical') }}">
                                     <i class="mdi mdi-cash fs-18"></i>
                                     <span>{{ 'nav.evaluations.submenu.headline4'|trans }}</span>
                                 </a>
                             </li>
-                            <li class="nav-item-sub">
+                            <li class="nav-item">
                                 <a href="{{ path('dashboard') }}">
                                     <i class="mdi mdi-monitor fs-18"></i>
                                     <span>{{ 'nav.evaluations.submenu.headline5'|trans }}</span>
                                 </a>
                             </li>
-                            <li class="nav-item-sub">
+                            <li class="nav-item">
                                 <a href="{{ path('logging') }}">
                                     <i class="mdi mdi-clipboard-text-search-outline fs-18"></i>
                                     <span>{{ 'nav.evaluations.submenu.headline6'|trans }}</span>
@@ -360,7 +357,7 @@
                     <div class="collapse menu-dropdown" id="sidebarInventory">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="#">
+                                <a href="{{ path('inventory_start') }}">
                                     <i class="mdi mdi-text-box-outline fs-18"></i>
                                     <span>{{ 'nav.inventory.submenu.headline1'|trans }}</span>
                                 </a>
@@ -397,27 +394,27 @@
                             <li class="nav-item">
                                 <a href="#sidebarSettingsUser" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarSettingsUser">
                                     <i class="mdi mdi-card-account-details-outline fs-18"></i>
-                                    <span>{{ 'nav.settings.submenu.headline2'|trans }}</span>
+                                    <span>{{ 'nav.settings.submenu.headline2.main_entry'|trans }}</span>
                                 </a>
                                 <div class="collapse menu-dropdown" id="sidebarSettingsUser">
                                     <ul class="nav nav-sm flex-column">
-                                        <li class="nav-item-sub">
-                                            <a id="settings_user_overview" class="nav-link-sub" href="{{ path('user') }}">
+                                        <li class="nav-item">
+                                            <a id="settings_user_overview" class="nav-link" href="{{ path('user') }}">
                                                 {{ 'nav.settings.submenu.headline2.entry1'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="settings_user_overview" class="nav-link-sub" href="{{ path('configuration_user_groups') }}">
+                                        <li class="nav-item">
+                                            <a id="settings_user_overview" class="nav-link" href="{{ path('configuration_user_groups') }}">
                                                 {{ 'nav.settings.submenu.headline2.entry2'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="settings_user_overview" class="nav-link-sub" href="{{ path('configuration_user_roles') }}">
+                                        <li class="nav-item">
+                                            <a id="settings_user_overview" class="nav-link" href="{{ path('configuration_user_roles') }}">
                                                 {{ 'nav.settings.submenu.headline2.entry3'|trans }}
                                             </a>
                                         </li>
-                                        <li class="nav-item-sub">
-                                            <a id="settings_user_overview" class="nav-link-sub" href="{{ path('configuration_user_rights') }}">
+                                        <li class="nav-item">
+                                            <a id="settings_user_overview" class="nav-link" href="{{ path('configuration_user_rights') }}">
                                                 {{ 'nav.settings.submenu.headline2.entry4'|trans }}
                                             </a>
                                         </li>
@@ -450,7 +447,6 @@
                         <span>{{ 'nav.help.headline3'|trans }}</span>
                     </a>
                 </li>
-
             </ul>
         </div>
     </div>

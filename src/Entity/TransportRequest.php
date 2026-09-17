@@ -67,8 +67,8 @@ class TransportRequest
     #[ORM\Column(name: 'tr_dispatch', type: Types::DATETIME_MUTABLE, nullable: true, options: ['default' => null])]
     private ?DateTimeInterface $trDispatch = null;
 
-    #[ORM\Column(name: 'tr_state', type: Types::INTEGER, nullable: false, options: ['default' => '0'])]
-    private int $trState;
+    #[ORM\Column(name: 'tr_state', type: Types::STRING, length: 20, nullable: false, options: ['default' => 'open'])]
+    private string $trState = 'open';
 
     #[ORM\Column(name: 'order_username', type: Types::STRING, length: 30, nullable: false)]
     private string $orderUsername;
@@ -371,12 +371,12 @@ class TransportRequest
         return $this;
     }
 
-    public function getTrState(): int
+    public function getTrState(): string
     {
         return $this->trState;
     }
 
-    public function setTrState(int $trState): self
+    public function setTrState(string $trState): self
     {
         $this->trState = $trState;
 

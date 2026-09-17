@@ -22,6 +22,8 @@ class StockLocationDto
 
     public ?int $id = null;
 
+    public ?int $suId = null;
+
     public ?int $ln = null;
 
     public ?int $fb = null;
@@ -41,6 +43,11 @@ class StockLocationDto
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getSuId(): ?int
+    {
+        return $this->suId;
     }
 
     public function getLn(): ?int

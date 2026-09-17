@@ -32,9 +32,9 @@ class CustomerService
         return $this->customerDataHandler->getCustomerByNr($customerNr);
     }
 
-    public function getAllCustomers(): JsonResponse
+    public function getAllCustomers(): array
     {
-        return new JsonResponse($this->customerDataHandler->getAllCustomers());
+        return $this->customerDataHandler->getAllCustomers();
     }
 
     public function getAllCustomersAjax(?string $customerNrInput): JsonResponse

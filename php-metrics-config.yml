@@ -1,0 +1,26 @@
+# Configuration file for phpmetrics
+# https://phpmetrics.github.io/website
+
+composer: true  # Analyse the composer.* files
+includes:  #  directory and files to analyze, relative to config file directory
+  - "src"
+excludes: # regex of files (or directory) to exclude from analyze
+  - "(./.docker/data/mysql/performance_schema"
+extensions:
+  - php
+  - php8
+report:
+  html: "public/phpmetrics/"
+  csv: "public/phpmetrics/report.csv"
+  json: "public/phpmetrics/report.json"
+  violations: "public/phpmetrics/violations.xml"
+groups:
+  - name: Component
+    match: "!component!i"
+  - name: Metric
+    match: "!metric!i"
+plugins:
+  git:
+    binary: git # if defined, runs git analyze
+  junit:
+    file: "/tmp/junit.xml" # if defined, analyze junit report

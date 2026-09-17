@@ -8,7 +8,39 @@
                     <div class="col">
                     </div>
                 </div>
-                {% include 'stock/stock_in_input_fields.html.twig' %}
+                {# templates/stock/stock_in_input_fields.html.twig #}
+
+                {% block webwms_stock_in_input_fields_form %}
+                    <div class="row">
+                        {% block webwms_stock_in_input_fields_form_inner %}
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card">
+                                        <div class="table-responsive">
+                                            <table id="editStockLocationTable" class="table table-striped table-bordered table-hover compact">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col" style="text-align: center">Koordinate</th>
+                                                    <th scope="col" style="text-align: center">Lagernummer</th>
+                                                    <th scope="col" style="text-align: center">Lagersystem</th>
+                                                    <th scope="col" style="text-align: center">Lagernummer</th>
+                                                    <th scope="col" style="text-align: center">Fachboden</th>
+                                                    <th scope="col" style="text-align: center">Stellplatz</th>
+                                                    <th scope="col" style="text-align: center">Tiefe</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock %}
+                        {% block bodyjs %}
+                            <script type="text/javascript" src="{{ asset('js/webWmsCoreJs/jquery.stockInEditStockLocation.js') }}"></script>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+
             </div>
         </div>
         <div class="modal-footer"></div>

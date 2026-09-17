@@ -7,7 +7,6 @@ namespace WebWMS\Event\Stock\Transfer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\Event;
 use WebWMS\Helper\Attribute\ClassInformation;
 
 #[ClassInformation(
@@ -16,20 +15,22 @@ use WebWMS\Helper\Attribute\ClassInformation;
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
     class: 'StockTransferFromReceivingAreaEvent'
 )]
-class StockTransferFromReceivingAreaEvent extends Event
+class StockTransferFromReceivingAreaEvent extends StockTransferBookingMethodEvent
 {
-    final public const EVENT_NAME = 'stock.stock_transfer_from_receiving_area';
+    public const string EVENT_NAME = 'stock.stock_transfer_from_receiving_area';
 
-    final public const EVENT = 'ST103';
+    public const string EVENT = 'ST103';
 
     /**
-     * ST103 Umlagerung aus WE-Zone ins LV-Lager (aus Artikelbelegung)
-     *
-     * @SuppressWarnings(UnusedFormalParameter)
+     * ST103 Umlagerung aus WE-Zone ins LV-Lager
      */
     public function stockTransferFromReceivingArea(Request $request): RedirectResponse|Response
     {
-        // TODO: Implement logic
-        return new Response('Example Response');
+        return $this->handleStockTransfer(
+            request: $request,
+            bookingMethod: self::EVENT,
+            pageTitle: 'Umlagerung aus WE-Zone ins LV-Lager',
+            stockTransferActionRoute: 'stock_transfer_from_receiving_area'
+        );
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller;
 
 use Exception;
+use Doctrine\DBAL\Exception as DBALException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -17,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Environment;
 use WebWMS\Entity\StockLocation;
 use WebWMS\Event\Stock\Correction\StockCorrectionEvent;
-use WebWMS\Event\Stock\In\StockInEvent;
+use WebWMS\Event\Stock\In\StockInBookingMethodEvent;
 use WebWMS\Event\Stock\In\StockInForSupplierOrderEvent;
 use WebWMS\Event\Stock\In\StockInFromCostCentreEvent;
 use WebWMS\Event\Stock\In\StockInFromGoodsReceiptEvent;
@@ -60,7 +61,7 @@ use WebWMS\Service\TransportRequest\TransportRequestService;
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
     class: 'StockTransactionsController'
 )]
-class StockTransactionController extends AbstractController
+class StockTransactionController extends BaseController
 {
     public function __construct(
         private readonly RequirementsService $requirementsService,
@@ -84,7 +85,7 @@ class StockTransactionController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $event = new StockInEvent(
+        $event = new StockInBookingMethodEvent(
             $this->requirementsService,
             $this->stockLocationService,
             $this->transportRequestService,
@@ -95,7 +96,7 @@ class StockTransactionController extends AbstractController
 
         $this->eventDispatcher->dispatch(
             $event,
-            StockInEvent::EVENT_NAME
+            StockInBookingMethodEvent::EVENT_NAME
         );
 
         return $event->stockIn($request);
@@ -107,7 +108,18 @@ class StockTransactionController extends AbstractController
     #[Route('/stock_in_from_goods_receipt', name: 'stock_in_from_goods_receipt')]
     public function stockInFromGoodsReceipt(Request $request): RedirectResponse|Response
     {
-        $event = new StockInFromGoodsReceiptEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockInFromGoodsReceiptEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -123,7 +135,18 @@ class StockTransactionController extends AbstractController
     #[Route('/stock_in_from_production', name: 'stock_in_from_production')]
     public function stockInFromProduction(Request $request): RedirectResponse|Response
     {
-        $event = new StockInFromProductionEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockInFromProductionEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -171,7 +194,18 @@ class StockTransactionController extends AbstractController
     #[Route('/stock_in_for_supplier_order', name: 'stock_in_for_supplier_order')]
     public function stockInForSupplierOrder(Request $request): RedirectResponse|Response
     {
-        $event = new StockInForSupplierOrderEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockInForSupplierOrderEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -245,13 +279,24 @@ class StockTransactionController extends AbstractController
         return $event->stockInToDispatchArea($request);
     }
 
-    /**
+     /**
      * SO101 Auslagern direkt
      */
     #[Route('/stock_out', name: 'stock_out')]
     public function stockOut(Request $request): RedirectResponse|Response
     {
-        $event = new StockOutEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockOutEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -265,13 +310,24 @@ class StockTransactionController extends AbstractController
      * SO102 Auslagern auf Kostenstelle
      */
     #[Route('/stock_out_to_cost_centre', name: 'stock_out_to_cost_centre')]
-    public function stockOutToCostCentre(Request $request): RedirectResponse|Response|null
+    public function stockOutToCostCentre(Request $request): RedirectResponse|Response
     {
-        $event = new StockOutToCostCentreEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockOutToCostCentreEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
-            StockOutEvent::EVENT_NAME
+            StockOutToCostCentreEvent::EVENT_NAME
         );
 
         return $event->stockOutToCostCentre($request);
@@ -283,7 +339,18 @@ class StockTransactionController extends AbstractController
     #[Route('/stock_out_from_container', name: 'stock_out_from_container')]
     public function stockOutFromContainer(Request $request): RedirectResponse|Response
     {
-        $event = new StockOutFromContainerEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockOutFromContainerEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -299,7 +366,18 @@ class StockTransactionController extends AbstractController
     #[Route('/stock_out_from_cost_centre', name: 'stock_out_from_cost_centre')]
     public function stockOutFromCostCentre(Request $request): RedirectResponse|Response
     {
-        $event = new StockOutFromCostCentreEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockOutFromCostCentreEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -315,7 +393,18 @@ class StockTransactionController extends AbstractController
     #[Route('/stock_out_from_dispatch_area', name: 'stock_out_from_dispatch_area')]
     public function stockOutFromDispatchArea(Request $request): RedirectResponse|Response
     {
-        $event = new StockOutFromDispatchAreaEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockOutFromDispatchAreaEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -422,12 +511,23 @@ class StockTransactionController extends AbstractController
     }
 
     /**
-     * SL101 Ausleihen auf Kostenstelle
-     */
+    * SL101 Ausleihen auf Kostenstelle
+    */
     #[Route('/stock_lending_to_cost_centre', name: 'stock_lending_to_cost_centre')]
     public function stockLendingToCostCentre(Request $request): RedirectResponse|Response
     {
-        $event = new StockLendingToCostCentreEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockLendingToCostCentreEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -443,7 +543,18 @@ class StockTransactionController extends AbstractController
     #[Route('/stock_lending_using_cost_centre', name: 'stock_lending_using_cost_centre')]
     public function stockLendingUsingCostCentre(Request $request): RedirectResponse|Response
     {
-        $event = new StockLendingUsingCostCentreEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockLendingUsingCostCentreEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -453,13 +564,24 @@ class StockTransactionController extends AbstractController
         return $event->stockLendingUsingCostCentre($request);
     }
 
-    /**
+     /**
      * ST101 Umlagern
      */
     #[Route('/stock_transfer_between_stock_locations', name: 'stock_transfer_between_stock_locations')]
     public function stockTransferBetweenStockLocations(Request $request): RedirectResponse|Response
     {
-        $event = new StockTransferBetweenStockLocationsEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockTransferBetweenStockLocationsEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -475,7 +597,18 @@ class StockTransactionController extends AbstractController
     #[Route('/stock_transfer_from_cost_centre', name: 'stock_transfer_from_cost_centre')]
     public function stockTransferFromCostCentre(Request $request): RedirectResponse|Response
     {
-        $event = new StockTransferFromCostCentreEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockTransferFromCostCentreEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -486,12 +619,23 @@ class StockTransactionController extends AbstractController
     }
 
     /**
-     * ST103 Umlagerung aus WE-Zone ins LV-Lager (aus Artikelbelegung)
+     * ST103 Umlagerung aus WE-Zone ins LV-Lager
      */
     #[Route('/stock_transfer_from_receiving_area', name: 'stock_transfer_from_receiving_area')]
     public function stockTransferFromReceivingArea(Request $request): RedirectResponse|Response
     {
-        $event = new StockTransferFromReceivingAreaEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockTransferFromReceivingAreaEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -507,7 +651,18 @@ class StockTransactionController extends AbstractController
     #[Route('/stock_transfer_to_dispatch_area', name: 'stock_transfer_to_dispatch_area')]
     public function stockTransferToDispatchArea(Request $request): RedirectResponse|Response
     {
-        $event = new StockTransferToDispatchAreaEvent();
+        if (!$this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $event = new StockTransferToDispatchAreaEvent(
+            $this->requirementsService,
+            $this->stockLocationService,
+            $this->transportRequestService,
+            $this->transportHistoryService,
+            $this->formFactory,
+            $this->twigEnvironment
+        );
 
         $this->eventDispatcher->dispatch(
             $event,
@@ -539,7 +694,7 @@ class StockTransactionController extends AbstractController
      * @SuppressWarnings(ExitExpression)
      */
     #[Route('/stock_in_final', name: 'stock_in_final')]
-    public function stockInFinal(Request $request): ?JsonResponse
+    public function stockInFinal(Request $request): JsonResponse
     {
         $user = '';
         $clientIp = $request->getClientIp() ?? '';
@@ -548,18 +703,42 @@ class StockTransactionController extends AbstractController
             $user = $this->getUser()->getUserIdentifier();
         }
 
-        $responseData = [];
+        $responseData = [
+            'success' => false,
+            'message' => 'Transportauftrag konnte nicht erstellt werden.',
+            'errors' => [],
+        ];
 
-        $response = $this->transportRequestService->createTransportRequest($request, $user, $clientIp);
-        $responseData['message'] = 'Der Transportauftrag wurde erfolgreich erstellt.';
+        try {
+            // Dispatch the StockInBookingMethodEvent
+            $event = new StockInBookingMethodEvent(
+                $this->requirementsService,
+                $this->stockLocationService,
+                $this->transportRequestService,
+                $this->transportHistoryService,
+                $this->formFactory,
+                $this->twigEnvironment
+            );
+            $this->eventDispatcher->dispatch($event, StockInBookingMethodEvent::EVENT_NAME);
 
-        if ($response?->getContent() === 'success') {
-            $responseData['message'] = 'Der Transportauftrag wurde erfolgreich erstellt.';
-            $logMessage = 'Der Transportauftrag wurde erfolgreich erstellt.';
+            $response = $this->transportRequestService->createTransportRequest(
+                $request,
+                $user,
+                $clientIp
+            );
 
-            $this->loggingService->write($request, $logMessage, $user);
+            if ($response?->getContent() === 'success') {
+                $responseData['success'] = true;
+                $responseData['message'] = 'Der Transportauftrag wurde erfolgreich erstellt.';
+                $logMessage = 'Der Transportauftrag wurde erfolgreich erstellt.';
 
-            return new JsonResponse($responseData);
+                $this->loggingService->write($request, $logMessage, $user);
+            } else {
+                $responseData['errors'][] = 'Fehler bei der Erstellung des Transportauftrags (ungültige Antwort).';
+            }
+        } catch (\Throwable $exception) {
+            $responseData['errors'][] = $exception->getMessage();
+            $this->loggingService->write($request, 'Fehler beim Stock-In-Final: ' . $exception->getMessage(), $user);
         }
 
         return new JsonResponse($responseData);
@@ -579,24 +758,46 @@ class StockTransactionController extends AbstractController
         return $suId;
     }
 
+    /**
+     * @throws DBALException
+     * @throws Exception
+     */
     #[Route('/edit_pre_selected_stock_location/id/{stockLocationId}', name: 'edit_pre_selected_stock_location')]
     public function editPreSelectedStockLocation(Request $request): Response
     {
-        $stockLocationId = $request->attributes->getString('stockLocationId');
-        /* @var $stockSystem StockLocation */
+        $stockLocationId = $request->attributes->getInt('stockLocationId');
         $stockSystem = $this->stockLocationService->getStockLocationDetailsById($stockLocationId);
 
-        /**
-         * @phpstan-ignore-next-line
-         */
-        $preSelectedStockLocation = $this->stockLocationService->getAllFreeStockLocations($stockSystem[0]->getStockLocationDesc());
+        if ($stockSystem === []) {
+            return new Response('<p>Keine Lagerplätze gefunden.</p>');
+        }
+
+        $preSelectedStockLocation = $this->stockLocationService->getAllFreeStockLocations($stockSystem->getStockLocationDesc());
 
         return $this->render(
-            'stock/stock_in_edit.html.twig',
+            'modal/edit_stock_location.html.twig',
             [
                 'freeStockLocations' => $preSelectedStockLocation,
-                'editArticle' => true,
             ]
         );
     }
+
+//    /**
+//     * @throws DBALException
+//     * @throws Exception
+//     */
+//    #[Route('/edit_pre_selected_stock_location/id/{stockLocationId}', name: 'edit_pre_selected_stock_location')]
+//    public function editPreSelectedStockLocation(Request $request): JsonResponse
+//    {
+//        $stockLocationId = $request->attributes->getString('stockLocationId');
+//        $stockSystem = $this->stockLocationService->getStockLocationDetailsById($stockLocationId);
+//
+//        if ($stockSystem === null) {
+//            return new JsonResponse([]);
+//        }
+//
+//        $preSelectedStockLocation = $this->stockLocationService->getAllFreeStockLocations($stockSystem->getStockLocationDesc());
+//
+//        return new JsonResponse($preSelectedStockLocation);
+//    }
 }

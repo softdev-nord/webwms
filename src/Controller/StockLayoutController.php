@@ -94,7 +94,7 @@ class StockLayoutController extends AbstractController
     }
 
     #[Route('/lagerlayout_bearbeiten/stockLayoutId/{stockLayoutId}', name: 'edit_stock_layout')]
-    public function editStockLayout(Request $request, int $stockLayoutId): RedirectResponse|JsonResponse|Response|null
+    public function editStockLayout(Request $request, int $stockLayoutId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -103,7 +103,7 @@ class StockLayoutController extends AbstractController
         $stockLayout = $this->stockLayoutService->getStockLayoutById($stockLayoutId);
 
         if (!$stockLayout instanceof StockLayoutEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $form = $this->stockLayoutFormHelper->editStockLayoutForm($stockLayout);
@@ -141,7 +141,7 @@ class StockLayoutController extends AbstractController
     }
 
     #[Route('/lagerlayout_löschen/stockLayoutId/{stockLayoutId}', name: 'delete_stock_layout')]
-    public function deleteStockLayout(Request $request, int $stockLayoutId): RedirectResponse|JsonResponse|Response|null
+    public function deleteStockLayout(Request $request, int $stockLayoutId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -150,7 +150,7 @@ class StockLayoutController extends AbstractController
         $stockLayout = $this->stockLayoutService->getStockLayoutById($stockLayoutId);
 
         if (!$stockLayout instanceof StockLayoutEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $form = $this->stockLayoutFormHelper->deleteStockLayoutForm($stockLayout);

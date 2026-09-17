@@ -1,47 +1,37 @@
-{# templates/modal/show_stock_details_modal.html.twig #}
-
-{% block webwms_show_stock_details_modal %}
-    <div id="showStockDetails">
+{% block webwms_show_article_stock_details_modal %}
+    <div id="stockModalContent">
         <div class="modal-body">
             <div class="card">
-                <div id="flash-message-overlay">
-                    <div class="col">
+                <div class="row g-3 m-3">
+                    <div class="col-xxl-5 col-sm-6">
+                        <div class="search-box">
+                            <input type="text" class="form-control search" placeholder="{{ 'article.overview.search.placeholder'|trans }}">
+                            <i class="ri-search-line search-icon"></i>
+                        </div>
                     </div>
                 </div>
-                    {% if stockDetails.info is defined %}
-                        <div class="no-stock-details">{{ stockDetails.info }}</div>
-                    {% else %}
-                    <table id="showStockDetailTable" class="table table-striped table-bordered table-hover compact">
+
+                <div id="stockListWrapper">
+                    <table class="table table-striped table-hover">
                         <thead>
-                            <tr>
-                                <th style="text-align: center; width: 7%;" scope="col">Koordinate</th>
-                                <th style="text-align: center; width: 7%;" scope="col">Artikel-Nr</th>
-                                <th style="text-align: center; width: 25%;" scope="col">Bezeichnung</th>
-                                <th style="text-align: center; width: 7%;" scope="col">Bestand</th>
-                                <th style="text-align: center; width: 7%;" scope="col">Zugang</th>
-                                <th style="text-align: center; width: 7%;" scope="col">Abgang</th>
-                                <th style="text-align: center; width: 10%;" scope="col">Letzter Zugang</th>
-                                <th style="text-align: center; width: 10%;" scope="col">Letzter Abgang</th>
-                            </tr>
+                        <tr>
+                            <th class="text-center" data-sort="lagereinheit">Lagereinheit</th>
+                            <th class="text-center" data-sort="lagerplatz">Lagerplatz</th>
+                            <th class="text-center" data-sort="articleNr">Artikel-Nr</th>
+                            <th class="text-center" data-sort="bezeichnung">Bezeichnung</th>
+                            <th class="text-center" data-sort="transEin">Zugang</th>
+                            <th class="text-center" data-sort="transAus">Abgang</th>
+                            <th class="text-center" data-sort="lpBestand">LP Bestand</th>
+                            <th class="text-center" data-sort="letzterZugang">Letzter Zugang</th>
+                            <th class="text-center" data-sort="letzterAbgang">Letzter Abgang</th>
+                        </tr>
                         </thead>
-                        <tbody>
-                            <tr data-article-nr="{{ stockDetails.article_nr }}">
-                                <th style="text-align: center;" scope="col">{{ stockDetails.stock_location_coordinate }}</th>
-                                <th style="text-align: center;" scope="col">{{ stockDetails.article_nr }}</th>
-                                <th style="text-align: center;" scope="col">{{ stockDetails.article_name }}</th>
-                                <th style="text-align: center;" scope="col">{% if stockDetails.in_stock is not null %}{{ stockDetails.in_stock }}{% else %}0.00{% endif %}</th>
-                                <th style="text-align: center;" scope="col">{% if stockDetails.incoming_stock is not null %}{{ stockDetails.incoming_stock }}{% else %}0.00{% endif %}</th>
-                                <th style="text-align: center;" scope="col">{% if stockDetails.reserved_stock is not null %}{{ stockDetails.reserved_stock }}{% else %}0.00{% endif %}</th>
-                                <th style="text-align: center;" scope="col">{% if stockDetails.last_incoming is not null %}{{ stockDetails.last_incoming }}{% else %}...{% endif %}</th>
-                                <th style="text-align: center;" scope="col">{% if stockDetails.last_outgoing is not null %}{{ stockDetails.last_outgoing }}{% else %}...{% endif %}</th>
-                            </tr>
+                        <tbody class="list" id="stockListBody">
+                        {# Wird durch JS gefüllt #}
                         </tbody>
                     </table>
-                    {% endif %}
+                </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <br/>
         </div>
     </div>
 {% endblock %}

@@ -13,6 +13,7 @@ use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 use Twig\Environment;
 use Twig\Loader\LoaderInterface;
+use WebWMS\Dto\TransportRequestDto;
 use WebWMS\Entity\TransportHistory;
 use WebWMS\Entity\TransportRequest;
 use WebWMS\Helper\Attribute\ClassInformation;
@@ -154,10 +155,14 @@ class DashboardController extends AbstractController
     {
         $countTrOpen = [];
         $countTrInProgress = [];
-        $transportRequests = $this->transportRequestService->getAllOpenTransportRequests();
+        $transportRequests = json_decode(
+            $this->transportRequestService->getAllOpenTransportRequests()->getContent(),
+            true
+        );
 
-        /** @var TransportRequest $transportRequest */
+        /** @var array $transportRequest */
         foreach ($transportRequests as $transportRequest) {
+            $transportRequest = TransportRequestDto::hydrate($transportRequest);
             if ($transportRequest->getTrState() === 1) {
                 $countTrInProgress[] = $transportRequest->getTrState();
             } else {

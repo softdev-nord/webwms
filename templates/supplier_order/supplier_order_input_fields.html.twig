@@ -252,9 +252,9 @@
         {% endblock %}
 
         {% block bodyjs %}
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.suppliersAutofill.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.itemsSupplierOrderPosAutofill.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('assets/js/webWmsCoreJs/jquery.modalDatePicker.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/webWmsCoreJs/jquery.suppliersAutofill.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/webWmsCoreJs/jquery.itemsSupplierOrderPosAutofill.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/webWmsCoreJs/jquery.modalDatePicker.js') }}"></script>
             <script>
                 {% set newSupplierOrderId = lastId.id +1 %}
                 {% set editOrder = editSupplierOrder|json_encode() %}
@@ -263,7 +263,7 @@
                 const editOrder = {{ editOrder }};
 
                 if (!editOrder) {
-                    $.getScript( '{{ asset('assets/js/webWmsCoreJs/jquery.modalDatePicker.js') }}' );
+                    $.getScript( '{{ asset('js/webWmsCoreJs/jquery.modalDatePicker.js') }}' );
                 }
 
                 $("#supplier_supplierNr").change(function() {

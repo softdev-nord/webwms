@@ -99,7 +99,7 @@ class ArticleController extends AbstractController
     }
 
     #[Route('artikel_bearbeiten/articleId/{articleId}', name: 'edit_article')]
-    public function editArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response|null
+    public function editArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -108,7 +108,7 @@ class ArticleController extends AbstractController
         $article = $this->articleService->getArticleById($articleId);
 
         if (!$article instanceof ArticleEntity) {
-            return null;
+            return new JsonResponse(['error' => 'Article not found'], 404);
         }
 
         $form = $this->articleFormHelper->editArticleForm($article);
@@ -147,7 +147,7 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/artikel_löschen/articleId/{articleId}', name: 'delete_article')]
-    public function deleteArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response|null
+    public function deleteArticle(Request $request, int $articleId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -156,7 +156,7 @@ class ArticleController extends AbstractController
         $article = $this->articleService->getArticleById($articleId);
 
         if (!$article instanceof ArticleEntity) {
-            return null;
+            return new JsonResponse(['error' => 'Article not found'], 404);
         }
 
         $form = $this->articleFormHelper->deleteArticleForm($article);

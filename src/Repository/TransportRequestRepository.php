@@ -21,4 +21,10 @@ class TransportRequestRepository extends ServiceEntityRepository
     {
         parent::__construct($managerRegistry, TransportRequest::class);
     }
+
+    public function save(TransportRequest $transportRequest): void
+    {
+        $this->getEntityManager()->persist($transportRequest);
+        $this->getEntityManager()->flush();
+    }
 }

@@ -1,0 +1,23 @@
+services:
+
+  SoftDevNord\TestGenerator\Command\GenerateTestCommand:
+    arguments:
+      $openAiClient: '@soft_dev_nord.test_generator.service.open_ai_client'
+      $fileLocator: '@soft_dev_nord.test_generator.helper.file_locator'
+      $fileService: '@soft_dev_nord.test_generator..service.file_service'
+    tags: ['console.command']
+
+  soft_dev_nord.test_generator.service.open_ai_client:
+    class: SoftDevNord\TestGenerator\Service\OpenAiClient
+    arguments:
+      $apiKey: '%env(OPENAI_API_KEY)%'
+
+  soft_dev_nord.test_generator.helper.file_locator:
+    class: SoftDevNord\TestGenerator\Helper\FileLocator
+    autowire: true
+    public: false
+
+  soft_dev_nord.test_generator..service.file_service:
+    class: SoftDevNord\TestGenerator\Service\FileService
+    autowire: true
+    public: false

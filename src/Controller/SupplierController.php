@@ -92,7 +92,7 @@ class SupplierController extends AbstractController
     }
 
     #[Route('/lieferant_bearbeiten/supplierId/{supplierId}', name: 'edit_supplier')]
-    public function editSupplier(Request $request, int $supplierId): RedirectResponse|JsonResponse|Response|null
+    public function editSupplier(Request $request, int $supplierId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -101,7 +101,7 @@ class SupplierController extends AbstractController
         $supplier = $this->supplierService->getSupplierById($supplierId);
 
         if (!$supplier instanceof SupplierEntity) {
-            return null;
+            return new JsonResponse(['error' => 'Supplier not found'], 404);
         }
 
         $form = $this->supplierFormHelper->editSupplierForm($supplier);
@@ -140,7 +140,7 @@ class SupplierController extends AbstractController
     }
 
     #[Route('/lieferant_löschen/supplierId/{supplierId}', name: 'delete_supplier')]
-    public function deleteSupplier(Request $request, int $supplierId): RedirectResponse|JsonResponse|Response|null
+    public function deleteSupplier(Request $request, int $supplierId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -149,7 +149,7 @@ class SupplierController extends AbstractController
         $supplier = $this->supplierService->getSupplierById($supplierId);
 
         if (!$supplier instanceof SupplierEntity) {
-            return null;
+            return new JsonResponse(['error' => 'Supplier not found'], 404);
         }
 
         $form = $this->supplierFormHelper->deleteSupplierForm($supplier);

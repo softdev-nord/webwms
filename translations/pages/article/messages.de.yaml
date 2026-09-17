@@ -1,0 +1,25 @@
+article:
+  overview:
+    title: "Artikelübersicht"
+    search:
+      placeholder: "Suche nach Artikelnummer, Artikelbezeichnung, EAN-Nummer"
+    button:
+      add: "Artikel hinzufügen"
+      edit: "Artikel bearbeiten"
+      delete: "Artikel löschen"
+      exportJson: "Artikelliste exportieren"
+    table:
+      header:
+        articleNumber: "Artikel-Nr"
+        description: "Bezeichnung"
+        category: "Kategorie"
+        weight: "Gewicht in g"
+        ean: "EAN-Code"
+        unit: "Einheit"
+        depth: "Tiefe in mm"
+        width: "Breite in mm"
+        height: "Höhe in mm"
+        stock: "Lagerbestand"
+        incomingStock: "Zugang"
+        reservedStock: "Reserviert"
+      noData: "Keine Artikel gefunden."

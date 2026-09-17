@@ -7,7 +7,6 @@ namespace WebWMS\Event\Stock\Out;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\Event;
 use WebWMS\Helper\Attribute\ClassInformation;
 
 #[ClassInformation(
@@ -16,20 +15,22 @@ use WebWMS\Helper\Attribute\ClassInformation;
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
     class: 'StockOutEvent'
 )]
-class StockOutEvent extends Event
+class StockOutEvent extends StockOutBookingMethodEvent
 {
-    final public const EVENT_NAME = 'stock.stock_out';
+    public const string EVENT_NAME = 'stock.stock_out';
 
-    final public const EVENT = 'SO101';
+    public const string EVENT = 'SO101';
 
     /**
      * SO101 Auslagern direkt
-     *
-     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockOut(Request $request): RedirectResponse|Response
     {
-        // TODO: Implement logic
-        return new Response('Example Response');
+        return $this->handleStockOut(
+            request: $request,
+            bookingMethod: self::EVENT,
+            pageTitle: 'Auslagern direkt',
+            stockOutActionRoute: 'stock_out'
+        );
     }
 }

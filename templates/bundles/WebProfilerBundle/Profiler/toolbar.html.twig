@@ -1,63 +1,50 @@
-{# templates/bundles/WebProfilerBundle/Profiler/toolbar.html.twig #}
-
-{% block webwms_article_input_fields_form %}
-    <!-- START of Symfony Web Debug Toolbar own template-->
-    <div id="sfMiniToolbar-{{ token }}" class="sf-minitoolbar" data-no-turbolink data-turbo="false">
-        <button type="button" title="Show Symfony toolbar" id="sfToolbarMiniToggler-{{ token }}" accesskey="D" aria-expanded="false" aria-controls="sfToolbarMainContent-{{ token }}">
-            {{ source('@WebProfiler/Icon/symfony.svg') }}
-        </button>
-    </div>
-    <div id="sfToolbarClearer-{{ token }}" class="sf-toolbar-clearer"></div>
-
-    <div id="sfToolbarMainContent-{{ token }}" class="sf-toolbarreset notranslate clear-fix" data-no-turbolink>
-        {% for name, template in templates %}
-            {% if block('toolbar', template) is defined %}
-                {% with {
-                    collector: profile ? profile.getcollector(name) : null,
-                    profiler_url: profiler_url,
-                    token: token ?? (profile ? profile.token : null),
-                    name: name,
-                    profiler_markup_version: profiler_markup_version,
-                    csp_script_nonce: csp_script_nonce,
-                    csp_style_nonce: csp_style_nonce
-                  } %}
-                    {{ block('toolbar', template) }}
-                {% endwith %}
-            {% endif %}
-        {% endfor %}
-        {% if full_stack %}
-            <div class="sf-full-stack sf-toolbar-block sf-toolbar-block-full-stack sf-toolbar-status-red sf-toolbar-block-right">
-                <div class="sf-toolbar-icon">
-                    <span class="sf-toolbar-value">Using symfony/symfony is NOT supported</span>
-                </div>
-                <div class="sf-toolbar-info sf-toolbar-status-red">
-                    <p>This project is using Symfony via the "symfony/symfony" package.</p>
-                    <p>This is NOT supported anymore since Symfony 4.0.</p>
-                    <p>Even if it seems to work well, it has some important limitations with no workarounds.</p>
-                    <p>Using this package also makes your project slower.</p>
-
-                    <strong>Please, stop using this package and replace it with individual packages instead.</strong>
-                </div>
-                <div></div>
-            </div>
+<div id="sfToolbarClearer-{{ token }}" class="sf-toolbar-clearer"></div>
+<div id="sfToolbarMainContent-{{ token }}" class="sf-toolbarreset notranslate clear-fix" data-no-turbolink data-turbo="false">
+    {% for name, template in templates %}
+        {% if block('toolbar', template) is defined %}
+            {% with {
+                collector: profile ? profile.getcollector(name) : null,
+                profiler_url: profiler_url,
+                token: token ?? (profile ? profile.token : null),
+                name: name,
+                profiler_markup_version: profiler_markup_version,
+                csp_script_nonce: csp_script_nonce,
+                csp_style_nonce: csp_style_nonce,
+              } %}
+                {{ block('toolbar', template) }}
+            {% endwith %}
         {% endif %}
-
-        <div class="sf-toolbar-block-dump sf-toolbar-status-red sf-toolbar-block-right" style="padding: 8px;">
+    {% endfor %}
+    {% if full_stack %}
+        <div class="sf-full-stack sf-toolbar-block sf-toolbar-block-full-stack sf-toolbar-status-red sf-toolbar-block-right">
             <div class="sf-toolbar-icon">
-                <span class="sf-toolbar-label" style="font-size: 14px; font-weight: bold">Environment:  </span>
-                <span class="sf-toolbar-value sf-toolbar-info-piece-additional"
-                      style="font-size: 14px; font-weight: bold; padding-left: 5px; color: {% if app.environment == 'dev' %}red{% else %}orange{% endif %}"
-                > {% if app.environment == 'dev' %}Development{% else %}Staging{% endif %}</span>
+                <span class="sf-toolbar-value">Using symfony/symfony is NOT supported</span>
             </div>
-        </div>
+            <div class="sf-toolbar-info sf-toolbar-status-red">
+                <p>This project is using Symfony via the "symfony/symfony" package.</p>
+                <p>This is NOT supported anymore since Symfony 4.0.</p>
+                <p>Even if it seems to work well, it has some important limitations with no workarounds.</p>
+                <p>Using this package also makes your project slower.</p>
 
-        <div class="sf-toolbar-block-dump sf-toolbar-logo">
-            <span class="text-first-small">web</span><span class="text-last-small">WMS</span>
+                <strong>Please, stop using this package and replace it with individual packages instead.</strong>
+            </div>
+            <div></div>
         </div>
+    {% endif %}
 
-        <button class="hide-button" type="button" id="sfToolbarHideButton-{{ token }}" title="Close Toolbar" accesskey="D" aria-expanded="true" aria-controls="sfToolbarMainContent-{{ token }}">
-            {{ source('@WebProfiler/Icon/close.svg') }}
-        </button>
+    <div class="sf-toolbar-block-dump sf-toolbar-status-red sf-toolbar-block-right" style="padding: 8px;">
+        <div class="sf-toolbar-icon">
+            <span class="sf-toolbar-label" style="font-size: 14px; font-weight: bold">Environment:</span>
+            <span class="sf-toolbar-value sf-toolbar-info-piece-additional" style="font-size: 14px; font-weight: bold; padding-left: 5px; color: {% if app.environment == 'dev' %}red{% else %}orange{% endif %}">{% if app.environment == 'dev' %}Development{% else %}Staging{% endif %}</span>
+        </div>
     </div>
-    <!-- END of Symfony Web Debug Toolbar own template -->
-{% endblock %}
+
+    <div class="sf-toolbar-block-dump sf-toolbar-logo">
+        <span class="text-first-small">web</span><span class="text-last-small">WMS</span>
+    </div>
+
+    <button class="sf-toolbar-toggle-button" type="button" id="sfToolbarToggleButton-{{ token }}" accesskey="D" aria-expanded="true" aria-controls="sfToolbarMainContent-{{ token }}" aria-label="Toggle Symfony Toolbar">
+        <i class="sf-toolbar-icon-opened" title="Close Toolbar">{{ source('@WebProfiler/Icon/close.svg') }}</i>
+        <i class="sf-toolbar-icon-closed" title="Open Toolbar">{{ source('@WebProfiler/Icon/symfony.svg') }}</i>
+    </button>
+</div>

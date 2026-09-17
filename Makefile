@@ -1,4 +1,4 @@
-APP_CONTAINER_NAME = "webwms-php8.3"
+APP_CONTAINER_NAME = "webwms-php8.4"
 DB_CONTAINER_NAME = "webwms-MariaDB10.5"
 
 help: ## Display this help

@@ -119,7 +119,7 @@ class SupplierOrderController extends AbstractController
     }
 
     #[Route('/bestellung_bearbeiten/supplierOrderId/{supplierOrderId}', name: 'edit_supplier_order')]
-    public function editSupplierOrder(Request $request, int $supplierOrderId): RedirectResponse|Response|null
+    public function editSupplierOrder(Request $request, int $supplierOrderId): RedirectResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -129,7 +129,7 @@ class SupplierOrderController extends AbstractController
         $supplierOrderPos = $this->supplierOrderPosService->getSupplierOrderPosBySupplierOrderId($supplierOrderId);
 
         if (!$supplierOrder instanceof SupplierOrderEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $supplierOrderForm = $this->supplierOrderFormHelper->editSupplierOrderForm($supplierOrder);
@@ -182,7 +182,7 @@ class SupplierOrderController extends AbstractController
     }
 
     #[Route('/bestellung_löschen/supplierOrderId/{supplierOrderId}', name: 'delete_supplier_order')]
-    public function deleteSupplierOrder(Request $request, int $supplierOrderId): RedirectResponse|JsonResponse|Response|null
+    public function deleteSupplierOrder(Request $request, int $supplierOrderId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -191,7 +191,7 @@ class SupplierOrderController extends AbstractController
         $supplierOrder = $this->supplierOrderService->getSupplierOrderById($supplierOrderId);
 
         if (!$supplierOrder instanceof SupplierOrderEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $supplierOrderForm = $this->createForm(DeleteSupplierOrderType::class, $supplierOrder);

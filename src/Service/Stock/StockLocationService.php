@@ -46,9 +46,8 @@ readonly class StockLocationService
 
     /**
      * @throws \Exception
-     * @return object[]
      */
-    public function getStockLocationDetailsById(string $stockLocationId): array
+    public function getStockLocationDetailsById(int $stockLocationId): ?StockLocation
     {
         return $this->stockLocationDataHandler->getStockLocationDetailsById($stockLocationId);
     }

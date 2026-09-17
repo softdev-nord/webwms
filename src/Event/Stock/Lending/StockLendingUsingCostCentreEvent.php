@@ -7,7 +7,6 @@ namespace WebWMS\Event\Stock\Lending;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\Event;
 use WebWMS\Helper\Attribute\ClassInformation;
 
 #[ClassInformation(
@@ -16,20 +15,22 @@ use WebWMS\Helper\Attribute\ClassInformation;
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
     class: 'StockLendingUsingCostCentreEvent'
 )]
-class StockLendingUsingCostCentreEvent extends Event
+class StockLendingUsingCostCentreEvent extends StockLendingBookingMethodEvent
 {
-    final public const EVENT_NAME = 'stock.stock_lending_using_cost_centre';
+    public const string EVENT_NAME = 'stock.stock_lending_using_cost_centre';
 
-    final public const EVENT = 'SL102';
+    public const string EVENT = 'SL102';
 
     /**
-     * SL102 Auftrag auslagern mit Kostenstelle (Auftrag-Liste)
-     *
-     * @SuppressWarnings(UnusedFormalParameter)
+     * SL102 Auftrag ausleihe auf Kostenstelle (Auftrag-Liste)
      */
     public function stockLendingUsingCostCentre(Request $request): RedirectResponse|Response
     {
-        // TODO: Implement logic
-        return new Response('Example Response');
+        return $this->handleStockLending(
+            request: $request,
+            bookingMethod: self::EVENT,
+            pageTitle: 'Auftrag ausleihe auf Kostenstelle',
+            stockLendingActionRoute: 'stock_lending_using_cost_centre'
+        );
     }
 }

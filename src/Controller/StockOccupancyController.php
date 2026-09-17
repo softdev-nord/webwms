@@ -135,19 +135,14 @@ class StockOccupancyController extends AbstractController
     /**
      * @throws DbalException
      */
-    #[Route('/stock_occupancy_ajax_article/{article_nr}', name: 'stock_occupancy_ajax_article')]
+    #[Route('/stock_occupancy_ajax_article/{article_id}', name: 'stock_occupancy_ajax_article')]
     public function getStockOccupancyByArticle(Request $request): Response
     {
         $article = $this->stockOccupancyService
-            ->getStockOccupancyByArticleNr(
-                $request->attributes->getInt('article_nr')
+            ->getStockOccupancyByArticleId(
+                $request->attributes->getInt('article_id')
             );
 
-        return $this->render(
-            'modal/show_article_stock_details_modal.html.twig',
-            [
-                'articleStockDetails' => $article, true,
-            ]
-        );
+        return $this->json($article);
     }
 }

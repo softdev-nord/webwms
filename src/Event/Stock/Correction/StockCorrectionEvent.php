@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockCorrectionEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_correction';
+    final public const string EVENT_NAME = 'stock.stock_correction';
 
-    final public const EVENT = 'SC101';
+    final public const string EVENT = 'SC101';
 
     /**
      * SC101 Bestandskorrektur

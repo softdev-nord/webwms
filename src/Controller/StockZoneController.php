@@ -86,7 +86,7 @@ class StockZoneController extends AbstractController
     }
 
     #[Route('/lagerzone_bearbeiten/stockZoneId/{stockZoneId}', name: 'edit_stock_layout')]
-    public function editStockZone(Request $request, int $stockZoneId): RedirectResponse|JsonResponse|Response|null
+    public function editStockZone(Request $request, int $stockZoneId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -95,7 +95,7 @@ class StockZoneController extends AbstractController
         $stockZone = $this->stockZoneService->getStockZoneById($stockZoneId);
 
         if (!$stockZone instanceof StockZoneEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $form = $this->stockZoneFormHelper->editStockZoneForm($stockZone);
@@ -127,7 +127,7 @@ class StockZoneController extends AbstractController
     }
 
     #[Route('/lagerzone_löschen/stockZoneId/{stockZoneId}', name: 'delete_stock_zone')]
-    public function deleteStockZone(Request $request, int $stockZoneId): RedirectResponse|JsonResponse|Response|null
+    public function deleteStockZone(Request $request, int $stockZoneId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -136,7 +136,7 @@ class StockZoneController extends AbstractController
         $stockZone = $this->stockZoneService->getStockZoneById($stockZoneId);
 
         if (!$stockZone instanceof StockZoneEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $form = $this->stockZoneFormHelper->deleteStockZoneForm($stockZone);

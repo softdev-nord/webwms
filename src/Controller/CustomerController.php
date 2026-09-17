@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Controller;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -99,7 +100,7 @@ class CustomerController extends AbstractController
     }
 
     #[Route('kunden_bearbeiten/customerId/{customerId}', name: 'edit_customer')]
-    public function editCustomer(Request $request, int $customerId): RedirectResponse|JsonResponse|Response|null
+    public function editCustomer(Request $request, int $customerId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -108,7 +109,7 @@ class CustomerController extends AbstractController
         $customer = $this->customerService->getCustomerById($customerId);
 
         if (!$customer instanceof CustomerEntity) {
-            return null;
+            return new JsonResponse(['error' => 'Customer not found'], 404);
         }
 
         $form = $this->customerFormHelper->editCustomerForm($customer);
@@ -147,7 +148,7 @@ class CustomerController extends AbstractController
     }
 
     #[Route('/kunden_löschen/customerId/{customerId}', name: 'delete_customer')]
-    public function deleteCustomer(Request $request, int $customerId): RedirectResponse|JsonResponse|Response|null
+    public function deleteCustomer(Request $request, int $customerId): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -156,7 +157,7 @@ class CustomerController extends AbstractController
         $customer = $this->customerService->getCustomerById($customerId);
 
         if (!$customer instanceof CustomerEntity) {
-            return null;
+            return new JsonResponse(['error' => 'Customer not found'], 404);
         }
 
         $form = $this->customerFormHelper->deleteCustomerForm($customer);
@@ -189,7 +190,28 @@ class CustomerController extends AbstractController
     #[Route('/customer_ajax', name: 'customer_ajax')]
     public function getAllCustomers(): JsonResponse
     {
-        return $this->customerService->getAllCustomers();
+        try {
+            $customers = $this->customerService->getAllCustomers();
+
+            return $this->json([
+                'data' => array_map(fn ($customer) => [
+                    'customerId' => $customer->getCustomerId(),
+                    'customerNr' => $customer->getCustomerNr(),
+                    'customerName' => $customer->getCustomerName(),
+                    'customerAddressAddition' => $customer->getCustomerAddressAddition(),
+                    'customerAddressStreet' => $customer->getCustomerAddressStreet(),
+                    'customerAddressStreetNr' => $customer->getCustomerAddressStreetNr(),
+                    'customerCountryCode' => $customer->getCustomerCountryCode(),
+                    'customerZipCode' => $customer->getCustomerZipCode(),
+                    'customerCity' => $customer->getCustomerCity(),
+                ], $customers),
+            ]);
+        } catch (Exception $exception) {
+            return $this->json(
+                ['message' => $exception->getMessage()],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 
     #[Route('/order_customer_ajax', name: 'order_customer_ajax')]

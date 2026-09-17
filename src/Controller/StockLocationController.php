@@ -29,7 +29,7 @@ use WebWMS\Service\Validation\StockLocationValidationService;
 /**
  * @SuppressWarnings(CouplingBetweenObjects)
  */
-class StockLocationController extends AbstractController
+class StockLocationController extends BaseController
 {
     public function __construct(
         private readonly StockLocationService $stockLocationService,
@@ -104,7 +104,7 @@ class StockLocationController extends AbstractController
     }
 
     #[Route('lagerplatz_bearbeiten/koordinate/{stockLocationCoordinate}', name: 'edit_stock_location')]
-    public function editStockLocation(Request $request, string $stockLocationCoordinate): RedirectResponse|JsonResponse|Response|null
+    public function editStockLocation(Request $request, string $stockLocationCoordinate): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -113,7 +113,7 @@ class StockLocationController extends AbstractController
         $stockLocation = $this->stockLocationService->getStockLocationByCoordinate($stockLocationCoordinate);
 
         if (!$stockLocation instanceof StockLocationEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $form = $this->stockLocationFormHelper->editStockLocationForm($stockLocation);
@@ -155,7 +155,7 @@ class StockLocationController extends AbstractController
     }
 
     #[Route('lagerplatz_löschen/koordinate/{stockLocationCoordinate}', name: 'delete_stock_location')]
-    public function deleteStockLocation(Request $request, string $stockLocationCoordinate): RedirectResponse|JsonResponse|Response|null
+    public function deleteStockLocation(Request $request, string $stockLocationCoordinate): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -164,7 +164,7 @@ class StockLocationController extends AbstractController
         $stockLocation = $this->stockLocationService->getStockLocationByCoordinate($stockLocationCoordinate);
 
         if (!$stockLocation instanceof StockLocationEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $form = $this->stockLocationFormHelper->deleteStockLocationForm($stockLocation);
@@ -212,12 +212,11 @@ class StockLocationController extends AbstractController
 
     /**
      * @throws \Exception
-     * @return array|object[]
      */
-    #[Route('/lagerplatz_details/{stock_location_coordinate}', name: 'show_stock_location_details')]
-    public function getStockLocationDetailsById(string $coordinate): array
+    #[Route('/lagerplatz_details/{stockLocationId}', name: 'show_stock_location_details')]
+    public function getStockLocationDetailsById(int $stockLocationId): ?StockLocationEntity
     {
-        return $this->stockLocationService->getStockLocationDetailsById($coordinate);
+        return $this->stockLocationService->getStockLocationDetailsById($stockLocationId);
     }
 
     /**

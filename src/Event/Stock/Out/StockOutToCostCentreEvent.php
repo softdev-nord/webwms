@@ -7,7 +7,6 @@ namespace WebWMS\Event\Stock\Out;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\Event;
 use WebWMS\Helper\Attribute\ClassInformation;
 
 #[ClassInformation(
@@ -16,20 +15,22 @@ use WebWMS\Helper\Attribute\ClassInformation;
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
     class: 'StockOutToCostCentreEvent'
 )]
-class StockOutToCostCentreEvent extends Event
+class StockOutToCostCentreEvent extends StockOutBookingMethodEvent
 {
-    final public const EVENT_NAME = 'stock.stock_out_to_cost_centre';
+    public const string EVENT_NAME = 'stock.stock_out_to_cost_centre';
 
-    final public const EVENT = 'SO102';
+    public const string EVENT = 'SO102';
 
     /**
      * SO102 Auslagern auf Kostenstelle
-     *
-     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockOutToCostCentre(Request $request): RedirectResponse|Response
     {
-        // TODO: Implement logic
-        return new Response('Example Response');
+        return $this->handleStockOut(
+            request: $request,
+            bookingMethod: self::EVENT,
+            pageTitle: 'Auslagern auf Kostenstelle',
+            stockOutActionRoute: 'stock_out_to_cost_centre'
+        );
     }
 }

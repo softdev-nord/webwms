@@ -113,7 +113,7 @@ class CustomerOrder
         fetch: 'EAGER'
     )]
     #[Groups(['customerOrder:read'])]
-    private Collection|ArrayCollection $customerOrderPos;
+    private Collection $customerOrderPos;
 
     /** Many Customer Orders has one Customer. This is the owning side. */
     #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'customerOrder')]

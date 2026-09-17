@@ -33,12 +33,13 @@ class BookingMethodService
     public const BLOCK = 'Block-Lager';
 
     public function __construct(
-        private readonly RequirementsService $requirementsService,
-        private readonly StockLocationService $stockLocationService,
+        private readonly RequirementsService     $requirementsService,
+        private readonly StockLocationService    $stockLocationService,
         private readonly TransportRequestService $transportRequestService,
-        private readonly FormFactoryInterface $formFactory,
-        private readonly Environment $twigEnvironment,
-    ) {
+        private readonly FormFactoryInterface    $formFactory,
+        private readonly Environment             $twigEnvironment,
+    )
+    {
     }
 
     /**

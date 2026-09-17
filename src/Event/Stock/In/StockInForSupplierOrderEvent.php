@@ -7,7 +7,6 @@ namespace WebWMS\Event\Stock\In;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\Event;
 use WebWMS\Helper\Attribute\ClassInformation;
 
 #[ClassInformation(
@@ -16,20 +15,22 @@ use WebWMS\Helper\Attribute\ClassInformation;
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
     class: 'StockInForSupplierOrderEvent'
 )]
-class StockInForSupplierOrderEvent extends Event
+class StockInForSupplierOrderEvent extends StockInBookingMethodEvent
 {
-    final public const EVENT_NAME = 'stock.stock_in_for_supplier_order';
+    public const string EVENT_NAME = 'stock.stock_in_for_supplier_order';
 
-    final public const EVENT = 'SI106';
+    public const string EVENT = 'SI106';
 
     /**
      * SI106 WE zur Bestellung
-     *
-     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockInForSupplierOrder(Request $request): RedirectResponse|Response
     {
-        // TODO: Implement logic
-        return new Response('Example Response');
+        return $this->handleStockIn(
+            request: $request,
+            bookingMethod: self::EVENT,
+            pageTitle: 'WE zur Bestellung',
+            stockInActionRoute: 'stock_in_for_supplier_order'
+        );
     }
 }

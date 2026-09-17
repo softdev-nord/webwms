@@ -103,7 +103,7 @@ class UserController extends AbstractController
      * @throws \Exception
      */
     #[Route('benutzer_bearbeiten/benutzername/{username}', name: 'edit_user')]
-    public function editUser(Request $request, string $username): RedirectResponse|JsonResponse|Response|null
+    public function editUser(Request $request, string $username): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -112,7 +112,7 @@ class UserController extends AbstractController
         $user = $this->userService->getUserByUsername($username);
 
         if (!$user instanceof UserEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $form = $this->userFormHelper->editUserForm($user);
@@ -151,7 +151,7 @@ class UserController extends AbstractController
      * @throws \Exception
      */
     #[Route('benutzer_passwort_bearbeiten/benutzername/{username}', name: 'edit_user_password')]
-    public function editUserPassword(Request $request, string $username): RedirectResponse|JsonResponse|Response|null
+    public function editUserPassword(Request $request, string $username): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -160,7 +160,7 @@ class UserController extends AbstractController
         $user = $this->userService->getUserByUsername($username);
 
         if (!$user instanceof UserEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $changePassword = new ChangePassword();
@@ -203,7 +203,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/benutzer_löschen/benutzername/{username}', name: 'delete_user')]
-    public function deleteArticle(Request $request, string $username): RedirectResponse|JsonResponse|Response|null
+    public function deleteArticle(Request $request, string $username): RedirectResponse|JsonResponse|Response
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('app_login');
@@ -212,7 +212,7 @@ class UserController extends AbstractController
         $user = $this->userService->getUserByUsername($username);
 
         if (!$user instanceof UserEntity) {
-            return null;
+            return new JsonResponse(["error" => "Resource not found"], 404);
         }
 
         $form = $this->userFormHelper->deleteUserForm($user);

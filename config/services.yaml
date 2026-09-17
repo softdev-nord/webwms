@@ -21,7 +21,7 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: true         // <---- This is the new additional config.
+        public: true        # // <---- This is the new additional config.
 
         bind:
             string $appName: '%env(APP_NAME)%'
@@ -50,12 +50,26 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+            - '../src/Service/Logging/ProcessLogEntry.php'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     WebWMS\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
+
+    WebWMS\Modules\:
+        resource: '../src/Modules/'
+        exclude:
+            - '../src/Modules/**/Application/**/View/'
+
+    WebWMS\Modules\Article\UI\Http\Controller\:
+        resource: '../src/Modules/Article/UI/Http/Controller/'
+        tags: ['controller.service_arguments']
+
+    # Interface-Bindings
+    WebWMS\Modules\Article\Application\Query\ArticleOverviewReadModelRepositoryInterface:
+        class: WebWMS\Modules\Article\Infrastructure\Query\DoctrineArticleOverviewReadModelRepository
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -110,3 +124,9 @@ services:
         tags: ['controller.service_arguments']
         arguments:
             $router: '@router'
+
+    WebWMS\Security\EventListener\RequireRoleListener:
+        tags: [kernel.event_subscriber]
+
+#    WebWMS\Modules\Article\Application\Query\ArticleOverviewReadModelRepositoryInterface:
+#        class: WebWMS\Modules\Article\Infrastructure\Query\DoctrineArticleOverviewReadModelRepository

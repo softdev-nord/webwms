@@ -76,28 +76,41 @@ readonly class ArticleDataHandler
     {
         $queryBuilder = $this->entityManager->getConnection()->createQueryBuilder();
         $queryBuilder
-            ->select('art.article_id, art.article_nr, art.article_name, art.article_category, art.article_weight, art.article_ean, art.article_unit, art.article_depth, art.article_width, art.article_height, art.created_at, art.updated_at')
+            ->select(
+                '
+                art.article_id as articleId,
+                art.article_nr as articleNr,
+                art.article_name as articleName,
+                art.article_category as articleCategory,
+                art.article_weight as articleWeight,
+                art.article_ean as articleEan,
+                art.article_unit as articleUnit,
+                art.article_depth as articleDepth,
+                art.article_width as articleWidth,
+                art.article_height as articleHeight,
+                art.created_at as createdAt,
+                art.updated_at as updatedAt
+                ')
             ->from('article', 'art');
 
         $results = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         foreach ($results as $key => $result) {
-            $results[$key]['in_stock'] = 0.00;
-            $results[$key]['incoming_stock'] = 0.00;
-            $results[$key]['reserved_stock'] = 0.00;
+            $results[$key]['inStock'] = 0.00;
+            $results[$key]['incomingStock'] = 0.00;
+            $results[$key]['reservedStock'] = 0.00;
 
-            /** @var int $articleNr */
-            $articleNr = $result['article_nr'];
+            $articleId = (int)$result['articleId'];
 
-            $stockOccupancies = $this->stockOccupancyService->getStockOccupancyByArticleNr($articleNr);
+            $stockOccupancies = $this->stockOccupancyService->getStockOccupancyByArticleId($articleId);
 
-            $inStock = array_column($stockOccupancies, 'in_stock');
-            $incomingStock = array_column($stockOccupancies, 'incoming_stock');
-            $reservedStock = array_column($stockOccupancies, 'reserved_stock');
+            $inStock = array_column($stockOccupancies, 'inStock');
+            $incomingStock = array_column($stockOccupancies, 'incomingStock');
+            $reservedStock = array_column($stockOccupancies, 'reservedStock');
 
-            $results[$key]['in_stock'] += array_sum($inStock);
-            $results[$key]['incoming_stock'] += array_sum($incomingStock);
-            $results[$key]['reserved_stock'] += array_sum($reservedStock);
+            $results[$key]['inStock'] += array_sum($inStock);
+            $results[$key]['incomingStock'] += array_sum($incomingStock);
+            $results[$key]['reservedStock'] += array_sum($reservedStock);
         }
 
         return new JsonResponse($results);

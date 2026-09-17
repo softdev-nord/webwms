@@ -1,0 +1,74 @@
+{# templates/subsections/context-menu.html.twig #}
+
+<div
+        class="context-menu d-none"
+        data-context-for="{{ id }}"
+        {% if entityName is defined %} data-entity="{{ entityName }}" {% endif %}
+>
+    {% for group in actions|batch(3) %}
+        <ul class="context-menu-list">
+            {% for action in group %}
+                <li class="context-menu-item">
+                    <button class="context-menu-button ps-2" data-action="{{ action.action }}">
+                        {% if action.icon %}
+                            <span class="{{ action.icon }} fs-20 me-2"></span>
+                        {% endif %}
+                        <span class="fs-10">{{ action.shortcut }}</span>
+                        <span class="fs-14">{{ action.label }}</span>
+                    </button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</div>
+
+{#<div class="context-menu d-none">#}
+{#    <ul class="context-menu-list">#}
+{#        <li class="context-menu-item">#}
+{#            <button class="context-menu-button">#}
+{#                <span class="ps-4"></span>#}
+{#                <span class="fs-10">{{ 'main.context_menu.shortcuts.undo'|trans }}</span>#}
+{#                <span class="fs-14">{{ 'main.context_menu.undo'|trans }}</span>#}
+{#            </button>#}
+{#        </li>#}
+{#    </ul>#}
+{#    <ul class="context-menu-list">#}
+{#        <li class="context-menu-item">#}
+{#            <button class="context-menu-button ps-2">#}
+{#                <span class="mdi mdi-content-cut fs-20 me-2"></span>#}
+{#                <span class="fs-10">{{ 'main.context_menu.shortcuts.cut'|trans }}</span>#}
+{#                <span class="fs-14">{{ 'main.context_menu.cut'|trans }}</span>#}
+{#            </button>#}
+{#        </li>#}
+{#        <li class="context-menu-item">#}
+{#            <button class="context-menu-button ps-2">#}
+{#                <span class="mdi mdi-content-copy fs-20 me-2"></span>#}
+{#                <span class="fs-10">{{ 'main.context_menu.shortcuts.copy'|trans }}</span>#}
+{#                <span class="fs-14">{{ 'main.context_menu.copy'|trans }}</span>#}
+{#            </button>#}
+{#        </li>#}
+{#        <li class="context-menu-item">#}
+{#            <button class="context-menu-button ps-2">#}
+{#                <span class="mdi mdi-content-paste fs-20 me-2"></span>#}
+{#                <span class="fs-10">{{ 'main.context_menu.shortcuts.paste'|trans }}</span>#}
+{#                <span class="fs-14">{{ 'main.context_menu.paste'|trans }}</span>#}
+{#            </button>#}
+{#        </li>#}
+{#        <li class="context-menu-item">#}
+{#            <button class="context-menu-button ps-2">#}
+{#                <span class="mdi mdi-delete-outline fs-22 me-2"></span>#}
+{#                <span class="fs-10"></span>#}
+{#                <span class="fs-14">{{ 'main.context_menu.delete'|trans }}</span>#}
+{#            </button>#}
+{#        </li>#}
+{#    </ul>#}
+{#    <ul class="context-menu-list">#}
+{#        <li class="context-menu-item">#}
+{#            <button class="context-menu-button ps-2">#}
+{#                <span class="ps-4"></span>#}
+{#                <span class="fs-10">{{ 'main.context_menu.shortcuts.select_all'|trans }}</span>#}
+{#                <span class="fs-14">{{ 'main.context_menu.select_all'|trans }}</span>#}
+{#            </button>#}
+{#        </li>#}
+{#    </ul>#}
+{#</div>#}

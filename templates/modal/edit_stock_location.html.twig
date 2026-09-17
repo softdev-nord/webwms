@@ -1,0 +1,41 @@
+{# templates/modal/edit_stock_location.html.twig #}
+
+{% block webwms_content %}
+    {% block webwms_edit_stock_location %}
+        <div class="modal-body">
+            {% block webwms_edit_stock_location_table %}
+                <table id="editStockLocationTable" class="table table-striped table-bordered table-hover compact">
+                    <thead>
+                    <tr>
+                        <th>Koordinate</th>
+                        <th>Lagerplatz</th>
+                        <th>Lagersystem</th>
+                        <th>Lagernummer</th>
+                        <th>Fachboden</th>
+                        <th>Stellplatz</th>
+                        <th>Tiefe</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for location in freeStockLocations %}
+                        <tr stock-location-id="{{ location.id }}">
+                            <td>{{ location.koordinate }}</td>
+                            <td>{{ location.lnKomplett }}</td>
+                            <td>{{ location.system }}</td>
+                            <td>{{ location.ln }}</td>
+                            <td>{{ location.fb }}</td>
+                            <td>{{ location.sp }}</td>
+                            <td>{{ location.tf }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endblock %}
+            <input type="hidden" id="selectedStockLocationId" name="selectedStockLocationId" value="">
+        </div>
+    {% endblock %}
+{% endblock %}
+
+{% block bodyjs %}
+    <script src="{{ asset('js/webWmsCoreJs/jquery.stockInEditStockLocation.js') }}" defer></script>
+{% endblock %}

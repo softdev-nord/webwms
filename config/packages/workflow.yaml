@@ -1,0 +1,34 @@
+framework:
+    workflows:
+        transport_request:
+            type: state_machine
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'trState'
+            supports:
+                - WebWMS\Entity\TransportRequest
+            initial_marking: open
+            places:
+                - open
+                - in_progress
+                - done
+                - cancelled
+                - archived
+            transitions:
+                start:
+                    from: open
+                    to: in_progress
+                complete:
+                    from: in_progress
+                    to: done
+                cancel:
+                    from: [open, in_progress]
+                    to: cancelled
+                archive:
+                    from: [done, cancelled]
+                    to: archived
+                reopen:
+                    from: cancelled
+                    to: open

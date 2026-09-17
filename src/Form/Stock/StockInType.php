@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 use WebWMS\Helper\Attribute\ClassInformation;
 
 #[ClassInformation(
@@ -30,6 +32,7 @@ class StockInType extends AbstractType
         $builder
             ->add('articleId', HiddenType::class, [
                 'label' => false,
+                'constraints' => [new NotNull(['message' => 'Artikel-ID erforderlich'])],
                 'attr' => [
                     'class' => 'form-control',
                     'id' => 'articleId',
@@ -38,6 +41,7 @@ class StockInType extends AbstractType
             ])
             ->add('articleNr', TextType::class, [
                 'label' => false,
+                'constraints' => [new NotBlank(['message' => 'Artikel-Nummer erforderlich'])],
                 'attr' => [
                     'class' => 'form-control autocomplete_items ui-autocomplete-input',
                     'id' => 'articleNr',
@@ -46,6 +50,7 @@ class StockInType extends AbstractType
             ])
             ->add('standardLoadingEquipment', ChoiceType::class, [
                 'label' => false,
+                'constraints' => [new NotBlank(['message' => 'Ladehilfsmittel erforderlich'])],
                 'attr' => [
                     'class' => 'form-select',
                 ],
@@ -57,6 +62,7 @@ class StockInType extends AbstractType
             ])
             ->add('leQuantity', TextType::class, [
                 'label' => false,
+                'constraints' => [new NotBlank(['message' => 'LE-Menge erforderlich'])],
                 'attr' => [
                     'class' => 'form-control',
                     'id' => 'le_quantity',
@@ -65,6 +71,7 @@ class StockInType extends AbstractType
             ])
             ->add('quantity', TextType::class, [
                 'label' => false,
+                'constraints' => [new NotBlank(['message' => 'Menge erforderlich'])],
                 'attr' => [
                     'class' => 'form-control',
                     'id' => 'quantity',
@@ -73,6 +80,7 @@ class StockInType extends AbstractType
             ])
             ->add('charge', TextType::class, [
                 'label' => false,
+                'constraints' => [new NotBlank(['message' => 'Charge erforderlich'])],
                 'attr' => [
                     'class' => 'form-control',
                     'id' => 'charge',

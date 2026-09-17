@@ -7,7 +7,6 @@ namespace WebWMS\Event\Stock\Transfer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\Event;
 use WebWMS\Helper\Attribute\ClassInformation;
 
 #[ClassInformation(
@@ -16,20 +15,22 @@ use WebWMS\Helper\Attribute\ClassInformation;
     copyright: 'Copyright © 2019-2025, SoftDev Nord',
     class: 'StockTransferFromCostCentreEvent'
 )]
-class StockTransferFromCostCentreEvent extends Event
+class StockTransferFromCostCentreEvent extends StockTransferBookingMethodEvent
 {
-    final public const EVENT_NAME = 'stock.stock_transfer_from_cost_centre';
+    public const string EVENT_NAME = 'stock.stock_transfer_from_cost_centre';
 
-    final public const EVENT = 'ST102';
+    public const string EVENT = 'ST102';
 
     /**
      * ST102 Rückgabe von Kostenstelle
-     *
-     * @SuppressWarnings(UnusedFormalParameter)
      */
     public function stockTransferFromCostCentre(Request $request): RedirectResponse|Response
     {
-        // TODO: Implement logic
-        return new Response('Example Response');
+        return $this->handleStockTransfer(
+            request: $request,
+            bookingMethod: self::EVENT,
+            pageTitle: 'Rückgabe von Kostenstelle',
+            stockTransferActionRoute: 'stock_transfer_from_cost_centre'
+        );
     }
 }
