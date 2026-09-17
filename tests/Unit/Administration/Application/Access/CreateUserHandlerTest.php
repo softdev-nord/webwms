@@ -10,6 +10,7 @@ use WebWMS\Administration\Application\Access\CreateUser\CreateUserCommand;
 use WebWMS\Administration\Application\Access\CreateUser\CreateUserHandler;
 use WebWMS\Administration\Application\Access\CreateUser\InvalidRoleAssignmentException;
 use WebWMS\Administration\Domain\Access\Role;
+use WebWMS\Administration\Domain\Access\PasswordHasher;
 use WebWMS\Administration\Domain\Access\RoleRepository;
 use WebWMS\Administration\Domain\Access\UserAccount;
 use WebWMS\Administration\Domain\Access\UserAccountRepository;
@@ -26,6 +27,7 @@ final class CreateUserHandlerTest extends TestCase
             new UserTenantRepository(),
             new AssignableRoleRepository(),
             $users,
+            new FakePasswordHasher(),
         );
 
         $user = $handler($this->command());
@@ -39,6 +41,7 @@ final class CreateUserHandlerTest extends TestCase
             new UserTenantRepository(),
             new AssignableRoleRepository(false),
             new UserMemoryRepository(),
+            new FakePasswordHasher(),
         );
 
         $this->expectException(InvalidRoleAssignmentException::class);
@@ -52,10 +55,18 @@ final class CreateUserHandlerTest extends TestCase
             '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8',
             'admin@example.com',
             'Warehouse Admin',
-            '$2y$13$test-hash',
+            'a-very-secure-password',
             ['018f6b7f-75d2-7c4e-8c33-31f91b1cf301'],
             new DateTimeImmutable(),
         );
+    }
+}
+
+final class FakePasswordHasher implements PasswordHasher
+{
+    public function hash(string $plainPassword): string
+    {
+        return 'hashed:' . $plainPassword;
     }
 }
 

@@ -6,6 +6,7 @@ namespace WebWMS\Administration\Application\Access\CreateUser;
 
 use WebWMS\Administration\Domain\Access\RoleId;
 use WebWMS\Administration\Domain\Access\RoleRepository;
+use WebWMS\Administration\Domain\Access\PasswordHasher;
 use WebWMS\Administration\Domain\Access\UserAccount;
 use WebWMS\Administration\Domain\Access\UserAccountRepository;
 use WebWMS\Administration\Domain\Access\UserId;
@@ -18,6 +19,7 @@ final readonly class CreateUserHandler
         private TenantRepository $tenants,
         private RoleRepository $roles,
         private UserAccountRepository $users,
+        private PasswordHasher $passwordHasher,
     ) {
     }
 
@@ -49,7 +51,7 @@ final readonly class CreateUserHandler
             $tenantId,
             $email,
             $command->displayName,
-            $command->passwordHash,
+            $this->passwordHasher->hash($command->plainPassword),
             $roleIds,
             $command->occurredAt,
         );

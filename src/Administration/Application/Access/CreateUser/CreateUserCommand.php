@@ -14,7 +14,7 @@ final readonly class CreateUserCommand
         public string $tenantId,
         public string $email,
         public string $displayName,
-        public string $passwordHash,
+        public string $plainPassword,
         public array $roleIds,
         public DateTimeImmutable $occurredAt,
     ) {

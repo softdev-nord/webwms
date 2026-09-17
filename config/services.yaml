@@ -71,6 +71,9 @@ services:
     WebWMS\Administration\Domain\Access\UserAccountRepository:
         alias: WebWMS\Administration\Infrastructure\Persistence\DoctrineAccessRepository
 
+    WebWMS\Administration\Domain\Access\PasswordHasher:
+        alias: WebWMS\Administration\Infrastructure\Security\SymfonyPasswordHasher
+
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     WebWMS\Controller\:
