@@ -14,4 +14,7 @@ interface InventoryRepository
     public function saveReservation(StockReservation $reservation): void;
     public function allocate(StockAllocation $allocation): StockAllocationResult;
     public function transitionAllocation(StockAllocationTransition $transition): StockFulfillmentResult;
+    public function savePickList(PickList $pickList): void;
+    public function assignPickList(PickListAssignment $assignment): void;
+    public function confirmPick(PickConfirmation $confirmation): PickConfirmationResult;
 }

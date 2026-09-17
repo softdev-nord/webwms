@@ -10,6 +10,10 @@ use WebWMS\Inventory\Application\PostStockCommand;
 use WebWMS\Inventory\Application\PostStockHandler;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\ProductReference;
+use WebWMS\Inventory\Domain\PickConfirmation;
+use WebWMS\Inventory\Domain\PickConfirmationResult;
+use WebWMS\Inventory\Domain\PickList;
+use WebWMS\Inventory\Domain\PickListAssignment;
 use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
 use WebWMS\Inventory\Domain\StockAllocationTransition;
@@ -90,5 +94,12 @@ final class InventoryMemoryRepository implements InventoryRepository
     public function transitionAllocation(StockAllocationTransition $transition): StockFulfillmentResult
     {
         return new StockFulfillmentResult('released', 'open', 0);
+    }
+
+    public function savePickList(PickList $pickList): void {}
+    public function assignPickList(PickListAssignment $assignment): void {}
+    public function confirmPick(PickConfirmation $confirmation): PickConfirmationResult
+    {
+        return new PickConfirmationResult('picked', 'completed', 'fulfilled');
     }
 }

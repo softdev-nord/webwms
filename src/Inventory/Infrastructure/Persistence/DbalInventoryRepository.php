@@ -14,6 +14,11 @@ use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\InvalidSerialStockException;
 use WebWMS\Inventory\Domain\ProductReference;
+use WebWMS\Inventory\Domain\PickConfirmation;
+use WebWMS\Inventory\Domain\PickConfirmationResult;
+use WebWMS\Inventory\Domain\PickList;
+use WebWMS\Inventory\Domain\PickListAssignment;
+use WebWMS\Inventory\Domain\PickOutcome;
 use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
 use WebWMS\Inventory\Domain\StockAllocationTransition;
@@ -339,6 +344,90 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 $reservationStatus,
                 $physicalQuantity,
             );
+        });
+    }
+
+    public function savePickList(PickList $pickList): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($pickList): void {
+            if ($connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $pickList->createdBy()->value(), 'tenantId' => $pickList->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('The pick list creator must exist in the tenant.');
+            }
+            $connection->insert('wms_pick_list', [
+                'id' => $pickList->id()->value(), 'tenant_id' => $pickList->tenantId()->value(),
+                'code' => $pickList->code(), 'status' => 'open', 'assigned_to' => null,
+                'created_by' => $pickList->createdBy()->value(),
+                'created_at' => $pickList->createdAt()->format('Y-m-d H:i:s.u'),
+                'updated_at' => $pickList->createdAt()->format('Y-m-d H:i:s.u'),
+            ]);
+            foreach ($pickList->allocationIds() as $sequence => $allocationId) {
+                if ($connection->fetchOne(
+                    "SELECT 1 FROM wms_stock_allocation WHERE id = :id AND tenant_id = :tenantId AND status = 'active' FOR UPDATE",
+                    ['id' => $allocationId->value(), 'tenantId' => $pickList->tenantId()->value()],
+                ) === false) {
+                    throw new InventoryReferenceNotFoundException('Every pick task requires an active allocation.');
+                }
+                $connection->insert('wms_pick_task', [
+                    'id' => $allocationId->value(), 'pick_list_id' => $pickList->id()->value(),
+                    'allocation_id' => $allocationId->value(), 'sequence_number' => $sequence + 1,
+                    'status' => 'open', 'confirmed_by' => null, 'confirmed_at' => null, 'note' => null,
+                ]);
+            }
+        });
+    }
+
+    public function assignPickList(PickListAssignment $assignment): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($assignment): void {
+            $users = (int) $connection->fetchOne(
+                'SELECT COUNT(*) FROM wms_user_account WHERE tenant_id = :tenantId AND id IN (:assignedTo, :assignedBy)',
+                ['tenantId' => $assignment->tenantId()->value(), 'assignedTo' => $assignment->assignedTo()->value(), 'assignedBy' => $assignment->assignedBy()->value()],
+            );
+            $expectedUsers = $assignment->assignedTo()->value() === $assignment->assignedBy()->value() ? 1 : 2;
+            if ($users !== $expectedUsers) {
+                throw new InventoryReferenceNotFoundException('Both assignment users must exist in the tenant.');
+            }
+            $updated = $connection->executeStatement(
+                "UPDATE wms_pick_list SET assigned_to = :assignedTo, assigned_by = :assignedBy, assigned_at = :assignedAt, status = 'assigned', updated_at = :assignedAt WHERE id = :id AND tenant_id = :tenantId AND status IN ('open', 'assigned')",
+                ['assignedTo' => $assignment->assignedTo()->value(), 'assignedBy' => $assignment->assignedBy()->value(), 'assignedAt' => $assignment->assignedAt()->format('Y-m-d H:i:s.u'), 'id' => $assignment->pickListId()->value(), 'tenantId' => $assignment->tenantId()->value()],
+            );
+            if ($updated !== 1) {
+                throw new InventoryReferenceNotFoundException('An assignable pick list must exist in the tenant.');
+            }
+        });
+    }
+
+    public function confirmPick(PickConfirmation $confirmation): PickConfirmationResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($confirmation): PickConfirmationResult {
+            $task = $connection->fetchAssociative(
+                "SELECT t.allocation_id, t.pick_list_id FROM wms_pick_task t INNER JOIN wms_pick_list l ON l.id = t.pick_list_id WHERE t.id = :taskId AND t.status = 'open' AND l.tenant_id = :tenantId AND l.assigned_to = :userId FOR UPDATE",
+                ['taskId' => $confirmation->taskId()->value(), 'tenantId' => $confirmation->tenantId()->value(), 'userId' => $confirmation->confirmedBy()->value()],
+            );
+            if ($task === false) {
+                throw new InventoryReferenceNotFoundException('An open task assigned to the confirming user must exist.');
+            }
+            $transition = new StockAllocationTransition(
+                new InventoryId((string) $task['allocation_id']), $confirmation->tenantId(),
+                $confirmation->outcome() === PickOutcome::Picked ? AllocationTransitionType::Consume : AllocationTransitionType::Release,
+                $confirmation->ledgerEntryId(), $confirmation->note(), $confirmation->confirmedBy(), $confirmation->confirmedAt(),
+            );
+            $fulfillment = $this->transitionAllocation($transition);
+            $connection->update('wms_pick_task', [
+                'status' => $confirmation->outcome()->value, 'confirmed_by' => $confirmation->confirmedBy()->value(),
+                'confirmed_at' => $confirmation->confirmedAt()->format('Y-m-d H:i:s.u'), 'note' => $confirmation->note(),
+            ], ['id' => $confirmation->taskId()->value()]);
+            $remaining = (int) $connection->fetchOne(
+                "SELECT COUNT(*) FROM wms_pick_task WHERE pick_list_id = :pickListId AND status = 'open'",
+                ['pickListId' => $task['pick_list_id']],
+            );
+            $listStatus = $remaining === 0 ? 'completed' : 'in_progress';
+            $connection->update('wms_pick_list', ['status' => $listStatus, 'updated_at' => $confirmation->confirmedAt()->format('Y-m-d H:i:s.u')], ['id' => $task['pick_list_id']]);
+
+            return new PickConfirmationResult($confirmation->outcome()->value, $listStatus, $fulfillment->reservationStatus);
         });
     }
 

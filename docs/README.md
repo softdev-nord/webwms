@@ -13,6 +13,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Atomare Bestandsumlagerung und Statusumbuchung](technical/inventory-transfers.md)
 - [Bestandsreservierung und Auftragsallokation](technical/inventory-reservations.md)
 - [Picking und Fulfillment](technical/inventory-fulfillment.md)
+- [Picklisten und Pickaufträge](technical/inventory-pick-lists.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -25,6 +26,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Bestand umlagern und Status ändern](user/inventory-transfers.md)
 - [Bestand reservieren und allokieren](user/inventory-reservations.md)
 - [Allokationen freigeben und entnehmen](user/inventory-fulfillment.md)
+- [Mit Picklisten arbeiten](user/inventory-pick-lists.md)
 
 ## Verbindliche Dokumentationsregel
 
