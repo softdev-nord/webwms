@@ -12,6 +12,8 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
+use WebWMS\Inventory\Domain\StockAllocationTransition;
+use WebWMS\Inventory\Domain\StockFulfillmentResult;
 use WebWMS\Inventory\Domain\StockPosting;
 use WebWMS\Inventory\Domain\StockReservation;
 use WebWMS\Inventory\Domain\StockTransfer;
@@ -90,5 +92,10 @@ final class TransferMemoryInventoryRepository implements InventoryRepository
     public function allocate(StockAllocation $allocation): StockAllocationResult
     {
         return new StockAllocationResult(0, 0, 0);
+    }
+
+    public function transitionAllocation(StockAllocationTransition $transition): StockFulfillmentResult
+    {
+        return new StockFulfillmentResult('released', 'open', 0);
     }
 }

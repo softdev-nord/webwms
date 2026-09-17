@@ -13,4 +13,5 @@ interface InventoryRepository
     public function transfer(StockTransfer $transfer): StockTransferResult;
     public function saveReservation(StockReservation $reservation): void;
     public function allocate(StockAllocation $allocation): StockAllocationResult;
+    public function transitionAllocation(StockAllocationTransition $transition): StockFulfillmentResult;
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Inventory\Infrastructure\Persistence;
 
+use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use WebWMS\Inventory\Domain\AllocationTransitionType;
 use WebWMS\Inventory\Domain\InsufficientAvailableStockException;
 use WebWMS\Inventory\Domain\InsufficientStockException;
 use WebWMS\Inventory\Domain\InventoryId;
@@ -14,6 +16,8 @@ use WebWMS\Inventory\Domain\InvalidSerialStockException;
 use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
+use WebWMS\Inventory\Domain\StockAllocationTransition;
+use WebWMS\Inventory\Domain\StockFulfillmentResult;
 use WebWMS\Inventory\Domain\StockMovementType;
 use WebWMS\Inventory\Domain\StockPosting;
 use WebWMS\Inventory\Domain\StockReservation;
@@ -283,6 +287,122 @@ final readonly class DbalInventoryRepository implements InventoryRepository
         });
     }
 
+    public function transitionAllocation(StockAllocationTransition $transition): StockFulfillmentResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($transition): StockFulfillmentResult {
+            $allocation = $connection->fetchAssociative(
+                'SELECT a.*, r.requested_quantity, r.allocated_quantity, r.fulfilled_quantity '
+                . 'FROM wms_stock_allocation a INNER JOIN wms_stock_reservation r ON r.id = a.reservation_id '
+                . "WHERE a.id = :allocationId AND a.tenant_id = :tenantId AND a.status = 'active' FOR UPDATE",
+                ['allocationId' => $transition->allocationId()->value(), 'tenantId' => $transition->tenantId()->value()],
+            );
+            if ($allocation === false) {
+                throw new InventoryReferenceNotFoundException('An active allocation must exist in the tenant.');
+            }
+
+            $userExists = $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $transition->performedBy()->value(), 'tenantId' => $transition->tenantId()->value()],
+            );
+            if ($userExists === false) {
+                throw new InventoryReferenceNotFoundException('The fulfillment user must exist in the tenant.');
+            }
+
+            $physicalQuantity = $this->transitionPhysicalStock($connection, $allocation, $transition);
+            $quantity = (int) $allocation['quantity'];
+            $allocatedQuantity = (int) $allocation['allocated_quantity'] - $quantity;
+            $fulfilledQuantity = (int) $allocation['fulfilled_quantity']
+                + ($transition->type() === AllocationTransitionType::Consume ? $quantity : 0);
+            $requestedQuantity = (int) $allocation['requested_quantity'];
+            $reservationStatus = $this->reservationStatus(
+                $requestedQuantity,
+                $allocatedQuantity,
+                $fulfilledQuantity,
+            );
+
+            $connection->update('wms_stock_allocation', [
+                'status' => $transition->type()->value,
+                'transitioned_by' => $transition->performedBy()->value(),
+                'transitioned_at' => $transition->occurredAt()->format('Y-m-d H:i:s.u'),
+                'transition_reason' => $transition->reason(),
+            ], ['id' => $transition->allocationId()->value()]);
+            $connection->update('wms_stock_reservation', [
+                'allocated_quantity' => $allocatedQuantity,
+                'fulfilled_quantity' => $fulfilledQuantity,
+                'status' => $reservationStatus,
+                'updated_at' => $transition->occurredAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $allocation['reservation_id']]);
+
+            return new StockFulfillmentResult(
+                $transition->type()->value,
+                $reservationStatus,
+                $physicalQuantity,
+            );
+        });
+    }
+
+    /** @param array<string, mixed> $allocation */
+    private function transitionPhysicalStock(
+        Connection $connection,
+        array $allocation,
+        StockAllocationTransition $transition,
+    ): int {
+        $posting = new StockPosting(
+            $transition->ledgerEntryId() ?? $transition->allocationId(),
+            $transition->tenantId(),
+            new InventoryId((string) $allocation['product_id']),
+            new InventoryId((string) $allocation['location_id']),
+            -(int) $allocation['quantity'],
+            $transition->reason(),
+            $transition->performedBy(),
+            $transition->occurredAt(),
+            StockDimensions::fromInput(
+                (string) $allocation['stock_status'],
+                $allocation['batch_number'] === null ? null : (string) $allocation['batch_number'],
+                $allocation['serial_number'] === null ? null : (string) $allocation['serial_number'],
+                $allocation['expires_at'] === null ? null : new DateTimeImmutable((string) $allocation['expires_at']),
+            ),
+        );
+        $balance = $connection->fetchOne(
+            'SELECT quantity FROM wms_stock_balance WHERE tenant_id = :tenantId AND product_id = :productId '
+            . 'AND location_id = :locationId AND stock_key = :stockKey FOR UPDATE',
+            $this->postingKey($posting),
+        );
+        $physical = $balance === false ? 0 : (int) $balance;
+
+        if ($transition->type() === AllocationTransitionType::Release) {
+            return $physical;
+        }
+
+        $newQuantity = $physical + $posting->quantityDelta();
+        if ($newQuantity < 0) {
+            throw new InsufficientStockException('The allocated stock is no longer physically available.');
+        }
+        $this->persistBalance($connection, $posting, $newQuantity, true);
+        $this->insertLedgerEntry(
+            $connection,
+            $posting,
+            $newQuantity,
+            StockMovementType::AllocationConsumption,
+            allocationId: $transition->allocationId(),
+            reservationId: new InventoryId((string) $allocation['reservation_id']),
+        );
+
+        return $newQuantity;
+    }
+
+    private function reservationStatus(int $requested, int $allocated, int $fulfilled): string
+    {
+        if ($fulfilled === $requested) {
+            return 'fulfilled';
+        }
+        if ($allocated === 0) {
+            return $fulfilled > 0 ? 'partially_fulfilled' : 'open';
+        }
+
+        return $allocated + $fulfilled === $requested ? 'allocated' : 'partially_allocated';
+    }
+
     /** @return array{tenantId: string, productId: string, locationId: string, stockKey: string} */
     private function postingKey(StockPosting $posting): array
     {
@@ -383,6 +503,8 @@ final readonly class DbalInventoryRepository implements InventoryRepository
         int $resultingQuantity,
         StockMovementType $movementType,
         ?InventoryId $transferId = null,
+        ?InventoryId $allocationId = null,
+        ?InventoryId $reservationId = null,
     ): void {
         $connection->insert('wms_stock_ledger', [
             'id' => $posting->id()->value(),
@@ -392,6 +514,8 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             'resulting_quantity' => $resultingQuantity,
             'movement_type' => $movementType->value,
             'transfer_id' => $transferId?->value(),
+            'allocation_id' => $allocationId?->value(),
+            'reservation_id' => $reservationId?->value(),
             'reason' => $posting->reason(),
             'performed_by' => $posting->performedBy()->value(),
             'occurred_at' => $posting->occurredAt()->format('Y-m-d H:i:s.u'),

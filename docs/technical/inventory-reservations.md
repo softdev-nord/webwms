@@ -41,5 +41,6 @@ Bestandsschlüssel.
 - Es kann weder über den Auftragsbedarf noch über den verfügbaren Bestand hinaus
   allokiert werden.
 - Mandant, Artikel, Lagerplatz und Benutzer werden referenziell geprüft.
-- Freigabe, Verbrauch beim Picking, Prioritäten und automatische FEFO-Auswahl
-  folgen als explizite Zustandsübergänge im nächsten Fulfillment-Slice.
+- Freigabe und Verbrauch beim Picking sind im Folgeslice
+  [Picking und Fulfillment](inventory-fulfillment.md) umgesetzt. Prioritäten und
+  automatische FEFO-Auswahl folgen später.

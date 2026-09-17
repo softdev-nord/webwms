@@ -12,6 +12,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Bestandsmerkmale: Status, Charge, Seriennummer und MHD](technical/inventory-stock-dimensions.md)
 - [Atomare Bestandsumlagerung und Statusumbuchung](technical/inventory-transfers.md)
 - [Bestandsreservierung und Auftragsallokation](technical/inventory-reservations.md)
+- [Picking und Fulfillment](technical/inventory-fulfillment.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -23,6 +24,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Bestandsstatus, Chargen, Seriennummern und MHD](user/inventory-stock-dimensions.md)
 - [Bestand umlagern und Status ändern](user/inventory-transfers.md)
 - [Bestand reservieren und allokieren](user/inventory-reservations.md)
+- [Allokationen freigeben und entnehmen](user/inventory-fulfillment.md)
 
 ## Verbindliche Dokumentationsregel
 
