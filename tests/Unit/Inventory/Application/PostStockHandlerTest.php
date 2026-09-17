@@ -11,6 +11,8 @@ use WebWMS\Inventory\Application\PostStockHandler;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\StockPosting;
+use WebWMS\Inventory\Domain\StockTransfer;
+use WebWMS\Inventory\Domain\StockTransferResult;
 use WebWMS\Inventory\Domain\StorageLocation;
 use WebWMS\Inventory\Domain\Warehouse;
 
@@ -64,5 +66,10 @@ final class InventoryMemoryRepository implements InventoryRepository
         $this->posting = $posting;
 
         return 10;
+    }
+
+    public function transfer(StockTransfer $transfer): StockTransferResult
+    {
+        return new StockTransferResult(0, 0);
     }
 }

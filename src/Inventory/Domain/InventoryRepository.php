@@ -10,4 +10,5 @@ interface InventoryRepository
     public function saveWarehouse(Warehouse $warehouse): void;
     public function saveLocation(StorageLocation $location): void;
     public function post(StockPosting $posting): int;
+    public function transfer(StockTransfer $transfer): StockTransferResult;
 }

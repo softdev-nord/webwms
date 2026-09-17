@@ -41,7 +41,7 @@ dieselbe Balance fortschreiben.
 
 ## Bekannte Einschränkungen
 
-Statuswechsel und Umlagerungen werden derzeit als zusammengehörige Aus- und
-Einbuchungen durch den aufrufenden Prozess modelliert. Eine atomare
-Transfer-Anwendung, FEFO-Reservierung, MHD-Warnungen und seriennummernweite
-Eindeutigkeit über mehrere Lagerplätze folgen in späteren Slices.
+Statuswechsel und Umlagerungen sind über den Folgeslice
+[Atomare Bestandsumlagerung und Statusumbuchung](inventory-transfers.md)
+abgedeckt. FEFO-Reservierung, MHD-Warnungen und seriennummernweite Eindeutigkeit
+über mehrere Lagerplätze folgen in späteren Slices.

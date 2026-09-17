@@ -6,11 +6,15 @@ namespace WebWMS\Inventory\Infrastructure\Persistence;
 
 use Doctrine\DBAL\Connection;
 use WebWMS\Inventory\Domain\InsufficientStockException;
+use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\InvalidSerialStockException;
 use WebWMS\Inventory\Domain\ProductReference;
+use WebWMS\Inventory\Domain\StockMovementType;
 use WebWMS\Inventory\Domain\StockPosting;
+use WebWMS\Inventory\Domain\StockTransfer;
+use WebWMS\Inventory\Domain\StockTransferResult;
 use WebWMS\Inventory\Domain\StorageLocation;
 use WebWMS\Inventory\Domain\Warehouse;
 
@@ -93,36 +97,77 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 throw new InvalidSerialStockException('A serial number can only have a stock quantity of zero or one.');
             }
 
-            if ($current === false) {
-                $connection->insert('wms_stock_balance', [
-                    ...$this->balanceKey($posting),
-                    ...$this->dimensionValues($posting),
-                    'quantity' => $newQuantity,
-                    'updated_at' => $posting->occurredAt()->format('Y-m-d H:i:s.u'),
-                ]);
-            } else {
-                $connection->update(
-                    'wms_stock_balance',
-                    [
-                        'quantity' => $newQuantity,
-                        'updated_at' => $posting->occurredAt()->format('Y-m-d H:i:s.u'),
-                    ],
-                    $this->balanceKey($posting),
-                );
-            }
-
-            $connection->insert('wms_stock_ledger', [
-                'id' => $posting->id()->value(),
-                ...$this->balanceKey($posting),
-                ...$this->dimensionValues($posting),
-                'quantity_delta' => $posting->quantityDelta(),
-                'resulting_quantity' => $newQuantity,
-                'reason' => $posting->reason(),
-                'performed_by' => $posting->performedBy()->value(),
-                'occurred_at' => $posting->occurredAt()->format('Y-m-d H:i:s.u'),
-            ]);
+            $this->persistBalance($connection, $posting, $newQuantity, $current !== false);
+            $this->insertLedgerEntry($connection, $posting, $newQuantity, StockMovementType::Posting);
 
             return $newQuantity;
+        });
+    }
+
+    public function transfer(StockTransfer $transfer): StockTransferResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($transfer): StockTransferResult {
+            $source = $transfer->sourcePosting();
+            $destination = $transfer->destinationPosting();
+            $this->assertReferencesExist($connection, $source);
+            $this->assertReferencesExist($connection, $destination);
+
+            $postings = [$source, $destination];
+            usort(
+                $postings,
+                fn (StockPosting $left, StockPosting $right): int => $this->lockKey($left) <=> $this->lockKey($right),
+            );
+
+            /** @var array<string, int|false> $currentQuantities */
+            $currentQuantities = [];
+            foreach ($postings as $posting) {
+                $current = $connection->fetchOne(
+                    'SELECT quantity FROM wms_stock_balance '
+                    . 'WHERE tenant_id = :tenantId AND product_id = :productId '
+                    . 'AND location_id = :locationId AND stock_key = :stockKey '
+                    . 'FOR UPDATE',
+                    $this->postingKey($posting),
+                );
+                $currentQuantities[$this->lockKey($posting)] = $current === false ? false : (int) $current;
+            }
+
+            $sourceCurrent = $currentQuantities[$this->lockKey($source)];
+            $destinationCurrent = $currentQuantities[$this->lockKey($destination)];
+            $sourceQuantity = ($sourceCurrent === false ? 0 : $sourceCurrent) + $source->quantityDelta();
+            $destinationQuantity = ($destinationCurrent === false ? 0 : $destinationCurrent)
+                + $destination->quantityDelta();
+
+            if ($sourceQuantity < 0) {
+                throw new InsufficientStockException('The stock transfer source does not contain enough stock.');
+            }
+
+            if ($destination->dimensions()->serialNumber() !== null && $destinationQuantity > 1) {
+                throw new InvalidSerialStockException('The destination already contains this serial number.');
+            }
+
+            $this->persistBalance($connection, $source, $sourceQuantity, $sourceCurrent !== false);
+            $this->persistBalance(
+                $connection,
+                $destination,
+                $destinationQuantity,
+                $destinationCurrent !== false,
+            );
+            $this->insertLedgerEntry(
+                $connection,
+                $source,
+                $sourceQuantity,
+                StockMovementType::TransferOut,
+                $transfer->id(),
+            );
+            $this->insertLedgerEntry(
+                $connection,
+                $destination,
+                $destinationQuantity,
+                StockMovementType::TransferIn,
+                $transfer->id(),
+            );
+
+            return new StockTransferResult($sourceQuantity, $destinationQuantity);
         });
     }
 
@@ -159,6 +204,64 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             'serial_number' => $dimensions->serialNumber(),
             'expires_at' => $dimensions->expiresAt()?->format('Y-m-d'),
         ];
+    }
+
+    private function lockKey(StockPosting $posting): string
+    {
+        return implode('|', [
+            $posting->tenantId()->value(),
+            $posting->productId()->value(),
+            $posting->locationId()->value(),
+            $posting->dimensions()->key(),
+        ]);
+    }
+
+    private function persistBalance(
+        Connection $connection,
+        StockPosting $posting,
+        int $quantity,
+        bool $exists,
+    ): void {
+        if (!$exists) {
+            $connection->insert('wms_stock_balance', [
+                ...$this->balanceKey($posting),
+                ...$this->dimensionValues($posting),
+                'quantity' => $quantity,
+                'updated_at' => $posting->occurredAt()->format('Y-m-d H:i:s.u'),
+            ]);
+
+            return;
+        }
+
+        $connection->update(
+            'wms_stock_balance',
+            [
+                'quantity' => $quantity,
+                'updated_at' => $posting->occurredAt()->format('Y-m-d H:i:s.u'),
+            ],
+            $this->balanceKey($posting),
+        );
+    }
+
+    private function insertLedgerEntry(
+        Connection $connection,
+        StockPosting $posting,
+        int $resultingQuantity,
+        StockMovementType $movementType,
+        ?InventoryId $transferId = null,
+    ): void {
+        $connection->insert('wms_stock_ledger', [
+            'id' => $posting->id()->value(),
+            ...$this->balanceKey($posting),
+            ...$this->dimensionValues($posting),
+            'quantity_delta' => $posting->quantityDelta(),
+            'resulting_quantity' => $resultingQuantity,
+            'movement_type' => $movementType->value,
+            'transfer_id' => $transferId?->value(),
+            'reason' => $posting->reason(),
+            'performed_by' => $posting->performedBy()->value(),
+            'occurred_at' => $posting->occurredAt()->format('Y-m-d H:i:s.u'),
+        ]);
     }
 
     private function assertReferencesExist(Connection $connection, StockPosting $posting): void

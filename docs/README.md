@@ -10,6 +10,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Benutzer, Rollen, Rechte und Symfony Security](technical/access-security.md)
 - [Inventory Core](technical/inventory-core.md)
 - [Bestandsmerkmale: Status, Charge, Seriennummer und MHD](technical/inventory-stock-dimensions.md)
+- [Atomare Bestandsumlagerung und Statusumbuchung](technical/inventory-transfers.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -19,6 +20,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Benutzer, Rollen, Rechte und Anmeldung](user/access-security.md)
 - [Artikel, Lagerplätze und Bestände](user/inventory-core.md)
 - [Bestandsstatus, Chargen, Seriennummern und MHD](user/inventory-stock-dimensions.md)
+- [Bestand umlagern und Status ändern](user/inventory-transfers.md)
 
 ## Verbindliche Dokumentationsregel
 
