@@ -17,6 +17,7 @@ use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
 use WebWMS\Inventory\Domain\StockAllocationTransition;
+use WebWMS\Inventory\Domain\StockDimensions;
 use WebWMS\Inventory\Domain\StockFulfillmentResult;
 use WebWMS\Inventory\Domain\StockMovementType;
 use WebWMS\Inventory\Domain\StockPosting;
