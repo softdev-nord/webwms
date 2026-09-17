@@ -59,6 +59,8 @@ services:
             - '../src/Administration/Application/**/*Command.php'
             - '../src/Administration/Application/**/*Exception.php'
             - '../src/Security/V3/SecurityUser.php'
+            - '../src/Inventory/Domain/'
+            - '../src/Inventory/Application/*Command.php'
 
     WebWMS\Administration\Domain\Tenant\TenantRepository:
         alias: WebWMS\Administration\Infrastructure\Persistence\DoctrineTenantRepository
@@ -74,6 +76,9 @@ services:
 
     WebWMS\Administration\Domain\Access\PasswordHasher:
         alias: WebWMS\Administration\Infrastructure\Security\SymfonyPasswordHasher
+
+    WebWMS\Inventory\Domain\InventoryRepository:
+        alias: WebWMS\Inventory\Infrastructure\Persistence\DbalInventoryRepository
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class

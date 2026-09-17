@@ -8,6 +8,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Phase 1: Runtime und Qualitätsbasis](technical/phase-1-runtime.md)
 - [Phase 2: Mandanten und Standorte](technical/phase-2-administration.md)
 - [Benutzer, Rollen, Rechte und Symfony Security](technical/access-security.md)
+- [Inventory Core](technical/inventory-core.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -15,6 +16,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [WebWMS 3.0 Grundlagen](user/getting-started.md)
 - [Mandanten und Standorte](user/tenants-and-sites.md)
 - [Benutzer, Rollen, Rechte und Anmeldung](user/access-security.md)
+- [Artikel, Lagerplätze und Bestände](user/inventory-core.md)
 
 ## Verbindliche Dokumentationsregel
 
