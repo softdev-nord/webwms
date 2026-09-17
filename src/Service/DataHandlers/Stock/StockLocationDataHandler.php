@@ -63,10 +63,6 @@ readonly class StockLocationDataHandler
             ->getRepository(StockLocation::class)
             ->findBy(['stockLocationId' => $stockLocationId]);
 
-        if ($stockLocation === null) {
-            throw new Exception('Keine Details für den gewählten Lagerort gefunden.');
-        }
-
         return $stockLocation;
     }
 
@@ -160,10 +156,6 @@ readonly class StockLocationDataHandler
         $stockLocation = $this->entityManager
             ->getRepository(StockLocation::class)
             ->findAll();
-
-        if ($stockLocation === null) {
-            throw new Exception('Keine Lagerorte gefunden');
-        }
 
         return $stockLocation;
     }

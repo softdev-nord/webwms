@@ -110,8 +110,8 @@ class StockOccupancyController extends AbstractController
 
         foreach ($allStockOccupancy as $stockOccupancy) {
             match ($stockOccupancy['system']) {
-                'Block-Lager' => $stockResults[$stockOccupancy['sp']][] = $stockOccupancy,
-                default => $stockResults[$stockOccupancy['fb']][] = $stockOccupancy,
+                'Block-Lager' => $stockResults[(string) $stockOccupancy['sp']][] = $stockOccupancy,
+                default => $stockResults[(string) $stockOccupancy['fb']][] = $stockOccupancy,
             };
             $stock[] = $stockOccupancy['system'];
         }
