@@ -1,6 +1,9 @@
 name: CI
 
 on:
+  push:
+    branches:
+      - 'feature/WEBWMS-3.0.0'
   pull_request:
     branches:
       - '**'
@@ -13,13 +16,18 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php-versions: ['8.3']
+        php-versions: ['8.4']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Add composer auth credentials
-        run: echo '${{ secrets.COMPOSER_AUTH_JSON }}' > $GITHUB_WORKSPACE/auth.json
+        env:
+          COMPOSER_AUTH_JSON: ${{ secrets.COMPOSER_AUTH_JSON }}
+        run: |
+          if [ -n "$COMPOSER_AUTH_JSON" ]; then
+            printf '%s' "$COMPOSER_AUTH_JSON" > "$GITHUB_WORKSPACE/auth.json"
+          fi
 
 #      - name: Setup SSH Keys and known_hosts
 #        env:
@@ -30,10 +38,12 @@ jobs:
 
       # https://github.com/shivammathur/setup-php (community)
       - name: Setup PHP, extensions and composer with shivammathur/setup-php
-        uses: shivammathur/setup-php@verbose
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: mbstring, xml, ctype, iconv, intl, dom, filter, gd, iconv, json, mbstring, pdo, curl, amqp
+          extensions: amqp, ctype, curl, dom, filter, gd, iconv, intl, json, mbstring, pdo, simplexml, xml, zip
+          coverage: pcov
+          tools: composer:v2
 
       # Composer
       - name: Get composer cache directory
@@ -54,9 +64,16 @@ jobs:
 
       - name: Install Composer dependencies
         working-directory: .
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+        run: composer install --no-interaction --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Validate Composer configuration and lock file
+        run: composer validate --strict
+
+      - name: Verify PHP platform requirements
+        run: composer check-platform-reqs
+
+      - name: Verify Symfony container
+        run: php bin/console about --env=test
 
       - name: Check PSR12 code style (Easy Coding Standards)
         working-directory: .

@@ -69,9 +69,9 @@ angelegt werden. Zugangsdaten dürfen nicht im Repository hinterlegt werden.
   + `rector/rector`
 
 ## Lokale Entwicklungsumgebung:
-* **PHP** `8.3`
+* **PHP** `8.4`
 * **Apache** `2.4`
-* **MariaDB** `10.5`
+* **MariaDB** `10.6`
 * **PhpMyAdmin** `latest`
 
 ## Installation:

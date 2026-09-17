@@ -13,8 +13,6 @@
 # (C)2022 SoftDev Nord Rene Irrgang
 #####################################################################
 
-version: '3'
-
 networks:
   webwms-net:
     ipam:
@@ -56,9 +54,6 @@ services:
       - ${VHOSTS_DIR}:/etc/apache2/sites-enabled
       - ${APACHE_LOG_DIR}:/var/log/apache2
       - ${APACHE_CERTS_DIR-./config/certs}:/etc/apache2/ssl
-      - ${BACKUP_CRONTAB}:/etc/cron.d/backup-db
-      - ${BACKUP_FILE}:/var/backup/mysql/backup-database.sh
-      - ${MYSQL_BACKUP_DIR}:/var/backup/mysql
       - /etc/localtime:/etc/localtime:ro
     environment:
       - APACHE_DOCUMENT_ROOT=${APACHE_DOCUMENT_ROOT}
@@ -76,7 +71,6 @@ services:
     build:
       context: ./.docker/${DATABASE}
     container_name: ${COMPOSE_PROJECT_NAME}-${DATABASE}
-    command: --default-authentication-plugin=mysql_native_password
     restart: always
     ports:
       - "${HOST_MACHINE_MYSQL_PORT}:3306"

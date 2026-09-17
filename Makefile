@@ -1,5 +1,5 @@
-APP_CONTAINER_NAME = "webwms-php8.3"
-DB_CONTAINER_NAME = "webwms-MariaDB10.5"
+APP_CONTAINER_NAME = "webwms-php8.4"
+DB_CONTAINER_NAME = "webwms-MariaDB10.6"
 
 help: ## Display this help
 	@printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"
@@ -42,15 +42,6 @@ generate-bundle: ## Generate bundles
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'bin/console webwms:generate:bundle'
 
 ######################################################################
-############################## Database ##############################
-######################################################################
-backup:
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'cd /var/backup/mysql && ./backup-database.sh'
-
-list-backup:
-	@docker exec -it $(APP_CONTAINER_NAME) ls /var/backup/mysql
-
-######################################################################
 ################################ Logs ################################
 ######################################################################
 logs: ## Tail application container logs
@@ -72,7 +63,7 @@ var-dump-check: ## Find var_dump, dd, etc.
 	@docker exec -t $(APP_CONTAINER_NAME) vendor/bin/var-dump-check --symfony --doctrine --exclude vendor .
 
 php-compatibility-check:
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'composer sniffer:php83';
+	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'composer check-platform-reqs';
 
 ######################################################################
 ########################## Code Style Check ##########################
