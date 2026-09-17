@@ -1,5 +1,6 @@
 {
     "name": "webwms/webwms-core",
+    "version": "2.1.4",
     "description": "webWMS Das webbasierte Lagerverwaltungssystem",
     "keywords": ["webWMS", "wms"],
     "homepage": "https://softdev-nord.de",
