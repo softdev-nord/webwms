@@ -56,12 +56,20 @@ services:
             - '../src/Administration/Application/**/CreateSiteCommand.php'
             - '../src/Administration/Application/**/SiteCodeAlreadyExists.php'
             - '../src/Administration/Application/**/TenantNotFound.php'
+            - '../src/Administration/Application/**/*Command.php'
+            - '../src/Administration/Application/**/*Exception.php'
 
     WebWMS\Administration\Domain\Tenant\TenantRepository:
         alias: WebWMS\Administration\Infrastructure\Persistence\DoctrineTenantRepository
 
     WebWMS\Administration\Domain\Site\SiteRepository:
         alias: WebWMS\Administration\Infrastructure\Persistence\DoctrineSiteRepository
+
+    WebWMS\Administration\Domain\Access\RoleRepository:
+        alias: WebWMS\Administration\Infrastructure\Persistence\DoctrineAccessRepository
+
+    WebWMS\Administration\Domain\Access\UserAccountRepository:
+        alias: WebWMS\Administration\Infrastructure\Persistence\DoctrineAccessRepository
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
