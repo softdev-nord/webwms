@@ -15,6 +15,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Picking und Fulfillment](technical/inventory-fulfillment.md)
 - [Picklisten und Pickaufträge](technical/inventory-pick-lists.md)
 - [Packprozess](technical/inventory-packing.md)
+- [Versandprozess](technical/inventory-shipping.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -29,6 +30,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Allokationen freigeben und entnehmen](user/inventory-fulfillment.md)
 - [Mit Picklisten arbeiten](user/inventory-pick-lists.md)
 - [Packaufträge und Packstücke](user/inventory-packing.md)
+- [Sendungen vorbereiten und übergeben](user/inventory-shipping.md)
 
 ## Verbindliche Dokumentationsregel
 

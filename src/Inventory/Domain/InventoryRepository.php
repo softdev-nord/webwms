@@ -20,4 +20,7 @@ interface InventoryRepository
     public function savePackingOrder(PackingOrder $order): void;
     public function savePackingPackage(PackingPackage $package): void;
     public function completePackingOrder(PackingCompletion $completion): PackingResult;
+    public function saveShipment(Shipment $shipment): void;
+    public function registerShipmentLabel(ShipmentLabel $label): ShipmentResult;
+    public function dispatchShipment(ShipmentDispatch $dispatch): ShipmentResult;
 }

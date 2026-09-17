@@ -23,6 +23,10 @@ use WebWMS\Inventory\Domain\PickList;
 use WebWMS\Inventory\Domain\PickListAssignment;
 use WebWMS\Inventory\Domain\PickOutcome;
 use WebWMS\Inventory\Domain\ProductReference;
+use WebWMS\Inventory\Domain\Shipment;
+use WebWMS\Inventory\Domain\ShipmentDispatch;
+use WebWMS\Inventory\Domain\ShipmentLabel;
+use WebWMS\Inventory\Domain\ShipmentResult;
 use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
 use WebWMS\Inventory\Domain\StockAllocationTransition;
@@ -512,6 +516,74 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             $connection->update('wms_packing_order', ['status' => 'completed', 'completed_by' => $completion->completedBy()->value(), 'completed_at' => $completion->completedAt()->format('Y-m-d H:i:s.u'), 'updated_at' => $completion->completedAt()->format('Y-m-d H:i:s.u')], ['id' => $completion->packingOrderId()->value()]);
 
             return new PackingResult('completed', (int) $summary['package_count'], (int) $summary['total_weight']);
+        });
+    }
+
+    public function saveShipment(Shipment $shipment): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($shipment): void {
+            $valid = $connection->fetchOne(
+                "SELECT 1 FROM wms_packing_order o, wms_user_account u WHERE o.id = :packingOrderId AND o.tenant_id = :tenantId AND o.status = 'completed' AND u.id = :userId AND u.tenant_id = :tenantId FOR UPDATE",
+                ['packingOrderId' => $shipment->packingOrderId()->value(), 'tenantId' => $shipment->tenantId()->value(), 'userId' => $shipment->createdBy()->value()],
+            );
+            if ($valid === false) {
+                throw new InventoryReferenceNotFoundException('A completed packing order and creator must exist in the tenant.');
+            }
+            $connection->insert('wms_shipment', [
+                'id' => $shipment->id()->value(), 'tenant_id' => $shipment->tenantId()->value(),
+                'packing_order_id' => $shipment->packingOrderId()->value(), 'shipment_number' => $shipment->shipmentNumber(),
+                'carrier' => $shipment->carrier(), 'service' => $shipment->service(), 'status' => 'prepared',
+                'created_by' => $shipment->createdBy()->value(), 'created_at' => $shipment->createdAt()->format('Y-m-d H:i:s.u'),
+                'updated_at' => $shipment->createdAt()->format('Y-m-d H:i:s.u'),
+            ]);
+        });
+    }
+
+    public function registerShipmentLabel(ShipmentLabel $label): ShipmentResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($label): ShipmentResult {
+            $shipment = $connection->fetchAssociative(
+                "SELECT id FROM wms_shipment WHERE id = :id AND tenant_id = :tenantId AND status = 'prepared' FOR UPDATE",
+                ['id' => $label->shipmentId()->value(), 'tenantId' => $label->tenantId()->value()],
+            );
+            if ($shipment === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $label->registeredBy()->value(), 'tenantId' => $label->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('A prepared shipment and registering user must exist in the tenant.');
+            }
+            $connection->update('wms_shipment', [
+                'status' => 'labelled', 'tracking_number' => $label->trackingNumber(),
+                'label_reference' => $label->labelReference(), 'label_registered_by' => $label->registeredBy()->value(),
+                'label_registered_at' => $label->registeredAt()->format('Y-m-d H:i:s.u'),
+                'updated_at' => $label->registeredAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $label->shipmentId()->value()]);
+
+            return new ShipmentResult('labelled', $label->trackingNumber());
+        });
+    }
+
+    public function dispatchShipment(ShipmentDispatch $dispatch): ShipmentResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($dispatch): ShipmentResult {
+            $shipment = $connection->fetchAssociative(
+                "SELECT tracking_number FROM wms_shipment WHERE id = :id AND tenant_id = :tenantId AND status = 'labelled' FOR UPDATE",
+                ['id' => $dispatch->shipmentId()->value(), 'tenantId' => $dispatch->tenantId()->value()],
+            );
+            if ($shipment === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $dispatch->dispatchedBy()->value(), 'tenantId' => $dispatch->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('A labelled shipment and dispatching user must exist in the tenant.');
+            }
+            $connection->update('wms_shipment', [
+                'status' => 'dispatched', 'handover_reference' => $dispatch->handoverReference(),
+                'dispatched_by' => $dispatch->dispatchedBy()->value(),
+                'dispatched_at' => $dispatch->dispatchedAt()->format('Y-m-d H:i:s.u'),
+                'updated_at' => $dispatch->dispatchedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $dispatch->shipmentId()->value()]);
+
+            return new ShipmentResult('dispatched', (string) $shipment['tracking_number']);
         });
     }
 

@@ -18,6 +18,10 @@ use WebWMS\Inventory\Domain\PickConfirmationResult;
 use WebWMS\Inventory\Domain\PickList;
 use WebWMS\Inventory\Domain\PickListAssignment;
 use WebWMS\Inventory\Domain\ProductReference;
+use WebWMS\Inventory\Domain\Shipment;
+use WebWMS\Inventory\Domain\ShipmentDispatch;
+use WebWMS\Inventory\Domain\ShipmentLabel;
+use WebWMS\Inventory\Domain\ShipmentResult;
 use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
 use WebWMS\Inventory\Domain\StockAllocationTransition;
@@ -124,5 +128,19 @@ final class InventoryMemoryRepository implements InventoryRepository
     public function completePackingOrder(PackingCompletion $completion): PackingResult
     {
         return new PackingResult('completed', 1, 1000);
+    }
+
+    public function saveShipment(Shipment $shipment): void
+    {
+    }
+
+    public function registerShipmentLabel(ShipmentLabel $label): ShipmentResult
+    {
+        return new ShipmentResult('labelled', 'TRACK-1');
+    }
+
+    public function dispatchShipment(ShipmentDispatch $dispatch): ShipmentResult
+    {
+        return new ShipmentResult('dispatched', 'TRACK-1');
     }
 }
