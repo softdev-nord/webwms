@@ -13,12 +13,16 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\InvalidSerialStockException;
-use WebWMS\Inventory\Domain\ProductReference;
+use WebWMS\Inventory\Domain\PackingCompletion;
+use WebWMS\Inventory\Domain\PackingOrder;
+use WebWMS\Inventory\Domain\PackingPackage;
+use WebWMS\Inventory\Domain\PackingResult;
 use WebWMS\Inventory\Domain\PickConfirmation;
 use WebWMS\Inventory\Domain\PickConfirmationResult;
 use WebWMS\Inventory\Domain\PickList;
 use WebWMS\Inventory\Domain\PickListAssignment;
 use WebWMS\Inventory\Domain\PickOutcome;
+use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
 use WebWMS\Inventory\Domain\StockAllocationTransition;
@@ -428,6 +432,86 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             $connection->update('wms_pick_list', ['status' => $listStatus, 'updated_at' => $confirmation->confirmedAt()->format('Y-m-d H:i:s.u')], ['id' => $task['pick_list_id']]);
 
             return new PickConfirmationResult($confirmation->outcome()->value, $listStatus, $fulfillment->reservationStatus);
+        });
+    }
+
+    public function savePackingOrder(PackingOrder $order): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($order): void {
+            $valid = $connection->fetchOne(
+                "SELECT 1 FROM wms_pick_list l, wms_user_account u WHERE l.id = :pickListId AND l.tenant_id = :tenantId AND l.status = 'completed' AND u.id = :userId AND u.tenant_id = :tenantId FOR UPDATE",
+                ['pickListId' => $order->pickListId()->value(), 'tenantId' => $order->tenantId()->value(), 'userId' => $order->createdBy()->value()],
+            );
+            if ($valid === false) {
+                throw new InventoryReferenceNotFoundException('A completed pick list and creator must exist in the tenant.');
+            }
+            $connection->insert('wms_packing_order', [
+                'id' => $order->id()->value(), 'tenant_id' => $order->tenantId()->value(),
+                'pick_list_id' => $order->pickListId()->value(), 'code' => $order->code(), 'status' => 'open',
+                'created_by' => $order->createdBy()->value(), 'created_at' => $order->createdAt()->format('Y-m-d H:i:s.u'),
+                'updated_at' => $order->createdAt()->format('Y-m-d H:i:s.u'),
+            ]);
+        });
+    }
+
+    public function savePackingPackage(PackingPackage $package): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($package): void {
+            $order = $connection->fetchAssociative(
+                "SELECT pick_list_id FROM wms_packing_order WHERE id = :id AND tenant_id = :tenantId AND status IN ('open', 'packing') FOR UPDATE",
+                ['id' => $package->packingOrderId()->value(), 'tenantId' => $package->tenantId()->value()],
+            );
+            if ($order === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $package->packedBy()->value(), 'tenantId' => $package->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('An open packing order and packer must exist in the tenant.');
+            }
+            $connection->insert('wms_package', [
+                'id' => $package->id()->value(), 'packing_order_id' => $package->packingOrderId()->value(),
+                'package_number' => $package->packageNumber(), 'weight_grams' => $package->weightGrams(),
+                'status' => 'sealed', 'packed_by' => $package->packedBy()->value(),
+                'packed_at' => $package->packedAt()->format('Y-m-d H:i:s.u'),
+            ]);
+            foreach ($package->pickTaskIds() as $taskId) {
+                $validTask = $connection->fetchOne(
+                    "SELECT 1 FROM wms_pick_task WHERE id = :taskId AND pick_list_id = :pickListId AND status = 'picked'",
+                    ['taskId' => $taskId->value(), 'pickListId' => $order['pick_list_id']],
+                );
+                if ($validTask === false) {
+                    throw new InventoryReferenceNotFoundException('Every package item must reference a picked task from the source list.');
+                }
+                $connection->insert('wms_package_item', ['package_id' => $package->id()->value(), 'pick_task_id' => $taskId->value()]);
+            }
+            $connection->update('wms_packing_order', ['status' => 'packing', 'updated_at' => $package->packedAt()->format('Y-m-d H:i:s.u')], ['id' => $package->packingOrderId()->value()]);
+        });
+    }
+
+    public function completePackingOrder(PackingCompletion $completion): PackingResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($completion): PackingResult {
+            $order = $connection->fetchAssociative(
+                "SELECT pick_list_id FROM wms_packing_order WHERE id = :id AND tenant_id = :tenantId AND status IN ('open', 'packing') FOR UPDATE",
+                ['id' => $completion->packingOrderId()->value(), 'tenantId' => $completion->tenantId()->value()],
+            );
+            if ($order === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $completion->completedBy()->value(), 'tenantId' => $completion->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('A completable packing order and user must exist in the tenant.');
+            }
+            $expected = (int) $connection->fetchOne("SELECT COUNT(*) FROM wms_pick_task WHERE pick_list_id = :pickListId AND status = 'picked'", ['pickListId' => $order['pick_list_id']]);
+            $packed = (int) $connection->fetchOne('SELECT COUNT(*) FROM wms_package_item i INNER JOIN wms_package p ON p.id = i.package_id WHERE p.packing_order_id = :orderId', ['orderId' => $completion->packingOrderId()->value()]);
+            if ($expected === 0 || $expected !== $packed) {
+                throw new InsufficientAvailableStockException('Every picked task must be packed exactly once before completion.');
+            }
+            $summary = $connection->fetchAssociative('SELECT COUNT(*) package_count, SUM(weight_grams) total_weight FROM wms_package WHERE packing_order_id = :orderId AND status = :status', ['orderId' => $completion->packingOrderId()->value(), 'status' => 'sealed']);
+            if ($summary === false || (int) $summary['package_count'] === 0) {
+                throw new InventoryReferenceNotFoundException('At least one sealed package is required.');
+            }
+            $connection->update('wms_packing_order', ['status' => 'completed', 'completed_by' => $completion->completedBy()->value(), 'completed_at' => $completion->completedAt()->format('Y-m-d H:i:s.u'), 'updated_at' => $completion->completedAt()->format('Y-m-d H:i:s.u')], ['id' => $completion->packingOrderId()->value()]);
+
+            return new PackingResult('completed', (int) $summary['package_count'], (int) $summary['total_weight']);
         });
     }
 

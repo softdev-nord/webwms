@@ -17,4 +17,7 @@ interface InventoryRepository
     public function savePickList(PickList $pickList): void;
     public function assignPickList(PickListAssignment $assignment): void;
     public function confirmPick(PickConfirmation $confirmation): PickConfirmationResult;
+    public function savePackingOrder(PackingOrder $order): void;
+    public function savePackingPackage(PackingPackage $package): void;
+    public function completePackingOrder(PackingCompletion $completion): PackingResult;
 }

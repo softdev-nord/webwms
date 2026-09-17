@@ -9,6 +9,10 @@ use PHPUnit\Framework\TestCase;
 use WebWMS\Inventory\Application\PostStockCommand;
 use WebWMS\Inventory\Application\PostStockHandler;
 use WebWMS\Inventory\Domain\InventoryRepository;
+use WebWMS\Inventory\Domain\PackingCompletion;
+use WebWMS\Inventory\Domain\PackingOrder;
+use WebWMS\Inventory\Domain\PackingPackage;
+use WebWMS\Inventory\Domain\PackingResult;
 use WebWMS\Inventory\Domain\PickConfirmation;
 use WebWMS\Inventory\Domain\PickConfirmationResult;
 use WebWMS\Inventory\Domain\PickList;
@@ -107,5 +111,18 @@ final class InventoryMemoryRepository implements InventoryRepository
     public function confirmPick(PickConfirmation $confirmation): PickConfirmationResult
     {
         return new PickConfirmationResult('picked', 'completed', 'fulfilled');
+    }
+
+    public function savePackingOrder(PackingOrder $order): void
+    {
+    }
+
+    public function savePackingPackage(PackingPackage $package): void
+    {
+    }
+
+    public function completePackingOrder(PackingCompletion $completion): PackingResult
+    {
+        return new PackingResult('completed', 1, 1000);
     }
 }
