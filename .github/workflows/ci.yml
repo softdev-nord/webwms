@@ -76,3 +76,6 @@ jobs:
       - name: Analyse PHP Code (PHPStan)
         working-directory: .
         run: composer run phpstan
+
+      - name: Test WebWMS 3.0 domain foundation
+        run: vendor/bin/phpunit tests/Unit/Shared tests/Unit/Administration
