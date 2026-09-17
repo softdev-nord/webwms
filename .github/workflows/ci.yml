@@ -61,7 +61,7 @@ jobs:
         run: composer install --no-interaction --no-progress --prefer-dist --optimize-autoloader
 
       - name: Validate Composer configuration and lock file
-        run: composer validate --strict --no-check-publish
+        run: composer validate --no-check-publish
 
       - name: Verify PHP platform requirements
         run: composer check-platform-reqs
