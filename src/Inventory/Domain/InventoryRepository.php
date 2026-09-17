@@ -11,4 +11,6 @@ interface InventoryRepository
     public function saveLocation(StorageLocation $location): void;
     public function post(StockPosting $posting): int;
     public function transfer(StockTransfer $transfer): StockTransferResult;
+    public function saveReservation(StockReservation $reservation): void;
+    public function allocate(StockAllocation $allocation): StockAllocationResult;
 }

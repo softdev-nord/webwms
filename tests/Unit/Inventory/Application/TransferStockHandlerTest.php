@@ -11,6 +11,9 @@ use WebWMS\Inventory\Application\TransferStockHandler;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\StockPosting;
+use WebWMS\Inventory\Domain\StockAllocation;
+use WebWMS\Inventory\Domain\StockAllocationResult;
+use WebWMS\Inventory\Domain\StockReservation;
 use WebWMS\Inventory\Domain\StockTransfer;
 use WebWMS\Inventory\Domain\StockTransferResult;
 use WebWMS\Inventory\Domain\StorageLocation;
@@ -78,5 +81,14 @@ final class TransferMemoryInventoryRepository implements InventoryRepository
         $this->transfer = $transfer;
 
         return new StockTransferResult(5, 12);
+    }
+
+    public function saveReservation(StockReservation $reservation): void
+    {
+    }
+
+    public function allocate(StockAllocation $allocation): StockAllocationResult
+    {
+        return new StockAllocationResult(0, 0, 0);
     }
 }
