@@ -1,0 +1,45 @@
+name: Refresh Composer lock
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'feature/WEBWMS-3.0.0'
+    paths:
+      - 'composer.json'
+      - '.github/workflows/dependency-lock.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  composer:
+    name: Resolve dependencies (PHP 8.4)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP and Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: amqp, ctype, curl, dom, filter, gd, iconv, intl, json, mbstring, pdo, simplexml, xml, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Resolve dependency graph
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ github.token }}"}}'
+        run: composer update --with-all-dependencies --no-interaction --no-progress --no-scripts
+
+      - name: Validate generated lock file
+        run: composer validate --no-check-publish
+
+      - name: Upload lock file
+        uses: actions/upload-artifact@v4
+        with:
+          name: composer-lock
+          path: composer.lock
+          if-no-files-found: error
+          retention-days: 1
