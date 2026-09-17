@@ -22,10 +22,10 @@
         "composer/composer": "^2.6",
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^2.0",
-        "doctrine/dbal": "^3",
-        "doctrine/doctrine-bundle": "^2.11",
+        "doctrine/dbal": "^4.3",
+        "doctrine/doctrine-bundle": "^3.0",
         "doctrine/doctrine-migrations-bundle": "^3.3",
-        "doctrine/orm": "^2.17",
+        "doctrine/orm": "^3.5",
         "jdorn/sql-formatter": "^1.2",
         "jms/serializer-bundle": "^5.4",
         "mpdf/mpdf": "^v8.2",
@@ -152,7 +152,6 @@
         "symplify/easy-coding-standard": "^12.5",
         "tomasvotruba/class-leak": "^0.2.13",
         "tomasvotruba/lines": "^0.5.1",
-        "twigstan/twigstan": "dev-main",
         "vincentlanglet/twig-cs-fixer": "^3.3"
     }
 }
