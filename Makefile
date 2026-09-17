@@ -76,12 +76,6 @@ phpcs-fix: ## Run code style fix
 	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/php-cs-fixer fix --using-cache=no \
 	 -vvv --show-progress=dots --allow-risky=yes';
 
-phpmd: ## Run code check (phpmd)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/bin/phpmd './src/,./module/,./tests/' ansi rulesets.xml';
-
-phpqa: ## Run code check (phpmd)
-	@docker exec -it $(APP_CONTAINER_NAME) bash -c 'vendor/edgedesign/phpqa/phpqa --analyzedDirs src --execution no-parallel';
-
 ######################################################################
 ############################ Twig Linter #############################
 ######################################################################

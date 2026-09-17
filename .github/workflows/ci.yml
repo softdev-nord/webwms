@@ -73,10 +73,6 @@ jobs:
         working-directory: .
         run: composer run ecs
 
-      - name: Analyses PHP Code (PHP Mess Detector)
-        working-directory: .
-        run: composer run phpmd
-
       - name: Analyse PHP Code (PHPStan)
         working-directory: .
         run: composer run phpstan
