@@ -58,6 +58,7 @@ services:
             - '../src/Administration/Application/**/TenantNotFound.php'
             - '../src/Administration/Application/**/*Command.php'
             - '../src/Administration/Application/**/*Exception.php'
+            - '../src/Security/V3/SecurityUser.php'
 
     WebWMS\Administration\Domain\Tenant\TenantRepository:
         alias: WebWMS\Administration\Infrastructure\Persistence\DoctrineTenantRepository
