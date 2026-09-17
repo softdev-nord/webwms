@@ -44,7 +44,7 @@ final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         Request $request,
         TokenInterface $token,
         string $firewallName,
-    ): ?Response {
+    ): Response {
         return new RedirectResponse($this->urlGenerator->generate('homepage'));
     }
 
