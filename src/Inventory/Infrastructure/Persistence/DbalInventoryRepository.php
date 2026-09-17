@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection;
 use WebWMS\Inventory\Domain\InsufficientStockException;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Inventory\Domain\InventoryRepository;
+use WebWMS\Inventory\Domain\InvalidSerialStockException;
 use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\StockPosting;
 use WebWMS\Inventory\Domain\StorageLocation;
@@ -76,7 +77,8 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             $this->assertReferencesExist($connection, $posting);
             $current = $connection->fetchOne(
                 'SELECT quantity FROM wms_stock_balance '
-                . 'WHERE tenant_id = :tenantId AND product_id = :productId AND location_id = :locationId '
+                . 'WHERE tenant_id = :tenantId AND product_id = :productId '
+                . 'AND location_id = :locationId AND stock_key = :stockKey '
                 . 'FOR UPDATE',
                 $this->postingKey($posting),
             );
@@ -87,9 +89,14 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 throw new InsufficientStockException('The stock posting would create negative stock.');
             }
 
+            if ($posting->dimensions()->serialNumber() !== null && $newQuantity > 1) {
+                throw new InvalidSerialStockException('A serial number can only have a stock quantity of zero or one.');
+            }
+
             if ($current === false) {
                 $connection->insert('wms_stock_balance', [
                     ...$this->balanceKey($posting),
+                    ...$this->dimensionValues($posting),
                     'quantity' => $newQuantity,
                     'updated_at' => $posting->occurredAt()->format('Y-m-d H:i:s.u'),
                 ]);
@@ -107,6 +114,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             $connection->insert('wms_stock_ledger', [
                 'id' => $posting->id()->value(),
                 ...$this->balanceKey($posting),
+                ...$this->dimensionValues($posting),
                 'quantity_delta' => $posting->quantityDelta(),
                 'resulting_quantity' => $newQuantity,
                 'reason' => $posting->reason(),
@@ -118,23 +126,38 @@ final readonly class DbalInventoryRepository implements InventoryRepository
         });
     }
 
-    /** @return array{tenantId: string, productId: string, locationId: string} */
+    /** @return array{tenantId: string, productId: string, locationId: string, stockKey: string} */
     private function postingKey(StockPosting $posting): array
     {
         return [
             'tenantId' => $posting->tenantId()->value(),
             'productId' => $posting->productId()->value(),
             'locationId' => $posting->locationId()->value(),
+            'stockKey' => $posting->dimensions()->key(),
         ];
     }
 
-    /** @return array{tenant_id: string, product_id: string, location_id: string} */
+    /** @return array{tenant_id: string, product_id: string, location_id: string, stock_key: string} */
     private function balanceKey(StockPosting $posting): array
     {
         return [
             'tenant_id' => $posting->tenantId()->value(),
             'product_id' => $posting->productId()->value(),
             'location_id' => $posting->locationId()->value(),
+            'stock_key' => $posting->dimensions()->key(),
+        ];
+    }
+
+    /** @return array{stock_status: string, batch_number: ?string, serial_number: ?string, expires_at: ?string} */
+    private function dimensionValues(StockPosting $posting): array
+    {
+        $dimensions = $posting->dimensions();
+
+        return [
+            'stock_status' => $dimensions->status()->value,
+            'batch_number' => $dimensions->batchNumber(),
+            'serial_number' => $dimensions->serialNumber(),
+            'expires_at' => $dimensions->expiresAt()?->format('Y-m-d'),
         ];
     }
 
@@ -145,7 +168,12 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             . 'WHERE p.id = :productId AND p.tenant_id = :tenantId '
             . 'AND l.id = :locationId AND l.tenant_id = :tenantId '
             . 'AND u.id = :performedBy AND u.tenant_id = :tenantId',
-            [...$this->postingKey($posting), 'performedBy' => $posting->performedBy()->value()],
+            [
+                'tenantId' => $posting->tenantId()->value(),
+                'productId' => $posting->productId()->value(),
+                'locationId' => $posting->locationId()->value(),
+                'performedBy' => $posting->performedBy()->value(),
+            ],
         );
 
         if ($result === false) {

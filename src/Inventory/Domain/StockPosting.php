@@ -20,6 +20,7 @@ final readonly class StockPosting
         private string $reason,
         private UserId $performedBy,
         private DateTimeImmutable $occurredAt,
+        private ?StockDimensions $stockDimensions = null,
     ) {
         if ($quantityDelta === 0) {
             throw new InvalidArgumentException('A stock posting quantity must not be zero.');
@@ -27,6 +28,10 @@ final readonly class StockPosting
 
         if (trim($reason) === '' || mb_strlen($reason) > 255) {
             throw new InvalidArgumentException('A stock posting reason must contain 1 to 255 characters.');
+        }
+
+        if ($this->dimensions()->serialNumber() !== null && abs($quantityDelta) !== 1) {
+            throw new InvalidSerialStockException('A serial number must be posted one unit at a time.');
         }
     }
 
@@ -38,4 +43,5 @@ final readonly class StockPosting
     public function reason(): string { return trim($this->reason); }
     public function performedBy(): UserId { return $this->performedBy; }
     public function occurredAt(): DateTimeImmutable { return $this->occurredAt; }
+    public function dimensions(): StockDimensions { return $this->stockDimensions ?? new StockDimensions(); }
 }

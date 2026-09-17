@@ -34,8 +34,12 @@ Zeitpunkt. Bestandsänderungen ohne Ledger-Eintrag sind nicht vorgesehen.
 
 Migration: `Version20260917110000`.
 
+## Erweiterungen
+
+Der Folgeslice [Bestandsmerkmale](inventory-stock-dimensions.md) unterteilt den
+Bestand zusätzlich nach Status, Charge, Seriennummer und MHD.
+
 ## Aktuelle Grenzen
 
-Mengen werden zunächst als ganze Basiseinheiten gespeichert. Chargen,
-Seriennummern, MHD, Bestandsstatus, Handling Units und Dezimalmengen folgen in
-weiteren Inventory-Slices.
+Mengen werden zunächst als ganze Basiseinheiten gespeichert. Handling Units
+und Dezimalmengen folgen in weiteren Inventory-Slices.

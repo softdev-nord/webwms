@@ -17,6 +17,10 @@ final readonly class PostStockCommand
         public string $reason,
         public string $performedBy,
         public DateTimeImmutable $occurredAt,
+        public string $status = 'available',
+        public ?string $batchNumber = null,
+        public ?string $serialNumber = null,
+        public ?DateTimeImmutable $expiresAt = null,
     ) {
     }
 }

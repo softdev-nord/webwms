@@ -8,6 +8,7 @@ use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
+use WebWMS\Inventory\Domain\StockDimensions;
 use WebWMS\Inventory\Domain\StockPosting;
 
 final readonly class PostStockHandler
@@ -27,6 +28,12 @@ final readonly class PostStockHandler
             $command->reason,
             new UserId($command->performedBy),
             $command->occurredAt,
+            StockDimensions::fromInput(
+                $command->status,
+                $command->batchNumber,
+                $command->serialNumber,
+                $command->expiresAt,
+            ),
         ));
     }
 }

@@ -30,10 +30,16 @@ final class PostStockHandlerTest extends TestCase
             'Initial receipt',
             '018f6b7f-75d2-7c4e-8c33-31f91b1cf302',
             new DateTimeImmutable(),
+            'blocked',
+            'lot-2026-01',
+            null,
+            new DateTimeImmutable('2027-05-31'),
         ));
 
         self::assertSame(10, $balance);
         self::assertSame(10, $repository->posting?->quantityDelta());
+        self::assertSame('blocked', $repository->posting?->dimensions()->status()->value);
+        self::assertSame('LOT-2026-01', $repository->posting?->dimensions()->batchNumber());
     }
 }
 

@@ -9,6 +9,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Phase 2: Mandanten und Standorte](technical/phase-2-administration.md)
 - [Benutzer, Rollen, Rechte und Symfony Security](technical/access-security.md)
 - [Inventory Core](technical/inventory-core.md)
+- [Bestandsmerkmale: Status, Charge, Seriennummer und MHD](technical/inventory-stock-dimensions.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -17,6 +18,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Mandanten und Standorte](user/tenants-and-sites.md)
 - [Benutzer, Rollen, Rechte und Anmeldung](user/access-security.md)
 - [Artikel, Lagerplätze und Bestände](user/inventory-core.md)
+- [Bestandsstatus, Chargen, Seriennummern und MHD](user/inventory-stock-dimensions.md)
 
 ## Verbindliche Dokumentationsregel
 
