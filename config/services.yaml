@@ -50,6 +50,12 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+            - '../src/Administration/Domain/'
+            - '../src/Administration/Application/**/CreateTenantCommand.php'
+            - '../src/Administration/Application/**/TenantAlreadyExists.php'
+
+    WebWMS\Administration\Domain\Tenant\TenantRepository:
+        alias: WebWMS\Administration\Infrastructure\Persistence\DoctrineTenantRepository
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
