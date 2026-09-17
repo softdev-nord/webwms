@@ -4,9 +4,17 @@
 **Das webbasierte Lagerverwaltungssystem**
 `https://webwms-dev.softdev-nord.de`
 
-## Test User:
-* ***Benutzername:*** `testAdmin`
-* ***Passwort:*** `WebWms2023!#`
+## WebWMS 3.0
+
+Version 3.0 is being rebuilt as a modular monolith on the
+`feature/WEBWMS-3.0.0` branch. The target baseline is PHP 8.4 and Symfony 8.1.
+Architecture decisions and module boundaries are documented in
+[`docs/architecture/`](docs/architecture/README.md).
+
+## Testzugang
+
+Für lokale Testsysteme muss ein eigener Benutzer mit einem individuellen Passwort
+angelegt werden. Zugangsdaten dürfen nicht im Repository hinterlegt werden.
 
 ## Systemvoraussetzung:
 * min. **PHP** `8.2`
