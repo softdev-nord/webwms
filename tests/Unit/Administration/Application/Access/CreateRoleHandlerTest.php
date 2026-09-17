@@ -10,7 +10,6 @@ use WebWMS\Administration\Application\Access\CreateRole\CreateRoleCommand;
 use WebWMS\Administration\Application\Access\CreateRole\CreateRoleHandler;
 use WebWMS\Administration\Application\Access\CreateRole\RoleCodeAlreadyExistsException;
 use WebWMS\Administration\Domain\Access\Role;
-use WebWMS\Administration\Domain\Access\RoleId;
 use WebWMS\Administration\Domain\Access\RoleRepository;
 use WebWMS\Administration\Domain\Tenant\Tenant;
 use WebWMS\Administration\Domain\Tenant\TenantId;

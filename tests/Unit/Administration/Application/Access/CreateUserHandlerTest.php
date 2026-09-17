@@ -10,7 +10,6 @@ use WebWMS\Administration\Application\Access\CreateUser\CreateUserCommand;
 use WebWMS\Administration\Application\Access\CreateUser\CreateUserHandler;
 use WebWMS\Administration\Application\Access\CreateUser\InvalidRoleAssignmentException;
 use WebWMS\Administration\Domain\Access\Role;
-use WebWMS\Administration\Domain\Access\RoleId;
 use WebWMS\Administration\Domain\Access\RoleRepository;
 use WebWMS\Administration\Domain\Access\UserAccount;
 use WebWMS\Administration\Domain\Access\UserAccountRepository;
