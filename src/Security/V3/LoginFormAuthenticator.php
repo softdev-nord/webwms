@@ -15,11 +15,11 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
-final readonly class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
+final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     public const LOGIN_ROUTE = 'app_v3_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
     {
     }
 
