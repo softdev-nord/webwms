@@ -23,4 +23,7 @@ interface InventoryRepository
     public function saveShipment(Shipment $shipment): void;
     public function registerShipmentLabel(ShipmentLabel $label): ShipmentResult;
     public function dispatchShipment(ShipmentDispatch $dispatch): ShipmentResult;
+    public function saveLoadingManifest(LoadingManifest $manifest): void;
+    public function confirmShipmentLoading(ShipmentLoading $loading): LoadingResult;
+    public function completeLoadingManifest(LoadingCompletion $completion): LoadingResult;
 }

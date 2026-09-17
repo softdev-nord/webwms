@@ -13,6 +13,9 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\InvalidSerialStockException;
+use WebWMS\Inventory\Domain\LoadingCompletion;
+use WebWMS\Inventory\Domain\LoadingManifest;
+use WebWMS\Inventory\Domain\LoadingResult;
 use WebWMS\Inventory\Domain\PackingCompletion;
 use WebWMS\Inventory\Domain\PackingOrder;
 use WebWMS\Inventory\Domain\PackingPackage;
@@ -27,6 +30,7 @@ use WebWMS\Inventory\Domain\Shipment;
 use WebWMS\Inventory\Domain\ShipmentDispatch;
 use WebWMS\Inventory\Domain\ShipmentLabel;
 use WebWMS\Inventory\Domain\ShipmentResult;
+use WebWMS\Inventory\Domain\ShipmentLoading;
 use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
 use WebWMS\Inventory\Domain\StockAllocationTransition;
@@ -584,6 +588,114 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ], ['id' => $dispatch->shipmentId()->value()]);
 
             return new ShipmentResult('dispatched', (string) $shipment['tracking_number']);
+        });
+    }
+
+    public function saveLoadingManifest(LoadingManifest $manifest): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($manifest): void {
+            if ($connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $manifest->createdBy()->value(), 'tenantId' => $manifest->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('The manifest creator must exist in the tenant.');
+            }
+            $connection->insert('wms_loading_manifest', [
+                'id' => $manifest->id()->value(), 'tenant_id' => $manifest->tenantId()->value(),
+                'code' => $manifest->code(), 'tour_reference' => $manifest->tourReference(),
+                'vehicle_reference' => $manifest->vehicleReference(), 'status' => 'open',
+                'created_by' => $manifest->createdBy()->value(),
+                'created_at' => $manifest->createdAt()->format('Y-m-d H:i:s.u'),
+                'updated_at' => $manifest->createdAt()->format('Y-m-d H:i:s.u'),
+            ]);
+            foreach ($manifest->shipmentIds() as $shipmentId) {
+                $shipment = $connection->fetchOne(
+                    "SELECT 1 FROM wms_shipment WHERE id = :shipmentId AND tenant_id = :tenantId AND status = 'labelled' FOR UPDATE",
+                    ['shipmentId' => $shipmentId->value(), 'tenantId' => $manifest->tenantId()->value()],
+                );
+                if ($shipment === false) {
+                    throw new InventoryReferenceNotFoundException('Every manifest shipment must be labelled and belong to the tenant.');
+                }
+                $connection->insert('wms_loading_manifest_shipment', [
+                    'manifest_id' => $manifest->id()->value(), 'shipment_id' => $shipmentId->value(),
+                    'status' => 'pending',
+                ]);
+            }
+        });
+    }
+
+    public function confirmShipmentLoading(ShipmentLoading $loading): LoadingResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($loading): LoadingResult {
+            $row = $connection->fetchAssociative(
+                "SELECT m.id FROM wms_loading_manifest m INNER JOIN wms_loading_manifest_shipment s ON s.manifest_id = m.id WHERE m.id = :manifestId AND m.tenant_id = :tenantId AND m.status IN ('open', 'loading') AND s.shipment_id = :shipmentId AND s.status = 'pending' FOR UPDATE",
+                ['manifestId' => $loading->manifestId()->value(), 'tenantId' => $loading->tenantId()->value(), 'shipmentId' => $loading->shipmentId()->value()],
+            );
+            if ($row === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $loading->loadedBy()->value(), 'tenantId' => $loading->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('A pending manifest shipment and loader must exist in the tenant.');
+            }
+            $connection->update('wms_loading_manifest_shipment', [
+                'status' => 'loaded', 'loaded_by' => $loading->loadedBy()->value(),
+                'loaded_at' => $loading->loadedAt()->format('Y-m-d H:i:s.u'),
+            ], ['manifest_id' => $loading->manifestId()->value(), 'shipment_id' => $loading->shipmentId()->value()]);
+            $connection->update('wms_loading_manifest', [
+                'status' => 'loading', 'updated_at' => $loading->loadedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $loading->manifestId()->value()]);
+            $loaded = (int) $connection->fetchOne(
+                "SELECT COUNT(*) FROM wms_loading_manifest_shipment WHERE manifest_id = :manifestId AND status = 'loaded'",
+                ['manifestId' => $loading->manifestId()->value()],
+            );
+            $total = (int) $connection->fetchOne(
+                'SELECT COUNT(*) FROM wms_loading_manifest_shipment WHERE manifest_id = :manifestId',
+                ['manifestId' => $loading->manifestId()->value()],
+            );
+
+            return new LoadingResult('loading', $loaded, $total);
+        });
+    }
+
+    public function completeLoadingManifest(LoadingCompletion $completion): LoadingResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($completion): LoadingResult {
+            $manifest = $connection->fetchAssociative(
+                "SELECT code FROM wms_loading_manifest WHERE id = :manifestId AND tenant_id = :tenantId AND status IN ('open', 'loading') FOR UPDATE",
+                ['manifestId' => $completion->manifestId()->value(), 'tenantId' => $completion->tenantId()->value()],
+            );
+            if ($manifest === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $completion->completedBy()->value(), 'tenantId' => $completion->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('A completable manifest and user must exist in the tenant.');
+            }
+            $total = (int) $connection->fetchOne(
+                'SELECT COUNT(*) FROM wms_loading_manifest_shipment WHERE manifest_id = :manifestId',
+                ['manifestId' => $completion->manifestId()->value()],
+            );
+            $loaded = (int) $connection->fetchOne(
+                "SELECT COUNT(*) FROM wms_loading_manifest_shipment WHERE manifest_id = :manifestId AND status = 'loaded'",
+                ['manifestId' => $completion->manifestId()->value()],
+            );
+            if ($total === 0 || $loaded !== $total) {
+                throw new InsufficientAvailableStockException('Every manifest shipment must be loaded before completion.');
+            }
+            $connection->executeStatement(
+                "UPDATE wms_shipment s INNER JOIN wms_loading_manifest_shipment ms ON ms.shipment_id = s.id SET s.status = 'dispatched', s.handover_reference = :reference, s.dispatched_by = :userId, s.dispatched_at = :occurredAt, s.updated_at = :occurredAt WHERE ms.manifest_id = :manifestId AND s.tenant_id = :tenantId AND s.status = 'labelled'",
+                [
+                    'reference' => (string) $manifest['code'], 'userId' => $completion->completedBy()->value(),
+                    'occurredAt' => $completion->completedAt()->format('Y-m-d H:i:s.u'),
+                    'manifestId' => $completion->manifestId()->value(), 'tenantId' => $completion->tenantId()->value(),
+                ],
+            );
+            $connection->update('wms_loading_manifest', [
+                'status' => 'completed', 'completed_by' => $completion->completedBy()->value(),
+                'completed_at' => $completion->completedAt()->format('Y-m-d H:i:s.u'),
+                'updated_at' => $completion->completedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $completion->manifestId()->value()]);
+
+            return new LoadingResult('completed', $loaded, $total);
         });
     }
 

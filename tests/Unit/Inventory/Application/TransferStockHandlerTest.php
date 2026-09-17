@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use WebWMS\Inventory\Application\TransferStockCommand;
 use WebWMS\Inventory\Application\TransferStockHandler;
 use WebWMS\Inventory\Domain\InventoryRepository;
+use WebWMS\Inventory\Domain\LoadingCompletion;
+use WebWMS\Inventory\Domain\LoadingManifest;
+use WebWMS\Inventory\Domain\LoadingResult;
 use WebWMS\Inventory\Domain\PackingCompletion;
 use WebWMS\Inventory\Domain\PackingOrder;
 use WebWMS\Inventory\Domain\PackingPackage;
@@ -22,6 +25,7 @@ use WebWMS\Inventory\Domain\Shipment;
 use WebWMS\Inventory\Domain\ShipmentDispatch;
 use WebWMS\Inventory\Domain\ShipmentLabel;
 use WebWMS\Inventory\Domain\ShipmentResult;
+use WebWMS\Inventory\Domain\ShipmentLoading;
 use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
 use WebWMS\Inventory\Domain\StockAllocationTransition;
@@ -149,5 +153,19 @@ final class TransferMemoryInventoryRepository implements InventoryRepository
     public function dispatchShipment(ShipmentDispatch $dispatch): ShipmentResult
     {
         return new ShipmentResult('dispatched', 'TRACK-1');
+    }
+
+    public function saveLoadingManifest(LoadingManifest $manifest): void
+    {
+    }
+
+    public function confirmShipmentLoading(ShipmentLoading $loading): LoadingResult
+    {
+        return new LoadingResult('loading', 1, 1);
+    }
+
+    public function completeLoadingManifest(LoadingCompletion $completion): LoadingResult
+    {
+        return new LoadingResult('completed', 1, 1);
     }
 }
