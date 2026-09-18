@@ -8,8 +8,9 @@ use Doctrine\DBAL\Connection;
 
 final readonly class ApiV3QueryService
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     /** @return list<array<string, mixed>> */

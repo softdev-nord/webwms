@@ -16,8 +16,9 @@ use Symfony\Component\Uid\Uuid;
 #[AsCommand(name: 'webwms:api-client:create', description: 'Create a tenant-scoped API v3 credential')]
 final class CreateApiClientConsoleCommand extends Command
 {
-    public function __construct(private readonly Connection $connection)
-    {
+    public function __construct(
+        private readonly Connection $connection
+    ) {
         parent::__construct();
     }
 
