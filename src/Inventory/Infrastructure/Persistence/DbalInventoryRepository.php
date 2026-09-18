@@ -26,6 +26,10 @@ use WebWMS\Inventory\Domain\PickList;
 use WebWMS\Inventory\Domain\PickListAssignment;
 use WebWMS\Inventory\Domain\PickOutcome;
 use WebWMS\Inventory\Domain\ProductReference;
+use WebWMS\Inventory\Domain\ReturnInspection;
+use WebWMS\Inventory\Domain\ReturnOrder;
+use WebWMS\Inventory\Domain\ReturnReceipt;
+use WebWMS\Inventory\Domain\ReturnResult;
 use WebWMS\Inventory\Domain\Shipment;
 use WebWMS\Inventory\Domain\ShipmentDispatch;
 use WebWMS\Inventory\Domain\ShipmentLabel;
@@ -696,6 +700,116 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ], ['id' => $completion->manifestId()->value()]);
 
             return new LoadingResult('completed', $loaded, $total);
+        });
+    }
+
+    public function saveReturnOrder(ReturnOrder $returnOrder): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($returnOrder): void {
+            if ($connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $returnOrder->createdBy()->value(), 'tenantId' => $returnOrder->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('The return creator must exist in the tenant.');
+            }
+            $connection->insert('wms_return_order', [
+                'id' => $returnOrder->id()->value(), 'tenant_id' => $returnOrder->tenantId()->value(),
+                'code' => $returnOrder->code(), 'order_reference' => $returnOrder->orderReference(),
+                'status' => 'open', 'created_by' => $returnOrder->createdBy()->value(),
+                'created_at' => $returnOrder->createdAt()->format('Y-m-d H:i:s.u'),
+                'updated_at' => $returnOrder->createdAt()->format('Y-m-d H:i:s.u'),
+            ]);
+            foreach ($returnOrder->items() as $item) {
+                if ($connection->fetchOne(
+                    'SELECT 1 FROM wms_product_reference WHERE id = :productId AND tenant_id = :tenantId',
+                    ['productId' => $item->productId()->value(), 'tenantId' => $returnOrder->tenantId()->value()],
+                ) === false) {
+                    throw new InventoryReferenceNotFoundException('Every return product must exist in the tenant.');
+                }
+                $connection->insert('wms_return_item', [
+                    'id' => $item->id()->value(), 'return_order_id' => $returnOrder->id()->value(),
+                    'product_id' => $item->productId()->value(), 'expected_quantity' => $item->expectedQuantity(),
+                    'reason' => $item->reason(), 'status' => 'expected',
+                ]);
+            }
+        });
+    }
+
+    public function receiveReturn(ReturnReceipt $receipt): ReturnResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($receipt): ReturnResult {
+            $item = $connection->fetchAssociative(
+                "SELECT i.expected_quantity FROM wms_return_item i INNER JOIN wms_return_order r ON r.id = i.return_order_id WHERE i.id = :itemId AND r.id = :orderId AND r.tenant_id = :tenantId AND i.status = 'expected' AND r.status IN ('open', 'in_progress') FOR UPDATE",
+                ['itemId' => $receipt->returnItemId()->value(), 'orderId' => $receipt->returnOrderId()->value(), 'tenantId' => $receipt->tenantId()->value()],
+            );
+            if ($item === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $receipt->receivedBy()->value(), 'tenantId' => $receipt->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('An expected return item and receiver must exist in the tenant.');
+            }
+            $connection->insert('wms_return_receipt', [
+                'id' => $receipt->id()->value(), 'return_item_id' => $receipt->returnItemId()->value(),
+                'quantity' => (int) $item['expected_quantity'], 'status' => 'pending_inspection',
+                'received_by' => $receipt->receivedBy()->value(),
+                'received_at' => $receipt->receivedAt()->format('Y-m-d H:i:s.u'),
+            ]);
+            $connection->update('wms_return_item', ['status' => 'received'], ['id' => $receipt->returnItemId()->value()]);
+            $connection->update('wms_return_order', [
+                'status' => 'in_progress', 'updated_at' => $receipt->receivedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $receipt->returnOrderId()->value()]);
+
+            return new ReturnResult('in_progress', 'received');
+        });
+    }
+
+    public function inspectReturn(ReturnInspection $inspection): ReturnResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($inspection): ReturnResult {
+            $receipt = $connection->fetchAssociative(
+                "SELECT rr.quantity, ri.id item_id, ri.product_id, ro.id return_order_id FROM wms_return_receipt rr INNER JOIN wms_return_item ri ON ri.id = rr.return_item_id INNER JOIN wms_return_order ro ON ro.id = ri.return_order_id WHERE rr.id = :receiptId AND rr.status = 'pending_inspection' AND ro.tenant_id = :tenantId FOR UPDATE",
+                ['receiptId' => $inspection->receiptId()->value(), 'tenantId' => $inspection->tenantId()->value()],
+            );
+            if ($receipt === false) {
+                throw new InventoryReferenceNotFoundException('A pending return receipt must exist in the tenant.');
+            }
+            $posting = new StockPosting(
+                $inspection->ledgerEntryId(), $inspection->tenantId(),
+                new InventoryId((string) $receipt['product_id']), $inspection->locationId(),
+                (int) $receipt['quantity'], 'Return inspection: ' . $inspection->note(),
+                $inspection->inspectedBy(), $inspection->inspectedAt(), $inspection->dimensions(),
+            );
+            $this->assertReferencesExist($connection, $posting);
+            $current = $connection->fetchOne(
+                'SELECT quantity FROM wms_stock_balance WHERE tenant_id = :tenantId AND product_id = :productId AND location_id = :locationId AND stock_key = :stockKey FOR UPDATE',
+                $this->postingKey($posting),
+            );
+            $newQuantity = ($current === false ? 0 : (int) $current) + $posting->quantityDelta();
+            if ($posting->dimensions()->serialNumber() !== null && $newQuantity > 1) {
+                throw new InvalidSerialStockException('A returned serial number can only have a stock quantity of one.');
+            }
+            $this->persistBalance($connection, $posting, $newQuantity, $current !== false);
+            $this->insertLedgerEntry($connection, $posting, $newQuantity, StockMovementType::ReturnReceipt);
+            $connection->update('wms_return_receipt', [
+                'status' => 'inspected', 'quality_decision' => $inspection->decision()->value,
+                'stock_status' => $inspection->dimensions()->status()->value,
+                'location_id' => $inspection->locationId()->value(), 'ledger_entry_id' => $inspection->ledgerEntryId()->value(),
+                'inspection_note' => $inspection->note(), 'inspected_by' => $inspection->inspectedBy()->value(),
+                'inspected_at' => $inspection->inspectedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $inspection->receiptId()->value()]);
+            $connection->update('wms_return_item', ['status' => 'processed'], ['id' => $receipt['item_id']]);
+            $remaining = (int) $connection->fetchOne(
+                "SELECT COUNT(*) FROM wms_return_item i LEFT JOIN wms_return_receipt r ON r.return_item_id = i.id WHERE i.return_order_id = :orderId AND (r.id IS NULL OR r.status <> 'inspected')",
+                ['orderId' => $receipt['return_order_id']],
+            );
+            $returnStatus = $remaining === 0 ? 'completed' : 'in_progress';
+            $connection->update('wms_return_order', [
+                'status' => $returnStatus, 'updated_at' => $inspection->inspectedAt()->format('Y-m-d H:i:s.u'),
+                'completed_by' => $remaining === 0 ? $inspection->inspectedBy()->value() : null,
+                'completed_at' => $remaining === 0 ? $inspection->inspectedAt()->format('Y-m-d H:i:s.u') : null,
+            ], ['id' => $receipt['return_order_id']]);
+
+            return new ReturnResult($returnStatus, 'processed', $inspection->dimensions()->status()->value, $newQuantity);
         });
     }
 

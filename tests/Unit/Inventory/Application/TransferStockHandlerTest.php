@@ -21,6 +21,10 @@ use WebWMS\Inventory\Domain\PickConfirmationResult;
 use WebWMS\Inventory\Domain\PickList;
 use WebWMS\Inventory\Domain\PickListAssignment;
 use WebWMS\Inventory\Domain\ProductReference;
+use WebWMS\Inventory\Domain\ReturnInspection;
+use WebWMS\Inventory\Domain\ReturnOrder;
+use WebWMS\Inventory\Domain\ReturnReceipt;
+use WebWMS\Inventory\Domain\ReturnResult;
 use WebWMS\Inventory\Domain\Shipment;
 use WebWMS\Inventory\Domain\ShipmentDispatch;
 use WebWMS\Inventory\Domain\ShipmentLabel;
@@ -167,5 +171,19 @@ final class TransferMemoryInventoryRepository implements InventoryRepository
     public function completeLoadingManifest(LoadingCompletion $completion): LoadingResult
     {
         return new LoadingResult('completed', 1, 1);
+    }
+
+    public function saveReturnOrder(ReturnOrder $returnOrder): void
+    {
+    }
+
+    public function receiveReturn(ReturnReceipt $receipt): ReturnResult
+    {
+        return new ReturnResult('in_progress', 'received');
+    }
+
+    public function inspectReturn(ReturnInspection $inspection): ReturnResult
+    {
+        return new ReturnResult('completed', 'processed', 'available', 1);
     }
 }

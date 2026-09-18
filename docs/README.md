@@ -17,6 +17,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Packprozess](technical/inventory-packing.md)
 - [Versandprozess](technical/inventory-shipping.md)
 - [Verladung, Touren und Manifeste](technical/inventory-loading.md)
+- [Retouren- und Rücknahmeabwicklung](technical/inventory-returns.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -33,6 +34,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Packaufträge und Packstücke](user/inventory-packing.md)
 - [Sendungen vorbereiten und übergeben](user/inventory-shipping.md)
 - [Sendungen verladen](user/inventory-loading.md)
+- [Retouren annehmen und prüfen](user/inventory-returns.md)
 
 ## Verbindliche Dokumentationsregel
 

@@ -26,4 +26,7 @@ interface InventoryRepository
     public function saveLoadingManifest(LoadingManifest $manifest): void;
     public function confirmShipmentLoading(ShipmentLoading $loading): LoadingResult;
     public function completeLoadingManifest(LoadingCompletion $completion): LoadingResult;
+    public function saveReturnOrder(ReturnOrder $returnOrder): void;
+    public function receiveReturn(ReturnReceipt $receipt): ReturnResult;
+    public function inspectReturn(ReturnInspection $inspection): ReturnResult;
 }

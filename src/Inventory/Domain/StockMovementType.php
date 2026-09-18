@@ -10,4 +10,5 @@ enum StockMovementType: string
     case TransferOut = 'transfer_out';
     case TransferIn = 'transfer_in';
     case AllocationConsumption = 'allocation_consumption';
+    case ReturnReceipt = 'return_receipt';
 }
