@@ -14,9 +14,23 @@ use WebWMS\Inventory\Domain\PackingPackage;
 
 final class PackingPackageTest extends TestCase
 {
+    public function testItNormalizesThePackageNumber(): void
+    {
+        $package = new PackingPackage(new InventoryId('018f6b7f-75d2-7c4e-8c33-31f91b1cf440'), new InventoryId('018f6b7f-75d2-7c4e-8c33-31f91b1cf441'), new TenantId('018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8'), ' pkg-1 ', 1000, [new InventoryId('018f6b7f-75d2-7c4e-8c33-31f91b1cf421')], new UserId('018f6b7f-75d2-7c4e-8c33-31f91b1cf302'), new DateTimeImmutable());
+
+        self::assertSame('PKG-1', $package->packageNumber());
+    }
+
     public function testItRejectsAPackageWithoutPositiveWeight(): void
     {
         $this->expectException(InvalidArgumentException::class);
         new PackingPackage(new InventoryId('018f6b7f-75d2-7c4e-8c33-31f91b1cf440'), new InventoryId('018f6b7f-75d2-7c4e-8c33-31f91b1cf441'), new TenantId('018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8'), 'PKG-1', 0, [new InventoryId('018f6b7f-75d2-7c4e-8c33-31f91b1cf421')], new UserId('018f6b7f-75d2-7c4e-8c33-31f91b1cf302'), new DateTimeImmutable());
+    }
+
+    public function testItRejectsDuplicatePickTasks(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $taskId = new InventoryId('018f6b7f-75d2-7c4e-8c33-31f91b1cf421');
+        new PackingPackage(new InventoryId('018f6b7f-75d2-7c4e-8c33-31f91b1cf440'), new InventoryId('018f6b7f-75d2-7c4e-8c33-31f91b1cf441'), new TenantId('018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8'), 'PKG-1', 1000, [$taskId, $taskId], new UserId('018f6b7f-75d2-7c4e-8c33-31f91b1cf302'), new DateTimeImmutable());
     }
 }

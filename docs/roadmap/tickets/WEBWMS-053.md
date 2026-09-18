@@ -46,10 +46,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 **Status:** Backend umgesetzt
 
-`PackingOrder`, `PackingPackage` und Packabschluss. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`PackingOrder`, `PackingPackage` und Packabschluss bilden den fachlichen Domain-, Application- und Persistenzkern. Über `PackingApiController` kann eine abgeschlossene Pickliste nun in einen Packauftrag überführt, in Packstücke aufgeteilt, gelesen und abgeschlossen werden. Mandant und Auditbenutzer stammen aus der API-Identität; `fulfillment.pack.write`, `fulfillment.pack.read` und `fulfillment.pack.execute` trennen die Operationen.
+
+Nachweise: `PackingApiController`, `ApiV3QueryService::packingOrder()`, `CreatePackingOrderHandler`, `AddPackingPackageHandler`, `CompletePackingOrderHandler`, `DbalInventoryRepository`, `PackingOrderTest`, `PackingPackageTest` sowie `docs/technical/packing-api.md` und `docs/user/packing-api.md`.
+
+Eine grafische Packplatzführung, Packmittelprüfung und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-053
 - Referenz: https://www.coglas.com/versand/
-

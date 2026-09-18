@@ -32,6 +32,10 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `GET` | `/api/v3/pick-lists/{id}` | `fulfillment.pick.read` | Pickliste und Positionen lesen |
 | `POST` | `/api/v3/pick-lists/{id}/assignment` | `fulfillment.pick.assign` | Pickliste zuweisen |
 | `POST` | `/api/v3/pick-tasks/{id}/confirmation` | `fulfillment.pick.execute` | Pick oder Fehlmenge bestätigen |
+| `POST` | `/api/v3/pick-lists/{id}/packing-orders` | `fulfillment.pack.write` | Packauftrag erzeugen |
+| `GET` | `/api/v3/packing-orders/{id}` | `fulfillment.pack.read` | Packauftrag und Packstücke lesen |
+| `POST` | `/api/v3/packing-orders/{id}/packages` | `fulfillment.pack.write` | Versiegeltes Packstück erfassen |
+| `POST` | `/api/v3/packing-orders/{id}/complete` | `fulfillment.pack.execute` | Vollständigkeit prüfen und abschließen |
 
 Listen akzeptieren `limit` von 1 bis 100. Artikel und Bestände unterstützen einen opaken `cursor`; der Folgewert steht in `meta.nextCursor`. Bestände können mit `warehouseId` eingeschränkt werden.
 
@@ -45,7 +49,7 @@ Erfolgreiche Antworten enthalten `data`, Listen zusätzlich `meta`. Fehler verwe
 
 ## Bekannte Restarbeiten
 
-- Packstücke, Sendungen und Statusereignisse als Ressourcen;
+- Sendungen und Statusereignisse als Ressourcen;
 - OpenAPI-Vertrag und API-Integrationstests mit MariaDB;
 - Rotation und Widerruf von Secrets über eine Administrationsoberfläche;
 - Rate-Limiting und technische Verbrauchsmetriken.

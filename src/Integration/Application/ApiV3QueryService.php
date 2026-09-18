@@ -158,4 +158,37 @@ final readonly class ApiV3QueryService
 
         return $pickList;
     }
+
+    /** @return array<string, mixed>|null */
+    public function packingOrder(string $tenantId, string $packingOrderId): ?array
+    {
+        $order = $this->connection->fetchAssociative(
+            'SELECT o.id, o.pick_list_id, l.outbound_order_id, o.code, o.status, o.created_by, '
+            . 'o.created_at, o.updated_at, o.completed_by, o.completed_at '
+            . 'FROM wms_packing_order o INNER JOIN wms_pick_list l ON l.id = o.pick_list_id '
+            . 'WHERE o.id = :packingOrderId AND o.tenant_id = :tenantId',
+            ['packingOrderId' => $packingOrderId, 'tenantId' => $tenantId],
+        );
+        if ($order === false) {
+            return null;
+        }
+        $packages = $this->connection->fetchAllAssociative(
+            'SELECT id, package_number, weight_grams, status, packed_by, packed_at '
+            . 'FROM wms_package WHERE packing_order_id = :packingOrderId ORDER BY packed_at, id',
+            ['packingOrderId' => $packingOrderId],
+        );
+        foreach ($packages as &$package) {
+            if (!is_string($package['id'] ?? null)) {
+                throw new \LogicException('The package projection is invalid.');
+            }
+            $package['pickTaskIds'] = $this->connection->fetchFirstColumn(
+                'SELECT pick_task_id FROM wms_package_item WHERE package_id = :packageId ORDER BY pick_task_id',
+                ['packageId' => $package['id']],
+            );
+        }
+        unset($package);
+        $order['packages'] = $packages;
+
+        return $order;
+    }
 }

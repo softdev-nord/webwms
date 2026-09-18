@@ -25,6 +25,10 @@ nicht verpackt werden.
 - `wms_package_item`: eindeutige Zuordnung einer Pickposition;
 - Migration `Version20260917133000`.
 
+Die API-v3-Anbindung ist unter [Packprozess über API v3](packing-api.md)
+dokumentiert. Dieser Slice benötigt keine zusätzliche Migration, da das
+bestehende normalisierte Packmodell unverändert verwendet wird.
+
 ## Grenzen
 
 Abmessungen, Verpackungsmittel, Umpacken, Etikettendruck, Carrier und

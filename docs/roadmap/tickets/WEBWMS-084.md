@@ -50,7 +50,7 @@ Unter `/api/v3` steht eine eigenständige, versionierte JSON-Schnittstelle mit m
 
 Nachweise: `ApiKeyAuthenticator`, `ApiClientUser`, `ApiExceptionSubscriber`, `ApiV3QueryService`, `InventoryApiController`, Konsolenkommando `webwms:api-client:create` und Migration `Version20260918180000`.
 
-Kundenaufträge, Freigaben, Reservierungen, Allokationen sowie auftragsreine Picklisten, Zuweisungen und Pickbestätigungen sind inzwischen ebenfalls als API-v3-Ressourcen verfügbar. Nachweise für Picking: `PickingApiController`, `ApiV3QueryService::pickList()` und `docs/technical/picking-api.md`. Pack-, Versand-, Bewegungs- und Statusressourcen sowie vollständige API-Integrationstests fehlen noch. Das Ticket bleibt deshalb `Teilweise umgesetzt`.
+Kundenaufträge, Freigaben, Reservierungen, Allokationen sowie auftragsreine Picklisten, Zuweisungen und Pickbestätigungen sind inzwischen ebenfalls als API-v3-Ressourcen verfügbar. Der Packprozess ergänzt Packauftrag, Packstücke und Vollständigkeitsabschluss. Nachweise: `PickingApiController`, `PackingApiController`, die Projektionen in `ApiV3QueryService` sowie `docs/technical/picking-api.md` und `docs/technical/packing-api.md`. Versand-, Bewegungs- und Statusressourcen sowie vollständige API-Integrationstests fehlen noch. Das Ticket bleibt deshalb `Teilweise umgesetzt`.
 
 ## Quelle
 

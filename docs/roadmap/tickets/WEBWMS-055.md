@@ -46,10 +46,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 **Status:** Teilweise umgesetzt
 
-Pack- und Versandkern; durchgängiger Scan-Dialog fehlt. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Pack- und Versandkern sind vorhanden. Die API v3 deckt inzwischen den durchgängigen technischen Übergang von Kundenauftrag, Reservierung und Picking bis zu Packauftrag, Packstück und Packabschluss ab. Nachweise für den Packanteil: `PackingApiController`, `ApiV3QueryService::packingOrder()` und `docs/technical/packing-api.md`.
+
+Ein scanbasierter Dialog, Labelerzeugung und die direkte Versandfreigabe in einem kombinierten Prozess fehlen weiterhin; das Ticket bleibt deshalb `Teilweise umgesetzt`.
 
 ## Quelle
 
 - Feature: CG-055
 - Referenz: https://www.coglas.com/kommissionierung/
-

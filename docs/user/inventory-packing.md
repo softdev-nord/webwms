@@ -24,3 +24,6 @@ Fehlmengen aus der Pickliste werden bei der Vollständigkeitsprüfung ignoriert.
 
 Der Abschluss liefert Anzahl und Gesamtgewicht aller Packstücke und bereitet
 damit den späteren Versandprozess vor.
+
+Für Integrationen steht der Ablauf auch über die
+[API v3](packing-api.md) zur Verfügung.

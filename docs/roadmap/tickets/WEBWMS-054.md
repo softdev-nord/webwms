@@ -46,10 +46,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 **Status:** Backend umgesetzt
 
-Vollständigkeitsprüfung beim Packabschluss. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Der transaktionale Packabschluss vergleicht die erfolgreich gepickten Positionen mit den eindeutig verpackten Positionen und akzeptiert ausschließlich versiegelte Packstücke. Diese Prüfung ist nun über `POST /api/v3/packing-orders/{id}/complete` berechtigt aufrufbar; die Antwort enthält Packstückanzahl und Gesamtgewicht.
+
+Nachweise: `PackingApiController::complete()`, `CompletePackingOrderHandler`, `DbalInventoryRepository::completePackingOrder()`, der eindeutige Index auf `wms_package_item.pick_task_id` und `docs/technical/packing-api.md`.
+
+Mengen- und Scanprüfung während des Einpackens sowie vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-054
 - Referenz: https://www.coglas.com/versand/
-
