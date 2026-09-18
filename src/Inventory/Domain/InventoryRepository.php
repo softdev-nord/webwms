@@ -79,4 +79,8 @@ interface InventoryRepository
     public function submitInventoryCount(InventoryCountSubmission $submission): InventoryCountResult;
 
     public function approveInventoryCount(InventoryCountApproval $approval): InventoryCountResult;
+
+    public function saveCycleCountPlan(CycleCountPlan $plan): void;
+
+    public function createDueCycleCount(CycleCountExecution $execution): InventoryCountResult;
 }

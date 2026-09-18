@@ -27,7 +27,7 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Backendfortschritt
 
-Nach dem Inventur-Core besitzen 27 Tickets mit 183 Story Points einen substanziellen Backendkern. Weitere 17 Tickets mit 131 Story Points sind teilweise umgesetzt. Damit wurden 44 von 96 Tickets und 314 von 750 Story Points zumindest fachlich oder technisch begonnen.
+Nach dem Slice für permanente und Nulldurchgangsinventur besitzen 29 Tickets mit 196 Story Points einen substanziellen Backendkern. Weitere 17 Tickets mit 131 Story Points sind teilweise umgesetzt. Damit wurden 46 von 96 Tickets und 327 von 750 Story Points zumindest fachlich oder technisch begonnen.
 
 ## Ergänzende Roadmap-Dokumente
 

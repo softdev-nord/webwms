@@ -8,6 +8,8 @@ use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Inventory\Application\TransferStockCommand;
 use WebWMS\Inventory\Application\TransferStockHandler;
+use WebWMS\Inventory\Domain\CycleCountExecution;
+use WebWMS\Inventory\Domain\CycleCountPlan;
 use WebWMS\Inventory\Domain\InboundDelivery;
 use WebWMS\Inventory\Domain\InboundInspection;
 use WebWMS\Inventory\Domain\InboundReceipt;
@@ -254,6 +256,15 @@ final class TransferMemoryInventoryRepository implements InventoryRepository
     public function createInventoryCount(InventoryCountPlan $plan): InventoryCountResult
     {
         return new InventoryCountResult('open', 1, 0);
+    }
+
+    public function saveCycleCountPlan(CycleCountPlan $plan): void
+    {
+    }
+
+    public function createDueCycleCount(CycleCountExecution $execution): InventoryCountResult
+    {
+        return new InventoryCountResult('open', 0, 0);
     }
 
     public function recordInventoryCount(InventoryCountEntry $entry): InventoryCountResult

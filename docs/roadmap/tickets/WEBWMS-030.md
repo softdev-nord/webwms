@@ -2,7 +2,7 @@
 id: WEBWMS-030
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Offen
+status: Backend umgesetzt
 priority: High
 story_points: 8
 component: "Lagerverwaltung"
@@ -44,12 +44,15 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Backend umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Umgesetzt sind zyklische Inventurpläne mit Lagerbereich, Intervall und Fälligkeit sowie die transaktionale Erzeugung regulärer Inventurbelege aus fälligen Plänen. Nach der Ausführung wird der nächste Termin fortgeschrieben; parallele offene Zählungen desselben Bereichs werden verhindert.
+
+Nachweise: `CycleCountPlan`, `CycleCountExecution`, die Application-Handler `CreateCycleCountPlanHandler` und `StartDueCycleCountHandler`, `DbalInventoryRepository` sowie Migration `Version20260918160000`.
+
+API/UI, ticketbezogene Autorisierung und Datenbank-Integrationstests sind noch offen; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-030
 - Referenz: https://www.coglas.com/funktionen/
-

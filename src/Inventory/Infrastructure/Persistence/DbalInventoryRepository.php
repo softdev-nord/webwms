@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Inventory\Infrastructure\Persistence;
 
+use DateInterval;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use WebWMS\Inventory\Domain\AllocationTransitionType;
+use WebWMS\Inventory\Domain\CycleCountExecution;
+use WebWMS\Inventory\Domain\CycleCountPlan;
 use WebWMS\Inventory\Domain\InboundDelivery;
 use WebWMS\Inventory\Domain\InboundInspection;
 use WebWMS\Inventory\Domain\InboundReceipt;
@@ -152,6 +155,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
 
             $this->persistBalance($connection, $posting, $newQuantity, $current !== false);
             $this->insertLedgerEntry($connection, $posting, $newQuantity, StockMovementType::Posting);
+            $this->createZeroCrossingControl($connection, $posting, $currentQuantity, $newQuantity);
 
             return $newQuantity;
         });
@@ -222,6 +226,12 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 $destinationQuantity,
                 StockMovementType::TransferIn,
                 $transfer->id(),
+            );
+            $this->createZeroCrossingControl(
+                $connection,
+                $source,
+                $sourceCurrent === false ? 0 : $sourceCurrent,
+                $sourceQuantity,
             );
 
             return new StockTransferResult($sourceQuantity, $destinationQuantity);
@@ -1298,6 +1308,121 @@ final readonly class DbalInventoryRepository implements InventoryRepository
         });
     }
 
+    public function saveCycleCountPlan(CycleCountPlan $plan): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($plan): void {
+            if ($connection->fetchOne(
+                'SELECT 1 FROM wms_warehouse w, wms_user_account u WHERE w.id = :warehouseId '
+                . 'AND w.tenant_id = :tenantId AND u.id = :userId AND u.tenant_id = :tenantId',
+                [
+                    'warehouseId' => $plan->warehouseId()->value(),
+                    'tenantId' => $plan->tenantId()->value(),
+                    'userId' => $plan->createdBy()->value(),
+                ],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException(
+                    'The cycle count warehouse and creator must exist in the tenant.',
+                );
+            }
+
+            $connection->insert('wms_cycle_count_plan', [
+                'id' => $plan->id()->value(),
+                'tenant_id' => $plan->tenantId()->value(),
+                'warehouse_id' => $plan->warehouseId()->value(),
+                'code' => $plan->code(),
+                'location_prefix' => $plan->locationPrefix(),
+                'interval_days' => $plan->intervalDays(),
+                'next_due_at' => $plan->nextDueAt()->format('Y-m-d H:i:s.u'),
+                'active' => 1,
+                'created_by' => $plan->createdBy()->value(),
+                'created_at' => $plan->createdAt()->format('Y-m-d H:i:s.u'),
+            ]);
+        });
+    }
+
+    public function createDueCycleCount(CycleCountExecution $execution): InventoryCountResult
+    {
+        return $this->connection->transactional(
+            function (Connection $connection) use ($execution): InventoryCountResult {
+                $plan = $connection->fetchAssociative(
+                    'SELECT * FROM wms_cycle_count_plan WHERE id = :planId AND tenant_id = :tenantId '
+                    . 'AND active = 1 AND next_due_at <= :startedAt FOR UPDATE',
+                    [
+                        'planId' => $execution->planId()->value(),
+                        'tenantId' => $execution->tenantId()->value(),
+                        'startedAt' => $execution->startedAt()->format('Y-m-d H:i:s.u'),
+                    ],
+                );
+                if ($plan === false || $connection->fetchOne(
+                    'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                    [
+                        'userId' => $execution->startedBy()->value(),
+                        'tenantId' => $execution->tenantId()->value(),
+                    ],
+                ) === false) {
+                    throw new InventoryReferenceNotFoundException(
+                        'A due cycle count plan and executing user must exist in the tenant.',
+                    );
+                }
+                if ($connection->fetchOne(
+                    "SELECT 1 FROM wms_inventory_count WHERE warehouse_id = :warehouseId "
+                    . "AND location_prefix = :locationPrefix AND status IN ('open', 'counted') FOR UPDATE",
+                    [
+                        'warehouseId' => $plan['warehouse_id'],
+                        'locationPrefix' => $plan['location_prefix'],
+                    ],
+                ) !== false) {
+                    throw new InventoryReferenceNotFoundException(
+                        'An unfinished inventory count already covers this cycle count area.',
+                    );
+                }
+
+                $connection->insert('wms_inventory_count', [
+                    'id' => $execution->countId()->value(),
+                    'tenant_id' => $execution->tenantId()->value(),
+                    'warehouse_id' => $plan['warehouse_id'],
+                    'code' => $execution->countCode(),
+                    'location_prefix' => $plan['location_prefix'],
+                    'count_type' => 'permanent',
+                    'cycle_count_plan_id' => $execution->planId()->value(),
+                    'status' => 'open',
+                    'line_count' => 0,
+                    'difference_count' => 0,
+                    'created_by' => $execution->startedBy()->value(),
+                    'created_at' => $execution->startedAt()->format('Y-m-d H:i:s.u'),
+                ]);
+                $lineCount = $connection->executeStatement(
+                    "INSERT INTO wms_inventory_count_line (id, inventory_count_id, product_id, location_id, stock_key, stock_status, batch_number, serial_number, expires_at, expected_quantity) SELECT UUID(), :countId, b.product_id, b.location_id, b.stock_key, b.stock_status, b.batch_number, b.serial_number, b.expires_at, b.quantity FROM wms_stock_balance b INNER JOIN wms_storage_location l ON l.id = b.location_id WHERE b.tenant_id = :tenantId AND l.warehouse_id = :warehouseId AND l.code LIKE CONCAT(:locationPrefix, '%')",
+                    [
+                        'countId' => $execution->countId()->value(),
+                        'tenantId' => $execution->tenantId()->value(),
+                        'warehouseId' => $plan['warehouse_id'],
+                        'locationPrefix' => $plan['location_prefix'],
+                    ],
+                );
+                if ($lineCount === 0) {
+                    throw new InventoryReferenceNotFoundException(
+                        'The due cycle count scope does not contain stock balances to count.',
+                    );
+                }
+                $connection->update(
+                    'wms_inventory_count',
+                    ['line_count' => $lineCount],
+                    ['id' => $execution->countId()->value()],
+                );
+                $nextDueAt = $execution->startedAt()->add(
+                    new DateInterval('P' . (int) $plan['interval_days'] . 'D'),
+                );
+                $connection->update('wms_cycle_count_plan', [
+                    'last_started_at' => $execution->startedAt()->format('Y-m-d H:i:s.u'),
+                    'next_due_at' => $nextDueAt->format('Y-m-d H:i:s.u'),
+                ], ['id' => $execution->planId()->value()]);
+
+                return new InventoryCountResult('open', $lineCount, 0);
+            },
+        );
+    }
+
     public function saveReturnOrder(ReturnOrder $returnOrder): void
     {
         $this->connection->transactional(function (Connection $connection) use ($returnOrder): void {
@@ -1459,8 +1584,69 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             allocationId: $transition->allocationId(),
             reservationId: new InventoryId((string) $allocation['reservation_id']),
         );
+        $this->createZeroCrossingControl($connection, $posting, $physical, $newQuantity);
 
         return $newQuantity;
+    }
+
+    private function createZeroCrossingControl(
+        Connection $connection,
+        StockPosting $posting,
+        int $previousQuantity,
+        int $resultingQuantity,
+    ): void {
+        if ($previousQuantity <= 0 || $resultingQuantity !== 0) {
+            return;
+        }
+
+        $location = $connection->fetchAssociative(
+            'SELECT warehouse_id, code FROM wms_storage_location '
+            . 'WHERE id = :locationId AND tenant_id = :tenantId',
+            [
+                'locationId' => $posting->locationId()->value(),
+                'tenantId' => $posting->tenantId()->value(),
+            ],
+        );
+        if ($location === false) {
+            throw new InventoryReferenceNotFoundException(
+                'The zero-crossing storage location must exist in the posting tenant.',
+            );
+        }
+        if ($connection->fetchOne(
+            "SELECT 1 FROM wms_inventory_count_line l INNER JOIN wms_inventory_count c "
+            . "ON c.id = l.inventory_count_id WHERE c.tenant_id = :tenantId "
+            . "AND c.count_type = 'zero_crossing' AND c.status IN ('open', 'counted') "
+            . 'AND l.product_id = :productId AND l.location_id = :locationId AND l.stock_key = :stockKey',
+            $this->postingKey($posting),
+        ) !== false) {
+            return;
+        }
+
+        $countId = (string) $connection->fetchOne('SELECT UUID()');
+        $lineId = (string) $connection->fetchOne('SELECT UUID()');
+        $connection->insert('wms_inventory_count', [
+            'id' => $countId,
+            'tenant_id' => $posting->tenantId()->value(),
+            'warehouse_id' => $location['warehouse_id'],
+            'code' => 'ZERO-' . $posting->id()->value(),
+            'location_prefix' => $location['code'],
+            'count_type' => 'zero_crossing',
+            'trigger_ledger_entry_id' => $posting->id()->value(),
+            'status' => 'open',
+            'line_count' => 1,
+            'difference_count' => 0,
+            'created_by' => $posting->performedBy()->value(),
+            'created_at' => $posting->occurredAt()->format('Y-m-d H:i:s.u'),
+        ]);
+        $connection->insert('wms_inventory_count_line', [
+            'id' => $lineId,
+            'inventory_count_id' => $countId,
+            'product_id' => $posting->productId()->value(),
+            'location_id' => $posting->locationId()->value(),
+            'stock_key' => $posting->dimensions()->key(),
+            ...$this->dimensionValues($posting),
+            'expected_quantity' => 0,
+        ]);
     }
 
     private function reservationStatus(int $requested, int $allocated, int $fulfilled): string

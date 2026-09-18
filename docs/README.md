@@ -26,6 +26,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Automatische Einlagerung und Lagerplatzstrategien](technical/inventory-putaway.md)
 - [Nachschubsteuerung](technical/inventory-replenishment.md)
 - [Stichtagsinventur und Differenzfreigabe](technical/inventory-counting.md)
+- [Permanente und Nulldurchgangsinventur](technical/cycle-counting.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -47,6 +48,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Ware automatisch einlagern](user/inventory-putaway.md)
 - [Kommissionierplätze nachfüllen](user/inventory-replenishment.md)
 - [Stichtagsinventur durchführen](user/inventory-counting.md)
+- [Permanente und Nulldurchgangsinventur verwenden](user/cycle-counting.md)
 
 ## Verbindliche Dokumentationsregel
 

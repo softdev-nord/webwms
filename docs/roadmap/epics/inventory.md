@@ -19,7 +19,6 @@ Alle 18 dokumentierten Funktionen des Bereichs Lagerverwaltung werden fachlich k
 | [WEBWMS-027](../tickets/WEBWMS-027.md) | Stücklisten implementieren | Offen | Medium | 8 |
 | [WEBWMS-028](../tickets/WEBWMS-028.md) | LHM-Konto implementieren | Offen | Medium | 5 |
 | [WEBWMS-029](../tickets/WEBWMS-029.md) | Stichtagsinventur implementieren | Backend umgesetzt | Highest | 8 |
-| [WEBWMS-030](../tickets/WEBWMS-030.md) | Permanente Inventur implementieren | Offen | High | 8 |
-| [WEBWMS-031](../tickets/WEBWMS-031.md) | Nulldurchgangsinventur implementieren | Offen | Medium | 5 |
+| [WEBWMS-030](../tickets/WEBWMS-030.md) | Permanente Inventur implementieren | Backend umgesetzt | High | 8 |
+| [WEBWMS-031](../tickets/WEBWMS-031.md) | Nulldurchgangsinventur implementieren | Backend umgesetzt | Medium | 5 |
 | [WEBWMS-032](../tickets/WEBWMS-032.md) | Differenz- und Freigabeworkflow implementieren | Backend umgesetzt | Highest | 8 |
-
