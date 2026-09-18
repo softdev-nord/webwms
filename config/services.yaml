@@ -59,6 +59,8 @@ services:
             - '../src/Administration/Application/**/*Command.php'
             - '../src/Administration/Application/**/*Exception.php'
             - '../src/Security/V3/SecurityUser.php'
+            - '../src/Security/V3/TenantPermissionUser.php'
+            - '../src/Integration/Infrastructure/Api/ApiClientUser.php'
             - '../src/Inventory/Domain/'
             - '../src/Inventory/Application/*Command.php'
 

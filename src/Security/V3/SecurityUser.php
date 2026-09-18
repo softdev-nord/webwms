@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace WebWMS\Security\V3;
 
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
-final class SecurityUser implements UserInterface, PasswordAuthenticatedUserInterface
+final class SecurityUser implements TenantPermissionUser, PasswordAuthenticatedUserInterface
 {
     /**
      * @param list<string> $roles

@@ -27,6 +27,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Nachschubsteuerung](technical/inventory-replenishment.md)
 - [Stichtagsinventur und Differenzfreigabe](technical/inventory-counting.md)
 - [Permanente und Nulldurchgangsinventur](technical/cycle-counting.md)
+- [Versionierte JSON-Web-API v3](technical/api-v3.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -49,6 +50,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Kommissionierplätze nachfüllen](user/inventory-replenishment.md)
 - [Stichtagsinventur durchführen](user/inventory-counting.md)
 - [Permanente und Nulldurchgangsinventur verwenden](user/cycle-counting.md)
+- [JSON-Web-API v3 verwenden](user/api-v3.md)
 
 ## Verbindliche Dokumentationsregel
 

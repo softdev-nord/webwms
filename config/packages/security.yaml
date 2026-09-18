@@ -18,6 +18,11 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
+    api_v3:
+      pattern: ^/api/v3
+      stateless: true
+      custom_authenticator: WebWMS\Integration\Infrastructure\Api\ApiKeyAuthenticator
+      entry_point: WebWMS\Integration\Infrastructure\Api\ApiKeyAuthenticator
     v3:
       pattern: ^/v3
       provider: v3_user_provider
@@ -57,6 +62,7 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
+    - { path: ^/api/v3, roles: ROLE_API_CLIENT }
     - { path: ^/v3/login$, roles: PUBLIC_ACCESS }
     - { path: ^/v3, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/homepage, roles: [ IS_AUTHENTICATED_FULLY, ROLE_SUPER_ADMIN, ROLE_ADMIN ] }

@@ -25,6 +25,6 @@ final class PermissionVoter extends Voter
     ): bool {
         $user = $token->getUser();
 
-        return $user instanceof SecurityUser && $user->hasPermission($attribute);
+        return $user instanceof TenantPermissionUser && $user->hasPermission($attribute);
     }
 }
