@@ -46,10 +46,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 **Status:** Backend umgesetzt
 
-`StockReservation`, `StockAllocation` und atomare Allokation. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`StockReservation`, `StockAllocation` und atomare Allokation bilden den fachlichen Kern. Die Kundenauftragsfreigabe erzeugt positionsbezogene Reservierungen; API-v3-Endpunkte liefern den Reservierungsstatus und nehmen dimensionsgenaue Allokationen entgegen. Verfügbarkeit, Restbedarf, Mandant und ausführender Benutzer werden serverseitig abgesichert.
+
+Nachweise: `OutboundOrderApiController`, `AllocateStockHandler`, `DbalInventoryRepository` und `ApiV3QueryService`.
+
+UI und vollständige Datenbank-Integrationstests sind noch offen; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-051
 - Referenz: https://www.coglas.com/warenausgang/
-

@@ -83,4 +83,8 @@ interface InventoryRepository
     public function saveCycleCountPlan(CycleCountPlan $plan): void;
 
     public function createDueCycleCount(CycleCountExecution $execution): InventoryCountResult;
+
+    public function saveOutboundOrder(OutboundOrder $order): OutboundOrderResult;
+
+    public function releaseOutboundOrder(OutboundOrderRelease $release): OutboundOrderResult;
 }

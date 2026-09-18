@@ -12,8 +12,14 @@ final readonly class ApiClientUser implements TenantPermissionUser
     public function __construct(
         private string $clientId,
         private string $tenant,
+        private string $actingUserId,
         private array $permissions
     ) {
+    }
+
+    public function actorId(): string
+    {
+        return $this->actingUserId;
     }
 
     public function tenantId(): string

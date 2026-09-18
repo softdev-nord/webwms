@@ -8,7 +8,7 @@ API-Clients sind einem Mandanten fest zugeordnet und speichern ausschließlich e
 
 ```bash
 php bin/console webwms:api-client:create \
-  TENANT_UUID erp-connector \
+  TENANT_UUID ACTING_USER_UUID erp-connector \
   inventory.product.read,inventory.product.write,inventory.location.read,inventory.stock.read
 ```
 
@@ -23,6 +23,11 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `POST` | `/api/v3/products` | `inventory.product.write` | Artikel anlegen |
 | `GET` | `/api/v3/warehouses` | `inventory.location.read` | Lager lesen |
 | `GET` | `/api/v3/stock` | `inventory.stock.read` | Bestand und verfügbare Menge lesen |
+| `POST` | `/api/v3/orders` | `outbound.order.write` | Kundenauftrag importieren |
+| `GET` | `/api/v3/orders/{id}` | `outbound.order.read` | Kundenauftrag lesen |
+| `POST` | `/api/v3/orders/{id}/release` | `outbound.order.release` | Auftrag freigeben und reservieren |
+| `GET` | `/api/v3/reservations/{id}` | `inventory.allocation.read` | Reservierung und Allokationen lesen |
+| `POST` | `/api/v3/reservations/{id}/allocations` | `inventory.allocation.write` | Bestand allokieren |
 
 Listen akzeptieren `limit` von 1 bis 100. Artikel und Bestände unterstützen einen opaken `cursor`; der Folgewert steht in `meta.nextCursor`. Bestände können mit `warehouseId` eingeschränkt werden.
 

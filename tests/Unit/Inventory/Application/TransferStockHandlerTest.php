@@ -23,6 +23,9 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\LoadingCompletion;
 use WebWMS\Inventory\Domain\LoadingManifest;
 use WebWMS\Inventory\Domain\LoadingResult;
+use WebWMS\Inventory\Domain\OutboundOrder;
+use WebWMS\Inventory\Domain\OutboundOrderRelease;
+use WebWMS\Inventory\Domain\OutboundOrderResult;
 use WebWMS\Inventory\Domain\PackingCompletion;
 use WebWMS\Inventory\Domain\PackingOrder;
 use WebWMS\Inventory\Domain\PackingPackage;
@@ -265,6 +268,16 @@ final class TransferMemoryInventoryRepository implements InventoryRepository
     public function createDueCycleCount(CycleCountExecution $execution): InventoryCountResult
     {
         return new InventoryCountResult('open', 0, 0);
+    }
+
+    public function saveOutboundOrder(OutboundOrder $order): OutboundOrderResult
+    {
+        return new OutboundOrderResult('imported', 1);
+    }
+
+    public function releaseOutboundOrder(OutboundOrderRelease $release): OutboundOrderResult
+    {
+        return new OutboundOrderResult('released', 1, 1);
     }
 
     public function recordInventoryCount(InventoryCountEntry $entry): InventoryCountResult

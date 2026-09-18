@@ -27,7 +27,7 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Backendfortschritt
 
-Nach dem Slice für permanente und Nulldurchgangsinventur besitzen 29 Tickets mit 196 Story Points einen substanziellen Backendkern. Weitere 17 Tickets mit 131 Story Points sind teilweise umgesetzt. Damit wurden 46 von 96 Tickets und 327 von 750 Story Points zumindest fachlich oder technisch begonnen.
+Nach der vertikalen Kundenauftrags-, Reservierungs- und Allokationskette besitzen 30 Tickets mit 204 Story Points einen substanziellen Backendkern. Weitere 16 Tickets mit 123 Story Points sind teilweise umgesetzt. Damit wurden 46 von 96 Tickets und 327 von 750 Story Points zumindest fachlich oder technisch begonnen.
 
 ## Ergänzende Roadmap-Dokumente
 

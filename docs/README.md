@@ -28,6 +28,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Stichtagsinventur und Differenzfreigabe](technical/inventory-counting.md)
 - [Permanente und Nulldurchgangsinventur](technical/cycle-counting.md)
 - [Versionierte JSON-Web-API v3](technical/api-v3.md)
+- [Kundenauftrag, Reservierung und Allokation](technical/outbound-order-api.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -51,6 +52,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Stichtagsinventur durchführen](user/inventory-counting.md)
 - [Permanente und Nulldurchgangsinventur verwenden](user/cycle-counting.md)
 - [JSON-Web-API v3 verwenden](user/api-v3.md)
+- [Kundenaufträge über API v3 bearbeiten](user/outbound-order-api.md)
 
 ## Verbindliche Dokumentationsregel
 

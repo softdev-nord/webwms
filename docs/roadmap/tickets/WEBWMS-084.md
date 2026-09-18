@@ -50,7 +50,7 @@ Unter `/api/v3` steht eine eigenständige, versionierte JSON-Schnittstelle mit m
 
 Nachweise: `ApiKeyAuthenticator`, `ApiClientUser`, `ApiExceptionSubscriber`, `ApiV3QueryService`, `InventoryApiController`, Konsolenkommando `webwms:api-client:create` und Migration `Version20260918180000`.
 
-Auftrags-, Bewegungs- und Statusressourcen sowie vollständige API-Integrationstests fehlen noch. Das Ticket bleibt deshalb `Teilweise umgesetzt`.
+Kundenaufträge, Freigaben, Reservierungen und Allokationen sind inzwischen ebenfalls als API-v3-Ressourcen verfügbar. Pick-, Pack-, Versand-, Bewegungs- und Statusressourcen sowie vollständige API-Integrationstests fehlen noch. Das Ticket bleibt deshalb `Teilweise umgesetzt`.
 
 ## Quelle
 

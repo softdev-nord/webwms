@@ -66,8 +66,8 @@ final class ApiKeyAuthenticator extends AbstractAuthenticator implements Authent
     private function loadClient(string $clientId, string $secret): ApiClientUser
     {
         $client = $this->connection->fetchAssociative(
-            'SELECT id, tenant_id, secret_hash, permissions FROM wms_api_client '
-            . 'WHERE id = :id AND active = 1',
+            'SELECT id, tenant_id, acting_user_id, secret_hash, permissions FROM wms_api_client '
+            . 'WHERE id = :id AND active = 1 AND acting_user_id IS NOT NULL',
             ['id' => $clientId],
         );
         if ($client === false || !hash_equals((string) $client['secret_hash'], hash('sha256', $secret))) {
@@ -97,7 +97,12 @@ final class ApiKeyAuthenticator extends AbstractAuthenticator implements Authent
             ['id' => $clientId],
         );
 
-        return new ApiClientUser((string) $client['id'], (string) $client['tenant_id'], $permissions);
+        return new ApiClientUser(
+            (string) $client['id'],
+            (string) $client['tenant_id'],
+            (string) $client['acting_user_id'],
+            $permissions,
+        );
     }
 
     private function unauthorized(string $detail): JsonResponse

@@ -2,7 +2,7 @@
 id: WEBWMS-049
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Teilweise umgesetzt
+status: Backend umgesetzt
 priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,12 +44,15 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Backend umgesetzt
 
-Legacy-Kundenauftrag und Auftragsreferenzen; 3.0-Outbound-Aggregat fehlt. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`OutboundOrder` und `OutboundOrderItem` bilden einen mandantenfähigen 3.0-Kundenauftrag mit eindeutigen Artikeln und validierten Mengen ab. Der transaktionale Ablauf importiert einen Auftrag im Status `imported` und gibt ihn einmalig frei. Bei der Freigabe wird für jede Position atomar eine Bestandsreservierung erzeugt. API-v3-Endpunkte ermöglichen Anlage, Abfrage und Freigabe mit getrennten Berechtigungen.
+
+Nachweise: `OutboundOrder`, `OutboundOrderRelease`, zugehörige Application-Handler, `DbalInventoryRepository`, `OutboundOrderApiController` und Migration `Version20260918191000`.
+
+UI, Änderungs-/Stornoworkflow und vollständige Datenbank-Integrationstests fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-049
 - Referenz: https://www.coglas.com/funktionen/
-

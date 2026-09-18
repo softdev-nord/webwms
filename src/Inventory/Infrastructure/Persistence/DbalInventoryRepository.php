@@ -28,6 +28,9 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\LoadingCompletion;
 use WebWMS\Inventory\Domain\LoadingManifest;
 use WebWMS\Inventory\Domain\LoadingResult;
+use WebWMS\Inventory\Domain\OutboundOrder;
+use WebWMS\Inventory\Domain\OutboundOrderRelease;
+use WebWMS\Inventory\Domain\OutboundOrderResult;
 use WebWMS\Inventory\Domain\PackingCompletion;
 use WebWMS\Inventory\Domain\PackingOrder;
 use WebWMS\Inventory\Domain\PackingPackage;
@@ -266,6 +269,125 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             'created_at' => $reservation->createdAt()->format('Y-m-d H:i:s.u'),
             'updated_at' => $reservation->createdAt()->format('Y-m-d H:i:s.u'),
         ]);
+    }
+
+    public function saveOutboundOrder(OutboundOrder $order): OutboundOrderResult
+    {
+        return $this->connection->transactional(
+            function (Connection $connection) use ($order): OutboundOrderResult {
+                if ($connection->fetchOne(
+                    'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                    ['userId' => $order->createdBy()->value(), 'tenantId' => $order->tenantId()->value()],
+                ) === false) {
+                    throw new InventoryReferenceNotFoundException(
+                        'The outbound order creator must exist in the tenant.',
+                    );
+                }
+
+                $connection->insert('wms_outbound_order', [
+                    'id' => $order->id()->value(),
+                    'tenant_id' => $order->tenantId()->value(),
+                    'order_number' => $order->orderNumber(),
+                    'customer_reference' => $order->customerReference(),
+                    'status' => 'imported',
+                    'created_by' => $order->createdBy()->value(),
+                    'created_at' => $order->createdAt()->format('Y-m-d H:i:s.u'),
+                ]);
+                foreach ($order->items() as $item) {
+                    if ($connection->fetchOne(
+                        'SELECT 1 FROM wms_product_reference WHERE id = :productId AND tenant_id = :tenantId',
+                        [
+                            'productId' => $item->productId()->value(),
+                            'tenantId' => $order->tenantId()->value(),
+                        ],
+                    ) === false) {
+                        throw new InventoryReferenceNotFoundException(
+                            'Every outbound order product must exist in the tenant.',
+                        );
+                    }
+                    $connection->insert('wms_outbound_order_item', [
+                        'id' => $item->id()->value(),
+                        'outbound_order_id' => $order->id()->value(),
+                        'product_id' => $item->productId()->value(),
+                        'requested_quantity' => $item->quantity(),
+                    ]);
+                }
+
+                return new OutboundOrderResult('imported', count($order->items()));
+            },
+        );
+    }
+
+    public function releaseOutboundOrder(OutboundOrderRelease $release): OutboundOrderResult
+    {
+        return $this->connection->transactional(
+            function (Connection $connection) use ($release): OutboundOrderResult {
+                $order = $connection->fetchAssociative(
+                    "SELECT id, order_number FROM wms_outbound_order WHERE id = :orderId "
+                    . "AND tenant_id = :tenantId AND status = 'imported' FOR UPDATE",
+                    [
+                        'orderId' => $release->orderId()->value(),
+                        'tenantId' => $release->tenantId()->value(),
+                    ],
+                );
+                if ($order === false || $connection->fetchOne(
+                    'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                    [
+                        'userId' => $release->releasedBy()->value(),
+                        'tenantId' => $release->tenantId()->value(),
+                    ],
+                ) === false) {
+                    throw new InventoryReferenceNotFoundException(
+                        'An imported outbound order and releasing user must exist in the tenant.',
+                    );
+                }
+                $items = $connection->fetchAllAssociative(
+                    'SELECT id, product_id, requested_quantity FROM wms_outbound_order_item '
+                    . 'WHERE outbound_order_id = :orderId ORDER BY id FOR UPDATE',
+                    ['orderId' => $release->orderId()->value()],
+                );
+                if (count($items) !== count($release->reservationIdsByItem())) {
+                    throw new InventoryReferenceNotFoundException(
+                        'Every outbound order item requires exactly one reservation ID.',
+                    );
+                }
+
+                foreach ($items as $item) {
+                    $itemId = (string) $item['id'];
+                    $reservationId = $release->reservationIdsByItem()[$itemId] ?? null;
+                    if ($reservationId === null) {
+                        throw new InventoryReferenceNotFoundException(
+                            'A reservation ID is missing for an outbound order item.',
+                        );
+                    }
+                    $connection->insert('wms_stock_reservation', [
+                        'id' => $reservationId->value(),
+                        'tenant_id' => $release->tenantId()->value(),
+                        'product_id' => $item['product_id'],
+                        'order_reference' => $order['order_number'],
+                        'requested_quantity' => $item['requested_quantity'],
+                        'allocated_quantity' => 0,
+                        'fulfilled_quantity' => 0,
+                        'status' => 'open',
+                        'created_by' => $release->releasedBy()->value(),
+                        'created_at' => $release->releasedAt()->format('Y-m-d H:i:s.u'),
+                        'updated_at' => $release->releasedAt()->format('Y-m-d H:i:s.u'),
+                    ]);
+                    $connection->update(
+                        'wms_outbound_order_item',
+                        ['reservation_id' => $reservationId->value()],
+                        ['id' => $itemId],
+                    );
+                }
+                $connection->update('wms_outbound_order', [
+                    'status' => 'released',
+                    'released_by' => $release->releasedBy()->value(),
+                    'released_at' => $release->releasedAt()->format('Y-m-d H:i:s.u'),
+                ], ['id' => $release->orderId()->value()]);
+
+                return new OutboundOrderResult('released', count($items), count($items));
+            },
+        );
     }
 
     public function allocate(StockAllocation $allocation): StockAllocationResult

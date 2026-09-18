@@ -1,6 +1,6 @@
 # JSON-Web-API v3 verwenden
 
-Die API v3 verbindet ERP-, Shop- oder Middleware-Systeme mit WebWMS. Jeder Zugang gehört genau zu einem Mandanten und erhält nur die benötigten Berechtigungen.
+Die API v3 verbindet ERP-, Shop- oder Middleware-Systeme mit WebWMS. Jeder Zugang gehört genau zu einem Mandanten, verwendet einen technischen Ausführungsbenutzer für das Audit und erhält nur die benötigten Berechtigungen.
 
 ## Zugang verwenden
 

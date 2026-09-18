@@ -10,5 +10,7 @@ interface TenantPermissionUser extends UserInterface
 {
     public function tenantId(): string;
 
+    public function actorId(): string;
+
     public function hasPermission(string $permission): bool;
 }

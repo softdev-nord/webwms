@@ -14,6 +14,8 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use WebWMS\Inventory\Domain\InsufficientAvailableStockException;
+use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 
 #[AsEventListener(event: KernelEvents::EXCEPTION)]
 final readonly class ApiExceptionSubscriber
@@ -29,6 +31,8 @@ final readonly class ApiExceptionSubscriber
             $exception instanceof AccessDeniedHttpException,
             $exception instanceof AccessDeniedException => [403, 'Forbidden', 'The API client lacks the required permission.'],
             $exception instanceof JsonException => [400, 'Bad Request', 'The request body must contain valid JSON.'],
+            $exception instanceof InventoryReferenceNotFoundException => [404, 'Not Found', $exception->getMessage()],
+            $exception instanceof InsufficientAvailableStockException => [409, 'Conflict', $exception->getMessage()],
             $exception instanceof UniqueConstraintViolationException => [409, 'Conflict', 'The resource already exists.'],
             $exception instanceof \InvalidArgumentException => [422, 'Unprocessable Entity', $exception->getMessage()],
             $exception instanceof HttpExceptionInterface => [$exception->getStatusCode(), Response::$statusTexts[$exception->getStatusCode()] ?? 'Request failed', $exception->getMessage()],

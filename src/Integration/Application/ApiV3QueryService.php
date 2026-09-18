@@ -58,4 +58,50 @@ final readonly class ApiV3QueryService
             ],
         );
     }
+
+    /** @return array<string, mixed>|null */
+    public function outboundOrder(string $tenantId, string $orderId): ?array
+    {
+        $order = $this->connection->fetchAssociative(
+            'SELECT id, order_number, customer_reference, status, created_at, released_at '
+            . 'FROM wms_outbound_order WHERE id = :orderId AND tenant_id = :tenantId',
+            ['orderId' => $orderId, 'tenantId' => $tenantId],
+        );
+        if ($order === false) {
+            return null;
+        }
+        $order['items'] = $this->connection->fetchAllAssociative(
+            'SELECT i.id, i.product_id, p.sku, i.requested_quantity, i.reservation_id, '
+            . 'r.status reservation_status, r.allocated_quantity, r.fulfilled_quantity '
+            . 'FROM wms_outbound_order_item i INNER JOIN wms_product_reference p ON p.id = i.product_id '
+            . 'LEFT JOIN wms_stock_reservation r ON r.id = i.reservation_id '
+            . 'WHERE i.outbound_order_id = :orderId ORDER BY i.id',
+            ['orderId' => $orderId],
+        );
+
+        return $order;
+    }
+
+    /** @return array<string, mixed>|null */
+    public function reservation(string $tenantId, string $reservationId): ?array
+    {
+        $reservation = $this->connection->fetchAssociative(
+            'SELECT r.id, r.product_id, p.sku, r.order_reference, r.requested_quantity, '
+            . 'r.allocated_quantity, r.fulfilled_quantity, r.status, r.created_at, r.updated_at '
+            . 'FROM wms_stock_reservation r INNER JOIN wms_product_reference p ON p.id = r.product_id '
+            . 'WHERE r.id = :reservationId AND r.tenant_id = :tenantId',
+            ['reservationId' => $reservationId, 'tenantId' => $tenantId],
+        );
+        if ($reservation === false) {
+            return null;
+        }
+        $reservation['allocations'] = $this->connection->fetchAllAssociative(
+            'SELECT id, location_id, stock_status, batch_number, serial_number, expires_at, quantity, status '
+            . 'FROM wms_stock_allocation WHERE reservation_id = :reservationId AND tenant_id = :tenantId '
+            . 'ORDER BY created_at, id',
+            ['reservationId' => $reservationId, 'tenantId' => $tenantId],
+        );
+
+        return $reservation;
+    }
 }

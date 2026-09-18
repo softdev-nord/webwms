@@ -26,6 +26,7 @@ final class CreateApiClientConsoleCommand extends Command
     {
         $this
             ->addArgument('tenant-id', InputArgument::REQUIRED)
+            ->addArgument('acting-user-id', InputArgument::REQUIRED)
             ->addArgument('name', InputArgument::REQUIRED)
             ->addArgument('permissions', InputArgument::REQUIRED, 'Comma-separated permission keys');
     }
@@ -33,6 +34,7 @@ final class CreateApiClientConsoleCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $tenantId = (string) $input->getArgument('tenant-id');
+        $actingUserId = (string) $input->getArgument('acting-user-id');
         $name = trim((string) $input->getArgument('name'));
         $permissions = array_values(array_unique(array_filter(array_map(
             'trim',
@@ -50,12 +52,19 @@ final class CreateApiClientConsoleCommand extends Command
         ) === false) {
             throw new \InvalidArgumentException('The tenant does not exist.');
         }
+        if ($this->connection->fetchOne(
+            'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId AND status = :status',
+            ['userId' => $actingUserId, 'tenantId' => $tenantId, 'status' => 'active'],
+        ) === false) {
+            throw new \InvalidArgumentException('The acting user does not exist or is inactive.');
+        }
 
         $clientId = Uuid::v7()->toRfc4122();
         $secret = bin2hex(random_bytes(24));
         $this->connection->insert('wms_api_client', [
             'id' => $clientId,
             'tenant_id' => $tenantId,
+            'acting_user_id' => $actingUserId,
             'name' => $name,
             'secret_hash' => hash('sha256', $secret),
             'permissions' => json_encode($permissions, JSON_THROW_ON_ERROR),

@@ -32,6 +32,11 @@ final class SecurityUser implements TenantPermissionUser, PasswordAuthenticatedU
         return $this->tenantId;
     }
 
+    public function actorId(): string
+    {
+        return $this->id;
+    }
+
     public function getUserIdentifier(): string
     {
         return $this->tenantId . '|' . $this->email;

@@ -4,7 +4,7 @@ Alle 17 dokumentierten Funktionen des Bereichs Warenausgang & Versand werden fac
 
 | Ticket | Zusammenfassung | Status | Priorität | Story Points |
 | --- | --- | --- | --- | ---: |
-| [WEBWMS-049](../tickets/WEBWMS-049.md) | Kundenaufträge implementieren | Teilweise umgesetzt | Highest | 8 |
+| [WEBWMS-049](../tickets/WEBWMS-049.md) | Kundenaufträge implementieren | Backend umgesetzt | Highest | 8 |
 | [WEBWMS-050](../tickets/WEBWMS-050.md) | Auftragsvorschau implementieren | Offen | High | 5 |
 | [WEBWMS-051](../tickets/WEBWMS-051.md) | Bestandsreservierung implementieren | Backend umgesetzt | Highest | 8 |
 | [WEBWMS-052](../tickets/WEBWMS-052.md) | QS-Checklisten im Ausgang implementieren | Offen | High | 5 |
@@ -21,4 +21,3 @@ Alle 17 dokumentierten Funktionen des Bereichs Warenausgang & Versand werden fac
 | [WEBWMS-063](../tickets/WEBWMS-063.md) | Ladelisten implementieren | Backend umgesetzt | High | 2 |
 | [WEBWMS-064](../tickets/WEBWMS-064.md) | CMR-Frachtbrief implementieren | Offen | Medium | 5 |
 | [WEBWMS-065](../tickets/WEBWMS-065.md) | Statusrückmeldung implementieren | Offen | Highest | 8 |
-
