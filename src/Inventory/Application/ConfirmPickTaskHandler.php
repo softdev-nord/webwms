@@ -21,6 +21,11 @@ final readonly class ConfirmPickTaskHandler
 
     public function __invoke(ConfirmPickTaskCommand $command): PickConfirmationResult
     {
-        return $this->inventory->confirmPick(new PickConfirmation(new InventoryId($command->taskId), new TenantId($command->tenantId), PickOutcome::from($command->outcome), $command->ledgerEntryId === null ? null : new InventoryId($command->ledgerEntryId), $command->note, new UserId($command->confirmedBy), $command->confirmedAt));
+        $outcome = PickOutcome::tryFrom($command->outcome);
+        if ($outcome === null) {
+            throw new \InvalidArgumentException('A pick outcome must be either "picked" or "shortage".');
+        }
+
+        return $this->inventory->confirmPick(new PickConfirmation(new InventoryId($command->taskId), new TenantId($command->tenantId), $outcome, $command->ledgerEntryId === null ? null : new InventoryId($command->ledgerEntryId), $command->note, new UserId($command->confirmedBy), $command->confirmedAt));
     }
 }

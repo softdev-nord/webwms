@@ -104,4 +104,58 @@ final readonly class ApiV3QueryService
 
         return $reservation;
     }
+
+    /** @return list<string> */
+    public function pickableAllocationIds(string $tenantId, string $orderId): array
+    {
+        $ids = $this->connection->fetchFirstColumn(
+            'SELECT a.id FROM wms_stock_allocation a '
+            . 'INNER JOIN wms_stock_reservation r ON r.id = a.reservation_id '
+            . 'INNER JOIN wms_outbound_order_item i ON i.reservation_id = r.id '
+            . 'INNER JOIN wms_outbound_order o ON o.id = i.outbound_order_id '
+            . "WHERE o.id = :orderId AND o.tenant_id = :tenantId AND o.status = 'released' AND a.status = 'active' "
+            . 'AND NOT EXISTS (SELECT 1 FROM wms_outbound_order_item pending '
+            . 'LEFT JOIN wms_stock_reservation pending_reservation ON pending_reservation.id = pending.reservation_id '
+            . 'WHERE pending.outbound_order_id = o.id AND (pending_reservation.id IS NULL OR pending_reservation.allocated_quantity < pending.requested_quantity)) '
+            . 'ORDER BY i.id, a.created_at, a.id',
+            ['orderId' => $orderId, 'tenantId' => $tenantId],
+        );
+
+        $allocationIds = [];
+        foreach ($ids as $id) {
+            if (!is_string($id)) {
+                throw new \LogicException('The allocation ID projection is invalid.');
+            }
+            $allocationIds[] = $id;
+        }
+
+        return $allocationIds;
+    }
+
+    /** @return array<string, mixed>|null */
+    public function pickList(string $tenantId, string $pickListId): ?array
+    {
+        $pickList = $this->connection->fetchAssociative(
+            'SELECT l.id, l.outbound_order_id, o.order_number, l.code, l.status, l.assigned_to, '
+            . 'l.assigned_by, l.assigned_at, l.created_by, l.created_at, l.updated_at '
+            . 'FROM wms_pick_list l LEFT JOIN wms_outbound_order o ON o.id = l.outbound_order_id '
+            . 'WHERE l.id = :pickListId AND l.tenant_id = :tenantId',
+            ['pickListId' => $pickListId, 'tenantId' => $tenantId],
+        );
+        if ($pickList === false) {
+            return null;
+        }
+        $pickList['tasks'] = $this->connection->fetchAllAssociative(
+            'SELECT t.id, t.sequence_number, t.status, t.confirmed_by, t.confirmed_at, t.note, '
+            . 'a.id allocation_id, a.product_id, p.sku, a.location_id, l.code location_code, '
+            . 'a.stock_status, a.batch_number, a.serial_number, a.expires_at, a.quantity '
+            . 'FROM wms_pick_task t INNER JOIN wms_stock_allocation a ON a.id = t.allocation_id '
+            . 'INNER JOIN wms_product_reference p ON p.id = a.product_id '
+            . 'INNER JOIN wms_storage_location l ON l.id = a.location_id '
+            . 'WHERE t.pick_list_id = :pickListId ORDER BY t.sequence_number',
+            ['pickListId' => $pickListId],
+        );
+
+        return $pickList;
+    }
 }

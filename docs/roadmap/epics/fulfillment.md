@@ -4,8 +4,8 @@ Alle 16 dokumentierten Funktionen des Bereichs Transport & Kommissionierung werd
 
 | Ticket | Zusammenfassung | Status | Priorität | Story Points |
 | --- | --- | --- | --- | ---: |
-| [WEBWMS-033](../tickets/WEBWMS-033.md) | Auftragsreine Kommissionierung implementieren | Teilweise umgesetzt | Highest | 8 |
-| [WEBWMS-034](../tickets/WEBWMS-034.md) | Single-Order-Picking implementieren | Teilweise umgesetzt | Highest | 5 |
+| [WEBWMS-033](../tickets/WEBWMS-033.md) | Auftragsreine Kommissionierung implementieren | Backend umgesetzt | Highest | 8 |
+| [WEBWMS-034](../tickets/WEBWMS-034.md) | Single-Order-Picking implementieren | Backend umgesetzt | Highest | 5 |
 | [WEBWMS-035](../tickets/WEBWMS-035.md) | Multi-Order-Picking implementieren | Offen | High | 8 |
 | [WEBWMS-036](../tickets/WEBWMS-036.md) | Wellenkommissionierung implementieren | Offen | High | 8 |
 | [WEBWMS-037](../tickets/WEBWMS-037.md) | Mehrstufige Kommissionierung implementieren | Offen | Medium | 8 |
@@ -20,4 +20,3 @@ Alle 16 dokumentierten Funktionen des Bereichs Transport & Kommissionierung werd
 | [WEBWMS-046](../tickets/WEBWMS-046.md) | Vorholung implementieren | Offen | Medium | 8 |
 | [WEBWMS-047](../tickets/WEBWMS-047.md) | Materialflusssteuerung implementieren | Offen | Medium | 13 |
 | [WEBWMS-048](../tickets/WEBWMS-048.md) | Routenzug implementieren | Offen | Medium | 8 |
-

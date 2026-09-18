@@ -2,7 +2,7 @@
 id: WEBWMS-034
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Teilweise umgesetzt
+status: Backend umgesetzt
 priority: Highest
 story_points: 5
 component: "Transport & Kommissionierung"
@@ -44,12 +44,15 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Backend umgesetzt
 
-Picklisten-Lifecycle; expliziter Single-Order-Modus fehlt. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Der explizite Single-Order-Modus ist über die Auftragsressource der API v3 umgesetzt. Pro freigegebenem Kundenauftrag entsteht höchstens eine Pickliste; alle Positionen referenzieren aktive Allokationen genau dieses Auftrags. Der Lifecycle umfasst Erzeugung, Zuweisung, sequenzierte Bearbeitung und automatischen Abschluss.
+
+Nachweise: `PickingApiController`, `CreatePickListHandler`, `AssignPickListHandler`, `ConfirmPickTaskHandler`, `DbalInventoryRepository`, Migration `Version20260918200000` und `PickListTest`.
+
+Eine mobile Bedienoberfläche, Rundgangoptimierung und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-034
 - Referenz: https://www.coglas.com/kommissionierung/
-

@@ -2,7 +2,7 @@
 id: WEBWMS-033
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Teilweise umgesetzt
+status: Backend umgesetzt
 priority: Highest
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,12 +44,15 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Backend umgesetzt
 
-Picklisten und Pickpositionen; Auftragsreinheit nicht erzwungen. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Picklisten werden über `POST /api/v3/orders/{id}/pick-lists` ausschließlich aus aktiven Allokationen eines einzelnen Kundenauftrags gebildet. `PickList::outboundOrderId()`, die persistente Auftragsreferenz und die transaktionale Prüfung in `DbalInventoryRepository::savePickList()` erzwingen die Auftragsreinheit. Zuweisung, Abfrage und Pickbestätigung sind mandantengebunden und durch getrennte Berechtigungen geschützt.
+
+Nachweise: `PickingApiController`, `ApiV3QueryService::pickList()`, `PickList`, `DbalInventoryRepository`, Migration `Version20260918200000`, `PickListTest` sowie die technische und fachliche Dokumentation unter `docs/technical/picking-api.md` und `docs/user/picking-api.md`.
+
+Eine Bedienoberfläche, automatische Wegeoptimierung und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-033
 - Referenz: https://www.coglas.com/funktionen/
-

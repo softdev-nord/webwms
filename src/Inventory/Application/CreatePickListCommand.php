@@ -12,6 +12,7 @@ final readonly class CreatePickListCommand
     public function __construct(
         public string $pickListId,
         public string $tenantId,
+        public string $outboundOrderId,
         public string $code,
         public array $allocationIds,
         public string $createdBy,

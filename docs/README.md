@@ -5,8 +5,6 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 
 Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/README.md).
 
-Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/README.md).
-
 ## Technische Dokumentation
 
 - [Phase 1: Runtime und Qualitätsbasis](technical/phase-1-runtime.md)
@@ -29,6 +27,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Permanente und Nulldurchgangsinventur](technical/cycle-counting.md)
 - [Versionierte JSON-Web-API v3](technical/api-v3.md)
 - [Kundenauftrag, Reservierung und Allokation](technical/outbound-order-api.md)
+- [Picklisten und Pickaufträge über API v3](technical/picking-api.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -53,6 +52,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Permanente und Nulldurchgangsinventur verwenden](user/cycle-counting.md)
 - [JSON-Web-API v3 verwenden](user/api-v3.md)
 - [Kundenaufträge über API v3 bearbeiten](user/outbound-order-api.md)
+- [Kommissionierung über API v3 durchführen](user/picking-api.md)
 
 ## Verbindliche Dokumentationsregel
 

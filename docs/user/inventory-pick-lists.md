@@ -3,8 +3,12 @@
 ## Pickliste erstellen und zuweisen
 
 Eine Pickliste bündelt bereits allokierte Bestände. Jede Position zeigt genau
-den Bestand, der für einen Auftrag vorgesehen ist. Anschließend wird die Liste
+den Bestand, der für genau einen Auftrag vorgesehen ist. Positionen
+unterschiedlicher Aufträge können nicht vermischt werden. Anschließend wird die Liste
 einem Lagermitarbeiter zugewiesen.
+
+Für Integrationen steht der vollständige Ablauf auch über die
+[API v3](picking-api.md) zur Verfügung.
 
 ## Position bestätigen
 

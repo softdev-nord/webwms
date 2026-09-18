@@ -19,6 +19,6 @@ final readonly class CreatePickListHandler
 
     public function __invoke(CreatePickListCommand $command): void
     {
-        $this->inventory->savePickList(new PickList(new InventoryId($command->pickListId), new TenantId($command->tenantId), $command->code, array_map(static fn (string $id): InventoryId => new InventoryId($id), $command->allocationIds), new UserId($command->createdBy), $command->createdAt));
+        $this->inventory->savePickList(new PickList(new InventoryId($command->pickListId), new TenantId($command->tenantId), new InventoryId($command->outboundOrderId), $command->code, array_map(static fn (string $id): InventoryId => new InventoryId($id), $command->allocationIds), new UserId($command->createdBy), $command->createdAt));
     }
 }

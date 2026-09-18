@@ -15,6 +15,7 @@ final readonly class PickList
     public function __construct(
         private InventoryId $id,
         private TenantId $tenantId,
+        private InventoryId $outboundOrderId,
         private string $code,
         private array $allocationIds,
         private UserId $createdBy,
@@ -36,6 +37,11 @@ final readonly class PickList
     public function tenantId(): TenantId
     {
         return $this->tenantId;
+    }
+
+    public function outboundOrderId(): InventoryId
+    {
+        return $this->outboundOrderId;
     }
 
     public function code(): string

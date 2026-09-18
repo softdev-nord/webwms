@@ -36,3 +36,6 @@ curl -X POST -H 'Content-Type: application/json' \
 `GET /api/v3/stock` liefert physische und verfügbare Mengen einschließlich Lagerplatz, Status, Charge, Seriennummer und MHD. Optional beschränkt `warehouseId` die Antwort auf ein Lager.
 
 Fehler werden als JSON mit HTTP-Status und einer kurzen Beschreibung zurückgegeben. Bei 401 ist das Credential ungültig; bei 403 fehlt dem Client die erforderliche Berechtigung.
+
+Die weiterführenden Abläufe sind unter [Kundenaufträge](outbound-order-api.md)
+und [Kommissionierung](picking-api.md) beschrieben.

@@ -30,4 +30,4 @@ Mandant und Auditbenutzer stammen ausschließlich aus dem authentifizierten API-
 - Auftragsänderung und Stornierung;
 - automatische Allokationsstrategie;
 - UI und Datenbank-Integrationstests;
-- Picklistenerzeugung direkt aus vollständig allokierten Aufträgen.
+- automatische Allokationsstrategie vor der Picklistenerzeugung.
