@@ -12,8 +12,9 @@ use WebWMS\Inventory\Domain\Warehouse;
 
 final readonly class CreateWarehouseHandler
 {
-    public function __construct(private InventoryRepository $inventory)
-    {
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
     }
 
     public function __invoke(CreateWarehouseCommand $command): Warehouse

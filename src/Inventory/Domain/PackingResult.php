@@ -6,5 +6,10 @@ namespace WebWMS\Inventory\Domain;
 
 final readonly class PackingResult
 {
-    public function __construct(public string $status, public int $packageCount, public int $totalWeightGrams) {}
+    public function __construct(
+        public string $status,
+        public int $packageCount,
+        public int $totalWeightGrams
+    ) {
+    }
 }

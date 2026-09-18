@@ -13,7 +13,11 @@ use WebWMS\Inventory\Domain\PutawayResult;
 
 final readonly class CreatePutawayOrderHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
+
     public function __invoke(CreatePutawayOrderCommand $command): PutawayResult
     {
         return $this->inventory->createPutawayOrder(new PutawayRequest(new InventoryId($command->orderId), new TenantId($command->tenantId), new InventoryId($command->inboundReceiptId), new UserId($command->createdBy), $command->createdAt));

@@ -6,7 +6,9 @@ namespace WebWMS\Inventory\Domain;
 
 final readonly class ShipmentResult
 {
-    public function __construct(public string $status, public string $trackingNumber)
-    {
+    public function __construct(
+        public string $status,
+        public string $trackingNumber
+    ) {
     }
 }

@@ -8,8 +8,12 @@ use InvalidArgumentException;
 
 final readonly class ReturnItem
 {
-    public function __construct(private InventoryId $id, private InventoryId $productId, private int $expectedQuantity, private string $reason)
-    {
+    public function __construct(
+        private InventoryId $id,
+        private InventoryId $productId,
+        private int $expectedQuantity,
+        private string $reason
+    ) {
         if ($expectedQuantity < 1) {
             throw new InvalidArgumentException('A return item quantity must be positive.');
         }
@@ -18,8 +22,23 @@ final readonly class ReturnItem
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
-    public function productId(): InventoryId { return $this->productId; }
-    public function expectedQuantity(): int { return $this->expectedQuantity; }
-    public function reason(): string { return trim($this->reason); }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function productId(): InventoryId
+    {
+        return $this->productId;
+    }
+
+    public function expectedQuantity(): int
+    {
+        return $this->expectedQuantity;
+    }
+
+    public function reason(): string
+    {
+        return trim($this->reason);
+    }
 }

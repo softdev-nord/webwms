@@ -13,8 +13,9 @@ use WebWMS\Inventory\Domain\StockPosting;
 
 final readonly class PostStockHandler
 {
-    public function __construct(private InventoryRepository $inventory)
-    {
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
     }
 
     public function __invoke(PostStockCommand $command): int

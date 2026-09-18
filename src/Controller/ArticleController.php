@@ -36,6 +36,18 @@ class ArticleController extends AbstractController
     ) {
     }
 
+    public function __construct(
+        public string $packageId,
+        public string $orderId,
+        public string $tenantId,
+        public string $packageNumber,
+        public int $weightGrams,
+        public array $pickTaskIds,
+        public string $packedBy,
+        public DateTimeImmutable $packedAt
+    ) {
+    }
+
     #[Route('/artikel', name: 'article')]
     public function index(): Response
     {

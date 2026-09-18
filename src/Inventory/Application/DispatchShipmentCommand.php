@@ -8,7 +8,12 @@ use DateTimeImmutable;
 
 final readonly class DispatchShipmentCommand
 {
-    public function __construct(public string $shipmentId, public string $tenantId, public string $handoverReference, public string $dispatchedBy, public DateTimeImmutable $dispatchedAt)
-    {
+    public function __construct(
+        public string $shipmentId,
+        public string $tenantId,
+        public string $handoverReference,
+        public string $dispatchedBy,
+        public DateTimeImmutable $dispatchedAt
+    ) {
     }
 }

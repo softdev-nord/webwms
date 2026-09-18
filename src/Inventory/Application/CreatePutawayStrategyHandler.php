@@ -14,7 +14,11 @@ use WebWMS\Inventory\Domain\StockStatus;
 
 final readonly class CreatePutawayStrategyHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
+
     public function __invoke(CreatePutawayStrategyCommand $command): void
     {
         $status = StockStatus::tryFrom(mb_strtolower(trim($command->stockStatus))) ?? throw new InvalidArgumentException('The putaway stock status is not supported.');

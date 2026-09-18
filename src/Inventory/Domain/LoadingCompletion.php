@@ -10,9 +10,31 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 
 final readonly class LoadingCompletion
 {
-    public function __construct(private InventoryId $manifestId, private TenantId $tenantId, private UserId $completedBy, private DateTimeImmutable $completedAt) {}
-    public function manifestId(): InventoryId { return $this->manifestId; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function completedBy(): UserId { return $this->completedBy; }
-    public function completedAt(): DateTimeImmutable { return $this->completedAt; }
+    public function __construct(
+        private InventoryId $manifestId,
+        private TenantId $tenantId,
+        private UserId $completedBy,
+        private DateTimeImmutable $completedAt
+    ) {
+    }
+
+    public function manifestId(): InventoryId
+    {
+        return $this->manifestId;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function completedBy(): UserId
+    {
+        return $this->completedBy;
+    }
+
+    public function completedAt(): DateTimeImmutable
+    {
+        return $this->completedAt;
+    }
 }

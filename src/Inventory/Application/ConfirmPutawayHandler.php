@@ -13,7 +13,11 @@ use WebWMS\Inventory\Domain\PutawayResult;
 
 final readonly class ConfirmPutawayHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
+
     public function __invoke(ConfirmPutawayCommand $command): PutawayResult
     {
         return $this->inventory->confirmPutaway(new PutawayConfirmation(new InventoryId($command->orderId), new InventoryId($command->transferId), new InventoryId($command->sourceLedgerId), new InventoryId($command->destinationLedgerId), new TenantId($command->tenantId), new UserId($command->confirmedBy), $command->confirmedAt));

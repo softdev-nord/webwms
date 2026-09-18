@@ -14,8 +14,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 /** @implements UserProviderInterface<SecurityUser> */
 final readonly class DbalUserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function loadUserByIdentifier(string $identifier): SecurityUser

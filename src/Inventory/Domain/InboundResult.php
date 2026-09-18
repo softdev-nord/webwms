@@ -6,5 +6,11 @@ namespace WebWMS\Inventory\Domain;
 
 final readonly class InboundResult
 {
-    public function __construct(public string $deliveryStatus, public string $lineStatus, public ?string $stockStatus = null, public ?int $resultingQuantity = null) {}
+    public function __construct(
+        public string $deliveryStatus,
+        public string $lineStatus,
+        public ?string $stockStatus = null,
+        public ?int $resultingQuantity = null
+    ) {
+    }
 }

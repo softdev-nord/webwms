@@ -12,8 +12,16 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 final readonly class LoadingManifest
 {
     /** @param list<InventoryId> $shipmentIds */
-    public function __construct(private InventoryId $id, private TenantId $tenantId, private string $code, private string $tourReference, private string $vehicleReference, private array $shipmentIds, private UserId $createdBy, private DateTimeImmutable $createdAt)
-    {
+    public function __construct(
+        private InventoryId $id,
+        private TenantId $tenantId,
+        private string $code,
+        private string $tourReference,
+        private string $vehicleReference,
+        private array $shipmentIds,
+        private UserId $createdBy,
+        private DateTimeImmutable $createdAt
+    ) {
         foreach ([$code, $tourReference, $vehicleReference] as $value) {
             if (trim($value) === '' || mb_strlen($value) > 80) {
                 throw new InvalidArgumentException('Manifest code, tour and vehicle must contain 1 to 80 characters.');
@@ -28,13 +36,44 @@ final readonly class LoadingManifest
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function code(): string { return mb_strtoupper(trim($this->code)); }
-    public function tourReference(): string { return trim($this->tourReference); }
-    public function vehicleReference(): string { return trim($this->vehicleReference); }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function code(): string
+    {
+        return mb_strtoupper(trim($this->code));
+    }
+
+    public function tourReference(): string
+    {
+        return trim($this->tourReference);
+    }
+
+    public function vehicleReference(): string
+    {
+        return trim($this->vehicleReference);
+    }
+
     /** @return list<InventoryId> */
-    public function shipmentIds(): array { return $this->shipmentIds; }
-    public function createdBy(): UserId { return $this->createdBy; }
-    public function createdAt(): DateTimeImmutable { return $this->createdAt; }
+    public function shipmentIds(): array
+    {
+        return $this->shipmentIds;
+    }
+
+    public function createdBy(): UserId
+    {
+        return $this->createdBy;
+    }
+
+    public function createdAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 }

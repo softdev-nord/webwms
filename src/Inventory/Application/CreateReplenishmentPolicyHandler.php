@@ -12,7 +12,11 @@ use WebWMS\Inventory\Domain\ReplenishmentPolicy;
 
 final readonly class CreateReplenishmentPolicyHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
+
     public function __invoke(CreateReplenishmentPolicyCommand $command): void
     {
         $this->inventory->saveReplenishmentPolicy(new ReplenishmentPolicy(new InventoryId($command->policyId), new TenantId($command->tenantId), new InventoryId($command->warehouseId), new InventoryId($command->productId), new InventoryId($command->targetLocationId), $command->code, $command->sourceLocationPrefix, $command->minimumQuantity, $command->targetQuantity, $command->priority, new UserId($command->createdBy), $command->createdAt));

@@ -28,10 +28,33 @@ final readonly class Warehouse
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function siteId(): SiteId { return $this->siteId; }
-    public function code(): string { return $this->code; }
-    public function name(): string { return trim($this->name); }
-    public function createdAt(): DateTimeImmutable { return $this->createdAt; }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function siteId(): SiteId
+    {
+        return $this->siteId;
+    }
+
+    public function code(): string
+    {
+        return $this->code;
+    }
+
+    public function name(): string
+    {
+        return trim($this->name);
+    }
+
+    public function createdAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 }

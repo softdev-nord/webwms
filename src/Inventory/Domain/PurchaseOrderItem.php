@@ -8,13 +8,28 @@ use InvalidArgumentException;
 
 final readonly class PurchaseOrderItem
 {
-    public function __construct(private InventoryId $id, private InventoryId $productId, private int $orderedQuantity)
-    {
+    public function __construct(
+        private InventoryId $id,
+        private InventoryId $productId,
+        private int $orderedQuantity
+    ) {
         if ($orderedQuantity < 1) {
             throw new InvalidArgumentException('An ordered quantity must be positive.');
         }
     }
-    public function id(): InventoryId { return $this->id; }
-    public function productId(): InventoryId { return $this->productId; }
-    public function orderedQuantity(): int { return $this->orderedQuantity; }
+
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function productId(): InventoryId
+    {
+        return $this->productId;
+    }
+
+    public function orderedQuantity(): int
+    {
+        return $this->orderedQuantity;
+    }
 }

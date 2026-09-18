@@ -17,7 +17,7 @@ return RectorConfig::configure()
         privatization: true,
         instanceOf: true,
         earlyReturn: true,
-        strictBooleans: true,
+//        strictBooleans: true,
         phpunitCodeQuality: true,
         doctrineCodeQuality: true,
         symfonyCodeQuality: true,
@@ -28,7 +28,7 @@ return RectorConfig::configure()
         phpunit: true
     )
     ->withPhpSets(
-        php83: true
+        php84: true
     )
     ->withRules([
             PreferPHPUnitSelfCallRector::class

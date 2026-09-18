@@ -11,8 +11,9 @@ use WebWMS\Security\V3\SecurityUser;
 
 final readonly class SymfonyPasswordHasher implements PasswordHasher
 {
-    public function __construct(private PasswordHasherFactoryInterface $factory)
-    {
+    public function __construct(
+        private PasswordHasherFactoryInterface $factory
+    ) {
     }
 
     public function hash(string $plainPassword): string

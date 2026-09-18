@@ -12,8 +12,15 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 final readonly class ReturnOrder
 {
     /** @param list<ReturnItem> $items */
-    public function __construct(private InventoryId $id, private TenantId $tenantId, private string $code, private string $orderReference, private array $items, private UserId $createdBy, private DateTimeImmutable $createdAt)
-    {
+    public function __construct(
+        private InventoryId $id,
+        private TenantId $tenantId,
+        private string $code,
+        private string $orderReference,
+        private array $items,
+        private UserId $createdBy,
+        private DateTimeImmutable $createdAt
+    ) {
         foreach ([$code, $orderReference] as $value) {
             if (trim($value) === '' || mb_strlen($value) > 80) {
                 throw new InvalidArgumentException('Return code and order reference must contain 1 to 80 characters.');
@@ -28,12 +35,39 @@ final readonly class ReturnOrder
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function code(): string { return mb_strtoupper(trim($this->code)); }
-    public function orderReference(): string { return trim($this->orderReference); }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function code(): string
+    {
+        return mb_strtoupper(trim($this->code));
+    }
+
+    public function orderReference(): string
+    {
+        return trim($this->orderReference);
+    }
+
     /** @return list<ReturnItem> */
-    public function items(): array { return $this->items; }
-    public function createdBy(): UserId { return $this->createdBy; }
-    public function createdAt(): DateTimeImmutable { return $this->createdAt; }
+    public function items(): array
+    {
+        return $this->items;
+    }
+
+    public function createdBy(): UserId
+    {
+        return $this->createdBy;
+    }
+
+    public function createdAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 }

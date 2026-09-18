@@ -8,5 +8,13 @@ use DateTimeImmutable;
 
 final readonly class ReceiveInboundDeliveryCommand
 {
-    public function __construct(public string $receiptId, public string $tenantId, public string $deliveryId, public string $deliveryLineId, public string $receivedBy, public DateTimeImmutable $receivedAt) {}
+    public function __construct(
+        public string $receiptId,
+        public string $tenantId,
+        public string $deliveryId,
+        public string $deliveryLineId,
+        public string $receivedBy,
+        public DateTimeImmutable $receivedAt
+    ) {
+    }
 }

@@ -8,5 +8,16 @@ use DateTimeImmutable;
 
 final readonly class CreatePutawayStrategyCommand
 {
-    public function __construct(public string $strategyId, public string $tenantId, public string $warehouseId, public string $code, public string $stockStatus, public string $locationPrefix, public int $priority, public string $createdBy, public DateTimeImmutable $createdAt) {}
+    public function __construct(
+        public string $strategyId,
+        public string $tenantId,
+        public string $warehouseId,
+        public string $code,
+        public string $stockStatus,
+        public string $locationPrefix,
+        public int $priority,
+        public string $createdBy,
+        public DateTimeImmutable $createdAt
+    ) {
+    }
 }

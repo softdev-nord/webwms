@@ -12,8 +12,9 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 
 final readonly class DoctrineSiteRepository implements SiteRepository
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function existsForTenant(TenantId $tenantId, SiteCode $code): bool

@@ -28,7 +28,6 @@ class TransportRequestFormHelper
 
     /**
      * @param class-string<FormTypeInterface<mixed>> $type
-     * @param mixed|null $data
      * @param array<string> $options
      */
     public function createForm(string $type, mixed $data = null, array $options = []): FormInterface

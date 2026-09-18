@@ -12,8 +12,9 @@ use WebWMS\Inventory\Domain\StockReservation;
 
 final readonly class CreateStockReservationHandler
 {
-    public function __construct(private InventoryRepository $inventory)
-    {
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
     }
 
     public function __invoke(CreateStockReservationCommand $command): void

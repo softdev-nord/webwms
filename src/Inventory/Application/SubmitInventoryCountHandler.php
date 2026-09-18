@@ -13,7 +13,11 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 
 final readonly class SubmitInventoryCountHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
+
     public function __invoke(SubmitInventoryCountCommand $command): InventoryCountResult
     {
         return $this->inventory->submitInventoryCount(new InventoryCountSubmission(new InventoryId($command->countId), new TenantId($command->tenantId), new UserId($command->submittedBy), $command->submittedAt));

@@ -13,7 +13,10 @@ use WebWMS\Inventory\Domain\ReturnResult;
 
 final readonly class ReceiveReturnHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
 
     public function __invoke(ReceiveReturnCommand $command): ReturnResult
     {

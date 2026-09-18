@@ -8,5 +8,14 @@ use DateTimeImmutable;
 
 final readonly class CreateInventoryCountCommand
 {
-    public function __construct(public string $countId, public string $tenantId, public string $warehouseId, public string $code, public string $locationPrefix, public string $createdBy, public DateTimeImmutable $createdAt) {}
+    public function __construct(
+        public string $countId,
+        public string $tenantId,
+        public string $warehouseId,
+        public string $code,
+        public string $locationPrefix,
+        public string $createdBy,
+        public DateTimeImmutable $createdAt
+    ) {
+    }
 }

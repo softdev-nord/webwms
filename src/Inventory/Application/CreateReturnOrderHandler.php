@@ -13,7 +13,10 @@ use WebWMS\Inventory\Domain\ReturnOrder;
 
 final readonly class CreateReturnOrderHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
 
     public function __invoke(CreateReturnOrderCommand $command): void
     {

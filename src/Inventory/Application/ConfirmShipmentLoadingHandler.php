@@ -13,7 +13,10 @@ use WebWMS\Inventory\Domain\ShipmentLoading;
 
 final readonly class ConfirmShipmentLoadingHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
 
     public function __invoke(ConfirmShipmentLoadingCommand $command): LoadingResult
     {

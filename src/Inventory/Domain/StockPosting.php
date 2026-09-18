@@ -35,13 +35,48 @@ final readonly class StockPosting
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function productId(): InventoryId { return $this->productId; }
-    public function locationId(): InventoryId { return $this->locationId; }
-    public function quantityDelta(): int { return $this->quantityDelta; }
-    public function reason(): string { return trim($this->reason); }
-    public function performedBy(): UserId { return $this->performedBy; }
-    public function occurredAt(): DateTimeImmutable { return $this->occurredAt; }
-    public function dimensions(): StockDimensions { return $this->stockDimensions ?? new StockDimensions(); }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function productId(): InventoryId
+    {
+        return $this->productId;
+    }
+
+    public function locationId(): InventoryId
+    {
+        return $this->locationId;
+    }
+
+    public function quantityDelta(): int
+    {
+        return $this->quantityDelta;
+    }
+
+    public function reason(): string
+    {
+        return trim($this->reason);
+    }
+
+    public function performedBy(): UserId
+    {
+        return $this->performedBy;
+    }
+
+    public function occurredAt(): DateTimeImmutable
+    {
+        return $this->occurredAt;
+    }
+
+    public function dimensions(): StockDimensions
+    {
+        return $this->stockDimensions ?? new StockDimensions();
+    }
 }

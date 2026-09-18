@@ -12,8 +12,9 @@ use WebWMS\Inventory\Domain\Sku;
 
 final readonly class RegisterProductHandler
 {
-    public function __construct(private InventoryRepository $inventory)
-    {
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
     }
 
     public function __invoke(RegisterProductCommand $command): ProductReference

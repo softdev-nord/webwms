@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace WebWMS\Security\V3;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /** @extends Voter<string, null> */
 final class PermissionVoter extends Voter

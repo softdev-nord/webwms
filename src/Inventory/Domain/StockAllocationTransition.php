@@ -28,11 +28,38 @@ final readonly class StockAllocationTransition
         }
     }
 
-    public function allocationId(): InventoryId { return $this->allocationId; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function type(): AllocationTransitionType { return $this->type; }
-    public function ledgerEntryId(): ?InventoryId { return $this->ledgerEntryId; }
-    public function reason(): string { return trim($this->reason); }
-    public function performedBy(): UserId { return $this->performedBy; }
-    public function occurredAt(): DateTimeImmutable { return $this->occurredAt; }
+    public function allocationId(): InventoryId
+    {
+        return $this->allocationId;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function type(): AllocationTransitionType
+    {
+        return $this->type;
+    }
+
+    public function ledgerEntryId(): ?InventoryId
+    {
+        return $this->ledgerEntryId;
+    }
+
+    public function reason(): string
+    {
+        return trim($this->reason);
+    }
+
+    public function performedBy(): UserId
+    {
+        return $this->performedBy;
+    }
+
+    public function occurredAt(): DateTimeImmutable
+    {
+        return $this->occurredAt;
+    }
 }

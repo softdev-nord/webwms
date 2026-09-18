@@ -13,7 +13,10 @@ use WebWMS\Inventory\Domain\ShipmentResult;
 
 final readonly class RegisterShipmentLabelHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
 
     public function __invoke(RegisterShipmentLabelCommand $command): ShipmentResult
     {

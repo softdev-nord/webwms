@@ -30,13 +30,48 @@ final readonly class StockAllocation
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
-    public function reservationId(): InventoryId { return $this->reservationId; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function productId(): InventoryId { return $this->productId; }
-    public function locationId(): InventoryId { return $this->locationId; }
-    public function dimensions(): StockDimensions { return $this->dimensions; }
-    public function quantity(): int { return $this->quantity; }
-    public function createdBy(): UserId { return $this->createdBy; }
-    public function createdAt(): DateTimeImmutable { return $this->createdAt; }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function reservationId(): InventoryId
+    {
+        return $this->reservationId;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function productId(): InventoryId
+    {
+        return $this->productId;
+    }
+
+    public function locationId(): InventoryId
+    {
+        return $this->locationId;
+    }
+
+    public function dimensions(): StockDimensions
+    {
+        return $this->dimensions;
+    }
+
+    public function quantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function createdBy(): UserId
+    {
+        return $this->createdBy;
+    }
+
+    public function createdAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 }

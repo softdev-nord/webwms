@@ -16,7 +16,10 @@ use WebWMS\Inventory\Domain\StockDimensions;
 
 final readonly class InspectReturnHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
 
     public function __invoke(InspectReturnCommand $command): ReturnResult
     {

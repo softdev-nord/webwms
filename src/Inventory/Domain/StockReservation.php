@@ -28,11 +28,38 @@ final readonly class StockReservation
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function productId(): InventoryId { return $this->productId; }
-    public function orderReference(): string { return trim($this->orderReference); }
-    public function requestedQuantity(): int { return $this->requestedQuantity; }
-    public function createdBy(): UserId { return $this->createdBy; }
-    public function createdAt(): DateTimeImmutable { return $this->createdAt; }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function productId(): InventoryId
+    {
+        return $this->productId;
+    }
+
+    public function orderReference(): string
+    {
+        return trim($this->orderReference);
+    }
+
+    public function requestedQuantity(): int
+    {
+        return $this->requestedQuantity;
+    }
+
+    public function createdBy(): UserId
+    {
+        return $this->createdBy;
+    }
+
+    public function createdAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 }

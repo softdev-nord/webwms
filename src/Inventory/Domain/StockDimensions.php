@@ -10,7 +10,9 @@ use InvalidArgumentException;
 final readonly class StockDimensions
 {
     private ?string $batchNumber;
+
     private ?string $serialNumber;
+
     private ?DateTimeImmutable $expiresAt;
 
     public function __construct(
@@ -39,10 +41,25 @@ final readonly class StockDimensions
         return new self($stockStatus, $batchNumber, $serialNumber, $expiresAt);
     }
 
-    public function status(): StockStatus { return $this->status; }
-    public function batchNumber(): ?string { return $this->batchNumber; }
-    public function serialNumber(): ?string { return $this->serialNumber; }
-    public function expiresAt(): ?DateTimeImmutable { return $this->expiresAt; }
+    public function status(): StockStatus
+    {
+        return $this->status;
+    }
+
+    public function batchNumber(): ?string
+    {
+        return $this->batchNumber;
+    }
+
+    public function serialNumber(): ?string
+    {
+        return $this->serialNumber;
+    }
+
+    public function expiresAt(): ?DateTimeImmutable
+    {
+        return $this->expiresAt;
+    }
 
     public function key(): string
     {

@@ -11,8 +11,9 @@ use WebWMS\Inventory\Domain\StorageLocation;
 
 final readonly class CreateStorageLocationHandler
 {
-    public function __construct(private InventoryRepository $inventory)
-    {
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
     }
 
     public function __invoke(CreateStorageLocationCommand $command): StorageLocation

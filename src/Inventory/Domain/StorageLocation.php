@@ -22,9 +22,28 @@ final readonly class StorageLocation
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function warehouseId(): InventoryId { return $this->warehouseId; }
-    public function code(): string { return $this->code; }
-    public function createdAt(): DateTimeImmutable { return $this->createdAt; }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function warehouseId(): InventoryId
+    {
+        return $this->warehouseId;
+    }
+
+    public function code(): string
+    {
+        return $this->code;
+    }
+
+    public function createdAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 }

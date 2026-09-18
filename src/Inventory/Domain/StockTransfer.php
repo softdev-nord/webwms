@@ -59,7 +59,10 @@ final readonly class StockTransfer
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
 
     public function sourcePosting(): StockPosting
     {

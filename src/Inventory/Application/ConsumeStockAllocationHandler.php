@@ -14,8 +14,9 @@ use WebWMS\Inventory\Domain\StockFulfillmentResult;
 
 final readonly class ConsumeStockAllocationHandler
 {
-    public function __construct(private InventoryRepository $inventory)
-    {
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
     }
 
     public function __invoke(ConsumeStockAllocationCommand $command): StockFulfillmentResult

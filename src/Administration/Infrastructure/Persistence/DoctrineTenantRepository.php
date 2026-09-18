@@ -11,8 +11,9 @@ use WebWMS\Administration\Domain\Tenant\TenantRepository;
 
 final readonly class DoctrineTenantRepository implements TenantRepository
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function exists(TenantId $id): bool

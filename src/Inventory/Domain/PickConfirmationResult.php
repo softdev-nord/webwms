@@ -6,5 +6,10 @@ namespace WebWMS\Inventory\Domain;
 
 final readonly class PickConfirmationResult
 {
-    public function __construct(public string $taskStatus, public string $pickListStatus, public string $reservationStatus) {}
+    public function __construct(
+        public string $taskStatus,
+        public string $pickListStatus,
+        public string $reservationStatus
+    ) {
+    }
 }

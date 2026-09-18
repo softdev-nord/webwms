@@ -13,7 +13,11 @@ use WebWMS\Inventory\Domain\PurchaseOrderItem;
 
 final readonly class CreatePurchaseOrderHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
+
     public function __invoke(CreatePurchaseOrderCommand $command): void
     {
         $items = array_map(static fn (array $item): PurchaseOrderItem => new PurchaseOrderItem(new InventoryId($item['id']), new InventoryId($item['productId']), $item['quantity']), $command->items);

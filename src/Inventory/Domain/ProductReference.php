@@ -22,9 +22,28 @@ final readonly class ProductReference
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function sku(): Sku { return $this->sku; }
-    public function name(): string { return trim($this->name); }
-    public function createdAt(): DateTimeImmutable { return $this->createdAt; }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function sku(): Sku
+    {
+        return $this->sku;
+    }
+
+    public function name(): string
+    {
+        return trim($this->name);
+    }
+
+    public function createdAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
 }

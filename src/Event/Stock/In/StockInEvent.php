@@ -169,10 +169,10 @@ class StockInEvent extends BaseEvent
                         'fb' => $withSpaceForAddingRemainder->getStockLocationFb(),
                         'sp' => $withSpaceForAddingRemainder->getStockLocationSp(),
                         'tf' => $withSpaceForAddingRemainder->getStockLocationTf(),
-                        'ln_komplett' => $withSpaceForAddingRemainder->getStockLocationLn() . '-' .
-                            $withSpaceForAddingRemainder->getStockLocationFb() . '-' .
-                            $withSpaceForAddingRemainder->getStockLocationSp() . '-' .
-                            $withSpaceForAddingRemainder->getStockLocationTf(),
+                        'ln_komplett' => $withSpaceForAddingRemainder->getStockLocationLn() . '-'
+                            . $withSpaceForAddingRemainder->getStockLocationFb() . '-'
+                            . $withSpaceForAddingRemainder->getStockLocationSp() . '-'
+                            . $withSpaceForAddingRemainder->getStockLocationTf(),
                         'koordinate' => $withSpaceForAddingRemainder->getStockLocationCoordinate(),
                         'system' => $withSpaceForAddingRemainder->getStockLocationDesc(),
                         'quantity' => $remainder,

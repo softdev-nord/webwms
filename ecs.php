@@ -8,6 +8,7 @@ use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ConstantNotation\NativeConstantInvocationFixer;
 use PhpCsFixer\Fixer\FunctionNotation\FopenFlagsFixer;
 use PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer;
+use PhpCsFixer\Fixer\FunctionNotation\MultilinePromotedPropertiesFixer;
 use PhpCsFixer\Fixer\FunctionNotation\NullableTypeDeclarationForDefaultNullValueFixer;
 use PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer;
 use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
@@ -18,6 +19,7 @@ use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer;
 use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocTrimConsecutiveBlankLineSeparationFixer;
 use PhpCsFixer\Fixer\ReturnNotation\NoUselessReturnFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer;
@@ -32,7 +34,7 @@ use Symplify\EasyCodingStandard\Config\ECSConfig;
  */
 return ECSConfig::configure()
     ->withPaths([
-        __DIR__ . '/tests'
+        __DIR__ . '/src'
     ])
 
     // add a single rule
@@ -56,6 +58,12 @@ return ECSConfig::configure()
         ConcatSpaceFixer::class,
         [
             'spacing' => 'one'
+        ]
+    )
+    ->withConfiguredRule(
+        MultilinePromotedPropertiesFixer::class,
+        [
+            'minimum_number_of_parameters' => 1,
         ]
     )
     // Configured annotations should be omitted from PHPDoc.
@@ -93,7 +101,9 @@ return ECSConfig::configure()
         ExplicitIndirectVariableFixer::class,
         SingleQuoteFixer::class,
         PhpdocLineSpanFixer::class,
-        RemoveUselessDefaultCommentFixer::class
+        RemoveUselessDefaultCommentFixer::class,
+        PhpdocOrderFixer::class,
+        PhpdocTrimConsecutiveBlankLineSeparationFixer::class
     ])
 
     // add sets - group of rules

@@ -13,7 +13,10 @@ use WebWMS\Inventory\Domain\LoadingResult;
 
 final readonly class CompleteLoadingManifestHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
 
     public function __invoke(CompleteLoadingManifestCommand $command): LoadingResult
     {

@@ -6,8 +6,8 @@ namespace WebWMS\Event;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Contracts\EventDispatcher\Event;
-use WebWMS\Helper\Attribute\ClassInformation;
 use Twig\Environment;
+use WebWMS\Helper\Attribute\ClassInformation;
 use WebWMS\Service\RequirementsService;
 use WebWMS\Service\Stock\StockLocationService;
 use WebWMS\Service\TransportHistory\TransportHistoryService;

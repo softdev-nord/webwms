@@ -17,7 +17,11 @@ use WebWMS\Inventory\Domain\StockDimensions;
 
 final readonly class InspectInboundReceiptHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
+
     public function __invoke(InspectInboundReceiptCommand $command): InboundResult
     {
         $decision = InboundQualityDecision::tryFrom(mb_strtolower(trim($command->decision))) ?? throw new InvalidArgumentException('The inbound quality decision is not supported.');

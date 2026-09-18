@@ -15,8 +15,9 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 
 final readonly class DoctrineAccessRepository implements RoleRepository, UserAccountRepository
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function existsByCode(TenantId $tenantId, string $code): bool

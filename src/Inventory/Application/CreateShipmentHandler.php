@@ -12,7 +12,10 @@ use WebWMS\Inventory\Domain\Shipment;
 
 final readonly class CreateShipmentHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
 
     public function __invoke(CreateShipmentCommand $command): void
     {

@@ -12,7 +12,10 @@ use WebWMS\Inventory\Domain\LoadingManifest;
 
 final readonly class CreateLoadingManifestHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
 
     public function __invoke(CreateLoadingManifestCommand $command): void
     {

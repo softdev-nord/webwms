@@ -10,8 +10,9 @@ use WebWMS\Administration\Domain\Tenant\TenantRepository;
 
 final readonly class CreateTenantHandler
 {
-    public function __construct(private TenantRepository $tenants)
-    {
+    public function __construct(
+        private TenantRepository $tenants
+    ) {
     }
 
     public function __invoke(CreateTenantCommand $command): Tenant

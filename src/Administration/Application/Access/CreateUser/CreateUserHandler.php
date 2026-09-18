@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace WebWMS\Administration\Application\Access\CreateUser;
 
+use WebWMS\Administration\Domain\Access\PasswordHasher;
 use WebWMS\Administration\Domain\Access\RoleId;
 use WebWMS\Administration\Domain\Access\RoleRepository;
-use WebWMS\Administration\Domain\Access\PasswordHasher;
 use WebWMS\Administration\Domain\Access\UserAccount;
 use WebWMS\Administration\Domain\Access\UserAccountRepository;
 use WebWMS\Administration\Domain\Access\UserId;

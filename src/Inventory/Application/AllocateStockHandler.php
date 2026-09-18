@@ -14,8 +14,9 @@ use WebWMS\Inventory\Domain\StockDimensions;
 
 final readonly class AllocateStockHandler
 {
-    public function __construct(private InventoryRepository $inventory)
-    {
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
     }
 
     public function __invoke(AllocateStockCommand $command): StockAllocationResult

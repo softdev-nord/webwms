@@ -14,8 +14,9 @@ use WebWMS\Inventory\Domain\StockTransferResult;
 
 final readonly class TransferStockHandler
 {
-    public function __construct(private InventoryRepository $inventory)
-    {
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
     }
 
     public function __invoke(TransferStockCommand $command): StockTransferResult

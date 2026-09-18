@@ -13,7 +13,11 @@ use WebWMS\Inventory\Domain\ReplenishmentResult;
 
 final readonly class CreateReplenishmentOrderHandler
 {
-    public function __construct(private InventoryRepository $inventory) {}
+    public function __construct(
+        private InventoryRepository $inventory
+    ) {
+    }
+
     public function __invoke(CreateReplenishmentOrderCommand $command): ReplenishmentResult
     {
         return $this->inventory->createReplenishmentOrder(new ReplenishmentRequest(new InventoryId($command->orderId), new TenantId($command->tenantId), new InventoryId($command->policyId), new UserId($command->createdBy), $command->createdAt));
