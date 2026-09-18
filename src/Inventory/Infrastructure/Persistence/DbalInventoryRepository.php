@@ -7,6 +7,10 @@ namespace WebWMS\Inventory\Infrastructure\Persistence;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use WebWMS\Inventory\Domain\AllocationTransitionType;
+use WebWMS\Inventory\Domain\InboundDelivery;
+use WebWMS\Inventory\Domain\InboundInspection;
+use WebWMS\Inventory\Domain\InboundReceipt;
+use WebWMS\Inventory\Domain\InboundResult;
 use WebWMS\Inventory\Domain\InsufficientAvailableStockException;
 use WebWMS\Inventory\Domain\InsufficientStockException;
 use WebWMS\Inventory\Domain\InventoryId;
@@ -26,6 +30,7 @@ use WebWMS\Inventory\Domain\PickList;
 use WebWMS\Inventory\Domain\PickListAssignment;
 use WebWMS\Inventory\Domain\PickOutcome;
 use WebWMS\Inventory\Domain\ProductReference;
+use WebWMS\Inventory\Domain\PurchaseOrder;
 use WebWMS\Inventory\Domain\ReturnInspection;
 use WebWMS\Inventory\Domain\ReturnOrder;
 use WebWMS\Inventory\Domain\ReturnReceipt;
@@ -700,6 +705,181 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ], ['id' => $completion->manifestId()->value()]);
 
             return new LoadingResult('completed', $loaded, $total);
+        });
+    }
+
+    public function savePurchaseOrder(PurchaseOrder $purchaseOrder): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($purchaseOrder): void {
+            if ($connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $purchaseOrder->createdBy()->value(), 'tenantId' => $purchaseOrder->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('The purchase order creator must exist in the tenant.');
+            }
+            $connection->insert('wms_purchase_order', [
+                'id' => $purchaseOrder->id()->value(), 'tenant_id' => $purchaseOrder->tenantId()->value(),
+                'code' => $purchaseOrder->code(), 'supplier_reference' => $purchaseOrder->supplierReference(),
+                'status' => 'open', 'created_by' => $purchaseOrder->createdBy()->value(),
+                'created_at' => $purchaseOrder->createdAt()->format('Y-m-d H:i:s.u'),
+                'updated_at' => $purchaseOrder->createdAt()->format('Y-m-d H:i:s.u'),
+            ]);
+            foreach ($purchaseOrder->items() as $item) {
+                if ($connection->fetchOne(
+                    'SELECT 1 FROM wms_product_reference WHERE id = :productId AND tenant_id = :tenantId',
+                    ['productId' => $item->productId()->value(), 'tenantId' => $purchaseOrder->tenantId()->value()],
+                ) === false) {
+                    throw new InventoryReferenceNotFoundException('Every ordered product must exist in the tenant.');
+                }
+                $connection->insert('wms_purchase_order_item', [
+                    'id' => $item->id()->value(), 'purchase_order_id' => $purchaseOrder->id()->value(),
+                    'product_id' => $item->productId()->value(), 'ordered_quantity' => $item->orderedQuantity(),
+                    'advised_quantity' => 0, 'received_quantity' => 0, 'status' => 'open',
+                ]);
+            }
+        });
+    }
+
+    public function saveInboundDelivery(InboundDelivery $delivery): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($delivery): void {
+            if ($connection->fetchOne(
+                "SELECT 1 FROM wms_purchase_order o, wms_user_account u WHERE o.id = :orderId AND o.tenant_id = :tenantId AND o.status IN ('open', 'partially_advised') AND u.id = :userId AND u.tenant_id = :tenantId FOR UPDATE",
+                ['orderId' => $delivery->purchaseOrderId()->value(), 'tenantId' => $delivery->tenantId()->value(), 'userId' => $delivery->createdBy()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('An open purchase order and advice creator must exist in the tenant.');
+            }
+            $connection->insert('wms_inbound_delivery', [
+                'id' => $delivery->id()->value(), 'tenant_id' => $delivery->tenantId()->value(),
+                'purchase_order_id' => $delivery->purchaseOrderId()->value(), 'code' => $delivery->code(),
+                'delivery_note' => $delivery->deliveryNote(), 'expected_at' => $delivery->expectedAt()->format('Y-m-d H:i:s.u'),
+                'status' => 'advised', 'created_by' => $delivery->createdBy()->value(),
+                'created_at' => $delivery->createdAt()->format('Y-m-d H:i:s.u'), 'updated_at' => $delivery->createdAt()->format('Y-m-d H:i:s.u'),
+            ]);
+            foreach ($delivery->lines() as $line) {
+                $item = $connection->fetchAssociative(
+                    'SELECT ordered_quantity, advised_quantity FROM wms_purchase_order_item WHERE id = :itemId AND purchase_order_id = :orderId FOR UPDATE',
+                    ['itemId' => $line->purchaseOrderItemId()->value(), 'orderId' => $delivery->purchaseOrderId()->value()],
+                );
+                if ($item === false || (int) $item['advised_quantity'] + $line->advisedQuantity() > (int) $item['ordered_quantity']) {
+                    throw new InsufficientAvailableStockException('The advice exceeds the open purchase order quantity.');
+                }
+                $newAdvised = (int) $item['advised_quantity'] + $line->advisedQuantity();
+                $connection->insert('wms_inbound_delivery_line', [
+                    'id' => $line->id()->value(), 'inbound_delivery_id' => $delivery->id()->value(),
+                    'purchase_order_item_id' => $line->purchaseOrderItemId()->value(),
+                    'advised_quantity' => $line->advisedQuantity(), 'status' => 'advised',
+                ]);
+                $connection->update('wms_purchase_order_item', [
+                    'advised_quantity' => $newAdvised,
+                    'status' => $newAdvised === (int) $item['ordered_quantity'] ? 'advised' : 'partially_advised',
+                ], ['id' => $line->purchaseOrderItemId()->value()]);
+            }
+            $openItems = (int) $connection->fetchOne(
+                'SELECT COUNT(*) FROM wms_purchase_order_item WHERE purchase_order_id = :orderId AND advised_quantity < ordered_quantity',
+                ['orderId' => $delivery->purchaseOrderId()->value()],
+            );
+            $connection->update('wms_purchase_order', [
+                'status' => $openItems === 0 ? 'advised' : 'partially_advised',
+                'updated_at' => $delivery->createdAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $delivery->purchaseOrderId()->value()]);
+        });
+    }
+
+    public function receiveInboundDelivery(InboundReceipt $receipt): InboundResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($receipt): InboundResult {
+            $line = $connection->fetchAssociative(
+                "SELECT l.advised_quantity FROM wms_inbound_delivery_line l INNER JOIN wms_inbound_delivery d ON d.id = l.inbound_delivery_id WHERE l.id = :lineId AND d.id = :deliveryId AND d.tenant_id = :tenantId AND l.status = 'advised' AND d.status IN ('advised', 'receiving') FOR UPDATE",
+                ['lineId' => $receipt->deliveryLineId()->value(), 'deliveryId' => $receipt->deliveryId()->value(), 'tenantId' => $receipt->tenantId()->value()],
+            );
+            if ($line === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $receipt->receivedBy()->value(), 'tenantId' => $receipt->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('An advised line and receiver must exist in the tenant.');
+            }
+            $connection->insert('wms_inbound_receipt', [
+                'id' => $receipt->id()->value(), 'inbound_delivery_line_id' => $receipt->deliveryLineId()->value(),
+                'quantity' => (int) $line['advised_quantity'], 'status' => 'pending_quality',
+                'received_by' => $receipt->receivedBy()->value(), 'received_at' => $receipt->receivedAt()->format('Y-m-d H:i:s.u'),
+            ]);
+            $connection->update('wms_inbound_delivery_line', ['status' => 'received'], ['id' => $receipt->deliveryLineId()->value()]);
+            $remaining = (int) $connection->fetchOne(
+                "SELECT COUNT(*) FROM wms_inbound_delivery_line WHERE inbound_delivery_id = :deliveryId AND status = 'advised'",
+                ['deliveryId' => $receipt->deliveryId()->value()],
+            );
+            $deliveryStatus = $remaining === 0 ? 'received' : 'receiving';
+            $connection->update('wms_inbound_delivery', [
+                'status' => $deliveryStatus, 'updated_at' => $receipt->receivedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $receipt->deliveryId()->value()]);
+
+            return new InboundResult($deliveryStatus, 'received');
+        });
+    }
+
+    public function inspectInboundReceipt(InboundInspection $inspection): InboundResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($inspection): InboundResult {
+            $receipt = $connection->fetchAssociative(
+                "SELECT r.quantity, l.id line_id, l.purchase_order_item_id, d.id delivery_id, i.product_id, i.purchase_order_id, i.ordered_quantity, i.received_quantity FROM wms_inbound_receipt r INNER JOIN wms_inbound_delivery_line l ON l.id = r.inbound_delivery_line_id INNER JOIN wms_inbound_delivery d ON d.id = l.inbound_delivery_id INNER JOIN wms_purchase_order_item i ON i.id = l.purchase_order_item_id WHERE r.id = :receiptId AND r.status = 'pending_quality' AND d.tenant_id = :tenantId FOR UPDATE",
+                ['receiptId' => $inspection->receiptId()->value(), 'tenantId' => $inspection->tenantId()->value()],
+            );
+            if ($receipt === false) {
+                throw new InventoryReferenceNotFoundException('A pending inbound receipt must exist in the tenant.');
+            }
+            $posting = new StockPosting(
+                $inspection->ledgerEntryId(), $inspection->tenantId(), new InventoryId((string) $receipt['product_id']),
+                $inspection->locationId(), (int) $receipt['quantity'], 'Inbound quality inspection',
+                $inspection->inspectedBy(), $inspection->inspectedAt(), $inspection->dimensions(),
+            );
+            $this->assertReferencesExist($connection, $posting);
+            $current = $connection->fetchOne(
+                'SELECT quantity FROM wms_stock_balance WHERE tenant_id = :tenantId AND product_id = :productId AND location_id = :locationId AND stock_key = :stockKey FOR UPDATE',
+                $this->postingKey($posting),
+            );
+            $newQuantity = ($current === false ? 0 : (int) $current) + $posting->quantityDelta();
+            if ($posting->dimensions()->serialNumber() !== null && $newQuantity > 1) {
+                throw new InvalidSerialStockException('An inbound serial number can only have a stock quantity of one.');
+            }
+            $this->persistBalance($connection, $posting, $newQuantity, $current !== false);
+            $this->insertLedgerEntry($connection, $posting, $newQuantity, StockMovementType::InboundReceipt);
+            foreach ($inspection->answers() as $position => $answer) {
+                $connection->insert('wms_inbound_quality_answer', [
+                    'receipt_id' => $inspection->receiptId()->value(), 'position' => $position + 1,
+                    'question' => $answer->question(), 'passed' => $answer->passed() ? 1 : 0, 'note' => $answer->note(),
+                ]);
+            }
+            $connection->update('wms_inbound_receipt', [
+                'status' => 'inspected', 'quality_decision' => $inspection->decision()->value,
+                'stock_status' => $inspection->dimensions()->status()->value, 'location_id' => $inspection->locationId()->value(),
+                'ledger_entry_id' => $inspection->ledgerEntryId()->value(), 'inspected_by' => $inspection->inspectedBy()->value(),
+                'inspected_at' => $inspection->inspectedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $inspection->receiptId()->value()]);
+            $connection->update('wms_inbound_delivery_line', ['status' => 'processed'], ['id' => $receipt['line_id']]);
+            $newReceived = (int) $receipt['received_quantity'] + (int) $receipt['quantity'];
+            $connection->update('wms_purchase_order_item', [
+                'received_quantity' => $newReceived,
+                'status' => $newReceived === (int) $receipt['ordered_quantity'] ? 'completed' : 'partially_received',
+            ], ['id' => $receipt['purchase_order_item_id']]);
+            $openOrderItems = (int) $connection->fetchOne(
+                'SELECT COUNT(*) FROM wms_purchase_order_item WHERE purchase_order_id = :orderId AND received_quantity < ordered_quantity',
+                ['orderId' => $receipt['purchase_order_id']],
+            );
+            $connection->update('wms_purchase_order', [
+                'status' => $openOrderItems === 0 ? 'completed' : 'partially_received',
+                'updated_at' => $inspection->inspectedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $receipt['purchase_order_id']]);
+            $remaining = (int) $connection->fetchOne(
+                "SELECT COUNT(*) FROM wms_inbound_delivery_line WHERE inbound_delivery_id = :deliveryId AND status <> 'processed'",
+                ['deliveryId' => $receipt['delivery_id']],
+            );
+            $deliveryStatus = $remaining === 0 ? 'completed' : 'quality_check';
+            $connection->update('wms_inbound_delivery', [
+                'status' => $deliveryStatus, 'updated_at' => $inspection->inspectedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $receipt['delivery_id']]);
+
+            return new InboundResult($deliveryStatus, 'processed', $inspection->dimensions()->status()->value, $newQuantity);
         });
     }
 

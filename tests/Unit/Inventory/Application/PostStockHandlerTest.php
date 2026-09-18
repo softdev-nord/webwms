@@ -8,6 +8,10 @@ use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Inventory\Application\PostStockCommand;
 use WebWMS\Inventory\Application\PostStockHandler;
+use WebWMS\Inventory\Domain\InboundDelivery;
+use WebWMS\Inventory\Domain\InboundInspection;
+use WebWMS\Inventory\Domain\InboundReceipt;
+use WebWMS\Inventory\Domain\InboundResult;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\LoadingCompletion;
 use WebWMS\Inventory\Domain\LoadingManifest;
@@ -21,6 +25,7 @@ use WebWMS\Inventory\Domain\PickConfirmationResult;
 use WebWMS\Inventory\Domain\PickList;
 use WebWMS\Inventory\Domain\PickListAssignment;
 use WebWMS\Inventory\Domain\ProductReference;
+use WebWMS\Inventory\Domain\PurchaseOrder;
 use WebWMS\Inventory\Domain\ReturnInspection;
 use WebWMS\Inventory\Domain\ReturnOrder;
 use WebWMS\Inventory\Domain\ReturnReceipt;
@@ -178,5 +183,23 @@ final class InventoryMemoryRepository implements InventoryRepository
     public function inspectReturn(ReturnInspection $inspection): ReturnResult
     {
         return new ReturnResult('completed', 'processed', 'available', 1);
+    }
+
+    public function savePurchaseOrder(PurchaseOrder $purchaseOrder): void
+    {
+    }
+
+    public function saveInboundDelivery(InboundDelivery $delivery): void
+    {
+    }
+
+    public function receiveInboundDelivery(InboundReceipt $receipt): InboundResult
+    {
+        return new InboundResult('received', 'received');
+    }
+
+    public function inspectInboundReceipt(InboundInspection $inspection): InboundResult
+    {
+        return new InboundResult('completed', 'processed', 'available', 1);
     }
 }

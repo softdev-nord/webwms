@@ -29,4 +29,8 @@ interface InventoryRepository
     public function saveReturnOrder(ReturnOrder $returnOrder): void;
     public function receiveReturn(ReturnReceipt $receipt): ReturnResult;
     public function inspectReturn(ReturnInspection $inspection): ReturnResult;
+    public function savePurchaseOrder(PurchaseOrder $purchaseOrder): void;
+    public function saveInboundDelivery(InboundDelivery $delivery): void;
+    public function receiveInboundDelivery(InboundReceipt $receipt): InboundResult;
+    public function inspectInboundReceipt(InboundInspection $inspection): InboundResult;
 }
