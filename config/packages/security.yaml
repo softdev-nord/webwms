@@ -21,6 +21,7 @@ security:
     api_v3:
       pattern: ^/api/v3
       stateless: true
+      provider: v3_user_provider
       custom_authenticator: WebWMS\Integration\Infrastructure\Api\ApiKeyAuthenticator
       entry_point: WebWMS\Integration\Infrastructure\Api\ApiKeyAuthenticator
     v3:
