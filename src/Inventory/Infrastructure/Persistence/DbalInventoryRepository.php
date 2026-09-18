@@ -13,6 +13,7 @@ use WebWMS\Inventory\Domain\InboundReceipt;
 use WebWMS\Inventory\Domain\InboundResult;
 use WebWMS\Inventory\Domain\InsufficientAvailableStockException;
 use WebWMS\Inventory\Domain\InsufficientStockException;
+use WebWMS\Inventory\Domain\InvalidSerialStockException;
 use WebWMS\Inventory\Domain\InventoryCountApproval;
 use WebWMS\Inventory\Domain\InventoryCountEntry;
 use WebWMS\Inventory\Domain\InventoryCountPlan;
@@ -21,7 +22,6 @@ use WebWMS\Inventory\Domain\InventoryCountSubmission;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Inventory\Domain\InventoryRepository;
-use WebWMS\Inventory\Domain\InvalidSerialStockException;
 use WebWMS\Inventory\Domain\LoadingCompletion;
 use WebWMS\Inventory\Domain\LoadingManifest;
 use WebWMS\Inventory\Domain\LoadingResult;
@@ -51,8 +51,8 @@ use WebWMS\Inventory\Domain\ReturnResult;
 use WebWMS\Inventory\Domain\Shipment;
 use WebWMS\Inventory\Domain\ShipmentDispatch;
 use WebWMS\Inventory\Domain\ShipmentLabel;
-use WebWMS\Inventory\Domain\ShipmentResult;
 use WebWMS\Inventory\Domain\ShipmentLoading;
+use WebWMS\Inventory\Domain\ShipmentResult;
 use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
 use WebWMS\Inventory\Domain\StockAllocationTransition;
@@ -68,8 +68,9 @@ use WebWMS\Inventory\Domain\Warehouse;
 
 final readonly class DbalInventoryRepository implements InventoryRepository
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function saveProduct(ProductReference $product): void
@@ -445,9 +446,13 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 throw new InventoryReferenceNotFoundException('An open task assigned to the confirming user must exist.');
             }
             $transition = new StockAllocationTransition(
-                new InventoryId((string) $task['allocation_id']), $confirmation->tenantId(),
+                new InventoryId((string) $task['allocation_id']),
+                $confirmation->tenantId(),
                 $confirmation->outcome() === PickOutcome::Picked ? AllocationTransitionType::Consume : AllocationTransitionType::Release,
-                $confirmation->ledgerEntryId(), $confirmation->note(), $confirmation->confirmedBy(), $confirmation->confirmedAt(),
+                $confirmation->ledgerEntryId(),
+                $confirmation->note(),
+                $confirmation->confirmedBy(),
+                $confirmation->confirmedAt(),
             );
             $fulfillment = $this->transitionAllocation($transition);
             $connection->update('wms_pick_task', [
@@ -842,9 +847,15 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 throw new InventoryReferenceNotFoundException('A pending inbound receipt must exist in the tenant.');
             }
             $posting = new StockPosting(
-                $inspection->ledgerEntryId(), $inspection->tenantId(), new InventoryId((string) $receipt['product_id']),
-                $inspection->locationId(), (int) $receipt['quantity'], 'Inbound quality inspection',
-                $inspection->inspectedBy(), $inspection->inspectedAt(), $inspection->dimensions(),
+                $inspection->ledgerEntryId(),
+                $inspection->tenantId(),
+                new InventoryId((string) $receipt['product_id']),
+                $inspection->locationId(),
+                (int) $receipt['quantity'],
+                'Inbound quality inspection',
+                $inspection->inspectedBy(),
+                $inspection->inspectedAt(),
+                $inspection->dimensions(),
             );
             $this->assertReferencesExist($connection, $posting);
             $current = $connection->fetchOne(
@@ -963,17 +974,25 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 throw new InventoryReferenceNotFoundException('An open putaway order must exist in the tenant.');
             }
             $dimensions = StockDimensions::fromInput(
-                (string) $order['stock_status'], $order['batch_number'] === null ? null : (string) $order['batch_number'],
+                (string) $order['stock_status'],
+                $order['batch_number'] === null ? null : (string) $order['batch_number'],
                 $order['serial_number'] === null ? null : (string) $order['serial_number'],
                 $order['expires_at'] === null ? null : new DateTimeImmutable((string) $order['expires_at']),
             );
             $transfer = $this->transfer(new StockTransfer(
-                $confirmation->transferId(), $confirmation->sourceLedgerId(), $confirmation->destinationLedgerId(),
-                $confirmation->tenantId(), new InventoryId((string) $order['product_id']),
-                new InventoryId((string) $order['source_location_id']), $dimensions,
-                new InventoryId((string) $order['target_location_id']), $dimensions,
-                (int) $order['quantity'], 'Putaway order ' . $confirmation->orderId()->value(),
-                $confirmation->confirmedBy(), $confirmation->confirmedAt(),
+                $confirmation->transferId(),
+                $confirmation->sourceLedgerId(),
+                $confirmation->destinationLedgerId(),
+                $confirmation->tenantId(),
+                new InventoryId((string) $order['product_id']),
+                new InventoryId((string) $order['source_location_id']),
+                $dimensions,
+                new InventoryId((string) $order['target_location_id']),
+                $dimensions,
+                (int) $order['quantity'],
+                'Putaway order ' . $confirmation->orderId()->value(),
+                $confirmation->confirmedBy(),
+                $confirmation->confirmedAt(),
             ));
             $connection->update('wms_putaway_order', [
                 'status' => 'completed', 'transfer_id' => $confirmation->transferId()->value(),
@@ -1076,17 +1095,25 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 throw new InventoryReferenceNotFoundException('An open replenishment order must exist in the tenant.');
             }
             $dimensions = StockDimensions::fromInput(
-                (string) $order['stock_status'], $order['batch_number'] === null ? null : (string) $order['batch_number'],
+                (string) $order['stock_status'],
+                $order['batch_number'] === null ? null : (string) $order['batch_number'],
                 $order['serial_number'] === null ? null : (string) $order['serial_number'],
                 $order['expires_at'] === null ? null : new DateTimeImmutable((string) $order['expires_at']),
             );
             $transfer = $this->transfer(new StockTransfer(
-                $confirmation->transferId(), $confirmation->sourceLedgerId(), $confirmation->destinationLedgerId(),
-                $confirmation->tenantId(), new InventoryId((string) $order['product_id']),
-                new InventoryId((string) $order['source_location_id']), $dimensions,
-                new InventoryId((string) $order['target_location_id']), $dimensions,
-                (int) $order['quantity'], 'Replenishment order ' . $confirmation->orderId()->value(),
-                $confirmation->confirmedBy(), $confirmation->confirmedAt(),
+                $confirmation->transferId(),
+                $confirmation->sourceLedgerId(),
+                $confirmation->destinationLedgerId(),
+                $confirmation->tenantId(),
+                new InventoryId((string) $order['product_id']),
+                new InventoryId((string) $order['source_location_id']),
+                $dimensions,
+                new InventoryId((string) $order['target_location_id']),
+                $dimensions,
+                (int) $order['quantity'],
+                'Replenishment order ' . $confirmation->orderId()->value(),
+                $confirmation->confirmedBy(),
+                $confirmation->confirmedAt(),
             ));
             $connection->update('wms_replenishment_order', [
                 'status' => 'completed', 'transfer_id' => $confirmation->transferId()->value(),
@@ -1238,15 +1265,21 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                     throw new InventoryReferenceNotFoundException('Stock changed after the inventory snapshot; the count cannot be approved.');
                 }
                 $dimensions = StockDimensions::fromInput(
-                    (string) $line['stock_status'], $line['batch_number'] === null ? null : (string) $line['batch_number'],
+                    (string) $line['stock_status'],
+                    $line['batch_number'] === null ? null : (string) $line['batch_number'],
                     $line['serial_number'] === null ? null : (string) $line['serial_number'],
                     $line['expires_at'] === null ? null : new DateTimeImmutable((string) $line['expires_at']),
                 );
                 $posting = new StockPosting(
-                    $ledgerEntryId, $approval->tenantId(), new InventoryId((string) $line['product_id']),
-                    new InventoryId((string) $line['location_id']), (int) $line['difference_quantity'],
-                    'Inventory count ' . $approval->countId()->value(), $approval->approvedBy(),
-                    $approval->approvedAt(), $dimensions,
+                    $ledgerEntryId,
+                    $approval->tenantId(),
+                    new InventoryId((string) $line['product_id']),
+                    new InventoryId((string) $line['location_id']),
+                    (int) $line['difference_quantity'],
+                    'Inventory count ' . $approval->countId()->value(),
+                    $approval->approvedBy(),
+                    $approval->approvedAt(),
+                    $dimensions,
                 );
                 $newQuantity = (int) $currentQuantity + $posting->quantityDelta();
                 if ($newQuantity < $this->allocatedQuantity($connection, $posting)) {
@@ -1336,10 +1369,15 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 throw new InventoryReferenceNotFoundException('A pending return receipt must exist in the tenant.');
             }
             $posting = new StockPosting(
-                $inspection->ledgerEntryId(), $inspection->tenantId(),
-                new InventoryId((string) $receipt['product_id']), $inspection->locationId(),
-                (int) $receipt['quantity'], 'Return inspection: ' . $inspection->note(),
-                $inspection->inspectedBy(), $inspection->inspectedAt(), $inspection->dimensions(),
+                $inspection->ledgerEntryId(),
+                $inspection->tenantId(),
+                new InventoryId((string) $receipt['product_id']),
+                $inspection->locationId(),
+                (int) $receipt['quantity'],
+                'Return inspection: ' . $inspection->note(),
+                $inspection->inspectedBy(),
+                $inspection->inspectedAt(),
+                $inspection->dimensions(),
             );
             $this->assertReferencesExist($connection, $posting);
             $current = $connection->fetchOne(
