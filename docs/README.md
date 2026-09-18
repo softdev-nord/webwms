@@ -3,6 +3,10 @@
 Die Dokumentation ist in technische Informationen für Entwicklung und Betrieb
 sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 
+Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/README.md).
+
+Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/README.md).
+
 ## Technische Dokumentation
 
 - [Phase 1: Runtime und Qualitätsbasis](technical/phase-1-runtime.md)
@@ -21,6 +25,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Wareneingang, Bestellungen, Avis und QS](technical/inventory-inbound.md)
 - [Automatische Einlagerung und Lagerplatzstrategien](technical/inventory-putaway.md)
 - [Nachschubsteuerung](technical/inventory-replenishment.md)
+- [Stichtagsinventur und Differenzfreigabe](technical/inventory-counting.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -41,6 +46,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Bestellungen und Wareneingänge bearbeiten](user/inventory-inbound.md)
 - [Ware automatisch einlagern](user/inventory-putaway.md)
 - [Kommissionierplätze nachfüllen](user/inventory-replenishment.md)
+- [Stichtagsinventur durchführen](user/inventory-counting.md)
 
 ## Verbindliche Dokumentationsregel
 

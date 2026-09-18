@@ -12,6 +12,11 @@ use WebWMS\Inventory\Domain\InboundDelivery;
 use WebWMS\Inventory\Domain\InboundInspection;
 use WebWMS\Inventory\Domain\InboundReceipt;
 use WebWMS\Inventory\Domain\InboundResult;
+use WebWMS\Inventory\Domain\InventoryCountApproval;
+use WebWMS\Inventory\Domain\InventoryCountEntry;
+use WebWMS\Inventory\Domain\InventoryCountPlan;
+use WebWMS\Inventory\Domain\InventoryCountResult;
+use WebWMS\Inventory\Domain\InventoryCountSubmission;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\LoadingCompletion;
 use WebWMS\Inventory\Domain\LoadingManifest;
@@ -237,5 +242,25 @@ final class InventoryMemoryRepository implements InventoryRepository
     public function confirmReplenishment(ReplenishmentConfirmation $confirmation): ReplenishmentResult
     {
         return new ReplenishmentResult('completed', '018f6b7f-75d2-7c4e-8c33-31f91b1cf404', '018f6b7f-75d2-7c4e-8c33-31f91b1cf403', 1, 1);
+    }
+
+    public function createInventoryCount(InventoryCountPlan $plan): InventoryCountResult
+    {
+        return new InventoryCountResult('open', 1, 0);
+    }
+
+    public function recordInventoryCount(InventoryCountEntry $entry): InventoryCountResult
+    {
+        return new InventoryCountResult('open', 1, 0);
+    }
+
+    public function submitInventoryCount(InventoryCountSubmission $submission): InventoryCountResult
+    {
+        return new InventoryCountResult('counted', 1, 0);
+    }
+
+    public function approveInventoryCount(InventoryCountApproval $approval): InventoryCountResult
+    {
+        return new InventoryCountResult('completed', 1, 0);
     }
 }

@@ -39,4 +39,8 @@ interface InventoryRepository
     public function saveReplenishmentPolicy(ReplenishmentPolicy $policy): void;
     public function createReplenishmentOrder(ReplenishmentRequest $request): ReplenishmentResult;
     public function confirmReplenishment(ReplenishmentConfirmation $confirmation): ReplenishmentResult;
+    public function createInventoryCount(InventoryCountPlan $plan): InventoryCountResult;
+    public function recordInventoryCount(InventoryCountEntry $entry): InventoryCountResult;
+    public function submitInventoryCount(InventoryCountSubmission $submission): InventoryCountResult;
+    public function approveInventoryCount(InventoryCountApproval $approval): InventoryCountResult;
 }

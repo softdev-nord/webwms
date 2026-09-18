@@ -12,4 +12,5 @@ enum StockMovementType: string
     case AllocationConsumption = 'allocation_consumption';
     case ReturnReceipt = 'return_receipt';
     case InboundReceipt = 'inbound_receipt';
+    case InventoryAdjustment = 'inventory_adjustment';
 }
