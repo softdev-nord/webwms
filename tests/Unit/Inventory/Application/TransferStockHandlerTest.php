@@ -26,6 +26,10 @@ use WebWMS\Inventory\Domain\PickList;
 use WebWMS\Inventory\Domain\PickListAssignment;
 use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\PurchaseOrder;
+use WebWMS\Inventory\Domain\PutawayConfirmation;
+use WebWMS\Inventory\Domain\PutawayRequest;
+use WebWMS\Inventory\Domain\PutawayResult;
+use WebWMS\Inventory\Domain\PutawayStrategy;
 use WebWMS\Inventory\Domain\ReturnInspection;
 use WebWMS\Inventory\Domain\ReturnOrder;
 use WebWMS\Inventory\Domain\ReturnReceipt;
@@ -208,5 +212,19 @@ final class TransferMemoryInventoryRepository implements InventoryRepository
     public function inspectInboundReceipt(InboundInspection $inspection): InboundResult
     {
         return new InboundResult('completed', 'processed', 'available', 1);
+    }
+
+    public function savePutawayStrategy(PutawayStrategy $strategy): void
+    {
+    }
+
+    public function createPutawayOrder(PutawayRequest $request): PutawayResult
+    {
+        return new PutawayResult('open', '018f6b7f-75d2-7c4e-8c33-31f91b1cf403', 1);
+    }
+
+    public function confirmPutaway(PutawayConfirmation $confirmation): PutawayResult
+    {
+        return new PutawayResult('completed', '018f6b7f-75d2-7c4e-8c33-31f91b1cf403', 1, 1);
     }
 }

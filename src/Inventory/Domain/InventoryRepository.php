@@ -33,4 +33,7 @@ interface InventoryRepository
     public function saveInboundDelivery(InboundDelivery $delivery): void;
     public function receiveInboundDelivery(InboundReceipt $receipt): InboundResult;
     public function inspectInboundReceipt(InboundInspection $inspection): InboundResult;
+    public function savePutawayStrategy(PutawayStrategy $strategy): void;
+    public function createPutawayOrder(PutawayRequest $request): PutawayResult;
+    public function confirmPutaway(PutawayConfirmation $confirmation): PutawayResult;
 }

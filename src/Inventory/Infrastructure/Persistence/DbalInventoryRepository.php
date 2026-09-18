@@ -31,6 +31,10 @@ use WebWMS\Inventory\Domain\PickListAssignment;
 use WebWMS\Inventory\Domain\PickOutcome;
 use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\PurchaseOrder;
+use WebWMS\Inventory\Domain\PutawayConfirmation;
+use WebWMS\Inventory\Domain\PutawayRequest;
+use WebWMS\Inventory\Domain\PutawayResult;
+use WebWMS\Inventory\Domain\PutawayStrategy;
 use WebWMS\Inventory\Domain\ReturnInspection;
 use WebWMS\Inventory\Domain\ReturnOrder;
 use WebWMS\Inventory\Domain\ReturnReceipt;
@@ -880,6 +884,95 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ], ['id' => $receipt['delivery_id']]);
 
             return new InboundResult($deliveryStatus, 'processed', $inspection->dimensions()->status()->value, $newQuantity);
+        });
+    }
+
+    public function savePutawayStrategy(PutawayStrategy $strategy): void
+    {
+        if ($this->connection->fetchOne(
+            'SELECT 1 FROM wms_warehouse w, wms_user_account u WHERE w.id = :warehouseId AND w.tenant_id = :tenantId AND u.id = :userId AND u.tenant_id = :tenantId',
+            ['warehouseId' => $strategy->warehouseId()->value(), 'tenantId' => $strategy->tenantId()->value(), 'userId' => $strategy->createdBy()->value()],
+        ) === false) {
+            throw new InventoryReferenceNotFoundException('The strategy warehouse and creator must exist in the tenant.');
+        }
+        $this->connection->insert('wms_putaway_strategy', [
+            'id' => $strategy->id()->value(), 'tenant_id' => $strategy->tenantId()->value(),
+            'warehouse_id' => $strategy->warehouseId()->value(), 'code' => $strategy->code(),
+            'stock_status' => $strategy->stockStatus()->value, 'location_prefix' => $strategy->locationPrefix(),
+            'priority' => $strategy->priority(), 'enabled' => 1, 'created_by' => $strategy->createdBy()->value(),
+            'created_at' => $strategy->createdAt()->format('Y-m-d H:i:s.u'),
+        ]);
+    }
+
+    public function createPutawayOrder(PutawayRequest $request): PutawayResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($request): PutawayResult {
+            $receipt = $connection->fetchAssociative(
+                "SELECT r.quantity, r.location_id source_location_id, l.warehouse_id, i.product_id, g.stock_status, g.batch_number, g.serial_number, g.expires_at, g.stock_key FROM wms_inbound_receipt r INNER JOIN wms_inbound_delivery_line dl ON dl.id = r.inbound_delivery_line_id INNER JOIN wms_purchase_order_item i ON i.id = dl.purchase_order_item_id INNER JOIN wms_storage_location l ON l.id = r.location_id INNER JOIN wms_stock_ledger g ON g.id = r.ledger_entry_id WHERE r.id = :receiptId AND r.status = 'inspected' AND g.tenant_id = :tenantId FOR UPDATE",
+                ['receiptId' => $request->inboundReceiptId()->value(), 'tenantId' => $request->tenantId()->value()],
+            );
+            if ($receipt === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $request->createdBy()->value(), 'tenantId' => $request->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('An inspected inbound receipt and creator must exist in the tenant.');
+            }
+            $target = $connection->fetchAssociative(
+                "SELECT s.id strategy_id, l.id target_location_id FROM wms_putaway_strategy s INNER JOIN wms_storage_location l ON l.warehouse_id = s.warehouse_id AND l.tenant_id = s.tenant_id AND l.code LIKE CONCAT(s.location_prefix, '%') WHERE s.tenant_id = :tenantId AND s.warehouse_id = :warehouseId AND s.stock_status = :stockStatus AND s.enabled = 1 AND l.putaway_enabled = 1 AND l.id <> :sourceLocationId AND (l.capacity_quantity = 0 OR (SELECT COALESCE(SUM(b.quantity), 0) FROM wms_stock_balance b WHERE b.location_id = l.id) + (SELECT COALESCE(SUM(po.quantity), 0) FROM wms_putaway_order po WHERE po.target_location_id = l.id AND po.status = 'open') + :quantity <= l.capacity_quantity) ORDER BY s.priority, CASE WHEN EXISTS (SELECT 1 FROM wms_stock_balance b2 WHERE b2.location_id = l.id AND b2.product_id = :productId AND b2.stock_key = :stockKey AND b2.quantity > 0) THEN 0 ELSE 1 END, l.putaway_priority, l.code LIMIT 1 FOR UPDATE",
+                [
+                    'tenantId' => $request->tenantId()->value(), 'warehouseId' => $receipt['warehouse_id'],
+                    'stockStatus' => $receipt['stock_status'], 'sourceLocationId' => $receipt['source_location_id'],
+                    'quantity' => (int) $receipt['quantity'], 'productId' => $receipt['product_id'], 'stockKey' => $receipt['stock_key'],
+                ],
+            );
+            if ($target === false) {
+                throw new InventoryReferenceNotFoundException('No enabled putaway strategy can provide a target location with sufficient capacity.');
+            }
+            $connection->insert('wms_putaway_order', [
+                'id' => $request->orderId()->value(), 'tenant_id' => $request->tenantId()->value(),
+                'inbound_receipt_id' => $request->inboundReceiptId()->value(), 'strategy_id' => $target['strategy_id'],
+                'product_id' => $receipt['product_id'], 'source_location_id' => $receipt['source_location_id'],
+                'target_location_id' => $target['target_location_id'], 'quantity' => (int) $receipt['quantity'],
+                'stock_status' => $receipt['stock_status'], 'batch_number' => $receipt['batch_number'],
+                'serial_number' => $receipt['serial_number'], 'expires_at' => $receipt['expires_at'],
+                'status' => 'open', 'created_by' => $request->createdBy()->value(),
+                'created_at' => $request->createdAt()->format('Y-m-d H:i:s.u'),
+            ]);
+
+            return new PutawayResult('open', (string) $target['target_location_id'], (int) $receipt['quantity']);
+        });
+    }
+
+    public function confirmPutaway(PutawayConfirmation $confirmation): PutawayResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($confirmation): PutawayResult {
+            $order = $connection->fetchAssociative(
+                "SELECT * FROM wms_putaway_order WHERE id = :orderId AND tenant_id = :tenantId AND status = 'open' FOR UPDATE",
+                ['orderId' => $confirmation->orderId()->value(), 'tenantId' => $confirmation->tenantId()->value()],
+            );
+            if ($order === false) {
+                throw new InventoryReferenceNotFoundException('An open putaway order must exist in the tenant.');
+            }
+            $dimensions = StockDimensions::fromInput(
+                (string) $order['stock_status'], $order['batch_number'] === null ? null : (string) $order['batch_number'],
+                $order['serial_number'] === null ? null : (string) $order['serial_number'],
+                $order['expires_at'] === null ? null : new DateTimeImmutable((string) $order['expires_at']),
+            );
+            $transfer = $this->transfer(new StockTransfer(
+                $confirmation->transferId(), $confirmation->sourceLedgerId(), $confirmation->destinationLedgerId(),
+                $confirmation->tenantId(), new InventoryId((string) $order['product_id']),
+                new InventoryId((string) $order['source_location_id']), $dimensions,
+                new InventoryId((string) $order['target_location_id']), $dimensions,
+                (int) $order['quantity'], 'Putaway order ' . $confirmation->orderId()->value(),
+                $confirmation->confirmedBy(), $confirmation->confirmedAt(),
+            ));
+            $connection->update('wms_putaway_order', [
+                'status' => 'completed', 'transfer_id' => $confirmation->transferId()->value(),
+                'confirmed_by' => $confirmation->confirmedBy()->value(),
+                'confirmed_at' => $confirmation->confirmedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $confirmation->orderId()->value()]);
+
+            return new PutawayResult('completed', (string) $order['target_location_id'], (int) $order['quantity'], $transfer->destinationQuantity);
         });
     }
 
