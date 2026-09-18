@@ -39,7 +39,7 @@ final class InventoryApiController extends AbstractController
         $items = $this->queries->products(
             $this->apiUser()->tenantId(),
             $this->limit($request),
-            $request->query->getString('cursor') ?: null,
+            $this->optionalQueryString($request, 'cursor'),
         );
 
         return $this->collection($items, 'id');
@@ -83,9 +83,9 @@ final class InventoryApiController extends AbstractController
     {
         $items = $this->queries->stock(
             $this->apiUser()->tenantId(),
-            $request->query->getString('warehouseId') ?: null,
+            $this->optionalQueryString($request, 'warehouseId'),
             $this->limit($request),
-            $request->query->getString('cursor') ?: null,
+            $this->optionalQueryString($request, 'cursor'),
         );
 
         return $this->collection($items, 'cursor');
@@ -120,6 +120,13 @@ final class InventoryApiController extends AbstractController
         }
 
         return $limit;
+    }
+
+    private function optionalQueryString(Request $request, string $name): ?string
+    {
+        $value = $request->query->getString($name);
+
+        return $value === '' ? null : $value;
     }
 
     /** @param array<string, mixed> $payload */

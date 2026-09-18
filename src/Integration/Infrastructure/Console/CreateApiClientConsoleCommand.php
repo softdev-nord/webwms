@@ -37,7 +37,7 @@ final class CreateApiClientConsoleCommand extends Command
         $permissions = array_values(array_unique(array_filter(array_map(
             'trim',
             explode(',', (string) $input->getArgument('permissions')),
-        ))));
+        ), static fn (string $permission): bool => $permission !== '')));
         if ($name === '' || $permissions === [] || array_filter(
             $permissions,
             static fn (string $permission): bool => preg_match('/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*){2,4}$/', $permission) !== 1,
