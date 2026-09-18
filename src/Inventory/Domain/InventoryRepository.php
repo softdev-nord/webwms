@@ -36,4 +36,7 @@ interface InventoryRepository
     public function savePutawayStrategy(PutawayStrategy $strategy): void;
     public function createPutawayOrder(PutawayRequest $request): PutawayResult;
     public function confirmPutaway(PutawayConfirmation $confirmation): PutawayResult;
+    public function saveReplenishmentPolicy(ReplenishmentPolicy $policy): void;
+    public function createReplenishmentOrder(ReplenishmentRequest $request): ReplenishmentResult;
+    public function confirmReplenishment(ReplenishmentConfirmation $confirmation): ReplenishmentResult;
 }

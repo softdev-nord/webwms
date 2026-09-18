@@ -20,6 +20,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Retouren- und Rücknahmeabwicklung](technical/inventory-returns.md)
 - [Wareneingang, Bestellungen, Avis und QS](technical/inventory-inbound.md)
 - [Automatische Einlagerung und Lagerplatzstrategien](technical/inventory-putaway.md)
+- [Nachschubsteuerung](technical/inventory-replenishment.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -39,6 +40,7 @@ sowie Anwenderanleitungen für die fachliche Nutzung getrennt.
 - [Retouren annehmen und prüfen](user/inventory-returns.md)
 - [Bestellungen und Wareneingänge bearbeiten](user/inventory-inbound.md)
 - [Ware automatisch einlagern](user/inventory-putaway.md)
+- [Kommissionierplätze nachfüllen](user/inventory-replenishment.md)
 
 ## Verbindliche Dokumentationsregel
 

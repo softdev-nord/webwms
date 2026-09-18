@@ -30,6 +30,10 @@ use WebWMS\Inventory\Domain\PutawayConfirmation;
 use WebWMS\Inventory\Domain\PutawayRequest;
 use WebWMS\Inventory\Domain\PutawayResult;
 use WebWMS\Inventory\Domain\PutawayStrategy;
+use WebWMS\Inventory\Domain\ReplenishmentConfirmation;
+use WebWMS\Inventory\Domain\ReplenishmentPolicy;
+use WebWMS\Inventory\Domain\ReplenishmentRequest;
+use WebWMS\Inventory\Domain\ReplenishmentResult;
 use WebWMS\Inventory\Domain\ReturnInspection;
 use WebWMS\Inventory\Domain\ReturnOrder;
 use WebWMS\Inventory\Domain\ReturnReceipt;
@@ -219,5 +223,19 @@ final class InventoryMemoryRepository implements InventoryRepository
     public function confirmPutaway(PutawayConfirmation $confirmation): PutawayResult
     {
         return new PutawayResult('completed', '018f6b7f-75d2-7c4e-8c33-31f91b1cf403', 1, 1);
+    }
+
+    public function saveReplenishmentPolicy(ReplenishmentPolicy $policy): void
+    {
+    }
+
+    public function createReplenishmentOrder(ReplenishmentRequest $request): ReplenishmentResult
+    {
+        return new ReplenishmentResult('open', '018f6b7f-75d2-7c4e-8c33-31f91b1cf404', '018f6b7f-75d2-7c4e-8c33-31f91b1cf403', 1);
+    }
+
+    public function confirmReplenishment(ReplenishmentConfirmation $confirmation): ReplenishmentResult
+    {
+        return new ReplenishmentResult('completed', '018f6b7f-75d2-7c4e-8c33-31f91b1cf404', '018f6b7f-75d2-7c4e-8c33-31f91b1cf403', 1, 1);
     }
 }

@@ -35,6 +35,10 @@ use WebWMS\Inventory\Domain\PutawayConfirmation;
 use WebWMS\Inventory\Domain\PutawayRequest;
 use WebWMS\Inventory\Domain\PutawayResult;
 use WebWMS\Inventory\Domain\PutawayStrategy;
+use WebWMS\Inventory\Domain\ReplenishmentConfirmation;
+use WebWMS\Inventory\Domain\ReplenishmentPolicy;
+use WebWMS\Inventory\Domain\ReplenishmentRequest;
+use WebWMS\Inventory\Domain\ReplenishmentResult;
 use WebWMS\Inventory\Domain\ReturnInspection;
 use WebWMS\Inventory\Domain\ReturnOrder;
 use WebWMS\Inventory\Domain\ReturnReceipt;
@@ -973,6 +977,119 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ], ['id' => $confirmation->orderId()->value()]);
 
             return new PutawayResult('completed', (string) $order['target_location_id'], (int) $order['quantity'], $transfer->destinationQuantity);
+        });
+    }
+
+    public function saveReplenishmentPolicy(ReplenishmentPolicy $policy): void
+    {
+        if ($this->connection->fetchOne(
+            'SELECT 1 FROM wms_warehouse w INNER JOIN wms_storage_location l ON l.warehouse_id = w.id '
+            . 'INNER JOIN wms_product_reference p ON p.tenant_id = w.tenant_id '
+            . 'INNER JOIN wms_user_account u ON u.tenant_id = w.tenant_id '
+            . 'WHERE w.id = :warehouseId AND l.id = :targetLocationId AND p.id = :productId '
+            . 'AND u.id = :userId AND w.tenant_id = :tenantId',
+            [
+                'warehouseId' => $policy->warehouseId()->value(),
+                'targetLocationId' => $policy->targetLocationId()->value(),
+                'productId' => $policy->productId()->value(),
+                'userId' => $policy->createdBy()->value(),
+                'tenantId' => $policy->tenantId()->value(),
+            ],
+        ) === false) {
+            throw new InventoryReferenceNotFoundException('The replenishment warehouse, product, target location and creator must exist in the tenant.');
+        }
+        $this->connection->insert('wms_replenishment_policy', [
+            'id' => $policy->id()->value(), 'tenant_id' => $policy->tenantId()->value(),
+            'warehouse_id' => $policy->warehouseId()->value(), 'product_id' => $policy->productId()->value(),
+            'target_location_id' => $policy->targetLocationId()->value(), 'code' => $policy->code(),
+            'source_location_prefix' => $policy->sourceLocationPrefix(),
+            'minimum_quantity' => $policy->minimumQuantity(), 'target_quantity' => $policy->targetQuantity(),
+            'priority' => $policy->priority(), 'enabled' => 1, 'created_by' => $policy->createdBy()->value(),
+            'created_at' => $policy->createdAt()->format('Y-m-d H:i:s.u'),
+        ]);
+    }
+
+    public function createReplenishmentOrder(ReplenishmentRequest $request): ReplenishmentResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($request): ReplenishmentResult {
+            $policy = $connection->fetchAssociative(
+                'SELECT * FROM wms_replenishment_policy WHERE id = :policyId AND tenant_id = :tenantId AND enabled = 1 FOR UPDATE',
+                ['policyId' => $request->policyId()->value(), 'tenantId' => $request->tenantId()->value()],
+            );
+            if ($policy === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $request->createdBy()->value(), 'tenantId' => $request->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('An enabled replenishment policy and creator must exist in the tenant.');
+            }
+            $targetQuantity = (int) $connection->fetchOne(
+                "SELECT COALESCE(SUM(b.quantity), 0) - (SELECT COALESCE(SUM(a.quantity), 0) FROM wms_stock_allocation a WHERE a.tenant_id = :tenantId AND a.product_id = :productId AND a.location_id = :locationId AND a.status = 'active') FROM wms_stock_balance b WHERE b.tenant_id = :tenantId AND b.product_id = :productId AND b.location_id = :locationId AND b.stock_status = 'available'",
+                ['tenantId' => $request->tenantId()->value(), 'productId' => $policy['product_id'], 'locationId' => $policy['target_location_id']],
+            );
+            $incomingQuantity = (int) $connection->fetchOne(
+                "SELECT COALESCE(SUM(quantity), 0) FROM wms_replenishment_order WHERE policy_id = :policyId AND status = 'open'",
+                ['policyId' => $request->policyId()->value()],
+            );
+            $effectiveQuantity = $targetQuantity + $incomingQuantity;
+            if ($effectiveQuantity >= (int) $policy['minimum_quantity']) {
+                throw new InsufficientAvailableStockException('The replenishment minimum has not been reached.');
+            }
+            $source = $connection->fetchAssociative(
+                "SELECT b.*, l.code, b.quantity - (SELECT COALESCE(SUM(a.quantity), 0) FROM wms_stock_allocation a WHERE a.tenant_id = b.tenant_id AND a.product_id = b.product_id AND a.location_id = b.location_id AND a.stock_key = b.stock_key AND a.status = 'active') - (SELECT COALESCE(SUM(ro.quantity), 0) FROM wms_replenishment_order ro WHERE ro.source_location_id = b.location_id AND ro.stock_key = b.stock_key AND ro.status = 'open') available_quantity FROM wms_stock_balance b INNER JOIN wms_storage_location l ON l.id = b.location_id WHERE b.tenant_id = :tenantId AND b.product_id = :productId AND b.stock_status = 'available' AND l.warehouse_id = :warehouseId AND l.code LIKE CONCAT(:sourcePrefix, '%') AND l.id <> :targetLocationId HAVING available_quantity > 0 ORDER BY CASE WHEN b.expires_at IS NULL THEN 1 ELSE 0 END, b.expires_at, l.putaway_priority, l.code LIMIT 1 FOR UPDATE",
+                [
+                    'tenantId' => $request->tenantId()->value(), 'productId' => $policy['product_id'],
+                    'warehouseId' => $policy['warehouse_id'], 'sourcePrefix' => $policy['source_location_prefix'],
+                    'targetLocationId' => $policy['target_location_id'],
+                ],
+            );
+            if ($source === false) {
+                throw new InsufficientAvailableStockException('No source location contains available stock for replenishment.');
+            }
+            $quantity = min((int) $policy['target_quantity'] - $effectiveQuantity, (int) $source['available_quantity']);
+            $connection->insert('wms_replenishment_order', [
+                'id' => $request->orderId()->value(), 'tenant_id' => $request->tenantId()->value(),
+                'policy_id' => $request->policyId()->value(), 'product_id' => $policy['product_id'],
+                'source_location_id' => $source['location_id'], 'target_location_id' => $policy['target_location_id'],
+                'quantity' => $quantity, 'stock_key' => $source['stock_key'], 'stock_status' => $source['stock_status'],
+                'batch_number' => $source['batch_number'], 'serial_number' => $source['serial_number'],
+                'expires_at' => $source['expires_at'], 'status' => 'open',
+                'created_by' => $request->createdBy()->value(), 'created_at' => $request->createdAt()->format('Y-m-d H:i:s.u'),
+            ]);
+
+            return new ReplenishmentResult('open', (string) $source['location_id'], (string) $policy['target_location_id'], $quantity);
+        });
+    }
+
+    public function confirmReplenishment(ReplenishmentConfirmation $confirmation): ReplenishmentResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($confirmation): ReplenishmentResult {
+            $order = $connection->fetchAssociative(
+                "SELECT * FROM wms_replenishment_order WHERE id = :orderId AND tenant_id = :tenantId AND status = 'open' FOR UPDATE",
+                ['orderId' => $confirmation->orderId()->value(), 'tenantId' => $confirmation->tenantId()->value()],
+            );
+            if ($order === false) {
+                throw new InventoryReferenceNotFoundException('An open replenishment order must exist in the tenant.');
+            }
+            $dimensions = StockDimensions::fromInput(
+                (string) $order['stock_status'], $order['batch_number'] === null ? null : (string) $order['batch_number'],
+                $order['serial_number'] === null ? null : (string) $order['serial_number'],
+                $order['expires_at'] === null ? null : new DateTimeImmutable((string) $order['expires_at']),
+            );
+            $transfer = $this->transfer(new StockTransfer(
+                $confirmation->transferId(), $confirmation->sourceLedgerId(), $confirmation->destinationLedgerId(),
+                $confirmation->tenantId(), new InventoryId((string) $order['product_id']),
+                new InventoryId((string) $order['source_location_id']), $dimensions,
+                new InventoryId((string) $order['target_location_id']), $dimensions,
+                (int) $order['quantity'], 'Replenishment order ' . $confirmation->orderId()->value(),
+                $confirmation->confirmedBy(), $confirmation->confirmedAt(),
+            ));
+            $connection->update('wms_replenishment_order', [
+                'status' => 'completed', 'transfer_id' => $confirmation->transferId()->value(),
+                'confirmed_by' => $confirmation->confirmedBy()->value(),
+                'confirmed_at' => $confirmation->confirmedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $confirmation->orderId()->value()]);
+
+            return new ReplenishmentResult('completed', (string) $order['source_location_id'], (string) $order['target_location_id'], (int) $order['quantity'], $transfer->destinationQuantity);
         });
     }
 
