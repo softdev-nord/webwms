@@ -583,7 +583,7 @@ class StockTransactionController extends AbstractController
     public function editPreSelectedStockLocation(Request $request): Response
     {
         $stockLocationId = $request->attributes->getString('stockLocationId');
-        /** @var StockLocation $stockSystem */
+        /** @var list<StockLocation> $stockSystem */
         $stockSystem = $this->stockLocationService->getStockLocationDetailsById($stockLocationId);
 
         /**
