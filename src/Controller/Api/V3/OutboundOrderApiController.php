@@ -143,8 +143,8 @@ final class OutboundOrderApiController extends AbstractController
             'id' => $allocationId,
             'reservationId' => $reservationId,
             'allocatedQuantity' => $result->allocatedQuantity,
-            'remainingQuantity' => $result->remainingQuantity,
-            'availableQuantity' => $result->availableQuantity,
+            'remainingQuantity' => $result->remainingReservationQuantity,
+            'availableQuantity' => $result->availableStockQuantity,
         ], Response::HTTP_CREATED);
     }
 
