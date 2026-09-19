@@ -2,6 +2,12 @@ twig:
   default_path: '%kernel.project_dir%/templates'
 #    paths:
 #        '%kernel.project_dir%/custom/plugins/DashboardBundle/Resources/templates/dashboard': DashboardBundle
+  globals:
+    appName: '%env(APP_NAME)%'
+    appVersion: '%env(APP_VERSION)%'
+    appVersionNumber: '%env(APP_VERSION_NUMBER)%'
+    appCopyright: '%env(APP_COPYRIGHT)%'
+    appLizenz: '%env(APP_LICENSE)%'
 
 when@test:
   twig:

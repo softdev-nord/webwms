@@ -44,6 +44,7 @@ final class V3AdministrationController extends AbstractController
             'users' => $user->hasPermission('administration.user.read') ? $this->administration->users($user->tenantId()) : [],
             'roles' => $user->hasPermission('administration.role.read') ? $this->administration->roles($user->tenantId()) : [],
             'apiClients' => $user->hasPermission('administration.api_client.read') ? $this->administration->apiClients($user->tenantId()) : [],
+            'page' => 'Administration',
         ]);
     }
 
@@ -69,6 +70,7 @@ final class V3AdministrationController extends AbstractController
 
         return $this->render('v3/administration/role_new.html.twig', [
             'permissions' => V3PermissionCatalog::ALL,
+            'page' => 'Neue Rolle',
         ]);
     }
 
@@ -95,6 +97,7 @@ final class V3AdministrationController extends AbstractController
 
         return $this->render('v3/administration/user_new.html.twig', [
             'roles' => $this->administration->roles($user->tenantId()),
+            'page' => 'Neuer Benutzer',
         ]);
     }
 
@@ -136,6 +139,7 @@ final class V3AdministrationController extends AbstractController
         return $this->render('v3/administration/api_client_new.html.twig', [
             'users' => $this->administration->users($user->tenantId()),
             'permissions' => V3PermissionCatalog::ALL,
+            'page' => 'API-Client',
         ]);
     }
 

@@ -24,19 +24,33 @@ use WebWMS\Inventory\Domain\Warehouse;
 
 final readonly class DemoBootstrapService
 {
-    public const TENANT_ID = '11111111-1111-4111-8111-111111111111';
-    public const SITE_ID = '22222222-2222-4222-8222-222222222222';
-    public const ROLE_ID = '33333333-3333-4333-8333-333333333333';
-    public const USER_ID = '44444444-4444-4444-8444-444444444444';
-    public const WAREHOUSE_ID = '55555555-5555-4555-8555-555555555555';
-    public const LOCATION_A_ID = '66666666-6666-4666-8666-666666666661';
-    public const LOCATION_B_ID = '66666666-6666-4666-8666-666666666662';
-    public const PRODUCT_A_ID = '77777777-7777-4777-8777-777777777771';
-    public const PRODUCT_B_ID = '77777777-7777-4777-8777-777777777772';
-    public const ORDER_ID = '88888888-8888-4888-8888-888888888888';
-    public const ORDER_ITEM_ID = '99999999-9999-4999-8999-999999999999';
-    public const PRINTER_ID = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
-    public const EMAIL = 'admin@demo.webwms.local';
+    public const string TENANT_ID = '83b4f6dd-4ef6-4226-9081-e6a2cedf14dd';
+
+    public const string SITE_ID = '91c8a9f7-ddd8-418a-b9bc-f2f85b95cd53';
+
+    public const string ROLE_ID = '8ef53de0-1abf-4a8a-8f89-f0f67cf3f14f';
+
+    public const string USER_ID = '8f7239e6-48a1-45f5-a55f-1e4c95acd8d2';
+
+    public const string WAREHOUSE_ID = 'f0f8a7ee-ef95-4a8a-b68b-96f0d864f4ca';
+
+    public const string LOCATION_A_ID = 'fd1ea338-9691-447f-a44e-b6f577ec07c6';
+
+    public const string LOCATION_B_ID = 'a3f696d9-fac9-4b06-a0f4-33f76e9c7d9d';
+
+    public const string PRODUCT_A_ID = 'af7b6174-a744-4346-a243-6f5e59e1de4f';
+
+    public const string PRODUCT_B_ID = 'dcfbe1d5-7210-4f28-afc7-e098214f102f';
+
+    public const string ORDER_ID = '3b190f7e-aa8d-412f-bf6e-a102d99d2b72';
+
+    public const string ORDER_ITEM_ID = '5f55fe9e-2396-4861-8dc8-a3b6088d53fc';
+
+    public const string PRINTER_ID = 'd1eac343-b344-4ea1-9f68-6e6303e0f3f9';
+
+    public const string EMAIL = 'rene.irrgang@outlook.de';
+
+    public const string PASSWORD = 'WebWMS2026!#';
 
     public function __construct(
         private Connection $connection,
@@ -53,7 +67,7 @@ final readonly class DemoBootstrapService
 
         if (!$this->exists('wms_tenant', self::TENANT_ID)) {
             $this->connection->insert('wms_tenant', [
-                'id' => self::TENANT_ID, 'name' => 'WebWMS Demo', 'status' => 'active',
+                'id' => self::TENANT_ID, 'name' => 'WebWMS Demo Mandant', 'status' => 'active',
                 'created_at' => $this->date($now), 'updated_at' => $this->date($now),
             ]);
             $created = true;
@@ -194,6 +208,6 @@ final readonly class DemoBootstrapService
 
     private function generatePassword(): string
     {
-        return rtrim(strtr(base64_encode(random_bytes(18)), '+/', '-_'), '=');
+        return self::PASSWORD;
     }
 }

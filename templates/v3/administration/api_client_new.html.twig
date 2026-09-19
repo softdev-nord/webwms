@@ -1,3 +1,43 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}API-Client anlegen | WebWMS 3.0{% endblock %}
-{% block body %}<div class="mb-4"><a href="{{ path('v3_administration_index') }}" class="text-decoration-none">← Administration</a><h1 class="h3 mt-2">API-Client anlegen</h1></div><form method="post" class="card border-0 shadow-sm"><div class="card-body"><input type="hidden" name="_token" value="{{ csrf_token('v3_administration_api_client_create') }}"><div class="row g-3 mb-4"><div class="col-md-6"><label class="form-label">Name</label><input class="form-control" name="name" required></div><div class="col-md-6"><label class="form-label">Ausführender Benutzer</label><select class="form-select" name="acting_user_id" required>{% for user in users if user.status == 'active' %}<option value="{{ user.id }}">{{ user.display_name }} – {{ user.email }}</option>{% endfor %}</select></div></div><h2 class="h5">API-Berechtigungen</h2><div class="row g-2">{% for permission in permissions %}<div class="col-md-6 col-xl-4"><div class="form-check"><input class="form-check-input" type="checkbox" name="permissions[]" value="{{ permission }}" id="api-permission-{{ loop.index }}"><label class="form-check-label" for="api-permission-{{ loop.index }}">{{ permission }}</label></div></div>{% endfor %}</div></div><div class="card-footer bg-white text-end"><button class="btn btn-primary">Zugang erzeugen</button></div></form>{% endblock %}
+
+{% block webwms_content %}
+    <div class="mb-4">
+        <a href="{{ path('v3_administration_index') }}" class="text-decoration-none">← Administration</a>
+        <h1 class="h3 mt-2">API-Client anlegen</h1>
+    </div>
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_administration_api_client_create') }}">
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label">Name</label>
+                    <input class="form-control" name="name" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Ausführender Benutzer</label>
+                    <select class="form-select" name="acting_user_id" required>
+                        {% for user in users %}
+                            {% if user.status == 'active' %}
+                                <option value="{{ user.id }}">{{ user.display_name }} – {{ user.email }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <h2 class="h5">API-Berechtigungen</h2>
+            <div class="row g-2">
+                {% for permission in permissions %}
+                    <div class="col-md-6 col-xl-4">
+                        <div class="form-check">
+                            <input class="form-check-input ms-2" type="checkbox" name="permissions[]" value="{{ permission }}" id="api-permission-{{ loop.index }}">
+                            <label class="form-check-label" for="api-permission-{{ loop.index }}">{{ permission }}</label>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button class="btn btn-primary">Zugang erzeugen</button>
+        </div>
+    </form>
+{% endblock %}

@@ -12,24 +12,24 @@
                 <img class="img-responsive img-rounded" src="{{ asset('assets/images/user_profile.png') }}"
                      alt="User picture">
             </div>
-            <div class="user-info">
-                    <span class="user-name">
-                        {% if app.user != null %}
-                            {{ app.user.firstname }} {{ app.user.lastname }}
-                        {% endif %}
-                    </span>
-                <span class="text-muted user-role">
-                        {% if app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}
-                            Superadministrator
-                        {% elseif app.user.roles[0] == 'ROLE_USER' %}
-                            Benutzer
-                        {% endif %}
-                    </span>
-                <span class="user-status">
-                        <i class="mdi mdi-circle"></i>
-                        <span class="text-muted">{{ 'nav.user.online'|trans }}</span>
-                    </span>
-            </div>
+{#            <div class="user-info">#}
+{#                    <span class="user-name">#}
+{#                        {% if app.user != null %}#}
+{#                            {{ app.user.firstname }} {{ app.user.lastname }}#}
+{#                        {% endif %}#}
+{#                    </span>#}
+{#                <span class="text-muted user-role">#}
+{#                        {% if app.user.roles[0] == 'ROLE_SUPER_ADMIN' %}#}
+{#                            Superadministrator#}
+{#                        {% elseif app.user.roles[0] == 'ROLE_USER' %}#}
+{#                            Benutzer#}
+{#                        {% endif %}#}
+{#                    </span>#}
+{#                <span class="user-status">#}
+{#                        <i class="mdi mdi-circle"></i>#}
+{#                        <span class="text-muted">{{ 'nav.user.online'|trans }}</span>#}
+{#                    </span>#}
+{#            </div>#}
         </div>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
             <i class="ri-record-circle-line"></i>

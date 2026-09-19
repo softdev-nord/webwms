@@ -41,6 +41,7 @@ final class V3OutboundController extends AbstractController
     {
         return $this->render('v3/outbound/orders.html.twig', [
             'orders' => $this->queries->outboundOrders($this->tenantUser()->tenantId()),
+            'page' => 'Ausgangsaufträge',
         ]);
     }
 
@@ -69,6 +70,7 @@ final class V3OutboundController extends AbstractController
 
         return $this->render('v3/outbound/order_new.html.twig', [
             'products' => $this->queries->products($user->tenantId(), 200, null),
+            'page' => 'Ausgangsauftrag',
         ]);
     }
 
@@ -85,7 +87,10 @@ final class V3OutboundController extends AbstractController
         }
         unset($item);
 
-        return $this->render('v3/outbound/order.html.twig', ['order' => $order]);
+        return $this->render('v3/outbound/order.html.twig', [
+            'order' => $order,
+            'page' => 'Ausgangsauftrag',
+        ]);
     }
 
     #[Route('/orders/{orderId}/release', name: 'order_release', methods: ['POST'])]
