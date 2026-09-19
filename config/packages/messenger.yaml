@@ -1,0 +1,21 @@
+framework:
+    messenger:
+        failure_transport: failed
+        transports:
+            integration:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: integration
+                    auto_setup: false
+                retry_strategy:
+                    max_retries: 5
+                    delay: 1000
+                    multiplier: 2
+                    max_delay: 60000
+            failed:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: failed
+                    auto_setup: false
+        routing:
+            WebWMS\Integration\Application\PublishedIntegrationMessage: integration

@@ -2,7 +2,7 @@
 id: WEBWMS-096
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Backend umgesetzt
 priority: Highest
 story_points: 13
 component: "Integration & Technik"
@@ -44,13 +44,15 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Backend umgesetzt
 
-Eine persistente, transaktionale Outbox mit Pending-Abfrage und idempotenter Quittierung ist vorhanden. Nicht quittierte Nachrichten bleiben für erneute Abrufe sichtbar; Zielsysteme verwenden die UUIDv7-Nachrichten-ID als Idempotenzschlüssel.
+Eine persistente, transaktionale Outbox mit Pending-Abfrage und idempotenter Quittierung ist vorhanden. Der automatische Publisher beansprucht fällige Nachrichten konkurenzsicher und stellt sie als `PublishedIntegrationMessage` in einen persistenten Symfony-Messenger-Transport. Zielsysteme verwenden die unveränderte UUIDv7-Nachrichten-ID als Idempotenzschlüssel.
 
-Nachweise: `wms_integration_outbox`, `IntegrationStatusEvent`, `OutboxAcknowledgement`, `DbalOutboxRepository`, `OutboxApiController`, Migration `Version20260919100000` und die Outbox-Dokumentation.
+Queue-Fehler erzeugen persistente Zustellversuche und exponentielle Wiederholungen. Nach fünf Fehlern folgt `dead_letter`; die API bietet Statusüberwachung und eine autorisierte, auditierte manuelle Wiederaufnahme.
 
-Queue-Publisher, automatische Retry-Strategie, Zustellversuche, Backoff, Dead-Letter-Verarbeitung und Betriebsmetriken fehlen noch; das Ticket bleibt deshalb `Teilweise umgesetzt`.
+Nachweise: `OutboxPublisher`, `MessengerOutboxTransport`, `DbalOutboxRepository`, `PublishOutboxConsoleCommand`, `OutboxApiController`, `wms_integration_attempt`, Migration `Version20260919120000`, Unit-Tests sowie die technische und Anwenderdokumentation.
+
+Konkrete Zieladapter, aggregierte Betriebsmetriken, Alarmierung, UI und vollständige Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 

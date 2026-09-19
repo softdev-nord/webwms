@@ -35,6 +35,7 @@ final readonly class ApiExceptionSubscriber
             $exception instanceof InventoryReferenceNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof OutboxMessageNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof InsufficientAvailableStockException => [409, 'Conflict', $exception->getMessage()],
+            $exception instanceof \DomainException => [409, 'Conflict', $exception->getMessage()],
             $exception instanceof UniqueConstraintViolationException => [409, 'Conflict', 'The resource already exists.'],
             $exception instanceof \InvalidArgumentException => [422, 'Unprocessable Entity', $exception->getMessage()],
             $exception instanceof HttpExceptionInterface => [$exception->getStatusCode(), Response::$statusTexts[$exception->getStatusCode()] ?? 'Request failed', $exception->getMessage()],

@@ -16,4 +16,4 @@ Alle 13 dokumentierten Funktionen des Bereichs Integration & Technik werden fach
 | [WEBWMS-093](../tickets/WEBWMS-093.md) | Lagerlifte und Paternoster implementieren | Offen | Medium | 13 |
 | [WEBWMS-094](../tickets/WEBWMS-094.md) | WCS/MFR/Fördertechnik implementieren | Offen | Medium | 13 |
 | [WEBWMS-095](../tickets/WEBWMS-095.md) | TCP/IP und Webservice implementieren | Offen | Medium | 8 |
-| [WEBWMS-096](../tickets/WEBWMS-096.md) | Asynchrone Integrationsverarbeitung implementieren | Teilweise umgesetzt | Highest | 13 |
+| [WEBWMS-096](../tickets/WEBWMS-096.md) | Asynchrone Integrationsverarbeitung implementieren | Backend umgesetzt | Highest | 13 |

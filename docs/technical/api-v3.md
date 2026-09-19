@@ -44,8 +44,9 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `GET` | `/api/v3/loading-manifests/{id}` | `fulfillment.loading.read` | Ladeliste und Fortschritt lesen |
 | `POST` | `/api/v3/loading-manifests/{id}/shipments/{shipmentId}/loading` | `fulfillment.loading.execute` | Verladung bestätigen |
 | `POST` | `/api/v3/loading-manifests/{id}/complete` | `fulfillment.loading.execute` | Manifest und Übergabe abschließen |
-| `GET` | `/api/v3/outbox` | `integration.outbox.read` | Ausstehende Statusereignisse lesen |
+| `GET` | `/api/v3/outbox` | `integration.outbox.read` | Statusereignisse nach Zustellstatus lesen |
 | `POST` | `/api/v3/outbox/{id}/acknowledgement` | `integration.outbox.acknowledge` | Verarbeitung idempotent quittieren |
+| `POST` | `/api/v3/outbox/{id}/retry` | `integration.outbox.retry` | Dead Letter geprüft wiederaufnehmen |
 
 Listen akzeptieren `limit` von 1 bis 100. Artikel, Bestände und Outbox-Nachrichten unterstützen einen opaken `cursor`; der Folgewert steht in `meta.nextCursor`. Bestände können mit `warehouseId` eingeschränkt werden.
 
@@ -60,7 +61,7 @@ Erfolgreiche Antworten enthalten `data`, Listen zusätzlich `meta`. Fehler verwe
 ## Bekannte Restarbeiten
 
 - Bestandsbewegungen als API-Ressourcen;
-- Push-Transport, automatische Wiederholung und Dead-Letter-Verarbeitung für Outbox-Nachrichten;
+- konkrete ERP-, Shop- und Webhook-Handler für die Integrationsqueue;
 - OpenAPI-Vertrag und API-Integrationstests mit MariaDB;
 - Rotation und Widerruf von Secrets über eine Administrationsoberfläche;
 - Rate-Limiting und technische Verbrauchsmetriken.

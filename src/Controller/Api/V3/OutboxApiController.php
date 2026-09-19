@@ -13,6 +13,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use WebWMS\Integration\Application\AcknowledgeOutboxMessageCommand;
 use WebWMS\Integration\Application\AcknowledgeOutboxMessageHandler;
 use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\RetryDeadLetterCommand;
+use WebWMS\Integration\Application\RetryDeadLetterHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/outbox', name: 'api_v3_outbox_')]
@@ -20,7 +22,8 @@ final class OutboxApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
-        private readonly AcknowledgeOutboxMessageHandler $acknowledgeMessage
+        private readonly AcknowledgeOutboxMessageHandler $acknowledgeMessage,
+        private readonly RetryDeadLetterHandler $retryDeadLetter
     ) {
     }
 
@@ -28,8 +31,13 @@ final class OutboxApiController extends AbstractController
     #[IsGranted('integration.outbox.read')]
     public function list(Request $request): JsonResponse
     {
-        $messages = $this->queries->pendingOutboxMessages(
+        $status = $request->query->getString('status', 'pending');
+        if (!in_array($status, ['pending', 'processing', 'published', 'dead_letter', 'acknowledged'], true)) {
+            throw new \InvalidArgumentException('The outbox status filter is invalid.');
+        }
+        $messages = $this->queries->outboxMessages(
             $this->apiUser()->tenantId(),
+            $status,
             $this->limit($request),
             $this->optionalQueryString($request, 'cursor'),
         );
@@ -39,6 +47,26 @@ final class OutboxApiController extends AbstractController
             'count' => count($messages),
             'nextCursor' => is_string($last) ? $last : null,
         ]]);
+    }
+
+    #[Route('/{messageId}/retry', name: 'retry', methods: ['POST'])]
+    #[IsGranted('integration.outbox.retry')]
+    public function retry(string $messageId): JsonResponse
+    {
+        if ($this->queries->outboxMessage($this->apiUser()->tenantId(), $messageId) === null) {
+            throw $this->createNotFoundException('The outbox message does not exist.');
+        }
+        ($this->retryDeadLetter)(new RetryDeadLetterCommand(
+            $messageId,
+            $this->apiUser()->tenantId(),
+            $this->apiUser()->actorId(),
+            new DateTimeImmutable(),
+        ));
+
+        return new JsonResponse(['data' => $this->queries->outboxMessage(
+            $this->apiUser()->tenantId(),
+            $messageId,
+        )]);
     }
 
     #[Route('/{messageId}/acknowledgement', name: 'acknowledge', methods: ['POST'])]

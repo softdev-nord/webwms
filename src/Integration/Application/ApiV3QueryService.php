@@ -235,13 +235,14 @@ final readonly class ApiV3QueryService
     }
 
     /** @return list<array<string, mixed>> */
-    public function pendingOutboxMessages(string $tenantId, int $limit, ?string $cursor): array
+    public function outboxMessages(string $tenantId, string $status, int $limit, ?string $cursor): array
     {
         $messages = $this->connection->fetchAllAssociative(
-            'SELECT id, event_name, aggregate_type, aggregate_id, payload, occurred_at, created_by '
-            . "FROM wms_integration_outbox WHERE tenant_id = :tenantId AND status = 'pending' "
+            'SELECT id, event_name, aggregate_type, aggregate_id, payload, status, occurred_at, created_by, '
+            . 'attempt_count, next_attempt_at, published_at, last_error, retried_by, retried_at '
+            . 'FROM wms_integration_outbox WHERE tenant_id = :tenantId AND status = :status '
             . 'AND (:cursorFilter IS NULL OR id > :cursorValue) ORDER BY id LIMIT ' . $limit,
-            ['tenantId' => $tenantId, 'cursorFilter' => $cursor, 'cursorValue' => $cursor ?? ''],
+            ['tenantId' => $tenantId, 'status' => $status, 'cursorFilter' => $cursor, 'cursorValue' => $cursor ?? ''],
         );
 
         return array_map($this->decodeOutboxPayload(...), $messages);
@@ -252,7 +253,8 @@ final readonly class ApiV3QueryService
     {
         $message = $this->connection->fetchAssociative(
             'SELECT id, event_name, aggregate_type, aggregate_id, payload, status, occurred_at, '
-            . 'created_by, acknowledged_by, acknowledged_at '
+            . 'created_by, acknowledged_by, acknowledged_at, attempt_count, next_attempt_at, claimed_at, '
+            . 'published_at, last_error, retried_by, retried_at '
             . 'FROM wms_integration_outbox WHERE id = :messageId AND tenant_id = :tenantId',
             ['messageId' => $messageId, 'tenantId' => $tenantId],
         );

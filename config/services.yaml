@@ -63,6 +63,8 @@ services:
             - '../src/Integration/Infrastructure/Api/ApiClientUser.php'
             - '../src/Integration/Domain/'
             - '../src/Integration/Application/*Command.php'
+            - '../src/Integration/Application/OutboxPublishReport.php'
+            - '../src/Integration/Application/PublishedIntegrationMessage.php'
             - '../src/Inventory/Domain/'
             - '../src/Inventory/Application/*Command.php'
 
@@ -86,6 +88,9 @@ services:
 
     WebWMS\Integration\Domain\OutboxRepository:
         alias: WebWMS\Integration\Infrastructure\Persistence\DbalOutboxRepository
+
+    WebWMS\Integration\Domain\OutboxTransport:
+        alias: WebWMS\Integration\Infrastructure\Messaging\MessengerOutboxTransport
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class

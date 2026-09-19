@@ -1,7 +1,8 @@
 # Statusrückmeldung und Integrations-Outbox
 
-Der Slice setzt `WEBWMS-065` als transaktionale Statusrückmeldung um und legt
-für `WEBWMS-096` die Outbox- und Idempotenzgrundlage.
+Der Slice setzt `WEBWMS-065` als transaktionale Statusrückmeldung um und baut
+`WEBWMS-096` zu einer asynchronen Veröffentlichung mit Wiederholungs- und
+Dead-Letter-Verarbeitung aus.
 
 ## Transaktionsmodell
 
@@ -10,14 +11,16 @@ abstrahierte `OutboxRepository`. Fachänderung und Outbox-Eintrag verwenden
 dieselbe Doctrine-DBAL-Verbindung und dieselbe Transaktion. Schlägt eine der
 beiden Schreiboperationen fehl, werden beide zurückgerollt.
 
-Migration `Version20260919100000` erzeugt `wms_integration_outbox` mit:
+Migration `Version20260919100000` erzeugt `wms_integration_outbox`. Migration
+`Version20260919120000` ergänzt Zustellzähler, Fälligkeit, Claim-Lease,
+Veröffentlichungszeitpunkt, letzten Fehler und die Auditdaten einer manuellen
+Wiederaufnahme. Die Zustände sind `pending`, `processing`, `published`,
+`dead_letter` und `acknowledged`.
 
-- Mandant, Ereignisname und Aggregatreferenz;
-- JSON-Payload und fachlichem Ereigniszeitpunkt;
-- Ersteller als Auditbenutzer;
-- Zustand `pending` oder `acknowledged`;
-- Quittierungsbenutzer und -zeitpunkt;
-- Indizes für Pending-Abfrage und Aggregathistorie.
+`wms_integration_attempt` hält jeden abgeschlossenen Queue-Versuch mit Nummer,
+Ergebnis, Fehler und Zeitpunkt unveränderlich fest. `messenger_messages` ist
+die persistente Doctrine-Queue für die Transportnamen `integration` und
+`failed`.
 
 ## Ereignisse
 
@@ -29,33 +32,64 @@ Migration `Version20260919100000` erzeugt `wms_integration_outbox` mit:
 | `fulfillment.shipment.dispatched` | `shipment` | Direkte oder manifestbasierte Übergabe |
 | `fulfillment.loading.completed` | `loading_manifest` | Lademanifest vollständig abgeschlossen |
 
-Beim Manifestabschluss wird neben dem Manifestereignis je Sendung ein eigenes
-Dispatch-Ereignis geschrieben.
+## Automatischer Publisher
 
-## Consumer-Protokoll
+`OutboxPublisher` beansprucht bis zu 1.000 fällige Nachrichten in einer
+DBAL-Transaktion. `SELECT ... FOR UPDATE` und der sofortige Wechsel nach
+`processing` verhindern parallele Doppel-Claims. Ein fünf Minuten alter Claim
+gilt als verwaist und darf erneut übernommen werden.
 
-`GET /api/v3/outbox` liefert ausschließlich offene Nachrichten aufsteigend
-nach UUIDv7. `limit` ist auf 1 bis 100 begrenzt; `meta.nextCursor` ermöglicht
-seitenweises Lesen. Nach erfolgreicher Verarbeitung quittiert der Consumer mit
-`POST /api/v3/outbox/{id}/acknowledgement`.
+`MessengerOutboxTransport` übergibt eine `PublishedIntegrationMessage` an den
+Symfony-Messenger-Transport `integration`. Die UUID der Outbox bleibt als
+`messageId` erhalten. Erst nach erfolgreicher Queue-Übergabe wechselt der
+Outbox-Datensatz nach `published`.
 
-Die Quittierung ist idempotent: Eine bereits quittierte Nachricht kann erneut
-bestätigt werden, ohne ihren ursprünglichen Auditzeitpunkt zu überschreiben.
-Ohne Quittierung bleibt die Nachricht sichtbar. Dadurch entsteht eine
-At-least-once-Zustellung; Zielsysteme müssen die Nachrichten-ID als
-Idempotenzschlüssel verwenden.
+Der Publisher wird regelmäßig, beispielsweise minütlich, gestartet:
 
-## Sicherheit
+```bash
+php bin/console webwms:outbox:publish --limit=100
+```
 
-- `integration.outbox.read`: offene Nachrichten des eigenen Mandanten lesen;
-- `integration.outbox.acknowledge`: Verarbeitung quittieren.
+Sobald ein konkreter ERP-, Shop- oder Webhook-Handler bereitsteht, verarbeitet
+ein unabhängiger Worker die Queue:
 
-Mandant und Quittierungsbenutzer stammen ausschließlich aus der
+```bash
+php bin/console messenger:consume integration --time-limit=3600
+```
+
+Queue-Übergabe und Outbox-Abschluss sind getrennte Transaktionen. Ein Absturz
+dazwischen kann dieselbe `messageId` erneut in die Queue stellen. Nachgelagerte
+Adapter müssen deshalb idempotent arbeiten.
+
+## Retry und Dead Letter
+
+Fehler bei der Queue-Übergabe werden mit exponentiellem Backoff nach 30, 60,
+120 und 240 Sekunden erneut versucht. Der fünfte Fehlschlag setzt
+`dead_letter`. Fehlermeldungen werden auf 1.000 Zeichen begrenzt.
+
+Dead Letters können mandantenbezogen gelesen und mit
+`POST /api/v3/outbox/{id}/retry` wieder auf `pending` gesetzt werden. Benutzer
+und Zeitpunkt werden gespeichert; ein neuer Fünf-Versuche-Zyklus beginnt. Ein
+Retry eines anderen Zustands wird als Konflikt abgelehnt.
+
+## API und Sicherheit
+
+`GET /api/v3/outbox` liefert standardmäßig offene Nachrichten aufsteigend nach
+UUIDv7. Über `status` können auch `processing`, `published`, `dead_letter` oder
+`acknowledged` abgefragt werden. `limit` ist auf 1 bis 100 begrenzt und
+`meta.nextCursor` ermöglicht seitenweises Lesen. Die Pull-Kompatibilität über
+`POST /api/v3/outbox/{id}/acknowledgement` bleibt erhalten.
+
+- `integration.outbox.read`: Nachrichten des eigenen Mandanten lesen;
+- `integration.outbox.acknowledge`: Pull-Verarbeitung quittieren;
+- `integration.outbox.retry`: Dead Letter manuell wiederaufnehmen.
+
+Mandant und ausführender Benutzer stammen ausschließlich aus der
 authentifizierten API-Identität.
 
 ## Grenzen
 
-Der aktuelle Pull-Consumer übernimmt Wiederholungen durch erneutes Lesen.
-Automatischer Queue-Push, Zustellversuche, exponentielles Backoff,
-Dead-Letter-Status und Betriebsmetriken folgen im weiteren Ausbau von
-`WEBWMS-096`.
+Der Slice stellt generische Ereignisse zuverlässig in die interne Queue.
+Konkrete Zieladapter, aggregierte Betriebsmetriken und Alarmierung folgen.
+Messenger besitzt zusätzlich seine eigene Retry-/Failure-Queue für Fehler, die
+erst im Zieladapter auftreten.
