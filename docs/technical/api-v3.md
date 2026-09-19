@@ -49,6 +49,12 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `POST` | `/api/v3/carrier-connections` | `integration.carrier_connection.write` | Carrier-Verbindung anlegen |
 | `PATCH` | `/api/v3/carrier-connections/{id}/status` | `integration.carrier_connection.write` | Verbindung aktivieren oder pausieren |
 | `GET` | `/api/v3/carriers/{code}/products` | `integration.carrier.read` | Carrierprodukte abrufen |
+| `GET` | `/api/v3/printers` | `integration.printer.read` | Drucker auflisten |
+| `POST` | `/api/v3/printers` | `integration.printer.write` | Drucker registrieren |
+| `PATCH` | `/api/v3/printers/{id}/status` | `integration.printer.write` | Drucker aktivieren/deaktivieren |
+| `GET` | `/api/v3/print-jobs` | `integration.print_job.read` | Druckaufträge auflisten |
+| `POST` | `/api/v3/print-jobs` | `integration.print_job.write` | Druckauftrag idempotent einreihen |
+| `POST` | `/api/v3/print-jobs/{id}/execute` | `integration.print_job.execute` | Druckauftrag ausführen/wiederholen |
 | `POST` | `/api/v3/shipments/{id}/carrier-label` | `integration.carrier.execute` | Label und Tracking anfordern |
 | `POST` | `/api/v3/shipments/{id}/carrier-tracking` | `integration.carrier.execute` | Tracking synchronisieren |
 | `POST` | `/api/v3/loading-manifests/{id}/carrier-handover` | `integration.carrier.execute` | Manifest übergeben |

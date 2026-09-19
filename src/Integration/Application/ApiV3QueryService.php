@@ -343,6 +343,52 @@ final readonly class ApiV3QueryService
         return $connection === false ? null : $connection;
     }
 
+    /** @return list<array<string, mixed>> */
+    public function printers(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, name, endpoint_url, credential_env, active, created_by, created_at, changed_by, changed_at '
+            . 'FROM wms_printer WHERE tenant_id = :tenantId ORDER BY name, id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function printer(string $tenantId, string $printerId): ?array
+    {
+        $printer = $this->connection->fetchAssociative(
+            'SELECT id, name, endpoint_url, credential_env, active, created_by, created_at, changed_by, changed_at '
+            . 'FROM wms_printer WHERE tenant_id = :tenantId AND id = :id',
+            ['tenantId' => $tenantId, 'id' => $printerId],
+        );
+
+        return $printer === false ? null : $printer;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function printJobs(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, printer_id, document_type, document_reference, format, copies, status, attempts, '
+            . 'external_reference, last_error, created_by, created_at, completed_at FROM wms_print_job '
+            . 'WHERE tenant_id = :tenantId ORDER BY created_at DESC, id DESC LIMIT 100',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function printJob(string $tenantId, string $jobId): ?array
+    {
+        $job = $this->connection->fetchAssociative(
+            'SELECT id, printer_id, document_type, document_reference, format, copies, status, attempts, '
+            . 'external_reference, last_error, created_by, created_at, completed_at FROM wms_print_job '
+            . 'WHERE tenant_id = :tenantId AND id = :id',
+            ['tenantId' => $tenantId, 'id' => $jobId],
+        );
+
+        return $job === false ? null : $job;
+    }
+
     /**
      * @param array<string, mixed> $message
      *

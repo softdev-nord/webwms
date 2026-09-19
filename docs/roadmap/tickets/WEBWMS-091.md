@@ -2,7 +2,7 @@
 id: WEBWMS-091
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Offen
+status: Backend umgesetzt
 priority: Highest
 story_points: 8
 component: "Integration & Technik"
@@ -44,12 +44,20 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Backend umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mit `Printer`, `PrintJob`, `PrintGateway` und dem generischen
+`HttpPrintTransport` sind mandantensichere Druckerkonfiguration, idempotente
+Druckwarteschlange, Zustandsautomat, Wiederholungsversuche und Auditdaten
+vorhanden. Die API schützt Verwaltung, Lesenzugriff und Ausführung mit getrennten
+Rechten. Nachweise: `PrintApiController`, `Version20260919173000`,
+`PrintJobTest`, `HttpPrintTransportTest` und
+`docs/technical/print-integration.md`.
+
+Standort-/Arbeitsplatz-Routing, herstellerspezifische Adapter, automatische
+Worker-Ausführung und UI fehlen weiterhin; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-091
 - Referenz: https://www.coglas.com/hardware-schnittstelle/
-

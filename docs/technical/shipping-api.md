@@ -44,6 +44,7 @@ authentifizierten API-Identität.
 ## Grenzen
 
 Die API kann eine Labelreferenz entweder manuell registrieren oder über die
-generische Carrier-Integration erzeugen. Druckauftrag,
+generische Carrier-Integration erzeugen. Die Referenz lässt sich anschließend
+über die Drucker-Integration als idempotenter Print-Job ausgeben.
 Mehrpaketsendung, Adressvalidierung, Zollinformationen und ausgehende
 Status-Webhooks folgen in späteren Slices.

@@ -105,6 +105,12 @@ services:
     WebWMS\Integration\Domain\CarrierTransport:
         alias: WebWMS\Integration\Infrastructure\Transport\HttpCarrierTransport
 
+    WebWMS\Integration\Domain\PrintRepository:
+        alias: WebWMS\Integration\Infrastructure\Persistence\DbalPrintRepository
+
+    WebWMS\Integration\Domain\PrintTransport:
+        alias: WebWMS\Integration\Infrastructure\Transport\HttpPrintTransport
+
     WebWMS\Integration\Domain\CredentialProvider:
         alias: WebWMS\Integration\Infrastructure\Security\EnvironmentCredentialProvider
 

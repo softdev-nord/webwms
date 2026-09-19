@@ -12,5 +12,4 @@ Alle 9 dokumentierten Funktionen des Bereichs Zusatzfunktionen werden fachlich k
 | [WEBWMS-071](../tickets/WEBWMS-071.md) | Dienstleistungen und VAS implementieren | Offen | Medium | 13 |
 | [WEBWMS-072](../tickets/WEBWMS-072.md) | Volltextsuche implementieren | Offen | High | 8 |
 | [WEBWMS-073](../tickets/WEBWMS-073.md) | Kameranutzung implementieren | Offen | Medium | 5 |
-| [WEBWMS-074](../tickets/WEBWMS-074.md) | Druckersteuerung implementieren | Offen | High | 8 |
-
+| [WEBWMS-074](../tickets/WEBWMS-074.md) | Druckersteuerung implementieren | Teilweise umgesetzt | High | 8 |

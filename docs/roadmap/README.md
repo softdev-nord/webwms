@@ -27,7 +27,7 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Backendfortschritt
 
-Nach der generischen Carrier-Integration besitzen 37 Tickets mit 277 Story Points einen substanziellen Backendkern. Weitere 13 Tickets mit 97 Story Points sind teilweise umgesetzt. Damit wurden 50 von 96 Tickets und 374 von 750 Story Points zumindest fachlich oder technisch begonnen.
+Nach der generischen Drucker-Integration besitzen 38 Tickets mit 285 Story Points einen substanziellen Backendkern. Weitere 14 Tickets mit 105 Story Points sind teilweise umgesetzt. Damit wurden 52 von 96 Tickets und 390 von 750 Story Points zumindest fachlich oder technisch begonnen.
 
 ## Ergänzende Roadmap-Dokumente
 

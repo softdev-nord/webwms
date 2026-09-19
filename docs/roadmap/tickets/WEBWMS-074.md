@@ -2,7 +2,7 @@
 id: WEBWMS-074
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Offen
+status: Teilweise umgesetzt
 priority: High
 story_points: 8
 component: "Zusatzfunktionen"
@@ -44,12 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-PLATFORM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Teilweise umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Der Druckkern aus `WEBWMS-091` stellt Drucker, idempotente Druckaufträge,
+Ausführung, Retry und Auditdaten bereit. Standort-, Arbeitsplatz- und
+prozessabhängige Routingregeln fehlen weiterhin.
 
 ## Quelle
 
 - Feature: CG-074
 - Referenz: https://www.coglas.com/funktionen/
-
