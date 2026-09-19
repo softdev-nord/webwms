@@ -52,8 +52,20 @@ final readonly class PrintGateway
     ): PrintJob {
         $this->repository->printer($tenantId, $printerId, true);
         $job = new PrintJob(
-            Uuid::v7()->toRfc4122(), $tenantId, $printerId, $documentType, $documentReference,
-            mb_strtoupper($format), $copies, $requestId, PrintJob::STATUS_QUEUED, 0, null, null, $actorId, $at,
+            Uuid::v7()->toRfc4122(),
+            $tenantId,
+            $printerId,
+            $documentType,
+            $documentReference,
+            mb_strtoupper($format),
+            $copies,
+            $requestId,
+            PrintJob::STATUS_QUEUED,
+            0,
+            null,
+            null,
+            $actorId,
+            $at,
         );
 
         return $this->repository->addJob($job);
@@ -72,6 +84,7 @@ final readonly class PrintGateway
             $message = trim($exception->getMessage());
             $job->fail($message === '' ? $exception::class : $message);
             $this->repository->saveJob($job);
+
             throw $exception;
         }
         $this->repository->saveJob($job);

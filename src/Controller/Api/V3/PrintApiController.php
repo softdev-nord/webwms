@@ -39,9 +39,13 @@ final class PrintApiController extends AbstractController
     {
         $payload = $this->payload($request);
         $printer = $this->gateway->registerPrinter(
-            $this->user()->tenantId(), $this->string($payload, 'name'), $this->string($payload, 'endpointUrl'),
-            $this->string($payload, 'credentialEnv'), $this->boolean($payload, 'active', true),
-            $this->user()->actorId(), new DateTimeImmutable(),
+            $this->user()->tenantId(),
+            $this->string($payload, 'name'),
+            $this->string($payload, 'endpointUrl'),
+            $this->string($payload, 'credentialEnv'),
+            $this->boolean($payload, 'active', true),
+            $this->user()->actorId(),
+            new DateTimeImmutable(),
         );
 
         return new JsonResponse(['data' => ['id' => $printer->id, 'name' => $printer->name, 'active' => $printer->active]], Response::HTTP_CREATED);
@@ -72,9 +76,15 @@ final class PrintApiController extends AbstractController
     {
         $payload = $this->payload($request);
         $job = $this->gateway->queue(
-            $this->user()->tenantId(), $this->string($payload, 'printerId'), $this->string($payload, 'documentType'),
-            $this->string($payload, 'documentReference'), $this->string($payload, 'format'), $this->integer($payload, 'copies', 1),
-            $this->string($payload, 'requestId'), $this->user()->actorId(), new DateTimeImmutable(),
+            $this->user()->tenantId(),
+            $this->string($payload, 'printerId'),
+            $this->string($payload, 'documentType'),
+            $this->string($payload, 'documentReference'),
+            $this->string($payload, 'format'),
+            $this->integer($payload, 'copies', 1),
+            $this->string($payload, 'requestId'),
+            $this->user()->actorId(),
+            new DateTimeImmutable(),
         );
 
         return new JsonResponse(['data' => $this->queries->printJob($this->user()->tenantId(), $job->id)], Response::HTTP_CREATED);

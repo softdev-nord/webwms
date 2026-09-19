@@ -49,10 +49,15 @@ final class CarrierApiController extends AbstractController
     {
         $payload = $this->payload($request);
         $connection = ($this->register)(new RegisterCarrierConnectionCommand(
-            Uuid::v7()->toRfc4122(), $this->user()->tenantId(), $this->string($payload, 'name'),
-            $this->string($payload, 'carrierCode'), $this->string($payload, 'endpointUrl'),
-            $this->string($payload, 'credentialEnv'), $this->boolean($payload, 'active', true),
-            $this->user()->actorId(), new DateTimeImmutable(),
+            Uuid::v7()->toRfc4122(),
+            $this->user()->tenantId(),
+            $this->string($payload, 'name'),
+            $this->string($payload, 'carrierCode'),
+            $this->string($payload, 'endpointUrl'),
+            $this->string($payload, 'credentialEnv'),
+            $this->boolean($payload, 'active', true),
+            $this->user()->actorId(),
+            new DateTimeImmutable(),
         ));
 
         return new JsonResponse(['data' => ['id' => $connection->id, 'carrierCode' => $connection->carrierCode, 'active' => $connection->active]], Response::HTTP_CREATED);

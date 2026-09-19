@@ -14,8 +14,9 @@ use WebWMS\Integration\Domain\PrintRepository;
 
 final readonly class DbalPrintRepository implements PrintRepository
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function addPrinter(Printer $printer): void
@@ -56,6 +57,7 @@ final readonly class DbalPrintRepository implements PrintRepository
     public function addJob(PrintJob $job): PrintJob
     {
         $this->assertActor($job->tenantId, $job->createdBy);
+
         try {
             $this->connection->insert('wms_print_job', $this->jobData($job));
         } catch (UniqueConstraintViolationException) {
@@ -84,12 +86,20 @@ final readonly class DbalPrintRepository implements PrintRepository
         }
 
         return new PrintJob(
-            (string) $row['id'], (string) $row['tenant_id'], (string) $row['printer_id'],
-            (string) $row['document_type'], (string) $row['document_reference'], (string) $row['format'],
-            (int) $row['copies'], (string) $row['idempotency_key'], (string) $row['status'], (int) $row['attempts'],
+            (string) $row['id'],
+            (string) $row['tenant_id'],
+            (string) $row['printer_id'],
+            (string) $row['document_type'],
+            (string) $row['document_reference'],
+            (string) $row['format'],
+            (int) $row['copies'],
+            (string) $row['idempotency_key'],
+            (string) $row['status'],
+            (int) $row['attempts'],
             is_string($row['external_reference']) ? $row['external_reference'] : null,
             is_string($row['last_error']) ? $row['last_error'] : null,
-            (string) $row['created_by'], new DateTimeImmutable((string) $row['created_at']),
+            (string) $row['created_by'],
+            new DateTimeImmutable((string) $row['created_at']),
             is_string($row['completed_at']) ? new DateTimeImmutable($row['completed_at']) : null,
         );
     }
