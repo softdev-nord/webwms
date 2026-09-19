@@ -328,13 +328,18 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             function (Connection $connection) use ($release): OutboundOrderResult {
                 $order = $connection->fetchAssociative(
                     "SELECT id, order_number FROM wms_outbound_order WHERE id = :orderId "
-                    . "AND tenant_id = :tenantId AND status = 'imported' FOR UPDATE",
+                    . "AND tenant_id = :tenantId AND status IN ('created', 'imported') FOR UPDATE",
                     [
                         'orderId' => $release->orderId()->value(),
                         'tenantId' => $release->tenantId()->value(),
                     ],
                 );
-                if ($order === false || $connection->fetchOne(
+                if ($order === false) {
+                    throw new InventoryReferenceNotFoundException(
+                        'A created or imported outbound order must exist in the tenant.',
+                    );
+                }
+                if ($connection->fetchOne(
                     'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
                     [
                         'userId' => $release->releasedBy()->value(),
@@ -342,7 +347,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                     ],
                 ) === false) {
                     throw new InventoryReferenceNotFoundException(
-                        'An imported outbound order and releasing user must exist in the tenant.',
+                        'The releasing user must exist in the tenant.',
                     );
                 }
                 $items = $connection->fetchAllAssociative(
