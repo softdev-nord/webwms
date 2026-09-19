@@ -2,7 +2,7 @@
 id: WEBWMS-096
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Backend umgesetzt
+status: Teilweise umgesetzt
 priority: Highest
 story_points: 13
 component: "Integration & Technik"
@@ -44,15 +44,15 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Teilweise umgesetzt
 
 Eine persistente, transaktionale Outbox mit Pending-Abfrage und idempotenter Quittierung ist vorhanden. Der automatische Publisher beansprucht fällige Nachrichten konkurenzsicher und stellt sie als `PublishedIntegrationMessage` in einen persistenten Symfony-Messenger-Transport. Zielsysteme verwenden die unveränderte UUIDv7-Nachrichten-ID als Idempotenzschlüssel.
 
-Queue-Fehler erzeugen persistente Zustellversuche und exponentielle Wiederholungen. Nach fünf Fehlern folgt `dead_letter`; die API bietet Statusüberwachung und eine autorisierte, auditierte manuelle Wiederaufnahme.
+Queue-Fehler erzeugen persistente Zustellversuche und exponentielle Wiederholungen. Nach fünf Fehlern folgt `dead_letter`; API und V3-Frontend bieten Statusüberwachung sowie eine autorisierte, auditierte manuelle Wiederaufnahme.
 
-Nachweise: `OutboxPublisher`, `MessengerOutboxTransport`, `DbalOutboxRepository`, `PublishOutboxConsoleCommand`, `OutboxApiController`, `wms_integration_attempt`, Migration `Version20260919120000`, Unit-Tests sowie die technische und Anwenderdokumentation.
+Nachweise: `OutboxPublisher`, `MessengerOutboxTransport`, `DbalOutboxRepository`, `PublishOutboxConsoleCommand`, `OutboxApiController`, `V3OutboxController`, `wms_integration_attempt`, Migration `Version20260919120000`, Unit-Tests sowie die technische und Anwenderdokumentation.
 
-Konkrete Zieladapter, aggregierte Betriebsmetriken, Alarmierung, UI und vollständige Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+Weitere Zieladapter, aggregierte Betriebsmetriken, Alarmierung und vollständige Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 

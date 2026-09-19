@@ -139,4 +139,46 @@ final class ApiV3QueryServiceTest extends TestCase
 
         self::assertSame([], (new ApiV3QueryService($connection))->shipmentsAvailableForLoading('tenant-id'));
     }
+
+    public function testOutboxListIsRestrictedByTenantAndStatus(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAllAssociative')
+            ->with(
+                self::callback(static function (string $sql): bool {
+                    self::assertStringContainsString('tenant_id = :tenantId AND status = :status', $sql);
+
+                    return true;
+                }),
+                [
+                    'tenantId' => 'tenant-id',
+                    'status' => 'dead_letter',
+                    'cursorFilter' => null,
+                    'cursorValue' => '',
+                ],
+            )
+            ->willReturn([]);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->outboxMessages(
+            'tenant-id',
+            'dead_letter',
+            50,
+            null,
+        ));
+    }
+
+    public function testOutboxDetailIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAssociative')
+            ->with(
+                self::isType('string'),
+                ['messageId' => 'message-id', 'tenantId' => 'tenant-id'],
+            )
+            ->willReturn(false);
+
+        self::assertNull((new ApiV3QueryService($connection))->outboxMessage('tenant-id', 'message-id'));
+    }
 }

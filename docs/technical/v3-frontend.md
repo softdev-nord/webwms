@@ -16,6 +16,7 @@ Der Slice umfasst:
 - `/v3/packing`: Paketbildung und Abschluss vollständig gepackter Aufträge
 - `/v3/shipping`: Sendung, Label/Tracking, Druckwarteschlange und direkte Übergabe
 - `/v3/loading`: Tour-/Fahrzeugmanifest, kontrollierte Verladung und gemeinsamer Abschluss
+- `/v3/integration/outbox`: Statusüberwachung, Pull-Quittierung und Dead-Letter-Retry
 - `/v3/administration`: Benutzer, Rollen, Berechtigungen und API-Clients
 - `webwms:v3:demo-bootstrap`: reproduzierbare lokale Beispieldaten
 

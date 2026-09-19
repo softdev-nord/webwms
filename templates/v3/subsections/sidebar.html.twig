@@ -84,6 +84,12 @@
                     </li>
                 {% endif %}
 
+                {% if is_granted('integration.outbox.read') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('v3_outbox_index') }}">Integrations-Outbox</a>
+                    </li>
+                {% endif %}
+
                 {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('v3_administration_index') }}">Administration</a>

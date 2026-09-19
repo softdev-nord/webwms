@@ -87,6 +87,11 @@ UUIDv7. Über `status` können auch `processing`, `published`, `dead_letter` ode
 Mandant und ausführender Benutzer stammen ausschließlich aus der
 authentifizierten API-Identität.
 
+Das serverseitige V3-Frontend stellt dieselben tenantbezogenen Operationen
+unter `/v3/integration/outbox` bereit. Berechtigte Benutzer können Nachrichten
+nach Status filtern, Payload und Zustellfehler prüfen, offene Pull-Nachrichten
+quittieren und Dead Letters nach Behebung der Ursache erneut einreihen.
+
 ## Grenzen
 
 Der Slice stellt generische Ereignisse zuverlässig in die interne Queue und

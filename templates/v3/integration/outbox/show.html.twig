@@ -1,0 +1,72 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex flex-wrap justify-content-between gap-3 mb-4">
+		<div>
+			<a href="{{ path('v3_outbox_index', {status: message.status}) }}" class="text-decoration-none">← Integrations-Outbox</a>
+			<h1 class="h3 mt-2 mb-1">{{ message.event_name }}</h1>
+			<code>{{ message.id }}</code>
+		</div>
+		<span class="badge bg-secondary align-self-start fs-6">{{ message.status }}</span>
+	</div>
+
+	<div class="row g-4 mb-4">
+		<div class="col-lg-5">
+			<div class="card border-0 shadow-sm h-100">
+				<div class="card-header">
+					<h2 class="h5 mb-0">Zustellung</h2>
+				</div>
+				<div class="card-body">
+					<dl class="row mb-0">
+						<dt class="col-sm-5">Aggregat</dt>
+						<dd class="col-sm-7">{{ message.aggregate_type }}</dd>
+						<dt class="col-sm-5">Aggregat-ID</dt>
+						<dd class="col-sm-7"><code>{{ message.aggregate_id }}</code></dd>
+						<dt class="col-sm-5">Versuche</dt>
+						<dd class="col-sm-7">{{ message.attempt_count }}</dd>
+						<dt class="col-sm-5">Entstanden</dt>
+						<dd class="col-sm-7">{{ message.occurred_at }}</dd>
+						<dt class="col-sm-5">Nächster Versuch</dt>
+						<dd class="col-sm-7">{{ message.next_attempt_at ?: '–' }}</dd>
+						<dt class="col-sm-5">Veröffentlicht</dt>
+						<dd class="col-sm-7">{{ message.published_at ?: '–' }}</dd>
+						<dt class="col-sm-5">Quittiert</dt>
+						<dd class="col-sm-7">{{ message.acknowledged_at ?: '–' }}</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-7">
+			<div class="card border-0 shadow-sm h-100">
+				<div class="card-header">
+					<h2 class="h5 mb-0">Payload</h2>
+				</div>
+				<div class="card-body">
+					<pre class="bg-light border rounded p-3 mb-0"><code>{{ message.payload|json_encode }}</code></pre>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% if message.last_error %}
+		<div class="alert alert-danger">
+			<strong>Letzter Fehler:</strong> {{ message.last_error }}
+		</div>
+	{% endif %}
+
+	<div class="d-flex gap-2">
+		{% if message.status == 'dead_letter' and is_granted('integration.outbox.retry') %}
+			<form method="post" action="{{ path('v3_outbox_retry', {messageId: message.id}) }}">
+				<input type="hidden" name="_token" value="{{ csrf_token('v3_outbox_retry_' ~ message.id) }}">
+				<button class="btn btn-primary">Erneut einreihen</button>
+			</form>
+		{% endif %}
+
+		{% if message.status == 'pending' and is_granted('integration.outbox.acknowledge') %}
+			<form method="post" action="{{ path('v3_outbox_acknowledge', {messageId: message.id}) }}">
+				<input type="hidden" name="_token" value="{{ csrf_token('v3_outbox_acknowledge_' ~ message.id) }}">
+				<button class="btn btn-outline-success">Manuell quittieren</button>
+			</form>
+		{% endif %}
+	</div>
+{% endblock %}
