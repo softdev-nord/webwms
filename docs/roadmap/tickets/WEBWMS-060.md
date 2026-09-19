@@ -46,10 +46,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 **Status:** Backend umgesetzt
 
-`LoadingManifest` mit Tour und Fahrzeug. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`LoadingManifest` bündelt etikettierte Sendungen mit Tour- und Fahrzeugreferenz. Über `POST /api/v3/loading-manifests` kann diese Gruppierung mandantengebunden erzeugt und über den Leseendpunkt als Tourfortschritt abgerufen werden.
+
+Nachweise: `LoadingApiController`, `ApiV3QueryService::loadingManifest()`, `CreateLoadingManifestHandler`, `LoadingManifest`, `DbalInventoryRepository::saveLoadingManifest()`, `LoadingManifestTest` und `docs/technical/loading-api.md`.
+
+Eigenständige Tourstammdaten, Stoppreihenfolge, UI und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-060
 - Referenz: https://www.coglas.com/versand/
-

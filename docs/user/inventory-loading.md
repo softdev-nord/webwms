@@ -24,3 +24,6 @@ der Übergabe protokolliert.
 Dieser Slice unterstützt noch kein Öffnen oder Stornieren abgeschlossener
 Manifeste. Fehler müssen deshalb vor dem Abschluss der Ladeliste korrigiert
 werden.
+
+Für Integrationen steht der vollständige Ablauf auch über die
+[API v3](loading-api.md) zur Verfügung.

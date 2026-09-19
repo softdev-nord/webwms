@@ -14,6 +14,24 @@ use WebWMS\Inventory\Domain\LoadingManifest;
 
 final class LoadingManifestTest extends TestCase
 {
+    public function testItNormalizesManifestData(): void
+    {
+        $manifest = new LoadingManifest(
+            new InventoryId('018f6b7f-75d2-7c4e-8c33-31f91b1cf460'),
+            new TenantId('018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8'),
+            ' man-1 ',
+            ' TOUR-1 ',
+            ' TRUCK-1 ',
+            [new InventoryId('018f6b7f-75d2-7c4e-8c33-31f91b1cf451')],
+            new UserId('018f6b7f-75d2-7c4e-8c33-31f91b1cf302'),
+            new DateTimeImmutable(),
+        );
+
+        self::assertSame('MAN-1', $manifest->code());
+        self::assertSame('TOUR-1', $manifest->tourReference());
+        self::assertSame('TRUCK-1', $manifest->vehicleReference());
+    }
+
     public function testItRejectsDuplicateShipments(): void
     {
         $this->expectException(InvalidArgumentException::class);

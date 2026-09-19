@@ -27,7 +27,7 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Backendfortschritt
 
-Nach der vertikalen Versandprozess-Kette besitzen 32 Tickets mit 217 Story Points einen substanziellen Backendkern. Weitere 14 Tickets mit 110 Story Points sind teilweise umgesetzt. Damit wurden 46 von 96 Tickets und 327 von 750 Story Points zumindest fachlich oder technisch begonnen.
+Nach der vertikalen Verladeprozess-Kette besitzen 32 Tickets mit 217 Story Points einen substanziellen Backendkern. Weitere 14 Tickets mit 110 Story Points sind teilweise umgesetzt. Damit wurden 46 von 96 Tickets und 327 von 750 Story Points zumindest fachlich oder technisch begonnen.
 
 ## Ergänzende Roadmap-Dokumente
 

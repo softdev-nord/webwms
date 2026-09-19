@@ -209,4 +209,28 @@ final readonly class ApiV3QueryService
 
         return $shipment === false ? null : $shipment;
     }
+
+    /** @return array<string, mixed>|null */
+    public function loadingManifest(string $tenantId, string $manifestId): ?array
+    {
+        $manifest = $this->connection->fetchAssociative(
+            'SELECT id, code, tour_reference, vehicle_reference, status, created_by, '
+            . 'created_at, updated_at, completed_by, completed_at '
+            . 'FROM wms_loading_manifest WHERE id = :manifestId AND tenant_id = :tenantId',
+            ['manifestId' => $manifestId, 'tenantId' => $tenantId],
+        );
+        if ($manifest === false) {
+            return null;
+        }
+        $manifest['shipments'] = $this->connection->fetchAllAssociative(
+            'SELECT ms.shipment_id, s.shipment_number, s.carrier, s.service, s.tracking_number, '
+            . 'ms.status, ms.loaded_by, ms.loaded_at '
+            . 'FROM wms_loading_manifest_shipment ms '
+            . 'INNER JOIN wms_shipment s ON s.id = ms.shipment_id '
+            . 'WHERE ms.manifest_id = :manifestId ORDER BY s.shipment_number, s.id',
+            ['manifestId' => $manifestId],
+        );
+
+        return $manifest;
+    }
 }

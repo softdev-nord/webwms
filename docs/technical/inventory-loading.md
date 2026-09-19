@@ -33,3 +33,7 @@ der Manifestcode dient als Übergabereferenz.
 
 Routenoptimierung, Stoppreihenfolge, Kapazitätsberechnung, Gefahrguttrennung,
 CMR-Frachtbrief, Druckausgabe und Telematik sind noch nicht enthalten.
+
+Die API-v3-Anbindung ist unter
+[Ladelisten und Verladung über API v3](loading-api.md) dokumentiert. Sie nutzt
+das vorhandene Schema ohne zusätzliche Migration.

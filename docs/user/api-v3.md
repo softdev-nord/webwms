@@ -39,4 +39,5 @@ Fehler werden als JSON mit HTTP-Status und einer kurzen Beschreibung zurückgege
 
 Die weiterführenden Abläufe sind unter [Kundenaufträge](outbound-order-api.md),
 [Kommissionierung](picking-api.md), [Packprozess](packing-api.md) und
-[Versandprozess](shipping-api.md) beschrieben.
+[Versandprozess](shipping-api.md) sowie unter
+[Ladelisten und Verladung](loading-api.md) beschrieben.

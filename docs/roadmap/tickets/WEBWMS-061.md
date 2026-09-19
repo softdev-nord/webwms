@@ -46,10 +46,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 **Status:** Backend umgesetzt
 
-Verladebestätigung und Tourabgleich im Manifest. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Der Endpunkt `POST /api/v3/loading-manifests/{id}/shipments/{shipmentId}/loading` bestätigt eine Sendung nur dann, wenn sie als offene Position genau diesem Manifest, seiner Tour und seinem Mandanten zugeordnet ist. Benutzer und Zeitpunkt werden je Position gespeichert; doppelte Bestätigungen werden verhindert.
+
+Nachweise: `LoadingApiController::confirm()`, `ConfirmShipmentLoadingHandler`, `ShipmentLoading`, `DbalInventoryRepository::confirmShipmentLoading()` und `docs/user/loading-api.md`.
+
+Scanner-UI und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-061
 - Referenz: https://www.coglas.com/versand/
-

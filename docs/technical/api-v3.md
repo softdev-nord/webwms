@@ -40,6 +40,10 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `GET` | `/api/v3/shipments/{id}` | `fulfillment.ship.read` | Sendung und Trackingstatus lesen |
 | `POST` | `/api/v3/shipments/{id}/label` | `fulfillment.ship.label` | Labelreferenz und Tracking registrieren |
 | `POST` | `/api/v3/shipments/{id}/dispatch` | `fulfillment.ship.dispatch` | Carrier-Übergabe bestätigen |
+| `POST` | `/api/v3/loading-manifests` | `fulfillment.loading.write` | Lademanifest erzeugen |
+| `GET` | `/api/v3/loading-manifests/{id}` | `fulfillment.loading.read` | Ladeliste und Fortschritt lesen |
+| `POST` | `/api/v3/loading-manifests/{id}/shipments/{shipmentId}/loading` | `fulfillment.loading.execute` | Verladung bestätigen |
+| `POST` | `/api/v3/loading-manifests/{id}/complete` | `fulfillment.loading.execute` | Manifest und Übergabe abschließen |
 
 Listen akzeptieren `limit` von 1 bis 100. Artikel und Bestände unterstützen einen opaken `cursor`; der Folgewert steht in `meta.nextCursor`. Bestände können mit `warehouseId` eingeschränkt werden.
 

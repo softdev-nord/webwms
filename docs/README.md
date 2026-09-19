@@ -30,6 +30,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Picklisten und Pickaufträge über API v3](technical/picking-api.md)
 - [Packprozess über API v3](technical/packing-api.md)
 - [Versandprozess über API v3](technical/shipping-api.md)
+- [Ladelisten und Verladung über API v3](technical/loading-api.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -57,6 +58,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Kommissionierung über API v3 durchführen](user/picking-api.md)
 - [Packprozess über API v3 durchführen](user/packing-api.md)
 - [Versandprozess über API v3 durchführen](user/shipping-api.md)
+- [Ladelisten über API v3 bearbeiten](user/loading-api.md)
 
 ## Verbindliche Dokumentationsregel
 

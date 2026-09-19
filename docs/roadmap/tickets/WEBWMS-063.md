@@ -46,10 +46,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 **Status:** Backend umgesetzt
 
-Manifestpositionen bilden die persistente Ladeliste. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Manifestpositionen bilden die persistente Ladeliste. `GET /api/v3/loading-manifests/{id}` stellt Sendungsnummer, Trackingnummer, Carrier, Service, Ladezustand und Auditdaten standardisiert bereit. Erstellung, Einzelbestätigung und vollständiger Abschluss sind über getrennte Berechtigungen geschützt.
+
+Nachweise: `LoadingApiController`, `ApiV3QueryService::loadingManifest()`, `LoadingManifest`, Migration `Version20260917143000` sowie die technische und fachliche Dokumentation.
+
+Druckausgabe, individuelle Layouts, UI und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-063
 - Referenz: https://www.coglas.com/funktionen/
-
