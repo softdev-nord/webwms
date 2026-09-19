@@ -233,4 +233,49 @@ final readonly class ApiV3QueryService
 
         return $manifest;
     }
+
+    /** @return list<array<string, mixed>> */
+    public function pendingOutboxMessages(string $tenantId, int $limit, ?string $cursor): array
+    {
+        $messages = $this->connection->fetchAllAssociative(
+            'SELECT id, event_name, aggregate_type, aggregate_id, payload, occurred_at, created_by '
+            . "FROM wms_integration_outbox WHERE tenant_id = :tenantId AND status = 'pending' "
+            . 'AND (:cursorFilter IS NULL OR id > :cursorValue) ORDER BY id LIMIT ' . $limit,
+            ['tenantId' => $tenantId, 'cursorFilter' => $cursor, 'cursorValue' => $cursor ?? ''],
+        );
+
+        return array_map($this->decodeOutboxPayload(...), $messages);
+    }
+
+    /** @return array<string, mixed>|null */
+    public function outboxMessage(string $tenantId, string $messageId): ?array
+    {
+        $message = $this->connection->fetchAssociative(
+            'SELECT id, event_name, aggregate_type, aggregate_id, payload, status, occurred_at, '
+            . 'created_by, acknowledged_by, acknowledged_at '
+            . 'FROM wms_integration_outbox WHERE id = :messageId AND tenant_id = :tenantId',
+            ['messageId' => $messageId, 'tenantId' => $tenantId],
+        );
+
+        return $message === false ? null : $this->decodeOutboxPayload($message);
+    }
+
+    /**
+     * @param array<string, mixed> $message
+     *
+     * @return array<string, mixed>
+     */
+    private function decodeOutboxPayload(array $message): array
+    {
+        if (!is_string($message['payload'] ?? null)) {
+            throw new \LogicException('The outbox payload projection is invalid.');
+        }
+        $payload = json_decode($message['payload'], true, 512, JSON_THROW_ON_ERROR);
+        if (!is_array($payload)) {
+            throw new \LogicException('The outbox payload must decode to an object.');
+        }
+        $message['payload'] = $payload;
+
+        return $message;
+    }
 }

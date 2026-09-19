@@ -41,3 +41,6 @@ Die weiterführenden Abläufe sind unter [Kundenaufträge](outbound-order-api.md
 [Kommissionierung](picking-api.md), [Packprozess](packing-api.md) und
 [Versandprozess](shipping-api.md) sowie unter
 [Ladelisten und Verladung](loading-api.md) beschrieben.
+
+Ausgehende Statusänderungen können über die
+[Integrations-Outbox](integration-outbox.md) zuverlässig übernommen werden.

@@ -61,6 +61,8 @@ services:
             - '../src/Security/V3/SecurityUser.php'
             - '../src/Security/V3/TenantPermissionUser.php'
             - '../src/Integration/Infrastructure/Api/ApiClientUser.php'
+            - '../src/Integration/Domain/'
+            - '../src/Integration/Application/*Command.php'
             - '../src/Inventory/Domain/'
             - '../src/Inventory/Application/*Command.php'
 
@@ -81,6 +83,9 @@ services:
 
     WebWMS\Inventory\Domain\InventoryRepository:
         alias: WebWMS\Inventory\Infrastructure\Persistence\DbalInventoryRepository
+
+    WebWMS\Integration\Domain\OutboxRepository:
+        alias: WebWMS\Integration\Infrastructure\Persistence\DbalOutboxRepository
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class

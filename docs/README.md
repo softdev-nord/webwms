@@ -31,6 +31,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Packprozess über API v3](technical/packing-api.md)
 - [Versandprozess über API v3](technical/shipping-api.md)
 - [Ladelisten und Verladung über API v3](technical/loading-api.md)
+- [Statusrückmeldung und Integrations-Outbox](technical/integration-outbox.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -59,6 +60,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Packprozess über API v3 durchführen](user/packing-api.md)
 - [Versandprozess über API v3 durchführen](user/shipping-api.md)
 - [Ladelisten über API v3 bearbeiten](user/loading-api.md)
+- [Statusmeldungen über die Outbox übernehmen](user/integration-outbox.md)
 
 ## Verbindliche Dokumentationsregel
 

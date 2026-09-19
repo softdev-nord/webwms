@@ -2,7 +2,7 @@
 id: WEBWMS-065
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Offen
+status: Backend umgesetzt
 priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,12 +44,15 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Backend umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Pick-, Pack-, Versand-, Tracking- und Verladeübergänge schreiben innerhalb ihrer Fachtransaktion eine mandantengebundene `IntegrationStatusEvent` in `wms_integration_outbox`. Offene Meldungen können über `GET /api/v3/outbox` cursorbasiert gelesen und nach erfolgreicher Übernahme idempotent quittiert werden.
+
+Nachweise: `IntegrationStatusEvent`, `OutboxRepository`, `DbalOutboxRepository`, `OutboxApiController`, die transaktionalen Aufrufe in `DbalInventoryRepository`, Migration `Version20260919100000`, Unit-Tests sowie `docs/technical/integration-outbox.md` und `docs/user/integration-outbox.md`.
+
+Konkrete ERP-/Shop-Adapter, Push-Zustellung, UI und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-065
 - Referenz: https://www.coglas.com/warenausgang/
-

@@ -20,4 +20,4 @@ Alle 17 dokumentierten Funktionen des Bereichs Warenausgang & Versand werden fac
 | [WEBWMS-062](../tickets/WEBWMS-062.md) | Gewichtsrestriktionen implementieren | Offen | Medium | 5 |
 | [WEBWMS-063](../tickets/WEBWMS-063.md) | Ladelisten implementieren | Backend umgesetzt | High | 2 |
 | [WEBWMS-064](../tickets/WEBWMS-064.md) | CMR-Frachtbrief implementieren | Offen | Medium | 5 |
-| [WEBWMS-065](../tickets/WEBWMS-065.md) | Statusrückmeldung implementieren | Offen | Highest | 8 |
+| [WEBWMS-065](../tickets/WEBWMS-065.md) | Statusrückmeldung implementieren | Backend umgesetzt | Highest | 8 |

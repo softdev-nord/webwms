@@ -7,6 +7,9 @@ namespace WebWMS\Inventory\Infrastructure\Persistence;
 use DateInterval;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Uid\Uuid;
+use WebWMS\Integration\Domain\IntegrationStatusEvent;
+use WebWMS\Integration\Domain\OutboxRepository;
 use WebWMS\Inventory\Domain\AllocationTransitionType;
 use WebWMS\Inventory\Domain\CycleCountExecution;
 use WebWMS\Inventory\Domain\CycleCountPlan;
@@ -75,7 +78,8 @@ use WebWMS\Inventory\Domain\Warehouse;
 final readonly class DbalInventoryRepository implements InventoryRepository
 {
     public function __construct(
-        private Connection $connection
+        private Connection $connection,
+        private OutboxRepository $outbox
     ) {
     }
 
@@ -615,6 +619,20 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             );
             $listStatus = $remaining === 0 ? 'completed' : 'in_progress';
             $connection->update('wms_pick_list', ['status' => $listStatus, 'updated_at' => $confirmation->confirmedAt()->format('Y-m-d H:i:s.u')], ['id' => $task['pick_list_id']]);
+            $this->recordStatus(
+                $confirmation->tenantId()->value(),
+                'fulfillment.pick.updated',
+                'pick_list',
+                (string) $task['pick_list_id'],
+                [
+                    'pickTaskId' => $confirmation->taskId()->value(),
+                    'pickTaskStatus' => $confirmation->outcome()->value,
+                    'pickListStatus' => $listStatus,
+                    'reservationStatus' => $fulfillment->reservationStatus,
+                ],
+                $confirmation->confirmedBy()->value(),
+                $confirmation->confirmedAt(),
+            );
 
             return new PickConfirmationResult($confirmation->outcome()->value, $listStatus, $fulfillment->reservationStatus);
         });
@@ -695,6 +713,19 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 throw new InventoryReferenceNotFoundException('At least one sealed package is required.');
             }
             $connection->update('wms_packing_order', ['status' => 'completed', 'completed_by' => $completion->completedBy()->value(), 'completed_at' => $completion->completedAt()->format('Y-m-d H:i:s.u'), 'updated_at' => $completion->completedAt()->format('Y-m-d H:i:s.u')], ['id' => $completion->packingOrderId()->value()]);
+            $this->recordStatus(
+                $completion->tenantId()->value(),
+                'fulfillment.packing.completed',
+                'packing_order',
+                $completion->packingOrderId()->value(),
+                [
+                    'status' => 'completed',
+                    'packageCount' => (int) $summary['package_count'],
+                    'totalWeightGrams' => (int) $summary['total_weight'],
+                ],
+                $completion->completedBy()->value(),
+                $completion->completedAt(),
+            );
 
             return new PackingResult('completed', (int) $summary['package_count'], (int) $summary['total_weight']);
         });
@@ -739,6 +770,15 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 'label_registered_at' => $label->registeredAt()->format('Y-m-d H:i:s.u'),
                 'updated_at' => $label->registeredAt()->format('Y-m-d H:i:s.u'),
             ], ['id' => $label->shipmentId()->value()]);
+            $this->recordStatus(
+                $label->tenantId()->value(),
+                'fulfillment.shipment.labelled',
+                'shipment',
+                $label->shipmentId()->value(),
+                ['status' => 'labelled', 'trackingNumber' => $label->trackingNumber(), 'labelReference' => $label->labelReference()],
+                $label->registeredBy()->value(),
+                $label->registeredAt(),
+            );
 
             return new ShipmentResult('labelled', $label->trackingNumber());
         });
@@ -763,6 +803,19 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 'dispatched_at' => $dispatch->dispatchedAt()->format('Y-m-d H:i:s.u'),
                 'updated_at' => $dispatch->dispatchedAt()->format('Y-m-d H:i:s.u'),
             ], ['id' => $dispatch->shipmentId()->value()]);
+            $this->recordStatus(
+                $dispatch->tenantId()->value(),
+                'fulfillment.shipment.dispatched',
+                'shipment',
+                $dispatch->shipmentId()->value(),
+                [
+                    'status' => 'dispatched',
+                    'trackingNumber' => (string) $shipment['tracking_number'],
+                    'handoverReference' => $dispatch->handoverReference(),
+                ],
+                $dispatch->dispatchedBy()->value(),
+                $dispatch->dispatchedAt(),
+            );
 
             return new ShipmentResult('dispatched', (string) $shipment['tracking_number']);
         });
@@ -858,6 +911,10 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($total === 0 || $loaded !== $total) {
                 throw new InsufficientAvailableStockException('Every manifest shipment must be loaded before completion.');
             }
+            $dispatchedShipments = $connection->fetchAllAssociative(
+                'SELECT s.id, s.tracking_number FROM wms_shipment s INNER JOIN wms_loading_manifest_shipment ms ON ms.shipment_id = s.id WHERE ms.manifest_id = :manifestId AND s.tenant_id = :tenantId',
+                ['manifestId' => $completion->manifestId()->value(), 'tenantId' => $completion->tenantId()->value()],
+            );
             $connection->executeStatement(
                 "UPDATE wms_shipment s INNER JOIN wms_loading_manifest_shipment ms ON ms.shipment_id = s.id SET s.status = 'dispatched', s.handover_reference = :reference, s.dispatched_by = :userId, s.dispatched_at = :occurredAt, s.updated_at = :occurredAt WHERE ms.manifest_id = :manifestId AND s.tenant_id = :tenantId AND s.status = 'labelled'",
                 [
@@ -871,6 +928,34 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 'completed_at' => $completion->completedAt()->format('Y-m-d H:i:s.u'),
                 'updated_at' => $completion->completedAt()->format('Y-m-d H:i:s.u'),
             ], ['id' => $completion->manifestId()->value()]);
+            foreach ($dispatchedShipments as $shipment) {
+                if (!is_string($shipment['id'] ?? null) || !is_string($shipment['tracking_number'] ?? null)) {
+                    throw new \LogicException('The dispatched shipment projection is invalid.');
+                }
+                $this->recordStatus(
+                    $completion->tenantId()->value(),
+                    'fulfillment.shipment.dispatched',
+                    'shipment',
+                    $shipment['id'],
+                    [
+                        'status' => 'dispatched',
+                        'trackingNumber' => $shipment['tracking_number'],
+                        'handoverReference' => (string) $manifest['code'],
+                        'loadingManifestId' => $completion->manifestId()->value(),
+                    ],
+                    $completion->completedBy()->value(),
+                    $completion->completedAt(),
+                );
+            }
+            $this->recordStatus(
+                $completion->tenantId()->value(),
+                'fulfillment.loading.completed',
+                'loading_manifest',
+                $completion->manifestId()->value(),
+                ['status' => 'completed', 'loadedShipments' => $loaded, 'totalShipments' => $total],
+                $completion->completedBy()->value(),
+                $completion->completedAt(),
+            );
 
             return new LoadingResult('completed', $loaded, $total);
         });
@@ -1940,5 +2025,27 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 'Product and storage location must exist in the posting tenant.',
             );
         }
+    }
+
+    /** @param array<string, bool|int|string|null> $payload */
+    private function recordStatus(
+        string $tenantId,
+        string $eventName,
+        string $aggregateType,
+        string $aggregateId,
+        array $payload,
+        string $createdBy,
+        DateTimeImmutable $occurredAt,
+    ): void {
+        $this->outbox->append(new IntegrationStatusEvent(
+            Uuid::v7()->toRfc4122(),
+            $tenantId,
+            $eventName,
+            $aggregateType,
+            $aggregateId,
+            $payload,
+            $createdBy,
+            $occurredAt,
+        ));
     }
 }
