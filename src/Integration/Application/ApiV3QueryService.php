@@ -39,7 +39,7 @@ final readonly class ApiV3QueryService
     public function stock(string $tenantId, ?string $warehouseId, int $limit, ?string $cursor): array
     {
         return $this->connection->fetchAllAssociative(
-            "SELECT CONCAT(b.product_id, '|', b.location_id, '|', b.stock_key) cursor, "
+            "SELECT CONCAT(b.product_id, '|', b.location_id, '|', b.stock_key) AS `cursor`, "
             . 'b.product_id, p.sku, b.location_id, l.code location_code, l.warehouse_id, '
             . 'b.stock_status, b.batch_number, b.serial_number, b.expires_at, b.quantity, '
             . "b.quantity - COALESCE((SELECT SUM(a.quantity) FROM wms_stock_allocation a WHERE a.tenant_id = b.tenant_id AND a.product_id = b.product_id AND a.location_id = b.location_id AND a.stock_key = b.stock_key AND a.status = 'active'), 0) available_quantity "
