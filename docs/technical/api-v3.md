@@ -45,6 +45,13 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `GET` | `/api/v3/shipments/{id}` | `fulfillment.ship.read` | Sendung und Trackingstatus lesen |
 | `POST` | `/api/v3/shipments/{id}/label` | `fulfillment.ship.label` | Labelreferenz und Tracking registrieren |
 | `POST` | `/api/v3/shipments/{id}/dispatch` | `fulfillment.ship.dispatch` | Carrier-Übergabe bestätigen |
+| `GET` | `/api/v3/carrier-connections` | `integration.carrier_connection.read` | Carrier-Verbindungen auflisten |
+| `POST` | `/api/v3/carrier-connections` | `integration.carrier_connection.write` | Carrier-Verbindung anlegen |
+| `PATCH` | `/api/v3/carrier-connections/{id}/status` | `integration.carrier_connection.write` | Verbindung aktivieren oder pausieren |
+| `GET` | `/api/v3/carriers/{code}/products` | `integration.carrier.read` | Carrierprodukte abrufen |
+| `POST` | `/api/v3/shipments/{id}/carrier-label` | `integration.carrier.execute` | Label und Tracking anfordern |
+| `POST` | `/api/v3/shipments/{id}/carrier-tracking` | `integration.carrier.execute` | Tracking synchronisieren |
+| `POST` | `/api/v3/loading-manifests/{id}/carrier-handover` | `integration.carrier.execute` | Manifest übergeben |
 | `POST` | `/api/v3/loading-manifests` | `fulfillment.loading.write` | Lademanifest erzeugen |
 | `GET` | `/api/v3/loading-manifests/{id}` | `fulfillment.loading.read` | Ladeliste und Fortschritt lesen |
 | `POST` | `/api/v3/loading-manifests/{id}/shipments/{shipmentId}/loading` | `fulfillment.loading.execute` | Verladung bestätigen |

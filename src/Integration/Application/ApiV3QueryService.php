@@ -321,6 +321,28 @@ final readonly class ApiV3QueryService
         return $message === false ? null : $this->decodeOutboxPayload($message);
     }
 
+    /** @return list<array<string, mixed>> */
+    public function carrierConnections(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, name, carrier_code, endpoint_url, credential_env, active, created_by, created_at, changed_by, changed_at '
+            . 'FROM wms_carrier_connection WHERE tenant_id = :tenantId ORDER BY carrier_code, name, id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function carrierConnection(string $tenantId, string $connectionId): ?array
+    {
+        $connection = $this->connection->fetchAssociative(
+            'SELECT id, name, carrier_code, endpoint_url, credential_env, active, created_by, created_at, changed_by, changed_at '
+            . 'FROM wms_carrier_connection WHERE id = :id AND tenant_id = :tenantId',
+            ['id' => $connectionId, 'tenantId' => $tenantId],
+        );
+
+        return $connection === false ? null : $connection;
+    }
+
     /**
      * @param array<string, mixed> $message
      *

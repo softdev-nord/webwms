@@ -50,7 +50,7 @@ Carrier und Service sind Bestandteil des `Shipment`-Modells und werden über `PO
 
 Nachweise: `ShippingApiController::create()`, `CreateShipmentHandler`, `Shipment`, `DbalInventoryRepository::saveShipment()`, `ShipmentTest` sowie `docs/technical/shipping-api.md` und `docs/user/shipping-api.md`.
 
-Versandregeln, Carrier-Stammdaten, UI und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+Carrier-Verbindungen und Produktabfrage sind über `WEBWMS-089` ergänzt. Versandregeln, lokale Carrier-Produktstammdaten, UI und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 

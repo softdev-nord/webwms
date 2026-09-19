@@ -43,7 +43,7 @@ authentifizierten API-Identität.
 
 ## Grenzen
 
-Die API registriert eine von einem Carrier gelieferte Labelreferenz, erzeugt
-aber noch keine Labeldatei. Carrier-Kommunikation, Druckauftrag,
+Die API kann eine Labelreferenz entweder manuell registrieren oder über die
+generische Carrier-Integration erzeugen. Druckauftrag,
 Mehrpaketsendung, Adressvalidierung, Zollinformationen und ausgehende
 Status-Webhooks folgen in späteren Slices.

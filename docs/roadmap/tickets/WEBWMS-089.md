@@ -2,7 +2,7 @@
 id: WEBWMS-089
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Offen
+status: Backend umgesetzt
 priority: Highest
 story_points: 13
 component: "Integration & Technik"
@@ -44,12 +44,19 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Backend umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mit `CarrierConnection`, `CarrierRequest`, `CarrierGateway` und dem generischen
+`HttpCarrierTransport` sind Carrierprodukte, Labelerzeugung, Tracking und
+Manifestübergabe mandantensicher angebunden. Credential-Referenzen statt Secrets,
+idempotente Requests, Auditdaten, granulare API-Rechte, Migration und Tests sind
+enthalten. Nachweise: `CarrierApiController`, `Version20260919160000`,
+`HttpCarrierTransportTest` und `docs/technical/carrier-integration.md`.
+
+Herstellerspezifische Adapter, Webhooks für proaktive Trackingereignisse,
+Labeldruck und UI fehlen weiterhin; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-089
 - Referenz: https://www.coglas.com/schnittstellen/
-

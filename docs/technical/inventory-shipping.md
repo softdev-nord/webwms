@@ -38,7 +38,7 @@ eindeutig; Trackingnummern sind pro Mandant und Carrier eindeutig.
 
 ## Bekannte Grenzen
 
-Carrier-API, Erzeugung und Speicherung der Labeldatei, Mehrpaketsendungen,
+Herstellerspezifische Carrier-Adapter, Speicherung der Labeldatei, Mehrpaketsendungen,
 Storno, Manifest/Ladeliste, Zustellstatus und ERP-Rückmeldung sind noch nicht
 Bestandteil dieses Slices. Der integrationsneutrale Kern stellt dafür stabile
 Referenzen und Zustände bereit.

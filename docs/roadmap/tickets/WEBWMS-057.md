@@ -50,7 +50,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 Nachweise: `ShippingApiController::registerLabel()`, `RegisterShipmentLabelHandler`, `ShipmentLabel`, `DbalInventoryRepository::registerShipmentLabel()` und `ShipmentTest`.
 
-Carrier-API, Erzeugung und Druck der Labeldatei, UI sowie vollständige API-Integrationstests fehlen noch; das Ticket ist deshalb nicht `Done`.
+Die generische Carrier-API erzeugt Label und Trackingdaten idempotent und registriert sie im Versandkern. Speicherung beziehungsweise Druck der Labeldatei, UI sowie vollständige API-Integrationstests fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 

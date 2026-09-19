@@ -99,6 +99,12 @@ services:
     WebWMS\Integration\Domain\ErpStatusTransport:
         alias: WebWMS\Integration\Infrastructure\Transport\HttpErpStatusTransport
 
+    WebWMS\Integration\Domain\CarrierConnectionRepository:
+        alias: WebWMS\Integration\Infrastructure\Persistence\DbalCarrierConnectionRepository
+
+    WebWMS\Integration\Domain\CarrierTransport:
+        alias: WebWMS\Integration\Infrastructure\Transport\HttpCarrierTransport
+
     WebWMS\Integration\Domain\CredentialProvider:
         alias: WebWMS\Integration\Infrastructure\Security\EnvironmentCredentialProvider
 
