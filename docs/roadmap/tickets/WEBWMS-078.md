@@ -2,7 +2,7 @@
 id: WEBWMS-078
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Backend umgesetzt
+status: Teilweise umgesetzt
 priority: Highest
 story_points: 8
 component: "Administration"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Teilweise umgesetzt
 
-`Role`, `PermissionKey`, `PermissionVoter`. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`Role`, `PermissionKey` und `PermissionVoter` bilden den fachlichen Kern. Die V3-Administration listet Rollen und erlaubt das Anlegen eigener Rollen aus einem kontrollierten Berechtigungskatalog. Bearbeitung bestehender Rollen, Schutz vor administrativem Lockout und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-078
 - Referenz: https://www.coglas.com/funktionen/
-

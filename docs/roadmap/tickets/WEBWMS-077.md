@@ -2,7 +2,7 @@
 id: WEBWMS-077
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Backend umgesetzt
+status: Teilweise umgesetzt
 priority: Highest
 story_points: 5
 component: "Administration"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Teilweise umgesetzt
 
-`UserAccount`, Status und Rollenzuordnung. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`UserAccount`, Status und Rollenzuordnung bilden den fachlichen Domain-, Application- und Persistenzkern. Die V3-Administration ermöglicht mandantenbezogenes Anlegen per E-Mail, Rollenzuordnung sowie Aktivierung und Deaktivierung; Selbstdeaktivierung ist gesperrt. Passwortwechsel, Einladungsprozess und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-077
 - Referenz: https://www.coglas.com/funktionen/
-

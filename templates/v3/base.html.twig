@@ -12,6 +12,7 @@
         {% if is_granted('fulfillment.pick.read') %}<li class="nav-item"><a class="nav-link" href="{{ path('v3_picking_index') }}">Picking</a></li>{% endif %}
         {% if is_granted('fulfillment.pack.read') %}<li class="nav-item"><a class="nav-link" href="{{ path('v3_packing_index') }}">Packen</a></li>{% endif %}
         {% if is_granted('fulfillment.ship.read') %}<li class="nav-item"><a class="nav-link" href="{{ path('v3_shipping_index') }}">Versand</a></li>{% endif %}
+        {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') %}<li class="nav-item"><a class="nav-link" href="{{ path('v3_administration_index') }}">Administration</a></li>{% endif %}
     </ul><span class="navbar-text me-3">{{ app.user.displayName }}</span><a class="btn btn-outline-light btn-sm" href="{{ path('app_v3_logout') }}">Abmelden</a></div>
 </div></nav>
 <main class="container-fluid px-lg-4 py-4">

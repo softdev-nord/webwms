@@ -7,6 +7,7 @@ namespace WebWMS\Administration\Application\Demo;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Uid\Uuid;
+use WebWMS\Administration\Application\Access\V3PermissionCatalog;
 use WebWMS\Administration\Domain\Access\PasswordHasher;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Site\SiteId;
@@ -36,24 +37,6 @@ final readonly class DemoBootstrapService
     public const ORDER_ITEM_ID = '99999999-9999-4999-8999-999999999999';
     public const PRINTER_ID = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
     public const EMAIL = 'admin@demo.webwms.local';
-
-    /** @var list<string> */
-    private const PERMISSIONS = [
-        'fulfillment.loading.execute', 'fulfillment.loading.read', 'fulfillment.loading.write',
-        'fulfillment.pack.execute', 'fulfillment.pack.read', 'fulfillment.pack.write',
-        'fulfillment.pick.assign', 'fulfillment.pick.execute', 'fulfillment.pick.read', 'fulfillment.pick.write',
-        'fulfillment.ship.dispatch', 'fulfillment.ship.label', 'fulfillment.ship.read', 'fulfillment.ship.write',
-        'integration.carrier.execute', 'integration.carrier.read',
-        'integration.carrier_connection.read', 'integration.carrier_connection.write',
-        'integration.erp_connection.read', 'integration.erp_connection.write',
-        'integration.outbox.acknowledge', 'integration.outbox.read', 'integration.outbox.retry',
-        'integration.print_job.execute', 'integration.print_job.read', 'integration.print_job.write',
-        'integration.printer.read', 'integration.printer.write',
-        'inventory.allocation.read', 'inventory.allocation.write', 'inventory.location.read',
-        'inventory.product.read', 'inventory.product.write', 'inventory.stock.movement.read',
-        'inventory.stock.read', 'inventory.stock.transfer',
-        'outbound.order.read', 'outbound.order.release', 'outbound.order.write',
-    ];
 
     public function __construct(
         private Connection $connection,
@@ -88,7 +71,7 @@ final readonly class DemoBootstrapService
                 'name' => 'Demo-Administrator', 'created_at' => $this->date($now), 'updated_at' => $this->date($now),
             ]);
         }
-        foreach (self::PERMISSIONS as $permission) {
+        foreach (V3PermissionCatalog::ALL as $permission) {
             if ($this->connection->fetchOne(
                 'SELECT 1 FROM wms_role_permission WHERE role_id = :roleId AND permission_key = :permission',
                 ['roleId' => self::ROLE_ID, 'permission' => $permission],

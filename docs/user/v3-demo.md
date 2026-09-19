@@ -31,5 +31,9 @@ Der zweite und jeder weitere Lauf verändert den bestehenden Benutzer und seinen
 8. Aus der abgeschlossenen Pickliste einen Packauftrag erzeugen, die Position in ein Paket übernehmen und den Packauftrag abschließen.
 9. Eine Sendung erzeugen, Demo-Tracking und Label-Referenz registrieren und das Label an den `Demo ZPL Drucker` senden.
 10. Die Übergabe mit einer Referenz bestätigen.
+11. Unter **Administration** eine eingeschränkte Rolle und einen Benutzer mit E-Mail-Anmeldung anlegen.
+12. Einen API-Client erzeugen und das nur einmal angezeigte Credential sicher kopieren.
 
 Der Bootstrap legt einen Demo-Mandanten, Standort, Administrator mit allen derzeitigen V3-Berechtigungen, ein Lager, zwei Lagerplätze, zwei Artikel, Anfangsbestände, einen offenen Beispielauftrag und einen Demo-ZPL-Drucker an. Der Drucker dient nur zum Testen der Warteschlange; eine Ausführung erfordert eine echte Druckeranbindung. Es werden keine Zugangsdaten im Repository gespeichert.
+
+API-Client-Secrets werden ausschließlich beim Erzeugen angezeigt. In der Datenbank wird nur ihr SHA-256-Hash gespeichert; ein verlorenes Secret muss durch einen neuen Client ersetzt werden.
