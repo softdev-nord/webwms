@@ -15,8 +15,9 @@ use WebWMS\Administration\Application\Demo\DemoBootstrapService;
 #[AsCommand(name: 'webwms:v3:demo-bootstrap', description: 'Creates an idempotent V3 demo tenant and stock data.')]
 final class BootstrapDemoConsoleCommand extends Command
 {
-    public function __construct(private readonly DemoBootstrapService $bootstrap)
-    {
+    public function __construct(
+        private readonly DemoBootstrapService $bootstrap
+    ) {
         parent::__construct();
     }
 

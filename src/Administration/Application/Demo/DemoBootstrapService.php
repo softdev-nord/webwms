@@ -111,8 +111,12 @@ final readonly class DemoBootstrapService
         $tenantId = new TenantId(self::TENANT_ID);
         if (!$this->exists('wms_warehouse', self::WAREHOUSE_ID)) {
             $this->inventory->saveWarehouse(new Warehouse(
-                new InventoryId(self::WAREHOUSE_ID), $tenantId, new SiteId(self::SITE_ID),
-                'DEMO-01', 'Demo-Lager', $now,
+                new InventoryId(self::WAREHOUSE_ID),
+                $tenantId,
+                new SiteId(self::SITE_ID),
+                'DEMO-01',
+                'Demo-Lager',
+                $now,
             ));
         }
         $this->createLocation($tenantId, self::LOCATION_A_ID, 'A-01-01', $now);
@@ -129,7 +133,11 @@ final readonly class DemoBootstrapService
     {
         if (!$this->exists('wms_storage_location', $id)) {
             $this->inventory->saveLocation(new StorageLocation(
-                new InventoryId($id), $tenantId, new InventoryId(self::WAREHOUSE_ID), $code, $now,
+                new InventoryId($id),
+                $tenantId,
+                new InventoryId(self::WAREHOUSE_ID),
+                $code,
+                $now,
             ));
         }
     }
@@ -150,8 +158,14 @@ final readonly class DemoBootstrapService
             return;
         }
         $this->inventory->post(new StockPosting(
-            new InventoryId(Uuid::v7()->toRfc4122()), $tenantId, new InventoryId($productId),
-            new InventoryId($locationId), $quantity, 'Demo-Anfangsbestand', new UserId(self::USER_ID), $now,
+            new InventoryId(Uuid::v7()->toRfc4122()),
+            $tenantId,
+            new InventoryId($productId),
+            new InventoryId($locationId),
+            $quantity,
+            'Demo-Anfangsbestand',
+            new UserId(self::USER_ID),
+            $now,
         ));
     }
 

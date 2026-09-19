@@ -8,8 +8,9 @@ use Doctrine\DBAL\Connection;
 
 final readonly class V3DashboardQueryService
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     /** @return array{tenant: string, products: int, warehouses: int, locations: int, stock: int, outboundOrders: int, pickLists: int, packingOrders: int, shipments: int} */
