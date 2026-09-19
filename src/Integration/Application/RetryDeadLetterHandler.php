@@ -8,8 +8,9 @@ use WebWMS\Integration\Domain\OutboxRepository;
 
 final readonly class RetryDeadLetterHandler
 {
-    public function __construct(private OutboxRepository $outbox)
-    {
+    public function __construct(
+        private OutboxRepository $outbox
+    ) {
     }
 
     public function __invoke(RetryDeadLetterCommand $command): void

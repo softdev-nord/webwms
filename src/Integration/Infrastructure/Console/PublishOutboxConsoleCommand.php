@@ -15,8 +15,9 @@ use WebWMS\Integration\Application\OutboxPublisher;
 #[AsCommand(name: 'webwms:outbox:publish', description: 'Publish due integration outbox messages to the async queue')]
 final class PublishOutboxConsoleCommand extends Command
 {
-    public function __construct(private readonly OutboxPublisher $publisher)
-    {
+    public function __construct(
+        private readonly OutboxPublisher $publisher
+    ) {
         parent::__construct();
     }
 

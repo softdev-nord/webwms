@@ -11,8 +11,9 @@ use WebWMS\Integration\Domain\OutboxTransport;
 
 final readonly class MessengerOutboxTransport implements OutboxTransport
 {
-    public function __construct(private MessageBusInterface $messageBus)
-    {
+    public function __construct(
+        private MessageBusInterface $messageBus
+    ) {
     }
 
     public function publish(OutboxMessage $message): void
