@@ -11,6 +11,14 @@ nicht über die WebWMS-API übertragen oder in der Datenbank gespeichert.
 
 ## Verbindung registrieren
 
+Im V3-Arbeitsbereich können berechtigte Benutzer unter
+`/v3/integration/erp-connections` Verbindungen anzeigen, anlegen, pausieren und
+erneut aktivieren. Die Detailansicht zeigt Endpunkt, Credential-Referenz und
+Auditinformationen. Der eigentliche Signaturschlüssel wird auch bei der Anlage
+über das Frontend weder übertragen noch gespeichert.
+
+Alternativ steht dieselbe Verwaltung über die API zur Verfügung:
+
 ```http
 POST /api/v3/erp-connections
 X-API-Key: CLIENT_UUID.SECRET
@@ -43,6 +51,10 @@ Content-Type: application/json
 
 Die Änderung wird mit Benutzer und Zeitpunkt protokolliert. Bei erneuter
 Aktivierung werden nur neu aus der Queue zugestellte Meldungen versendet.
+
+Für den V3-Arbeitsbereich werden die Berechtigungen
+`integration.erp_connection.read` und `integration.erp_connection.write`
+benötigt.
 
 ## Statusmeldung prüfen
 

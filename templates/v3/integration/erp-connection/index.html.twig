@@ -1,0 +1,54 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<div>
+			<h1 class="h3 mb-1">ERP-Verbindungen</h1>
+			<p class="text-muted mb-0">Statusmeldungen sicher an angebundene ERP-Systeme übertragen</p>
+		</div>
+		{% if is_granted('integration.erp_connection.write') %}
+			<a class="btn btn-primary" href="{{ path('v3_erp_connection_new') }}">ERP-Verbindung anlegen</a>
+		{% endif %}
+	</div>
+
+	<div class="card border-0 shadow-sm">
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Endpunkt</th>
+						<th>Credential-Referenz</th>
+						<th>Status</th>
+						<th>Geändert</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for connection in connections %}
+						<tr>
+							<td class="fw-semibold">{{ connection.name }}</td>
+							<td><code>{{ connection.endpoint_url }}</code></td>
+							<td><code>{{ connection.credential_env }}</code></td>
+							<td>
+								{% if connection.active %}
+									<span class="badge bg-success-subtle text-success">Aktiv</span>
+								{% else %}
+									<span class="badge bg-secondary-subtle text-secondary">Pausiert</span>
+								{% endif %}
+							</td>
+							<td>{{ connection.changed_at|default(connection.created_at) }}</td>
+							<td class="text-end">
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_erp_connection_show', {connectionId: connection.id}) }}">Öffnen</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6" class="text-center text-muted py-5">Noch keine ERP-Verbindungen vorhanden.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
