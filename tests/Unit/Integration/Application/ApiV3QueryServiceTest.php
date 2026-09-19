@@ -213,4 +213,36 @@ final class ApiV3QueryServiceTest extends TestCase
 
         self::assertNull((new ApiV3QueryService($connection))->erpConnection('tenant-id', 'connection-id'));
     }
+
+    public function testCarrierConnectionListIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAllAssociative')
+            ->with(
+                self::callback(static function (string $sql): bool {
+                    self::assertStringContainsString('WHERE tenant_id = :tenantId', $sql);
+
+                    return true;
+                }),
+                ['tenantId' => 'tenant-id'],
+            )
+            ->willReturn([]);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->carrierConnections('tenant-id'));
+    }
+
+    public function testCarrierConnectionDetailIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAssociative')
+            ->with(
+                self::isType('string'),
+                ['id' => 'connection-id', 'tenantId' => 'tenant-id'],
+            )
+            ->willReturn(false);
+
+        self::assertNull((new ApiV3QueryService($connection))->carrierConnection('tenant-id', 'connection-id'));
+    }
 }

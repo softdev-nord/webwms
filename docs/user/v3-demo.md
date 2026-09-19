@@ -34,8 +34,9 @@ Der zweite und jeder weitere Lauf verändert den bestehenden Benutzer und seinen
 11. Die Sendung als verladen bestätigen und anschließend das vollständige Manifest abschließen. Die Sendung wechselt dabei auf `dispatched`.
 12. Unter **Integrations-Outbox** die beim Pick-, Pack-, Versand- und Verladeprozess entstandenen Statusmeldungen nach Status filtern und ihre Payload öffnen.
 13. Unter **ERP-Verbindungen** eine Verbindung mit einer lokalen HTTPS-Test-URL und einer Credential-Umgebungsvariablen anlegen, anschließend pausieren und erneut aktivieren.
-14. Unter **Administration** eine eingeschränkte Rolle und einen Benutzer mit E-Mail-Anmeldung anlegen.
-15. Einen API-Client erzeugen und das nur einmal angezeigte Credential sicher kopieren.
+14. Unter **Carrier-Verbindungen** eine Verbindung für den in der Sendung verwendeten Carrier-Code anlegen, pausieren und erneut aktivieren. Mit einem kompatiblen HTTPS-Testadapter können zusätzlich Versandprodukte und die automatische Labelerzeugung geprüft werden.
+15. Unter **Administration** eine eingeschränkte Rolle und einen Benutzer mit E-Mail-Anmeldung anlegen.
+16. Einen API-Client erzeugen und das nur einmal angezeigte Credential sicher kopieren.
 
 Der Bootstrap legt einen Demo-Mandanten, Standort, Administrator mit allen derzeitigen V3-Berechtigungen, ein Lager, zwei Lagerplätze, zwei Artikel, Anfangsbestände, einen offenen Beispielauftrag und einen Demo-ZPL-Drucker an. Der Drucker dient nur zum Testen der Warteschlange; eine Ausführung erfordert eine echte Druckeranbindung. Es werden keine Zugangsdaten im Repository gespeichert.
 

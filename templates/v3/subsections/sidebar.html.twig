@@ -96,6 +96,12 @@
                     </li>
                 {% endif %}
 
+                {% if is_granted('integration.carrier_connection.read') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('v3_carrier_connection_index') }}">Carrier-Verbindungen</a>
+                    </li>
+                {% endif %}
+
                 {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('v3_administration_index') }}">Administration</a>

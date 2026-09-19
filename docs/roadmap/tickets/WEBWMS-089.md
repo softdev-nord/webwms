@@ -2,7 +2,7 @@
 id: WEBWMS-089
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Backend umgesetzt
+status: Teilweise umgesetzt
 priority: Highest
 story_points: 13
 component: "Integration & Technik"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Teilweise umgesetzt
 
 Mit `CarrierConnection`, `CarrierRequest`, `CarrierGateway` und dem generischen
 `HttpCarrierTransport` sind Carrierprodukte, Labelerzeugung, Tracking und
@@ -53,8 +53,16 @@ idempotente Requests, Auditdaten, granulare API-Rechte, Migration und Tests sind
 enthalten. Nachweise: `CarrierApiController`, `Version20260919160000`,
 `HttpCarrierTransportTest` und `docs/technical/carrier-integration.md`.
 
+Der V3-Arbeitsbereich ergänzt eine mandantengebundene Verbindungsverwaltung mit
+Detail- und Auditansicht, Statuswechseln und Live-Abruf der Versandprodukte.
+Vorbereitete Sendungen können Carrier-Labels idempotent anfordern und übernehmen;
+der vorhandene Druckworkflow verarbeitet die daraus resultierende Labelreferenz.
+Nachweise: `V3CarrierConnectionController`, `V3ShippingController` und die
+Templates unter `templates/v3/integration/carrier-connection`.
+
 Herstellerspezifische Adapter, Webhooks für proaktive Trackingereignisse,
-Labeldruck und UI fehlen weiterhin; das Ticket ist deshalb nicht `Done`.
+die Manifestübergabe im V3-Frontend und vollständige HTTP-/MariaDB-
+Integrationstests fehlen weiterhin; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 

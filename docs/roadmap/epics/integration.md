@@ -9,7 +9,7 @@ Alle 13 dokumentierten Funktionen des Bereichs Integration & Technik werden fach
 | [WEBWMS-086](../tickets/WEBWMS-086.md) | SAP IDoc implementieren | Offen | Medium | 13 |
 | [WEBWMS-087](../tickets/WEBWMS-087.md) | ERP-Integration implementieren | Teilweise umgesetzt | Highest | 13 |
 | [WEBWMS-088](../tickets/WEBWMS-088.md) | Shop- und Marktplatzintegration implementieren | Offen | High | 13 |
-| [WEBWMS-089](../tickets/WEBWMS-089.md) | Carrier-Integration implementieren | Backend umgesetzt | Highest | 13 |
+| [WEBWMS-089](../tickets/WEBWMS-089.md) | Carrier-Integration implementieren | Teilweise umgesetzt | Highest | 13 |
 | [WEBWMS-090](../tickets/WEBWMS-090.md) | Scanner und MDE implementieren | Offen | Highest | 8 |
 | [WEBWMS-091](../tickets/WEBWMS-091.md) | Drucker implementieren | Backend umgesetzt | Highest | 8 |
 | [WEBWMS-092](../tickets/WEBWMS-092.md) | Waagen und Volumenmessung implementieren | Offen | Medium | 8 |

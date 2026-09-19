@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\CarrierGateway;
 use WebWMS\Integration\Application\PrintGateway;
 use WebWMS\Inventory\Application\CreateShipmentCommand;
 use WebWMS\Inventory\Application\CreateShipmentHandler;
@@ -31,6 +32,7 @@ final class V3ShippingController extends AbstractController
         private readonly RegisterShipmentLabelHandler $registerLabel,
         private readonly DispatchShipmentHandler $dispatchShipment,
         private readonly PrintGateway $printGateway,
+        private readonly CarrierGateway $carrierGateway,
     ) {
     }
 
@@ -75,10 +77,15 @@ final class V3ShippingController extends AbstractController
     public function show(string $shipmentId): Response
     {
         $user = $this->tenantUser();
+        $shipment = $this->requiredShipment($shipmentId);
 
         return $this->render('v3/shipping/show.html.twig', [
             'page' => 'Sendung',
-            'shipment' => $this->requiredShipment($shipmentId),
+            'shipment' => $shipment,
+            'carrierConnectionAvailable' => $this->carrierConnectionAvailable(
+                $this->queries->carrierConnections($user->tenantId()),
+                (string) ($shipment['carrier'] ?? ''),
+            ),
             'printers' => array_values(array_filter(
                 $this->queries->printers($user->tenantId()),
                 static fn (array $printer): bool => (bool) ($printer['active'] ?? false),
@@ -88,6 +95,37 @@ final class V3ShippingController extends AbstractController
                 static fn (array $job): bool => ($job['document_reference'] ?? null) === $shipmentId,
             )),
         ]);
+    }
+
+    #[Route('/{shipmentId}/carrier-label', name: 'carrier_label', methods: ['POST'])]
+    #[IsGranted('integration.carrier.execute')]
+    public function carrierLabel(string $shipmentId, Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_shipping_carrier_label_' . $shipmentId);
+        $shipment = $this->requiredShipment($shipmentId);
+        if (($shipment['status'] ?? null) !== 'prepared') {
+            throw new \DomainException('Nur eine vorbereitete Sendung kann ein Carrier-Label erhalten.');
+        }
+        $user = $this->tenantUser();
+        $result = $this->carrierGateway->createLabel(
+            $user->tenantId(),
+            $this->shipmentValue($shipment, 'carrier'),
+            $shipment,
+            'web-v3-label-' . $shipmentId,
+            $user->actorId(),
+            new DateTimeImmutable(),
+        );
+        ($this->registerLabel)(new RegisterShipmentLabelCommand(
+            $shipmentId,
+            $user->tenantId(),
+            $result['trackingNumber'],
+            $result['labelReference'],
+            $user->actorId(),
+            new DateTimeImmutable(),
+        ));
+        $this->addFlash('success', 'Das Carrier-Label wurde erzeugt und in die Sendung übernommen.');
+
+        return $this->redirectToRoute('v3_shipping_show', ['shipmentId' => $shipmentId]);
     }
 
     #[Route('/{shipmentId}/label', name: 'label', methods: ['POST'])]
@@ -164,6 +202,31 @@ final class V3ShippingController extends AbstractController
         }
 
         return $shipment;
+    }
+
+    /** @param list<array<string, mixed>> $connections */
+    private function carrierConnectionAvailable(array $connections, string $carrierCode): bool
+    {
+        foreach ($connections as $connection) {
+            if ((bool) ($connection['active'] ?? false)
+                && is_string($connection['carrier_code'] ?? null)
+                && mb_strtoupper($carrierCode) === $connection['carrier_code']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /** @param array<string, mixed> $shipment */
+    private function shipmentValue(array $shipment, string $field): string
+    {
+        $value = $shipment[$field] ?? null;
+        if (!is_string($value) || $value === '') {
+            throw new LogicException(sprintf('Das persistierte Sendungsfeld "%s" ist ungültig.', $field));
+        }
+
+        return $value;
     }
 
     private function required(Request $request, string $field): string

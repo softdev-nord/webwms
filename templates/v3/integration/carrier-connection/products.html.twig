@@ -1,0 +1,34 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<a href="{{ path('v3_carrier_connection_show', {connectionId: connection.id}) }}" class="text-decoration-none">← {{ connection.name }}</a>
+		<h1 class="h3 mt-2 mb-1">Versandprodukte</h1>
+		<p class="text-muted mb-0">Live vom Carrier {{ connection.carrier_code }} abgerufen</p>
+	</div>
+
+	<div class="card border-0 shadow-sm">
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead>
+					<tr>
+						<th>Produktcode</th>
+						<th>Bezeichnung</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for product in products %}
+						<tr>
+							<td><code>{{ product.code }}</code></td>
+							<td>{{ product.name }}</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="2" class="text-center text-muted py-5">Der Carrier hat keine Versandprodukte geliefert.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

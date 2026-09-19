@@ -1,0 +1,64 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex justify-content-between align-items-start mb-4">
+		<div>
+			<a href="{{ path('v3_carrier_connection_index') }}" class="text-decoration-none">← Carrier-Verbindungen</a>
+			<h1 class="h3 mt-2 mb-1">{{ connection.name }}</h1>
+			<span class="badge bg-primary-subtle text-primary me-1">{{ connection.carrier_code }}</span>
+			{% if connection.active %}
+				<span class="badge bg-success-subtle text-success">Aktiv</span>
+			{% else %}
+				<span class="badge bg-secondary-subtle text-secondary">Pausiert</span>
+			{% endif %}
+		</div>
+		<div class="d-flex gap-2">
+			{% if connection.active and is_granted('integration.carrier.read') %}
+				<a class="btn btn-outline-primary" href="{{ path('v3_carrier_connection_products', {connectionId: connection.id}) }}">Versandprodukte abrufen</a>
+			{% endif %}
+			{% if is_granted('integration.carrier_connection.write') %}
+				<form method="post" action="{{ path('v3_carrier_connection_status', {connectionId: connection.id}) }}">
+					<input type="hidden" name="_token" value="{{ csrf_token('v3_carrier_connection_status_' ~ connection.id) }}">
+					<button class="btn {{ connection.active ? 'btn-outline-warning' : 'btn-success' }}">
+						{{ connection.active ? 'Verbindung pausieren' : 'Verbindung aktivieren' }}
+					</button>
+				</form>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="row g-4">
+		<div class="col-lg-8">
+			<div class="card border-0 shadow-sm h-100">
+				<div class="card-header bg-transparent"><h2 class="h5 mb-0">Verbindungsdaten</h2></div>
+				<div class="card-body">
+					<dl class="row mb-0">
+						<dt class="col-sm-4">HTTPS-Basis-URL</dt>
+						<dd class="col-sm-8"><code>{{ connection.endpoint_url }}</code></dd>
+						<dt class="col-sm-4">Credential-Referenz</dt>
+						<dd class="col-sm-8"><code>{{ connection.credential_env }}</code></dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="card border-0 shadow-sm h-100">
+				<div class="card-header bg-transparent"><h2 class="h5 mb-0">Audit</h2></div>
+				<div class="card-body">
+					<dl class="mb-0">
+						<dt>Angelegt</dt>
+						<dd>{{ connection.created_at }}<br><code>{{ connection.created_by }}</code></dd>
+						<dt>Letzte Statusänderung</dt>
+						<dd class="mb-0">
+							{% if connection.changed_at %}
+								{{ connection.changed_at }}<br><code>{{ connection.changed_by }}</code>
+							{% else %}
+								Noch keine Statusänderung
+							{% endif %}
+						</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
