@@ -96,6 +96,28 @@ final readonly class ApiV3QueryService
         );
     }
 
+    /** @return list<array<string, mixed>> */
+    public function erpConnections(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, name, endpoint_url, credential_env, active, created_by, created_at, changed_by, changed_at '
+            . 'FROM wms_erp_connection WHERE tenant_id = :tenantId ORDER BY name, id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function erpConnection(string $tenantId, string $connectionId): ?array
+    {
+        $connection = $this->connection->fetchAssociative(
+            'SELECT id, name, endpoint_url, credential_env, active, created_by, created_at, changed_by, changed_at '
+            . 'FROM wms_erp_connection WHERE id = :connectionId AND tenant_id = :tenantId',
+            ['connectionId' => $connectionId, 'tenantId' => $tenantId],
+        );
+
+        return $connection === false ? null : $connection;
+    }
+
     /** @return array<string, mixed>|null */
     public function outboundOrder(string $tenantId, string $orderId): ?array
     {

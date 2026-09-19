@@ -25,6 +25,9 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `GET` | `/api/v3/stock` | `inventory.stock.read` | Bestand und verfügbare Menge lesen |
 | `GET` | `/api/v3/stock-movements` | `inventory.stock.movement.read` | Bewegungsjournal filtern und lesen |
 | `POST` | `/api/v3/stock-transfers` | `inventory.stock.transfer` | Bestand atomar umlagern oder Status ändern |
+| `GET` | `/api/v3/erp-connections` | `integration.erp_connection.read` | ERP-Verbindungen des Mandanten lesen |
+| `POST` | `/api/v3/erp-connections` | `integration.erp_connection.write` | ERP-Verbindung registrieren |
+| `PATCH` | `/api/v3/erp-connections/{id}/status` | `integration.erp_connection.write` | ERP-Verbindung aktivieren oder pausieren |
 | `POST` | `/api/v3/orders` | `outbound.order.write` | Kundenauftrag importieren |
 | `GET` | `/api/v3/orders/{id}` | `outbound.order.read` | Kundenauftrag lesen |
 | `POST` | `/api/v3/orders/{id}/release` | `outbound.order.release` | Auftrag freigeben und reservieren |
@@ -62,7 +65,7 @@ Erfolgreiche Antworten enthalten `data`, Listen zusätzlich `meta`. Fehler verwe
 
 ## Bekannte Restarbeiten
 
-- konkrete ERP-, Shop- und Webhook-Handler für die Integrationsqueue;
+- herstellerspezifische ERP-, Shop- und Carrier-Adapter;
 - OpenAPI-Vertrag und API-Integrationstests mit MariaDB;
 - Rotation und Widerruf von Secrets über eine Administrationsoberfläche;
 - Rate-Limiting und technische Verbrauchsmetriken.

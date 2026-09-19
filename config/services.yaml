@@ -93,6 +93,15 @@ services:
     WebWMS\Integration\Domain\OutboxTransport:
         alias: WebWMS\Integration\Infrastructure\Messaging\MessengerOutboxTransport
 
+    WebWMS\Integration\Domain\ErpConnectionRepository:
+        alias: WebWMS\Integration\Infrastructure\Persistence\DbalErpConnectionRepository
+
+    WebWMS\Integration\Domain\ErpStatusTransport:
+        alias: WebWMS\Integration\Infrastructure\Transport\HttpErpStatusTransport
+
+    WebWMS\Integration\Domain\CredentialProvider:
+        alias: WebWMS\Integration\Infrastructure\Security\EnvironmentCredentialProvider
+
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     WebWMS\Controller\:

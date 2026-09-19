@@ -33,6 +33,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Ladelisten und Verladung über API v3](technical/loading-api.md)
 - [Statusrückmeldung und Integrations-Outbox](technical/integration-outbox.md)
 - [Bestandsbewegungen in API v3](technical/inventory-movement-api.md)
+- [Generische ERP-Integration](technical/erp-integration.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -63,6 +64,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Ladelisten über API v3 bearbeiten](user/loading-api.md)
 - [Statusmeldungen über die Outbox übernehmen](user/integration-outbox.md)
 - [Bestände über API v3 umbuchen](user/inventory-movement-api.md)
+- [ERP-System anbinden](user/erp-integration.md)
 
 ## Verbindliche Dokumentationsregel
 

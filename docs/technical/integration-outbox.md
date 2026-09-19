@@ -50,8 +50,8 @@ Der Publisher wird regelmäßig, beispielsweise minütlich, gestartet:
 php bin/console webwms:outbox:publish --limit=100
 ```
 
-Sobald ein konkreter ERP-, Shop- oder Webhook-Handler bereitsteht, verarbeitet
-ein unabhängiger Worker die Queue:
+Ein unabhängiger Worker verarbeitet die Queue. Der generische ERP-Handler
+liefert Statusmeldungen an alle aktiven Verbindungen des Mandanten:
 
 ```bash
 php bin/console messenger:consume integration --time-limit=3600
@@ -89,7 +89,8 @@ authentifizierten API-Identität.
 
 ## Grenzen
 
-Der Slice stellt generische Ereignisse zuverlässig in die interne Queue.
-Konkrete Zieladapter, aggregierte Betriebsmetriken und Alarmierung folgen.
+Der Slice stellt generische Ereignisse zuverlässig in die interne Queue und
+liefert sie über den ERP-HTTP-Adapter aus. Herstellerspezifische ERP-Mappings,
+weitere Zieladapter, aggregierte Betriebsmetriken und Alarmierung folgen.
 Messenger besitzt zusätzlich seine eigene Retry-/Failure-Queue für Fehler, die
 erst im Zieladapter auftreten.

@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use WebWMS\Integration\Domain\OutboxMessageNotFoundException;
+use WebWMS\Integration\Domain\ErpConnectionNotFoundException;
 use WebWMS\Inventory\Domain\InsufficientAvailableStockException;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 
@@ -34,6 +35,7 @@ final readonly class ApiExceptionSubscriber
             $exception instanceof JsonException => [400, 'Bad Request', 'The request body must contain valid JSON.'],
             $exception instanceof InventoryReferenceNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof OutboxMessageNotFoundException => [404, 'Not Found', $exception->getMessage()],
+            $exception instanceof ErpConnectionNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof InsufficientAvailableStockException => [409, 'Conflict', $exception->getMessage()],
             $exception instanceof \DomainException => [409, 'Conflict', $exception->getMessage()],
             $exception instanceof UniqueConstraintViolationException => [409, 'Conflict', 'The resource already exists.'],

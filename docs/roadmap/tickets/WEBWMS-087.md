@@ -2,7 +2,7 @@
 id: WEBWMS-087
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Offen
+status: Backend umgesetzt
 priority: Highest
 story_points: 13
 component: "Integration & Technik"
@@ -44,12 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Backend umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mandantengebundene ERP-Verbindungen können über API v3 registriert, gelesen, aktiviert und pausiert werden. Geheimnisse verbleiben in Laufzeit-Umgebungsvariablen; WebWMS persistiert ausschließlich deren Referenz. Benutzer und Zeitpunkte der Anlage und Statusänderung sind auditierbar.
+
+Artikel- und Auftragsübernahme sowie Bestands- und Bewegungsabfragen nutzen die vorhandenen API-v3-Ressourcen. Ausgehende Statusereignisse verarbeitet `DeliverErpStatusEventHandler` aus der Integrationsqueue und sendet sie per HTTPS mit stabiler Nachrichten-ID und HMAC-SHA-256-Signatur an alle aktiven ERP-Verbindungen des Mandanten. Fehler werden durch Symfony Messenger wiederholt und gegebenenfalls in dessen Failure Queue verschoben.
+
+Nachweise: `ErpConnection`, `DbalErpConnectionRepository`, `ErpConnectionApiController`, `DeliverErpStatusEventHandler`, `HttpErpStatusTransport`, Migration `Version20260919140000`, Unit-Tests sowie `docs/technical/erp-integration.md` und `docs/user/erp-integration.md`.
+
+Herstellerspezifische Mappings, Administrations-UI, aggregierte Betriebsmetriken und vollständige HTTP-/MariaDB-Integrationstests fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-087
 - Referenz: https://www.coglas.com/schnittstellen/
-

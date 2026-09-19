@@ -27,7 +27,7 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Backendfortschritt
 
-Nach der Bestandsbewegungs-API besitzen 35 Tickets mit 251 Story Points einen substanziellen Backendkern. Weitere 13 Tickets mit 97 Story Points sind teilweise umgesetzt. Damit wurden 48 von 96 Tickets und 348 von 750 Story Points zumindest fachlich oder technisch begonnen.
+Nach der generischen ERP-Integration besitzen 36 Tickets mit 264 Story Points einen substanziellen Backendkern. Weitere 13 Tickets mit 97 Story Points sind teilweise umgesetzt. Damit wurden 49 von 96 Tickets und 361 von 750 Story Points zumindest fachlich oder technisch begonnen.
 
 ## Ergänzende Roadmap-Dokumente
 
