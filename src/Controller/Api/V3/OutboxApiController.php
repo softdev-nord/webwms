@@ -56,9 +56,6 @@ final class OutboxApiController extends AbstractController
         ));
 
         $message = $this->queries->outboxMessage($this->apiUser()->tenantId(), $messageId);
-        if ($message === null) {
-            throw new \LogicException('The acknowledged outbox message disappeared.');
-        }
 
         return new JsonResponse(['data' => $message]);
     }
