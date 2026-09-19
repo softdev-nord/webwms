@@ -2,7 +2,7 @@
 id: WEBWMS-056
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Backend umgesetzt
+status: Teilweise umgesetzt
 priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,13 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Teilweise umgesetzt
 
-Carrier und Service sind Bestandteil des `Shipment`-Modells und werden über `POST /api/v3/packing-orders/{id}/shipments` explizit ausgewählt. Der Endpunkt ist mandantengebunden und mit `fulfillment.ship.write` geschützt.
+Carrier und Service sind Bestandteil des `Shipment`-Modells und werden über API v3 oder den V3-Versandarbeitsplatz explizit ausgewählt. Beide Zugänge sind mandantengebunden und mit `fulfillment.ship.write` geschützt.
 
 Nachweise: `ShippingApiController::create()`, `CreateShipmentHandler`, `Shipment`, `DbalInventoryRepository::saveShipment()`, `ShipmentTest` sowie `docs/technical/shipping-api.md` und `docs/user/shipping-api.md`.
 
-Carrier-Verbindungen und Produktabfrage sind über `WEBWMS-089` ergänzt. Versandregeln, lokale Carrier-Produktstammdaten, UI und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+Carrier-Verbindungen und Produktabfrage sind über `WEBWMS-089` ergänzt. Versandregeln, lokale Carrier-Produktstammdaten und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 

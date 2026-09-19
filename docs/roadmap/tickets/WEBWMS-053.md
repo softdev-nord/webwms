@@ -2,7 +2,7 @@
 id: WEBWMS-053
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Backend umgesetzt
+status: Teilweise umgesetzt
 priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,13 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Teilweise umgesetzt
 
-`PackingOrder`, `PackingPackage` und Packabschluss bilden den fachlichen Domain-, Application- und Persistenzkern. Über `PackingApiController` kann eine abgeschlossene Pickliste nun in einen Packauftrag überführt, in Packstücke aufgeteilt, gelesen und abgeschlossen werden. Mandant und Auditbenutzer stammen aus der API-Identität; `fulfillment.pack.write`, `fulfillment.pack.read` und `fulfillment.pack.execute` trennen die Operationen.
+`PackingOrder`, `PackingPackage` und Packabschluss bilden den fachlichen Domain-, Application- und Persistenzkern. Über API v3 und den V3-Packarbeitsplatz kann eine abgeschlossene Pickliste in einen Packauftrag überführt, in Packstücke aufgeteilt, gelesen und abgeschlossen werden. Mandant und Auditbenutzer stammen aus der jeweiligen authentifizierten Identität.
 
 Nachweise: `PackingApiController`, `ApiV3QueryService::packingOrder()`, `CreatePackingOrderHandler`, `AddPackingPackageHandler`, `CompletePackingOrderHandler`, `DbalInventoryRepository`, `PackingOrderTest`, `PackingPackageTest` sowie `docs/technical/packing-api.md` und `docs/user/packing-api.md`.
 
-Eine grafische Packplatzführung, Packmittelprüfung und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+Packmittelprüfung und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 

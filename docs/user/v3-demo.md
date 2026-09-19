@@ -28,5 +28,8 @@ Der zweite und jeder weitere Lauf verändert den bestehenden Benutzer und seinen
 5. Im Lagerfilter `DEMO-01` wählen. Erwartet werden `DEMO-1000` mit Menge 25 und `DEMO-2000` mit Menge 100.
 6. Unter **Aufträge** den Auftrag `DEMO-ORDER-001` öffnen, freigeben und die Menge 2 vom Lagerplatz `A-01-01` allokieren.
 7. Eine Pickliste erzeugen, unter **Picking** selbst zuweisen und die Position bestätigen.
+8. Aus der abgeschlossenen Pickliste einen Packauftrag erzeugen, die Position in ein Paket übernehmen und den Packauftrag abschließen.
+9. Eine Sendung erzeugen, Demo-Tracking und Label-Referenz registrieren und das Label an den `Demo ZPL Drucker` senden.
+10. Die Übergabe mit einer Referenz bestätigen.
 
-Der Bootstrap legt einen Demo-Mandanten, Standort, Administrator mit allen derzeitigen V3-Berechtigungen, ein Lager, zwei Lagerplätze, zwei Artikel, Anfangsbestände und einen offenen Beispielauftrag an. Es werden keine Zugangsdaten im Repository gespeichert.
+Der Bootstrap legt einen Demo-Mandanten, Standort, Administrator mit allen derzeitigen V3-Berechtigungen, ein Lager, zwei Lagerplätze, zwei Artikel, Anfangsbestände, einen offenen Beispielauftrag und einen Demo-ZPL-Drucker an. Der Drucker dient nur zum Testen der Warteschlange; eine Ausführung erfordert eine echte Druckeranbindung. Es werden keine Zugangsdaten im Repository gespeichert.

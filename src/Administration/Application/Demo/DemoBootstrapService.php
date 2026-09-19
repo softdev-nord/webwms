@@ -34,6 +34,7 @@ final readonly class DemoBootstrapService
     public const PRODUCT_B_ID = '77777777-7777-4777-8777-777777777772';
     public const ORDER_ID = '88888888-8888-4888-8888-888888888888';
     public const ORDER_ITEM_ID = '99999999-9999-4999-8999-999999999999';
+    public const PRINTER_ID = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
     public const EMAIL = 'admin@demo.webwms.local';
 
     /** @var list<string> */
@@ -110,6 +111,20 @@ final readonly class DemoBootstrapService
             ['userId' => self::USER_ID, 'roleId' => self::ROLE_ID],
         ) === false) {
             $this->connection->insert('wms_user_role', ['user_id' => self::USER_ID, 'role_id' => self::ROLE_ID]);
+        }
+        if (!$this->exists('wms_printer', self::PRINTER_ID)) {
+            $this->connection->insert('wms_printer', [
+                'id' => self::PRINTER_ID,
+                'tenant_id' => self::TENANT_ID,
+                'name' => 'Demo ZPL Drucker',
+                'endpoint_url' => 'https://printer.demo.webwms.local/print',
+                'credential_env' => 'DEMO_PRINTER_TOKEN',
+                'active' => 1,
+                'created_by' => self::USER_ID,
+                'created_at' => $this->date($now),
+                'changed_by' => null,
+                'changed_at' => null,
+            ]);
         }
 
         $tenantId = new TenantId(self::TENANT_ID);

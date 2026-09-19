@@ -10,6 +10,8 @@
         {% if is_granted('inventory.stock.read') %}<li class="nav-item"><a class="nav-link" href="{{ path('v3_stock') }}">Bestand</a></li>{% endif %}
         {% if is_granted('outbound.order.read') %}<li class="nav-item"><a class="nav-link" href="{{ path('v3_outbound_orders') }}">Aufträge</a></li>{% endif %}
         {% if is_granted('fulfillment.pick.read') %}<li class="nav-item"><a class="nav-link" href="{{ path('v3_picking_index') }}">Picking</a></li>{% endif %}
+        {% if is_granted('fulfillment.pack.read') %}<li class="nav-item"><a class="nav-link" href="{{ path('v3_packing_index') }}">Packen</a></li>{% endif %}
+        {% if is_granted('fulfillment.ship.read') %}<li class="nav-item"><a class="nav-link" href="{{ path('v3_shipping_index') }}">Versand</a></li>{% endif %}
     </ul><span class="navbar-text me-3">{{ app.user.displayName }}</span><a class="btn btn-outline-light btn-sm" href="{{ path('app_v3_logout') }}">Abmelden</a></div>
 </div></nav>
 <main class="container-fluid px-lg-4 py-4">

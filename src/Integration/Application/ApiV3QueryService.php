@@ -246,8 +246,10 @@ final readonly class ApiV3QueryService
     {
         $pickList = $this->connection->fetchAssociative(
             'SELECT l.id, l.outbound_order_id, o.order_number, l.code, l.status, l.assigned_to, '
-            . 'l.assigned_by, l.assigned_at, l.created_by, l.created_at, l.updated_at '
+            . 'l.assigned_by, l.assigned_at, l.created_by, l.created_at, l.updated_at, '
+            . 'po.id packing_order_id, po.code packing_order_code, po.status packing_order_status '
             . 'FROM wms_pick_list l LEFT JOIN wms_outbound_order o ON o.id = l.outbound_order_id '
+            . 'LEFT JOIN wms_packing_order po ON po.pick_list_id = l.id '
             . 'WHERE l.id = :pickListId AND l.tenant_id = :tenantId',
             ['pickListId' => $pickListId, 'tenantId' => $tenantId],
         );
@@ -273,8 +275,10 @@ final readonly class ApiV3QueryService
     {
         $order = $this->connection->fetchAssociative(
             'SELECT o.id, o.pick_list_id, l.outbound_order_id, o.code, o.status, o.created_by, '
-            . 'o.created_at, o.updated_at, o.completed_by, o.completed_at '
+            . 'o.created_at, o.updated_at, o.completed_by, o.completed_at, '
+            . 's.id shipment_id, s.shipment_number, s.status shipment_status '
             . 'FROM wms_packing_order o INNER JOIN wms_pick_list l ON l.id = o.pick_list_id '
+            . 'LEFT JOIN wms_shipment s ON s.packing_order_id = o.id '
             . 'WHERE o.id = :packingOrderId AND o.tenant_id = :tenantId',
             ['packingOrderId' => $packingOrderId, 'tenantId' => $tenantId],
         );
@@ -301,6 +305,41 @@ final readonly class ApiV3QueryService
         return $order;
     }
 
+    /** @return list<array<string, mixed>> */
+    public function packingOrders(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT p.id, p.pick_list_id, l.code pick_list_code, l.outbound_order_id, o.order_number, '
+            . 'p.code, p.status, COUNT(pkg.id) package_count, COALESCE(SUM(pkg.weight_grams), 0) total_weight_grams, '
+            . 's.id shipment_id, s.shipment_number, p.created_at '
+            . 'FROM wms_packing_order p INNER JOIN wms_pick_list l ON l.id = p.pick_list_id '
+            . 'INNER JOIN wms_outbound_order o ON o.id = l.outbound_order_id '
+            . 'LEFT JOIN wms_package pkg ON pkg.packing_order_id = p.id '
+            . 'LEFT JOIN wms_shipment s ON s.packing_order_id = p.id '
+            . 'WHERE p.tenant_id = :tenantId '
+            . 'GROUP BY p.id, p.pick_list_id, l.code, l.outbound_order_id, o.order_number, p.code, p.status, '
+            . 's.id, s.shipment_number, p.created_at ORDER BY p.created_at DESC, p.id DESC',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function packablePickTasks(string $tenantId, string $packingOrderId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT t.id, t.sequence_number, a.product_id, p.sku, a.quantity, l.code location_code '
+            . 'FROM wms_packing_order po INNER JOIN wms_pick_list pl ON pl.id = po.pick_list_id '
+            . 'INNER JOIN wms_pick_task t ON t.pick_list_id = pl.id '
+            . 'INNER JOIN wms_stock_allocation a ON a.id = t.allocation_id '
+            . 'INNER JOIN wms_product_reference p ON p.id = a.product_id '
+            . 'INNER JOIN wms_storage_location l ON l.id = a.location_id '
+            . "WHERE po.id = :packingOrderId AND po.tenant_id = :tenantId AND t.status = 'picked' "
+            . 'AND NOT EXISTS (SELECT 1 FROM wms_package_item pi WHERE pi.pick_task_id = t.id) '
+            . 'ORDER BY t.sequence_number, t.id',
+            ['packingOrderId' => $packingOrderId, 'tenantId' => $tenantId],
+        );
+    }
+
     /** @return array<string, mixed>|null */
     public function shipment(string $tenantId, string $shipmentId): ?array
     {
@@ -317,6 +356,18 @@ final readonly class ApiV3QueryService
         );
 
         return $shipment === false ? null : $shipment;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function shipments(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT s.id, s.packing_order_id, p.code packing_order_code, s.shipment_number, s.carrier, '
+            . 's.service, s.status, s.tracking_number, s.label_reference, s.handover_reference, s.created_at '
+            . 'FROM wms_shipment s INNER JOIN wms_packing_order p ON p.id = s.packing_order_id '
+            . 'WHERE s.tenant_id = :tenantId ORDER BY s.created_at DESC, s.id DESC',
+            ['tenantId' => $tenantId],
+        );
     }
 
     /** @return array<string, mixed>|null */

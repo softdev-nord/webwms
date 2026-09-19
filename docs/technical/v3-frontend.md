@@ -13,6 +13,8 @@ Der Slice umfasst:
 - `/v3/inventory/stock`: berechtigungsgeschützte Bestandsprojektion mit Lagerfilter
 - `/v3/outbound/orders`: Auftragserfassung, Freigabe, Reservierung und Allokation
 - `/v3/picking`: Picklisten-Zuweisung und mobile Pickbestätigung
+- `/v3/packing`: Paketbildung und Abschluss vollständig gepackter Aufträge
+- `/v3/shipping`: Sendung, Label/Tracking, Druckwarteschlange und direkte Übergabe
 - `webwms:v3:demo-bootstrap`: reproduzierbare lokale Beispieldaten
 
 Weitere Frontend-Slices können dieselbe Shell und dieselbe Controller-Grenze verwenden. Schreibaktionen sollen weiterhin über Application Commands laufen; Query-Services bleiben reine Leseprojektionen.
