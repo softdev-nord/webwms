@@ -1,0 +1,8 @@
+{% extends 'v3/base.html.twig' %}
+{% block title %}Ausgangsaufträge | WebWMS 3.0{% endblock %}
+{% block body %}
+<div class="d-flex justify-content-between align-items-center mb-4"><div><h1 class="h3 mb-1">Ausgangsaufträge</h1><p class="text-muted mb-0">Auftragsfreigabe, Reservierung und Übergabe an das Picking</p></div>{% if is_granted('outbound.order.write') %}<a class="btn btn-primary" href="{{ path('v3_outbound_order_new') }}">Auftrag anlegen</a>{% endif %}</div>
+<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>Auftrag</th><th>Kundenreferenz</th><th>Status</th><th class="text-end">Positionen</th><th class="text-end">Menge</th><th>Pickliste</th><th></th></tr></thead><tbody>
+{% for order in orders %}<tr><td class="fw-semibold">{{ order.order_number }}</td><td>{{ order.customer_reference }}</td><td><span class="badge bg-secondary-subtle text-secondary">{{ order.status }}</span></td><td class="text-end">{{ order.item_count }}</td><td class="text-end">{{ order.requested_quantity }}</td><td>{{ order.pick_list_code ?: '–' }}</td><td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_outbound_order', {orderId: order.id}) }}">Öffnen</a></td></tr>{% else %}<tr><td colspan="7" class="text-center text-muted py-5">Noch keine Ausgangsaufträge vorhanden.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}

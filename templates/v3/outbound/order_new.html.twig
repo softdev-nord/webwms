@@ -1,0 +1,13 @@
+{% extends 'v3/base.html.twig' %}
+{% block title %}Auftrag anlegen | WebWMS 3.0{% endblock %}
+{% block body %}
+<div class="mb-4"><a href="{{ path('v3_outbound_orders') }}" class="text-decoration-none">← Aufträge</a><h1 class="h3 mt-2">Ausgangsauftrag anlegen</h1></div>
+<form method="post" class="card border-0 shadow-sm"><div class="card-body">
+<input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_order_create') }}">
+<div class="row g-3 mb-4"><div class="col-md-6"><label class="form-label" for="order_number">Auftragsnummer</label><input class="form-control" id="order_number" name="order_number" required></div><div class="col-md-6"><label class="form-label" for="customer_reference">Kundenreferenz</label><input class="form-control" id="customer_reference" name="customer_reference" required></div></div>
+<h2 class="h5">Positionen</h2><div id="order-items">
+<div class="row g-3 mb-3 order-item"><div class="col-md-9"><label class="form-label">Artikel</label><select class="form-select" name="product_id[]" required>{% for product in products %}<option value="{{ product.id }}">{{ product.sku }} – {{ product.name }}</option>{% endfor %}</select></div><div class="col-md-3"><label class="form-label">Menge</label><input class="form-control" type="number" min="1" name="quantity[]" value="1" required></div></div>
+</div><button class="btn btn-sm btn-outline-secondary" type="button" id="add-item">Weitere Position</button>
+</div><div class="card-footer bg-white d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_outbound_orders') }}">Abbrechen</a><button class="btn btn-primary">Auftrag anlegen</button></div></form>
+<script>document.getElementById('add-item').addEventListener('click', function () { const item = document.querySelector('.order-item').cloneNode(true); item.querySelector('input').value = '1'; document.getElementById('order-items').appendChild(item); });</script>
+{% endblock %}

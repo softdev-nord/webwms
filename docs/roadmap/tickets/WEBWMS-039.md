@@ -46,10 +46,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 **Status:** Teilweise umgesetzt
 
-Pickbestätigung vorhanden; Barcodeprüfung fehlt. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Pickbestätigung und Fehlbestandsmeldung sind über API v3 und V3-Frontend bedienbar. Die Prüfung gescannter Platz-, Artikel-, Chargen- und Seriennummern sowie die vollständige Akzeptanztestabdeckung fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-039
 - Referenz: https://www.coglas.com/kommissionierung/
-

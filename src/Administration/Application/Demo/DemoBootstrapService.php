@@ -13,6 +13,8 @@ use WebWMS\Administration\Domain\Site\SiteId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
+use WebWMS\Inventory\Domain\OutboundOrder;
+use WebWMS\Inventory\Domain\OutboundOrderItem;
 use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\Sku;
 use WebWMS\Inventory\Domain\StockPosting;
@@ -30,6 +32,8 @@ final readonly class DemoBootstrapService
     public const LOCATION_B_ID = '66666666-6666-4666-8666-666666666662';
     public const PRODUCT_A_ID = '77777777-7777-4777-8777-777777777771';
     public const PRODUCT_B_ID = '77777777-7777-4777-8777-777777777772';
+    public const ORDER_ID = '88888888-8888-4888-8888-888888888888';
+    public const ORDER_ITEM_ID = '99999999-9999-4999-8999-999999999999';
     public const EMAIL = 'admin@demo.webwms.local';
 
     /** @var list<string> */
@@ -125,6 +129,17 @@ final readonly class DemoBootstrapService
         $this->createProduct($tenantId, self::PRODUCT_B_ID, 'DEMO-2000', 'Demo Versandkarton', $now);
         $this->createStock($tenantId, self::PRODUCT_A_ID, self::LOCATION_A_ID, 25, $now);
         $this->createStock($tenantId, self::PRODUCT_B_ID, self::LOCATION_B_ID, 100, $now);
+        if (!$this->exists('wms_outbound_order', self::ORDER_ID)) {
+            $this->inventory->saveOutboundOrder(new OutboundOrder(
+                new InventoryId(self::ORDER_ID),
+                $tenantId,
+                'DEMO-ORDER-001',
+                'DEMO-CUSTOMER-001',
+                [new OutboundOrderItem(new InventoryId(self::ORDER_ITEM_ID), new InventoryId(self::PRODUCT_A_ID), 2)],
+                new UserId(self::USER_ID),
+                $now,
+            ));
+        }
 
         return new DemoBootstrapResult(self::TENANT_ID, self::EMAIL, $generatedPassword, $created);
     }

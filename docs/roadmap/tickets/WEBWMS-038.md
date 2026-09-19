@@ -46,10 +46,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 **Status:** Teilweise umgesetzt
 
-Pickzuweisung und Bestätigung; mobile Oberfläche fehlt. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Pickzuweisung und Bestätigung sind über API v3 und eine responsive V3-Pickansicht bedienbar. Scanner-spezifische Navigation, Offline-Fähigkeit und die vollständige Akzeptanztestabdeckung fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-038
 - Referenz: https://www.coglas.com/kommissionierung/
-

@@ -4,9 +4,9 @@ Alle 17 dokumentierten Funktionen des Bereichs Warenausgang & Versand werden fac
 
 | Ticket | Zusammenfassung | Status | Priorität | Story Points |
 | --- | --- | --- | --- | ---: |
-| [WEBWMS-049](../tickets/WEBWMS-049.md) | Kundenaufträge implementieren | Backend umgesetzt | Highest | 8 |
+| [WEBWMS-049](../tickets/WEBWMS-049.md) | Kundenaufträge implementieren | Teilweise umgesetzt | Highest | 8 |
 | [WEBWMS-050](../tickets/WEBWMS-050.md) | Auftragsvorschau implementieren | Offen | High | 5 |
-| [WEBWMS-051](../tickets/WEBWMS-051.md) | Bestandsreservierung implementieren | Backend umgesetzt | Highest | 8 |
+| [WEBWMS-051](../tickets/WEBWMS-051.md) | Bestandsreservierung implementieren | Teilweise umgesetzt | Highest | 8 |
 | [WEBWMS-052](../tickets/WEBWMS-052.md) | QS-Checklisten im Ausgang implementieren | Offen | High | 5 |
 | [WEBWMS-053](../tickets/WEBWMS-053.md) | Geführter Packprozess implementieren | Backend umgesetzt | Highest | 8 |
 | [WEBWMS-054](../tickets/WEBWMS-054.md) | Automatischer Mengenabgleich implementieren | Backend umgesetzt | Highest | 5 |

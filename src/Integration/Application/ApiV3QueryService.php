@@ -122,8 +122,10 @@ final readonly class ApiV3QueryService
     public function outboundOrder(string $tenantId, string $orderId): ?array
     {
         $order = $this->connection->fetchAssociative(
-            'SELECT id, order_number, customer_reference, status, created_at, released_at '
-            . 'FROM wms_outbound_order WHERE id = :orderId AND tenant_id = :tenantId',
+            'SELECT o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, '
+            . 'l.id pick_list_id, l.code pick_list_code, l.status pick_list_status '
+            . 'FROM wms_outbound_order o LEFT JOIN wms_pick_list l ON l.outbound_order_id = o.id '
+            . 'WHERE o.id = :orderId AND o.tenant_id = :tenantId',
             ['orderId' => $orderId, 'tenantId' => $tenantId],
         );
         if ($order === false) {
@@ -139,6 +141,54 @@ final readonly class ApiV3QueryService
         );
 
         return $order;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function outboundOrders(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, '
+            . 'COUNT(i.id) item_count, COALESCE(SUM(i.requested_quantity), 0) requested_quantity, '
+            . 'l.id pick_list_id, l.code pick_list_code, l.status pick_list_status '
+            . 'FROM wms_outbound_order o LEFT JOIN wms_outbound_order_item i ON i.outbound_order_id = o.id '
+            . 'LEFT JOIN wms_pick_list l ON l.outbound_order_id = o.id '
+            . 'WHERE o.tenant_id = :tenantId '
+            . 'GROUP BY o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, '
+            . 'l.id, l.code, l.status ORDER BY o.created_at DESC, o.id DESC',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function availableStockForProduct(string $tenantId, string $productId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT b.location_id, l.code location_code, b.stock_status, b.batch_number, b.serial_number, '
+            . 'b.expires_at, b.quantity - COALESCE(SUM(a.quantity), 0) available_quantity '
+            . 'FROM wms_stock_balance b INNER JOIN wms_storage_location l ON l.id = b.location_id '
+            . "LEFT JOIN wms_stock_allocation a ON a.tenant_id = b.tenant_id AND a.product_id = b.product_id AND a.location_id = b.location_id AND a.stock_key = b.stock_key AND a.status = 'active' "
+            . 'WHERE b.tenant_id = :tenantId AND b.product_id = :productId '
+            . 'GROUP BY b.location_id, l.code, b.stock_status, b.batch_number, b.serial_number, b.expires_at, b.quantity '
+            . 'HAVING available_quantity > 0 ORDER BY l.code, b.stock_key',
+            ['tenantId' => $tenantId, 'productId' => $productId],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function pickLists(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT l.id, l.outbound_order_id, o.order_number, l.code, l.status, l.assigned_to, '
+            . 'u.display_name assigned_to_name, COUNT(t.id) task_count, '
+            . "COALESCE(SUM(CASE WHEN t.status <> 'open' THEN 1 ELSE 0 END), 0) completed_task_count, l.created_at "
+            . 'FROM wms_pick_list l INNER JOIN wms_outbound_order o ON o.id = l.outbound_order_id '
+            . 'LEFT JOIN wms_user_account u ON u.id = l.assigned_to '
+            . 'LEFT JOIN wms_pick_task t ON t.pick_list_id = l.id '
+            . 'WHERE l.tenant_id = :tenantId '
+            . 'GROUP BY l.id, l.outbound_order_id, o.order_number, l.code, l.status, l.assigned_to, '
+            . 'u.display_name, l.created_at ORDER BY l.created_at DESC, l.id DESC',
+            ['tenantId' => $tenantId],
+        );
     }
 
     /** @return array<string, mixed>|null */

@@ -11,6 +11,8 @@ Der Slice umfasst:
 - `/v3/login`: E-Mail- und Passwort-Anmeldung innerhalb eines Mandanten
 - `/v3`: operatives Dashboard mit Stamm-, Bestands- und Fulfillment-Zahlen
 - `/v3/inventory/stock`: berechtigungsgeschützte Bestandsprojektion mit Lagerfilter
+- `/v3/outbound/orders`: Auftragserfassung, Freigabe, Reservierung und Allokation
+- `/v3/picking`: Picklisten-Zuweisung und mobile Pickbestätigung
 - `webwms:v3:demo-bootstrap`: reproduzierbare lokale Beispieldaten
 
 Weitere Frontend-Slices können dieselbe Shell und dieselbe Controller-Grenze verwenden. Schreibaktionen sollen weiterhin über Application Commands laufen; Query-Services bleiben reine Leseprojektionen.
