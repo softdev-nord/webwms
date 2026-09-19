@@ -498,9 +498,11 @@ final readonly class ApiV3QueryService
     public function printJobs(string $tenantId): array
     {
         return $this->connection->fetchAllAssociative(
-            'SELECT id, printer_id, document_type, document_reference, format, copies, status, attempts, '
-            . 'external_reference, last_error, created_by, created_at, completed_at FROM wms_print_job '
-            . 'WHERE tenant_id = :tenantId ORDER BY created_at DESC, id DESC LIMIT 100',
+            'SELECT j.id, j.printer_id, p.name printer_name, j.document_type, j.document_reference, '
+            . 'j.format, j.copies, j.status, j.attempts, j.external_reference, j.last_error, '
+            . 'j.created_by, j.created_at, j.completed_at FROM wms_print_job j '
+            . 'INNER JOIN wms_printer p ON p.id = j.printer_id AND p.tenant_id = j.tenant_id '
+            . 'WHERE j.tenant_id = :tenantId ORDER BY j.created_at DESC, j.id DESC LIMIT 100',
             ['tenantId' => $tenantId],
         );
     }
@@ -509,9 +511,11 @@ final readonly class ApiV3QueryService
     public function printJob(string $tenantId, string $jobId): ?array
     {
         $job = $this->connection->fetchAssociative(
-            'SELECT id, printer_id, document_type, document_reference, format, copies, status, attempts, '
-            . 'external_reference, last_error, created_by, created_at, completed_at FROM wms_print_job '
-            . 'WHERE tenant_id = :tenantId AND id = :id',
+            'SELECT j.id, j.printer_id, p.name printer_name, j.document_type, j.document_reference, '
+            . 'j.format, j.copies, j.status, j.attempts, j.external_reference, j.last_error, '
+            . 'j.created_by, j.created_at, j.completed_at FROM wms_print_job j '
+            . 'INNER JOIN wms_printer p ON p.id = j.printer_id AND p.tenant_id = j.tenant_id '
+            . 'WHERE j.tenant_id = :tenantId AND j.id = :id',
             ['tenantId' => $tenantId, 'id' => $jobId],
         );
 

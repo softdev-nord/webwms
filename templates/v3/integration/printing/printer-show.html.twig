@@ -1,0 +1,85 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex justify-content-between align-items-start mb-4">
+		<div>
+			<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">← Druckwarteschlange</a>
+			<h1 class="h3 mt-2 mb-1">{{ printer.name }}</h1>
+			{% if printer.active %}
+				<span class="badge bg-success-subtle text-success">Aktiv</span>
+			{% else %}
+				<span class="badge bg-secondary-subtle text-secondary">Pausiert</span>
+			{% endif %}
+		</div>
+		{% if is_granted('integration.printer.write') %}
+			<form method="post" action="{{ path('v3_printing_printer_status', {printerId: printer.id}) }}">
+				<input type="hidden" name="_token" value="{{ csrf_token('v3_printing_printer_status_' ~ printer.id) }}">
+				<button class="btn {{ printer.active ? 'btn-outline-warning' : 'btn-success' }}">
+					{{ printer.active ? 'Drucker pausieren' : 'Drucker aktivieren' }}
+				</button>
+			</form>
+		{% endif %}
+	</div>
+
+	<div class="row g-4 mb-4">
+		<div class="col-lg-8">
+			<div class="card border-0 shadow-sm h-100">
+				<div class="card-header bg-transparent"><h2 class="h5 mb-0">Verbindungsdaten</h2></div>
+				<div class="card-body">
+					<dl class="row mb-0">
+						<dt class="col-sm-4">HTTPS-Endpunkt</dt>
+						<dd class="col-sm-8"><code>{{ printer.endpoint_url }}</code></dd>
+						<dt class="col-sm-4">Credential-Referenz</dt>
+						<dd class="col-sm-8"><code>{{ printer.credential_env }}</code></dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="card border-0 shadow-sm h-100">
+				<div class="card-header bg-transparent"><h2 class="h5 mb-0">Audit</h2></div>
+				<div class="card-body">
+					<strong>Angelegt</strong>
+					<div>{{ printer.created_at }}</div>
+					<code>{{ printer.created_by }}</code>
+					{% if printer.changed_at %}
+						<hr>
+						<strong>Geändert</strong>
+						<div>{{ printer.changed_at }}</div>
+						<code>{{ printer.changed_by }}</code>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="card border-0 shadow-sm">
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Druckaufträge</h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead>
+					<tr>
+						<th>Dokument</th>
+						<th>Status</th>
+						<th>Versuche</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for job in jobs %}
+						<tr>
+							<td>{{ job.document_type }}<br><code>{{ job.document_reference }}</code></td>
+							<td>{{ job.status }}</td>
+							<td>{{ job.attempts }}</td>
+							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_printing_job_show', {jobId: job.id}) }}">Öffnen</a></td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="4" class="text-center text-muted py-4">Keine Druckaufträge für diesen Drucker.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

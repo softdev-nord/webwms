@@ -245,4 +245,70 @@ final class ApiV3QueryServiceTest extends TestCase
 
         self::assertNull((new ApiV3QueryService($connection))->carrierConnection('tenant-id', 'connection-id'));
     }
+
+    public function testPrintJobListIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAllAssociative')
+            ->with(
+                self::callback(static function (string $sql): bool {
+                    self::assertStringContainsString('p.tenant_id = j.tenant_id', $sql);
+                    self::assertStringContainsString('WHERE j.tenant_id = :tenantId', $sql);
+
+                    return true;
+                }),
+                ['tenantId' => 'tenant-id'],
+            )
+            ->willReturn([]);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->printJobs('tenant-id'));
+    }
+
+    public function testPrintJobDetailIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAssociative')
+            ->with(
+                self::callback(static function (string $sql): bool {
+                    self::assertStringContainsString('WHERE j.tenant_id = :tenantId AND j.id = :id', $sql);
+
+                    return true;
+                }),
+                ['tenantId' => 'tenant-id', 'id' => 'job-id'],
+            )
+            ->willReturn(false);
+
+        self::assertNull((new ApiV3QueryService($connection))->printJob('tenant-id', 'job-id'));
+    }
+
+    public function testPrinterListIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAllAssociative')
+            ->with(self::isType('string'), ['tenantId' => 'tenant-id'])
+            ->willReturn([]);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->printers('tenant-id'));
+    }
+
+    public function testPrinterDetailIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAssociative')
+            ->with(
+                self::callback(static function (string $sql): bool {
+                    self::assertStringContainsString('WHERE tenant_id = :tenantId AND id = :id', $sql);
+
+                    return true;
+                }),
+                ['tenantId' => 'tenant-id', 'id' => 'printer-id'],
+            )
+            ->willReturn(false);
+
+        self::assertNull((new ApiV3QueryService($connection))->printer('tenant-id', 'printer-id'));
+    }
 }

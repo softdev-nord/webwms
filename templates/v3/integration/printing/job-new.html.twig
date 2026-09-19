@@ -1,0 +1,54 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">← Druckwarteschlange</a>
+		<h1 class="h3 mt-2">Druckauftrag anlegen</h1>
+	</div>
+	<form method="post" class="card border-0 shadow-sm">
+		<div class="card-body">
+			<input type="hidden" name="_token" value="{{ csrf_token('v3_printing_job_create') }}">
+			<input type="hidden" name="request_id" value="{{ requestId }}">
+			<div class="row g-3">
+				<div class="col-md-6">
+					<label class="form-label" for="printer_id">Drucker</label>
+					<select class="form-select" id="printer_id" name="printer_id" required>
+						{% for printer in printers %}
+							<option value="{{ printer.id }}">{{ printer.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="document_type">Dokumenttyp</label>
+					<select class="form-select" id="document_type" name="document_type">
+						<option value="carrier_label">Carrier-Label</option>
+						<option value="document">Dokument</option>
+						<option value="loading_manifest">Lademanifest</option>
+					</select>
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="format">Format</label>
+					<select class="form-select" id="format" name="format">
+						<option value="ZPL">ZPL</option>
+						<option value="PDF">PDF</option>
+					</select>
+				</div>
+				<div class="col-md-9">
+					<label class="form-label" for="document_reference">Dokumentreferenz</label>
+					<input class="form-control" id="document_reference" name="document_reference" maxlength="500" required>
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="copies">Exemplare</label>
+					<input class="form-control" type="number" id="copies" name="copies" min="1" max="99" value="1" required>
+				</div>
+			</div>
+			{% if printers is empty %}
+				<div class="alert alert-warning mt-3 mb-0">Es ist kein aktiver Drucker vorhanden.</div>
+			{% endif %}
+		</div>
+		<div class="card-footer d-flex justify-content-end gap-2">
+			<a class="btn btn-light" href="{{ path('v3_printing_index') }}">Abbrechen</a>
+			<button class="btn btn-primary" {% if printers is empty %}disabled{% endif %}>Druckauftrag anlegen</button>
+		</div>
+	</form>
+{% endblock %}

@@ -2,7 +2,7 @@
 id: WEBWMS-091
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Backend umgesetzt
+status: Teilweise umgesetzt
 priority: Highest
 story_points: 8
 component: "Integration & Technik"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Teilweise umgesetzt
 
 Mit `Printer`, `PrintJob`, `PrintGateway` und dem generischen
 `HttpPrintTransport` sind mandantensichere Druckerkonfiguration, idempotente
@@ -54,8 +54,17 @@ Rechten. Nachweise: `PrintApiController`, `Version20260919173000`,
 `PrintJobTest`, `HttpPrintTransportTest` und
 `docs/technical/print-integration.md`.
 
+Der V3-Arbeitsbereich ergänzt Druckerübersicht, Anlage, Detail- und Auditansicht,
+Statuswechsel sowie eine zentrale Druckwarteschlange. Allgemeine Druckaufträge
+können erfasst und wartende oder fehlgeschlagene Jobs manuell ausgeführt
+beziehungsweise erneut versucht werden. Fehler, Versuche und externe Referenzen
+sind in der Detailansicht nachvollziehbar. Nachweise: `V3PrintingController`,
+die Templates unter `templates/v3/integration/printing` und die erweiterten
+mandantengebundenen Query-Tests.
+
 Standort-/Arbeitsplatz-Routing, herstellerspezifische Adapter, automatische
-Worker-Ausführung und UI fehlen weiterhin; das Ticket ist deshalb nicht `Done`.
+Worker-Ausführung und vollständige HTTP-/MariaDB-Integrationstests fehlen
+weiterhin; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 

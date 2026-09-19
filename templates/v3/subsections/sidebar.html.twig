@@ -102,6 +102,12 @@
                     </li>
                 {% endif %}
 
+                {% if is_granted('integration.print_job.read') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('v3_printing_index') }}">Druckwarteschlange</a>
+                    </li>
+                {% endif %}
+
                 {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('v3_administration_index') }}">Administration</a>

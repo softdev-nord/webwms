@@ -11,7 +11,7 @@ Alle 13 dokumentierten Funktionen des Bereichs Integration & Technik werden fach
 | [WEBWMS-088](../tickets/WEBWMS-088.md) | Shop- und Marktplatzintegration implementieren | Offen | High | 13 |
 | [WEBWMS-089](../tickets/WEBWMS-089.md) | Carrier-Integration implementieren | Teilweise umgesetzt | Highest | 13 |
 | [WEBWMS-090](../tickets/WEBWMS-090.md) | Scanner und MDE implementieren | Offen | Highest | 8 |
-| [WEBWMS-091](../tickets/WEBWMS-091.md) | Drucker implementieren | Backend umgesetzt | Highest | 8 |
+| [WEBWMS-091](../tickets/WEBWMS-091.md) | Drucker implementieren | Teilweise umgesetzt | Highest | 8 |
 | [WEBWMS-092](../tickets/WEBWMS-092.md) | Waagen und Volumenmessung implementieren | Offen | Medium | 8 |
 | [WEBWMS-093](../tickets/WEBWMS-093.md) | Lagerlifte und Paternoster implementieren | Offen | Medium | 13 |
 | [WEBWMS-094](../tickets/WEBWMS-094.md) | WCS/MFR/Fördertechnik implementieren | Offen | Medium | 13 |

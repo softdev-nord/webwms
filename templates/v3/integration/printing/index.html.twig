@@ -1,0 +1,92 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+		<div>
+			<h1 class="h3 mb-1">Druckwarteschlange</h1>
+			<p class="text-muted mb-0">Drucker verwalten und Etiketten- sowie Dokumentenaufträge überwachen</p>
+		</div>
+		<div class="d-flex gap-2">
+			{% if is_granted('integration.printer.write') %}
+				<a class="btn btn-outline-primary" href="{{ path('v3_printing_printer_new') }}">Drucker anlegen</a>
+			{% endif %}
+			{% if is_granted('integration.print_job.write') %}
+				<a class="btn btn-primary" href="{{ path('v3_printing_job_new') }}">Druckauftrag anlegen</a>
+			{% endif %}
+		</div>
+	</div>
+
+	{% if is_granted('integration.printer.read') %}
+		<div class="card border-0 shadow-sm mb-4">
+			<div class="card-header bg-transparent"><h2 class="h5 mb-0">Drucker</h2></div>
+			<div class="table-responsive">
+				<table class="table table-hover align-middle mb-0">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Endpunkt</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for printer in printers %}
+							<tr>
+								<td class="fw-semibold">{{ printer.name }}</td>
+								<td><code>{{ printer.endpoint_url }}</code></td>
+								<td>
+									{% if printer.active %}
+										<span class="badge bg-success-subtle text-success">Aktiv</span>
+									{% else %}
+										<span class="badge bg-secondary-subtle text-secondary">Pausiert</span>
+									{% endif %}
+								</td>
+								<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_printing_printer_show', {printerId: printer.id}) }}">Öffnen</a></td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="4" class="text-center text-muted py-4">Noch keine Drucker vorhanden.</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	{% endif %}
+
+	<div class="card border-0 shadow-sm">
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Letzte Druckaufträge</h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead>
+					<tr>
+						<th>Dokument</th>
+						<th>Drucker</th>
+						<th>Format</th>
+						<th>Status</th>
+						<th>Versuche</th>
+						<th>Zeitpunkt</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for job in jobs %}
+						<tr>
+							<td><div class="fw-semibold">{{ job.document_type }}</div><code>{{ job.document_reference }}</code></td>
+							<td>{{ job.printer_name }}</td>
+							<td>{{ job.format }} · {{ job.copies }}×</td>
+							<td><span class="badge bg-secondary-subtle text-secondary">{{ job.status }}</span></td>
+							<td>{{ job.attempts }}</td>
+							<td>{{ job.created_at }}</td>
+							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_printing_job_show', {jobId: job.id}) }}">Öffnen</a></td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="7" class="text-center text-muted py-5">Noch keine Druckaufträge vorhanden.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
