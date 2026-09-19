@@ -35,3 +35,6 @@ aktuellen Prozess endgültig.
 - Buchen Sie die Übergabe erst, wenn das Label registriert ist.
 - Bewahren Sie das eigentliche Label im angebundenen Dokument- oder
   Carrier-System auf; WebWMS speichert in diesem Slice dessen Referenz.
+
+Für Integrationen steht der Ablauf auch über die
+[API v3](shipping-api.md) zur Verfügung.

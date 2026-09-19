@@ -46,10 +46,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 **Status:** Backend umgesetzt
 
-Sendungs- und Trackingnummer mit Eindeutigkeitsregeln. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Sendungs- und Trackingnummer besitzen mandantenbezogene Eindeutigkeitsregeln und sind über `GET /api/v3/shipments/{id}` abrufbar. Labelregistrierung und Carrier-Übergabe liefern den aktuellen Status und die Trackingnummer zurück.
+
+Nachweise: `ShippingApiController`, `ApiV3QueryService::shipment()`, `ShipmentResult`, die Eindeutigkeitsindizes aus `Version20260917140000` und `docs/technical/shipping-api.md`.
+
+Aktive Statusrückmeldung an ERP/Shop, Trackingevents nach der Übergabe, UI und vollständige API-Integrationstests fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-058
 - Referenz: https://www.coglas.com/versand/
-

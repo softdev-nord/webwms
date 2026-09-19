@@ -29,6 +29,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Kundenauftrag, Reservierung und Allokation](technical/outbound-order-api.md)
 - [Picklisten und Pickaufträge über API v3](technical/picking-api.md)
 - [Packprozess über API v3](technical/packing-api.md)
+- [Versandprozess über API v3](technical/shipping-api.md)
 - [Architekturübersicht](architecture/README.md)
 
 ## Anwenderdokumentation
@@ -55,6 +56,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Kundenaufträge über API v3 bearbeiten](user/outbound-order-api.md)
 - [Kommissionierung über API v3 durchführen](user/picking-api.md)
 - [Packprozess über API v3 durchführen](user/packing-api.md)
+- [Versandprozess über API v3 durchführen](user/shipping-api.md)
 
 ## Verbindliche Dokumentationsregel
 

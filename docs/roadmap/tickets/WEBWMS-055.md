@@ -46,9 +46,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 **Status:** Teilweise umgesetzt
 
-Pack- und Versandkern sind vorhanden. Die API v3 deckt inzwischen den durchgängigen technischen Übergang von Kundenauftrag, Reservierung und Picking bis zu Packauftrag, Packstück und Packabschluss ab. Nachweise für den Packanteil: `PackingApiController`, `ApiV3QueryService::packingOrder()` und `docs/technical/packing-api.md`.
+Pack- und Versandkern sind vorhanden. Die API v3 deckt inzwischen den durchgängigen technischen Übergang von Kundenauftrag, Reservierung und Picking über Packauftrag und Packstück bis zu Sendung, Labelregistrierung und Carrier-Übergabe ab. Nachweise: `PackingApiController`, `ShippingApiController`, die Projektionen in `ApiV3QueryService` sowie die technische API-Dokumentation.
 
-Ein scanbasierter Dialog, Labelerzeugung und die direkte Versandfreigabe in einem kombinierten Prozess fehlen weiterhin; das Ticket bleibt deshalb `Teilweise umgesetzt`.
+Ein scanbasierter Dialog und die tatsächliche Labelerzeugung über eine Carrier-Anbindung fehlen weiterhin; das Ticket bleibt deshalb `Teilweise umgesetzt`.
 
 ## Quelle
 

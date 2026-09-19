@@ -42,3 +42,7 @@ Carrier-API, Erzeugung und Speicherung der Labeldatei, Mehrpaketsendungen,
 Storno, Manifest/Ladeliste, Zustellstatus und ERP-Rückmeldung sind noch nicht
 Bestandteil dieses Slices. Der integrationsneutrale Kern stellt dafür stabile
 Referenzen und Zustände bereit.
+
+Die API-v3-Anbindung des vorhandenen Versandkerns ist unter
+[Versandprozess über API v3](shipping-api.md) dokumentiert. Sie benötigt keine
+zusätzliche Migration.

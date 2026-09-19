@@ -748,14 +748,14 @@ final readonly class DbalInventoryRepository implements InventoryRepository
     {
         return $this->connection->transactional(function (Connection $connection) use ($dispatch): ShipmentResult {
             $shipment = $connection->fetchAssociative(
-                "SELECT tracking_number FROM wms_shipment WHERE id = :id AND tenant_id = :tenantId AND status = 'labelled' FOR UPDATE",
+                "SELECT s.tracking_number FROM wms_shipment s WHERE s.id = :id AND s.tenant_id = :tenantId AND s.status = 'labelled' AND NOT EXISTS (SELECT 1 FROM wms_loading_manifest_shipment m WHERE m.shipment_id = s.id) FOR UPDATE",
                 ['id' => $dispatch->shipmentId()->value(), 'tenantId' => $dispatch->tenantId()->value()],
             );
             if ($shipment === false || $connection->fetchOne(
                 'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
                 ['userId' => $dispatch->dispatchedBy()->value(), 'tenantId' => $dispatch->tenantId()->value()],
             ) === false) {
-                throw new InventoryReferenceNotFoundException('A labelled shipment and dispatching user must exist in the tenant.');
+                throw new InventoryReferenceNotFoundException('A directly dispatchable labelled shipment and dispatching user must exist in the tenant.');
             }
             $connection->update('wms_shipment', [
                 'status' => 'dispatched', 'handover_reference' => $dispatch->handoverReference(),

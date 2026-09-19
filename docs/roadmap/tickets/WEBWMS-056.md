@@ -46,10 +46,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 **Status:** Backend umgesetzt
 
-Carrier und Service im `Shipment`-Modell. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Carrier und Service sind Bestandteil des `Shipment`-Modells und werden über `POST /api/v3/packing-orders/{id}/shipments` explizit ausgewählt. Der Endpunkt ist mandantengebunden und mit `fulfillment.ship.write` geschützt.
+
+Nachweise: `ShippingApiController::create()`, `CreateShipmentHandler`, `Shipment`, `DbalInventoryRepository::saveShipment()`, `ShipmentTest` sowie `docs/technical/shipping-api.md` und `docs/user/shipping-api.md`.
+
+Versandregeln, Carrier-Stammdaten, UI und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-056
 - Referenz: https://www.coglas.com/versand/
-

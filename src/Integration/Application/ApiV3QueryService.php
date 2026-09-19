@@ -191,4 +191,22 @@ final readonly class ApiV3QueryService
 
         return $order;
     }
+
+    /** @return array<string, mixed>|null */
+    public function shipment(string $tenantId, string $shipmentId): ?array
+    {
+        $shipment = $this->connection->fetchAssociative(
+            'SELECT s.id, s.packing_order_id, p.pick_list_id, l.outbound_order_id, '
+            . 's.shipment_number, s.carrier, s.service, s.status, s.tracking_number, '
+            . 's.label_reference, s.handover_reference, s.created_by, s.created_at, '
+            . 's.updated_at, s.label_registered_by, s.label_registered_at, '
+            . 's.dispatched_by, s.dispatched_at '
+            . 'FROM wms_shipment s INNER JOIN wms_packing_order p ON p.id = s.packing_order_id '
+            . 'INNER JOIN wms_pick_list l ON l.id = p.pick_list_id '
+            . 'WHERE s.id = :shipmentId AND s.tenant_id = :tenantId',
+            ['shipmentId' => $shipmentId, 'tenantId' => $tenantId],
+        );
+
+        return $shipment === false ? null : $shipment;
+    }
 }

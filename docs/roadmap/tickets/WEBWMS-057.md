@@ -46,10 +46,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 **Status:** Backend umgesetzt
 
-`ShipmentLabel` und Labelreferenz; Carrier-API fehlt. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`ShipmentLabel` speichert Trackingnummer und externe Labelreferenz über den berechtigten Endpunkt `POST /api/v3/shipments/{id}/label`. Der Zustandswechsel von `prepared` nach `labelled` erfolgt transaktional und wird mit Benutzer und Zeitpunkt auditiert.
+
+Nachweise: `ShippingApiController::registerLabel()`, `RegisterShipmentLabelHandler`, `ShipmentLabel`, `DbalInventoryRepository::registerShipmentLabel()` und `ShipmentTest`.
+
+Carrier-API, Erzeugung und Druck der Labeldatei, UI sowie vollständige API-Integrationstests fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-057
 - Referenz: https://www.coglas.com/versand/
-

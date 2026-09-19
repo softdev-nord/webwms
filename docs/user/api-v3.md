@@ -38,4 +38,5 @@ curl -X POST -H 'Content-Type: application/json' \
 Fehler werden als JSON mit HTTP-Status und einer kurzen Beschreibung zurückgegeben. Bei 401 ist das Credential ungültig; bei 403 fehlt dem Client die erforderliche Berechtigung.
 
 Die weiterführenden Abläufe sind unter [Kundenaufträge](outbound-order-api.md),
-[Kommissionierung](picking-api.md) und [Packprozess](packing-api.md) beschrieben.
+[Kommissionierung](picking-api.md), [Packprozess](packing-api.md) und
+[Versandprozess](shipping-api.md) beschrieben.

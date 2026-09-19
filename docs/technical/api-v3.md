@@ -36,6 +36,10 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `GET` | `/api/v3/packing-orders/{id}` | `fulfillment.pack.read` | Packauftrag und Packstücke lesen |
 | `POST` | `/api/v3/packing-orders/{id}/packages` | `fulfillment.pack.write` | Versiegeltes Packstück erfassen |
 | `POST` | `/api/v3/packing-orders/{id}/complete` | `fulfillment.pack.execute` | Vollständigkeit prüfen und abschließen |
+| `POST` | `/api/v3/packing-orders/{id}/shipments` | `fulfillment.ship.write` | Sendung erzeugen |
+| `GET` | `/api/v3/shipments/{id}` | `fulfillment.ship.read` | Sendung und Trackingstatus lesen |
+| `POST` | `/api/v3/shipments/{id}/label` | `fulfillment.ship.label` | Labelreferenz und Tracking registrieren |
+| `POST` | `/api/v3/shipments/{id}/dispatch` | `fulfillment.ship.dispatch` | Carrier-Übergabe bestätigen |
 
 Listen akzeptieren `limit` von 1 bis 100. Artikel und Bestände unterstützen einen opaken `cursor`; der Folgewert steht in `meta.nextCursor`. Bestände können mit `warehouseId` eingeschränkt werden.
 
@@ -49,7 +53,7 @@ Erfolgreiche Antworten enthalten `data`, Listen zusätzlich `meta`. Fehler verwe
 
 ## Bekannte Restarbeiten
 
-- Sendungen und Statusereignisse als Ressourcen;
+- Bewegungs- und ausgehende Statusereignisse als Ressourcen;
 - OpenAPI-Vertrag und API-Integrationstests mit MariaDB;
 - Rotation und Widerruf von Secrets über eine Administrationsoberfläche;
 - Rate-Limiting und technische Verbrauchsmetriken.
