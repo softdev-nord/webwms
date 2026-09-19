@@ -13,8 +13,12 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\StockMovementCriteria;
 use WebWMS\Inventory\Application\RegisterProductCommand;
 use WebWMS\Inventory\Application\RegisterProductHandler;
+use WebWMS\Inventory\Application\TransferStockCommand;
+use WebWMS\Inventory\Application\TransferStockHandler;
+use WebWMS\Inventory\Domain\StockStatus;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3', name: 'api_v3_')]
@@ -22,7 +26,8 @@ final class InventoryApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
-        private readonly RegisterProductHandler $registerProduct
+        private readonly RegisterProductHandler $registerProduct,
+        private readonly TransferStockHandler $transferStock
     ) {
     }
 
@@ -91,6 +96,66 @@ final class InventoryApiController extends AbstractController
         return $this->collection($items, 'cursor');
     }
 
+    #[Route('/stock-movements', name: 'stock_movements', methods: ['GET'])]
+    #[IsGranted('inventory.stock.movement.read')]
+    public function stockMovements(Request $request): JsonResponse
+    {
+        $items = $this->queries->stockMovements(
+            $this->apiUser()->tenantId(),
+            new StockMovementCriteria(
+                $this->optionalQueryString($request, 'productId'),
+                $this->optionalQueryString($request, 'locationId'),
+                $this->optionalQueryString($request, 'transferId'),
+                $this->optionalQueryString($request, 'movementType'),
+            ),
+            $this->limit($request),
+            $this->optionalQueryString($request, 'cursor'),
+        );
+
+        return $this->collection($items, 'id');
+    }
+
+    #[Route('/stock-transfers', name: 'stock_transfer', methods: ['POST'])]
+    #[IsGranted('inventory.stock.transfer')]
+    public function transferStock(Request $request): JsonResponse
+    {
+        /** @var array<string, mixed> $payload */
+        $payload = $request->toArray();
+        $sourceStatus = $this->stockStatus($payload, 'sourceStatus', StockStatus::Available->value);
+        $destinationStatus = $this->stockStatus($payload, 'destinationStatus', StockStatus::Available->value);
+        $transferId = $this->optionalUuid($payload, 'id') ?? Uuid::v7()->toRfc4122();
+        $sourcePostingId = Uuid::v7()->toRfc4122();
+        $destinationPostingId = Uuid::v7()->toRfc4122();
+        $result = ($this->transferStock)(new TransferStockCommand(
+            $transferId,
+            $sourcePostingId,
+            $destinationPostingId,
+            $this->apiUser()->tenantId(),
+            $this->requiredString($payload, 'productId'),
+            $this->requiredString($payload, 'sourceLocationId'),
+            $this->requiredString($payload, 'destinationLocationId'),
+            $this->requiredPositiveInt($payload, 'quantity'),
+            $this->requiredString($payload, 'reason'),
+            $this->apiUser()->actorId(),
+            new DateTimeImmutable(),
+            $sourceStatus,
+            $destinationStatus,
+            $this->optionalString($payload, 'batchNumber'),
+            $this->optionalString($payload, 'serialNumber'),
+            $this->optionalDate($payload, 'expiresAt'),
+        ));
+
+        return $this->data([
+            'id' => $transferId,
+            'sourcePostingId' => $sourcePostingId,
+            'destinationPostingId' => $destinationPostingId,
+            'sourceQuantity' => $result->sourceQuantity,
+            'destinationQuantity' => $result->destinationQuantity,
+            'sourceStatus' => $sourceStatus,
+            'destinationStatus' => $destinationStatus,
+        ], Response::HTTP_CREATED);
+    }
+
     private function apiUser(): TenantPermissionUser
     {
         $user = $this->getUser();
@@ -107,6 +172,68 @@ final class InventoryApiController extends AbstractController
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
             throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+        }
+
+        return $value;
+    }
+
+    /** @param array<string, mixed> $payload */
+    private function requiredPositiveInt(array $payload, string $field): int
+    {
+        $value = $payload[$field] ?? null;
+        if (!is_int($value) || $value < 1) {
+            throw new \InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
+        }
+
+        return $value;
+    }
+
+    /** @param array<string, mixed> $payload */
+    private function optionalString(array $payload, string $field): ?string
+    {
+        $value = $payload[$field] ?? null;
+        if ($value === null) {
+            return null;
+        }
+        if (!is_string($value) || trim($value) === '') {
+            throw new \InvalidArgumentException(sprintf('Field "%s" must be null or a non-empty string.', $field));
+        }
+
+        return $value;
+    }
+
+    /** @param array<string, mixed> $payload */
+    private function optionalDate(array $payload, string $field): ?DateTimeImmutable
+    {
+        $value = $this->optionalString($payload, $field);
+        if ($value === null) {
+            return null;
+        }
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $value);
+        if ($date === false || $date->format('Y-m-d') !== $value) {
+            throw new \InvalidArgumentException(sprintf('Field "%s" must use YYYY-MM-DD.', $field));
+        }
+
+        return $date;
+    }
+
+    /** @param array<string, mixed> $payload */
+    private function optionalUuid(array $payload, string $field): ?string
+    {
+        $value = $this->optionalString($payload, $field);
+        if ($value !== null && !Uuid::isValid($value)) {
+            throw new \InvalidArgumentException(sprintf('Field "%s" must contain a UUID.', $field));
+        }
+
+        return $value;
+    }
+
+    /** @param array<string, mixed> $payload */
+    private function stockStatus(array $payload, string $field, string $default): string
+    {
+        $value = $payload[$field] ?? $default;
+        if (!is_string($value) || StockStatus::tryFrom($value) === null) {
+            throw new \InvalidArgumentException(sprintf('Field "%s" contains an invalid stock status.', $field));
         }
 
         return $value;

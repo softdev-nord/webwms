@@ -23,6 +23,8 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `POST` | `/api/v3/products` | `inventory.product.write` | Artikel anlegen |
 | `GET` | `/api/v3/warehouses` | `inventory.location.read` | Lager lesen |
 | `GET` | `/api/v3/stock` | `inventory.stock.read` | Bestand und verfügbare Menge lesen |
+| `GET` | `/api/v3/stock-movements` | `inventory.stock.movement.read` | Bewegungsjournal filtern und lesen |
+| `POST` | `/api/v3/stock-transfers` | `inventory.stock.transfer` | Bestand atomar umlagern oder Status ändern |
 | `POST` | `/api/v3/orders` | `outbound.order.write` | Kundenauftrag importieren |
 | `GET` | `/api/v3/orders/{id}` | `outbound.order.read` | Kundenauftrag lesen |
 | `POST` | `/api/v3/orders/{id}/release` | `outbound.order.release` | Auftrag freigeben und reservieren |
@@ -48,7 +50,7 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `POST` | `/api/v3/outbox/{id}/acknowledgement` | `integration.outbox.acknowledge` | Verarbeitung idempotent quittieren |
 | `POST` | `/api/v3/outbox/{id}/retry` | `integration.outbox.retry` | Dead Letter geprüft wiederaufnehmen |
 
-Listen akzeptieren `limit` von 1 bis 100. Artikel, Bestände und Outbox-Nachrichten unterstützen einen opaken `cursor`; der Folgewert steht in `meta.nextCursor`. Bestände können mit `warehouseId` eingeschränkt werden.
+Listen akzeptieren `limit` von 1 bis 100. Artikel, Bestände, Bestandsbewegungen und Outbox-Nachrichten unterstützen einen opaken `cursor`; der Folgewert steht in `meta.nextCursor`. Bestände können mit `warehouseId`, Bewegungen mit Artikel, Lagerplatz, Transfer-ID und Bewegungsart eingeschränkt werden.
 
 ## Mandantentrennung
 
@@ -60,7 +62,6 @@ Erfolgreiche Antworten enthalten `data`, Listen zusätzlich `meta`. Fehler verwe
 
 ## Bekannte Restarbeiten
 
-- Bestandsbewegungen als API-Ressourcen;
 - konkrete ERP-, Shop- und Webhook-Handler für die Integrationsqueue;
 - OpenAPI-Vertrag und API-Integrationstests mit MariaDB;
 - Rotation und Widerruf von Secrets über eine Administrationsoberfläche;

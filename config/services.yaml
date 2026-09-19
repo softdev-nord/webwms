@@ -65,6 +65,7 @@ services:
             - '../src/Integration/Application/*Command.php'
             - '../src/Integration/Application/OutboxPublishReport.php'
             - '../src/Integration/Application/PublishedIntegrationMessage.php'
+            - '../src/Integration/Application/StockMovementCriteria.php'
             - '../src/Inventory/Domain/'
             - '../src/Inventory/Application/*Command.php'
 

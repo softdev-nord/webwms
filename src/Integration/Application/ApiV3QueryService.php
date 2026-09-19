@@ -59,6 +59,43 @@ final readonly class ApiV3QueryService
         );
     }
 
+    /** @return list<array<string, mixed>> */
+    public function stockMovements(
+        string $tenantId,
+        StockMovementCriteria $criteria,
+        int $limit,
+        ?string $cursor
+    ): array {
+        return $this->connection->fetchAllAssociative(
+            'SELECT e.id, e.product_id, p.sku, e.location_id, l.code location_code, '
+            . 'e.stock_status, e.batch_number, e.serial_number, e.expires_at, '
+            . 'e.quantity_delta, e.resulting_quantity, e.movement_type, e.transfer_id, '
+            . 'e.allocation_id, e.reservation_id, e.reason, e.performed_by, e.occurred_at '
+            . 'FROM wms_stock_ledger e INNER JOIN wms_product_reference p ON p.id = e.product_id '
+            . 'INNER JOIN wms_storage_location l ON l.id = e.location_id '
+            . 'WHERE e.tenant_id = :tenantId '
+            . 'AND (:productFilter IS NULL OR e.product_id = :productId) '
+            . 'AND (:locationFilter IS NULL OR e.location_id = :locationId) '
+            . 'AND (:transferFilter IS NULL OR e.transfer_id = :transferId) '
+            . 'AND (:movementTypeFilter IS NULL OR e.movement_type = :movementType) '
+            . 'AND (:cursorFilter IS NULL OR e.id > :cursorValue) '
+            . 'ORDER BY e.id LIMIT ' . $limit,
+            [
+                'tenantId' => $tenantId,
+                'productFilter' => $criteria->productId,
+                'productId' => $criteria->productId ?? '',
+                'locationFilter' => $criteria->locationId,
+                'locationId' => $criteria->locationId ?? '',
+                'transferFilter' => $criteria->transferId,
+                'transferId' => $criteria->transferId ?? '',
+                'movementTypeFilter' => $criteria->movementType,
+                'movementType' => $criteria->movementType ?? '',
+                'cursorFilter' => $cursor,
+                'cursorValue' => $cursor ?? '',
+            ],
+        );
+    }
+
     /** @return array<string, mixed>|null */
     public function outboundOrder(string $tenantId, string $orderId): ?array
     {

@@ -2,7 +2,7 @@
 id: WEBWMS-084
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Backend umgesetzt
 priority: Highest
 story_points: 13
 component: "Integration & Technik"
@@ -44,13 +44,19 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Backend umgesetzt
 
 Unter `/api/v3` steht eine eigenständige, versionierte JSON-Schnittstelle mit mandantengebundenen API-Key-Clients, granularen Berechtigungen, RFC-7807-artigen Fehlerantworten und Cursor-Paginierung bereit. Als erste vertikale Ressourcen sind Artikel (Lesen/Anlegen), Lager und Echtzeitbestände angebunden. Mandanten-IDs werden ausschließlich aus der authentifizierten Identität übernommen.
 
 Nachweise: `ApiKeyAuthenticator`, `ApiClientUser`, `ApiExceptionSubscriber`, `ApiV3QueryService`, `InventoryApiController`, Konsolenkommando `webwms:api-client:create` und Migration `Version20260918180000`.
 
-Kundenaufträge, Freigaben, Reservierungen, Allokationen sowie auftragsreine Picklisten, Zuweisungen und Pickbestätigungen sind inzwischen ebenfalls als API-v3-Ressourcen verfügbar. Pack-, Versand- und Verladeprozess ergänzen Packauftrag, Packstücke, Sendung, Tracking, Labelreferenz, Lademanifest und Carrier-Übergabe. Ausgehende Statusereignisse stehen über die mandantengebundene Outbox-API mit Cursor und Quittierung bereit. Nachweise: die API-v3-Controller, Projektionen in `ApiV3QueryService` und die zugehörige API-Dokumentation. Bestandsbewegungsressourcen sowie vollständige API-Integrationstests fehlen noch. Das Ticket bleibt deshalb `Teilweise umgesetzt`.
+Kundenaufträge, Freigaben, Reservierungen, Allokationen sowie auftragsreine Picklisten, Zuweisungen und Pickbestätigungen sind ebenfalls als API-v3-Ressourcen verfügbar. Pack-, Versand- und Verladeprozess ergänzen Packauftrag, Packstücke, Sendung, Tracking, Labelreferenz, Lademanifest und Carrier-Übergabe. Ausgehende Statusereignisse stehen über die mandantengebundene Outbox-API bereit.
+
+Der Bestandsbereich umfasst nun außerdem atomare Umlagerungen und Statusumbuchungen über `POST /api/v3/stock-transfers` sowie das filter- und cursorbasierte Bewegungsjournal unter `GET /api/v3/stock-movements`. Clientseitig vorgegebene Transfer-IDs ermöglichen eine sichere Wiederholungsprüfung.
+
+Nachweise: die API-v3-Controller, `ApiV3QueryService`, `StockMovementCriteria`, der vorhandene `TransferStockHandler`, Unit-Tests sowie `docs/technical/inventory-movement-api.md` und `docs/user/inventory-movement-api.md`.
+
+Ein formaler OpenAPI-Vertrag, vollständige HTTP-Integrationstests mit MariaDB und weitere Stammdatenressourcen fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
