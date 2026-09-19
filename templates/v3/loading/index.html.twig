@@ -1,0 +1,48 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<div>
+			<h1 class="h3 mb-1">Verladung</h1>
+			<p class="text-muted mb-0">Sendungen nach Tour und Fahrzeug gruppieren und kontrolliert verladen</p>
+		</div>
+		{% if is_granted('fulfillment.loading.write') %}
+			<a class="btn btn-primary" href="{{ path('v3_loading_new') }}">Lademanifest anlegen</a>
+		{% endif %}
+	</div>
+
+	<div class="card border-0 shadow-sm">
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead>
+					<tr>
+						<th>Manifest</th>
+						<th>Tour</th>
+						<th>Fahrzeug</th>
+						<th>Status</th>
+						<th>Fortschritt</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for manifest in manifests %}
+						<tr>
+							<td class="fw-semibold">{{ manifest.code }}</td>
+							<td>{{ manifest.tour_reference }}</td>
+							<td>{{ manifest.vehicle_reference }}</td>
+							<td><span class="badge bg-secondary-subtle text-secondary">{{ manifest.status }}</span></td>
+							<td>{{ manifest.loaded_shipment_count }}/{{ manifest.shipment_count }}</td>
+							<td class="text-end">
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_loading_show', {manifestId: manifest.id}) }}">Öffnen</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6" class="text-center text-muted py-5">Noch keine Lademanifeste vorhanden.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

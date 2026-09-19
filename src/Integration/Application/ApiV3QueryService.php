@@ -395,6 +395,34 @@ final readonly class ApiV3QueryService
     }
 
     /** @return list<array<string, mixed>> */
+    public function loadingManifests(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT m.id, m.code, m.tour_reference, m.vehicle_reference, m.status, m.created_at, '
+            . 'COUNT(ms.shipment_id) shipment_count, '
+            . "COALESCE(SUM(CASE WHEN ms.status = 'loaded' THEN 1 ELSE 0 END), 0) loaded_shipment_count "
+            . 'FROM wms_loading_manifest m '
+            . 'LEFT JOIN wms_loading_manifest_shipment ms ON ms.manifest_id = m.id '
+            . 'WHERE m.tenant_id = :tenantId '
+            . 'GROUP BY m.id, m.code, m.tour_reference, m.vehicle_reference, m.status, m.created_at '
+            . 'ORDER BY m.created_at DESC, m.id DESC',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function shipmentsAvailableForLoading(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT s.id, s.shipment_number, s.carrier, s.service, s.tracking_number '
+            . "FROM wms_shipment s WHERE s.tenant_id = :tenantId AND s.status = 'labelled' "
+            . 'AND NOT EXISTS (SELECT 1 FROM wms_loading_manifest_shipment ms WHERE ms.shipment_id = s.id) '
+            . 'ORDER BY s.created_at, s.id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
     public function outboxMessages(string $tenantId, string $status, int $limit, ?string $cursor): array
     {
         $messages = $this->connection->fetchAllAssociative(

@@ -30,9 +30,10 @@ Der zweite und jeder weitere Lauf verändert den bestehenden Benutzer und seinen
 7. Eine Pickliste erzeugen, unter **Picking** selbst zuweisen und die Position bestätigen.
 8. Aus der abgeschlossenen Pickliste einen Packauftrag erzeugen, die Position in ein Paket übernehmen und den Packauftrag abschließen.
 9. Eine Sendung erzeugen, Demo-Tracking und Label-Referenz registrieren und das Label an den `Demo ZPL Drucker` senden.
-10. Die Übergabe mit einer Referenz bestätigen.
-11. Unter **Administration** eine eingeschränkte Rolle und einen Benutzer mit E-Mail-Anmeldung anlegen.
-12. Einen API-Client erzeugen und das nur einmal angezeigte Credential sicher kopieren.
+10. Unter **Verladung** ein Manifest für die etikettierte Sendung mit Tour- und Fahrzeugreferenz anlegen.
+11. Die Sendung als verladen bestätigen und anschließend das vollständige Manifest abschließen. Die Sendung wechselt dabei auf `dispatched`.
+12. Unter **Administration** eine eingeschränkte Rolle und einen Benutzer mit E-Mail-Anmeldung anlegen.
+13. Einen API-Client erzeugen und das nur einmal angezeigte Credential sicher kopieren.
 
 Der Bootstrap legt einen Demo-Mandanten, Standort, Administrator mit allen derzeitigen V3-Berechtigungen, ein Lager, zwei Lagerplätze, zwei Artikel, Anfangsbestände, einen offenen Beispielauftrag und einen Demo-ZPL-Drucker an. Der Drucker dient nur zum Testen der Warteschlange; eine Ausführung erfordert eine echte Druckeranbindung. Es werden keine Zugangsdaten im Repository gespeichert.
 

@@ -15,9 +15,9 @@ Alle 17 dokumentierten Funktionen des Bereichs Warenausgang & Versand werden fac
 | [WEBWMS-057](../tickets/WEBWMS-057.md) | Carrier-Label implementieren | Teilweise umgesetzt | Highest | 8 |
 | [WEBWMS-058](../tickets/WEBWMS-058.md) | Sendungsnummer und Tracking implementieren | Teilweise umgesetzt | Highest | 5 |
 | [WEBWMS-059](../tickets/WEBWMS-059.md) | Versanddokumente implementieren | Offen | Highest | 5 |
-| [WEBWMS-060](../tickets/WEBWMS-060.md) | Tourenverwaltung implementieren | Backend umgesetzt | High | 8 |
-| [WEBWMS-061](../tickets/WEBWMS-061.md) | Verladescan implementieren | Backend umgesetzt | High | 5 |
+| [WEBWMS-060](../tickets/WEBWMS-060.md) | Tourenverwaltung implementieren | Teilweise umgesetzt | High | 8 |
+| [WEBWMS-061](../tickets/WEBWMS-061.md) | Verladescan implementieren | Teilweise umgesetzt | High | 5 |
 | [WEBWMS-062](../tickets/WEBWMS-062.md) | Gewichtsrestriktionen implementieren | Offen | Medium | 5 |
-| [WEBWMS-063](../tickets/WEBWMS-063.md) | Ladelisten implementieren | Backend umgesetzt | High | 2 |
+| [WEBWMS-063](../tickets/WEBWMS-063.md) | Ladelisten implementieren | Teilweise umgesetzt | High | 2 |
 | [WEBWMS-064](../tickets/WEBWMS-064.md) | CMR-Frachtbrief implementieren | Offen | Medium | 5 |
 | [WEBWMS-065](../tickets/WEBWMS-065.md) | Statusrückmeldung implementieren | Backend umgesetzt | Highest | 8 |

@@ -78,6 +78,12 @@
                     </li>
                 {% endif %}
 
+                {% if is_granted('fulfillment.loading.read') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('v3_loading_index') }}">Verladung</a>
+                    </li>
+                {% endif %}
+
                 {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('v3_administration_index') }}">Administration</a>

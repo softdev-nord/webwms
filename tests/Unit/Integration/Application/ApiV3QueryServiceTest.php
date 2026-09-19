@@ -101,4 +101,42 @@ final class ApiV3QueryServiceTest extends TestCase
 
         self::assertSame([], (new ApiV3QueryService($connection))->shipments('tenant-id'));
     }
+
+    public function testLoadingManifestListIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAllAssociative')
+            ->with(
+                self::callback(static function (string $sql): bool {
+                    self::assertStringContainsString('WHERE m.tenant_id = :tenantId', $sql);
+
+                    return true;
+                }),
+                ['tenantId' => 'tenant-id'],
+            )
+            ->willReturn([]);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->loadingManifests('tenant-id'));
+    }
+
+    public function testAvailableLoadingShipmentsAreLabelledAndUnassigned(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAllAssociative')
+            ->with(
+                self::callback(static function (string $sql): bool {
+                    self::assertStringContainsString('s.tenant_id = :tenantId', $sql);
+                    self::assertStringContainsString("s.status = 'labelled'", $sql);
+                    self::assertStringContainsString('NOT EXISTS', $sql);
+
+                    return true;
+                }),
+                ['tenantId' => 'tenant-id'],
+            )
+            ->willReturn([]);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->shipmentsAvailableForLoading('tenant-id'));
+    }
 }

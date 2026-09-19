@@ -2,7 +2,7 @@
 id: WEBWMS-061
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Backend umgesetzt
+status: Teilweise umgesetzt
 priority: High
 story_points: 5
 component: "Warenausgang & Versand"
@@ -44,13 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Teilweise umgesetzt
 
-Der Endpunkt `POST /api/v3/loading-manifests/{id}/shipments/{shipmentId}/loading` bestätigt eine Sendung nur dann, wenn sie als offene Position genau diesem Manifest, seiner Tour und seinem Mandanten zugeordnet ist. Benutzer und Zeitpunkt werden je Position gespeichert; doppelte Bestätigungen werden verhindert.
+Der Endpunkt `POST /api/v3/loading-manifests/{id}/shipments/{shipmentId}/loading` bestätigt eine Sendung nur dann, wenn sie als offene Position genau diesem Manifest, seiner Tour und seinem Mandanten zugeordnet ist. Benutzer und Zeitpunkt werden je Position gespeichert; doppelte Bestätigungen werden verhindert. Dieselbe Operation steht im V3-Frontend positionsbezogen und CSRF-geschützt zur Verfügung.
 
-Nachweise: `LoadingApiController::confirm()`, `ConfirmShipmentLoadingHandler`, `ShipmentLoading`, `DbalInventoryRepository::confirmShipmentLoading()` und `docs/user/loading-api.md`.
+Nachweise: `LoadingApiController::confirm()`, `V3LoadingController::confirm()`, `ConfirmShipmentLoadingHandler`, `ShipmentLoading`, `DbalInventoryRepository::confirmShipmentLoading()` und `docs/user/loading-api.md`.
 
-Scanner-UI und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+Eine echte Barcode-Scanner-Anbindung und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
