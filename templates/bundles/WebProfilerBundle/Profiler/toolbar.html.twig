@@ -1,15 +1,9 @@
 {# templates/bundles/WebProfilerBundle/Profiler/toolbar.html.twig #}
 
-{% block webwms_article_input_fields_form %}
-    <!-- START of Symfony Web Debug Toolbar own template-->
-    <div id="sfMiniToolbar-{{ token }}" class="sf-minitoolbar" data-no-turbolink data-turbo="false">
-        <button type="button" title="Show Symfony toolbar" id="sfToolbarMiniToggler-{{ token }}" accesskey="D" aria-expanded="false" aria-controls="sfToolbarMainContent-{{ token }}">
-            {{ source('@WebProfiler/Icon/symfony.svg') }}
-        </button>
-    </div>
-    <div id="sfToolbarClearer-{{ token }}" class="sf-toolbar-clearer"></div>
+<!-- START of Symfony Web Debug Toolbar own template -->
+<div id="sfToolbarClearer-{{ token }}" class="sf-toolbar-clearer"></div>
 
-    <div id="sfToolbarMainContent-{{ token }}" class="sf-toolbarreset notranslate clear-fix" data-no-turbolink>
+<div id="sfToolbarMainContent-{{ token }}" class="sf-toolbarreset notranslate clear-fix" data-no-turbolink data-turbo="false">
         {% for name, template in templates %}
             {% if block('toolbar', template) is defined %}
                 {% with {
@@ -55,9 +49,9 @@
             <span class="text-first-small">web</span><span class="text-last-small">WMS</span>
         </div>
 
-        <button class="hide-button" type="button" id="sfToolbarHideButton-{{ token }}" title="Close Toolbar" accesskey="D" aria-expanded="true" aria-controls="sfToolbarMainContent-{{ token }}">
-            {{ source('@WebProfiler/Icon/close.svg') }}
-        </button>
-    </div>
-    <!-- END of Symfony Web Debug Toolbar own template -->
-{% endblock %}
+    <button class="sf-toolbar-toggle-button" type="button" id="sfToolbarToggleButton-{{ token }}" accesskey="D" aria-expanded="true" aria-controls="sfToolbarMainContent-{{ token }}" aria-label="Toggle Symfony Toolbar">
+        <i class="sf-toolbar-icon-opened" title="Close Toolbar">{{ source('@WebProfiler/Icon/close.svg') }}</i>
+        <i class="sf-toolbar-icon-closed" title="Open Toolbar">{{ source('@WebProfiler/Icon/symfony.svg') }}</i>
+    </button>
+</div>
+<!-- END of Symfony Web Debug Toolbar own template -->
