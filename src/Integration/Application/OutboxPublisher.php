@@ -44,7 +44,11 @@ final readonly class OutboxPublisher
                     min($this->maximumDelaySeconds, $this->baseDelaySeconds * (2 ** ($message->attemptNumber - 1))),
                 ));
                 $this->outbox->markFailed($message, mb_substr($exception->getMessage(), 0, 1000), $now, $nextAttemptAt);
-                $deadLetter ? ++$deadLettered : ++$retryScheduled;
+                if ($deadLetter) {
+                    ++$deadLettered;
+                } else {
+                    ++$retryScheduled;
+                }
             }
         }
 
