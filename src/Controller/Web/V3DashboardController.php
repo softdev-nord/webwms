@@ -32,7 +32,8 @@ final class V3DashboardController extends AbstractController
     public function stock(Request $request, ApiV3QueryService $queries): Response
     {
         $user = $this->tenantUser();
-        $warehouseId = trim((string) $request->query->get('warehouse')) ?: null;
+        $warehouse = trim((string) $request->query->get('warehouse'));
+        $warehouseId = $warehouse === '' ? null : $warehouse;
 
         return $this->render('v3/inventory/stock.html.twig', [
             'warehouses' => $queries->warehouses($user->tenantId()),
