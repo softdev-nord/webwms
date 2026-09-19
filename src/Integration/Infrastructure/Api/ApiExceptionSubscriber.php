@@ -14,8 +14,8 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use WebWMS\Integration\Domain\OutboxMessageNotFoundException;
 use WebWMS\Integration\Domain\ErpConnectionNotFoundException;
+use WebWMS\Integration\Domain\OutboxMessageNotFoundException;
 use WebWMS\Inventory\Domain\InsufficientAvailableStockException;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 
