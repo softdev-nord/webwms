@@ -1,8 +1,79 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}Pickliste {{ pickList.code }} | WebWMS 3.0{% endblock %}
-{% block body %}
-<div class="d-flex flex-wrap justify-content-between gap-3 mb-4"><div><a href="{{ path('v3_picking_index') }}" class="text-decoration-none">← Picking</a><h1 class="h3 mt-2 mb-1">{{ pickList.code }}</h1><p class="text-muted mb-0">Auftrag {{ pickList.order_number }}</p></div><span class="badge bg-secondary align-self-start fs-6">{{ pickList.status }}</span></div>
-{% if not pickList.assigned_to and is_granted('fulfillment.pick.assign') %}<form method="post" action="{{ path('v3_picking_assign', {pickListId: pickList.id}) }}" class="mb-4"><input type="hidden" name="_token" value="{{ csrf_token('v3_pick_assign_' ~ pickList.id) }}"><button class="btn btn-primary">Mir zuweisen und starten</button></form>{% endif %}
-<div class="row g-3">{% for task in pickList.tasks %}<div class="col-12"><div class="card border-0 shadow-sm {% if task.status != 'open' %}border-start border-success border-4{% endif %}"><div class="card-body"><div class="row align-items-center g-3"><div class="col-md-2"><div class="display-6">{{ task.sequence_number }}</div></div><div class="col-md-4"><small class="text-muted">Lagerplatz</small><div class="h4 mb-1">{{ task.location_code }}</div><div>{{ task.sku }}</div></div><div class="col-md-2"><small class="text-muted">Menge</small><div class="h3">{{ task.quantity }}</div></div><div class="col-md-4">{% if task.status != 'open' %}<span class="badge bg-success">{{ task.status }}</span>{% elseif pickList.assigned_to == app.user.actorId and is_granted('fulfillment.pick.execute') %}<form method="post" action="{{ path('v3_picking_confirm', {pickListId: pickList.id, taskId: task.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_pick_confirm_' ~ task.id) }}"><input class="form-control mb-2" name="note" value="Pick bestätigt" required><div class="d-flex gap-2"><button class="btn btn-success flex-grow-1" name="outcome" value="picked">Gepickt</button><button class="btn btn-outline-danger" name="outcome" value="shortage">Fehlbestand</button></div></form>{% else %}<span class="text-muted">Pickliste zuerst selbst zuweisen</span>{% endif %}</div></div></div></div></div>{% endfor %}</div>
-{% if pickList.packing_order_id %}<div class="mt-4"><a class="btn btn-primary" href="{{ path('v3_packing_show', {packingOrderId: pickList.packing_order_id}) }}">Packauftrag {{ pickList.packing_order_code }} öffnen</a></div>{% elseif pickList.status == 'completed' and is_granted('fulfillment.pack.write') %}<div class="card border-0 shadow-sm mt-4"><div class="card-body"><h2 class="h5">An Packplatz übergeben</h2><form class="d-flex gap-2" method="post" action="{{ path('v3_packing_create', {pickListId: pickList.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_packing_create_' ~ pickList.id) }}"><input class="form-control" name="code" value="PACK-{{ pickList.code }}" required><button class="btn btn-primary text-nowrap">Packauftrag erzeugen</button></form></div></div>{% endif %}
+
+{% block webwms_content %}
+	<div class="d-flex flex-wrap justify-content-between gap-3 mb-4">
+		<div>
+			<a href="{{ path('v3_picking_index') }}" class="text-decoration-none">← Picking</a>
+			<h1 class="h3 mt-2 mb-1">{{ pickList.code }}</h1>
+			<p class="text-muted mb-0">Auftrag {{ pickList.order_number }}</p>
+		</div>
+		<span class="badge bg-secondary align-self-start fs-6">{{ pickList.status }}</span>
+	</div>
+
+	{% if not pickList.assigned_to and is_granted('fulfillment.pick.assign') %}
+		<form method="post" action="{{ path('v3_picking_assign', {pickListId: pickList.id}) }}" class="mb-4">
+			<input type="hidden" name="_token" value="{{ csrf_token('v3_pick_assign_' ~ pickList.id) }}">
+			<button class="btn btn-primary">Mir zuweisen und starten</button>
+		</form>
+	{% endif %}
+
+	<div class="row g-3">
+		{% for task in pickList.tasks %}
+			<div class="col-12">
+				<div class="card border-0 shadow-sm {% if task.status != 'open' %}border-start border-success border-4{% endif %}">
+					<div class="card-body">
+						<div class="row align-items-center g-3">
+							<div class="col-md-2">
+								<div class="display-6">{{ task.sequence_number }}</div>
+							</div>
+							<div class="col-md-4">
+								<small class="text-muted">Lagerplatz</small>
+								<div class="h4 mb-1">{{ task.location_code }}</div>
+								<div>{{ task.sku }}</div>
+							</div>
+							<div class="col-md-2">
+								<small class="text-muted">Menge</small>
+								<div class="h3">{{ task.quantity }}</div>
+							</div>
+							<div class="col-md-4">
+								{% if task.status != 'open' %}
+									<span class="badge bg-success">{{ task.status }}</span>
+								{% elseif pickList.assigned_to == app.user.actorId and is_granted('fulfillment.pick.execute') %}
+									<form method="post" action="{{ path('v3_picking_confirm', {pickListId: pickList.id, taskId: task.id}) }}">
+										<input type="hidden" name="_token" value="{{ csrf_token('v3_pick_confirm_' ~ task.id) }}">
+										<input class="form-control mb-2" name="note" value="Pick bestätigt" required>
+										<div class="d-flex gap-2">
+											<button class="btn btn-success flex-grow-1" name="outcome" value="picked">Gepickt</button>
+											<button class="btn btn-outline-danger" name="outcome" value="shortage">Fehlbestand</button>
+										</div>
+									</form>
+								{% else %}
+									<span class="text-muted">Pickliste zuerst selbst zuweisen</span>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+
+	{% if pickList.packing_order_id %}
+		<div class="mt-4">
+			<a class="btn btn-primary" href="{{ path('v3_packing_show', {packingOrderId: pickList.packing_order_id}) }}">
+				Packauftrag {{ pickList.packing_order_code }} öffnen
+			</a>
+		</div>
+	{% elseif pickList.status == 'completed' and is_granted('fulfillment.pack.write') %}
+		<div class="card border-0 shadow-sm mt-4">
+			<div class="card-body">
+				<h2 class="h5">An Packplatz übergeben</h2>
+				<form class="d-flex gap-2" method="post" action="{{ path('v3_packing_create', {pickListId: pickList.id}) }}">
+					<input type="hidden" name="_token" value="{{ csrf_token('v3_packing_create_' ~ pickList.id) }}">
+					<input class="form-control" name="code" value="PACK-{{ pickList.code }}" required>
+					<button class="btn btn-primary text-nowrap">Packauftrag erzeugen</button>
+				</form>
+			</div>
+		</div>
+	{% endif %}
 {% endblock %}

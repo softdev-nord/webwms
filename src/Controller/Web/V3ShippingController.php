@@ -39,6 +39,7 @@ final class V3ShippingController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/shipping/index.html.twig', [
+            'page' => 'Versand',
             'shipments' => $this->queries->shipments($this->tenantUser()->tenantId()),
         ]);
     }
@@ -76,6 +77,7 @@ final class V3ShippingController extends AbstractController
         $user = $this->tenantUser();
 
         return $this->render('v3/shipping/show.html.twig', [
+            'page' => 'Sendung',
             'shipment' => $this->requiredShipment($shipmentId),
             'printers' => array_values(array_filter(
                 $this->queries->printers($user->tenantId()),

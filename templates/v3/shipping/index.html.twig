@@ -1,3 +1,43 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}Versand | WebWMS 3.0{% endblock %}
-{% block body %}<div class="mb-4"><h1 class="h3 mb-1">Versand</h1><p class="text-muted mb-0">Labels, Tracking und Übergabe an den Frachtführer</p></div><div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Sendung</th><th>Carrier</th><th>Service</th><th>Status</th><th>Tracking</th><th></th></tr></thead><tbody>{% for shipment in shipments %}<tr><td class="fw-semibold">{{ shipment.shipment_number }}</td><td>{{ shipment.carrier }}</td><td>{{ shipment.service }}</td><td>{{ shipment.status }}</td><td>{{ shipment.tracking_number ?: '–' }}</td><td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_shipping_show', {shipmentId: shipment.id}) }}">Öffnen</a></td></tr>{% else %}<tr><td colspan="6" class="text-center text-muted py-5">Noch keine Sendungen vorhanden.</td></tr>{% endfor %}</tbody></table></div></div>{% endblock %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<h1 class="h3 mb-1">Versand</h1>
+		<p class="text-muted mb-0">Labels, Tracking und Übergabe an den Frachtführer</p>
+	</div>
+
+	<div class="card border-0 shadow-sm">
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead>
+					<tr>
+						<th>Sendung</th>
+						<th>Carrier</th>
+						<th>Service</th>
+						<th>Status</th>
+						<th>Tracking</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for shipment in shipments %}
+						<tr>
+							<td class="fw-semibold">{{ shipment.shipment_number }}</td>
+							<td>{{ shipment.carrier }}</td>
+							<td>{{ shipment.service }}</td>
+							<td>{{ shipment.status }}</td>
+							<td>{{ shipment.tracking_number ?: '–' }}</td>
+							<td class="text-end">
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_shipping_show', {shipmentId: shipment.id}) }}">Öffnen</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6" class="text-center text-muted py-5">Noch keine Sendungen vorhanden.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

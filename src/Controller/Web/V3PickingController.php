@@ -34,6 +34,7 @@ final class V3PickingController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/picking/index.html.twig', [
+            'page' => 'Picking',
             'pickLists' => $this->queries->pickLists($this->tenantUser()->tenantId()),
         ]);
     }
@@ -43,6 +44,7 @@ final class V3PickingController extends AbstractController
     public function show(string $pickListId): Response
     {
         return $this->render('v3/picking/show.html.twig', [
+            'page' => 'Pickliste',
             'pickList' => $this->requiredPickList($pickListId),
         ]);
     }

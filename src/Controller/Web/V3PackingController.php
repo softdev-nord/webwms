@@ -37,6 +37,7 @@ final class V3PackingController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/packing/index.html.twig', [
+            'page' => 'Packen',
             'packingOrders' => $this->queries->packingOrders($this->tenantUser()->tenantId()),
         ]);
     }
@@ -72,6 +73,7 @@ final class V3PackingController extends AbstractController
         $user = $this->tenantUser();
 
         return $this->render('v3/packing/show.html.twig', [
+            'page' => 'Packauftrag',
             'packingOrder' => $this->requiredPackingOrder($packingOrderId),
             'packableTasks' => $this->queries->packablePickTasks($user->tenantId(), $packingOrderId),
         ]);

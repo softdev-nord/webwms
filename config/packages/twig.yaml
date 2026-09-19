@@ -7,7 +7,7 @@ twig:
     appVersion: '%env(APP_VERSION)%'
     appVersionNumber: '%env(APP_VERSION_NUMBER)%'
     appCopyright: '%env(APP_COPYRIGHT)%'
-    appLizenz: '%env(APP_LICENSE)%'
+    appLizenz: '%env(APP_LIZENZ)%'
 
 when@test:
   twig:

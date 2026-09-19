@@ -1,4 +1,32 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}Packen | WebWMS 3.0{% endblock %}
-{% block body %}<div class="mb-4"><h1 class="h3 mb-1">Packarbeitsplatz</h1><p class="text-muted mb-0">Gepickte Positionen verpacken und Packaufträge abschließen</p></div><div class="row g-3">
-{% for order in packingOrders %}<div class="col-md-6 col-xl-4"><div class="card h-100 border-0 shadow-sm"><div class="card-body"><div class="d-flex justify-content-between"><h2 class="h5">{{ order.code }}</h2><span class="badge bg-secondary-subtle text-secondary">{{ order.status }}</span></div><div>Auftrag {{ order.order_number }}</div><div class="text-muted">{{ order.package_count }} Pakete · {{ order.total_weight_grams }} g</div></div><div class="card-footer bg-white"><a class="btn btn-primary w-100" href="{{ path('v3_packing_show', {packingOrderId: order.id}) }}">Packauftrag öffnen</a></div></div></div>{% else %}<div class="col-12"><div class="alert alert-light border">Noch keine Packaufträge vorhanden.</div></div>{% endfor %}</div>{% endblock %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<h1 class="h3 mb-1">Packarbeitsplatz</h1>
+		<p class="text-muted mb-0">Gepickte Positionen verpacken und Packaufträge abschließen</p>
+	</div>
+
+	<div class="row g-3">
+		{% for order in packingOrders %}
+			<div class="col-md-6 col-xl-4">
+				<div class="card h-100 border-0 shadow-sm">
+					<div class="card-body">
+						<div class="d-flex justify-content-between">
+							<h2 class="h5">{{ order.code }}</h2>
+							<span class="badge bg-secondary-subtle text-secondary">{{ order.status }}</span>
+						</div>
+						<div>Auftrag {{ order.order_number }}</div>
+						<div class="text-muted">{{ order.package_count }} Pakete · {{ order.total_weight_grams }} g</div>
+					</div>
+					<div class="card-footer">
+						<a class="btn btn-primary w-100" href="{{ path('v3_packing_show', {packingOrderId: order.id}) }}">Packauftrag öffnen</a>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<div class="col-12">
+				<div class="alert alert-light border">Noch keine Packaufträge vorhanden.</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}
