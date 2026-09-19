@@ -23,7 +23,7 @@ final readonly class DbalUserProvider implements UserProviderInterface, Password
     {
         [$tenantId, $email] = $this->splitIdentifier($identifier);
         $rows = $this->connection->fetchAllAssociative(
-            'SELECT u.id, u.tenant_id, u.email, u.password_hash, '
+            'SELECT u.id, u.tenant_id, u.email, u.display_name, u.password_hash, '
             . 'r.code AS role_code, rp.permission_key '
             . 'FROM wms_user_account u '
             . 'LEFT JOIN wms_user_role ur ON ur.user_id = u.id '
@@ -61,6 +61,7 @@ final readonly class DbalUserProvider implements UserProviderInterface, Password
             (string) $first['password_hash'],
             array_values($roles),
             array_values($permissions),
+            is_string($first['display_name']) ? $first['display_name'] : null,
         );
     }
 

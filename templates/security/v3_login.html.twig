@@ -1,39 +1,29 @@
-{% block body %}
-    <head>
-        {{ include('subsections/head-css.html.twig') }}
-    </head>
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Anmelden | WebWMS 3.0</title>
-    <div class="content-webLVS">
-        <div class="signup-form">
-            <form class="form-horizontal" method="post">
-                {% if error %}
-                    <div class="alert alert-danger">
-                        {{ error.messageKey|trans(error.messageData, 'security') }}
-                    </div>
-                {% endif %}
-                <div class="mb-3">
-                    <span class="text-first">web</span><span class="text-last">WMS</span>
-                </div>
-                <h4>WebWMS 3.0</h4>
-                <div class="form-group">
-                    <input type="text" name="tenant_id" class="form-control"
-                           placeholder="Mandanten-UUID" required autofocus>
-                </div>
-                <div class="form-group">
-                    <input type="email" name="email" class="form-control"
-                           placeholder="E-Mail-Adresse" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password" class="form-control"
-                           placeholder="Passwort" required>
-                </div>
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate_v3') }}">
-                <div class="form-group">
-                    <button type="submit" class="btn btn-dark bg-gradient waves-effect waves-light">
-                        Anmelden
-                    </button>
-                </div>
-            </form>
+    {{ include('subsections/head-css.html.twig') }}
+</head>
+<body class="bg-light">
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+            <div class="text-center mb-4"><h1><span class="text-primary">web</span>WMS</h1><p class="text-muted">V3-Arbeitsbereich</p></div>
+            <div class="card shadow-sm border-0"><div class="card-body p-4">
+                <h2 class="h4 mb-3">Mit E-Mail anmelden</h2>
+                {% if error %}<div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>{% endif %}
+                <form method="post">
+                    <div class="mb-3"><label class="form-label" for="tenant_id">Mandanten-ID</label><input id="tenant_id" type="text" name="tenant_id" class="form-control" value="{{ last_tenant_id }}" autocomplete="organization" required autofocus></div>
+                    <div class="mb-3"><label class="form-label" for="email">E-Mail-Adresse</label><input id="email" type="email" name="email" class="form-control" value="{{ last_email }}" autocomplete="email" required></div>
+                    <div class="mb-4"><label class="form-label" for="password">Passwort</label><input id="password" type="password" name="password" class="form-control" autocomplete="current-password" required></div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate_v3') }}">
+                    <button type="submit" class="btn btn-primary w-100">Anmelden</button>
+                </form>
+            </div></div>
         </div>
     </div>
-{% endblock %}
+</main>
+</body>
+</html>

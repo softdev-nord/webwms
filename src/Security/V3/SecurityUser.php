@@ -19,6 +19,7 @@ final class SecurityUser implements TenantPermissionUser, PasswordAuthenticatedU
         private string $passwordHash,
         private readonly array $roles,
         private readonly array $permissions,
+        private readonly ?string $displayName = null,
     ) {
     }
 
@@ -40,6 +41,16 @@ final class SecurityUser implements TenantPermissionUser, PasswordAuthenticatedU
     public function getUserIdentifier(): string
     {
         return $this->tenantId . '|' . $this->email;
+    }
+
+    public function email(): string
+    {
+        return $this->email;
+    }
+
+    public function displayName(): string
+    {
+        return $this->displayName ?? $this->email;
     }
 
     public function getPassword(): string

@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}WebWMS 3.0{% endblock %}</title>{{ include('subsections/head-css.html.twig') }}</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark"><div class="container-fluid px-lg-4">
+    <a class="navbar-brand" href="{{ path('v3_dashboard') }}"><span class="text-info">web</span>WMS 3.0</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#v3Navigation" aria-controls="v3Navigation" aria-expanded="false" aria-label="Navigation öffnen"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="v3Navigation"><ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="{{ path('v3_dashboard') }}">Dashboard</a></li>
+        {% if is_granted('inventory.stock.read') %}<li class="nav-item"><a class="nav-link" href="{{ path('v3_stock') }}">Bestand</a></li>{% endif %}
+    </ul><span class="navbar-text me-3">{{ app.user.displayName }}</span><a class="btn btn-outline-light btn-sm" href="{{ path('app_v3_logout') }}">Abmelden</a></div>
+</div></nav>
+<main class="container-fluid px-lg-4 py-4">{% block body %}{% endblock %}</main>
+{{ include('subsections/vendor-scripts.html.twig') }}</body></html>

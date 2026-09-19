@@ -15,6 +15,8 @@ Architecture decisions and module boundaries are documented in
 
 Für lokale Testsysteme muss ein eigener Benutzer mit einem individuellen Passwort
 angelegt werden. Zugangsdaten dürfen nicht im Repository hinterlegt werden.
+Ein reproduzierbarer V3-Demozugang kann mit `bin/console webwms:v3:demo-bootstrap`
+erzeugt werden; die Schritte sind in [`docs/user/v3-demo.md`](docs/user/v3-demo.md) beschrieben.
 
 ## Systemvoraussetzung:
 * min. **PHP** `8.2`

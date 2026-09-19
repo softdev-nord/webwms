@@ -15,8 +15,11 @@ final class V3SecurityController extends AbstractController
     #[Route('/v3/login', name: 'app_v3_login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        $identifier = explode('|', $authenticationUtils->getLastUsername(), 2);
+
         return $this->render('security/v3_login.html.twig', [
-            'last_identifier' => $authenticationUtils->getLastUsername(),
+            'last_tenant_id' => count($identifier) === 2 ? $identifier[0] : '',
+            'last_email' => count($identifier) === 2 ? $identifier[1] : '',
             'error' => $authenticationUtils->getLastAuthenticationError(),
         ]);
     }

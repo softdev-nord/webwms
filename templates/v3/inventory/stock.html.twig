@@ -1,0 +1,9 @@
+{% extends 'v3/base.html.twig' %}
+{% block title %}Bestand | WebWMS 3.0{% endblock %}
+{% block body %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4"><div><h1 class="h3 mb-1">Bestand</h1><p class="text-muted mb-0">Mandantensichere Live-Sicht auf die V3-Bestandsprojektion</p></div>
+<form method="get" class="d-flex gap-2 align-items-end"><div><label for="warehouse" class="form-label small">Lager</label><select id="warehouse" name="warehouse" class="form-select"><option value="">Alle Lager</option>{% for warehouse in warehouses %}<option value="{{ warehouse.id }}" {{ warehouse.id == selectedWarehouse ? 'selected' : '' }}>{{ warehouse.code }} – {{ warehouse.name }}</option>{% endfor %}</select></div><button class="btn btn-primary" type="submit">Filtern</button></form></div>
+<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>SKU</th><th>Lagerplatz</th><th>Status</th><th>Charge</th><th>Seriennummer</th><th>Verfall</th><th class="text-end">Menge</th><th class="text-end">Verfügbar</th></tr></thead><tbody>
+{% for row in stock %}<tr><td class="fw-semibold">{{ row.sku }}</td><td>{{ row.location_code }}</td><td><span class="badge bg-success-subtle text-success">{{ row.stock_status }}</span></td><td>{{ row.batch_number ?: '–' }}</td><td>{{ row.serial_number ?: '–' }}</td><td>{{ row.expires_at ?: '–' }}</td><td class="text-end">{{ row.quantity }}</td><td class="text-end fw-semibold">{{ row.available_quantity }}</td></tr>{% else %}<tr><td colspan="8" class="text-center text-muted py-5">Kein Bestand für diesen Filter vorhanden.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}
