@@ -128,7 +128,7 @@ final class V3AdministrationController extends AbstractController
                 $this->stringList($request, 'permissions'),
                 new DateTimeImmutable(),
             );
-            $request->getSession()->getFlashBag()->add('api_credential', $result['credential']);
+            $request->getSession()->set('v3_api_credential', $result['credential']);
 
             return $this->redirectToRoute('v3_administration_api_client_credential');
         }
@@ -143,8 +143,7 @@ final class V3AdministrationController extends AbstractController
     #[IsGranted('administration.api_client.write')]
     public function apiClientCredential(Request $request): Response
     {
-        $credentials = $request->getSession()->getFlashBag()->get('api_credential');
-        $credential = $credentials[0] ?? null;
+        $credential = $request->getSession()->remove('v3_api_credential');
         if (!is_string($credential)) {
             return $this->redirectToRoute('v3_administration_index');
         }
