@@ -1,0 +1,24 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<a href="{{ path('v3_measurement_index') }}" class="text-decoration-none">← Waagen und Volumenmessung</a>
+		<h1 class="h3 mt-2">Messung</h1>
+	</div>
+	<div class="card border-0 shadow-sm">
+		<div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+			<h2 class="h5 mb-0">{{ measurement.device_code }} · {{ measurement.target_type }}</h2>
+			<span class="badge bg-{{ measurement.status == 'accepted' ? 'success' : 'danger' }}-subtle text-{{ measurement.status == 'accepted' ? 'success' : 'danger' }}">{{ measurement.status }}</span>
+		</div>
+		<div class="card-body">
+			<dl class="row mb-0">
+				<dt class="col-sm-3">Ziel-ID</dt><dd class="col-sm-9"><code>{{ measurement.target_id }}</code></dd>
+				<dt class="col-sm-3">Gewicht</dt><dd class="col-sm-9">{{ measurement.weight_grams ? measurement.weight_grams ~ ' g' : '–' }}</dd>
+				<dt class="col-sm-3">Abmessungen</dt><dd class="col-sm-9">{{ measurement.length_mm ? measurement.length_mm ~ ' × ' ~ measurement.width_mm ~ ' × ' ~ measurement.height_mm ~ ' mm' : '–' }}</dd>
+				<dt class="col-sm-3">Request-ID</dt><dd class="col-sm-9"><code>{{ measurement.request_id }}</code></dd>
+				<dt class="col-sm-3">Zeitpunkt</dt><dd class="col-sm-9">{{ measurement.measured_at }}</dd>
+				<dt class="col-sm-3">Hinweis</dt><dd class="col-sm-9">{{ measurement.message|default('–') }}</dd>
+			</dl>
+		</div>
+	</div>
+{% endblock %}

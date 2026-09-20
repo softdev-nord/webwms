@@ -17,7 +17,7 @@ final readonly class ApiV3QueryService
     public function products(string $tenantId, int $limit, ?string $cursor): array
     {
         return $this->connection->fetchAllAssociative(
-            'SELECT id, sku, name, created_at FROM wms_product_reference '
+            'SELECT id, sku, name, weight_grams, length_mm, width_mm, height_mm, created_at FROM wms_product_reference '
             . 'WHERE tenant_id = :tenantId AND (:cursorFilter IS NULL OR id > :cursorValue) '
             . 'ORDER BY id ASC LIMIT ' . $limit,
             ['tenantId' => $tenantId, 'cursorFilter' => $cursor, 'cursorValue' => $cursor ?? ''],
@@ -286,7 +286,7 @@ final readonly class ApiV3QueryService
             return null;
         }
         $packages = $this->connection->fetchAllAssociative(
-            'SELECT id, package_number, weight_grams, status, packed_by, packed_at '
+            'SELECT id, package_number, weight_grams, length_mm, width_mm, height_mm, status, packed_by, packed_at '
             . 'FROM wms_package WHERE packing_order_id = :packingOrderId ORDER BY packed_at, id',
             ['packingOrderId' => $packingOrderId],
         );
@@ -570,6 +570,68 @@ final readonly class ApiV3QueryService
         );
 
         return $event === false ? null : $event;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function measurementDevices(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, code, name, device_type, active, created_by, created_at, changed_by, changed_at '
+            . 'FROM wms_measurement_device WHERE tenant_id = :tenantId ORDER BY code, id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function measurementDevice(string $tenantId, string $deviceId): ?array
+    {
+        $device = $this->connection->fetchAssociative(
+            'SELECT id, code, name, device_type, active, created_by, created_at, changed_by, changed_at '
+            . 'FROM wms_measurement_device WHERE tenant_id = :tenantId AND id = :id',
+            ['tenantId' => $tenantId, 'id' => $deviceId],
+        );
+
+        return $device === false ? null : $device;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function measurements(string $tenantId, int $limit = 100): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT m.id, m.device_id, d.code device_code, d.name device_name, m.target_type, m.target_id, '
+            . 'm.weight_grams, m.length_mm, m.width_mm, m.height_mm, m.request_id, m.status, m.message, '
+            . 'm.measured_by, m.measured_at FROM wms_measurement m '
+            . 'INNER JOIN wms_measurement_device d ON d.id = m.device_id AND d.tenant_id = m.tenant_id '
+            . 'WHERE m.tenant_id = :tenantId ORDER BY m.measured_at DESC, m.id DESC LIMIT ' . $limit,
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function measurement(string $tenantId, string $measurementId): ?array
+    {
+        $measurement = $this->connection->fetchAssociative(
+            'SELECT m.id, m.device_id, d.code device_code, d.name device_name, m.target_type, m.target_id, '
+            . 'm.weight_grams, m.length_mm, m.width_mm, m.height_mm, m.request_id, m.status, m.message, '
+            . 'm.measured_by, m.measured_at FROM wms_measurement m '
+            . 'INNER JOIN wms_measurement_device d ON d.id = m.device_id AND d.tenant_id = m.tenant_id '
+            . 'WHERE m.tenant_id = :tenantId AND m.id = :id',
+            ['tenantId' => $tenantId, 'id' => $measurementId],
+        );
+
+        return $measurement === false ? null : $measurement;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function measurablePackages(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT p.id, p.package_number, o.code packing_order_code, p.weight_grams, '
+            . 'p.length_mm, p.width_mm, p.height_mm FROM wms_package p '
+            . 'INNER JOIN wms_packing_order o ON o.id = p.packing_order_id '
+            . "WHERE o.tenant_id = :tenantId AND o.status IN ('open', 'packing') ORDER BY o.code, p.package_number",
+            ['tenantId' => $tenantId],
+        );
     }
 
     /**

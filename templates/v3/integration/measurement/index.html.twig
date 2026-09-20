@@ -1,0 +1,71 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+		<div>
+			<h1 class="h3 mb-1">Waagen und Volumenmessung</h1>
+			<p class="text-muted mb-0">Messgeräte verwalten und Gewicht sowie Abmessungen automatisch übernehmen</p>
+		</div>
+		<div class="d-flex gap-2">
+			{% if is_granted('integration.measurement.write') %}
+				<a class="btn btn-outline-primary" href="{{ path('v3_measurement_device_new') }}">Messgerät anlegen</a>
+			{% endif %}
+			{% if is_granted('integration.measurement.capture') %}
+				<a class="btn btn-primary" href="{{ path('v3_measurement_capture') }}">Messung erfassen</a>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="card border-0 shadow-sm mb-4">
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Messgeräte</h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead><tr><th>Code</th><th>Name</th><th>Typ</th><th>Status</th><th></th></tr></thead>
+				<tbody>
+					{% for device in devices %}
+						<tr>
+							<td><code>{{ device.code }}</code></td>
+							<td class="fw-semibold">{{ device.name }}</td>
+							<td>{{ device.device_type }}</td>
+							<td><span class="badge bg-{{ device.active ? 'success' : 'secondary' }}-subtle text-{{ device.active ? 'success' : 'secondary' }}">{{ device.active ? 'Aktiv' : 'Pausiert' }}</span></td>
+							<td class="text-end">
+								{% if is_granted('integration.measurement.write') %}
+									<form method="post" action="{{ path('v3_measurement_device_status', {deviceId: device.id}) }}">
+										<input type="hidden" name="_token" value="{{ csrf_token('v3_measurement_device_status_' ~ device.id) }}">
+										<button class="btn btn-sm btn-outline-secondary">{{ device.active ? 'Pausieren' : 'Aktivieren' }}</button>
+									</form>
+								{% endif %}
+							</td>
+						</tr>
+					{% else %}
+						<tr><td colspan="5" class="text-center text-muted py-4">Noch keine Messgeräte vorhanden.</td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card border-0 shadow-sm">
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Letzte Messungen</h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead><tr><th>Gerät</th><th>Ziel</th><th>Gewicht</th><th>Abmessungen</th><th>Status</th><th>Zeitpunkt</th><th></th></tr></thead>
+				<tbody>
+					{% for measurement in measurements %}
+						<tr>
+							<td>{{ measurement.device_code }}</td>
+							<td>{{ measurement.target_type }}<br><code>{{ measurement.target_id }}</code></td>
+							<td>{{ measurement.weight_grams ? measurement.weight_grams ~ ' g' : '–' }}</td>
+							<td>{{ measurement.length_mm ? measurement.length_mm ~ ' × ' ~ measurement.width_mm ~ ' × ' ~ measurement.height_mm ~ ' mm' : '–' }}</td>
+							<td><span class="badge bg-{{ measurement.status == 'accepted' ? 'success' : 'danger' }}-subtle text-{{ measurement.status == 'accepted' ? 'success' : 'danger' }}">{{ measurement.status }}</span></td>
+							<td>{{ measurement.measured_at }}</td>
+							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_measurement_show', {measurementId: measurement.id}) }}">Öffnen</a></td>
+						</tr>
+					{% else %}
+						<tr><td colspan="7" class="text-center text-muted py-5">Noch keine Messungen vorhanden.</td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

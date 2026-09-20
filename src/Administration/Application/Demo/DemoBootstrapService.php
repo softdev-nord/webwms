@@ -50,6 +50,8 @@ final readonly class DemoBootstrapService
 
     public const string DEVICE_ID = 'e2a71554-20cb-4a79-a5cc-f65215d2ca21';
 
+    public const string MEASUREMENT_DEVICE_ID = 'f2d82665-29dc-4d98-8c91-c2e82504f1d4';
+
     public const string EMAIL = 'admin@demo.webwms.local';
 
     public function __construct(
@@ -130,6 +132,20 @@ final readonly class DemoBootstrapService
                 'code' => 'MDE-DEMO-01',
                 'name' => 'Demo MDE Warenausgang',
                 'device_type' => 'mde',
+                'active' => 1,
+                'created_by' => self::USER_ID,
+                'created_at' => $this->date($now),
+                'changed_by' => null,
+                'changed_at' => null,
+            ]);
+        }
+        if (!$this->exists('wms_measurement_device', self::MEASUREMENT_DEVICE_ID)) {
+            $this->connection->insert('wms_measurement_device', [
+                'id' => self::MEASUREMENT_DEVICE_ID,
+                'tenant_id' => self::TENANT_ID,
+                'code' => 'MEASURE-DEMO-01',
+                'name' => 'Demo Packplatzwaage mit Volumenmessung',
+                'device_type' => 'combined',
                 'active' => 1,
                 'created_by' => self::USER_ID,
                 'created_at' => $this->date($now),

@@ -1,0 +1,71 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<a href="{{ path('v3_measurement_index') }}" class="text-decoration-none">← Waagen und Volumenmessung</a>
+		<h1 class="h3 mt-2">Messung erfassen</h1>
+		<p class="text-muted mb-0">Messwerte werden bei Annahme direkt auf Paket oder Artikel übernommen.</p>
+	</div>
+	<form method="post" class="card border-0 shadow-sm">
+		<div class="card-body">
+			<input type="hidden" name="_token" value="{{ csrf_token('v3_measurement_capture') }}">
+			<input type="hidden" name="request_id" value="{{ requestId }}">
+			<div class="row g-3">
+				<div class="col-md-6">
+					<label class="form-label" for="device_id">Messgerät</label>
+					<select class="form-select" id="device_id" name="device_id" required>
+						{% for device in devices %}
+							<option value="{{ device.id }}">{{ device.code }} · {{ device.name }} ({{ device.device_type }})</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="target_type">Zieltyp</label>
+					<select class="form-select" id="target_type" name="target_type">
+						<option value="package" {% if app.request.query.get('targetType') == 'package' %}selected{% endif %}>Paket</option>
+						<option value="product" {% if app.request.query.get('targetType') == 'product' %}selected{% endif %}>Artikel</option>
+					</select>
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="target_id">Ziel-ID</label>
+					<input class="form-control font-monospace" id="target_id" name="target_id" list="measurement-targets" value="{{ app.request.query.get('targetId') }}" required autofocus>
+					<datalist id="measurement-targets">
+						{% for package in packages %}<option value="{{ package.id }}">Paket {{ package.package_number }} · {{ package.packing_order_code }}</option>{% endfor %}
+						{% for product in products %}<option value="{{ product.id }}">Artikel {{ product.sku }} · {{ product.name }}</option>{% endfor %}
+					</datalist>
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="weight_grams">Gewicht in Gramm</label>
+					<input class="form-control" type="number" min="1" id="weight_grams" name="weight_grams">
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="length_mm">Länge in mm</label>
+					<input class="form-control" type="number" min="1" id="length_mm" name="length_mm">
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="width_mm">Breite in mm</label>
+					<input class="form-control" type="number" min="1" id="width_mm" name="width_mm">
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="height_mm">Höhe in mm</label>
+					<input class="form-control" type="number" min="1" id="height_mm" name="height_mm">
+				</div>
+				<div class="col-md-3">
+					<div class="form-check form-switch mt-4">
+						<input class="form-check-input" type="checkbox" id="accepted" name="accepted" value="1" checked>
+						<label class="form-check-label" for="accepted">Messung akzeptiert</label>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<label class="form-label" for="message">Prüfhinweis</label>
+					<input class="form-control" id="message" name="message" maxlength="500">
+				</div>
+			</div>
+			{% if devices is empty %}<div class="alert alert-warning mt-3 mb-0">Es ist kein aktives Messgerät vorhanden.</div>{% endif %}
+		</div>
+		<div class="card-footer d-flex justify-content-end gap-2">
+			<a class="btn btn-light" href="{{ path('v3_measurement_index') }}">Abbrechen</a>
+			<button class="btn btn-primary" {% if devices is empty %}disabled{% endif %}>Messung verarbeiten</button>
+		</div>
+	</form>
+{% endblock %}

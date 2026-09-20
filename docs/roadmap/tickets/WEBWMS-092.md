@@ -2,7 +2,7 @@
 id: WEBWMS-092
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Offen
+status: Teilweise umgesetzt
 priority: Medium
 story_points: 8
 component: "Integration & Technik"
@@ -44,12 +44,23 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Teilweise umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mit `MeasurementDevice`, `Measurement`, `MeasurementService` und
+`DbalMeasurementRepository` sind mandantengebundene Waagen, Dimensioner und
+Kombigeräte sowie eine idempotente, auditierbare Messwertübernahme vorhanden.
+Akzeptierte Messungen aktualisieren Paket oder Artikel transaktional; abgelehnte
+Messungen bleiben ohne Zieländerung im Journal. API v3 und V3-Arbeitsbereich
+decken Geräteanlage, Statuswechsel, Erfassung und Verlauf ab. Nachweise:
+`MeasurementApiController`, `V3MeasurementController`, Migration
+`Version20260920120000`, Domain-/Application-/Query-Tests sowie technische und
+Anwenderdokumentation.
+
+Reale Hardwareprotokolle und Treiber, automatische Push-Übertragung vom Gerät
+sowie vollständige HTTP-/MariaDB-Integrationstests fehlen noch; das Ticket ist
+deshalb nicht `Done`.
 
 ## Quelle
 
 - Feature: CG-092
 - Referenz: https://www.coglas.com/hardware-schnittstelle/
-

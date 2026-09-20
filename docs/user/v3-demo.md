@@ -33,6 +33,7 @@ Der zweite und jeder weitere Lauf verändert den bestehenden Benutzer und seinen
 10. Unter **Verladung** ein Manifest für die etikettierte Sendung mit Tour- und Fahrzeugreferenz anlegen.
 11. Die Sendung als verladen bestätigen und anschließend das vollständige Manifest abschließen. Die Sendung wechselt dabei auf `dispatched`.
 12. Unter **Integrations-Outbox** die beim Pick-, Pack-, Versand- und Verladeprozess entstandenen Statusmeldungen nach Status filtern und ihre Payload öffnen.
+13. Unter **Waagen und Volumenmessung** das Demo-Kombigerät öffnen und eine akzeptierte Gewichts- und Volumenmessung für ein noch offenes Paket oder einen Demo-Artikel erfassen.
 13. Unter **ERP-Verbindungen** eine Verbindung mit einer lokalen HTTPS-Test-URL und einer Credential-Umgebungsvariablen anlegen, anschließend pausieren und erneut aktivieren.
 14. Unter **Carrier-Verbindungen** eine Verbindung für den in der Sendung verwendeten Carrier-Code anlegen, pausieren und erneut aktivieren. Mit einem kompatiblen HTTPS-Testadapter können zusätzlich Versandprodukte und die automatische Labelerzeugung geprüft werden.
 15. Unter **Druckwarteschlange** den vorhandenen Demo-ZPL-Drucker sowie den aus der Sendung erzeugten Druckauftrag prüfen. Mit einem kompatiblen HTTPS-Printadapter kann der Auftrag ausgeführt und ein fehlgeschlagener Versuch erneut gestartet werden.

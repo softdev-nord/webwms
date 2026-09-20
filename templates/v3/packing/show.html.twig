@@ -19,8 +19,10 @@
 					<tr>
 						<th>Paketnummer</th>
 						<th class="text-end">Gewicht</th>
+						<th>Abmessungen</th>
 						<th>Status</th>
 						<th>Pickpositionen</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -28,12 +30,18 @@
 						<tr>
 							<td>{{ package.package_number }}</td>
 							<td class="text-end">{{ package.weight_grams }} g</td>
+							<td>{{ package.length_mm ? package.length_mm ~ ' × ' ~ package.width_mm ~ ' × ' ~ package.height_mm ~ ' mm' : '–' }}</td>
 							<td>{{ package.status }}</td>
 							<td>{{ package.pickTaskIds|length }}</td>
+							<td class="text-end">
+								{% if packingOrder.status in ['open', 'packing'] and is_granted('integration.measurement.capture') %}
+									<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_measurement_capture', {targetType: 'package', targetId: package.id}) }}">Messen</a>
+								{% endif %}
+							</td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="4" class="text-center text-muted py-4">Noch kein Paket versiegelt.</td>
+							<td colspan="6" class="text-center text-muted py-4">Noch kein Paket versiegelt.</td>
 						</tr>
 					{% endfor %}
 				</tbody>
