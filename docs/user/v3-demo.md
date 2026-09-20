@@ -11,10 +11,10 @@ docker compose exec php bin/console doctrine:migrations:migrate --no-interaction
 docker compose exec php bin/console webwms:v3:demo-bootstrap
 ```
 
-Der Befehl zeigt beim ersten Lauf ein zufällig erzeugtes Passwort genau einmal an. Alternativ kann für ein lokales Testsystem ein eigenes Passwort gesetzt werden:
+Der Befehl zeigt beim ersten Lauf ein zufällig erzeugtes Passwort genau einmal an. Alternativ kann für ein lokales Testsystem ein eigenes Passwort aus einer lokalen Umgebungsvariable gesetzt werden:
 
 ```shell
-docker compose exec php bin/console webwms:v3:demo-bootstrap --password='lokales-testpasswort'
+docker compose exec php bin/console webwms:v3:demo-bootstrap --password="$WEBWMS_DEMO_PASSWORD"
 ```
 
 Der zweite und jeder weitere Lauf verändert den bestehenden Benutzer und seinen Bestand nicht.
@@ -36,9 +36,10 @@ Der zweite und jeder weitere Lauf verändert den bestehenden Benutzer und seinen
 13. Unter **ERP-Verbindungen** eine Verbindung mit einer lokalen HTTPS-Test-URL und einer Credential-Umgebungsvariablen anlegen, anschließend pausieren und erneut aktivieren.
 14. Unter **Carrier-Verbindungen** eine Verbindung für den in der Sendung verwendeten Carrier-Code anlegen, pausieren und erneut aktivieren. Mit einem kompatiblen HTTPS-Testadapter können zusätzlich Versandprodukte und die automatische Labelerzeugung geprüft werden.
 15. Unter **Druckwarteschlange** den vorhandenen Demo-ZPL-Drucker sowie den aus der Sendung erzeugten Druckauftrag prüfen. Mit einem kompatiblen HTTPS-Printadapter kann der Auftrag ausgeführt und ein fehlgeschlagener Versuch erneut gestartet werden.
-16. Unter **Administration** eine eingeschränkte Rolle und einen Benutzer mit E-Mail-Anmeldung anlegen.
-17. Einen API-Client erzeugen und das nur einmal angezeigte Credential sicher kopieren.
+16. Unter **Scanner und MDE** das Demo-MDE öffnen und einen akzeptierten sowie einen abgelehnten Scan mit Prozessreferenz erfassen.
+17. Unter **Administration** eine eingeschränkte Rolle und einen Benutzer mit E-Mail-Anmeldung anlegen.
+18. Einen API-Client erzeugen und das nur einmal angezeigte Credential sicher kopieren.
 
-Der Bootstrap legt einen Demo-Mandanten, Standort, Administrator mit allen derzeitigen V3-Berechtigungen, ein Lager, zwei Lagerplätze, zwei Artikel, Anfangsbestände, einen offenen Beispielauftrag und einen Demo-ZPL-Drucker an. Der Drucker dient nur zum Testen der Warteschlange; eine Ausführung erfordert eine echte Druckeranbindung. Es werden keine Zugangsdaten im Repository gespeichert.
+Der Bootstrap legt einen Demo-Mandanten, Standort, Administrator mit allen derzeitigen V3-Berechtigungen, ein Lager, zwei Lagerplätze, zwei Artikel, Anfangsbestände, einen offenen Beispielauftrag, einen Demo-ZPL-Drucker und ein Demo-MDE an. Der Drucker dient nur zum Testen der Warteschlange; eine Ausführung erfordert eine echte Druckeranbindung. Es werden keine Zugangsdaten im Repository gespeichert.
 
 API-Client-Secrets werden ausschließlich beim Erzeugen angezeigt. In der Datenbank wird nur ihr SHA-256-Hash gespeichert; ein verlorenes Secret muss durch einen neuen Client ersetzt werden.

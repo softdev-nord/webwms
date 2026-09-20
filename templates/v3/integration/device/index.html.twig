@@ -1,0 +1,90 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+		<div>
+			<h1 class="h3 mb-1">Scanner und MDE</h1>
+			<p class="text-muted mb-0">Erfassungsgeräte verwalten und prozessbezogene Scans nachvollziehen</p>
+		</div>
+		<div class="d-flex gap-2">
+			{% if is_granted('integration.device.write') %}
+				<a class="btn btn-outline-primary" href="{{ path('v3_device_new') }}">Gerät anlegen</a>
+			{% endif %}
+			{% if is_granted('integration.device.scan') %}
+				<a class="btn btn-primary" href="{{ path('v3_device_scan') }}">Scan erfassen</a>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="card border-0 shadow-sm mb-4">
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Erfassungsgeräte</h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead>
+					<tr>
+						<th>Code</th>
+						<th>Name</th>
+						<th>Typ</th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for device in devices %}
+						<tr>
+							<td><code>{{ device.code }}</code></td>
+							<td class="fw-semibold">{{ device.name }}</td>
+							<td>{{ device.device_type }}</td>
+							<td><span class="badge bg-{{ device.active ? 'success' : 'secondary' }}-subtle text-{{ device.active ? 'success' : 'secondary' }}">{{ device.active ? 'Aktiv' : 'Pausiert' }}</span></td>
+							<td class="text-end">
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_show', {deviceId: device.id}) }}">Öffnen</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="5" class="text-center text-muted py-4">Noch keine Erfassungsgeräte vorhanden.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card border-0 shadow-sm">
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Letzte Scanereignisse</h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead>
+					<tr>
+						<th>Gerät</th>
+						<th>Prozess</th>
+						<th>Scantyp</th>
+						<th>Wert</th>
+						<th>Status</th>
+						<th>Zeitpunkt</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for event in scanEvents %}
+						<tr>
+							<td>{{ event.device_code }}</td>
+							<td>{{ event.process_type }}<br><code>{{ event.context_reference }}</code></td>
+							<td>{{ event.scan_type }}</td>
+							<td><code>{{ event.scan_value }}</code></td>
+							<td><span class="badge bg-{{ event.status == 'accepted' ? 'success' : 'danger' }}-subtle text-{{ event.status == 'accepted' ? 'success' : 'danger' }}">{{ event.status }}</span></td>
+							<td>{{ event.scanned_at }}</td>
+							<td class="text-end">
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_scan_show', {eventId: event.id}) }}">Öffnen</a>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="7" class="text-center text-muted py-5">Noch keine Scanereignisse vorhanden.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

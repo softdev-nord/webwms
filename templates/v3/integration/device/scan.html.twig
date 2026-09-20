@@ -1,0 +1,72 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<a href="{{ path('v3_device_index') }}" class="text-decoration-none">← Scanner und MDE</a>
+		<h1 class="h3 mt-2">Scan erfassen</h1>
+		<p class="text-muted mb-0">Generischer Scan-Dialog zur Prüfung der Geräte- und Prozessintegration</p>
+	</div>
+	<form method="post" class="card border-0 shadow-sm">
+		<div class="card-body">
+			<input type="hidden" name="_token" value="{{ csrf_token('v3_device_scan') }}">
+			<input type="hidden" name="request_id" value="{{ requestId }}">
+			<div class="row g-3">
+				<div class="col-md-6">
+					<label class="form-label" for="device_id">Gerät</label>
+					<select class="form-select" id="device_id" name="device_id" required>
+						{% for device in devices %}
+							<option value="{{ device.id }}">{{ device.code }} · {{ device.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="process_type">Prozess</label>
+					<select class="form-select" id="process_type" name="process_type">
+						<option value="inbound">Wareneingang</option>
+						<option value="picking">Kommissionierung</option>
+						<option value="packing">Packen</option>
+						<option value="shipping">Versand</option>
+						<option value="loading">Verladung</option>
+						<option value="inventory">Inventur</option>
+					</select>
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="scan_type">Scantyp</label>
+					<select class="form-select" id="scan_type" name="scan_type">
+						<option value="location">Lagerplatz</option>
+						<option value="product">Artikel</option>
+						<option value="batch">Charge</option>
+						<option value="serial">Seriennummer</option>
+						<option value="shipment">Sendung</option>
+						<option value="order">Auftrag</option>
+					</select>
+				</div>
+				<div class="col-md-6">
+					<label class="form-label" for="context_reference">Prozessreferenz</label>
+					<input class="form-control font-monospace" id="context_reference" name="context_reference" maxlength="100" required autofocus>
+				</div>
+				<div class="col-md-6">
+					<label class="form-label" for="scan_value">Scanwert</label>
+					<input class="form-control font-monospace" id="scan_value" name="scan_value" maxlength="255" required>
+				</div>
+				<div class="col-md-3">
+					<div class="form-check form-switch mt-4">
+						<input class="form-check-input" type="checkbox" id="accepted" name="accepted" value="1" checked>
+						<label class="form-check-label" for="accepted">Scan akzeptiert</label>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<label class="form-label" for="message">Prüfhinweis</label>
+					<input class="form-control" id="message" name="message" maxlength="500">
+				</div>
+			</div>
+			{% if devices is empty %}
+				<div class="alert alert-warning mt-3 mb-0">Es ist kein aktives Erfassungsgerät vorhanden.</div>
+			{% endif %}
+		</div>
+		<div class="card-footer d-flex justify-content-end gap-2">
+			<a class="btn btn-light" href="{{ path('v3_device_index') }}">Abbrechen</a>
+			<button class="btn btn-primary" {% if devices is empty %}disabled{% endif %}>Scan erfassen</button>
+		</div>
+	</form>
+{% endblock %}

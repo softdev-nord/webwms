@@ -48,9 +48,9 @@ final readonly class DemoBootstrapService
 
     public const string PRINTER_ID = 'd1eac343-b344-4ea1-9f68-6e6303e0f3f9';
 
-    public const string EMAIL = 'rene.irrgang@outlook.de';
+    public const string DEVICE_ID = 'e2a71554-20cb-4a79-a5cc-f65215d2ca21';
 
-    public const string PASSWORD = 'WebWMS2026!#';
+    public const string EMAIL = 'admin@demo.webwms.local';
 
     public function __construct(
         private Connection $connection,
@@ -116,6 +116,20 @@ final readonly class DemoBootstrapService
                 'name' => 'Demo ZPL Drucker',
                 'endpoint_url' => 'https://printer.demo.webwms.local/print',
                 'credential_env' => 'DEMO_PRINTER_TOKEN',
+                'active' => 1,
+                'created_by' => self::USER_ID,
+                'created_at' => $this->date($now),
+                'changed_by' => null,
+                'changed_at' => null,
+            ]);
+        }
+        if (!$this->exists('wms_device', self::DEVICE_ID)) {
+            $this->connection->insert('wms_device', [
+                'id' => self::DEVICE_ID,
+                'tenant_id' => self::TENANT_ID,
+                'code' => 'MDE-DEMO-01',
+                'name' => 'Demo MDE Warenausgang',
+                'device_type' => 'mde',
                 'active' => 1,
                 'created_by' => self::USER_ID,
                 'created_at' => $this->date($now),
@@ -208,6 +222,6 @@ final readonly class DemoBootstrapService
 
     private function generatePassword(): string
     {
-        return self::PASSWORD;
+        return bin2hex(random_bytes(16));
     }
 }

@@ -522,6 +522,56 @@ final readonly class ApiV3QueryService
         return $job === false ? null : $job;
     }
 
+    /** @return list<array<string, mixed>> */
+    public function devices(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, code, name, device_type, active, created_by, created_at, changed_by, changed_at '
+            . 'FROM wms_device WHERE tenant_id = :tenantId ORDER BY code, id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function device(string $tenantId, string $deviceId): ?array
+    {
+        $device = $this->connection->fetchAssociative(
+            'SELECT id, code, name, device_type, active, created_by, created_at, changed_by, changed_at '
+            . 'FROM wms_device WHERE tenant_id = :tenantId AND id = :id',
+            ['tenantId' => $tenantId, 'id' => $deviceId],
+        );
+
+        return $device === false ? null : $device;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function scanEvents(string $tenantId, int $limit = 100): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT e.id, e.device_id, d.code device_code, d.name device_name, e.scan_type, e.scan_value, '
+            . 'e.process_type, e.context_reference, e.request_id, e.status, e.message, '
+            . 'e.scanned_by, e.scanned_at FROM wms_scan_event e '
+            . 'INNER JOIN wms_device d ON d.id = e.device_id AND d.tenant_id = e.tenant_id '
+            . 'WHERE e.tenant_id = :tenantId ORDER BY e.scanned_at DESC, e.id DESC LIMIT ' . $limit,
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function scanEvent(string $tenantId, string $eventId): ?array
+    {
+        $event = $this->connection->fetchAssociative(
+            'SELECT e.id, e.device_id, d.code device_code, d.name device_name, e.scan_type, e.scan_value, '
+            . 'e.process_type, e.context_reference, e.request_id, e.status, e.message, '
+            . 'e.scanned_by, e.scanned_at FROM wms_scan_event e '
+            . 'INNER JOIN wms_device d ON d.id = e.device_id AND d.tenant_id = e.tenant_id '
+            . 'WHERE e.tenant_id = :tenantId AND e.id = :id',
+            ['tenantId' => $tenantId, 'id' => $eventId],
+        );
+
+        return $event === false ? null : $event;
+    }
+
     /**
      * @param array<string, mixed> $message
      *

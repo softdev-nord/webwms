@@ -112,6 +112,9 @@ services:
     WebWMS\Integration\Domain\PrintTransport:
         alias: WebWMS\Integration\Infrastructure\Transport\HttpPrintTransport
 
+    WebWMS\Integration\Domain\DeviceRepository:
+        alias: WebWMS\Integration\Infrastructure\Persistence\DbalDeviceRepository
+
     WebWMS\Integration\Domain\CredentialProvider:
         alias: WebWMS\Integration\Infrastructure\Security\EnvironmentCredentialProvider
 

@@ -18,6 +18,7 @@ final class V3PermissionCatalog
         'integration.carrier.execute', 'integration.carrier.read',
         'integration.carrier_connection.read', 'integration.carrier_connection.write',
         'integration.erp_connection.read', 'integration.erp_connection.write',
+        'integration.device.read', 'integration.device.scan', 'integration.device.write',
         'integration.outbox.acknowledge', 'integration.outbox.read', 'integration.outbox.retry',
         'integration.print_job.execute', 'integration.print_job.read', 'integration.print_job.write',
         'integration.printer.read', 'integration.printer.write',

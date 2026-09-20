@@ -2,7 +2,7 @@
 id: WEBWMS-090
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Offen
+status: Teilweise umgesetzt
 priority: Highest
 story_points: 8
 component: "Integration & Technik"
@@ -44,12 +44,23 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Teilweise umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mit `Device`, `ScanEvent`, `DeviceIntegrationService` und
+`DbalDeviceRepository` sind mandantengebundene Geräteverwaltung, Aktivstatus,
+idempotente Scanannahme und ein auditierbares Scanereignisjournal vorhanden.
+API v3 und V3-Arbeitsbereich ermöglichen Anlage, Statuswechsel, Scanerfassung
+sowie Detail- und Verlaufsansichten. Akzeptierte und abgelehnte Scans bilden
+positive und negative Prüfpfade ab. Nachweise: `DeviceApiController`,
+`V3DeviceController`, Migration `Version20260920100000`, Domain- und Query-Tests
+sowie die technische und Anwenderdokumentation.
+
+Die direkte Ausführung und Validierung konkreter Wareneingangs-, Pick-, Pack-,
+Versand-, Verlade- und Inventuraktionen, Offline-Fähigkeit sowie vollständige
+HTTP-/MariaDB-Integrationstests fehlen noch; das Ticket ist deshalb nicht
+`Done`.
 
 ## Quelle
 
 - Feature: CG-090
 - Referenz: https://www.coglas.com/hardware-schnittstelle/
-

@@ -90,7 +90,7 @@
                     {% endif %}
                 {% endif %}
 
-                {% if is_granted('integration.outbox.read') or is_granted('integration.erp_connection.read') or is_granted('integration.carrier_connection.read') or is_granted('integration.print_job.read') %}
+                {% if is_granted('integration.outbox.read') or is_granted('integration.erp_connection.read') or is_granted('integration.carrier_connection.read') or is_granted('integration.print_job.read') or is_granted('integration.device.read') %}
                     <li class="menu-title"><span>Integration &amp; Technik</span></li>
 
                     {% if is_granted('integration.outbox.read') %}
@@ -114,6 +114,12 @@
                     {% if is_granted('integration.print_job.read') %}
                         <li class="nav-item">
                             <a class="nav-link {% if currentRoute starts with 'v3_printing_' %}active{% endif %}" href="{{ path('v3_printing_index') }}">Druckwarteschlange</a>
+                        </li>
+                    {% endif %}
+
+                    {% if is_granted('integration.device.read') %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if currentRoute starts with 'v3_device_' %}active{% endif %}" href="{{ path('v3_device_index') }}">Scanner und MDE</a>
                         </li>
                     {% endif %}
                 {% endif %}
