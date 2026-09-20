@@ -62,6 +62,8 @@ use WebWMS\Inventory\Domain\StockReservation;
 use WebWMS\Inventory\Domain\StockTransfer;
 use WebWMS\Inventory\Domain\StockTransferResult;
 use WebWMS\Inventory\Domain\StorageLocation;
+use WebWMS\Inventory\Domain\UnplannedReceipt;
+use WebWMS\Inventory\Domain\UnplannedReceiptBooking;
 use WebWMS\Inventory\Domain\Warehouse;
 
 final class PostStockHandlerTest extends TestCase
@@ -219,6 +221,15 @@ final class InventoryMemoryRepository implements InventoryRepository
     public function inspectInboundReceipt(InboundInspection $inspection): InboundResult
     {
         return new InboundResult('completed', 'processed', 'available', 1);
+    }
+
+    public function saveUnplannedReceipt(UnplannedReceipt $receipt): void
+    {
+    }
+
+    public function bookUnplannedReceipt(UnplannedReceiptBooking $booking): InboundResult
+    {
+        return new InboundResult('booked', 'booked', 'available', 1);
     }
 
     public function savePutawayStrategy(PutawayStrategy $strategy): void
