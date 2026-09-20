@@ -27,7 +27,7 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Backendfortschritt
 
-Nach dem V3-Lagerautomations-Slice besitzen 22 Tickets mit 157 Story Points einen substanziellen Backendkern. Weitere 34 Tickets mit 270 Story Points sind teilweise umgesetzt. Damit wurden 56 von 96 Tickets und 427 von 750 Story Points zumindest fachlich oder technisch begonnen.
+Nach dem V3-WCS-/MFR-Slice besitzen 22 Tickets mit 157 Story Points einen substanziellen Backendkern. Weitere 35 Tickets mit 283 Story Points sind teilweise umgesetzt. Damit wurden 57 von 96 Tickets und 440 von 750 Story Points zumindest fachlich oder technisch begonnen.
 
 ## Ergänzende Roadmap-Dokumente
 

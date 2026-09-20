@@ -1,0 +1,20 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4"><a href="{{ path('v3_wcs_index') }}" class="text-decoration-none">← WCS, MFR und Fördertechnik</a><h1 class="h3 mt-2">Maschinenbefehl anlegen</h1></div>
+	<form method="post" class="card border-0 shadow-sm">
+		<div class="card-body">
+			<input type="hidden" name="_token" value="{{ csrf_token('v3_wcs_command_create') }}">
+			<input type="hidden" name="request_id" value="{{ requestId }}">
+			<div class="row g-3">
+				<div class="col-md-6"><label class="form-label" for="connection_id">Verbindung</label><select class="form-select" id="connection_id" name="connection_id" required>{% for connection in connections %}<option value="{{ connection.id }}">{{ connection.code }} · {{ connection.name }}</option>{% endfor %}</select></div>
+				<div class="col-md-6"><label class="form-label" for="command_type">Befehl</label><select class="form-select" id="command_type" name="command_type"><option value="transport">Transport</option><option value="route">Route setzen</option><option value="cancel">Abbruchauftrag</option></select></div>
+				<div class="col-md-4"><label class="form-label" for="source">Quelle</label><input class="form-control font-monospace" id="source" name="source" maxlength="100" required></div>
+				<div class="col-md-4"><label class="form-label" for="destination">Ziel</label><input class="form-control font-monospace" id="destination" name="destination" maxlength="100" required></div>
+				<div class="col-md-4"><label class="form-label" for="load_unit">Ladeeinheit</label><input class="form-control font-monospace" id="load_unit" name="load_unit" maxlength="100" required></div>
+			</div>
+			{% if connections is empty %}<div class="alert alert-warning mt-3 mb-0">Es ist keine aktive WCS-Verbindung vorhanden.</div>{% endif %}
+		</div>
+		<div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_wcs_index') }}">Abbrechen</a><button class="btn btn-primary" {% if connections is empty %}disabled{% endif %}>Befehl einreihen</button></div>
+	</form>
+{% endblock %}

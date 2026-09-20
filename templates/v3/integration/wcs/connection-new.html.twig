@@ -1,0 +1,22 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<a href="{{ path('v3_wcs_index') }}" class="text-decoration-none">← WCS, MFR und Fördertechnik</a>
+		<h1 class="h3 mt-2">WCS-Verbindung anlegen</h1>
+	</div>
+	<form method="post" class="card border-0 shadow-sm">
+		<div class="card-body">
+			<input type="hidden" name="_token" value="{{ csrf_token('v3_wcs_connection_create') }}">
+			<div class="row g-3">
+				<div class="col-md-3"><label class="form-label" for="code">Code</label><input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" required placeholder="WCS-01"></div>
+				<div class="col-md-5"><label class="form-label" for="name">Name</label><input class="form-control" id="name" name="name" maxlength="100" required></div>
+				<div class="col-md-4"><label class="form-label" for="system_type">Systemtyp</label><select class="form-select" id="system_type" name="system_type"><option value="wcs">WCS</option><option value="mfr">Materialflussrechner</option><option value="conveyor">Fördertechnik</option></select></div>
+				<div class="col-md-7"><label class="form-label" for="endpoint_url">HTTPS-Endpoint</label><input class="form-control" type="url" id="endpoint_url" name="endpoint_url" required></div>
+				<div class="col-md-5"><label class="form-label" for="credential_env">Credential-Umgebungsvariable</label><input class="form-control font-monospace text-uppercase" id="credential_env" name="credential_env" required></div>
+				<div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="active" name="active" value="1" checked><label class="form-check-label" for="active">Verbindung sofort aktivieren</label></div></div>
+			</div>
+		</div>
+		<div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_wcs_index') }}">Abbrechen</a><button class="btn btn-primary">Verbindung anlegen</button></div>
+	</form>
+{% endblock %}

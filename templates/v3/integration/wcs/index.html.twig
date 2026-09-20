@@ -1,0 +1,94 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+		<div>
+			<h1 class="h3 mb-1">WCS, MFR und Fördertechnik</h1>
+			<p class="text-muted mb-0">Transportbefehle und Maschinenrückmeldungen überwachen</p>
+		</div>
+		<div class="d-flex gap-2">
+			{% if is_granted('integration.wcs.write') %}
+				<a class="btn btn-outline-primary" href="{{ path('v3_wcs_connection_new') }}">Verbindung anlegen</a>
+			{% endif %}
+			{% if is_granted('integration.wcs.execute') %}
+				<a class="btn btn-outline-primary" href="{{ path('v3_wcs_status_new') }}">Status erfassen</a>
+				<a class="btn btn-primary" href="{{ path('v3_wcs_command_new') }}">Befehl anlegen</a>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="card border-0 shadow-sm mb-4">
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Verbindungen</h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead><tr><th>Code</th><th>Name</th><th>System</th><th>Endpoint</th><th>Status</th><th></th></tr></thead>
+				<tbody>
+					{% for connection in connections %}
+						<tr>
+							<td><code>{{ connection.code }}</code></td>
+							<td class="fw-semibold">{{ connection.name }}</td>
+							<td>{{ connection.system_type }}</td>
+							<td><code>{{ connection.endpoint_url }}</code></td>
+							<td><span class="badge bg-{{ connection.active ? 'success' : 'secondary' }}-subtle text-{{ connection.active ? 'success' : 'secondary' }}">{{ connection.active ? 'Aktiv' : 'Pausiert' }}</span></td>
+							<td class="text-end">
+								{% if is_granted('integration.wcs.write') %}
+									<form method="post" action="{{ path('v3_wcs_connection_status', {connectionId: connection.id}) }}">
+										<input type="hidden" name="_token" value="{{ csrf_token('v3_wcs_connection_status_' ~ connection.id) }}">
+										<button class="btn btn-sm btn-outline-secondary">{{ connection.active ? 'Pausieren' : 'Aktivieren' }}</button>
+									</form>
+								{% endif %}
+							</td>
+						</tr>
+					{% else %}
+						<tr><td colspan="6" class="text-center text-muted py-4">Noch keine WCS-Verbindung vorhanden.</td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card border-0 shadow-sm mb-4">
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Transportbefehle</h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead><tr><th>Verbindung</th><th>Ladeeinheit</th><th>Route</th><th>Typ</th><th>Status</th><th></th></tr></thead>
+				<tbody>
+					{% for command in commands %}
+						<tr>
+							<td>{{ command.connection_code }}</td>
+							<td><code>{{ command.load_unit }}</code></td>
+							<td>{{ command.source }} → {{ command.destination }}</td>
+							<td>{{ command.command_type }}</td>
+							<td><span class="badge bg-secondary-subtle text-secondary">{{ command.status }}</span></td>
+							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_wcs_command_show', {commandId: command.id}) }}">Öffnen</a></td>
+						</tr>
+					{% else %}
+						<tr><td colspan="6" class="text-center text-muted py-4">Noch keine Transportbefehle vorhanden.</td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card border-0 shadow-sm">
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Maschinenstatus</h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead><tr><th>Verbindung</th><th>Maschine</th><th>Status</th><th>Meldung</th><th>Zeitpunkt</th></tr></thead>
+				<tbody>
+					{% for machineStatus in statuses %}
+						<tr>
+							<td>{{ machineStatus.connection_code }}</td>
+							<td><code>{{ machineStatus.machine_code }}</code></td>
+							<td><span class="badge bg-secondary-subtle text-secondary">{{ machineStatus.status }}</span></td>
+							<td>{{ machineStatus.message|default('–') }}</td>
+							<td>{{ machineStatus.recorded_at }}</td>
+						</tr>
+					{% else %}
+						<tr><td colspan="5" class="text-center text-muted py-4">Noch keine Maschinenrückmeldungen vorhanden.</td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

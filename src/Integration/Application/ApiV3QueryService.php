@@ -697,6 +697,66 @@ final readonly class ApiV3QueryService
         );
     }
 
+    /** @return list<array<string, mixed>> */
+    public function wcsConnections(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, code, name, system_type, endpoint_url, credential_env, active, created_by, created_at, '
+            . 'changed_by, changed_at FROM wms_wcs_connection WHERE tenant_id = :tenantId ORDER BY code, id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function wcsConnection(string $tenantId, string $connectionId): ?array
+    {
+        $connection = $this->connection->fetchAssociative(
+            'SELECT id, code, name, system_type, endpoint_url, credential_env, active, created_by, created_at, '
+            . 'changed_by, changed_at FROM wms_wcs_connection WHERE tenant_id = :tenantId AND id = :id',
+            ['tenantId' => $tenantId, 'id' => $connectionId],
+        );
+
+        return $connection === false ? null : $connection;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function machineCommands(string $tenantId, int $limit = 100): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT c.id, c.connection_id, w.code connection_code, c.command_type, c.source, c.destination, '
+            . 'c.load_unit, c.request_id, c.status, c.message, c.created_by, c.created_at, c.changed_by, c.changed_at '
+            . 'FROM wms_machine_command c INNER JOIN wms_wcs_connection w ON w.id = c.connection_id '
+            . 'AND w.tenant_id = c.tenant_id WHERE c.tenant_id = :tenantId ORDER BY c.created_at DESC, c.id DESC LIMIT ' . $limit,
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function machineCommand(string $tenantId, string $commandId): ?array
+    {
+        $command = $this->connection->fetchAssociative(
+            'SELECT c.id, c.connection_id, w.code connection_code, c.command_type, c.source, c.destination, '
+            . 'c.load_unit, c.request_id, c.status, c.message, c.created_by, c.created_at, c.changed_by, c.changed_at '
+            . 'FROM wms_machine_command c INNER JOIN wms_wcs_connection w ON w.id = c.connection_id '
+            . 'AND w.tenant_id = c.tenant_id WHERE c.tenant_id = :tenantId AND c.id = :id',
+            ['tenantId' => $tenantId, 'id' => $commandId],
+        );
+
+        return $command === false ? null : $command;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function machineStatuses(string $tenantId, int $limit = 100): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT s.id, s.connection_id, w.code connection_code, s.command_id, s.machine_code, s.status, '
+            . 's.message, s.external_event_id, s.recorded_by, s.recorded_at FROM wms_machine_status s '
+            . 'INNER JOIN wms_wcs_connection w ON w.id = s.connection_id AND w.tenant_id = s.tenant_id '
+            . 'WHERE s.tenant_id = :tenantId ORDER BY s.recorded_at DESC, s.id DESC LIMIT ' . $limit,
+            ['tenantId' => $tenantId],
+        );
+    }
+
     /**
      * @param array<string, mixed> $message
      *

@@ -1,0 +1,18 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4"><a href="{{ path('v3_wcs_index') }}" class="text-decoration-none">← WCS, MFR und Fördertechnik</a><h1 class="h3 mt-2">Maschinenstatus erfassen</h1></div>
+	<form method="post" class="card border-0 shadow-sm">
+		<div class="card-body">
+			<input type="hidden" name="_token" value="{{ csrf_token('v3_wcs_status_create') }}"><input type="hidden" name="external_event_id" value="{{ eventId }}">
+			<div class="row g-3">
+				<div class="col-md-6"><label class="form-label" for="connection_id">Verbindung</label><select class="form-select" id="connection_id" name="connection_id" required>{% for connection in connections %}<option value="{{ connection.id }}">{{ connection.code }} · {{ connection.name }}</option>{% endfor %}</select></div>
+				<div class="col-md-6"><label class="form-label" for="command_id">Transportbefehl (optional)</label><select class="form-select" id="command_id" name="command_id"><option value="">Ohne Befehlsbezug</option>{% for command in commands %}<option value="{{ command.id }}">{{ command.load_unit }} · {{ command.source }} → {{ command.destination }}</option>{% endfor %}</select></div>
+				<div class="col-md-4"><label class="form-label" for="machine_code">Maschinencode</label><input class="form-control font-monospace text-uppercase" id="machine_code" name="machine_code" maxlength="100" required></div>
+				<div class="col-md-3"><label class="form-label" for="status">Status</label><select class="form-select" id="status" name="status"><option value="ready">Bereit</option><option value="busy">Beschäftigt</option><option value="blocked">Blockiert</option><option value="fault">Störung</option><option value="offline">Offline</option></select></div>
+				<div class="col-md-5"><label class="form-label" for="message">Meldung</label><input class="form-control" id="message" name="message" maxlength="500"></div>
+			</div>
+		</div>
+		<div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_wcs_index') }}">Abbrechen</a><button class="btn btn-primary" {% if connections is empty %}disabled{% endif %}>Status erfassen</button></div>
+	</form>
+{% endblock %}

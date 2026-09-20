@@ -2,7 +2,7 @@
 id: WEBWMS-094
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Offen
+status: Teilweise umgesetzt
 priority: Medium
 story_points: 13
 component: "Integration & Technik"
@@ -44,12 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Teilweise umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mit `WcsConnection`, `MachineCommand`, `MachineStatus` und `WcsIntegrationService` ist der mandantenfähige Kern für WCS, Materialflussrechner und Fördertechnik vorhanden. Migration und DBAL-Repository speichern Verbindungen, idempotente Transportbefehle, Maschinenzustände und Auditdaten. V3-Weboberfläche und JSON-API bilden den bidirektionalen Ablauf berechtigt ab; Demo-Daten sowie automatisierte Domain-, Application- und Query-Tests decken den Slice ab.
+
+Zur vollständigen Umsetzung fehlen herstellerspezifische Protokolladapter, die asynchrone Zustellung über die Integrations-Outbox sowie End-to-End-Tests mit einem WCS-Simulator.
 
 ## Quelle
 
 - Feature: CG-094
 - Referenz: https://www.coglas.com/hardware-schnittstelle/
-

@@ -10,6 +10,25 @@ use WebWMS\Integration\Application\ApiV3QueryService;
 
 final class ApiV3QueryServiceTest extends TestCase
 {
+    public function testMachineCommandJournalIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAllAssociative')
+            ->with(
+                self::callback(static function (string $sql): bool {
+                    self::assertStringContainsString('w.tenant_id = c.tenant_id', $sql);
+                    self::assertStringContainsString('WHERE c.tenant_id = :tenantId', $sql);
+
+                    return true;
+                }),
+                ['tenantId' => 'tenant-id'],
+            )
+            ->willReturn([]);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->machineCommands('tenant-id'));
+    }
+
     public function testAutomationCommandJournalIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);

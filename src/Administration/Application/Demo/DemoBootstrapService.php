@@ -54,6 +54,8 @@ final readonly class DemoBootstrapService
 
     public const string AUTOMATION_DEVICE_ID = 'a67562f8-9eb5-4b7f-a93b-39132c7d0e11';
 
+    public const string WCS_CONNECTION_ID = '89c3f8dc-19a0-48b5-911f-601ba20802cb';
+
     public const string EMAIL = 'admin@demo.webwms.local';
 
     public function __construct(
@@ -164,6 +166,22 @@ final readonly class DemoBootstrapService
                 'device_type' => 'storage_lift',
                 'endpoint_url' => 'https://lift.demo.webwms.local/commands',
                 'credential_env' => 'DEMO_LIFT_TOKEN',
+                'active' => 1,
+                'created_by' => self::USER_ID,
+                'created_at' => $this->date($now),
+                'changed_by' => null,
+                'changed_at' => null,
+            ]);
+        }
+        if (!$this->exists('wms_wcs_connection', self::WCS_CONNECTION_ID)) {
+            $this->connection->insert('wms_wcs_connection', [
+                'id' => self::WCS_CONNECTION_ID,
+                'tenant_id' => self::TENANT_ID,
+                'code' => 'WCS-DEMO-01',
+                'name' => 'Demo Materialflussrechner',
+                'system_type' => 'mfr',
+                'endpoint_url' => 'https://wcs.demo.webwms.local/commands',
+                'credential_env' => 'DEMO_WCS_TOKEN',
                 'active' => 1,
                 'created_by' => self::USER_ID,
                 'created_at' => $this->date($now),
