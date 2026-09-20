@@ -52,6 +52,8 @@ final readonly class DemoBootstrapService
 
     public const string MEASUREMENT_DEVICE_ID = 'f2d82665-29dc-4d98-8c91-c2e82504f1d4';
 
+    public const string AUTOMATION_DEVICE_ID = 'a67562f8-9eb5-4b7f-a93b-39132c7d0e11';
+
     public const string EMAIL = 'admin@demo.webwms.local';
 
     public function __construct(
@@ -146,6 +148,22 @@ final readonly class DemoBootstrapService
                 'code' => 'MEASURE-DEMO-01',
                 'name' => 'Demo Packplatzwaage mit Volumenmessung',
                 'device_type' => 'combined',
+                'active' => 1,
+                'created_by' => self::USER_ID,
+                'created_at' => $this->date($now),
+                'changed_by' => null,
+                'changed_at' => null,
+            ]);
+        }
+        if (!$this->exists('wms_automation_device', self::AUTOMATION_DEVICE_ID)) {
+            $this->connection->insert('wms_automation_device', [
+                'id' => self::AUTOMATION_DEVICE_ID,
+                'tenant_id' => self::TENANT_ID,
+                'code' => 'LIFT-DEMO-01',
+                'name' => 'Demo Lagerlift',
+                'device_type' => 'storage_lift',
+                'endpoint_url' => 'https://lift.demo.webwms.local/commands',
+                'credential_env' => 'DEMO_LIFT_TOKEN',
                 'active' => 1,
                 'created_by' => self::USER_ID,
                 'created_at' => $this->date($now),

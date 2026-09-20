@@ -634,6 +634,69 @@ final readonly class ApiV3QueryService
         );
     }
 
+    /** @return list<array<string, mixed>> */
+    public function automationDevices(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, code, name, device_type, endpoint_url, credential_env, active, created_by, created_at, '
+            . 'changed_by, changed_at FROM wms_automation_device WHERE tenant_id = :tenantId ORDER BY code, id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function automationDevice(string $tenantId, string $deviceId): ?array
+    {
+        $device = $this->connection->fetchAssociative(
+            'SELECT id, code, name, device_type, endpoint_url, credential_env, active, created_by, created_at, '
+            . 'changed_by, changed_at FROM wms_automation_device WHERE tenant_id = :tenantId AND id = :id',
+            ['tenantId' => $tenantId, 'id' => $deviceId],
+        );
+
+        return $device === false ? null : $device;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function deviceCommands(string $tenantId, int $limit = 100): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT c.id, c.device_id, d.code device_code, d.name device_name, c.command_type, c.location_id, '
+            . 'l.code location_code, c.reference_type, c.reference_id, c.request_id, c.status, c.message, '
+            . 'c.created_by, c.created_at, c.changed_by, c.changed_at FROM wms_device_command c '
+            . 'INNER JOIN wms_automation_device d ON d.id = c.device_id AND d.tenant_id = c.tenant_id '
+            . 'INNER JOIN wms_storage_location l ON l.id = c.location_id AND l.tenant_id = c.tenant_id '
+            . 'WHERE c.tenant_id = :tenantId ORDER BY c.created_at DESC, c.id DESC LIMIT ' . $limit,
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function deviceCommand(string $tenantId, string $commandId): ?array
+    {
+        $command = $this->connection->fetchAssociative(
+            'SELECT c.id, c.device_id, d.code device_code, d.name device_name, c.command_type, c.location_id, '
+            . 'l.code location_code, c.reference_type, c.reference_id, c.request_id, c.status, c.message, '
+            . 'c.created_by, c.created_at, c.changed_by, c.changed_at FROM wms_device_command c '
+            . 'INNER JOIN wms_automation_device d ON d.id = c.device_id AND d.tenant_id = c.tenant_id '
+            . 'INNER JOIN wms_storage_location l ON l.id = c.location_id AND l.tenant_id = c.tenant_id '
+            . 'WHERE c.tenant_id = :tenantId AND c.id = :id',
+            ['tenantId' => $tenantId, 'id' => $commandId],
+        );
+
+        return $command === false ? null : $command;
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function automationLocations(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT l.id, l.code, w.code warehouse_code FROM wms_storage_location l '
+            . 'INNER JOIN wms_warehouse w ON w.id = l.warehouse_id AND w.tenant_id = l.tenant_id '
+            . 'WHERE l.tenant_id = :tenantId ORDER BY w.code, l.code',
+            ['tenantId' => $tenantId],
+        );
+    }
+
     /**
      * @param array<string, mixed> $message
      *

@@ -2,7 +2,7 @@
 id: WEBWMS-093
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Offen
+status: Teilweise umgesetzt
 priority: Medium
 story_points: 13
 component: "Integration & Technik"
@@ -44,12 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Teilweise umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mit `AutomationDevice`, `DeviceCommand` und `StorageAutomationAdapter` ist der mandantenfähige Kern für Lagerlifte, Paternoster und Logimat-Geräte vorhanden. Migration und DBAL-Repository speichern Geräte, idempotente Befehle, Zustände sowie Benutzer und Zeitpunkte. V3-Weboberfläche und JSON-API bilden Gerätepflege, Task-Zuordnung und Geräterückmeldung berechtigt ab; Demo-Daten und automatisierte Domain-, Application- und Query-Tests decken den Slice ab.
+
+Zur vollständigen Umsetzung fehlen herstellerspezifische Protokolladapter, die tatsächliche asynchrone Übertragung über die Integrations-Outbox und End-to-End-Tests mit einem Geräte-Simulator.
 
 ## Quelle
 
 - Feature: CG-093
 - Referenz: https://www.coglas.com/hardware-schnittstelle/
-

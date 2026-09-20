@@ -118,6 +118,9 @@ services:
     WebWMS\Integration\Domain\MeasurementRepository:
         alias: WebWMS\Integration\Infrastructure\Persistence\DbalMeasurementRepository
 
+    WebWMS\Integration\Domain\AutomationRepository:
+        alias: WebWMS\Integration\Infrastructure\Persistence\DbalAutomationRepository
+
     WebWMS\Integration\Domain\CredentialProvider:
         alias: WebWMS\Integration\Infrastructure\Security\EnvironmentCredentialProvider
 

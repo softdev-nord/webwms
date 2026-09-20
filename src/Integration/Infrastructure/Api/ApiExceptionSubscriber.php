@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use WebWMS\Integration\Domain\AutomationDeviceNotFoundException;
 use WebWMS\Integration\Domain\DeviceNotFoundException;
 use WebWMS\Integration\Domain\ErpConnectionNotFoundException;
 use WebWMS\Integration\Domain\MeasurementDeviceNotFoundException;
@@ -39,6 +40,7 @@ final readonly class ApiExceptionSubscriber
             $exception instanceof OutboxMessageNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof ErpConnectionNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof DeviceNotFoundException => [404, 'Not Found', $exception->getMessage()],
+            $exception instanceof AutomationDeviceNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof MeasurementDeviceNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof InsufficientAvailableStockException => [409, 'Conflict', $exception->getMessage()],
             $exception instanceof \DomainException => [409, 'Conflict', $exception->getMessage()],

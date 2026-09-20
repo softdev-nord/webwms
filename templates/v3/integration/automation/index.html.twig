@@ -1,0 +1,72 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+		<div>
+			<h1 class="h3 mb-1">Lagerlifte und Paternoster</h1>
+			<p class="text-muted mb-0">Automationsgeräte, Aufgaben und Rückmeldungen verwalten</p>
+		</div>
+		<div class="d-flex gap-2">
+			{% if is_granted('integration.automation.write') %}
+				<a class="btn btn-outline-primary" href="{{ path('v3_automation_device_new') }}">Gerät anlegen</a>
+			{% endif %}
+			{% if is_granted('integration.automation.execute') %}
+				<a class="btn btn-primary" href="{{ path('v3_automation_command_new') }}">Befehl anlegen</a>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="card border-0 shadow-sm mb-4">
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Automationsgeräte</h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead><tr><th>Code</th><th>Name</th><th>Typ</th><th>Endpoint</th><th>Status</th><th></th></tr></thead>
+				<tbody>
+					{% for device in devices %}
+						<tr>
+							<td><code>{{ device.code }}</code></td>
+							<td class="fw-semibold">{{ device.name }}</td>
+							<td>{{ device.device_type }}</td>
+							<td><code>{{ device.endpoint_url }}</code></td>
+							<td><span class="badge bg-{{ device.active ? 'success' : 'secondary' }}-subtle text-{{ device.active ? 'success' : 'secondary' }}">{{ device.active ? 'Aktiv' : 'Pausiert' }}</span></td>
+							<td class="text-end">
+								{% if is_granted('integration.automation.write') %}
+									<form method="post" action="{{ path('v3_automation_device_status', {deviceId: device.id}) }}">
+										<input type="hidden" name="_token" value="{{ csrf_token('v3_automation_device_status_' ~ device.id) }}">
+										<button class="btn btn-sm btn-outline-secondary">{{ device.active ? 'Pausieren' : 'Aktivieren' }}</button>
+									</form>
+								{% endif %}
+							</td>
+						</tr>
+					{% else %}
+						<tr><td colspan="6" class="text-center text-muted py-4">Noch keine Automationsgeräte vorhanden.</td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card border-0 shadow-sm">
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Gerätebefehle</h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead><tr><th>Gerät</th><th>Befehl</th><th>Lagerplatz</th><th>Referenz</th><th>Status</th><th>Zeitpunkt</th><th></th></tr></thead>
+				<tbody>
+					{% for command in commands %}
+						<tr>
+							<td>{{ command.device_code }}</td>
+							<td>{{ command.command_type }}</td>
+							<td><code>{{ command.location_code }}</code></td>
+							<td>{{ command.reference_type }}<br><code>{{ command.reference_id }}</code></td>
+							<td><span class="badge bg-secondary-subtle text-secondary">{{ command.status }}</span></td>
+							<td>{{ command.created_at }}</td>
+							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_automation_command_show', {commandId: command.id}) }}">Öffnen</a></td>
+						</tr>
+					{% else %}
+						<tr><td colspan="7" class="text-center text-muted py-5">Noch keine Gerätebefehle vorhanden.</td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

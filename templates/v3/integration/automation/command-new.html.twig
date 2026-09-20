@@ -1,0 +1,62 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<a href="{{ path('v3_automation_index') }}" class="text-decoration-none">← Lagerlifte und Paternoster</a>
+		<h1 class="h3 mt-2">Gerätebefehl anlegen</h1>
+		<p class="text-muted mb-0">Aufgabe einem Automationsgerät und Lagerplatz zuordnen</p>
+	</div>
+
+	<form method="post" class="card border-0 shadow-sm">
+		<div class="card-body">
+			<input type="hidden" name="_token" value="{{ csrf_token('v3_automation_command_create') }}">
+			<input type="hidden" name="request_id" value="{{ requestId }}">
+			<div class="row g-3">
+				<div class="col-md-6">
+					<label class="form-label" for="device_id">Gerät</label>
+					<select class="form-select" id="device_id" name="device_id" required>
+						{% for device in devices %}
+							<option value="{{ device.id }}">{{ device.code }} · {{ device.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="command_type">Befehl</label>
+					<select class="form-select" id="command_type" name="command_type">
+						<option value="present">Tablar bereitstellen</option>
+						<option value="store">Einlagern</option>
+						<option value="retrieve">Auslagern</option>
+					</select>
+				</div>
+				<div class="col-md-3">
+					<label class="form-label" for="location_id">Lagerplatz</label>
+					<select class="form-select" id="location_id" name="location_id" required>
+						{% for location in locations %}
+							<option value="{{ location.id }}">{{ location.warehouse_code }} · {{ location.code }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-md-5">
+					<label class="form-label" for="reference_type">Referenztyp</label>
+					<select class="form-select" id="reference_type" name="reference_type">
+						<option value="pick_task">Pickposition</option>
+						<option value="putaway_order">Einlagerungsauftrag</option>
+						<option value="replenishment_order">Nachschubauftrag</option>
+						<option value="manual">Manuell</option>
+					</select>
+				</div>
+				<div class="col-md-7">
+					<label class="form-label" for="reference_id">Referenz</label>
+					<input class="form-control font-monospace" id="reference_id" name="reference_id" maxlength="100" required>
+				</div>
+			</div>
+			{% if devices is empty %}
+				<div class="alert alert-warning mt-3 mb-0">Es ist kein aktives Automationsgerät vorhanden.</div>
+			{% endif %}
+		</div>
+		<div class="card-footer d-flex justify-content-end gap-2">
+			<a class="btn btn-light" href="{{ path('v3_automation_index') }}">Abbrechen</a>
+			<button class="btn btn-primary" {% if devices is empty %}disabled{% endif %}>Befehl einreihen</button>
+		</div>
+	</form>
+{% endblock %}

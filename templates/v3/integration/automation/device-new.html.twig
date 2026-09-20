@@ -1,0 +1,50 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<a href="{{ path('v3_automation_index') }}" class="text-decoration-none">← Lagerlifte und Paternoster</a>
+		<h1 class="h3 mt-2">Automationsgerät anlegen</h1>
+	</div>
+
+	<form method="post" class="card border-0 shadow-sm">
+		<div class="card-body">
+			<input type="hidden" name="_token" value="{{ csrf_token('v3_automation_device_create') }}">
+			<div class="row g-3">
+				<div class="col-md-3">
+					<label class="form-label" for="code">Gerätecode</label>
+					<input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" pattern="[A-Z0-9][A-Z0-9_-]{1,39}" required placeholder="LIFT-01">
+				</div>
+				<div class="col-md-5">
+					<label class="form-label" for="name">Name</label>
+					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="Lagerlift Halle 1">
+				</div>
+				<div class="col-md-4">
+					<label class="form-label" for="device_type">Gerätetyp</label>
+					<select class="form-select" id="device_type" name="device_type">
+						<option value="storage_lift">Lagerlift</option>
+						<option value="paternoster">Paternoster</option>
+						<option value="logimat">Logimat</option>
+					</select>
+				</div>
+				<div class="col-md-7">
+					<label class="form-label" for="endpoint_url">HTTPS-Endpoint</label>
+					<input class="form-control" type="url" id="endpoint_url" name="endpoint_url" required placeholder="https://lift.internal.example/commands">
+				</div>
+				<div class="col-md-5">
+					<label class="form-label" for="credential_env">Credential-Umgebungsvariable</label>
+					<input class="form-control font-monospace text-uppercase" id="credential_env" name="credential_env" required placeholder="LIFT_01_TOKEN">
+				</div>
+				<div class="col-12">
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox" id="active" name="active" value="1" checked>
+						<label class="form-check-label" for="active">Gerät sofort aktivieren</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-footer d-flex justify-content-end gap-2">
+			<a class="btn btn-light" href="{{ path('v3_automation_index') }}">Abbrechen</a>
+			<button class="btn btn-primary">Gerät anlegen</button>
+		</div>
+	</form>
+{% endblock %}
