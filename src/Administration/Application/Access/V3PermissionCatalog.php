@@ -22,6 +22,7 @@ final class V3PermissionCatalog
         'integration.automation.execute', 'integration.automation.read', 'integration.automation.write',
         'integration.measurement.capture', 'integration.measurement.read', 'integration.measurement.write',
         'integration.wcs.execute', 'integration.wcs.read', 'integration.wcs.write',
+        'integration.transport.read', 'integration.transport.write',
         'integration.outbox.acknowledge', 'integration.outbox.read', 'integration.outbox.retry',
         'integration.print_job.execute', 'integration.print_job.read', 'integration.print_job.write',
         'integration.printer.read', 'integration.printer.write',

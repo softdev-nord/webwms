@@ -124,6 +124,9 @@ services:
     WebWMS\Integration\Domain\WcsRepository:
         alias: WebWMS\Integration\Infrastructure\Persistence\DbalWcsRepository
 
+    WebWMS\Integration\Domain\IntegrationTransportRepository:
+        alias: WebWMS\Integration\Infrastructure\Persistence\DbalIntegrationTransportRepository
+
     WebWMS\Integration\Domain\CredentialProvider:
         alias: WebWMS\Integration\Infrastructure\Security\EnvironmentCredentialProvider
 

@@ -36,13 +36,14 @@ Der zweite und jeder weitere Lauf verändert den bestehenden Benutzer und seinen
 13. Unter **Waagen und Volumenmessung** das Demo-Kombigerät öffnen und eine akzeptierte Gewichts- und Volumenmessung für ein noch offenes Paket oder einen Demo-Artikel erfassen.
 14. Unter **Lagerlifte und Paternoster** das aktive Demo-Gerät prüfen, einen manuellen Befehl für einen Lagerplatz einreihen und die Rückmeldungen `dispatched` und `completed` verarbeiten.
 15. Unter **WCS, MFR und Fördertechnik** die Demo-Verbindung prüfen, einen Transportbefehl einreihen, über `dispatched` und `accepted` abschließen und einen Maschinenstatus erfassen.
-16. Unter **ERP-Verbindungen** eine Verbindung mit einer lokalen HTTPS-Test-URL und einer Credential-Umgebungsvariablen anlegen, anschließend pausieren und erneut aktivieren.
-17. Unter **Carrier-Verbindungen** eine Verbindung für den in der Sendung verwendeten Carrier-Code anlegen, pausieren und erneut aktivieren. Mit einem kompatiblen HTTPS-Testadapter können zusätzlich Versandprodukte und die automatische Labelerzeugung geprüft werden.
-18. Unter **Druckwarteschlange** den vorhandenen Demo-ZPL-Drucker sowie den aus der Sendung erzeugten Druckauftrag prüfen. Mit einem kompatiblen HTTPS-Printadapter kann der Auftrag ausgeführt und ein fehlgeschlagener Versuch erneut gestartet werden.
-19. Unter **Scanner und MDE** das Demo-MDE öffnen und einen akzeptierten sowie einen abgelehnten Scan mit Prozessreferenz erfassen.
-20. Unter **Administration** eine eingeschränkte Rolle und einen Benutzer mit E-Mail-Anmeldung anlegen.
-21. Einen API-Client erzeugen und das nur einmal angezeigte Credential sicher kopieren.
+16. Unter **TCP/IP und Webservice** den Demo-TCP-Endpunkt prüfen, pausieren und erneut aktivieren. Zusätzlich kann ein HTTPS-Endpunkt mit REST/JSON und HTTP-Framing angelegt werden.
+17. Unter **ERP-Verbindungen** eine Verbindung mit einer lokalen HTTPS-Test-URL und einer Credential-Umgebungsvariablen anlegen, anschließend pausieren und erneut aktivieren.
+18. Unter **Carrier-Verbindungen** eine Verbindung für den in der Sendung verwendeten Carrier-Code anlegen, pausieren und erneut aktivieren. Mit einem kompatiblen HTTPS-Testadapter können zusätzlich Versandprodukte und die automatische Labelerzeugung geprüft werden.
+19. Unter **Druckwarteschlange** den vorhandenen Demo-ZPL-Drucker sowie den aus der Sendung erzeugten Druckauftrag prüfen. Mit einem kompatiblen HTTPS-Printadapter kann der Auftrag ausgeführt und ein fehlgeschlagener Versuch erneut gestartet werden.
+20. Unter **Scanner und MDE** das Demo-MDE öffnen und einen akzeptierten sowie einen abgelehnten Scan mit Prozessreferenz erfassen.
+21. Unter **Administration** eine eingeschränkte Rolle und einen Benutzer mit E-Mail-Anmeldung anlegen.
+22. Einen API-Client erzeugen und das nur einmal angezeigte Credential sicher kopieren.
 
-Der Bootstrap legt einen Demo-Mandanten, Standort, Administrator mit allen derzeitigen V3-Berechtigungen, ein Lager, zwei Lagerplätze, zwei Artikel, Anfangsbestände, einen offenen Beispielauftrag, einen Demo-ZPL-Drucker, ein Demo-MDE, einen Demo-Lagerlift und eine Demo-MFR-Verbindung an. Die Integrationen dienen nur zum Testen der Warteschlangen; eine Ausführung erfordert echte Geräteadapter. Es werden keine Zugangsdaten im Repository gespeichert.
+Der Bootstrap legt einen Demo-Mandanten, Standort, Administrator mit allen derzeitigen V3-Berechtigungen, ein Lager, zwei Lagerplätze, zwei Artikel, Anfangsbestände, einen offenen Beispielauftrag, einen Demo-ZPL-Drucker, ein Demo-MDE, einen Demo-Lagerlift, eine Demo-MFR-Verbindung und einen Demo-TCP-Endpunkt an. Die Integrationen dienen nur zum Testen der Konfiguration und Warteschlangen; eine Ausführung erfordert echte Geräteadapter. Es werden keine Zugangsdaten im Repository gespeichert.
 
 API-Client-Secrets werden ausschließlich beim Erzeugen angezeigt. In der Datenbank wird nur ihr SHA-256-Hash gespeichert; ein verlorenes Secret muss durch einen neuen Client ersetzt werden.

@@ -19,6 +19,7 @@ use WebWMS\Integration\Domain\DeviceNotFoundException;
 use WebWMS\Integration\Domain\ErpConnectionNotFoundException;
 use WebWMS\Integration\Domain\MeasurementDeviceNotFoundException;
 use WebWMS\Integration\Domain\OutboxMessageNotFoundException;
+use WebWMS\Integration\Domain\TransportEndpointNotFoundException;
 use WebWMS\Integration\Domain\WcsConnectionNotFoundException;
 use WebWMS\Inventory\Domain\InsufficientAvailableStockException;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
@@ -44,6 +45,7 @@ final readonly class ApiExceptionSubscriber
             $exception instanceof AutomationDeviceNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof MeasurementDeviceNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof WcsConnectionNotFoundException => [404, 'Not Found', $exception->getMessage()],
+            $exception instanceof TransportEndpointNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof InsufficientAvailableStockException => [409, 'Conflict', $exception->getMessage()],
             $exception instanceof \DomainException => [409, 'Conflict', $exception->getMessage()],
             $exception instanceof UniqueConstraintViolationException => [409, 'Conflict', 'The resource already exists.'],

@@ -757,6 +757,32 @@ final readonly class ApiV3QueryService
         );
     }
 
+    /** @return list<array<string, mixed>> */
+    public function transportEndpoints(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT e.id, e.code, e.name, e.adapter_type, e.address, e.credential_env, e.active, '
+            . 'p.protocol, p.framing, p.connect_timeout_ms, p.read_timeout_ms, e.created_by, e.created_at, '
+            . 'e.changed_by, e.changed_at FROM wms_transport_endpoint e INNER JOIN wms_protocol_configuration p '
+            . 'ON p.endpoint_id = e.id WHERE e.tenant_id = :tenantId ORDER BY e.code, e.id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function transportEndpoint(string $tenantId, string $endpointId): ?array
+    {
+        $endpoint = $this->connection->fetchAssociative(
+            'SELECT e.id, e.code, e.name, e.adapter_type, e.address, e.credential_env, e.active, '
+            . 'p.protocol, p.framing, p.connect_timeout_ms, p.read_timeout_ms, e.created_by, e.created_at, '
+            . 'e.changed_by, e.changed_at FROM wms_transport_endpoint e INNER JOIN wms_protocol_configuration p '
+            . 'ON p.endpoint_id = e.id WHERE e.tenant_id = :tenantId AND e.id = :id',
+            ['tenantId' => $tenantId, 'id' => $endpointId],
+        );
+
+        return $endpoint === false ? null : $endpoint;
+    }
+
     /**
      * @param array<string, mixed> $message
      *

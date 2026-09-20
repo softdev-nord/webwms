@@ -90,7 +90,7 @@
                     {% endif %}
                 {% endif %}
 
-                {% if is_granted('integration.outbox.read') or is_granted('integration.erp_connection.read') or is_granted('integration.carrier_connection.read') or is_granted('integration.print_job.read') or is_granted('integration.device.read') or is_granted('integration.measurement.read') or is_granted('integration.automation.read') or is_granted('integration.wcs.read') %}
+                {% if is_granted('integration.outbox.read') or is_granted('integration.erp_connection.read') or is_granted('integration.carrier_connection.read') or is_granted('integration.print_job.read') or is_granted('integration.device.read') or is_granted('integration.measurement.read') or is_granted('integration.automation.read') or is_granted('integration.wcs.read') or is_granted('integration.transport.read') %}
                     <li class="menu-title"><span>Integration &amp; Technik</span></li>
 
                     {% if is_granted('integration.outbox.read') %}
@@ -138,6 +138,12 @@
                     {% if is_granted('integration.wcs.read') %}
                         <li class="nav-item">
                             <a class="nav-link {% if currentRoute starts with 'v3_wcs_' %}active{% endif %}" href="{{ path('v3_wcs_index') }}">WCS, MFR und Fördertechnik</a>
+                        </li>
+                    {% endif %}
+
+                    {% if is_granted('integration.transport.read') %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if currentRoute starts with 'v3_transport_' %}active{% endif %}" href="{{ path('v3_transport_index') }}">TCP/IP und Webservice</a>
                         </li>
                     {% endif %}
                 {% endif %}

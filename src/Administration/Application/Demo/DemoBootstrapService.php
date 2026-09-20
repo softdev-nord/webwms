@@ -56,6 +56,8 @@ final readonly class DemoBootstrapService
 
     public const string WCS_CONNECTION_ID = '89c3f8dc-19a0-48b5-911f-601ba20802cb';
 
+    public const string TRANSPORT_ENDPOINT_ID = '7414cf86-e29a-43d3-8141-2892e302991f';
+
     public const string EMAIL = 'admin@demo.webwms.local';
 
     public function __construct(
@@ -187,6 +189,29 @@ final readonly class DemoBootstrapService
                 'created_at' => $this->date($now),
                 'changed_by' => null,
                 'changed_at' => null,
+            ]);
+        }
+        if (!$this->exists('wms_transport_endpoint', self::TRANSPORT_ENDPOINT_ID)) {
+            $this->connection->insert('wms_transport_endpoint', [
+                'id' => self::TRANSPORT_ENDPOINT_ID,
+                'tenant_id' => self::TENANT_ID,
+                'code' => 'TCP-DEMO-01',
+                'name' => 'Demo Fördertechnik TCP',
+                'adapter_type' => 'tcp_client',
+                'address' => 'tcp://conveyor.demo.webwms.local:9100',
+                'credential_env' => 'DEMO_TCP_TOKEN',
+                'active' => 1,
+                'created_by' => self::USER_ID,
+                'created_at' => $this->date($now),
+                'changed_by' => null,
+                'changed_at' => null,
+            ]);
+            $this->connection->insert('wms_protocol_configuration', [
+                'endpoint_id' => self::TRANSPORT_ENDPOINT_ID,
+                'protocol' => 'raw_tcp',
+                'framing' => 'stx_etx',
+                'connect_timeout_ms' => 3000,
+                'read_timeout_ms' => 10000,
             ]);
         }
 

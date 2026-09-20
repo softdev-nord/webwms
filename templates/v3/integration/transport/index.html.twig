@@ -1,0 +1,44 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+		<div>
+			<h1 class="h3 mb-1">TCP/IP und Webservice</h1>
+			<p class="text-muted mb-0">Transportadapter und Protokolle für Hardware und Anlagen verwalten</p>
+		</div>
+		{% if is_granted('integration.transport.write') %}
+			<a class="btn btn-primary" href="{{ path('v3_transport_new') }}">Endpunkt anlegen</a>
+		{% endif %}
+	</div>
+
+	<div class="card border-0 shadow-sm">
+		<div class="table-responsive">
+			<table class="table table-hover align-middle mb-0">
+				<thead><tr><th>Code</th><th>Name</th><th>Adapter</th><th>Protokoll</th><th>Adresse</th><th>Timeouts</th><th>Status</th><th></th></tr></thead>
+				<tbody>
+					{% for endpoint in endpoints %}
+						<tr>
+							<td><code>{{ endpoint.code }}</code></td>
+							<td class="fw-semibold">{{ endpoint.name }}</td>
+							<td>{{ endpoint.adapter_type }}</td>
+							<td>{{ endpoint.protocol }} · {{ endpoint.framing }}</td>
+							<td><code>{{ endpoint.address }}</code></td>
+							<td>{{ endpoint.connect_timeout_ms }} / {{ endpoint.read_timeout_ms }} ms</td>
+							<td><span class="badge bg-{{ endpoint.active ? 'success' : 'secondary' }}-subtle text-{{ endpoint.active ? 'success' : 'secondary' }}">{{ endpoint.active ? 'Aktiv' : 'Pausiert' }}</span></td>
+							<td class="text-end">
+								{% if is_granted('integration.transport.write') %}
+									<form method="post" action="{{ path('v3_transport_status', {endpointId: endpoint.id}) }}">
+										<input type="hidden" name="_token" value="{{ csrf_token('v3_transport_status_' ~ endpoint.id) }}">
+										<button class="btn btn-sm btn-outline-secondary">{{ endpoint.active ? 'Pausieren' : 'Aktivieren' }}</button>
+									</form>
+								{% endif %}
+							</td>
+						</tr>
+					{% else %}
+						<tr><td colspan="8" class="text-center text-muted py-5">Noch keine Transport-Endpunkte vorhanden.</td></tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

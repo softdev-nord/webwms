@@ -1,0 +1,26 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<a href="{{ path('v3_transport_index') }}" class="text-decoration-none">← TCP/IP und Webservice</a>
+		<h1 class="h3 mt-2">Transport-Endpunkt anlegen</h1>
+	</div>
+	<form method="post" class="card border-0 shadow-sm">
+		<div class="card-body">
+			<input type="hidden" name="_token" value="{{ csrf_token('v3_transport_create') }}">
+			<div class="row g-3">
+				<div class="col-md-3"><label class="form-label" for="code">Code</label><input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" required></div>
+				<div class="col-md-5"><label class="form-label" for="name">Name</label><input class="form-control" id="name" name="name" maxlength="100" required></div>
+				<div class="col-md-4"><label class="form-label" for="adapter_type">Adapter</label><select class="form-select" id="adapter_type" name="adapter_type"><option value="tcp_client">TCP Client</option><option value="http_webservice">HTTP Webservice</option></select></div>
+				<div class="col-md-7"><label class="form-label" for="address">Adresse</label><input class="form-control font-monospace" id="address" name="address" required placeholder="tcp://host:9100 oder https://host/api"></div>
+				<div class="col-md-5"><label class="form-label" for="credential_env">Credential-Umgebungsvariable</label><input class="form-control font-monospace text-uppercase" id="credential_env" name="credential_env" required></div>
+				<div class="col-md-4"><label class="form-label" for="protocol">Protokoll</label><select class="form-select" id="protocol" name="protocol"><option value="raw_tcp">Raw TCP</option><option value="rest_json">REST/JSON</option><option value="soap_xml">SOAP/XML</option></select></div>
+				<div class="col-md-4"><label class="form-label" for="framing">Framing</label><select class="form-select" id="framing" name="framing"><option value="stx_etx">STX/ETX</option><option value="newline">Newline</option><option value="none">Ohne</option><option value="http">HTTP</option></select></div>
+				<div class="col-md-2"><label class="form-label" for="connect_timeout_ms">Connect ms</label><input class="form-control" type="number" id="connect_timeout_ms" name="connect_timeout_ms" min="100" max="60000" value="3000" required></div>
+				<div class="col-md-2"><label class="form-label" for="read_timeout_ms">Read ms</label><input class="form-control" type="number" id="read_timeout_ms" name="read_timeout_ms" min="100" max="300000" value="10000" required></div>
+				<div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="active" name="active" value="1" checked><label class="form-check-label" for="active">Endpunkt sofort aktivieren</label></div></div>
+			</div>
+		</div>
+		<div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_transport_index') }}">Abbrechen</a><button class="btn btn-primary">Endpunkt anlegen</button></div>
+	</form>
+{% endblock %}
