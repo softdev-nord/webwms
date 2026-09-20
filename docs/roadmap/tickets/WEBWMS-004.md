@@ -2,7 +2,7 @@
 id: WEBWMS-004
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Offen
+status: Teilweise umgesetzt
 priority: High
 story_points: 5
 component: "Wareneingang"
@@ -44,12 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Teilweise umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mit `UnplannedReceipt`, `UnplannedReceiptItem` und `UnplannedReceiptService` ist der Ablauf Annahme, Lieferanten-/Artikelidentifikation und atomare Bestandsbuchung ohne Bestellung oder Avis vorhanden. Migration und DBAL-Persistenz speichern Lieferant, Positionen, Bestandsdimensionen und Auditdaten mandantenbezogen. V3-Weboberfläche und JSON-API bilden Annahme und Buchung berechtigt ab; Domain-, Application- und Query-Tests decken zentrale Regeln ab.
+
+Für `Done` fehlen die Mehrpositions-Erfassung in der Weboberfläche, der gemeinsame V3-Arbeitsplatz für geplante und ungeplante Eingänge sowie vollständige End-to-End-Tests mit QS- und Einlagerungsfolgeprozess.
 
 ## Quelle
 
 - Feature: CG-004
 - Referenz: https://www.coglas.com/wareneingang/
-

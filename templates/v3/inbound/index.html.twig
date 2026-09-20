@@ -1,0 +1,12 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<div><h1 class="h3 mb-1">Wareneingang</h1><p class="text-muted mb-0">Ungeplante Eingänge annehmen und buchen</p></div>
+		{% if is_granted('inbound.receipt.write') %}<a class="btn btn-primary" href="{{ path('v3_inbound_unplanned_new') }}">Ungeplanten Eingang erfassen</a>{% endif %}
+	</div>
+	<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0">
+		<thead><tr><th>Nummer</th><th>Lieferant</th><th>Lieferschein</th><th>Positionen</th><th>Menge</th><th>Status</th><th></th></tr></thead>
+		<tbody>{% for receipt in receipts %}<tr><td><code>{{ receipt.code }}</code></td><td>{{ receipt.supplier_code }} · {{ receipt.supplier_name }}</td><td>{{ receipt.delivery_note|default('–') }}</td><td>{{ receipt.item_count }}</td><td>{{ receipt.total_quantity }}</td><td><span class="badge bg-secondary-subtle text-secondary">{{ receipt.status }}</span></td><td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_inbound_show', {receiptId: receipt.id}) }}">Öffnen</a></td></tr>{% else %}<tr><td colspan="7" class="text-center text-muted py-5">Noch keine ungeplanten Wareneingänge vorhanden.</td></tr>{% endfor %}</tbody>
+	</table></div></div>
+{% endblock %}

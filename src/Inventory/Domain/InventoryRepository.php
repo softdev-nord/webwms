@@ -60,6 +60,10 @@ interface InventoryRepository
 
     public function inspectInboundReceipt(InboundInspection $inspection): InboundResult;
 
+    public function saveUnplannedReceipt(UnplannedReceipt $receipt): void;
+
+    public function bookUnplannedReceipt(UnplannedReceiptBooking $booking): InboundResult;
+
     public function savePutawayStrategy(PutawayStrategy $strategy): void;
 
     public function createPutawayOrder(PutawayRequest $request): PutawayResult;

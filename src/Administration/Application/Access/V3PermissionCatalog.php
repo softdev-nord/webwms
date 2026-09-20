@@ -15,6 +15,7 @@ final class V3PermissionCatalog
         'fulfillment.pack.execute', 'fulfillment.pack.read', 'fulfillment.pack.write',
         'fulfillment.pick.assign', 'fulfillment.pick.execute', 'fulfillment.pick.read', 'fulfillment.pick.write',
         'fulfillment.ship.dispatch', 'fulfillment.ship.label', 'fulfillment.ship.read', 'fulfillment.ship.write',
+        'inbound.receipt.book', 'inbound.receipt.read', 'inbound.receipt.write',
         'integration.carrier.execute', 'integration.carrier.read',
         'integration.carrier_connection.read', 'integration.carrier_connection.write',
         'integration.erp_connection.read', 'integration.erp_connection.write',

@@ -36,6 +36,54 @@ final readonly class ApiV3QueryService
     }
 
     /** @return list<array<string, mixed>> */
+    public function receivingLocations(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT l.id, l.code, w.code warehouse_code FROM wms_storage_location l '
+            . 'INNER JOIN wms_warehouse w ON w.id = l.warehouse_id AND w.tenant_id = l.tenant_id '
+            . 'WHERE l.tenant_id = :tenantId ORDER BY w.code, l.code',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function unplannedReceipts(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT r.id, r.code, r.delivery_note, r.status, r.accepted_at, r.booked_at, s.code supplier_code, '
+            . 's.name supplier_name, COUNT(i.id) item_count, COALESCE(SUM(i.quantity), 0) total_quantity '
+            . 'FROM wms_unplanned_receipt r INNER JOIN wms_supplier s ON s.id = r.supplier_id '
+            . 'LEFT JOIN wms_unplanned_receipt_item i ON i.receipt_id = r.id WHERE r.tenant_id = :tenantId '
+            . 'GROUP BY r.id, r.code, r.delivery_note, r.status, r.accepted_at, r.booked_at, s.code, s.name '
+            . 'ORDER BY r.accepted_at DESC, r.id DESC',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array<string, mixed>|null */
+    public function unplannedReceipt(string $tenantId, string $receiptId): ?array
+    {
+        $receipt = $this->connection->fetchAssociative(
+            'SELECT r.id, r.code, r.delivery_note, r.status, r.accepted_at, r.booked_at, s.code supplier_code, '
+            . 's.name supplier_name FROM wms_unplanned_receipt r INNER JOIN wms_supplier s ON s.id = r.supplier_id '
+            . 'WHERE r.tenant_id = :tenantId AND r.id = :id',
+            ['tenantId' => $tenantId, 'id' => $receiptId],
+        );
+        if ($receipt === false) {
+            return null;
+        }
+        $receipt['items'] = $this->connection->fetchAllAssociative(
+            'SELECT i.id, i.product_id, p.sku, p.name product_name, i.location_id, l.code location_code, '
+            . 'i.quantity, i.stock_status, i.batch_number, i.serial_number, i.expires_at '
+            . 'FROM wms_unplanned_receipt_item i INNER JOIN wms_product_reference p ON p.id = i.product_id '
+            . 'INNER JOIN wms_storage_location l ON l.id = i.location_id WHERE i.receipt_id = :receiptId ORDER BY i.id',
+            ['receiptId' => $receiptId],
+        );
+
+        return $receipt;
+    }
+
+    /** @return list<array<string, mixed>> */
     public function stock(string $tenantId, ?string $warehouseId, int $limit, ?string $cursor): array
     {
         return $this->connection->fetchAllAssociative(

@@ -73,6 +73,8 @@ use WebWMS\Inventory\Domain\StockReservation;
 use WebWMS\Inventory\Domain\StockTransfer;
 use WebWMS\Inventory\Domain\StockTransferResult;
 use WebWMS\Inventory\Domain\StorageLocation;
+use WebWMS\Inventory\Domain\UnplannedReceipt;
+use WebWMS\Inventory\Domain\UnplannedReceiptBooking;
 use WebWMS\Inventory\Domain\Warehouse;
 
 final readonly class DbalInventoryRepository implements InventoryRepository
@@ -1144,6 +1146,103 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ], ['id' => $receipt['delivery_id']]);
 
             return new InboundResult($deliveryStatus, 'processed', $inspection->dimensions()->status()->value, $newQuantity);
+        });
+    }
+
+    public function saveUnplannedReceipt(UnplannedReceipt $receipt): void
+    {
+        $this->connection->transactional(function (Connection $connection) use ($receipt): void {
+            if ($connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :actorId AND tenant_id = :tenantId',
+                ['actorId' => $receipt->acceptedBy()->value(), 'tenantId' => $receipt->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('The accepting user must exist in the tenant.');
+            }
+            $connection->executeStatement(
+                'INSERT INTO wms_supplier (id, tenant_id, code, name, created_at) VALUES (:id, :tenantId, :code, :name, :createdAt) '
+                . 'ON DUPLICATE KEY UPDATE name = VALUES(name)',
+                [
+                    'id' => Uuid::v7()->toRfc4122(),
+                    'tenantId' => $receipt->tenantId()->value(),
+                    'code' => $receipt->supplierCode(),
+                    'name' => $receipt->supplierName(),
+                    'createdAt' => $receipt->acceptedAt()->format('Y-m-d H:i:s.u'),
+                ],
+            );
+            $supplierId = $connection->fetchOne(
+                'SELECT id FROM wms_supplier WHERE tenant_id = :tenantId AND code = :code',
+                ['tenantId' => $receipt->tenantId()->value(), 'code' => $receipt->supplierCode()],
+            );
+            $connection->insert('wms_unplanned_receipt', [
+                'id' => $receipt->id()->value(),
+                'tenant_id' => $receipt->tenantId()->value(),
+                'supplier_id' => $supplierId,
+                'code' => $receipt->code(),
+                'delivery_note' => $receipt->deliveryNote(),
+                'status' => 'accepted',
+                'accepted_by' => $receipt->acceptedBy()->value(),
+                'accepted_at' => $receipt->acceptedAt()->format('Y-m-d H:i:s.u'),
+                'booked_by' => null,
+                'booked_at' => null,
+            ]);
+            foreach ($receipt->items() as $item) {
+                if ($connection->fetchOne(
+                    'SELECT 1 FROM wms_product_reference p INNER JOIN wms_storage_location l ON l.tenant_id = p.tenant_id '
+                    . 'WHERE p.id = :productId AND l.id = :locationId AND p.tenant_id = :tenantId',
+                    ['productId' => $item->productId()->value(), 'locationId' => $item->locationId()->value(), 'tenantId' => $receipt->tenantId()->value()],
+                ) === false) {
+                    throw new InventoryReferenceNotFoundException('Product and receiving location must exist in the tenant.');
+                }
+                $connection->insert('wms_unplanned_receipt_item', [
+                    'id' => $item->id()->value(),
+                    'receipt_id' => $receipt->id()->value(),
+                    'product_id' => $item->productId()->value(),
+                    'location_id' => $item->locationId()->value(),
+                    'quantity' => $item->quantity(),
+                    'stock_status' => $item->dimensions()->status()->value,
+                    'batch_number' => $item->dimensions()->batchNumber(),
+                    'serial_number' => $item->dimensions()->serialNumber(),
+                    'expires_at' => $item->dimensions()->expiresAt()?->format('Y-m-d'),
+                ]);
+            }
+        });
+    }
+
+    public function bookUnplannedReceipt(UnplannedReceiptBooking $booking): InboundResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($booking): InboundResult {
+            $receipt = $connection->fetchAssociative(
+                "SELECT * FROM wms_unplanned_receipt WHERE id = :id AND tenant_id = :tenantId AND status = 'accepted' FOR UPDATE",
+                ['id' => $booking->receiptId()->value(), 'tenantId' => $booking->tenantId()->value()],
+            );
+            if ($receipt === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :actorId AND tenant_id = :tenantId',
+                ['actorId' => $booking->bookedBy()->value(), 'tenantId' => $booking->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('An accepted unplanned receipt and booking user must exist in the tenant.');
+            }
+            $items = $connection->fetchAllAssociative('SELECT * FROM wms_unplanned_receipt_item WHERE receipt_id = :receiptId ORDER BY id', ['receiptId' => $booking->receiptId()->value()]);
+            $lastQuantity = null;
+            foreach ($items as $item) {
+                $lastQuantity = $this->post(new StockPosting(
+                    new InventoryId(Uuid::v7()->toRfc4122()),
+                    $booking->tenantId(),
+                    new InventoryId((string) $item['product_id']),
+                    new InventoryId((string) $item['location_id']),
+                    (int) $item['quantity'],
+                    'Unplanned receipt ' . (string) $receipt['code'],
+                    $booking->bookedBy(),
+                    $booking->bookedAt(),
+                    StockDimensions::fromInput((string) $item['stock_status'], is_string($item['batch_number']) ? $item['batch_number'] : null, is_string($item['serial_number']) ? $item['serial_number'] : null, is_string($item['expires_at']) ? new DateTimeImmutable($item['expires_at']) : null),
+                ));
+            }
+            $connection->update('wms_unplanned_receipt', [
+                'status' => 'booked',
+                'booked_by' => $booking->bookedBy()->value(),
+                'booked_at' => $booking->bookedAt()->format('Y-m-d H:i:s.u'),
+            ], ['id' => $booking->receiptId()->value()]);
+
+            return new InboundResult('booked', 'booked', null, $lastQuantity);
         });
     }
 

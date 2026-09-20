@@ -27,7 +27,7 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Backendfortschritt
 
-Nach dem V3-Transportprotokoll-Slice besitzen 22 Tickets mit 157 Story Points einen substanziellen Backendkern. Weitere 36 Tickets mit 291 Story Points sind teilweise umgesetzt. Damit wurden 58 von 96 Tickets und 448 von 750 Story Points zumindest fachlich oder technisch begonnen.
+Nach dem V3-Slice für ungeplante Wareneingänge besitzen 22 Tickets mit 157 Story Points einen substanziellen Backendkern. Weitere 37 Tickets mit 296 Story Points sind teilweise umgesetzt. Damit wurden 59 von 96 Tickets und 453 von 750 Story Points zumindest fachlich oder technisch begonnen.
 
 ## Ergänzende Roadmap-Dokumente
 
@@ -35,6 +35,7 @@ Nach dem V3-Transportprotokoll-Slice besitzen 22 Tickets mit 157 Story Points ei
 - [Fachliches Datenmodell](data-model.md)
 - [Quellen](sources.md)
 - [Fortschrittsanalyse vom 18.09.2026](analysis/2026-09-18-progress.md)
+- [Fortschrittsanalyse Wareneingang vom 20.09.2026](analysis/2026-09-20-inbound-progress.md)
 
 ## Pflege
 

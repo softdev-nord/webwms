@@ -56,6 +56,13 @@
                     </li>
                 {% endif %}
 
+                {% if is_granted('inbound.receipt.read') %}
+                    <li class="menu-title"><span>Wareneingang</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if currentRoute starts with 'v3_inbound_' %}active{% endif %}" href="{{ path('v3_inbound_index') }}">Wareneingänge</a>
+                    </li>
+                {% endif %}
+
                 {% if is_granted('outbound.order.read') or is_granted('fulfillment.pick.read') or is_granted('fulfillment.pack.read') or is_granted('fulfillment.ship.read') or is_granted('fulfillment.loading.read') %}
                     <li class="menu-title"><span>Auftragsabwicklung</span></li>
 
