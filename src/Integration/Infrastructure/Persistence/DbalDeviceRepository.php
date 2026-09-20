@@ -42,8 +42,13 @@ final readonly class DbalDeviceRepository implements DeviceRepository
         }
 
         return new Device(
-            (string) $row['id'], (string) $row['tenant_id'], (string) $row['code'], (string) $row['name'],
-            (string) $row['device_type'], (bool) $row['active'], (string) $row['created_by'],
+            (string) $row['id'],
+            (string) $row['tenant_id'],
+            (string) $row['code'],
+            (string) $row['name'],
+            (string) $row['device_type'],
+            (bool) $row['active'],
+            (string) $row['created_by'],
             new DateTimeImmutable((string) $row['created_at']),
         );
     }
@@ -63,6 +68,7 @@ final readonly class DbalDeviceRepository implements DeviceRepository
     public function addScan(ScanEvent $event): ScanEvent
     {
         $this->assertActor($event->tenantId, $event->scannedBy);
+
         try {
             $this->connection->insert('wms_scan_event', [
                 'id' => $event->id, 'tenant_id' => $event->tenantId, 'device_id' => $event->deviceId,
@@ -97,10 +103,17 @@ final readonly class DbalDeviceRepository implements DeviceRepository
     private function hydrateScan(array $row): ScanEvent
     {
         return new ScanEvent(
-            (string) $row['id'], (string) $row['tenant_id'], (string) $row['device_id'],
-            (string) $row['scan_type'], (string) $row['scan_value'], (string) $row['process_type'],
-            (string) $row['context_reference'], (string) $row['request_id'], (string) $row['status'],
-            is_string($row['message']) ? $row['message'] : null, (string) $row['scanned_by'],
+            (string) $row['id'],
+            (string) $row['tenant_id'],
+            (string) $row['device_id'],
+            (string) $row['scan_type'],
+            (string) $row['scan_value'],
+            (string) $row['process_type'],
+            (string) $row['context_reference'],
+            (string) $row['request_id'],
+            (string) $row['status'],
+            is_string($row['message']) ? $row['message'] : null,
+            (string) $row['scanned_by'],
             new DateTimeImmutable((string) $row['scanned_at']),
         );
     }
