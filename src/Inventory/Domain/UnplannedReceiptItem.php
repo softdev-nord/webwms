@@ -23,9 +23,28 @@ final readonly class UnplannedReceiptItem
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
-    public function productId(): InventoryId { return $this->productId; }
-    public function locationId(): InventoryId { return $this->locationId; }
-    public function quantity(): int { return $this->quantity; }
-    public function dimensions(): StockDimensions { return $this->dimensions; }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function productId(): InventoryId
+    {
+        return $this->productId;
+    }
+
+    public function locationId(): InventoryId
+    {
+        return $this->locationId;
+    }
+
+    public function quantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function dimensions(): StockDimensions
+    {
+        return $this->dimensions;
+    }
 }

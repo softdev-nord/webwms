@@ -31,14 +31,49 @@ final readonly class UnplannedReceipt
         }
     }
 
-    public function id(): InventoryId { return $this->id; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function code(): string { return trim($this->code); }
-    public function supplierCode(): string { return mb_strtoupper(trim($this->supplierCode)); }
-    public function supplierName(): string { return trim($this->supplierName); }
-    public function deliveryNote(): ?string { return $this->deliveryNote === null ? null : trim($this->deliveryNote); }
+    public function id(): InventoryId
+    {
+        return $this->id;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function code(): string
+    {
+        return trim($this->code);
+    }
+
+    public function supplierCode(): string
+    {
+        return mb_strtoupper(trim($this->supplierCode));
+    }
+
+    public function supplierName(): string
+    {
+        return trim($this->supplierName);
+    }
+
+    public function deliveryNote(): ?string
+    {
+        return $this->deliveryNote === null ? null : trim($this->deliveryNote);
+    }
+
     /** @return list<UnplannedReceiptItem> */
-    public function items(): array { return $this->items; }
-    public function acceptedBy(): UserId { return $this->acceptedBy; }
-    public function acceptedAt(): DateTimeImmutable { return $this->acceptedAt; }
+    public function items(): array
+    {
+        return $this->items;
+    }
+
+    public function acceptedBy(): UserId
+    {
+        return $this->acceptedBy;
+    }
+
+    public function acceptedAt(): DateTimeImmutable
+    {
+        return $this->acceptedAt;
+    }
 }

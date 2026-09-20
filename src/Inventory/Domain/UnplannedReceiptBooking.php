@@ -18,8 +18,23 @@ final readonly class UnplannedReceiptBooking
     ) {
     }
 
-    public function receiptId(): InventoryId { return $this->receiptId; }
-    public function tenantId(): TenantId { return $this->tenantId; }
-    public function bookedBy(): UserId { return $this->bookedBy; }
-    public function bookedAt(): DateTimeImmutable { return $this->bookedAt; }
+    public function receiptId(): InventoryId
+    {
+        return $this->receiptId;
+    }
+
+    public function tenantId(): TenantId
+    {
+        return $this->tenantId;
+    }
+
+    public function bookedBy(): UserId
+    {
+        return $this->bookedBy;
+    }
+
+    public function bookedAt(): DateTimeImmutable
+    {
+        return $this->bookedAt;
+    }
 }
