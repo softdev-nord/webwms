@@ -4,10 +4,10 @@ Alle 18 dokumentierten Funktionen des Bereichs Lagerverwaltung werden fachlich k
 
 | Ticket | Zusammenfassung | Status | Priorität | Story Points |
 | --- | --- | --- | --- | ---: |
-| [WEBWMS-015](../tickets/WEBWMS-015.md) | Lagertopologie implementieren | Teilweise umgesetzt | Highest | 8 |
-| [WEBWMS-016](../tickets/WEBWMS-016.md) | Lagerübersicht implementieren | Teilweise umgesetzt | Highest | 5 |
-| [WEBWMS-017](../tickets/WEBWMS-017.md) | Echtzeitbestand implementieren | Backend umgesetzt | Highest | 8 |
-| [WEBWMS-018](../tickets/WEBWMS-018.md) | Bewegungshistorie implementieren | Backend umgesetzt | Highest | 8 |
+| [WEBWMS-015](../tickets/WEBWMS-015.md) | Lagertopologie implementieren | Done | Highest | 8 |
+| [WEBWMS-016](../tickets/WEBWMS-016.md) | Lagerübersicht implementieren | Done | Highest | 5 |
+| [WEBWMS-017](../tickets/WEBWMS-017.md) | Echtzeitbestand implementieren | Done | Highest | 8 |
+| [WEBWMS-018](../tickets/WEBWMS-018.md) | Bewegungshistorie implementieren | Done | Highest | 8 |
 | [WEBWMS-019](../tickets/WEBWMS-019.md) | Sonderbestandskennzeichen implementieren | Teilweise umgesetzt | High | 5 |
 | [WEBWMS-020](../tickets/WEBWMS-020.md) | Chargenverwaltung implementieren | Backend umgesetzt | Highest | 8 |
 | [WEBWMS-021](../tickets/WEBWMS-021.md) | MHD-Verwaltung implementieren | Backend umgesetzt | High | 5 |

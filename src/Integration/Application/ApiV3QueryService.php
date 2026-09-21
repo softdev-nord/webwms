@@ -35,6 +35,64 @@ final readonly class ApiV3QueryService
         );
     }
 
+    /** @return array{sites: list<array<string, mixed>>, warehouses: list<array<string, mixed>>, areas: list<array<string, mixed>>, aisles: list<array<string, mixed>>, bins: list<array<string, mixed>>} */
+    public function warehouseTopology(string $tenantId): array
+    {
+        return [
+            'sites' => $this->connection->fetchAllAssociative(
+                'SELECT id, code, name, timezone, status, created_at FROM wms_site WHERE tenant_id = :tenantId ORDER BY code',
+                ['tenantId' => $tenantId],
+            ),
+            'warehouses' => $this->connection->fetchAllAssociative(
+                'SELECT w.id, w.site_id, w.code, w.name, w.warehouse_type, s.code site_code, w.created_at '
+                . 'FROM wms_warehouse w INNER JOIN wms_site s ON s.id = w.site_id AND s.tenant_id = w.tenant_id '
+                . 'WHERE w.tenant_id = :tenantId ORDER BY s.code, w.code',
+                ['tenantId' => $tenantId],
+            ),
+            'areas' => $this->connection->fetchAllAssociative(
+                'SELECT id, warehouse_id, code, name, area_type, created_at FROM wms_warehouse_area '
+                . 'WHERE tenant_id = :tenantId ORDER BY warehouse_id, code',
+                ['tenantId' => $tenantId],
+            ),
+            'aisles' => $this->connection->fetchAllAssociative(
+                'SELECT id, area_id, code, name, created_at FROM wms_warehouse_aisle '
+                . 'WHERE tenant_id = :tenantId ORDER BY area_id, code',
+                ['tenantId' => $tenantId],
+            ),
+            'bins' => $this->connection->fetchAllAssociative(
+                'SELECT id, warehouse_id, area_id, aisle_id, code, level_code, bin_code, location_type, '
+                . 'capacity_quantity, putaway_enabled, putaway_priority, created_at FROM wms_storage_location '
+                . 'WHERE tenant_id = :tenantId ORDER BY warehouse_id, area_id, aisle_id, level_code, bin_code, code',
+                ['tenantId' => $tenantId],
+            ),
+        ];
+    }
+
+    /** @return array{warehouses: list<array<string, mixed>>, areas: list<array<string, mixed>>} */
+    public function warehouseOverview(string $tenantId): array
+    {
+        return [
+            'warehouses' => $this->connection->fetchAllAssociative(
+                'SELECT w.id, w.code, w.name, w.warehouse_type, '
+                . '(SELECT COUNT(*) FROM wms_storage_location l WHERE l.warehouse_id = w.id) bin_count, '
+                . '(SELECT COUNT(*) FROM wms_storage_location l WHERE l.warehouse_id = w.id AND EXISTS (SELECT 1 FROM wms_stock_balance b WHERE b.location_id = l.id AND b.quantity > 0)) occupied_bin_count, '
+                . '(SELECT COALESCE(SUM(l.capacity_quantity), 0) FROM wms_storage_location l WHERE l.warehouse_id = w.id) total_capacity, '
+                . '(SELECT COALESCE(SUM(b.quantity), 0) FROM wms_stock_balance b INNER JOIN wms_storage_location l ON l.id = b.location_id WHERE l.warehouse_id = w.id) stock_quantity '
+                . 'FROM wms_warehouse w WHERE w.tenant_id = :tenantId ORDER BY w.code',
+                ['tenantId' => $tenantId],
+            ),
+            'areas' => $this->connection->fetchAllAssociative(
+                'SELECT a.id, a.warehouse_id, a.code, a.name, a.area_type, '
+                . '(SELECT COUNT(*) FROM wms_storage_location l WHERE l.area_id = a.id) bin_count, '
+                . '(SELECT COUNT(*) FROM wms_storage_location l WHERE l.area_id = a.id AND EXISTS (SELECT 1 FROM wms_stock_balance b WHERE b.location_id = l.id AND b.quantity > 0)) occupied_bin_count, '
+                . '(SELECT COALESCE(SUM(l.capacity_quantity), 0) FROM wms_storage_location l WHERE l.area_id = a.id) total_capacity, '
+                . '(SELECT COALESCE(SUM(b.quantity), 0) FROM wms_stock_balance b INNER JOIN wms_storage_location l ON l.id = b.location_id WHERE l.area_id = a.id) stock_quantity '
+                . 'FROM wms_warehouse_area a WHERE a.tenant_id = :tenantId ORDER BY a.warehouse_id, a.code',
+                ['tenantId' => $tenantId],
+            ),
+        ];
+    }
+
     /** @return list<array<string, mixed>> */
     public function receivingLocations(string $tenantId): array
     {
@@ -114,11 +172,14 @@ final readonly class ApiV3QueryService
     {
         return $this->connection->fetchAllAssociative(
             "SELECT CONCAT(b.product_id, '|', b.location_id, '|', b.stock_key) AS `cursor`, "
-            . 'b.product_id, p.sku, b.location_id, l.code location_code, l.warehouse_id, '
-            . 'b.stock_status, b.batch_number, b.serial_number, b.expires_at, b.quantity, '
+            . 'b.product_id, p.sku, p.name product_name, b.location_id, l.code location_code, l.warehouse_id, '
+            . 'w.code warehouse_code, a.code area_code, ai.code aisle_code, l.level_code, l.bin_code, '
+            . 'b.stock_status, b.batch_number, b.serial_number, b.expires_at, b.quantity, b.updated_at, '
             . "b.quantity - COALESCE((SELECT SUM(a.quantity) FROM wms_stock_allocation a WHERE a.tenant_id = b.tenant_id AND a.product_id = b.product_id AND a.location_id = b.location_id AND a.stock_key = b.stock_key AND a.status = 'active'), 0) available_quantity "
             . 'FROM wms_stock_balance b INNER JOIN wms_product_reference p ON p.id = b.product_id '
             . 'INNER JOIN wms_storage_location l ON l.id = b.location_id '
+            . 'INNER JOIN wms_warehouse w ON w.id = l.warehouse_id AND w.tenant_id = b.tenant_id '
+            . 'LEFT JOIN wms_warehouse_area a ON a.id = l.area_id LEFT JOIN wms_warehouse_aisle ai ON ai.id = l.aisle_id '
             . 'WHERE b.tenant_id = :tenantId '
             . 'AND (:warehouseFilter IS NULL OR l.warehouse_id = :warehouseId) '
             . "AND (:cursorFilter IS NULL OR CONCAT(b.product_id, '|', b.location_id, '|', b.stock_key) > :cursorValue) "
@@ -144,16 +205,17 @@ final readonly class ApiV3QueryService
             'SELECT e.id, e.product_id, p.sku, e.location_id, l.code location_code, '
             . 'e.stock_status, e.batch_number, e.serial_number, e.expires_at, '
             . 'e.quantity_delta, e.resulting_quantity, e.movement_type, e.transfer_id, '
-            . 'e.allocation_id, e.reservation_id, e.reason, e.performed_by, e.occurred_at '
+            . 'e.allocation_id, e.reservation_id, e.reason, e.performed_by, u.display_name performed_by_name, e.occurred_at '
             . 'FROM wms_stock_ledger e INNER JOIN wms_product_reference p ON p.id = e.product_id '
             . 'INNER JOIN wms_storage_location l ON l.id = e.location_id '
+            . 'INNER JOIN wms_user_account u ON u.id = e.performed_by AND u.tenant_id = e.tenant_id '
             . 'WHERE e.tenant_id = :tenantId '
             . 'AND (:productFilter IS NULL OR e.product_id = :productId) '
             . 'AND (:locationFilter IS NULL OR e.location_id = :locationId) '
             . 'AND (:transferFilter IS NULL OR e.transfer_id = :transferId) '
             . 'AND (:movementTypeFilter IS NULL OR e.movement_type = :movementType) '
-            . 'AND (:cursorFilter IS NULL OR e.id > :cursorValue) '
-            . 'ORDER BY e.id LIMIT ' . $limit,
+            . 'AND (:cursorFilter IS NULL OR e.id < :cursorValue) '
+            . 'ORDER BY e.occurred_at DESC, e.id DESC LIMIT ' . $limit,
             [
                 'tenantId' => $tenantId,
                 'productFilter' => $criteria->productId,

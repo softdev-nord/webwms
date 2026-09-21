@@ -2,7 +2,7 @@
 id: WEBWMS-015
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-`Site`, `Warehouse`, `StorageLocation`; Bereiche und Gänge fehlen. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`WarehouseTopologyService`, `StorageBinDefinition` und die normalisierten Tabellen für Bereich und Gang bilden Standort → Lager → Bereich → Gang → Ebene/Fach vollständig ab. V3-UI und JSON-API, mandantenbezogene Referenzprüfung, Berechtigungen, Auditdaten, Demo-Topologie und automatisierte Domain-/Querytests erfüllen die Akzeptanzkriterien.
 
 ## Quelle
 
 - Feature: CG-015
 - Referenz: https://www.coglas.com/lagerverwaltung/
-

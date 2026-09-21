@@ -2,7 +2,7 @@
 id: WEBWMS-016
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 5
 component: "Lagerverwaltung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-Bestands- und Kapazitätsdaten; neue visuelle Übersicht fehlt. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`ApiV3QueryService::warehouseOverview()` aggregiert Lager- und Bereichsdaten ohne Kapazitätsdoppelzählung. Die V3-Übersicht visualisiert Lagertyp, Platzbelegung, Bestand, Gesamtkapazität und freie Kapazität; dieselbe mandantensichere Projektion steht berechtigt als JSON-API bereit und ist automatisiert getestet.
 
 ## Quelle
 
 - Feature: CG-016
 - Referenz: https://www.coglas.com/funktionen/
-

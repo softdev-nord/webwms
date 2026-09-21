@@ -2,7 +2,7 @@
 id: WEBWMS-018
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Backend umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
-Unveränderlicher `wms_stock_ledger`. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Das unveränderliche `wms_stock_ledger` wird über eine berechtigte, mandantensichere V3-UI und JSON-API revisionsnah bereitgestellt. Filter für Artikel, Lagerplatz, Transfer und Bewegungstyp sowie Benutzer, Grund, Dimensionen, Mengenänderung und resultierender Bestand erfüllen die Nachvollziehbarkeit; Query- und Buchungstests sichern den Ablauf.
 
 ## Quelle
 
 - Feature: CG-018
 - Referenz: https://www.coglas.com/lagerverwaltung/
-

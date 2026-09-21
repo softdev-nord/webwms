@@ -7,9 +7,36 @@ namespace WebWMS\Tests\Unit\Integration\Application;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\StockMovementCriteria;
 
 final class ApiV3QueryServiceTest extends TestCase
 {
+    public function testWarehouseTopologyIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::exactly(5))->method('fetchAllAssociative')->with(
+            self::callback(static fn (string $sql): bool => str_contains($sql, 'tenant_id = :tenantId')),
+            ['tenantId' => 'tenant-id'],
+        )->willReturn([]);
+
+        $result = (new ApiV3QueryService($connection))->warehouseTopology('tenant-id');
+
+        self::assertSame([], $result['bins']);
+    }
+
+    public function testWarehouseOverviewIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::exactly(2))->method('fetchAllAssociative')->with(
+            self::callback(static fn (string $sql): bool => str_contains($sql, 'tenant_id = :tenantId')),
+            ['tenantId' => 'tenant-id'],
+        )->willReturn([]);
+
+        $result = (new ApiV3QueryService($connection))->warehouseOverview('tenant-id');
+
+        self::assertSame([], $result['warehouses']);
+    }
+
     public function testPlannedInboundWorklistIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
@@ -120,6 +147,28 @@ final class ApiV3QueryServiceTest extends TestCase
         $queries = new ApiV3QueryService($connection);
 
         self::assertSame([], $queries->stock('tenant-id', null, 200, null));
+    }
+
+    public function testStockMovementJournalIsTenantScopedAndNewestFirst(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())
+            ->method('fetchAllAssociative')
+            ->with(
+                self::callback(static function (string $sql): bool {
+                    self::assertStringContainsString('WHERE e.tenant_id = :tenantId', $sql);
+                    self::assertStringContainsString('performed_by_name', $sql);
+                    self::assertStringContainsString('ORDER BY e.occurred_at DESC, e.id DESC', $sql);
+
+                    return true;
+                }),
+                self::isType('array'),
+            )
+            ->willReturn([]);
+
+        $criteria = new StockMovementCriteria(null, null, null, null);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->stockMovements('tenant-id', $criteria, 100, null));
     }
 
     public function testOutboundOrderListIsRestrictedToTheAuthenticatedTenant(): void

@@ -38,6 +38,10 @@ final readonly class DemoBootstrapService
 
     public const string LOCATION_B_ID = 'a3f696d9-fac9-4b06-a0f4-33f76e9c7d9d';
 
+    public const string AREA_ID = '80dc3871-a751-45f4-b1a0-6261ad471783';
+
+    public const string AISLE_ID = 'b059382c-6e64-4302-8fb8-c357617fba28';
+
     public const string PRODUCT_A_ID = 'af7b6174-a744-4346-a243-6f5e59e1de4f';
 
     public const string PRODUCT_B_ID = 'dcfbe1d5-7210-4f28-afc7-e098214f102f';
@@ -238,6 +242,7 @@ final readonly class DemoBootstrapService
         }
         $this->createLocation($tenantId, self::LOCATION_A_ID, 'A-01-01', $now);
         $this->createLocation($tenantId, self::LOCATION_B_ID, 'B-01-01', $now);
+        $this->createTopologyDemo($now);
         $this->createProduct($tenantId, self::PRODUCT_A_ID, 'DEMO-1000', 'Demo Scanner', $now);
         $this->createProduct($tenantId, self::PRODUCT_B_ID, 'DEMO-2000', 'Demo Versandkarton', $now);
         $this->createPlannedInboundDemo($now);
@@ -256,6 +261,36 @@ final readonly class DemoBootstrapService
         }
 
         return new DemoBootstrapResult(self::TENANT_ID, self::EMAIL, $generatedPassword, $created);
+    }
+
+    private function createTopologyDemo(DateTimeImmutable $now): void
+    {
+        $this->connection->update('wms_site', ['created_by' => self::USER_ID], ['id' => self::SITE_ID]);
+        $this->connection->update('wms_warehouse', [
+            'warehouse_type' => 'standard', 'created_by' => self::USER_ID,
+        ], ['id' => self::WAREHOUSE_ID]);
+        if (!$this->exists('wms_warehouse_area', self::AREA_ID)) {
+            $this->connection->insert('wms_warehouse_area', [
+                'id' => self::AREA_ID, 'tenant_id' => self::TENANT_ID, 'warehouse_id' => self::WAREHOUSE_ID,
+                'code' => 'STORAGE', 'name' => 'Demo-Lagerbereich', 'area_type' => 'storage',
+                'created_by' => self::USER_ID, 'created_at' => $this->date($now),
+            ]);
+        }
+        if (!$this->exists('wms_warehouse_aisle', self::AISLE_ID)) {
+            $this->connection->insert('wms_warehouse_aisle', [
+                'id' => self::AISLE_ID, 'tenant_id' => self::TENANT_ID, 'area_id' => self::AREA_ID,
+                'code' => '01', 'name' => 'Demo-Gang 01', 'created_by' => self::USER_ID,
+                'created_at' => $this->date($now),
+            ]);
+        }
+        $this->connection->update('wms_storage_location', [
+            'area_id' => self::AREA_ID, 'aisle_id' => self::AISLE_ID, 'level_code' => '01', 'bin_code' => '01',
+            'location_type' => 'storage', 'capacity_quantity' => 100, 'created_by' => self::USER_ID,
+        ], ['id' => self::LOCATION_A_ID]);
+        $this->connection->update('wms_storage_location', [
+            'area_id' => self::AREA_ID, 'aisle_id' => self::AISLE_ID, 'level_code' => '01', 'bin_code' => '02',
+            'location_type' => 'storage', 'capacity_quantity' => 200, 'created_by' => self::USER_ID,
+        ], ['id' => self::LOCATION_B_ID]);
     }
 
     private function createPlannedInboundDemo(DateTimeImmutable $now): void

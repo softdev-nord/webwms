@@ -31,7 +31,8 @@ final class V3PermissionCatalog
         'integration.printer.read', 'integration.printer.write',
         'inventory.allocation.read', 'inventory.allocation.write', 'inventory.location.read',
         'inventory.product.read', 'inventory.product.write', 'inventory.stock.movement.read',
-        'inventory.stock.read', 'inventory.stock.transfer',
+        'inventory.stock.read', 'inventory.stock.transfer', 'inventory.topology.read', 'inventory.topology.write',
+        'inventory.overview.read',
         'outbound.order.read', 'outbound.order.release', 'outbound.order.write',
     ];
 

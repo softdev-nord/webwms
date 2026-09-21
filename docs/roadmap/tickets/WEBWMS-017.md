@@ -2,7 +2,7 @@
 id: WEBWMS-017
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Backend umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
-`wms_stock_balance`, `PostStockHandler`, atomare Buchungen. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`wms_stock_balance`, atomare Buchungen und die mandantensichere V3-Projektion führen Mengen, Status, Dimensionen, Plätze und Verfügbarkeit aktuell. UI und JSON-API zeigen zusätzlich Topologie und Aktualisierungszeitpunkt. Berechtigungen sowie Domain-, Application- und Querytests decken den Ablauf ab.
 
 ## Quelle
 
 - Feature: CG-017
 - Referenz: https://www.coglas.com/lagerverwaltung/
-

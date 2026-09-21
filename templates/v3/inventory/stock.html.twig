@@ -26,12 +26,14 @@
             <tr>
                 <th>SKU</th>
                 <th>Lagerplatz</th>
+                <th>Topologie</th>
                 <th>Status</th>
                 <th>Charge</th>
                 <th>Seriennummer</th>
                 <th>Verfall</th>
                 <th class="text-end">Menge</th>
                 <th class="text-end">Verfügbar</th>
+                <th>Aktualisiert</th>
             </tr>
             </thead>
             <tbody>
@@ -39,6 +41,7 @@
                     <tr>
                         <td class="fw-semibold">{{ row.sku }}</td>
                         <td>{{ row.location_code }}</td>
+                        <td>{{ row.warehouse_code }}{% if row.area_code %} / {{ row.area_code }}{% endif %}{% if row.aisle_code %} / {{ row.aisle_code }}{% endif %}</td>
                         <td>
                             <span class="badge bg-success-subtle text-success">
                                 {{ row.stock_status }}
@@ -49,10 +52,11 @@
                         <td>{{ row.expires_at ?: '–' }}</td>
                         <td class="text-end">{{ row.quantity }}</td>
                         <td class="text-end fw-semibold">{{ row.available_quantity }}</td>
+                        <td class="text-nowrap">{{ row.updated_at|date('d.m.Y H:i:s') }}</td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="8" class="text-center text-muted py-5">Kein Bestand für diesen Filter vorhanden.</td>
+                        <td colspan="10" class="text-center text-muted py-5">Kein Bestand für diesen Filter vorhanden.</td>
                     </tr>
                 {% endfor %}
             </tbody>

@@ -49,11 +49,14 @@
                     <a class="nav-link {% if currentRoute == 'v3_dashboard' %}active{% endif %}" href="{{ path('v3_dashboard') }}">Dashboard</a>
                 </li>
 
-                {% if is_granted('inventory.stock.read') %}
+                {% if is_granted('inventory.stock.read') or is_granted('inventory.topology.read') or is_granted('inventory.overview.read') or is_granted('inventory.stock.movement.read') %}
                     <li class="menu-title"><span>Lager</span></li>
-                    <li class="nav-item">
+                    {% if is_granted('inventory.overview.read') %}<li class="nav-item"><a class="nav-link {% if currentRoute == 'v3_inventory_overview' %}active{% endif %}" href="{{ path('v3_inventory_overview') }}">Lagerübersicht</a></li>{% endif %}
+                    {% if is_granted('inventory.topology.read') %}<li class="nav-item"><a class="nav-link {% if currentRoute starts with 'v3_inventory_' and currentRoute not in ['v3_inventory_overview', 'v3_inventory_movements'] %}active{% endif %}" href="{{ path('v3_inventory_topology') }}">Lagertopologie</a></li>{% endif %}
+                    {% if is_granted('inventory.stock.read') %}<li class="nav-item">
                         <a class="nav-link {% if currentRoute == 'v3_stock' %}active{% endif %}" href="{{ path('v3_stock') }}">Bestand</a>
-                    </li>
+                    </li>{% endif %}
+                    {% if is_granted('inventory.stock.movement.read') %}<li class="nav-item"><a class="nav-link {% if currentRoute == 'v3_inventory_movements' %}active{% endif %}" href="{{ path('v3_inventory_movements') }}">Bewegungen</a></li>{% endif %}
                 {% endif %}
 
                 {% if is_granted('inbound.receipt.read') or is_granted('inbound.planned.read') %}
