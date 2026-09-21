@@ -94,7 +94,7 @@ final readonly class ExtendedDemoDatasetService
         $serialNumber = null;
         $expiresAt = $createdAt->modify(sprintf('+%d days', ($number % 120) - 20))->format('Y-m-d');
         $stockQuantity = 50 + $number;
-        $stockKey = hash('sha256', implode('|', ['available', $batchNumber ?? '', $serialNumber ?? '', $expiresAt ?? '']));
+        $stockKey = hash('sha256', implode('|', ['available', $batchNumber, '', $expiresAt]));
         $this->insertComposite('wms_stock_balance', [
             'tenant_id' => DemoBootstrapService::TENANT_ID, 'product_id' => $productId,
             'location_id' => $locationId, 'stock_key' => $stockKey, 'quantity' => $stockQuantity,
