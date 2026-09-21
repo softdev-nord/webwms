@@ -43,6 +43,7 @@ final readonly class ExtendedDemoDatasetService
         $supplierId = $this->id('supplier', $number);
         $strategyId = $this->id('putaway-strategy', $number);
         $selectionRuleId = $this->id('selection-rule', $number);
+        $blockReasonId = $this->id('stock-block-reason', $number);
 
         $this->insert('wms_site', $siteId, [
             'tenant_id' => DemoBootstrapService::TENANT_ID, 'code' => 'S' . $suffix,
@@ -96,6 +97,12 @@ final readonly class ExtendedDemoDatasetService
             'name' => 'Demo-Entnahmeregel ' . $suffix,
             'strategy' => ['fifo', 'lifo', 'fefo'][($number - 1) % 3], 'priority' => $number,
             'enabled' => 1, 'created_by' => DemoBootstrapService::USER_ID,
+            'created_at' => $this->date($createdAt),
+        ]);
+        $this->insert('wms_stock_block_reason', $blockReasonId, [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'code' => 'BLOCK-' . $suffix,
+            'name' => 'Demo-Sperrgrund ' . $suffix, 'description' => 'Prüfgrund für den erweiterten Demodatensatz',
+            'active' => 1, 'created_by' => DemoBootstrapService::USER_ID,
             'created_at' => $this->date($createdAt),
         ]);
 
@@ -160,7 +167,7 @@ final readonly class ExtendedDemoDatasetService
             'occurred_at' => $this->date($createdAt),
         ]);
 
-        return compact('warehouseId', 'locationId', 'productId', 'supplierId', 'strategyId', 'selectionRuleId', 'stockKey');
+        return compact('warehouseId', 'locationId', 'productId', 'supplierId', 'strategyId', 'selectionRuleId', 'blockReasonId', 'stockKey', 'batchNumber', 'expiresAt');
     }
 
     /** @param array<string, string> $references */
@@ -349,6 +356,30 @@ final readonly class ExtendedDemoDatasetService
         $policyId = $this->id('replenishment-policy', $number);
         $countId = $this->id('inventory-count', $number);
         $cycleId = $this->id('cycle-count', $number);
+        $blockId = $this->id('stock-block', $number);
+
+        $blockedStockKey = hash('sha256', implode('|', ['blocked', $references['batchNumber'], '', $references['expiresAt']]));
+        $this->insert('wms_stock_block', $blockId, [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'reason_id' => $references['blockReasonId'],
+            'product_id' => $references['productId'], 'location_id' => $references['locationId'],
+            'source_stock_key' => $references['stockKey'], 'blocked_stock_key' => $blockedStockKey,
+            'original_status' => 'available', 'batch_number' => $references['batchNumber'],
+            'serial_number' => null, 'expires_at' => $references['expiresAt'], 'quantity' => 1,
+            'note' => 'Historische Demo-Sperre', 'status' => 'released',
+            'blocked_by' => DemoBootstrapService::USER_ID, 'blocked_at' => $this->date($createdAt),
+            'reviewed_by' => DemoBootstrapService::USER_ID, 'reviewed_at' => $this->date($createdAt->modify('+10 minutes')),
+            'review_note' => 'Demo-Prüfung ohne Befund', 'released_by' => DemoBootstrapService::USER_ID,
+            'released_at' => $this->date($createdAt->modify('+20 minutes')),
+        ]);
+        foreach (['blocked' => 'Historische Demo-Sperre', 'reviewed' => 'Demo-Prüfung ohne Befund', 'released' => 'Demo-Freigabe'] as $eventType => $eventNote) {
+            $offset = $eventType === 'blocked' ? 0 : ($eventType === 'reviewed' ? 10 : 20);
+            $this->insert('wms_stock_block_event', $this->id('stock-block-' . $eventType, $number), [
+                'tenant_id' => DemoBootstrapService::TENANT_ID, 'block_id' => $blockId,
+                'event_type' => $eventType, 'note' => $eventNote,
+                'performed_by' => DemoBootstrapService::USER_ID,
+                'occurred_at' => $this->date($createdAt->modify(sprintf('+%d minutes', $offset))),
+            ]);
+        }
 
         $this->insert('wms_return_order', $returnId, [
             'tenant_id' => DemoBootstrapService::TENANT_ID, 'code' => 'RET-' . $suffix,

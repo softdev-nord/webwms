@@ -15,6 +15,7 @@ use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
 use WebWMS\Integration\Application\StockMovementCriteria;
 use WebWMS\Inventory\Application\SpecialStockService;
+use WebWMS\Inventory\Application\StockBlockingService;
 use WebWMS\Inventory\Application\StockSelectionService;
 use WebWMS\Inventory\Application\WarehouseTopologyService;
 use WebWMS\Security\V3\TenantPermissionUser;
@@ -27,6 +28,7 @@ final class V3WarehouseController extends AbstractController
         private readonly WarehouseTopologyService $topology,
         private readonly SpecialStockService $specialStock,
         private readonly StockSelectionService $stockSelection,
+        private readonly StockBlockingService $stockBlocking,
     ) {
     }
 
@@ -238,6 +240,94 @@ final class V3WarehouseController extends AbstractController
         $this->addFlash('success', 'Die Entnahmestrategie wurde angelegt.');
 
         return $this->redirectToRoute('v3_inventory_selection_rules');
+    }
+
+    #[Route('/stock-blocks', name: 'stock_blocks', methods: ['GET'])]
+    #[IsGranted('inventory.stock_block.read')]
+    public function stockBlocks(Request $request): Response
+    {
+        $user = $this->user();
+        $selectedBlock = $this->query($request, 'block');
+
+        return $this->render('v3/inventory/stock_blocks.html.twig', [
+            'page' => 'Bestandssperren',
+            'reasons' => $this->queries->stockBlockReasons($user->tenantId()),
+            'blocks' => $this->queries->stockBlocks($user->tenantId()),
+            'stock' => $this->queries->stock($user->tenantId(), null, 500, null),
+            'events' => $selectedBlock === null ? [] : $this->queries->stockBlockEvents($user->tenantId(), $selectedBlock),
+            'selectedBlock' => $selectedBlock,
+        ]);
+    }
+
+    #[Route('/stock-blocks/reasons', name: 'stock_block_reason_create', methods: ['POST'])]
+    #[IsGranted('inventory.stock_block.write')]
+    public function createStockBlockReason(Request $request): Response
+    {
+        $this->csrf($request, 'v3_inventory_stock_block_reason_create');
+        $user = $this->user();
+        $this->stockBlocking->createReason(
+            Uuid::v7()->toRfc4122(),
+            $user->tenantId(),
+            $this->required($request, 'code'),
+            $this->required($request, 'name'),
+            $this->optional($request, 'description'),
+            $request->request->getBoolean('active'),
+            $user->actorId(),
+            new DateTimeImmutable(),
+        );
+        $this->addFlash('success', 'Der Sperrgrund wurde angelegt.');
+
+        return $this->redirectToRoute('v3_inventory_stock_blocks');
+    }
+
+    #[Route('/stock-blocks', name: 'stock_block_create', methods: ['POST'])]
+    #[IsGranted('inventory.stock_block.write')]
+    public function createStockBlock(Request $request): Response
+    {
+        $this->csrf($request, 'v3_inventory_stock_block_create');
+        $user = $this->user();
+        $this->stockBlocking->block(
+            Uuid::v7()->toRfc4122(),
+            $user->tenantId(),
+            $this->required($request, 'reason_id'),
+            $this->required($request, 'product_id'),
+            $this->required($request, 'location_id'),
+            $this->required($request, 'stock_status'),
+            $this->optional($request, 'batch_number'),
+            $this->optional($request, 'serial_number'),
+            ($expiresAt = $this->optional($request, 'expires_at')) === null ? null : new DateTimeImmutable($expiresAt),
+            $this->positiveInt($request, 'quantity'),
+            $this->required($request, 'note'),
+            $user->actorId(),
+            new DateTimeImmutable(),
+        );
+        $this->addFlash('success', 'Der Bestand wurde gesperrt und dem Prüfworkflow übergeben.');
+
+        return $this->redirectToRoute('v3_inventory_stock_blocks');
+    }
+
+    #[Route('/stock-blocks/{blockId}/review', name: 'stock_block_review', methods: ['POST'])]
+    #[IsGranted('inventory.stock_block.review')]
+    public function reviewStockBlock(string $blockId, Request $request): Response
+    {
+        $this->csrf($request, 'v3_inventory_stock_block_review_' . $blockId);
+        $user = $this->user();
+        $this->stockBlocking->review($user->tenantId(), $blockId, $this->required($request, 'note'), $user->actorId(), new DateTimeImmutable());
+        $this->addFlash('success', 'Die Bestandssperre wurde geprüft.');
+
+        return $this->redirectToRoute('v3_inventory_stock_blocks', ['block' => $blockId]);
+    }
+
+    #[Route('/stock-blocks/{blockId}/release', name: 'stock_block_release', methods: ['POST'])]
+    #[IsGranted('inventory.stock_block.release')]
+    public function releaseStockBlock(string $blockId, Request $request): Response
+    {
+        $this->csrf($request, 'v3_inventory_stock_block_release_' . $blockId);
+        $user = $this->user();
+        $this->stockBlocking->release($user->tenantId(), $blockId, $this->required($request, 'note'), $user->actorId(), new DateTimeImmutable());
+        $this->addFlash('success', 'Der geprüfte Bestand wurde freigegeben.');
+
+        return $this->redirectToRoute('v3_inventory_stock_blocks', ['block' => $blockId]);
     }
 
     private function user(): TenantPermissionUser

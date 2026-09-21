@@ -11,6 +11,35 @@ use WebWMS\Integration\Application\StockMovementCriteria;
 
 final class ApiV3QueryServiceTest extends TestCase
 {
+    public function testStockBlockViewsAreTenantScoped(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::exactly(3))->method('fetchAllAssociative')->with(
+            self::callback(static fn (string $sql): bool => str_contains($sql, 'tenant_id = :tenantId')),
+            self::isType('array'),
+        )->willReturn([]);
+        $queries = new ApiV3QueryService($connection);
+
+        self::assertSame([], $queries->stockBlockReasons('tenant-id'));
+        self::assertSame([], $queries->stockBlocks('tenant-id'));
+        self::assertSame([], $queries->stockBlockEvents('tenant-id', 'block-id'));
+    }
+
+    public function testAvailableStockExcludesBlockedStatus(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())->method('fetchAllAssociative')->with(
+            self::callback(static function (string $sql): bool {
+                self::assertStringContainsString("b.stock_status = 'available'", $sql);
+
+                return true;
+            }),
+            ['tenantId' => 'tenant-id', 'productId' => 'product-id'],
+        )->willReturn([]);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->availableStockForProduct('tenant-id', 'product-id'));
+    }
+
     public function testStockSelectionConfigurationAndJournalAreTenantScoped(): void
     {
         $connection = $this->createMock(Connection::class);

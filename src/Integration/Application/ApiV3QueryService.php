@@ -272,6 +272,46 @@ final readonly class ApiV3QueryService
         );
     }
 
+    /** @return list<array<string, mixed>> */
+    public function stockBlockReasons(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, code, name, description, active, created_at FROM wms_stock_block_reason '
+            . 'WHERE tenant_id = :tenantId ORDER BY code',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function stockBlocks(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT b.id, b.product_id, p.sku, p.name product_name, b.location_id, l.code location_code, '
+            . 'b.original_status, b.batch_number, b.serial_number, b.expires_at, b.quantity, b.note, b.status, '
+            . 'r.code reason_code, r.name reason_name, blocker.display_name blocked_by_name, b.blocked_at, '
+            . 'reviewer.display_name reviewed_by_name, b.reviewed_at, b.review_note, releaser.display_name released_by_name, b.released_at '
+            . 'FROM wms_stock_block b INNER JOIN wms_stock_block_reason r ON r.id = b.reason_id AND r.tenant_id = b.tenant_id '
+            . 'INNER JOIN wms_product_reference p ON p.id = b.product_id AND p.tenant_id = b.tenant_id '
+            . 'INNER JOIN wms_storage_location l ON l.id = b.location_id AND l.tenant_id = b.tenant_id '
+            . 'INNER JOIN wms_user_account blocker ON blocker.id = b.blocked_by AND blocker.tenant_id = b.tenant_id '
+            . 'LEFT JOIN wms_user_account reviewer ON reviewer.id = b.reviewed_by AND reviewer.tenant_id = b.tenant_id '
+            . 'LEFT JOIN wms_user_account releaser ON releaser.id = b.released_by AND releaser.tenant_id = b.tenant_id '
+            . 'WHERE b.tenant_id = :tenantId ORDER BY CASE b.status WHEN \'open\' THEN 0 WHEN \'reviewed\' THEN 1 ELSE 2 END, b.blocked_at DESC',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function stockBlockEvents(string $tenantId, string $blockId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT e.id, e.event_type, e.note, u.display_name performed_by_name, e.occurred_at '
+            . 'FROM wms_stock_block_event e INNER JOIN wms_user_account u ON u.id = e.performed_by AND u.tenant_id = e.tenant_id '
+            . 'WHERE e.tenant_id = :tenantId AND e.block_id = :blockId ORDER BY e.occurred_at, e.id',
+            ['tenantId' => $tenantId, 'blockId' => $blockId],
+        );
+    }
+
     /** @return array{batches: list<array<string, mixed>>, expiries: list<array<string, mixed>>, serials: list<array<string, mixed>>} */
     public function traceability(string $tenantId, int $expiryWarningDays = 30): array
     {
@@ -400,7 +440,7 @@ final readonly class ApiV3QueryService
             . "LEFT JOIN wms_stock_allocation a ON a.tenant_id = b.tenant_id AND a.product_id = b.product_id AND a.location_id = b.location_id AND a.stock_key = b.stock_key AND a.status = 'active' "
             . 'LEFT JOIN wms_stock_classification c ON c.tenant_id = b.tenant_id AND c.product_id = b.product_id AND c.location_id = b.location_id AND c.stock_key = b.stock_key '
             . 'LEFT JOIN wms_special_stock_type t ON t.id = c.special_stock_type_id '
-            . 'WHERE b.tenant_id = :tenantId AND b.product_id = :productId AND (t.id IS NULL OR t.allocatable = 1) '
+            . "WHERE b.tenant_id = :tenantId AND b.product_id = :productId AND b.stock_status = 'available' AND (t.id IS NULL OR t.allocatable = 1) "
             . 'AND (b.expires_at IS NULL OR b.expires_at >= CURRENT_DATE) '
             . 'GROUP BY b.location_id, b.stock_key, l.code, b.stock_status, b.batch_number, b.serial_number, b.expires_at, b.quantity '
             . 'HAVING available_quantity > 0 ORDER BY l.code, b.stock_key',

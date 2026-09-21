@@ -2,7 +2,7 @@
 id: WEBWMS-025
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 5
 component: "Lagerverwaltung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-Bestandsstatus `blocked`; Sperrgründe und Sperrlisten fehlen. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Konfigurierbare Sperrgründe und der vollständige Ablauf Sperren → Prüfen → Freigeben sind umgesetzt. Sperren führen eine reale, dimensionsgleiche Statusumbuchung aus und können erst nach dokumentierter Prüfung freigegeben werden. UI, API, getrennte Berechtigungen, Auditjournal, Demodaten und Tests sind vorhanden.
 
 ## Quelle
 
 - Feature: CG-025
 - Referenz: https://www.coglas.com/funktionen/
-

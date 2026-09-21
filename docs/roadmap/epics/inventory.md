@@ -14,7 +14,7 @@ Alle 18 dokumentierten Funktionen des Bereichs Lagerverwaltung werden fachlich k
 | [WEBWMS-022](../tickets/WEBWMS-022.md) | Seriennummernverwaltung implementieren | Done | High | 8 |
 | [WEBWMS-023](../tickets/WEBWMS-023.md) | FIFO/LIFO implementieren | Done | Highest | 8 |
 | [WEBWMS-024](../tickets/WEBWMS-024.md) | FEFO implementieren | Done | High | 8 |
-| [WEBWMS-025](../tickets/WEBWMS-025.md) | Sperrlisten und Sperrgründe implementieren | Teilweise umgesetzt | Highest | 5 |
+| [WEBWMS-025](../tickets/WEBWMS-025.md) | Sperrlisten und Sperrgründe implementieren | Done | Highest | 5 |
 | [WEBWMS-026](../tickets/WEBWMS-026.md) | Gefahrstoffverwaltung implementieren | Offen | Medium | 8 |
 | [WEBWMS-027](../tickets/WEBWMS-027.md) | Stücklisten implementieren | Offen | Medium | 8 |
 | [WEBWMS-028](../tickets/WEBWMS-028.md) | LHM-Konto implementieren | Offen | Medium | 5 |

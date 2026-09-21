@@ -34,7 +34,8 @@ final class V3PermissionCatalog
         'inventory.stock.read', 'inventory.stock.transfer', 'inventory.topology.read', 'inventory.topology.write',
         'inventory.overview.read', 'inventory.special_stock.read', 'inventory.special_stock.write',
         'inventory.traceability.read', 'inventory.selection.execute', 'inventory.selection_rule.read',
-        'inventory.selection_rule.write',
+        'inventory.selection_rule.write', 'inventory.stock_block.read', 'inventory.stock_block.release',
+        'inventory.stock_block.review', 'inventory.stock_block.write',
         'outbound.order.read', 'outbound.order.release', 'outbound.order.write',
     ];
 

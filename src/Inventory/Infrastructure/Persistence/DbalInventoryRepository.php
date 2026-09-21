@@ -434,15 +434,15 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             );
             $this->assertReferencesExist($connection, $posting);
             $balance = $connection->fetchAssociative(
-                'SELECT b.quantity, b.expires_at, COALESCE(t.allocatable, 1) allocatable FROM wms_stock_balance b '
+                'SELECT b.quantity, b.stock_status, b.expires_at, COALESCE(t.allocatable, 1) allocatable FROM wms_stock_balance b '
                 . 'LEFT JOIN wms_stock_classification c ON c.tenant_id = b.tenant_id AND c.product_id = b.product_id AND c.location_id = b.location_id AND c.stock_key = b.stock_key '
                 . 'LEFT JOIN wms_special_stock_type t ON t.id = c.special_stock_type_id '
                 . 'WHERE b.tenant_id = :tenantId AND b.product_id = :productId '
                 . 'AND b.location_id = :locationId AND b.stock_key = :stockKey FOR UPDATE',
                 $this->postingKey($posting),
             );
-            if ($balance !== false && (!(bool) $balance['allocatable'] || (is_string($balance['expires_at']) && $balance['expires_at'] < $allocation->createdAt()->format('Y-m-d')))) {
-                throw new InsufficientAvailableStockException('Blocked special stock and expired stock cannot be allocated.');
+            if ($balance !== false && ($balance['stock_status'] !== 'available' || !(bool) $balance['allocatable'] || (is_string($balance['expires_at']) && $balance['expires_at'] < $allocation->createdAt()->format('Y-m-d')))) {
+                throw new InsufficientAvailableStockException('Only available, allocatable and non-expired stock can be allocated.');
             }
             $physical = $balance === false ? 0 : (int) $balance['quantity'];
             $reserved = $this->allocatedQuantity($connection, $posting);

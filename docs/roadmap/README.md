@@ -27,7 +27,7 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Backendfortschritt
 
-Nach dem V3-Slice für Entnahmestrategien sind 10 Tickets mit 71 Story Points vollständig `Done`. Weitere 14 Tickets mit 99 Story Points besitzen einen substanziellen Backendkern und 35 Tickets mit 283 Story Points sind teilweise umgesetzt. Damit wurden weiterhin 59 von 96 Tickets und 453 von 750 Story Points zumindest fachlich oder technisch begonnen.
+Nach dem V3-Slice für Bestandssperren sind 11 Tickets mit 76 Story Points vollständig `Done`. Weitere 14 Tickets mit 99 Story Points besitzen einen substanziellen Backendkern und 34 Tickets mit 278 Story Points sind teilweise umgesetzt. Damit wurden weiterhin 59 von 96 Tickets und 453 von 750 Story Points zumindest fachlich oder technisch begonnen.
 
 ## Ergänzende Roadmap-Dokumente
 
@@ -39,6 +39,7 @@ Nach dem V3-Slice für Entnahmestrategien sind 10 Tickets mit 71 Story Points vo
 - [Abschlussanalyse Lagerbasis vom 21.09.2026](analysis/2026-09-21-inventory-workspace.md)
 - [Abschlussanalyse Bestandsattribute und Rückverfolgung vom 21.09.2026](analysis/2026-09-21-stock-traceability.md)
 - [Abschlussanalyse Entnahmestrategien vom 21.09.2026](analysis/2026-09-21-stock-selection.md)
+- [Abschlussanalyse Bestandssperren vom 21.09.2026](analysis/2026-09-21-stock-blocking.md)
 
 ## Pflege
 
