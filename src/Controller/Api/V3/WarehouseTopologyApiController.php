@@ -51,18 +51,23 @@ final class WarehouseTopologyApiController extends AbstractController
         switch ($type) {
             case 'sites':
                 $this->topology->createSite($id, $user->tenantId(), $this->string($payload, 'code'), $this->string($payload, 'name'), $this->string($payload, 'timezone'), $user->actorId(), $now);
+
                 break;
             case 'warehouses':
                 $this->topology->createWarehouse($id, $user->tenantId(), $this->string($payload, 'siteId'), $this->string($payload, 'code'), $this->string($payload, 'name'), $this->string($payload, 'warehouseType'), $user->actorId(), $now);
+
                 break;
             case 'areas':
                 $this->topology->createArea($id, $user->tenantId(), $this->string($payload, 'warehouseId'), $this->string($payload, 'code'), $this->string($payload, 'name'), $this->string($payload, 'areaType'), $user->actorId(), $now);
+
                 break;
             case 'aisles':
                 $this->topology->createAisle($id, $user->tenantId(), $this->string($payload, 'areaId'), $this->string($payload, 'code'), $this->string($payload, 'name'), $user->actorId(), $now);
+
                 break;
             case 'bins':
                 $this->topology->createBin($id, $user->tenantId(), $this->string($payload, 'warehouseId'), $this->string($payload, 'areaId'), $this->string($payload, 'aisleId'), $this->string($payload, 'code'), $this->string($payload, 'levelCode'), $this->string($payload, 'binCode'), $this->string($payload, 'locationType'), $this->integer($payload, 'capacityQuantity'), $user->actorId(), $now);
+
                 break;
         }
 
