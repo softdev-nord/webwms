@@ -14,6 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
 use WebWMS\Integration\Application\StockMovementCriteria;
+use WebWMS\Inventory\Application\SpecialStockService;
 use WebWMS\Inventory\Application\WarehouseTopologyService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -23,6 +24,7 @@ final class V3WarehouseController extends AbstractController
     public function __construct(
         private readonly ApiV3QueryService $queries,
         private readonly WarehouseTopologyService $topology,
+        private readonly SpecialStockService $specialStock,
     ) {
     }
 
@@ -122,6 +124,79 @@ final class V3WarehouseController extends AbstractController
             'locations' => $this->queries->receivingLocations($user->tenantId()),
             'filters' => ['product' => $productId, 'location' => $locationId, 'movement_type' => $movementType],
         ]);
+    }
+
+    #[Route('/traceability', name: 'traceability', methods: ['GET'])]
+    #[IsGranted('inventory.traceability.read')]
+    public function traceability(Request $request): Response
+    {
+        $user = $this->user();
+        $dimension = $this->query($request, 'dimension');
+        $value = $this->query($request, 'value');
+
+        return $this->render('v3/inventory/traceability.html.twig', [
+            'page' => 'Rückverfolgung',
+            'traceability' => $this->queries->traceability($user->tenantId()),
+            'events' => $dimension !== null && $value !== null ? $this->queries->traceabilityEvents($user->tenantId(), $dimension, $value) : [],
+            'selectedDimension' => $dimension,
+            'selectedValue' => $value,
+        ]);
+    }
+
+    #[Route('/special-stock', name: 'special_stock', methods: ['GET'])]
+    #[IsGranted('inventory.special_stock.read')]
+    public function specialStock(): Response
+    {
+        $user = $this->user();
+
+        return $this->render('v3/inventory/special_stock.html.twig', [
+            'page' => 'Sonderbestände',
+            'types' => $this->queries->specialStockTypes($user->tenantId()),
+            'stock' => $this->queries->stock($user->tenantId(), null, 500, null),
+        ]);
+    }
+
+    #[Route('/special-stock/types', name: 'special_stock_type_create', methods: ['POST'])]
+    #[IsGranted('inventory.special_stock.write')]
+    public function createSpecialStockType(Request $request): Response
+    {
+        $this->csrf($request, 'v3_inventory_special_stock_type_create');
+        $user = $this->user();
+        $this->specialStock->createType(
+            Uuid::v7()->toRfc4122(),
+            $user->tenantId(),
+            $this->required($request, 'code'),
+            $this->required($request, 'name'),
+            $this->required($request, 'classification_kind'),
+            $request->request->getBoolean('allocatable'),
+            $user->actorId(),
+            new DateTimeImmutable(),
+        );
+        $this->addFlash('success', 'Das Sonderbestandskennzeichen wurde angelegt.');
+
+        return $this->redirectToRoute('v3_inventory_special_stock');
+    }
+
+    #[Route('/special-stock/classify', name: 'special_stock_classify', methods: ['POST'])]
+    #[IsGranted('inventory.special_stock.write')]
+    public function classifyStock(Request $request): Response
+    {
+        $this->csrf($request, 'v3_inventory_special_stock_classify');
+        $user = $this->user();
+        $this->specialStock->classify(
+            $user->tenantId(),
+            $this->required($request, 'product_id'),
+            $this->required($request, 'location_id'),
+            $this->required($request, 'stock_key'),
+            $this->required($request, 'special_stock_type_id'),
+            $request->request->getString('owner_reference'),
+            $this->required($request, 'reason'),
+            $user->actorId(),
+            new DateTimeImmutable(),
+        );
+        $this->addFlash('success', 'Der Bestand wurde neu klassifiziert.');
+
+        return $this->redirectToRoute('v3_inventory_special_stock');
     }
 
     private function user(): TenantPermissionUser

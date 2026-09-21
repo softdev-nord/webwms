@@ -90,22 +90,65 @@ final readonly class ExtendedDemoDatasetService
             'created_at' => $this->date($createdAt),
         ]);
 
-        $stockKey = hash('sha256', 'available||||');
+        $batchNumber = 'LOT-' . $suffix;
+        $serialNumber = null;
+        $expiresAt = $createdAt->modify(sprintf('+%d days', ($number % 120) - 20))->format('Y-m-d');
+        $stockQuantity = 50 + $number;
+        $stockKey = hash('sha256', implode('|', ['available', $batchNumber ?? '', $serialNumber ?? '', $expiresAt ?? '']));
         $this->insertComposite('wms_stock_balance', [
             'tenant_id' => DemoBootstrapService::TENANT_ID, 'product_id' => $productId,
-            'location_id' => $locationId, 'stock_key' => $stockKey, 'quantity' => 50 + $number,
+            'location_id' => $locationId, 'stock_key' => $stockKey, 'quantity' => $stockQuantity,
             'updated_at' => $this->date($createdAt), 'stock_status' => 'available',
-            'batch_number' => $number % 3 === 0 ? 'LOT-' . $suffix : null,
-            'serial_number' => null, 'expires_at' => $number % 3 === 0 ? $createdAt->modify('+1 year')->format('Y-m-d') : null,
+            'batch_number' => $batchNumber, 'serial_number' => $serialNumber, 'expires_at' => $expiresAt,
         ], ['tenant_id', 'product_id', 'location_id', 'stock_key']);
         $this->insert('wms_stock_ledger', $this->id('stock-ledger', $number), [
             'tenant_id' => DemoBootstrapService::TENANT_ID, 'product_id' => $productId,
-            'location_id' => $locationId, 'quantity_delta' => 50 + $number, 'resulting_quantity' => 50 + $number,
+            'location_id' => $locationId, 'quantity_delta' => $stockQuantity, 'resulting_quantity' => $stockQuantity,
             'reason' => 'Erweiterter Demo-Anfangsbestand', 'performed_by' => DemoBootstrapService::USER_ID,
             'occurred_at' => $this->date($createdAt), 'stock_key' => $stockKey, 'stock_status' => 'available',
-            'batch_number' => $number % 3 === 0 ? 'LOT-' . $suffix : null, 'serial_number' => null,
-            'expires_at' => $number % 3 === 0 ? $createdAt->modify('+1 year')->format('Y-m-d') : null,
+            'batch_number' => $batchNumber, 'serial_number' => $serialNumber, 'expires_at' => $expiresAt,
             'movement_type' => 'posting',
+        ]);
+        $serialNumber = 'SN-' . $suffix;
+        $serialStockKey = hash('sha256', implode('|', ['available', '', $serialNumber, '']));
+        $this->insertComposite('wms_stock_balance', [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'product_id' => $productId,
+            'location_id' => $locationId, 'stock_key' => $serialStockKey, 'quantity' => 1,
+            'updated_at' => $this->date($createdAt), 'stock_status' => 'available',
+            'batch_number' => null, 'serial_number' => $serialNumber, 'expires_at' => null,
+        ], ['tenant_id', 'product_id', 'location_id', 'stock_key']);
+        $this->insert('wms_stock_ledger', $this->id('serial-stock-ledger', $number), [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'product_id' => $productId,
+            'location_id' => $locationId, 'quantity_delta' => 1, 'resulting_quantity' => 1,
+            'reason' => 'Demo-Serienbestand', 'performed_by' => DemoBootstrapService::USER_ID,
+            'occurred_at' => $this->date($createdAt), 'stock_key' => $serialStockKey,
+            'stock_status' => 'available', 'batch_number' => null, 'serial_number' => $serialNumber,
+            'expires_at' => null, 'movement_type' => 'posting',
+        ]);
+
+        $specialStockTypeId = $this->id('special-stock-type', $number);
+        $this->insert('wms_special_stock_type', $specialStockTypeId, [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'code' => 'SST-' . $suffix,
+            'name' => 'Demo-Sonderbestand ' . $suffix,
+            'classification_kind' => $number % 2 === 0 ? 'owner' : 'special',
+            'allocatable' => $number % 5 === 0 ? 0 : 1, 'active' => 1,
+            'created_by' => DemoBootstrapService::USER_ID, 'created_at' => $this->date($createdAt),
+        ]);
+        $this->insertComposite('wms_stock_classification', [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'product_id' => $productId,
+            'location_id' => $locationId, 'stock_key' => $stockKey,
+            'special_stock_type_id' => $specialStockTypeId,
+            'owner_reference' => $number % 2 === 0 ? 'OWNER-' . $suffix : null,
+            'reason' => 'Demo-Klassifizierung', 'changed_by' => DemoBootstrapService::USER_ID,
+            'changed_at' => $this->date($createdAt),
+        ], ['tenant_id', 'product_id', 'location_id', 'stock_key']);
+        $this->insert('wms_stock_classification_event', $this->id('stock-classification-event', $number), [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'product_id' => $productId,
+            'location_id' => $locationId, 'stock_key' => $stockKey,
+            'special_stock_type_id' => $specialStockTypeId,
+            'owner_reference' => $number % 2 === 0 ? 'OWNER-' . $suffix : null,
+            'reason' => 'Demo-Klassifizierung', 'performed_by' => DemoBootstrapService::USER_ID,
+            'occurred_at' => $this->date($createdAt),
         ]);
 
         return compact('warehouseId', 'locationId', 'productId', 'supplierId', 'strategyId', 'stockKey');

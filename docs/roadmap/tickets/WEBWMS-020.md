@@ -2,7 +2,7 @@
 id: WEBWMS-020
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Backend umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
-Chargendimension in `StockDimensions`. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Die Chargendimension wird in Wareneingang, Bestand, Umlagerung, Allokation und Ledger geführt. Die berechtigte V3-UI und JSON-API aggregieren aktuelle Chargenbestände und stellen den chronologischen Lebenslauf vom Eingang bis zum Ausgang mandantensicher bereit.
 
 ## Quelle
 
 - Feature: CG-020
 - Referenz: https://www.coglas.com/funktionen/
-

@@ -162,6 +162,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($posting->dimensions()->serialNumber() !== null && $newQuantity > 1) {
                 throw new InvalidSerialStockException('A serial number can only have a stock quantity of zero or one.');
             }
+            $this->assertSerialNumberAvailable($connection, $posting, $newQuantity);
 
             $this->persistBalance($connection, $posting, $newQuantity, $current !== false);
             $this->insertLedgerEntry($connection, $posting, $newQuantity, StockMovementType::Posting);
@@ -217,6 +218,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             }
 
             $this->persistBalance($connection, $source, $sourceQuantity, $sourceCurrent !== false);
+            $this->assertSerialNumberAvailable($connection, $destination, $destinationQuantity);
             $this->persistBalance(
                 $connection,
                 $destination,
@@ -431,12 +433,18 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 $allocation->dimensions(),
             );
             $this->assertReferencesExist($connection, $posting);
-            $balance = $connection->fetchOne(
-                'SELECT quantity FROM wms_stock_balance WHERE tenant_id = :tenantId '
-                . 'AND product_id = :productId AND location_id = :locationId AND stock_key = :stockKey FOR UPDATE',
+            $balance = $connection->fetchAssociative(
+                'SELECT b.quantity, b.expires_at, COALESCE(t.allocatable, 1) allocatable FROM wms_stock_balance b '
+                . 'LEFT JOIN wms_stock_classification c ON c.tenant_id = b.tenant_id AND c.product_id = b.product_id AND c.location_id = b.location_id AND c.stock_key = b.stock_key '
+                . 'LEFT JOIN wms_special_stock_type t ON t.id = c.special_stock_type_id '
+                . 'WHERE b.tenant_id = :tenantId AND b.product_id = :productId '
+                . 'AND b.location_id = :locationId AND b.stock_key = :stockKey FOR UPDATE',
                 $this->postingKey($posting),
             );
-            $physical = $balance === false ? 0 : (int) $balance;
+            if ($balance !== false && (!(bool) $balance['allocatable'] || (is_string($balance['expires_at']) && $balance['expires_at'] < $allocation->createdAt()->format('Y-m-d')))) {
+                throw new InsufficientAvailableStockException('Blocked special stock and expired stock cannot be allocated.');
+            }
+            $physical = $balance === false ? 0 : (int) $balance['quantity'];
             $reserved = $this->allocatedQuantity($connection, $posting);
             $available = $physical - $reserved;
             $remaining = (int) $reservation['requested_quantity'] - (int) $reservation['allocated_quantity'];
@@ -1138,6 +1146,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($posting->dimensions()->serialNumber() !== null && $newQuantity > 1) {
                 throw new InvalidSerialStockException('An inbound serial number can only have a stock quantity of one.');
             }
+            $this->assertSerialNumberAvailable($connection, $posting, $newQuantity);
             $this->persistBalance($connection, $posting, $newQuantity, $current !== false);
             $this->insertLedgerEntry($connection, $posting, $newQuantity, StockMovementType::InboundReceipt);
             foreach ($inspection->answers() as $position => $answer) {
@@ -1930,6 +1939,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($posting->dimensions()->serialNumber() !== null && $newQuantity > 1) {
                 throw new InvalidSerialStockException('A returned serial number can only have a stock quantity of one.');
             }
+            $this->assertSerialNumberAvailable($connection, $posting, $newQuantity);
             $this->persistBalance($connection, $posting, $newQuantity, $current !== false);
             $this->insertLedgerEntry($connection, $posting, $newQuantity, StockMovementType::ReturnReceipt);
             $connection->update('wms_return_receipt', [
@@ -2216,6 +2226,27 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             throw new InventoryReferenceNotFoundException(
                 'Product and storage location must exist in the posting tenant.',
             );
+        }
+    }
+
+    private function assertSerialNumberAvailable(Connection $connection, StockPosting $posting, int $newQuantity): void
+    {
+        $serialNumber = $posting->dimensions()->serialNumber();
+        if ($serialNumber === null || $newQuantity === 0) {
+            return;
+        }
+        $otherQuantity = (int) $connection->fetchOne(
+            'SELECT COALESCE(SUM(quantity), 0) FROM wms_stock_balance '
+            . 'WHERE tenant_id = :tenantId AND serial_number = :serialNumber '
+            . 'AND NOT (product_id = :productId AND location_id = :locationId AND stock_key = :stockKey)',
+            [
+                'tenantId' => $posting->tenantId()->value(), 'serialNumber' => $serialNumber,
+                'productId' => $posting->productId()->value(), 'locationId' => $posting->locationId()->value(),
+                'stockKey' => $posting->dimensions()->key(),
+            ],
+        );
+        if ($otherQuantity > 0) {
+            throw new InvalidSerialStockException('The serial number already exists in another stock position.');
         }
     }
 

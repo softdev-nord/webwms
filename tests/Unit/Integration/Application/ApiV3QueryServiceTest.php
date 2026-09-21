@@ -11,6 +11,35 @@ use WebWMS\Integration\Application\StockMovementCriteria;
 
 final class ApiV3QueryServiceTest extends TestCase
 {
+    public function testTraceabilityViewsAreRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::exactly(3))->method('fetchAllAssociative')->with(
+            self::callback(static fn (string $sql): bool => str_contains($sql, 'tenant_id = :tenantId')),
+            ['tenantId' => 'tenant-id'],
+        )->willReturn([]);
+
+        $result = (new ApiV3QueryService($connection))->traceability('tenant-id');
+
+        self::assertSame([], $result['serials']);
+    }
+
+    public function testTraceabilityEventsUseOnlySupportedDimensions(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())->method('fetchAllAssociative')->with(
+            self::callback(static function (string $sql): bool {
+                self::assertStringContainsString('e.serial_number = :value', $sql);
+                self::assertStringContainsString('e.tenant_id = :tenantId', $sql);
+
+                return true;
+            }),
+            ['tenantId' => 'tenant-id', 'value' => 'SN-001'],
+        )->willReturn([]);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->traceabilityEvents('tenant-id', 'serial', 'SN-001'));
+    }
+
     public function testWarehouseTopologyIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);

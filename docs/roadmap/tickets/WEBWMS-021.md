@@ -2,7 +2,7 @@
 id: WEBWMS-021
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Backend umgesetzt
+status: Done
 priority: High
 story_points: 5
 component: "Lagerverwaltung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
-MHD-Dimension und FEFO-fähige Persistenz. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Das MHD wird im geplanten und ungeplanten Wareneingang erfasst und durch alle Bestandsbewegungen geführt. Die V3-Überwachung unterscheidet abgelaufene, innerhalb von 30 Tagen kritische und unauffällige Bestände; abgelaufene Bestände werden aus der Allokationsauswahl ausgeschlossen.
 
 ## Quelle
 
 - Feature: CG-021
 - Referenz: https://www.coglas.com/funktionen/
-

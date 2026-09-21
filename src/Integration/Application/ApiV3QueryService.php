@@ -172,14 +172,17 @@ final readonly class ApiV3QueryService
     {
         return $this->connection->fetchAllAssociative(
             "SELECT CONCAT(b.product_id, '|', b.location_id, '|', b.stock_key) AS `cursor`, "
-            . 'b.product_id, p.sku, p.name product_name, b.location_id, l.code location_code, l.warehouse_id, '
+            . 'b.product_id, p.sku, p.name product_name, b.location_id, b.stock_key, l.code location_code, l.warehouse_id, '
             . 'w.code warehouse_code, a.code area_code, ai.code aisle_code, l.level_code, l.bin_code, '
             . 'b.stock_status, b.batch_number, b.serial_number, b.expires_at, b.quantity, b.updated_at, '
+            . 't.id special_stock_type_id, t.code special_stock_code, t.name special_stock_name, t.allocatable, c.owner_reference, c.reason classification_reason, '
             . "b.quantity - COALESCE((SELECT SUM(a.quantity) FROM wms_stock_allocation a WHERE a.tenant_id = b.tenant_id AND a.product_id = b.product_id AND a.location_id = b.location_id AND a.stock_key = b.stock_key AND a.status = 'active'), 0) available_quantity "
             . 'FROM wms_stock_balance b INNER JOIN wms_product_reference p ON p.id = b.product_id '
             . 'INNER JOIN wms_storage_location l ON l.id = b.location_id '
             . 'INNER JOIN wms_warehouse w ON w.id = l.warehouse_id AND w.tenant_id = b.tenant_id '
             . 'LEFT JOIN wms_warehouse_area a ON a.id = l.area_id LEFT JOIN wms_warehouse_aisle ai ON ai.id = l.aisle_id '
+            . 'LEFT JOIN wms_stock_classification c ON c.tenant_id = b.tenant_id AND c.product_id = b.product_id AND c.location_id = b.location_id AND c.stock_key = b.stock_key '
+            . 'LEFT JOIN wms_special_stock_type t ON t.id = c.special_stock_type_id '
             . 'WHERE b.tenant_id = :tenantId '
             . 'AND (:warehouseFilter IS NULL OR l.warehouse_id = :warehouseId) '
             . "AND (:cursorFilter IS NULL OR CONCAT(b.product_id, '|', b.location_id, '|', b.stock_key) > :cursorValue) "
@@ -229,6 +232,71 @@ final readonly class ApiV3QueryService
                 'cursorFilter' => $cursor,
                 'cursorValue' => $cursor ?? '',
             ],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function specialStockTypes(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, code, name, classification_kind, allocatable, active, created_at, changed_at '
+            . 'FROM wms_special_stock_type WHERE tenant_id = :tenantId ORDER BY code, id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return array{batches: list<array<string, mixed>>, expiries: list<array<string, mixed>>, serials: list<array<string, mixed>>} */
+    public function traceability(string $tenantId, int $expiryWarningDays = 30): array
+    {
+        $expiryWarningDays = max(0, min($expiryWarningDays, 365));
+        $batches = $this->connection->fetchAllAssociative(
+            'SELECT b.product_id, p.sku, p.name product_name, b.batch_number, MIN(b.expires_at) earliest_expiry, '
+            . 'SUM(b.quantity) quantity, COUNT(DISTINCT b.location_id) location_count '
+            . 'FROM wms_stock_balance b INNER JOIN wms_product_reference p ON p.id = b.product_id '
+            . 'WHERE b.tenant_id = :tenantId AND b.batch_number IS NOT NULL '
+            . 'GROUP BY b.product_id, p.sku, p.name, b.batch_number ORDER BY p.sku, b.batch_number',
+            ['tenantId' => $tenantId],
+        );
+        $expiries = $this->connection->fetchAllAssociative(
+            "SELECT b.product_id, p.sku, p.name product_name, b.batch_number, b.expires_at, SUM(b.quantity) quantity, "
+            . "CASE WHEN b.expires_at < CURRENT_DATE THEN 'expired' WHEN b.expires_at <= DATE_ADD(CURRENT_DATE, INTERVAL " . $expiryWarningDays . " DAY) THEN 'critical' ELSE 'ok' END expiry_status "
+            . 'FROM wms_stock_balance b INNER JOIN wms_product_reference p ON p.id = b.product_id '
+            . 'WHERE b.tenant_id = :tenantId AND b.expires_at IS NOT NULL '
+            . 'GROUP BY b.product_id, p.sku, p.name, b.batch_number, b.expires_at '
+            . 'ORDER BY b.expires_at, p.sku, b.batch_number',
+            ['tenantId' => $tenantId],
+        );
+        $serials = $this->connection->fetchAllAssociative(
+            'SELECT b.product_id, p.sku, p.name product_name, b.serial_number, b.stock_status, '
+            . 'b.location_id, l.code location_code, b.quantity, b.updated_at '
+            . 'FROM wms_stock_balance b INNER JOIN wms_product_reference p ON p.id = b.product_id '
+            . 'INNER JOIN wms_storage_location l ON l.id = b.location_id '
+            . 'WHERE b.tenant_id = :tenantId AND b.serial_number IS NOT NULL '
+            . 'ORDER BY p.sku, b.serial_number',
+            ['tenantId' => $tenantId],
+        );
+
+        return ['batches' => $batches, 'expiries' => $expiries, 'serials' => $serials];
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function traceabilityEvents(string $tenantId, string $dimension, string $value): array
+    {
+        $column = match ($dimension) {
+            'batch' => 'e.batch_number',
+            'serial' => 'e.serial_number',
+            default => throw new \InvalidArgumentException('The traceability dimension is invalid.'),
+        };
+
+        return $this->connection->fetchAllAssociative(
+            'SELECT e.id, e.product_id, p.sku, p.name product_name, e.location_id, l.code location_code, '
+            . 'e.stock_status, e.batch_number, e.serial_number, e.expires_at, e.quantity_delta, '
+            . 'e.resulting_quantity, e.movement_type, e.reason, u.display_name performed_by_name, e.occurred_at '
+            . 'FROM wms_stock_ledger e INNER JOIN wms_product_reference p ON p.id = e.product_id '
+            . 'INNER JOIN wms_storage_location l ON l.id = e.location_id '
+            . 'INNER JOIN wms_user_account u ON u.id = e.performed_by AND u.tenant_id = e.tenant_id '
+            . 'WHERE e.tenant_id = :tenantId AND ' . $column . ' = :value ORDER BY e.occurred_at, e.id',
+            ['tenantId' => $tenantId, 'value' => $value],
         );
     }
 
@@ -299,12 +367,15 @@ final readonly class ApiV3QueryService
     public function availableStockForProduct(string $tenantId, string $productId): array
     {
         return $this->connection->fetchAllAssociative(
-            'SELECT b.location_id, l.code location_code, b.stock_status, b.batch_number, b.serial_number, '
+            'SELECT b.location_id, b.stock_key, l.code location_code, b.stock_status, b.batch_number, b.serial_number, '
             . 'b.expires_at, b.quantity - COALESCE(SUM(a.quantity), 0) available_quantity '
             . 'FROM wms_stock_balance b INNER JOIN wms_storage_location l ON l.id = b.location_id '
             . "LEFT JOIN wms_stock_allocation a ON a.tenant_id = b.tenant_id AND a.product_id = b.product_id AND a.location_id = b.location_id AND a.stock_key = b.stock_key AND a.status = 'active' "
-            . 'WHERE b.tenant_id = :tenantId AND b.product_id = :productId '
-            . 'GROUP BY b.location_id, l.code, b.stock_status, b.batch_number, b.serial_number, b.expires_at, b.quantity '
+            . 'LEFT JOIN wms_stock_classification c ON c.tenant_id = b.tenant_id AND c.product_id = b.product_id AND c.location_id = b.location_id AND c.stock_key = b.stock_key '
+            . 'LEFT JOIN wms_special_stock_type t ON t.id = c.special_stock_type_id '
+            . 'WHERE b.tenant_id = :tenantId AND b.product_id = :productId AND (t.id IS NULL OR t.allocatable = 1) '
+            . 'AND (b.expires_at IS NULL OR b.expires_at >= CURRENT_DATE) '
+            . 'GROUP BY b.location_id, b.stock_key, l.code, b.stock_status, b.batch_number, b.serial_number, b.expires_at, b.quantity '
             . 'HAVING available_quantity > 0 ORDER BY l.code, b.stock_key',
             ['tenantId' => $tenantId, 'productId' => $productId],
         );

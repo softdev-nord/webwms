@@ -138,6 +138,10 @@ final class V3OutboundController extends AbstractController
             $this->positiveInt($request, 'quantity'),
             $user->actorId(),
             new DateTimeImmutable(),
+            $this->required($request, 'stock_status'),
+            $this->optional($request, 'batch_number'),
+            $this->optional($request, 'serial_number'),
+            ($expiresAt = $this->optional($request, 'expires_at')) === null ? null : new DateTimeImmutable($expiresAt),
         ));
         $this->addFlash('success', 'Bestand wurde der Reservierung zugeordnet.');
 
@@ -209,6 +213,13 @@ final class V3OutboundController extends AbstractController
         }
 
         return $value;
+    }
+
+    private function optional(Request $request, string $field): ?string
+    {
+        $value = trim((string) $request->request->get($field));
+
+        return $value === '' ? null : $value;
     }
 
     private function positiveInt(Request $request, string $field): int

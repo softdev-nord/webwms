@@ -2,7 +2,7 @@
 id: WEBWMS-019
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 5
 component: "Lagerverwaltung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-Bestandsstatus vorhanden; allgemeine Sonderbestandsarten fehlen. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Konfigurierbare Sonderbestandsarten unterscheiden Eigentum, Status und Sonderart. Bestandspositionen werden mit Eigentümerreferenz und Grund klassifiziert; nicht allokierbare Arten werden im Warenausgang ausgeschlossen. V3-UI, JSON-API, Berechtigungen, Mandantentrennung und ein unveränderliches Auditjournal erfüllen die Akzeptanzkriterien.
 
 ## Quelle
 
 - Feature: CG-019
 - Referenz: https://www.coglas.com/lagerverwaltung/
-
