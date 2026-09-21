@@ -57,7 +57,12 @@ final class V3InboundController extends AbstractController
         $this->assertCsrf($request, 'v3_inbound_receive_' . $lineId);
         $user = $this->user();
         ($this->receiveInbound)(new ReceiveInboundDeliveryCommand(
-            Uuid::v7()->toRfc4122(), $user->tenantId(), $deliveryId, $lineId, $user->actorId(), new DateTimeImmutable(),
+            Uuid::v7()->toRfc4122(),
+            $user->tenantId(),
+            $deliveryId,
+            $lineId,
+            $user->actorId(),
+            new DateTimeImmutable(),
         ));
         $this->addFlash('success', 'Die avisierte Position wurde angenommen und an die QS übergeben.');
 
@@ -100,7 +105,11 @@ final class V3InboundController extends AbstractController
         $this->assertCsrf($request, 'v3_inbound_putaway_' . $receiptId);
         $user = $this->user();
         ($this->createPutaway)(new CreatePutawayOrderCommand(
-            Uuid::v7()->toRfc4122(), $user->tenantId(), $receiptId, $user->actorId(), new DateTimeImmutable(),
+            Uuid::v7()->toRfc4122(),
+            $user->tenantId(),
+            $receiptId,
+            $user->actorId(),
+            new DateTimeImmutable(),
         ));
         $this->addFlash('success', 'Der Einlagerungsauftrag wurde erzeugt.');
 

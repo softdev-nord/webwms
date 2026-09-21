@@ -49,7 +49,12 @@ final class PlannedInboundApiController extends AbstractController
     {
         $user = $this->user();
         $result = ($this->receiveInbound)(new ReceiveInboundDeliveryCommand(
-            Uuid::v7()->toRfc4122(), $user->tenantId(), $deliveryId, $lineId, $user->actorId(), new DateTimeImmutable(),
+            Uuid::v7()->toRfc4122(),
+            $user->tenantId(),
+            $deliveryId,
+            $lineId,
+            $user->actorId(),
+            new DateTimeImmutable(),
         ));
 
         return new JsonResponse(['data' => $result]);
@@ -100,7 +105,11 @@ final class PlannedInboundApiController extends AbstractController
     {
         $user = $this->user();
         $result = ($this->createPutaway)(new CreatePutawayOrderCommand(
-            Uuid::v7()->toRfc4122(), $user->tenantId(), $receiptId, $user->actorId(), new DateTimeImmutable(),
+            Uuid::v7()->toRfc4122(),
+            $user->tenantId(),
+            $receiptId,
+            $user->actorId(),
+            new DateTimeImmutable(),
         ));
 
         return new JsonResponse(['data' => $result]);
