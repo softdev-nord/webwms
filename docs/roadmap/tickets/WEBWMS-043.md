@@ -2,7 +2,7 @@
 id: WEBWMS-043
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Offen
+status: Umgesetzt
 priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Priorisierte Transportregeln verknüpfen Auslöser, Quell- und Zielpräfixe, Transportart und Ressourcentyp. Passende Regeln erzeugen mandantengetrennt einen Fahrbefehl über API v3.
 
 ## Quelle
 
 - Feature: CG-043
 - Referenz: https://www.coglas.com/funktionen/
-

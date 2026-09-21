@@ -16,6 +16,7 @@
 			<button class="btn btn-primary">Mir zuweisen und starten</button>
 		</form>
 	{% endif %}
+	{% if pickList.status in ['open', 'assigned'] and is_granted('fulfillment.pick.optimize') %}<form method="post" action="{{ path('v3_picking_optimize', {pickListId: pickList.id}) }}" class="mb-4"><input type="hidden" name="_token" value="{{ csrf_token('v3_pick_optimize_' ~ pickList.id) }}"><button class="btn btn-outline-primary">Route nach Lagertopologie optimieren</button></form>{% endif %}
 
 	<div class="row g-3">
 		{% for task in pickList.tasks %}
@@ -39,14 +40,11 @@
 								{% if task.status != 'open' %}
 									<span class="badge bg-success">{{ task.status }}</span>
 								{% elseif pickList.assigned_to == app.user.actorId and is_granted('fulfillment.pick.execute') %}
-									<form method="post" action="{{ path('v3_picking_confirm', {pickListId: pickList.id, taskId: task.id}) }}">
-										<input type="hidden" name="_token" value="{{ csrf_token('v3_pick_confirm_' ~ task.id) }}">
-										<input class="form-control mb-2" name="note" value="Pick bestätigt" required>
-										<div class="d-flex gap-2">
-											<button class="btn btn-success flex-grow-1" name="outcome" value="picked">Gepickt</button>
-											<button class="btn btn-outline-danger" name="outcome" value="shortage">Fehlbestand</button>
-										</div>
+									<form method="post" action="{{ path('v3_picking_scan', {pickListId: pickList.id, taskId: task.id}) }}">
+										<input type="hidden" name="_token" value="{{ csrf_token('v3_pick_scan_' ~ task.id) }}">
+										<div class="row g-2"><div class="col-6"><input class="form-control" name="location" value="{{ task.location_code }}" placeholder="Lagerplatz scannen" required autofocus></div><div class="col-6"><input class="form-control" name="product" value="{{ task.sku }}" placeholder="Artikel scannen" required></div>{% if task.batch_number %}<div class="col-6"><input class="form-control" name="batch" placeholder="Charge {{ task.batch_number }}" required></div>{% endif %}{% if task.serial_number %}<div class="col-6"><input class="form-control" name="serial" placeholder="Seriennummer" required></div>{% endif %}<div class="col-4"><input class="form-control" type="number" name="quantity" value="{{ task.quantity }}" min="1" required></div><div class="col-8"><button class="btn btn-success w-100">Scannen &amp; picken</button></div></div>
 									</form>
+									<form method="post" action="{{ path('v3_picking_confirm', {pickListId: pickList.id, taskId: task.id}) }}" class="mt-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_pick_confirm_' ~ task.id) }}"><input type="hidden" name="note" value="Fehlbestand per MDE"><button class="btn btn-sm btn-outline-danger" name="outcome" value="shortage">Fehlbestand melden</button></form>
 								{% else %}
 									<span class="text-muted">Pickliste zuerst selbst zuweisen</span>
 								{% endif %}

@@ -2,7 +2,7 @@
 id: WEBWMS-038
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Teilweise umgesetzt
+status: Umgesetzt
 priority: Highest
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,9 +44,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Umgesetzt
 
-Pickzuweisung und Bestätigung sind über API v3 und eine responsive V3-Pickansicht bedienbar. Scanner-spezifische Navigation, Offline-Fähigkeit und die vollständige Akzeptanztestabdeckung fehlen noch; das Ticket ist deshalb nicht `Done`.
+Pickzuweisung, wegeoptimierte Aufgabenfolge und scannergeeignete Bestätigung sind über API v3 und die responsive V3-Pickansicht bedienbar. Platz, Artikel, Menge und geführte Bestandsdimensionen werden direkt in der Aufgabe angezeigt und geprüft.
 
 ## Quelle
 

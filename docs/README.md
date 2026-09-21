@@ -60,6 +60,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Bestellungen und Wareneingänge bearbeiten](user/inventory-inbound.md)
 - [Ware automatisch einlagern](user/inventory-putaway.md)
 - [Kommissionierplätze nachfüllen](user/inventory-replenishment.md)
+- [Kommissionierung und internen Transport steuern](user/advanced-fulfillment-control.md)
 - [Stichtagsinventur durchführen](user/inventory-counting.md)
 - [Permanente und Nulldurchgangsinventur verwenden](user/cycle-counting.md)
 - [JSON-Web-API v3 verwenden](user/api-v3.md)

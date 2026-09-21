@@ -44,7 +44,7 @@
                 {% set currentRoute = app.request.attributes.get('_route')|default('') %}
                 {% set inventoryOpen = currentRoute == 'v3_stock' or currentRoute starts with 'v3_inventory_' %}
                 {% set inboundOpen = currentRoute starts with 'v3_inbound_' %}
-                {% set outboundOpen = currentRoute starts with 'v3_outbound_' or currentRoute starts with 'v3_picking_' or currentRoute starts with 'v3_packing_' or currentRoute starts with 'v3_shipping_' or currentRoute starts with 'v3_loading_' %}
+                {% set outboundOpen = currentRoute starts with 'v3_outbound_' or currentRoute starts with 'v3_picking_' or currentRoute starts with 'v3_packing_' or currentRoute starts with 'v3_shipping_' or currentRoute starts with 'v3_loading_' or currentRoute starts with 'v3_internal_transport_' %}
                 {% set integrationOpen = currentRoute starts with 'v3_outbox_' or currentRoute starts with 'v3_erp_connection_' or currentRoute starts with 'v3_carrier_connection_' or currentRoute starts with 'v3_printing_' or currentRoute starts with 'v3_device_' or currentRoute starts with 'v3_measurement_' or currentRoute starts with 'v3_automation_' or currentRoute starts with 'v3_wcs_' or currentRoute starts with 'v3_transport_' %}
                 {% set administrationOpen = currentRoute starts with 'v3_administration_' %}
 
@@ -88,14 +88,16 @@
                     </li>
                 {% endif %}
 
-                {% if is_granted('outbound.order.read') or is_granted('fulfillment.pick.read') or is_granted('fulfillment.pack.read') or is_granted('fulfillment.ship.read') or is_granted('fulfillment.loading.read') %}
+                {% if is_granted('outbound.order.read') or is_granted('fulfillment.pick.read') or is_granted('fulfillment.pick.control') or is_granted('fulfillment.transport.read') or is_granted('fulfillment.pack.read') or is_granted('fulfillment.ship.read') or is_granted('fulfillment.loading.read') %}
                     <li class="nav-item">
                         <a class="nav-link menu-link {{ outboundOpen ? '' : 'collapsed' }}" href="#sidebarOutbound" data-bs-toggle="collapse" role="button" aria-expanded="{{ outboundOpen ? 'true' : 'false' }}" aria-controls="sidebarOutbound">
                             <i class="ri-truck-line"></i><span>Warenausgang</span>
                         </a>
                         <div class="collapse menu-dropdown {{ outboundOpen ? 'show' : '' }}" id="sidebarOutbound"><ul class="nav nav-sm flex-column">
                             {% if is_granted('outbound.order.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_outbound_' ? 'active' : '' }}" href="{{ path('v3_outbound_orders') }}">Aufträge</a></li>{% endif %}
-                            {% if is_granted('fulfillment.pick.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_picking_' ? 'active' : '' }}" href="{{ path('v3_picking_index') }}">Kommissionierung</a></li>{% endif %}
+                            {% if is_granted('fulfillment.pick.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_picking_' and not (currentRoute starts with 'v3_picking_control_') ? 'active' : '' }}" href="{{ path('v3_picking_index') }}">Kommissionierung</a></li>{% endif %}
+                            {% if is_granted('fulfillment.pick.control') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_picking_control_' ? 'active' : '' }}" href="{{ path('v3_picking_control_index') }}">Kommissionierleitstand</a></li>{% endif %}
+                            {% if is_granted('fulfillment.transport.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_internal_transport_' ? 'active' : '' }}" href="{{ path('v3_internal_transport_index') }}">Interner Transport</a></li>{% endif %}
                             {% if is_granted('fulfillment.pack.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_packing_' ? 'active' : '' }}" href="{{ path('v3_packing_index') }}">Packen</a></li>{% endif %}
                             {% if is_granted('fulfillment.ship.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_shipping_' ? 'active' : '' }}" href="{{ path('v3_shipping_index') }}">Versand</a></li>{% endif %}
                             {% if is_granted('fulfillment.loading.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_loading_' ? 'active' : '' }}" href="{{ path('v3_loading_index') }}">Verladung</a></li>{% endif %}

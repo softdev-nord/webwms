@@ -37,6 +37,22 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `GET` | `/api/v3/pick-lists/{id}` | `fulfillment.pick.read` | Pickliste und Positionen lesen |
 | `POST` | `/api/v3/pick-lists/{id}/assignment` | `fulfillment.pick.assign` | Pickliste zuweisen |
 | `POST` | `/api/v3/pick-tasks/{id}/confirmation` | `fulfillment.pick.execute` | Pick oder Fehlmenge bestätigen |
+| `GET` | `/api/v3/fulfillment-control/picking` | `fulfillment.pick.control` | Pickwellen und Leitstand lesen |
+| `POST` | `/api/v3/fulfillment-control/pick-waves` | `fulfillment.pick.wave.write` | Single-, Multi- oder zweistufige Pickwelle planen |
+| `POST` | `/api/v3/fulfillment-control/pick-waves/{id}/release` | `fulfillment.pick.wave.write` | Pickwelle freigeben |
+| `POST` | `/api/v3/fulfillment-control/pick-waves/{id}/pick-lists/{pickListId}/consolidation` | `fulfillment.pick.wave.write` | Zweistufigen Zielbehälter konsolidieren |
+| `POST` | `/api/v3/fulfillment-control/pick-lists/{id}/optimize` | `fulfillment.pick.optimize` | Pickreihenfolge nach Lagertopologie optimieren |
+| `POST` | `/api/v3/fulfillment-control/pick-tasks/{id}/scan` | `fulfillment.pick.execute` | Scan prüfen und Pickposition bestätigen |
+| `GET` | `/api/v3/fulfillment-control/transport` | `fulfillment.transport.read` | Transportleitstand und Konfiguration lesen |
+| `POST` | `/api/v3/fulfillment-control/transport-orders` | `fulfillment.transport.write` | Fahrbefehl anlegen |
+| `POST` | `/api/v3/fulfillment-control/transport-orders/from-rule/{triggerType}` | `fulfillment.transport.write` | Fahrbefehl über eine passende Regel anlegen |
+| `POST` | `/api/v3/fulfillment-control/transport-orders/{id}/{transition}` | `fulfillment.transport.assign` oder `fulfillment.transport.execute` | Fahrbefehl zuweisen, starten oder abschließen |
+| `POST` | `/api/v3/fulfillment-control/transport-resources/{resource}` | `fulfillment.transport.configure` | Flurförderzeug, Regel, Station oder Routenzug anlegen |
+| `POST` | `/api/v3/fulfillment-control/milk-runs/{id}/stops` | `fulfillment.transport.configure` | Routenzugstation ergänzen |
+| `POST` | `/api/v3/fulfillment-control/milk-runs/{id}/dispatch` | `fulfillment.transport.execute` | Routenzugtour in Fahrbefehle auflösen |
+| `POST` | `/api/v3/fulfillment-control/replenishment-policies` | `fulfillment.replenishment.write` | Nachschubrichtlinie anlegen |
+| `POST` | `/api/v3/fulfillment-control/replenishment-policies/{id}/orders` | `fulfillment.replenishment.write` | Nachschubauftrag erzeugen |
+| `POST` | `/api/v3/fulfillment-control/replenishment-orders/{id}/completion` | `fulfillment.replenishment.execute` | Nachschub bestätigen |
 | `POST` | `/api/v3/pick-lists/{id}/packing-orders` | `fulfillment.pack.write` | Packauftrag erzeugen |
 | `GET` | `/api/v3/packing-orders/{id}` | `fulfillment.pack.read` | Packauftrag und Packstücke lesen |
 | `POST` | `/api/v3/packing-orders/{id}/packages` | `fulfillment.pack.write` | Versiegeltes Packstück erfassen |

@@ -2,7 +2,7 @@
 id: WEBWMS-037
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Offen
+status: Umgesetzt
 priority: Medium
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Zweistufige Pickwellen führen Picklisten über getrennte Zielbehälter in die Konsolidierung. Nur vollständig gepickte Listen einer freigegebenen Welle können konsolidiert werden; nach dem letzten Behälter wird die Welle abgeschlossen.
 
 ## Quelle
 
 - Feature: CG-037
 - Referenz: https://www.coglas.com/kommissionierung/
-

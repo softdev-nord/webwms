@@ -2,7 +2,7 @@
 id: WEBWMS-040
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Offen
+status: Umgesetzt
 priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Offene Pickpositionen werden transaktional nach Lagerbereich, Gang, Ebene und Fach neu sequenziert. Die Optimierung ist in Pickansicht und API v3 verfügbar und wird im Fulfillment-Journal protokolliert.
 
 ## Quelle
 
 - Feature: CG-040
 - Referenz: https://www.coglas.com/kommissionierung/
-

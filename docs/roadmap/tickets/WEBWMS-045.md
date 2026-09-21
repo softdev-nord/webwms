@@ -2,7 +2,7 @@
 id: WEBWMS-045
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Backend umgesetzt
+status: Umgesetzt
 priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Umgesetzt
 
-`ReplenishmentPolicy`, Quellwahl und Nachschubauftrag. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`ReplenishmentPolicy`, Quellwahl und Nachschubauftrag bilden den fachlichen Domain-, Application- und Persistenzkern. Der Transportleitstand und die API v3 ergänzen Einrichtung, Bedarfsauslösung, Bestätigung und getrennte Nachschubberechtigungen.
 
 ## Quelle
 
 - Feature: CG-045
 - Referenz: https://www.coglas.com/funktionen/
-

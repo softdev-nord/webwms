@@ -2,7 +2,7 @@
 id: WEBWMS-046
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Offen
+status: Umgesetzt
 priority: Medium
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Vorholungen werden als priorisierte Fahrbefehle mit Fälligkeit, Quelle, Ziel und optionalem Artikelbestand geplant, disponiert, ausgeführt und nachvollziehbar abgeschlossen.
 
 ## Quelle
 
 - Feature: CG-046
 - Referenz: https://www.coglas.com/funktionen/
-

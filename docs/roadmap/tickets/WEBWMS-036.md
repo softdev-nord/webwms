@@ -2,7 +2,7 @@
 id: WEBWMS-036
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Offen
+status: Umgesetzt
 priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Pickwellen lassen sich nach Zeit, Tour, Carrier oder Priorität selektieren, planen und kontrolliert freigeben. Der Leitstand stellt Bearbeitungs- und Konsolidierungsfortschritt dar.
 
 ## Quelle
 
 - Feature: CG-036
 - Referenz: https://www.coglas.com/kommissionierung/
-

@@ -80,6 +80,16 @@ final readonly class DemoBootstrapService
 
     public const string DEVICE_PROFILE_ID = '040d919b-aae9-4103-a3c8-1a40c0b257d9';
 
+    public const string FORKLIFT_ID = '0b117a0e-ea4a-4fe3-8c4c-80584601d5d4';
+
+    public const string TRANSPORT_RULE_ID = '379b8977-f3e1-42b2-b3d4-94dff79d3953';
+
+    public const string STATION_A_ID = '66c0c73e-f00f-4346-a4e6-761cb4992680';
+
+    public const string STATION_B_ID = '1d70f3f9-196d-4831-b7ae-2c3e74164622';
+
+    public const string MILK_RUN_ID = '52d49360-b891-46f8-a091-4063bd674b58';
+
     public const string EMAIL = 'admin@demo.webwms.local';
 
     public function __construct(
@@ -269,6 +279,7 @@ final readonly class DemoBootstrapService
                 $now,
             ));
         }
+        $this->createFulfillmentControlDemo($now);
         $this->extendedDataset->generate($now);
 
         return new DemoBootstrapResult(self::TENANT_ID, self::EMAIL, $generatedPassword, $created);
@@ -359,6 +370,27 @@ final readonly class DemoBootstrapService
         }
         if ($this->connection->fetchOne('SELECT 1 FROM wms_deployment_configuration WHERE tenant_id = :tenantId', ['tenantId' => self::TENANT_ID]) === false) {
             $this->connection->insert('wms_deployment_configuration', ['tenant_id' => self::TENANT_ID, 'deployment_mode' => 'on_premises', 'public_url' => 'http://www.webwms.local', 'storage_driver' => 'local', 'queue_transport' => 'rabbitmq', 'release_channel' => 'stable', 'changed_by' => self::USER_ID, 'changed_at' => $this->date($now)]);
+        }
+    }
+
+    private function createFulfillmentControlDemo(DateTimeImmutable $now): void
+    {
+        if (!$this->exists('wms_forklift', self::FORKLIFT_ID)) {
+            $this->connection->insert('wms_forklift', ['id' => self::FORKLIFT_ID, 'tenant_id' => self::TENANT_ID, 'warehouse_id' => self::WAREHOUSE_ID, 'code' => 'forklift-01', 'name' => 'Demo Stapler 01', 'resource_type' => 'forklift', 'status' => 'available', 'assigned_user_id' => self::USER_ID, 'last_location_id' => self::LOCATION_A_ID, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_transport_rule', self::TRANSPORT_RULE_ID)) {
+            $this->connection->insert('wms_transport_rule', ['id' => self::TRANSPORT_RULE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'storage-to-pick', 'name' => 'Lager zur Zugriffszone', 'trigger_type' => 'prepositioning', 'source_prefix' => 'A-', 'target_prefix' => 'B-', 'transport_type' => 'prepositioning', 'resource_type' => 'forklift', 'priority' => 80, 'enabled' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_process_station', self::STATION_A_ID)) {
+            $this->connection->insert('wms_process_station', ['id' => self::STATION_A_ID, 'tenant_id' => self::TENANT_ID, 'warehouse_id' => self::WAREHOUSE_ID, 'location_id' => self::LOCATION_A_ID, 'code' => 'station-a', 'name' => 'Lagerstation A', 'station_type' => 'storage', 'sequence_number' => 10, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_process_station', self::STATION_B_ID)) {
+            $this->connection->insert('wms_process_station', ['id' => self::STATION_B_ID, 'tenant_id' => self::TENANT_ID, 'warehouse_id' => self::WAREHOUSE_ID, 'location_id' => self::LOCATION_B_ID, 'code' => 'station-b', 'name' => 'Bereitstellung B', 'station_type' => 'buffer', 'sequence_number' => 20, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_milk_run', self::MILK_RUN_ID)) {
+            $this->connection->insert('wms_milk_run', ['id' => self::MILK_RUN_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'milk-run-01', 'name' => 'Demo Routenzug', 'warehouse_id' => self::WAREHOUSE_ID, 'schedule_type' => 'fixed', 'interval_minutes' => 60, 'next_departure_at' => null, 'status' => 'active', 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+            $this->connection->insert('wms_milk_run_stop', ['id' => Uuid::v7()->toRfc4122(), 'milk_run_id' => self::MILK_RUN_ID, 'station_id' => self::STATION_A_ID, 'sequence_number' => 1, 'dwell_minutes' => 5]);
+            $this->connection->insert('wms_milk_run_stop', ['id' => Uuid::v7()->toRfc4122(), 'milk_run_id' => self::MILK_RUN_ID, 'station_id' => self::STATION_B_ID, 'sequence_number' => 2, 'dwell_minutes' => 5]);
         }
     }
 

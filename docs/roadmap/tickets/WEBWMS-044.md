@@ -2,7 +2,7 @@
 id: WEBWMS-044
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Backend umgesetzt
+status: Umgesetzt
 priority: Highest
 story_points: 5
 component: "Transport & Kommissionierung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Umgesetzt
 
-`StockTransfer` und `TransferStockHandler`. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`StockTransfer` und `TransferStockHandler` bilden den fachlichen Domain-, Application- und Persistenzkern. Der Transportleitstand und die API v3 ergänzen Planung, Ressourcenzuweisung, Ausführung, Autorisierung und Auditierung.
 
 ## Quelle
 
 - Feature: CG-044
 - Referenz: https://www.coglas.com/materialflusssteuerung/
-

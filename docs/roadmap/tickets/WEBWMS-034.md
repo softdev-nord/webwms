@@ -2,7 +2,7 @@
 id: WEBWMS-034
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Backend umgesetzt
+status: Umgesetzt
 priority: Highest
 story_points: 5
 component: "Transport & Kommissionierung"
@@ -44,13 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Umgesetzt
 
 Der explizite Single-Order-Modus ist über die Auftragsressource der API v3 umgesetzt. Pro freigegebenem Kundenauftrag entsteht höchstens eine Pickliste; alle Positionen referenzieren aktive Allokationen genau dieses Auftrags. Der Lifecycle umfasst Erzeugung, Zuweisung, sequenzierte Bearbeitung und automatischen Abschluss.
 
 Nachweise: `PickingApiController`, `CreatePickListHandler`, `AssignPickListHandler`, `ConfirmPickTaskHandler`, `DbalInventoryRepository`, Migration `Version20260918200000` und `PickListTest`.
 
-Eine mobile Bedienoberfläche, Rundgangoptimierung und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+Die responsive Pickansicht, scannergeeignete Bestätigung und Rundgangoptimierung ergänzen die vorhandene auftragsreine Pickliste zu einem durchgängigen Single-Order-Prozess.
 
 ## Quelle
 

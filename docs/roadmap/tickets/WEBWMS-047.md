@@ -2,7 +2,7 @@
 id: WEBWMS-047
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Offen
+status: Umgesetzt
 priority: Medium
 story_points: 13
 component: "Transport & Kommissionierung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Prozessstationen und Transportregeln bilden den Materialfluss zwischen Lager-, Pick-, Konsolidierungs-, Pack-, Versand- und Pufferstationen ab. Fahrbefehle werden im gemeinsamen Leitstand ausgelöst und überwacht.
 
 ## Quelle
 
 - Feature: CG-047
 - Referenz: https://www.coglas.com/materialflusssteuerung/
-

@@ -2,7 +2,7 @@
 id: WEBWMS-035
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Offen
+status: Umgesetzt
 priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Multi-Order-Wellen bündeln mehrere Picklisten in einem Rundgang und weisen jeder Liste einen eindeutigen Zielbehälter zu. Planung, Freigabe, Leitstand und Auditierung sind über Web und API v3 verfügbar.
 
 ## Quelle
 
 - Feature: CG-035
 - Referenz: https://www.coglas.com/kommissionierung/
-
