@@ -14,6 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
 use WebWMS\Inventory\Application\SpecialStockService;
+use WebWMS\Inventory\Application\StockSelectionService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/inventory', name: 'api_v3_inventory_traceability_')]
@@ -22,6 +23,7 @@ final class TraceabilityApiController extends AbstractController
     public function __construct(
         private readonly ApiV3QueryService $queries,
         private readonly SpecialStockService $specialStock,
+        private readonly StockSelectionService $stockSelection,
     ) {
     }
 
@@ -71,6 +73,38 @@ final class TraceabilityApiController extends AbstractController
         return new JsonResponse(['data' => ['classified' => true]]);
     }
 
+    #[Route('/selection-rules', name: 'selection_rules', methods: ['GET'])]
+    #[IsGranted('inventory.selection_rule.read')]
+    public function selectionRules(): JsonResponse
+    {
+        return new JsonResponse(['data' => $this->queries->stockSelectionRules($this->user()->tenantId())]);
+    }
+
+    #[Route('/selection-rules', name: 'selection_rule_create', methods: ['POST'])]
+    #[IsGranted('inventory.selection_rule.write')]
+    public function createSelectionRule(Request $request): JsonResponse
+    {
+        /** @var array<string, mixed> $payload */
+        $payload = $request->toArray();
+        $id = Uuid::v7()->toRfc4122();
+        $user = $this->user();
+        $this->stockSelection->createRule(
+            $id,
+            $user->tenantId(),
+            $this->string($payload, 'code'),
+            $this->string($payload, 'name'),
+            $this->string($payload, 'strategy'),
+            $this->positiveInt($payload, 'priority'),
+            $this->boolean($payload, 'enabled'),
+            $this->optionalString($payload, 'warehouseId'),
+            $this->optionalString($payload, 'productId'),
+            $user->actorId(),
+            new DateTimeImmutable(),
+        );
+
+        return new JsonResponse(['data' => ['id' => $id]], Response::HTTP_CREATED);
+    }
+
     private function user(): TenantPermissionUser
     {
         $user = $this->getUser();
@@ -106,6 +140,17 @@ final class TraceabilityApiController extends AbstractController
         $value = $payload[$field] ?? null;
         if (!is_bool($value)) {
             throw new \InvalidArgumentException(sprintf('Field "%s" must be a boolean.', $field));
+        }
+
+        return $value;
+    }
+
+    /** @param array<string, mixed> $payload */
+    private function positiveInt(array $payload, string $field): int
+    {
+        $value = $payload[$field] ?? null;
+        if (!is_int($value) || $value < 1) {
+            throw new \InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
         }
 
         return $value;

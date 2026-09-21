@@ -2,7 +2,7 @@
 id: WEBWMS-024
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 8
 component: "Lagerverwaltung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-FEFO-Quellwahl im Nachschub; allgemeine Entnahmestrategie fehlt. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+FEFO ist als allgemeine Entnahmeregel für Ausgangsreservierungen umgesetzt. Noch gültige Bestände mit dem frühesten MHD werden bevorzugt, Bestände ohne MHD folgen und abgelaufene oder nicht allokierbare Bestände bleiben ausgeschlossen. V3-Oberfläche, API, Auditjournal, Demodaten, Berechtigungen und Tests sind vorhanden.
 
 ## Quelle
 
 - Feature: CG-024
 - Referenz: https://www.coglas.com/wms-fuer-lebensmittel/
-

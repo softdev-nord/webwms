@@ -245,6 +245,33 @@ final readonly class ApiV3QueryService
         );
     }
 
+    /** @return list<array<string, mixed>> */
+    public function stockSelectionRules(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT r.id, r.code, r.name, r.strategy, r.priority, r.enabled, r.warehouse_id, w.code warehouse_code, '
+            . 'r.product_id, p.sku product_sku, r.created_at FROM wms_stock_selection_rule r '
+            . 'LEFT JOIN wms_warehouse w ON w.id = r.warehouse_id AND w.tenant_id = r.tenant_id '
+            . 'LEFT JOIN wms_product_reference p ON p.id = r.product_id AND p.tenant_id = r.tenant_id '
+            . 'WHERE r.tenant_id = :tenantId ORDER BY r.priority, r.code',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function stockSelectionEvents(string $tenantId, int $limit = 100): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT e.id, e.reservation_id, e.requested_quantity, e.allocated_quantity, e.candidate_count, '
+            . 'e.occurred_at, r.code rule_code, r.strategy, p.sku, u.display_name performed_by_name '
+            . 'FROM wms_stock_selection_event e INNER JOIN wms_stock_selection_rule r ON r.id = e.rule_id AND r.tenant_id = e.tenant_id '
+            . 'INNER JOIN wms_product_reference p ON p.id = e.product_id AND p.tenant_id = e.tenant_id '
+            . 'INNER JOIN wms_user_account u ON u.id = e.performed_by AND u.tenant_id = e.tenant_id '
+            . 'WHERE e.tenant_id = :tenantId ORDER BY e.occurred_at DESC, e.id DESC LIMIT ' . max(1, min($limit, 500)),
+            ['tenantId' => $tenantId],
+        );
+    }
+
     /** @return array{batches: list<array<string, mixed>>, expiries: list<array<string, mixed>>, serials: list<array<string, mixed>>} */
     public function traceability(string $tenantId, int $expiryWarningDays = 30): array
     {

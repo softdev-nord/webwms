@@ -42,6 +42,7 @@ final readonly class ExtendedDemoDatasetService
         $productId = $this->id('product', $number);
         $supplierId = $this->id('supplier', $number);
         $strategyId = $this->id('putaway-strategy', $number);
+        $selectionRuleId = $this->id('selection-rule', $number);
 
         $this->insert('wms_site', $siteId, [
             'tenant_id' => DemoBootstrapService::TENANT_ID, 'code' => 'S' . $suffix,
@@ -87,6 +88,14 @@ final readonly class ExtendedDemoDatasetService
             'tenant_id' => DemoBootstrapService::TENANT_ID, 'warehouse_id' => $warehouseId,
             'code' => 'PUT-' . $suffix, 'stock_status' => 'available', 'location_prefix' => 'L-' . $suffix,
             'priority' => $number, 'enabled' => 1, 'created_by' => DemoBootstrapService::USER_ID,
+            'created_at' => $this->date($createdAt),
+        ]);
+        $this->insert('wms_stock_selection_rule', $selectionRuleId, [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'warehouse_id' => $warehouseId,
+            'product_id' => $number % 4 === 0 ? $productId : null, 'code' => 'SEL-' . $suffix,
+            'name' => 'Demo-Entnahmeregel ' . $suffix,
+            'strategy' => ['fifo', 'lifo', 'fefo'][($number - 1) % 3], 'priority' => $number,
+            'enabled' => 1, 'created_by' => DemoBootstrapService::USER_ID,
             'created_at' => $this->date($createdAt),
         ]);
 
@@ -151,7 +160,7 @@ final readonly class ExtendedDemoDatasetService
             'occurred_at' => $this->date($createdAt),
         ]);
 
-        return compact('warehouseId', 'locationId', 'productId', 'supplierId', 'strategyId', 'stockKey');
+        return compact('warehouseId', 'locationId', 'productId', 'supplierId', 'strategyId', 'selectionRuleId', 'stockKey');
     }
 
     /** @param array<string, string> $references */
@@ -261,6 +270,12 @@ final readonly class ExtendedDemoDatasetService
             'stock_key' => $references['stockKey'], 'stock_status' => 'available', 'quantity' => 2,
             'status' => $completed ? 'consumed' : 'active', 'created_by' => DemoBootstrapService::USER_ID,
             'created_at' => $this->date($createdAt),
+        ]);
+        $this->insert('wms_stock_selection_event', $this->id('selection-event', $number), [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'rule_id' => $references['selectionRuleId'],
+            'reservation_id' => $reservationId, 'product_id' => $references['productId'],
+            'requested_quantity' => 2, 'allocated_quantity' => 2, 'candidate_count' => 1,
+            'performed_by' => DemoBootstrapService::USER_ID, 'occurred_at' => $this->date($createdAt),
         ]);
         $this->insert('wms_outbound_order', $orderId, [
             'tenant_id' => DemoBootstrapService::TENANT_ID, 'order_number' => 'SO-' . $suffix,

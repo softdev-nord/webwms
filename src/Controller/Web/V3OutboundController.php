@@ -21,6 +21,7 @@ use WebWMS\Inventory\Application\CreatePickListCommand;
 use WebWMS\Inventory\Application\CreatePickListHandler;
 use WebWMS\Inventory\Application\ReleaseOutboundOrderCommand;
 use WebWMS\Inventory\Application\ReleaseOutboundOrderHandler;
+use WebWMS\Inventory\Application\StockSelectionService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/outbound', name: 'v3_outbound_')]
@@ -32,6 +33,7 @@ final class V3OutboundController extends AbstractController
         private readonly ReleaseOutboundOrderHandler $releaseOrder,
         private readonly AllocateStockHandler $allocateStock,
         private readonly CreatePickListHandler $createPickList,
+        private readonly StockSelectionService $stockSelection,
     ) {
     }
 
@@ -89,6 +91,7 @@ final class V3OutboundController extends AbstractController
 
         return $this->render('v3/outbound/order.html.twig', [
             'order' => $order,
+            'selectionRules' => $this->queries->stockSelectionRules($user->tenantId()),
             'page' => 'Ausgangsauftrag',
         ]);
     }
@@ -115,6 +118,25 @@ final class V3OutboundController extends AbstractController
             new DateTimeImmutable(),
         ));
         $this->addFlash('success', 'Der Auftrag wurde freigegeben und reserviert.');
+
+        return $this->redirectToRoute('v3_outbound_order', ['orderId' => $orderId]);
+    }
+
+    #[Route('/orders/{orderId}/reservations/{reservationId}/auto-allocate', name: 'automatic_allocation', methods: ['POST'])]
+    #[IsGranted('inventory.selection.execute')]
+    public function automaticallyAllocate(string $orderId, string $reservationId, Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_outbound_auto_allocate_' . $reservationId);
+        $user = $this->tenantUser();
+        $this->requiredOrder($user->tenantId(), $orderId);
+        $result = $this->stockSelection->allocate(
+            $user->tenantId(),
+            $reservationId,
+            $this->required($request, 'rule_id'),
+            $user->actorId(),
+            new DateTimeImmutable(),
+        );
+        $this->addFlash('success', sprintf('%d Einheiten wurden automatisch per %s allokiert.', $result->allocatedQuantity, mb_strtoupper($result->strategy)));
 
         return $this->redirectToRoute('v3_outbound_order', ['orderId' => $orderId]);
     }

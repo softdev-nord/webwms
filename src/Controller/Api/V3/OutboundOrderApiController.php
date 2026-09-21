@@ -19,6 +19,7 @@ use WebWMS\Inventory\Application\CreateOutboundOrderCommand;
 use WebWMS\Inventory\Application\CreateOutboundOrderHandler;
 use WebWMS\Inventory\Application\ReleaseOutboundOrderCommand;
 use WebWMS\Inventory\Application\ReleaseOutboundOrderHandler;
+use WebWMS\Inventory\Application\StockSelectionService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3', name: 'api_v3_outbound_')]
@@ -28,7 +29,8 @@ final class OutboundOrderApiController extends AbstractController
         private readonly ApiV3QueryService $queries,
         private readonly CreateOutboundOrderHandler $createOrder,
         private readonly ReleaseOutboundOrderHandler $releaseOrder,
-        private readonly AllocateStockHandler $allocateStock
+        private readonly AllocateStockHandler $allocateStock,
+        private readonly StockSelectionService $stockSelection,
     ) {
     }
 
@@ -145,6 +147,30 @@ final class OutboundOrderApiController extends AbstractController
             'allocatedQuantity' => $result->allocatedQuantity,
             'remainingQuantity' => $result->remainingReservationQuantity,
             'availableQuantity' => $result->availableStockQuantity,
+        ], Response::HTTP_CREATED);
+    }
+
+    #[Route('/reservations/{reservationId}/automatic-allocation', name: 'automatic_allocation', methods: ['POST'])]
+    #[IsGranted('inventory.selection.execute')]
+    public function automaticallyAllocate(string $reservationId, Request $request): JsonResponse
+    {
+        /** @var array<string, mixed> $payload */
+        $payload = $request->toArray();
+        $user = $this->apiUser();
+        $result = $this->stockSelection->allocate(
+            $user->tenantId(),
+            $reservationId,
+            $this->string($payload, 'ruleId'),
+            $user->actorId(),
+            new DateTimeImmutable(),
+        );
+
+        return $this->data([
+            'strategy' => $result->strategy,
+            'requestedQuantity' => $result->requestedQuantity,
+            'allocatedQuantity' => $result->allocatedQuantity,
+            'remainingQuantity' => $result->remainingQuantity,
+            'candidateCount' => $result->candidateCount,
         ], Response::HTTP_CREATED);
     }
 

@@ -49,6 +49,14 @@
 							{% set remaining = item.requested_quantity - item.allocated_quantity %}
 
 							{% if remaining > 0 and is_granted('inventory.allocation.write') %}
+								{% set applicableRules = selectionRules|filter(rule => rule.enabled and (not rule.product_id or rule.product_id == item.product_id)) %}
+								{% if applicableRules|length > 0 and is_granted('inventory.selection.execute') %}
+									<form class="row g-2 align-items-end mt-3 p-3 bg-light rounded" method="post" action="{{ path('v3_outbound_automatic_allocation', {orderId: order.id, reservationId: item.reservation_id}) }}">
+										<input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_auto_allocate_' ~ item.reservation_id) }}">
+										<div class="col-md-8"><label class="form-label small fw-semibold">Automatische Entnahme</label><select class="form-select form-select-sm" name="rule_id" required>{% for rule in applicableRules %}<option value="{{ rule.id }}">{{ rule.code }} · {{ rule.strategy|upper }}{% if rule.warehouse_code %} · {{ rule.warehouse_code }}{% endif %}</option>{% endfor %}</select></div>
+										<div class="col-md-4"><button class="btn btn-sm btn-primary w-100">Restmenge automatisch allokieren</button></div>
+									</form>
+								{% endif %}
 								<div class="mt-3"><div class="small fw-semibold mb-2">Bestandsdimension auswählen</div>{% for stock in item.stock %}<form class="row g-2 align-items-center border-top py-2" method="post" action="{{ path('v3_outbound_allocation', {orderId: order.id, reservationId: item.reservation_id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_allocate_' ~ item.reservation_id) }}"><input type="hidden" name="location_id" value="{{ stock.location_id }}"><input type="hidden" name="stock_status" value="{{ stock.stock_status }}"><input type="hidden" name="batch_number" value="{{ stock.batch_number }}"><input type="hidden" name="serial_number" value="{{ stock.serial_number }}"><input type="hidden" name="expires_at" value="{{ stock.expires_at }}"><div class="col-md-7"><strong>{{ stock.location_code }}</strong> · {{ stock.stock_status }}{% if stock.batch_number %} · Charge {{ stock.batch_number }}{% endif %}{% if stock.serial_number %} · SN {{ stock.serial_number }}{% endif %}{% if stock.expires_at %} · MHD {{ stock.expires_at|date('d.m.Y') }}{% endif %}<div class="small text-muted">Verfügbar: {{ stock.available_quantity }}</div></div><div class="col-md-2"><input class="form-control form-control-sm" type="number" name="quantity" min="1" max="{{ min(remaining, stock.available_quantity) }}" value="{{ stock.serial_number ? 1 : min(remaining, stock.available_quantity) }}" required></div><div class="col-md-3"><button class="btn btn-sm btn-outline-primary w-100">Allokieren</button></div></form>{% else %}<div class="alert alert-warning mb-0">Kein passender Bestand verfügbar.</div>{% endfor %}</div>
 							{% endif %}
 						{% endif %}

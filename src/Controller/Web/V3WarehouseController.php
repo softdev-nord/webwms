@@ -15,6 +15,7 @@ use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
 use WebWMS\Integration\Application\StockMovementCriteria;
 use WebWMS\Inventory\Application\SpecialStockService;
+use WebWMS\Inventory\Application\StockSelectionService;
 use WebWMS\Inventory\Application\WarehouseTopologyService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -25,6 +26,7 @@ final class V3WarehouseController extends AbstractController
         private readonly ApiV3QueryService $queries,
         private readonly WarehouseTopologyService $topology,
         private readonly SpecialStockService $specialStock,
+        private readonly StockSelectionService $stockSelection,
     ) {
     }
 
@@ -199,6 +201,45 @@ final class V3WarehouseController extends AbstractController
         return $this->redirectToRoute('v3_inventory_special_stock');
     }
 
+    #[Route('/selection-rules', name: 'selection_rules', methods: ['GET'])]
+    #[IsGranted('inventory.selection_rule.read')]
+    public function selectionRules(): Response
+    {
+        $user = $this->user();
+
+        return $this->render('v3/inventory/selection_rules.html.twig', [
+            'page' => 'Entnahmestrategien',
+            'rules' => $this->queries->stockSelectionRules($user->tenantId()),
+            'events' => $this->queries->stockSelectionEvents($user->tenantId()),
+            'warehouses' => $this->queries->warehouses($user->tenantId()),
+            'products' => $this->queries->products($user->tenantId(), 500, null),
+        ]);
+    }
+
+    #[Route('/selection-rules', name: 'selection_rule_create', methods: ['POST'])]
+    #[IsGranted('inventory.selection_rule.write')]
+    public function createSelectionRule(Request $request): Response
+    {
+        $this->csrf($request, 'v3_inventory_selection_rule_create');
+        $user = $this->user();
+        $this->stockSelection->createRule(
+            Uuid::v7()->toRfc4122(),
+            $user->tenantId(),
+            $this->required($request, 'code'),
+            $this->required($request, 'name'),
+            $this->required($request, 'strategy'),
+            $this->positiveInt($request, 'priority'),
+            $request->request->getBoolean('enabled'),
+            $this->optional($request, 'warehouse_id'),
+            $this->optional($request, 'product_id'),
+            $user->actorId(),
+            new DateTimeImmutable(),
+        );
+        $this->addFlash('success', 'Die Entnahmestrategie wurde angelegt.');
+
+        return $this->redirectToRoute('v3_inventory_selection_rules');
+    }
+
     private function user(): TenantPermissionUser
     {
         $user = $this->getUser();
@@ -224,6 +265,23 @@ final class V3WarehouseController extends AbstractController
         $value = trim((string) $request->query->get($field));
 
         return $value === '' ? null : $value;
+    }
+
+    private function optional(Request $request, string $field): ?string
+    {
+        $value = trim((string) $request->request->get($field));
+
+        return $value === '' ? null : $value;
+    }
+
+    private function positiveInt(Request $request, string $field): int
+    {
+        $value = $this->required($request, $field);
+        if (!ctype_digit($value) || (int) $value < 1) {
+            throw new \InvalidArgumentException(sprintf('Das Feld "%s" muss eine positive Ganzzahl sein.', $field));
+        }
+
+        return (int) $value;
     }
 
     private function csrf(Request $request, string $id): void

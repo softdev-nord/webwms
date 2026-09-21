@@ -2,7 +2,7 @@
 id: WEBWMS-023
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-Strategiegrundlagen vorhanden; allgemeines FIFO/LIFO fehlt. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+FIFO und LIFO sind als mandantenfähige, optional lager- und artikelbezogene Entnahmeregeln umgesetzt. Die transaktionale automatische Allokation nutzt die Zugangszeitpunkte des Bestandsledgers, verhindert Teilresultate bei Unterdeckung und protokolliert jede erfolgreiche Ausführung. V3-Oberfläche, API, Berechtigungen, Demodaten und Tests sind vorhanden.
 
 ## Quelle
 
 - Feature: CG-023
 - Referenz: https://www.coglas.com/lagerverwaltung/
-

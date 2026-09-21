@@ -11,6 +11,19 @@ use WebWMS\Integration\Application\StockMovementCriteria;
 
 final class ApiV3QueryServiceTest extends TestCase
 {
+    public function testStockSelectionConfigurationAndJournalAreTenantScoped(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::exactly(2))->method('fetchAllAssociative')->with(
+            self::callback(static fn (string $sql): bool => str_contains($sql, 'tenant_id = :tenantId')),
+            ['tenantId' => 'tenant-id'],
+        )->willReturn([]);
+        $queries = new ApiV3QueryService($connection);
+
+        self::assertSame([], $queries->stockSelectionRules('tenant-id'));
+        self::assertSame([], $queries->stockSelectionEvents('tenant-id'));
+    }
+
     public function testTraceabilityViewsAreRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);

@@ -1,0 +1,34 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="d-flex justify-content-between align-items-start gap-3 mb-4">
+		<div><h1 class="h3 mb-1">Entnahmestrategien</h1><p class="text-muted mb-0">FIFO, LIFO und FEFO für die automatische Bestandsselektion konfigurieren.</p></div>
+	</div>
+
+	<div class="row g-4 mb-4">
+		<div class="col-xl-4">
+			<div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">Neue Regel</h2></div><div class="card-body">
+				<form method="post" action="{{ path('v3_inventory_selection_rule_create') }}" class="row g-3">
+					<input type="hidden" name="_token" value="{{ csrf_token('v3_inventory_selection_rule_create') }}">
+					<div class="col-4"><label class="form-label">Code</label><input class="form-control" name="code" maxlength="50" required></div>
+					<div class="col-8"><label class="form-label">Name</label><input class="form-control" name="name" maxlength="100" required></div>
+					<div class="col-8"><label class="form-label">Strategie</label><select class="form-select" name="strategy"><option value="fifo">FIFO – ältester Zugang zuerst</option><option value="lifo">LIFO – neuester Zugang zuerst</option><option value="fefo">FEFO – frühestes MHD zuerst</option></select></div>
+					<div class="col-4"><label class="form-label">Priorität</label><input class="form-control" type="number" name="priority" min="1" value="100" required></div>
+					<div class="col-12"><label class="form-label">Lager (optional)</label><select class="form-select" name="warehouse_id"><option value="">Alle Lager</option>{% for warehouse in warehouses %}<option value="{{ warehouse.id }}">{{ warehouse.code }} · {{ warehouse.name }}</option>{% endfor %}</select></div>
+					<div class="col-12"><label class="form-label">Artikel (optional)</label><select class="form-select" name="product_id"><option value="">Alle Artikel</option>{% for product in products %}<option value="{{ product.id }}">{{ product.sku }} · {{ product.name }}</option>{% endfor %}</select></div>
+					<div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" name="enabled" value="1" id="selection-rule-enabled" checked><label class="form-check-label" for="selection-rule-enabled">Regel aktiv</label></div></div>
+					<div class="col-12"><button class="btn btn-primary w-100">Regel anlegen</button></div>
+				</form>
+			</div></div>
+		</div>
+		<div class="col-xl-8">
+			<div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">Konfigurierte Regeln</h2></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Priorität</th><th>Regel</th><th>Strategie</th><th>Geltungsbereich</th><th>Status</th></tr></thead><tbody>
+			{% for rule in rules %}<tr><td>{{ rule.priority }}</td><td><strong>{{ rule.code }}</strong><div class="small text-muted">{{ rule.name }}</div></td><td><span class="badge bg-primary-subtle text-primary">{{ rule.strategy|upper }}</span></td><td>{{ rule.warehouse_code ?: 'Alle Lager' }}<div class="small text-muted">{{ rule.product_sku ?: 'Alle Artikel' }}</div></td><td>{% if rule.enabled %}<span class="badge bg-success-subtle text-success">Aktiv</span>{% else %}<span class="badge bg-secondary-subtle text-secondary">Inaktiv</span>{% endif %}</td></tr>{% else %}<tr><td colspan="5" class="text-center text-muted py-4">Noch keine Entnahmeregel vorhanden.</td></tr>{% endfor %}
+			</tbody></table></div></div>
+		</div>
+	</div>
+
+	<div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">Ausführungsjournal</h2></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Zeitpunkt</th><th>Regel</th><th>Artikel</th><th>Reservierung</th><th>Ergebnis</th><th>Benutzer</th></tr></thead><tbody>
+	{% for event in events %}<tr><td>{{ event.occurred_at|date('d.m.Y H:i:s') }}</td><td>{{ event.rule_code }} · {{ event.strategy|upper }}</td><td>{{ event.sku }}</td><td><code>{{ event.reservation_id }}</code></td><td>{{ event.allocated_quantity }} / {{ event.requested_quantity }} aus {{ event.candidate_count }} Kandidaten</td><td>{{ event.performed_by_name }}</td></tr>{% else %}<tr><td colspan="6" class="text-center text-muted py-4">Noch keine automatische Selektion ausgeführt.</td></tr>{% endfor %}
+	</tbody></table></div></div>
+{% endblock %}
