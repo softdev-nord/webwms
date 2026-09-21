@@ -72,6 +72,14 @@ final readonly class DemoBootstrapService
 
     public const string TRANSPORT_ENDPOINT_ID = '7414cf86-e29a-43d3-8141-2892e302991f';
 
+    public const string BUSINESS_PARTNER_ID = '50c31f4f-fde8-4a4b-b2cf-706a8be00d43';
+
+    public const string TENANT_CONTEXT_ID = '88993899-6006-484f-b4ad-aa9cc63147a1';
+
+    public const string NUMBER_RANGE_ID = '41864d2c-3227-43f8-b490-03c3a7e2e94d';
+
+    public const string DEVICE_PROFILE_ID = '040d919b-aae9-4103-a3c8-1a40c0b257d9';
+
     public const string EMAIL = 'admin@demo.webwms.local';
 
     public function __construct(
@@ -132,6 +140,7 @@ final readonly class DemoBootstrapService
         ) === false) {
             $this->connection->insert('wms_user_role', ['user_id' => self::USER_ID, 'role_id' => self::ROLE_ID]);
         }
+        $this->createAdministrationDemo($now);
         if (!$this->exists('wms_printer', self::PRINTER_ID)) {
             $this->connection->insert('wms_printer', [
                 'id' => self::PRINTER_ID,
@@ -328,6 +337,28 @@ final readonly class DemoBootstrapService
                 'location_prefix' => 'B-', 'priority' => 10, 'enabled' => 1,
                 'created_by' => self::USER_ID, 'created_at' => $this->date($now),
             ]);
+        }
+    }
+
+    private function createAdministrationDemo(DateTimeImmutable $now): void
+    {
+        if (!$this->exists('wms_business_partner', self::BUSINESS_PARTNER_ID)) {
+            $this->connection->insert('wms_business_partner', ['id' => self::BUSINESS_PARTNER_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'demo-customer', 'name' => 'Demo Kunde GmbH', 'partner_type' => 'customer', 'external_reference' => 'ERP-10001', 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_tenant_context', self::TENANT_CONTEXT_ID)) {
+            $this->connection->insert('wms_tenant_context', ['id' => self::TENANT_CONTEXT_ID, 'tenant_id' => self::TENANT_ID, 'business_partner_id' => self::BUSINESS_PARTNER_ID, 'code' => 'demo-customer', 'name' => 'Demo Kundendatenraum', 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_number_range', self::NUMBER_RANGE_ID)) {
+            $this->connection->insert('wms_number_range', ['id' => self::NUMBER_RANGE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'outbound', 'name' => 'Warenausgang', 'object_type' => 'outbound_order', 'prefix' => 'AU-', 'suffix' => '', 'padding' => 8, 'next_value' => 10001, 'maximum_value' => 99999999, 'gs1_company_prefix' => null, 'enabled' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_device_profile', self::DEVICE_PROFILE_ID)) {
+            $this->connection->insert('wms_device_profile', ['id' => self::DEVICE_PROFILE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'mde-default', 'name' => 'Standard MDE', 'device_type' => 'scanner', 'start_route' => '/v3/inbound/planned', 'fullscreen' => 1, 'scan_suffix' => 'Enter', 'enabled' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if ($this->connection->fetchOne('SELECT 1 FROM wms_process_configuration WHERE tenant_id = :tenantId AND process_key = :processKey', ['tenantId' => self::TENANT_ID, 'processKey' => 'inbound.quality']) === false) {
+            $this->connection->insert('wms_process_configuration', ['id' => Uuid::v7()->toRfc4122(), 'tenant_id' => self::TENANT_ID, 'process_key' => 'inbound.quality', 'name' => 'Qualitätsprüfung im Wareneingang', 'enabled' => 1, 'configuration' => '{}', 'changed_by' => self::USER_ID, 'changed_at' => $this->date($now)]);
+        }
+        if ($this->connection->fetchOne('SELECT 1 FROM wms_deployment_configuration WHERE tenant_id = :tenantId', ['tenantId' => self::TENANT_ID]) === false) {
+            $this->connection->insert('wms_deployment_configuration', ['tenant_id' => self::TENANT_ID, 'deployment_mode' => 'on_premises', 'public_url' => 'http://www.webwms.local', 'storage_driver' => 'local', 'queue_transport' => 'rabbitmq', 'release_channel' => 'stable', 'changed_by' => self::USER_ID, 'changed_at' => $this->date($now)]);
         }
     }
 

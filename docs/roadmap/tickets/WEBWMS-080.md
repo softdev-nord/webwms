@@ -2,7 +2,7 @@
 id: WEBWMS-080
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Offen
+status: Done
 priority: High
 story_points: 5
 component: "Administration"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mandantenbezogene Nummernkreise unterstützen Präfix, Suffix, Stellenzahl, Start- und Maximalwert sowie ein optionales GS1-Unternehmenspräfix. Die Vergabe erfolgt atomar mit Zeilensperre, wird auditiert und steht über UI und API bereit.
 
 ## Quelle
 
 - Feature: CG-080
 - Referenz: https://www.coglas.com/funktionen/
-

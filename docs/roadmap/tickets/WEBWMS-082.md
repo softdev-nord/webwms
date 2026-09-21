@@ -2,7 +2,7 @@
 id: WEBWMS-082
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Administration"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-Webanwendung vorhanden; Scanner-/PWA-Optimierung fehlt. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Die responsive V3-Webanwendung wird um installierbare PWA-Metadaten, einen sicher auf statische Assets begrenzten Service Worker sowie konfigurierbare Desktop-, Tablet- und Scannerprofile ergänzt. Authentifizierte Inhalte und API-Daten werden nicht offline gespeichert.
 
 ## Quelle
 
 - Feature: CG-082
 - Referenz: https://www.coglas.com/funktionen/
-

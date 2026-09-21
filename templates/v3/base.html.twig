@@ -123,6 +123,11 @@
         </div>
     </div>
 </div>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('{{ asset('service-worker.js') }}'));
+    }
+</script>
 {% block bodyjs %}
     <script>
         const loader = '<img src="{{ asset('assets/images/ajax-loader.gif') }}" />';

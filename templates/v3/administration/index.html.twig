@@ -31,7 +31,7 @@
 							<tr>
 								<td>{{ user.display_name }}</td>
 								<td>{{ user.email }}</td>
-								<td>{{ user.role_codes ?: '–' }}</td>
+								<td>{% if is_granted('administration.user.write') %}<form method="post" action="{{ path('v3_administration_user_roles', {userId: user.id}) }}" class="d-flex gap-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_administration_user_roles_' ~ user.id) }}"><select class="form-select form-select-sm" name="role_ids[]" multiple>{% set assigned = user.role_codes ? user.role_codes|split(', ') : [] %}{% for role in roles %}<option value="{{ role.id }}" {{ role.code in assigned ? 'selected' : '' }}>{{ role.code }}</option>{% endfor %}</select><button class="btn btn-sm btn-outline-primary">Speichern</button></form>{% else %}{{ user.role_codes ?: '–' }}{% endif %}</td>
 								<td>{{ user.status }}</td>
 								<td class="text-end">
 									{% if is_granted('administration.user.write') %}
@@ -79,6 +79,7 @@
 								<td class="text-end">{{ role.user_count }}</td>
 								<td>
 									<span class="text-muted">{{ role.permissions|split(',')|length }} Berechtigungen</span>
+									{% if is_granted('administration.role.write') %}<a class="btn btn-sm btn-link" href="{{ path('v3_administration_role_edit', {roleId: role.id}) }}">Bearbeiten</a>{% endif %}
 								</td>
 							</tr>
 						{% endfor %}

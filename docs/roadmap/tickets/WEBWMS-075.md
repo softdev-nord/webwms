@@ -2,7 +2,7 @@
 id: WEBWMS-075
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 13
 component: "Administration"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-Mandantenisolation vorhanden; Geschäftspartner und Abrechnung fehlen. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`wms_business_partner` und `wms_tenant_context` ergänzen die bestehende Mandantenisolation um Geschäftspartner und getrennte Datenräume. V3-UI und API validieren alle Zuordnungen mandantenbezogen; Änderungen werden im Administrationsjournal protokolliert.
 
 ## Quelle
 
 - Feature: CG-075
 - Referenz: https://www.coglas.com/funktionen/
-

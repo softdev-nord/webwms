@@ -1,0 +1,6 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4"><a href="{{ path('v3_administration_index') }}" class="text-decoration-none">← Administration</a><h1 class="h3 mt-2">Rolle {{ role.code }} bearbeiten</h1></div>
+	<form method="post" class="card border-0 shadow-sm"><div class="card-body"><input type="hidden" name="_token" value="{{ csrf_token('v3_administration_role_edit_' ~ role.id) }}"><label class="form-label">Name</label><input class="form-control mb-4" name="name" value="{{ role.name }}" required><h2 class="h5">Berechtigungen</h2>{% set assigned = role.permissions|split(',') %}<div class="row g-2">{% for permission in permissions %}<div class="col-md-6 col-xl-4"><div class="form-check"><input class="form-check-input ms-2" type="checkbox" name="permissions[]" value="{{ permission }}" id="permission-{{ loop.index }}" {{ permission in assigned ? 'checked' : '' }}><label class="form-check-label" for="permission-{{ loop.index }}">{{ permission }}</label></div></div>{% endfor %}</div></div><div class="card-footer text-end"><button class="btn btn-primary">Änderungen speichern</button></div></form>
+{% endblock %}

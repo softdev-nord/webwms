@@ -9,6 +9,8 @@ final class V3PermissionCatalog
     /** @var list<string> */
     public const ALL = [
         'administration.api_client.read', 'administration.api_client.write',
+        'administration.configuration.read', 'administration.configuration.write',
+        'administration.number_range.use',
         'administration.role.read', 'administration.role.write',
         'administration.user.read', 'administration.user.write',
         'fulfillment.loading.execute', 'fulfillment.loading.read', 'fulfillment.loading.write',

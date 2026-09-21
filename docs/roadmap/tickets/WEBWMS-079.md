@@ -2,7 +2,7 @@
 id: WEBWMS-079
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Offen
+status: Backend umgesetzt
 priority: Medium
 story_points: 8
 component: "Administration"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Backend umgesetzt
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+OIDC- und SAML-Identity-Provider sowie externe Identitätszuordnungen sind mandantenbezogen modelliert und über V3-UI/API konfigurierbar. Client-Secrets werden ausschließlich über Umgebungsvariablen referenziert. Der konkrete Redirect-/Callback-Handshake folgt nach Festlegung der produktiv verwendeten IdP-Bibliothek; das Ticket bleibt deshalb unterhalb von `Done`.
 
 ## Quelle
 
 - Feature: CG-079
 - Referenz: https://www.coglas.com/funktionen/
-

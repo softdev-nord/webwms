@@ -65,6 +65,11 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `GET` | `/api/v3/outbox` | `integration.outbox.read` | Statusereignisse nach Zustellstatus lesen |
 | `POST` | `/api/v3/outbox/{id}/acknowledgement` | `integration.outbox.acknowledge` | Verarbeitung idempotent quittieren |
 | `POST` | `/api/v3/outbox/{id}/retry` | `integration.outbox.retry` | Dead Letter geprüft wiederaufnehmen |
+| `GET` | `/api/v3/administration/workspace` | `administration.configuration.read` | Mandantenkonfiguration lesen |
+| `POST` | `/api/v3/administration/workspace/{resource}` | `administration.configuration.write` | Geschäftspartner, Datenraum, IdP, Nummernkreis oder Geräteprofil anlegen |
+| `PUT` | `/api/v3/administration/processes/{processKey}` | `administration.configuration.write` | Prozess aktivieren und konfigurieren |
+| `PUT` | `/api/v3/administration/deployment` | `administration.configuration.write` | Betriebsprofil konfigurieren |
+| `POST` | `/api/v3/administration/number-ranges/{code}/next` | `administration.number_range.use` | Nächste Nummer atomar vergeben |
 
 Listen akzeptieren `limit` von 1 bis 100. Artikel, Bestände, Bestandsbewegungen und Outbox-Nachrichten unterstützen einen opaken `cursor`; der Folgewert steht in `meta.nextCursor`. Bestände können mit `warehouseId`, Bewegungen mit Artikel, Lagerplatz, Transfer-ID und Bewegungsart eingeschränkt werden.
 

@@ -2,7 +2,7 @@
 id: WEBWMS-076
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Backend umgesetzt
+status: Done
 priority: High
 story_points: 8
 component: "Administration"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
-`Site`, `Warehouse` und mandantenbezogene Lagerplätze. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`Site`, `Warehouse`, Bereiche, Gänge und Lagerplätze sind vollständig mandantenbezogen über V3-UI und API pflegbar. Der Administrations-Workspace zeigt zusätzlich die Organisationszuordnung Standort → Lager und verlinkt in die Lagertopologie.
 
 ## Quelle
 
 - Feature: CG-076
 - Referenz: https://www.coglas.com/wms-fuer-speditionen-3pl/
-

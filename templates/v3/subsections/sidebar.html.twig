@@ -122,13 +122,14 @@
                     </li>
                 {% endif %}
 
-                {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') %}
+                {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') or is_granted('administration.configuration.read') %}
                     <li class="nav-item">
                         <a class="nav-link menu-link {{ administrationOpen ? '' : 'collapsed' }}" href="#sidebarAdministration" data-bs-toggle="collapse" role="button" aria-expanded="{{ administrationOpen ? 'true' : 'false' }}" aria-controls="sidebarAdministration">
                             <i class="ri-admin-line"></i><span>Administration</span>
                         </a>
                         <div class="collapse menu-dropdown {{ administrationOpen ? 'show' : '' }}" id="sidebarAdministration"><ul class="nav nav-sm flex-column">
-                            <li class="nav-item"><a class="nav-link {{ administrationOpen ? 'active' : '' }}" href="{{ path('v3_administration_index') }}">Mandant &amp; Benutzer</a></li>
+                            {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_administration_index' or currentRoute starts with 'v3_administration_user_' or currentRoute starts with 'v3_administration_role_' or currentRoute starts with 'v3_administration_api_client_' ? 'active' : '' }}" href="{{ path('v3_administration_index') }}">Benutzer &amp; Rollen</a></li>{% endif %}
+                            {% if is_granted('administration.configuration.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_administration_workspace' or currentRoute starts with 'v3_administration_process_' or currentRoute starts with 'v3_administration_deployment_' or currentRoute starts with 'v3_administration_number_range_' ? 'active' : '' }}" href="{{ path('v3_administration_workspace') }}">Mandant &amp; Konfiguration</a></li>{% endif %}
                         </ul></div>
                     </li>
                 {% endif %}

@@ -2,7 +2,7 @@
 id: WEBWMS-081
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Offen
+status: Done
 priority: High
 story_points: 8
 component: "Administration"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mandantenbezogene Prozessschalter können über den Admin-Workspace angelegt, aktiviert und mit validierter JSON-Konfiguration versehen werden. Änderungen sind berechtigt, transaktional und auditiert.
 
 ## Quelle
 
 - Feature: CG-081
 - Referenz: https://www.coglas.com/funktionen/
-

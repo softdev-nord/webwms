@@ -18,6 +18,7 @@ use WebWMS\Administration\Application\Access\CreateUser\CreateUserCommand;
 use WebWMS\Administration\Application\Access\CreateUser\CreateUserHandler;
 use WebWMS\Administration\Application\Access\V3AdministrationService;
 use WebWMS\Administration\Application\Access\V3PermissionCatalog;
+use WebWMS\Administration\Application\AdministrationWorkspaceService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/administration', name: 'v3_administration_')]
@@ -27,7 +28,82 @@ final class V3AdministrationController extends AbstractController
         private readonly V3AdministrationService $administration,
         private readonly CreateRoleHandler $createRole,
         private readonly CreateUserHandler $createUser,
+        private readonly AdministrationWorkspaceService $workspace,
     ) {
+    }
+
+    #[Route('/workspace', name: 'workspace', methods: ['GET'])]
+    #[IsGranted('administration.configuration.read')]
+    public function workspace(): Response
+    {
+        return $this->render('v3/administration/workspace.html.twig', [
+            'workspace' => $this->workspace->workspace($this->tenantUser()->tenantId()),
+            'page' => 'Mandant & Konfiguration',
+        ]);
+    }
+
+    #[Route('/workspace/{resource}', name: 'workspace_create', requirements: ['resource' => 'partner|context|identity_provider|number_range|device_profile'], methods: ['POST'])]
+    #[IsGranted('administration.configuration.write')]
+    public function createWorkspaceResource(string $resource, Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_administration_workspace_create_' . $resource);
+        $user = $this->tenantUser();
+        $this->workspace->create($user->tenantId(), $user->actorId(), $resource, $request->request->all(), new DateTimeImmutable());
+        $this->addFlash('success', 'Die Konfiguration wurde angelegt.');
+
+        return $this->redirectToRoute('v3_administration_workspace');
+    }
+
+    #[Route('/workspace/{resource}/{id}/status', name: 'workspace_status', requirements: ['resource' => 'partner|context|identity_provider|number_range|device_profile'], methods: ['POST'])]
+    #[IsGranted('administration.configuration.write')]
+    public function workspaceStatus(string $resource, string $id, Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_administration_workspace_status_' . $resource . '_' . $id);
+        $user = $this->tenantUser();
+        $this->workspace->setEnabled($user->tenantId(), $user->actorId(), $resource, $id, $this->required($request, 'enabled') === '1', new DateTimeImmutable());
+        $this->addFlash('success', 'Der Status wurde aktualisiert.');
+
+        return $this->redirectToRoute('v3_administration_workspace');
+    }
+
+    #[Route('/workspace/process', name: 'process_configure', methods: ['POST'])]
+    #[IsGranted('administration.configuration.write')]
+    public function configureProcess(Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_administration_process_configure');
+        $user = $this->tenantUser();
+        $this->workspace->configureProcess($user->tenantId(), $user->actorId(), $this->required($request, 'process_key'), $this->required($request, 'name'), $request->request->getBoolean('enabled'), (string) $request->request->get('configuration', '{}'), new DateTimeImmutable());
+        $this->addFlash('success', 'Die Prozesskonfiguration wurde gespeichert.');
+
+        return $this->redirectToRoute('v3_administration_workspace');
+    }
+
+    #[Route('/workspace/deployment', name: 'deployment_configure', methods: ['POST'])]
+    #[IsGranted('administration.configuration.write')]
+    public function configureDeployment(Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_administration_deployment_configure');
+        $user = $this->tenantUser();
+        $values = [];
+        foreach (['deployment_mode', 'public_url', 'storage_driver', 'queue_transport', 'release_channel'] as $field) {
+            $values[$field] = $this->required($request, $field);
+        }
+        $this->workspace->configureDeployment($user->tenantId(), $user->actorId(), $values, new DateTimeImmutable());
+        $this->addFlash('success', 'Das Betriebsprofil wurde gespeichert.');
+
+        return $this->redirectToRoute('v3_administration_workspace');
+    }
+
+    #[Route('/workspace/number-ranges/{code}/next', name: 'number_range_next', methods: ['POST'])]
+    #[IsGranted('administration.number_range.use')]
+    public function nextNumber(string $code, Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_administration_number_range_next_' . $code);
+        $user = $this->tenantUser();
+        $number = $this->workspace->nextNumber($user->tenantId(), $user->actorId(), $code, new DateTimeImmutable());
+        $this->addFlash('success', sprintf('Nächste Nummer: %s', $number));
+
+        return $this->redirectToRoute('v3_administration_workspace');
     }
 
     #[Route('', name: 'index', methods: ['GET'])]
@@ -115,6 +191,45 @@ final class V3AdministrationController extends AbstractController
         $this->addFlash('success', 'Der Benutzerstatus wurde aktualisiert.');
 
         return $this->redirectToRoute('v3_administration_index');
+    }
+
+    #[Route('/users/{userId}/roles', name: 'user_roles', methods: ['POST'])]
+    #[IsGranted('administration.user.write')]
+    public function userRoles(string $userId, Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_administration_user_roles_' . $userId);
+        $user = $this->tenantUser();
+        $this->administration->setUserRoles($user->tenantId(), $user->actorId(), $userId, $this->stringList($request, 'role_ids'), new DateTimeImmutable());
+        $this->addFlash('success', 'Die Benutzerrollen wurden aktualisiert.');
+
+        return $this->redirectToRoute('v3_administration_index');
+    }
+
+    #[Route('/roles/{roleId}', name: 'role_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('administration.role.write')]
+    public function editRole(string $roleId, Request $request): Response
+    {
+        $user = $this->tenantUser();
+        $roles = $this->administration->roles($user->tenantId());
+        $role = null;
+        foreach ($roles as $candidate) {
+            if ($candidate['id'] === $roleId) {
+                $role = $candidate;
+                break;
+            }
+        }
+        if ($role === null) {
+            throw $this->createNotFoundException();
+        }
+        if ($request->isMethod('POST')) {
+            $this->assertCsrf($request, 'v3_administration_role_edit_' . $roleId);
+            $this->administration->updateRole($user->tenantId(), $user->actorId(), $roleId, $this->required($request, 'name'), $this->stringList($request, 'permissions'), new DateTimeImmutable());
+            $this->addFlash('success', 'Die Rolle wurde aktualisiert.');
+
+            return $this->redirectToRoute('v3_administration_index');
+        }
+
+        return $this->render('v3/administration/role_edit.html.twig', ['role' => $role, 'permissions' => V3PermissionCatalog::ALL, 'page' => 'Rolle bearbeiten']);
     }
 
     #[Route('/api-clients/new', name: 'api_client_new', methods: ['GET', 'POST'])]

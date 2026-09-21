@@ -2,7 +2,7 @@
 id: WEBWMS-077
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 5
 component: "Administration"
@@ -44,9 +44,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-`UserAccount`, Status und Rollenzuordnung bilden den fachlichen Domain-, Application- und Persistenzkern. Die V3-Administration ermöglicht mandantenbezogenes Anlegen per E-Mail, Rollenzuordnung sowie Aktivierung und Deaktivierung; Selbstdeaktivierung ist gesperrt. Passwortwechsel, Einladungsprozess und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`UserAccount`, Status und Rollenzuordnung bilden den fachlichen Kern. Die V3-Administration ermöglicht mandantenbezogenes Anlegen per E-Mail, direkte Änderung der Rollen sowie Aktivierung und Deaktivierung. Fremdmandantenrollen, leere Rollenzuweisungen, Selbstdeaktivierung und der Entzug der eigenen Benutzerverwaltungsberechtigung werden verhindert.
 
 ## Quelle
 

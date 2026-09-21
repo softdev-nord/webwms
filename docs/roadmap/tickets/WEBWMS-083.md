@@ -2,7 +2,7 @@
 id: WEBWMS-083
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Offen
+status: Done
 priority: Medium
 story_points: 13
 component: "Administration"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Ein validiertes Betriebsprofil bildet SaaS-, On-Premises- und Hybridbetrieb mit öffentlicher URL, Storage-Treiber, Queue-Transport und Release-Kanal ab. Es wird mandantenbezogen verwaltet und vollständig auditiert; die Applikation bleibt über Umgebungsvariablen und austauschbare Infrastrukturadapter deploybar.
 
 ## Quelle
 
 - Feature: CG-083
 - Referenz: https://www.coglas.com/lagerverwaltung/
-

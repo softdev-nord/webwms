@@ -2,7 +2,7 @@
 id: WEBWMS-078
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Administration"
@@ -44,9 +44,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-`Role`, `PermissionKey` und `PermissionVoter` bilden den fachlichen Kern. Die V3-Administration listet Rollen und erlaubt das Anlegen eigener Rollen aus einem kontrollierten Berechtigungskatalog. Bearbeitung bestehender Rollen, Schutz vor administrativem Lockout und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`Role`, `PermissionKey` und `PermissionVoter` bilden den fachlichen Kern. Eigene Rollen können aus dem kontrollierten Berechtigungskatalog angelegt und bearbeitet werden. Beim Bearbeiten einer selbst verwendeten Rolle verhindert der Service den Entzug der eigenen Rollenverwaltungsberechtigung.
 
 ## Quelle
 

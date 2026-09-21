@@ -1,0 +1,13 @@
+{
+  "name": "webWMS",
+  "short_name": "webWMS",
+  "description": "Webbasierte Lagerverwaltung für Desktop, Tablet und Scanner",
+  "start_url": "/v3",
+  "scope": "/v3",
+  "display": "standalone",
+  "background_color": "#f3f3f9",
+  "theme_color": "#405189",
+  "icons": [
+    {"src": "/assets/images/favicon.ico", "sizes": "48x48", "type": "image/x-icon"}
+  ]
+}
