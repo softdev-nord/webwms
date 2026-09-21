@@ -63,6 +63,7 @@
                         <div class="collapse menu-dropdown {{ inventoryOpen ? 'show' : '' }}" id="sidebarInventory">
                             <ul class="nav nav-sm flex-column">
                                 {% if is_granted('inventory.overview.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_inventory_overview' ? 'active' : '' }}" href="{{ path('v3_inventory_overview') }}">Lagerübersicht</a></li>{% endif %}
+                                {% if is_granted('inventory.overview.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_inventory_occupancy' ? 'active' : '' }}" href="{{ path('v3_inventory_occupancy') }}">Grafische Lagebelegung</a></li>{% endif %}
                                 {% if is_granted('inventory.topology.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_inventory_topology' ? 'active' : '' }}" href="{{ path('v3_inventory_topology') }}">Lagertopologie</a></li>{% endif %}
                                 {% if is_granted('inventory.stock.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_stock' ? 'active' : '' }}" href="{{ path('v3_stock') }}">Echtzeitbestand</a></li>{% endif %}
                                 {% if is_granted('inventory.stock.movement.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_inventory_movements' ? 'active' : '' }}" href="{{ path('v3_inventory_movements') }}">Bewegungshistorie</a></li>{% endif %}

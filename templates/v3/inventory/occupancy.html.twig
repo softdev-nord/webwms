@@ -1,0 +1,63 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.occupancy-legend { display: flex; flex-wrap: wrap; gap: 1rem; }
+		.occupancy-legend-item { display: inline-flex; align-items: center; gap: .4rem; }
+		.occupancy-legend-swatch { width: .85rem; height: .85rem; border-radius: .2rem; border: 1px solid rgba(0, 0, 0, .12); }
+		.occupancy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: .75rem; }
+		.occupancy-bin { position: relative; min-height: 145px; padding: .85rem; border: 1px solid var(--vz-border-color); border-left-width: 5px; border-radius: .4rem; background: var(--vz-card-bg); color: inherit; transition: transform .15s ease, box-shadow .15s ease; }
+		.occupancy-bin:hover { transform: translateY(-2px); box-shadow: 0 .35rem .9rem rgba(15, 34, 58, .12); }
+		.occupancy-bin--empty { border-left-color: #adb5bd; background: rgba(173, 181, 189, .08); }
+		.occupancy-bin--occupied { border-left-color: #0ab39c; background: rgba(10, 179, 156, .08); }
+		.occupancy-bin--quality { border-left-color: #f7b84b; background: rgba(247, 184, 75, .11); }
+		.occupancy-bin--blocked, .occupancy-bin--full { border-left-color: #f06548; background: rgba(240, 101, 72, .1); }
+		.occupancy-bin-code { font-size: .95rem; font-weight: 700; }
+		.occupancy-bin-meta { font-size: .72rem; color: var(--vz-secondary-color); }
+		.occupancy-bin-quantity { font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
+		.occupancy-area + .occupancy-area { margin-top: 1.5rem; }
+	</style>
+{% endblock %}
+
+{% block webwms_content %}
+	<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+		<div><h1 class="h3 mb-1">Grafische Lagebelegung</h1><p class="text-muted mb-0">Belegung und Auslastung jedes Lagerplatzes nach Lager und Bereich.</p></div>
+		<form method="get" class="d-flex gap-2 align-items-end"><div><label for="warehouse" class="form-label small">Lager</label><select id="warehouse" name="warehouse" class="form-select" required>{% for warehouse in warehouses %}<option value="{{ warehouse.id }}" {{ warehouse.id == selectedWarehouse ? 'selected' : '' }}>{{ warehouse.code }} – {{ warehouse.name }}</option>{% endfor %}</select></div><button class="btn btn-primary">Anzeigen</button></form>
+	</div>
+
+	<div class="card border-0 shadow-sm mb-4"><div class="card-body py-3"><div class="occupancy-legend small">
+		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-light"></span>Frei</span>
+		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-success"></span>Belegt</span>
+		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-warning"></span>QS-Bestand</span>
+		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-danger"></span>Gesperrt oder voll</span>
+		<span class="ms-auto text-muted">Die Platzkarten öffnen den Echtzeitbestand des gewählten Lagers.</span>
+	</div></div></div>
+
+	{% set renderedAreas = [] %}
+	{% for area in locations %}
+		{% set areaKey = area.area_id ?: 'without-area' %}
+		{% if areaKey not in renderedAreas %}
+			{% set areaLocations = locations|filter(location => (location.area_id ?: 'without-area') == areaKey) %}
+			<section class="occupancy-area card border-0 shadow-sm">
+				<div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2"><div><h2 class="h5 mb-0">{{ area.area_code ?: 'Ohne Bereich' }}{% if area.area_name %} · {{ area.area_name }}{% endif %}</h2><span class="small text-muted">{{ area.warehouse_code }} · {{ area.area_type ?: 'nicht klassifiziert' }}</span></div><span class="badge bg-primary-subtle text-primary">{{ areaLocations|length }} Lagerplätze</span></div>
+				<div class="card-body"><div class="occupancy-grid">
+					{% for location in areaLocations %}
+						{% set utilization = location.capacity_quantity > 0 ? min(100, (location.stock_quantity / location.capacity_quantity * 100)|round) : 0 %}
+						{% set state = location.stock_quantity == 0 ? 'empty' : (location.blocked_quantity > 0 ? 'blocked' : (location.quality_quantity > 0 ? 'quality' : (location.capacity_quantity > 0 and location.stock_quantity >= location.capacity_quantity ? 'full' : 'occupied'))) %}
+						<a href="{{ path('v3_stock', {warehouse: location.warehouse_id}) }}" class="occupancy-bin occupancy-bin--{{ state }} text-decoration-none" title="{{ location.location_code }} · {{ location.product_skus ?: 'Kein Bestand' }}">
+							<div class="d-flex justify-content-between gap-2"><span class="occupancy-bin-code">{{ location.location_code }}</span><span class="badge bg-light text-body">{{ location.location_type }}</span></div>
+							<div class="occupancy-bin-meta mt-1">Gang {{ location.aisle_code ?: '–' }} · Ebene {{ location.level_code ?: '–' }} · Fach {{ location.bin_code ?: '–' }}</div>
+							<div class="d-flex justify-content-between align-items-end mt-3"><div><div class="occupancy-bin-quantity">{{ location.stock_quantity }}</div><div class="occupancy-bin-meta">Bestand{% if location.capacity_quantity > 0 %} / {{ location.capacity_quantity }}{% else %} · unbegrenzt{% endif %}</div></div><div class="text-end"><strong>{{ location.product_count }}</strong><div class="occupancy-bin-meta">Artikel</div></div></div>
+							{% if location.capacity_quantity > 0 %}<div class="progress mt-2" style="height: 5px"><div class="progress-bar {{ state in ['blocked', 'full'] ? 'bg-danger' : (state == 'quality' ? 'bg-warning' : 'bg-success') }}" style="width: {{ utilization }}%"></div></div>{% endif %}
+							<div class="occupancy-bin-meta text-truncate mt-2">{{ location.product_skus ?: 'Frei' }}</div>
+						</a>
+					{% endfor %}
+				</div></div>
+			</section>
+			{% set renderedAreas = renderedAreas|merge([areaKey]) %}
+		{% endif %}
+	{% else %}
+		<div class="alert alert-info">Für das gewählte Lager sind noch keine Lagerplätze angelegt.</div>
+	{% endfor %}
+{% endblock %}

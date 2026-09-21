@@ -16,6 +16,15 @@ Bei jedem Lagerplatz müssen Lager, Bereich und Gang derselben Hierarchie angeh�
 
 **Lager → Lagerübersicht** zeigt je Lager und Bereich die Anzahl der Plätze, belegte Plätze, aktuelle Bestandsmenge, Gesamtkapazität und freie Kapazität. Kapazität `0` bedeutet unbegrenzt.
 
+Unter **Lager & Bestand → Grafische Lagebelegung** wählen Sie ein Lager aus und sehen jeden Lagerplatz als farbcodierte Karte innerhalb seines Bereichs:
+
+- Grau: freier Lagerplatz
+- Grün: belegter Lagerplatz
+- Gelb: Bestand in Qualitätsprüfung
+- Rot: gesperrter oder vollständig ausgelasteter Lagerplatz
+
+Die Karte zeigt Lagerplatzcode, Gang, Ebene, Fach, Menge, Kapazität, Artikelanzahl und die enthaltenen SKUs. Ein Klick führt zum Echtzeitbestand des Lagers.
+
 ## Echtzeitbestand
 
 Unter **Lager → Bestand** sehen Sie SKU, Lagerplatz, Topologie, Bestandsstatus, Charge, Seriennummer, Verfall, Menge, verfügbare Menge und den letzten Aktualisierungszeitpunkt.

@@ -94,6 +94,40 @@ final readonly class ApiV3QueryService
     }
 
     /** @return list<array<string, mixed>> */
+    public function warehouseOccupancy(string $tenantId, ?string $warehouseId = null): array
+    {
+        $warehouseFilter = $warehouseId === null ? '' : 'AND l.warehouse_id = :warehouseId ';
+        $parameters = ['tenantId' => $tenantId];
+        if ($warehouseId !== null) {
+            $parameters['warehouseId'] = $warehouseId;
+        }
+
+        return $this->connection->fetchAllAssociative(
+            'SELECT l.id, l.warehouse_id, w.code warehouse_code, w.name warehouse_name, '
+            . 'l.area_id, a.code area_code, a.name area_name, a.area_type, '
+            . 'l.aisle_id, g.code aisle_code, g.name aisle_name, l.code location_code, '
+            . 'l.level_code, l.bin_code, l.location_type, l.capacity_quantity, '
+            . 'COALESCE(SUM(CASE WHEN b.quantity > 0 THEN b.quantity ELSE 0 END), 0) stock_quantity, '
+            . 'COUNT(DISTINCT CASE WHEN b.quantity > 0 THEN b.product_id END) product_count, '
+            . 'COUNT(DISTINCT CASE WHEN b.quantity > 0 THEN b.stock_key END) stock_position_count, '
+            . "COALESCE(SUM(CASE WHEN b.quantity > 0 AND b.stock_status = 'available' THEN b.quantity ELSE 0 END), 0) available_quantity, "
+            . "COALESCE(SUM(CASE WHEN b.quantity > 0 AND b.stock_status = 'quality_inspection' THEN b.quantity ELSE 0 END), 0) quality_quantity, "
+            . "COALESCE(SUM(CASE WHEN b.quantity > 0 AND b.stock_status = 'blocked' THEN b.quantity ELSE 0 END), 0) blocked_quantity, "
+            . "GROUP_CONCAT(DISTINCT CASE WHEN b.quantity > 0 THEN p.sku END ORDER BY p.sku SEPARATOR ', ') product_skus "
+            . 'FROM wms_storage_location l INNER JOIN wms_warehouse w ON w.id = l.warehouse_id AND w.tenant_id = l.tenant_id '
+            . 'LEFT JOIN wms_warehouse_area a ON a.id = l.area_id AND a.tenant_id = l.tenant_id '
+            . 'LEFT JOIN wms_warehouse_aisle g ON g.id = l.aisle_id AND g.tenant_id = l.tenant_id '
+            . 'LEFT JOIN wms_stock_balance b ON b.location_id = l.id AND b.tenant_id = l.tenant_id '
+            . 'LEFT JOIN wms_product_reference p ON p.id = b.product_id AND p.tenant_id = b.tenant_id '
+            . 'WHERE l.tenant_id = :tenantId ' . $warehouseFilter
+            . 'GROUP BY l.id, l.warehouse_id, w.code, w.name, l.area_id, a.code, a.name, a.area_type, '
+            . 'l.aisle_id, g.code, g.name, l.code, l.level_code, l.bin_code, l.location_type, l.capacity_quantity '
+            . 'ORDER BY w.code, a.code, g.code, l.level_code DESC, l.bin_code, l.code',
+            $parameters,
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
     public function receivingLocations(string $tenantId): array
     {
         return $this->connection->fetchAllAssociative(

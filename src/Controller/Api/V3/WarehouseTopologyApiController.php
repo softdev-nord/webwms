@@ -39,6 +39,18 @@ final class WarehouseTopologyApiController extends AbstractController
         return new JsonResponse(['data' => $this->queries->warehouseOverview($this->user()->tenantId())]);
     }
 
+    #[Route('/occupancy', name: 'occupancy', methods: ['GET'])]
+    #[IsGranted('inventory.overview.read')]
+    public function occupancy(Request $request): JsonResponse
+    {
+        $warehouse = trim((string) $request->query->get('warehouse'));
+
+        return new JsonResponse(['data' => $this->queries->warehouseOccupancy(
+            $this->user()->tenantId(),
+            $warehouse === '' ? null : $warehouse,
+        )]);
+    }
+
     #[Route('/topology/{type}', name: 'topology_create', requirements: ['type' => 'sites|warehouses|areas|aisles|bins'], methods: ['POST'])]
     #[IsGranted('inventory.topology.write')]
     public function create(string $type, Request $request): JsonResponse

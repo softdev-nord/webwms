@@ -12,6 +12,7 @@ Die Migration `Version20260921090000` ergänzt Bereiche und Gänge sowie Topolog
 
 - `warehouseTopology()` liefert die vollständige Struktur für UI und API.
 - `warehouseOverview()` aggregiert Platzanzahl, belegte Plätze, Bestand und Kapazität über korrelierte Unterabfragen, sodass mehrere Bestandsdimensionen auf einem Platz die Platzkapazität nicht mehrfach zählen.
+- `warehouseOccupancy()` projiziert jeden Lagerplatz mit Bereich, Gang, Ebene, Fach, Kapazität, Artikelanzahl, Bestand und Statusverteilung. Die optionale Lager-ID wird zusätzlich zum zwingenden Mandantenfilter angewendet.
 - `stock()` liefert Echtzeitbestand einschließlich Lager, Bereich, Gang und Aktualisierungszeitpunkt.
 - `stockMovements()` liefert das unveränderliche Ledger mit Benutzer, Grund, Dimensionen und resultierendem Bestand, neueste Bewegung zuerst.
 
@@ -23,6 +24,7 @@ Alle Queries filtern über `tenant_id`. Schreibzugriffe sind über `inventory.to
 | --- | --- | --- |
 | Topologie | `/v3/inventory/topology` | `/api/v3/inventory/topology` |
 | Lagerübersicht | `/v3/inventory/overview` | `/api/v3/inventory/overview` |
+| Grafische Lagebelegung | `/v3/inventory/occupancy` | `/api/v3/inventory/occupancy?warehouse={id}` |
 | Echtzeitbestand | `/v3/inventory/stock` | `/api/v3/stock` |
 | Bewegungshistorie | `/v3/inventory/movements` | `/api/v3/stock-movements` |
 

@@ -112,6 +112,25 @@ final class V3WarehouseController extends AbstractController
         ]);
     }
 
+    #[Route('/occupancy', name: 'occupancy', methods: ['GET'])]
+    #[IsGranted('inventory.overview.read')]
+    public function occupancy(Request $request): Response
+    {
+        $user = $this->user();
+        $warehouses = $this->queries->warehouses($user->tenantId());
+        $warehouseId = $this->query($request, 'warehouse');
+        if ($warehouseId === null && isset($warehouses[0]['id']) && is_string($warehouses[0]['id'])) {
+            $warehouseId = $warehouses[0]['id'];
+        }
+
+        return $this->render('v3/inventory/occupancy.html.twig', [
+            'page' => 'Grafische Lagebelegung',
+            'warehouses' => $warehouses,
+            'locations' => $this->queries->warehouseOccupancy($user->tenantId(), $warehouseId),
+            'selectedWarehouse' => $warehouseId,
+        ]);
+    }
+
     #[Route('/movements', name: 'movements', methods: ['GET'])]
     #[IsGranted('inventory.stock.movement.read')]
     public function movements(Request $request): Response

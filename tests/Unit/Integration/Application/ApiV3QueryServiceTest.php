@@ -108,6 +108,24 @@ final class ApiV3QueryServiceTest extends TestCase
         self::assertSame([], $result['warehouses']);
     }
 
+    public function testWarehouseOccupancyIsTenantAndWarehouseScoped(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())->method('fetchAllAssociative')->with(
+            self::callback(static function (string $sql): bool {
+                self::assertStringContainsString('WHERE l.tenant_id = :tenantId', $sql);
+                self::assertStringContainsString('AND l.warehouse_id = :warehouseId', $sql);
+                self::assertStringContainsString('blocked_quantity', $sql);
+                self::assertStringContainsString('quality_quantity', $sql);
+
+                return true;
+            }),
+            ['tenantId' => 'tenant-id', 'warehouseId' => 'warehouse-id'],
+        )->willReturn([]);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->warehouseOccupancy('tenant-id', 'warehouse-id'));
+    }
+
     public function testPlannedInboundWorklistIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
