@@ -10,6 +10,17 @@ use WebWMS\Integration\Application\ApiV3QueryService;
 
 final class ApiV3QueryServiceTest extends TestCase
 {
+    public function testPlannedInboundWorklistIsRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())->method('fetchAllAssociative')->with(
+            self::callback(static fn (string $sql): bool => str_contains($sql, 'WHERE d.tenant_id = :tenantId')),
+            ['tenantId' => 'tenant-id'],
+        )->willReturn([]);
+
+        self::assertSame([], (new ApiV3QueryService($connection))->plannedInboundWorklist('tenant-id'));
+    }
+
     public function testUnplannedReceiptsAreRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);

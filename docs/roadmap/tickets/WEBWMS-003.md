@@ -2,7 +2,7 @@
 id: WEBWMS-003
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Backend umgesetzt
+status: Teilweise umgesetzt
 priority: Highest
 story_points: 5
 component: "Wareneingang"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Teilweise umgesetzt
 
-`InboundReceipt`, `ReceiveInboundDeliveryHandler`. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`InboundReceipt` und `ReceiveInboundDeliveryHandler` bilden den transaktionalen Kern. Der gemeinsame V3-Arbeitsplatz und die JSON-API stellen avisierte Positionen mandantenbezogen bereit und erlauben die berechtigte Annahme. Der komplette vorgelagerte Bestell-/Avis-Erfassungsprozess und dessen Akzeptanztests bleiben für `Done` noch zu vertikalisieren.
 
 ## Quelle
 
 - Feature: CG-003
 - Referenz: https://www.coglas.com/wareneingang/
-

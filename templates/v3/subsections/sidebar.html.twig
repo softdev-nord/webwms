@@ -56,11 +56,14 @@
                     </li>
                 {% endif %}
 
-                {% if is_granted('inbound.receipt.read') %}
+                {% if is_granted('inbound.receipt.read') or is_granted('inbound.planned.read') %}
                     <li class="menu-title"><span>Wareneingang</span></li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if currentRoute starts with 'v3_inbound_' %}active{% endif %}" href="{{ path('v3_inbound_index') }}">Wareneingänge</a>
-                    </li>
+                    {% if is_granted('inbound.receipt.read') %}<li class="nav-item">
+                        <a class="nav-link {% if currentRoute starts with 'v3_inbound_' and currentRoute not in ['v3_inbound_planned', 'v3_inbound_planned_receive', 'v3_inbound_planned_inspect', 'v3_inbound_planned_putaway', 'v3_inbound_planned_putaway_confirm'] %}active{% endif %}" href="{{ path('v3_inbound_index') }}">Wareneingänge</a>
+                    </li>{% endif %}
+                    {% if is_granted('inbound.planned.read') %}<li class="nav-item">
+                        <a class="nav-link {% if currentRoute starts with 'v3_inbound_planned' %}active{% endif %}" href="{{ path('v3_inbound_planned') }}">Geplante Eingänge</a>
+                    </li>{% endif %}
                 {% endif %}
 
                 {% if is_granted('outbound.order.read') or is_granted('fulfillment.pick.read') or is_granted('fulfillment.pack.read') or is_granted('fulfillment.ship.read') or is_granted('fulfillment.loading.read') %}

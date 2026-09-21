@@ -84,6 +84,29 @@ final readonly class ApiV3QueryService
     }
 
     /** @return list<array<string, mixed>> */
+    public function plannedInboundWorklist(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT d.id delivery_id, d.code delivery_code, d.delivery_note, d.expected_at, d.status delivery_status, '
+            . 'o.code order_number, l.id line_id, l.advised_quantity, l.status line_status, p.sku, p.name product_name, '
+            . 'r.id receipt_id, r.quantity receipt_quantity, r.status receipt_status, r.quality_decision, '
+            . 'r.stock_status, r.location_id, source.code source_location_code, r.received_at, r.inspected_at, '
+            . 'po.id putaway_order_id, po.status putaway_status, po.quantity putaway_quantity, '
+            . 'target.code target_location_code, po.created_at putaway_created_at, po.confirmed_at putaway_confirmed_at '
+            . 'FROM wms_inbound_delivery d INNER JOIN wms_purchase_order o ON o.id = d.purchase_order_id '
+            . 'INNER JOIN wms_inbound_delivery_line l ON l.inbound_delivery_id = d.id '
+            . 'INNER JOIN wms_purchase_order_item i ON i.id = l.purchase_order_item_id '
+            . 'INNER JOIN wms_product_reference p ON p.id = i.product_id '
+            . 'LEFT JOIN wms_inbound_receipt r ON r.inbound_delivery_line_id = l.id '
+            . 'LEFT JOIN wms_storage_location source ON source.id = r.location_id '
+            . 'LEFT JOIN wms_putaway_order po ON po.inbound_receipt_id = r.id '
+            . 'LEFT JOIN wms_storage_location target ON target.id = po.target_location_id '
+            . 'WHERE d.tenant_id = :tenantId ORDER BY d.expected_at, d.code, l.id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
     public function stock(string $tenantId, ?string $warehouseId, int $limit, ?string $cursor): array
     {
         return $this->connection->fetchAllAssociative(

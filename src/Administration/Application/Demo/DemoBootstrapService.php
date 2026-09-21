@@ -46,6 +46,16 @@ final readonly class DemoBootstrapService
 
     public const string ORDER_ITEM_ID = '5f55fe9e-2396-4861-8dc8-a3b6088d53fc';
 
+    public const string PURCHASE_ORDER_ID = 'eb4bdfea-1f02-4dbd-bedd-b063fc92d817';
+
+    public const string PURCHASE_ORDER_ITEM_ID = '3563d5f3-16af-4bb1-b4f9-9a23d6ca318a';
+
+    public const string INBOUND_DELIVERY_ID = 'a0990777-d307-41c3-95d3-f124a5f3312e';
+
+    public const string INBOUND_DELIVERY_LINE_ID = 'dc37b2b3-996f-4a57-bb13-ad07eb8b1994';
+
+    public const string PUTAWAY_STRATEGY_ID = 'd22003b0-65dc-4f74-9efc-dcbe8db7b963';
+
     public const string PRINTER_ID = 'd1eac343-b344-4ea1-9f68-6e6303e0f3f9';
 
     public const string DEVICE_ID = 'e2a71554-20cb-4a79-a5cc-f65215d2ca21';
@@ -230,6 +240,7 @@ final readonly class DemoBootstrapService
         $this->createLocation($tenantId, self::LOCATION_B_ID, 'B-01-01', $now);
         $this->createProduct($tenantId, self::PRODUCT_A_ID, 'DEMO-1000', 'Demo Scanner', $now);
         $this->createProduct($tenantId, self::PRODUCT_B_ID, 'DEMO-2000', 'Demo Versandkarton', $now);
+        $this->createPlannedInboundDemo($now);
         $this->createStock($tenantId, self::PRODUCT_A_ID, self::LOCATION_A_ID, 25, $now);
         $this->createStock($tenantId, self::PRODUCT_B_ID, self::LOCATION_B_ID, 100, $now);
         if (!$this->exists('wms_outbound_order', self::ORDER_ID)) {
@@ -245,6 +256,42 @@ final readonly class DemoBootstrapService
         }
 
         return new DemoBootstrapResult(self::TENANT_ID, self::EMAIL, $generatedPassword, $created);
+    }
+
+    private function createPlannedInboundDemo(DateTimeImmutable $now): void
+    {
+        if (!$this->exists('wms_purchase_order', self::PURCHASE_ORDER_ID)) {
+            $this->connection->insert('wms_purchase_order', [
+                'id' => self::PURCHASE_ORDER_ID, 'tenant_id' => self::TENANT_ID,
+                'code' => 'DEMO-PO-001', 'supplier_reference' => 'DEMO-SUPPLIER-001', 'status' => 'advised',
+                'created_by' => self::USER_ID, 'created_at' => $this->date($now), 'updated_at' => $this->date($now),
+            ]);
+            $this->connection->insert('wms_purchase_order_item', [
+                'id' => self::PURCHASE_ORDER_ITEM_ID, 'purchase_order_id' => self::PURCHASE_ORDER_ID,
+                'product_id' => self::PRODUCT_A_ID, 'ordered_quantity' => 5, 'advised_quantity' => 5,
+                'received_quantity' => 0, 'status' => 'advised',
+            ]);
+        }
+        if (!$this->exists('wms_inbound_delivery', self::INBOUND_DELIVERY_ID)) {
+            $this->connection->insert('wms_inbound_delivery', [
+                'id' => self::INBOUND_DELIVERY_ID, 'tenant_id' => self::TENANT_ID,
+                'purchase_order_id' => self::PURCHASE_ORDER_ID, 'code' => 'DEMO-IN-001',
+                'delivery_note' => 'LS-DEMO-001', 'expected_at' => $this->date($now), 'status' => 'advised',
+                'created_by' => self::USER_ID, 'created_at' => $this->date($now), 'updated_at' => $this->date($now),
+            ]);
+            $this->connection->insert('wms_inbound_delivery_line', [
+                'id' => self::INBOUND_DELIVERY_LINE_ID, 'inbound_delivery_id' => self::INBOUND_DELIVERY_ID,
+                'purchase_order_item_id' => self::PURCHASE_ORDER_ITEM_ID, 'advised_quantity' => 5, 'status' => 'advised',
+            ]);
+        }
+        if (!$this->exists('wms_putaway_strategy', self::PUTAWAY_STRATEGY_ID)) {
+            $this->connection->insert('wms_putaway_strategy', [
+                'id' => self::PUTAWAY_STRATEGY_ID, 'tenant_id' => self::TENANT_ID,
+                'warehouse_id' => self::WAREHOUSE_ID, 'code' => 'DEMO-PUTAWAY', 'stock_status' => 'available',
+                'location_prefix' => 'B-', 'priority' => 10, 'enabled' => 1,
+                'created_by' => self::USER_ID, 'created_at' => $this->date($now),
+            ]);
+        }
     }
 
     private function createLocation(TenantId $tenantId, string $id, string $code, DateTimeImmutable $now): void

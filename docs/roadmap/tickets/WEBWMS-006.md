@@ -2,7 +2,7 @@
 id: WEBWMS-006
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Backend umgesetzt
+status: Teilweise umgesetzt
 priority: High
 story_points: 8
 component: "Wareneingang"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Teilweise umgesetzt
 
-`InboundInspection`, `QualityCheckAnswer`, `wms_inbound_quality_answer`. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`InboundInspection`, `QualityCheckAnswer` und `wms_inbound_quality_answer` bilden den fachlichen Kern. V3-Weboberfläche und JSON-API führen die QS berechtigt aus, buchen Freigabe oder Sperrbestand und protokollieren Prüfer sowie Zeitpunkt. Konfigurierbare Checklisten und vollständige Akzeptanztests bleiben für `Done` offen.
 
 ## Quelle
 
 - Feature: CG-006
 - Referenz: https://www.coglas.com/wareneingang/
-

@@ -11,7 +11,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Inventory\Application\ConfirmPutawayCommand;
+use WebWMS\Inventory\Application\ConfirmPutawayHandler;
+use WebWMS\Inventory\Application\CreatePutawayOrderCommand;
+use WebWMS\Inventory\Application\CreatePutawayOrderHandler;
+use WebWMS\Inventory\Application\InspectInboundReceiptCommand;
+use WebWMS\Inventory\Application\InspectInboundReceiptHandler;
+use WebWMS\Inventory\Application\ReceiveInboundDeliveryCommand;
+use WebWMS\Inventory\Application\ReceiveInboundDeliveryHandler;
 use WebWMS\Inventory\Application\UnplannedReceiptService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -21,7 +30,101 @@ final class V3InboundController extends AbstractController
     public function __construct(
         private readonly ApiV3QueryService $queries,
         private readonly UnplannedReceiptService $receipts,
+        private readonly ReceiveInboundDeliveryHandler $receiveInbound,
+        private readonly InspectInboundReceiptHandler $inspectInbound,
+        private readonly CreatePutawayOrderHandler $createPutaway,
+        private readonly ConfirmPutawayHandler $confirmPutaway,
     ) {
+    }
+
+    #[Route('/planned', name: 'planned', methods: ['GET'])]
+    #[IsGranted('inbound.planned.read')]
+    public function planned(): Response
+    {
+        $tenantId = $this->user()->tenantId();
+
+        return $this->render('v3/inbound/planned.html.twig', [
+            'page' => 'Geplanter Wareneingang',
+            'worklist' => $this->queries->plannedInboundWorklist($tenantId),
+            'locations' => $this->queries->receivingLocations($tenantId),
+        ]);
+    }
+
+    #[Route('/planned/{deliveryId}/lines/{lineId}/receive', name: 'planned_receive', methods: ['POST'])]
+    #[IsGranted('inbound.planned.receive')]
+    public function receive(string $deliveryId, string $lineId, Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_inbound_receive_' . $lineId);
+        $user = $this->user();
+        ($this->receiveInbound)(new ReceiveInboundDeliveryCommand(
+            Uuid::v7()->toRfc4122(), $user->tenantId(), $deliveryId, $lineId, $user->actorId(), new DateTimeImmutable(),
+        ));
+        $this->addFlash('success', 'Die avisierte Position wurde angenommen und an die QS übergeben.');
+
+        return $this->redirectToRoute('v3_inbound_planned');
+    }
+
+    #[Route('/planned/receipts/{receiptId}/inspect', name: 'planned_inspect', methods: ['POST'])]
+    #[IsGranted('inbound.planned.inspect')]
+    public function inspect(string $receiptId, Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_inbound_inspect_' . $receiptId);
+        $user = $this->user();
+        $packagingPassed = $request->request->getBoolean('packaging_passed');
+        $quantityPassed = $request->request->getBoolean('quantity_passed');
+        ($this->inspectInbound)(new InspectInboundReceiptCommand(
+            $receiptId,
+            Uuid::v7()->toRfc4122(),
+            $user->tenantId(),
+            $this->required($request, 'location_id'),
+            $this->required($request, 'decision'),
+            [
+                ['question' => 'Verpackung unbeschädigt?', 'passed' => $packagingPassed, 'note' => $this->optional($request, 'packaging_note') ?? ''],
+                ['question' => 'Menge vollständig?', 'passed' => $quantityPassed, 'note' => $this->optional($request, 'quantity_note') ?? ''],
+            ],
+            $user->actorId(),
+            new DateTimeImmutable(),
+            $this->optional($request, 'batch_number'),
+            $this->optional($request, 'serial_number'),
+            ($expiresAt = $this->optional($request, 'expires_at')) === null ? null : new DateTimeImmutable($expiresAt),
+        ));
+        $this->addFlash('success', 'Die QS-Prüfung wurde abgeschlossen und der Bestand gebucht.');
+
+        return $this->redirectToRoute('v3_inbound_planned');
+    }
+
+    #[Route('/planned/receipts/{receiptId}/putaway', name: 'planned_putaway', methods: ['POST'])]
+    #[IsGranted('inbound.planned.putaway')]
+    public function createPutaway(string $receiptId, Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_inbound_putaway_' . $receiptId);
+        $user = $this->user();
+        ($this->createPutaway)(new CreatePutawayOrderCommand(
+            Uuid::v7()->toRfc4122(), $user->tenantId(), $receiptId, $user->actorId(), new DateTimeImmutable(),
+        ));
+        $this->addFlash('success', 'Der Einlagerungsauftrag wurde erzeugt.');
+
+        return $this->redirectToRoute('v3_inbound_planned');
+    }
+
+    #[Route('/planned/putaway/{orderId}/confirm', name: 'planned_putaway_confirm', methods: ['POST'])]
+    #[IsGranted('inbound.planned.putaway')]
+    public function confirmPutaway(string $orderId, Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_inbound_putaway_confirm_' . $orderId);
+        $user = $this->user();
+        ($this->confirmPutaway)(new ConfirmPutawayCommand(
+            $orderId,
+            Uuid::v7()->toRfc4122(),
+            Uuid::v7()->toRfc4122(),
+            Uuid::v7()->toRfc4122(),
+            $user->tenantId(),
+            $user->actorId(),
+            new DateTimeImmutable(),
+        ));
+        $this->addFlash('success', 'Die Einlagerung wurde bestätigt und atomar umgebucht.');
+
+        return $this->redirectToRoute('v3_inbound_planned');
     }
 
     #[Route('', name: 'index', methods: ['GET'])]

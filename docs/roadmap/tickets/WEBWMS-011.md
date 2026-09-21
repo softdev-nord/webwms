@@ -2,7 +2,7 @@
 id: WEBWMS-011
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Backend umgesetzt
+status: Teilweise umgesetzt
 priority: Highest
 story_points: 8
 component: "Wareneingang"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Teilweise umgesetzt
 
-`PutawayStrategy`, `PutawayRequest`, `ConfirmPutawayHandler`. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`PutawayStrategy`, `PutawayRequest` und `ConfirmPutawayHandler` bilden Platzfindung und atomare Umbuchung ab. V3-Weboberfläche und JSON-API erlauben die berechtigte Planung und Bestätigung; Demo-Daten stellen eine ausführbare Strategie bereit. Strategiepflege und vollständige Akzeptanztests bleiben für `Done` offen.
 
 ## Quelle
 
 - Feature: CG-011
 - Referenz: https://www.coglas.com/wareneingang/
-
