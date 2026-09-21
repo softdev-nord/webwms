@@ -42,129 +42,89 @@
             <div id="two-column-menu"></div>
             <ul class="navbar-nav" id="navbar-nav">
                 {% set currentRoute = app.request.attributes.get('_route')|default('') %}
+                {% set inventoryOpen = currentRoute == 'v3_stock' or currentRoute starts with 'v3_inventory_' %}
+                {% set inboundOpen = currentRoute starts with 'v3_inbound_' %}
+                {% set outboundOpen = currentRoute starts with 'v3_outbound_' or currentRoute starts with 'v3_picking_' or currentRoute starts with 'v3_packing_' or currentRoute starts with 'v3_shipping_' or currentRoute starts with 'v3_loading_' %}
+                {% set integrationOpen = currentRoute starts with 'v3_outbox_' or currentRoute starts with 'v3_erp_connection_' or currentRoute starts with 'v3_carrier_connection_' or currentRoute starts with 'v3_printing_' or currentRoute starts with 'v3_device_' or currentRoute starts with 'v3_measurement_' or currentRoute starts with 'v3_automation_' or currentRoute starts with 'v3_wcs_' or currentRoute starts with 'v3_transport_' %}
+                {% set administrationOpen = currentRoute starts with 'v3_administration_' %}
 
-                <li class="menu-title"><span>Übersicht</span></li>
-
+                <li class="menu-title"><span>Navigation</span></li>
                 <li class="nav-item">
-                    <a class="nav-link {% if currentRoute == 'v3_dashboard' %}active{% endif %}" href="{{ path('v3_dashboard') }}">Dashboard</a>
+                    <a class="nav-link menu-link {{ currentRoute == 'v3_dashboard' ? 'active' : '' }}" href="{{ path('v3_dashboard') }}">
+                        <i class="ri-dashboard-2-line"></i><span>Dashboard</span>
+                    </a>
                 </li>
 
                 {% if is_granted('inventory.stock.read') or is_granted('inventory.topology.read') or is_granted('inventory.overview.read') or is_granted('inventory.stock.movement.read') %}
-                    <li class="menu-title"><span>Lager</span></li>
-                    {% if is_granted('inventory.overview.read') %}<li class="nav-item"><a class="nav-link {% if currentRoute == 'v3_inventory_overview' %}active{% endif %}" href="{{ path('v3_inventory_overview') }}">Lagerübersicht</a></li>{% endif %}
-                    {% if is_granted('inventory.topology.read') %}<li class="nav-item"><a class="nav-link {% if currentRoute starts with 'v3_inventory_' and currentRoute not in ['v3_inventory_overview', 'v3_inventory_movements'] %}active{% endif %}" href="{{ path('v3_inventory_topology') }}">Lagertopologie</a></li>{% endif %}
-                    {% if is_granted('inventory.stock.read') %}<li class="nav-item">
-                        <a class="nav-link {% if currentRoute == 'v3_stock' %}active{% endif %}" href="{{ path('v3_stock') }}">Bestand</a>
-                    </li>{% endif %}
-                    {% if is_granted('inventory.stock.movement.read') %}<li class="nav-item"><a class="nav-link {% if currentRoute == 'v3_inventory_movements' %}active{% endif %}" href="{{ path('v3_inventory_movements') }}">Bewegungen</a></li>{% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ inventoryOpen ? '' : 'collapsed' }}" href="#sidebarInventory" data-bs-toggle="collapse" role="button" aria-expanded="{{ inventoryOpen ? 'true' : 'false' }}" aria-controls="sidebarInventory">
+                            <i class="ri-store-2-line"></i><span>Lager &amp; Bestand</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ inventoryOpen ? 'show' : '' }}" id="sidebarInventory">
+                            <ul class="nav nav-sm flex-column">
+                                {% if is_granted('inventory.overview.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_inventory_overview' ? 'active' : '' }}" href="{{ path('v3_inventory_overview') }}">Lagerübersicht</a></li>{% endif %}
+                                {% if is_granted('inventory.topology.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_inventory_topology' ? 'active' : '' }}" href="{{ path('v3_inventory_topology') }}">Lagertopologie</a></li>{% endif %}
+                                {% if is_granted('inventory.stock.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_stock' ? 'active' : '' }}" href="{{ path('v3_stock') }}">Echtzeitbestand</a></li>{% endif %}
+                                {% if is_granted('inventory.stock.movement.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_inventory_movements' ? 'active' : '' }}" href="{{ path('v3_inventory_movements') }}">Bewegungshistorie</a></li>{% endif %}
+                            </ul>
+                        </div>
+                    </li>
                 {% endif %}
 
                 {% if is_granted('inbound.receipt.read') or is_granted('inbound.planned.read') %}
-                    <li class="menu-title"><span>Wareneingang</span></li>
-                    {% if is_granted('inbound.receipt.read') %}<li class="nav-item">
-                        <a class="nav-link {% if currentRoute starts with 'v3_inbound_' and currentRoute not in ['v3_inbound_planned', 'v3_inbound_planned_receive', 'v3_inbound_planned_inspect', 'v3_inbound_planned_resolve', 'v3_inbound_planned_putaway', 'v3_inbound_planned_putaway_confirm'] %}active{% endif %}" href="{{ path('v3_inbound_index') }}">Wareneingänge</a>
-                    </li>{% endif %}
-                    {% if is_granted('inbound.planned.read') %}<li class="nav-item">
-                        <a class="nav-link {% if currentRoute starts with 'v3_inbound_planned' %}active{% endif %}" href="{{ path('v3_inbound_planned') }}">Geplante Eingänge</a>
-                    </li>{% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ inboundOpen ? '' : 'collapsed' }}" href="#sidebarInbound" data-bs-toggle="collapse" role="button" aria-expanded="{{ inboundOpen ? 'true' : 'false' }}" aria-controls="sidebarInbound">
+                            <i class="ri-inbox-archive-line"></i><span>Wareneingang</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ inboundOpen ? 'show' : '' }}" id="sidebarInbound"><ul class="nav nav-sm flex-column">
+                            {% if is_granted('inbound.planned.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_inbound_planned' ? 'active' : '' }}" href="{{ path('v3_inbound_planned') }}">Geplante Eingänge</a></li>{% endif %}
+                            {% if is_granted('inbound.receipt.read') %}<li class="nav-item"><a class="nav-link {{ inboundOpen and not (currentRoute starts with 'v3_inbound_planned') ? 'active' : '' }}" href="{{ path('v3_inbound_index') }}">Ungeplante Eingänge</a></li>{% endif %}
+                        </ul></div>
+                    </li>
                 {% endif %}
 
                 {% if is_granted('outbound.order.read') or is_granted('fulfillment.pick.read') or is_granted('fulfillment.pack.read') or is_granted('fulfillment.ship.read') or is_granted('fulfillment.loading.read') %}
-                    <li class="menu-title"><span>Auftragsabwicklung</span></li>
-
-                    {% if is_granted('outbound.order.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_outbound_' %}active{% endif %}" href="{{ path('v3_outbound_orders') }}">Aufträge</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('fulfillment.pick.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_picking_' %}active{% endif %}" href="{{ path('v3_picking_index') }}">Kommissionierung</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('fulfillment.pack.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_packing_' %}active{% endif %}" href="{{ path('v3_packing_index') }}">Packen</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('fulfillment.ship.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_shipping_' %}active{% endif %}" href="{{ path('v3_shipping_index') }}">Versand</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('fulfillment.loading.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_loading_' %}active{% endif %}" href="{{ path('v3_loading_index') }}">Verladung</a>
-                        </li>
-                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ outboundOpen ? '' : 'collapsed' }}" href="#sidebarOutbound" data-bs-toggle="collapse" role="button" aria-expanded="{{ outboundOpen ? 'true' : 'false' }}" aria-controls="sidebarOutbound">
+                            <i class="ri-truck-line"></i><span>Warenausgang</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ outboundOpen ? 'show' : '' }}" id="sidebarOutbound"><ul class="nav nav-sm flex-column">
+                            {% if is_granted('outbound.order.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_outbound_' ? 'active' : '' }}" href="{{ path('v3_outbound_orders') }}">Aufträge</a></li>{% endif %}
+                            {% if is_granted('fulfillment.pick.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_picking_' ? 'active' : '' }}" href="{{ path('v3_picking_index') }}">Kommissionierung</a></li>{% endif %}
+                            {% if is_granted('fulfillment.pack.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_packing_' ? 'active' : '' }}" href="{{ path('v3_packing_index') }}">Packen</a></li>{% endif %}
+                            {% if is_granted('fulfillment.ship.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_shipping_' ? 'active' : '' }}" href="{{ path('v3_shipping_index') }}">Versand</a></li>{% endif %}
+                            {% if is_granted('fulfillment.loading.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_loading_' ? 'active' : '' }}" href="{{ path('v3_loading_index') }}">Verladung</a></li>{% endif %}
+                        </ul></div>
+                    </li>
                 {% endif %}
 
                 {% if is_granted('integration.outbox.read') or is_granted('integration.erp_connection.read') or is_granted('integration.carrier_connection.read') or is_granted('integration.print_job.read') or is_granted('integration.device.read') or is_granted('integration.measurement.read') or is_granted('integration.automation.read') or is_granted('integration.wcs.read') or is_granted('integration.transport.read') %}
-                    <li class="menu-title"><span>Integration &amp; Technik</span></li>
-
-                    {% if is_granted('integration.outbox.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_outbox_' %}active{% endif %}" href="{{ path('v3_outbox_index') }}">Integrations-Outbox</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('integration.erp_connection.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_erp_connection_' %}active{% endif %}" href="{{ path('v3_erp_connection_index') }}">ERP-Verbindungen</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('integration.carrier_connection.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_carrier_connection_' %}active{% endif %}" href="{{ path('v3_carrier_connection_index') }}">Carrier-Verbindungen</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('integration.print_job.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_printing_' %}active{% endif %}" href="{{ path('v3_printing_index') }}">Druckwarteschlange</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('integration.device.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_device_' %}active{% endif %}" href="{{ path('v3_device_index') }}">Scanner und MDE</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('integration.measurement.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_measurement_' %}active{% endif %}" href="{{ path('v3_measurement_index') }}">Waagen und Volumenmessung</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('integration.automation.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_automation_' %}active{% endif %}" href="{{ path('v3_automation_index') }}">Lagerlifte und Paternoster</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('integration.wcs.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_wcs_' %}active{% endif %}" href="{{ path('v3_wcs_index') }}">WCS, MFR und Fördertechnik</a>
-                        </li>
-                    {% endif %}
-
-                    {% if is_granted('integration.transport.read') %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if currentRoute starts with 'v3_transport_' %}active{% endif %}" href="{{ path('v3_transport_index') }}">TCP/IP und Webservice</a>
-                        </li>
-                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ integrationOpen ? '' : 'collapsed' }}" href="#sidebarIntegration" data-bs-toggle="collapse" role="button" aria-expanded="{{ integrationOpen ? 'true' : 'false' }}" aria-controls="sidebarIntegration">
+                            <i class="ri-settings-5-line"></i><span>Integration &amp; Technik</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ integrationOpen ? 'show' : '' }}" id="sidebarIntegration"><ul class="nav nav-sm flex-column">
+                            {% if is_granted('integration.outbox.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_outbox_' ? 'active' : '' }}" href="{{ path('v3_outbox_index') }}">Integrations-Outbox</a></li>{% endif %}
+                            {% if is_granted('integration.erp_connection.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_erp_connection_' ? 'active' : '' }}" href="{{ path('v3_erp_connection_index') }}">ERP-Verbindungen</a></li>{% endif %}
+                            {% if is_granted('integration.carrier_connection.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_carrier_connection_' ? 'active' : '' }}" href="{{ path('v3_carrier_connection_index') }}">Carrier-Verbindungen</a></li>{% endif %}
+                            {% if is_granted('integration.print_job.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_printing_' ? 'active' : '' }}" href="{{ path('v3_printing_index') }}">Druckwarteschlange</a></li>{% endif %}
+                            {% if is_granted('integration.device.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_device_' ? 'active' : '' }}" href="{{ path('v3_device_index') }}">Scanner &amp; MDE</a></li>{% endif %}
+                            {% if is_granted('integration.measurement.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_measurement_' ? 'active' : '' }}" href="{{ path('v3_measurement_index') }}">Waagen &amp; Volumen</a></li>{% endif %}
+                            {% if is_granted('integration.automation.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_automation_' ? 'active' : '' }}" href="{{ path('v3_automation_index') }}">Lagerautomation</a></li>{% endif %}
+                            {% if is_granted('integration.wcs.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_wcs_' ? 'active' : '' }}" href="{{ path('v3_wcs_index') }}">WCS &amp; MFR</a></li>{% endif %}
+                            {% if is_granted('integration.transport.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_transport_' ? 'active' : '' }}" href="{{ path('v3_transport_index') }}">Transportprotokolle</a></li>{% endif %}
+                        </ul></div>
+                    </li>
                 {% endif %}
 
                 {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') %}
-                    <li class="menu-title"><span>System</span></li>
                     <li class="nav-item">
-                        <a class="nav-link {% if currentRoute starts with 'v3_administration_' %}active{% endif %}" href="{{ path('v3_administration_index') }}">Administration</a>
+                        <a class="nav-link menu-link {{ administrationOpen ? '' : 'collapsed' }}" href="#sidebarAdministration" data-bs-toggle="collapse" role="button" aria-expanded="{{ administrationOpen ? 'true' : 'false' }}" aria-controls="sidebarAdministration">
+                            <i class="ri-admin-line"></i><span>Administration</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ administrationOpen ? 'show' : '' }}" id="sidebarAdministration"><ul class="nav nav-sm flex-column">
+                            <li class="nav-item"><a class="nav-link {{ administrationOpen ? 'active' : '' }}" href="{{ path('v3_administration_index') }}">Mandant &amp; Benutzer</a></li>
+                        </ul></div>
                     </li>
                 {% endif %}
 

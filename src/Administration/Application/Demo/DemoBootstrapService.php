@@ -78,6 +78,7 @@ final readonly class DemoBootstrapService
         private Connection $connection,
         private PasswordHasher $passwordHasher,
         private InventoryRepository $inventory,
+        private ExtendedDemoDatasetService $extendedDataset,
     ) {
     }
 
@@ -259,6 +260,7 @@ final readonly class DemoBootstrapService
                 $now,
             ));
         }
+        $this->extendedDataset->generate($now);
 
         return new DemoBootstrapResult(self::TENANT_ID, self::EMAIL, $generatedPassword, $created);
     }

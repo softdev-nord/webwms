@@ -27,3 +27,9 @@ Alle Queries filtern über `tenant_id`. Schreibzugriffe sind über `inventory.to
 | Bewegungshistorie | `/v3/inventory/movements` | `/api/v3/stock-movements` |
 
 Topologieelemente werden über `POST /api/v3/inventory/topology/{sites|warehouses|areas|aisles|bins}` angelegt.
+
+## Erweiterter Demodatensatz
+
+`ExtendedDemoDatasetService` ergänzt beim Demo-Bootstrap für jede fachliche Kernentität mindestens 100 deterministische Datensätze. Dazu gehören Topologie, Artikel, Bestand und Ledger, geplanter und ungeplanter Wareneingang, Qualitätsabweichungen, Einlagerung, der vollständige Warenausgang von Reservierung bis Verladung sowie Retouren, Nachschub und Inventur.
+
+Die UUIDv5-IDs werden aus Mandant, Entität und laufender Nummer gebildet. Der Generator ist dadurch idempotent und kann nach Schemaänderungen oder zum Wiederauffüllen erneut ausgeführt werden. Mandanten, Benutzer und technische Integrationskonfigurationen bleiben bewusst bei ihren kompakten, manuell nachvollziehbaren Beispielen.
