@@ -14,8 +14,12 @@ final readonly class SpecialStockTypeDefinition
 
     public string $kind;
 
-    public function __construct(string $code, string $name, string $kind, public bool $allocatable)
-    {
+    public function __construct(
+        string $code,
+        string $name,
+        string $kind,
+        public bool $allocatable
+    ) {
         $this->code = mb_strtoupper(trim($code));
         $this->name = trim($name);
         $this->kind = mb_strtolower(trim($kind));
