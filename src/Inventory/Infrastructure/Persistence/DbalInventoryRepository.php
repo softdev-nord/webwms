@@ -14,6 +14,7 @@ use WebWMS\Inventory\Domain\AllocationTransitionType;
 use WebWMS\Inventory\Domain\CycleCountExecution;
 use WebWMS\Inventory\Domain\CycleCountPlan;
 use WebWMS\Inventory\Domain\InboundDelivery;
+use WebWMS\Inventory\Domain\InboundDiscrepancyResolution;
 use WebWMS\Inventory\Domain\InboundInspection;
 use WebWMS\Inventory\Domain\InboundReceipt;
 use WebWMS\Inventory\Domain\InboundResult;
@@ -1059,11 +1060,27 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('An advised line and receiver must exist in the tenant.');
             }
+            $advisedQuantity = (int) $line['advised_quantity'];
+            $actualQuantity = $receipt->actualQuantity($advisedQuantity);
+            $reason = $receipt->discrepancyReason();
+            if ($actualQuantity !== $advisedQuantity && $reason === null) {
+                throw new \InvalidArgumentException('A quantity discrepancy requires a reason.');
+            }
             $connection->insert('wms_inbound_receipt', [
                 'id' => $receipt->id()->value(), 'inbound_delivery_line_id' => $receipt->deliveryLineId()->value(),
-                'quantity' => (int) $line['advised_quantity'], 'status' => 'pending_quality',
+                'quantity' => $actualQuantity, 'status' => 'pending_quality',
                 'received_by' => $receipt->receivedBy()->value(), 'received_at' => $receipt->receivedAt()->format('Y-m-d H:i:s.u'),
             ]);
+            if ($actualQuantity !== $advisedQuantity) {
+                $connection->insert('wms_inbound_discrepancy', [
+                    'id' => $receipt->id()->value(), 'tenant_id' => $receipt->tenantId()->value(),
+                    'receipt_id' => $receipt->id()->value(),
+                    'discrepancy_type' => $actualQuantity < $advisedQuantity ? 'shortage' : 'overage',
+                    'expected_quantity' => $advisedQuantity, 'actual_quantity' => $actualQuantity,
+                    'reason' => $reason, 'status' => 'open', 'created_by' => $receipt->receivedBy()->value(),
+                    'created_at' => $receipt->receivedAt()->format('Y-m-d H:i:s.u'),
+                ]);
+            }
             $connection->update('wms_inbound_delivery_line', ['status' => 'received'], ['id' => $receipt->deliveryLineId()->value()]);
             $remaining = (int) $connection->fetchOne(
                 "SELECT COUNT(*) FROM wms_inbound_delivery_line WHERE inbound_delivery_id = :deliveryId AND status = 'advised'",
@@ -1082,11 +1099,24 @@ final readonly class DbalInventoryRepository implements InventoryRepository
     {
         return $this->connection->transactional(function (Connection $connection) use ($inspection): InboundResult {
             $receipt = $connection->fetchAssociative(
-                "SELECT r.quantity, l.id line_id, l.purchase_order_item_id, d.id delivery_id, i.product_id, i.purchase_order_id, i.ordered_quantity, i.received_quantity FROM wms_inbound_receipt r INNER JOIN wms_inbound_delivery_line l ON l.id = r.inbound_delivery_line_id INNER JOIN wms_inbound_delivery d ON d.id = l.inbound_delivery_id INNER JOIN wms_purchase_order_item i ON i.id = l.purchase_order_item_id WHERE r.id = :receiptId AND r.status = 'pending_quality' AND d.tenant_id = :tenantId FOR UPDATE",
+                "SELECT r.quantity, l.id line_id, l.purchase_order_item_id, d.id delivery_id, i.product_id, i.purchase_order_id, i.ordered_quantity, i.received_quantity, x.status discrepancy_status FROM wms_inbound_receipt r INNER JOIN wms_inbound_delivery_line l ON l.id = r.inbound_delivery_line_id INNER JOIN wms_inbound_delivery d ON d.id = l.inbound_delivery_id INNER JOIN wms_purchase_order_item i ON i.id = l.purchase_order_item_id LEFT JOIN wms_inbound_discrepancy x ON x.receipt_id = r.id WHERE r.id = :receiptId AND r.status = 'pending_quality' AND d.tenant_id = :tenantId FOR UPDATE",
                 ['receiptId' => $inspection->receiptId()->value(), 'tenantId' => $inspection->tenantId()->value()],
             );
             if ($receipt === false) {
                 throw new InventoryReferenceNotFoundException('A pending inbound receipt must exist in the tenant.');
+            }
+            if ($receipt['discrepancy_status'] === 'open' && $inspection->decision()->value === 'accept') {
+                throw new \InvalidArgumentException('A receipt with an open discrepancy must first be booked to blocked stock.');
+            }
+            if ($inspection->decision()->value === 'block' && $receipt['discrepancy_status'] === null) {
+                $connection->insert('wms_inbound_discrepancy', [
+                    'id' => $inspection->receiptId()->value(), 'tenant_id' => $inspection->tenantId()->value(),
+                    'receipt_id' => $inspection->receiptId()->value(), 'discrepancy_type' => 'quality_block',
+                    'expected_quantity' => (int) $receipt['quantity'], 'actual_quantity' => (int) $receipt['quantity'],
+                    'reason' => 'Blocked by inbound quality inspection', 'status' => 'open',
+                    'created_by' => $inspection->inspectedBy()->value(),
+                    'created_at' => $inspection->inspectedAt()->format('Y-m-d H:i:s.u'),
+                ]);
             }
             $posting = new StockPosting(
                 $inspection->ledgerEntryId(),
@@ -1126,7 +1156,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             $newReceived = (int) $receipt['received_quantity'] + (int) $receipt['quantity'];
             $connection->update('wms_purchase_order_item', [
                 'received_quantity' => $newReceived,
-                'status' => $newReceived === (int) $receipt['ordered_quantity'] ? 'completed' : 'partially_received',
+                'status' => $newReceived > (int) $receipt['ordered_quantity'] ? 'over_received' : ($newReceived === (int) $receipt['ordered_quantity'] ? 'completed' : 'partially_received'),
             ], ['id' => $receipt['purchase_order_item_id']]);
             $openOrderItems = (int) $connection->fetchOne(
                 'SELECT COUNT(*) FROM wms_purchase_order_item WHERE purchase_order_id = :orderId AND received_quantity < ordered_quantity',
@@ -1146,6 +1176,64 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ], ['id' => $receipt['delivery_id']]);
 
             return new InboundResult($deliveryStatus, 'processed', $inspection->dimensions()->status()->value, $newQuantity);
+        });
+    }
+
+    public function resolveInboundDiscrepancy(InboundDiscrepancyResolution $resolution): InboundResult
+    {
+        return $this->connection->transactional(function (Connection $connection) use ($resolution): InboundResult {
+            $row = $connection->fetchAssociative(
+                "SELECT x.status, r.quantity, r.location_id, r.stock_status, i.product_id, g.batch_number, g.serial_number, g.expires_at FROM wms_inbound_discrepancy x INNER JOIN wms_inbound_receipt r ON r.id = x.receipt_id INNER JOIN wms_inbound_delivery_line l ON l.id = r.inbound_delivery_line_id INNER JOIN wms_purchase_order_item i ON i.id = l.purchase_order_item_id INNER JOIN wms_stock_ledger g ON g.id = r.ledger_entry_id WHERE x.receipt_id = :receiptId AND x.tenant_id = :tenantId AND x.status = 'open' AND r.status = 'inspected' FOR UPDATE",
+                ['receiptId' => $resolution->receiptId()->value(), 'tenantId' => $resolution->tenantId()->value()],
+            );
+            if ($row === false || $connection->fetchOne(
+                'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
+                ['userId' => $resolution->resolvedBy()->value(), 'tenantId' => $resolution->tenantId()->value()],
+            ) === false) {
+                throw new InventoryReferenceNotFoundException('An open inbound discrepancy and resolver must exist in the tenant.');
+            }
+            if ($row['stock_status'] !== 'blocked') {
+                throw new \InvalidArgumentException('Only blocked inbound stock can be resolved.');
+            }
+
+            $resultingQuantity = null;
+            $transferId = null;
+            if ($resolution->action() === 'release') {
+                $batchNumber = $row['batch_number'] === null ? null : (string) $row['batch_number'];
+                $serialNumber = $row['serial_number'] === null ? null : (string) $row['serial_number'];
+                $expiresAt = $row['expires_at'] === null ? null : new DateTimeImmutable((string) $row['expires_at']);
+                $blocked = StockDimensions::fromInput('blocked', $batchNumber, $serialNumber, $expiresAt);
+                $available = StockDimensions::fromInput('available', $batchNumber, $serialNumber, $expiresAt);
+                $transfer = $this->transfer(new StockTransfer(
+                    $resolution->transferId(),
+                    $resolution->sourceLedgerId(),
+                    $resolution->destinationLedgerId(),
+                    $resolution->tenantId(),
+                    new InventoryId((string) $row['product_id']),
+                    new InventoryId((string) $row['location_id']),
+                    $blocked,
+                    new InventoryId((string) $row['location_id']),
+                    $available,
+                    (int) $row['quantity'],
+                    'Release inbound discrepancy ' . $resolution->receiptId()->value(),
+                    $resolution->resolvedBy(),
+                    $resolution->resolvedAt(),
+                ));
+                $resultingQuantity = $transfer->destinationQuantity;
+                $transferId = $resolution->transferId()->value();
+                $connection->update('wms_inbound_receipt', [
+                    'stock_status' => 'available',
+                    'ledger_entry_id' => $resolution->destinationLedgerId()->value(),
+                ], ['id' => $resolution->receiptId()->value()]);
+            }
+            $connection->update('wms_inbound_discrepancy', [
+                'status' => $resolution->action() === 'release' ? 'released' : 'rejected',
+                'resolution_note' => $resolution->note(), 'transfer_id' => $transferId,
+                'resolved_by' => $resolution->resolvedBy()->value(),
+                'resolved_at' => $resolution->resolvedAt()->format('Y-m-d H:i:s.u'),
+            ], ['receipt_id' => $resolution->receiptId()->value(), 'tenant_id' => $resolution->tenantId()->value()]);
+
+            return new InboundResult('completed', $resolution->action(), $resolution->action() === 'release' ? 'available' : 'blocked', $resultingQuantity);
         });
     }
 

@@ -60,6 +60,8 @@ interface InventoryRepository
 
     public function inspectInboundReceipt(InboundInspection $inspection): InboundResult;
 
+    public function resolveInboundDiscrepancy(InboundDiscrepancyResolution $resolution): InboundResult;
+
     public function saveUnplannedReceipt(UnplannedReceipt $receipt): void;
 
     public function bookUnplannedReceipt(UnplannedReceiptBooking $booking): InboundResult;

@@ -14,7 +14,9 @@ final readonly class ReceiveInboundDeliveryCommand
         public string $deliveryId,
         public string $deliveryLineId,
         public string $receivedBy,
-        public DateTimeImmutable $receivedAt
+        public DateTimeImmutable $receivedAt,
+        public ?int $actualQuantity = null,
+        public ?string $discrepancyReason = null,
     ) {
     }
 }

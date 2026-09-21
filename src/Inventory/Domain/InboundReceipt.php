@@ -16,8 +16,16 @@ final readonly class InboundReceipt
         private InventoryId $deliveryId,
         private InventoryId $deliveryLineId,
         private UserId $receivedBy,
-        private DateTimeImmutable $receivedAt
+        private DateTimeImmutable $receivedAt,
+        private ?int $actualQuantity = null,
+        private ?string $discrepancyReason = null,
     ) {
+        if ($actualQuantity !== null && $actualQuantity < 1) {
+            throw new \InvalidArgumentException('The actual inbound quantity must be positive.');
+        }
+        if ($discrepancyReason !== null && mb_strlen(trim($discrepancyReason)) > 255) {
+            throw new \InvalidArgumentException('The discrepancy reason must not exceed 255 characters.');
+        }
     }
 
     public function id(): InventoryId
@@ -48,5 +56,17 @@ final readonly class InboundReceipt
     public function receivedAt(): DateTimeImmutable
     {
         return $this->receivedAt;
+    }
+
+    public function actualQuantity(int $advisedQuantity): int
+    {
+        return $this->actualQuantity ?? $advisedQuantity;
+    }
+
+    public function discrepancyReason(): ?string
+    {
+        $reason = $this->discrepancyReason === null ? null : trim($this->discrepancyReason);
+
+        return $reason === '' ? null : $reason;
     }
 }

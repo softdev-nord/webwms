@@ -20,6 +20,15 @@ final readonly class ReceiveInboundDeliveryHandler
 
     public function __invoke(ReceiveInboundDeliveryCommand $command): InboundResult
     {
-        return $this->inventory->receiveInboundDelivery(new InboundReceipt(new InventoryId($command->receiptId), new TenantId($command->tenantId), new InventoryId($command->deliveryId), new InventoryId($command->deliveryLineId), new UserId($command->receivedBy), $command->receivedAt));
+        return $this->inventory->receiveInboundDelivery(new InboundReceipt(
+            new InventoryId($command->receiptId),
+            new TenantId($command->tenantId),
+            new InventoryId($command->deliveryId),
+            new InventoryId($command->deliveryLineId),
+            new UserId($command->receivedBy),
+            $command->receivedAt,
+            $command->actualQuantity,
+            $command->discrepancyReason,
+        ));
     }
 }

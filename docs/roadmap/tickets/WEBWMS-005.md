@@ -46,10 +46,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 **Status:** Teilweise umgesetzt
 
-Mengenvalidierung im regulären Wareneingang. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Der V3-Arbeitsplatz erfasst Soll- und Istmenge, verlangt bei Abweichung einen Grund und dokumentiert Unter- beziehungsweise Überlieferungen als eigenen mandantenbezogenen Vorgang. UI, JSON-API, Autorisierung, Auditdaten und Domain-Tests sind vorhanden. Falschlieferungen mit abweichender Artikelidentität und vollständige Akzeptanztests bleiben für `Done` offen.
 
 ## Quelle
 
 - Feature: CG-005
 - Referenz: https://www.coglas.com/wareneingang/
-

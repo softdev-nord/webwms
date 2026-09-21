@@ -46,10 +46,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 **Status:** Teilweise umgesetzt
 
-Bestandsstatus `blocked` und QS-Entscheidung `block`. Ein Teil der fachlichen oder technischen Grundlage ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Bestandsstatus `blocked` und QS-Entscheidung `block` sind jetzt mit einem expliziten Abweichungsvorgang verbunden. Offene Abweichungen erzwingen Sperrbestand; die auditierte Entscheidung gibt den Bestand atomar frei oder hält ihn abgelehnt gesperrt. UI, JSON-API, Berechtigungen und Domain-Tests sind vorhanden. Lieferantenkommunikation und vollständige Akzeptanztests bleiben für `Done` offen.
 
 ## Quelle
 
 - Feature: CG-008
 - Referenz: https://www.coglas.com/wareneingang/
-

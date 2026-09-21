@@ -11,6 +11,7 @@ use WebWMS\Inventory\Application\TransferStockHandler;
 use WebWMS\Inventory\Domain\CycleCountExecution;
 use WebWMS\Inventory\Domain\CycleCountPlan;
 use WebWMS\Inventory\Domain\InboundDelivery;
+use WebWMS\Inventory\Domain\InboundDiscrepancyResolution;
 use WebWMS\Inventory\Domain\InboundInspection;
 use WebWMS\Inventory\Domain\InboundReceipt;
 use WebWMS\Inventory\Domain\InboundResult;
@@ -228,6 +229,11 @@ final class TransferMemoryInventoryRepository implements InventoryRepository
     public function inspectInboundReceipt(InboundInspection $inspection): InboundResult
     {
         return new InboundResult('completed', 'processed', 'available', 1);
+    }
+
+    public function resolveInboundDiscrepancy(InboundDiscrepancyResolution $resolution): InboundResult
+    {
+        return new InboundResult('completed', 'released', 'available', 1);
     }
 
     public function saveUnplannedReceipt(UnplannedReceipt $receipt): void

@@ -91,6 +91,8 @@ final readonly class ApiV3QueryService
             . 'o.code order_number, l.id line_id, l.advised_quantity, l.status line_status, p.sku, p.name product_name, '
             . 'r.id receipt_id, r.quantity receipt_quantity, r.status receipt_status, r.quality_decision, '
             . 'r.stock_status, r.location_id, source.code source_location_code, r.received_at, r.inspected_at, '
+            . 'x.discrepancy_type, x.expected_quantity, x.actual_quantity, x.reason discrepancy_reason, '
+            . 'x.status discrepancy_status, x.resolution_note, x.resolved_at, '
             . 'po.id putaway_order_id, po.status putaway_status, po.quantity putaway_quantity, '
             . 'target.code target_location_code, po.created_at putaway_created_at, po.confirmed_at putaway_confirmed_at '
             . 'FROM wms_inbound_delivery d INNER JOIN wms_purchase_order o ON o.id = d.purchase_order_id '
@@ -99,6 +101,7 @@ final readonly class ApiV3QueryService
             . 'INNER JOIN wms_product_reference p ON p.id = i.product_id '
             . 'LEFT JOIN wms_inbound_receipt r ON r.inbound_delivery_line_id = l.id '
             . 'LEFT JOIN wms_storage_location source ON source.id = r.location_id '
+            . 'LEFT JOIN wms_inbound_discrepancy x ON x.receipt_id = r.id '
             . 'LEFT JOIN wms_putaway_order po ON po.inbound_receipt_id = r.id '
             . 'LEFT JOIN wms_storage_location target ON target.id = po.target_location_id '
             . 'WHERE d.tenant_id = :tenantId ORDER BY d.expected_at, d.code, l.id',

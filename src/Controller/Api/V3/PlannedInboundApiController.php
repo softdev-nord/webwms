@@ -20,6 +20,8 @@ use WebWMS\Inventory\Application\InspectInboundReceiptCommand;
 use WebWMS\Inventory\Application\InspectInboundReceiptHandler;
 use WebWMS\Inventory\Application\ReceiveInboundDeliveryCommand;
 use WebWMS\Inventory\Application\ReceiveInboundDeliveryHandler;
+use WebWMS\Inventory\Application\ResolveInboundDiscrepancyCommand;
+use WebWMS\Inventory\Application\ResolveInboundDiscrepancyHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/inbound/planned', name: 'api_v3_planned_inbound_')]
@@ -31,6 +33,7 @@ final class PlannedInboundApiController extends AbstractController
         private readonly InspectInboundReceiptHandler $inspectInbound,
         private readonly CreatePutawayOrderHandler $createPutaway,
         private readonly ConfirmPutawayHandler $confirmPutaway,
+        private readonly ResolveInboundDiscrepancyHandler $resolveDiscrepancy,
     ) {
     }
 
@@ -45,14 +48,38 @@ final class PlannedInboundApiController extends AbstractController
 
     #[Route('/{deliveryId}/lines/{lineId}/receive', name: 'receive', methods: ['POST'])]
     #[IsGranted('inbound.planned.receive')]
-    public function receive(string $deliveryId, string $lineId): JsonResponse
+    public function receive(string $deliveryId, string $lineId, Request $request): JsonResponse
     {
+        $payload = $request->toArray();
         $user = $this->user();
         $result = ($this->receiveInbound)(new ReceiveInboundDeliveryCommand(
             Uuid::v7()->toRfc4122(),
             $user->tenantId(),
             $deliveryId,
             $lineId,
+            $user->actorId(),
+            new DateTimeImmutable(),
+            $this->optionalInteger($payload, 'actualQuantity'),
+            $this->optionalString($payload, 'discrepancyReason'),
+        ));
+
+        return new JsonResponse(['data' => $result]);
+    }
+
+    #[Route('/receipts/{receiptId}/resolve', name: 'resolve', methods: ['POST'])]
+    #[IsGranted('inbound.planned.resolve')]
+    public function resolve(string $receiptId, Request $request): JsonResponse
+    {
+        $payload = $request->toArray();
+        $user = $this->user();
+        $result = ($this->resolveDiscrepancy)(new ResolveInboundDiscrepancyCommand(
+            $receiptId,
+            $user->tenantId(),
+            $this->string($payload, 'action'),
+            $this->string($payload, 'note'),
+            Uuid::v7()->toRfc4122(),
+            Uuid::v7()->toRfc4122(),
+            Uuid::v7()->toRfc4122(),
             $user->actorId(),
             new DateTimeImmutable(),
         ));
@@ -160,5 +187,16 @@ final class PlannedInboundApiController extends AbstractController
         $value = $payload[$field] ?? null;
 
         return is_string($value) && trim($value) !== '' ? trim($value) : null;
+    }
+
+    /** @param array<string, mixed> $payload */
+    private function optionalInteger(array $payload, string $field): ?int
+    {
+        $value = $payload[$field] ?? null;
+        if ($value !== null && !is_int($value)) {
+            throw new \InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
+        }
+
+        return $value;
     }
 }

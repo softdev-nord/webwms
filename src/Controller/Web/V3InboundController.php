@@ -21,6 +21,8 @@ use WebWMS\Inventory\Application\InspectInboundReceiptCommand;
 use WebWMS\Inventory\Application\InspectInboundReceiptHandler;
 use WebWMS\Inventory\Application\ReceiveInboundDeliveryCommand;
 use WebWMS\Inventory\Application\ReceiveInboundDeliveryHandler;
+use WebWMS\Inventory\Application\ResolveInboundDiscrepancyCommand;
+use WebWMS\Inventory\Application\ResolveInboundDiscrepancyHandler;
 use WebWMS\Inventory\Application\UnplannedReceiptService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -34,6 +36,7 @@ final class V3InboundController extends AbstractController
         private readonly InspectInboundReceiptHandler $inspectInbound,
         private readonly CreatePutawayOrderHandler $createPutaway,
         private readonly ConfirmPutawayHandler $confirmPutaway,
+        private readonly ResolveInboundDiscrepancyHandler $resolveDiscrepancy,
     ) {
     }
 
@@ -63,8 +66,32 @@ final class V3InboundController extends AbstractController
             $lineId,
             $user->actorId(),
             new DateTimeImmutable(),
+            $request->request->getInt('actual_quantity'),
+            $this->optional($request, 'discrepancy_reason'),
         ));
         $this->addFlash('success', 'Die avisierte Position wurde angenommen und an die QS übergeben.');
+
+        return $this->redirectToRoute('v3_inbound_planned');
+    }
+
+    #[Route('/planned/receipts/{receiptId}/resolve', name: 'planned_resolve', methods: ['POST'])]
+    #[IsGranted('inbound.planned.resolve')]
+    public function resolve(string $receiptId, Request $request): Response
+    {
+        $this->assertCsrf($request, 'v3_inbound_resolve_' . $receiptId);
+        $user = $this->user();
+        ($this->resolveDiscrepancy)(new ResolveInboundDiscrepancyCommand(
+            $receiptId,
+            $user->tenantId(),
+            $this->required($request, 'action'),
+            $this->required($request, 'resolution_note'),
+            Uuid::v7()->toRfc4122(),
+            Uuid::v7()->toRfc4122(),
+            Uuid::v7()->toRfc4122(),
+            $user->actorId(),
+            new DateTimeImmutable(),
+        ));
+        $this->addFlash('success', 'Die Abweichung wurde entschieden.');
 
         return $this->redirectToRoute('v3_inbound_planned');
     }

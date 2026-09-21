@@ -18,7 +18,7 @@ Der Wareneingang besitzt einen belastbaren Backendkern für Bestellung, Avis, ge
 ## Nächste sinnvolle Reihenfolge
 
 1. ~~Den gemeinsamen V3-Arbeitsplatz auf geplante Eingänge, QS und Einlagerungsaufträge erweitern.~~ Umgesetzt am 21.09.2026.
-2. `WEBWMS-005` und `WEBWMS-008` zu einem durchgängigen Abweichungs- und Sperrbestandsworkflow vervollständigen.
+2. ~~`WEBWMS-005` und `WEBWMS-008` zu einem durchgängigen Abweichungs- und Sperrbestandsworkflow vervollständigen.~~ Als V3-Slice umgesetzt am 21.09.2026; Falschlieferungen und Lieferantenkommunikation bleiben als Restumfang.
 3. Danach Foto-/Anhangsdokumentation und Etikettendruck ergänzen.
 
 Cross-Docking und Produktionseingänge sollten erst auf dem vereinheitlichten Annahme-, QS- und Buchungsprozess aufbauen.
