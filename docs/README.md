@@ -7,6 +7,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 
 ## Technische Dokumentation
 
+- [Benutzerdokumentation im V3-Frontend](technical/user-documentation.md)
 - [Phase 1: Runtime und Qualitätsbasis](technical/phase-1-runtime.md)
 - [Phase 2: Mandanten und Standorte](technical/phase-2-administration.md)
 - [Benutzer, Rollen, Rechte und Symfony Security](technical/access-security.md)

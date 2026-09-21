@@ -1,0 +1,61 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+    <div class="row align-items-center mb-4">
+        <div class="col-lg-7">
+            <h1 class="h3 mb-1">Hilfe &amp; Dokumentation</h1>
+            <p class="text-muted mb-0">Anleitungen für die tägliche Arbeit mit WebWMS 3.0.</p>
+        </div>
+        <div class="col-lg-5 mt-3 mt-lg-0">
+            <form method="get" action="{{ path('v3_documentation_index') }}" role="search">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="ri-search-line"></i></span>
+                    <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen">
+                    {% if query %}<a class="btn btn-light" href="{{ path('v3_documentation_index') }}" aria-label="Suche zurücksetzen"><i class="ri-close-line"></i></a>{% endif %}
+                    <button class="btn btn-primary" type="submit">Suchen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if groups is empty %}
+        <div class="alert alert-info border-0 shadow-sm">
+            Für „{{ query }}“ wurde keine passende Dokumentation gefunden.
+        </div>
+    {% endif %}
+
+    {% for category, documents in groups %}
+        <div class="mb-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="avatar-xs"><span class="avatar-title rounded bg-primary-subtle text-primary"><i class="ri-folder-open-line"></i></span></span>
+                <h2 class="h5 mb-0">{{ category }}</h2>
+                <span class="badge bg-light text-body">{{ documents|length }}</span>
+            </div>
+            <div class="row g-3">
+                {% for document in documents %}
+                    <div class="col-md-6 col-xl-4">
+                        <a class="card border-0 shadow-sm h-100 text-reset text-decoration-none documentation-card" href="{{ path('v3_documentation_show', {slug: document.slug}) }}">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between gap-3">
+                                    <div>
+                                        <h3 class="h6 text-primary mb-2">{{ document.title }}</h3>
+                                        <p class="text-muted mb-0">{{ document.summary }}</p>
+                                    </div>
+                                    <i class="ri-arrow-right-line fs-20 text-muted"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block bodyjs %}
+    {{ parent() }}
+    <style>
+        .documentation-card { transition: transform .15s ease, box-shadow .15s ease; }
+        .documentation-card:hover { transform: translateY(-2px); box-shadow: 0 .5rem 1rem rgba(56, 65, 74, .12) !important; }
+    </style>
+{% endblock %}

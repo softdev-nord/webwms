@@ -1,0 +1,74 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+    <nav aria-label="Breadcrumb" class="mb-3">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ path('v3_documentation_index') }}">Dokumentation</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ document.title }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <div class="col-xl-9">
+            <article class="card border-0 shadow-sm">
+                <div class="card-body documentation-content p-4 p-lg-5">
+                    {{ content|raw }}
+                </div>
+            </article>
+
+            <div class="d-flex justify-content-between gap-3 mt-4">
+                {% if document.previous %}
+                    <a class="btn btn-light text-start" href="{{ path('v3_documentation_show', {slug: document.previous.slug}) }}">
+                        <span class="d-block small text-muted">Vorherige Seite</span>
+                        <i class="ri-arrow-left-line me-1"></i>{{ document.previous.title }}
+                    </a>
+                {% else %}<span></span>{% endif %}
+                {% if document.next %}
+                    <a class="btn btn-light text-end" href="{{ path('v3_documentation_show', {slug: document.next.slug}) }}">
+                        <span class="d-block small text-muted">Nächste Seite</span>
+                        {{ document.next.title }}<i class="ri-arrow-right-line ms-1"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="card border-0 shadow-sm documentation-toc">
+                <div class="card-header"><h2 class="h6 mb-0">Auf dieser Seite</h2></div>
+                <div class="card-body">
+                    {% if toc %}
+                        <nav class="nav flex-column">
+                            {% for entry in toc %}
+                                <a class="nav-link px-0 py-1 {{ entry.level == 3 ? 'ps-3 small' : '' }}" href="#{{ entry.id }}">{{ entry.title }}</a>
+                            {% endfor %}
+                        </nav>
+                    {% else %}
+                        <span class="text-muted">Kurzübersicht ohne Unterkapitel.</span>
+                    {% endif %}
+                    <hr>
+                    <a href="{{ path('v3_documentation_index') }}"><i class="ri-book-open-line me-1"></i>Alle Anleitungen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bodyjs %}
+    {{ parent() }}
+    <style>
+        .documentation-content { font-size: 1rem; line-height: 1.75; }
+        .documentation-content h1 { font-size: 1.75rem; margin: 0 0 1.5rem; }
+        .documentation-content h2 { font-size: 1.3rem; margin: 2.25rem 0 .8rem; padding-bottom: .55rem; border-bottom: 1px solid var(--vz-border-color); scroll-margin-top: 90px; }
+        .documentation-content h3 { font-size: 1.1rem; margin: 1.75rem 0 .65rem; scroll-margin-top: 90px; }
+        .documentation-content p, .documentation-content ul, .documentation-content ol { margin-bottom: 1rem; }
+        .documentation-content li + li { margin-top: .35rem; }
+        .documentation-content code { color: var(--vz-code-color); background: var(--vz-light); padding: .15rem .35rem; border-radius: .25rem; }
+        .documentation-content pre { padding: 1rem; color: #ced4da; background: #212529; border-radius: .4rem; overflow-x: auto; }
+        .documentation-content pre code { color: inherit; background: transparent; padding: 0; }
+        .documentation-content .table { margin: 1.25rem 0; }
+        .documentation-toc { position: sticky; top: 90px; }
+        .documentation-toc .nav-link { color: var(--vz-body-color); }
+        .documentation-toc .nav-link:hover { color: var(--vz-primary); }
+        @media (max-width: 1199.98px) { .documentation-toc { position: static; } }
+    </style>
+{% endblock %}

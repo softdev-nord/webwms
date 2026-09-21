@@ -47,6 +47,7 @@
                 {% set outboundOpen = currentRoute starts with 'v3_outbound_' or currentRoute starts with 'v3_picking_' or currentRoute starts with 'v3_packing_' or currentRoute starts with 'v3_shipping_' or currentRoute starts with 'v3_loading_' or currentRoute starts with 'v3_internal_transport_' %}
                 {% set integrationOpen = currentRoute starts with 'v3_outbox_' or currentRoute starts with 'v3_erp_connection_' or currentRoute starts with 'v3_carrier_connection_' or currentRoute starts with 'v3_printing_' or currentRoute starts with 'v3_device_' or currentRoute starts with 'v3_measurement_' or currentRoute starts with 'v3_automation_' or currentRoute starts with 'v3_wcs_' or currentRoute starts with 'v3_transport_' %}
                 {% set administrationOpen = currentRoute starts with 'v3_administration_' %}
+                {% set documentationOpen = currentRoute starts with 'v3_documentation_' %}
 
                 <li class="menu-title"><span>Navigation</span></li>
                 <li class="nav-item">
@@ -523,9 +524,9 @@
                 <li class="menu-title"><i class="ri-more-fill"></i> <span>Hilfe &amp; Dokumentation</span></li>
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="../doku_weblvs/index.php" target="_blank">
+                    <a class="nav-link menu-link {{ documentationOpen ? 'active' : '' }}" href="{{ path('v3_documentation_index') }}">
                         <i class="mdi mdi-information-outline"></i>
-                        <span>{{ 'nav.help.headline1'|trans }}</span>
+                        <span>Benutzerdokumentation</span>
                     </a>
                 </li>
 
