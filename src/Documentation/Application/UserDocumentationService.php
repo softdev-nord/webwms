@@ -130,7 +130,7 @@ final readonly class UserDocumentationService
 
     private function category(string $slug): string
     {
-        if (preg_match('/^(getting-started|tenants-and-sites|access-security|administration-workspace|v3-demo)$/', $slug) === 1) {
+        if (preg_match('/^(getting-started|tenants-and-sites|access-security|administration-workspace|list-search-and-pagination|v3-demo)$/', $slug) === 1) {
             return 'Grundlagen & Administration';
         }
         if (preg_match('/^(inventory-inbound|planned-inbound|unplanned-receipts|inbound-discrepancy|inventory-putaway|inventory-replenishment)/', $slug) === 1) {

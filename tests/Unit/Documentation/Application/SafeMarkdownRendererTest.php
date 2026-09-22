@@ -28,7 +28,7 @@ MARKDOWN;
         self::assertStringContainsString('href="/v3/help/picking-api"', $result['html']);
         self::assertStringContainsString('&lt;script&gt;', $result['html']);
         self::assertStringNotContainsString('<script>', $result['html']);
-        self::assertStringContainsString('<table class="table table-striped align-middle">', $result['html']);
+        self::assertStringContainsString('<table class="table table-striped align-middle" data-table-tools="false">', $result['html']);
         self::assertSame([['level' => 2, 'id' => 'bestand-pruefen', 'title' => 'Bestand prüfen']], $result['toc']);
     }
 

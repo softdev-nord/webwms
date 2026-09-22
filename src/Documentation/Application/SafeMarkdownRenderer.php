@@ -130,7 +130,7 @@ final class SafeMarkdownRenderer
             $body .= '<tr>' . implode('', array_map(fn (string $cell): string => '<td>' . $this->inline($cell, $documentationPath) . '</td>', $row)) . '</tr>';
         }
 
-        return ['<div class="table-responsive"><table class="table table-striped align-middle"><thead><tr>' . $head . '</tr></thead><tbody>' . $body . '</tbody></table></div>', $cursor - 1];
+        return ['<div class="table-responsive"><table class="table table-striped align-middle" data-table-tools="false"><thead><tr>' . $head . '</tr></thead><tbody>' . $body . '</tbody></table></div>', $cursor - 1];
     }
 
     /** @return list<string> */
