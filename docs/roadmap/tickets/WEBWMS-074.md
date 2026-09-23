@@ -2,7 +2,7 @@
 id: WEBWMS-074
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 8
 component: "Zusatzfunktionen"
@@ -44,11 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-PLATFORM
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-Der Druckkern aus `WEBWMS-091` stellt Drucker, idempotente Druckaufträge,
-Ausführung, Retry und Auditdaten bereit. Standort-, Arbeitsplatz- und
-prozessabhängige Routingregeln fehlen weiterhin.
+Der Druckkern aus `WEBWMS-091` wird um priorisierte Routingregeln nach Dokumenttyp, Standort, Arbeitsplatz und Prozess ergänzt. Die Auswahl liefert ausschließlich einen aktiven Drucker des Mandanten; ohne passende Regel wird der Druck kontrolliert abgewiesen.
+
+Nachweise: `wms_print_routing_rule`, `PlatformControlService::routePrinter()`, Routing-API und Platform Control Center.
 
 ## Quelle
 

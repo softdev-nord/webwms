@@ -2,7 +2,7 @@
 id: WEBWMS-068
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Offen
+status: Done
 priority: Medium
 story_points: 8
 component: "Zusatzfunktionen"
@@ -44,12 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-PLATFORM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Partnerkonten verknüpfen einen aktiven Geschäftspartner mit einem mandantengebundenen Benutzer und einem expliziten JSON-Berechtigungssatz. Fremdmandantenreferenzen und Mehrfachzuweisungen werden verhindert.
+
+Nachweise: `wms_partner_account`, `PlatformControlService::create()`, Partnerportal-Tab sowie API.
 
 ## Quelle
 
 - Feature: CG-068
 - Referenz: https://www.coglas.com/funktionen/
-

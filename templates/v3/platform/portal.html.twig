@@ -1,0 +1,7 @@
+{% extends 'v3/base.html.twig' %}
+{% block title %}Partnerportal | WebWMS 3.0{% endblock %}
+{% block webwms_content %}
+<div class="mb-4"><h1 class="h3 mb-1">Partnerportal</h1><p class="text-muted">{{ portal.account.partner_code }} · {{ portal.account.partner_name }}</p></div>
+<div class="card border-0 shadow-sm mb-4"><div class="card-header"><h2 class="h5 mb-0">Abrechenbare Leistungen</h2></div><div class="table-responsive"><table class="table mb-0"><thead><tr><th>Datum</th><th>Referenz</th><th>Leistung</th><th>Menge</th><th>Betrag</th><th>Status</th></tr></thead><tbody>{% for line in portal.billableLines %}<tr><td>{{ line.service_date }}</td><td>{{ line.source_reference }}</td><td>{{ line.description }}</td><td>{{ line.quantity }}</td><td>{{ line.amount }} {{ line.currency }}</td><td>{{ line.status }}</td></tr>{% else %}<tr><td colspan="6" class="text-center text-muted py-4">Keine Leistungen vorhanden.</td></tr>{% endfor %}</tbody></table></div></div>
+<div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">Dokumente und Medien</h2></div><div class="list-group list-group-flush">{% for media in portal.media %}<a class="list-group-item list-group-item-action" target="_blank" href="{{ path('v3_partner_portal_media',{mediaId:media.id}) }}">{{ media.filename }} <span class="text-muted">· {{ media.captured_at|date('d.m.Y H:i') }}</span></a>{% else %}<div class="list-group-item text-muted">Keine Medien vorhanden.</div>{% endfor %}</div></div>
+{% endblock %}

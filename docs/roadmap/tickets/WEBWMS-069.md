@@ -2,7 +2,7 @@
 id: WEBWMS-069
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Offen
+status: Done
 priority: High
 story_points: 13
 component: "Zusatzfunktionen"
@@ -44,12 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-PLATFORM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Das Eventcenter verwaltet Eventname, JSON-Bedingungen und Aktionen für Druck, Nachricht oder Folgeauftrag. Passende Regeln erzeugen persistente, auditierbare Ausführungen; Testevents stehen in UI und API bereit.
+
+Nachweise: `wms_automation_rule`, `wms_automation_execution`, `PlatformControlService::executeEvent()` und Platform Control Center.
 
 ## Quelle
 
 - Feature: CG-069
 - Referenz: https://www.coglas.com/funktionen/
-

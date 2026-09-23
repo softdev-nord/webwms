@@ -78,4 +78,4 @@ jobs:
         run: composer run phpstan
 
       - name: Test WebWMS 3.0 domain foundation
-        run: vendor/bin/phpunit tests/Unit/Shared tests/Unit/Administration tests/Unit/Security/V3 tests/Unit/Inventory tests/Unit/Integration
+        run: vendor/bin/phpunit tests/Unit/Shared tests/Unit/Administration tests/Unit/Security/V3 tests/Unit/Inventory tests/Unit/Integration tests/Unit/Platform

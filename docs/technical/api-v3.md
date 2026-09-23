@@ -86,6 +86,16 @@ Die Ausgabe besitzt das Format `CLIENT_UUID.SECRET` und wird im Header `X-API-Ke
 | `PUT` | `/api/v3/administration/processes/{processKey}` | `administration.configuration.write` | Prozess aktivieren und konfigurieren |
 | `PUT` | `/api/v3/administration/deployment` | `administration.configuration.write` | Betriebsprofil konfigurieren |
 | `POST` | `/api/v3/administration/number-ranges/{code}/next` | `administration.number_range.use` | Nächste Nummer atomar vergeben |
+| `GET` | `/api/v3/platform` | `platform.read` | Platform Control Center lesen |
+| `POST` | `/api/v3/platform/resources/{resource}` | `platform.write` | Plattformressource anlegen |
+| `POST` | `/api/v3/platform/tasks/{id}/status` | `platform.execute` | Shopfloor-Aufgabe fortschreiben |
+| `POST` | `/api/v3/platform/events` | `platform.execute` | Eventregeln auswerten |
+| `POST` | `/api/v3/platform/billing/storage` | `platform.execute` | Lagergeld berechnen |
+| `POST` | `/api/v3/platform/billing/services` | `platform.execute` | Zusatzleistung abrechnen |
+| `GET` | `/api/v3/platform/search` | `platform.read` | Plattformindex durchsuchen |
+| `POST` | `/api/v3/platform/media` | `platform.write` | Medium base64-kodiert zuordnen |
+| `GET` | `/api/v3/platform/print-routing/select` | `platform.read` | Drucker regelbasiert auswählen |
+| `GET` | `/api/v3/partner-portal` | Partnerkonto | Eigenen Partnerdatenraum lesen |
 
 Listen akzeptieren `limit` von 1 bis 100. Artikel, Bestände, Bestandsbewegungen und Outbox-Nachrichten unterstützen einen opaken `cursor`; der Folgewert steht in `meta.nextCursor`. Bestände können mit `warehouseId`, Bewegungen mit Artikel, Lagerplatz, Transfer-ID und Bewegungsart eingeschränkt werden.
 

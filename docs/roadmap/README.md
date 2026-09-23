@@ -27,9 +27,9 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Gesamtfortschritt
 
-Stand 23.09.2026 sind 66 Tickets mit 467 Story Points vollständig `Done`. Weitere 6 Tickets mit 50 Story Points besitzen einen Backendkern und 11 Tickets mit 113 Story Points sind teilweise umgesetzt. 13 Tickets mit 120 Story Points sind noch offen. Damit wurden 83 von 96 Tickets und 630 von 750 Story Points zumindest fachlich oder technisch begonnen.
+Stand 23.09.2026 sind 75 Tickets mit 548 Story Points vollständig `Done`. Weitere 6 Tickets mit 50 Story Points besitzen einen Backendkern und 9 Tickets mit 97 Story Points sind teilweise umgesetzt. 6 Tickets mit 55 Story Points sind noch offen. Damit wurden 90 von 96 Tickets und 695 von 750 Story Points zumindest fachlich oder technisch begonnen.
 
-Die Epics **Wareneingang**, **Transport & Kommissionierung** sowie **Warenausgang & Versand** sind vollständig abgeschlossen. Die Tabellen der sieben Epic-Dateien wurden mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
+Die Epics **Wareneingang**, **Transport & Kommissionierung**, **Warenausgang & Versand** sowie **Zusatzfunktionen** sind vollständig abgeschlossen. Die Tabellen der sieben Epic-Dateien wurden mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 
 ## Ergänzende Roadmap-Dokumente
 
@@ -39,6 +39,7 @@ Die Epics **Wareneingang**, **Transport & Kommissionierung** sowie **Warenausgan
 - [Fortschrittsanalyse vom 18.09.2026](analysis/2026-09-18-progress.md)
 - [Fortschrittsanalyse Wareneingang vom 20.09.2026](analysis/2026-09-20-inbound-progress.md)
 - [Abschlussanalyse Inbound und Outbound vom 23.09.2026](analysis/2026-09-23-inbound-outbound-completion.md)
+- [Abschlussanalyse Platform vom 23.09.2026](analysis/2026-09-23-platform-completion.md)
 - [Abschlussanalyse Lagerbasis vom 21.09.2026](analysis/2026-09-21-inventory-workspace.md)
 - [Abschlussanalyse Bestandsattribute und Rückverfolgung vom 21.09.2026](analysis/2026-09-21-stock-traceability.md)
 - [Abschlussanalyse Entnahmestrategien vom 21.09.2026](analysis/2026-09-21-stock-selection.md)

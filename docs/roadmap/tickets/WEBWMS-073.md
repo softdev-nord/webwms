@@ -2,7 +2,7 @@
 id: WEBWMS-073
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Offen
+status: Done
 priority: Medium
 story_points: 5
 component: "Zusatzfunktionen"
@@ -44,12 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-PLATFORM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mobile Browser können über `capture=environment` Fotos aufnehmen oder Dokumente hochladen. Erlaubte Formate, 5-MB-Grenze, Mandant, Objektzuordnung, SHA-256-Prüfsumme, Benutzer und Zeitpunkt werden serverseitig erzwungen und persistiert.
+
+Nachweise: `wms_media_asset`, `PlatformControlService::captureMedia()`, geschützter Medienabruf und Kameraformular.
 
 ## Quelle
 
 - Feature: CG-073
 - Referenz: https://www.coglas.com/funktionen/
-

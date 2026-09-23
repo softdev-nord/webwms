@@ -2,7 +2,7 @@
 id: WEBWMS-070
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Offen
+status: Done
 priority: Medium
 story_points: 13
 component: "Zusatzfunktionen"
@@ -44,12 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-PLATFORM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Lagergeldtarife definieren je Geschäftspartner Preis pro Mengeneinheit und Tag, Freitage und Währung. Die Abrechnung erzeugt reproduzierbare offene Belegpositionen aus Menge und Lagerdauer.
+
+Nachweise: `wms_storage_fee_rule`, `wms_billable_line`, `PlatformControlService::billStorage()` sowie Abrechnungsoberfläche.
 
 ## Quelle
 
 - Feature: CG-070
 - Referenz: https://www.coglas.com/wms-fuer-speditionen-3pl/
-

@@ -94,6 +94,20 @@ final readonly class DemoBootstrapService
 
     public const string WEIGHT_CONSTRAINT_ID = '077d476a-b8e9-444b-80fe-b4ec386c6c1c';
 
+    public const string PLATFORM_TASK_ID = 'c4dfe2bb-0ad9-4c65-a889-43c17e53d928';
+
+    public const string PLATFORM_KPI_ID = '4c54a507-537f-4f63-bbcc-39cc82715f16';
+
+    public const string PLATFORM_PRINT_ROUTE_ID = '7a53c20b-c49d-4b68-9a95-5d75b030b210';
+
+    public const string PLATFORM_PARTNER_ACCOUNT_ID = '865e16fc-18a2-4af9-8b80-3c8979596528';
+
+    public const string PLATFORM_AUTOMATION_RULE_ID = '14727974-a0f6-4d6b-93f1-d7107d97dfc2';
+
+    public const string PLATFORM_STORAGE_FEE_ID = 'e51a38c7-944c-46ee-939e-3cfe6a35fe79';
+
+    public const string PLATFORM_SERVICE_ID = '4caf15cc-b884-454b-a21d-7856f4031d64';
+
     public const string EMAIL = 'admin@demo.webwms.local';
 
     public function __construct(
@@ -168,6 +182,27 @@ final readonly class DemoBootstrapService
                 'changed_by' => null,
                 'changed_at' => null,
             ]);
+        }
+        if (!$this->exists('wms_shopfloor_task', self::PLATFORM_TASK_ID)) {
+            $this->connection->insert('wms_shopfloor_task', ['id' => self::PLATFORM_TASK_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'DEMO-SHOP-001', 'task_type' => 'putaway', 'title' => 'Demo-Wareneingang priorisiert einlagern', 'reference_type' => 'inbound_delivery', 'reference_id' => self::INBOUND_DELIVERY_ID, 'priority' => 90, 'status' => 'planned', 'planned_for' => $this->date($now), 'assigned_to' => self::USER_ID, 'created_by' => self::USER_ID, 'created_at' => $this->date($now), 'changed_by' => null, 'changed_at' => null]);
+        }
+        if (!$this->exists('wms_kpi_definition', self::PLATFORM_KPI_ID)) {
+            $this->connection->insert('wms_kpi_definition', ['id' => self::PLATFORM_KPI_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'open-shopfloor', 'name' => 'Offene Shopfloor-Aufgaben', 'metric' => 'open_shopfloor_tasks', 'aggregation' => 'count', 'target_value' => 5, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_print_routing_rule', self::PLATFORM_PRINT_ROUTE_ID)) {
+            $this->connection->insert('wms_print_routing_rule', ['id' => self::PLATFORM_PRINT_ROUTE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'demo-inbound-label', 'name' => 'Demo Wareneingangsetikett', 'document_type' => 'inbound_label', 'site_id' => self::SITE_ID, 'workstation' => null, 'process_key' => 'inbound.receipt', 'printer_id' => self::PRINTER_ID, 'priority' => 100, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_partner_account', self::PLATFORM_PARTNER_ACCOUNT_ID)) {
+            $this->connection->insert('wms_partner_account', ['id' => self::PLATFORM_PARTNER_ACCOUNT_ID, 'tenant_id' => self::TENANT_ID, 'business_partner_id' => self::BUSINESS_PARTNER_ID, 'user_id' => self::USER_ID, 'permissions' => json_encode(['billing.read', 'media.read'], JSON_THROW_ON_ERROR), 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_automation_rule', self::PLATFORM_AUTOMATION_RULE_ID)) {
+            $this->connection->insert('wms_automation_rule', ['id' => self::PLATFORM_AUTOMATION_RULE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'demo-shipment-notification', 'name' => 'Versandmeldung an Partner', 'event_name' => 'shipment.dispatched', 'conditions_json' => '{}', 'action_type' => 'notification', 'action_config' => json_encode(['channel' => 'portal'], JSON_THROW_ON_ERROR), 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_storage_fee_rule', self::PLATFORM_STORAGE_FEE_ID)) {
+            $this->connection->insert('wms_storage_fee_rule', ['id' => self::PLATFORM_STORAGE_FEE_ID, 'tenant_id' => self::TENANT_ID, 'business_partner_id' => self::BUSINESS_PARTNER_ID, 'code' => 'demo-standard', 'name' => 'Standard-Lagergeld', 'price_per_unit_day' => 0.15, 'free_days' => 2, 'currency' => 'EUR', 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_value_added_service', self::PLATFORM_SERVICE_ID)) {
+            $this->connection->insert('wms_value_added_service', ['id' => self::PLATFORM_SERVICE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'demo-repacking', 'name' => 'Umpacken', 'unit' => 'Stück', 'unit_price' => 1.25, 'currency' => 'EUR', 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
         if (!$this->exists('wms_device', self::DEVICE_ID)) {
             $this->connection->insert('wms_device', [

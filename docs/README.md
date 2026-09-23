@@ -9,6 +9,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 
 - [Benutzerdokumentation im V3-Frontend](technical/user-documentation.md)
 - [Einheitliche Suche, Filterung und Paginierung](technical/v3-list-navigation.md)
+- [Platform Control Center](technical/platform-control-center.md)
 - [Phase 1: Runtime und Qualitätsbasis](technical/phase-1-runtime.md)
 - [Phase 2: Mandanten und Standorte](technical/phase-2-administration.md)
 - [Benutzer, Rollen, Rechte und Symfony Security](technical/access-security.md)
@@ -73,6 +74,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Versandprozess über API v3 durchführen](user/shipping-api.md)
 - [Ladelisten über API v3 bearbeiten](user/loading-api.md)
 - [Statusmeldungen über die Outbox übernehmen](user/integration-outbox.md)
+- [Zusatzfunktionen im Platform Control Center](user/platform-control-center.md)
 - [Bestände über API v3 umbuchen](user/inventory-movement-api.md)
 - [ERP-System anbinden](user/erp-integration.md)
 

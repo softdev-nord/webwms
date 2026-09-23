@@ -2,7 +2,7 @@
 id: WEBWMS-071
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Offen
+status: Done
 priority: Medium
 story_points: 13
 component: "Zusatzfunktionen"
@@ -44,12 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-PLATFORM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Zusatzleistungen werden mit Einheit, Preis und Währung katalogisiert. Erfasste Leistungsmengen erzeugen partnerbezogene Abrechnungspositionen mit Leistungsdatum, Referenz und Auditbenutzer.
+
+Nachweise: `wms_value_added_service`, `wms_billable_line`, `PlatformControlService::billService()` sowie UI/API.
 
 ## Quelle
 
 - Feature: CG-071
 - Referenz: https://www.coglas.com/funktionen/
-

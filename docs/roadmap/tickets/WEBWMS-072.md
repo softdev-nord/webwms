@@ -2,7 +2,7 @@
 id: WEBWMS-072
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Offen
+status: Done
 priority: High
 story_points: 8
 component: "Zusatzfunktionen"
@@ -44,12 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-PLATFORM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Eine mandantengetrennte Hybridsuche kombiniert den persistenten Plattformindex mit Artikeln, Ein- und Ausgangsbelegen sowie Sendungen. Web- und JSON-Suche liefern maximal 100 Treffer ohne Fremdmandantenzugriff.
+
+Nachweise: `wms_search_document`, `PlatformControlService::search()` und die globale Suche im Control Center.
 
 ## Quelle
 
 - Feature: CG-072
 - Referenz: https://www.coglas.com/funktionen/
-

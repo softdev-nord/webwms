@@ -2,7 +2,7 @@
 id: WEBWMS-067
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 8
 component: "Zusatzfunktionen"
@@ -44,9 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-PLATFORM
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-Ein erstes operatives V3-Dashboard zeigt mandantenbezogene Kennzahlen zu Stammdaten, Bestand und Fulfillment. Die eigene V3-Frontend-Shell, Session-Anmeldung und eine Bestandsdetailansicht sind ebenfalls vorhanden. Konfigurierbare KPI-Definitionen, zeitliche Aggregationen, frei zusammenstellbare Dashboards sowie deren Persistenz und Auditierung fehlen noch.
+Konfigurierbare KPI-Definitionen aggregieren Bestand, offene Ein- und Ausgangsvorgänge, Shopfloor-Aufgaben und Druckjobs. Zielwerte sowie persistente JSON-Dashboardlayouts werden mandantenbezogen und auditiert über UI/API verwaltet.
+
+Nachweise: `PlatformControlService::workspace()`, `wms_kpi_definition`, `wms_dashboard`, Platform Control Center und API.
 
 ## Quelle
 

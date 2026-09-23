@@ -2,7 +2,7 @@
 id: WEBWMS-066
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Offen
+status: Done
 priority: Medium
 story_points: 5
 component: "Zusatzfunktionen"
@@ -44,12 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-PLATFORM
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Der Shopfloor-Arbeitsvorrat plant Einlagerung, Auslagerung, Transport und Inventur mit Priorität, Termin, Referenz und Benutzerzuordnung. Der transaktionale Zustandsautomat verhindert unzulässige Übergänge; UI und API protokollieren jede Änderung.
+
+Nachweise: `PlatformControlService`, `V3PlatformController`, `PlatformApiController`, Migration `Version20260923190000`, Unit-Tests sowie Platform-Benutzer- und Technikdokumentation.
 
 ## Quelle
 
 - Feature: CG-066
 - Referenz: https://www.coglas.com/funktionen/
-
