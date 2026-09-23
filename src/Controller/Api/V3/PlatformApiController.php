@@ -113,7 +113,11 @@ final class PlatformApiController extends AbstractController
     #[IsGranted('platform.read')]
     public function printRoute(Request $request): JsonResponse
     {
-        return new JsonResponse(['data' => ['printerId' => $this->platform->routePrinter($this->user()->tenantId(), (string) $request->query->get('documentType'), $request->query->getString('siteId') ?: null, $request->query->getString('workstation') ?: null, $request->query->getString('processKey') ?: null)]]);
+        $siteId = $request->query->getString('siteId');
+        $workstation = $request->query->getString('workstation');
+        $processKey = $request->query->getString('processKey');
+
+        return new JsonResponse(['data' => ['printerId' => $this->platform->routePrinter($this->user()->tenantId(), (string) $request->query->get('documentType'), $siteId !== '' ? $siteId : null, $workstation !== '' ? $workstation : null, $processKey !== '' ? $processKey : null)]]);
     }
 
     private function user(): TenantPermissionUser

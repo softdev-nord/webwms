@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
@@ -124,7 +125,8 @@ final class V3InboundControlController extends AbstractController
     {
         $this->csrf($request, 'v3_inbound_checklist');
         $user = $this->user();
-        $this->processes->createChecklist($user->tenantId(), $this->required($request, 'code'), $this->required($request, 'name'), preg_split('/\R/', $this->required($request, 'questions')) ?: [], $user->actorId(), new DateTimeImmutable());
+        $questions = preg_split('/\R/', $this->required($request, 'questions'));
+        $this->processes->createChecklist($user->tenantId(), $this->required($request, 'code'), $this->required($request, 'name'), $questions !== false ? $questions : [], $user->actorId(), new DateTimeImmutable());
         $this->addFlash('success', 'Die QS-Checkliste wurde aktiviert.');
 
         return $this->back();
@@ -136,7 +138,7 @@ final class V3InboundControlController extends AbstractController
     {
         $this->csrf($request, 'v3_inbound_attachment');
         $file = $request->files->get('file');
-        if ($file === null || !$file->isValid()) {
+        if (!$file instanceof UploadedFile || !$file->isValid()) {
             throw new \InvalidArgumentException('Eine gültige Datei ist erforderlich.');
         }
         $user = $this->user();

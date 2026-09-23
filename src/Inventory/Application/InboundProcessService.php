@@ -38,7 +38,7 @@ final readonly class InboundProcessService
     /** @param list<string> $questions */
     public function createChecklist(string $tenantId, string $code, string $name, array $questions, string $actorId, DateTimeImmutable $now): string
     {
-        $questions = array_values(array_filter(array_map('trim', $questions)));
+        $questions = array_values(array_filter(array_map('trim', $questions), static fn (string $question): bool => $question !== ''));
 
         if ($questions === []) {
             throw new InvalidArgumentException('A quality checklist requires at least one question.');

@@ -228,7 +228,8 @@ final readonly class PlatformControlService
             'queued_print_jobs' => "SELECT COUNT(*) FROM wms_print_job WHERE tenant_id = :tenantId AND status IN ('queued', 'failed')",
         ];
         foreach ($definitions as &$definition) {
-            $sql = $queries[$definition['metric']] ?? null;
+            $metric = $definition['metric'] ?? null;
+            $sql = is_string($metric) ? ($queries[$metric] ?? null) : null;
             $definition['value'] = $sql === null ? null : $this->connection->fetchOne($sql, ['tenantId' => $tenantId]);
         }
         unset($definition);
@@ -314,7 +315,7 @@ final readonly class PlatformControlService
                 throw new \InvalidArgumentException(sprintf('Das Feld "%s" enthält einen ungültigen Wert.', $field));
             }
 
-            return (string) $value;
+            return $value;
         }
         if ($kind === 'code') {
             $code = strtolower(trim((string) $value));

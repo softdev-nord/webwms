@@ -9,12 +9,19 @@ final class SafeMarkdownRenderer
     /** @return array{html: string, toc: list<array{level: int, id: string, title: string}>} */
     public function render(string $markdown, string $documentationPath): array
     {
-        $lines = preg_split('/\R/', $markdown) ?: [];
+        $splitLines = preg_split('/\R/', $markdown);
+        $lines = $splitLines !== false ? $splitLines : [];
+        /** @var list<string> $html */
         $html = [];
+        /** @var list<array{level: int, id: string, title: string}> $toc */
         $toc = [];
+        /** @var list<string> $paragraph */
         $paragraph = [];
+        /** @var list<string> $list */
         $list = [];
+        /** @var 'ul'|'ol'|null $listType */
         $listType = null;
+        /** @var list<string> $code */
         $code = [];
         $codeLanguage = '';
 

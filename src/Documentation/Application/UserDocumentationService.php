@@ -115,7 +115,8 @@ final readonly class UserDocumentationService
     private function summary(string $markdown): string
     {
         $withoutTitle = preg_replace('/^#\s+.+\R?/', '', $markdown, 1) ?? $markdown;
-        $paragraphs = preg_split('/\R\s*\R/', trim($withoutTitle)) ?: [];
+        $splitParagraphs = preg_split('/\R\s*\R/', trim($withoutTitle));
+        $paragraphs = $splitParagraphs !== false ? $splitParagraphs : [];
         foreach ($paragraphs as $paragraph) {
             if ($paragraph === '' || str_starts_with(ltrim($paragraph), '#') || str_starts_with(ltrim($paragraph), '```')) {
                 continue;

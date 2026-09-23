@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use WebWMS\Platform\Application\PlatformControlService;
@@ -103,7 +104,7 @@ final class V3PlatformController extends AbstractController
     {
         $this->csrf($request, 'v3_platform_media');
         $file = $request->files->get('file');
-        if ($file === null || !$file->isValid()) {
+        if (!$file instanceof UploadedFile || !$file->isValid()) {
             throw new \InvalidArgumentException('Eine gültige Aufnahme ist erforderlich.');
         }
         $user = $this->user();
