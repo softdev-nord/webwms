@@ -166,5 +166,4 @@ final readonly class InventoryControlService
     {
         return $date->format('Y-m-d H:i:s.u');
     }
-
 }
