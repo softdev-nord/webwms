@@ -17,8 +17,9 @@ use WebWMS\Security\V3\TenantPermissionUser;
 #[Route('/api/v3/administration', name: 'api_v3_administration_')]
 final class AdministrationApiController extends AbstractController
 {
-    public function __construct(private readonly AdministrationWorkspaceService $workspace)
-    {
+    public function __construct(
+        private readonly AdministrationWorkspaceService $workspace
+    ) {
     }
 
     #[Route('/workspace', name: 'workspace', methods: ['GET'])]

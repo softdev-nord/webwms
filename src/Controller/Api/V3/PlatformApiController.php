@@ -17,8 +17,9 @@ use WebWMS\Security\V3\TenantPermissionUser;
 #[Route('/api/v3/platform', name: 'api_v3_platform_')]
 final class PlatformApiController extends AbstractController
 {
-    public function __construct(private readonly PlatformControlService $platform)
-    {
+    public function __construct(
+        private readonly PlatformControlService $platform
+    ) {
     }
 
     #[Route('', name: 'index', methods: ['GET'])]

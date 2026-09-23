@@ -13,8 +13,9 @@ use WebWMS\Security\V3\TenantPermissionUser;
 
 final class PartnerPortalApiController extends AbstractController
 {
-    public function __construct(private readonly PlatformControlService $platform)
-    {
+    public function __construct(
+        private readonly PlatformControlService $platform
+    ) {
     }
 
     #[Route('/api/v3/partner-portal', name: 'api_v3_partner_portal', methods: ['GET'])]

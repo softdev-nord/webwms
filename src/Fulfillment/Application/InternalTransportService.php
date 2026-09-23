@@ -12,8 +12,10 @@ use WebWMS\Inventory\Application\TransferStockHandler;
 
 final readonly class InternalTransportService
 {
-    public function __construct(private Connection $connection, private TransferStockHandler $transferStock)
-    {
+    public function __construct(
+        private Connection $connection,
+        private TransferStockHandler $transferStock
+    ) {
     }
 
     /** @return array<string, list<array<string, mixed>>> */
@@ -170,6 +172,7 @@ final readonly class InternalTransportService
             return $row;
         });
         $transferId = null;
+
         try {
             if (is_string($order['product_id']) && is_int($quantity = filter_var($order['quantity'], FILTER_VALIDATE_INT))) {
                 $transferId = Uuid::v7()->toRfc4122();
@@ -177,6 +180,7 @@ final readonly class InternalTransportService
             }
         } catch (\Throwable $exception) {
             $this->connection->update('wms_transport_order', ['status' => 'started'], ['id' => $orderId, 'tenant_id' => $tenantId, 'status' => 'executing']);
+
             throw $exception;
         }
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $actorId, $orderId, $order, $transferId, $now): void {

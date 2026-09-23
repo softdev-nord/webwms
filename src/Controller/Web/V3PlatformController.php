@@ -19,8 +19,9 @@ use WebWMS\Security\V3\TenantPermissionUser;
 #[IsGranted('platform.read')]
 final class V3PlatformController extends AbstractController
 {
-    public function __construct(private readonly PlatformControlService $platform)
-    {
+    public function __construct(
+        private readonly PlatformControlService $platform
+    ) {
     }
 
     #[Route('', name: 'index', methods: ['GET'])]

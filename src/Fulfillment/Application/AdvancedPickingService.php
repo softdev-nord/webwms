@@ -10,8 +10,9 @@ use Symfony\Component\Uid\Uuid;
 
 final readonly class AdvancedPickingService
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     /** @return array<string, list<array<string, mixed>>> */

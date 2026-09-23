@@ -10,8 +10,9 @@ use Symfony\Component\Uid\Uuid;
 
 final readonly class PlatformControlService
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     /** @return array<string, mixed> */
@@ -118,6 +119,7 @@ final readonly class PlatformControlService
             foreach ($conditions as $key => $expected) {
                 if (!is_string($key) || ($payload[$key] ?? null) !== $expected) {
                     $matches = false;
+
                     break;
                 }
             }

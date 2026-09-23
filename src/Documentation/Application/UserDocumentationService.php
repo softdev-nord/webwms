@@ -16,8 +16,9 @@ final readonly class UserDocumentationService
         'Integration & Technik',
     ];
 
-    public function __construct(private string $projectDir)
-    {
+    public function __construct(
+        private string $projectDir
+    ) {
     }
 
     /** @return array<string, list<array{slug: string, title: string, summary: string}>> */

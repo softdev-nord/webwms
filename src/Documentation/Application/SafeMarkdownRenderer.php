@@ -45,12 +45,14 @@ final class SafeMarkdownRenderer
                 } else {
                     $code[] = $line;
                 }
+
                 continue;
             }
             if (preg_match('/^```([a-z0-9_-]*)$/i', trim($line), $match) === 1) {
                 $flushParagraph();
                 $flushList();
                 $codeLanguage = $match[1] === '' ? 'text' : strtolower($match[1]);
+
                 continue;
             }
             if (preg_match('/^(#{1,6})\s+(.+)$/', $line, $match) === 1) {
@@ -63,6 +65,7 @@ final class SafeMarkdownRenderer
                     $toc[] = ['level' => $level, 'id' => $id, 'title' => $title];
                 }
                 $html[] = sprintf('<h%d id="%s">%s</h%d>', $level, $id, $this->inline($title, $documentationPath), $level);
+
                 continue;
             }
             if ($this->isTableHeader($lines, $index)) {
@@ -71,6 +74,7 @@ final class SafeMarkdownRenderer
                 [$table, $lastLine] = $this->table($lines, $index, $documentationPath);
                 $html[] = $table;
                 $index = $lastLine;
+
                 continue;
             }
             if (preg_match('/^\s*[-*]\s+(.+)$/', $line, $match) === 1 || preg_match('/^\s*\d+\.\s+(.+)$/', $line, $match) === 1) {
@@ -81,11 +85,13 @@ final class SafeMarkdownRenderer
                 }
                 $listType = $type;
                 $list[] = $match[1];
+
                 continue;
             }
             if ($line === '') {
                 $flushParagraph();
                 $flushList();
+
                 continue;
             }
             if ($list !== []) {

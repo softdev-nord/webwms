@@ -215,6 +215,7 @@ final class V3AdministrationController extends AbstractController
         foreach ($roles as $candidate) {
             if ($candidate['id'] === $roleId) {
                 $role = $candidate;
+
                 break;
             }
         }

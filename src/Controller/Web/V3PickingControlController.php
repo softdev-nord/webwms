@@ -17,8 +17,9 @@ use WebWMS\Security\V3\TenantPermissionUser;
 #[Route('/v3/picking-control', name: 'v3_picking_control_')]
 final class V3PickingControlController extends AbstractController
 {
-    public function __construct(private readonly AdvancedPickingService $picking)
-    {
+    public function __construct(
+        private readonly AdvancedPickingService $picking
+    ) {
     }
 
     #[Route('', name: 'index', methods: ['GET'])]
