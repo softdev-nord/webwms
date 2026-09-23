@@ -44,7 +44,7 @@ final readonly class InventoryControlService
 
     public function classifyMaterial(string $tenantId, string $actorId, string $productId, string $hazardClassId, string $unNumber, ?string $packingGroup, string $description, DateTimeImmutable $now): string
     {
-        return $this->transactional(function () use ($tenantId, $actorId, $productId, $hazardClassId, $unNumber, $packingGroup, $description, $now): string {
+        return $this->connection->transactional(function () use ($tenantId, $actorId, $productId, $hazardClassId, $unNumber, $packingGroup, $description, $now): string {
             $this->assertOwned('wms_product_reference', $productId, $tenantId);
             $this->assertOwned('wms_hazard_class', $hazardClassId, $tenantId);
             $id = Uuid::v7()->toRfc4122();
@@ -73,7 +73,7 @@ final readonly class InventoryControlService
             throw new \InvalidArgumentException('Eine Stückliste benötigt mindestens eine Komponente.');
         }
 
-        return $this->transactional(function () use ($tenantId, $actorId, $productId, $code, $version, $items, $now): string {
+        return $this->connection->transactional(function () use ($tenantId, $actorId, $productId, $code, $version, $items, $now): string {
             $this->assertOwned('wms_product_reference', $productId, $tenantId);
             $id = Uuid::v7()->toRfc4122();
             $this->connection->insert('wms_bill_of_material', ['id' => $id, 'tenant_id' => $tenantId, 'product_id' => $productId, 'code' => $this->required($code), 'version' => $this->required($version), 'active' => 1, 'created_by' => $actorId, 'created_at' => $this->date($now)]);
@@ -107,7 +107,7 @@ final readonly class InventoryControlService
             throw new \InvalidArgumentException('Die Buchungsmenge darf nicht null sein.');
         }
 
-        return $this->transactional(function () use ($tenantId, $actorId, $partnerCode, $carrierType, $quantity, $reference, $note, $now): string {
+        return $this->connection->transactional(function () use ($tenantId, $actorId, $partnerCode, $carrierType, $quantity, $reference, $note, $now): string {
             $accountId = $this->connection->fetchOne('SELECT id FROM wms_load_carrier_account WHERE tenant_id = :tenantId AND partner_code = :partnerCode AND carrier_type = :carrierType FOR UPDATE', ['tenantId' => $tenantId, 'partnerCode' => $this->required($partnerCode), 'carrierType' => $this->required($carrierType)]);
             if (!is_string($accountId)) {
                 $accountId = Uuid::v7()->toRfc4122();
@@ -167,9 +167,4 @@ final readonly class InventoryControlService
         return $date->format('Y-m-d H:i:s.u');
     }
 
-    /** @template T @param callable(): T $callback @return T */
-    private function transactional(callable $callback): mixed
-    {
-        return $this->connection->transactional($callback);
-    }
 }
