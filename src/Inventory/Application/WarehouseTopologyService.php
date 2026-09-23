@@ -6,6 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Uid\Uuid;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Inventory\Domain\StorageBinDefinition;
 
@@ -98,6 +99,135 @@ final readonly class WarehouseTopologyService
             'putaway_enabled' => 1, 'putaway_priority' => 100,
             'created_by' => $actorId, 'created_at' => $this->date($now),
         ]);
+    }
+
+    /** @return array<string, mixed> */
+    public function topologyEntry(string $tenantId, string $resource, string $id): array
+    {
+        $table = $this->table($resource);
+        $entry = $this->connection->fetchAssociative(sprintf('SELECT * FROM %s WHERE id = :id AND tenant_id = :tenantId', $table), ['id' => $id, 'tenantId' => $tenantId]);
+        if ($entry === false) {
+            throw new InventoryReferenceNotFoundException('The topology entry does not exist in the tenant.');
+        }
+
+        return $entry;
+    }
+
+    /** @param array<string, mixed> $data */
+    public function updateTopologyEntry(string $tenantId, string $actorId, string $resource, string $id, array $data, DateTimeImmutable $now): void
+    {
+        $this->assertActor($tenantId, $actorId);
+        $before = $this->topologyEntry($tenantId, $resource, $id);
+        $changes = match ($resource) {
+            'site' => [
+                'code' => $this->code($this->string($data, 'code'), 20),
+                'name' => $this->name($this->string($data, 'name')),
+                'timezone' => $this->timezone($this->string($data, 'timezone')),
+                'status' => $this->type($this->string($data, 'status'), ['active', 'inactive']),
+                'updated_at' => $this->date($now),
+            ],
+            'warehouse' => [
+                'site_id' => $this->ownedReference('wms_site', $this->string($data, 'site_id'), $tenantId),
+                'code' => $this->code($this->string($data, 'code'), 20),
+                'name' => $this->name($this->string($data, 'name')),
+                'warehouse_type' => $this->type($this->string($data, 'warehouse_type'), ['standard', 'high_bay', 'block', 'automated']),
+            ],
+            'area' => [
+                'warehouse_id' => $this->ownedReference('wms_warehouse', $this->string($data, 'warehouse_id'), $tenantId),
+                'code' => $this->code($this->string($data, 'code'), 30),
+                'name' => $this->name($this->string($data, 'name'), 100),
+                'area_type' => $this->type($this->string($data, 'area_type'), ['storage', 'receiving', 'shipping', 'quality', 'blocked']),
+            ],
+            'aisle' => [
+                'area_id' => $this->ownedReference('wms_warehouse_area', $this->string($data, 'area_id'), $tenantId),
+                'code' => $this->code($this->string($data, 'code'), 30),
+                'name' => $this->name($this->string($data, 'name'), 100),
+            ],
+            'bin' => $this->binChanges($tenantId, $data),
+            default => throw new \InvalidArgumentException('The topology resource is not supported.'),
+        };
+
+        $this->connection->transactional(function (Connection $connection) use ($tenantId, $actorId, $resource, $id, $changes, $before, $now): void {
+            $connection->update($this->table($resource), $changes, ['id' => $id, 'tenant_id' => $tenantId]);
+            $connection->insert('wms_administration_event', [
+                'id' => Uuid::v7()->toRfc4122(), 'tenant_id' => $tenantId,
+                'aggregate_type' => 'warehouse_' . $resource, 'aggregate_id' => $id,
+                'event_type' => 'updated', 'payload' => json_encode(['before' => $before, 'after' => $changes], JSON_THROW_ON_ERROR),
+                'performed_by' => $actorId, 'occurred_at' => $this->date($now),
+            ]);
+        });
+    }
+
+    /** @param array<string, mixed> $data @return array<string, mixed> */
+    private function binChanges(string $tenantId, array $data): array
+    {
+        $warehouseId = $this->ownedReference('wms_warehouse', $this->string($data, 'warehouse_id'), $tenantId);
+        $areaId = $this->ownedReference('wms_warehouse_area', $this->string($data, 'area_id'), $tenantId);
+        $aisleId = $this->ownedReference('wms_warehouse_aisle', $this->string($data, 'aisle_id'), $tenantId);
+        if ($this->connection->fetchOne('SELECT 1 FROM wms_warehouse_aisle a JOIN wms_warehouse_area ar ON ar.id = a.area_id WHERE a.id = :aisle AND ar.id = :area AND ar.warehouse_id = :warehouse AND a.tenant_id = :tenant', ['aisle' => $aisleId, 'area' => $areaId, 'warehouse' => $warehouseId, 'tenant' => $tenantId]) === false) {
+            throw new InventoryReferenceNotFoundException('The bin hierarchy is invalid.');
+        }
+        $bin = new StorageBinDefinition($this->string($data, 'code'), $this->string($data, 'level_code'), $this->string($data, 'bin_code'), $this->string($data, 'location_type'), $this->integer($data, 'capacity_quantity'));
+
+        return ['warehouse_id' => $warehouseId, 'area_id' => $areaId, 'aisle_id' => $aisleId, 'code' => $bin->code(), 'level_code' => $bin->levelCode(), 'bin_code' => $bin->binCode(), 'location_type' => $bin->locationType(), 'capacity_quantity' => $bin->capacityQuantity(), 'putaway_enabled' => $this->boolean($data, 'putaway_enabled') ? 1 : 0, 'putaway_priority' => $this->integer($data, 'putaway_priority')];
+    }
+
+    private function table(string $resource): string
+    {
+        return match ($resource) {
+            'site' => 'wms_site', 'warehouse' => 'wms_warehouse', 'area' => 'wms_warehouse_area',
+            'aisle' => 'wms_warehouse_aisle', 'bin' => 'wms_storage_location',
+            default => throw new \InvalidArgumentException('The topology resource is not supported.'),
+        };
+    }
+
+    private function ownedReference(string $table, string $id, string $tenantId): string
+    {
+        if (!$this->referenceExists($table, $id, $tenantId)) {
+            throw new InventoryReferenceNotFoundException('The referenced topology entry does not exist in the tenant.');
+        }
+
+        return $id;
+    }
+
+    /** @param array<string, mixed> $data */
+    private function string(array $data, string $field): string
+    {
+        $value = $data[$field] ?? null;
+        if (!is_string($value) || trim($value) === '') {
+            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+        }
+
+        return trim($value);
+    }
+
+    /** @param array<string, mixed> $data */
+    private function integer(array $data, string $field): int
+    {
+        $value = $data[$field] ?? null;
+        if (is_string($value) && ctype_digit($value)) {
+            return (int) $value;
+        }
+        if (!is_int($value)) {
+            throw new \InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
+        }
+
+        return $value;
+    }
+
+    /** @param array<string, mixed> $data */
+    private function boolean(array $data, string $field): bool
+    {
+        return filter_var($data[$field] ?? false, FILTER_VALIDATE_BOOL);
+    }
+
+    private function timezone(string $timezone): string
+    {
+        if (!in_array($timezone, timezone_identifiers_list(), true)) {
+            throw new \InvalidArgumentException('The site timezone is invalid.');
+        }
+
+        return $timezone;
     }
 
     private function assertActor(string $tenantId, string $actorId): void

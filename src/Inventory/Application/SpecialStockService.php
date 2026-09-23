@@ -29,6 +29,29 @@ final readonly class SpecialStockService
         ]);
     }
 
+    /** @return array<string, mixed> */
+    public function type(string $tenantId, string $typeId): array
+    {
+        $type = $this->connection->fetchAssociative('SELECT * FROM wms_special_stock_type WHERE id = :id AND tenant_id = :tenantId', ['id' => $typeId, 'tenantId' => $tenantId]);
+        if ($type === false) {
+            throw new InventoryReferenceNotFoundException('The special stock type does not exist in the tenant.');
+        }
+
+        return $type;
+    }
+
+    public function updateType(string $tenantId, string $typeId, string $code, string $name, string $kind, bool $allocatable, bool $active, string $actorId, DateTimeImmutable $now): void
+    {
+        $definition = new SpecialStockTypeDefinition($code, $name, $kind, $allocatable);
+        $this->assertActor($tenantId, $actorId);
+        $before = $this->type($tenantId, $typeId);
+        $after = ['code' => $definition->code, 'name' => $definition->name, 'classification_kind' => $definition->kind, 'allocatable' => $definition->allocatable ? 1 : 0, 'active' => $active ? 1 : 0];
+        $this->connection->transactional(function (Connection $connection) use ($tenantId, $typeId, $actorId, $now, $before, $after): void {
+            $connection->update('wms_special_stock_type', $after, ['id' => $typeId, 'tenant_id' => $tenantId]);
+            $connection->insert('wms_administration_event', ['id' => Uuid::v7()->toRfc4122(), 'tenant_id' => $tenantId, 'aggregate_type' => 'special_stock_type', 'aggregate_id' => $typeId, 'event_type' => 'updated', 'payload' => json_encode(['before' => $before, 'after' => $after], JSON_THROW_ON_ERROR), 'performed_by' => $actorId, 'occurred_at' => $this->date($now)]);
+        });
+    }
+
     public function classify(string $tenantId, string $productId, string $locationId, string $stockKey, string $typeId, ?string $ownerReference, string $reason, string $actorId, DateTimeImmutable $now): void
     {
         $ownerReference = $this->optional($ownerReference, 100);

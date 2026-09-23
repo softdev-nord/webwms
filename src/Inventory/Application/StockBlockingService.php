@@ -45,6 +45,29 @@ final readonly class StockBlockingService
         ]);
     }
 
+    /** @return array<string, mixed> */
+    public function reason(string $tenantId, string $reasonId): array
+    {
+        $reason = $this->connection->fetchAssociative('SELECT * FROM wms_stock_block_reason WHERE id = :id AND tenant_id = :tenantId', ['id' => $reasonId, 'tenantId' => $tenantId]);
+        if ($reason === false) {
+            throw new InventoryReferenceNotFoundException('The stock block reason does not exist in the tenant.');
+        }
+
+        return $reason;
+    }
+
+    public function updateReason(string $tenantId, string $reasonId, string $code, string $name, ?string $description, bool $active, string $actorId, DateTimeImmutable $now): void
+    {
+        $reason = new StockBlockReasonDefinition($code, $name, $description, $active);
+        $this->assertUser($tenantId, $actorId);
+        $before = $this->reason($tenantId, $reasonId);
+        $after = ['code' => $reason->code, 'name' => $reason->name, 'description' => $reason->description, 'active' => $reason->active ? 1 : 0];
+        $this->connection->transactional(function (Connection $connection) use ($tenantId, $reasonId, $actorId, $now, $before, $after): void {
+            $connection->update('wms_stock_block_reason', $after, ['id' => $reasonId, 'tenant_id' => $tenantId]);
+            $connection->insert('wms_administration_event', ['id' => Uuid::v7()->toRfc4122(), 'tenant_id' => $tenantId, 'aggregate_type' => 'stock_block_reason', 'aggregate_id' => $reasonId, 'event_type' => 'updated', 'payload' => json_encode(['before' => $before, 'after' => $after], JSON_THROW_ON_ERROR), 'performed_by' => $actorId, 'occurred_at' => $this->date($now)]);
+        });
+    }
+
     public function block(
         string $id,
         string $tenantId,

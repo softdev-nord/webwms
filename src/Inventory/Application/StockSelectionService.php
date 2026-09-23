@@ -58,6 +58,35 @@ final readonly class StockSelectionService
         ]);
     }
 
+    /** @return array<string, mixed> */
+    public function rule(string $tenantId, string $ruleId): array
+    {
+        $rule = $this->connection->fetchAssociative('SELECT * FROM wms_stock_selection_rule WHERE id = :id AND tenant_id = :tenantId', ['id' => $ruleId, 'tenantId' => $tenantId]);
+        if ($rule === false) {
+            throw new InventoryReferenceNotFoundException('The stock selection rule does not exist in the tenant.');
+        }
+
+        return $rule;
+    }
+
+    public function updateRule(string $tenantId, string $ruleId, string $code, string $name, string $strategy, int $priority, bool $enabled, ?string $warehouseId, ?string $productId, string $actorId, DateTimeImmutable $now): void
+    {
+        $definition = new StockSelectionRuleDefinition($code, $name, StockSelectionStrategy::fromInput($strategy), $priority, $enabled);
+        $this->assertTenantReference('wms_user_account', $actorId, $tenantId);
+        if ($warehouseId !== null) {
+            $this->assertTenantReference('wms_warehouse', $warehouseId, $tenantId);
+        }
+        if ($productId !== null) {
+            $this->assertTenantReference('wms_product_reference', $productId, $tenantId);
+        }
+        $before = $this->rule($tenantId, $ruleId);
+        $after = ['warehouse_id' => $warehouseId, 'product_id' => $productId, 'code' => $definition->code, 'name' => $definition->name, 'strategy' => $definition->strategy->value, 'priority' => $definition->priority, 'enabled' => $definition->enabled ? 1 : 0];
+        $this->connection->transactional(function (Connection $connection) use ($tenantId, $ruleId, $actorId, $now, $before, $after): void {
+            $connection->update('wms_stock_selection_rule', $after, ['id' => $ruleId, 'tenant_id' => $tenantId]);
+            $connection->insert('wms_administration_event', ['id' => Uuid::v7()->toRfc4122(), 'tenant_id' => $tenantId, 'aggregate_type' => 'stock_selection_rule', 'aggregate_id' => $ruleId, 'event_type' => 'updated', 'payload' => json_encode(['before' => $before, 'after' => $after], JSON_THROW_ON_ERROR), 'performed_by' => $actorId, 'occurred_at' => $now->format('Y-m-d H:i:s.u')]);
+        });
+    }
+
     public function allocate(
         string $tenantId,
         string $reservationId,

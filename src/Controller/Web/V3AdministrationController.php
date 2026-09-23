@@ -124,6 +124,72 @@ final class V3AdministrationController extends AbstractController
         ]);
     }
 
+    #[Route('/users', name: 'users', methods: ['GET'])]
+    #[IsGranted('administration.user.read')]
+    public function users(): Response
+    {
+        return $this->render('v3/administration/users.html.twig', ['users' => $this->administration->users($this->tenantUser()->tenantId()), 'page' => 'Benutzer']);
+    }
+
+    #[Route('/users/{userId}/edit', name: 'user_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('administration.user.write')]
+    public function editUser(string $userId, Request $request): Response
+    {
+        $current = $this->tenantUser();
+        $users = array_values(array_filter($this->administration->users($current->tenantId()), static fn (array $user): bool => $user['id'] === $userId));
+        if (!isset($users[0])) {
+            throw $this->createNotFoundException();
+        }
+        if ($request->isMethod('POST')) {
+            $this->assertCsrf($request, 'v3_administration_user_edit_' . $userId);
+            $active = $request->request->getBoolean('active');
+            if (!$active && $userId === $current->actorId()) {
+                throw new \InvalidArgumentException('Der aktuell angemeldete Benutzer kann sich nicht selbst deaktivieren.');
+            }
+            $this->administration->setUserRoles($current->tenantId(), $current->actorId(), $userId, $this->stringList($request, 'role_ids'), new DateTimeImmutable());
+            $this->administration->setUserActive($current->tenantId(), $userId, $active, new DateTimeImmutable());
+            $this->addFlash('success', 'Der Benutzer wurde aktualisiert.');
+
+            return $this->redirectToRoute('v3_administration_users');
+        }
+
+        return $this->render('v3/administration/user_edit.html.twig', ['user' => $users[0], 'roles' => $this->administration->roles($current->tenantId()), 'page' => 'Benutzer bearbeiten']);
+    }
+
+    #[Route('/roles', name: 'roles', methods: ['GET'])]
+    #[IsGranted('administration.role.read')]
+    public function roles(): Response
+    {
+        return $this->render('v3/administration/roles.html.twig', ['roles' => $this->administration->roles($this->tenantUser()->tenantId()), 'page' => 'Rollen']);
+    }
+
+    #[Route('/api-clients', name: 'api_clients', methods: ['GET'])]
+    #[IsGranted('administration.api_client.read')]
+    public function apiClients(): Response
+    {
+        return $this->render('v3/administration/api_clients.html.twig', ['clients' => $this->administration->apiClients($this->tenantUser()->tenantId()), 'page' => 'API-Clients']);
+    }
+
+    #[Route('/api-clients/{clientId}/edit', name: 'api_client_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('administration.api_client.write')]
+    public function editApiClient(string $clientId, Request $request): Response
+    {
+        $user = $this->tenantUser();
+        $clients = array_values(array_filter($this->administration->apiClients($user->tenantId()), static fn (array $client): bool => $client['id'] === $clientId));
+        if (!isset($clients[0])) {
+            throw $this->createNotFoundException();
+        }
+        if ($request->isMethod('POST')) {
+            $this->assertCsrf($request, 'v3_administration_api_client_edit_' . $clientId);
+            $this->administration->setApiClientActive($user->tenantId(), $clientId, $request->request->getBoolean('active'));
+            $this->addFlash('success', 'Der API-Client wurde aktualisiert.');
+
+            return $this->redirectToRoute('v3_administration_api_clients');
+        }
+
+        return $this->render('v3/administration/api_client_edit.html.twig', ['client' => $clients[0], 'page' => 'API-Client bearbeiten']);
+    }
+
     #[Route('/roles/new', name: 'role_new', methods: ['GET', 'POST'])]
     #[IsGranted('administration.role.write')]
     public function createRole(Request $request): Response
@@ -141,7 +207,7 @@ final class V3AdministrationController extends AbstractController
             ));
             $this->addFlash('success', 'Die Rolle wurde angelegt.');
 
-            return $this->redirectToRoute('v3_administration_index');
+            return $this->redirectToRoute('v3_administration_roles');
         }
 
         return $this->render('v3/administration/role_new.html.twig', [
@@ -168,7 +234,7 @@ final class V3AdministrationController extends AbstractController
             ));
             $this->addFlash('success', 'Der Benutzer wurde angelegt.');
 
-            return $this->redirectToRoute('v3_administration_index');
+            return $this->redirectToRoute('v3_administration_users');
         }
 
         return $this->render('v3/administration/user_new.html.twig', [
@@ -227,7 +293,7 @@ final class V3AdministrationController extends AbstractController
             $this->administration->updateRole($user->tenantId(), $user->actorId(), $roleId, $this->required($request, 'name'), $this->stringList($request, 'permissions'), new DateTimeImmutable());
             $this->addFlash('success', 'Die Rolle wurde aktualisiert.');
 
-            return $this->redirectToRoute('v3_administration_index');
+            return $this->redirectToRoute('v3_administration_roles');
         }
 
         return $this->render('v3/administration/role_edit.html.twig', ['role' => $role, 'permissions' => V3PermissionCatalog::ALL, 'page' => 'Rolle bearbeiten']);

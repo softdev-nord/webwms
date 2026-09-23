@@ -42,6 +42,41 @@ final class V3WarehouseController extends AbstractController
         ]);
     }
 
+    #[Route('/topology/{resource}/new', name: 'topology_new', requirements: ['resource' => 'site|warehouse|area|aisle|bin'], methods: ['GET'])]
+    #[IsGranted('inventory.topology.write')]
+    public function newTopologyEntry(string $resource): Response
+    {
+        return $this->render('v3/inventory/topology_form.html.twig', [
+            'page' => 'Topologieeintrag anlegen', 'resource' => $resource, 'entry' => null,
+            'topology' => $this->queries->warehouseTopology($this->user()->tenantId()),
+        ]);
+    }
+
+    #[Route('/topology/{resource}/{id}/edit', name: 'topology_edit', requirements: ['resource' => 'site|warehouse|area|aisle|bin'], methods: ['GET'])]
+    #[IsGranted('inventory.topology.write')]
+    public function editTopologyEntry(string $resource, string $id): Response
+    {
+        $user = $this->user();
+
+        return $this->render('v3/inventory/topology_form.html.twig', [
+            'page' => 'Topologieeintrag bearbeiten', 'resource' => $resource,
+            'entry' => $this->topology->topologyEntry($user->tenantId(), $resource, $id),
+            'topology' => $this->queries->warehouseTopology($user->tenantId()),
+        ]);
+    }
+
+    #[Route('/topology/{resource}/{id}', name: 'topology_update', requirements: ['resource' => 'site|warehouse|area|aisle|bin'], methods: ['POST'])]
+    #[IsGranted('inventory.topology.write')]
+    public function updateTopologyEntry(string $resource, string $id, Request $request): Response
+    {
+        $this->csrf($request, 'v3_inventory_topology_update_' . $resource . '_' . $id);
+        $user = $this->user();
+        $this->topology->updateTopologyEntry($user->tenantId(), $user->actorId(), $resource, $id, $request->request->all(), new DateTimeImmutable());
+        $this->addFlash('success', 'Der Topologieeintrag wurde aktualisiert.');
+
+        return $this->redirectToRoute('v3_inventory_topology');
+    }
+
     #[Route('/topology/sites', name: 'site_create', methods: ['POST'])]
     #[IsGranted('inventory.topology.write')]
     public function createSite(Request $request): Response
@@ -179,6 +214,32 @@ final class V3WarehouseController extends AbstractController
         ]);
     }
 
+    #[Route('/special-stock/types/new', name: 'special_stock_type_new', methods: ['GET'])]
+    #[IsGranted('inventory.special_stock.write')]
+    public function newSpecialStockType(): Response
+    {
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'Sonderbestandskennzeichen anlegen', 'kind' => 'special_stock_type', 'entry' => null]);
+    }
+
+    #[Route('/special-stock/types/{typeId}/edit', name: 'special_stock_type_edit', methods: ['GET'])]
+    #[IsGranted('inventory.special_stock.write')]
+    public function editSpecialStockType(string $typeId): Response
+    {
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'Sonderbestandskennzeichen bearbeiten', 'kind' => 'special_stock_type', 'entry' => $this->specialStock->type($this->user()->tenantId(), $typeId)]);
+    }
+
+    #[Route('/special-stock/types/{typeId}', name: 'special_stock_type_update', methods: ['POST'])]
+    #[IsGranted('inventory.special_stock.write')]
+    public function updateSpecialStockType(string $typeId, Request $request): Response
+    {
+        $this->csrf($request, 'v3_inventory_special_stock_type_update_' . $typeId);
+        $user = $this->user();
+        $this->specialStock->updateType($user->tenantId(), $typeId, $this->required($request, 'code'), $this->required($request, 'name'), $this->required($request, 'classification_kind'), $request->request->getBoolean('allocatable'), $request->request->getBoolean('active'), $user->actorId(), new DateTimeImmutable());
+        $this->addFlash('success', 'Das Sonderbestandskennzeichen wurde aktualisiert.');
+
+        return $this->redirectToRoute('v3_inventory_special_stock');
+    }
+
     #[Route('/special-stock/types', name: 'special_stock_type_create', methods: ['POST'])]
     #[IsGranted('inventory.special_stock.write')]
     public function createSpecialStockType(Request $request): Response
@@ -222,6 +283,22 @@ final class V3WarehouseController extends AbstractController
         return $this->redirectToRoute('v3_inventory_special_stock');
     }
 
+    #[Route('/special-stock/classify', name: 'special_stock_classify_form', methods: ['GET'])]
+    #[IsGranted('inventory.special_stock.write')]
+    public function classifyStockForm(Request $request): Response
+    {
+        $user = $this->user();
+        $productId = $this->query($request, 'product');
+        $locationId = $this->query($request, 'location');
+        $stockKey = $this->query($request, 'stock_key');
+        $stock = array_values(array_filter($this->queries->stock($user->tenantId(), null, 500, null), static fn (array $row): bool => $row['product_id'] === $productId && $row['location_id'] === $locationId && $row['stock_key'] === $stockKey));
+        if (!isset($stock[0])) {
+            throw $this->createNotFoundException('Der Bestand wurde nicht gefunden.');
+        }
+
+        return $this->render('v3/inventory/special_stock_classify.html.twig', ['page' => 'Sonderbestand klassifizieren', 'row' => $stock[0], 'types' => $this->queries->specialStockTypes($user->tenantId())]);
+    }
+
     #[Route('/selection-rules', name: 'selection_rules', methods: ['GET'])]
     #[IsGranted('inventory.selection_rule.read')]
     public function selectionRules(): Response
@@ -235,6 +312,36 @@ final class V3WarehouseController extends AbstractController
             'warehouses' => $this->queries->warehouses($user->tenantId()),
             'products' => $this->queries->products($user->tenantId(), 500, null),
         ]);
+    }
+
+    #[Route('/selection-rules/new', name: 'selection_rule_new', methods: ['GET'])]
+    #[IsGranted('inventory.selection_rule.write')]
+    public function newSelectionRule(): Response
+    {
+        $user = $this->user();
+
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'Entnahmestrategie anlegen', 'kind' => 'selection_rule', 'entry' => null, 'warehouses' => $this->queries->warehouses($user->tenantId()), 'products' => $this->queries->products($user->tenantId(), 500, null)]);
+    }
+
+    #[Route('/selection-rules/{ruleId}/edit', name: 'selection_rule_edit', methods: ['GET'])]
+    #[IsGranted('inventory.selection_rule.write')]
+    public function editSelectionRule(string $ruleId): Response
+    {
+        $user = $this->user();
+
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'Entnahmestrategie bearbeiten', 'kind' => 'selection_rule', 'entry' => $this->stockSelection->rule($user->tenantId(), $ruleId), 'warehouses' => $this->queries->warehouses($user->tenantId()), 'products' => $this->queries->products($user->tenantId(), 500, null)]);
+    }
+
+    #[Route('/selection-rules/{ruleId}', name: 'selection_rule_update', methods: ['POST'])]
+    #[IsGranted('inventory.selection_rule.write')]
+    public function updateSelectionRule(string $ruleId, Request $request): Response
+    {
+        $this->csrf($request, 'v3_inventory_selection_rule_update_' . $ruleId);
+        $user = $this->user();
+        $this->stockSelection->updateRule($user->tenantId(), $ruleId, $this->required($request, 'code'), $this->required($request, 'name'), $this->required($request, 'strategy'), $this->positiveInt($request, 'priority'), $request->request->getBoolean('enabled'), $this->optional($request, 'warehouse_id'), $this->optional($request, 'product_id'), $user->actorId(), new DateTimeImmutable());
+        $this->addFlash('success', 'Die Entnahmestrategie wurde aktualisiert.');
+
+        return $this->redirectToRoute('v3_inventory_selection_rules');
     }
 
     #[Route('/selection-rules', name: 'selection_rule_create', methods: ['POST'])]
@@ -263,19 +370,78 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/stock-blocks', name: 'stock_blocks', methods: ['GET'])]
     #[IsGranted('inventory.stock_block.read')]
-    public function stockBlocks(Request $request): Response
+    public function stockBlocks(): Response
     {
         $user = $this->user();
-        $selectedBlock = $this->query($request, 'block');
 
         return $this->render('v3/inventory/stock_blocks.html.twig', [
             'page' => 'Bestandssperren',
             'reasons' => $this->queries->stockBlockReasons($user->tenantId()),
             'blocks' => $this->queries->stockBlocks($user->tenantId()),
             'stock' => $this->queries->stock($user->tenantId(), null, 500, null),
-            'events' => $selectedBlock === null ? [] : $this->queries->stockBlockEvents($user->tenantId(), $selectedBlock),
-            'selectedBlock' => $selectedBlock,
         ]);
+    }
+
+    #[Route('/stock-blocks/{blockId}', name: 'stock_block_show', methods: ['GET'])]
+    #[IsGranted('inventory.stock_block.read')]
+    public function stockBlock(string $blockId): Response
+    {
+        $user = $this->user();
+        $blocks = array_values(array_filter($this->queries->stockBlocks($user->tenantId()), static fn (array $row): bool => $row['id'] === $blockId));
+        if (!isset($blocks[0])) {
+            throw $this->createNotFoundException('Die Bestandssperre wurde nicht gefunden.');
+        }
+
+        return $this->render('v3/inventory/stock_block_show.html.twig', ['page' => 'Bestandssperre bearbeiten', 'block' => $blocks[0], 'events' => $this->queries->stockBlockEvents($user->tenantId(), $blockId)]);
+    }
+
+    #[Route('/stock-blocks/reasons/new', name: 'stock_block_reason_new', methods: ['GET'])]
+    #[IsGranted('inventory.stock_block.write')]
+    public function newStockBlockReason(): Response
+    {
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'Sperrgrund anlegen', 'kind' => 'stock_block_reason', 'entry' => null]);
+    }
+
+    #[Route('/stock-blocks/reasons', name: 'stock_block_reasons', methods: ['GET'])]
+    #[IsGranted('inventory.stock_block.read')]
+    public function stockBlockReasons(): Response
+    {
+        return $this->render('v3/inventory/stock_block_reasons.html.twig', ['page' => 'Sperrgründe', 'reasons' => $this->queries->stockBlockReasons($this->user()->tenantId())]);
+    }
+
+    #[Route('/stock-blocks/new', name: 'stock_block_new', methods: ['GET'])]
+    #[IsGranted('inventory.stock_block.write')]
+    public function newStockBlock(Request $request): Response
+    {
+        $user = $this->user();
+        $productId = $this->query($request, 'product');
+        $locationId = $this->query($request, 'location');
+        $stockKey = $this->query($request, 'stock_key');
+        $stock = array_values(array_filter($this->queries->stock($user->tenantId(), null, 500, null), static fn (array $row): bool => $row['product_id'] === $productId && $row['location_id'] === $locationId && $row['stock_key'] === $stockKey));
+        if (!isset($stock[0])) {
+            throw $this->createNotFoundException('Der Bestand wurde nicht gefunden.');
+        }
+
+        return $this->render('v3/inventory/stock_block_new.html.twig', ['page' => 'Bestand sperren', 'row' => $stock[0], 'reasons' => $this->queries->stockBlockReasons($user->tenantId())]);
+    }
+
+    #[Route('/stock-blocks/reasons/{reasonId}/edit', name: 'stock_block_reason_edit', methods: ['GET'])]
+    #[IsGranted('inventory.stock_block.write')]
+    public function editStockBlockReason(string $reasonId): Response
+    {
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'Sperrgrund bearbeiten', 'kind' => 'stock_block_reason', 'entry' => $this->stockBlocking->reason($this->user()->tenantId(), $reasonId)]);
+    }
+
+    #[Route('/stock-blocks/reasons/{reasonId}', name: 'stock_block_reason_update', methods: ['POST'])]
+    #[IsGranted('inventory.stock_block.write')]
+    public function updateStockBlockReason(string $reasonId, Request $request): Response
+    {
+        $this->csrf($request, 'v3_inventory_stock_block_reason_update_' . $reasonId);
+        $user = $this->user();
+        $this->stockBlocking->updateReason($user->tenantId(), $reasonId, $this->required($request, 'code'), $this->required($request, 'name'), $this->optional($request, 'description'), $request->request->getBoolean('active'), $user->actorId(), new DateTimeImmutable());
+        $this->addFlash('success', 'Der Sperrgrund wurde aktualisiert.');
+
+        return $this->redirectToRoute('v3_inventory_stock_blocks');
     }
 
     #[Route('/stock-blocks/reasons', name: 'stock_block_reason_create', methods: ['POST'])]
