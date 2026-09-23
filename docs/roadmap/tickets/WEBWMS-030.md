@@ -2,7 +2,7 @@
 id: WEBWMS-030
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Backend umgesetzt
+status: Done
 priority: High
 story_points: 8
 component: "Lagerverwaltung"
@@ -44,13 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
 Umgesetzt sind zyklische Inventurpläne mit Lagerbereich, Intervall und Fälligkeit sowie die transaktionale Erzeugung regulärer Inventurbelege aus fälligen Plänen. Nach der Ausführung wird der nächste Termin fortgeschrieben; parallele offene Zählungen desselben Bereichs werden verhindert.
 
 Nachweise: `CycleCountPlan`, `CycleCountExecution`, die Application-Handler `CreateCycleCountPlanHandler` und `StartDueCycleCountHandler`, `DbalInventoryRepository` sowie Migration `Version20260918160000`.
 
-API/UI, ticketbezogene Autorisierung und Datenbank-Integrationstests sind noch offen; das Ticket ist deshalb nicht `Done`.
+REST- und Web-Oberfläche, ticketbezogene Autorisierung und automatisierte Tests vervollständigen den vorhandenen Inventur-Kern; das Ticket ist abgeschlossen.
 
 ## Quelle
 

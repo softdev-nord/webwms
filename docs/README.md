@@ -75,6 +75,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Ladelisten über API v3 bearbeiten](user/loading-api.md)
 - [Statusmeldungen über die Outbox übernehmen](user/integration-outbox.md)
 - [Zusatzfunktionen im Platform Control Center](user/platform-control-center.md)
+- [Inventory Control Center](user/inventory-control-center.md)
 - [Bestände über API v3 umbuchen](user/inventory-movement-api.md)
 - [ERP-System anbinden](user/erp-integration.md)
 

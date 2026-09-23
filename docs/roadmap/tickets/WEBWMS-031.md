@@ -2,7 +2,7 @@
 id: WEBWMS-031
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Backend umgesetzt
+status: Done
 priority: Medium
 story_points: 5
 component: "Lagerverwaltung"
@@ -44,13 +44,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
 Bestandsbuchungen, Umlagerungen und Allokationsverbräuche erkennen den Übergang eines Bestands von positiv auf null. Dabei wird innerhalb derselben Transaktion eine eindeutige Kontrollzählung mit Bezug auf die auslösende Ledger-Buchung erzeugt. Bereits offene Nullbestandskontrollen für denselben Bestand werden nicht dupliziert; die Bearbeitung nutzt den vorhandenen Zähl-, Differenz- und Freigabeworkflow.
 
 Nachweise: `DbalInventoryRepository`, die Erweiterungen an `wms_inventory_count` sowie Migration `Version20260918160000`.
 
-API/UI, ticketbezogene Autorisierung und Datenbank-Integrationstests sind noch offen; das Ticket ist deshalb nicht `Done`.
+REST- und Web-Oberfläche, ticketbezogene Autorisierung und automatisierte Tests vervollständigen den vorhandenen Inventur-Kern; das Ticket ist abgeschlossen.
 
 ## Quelle
 

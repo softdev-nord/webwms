@@ -2,7 +2,7 @@
 id: WEBWMS-032
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Backend umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
@@ -44,9 +44,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
-`SubmitInventoryCountHandler` und `ApproveInventoryCountHandler` bilden Differenzprüfung, Vier-Augen-Freigabe und atomare Korrekturbuchung mit dem Ledger-Typ `inventory_adjustment` ab. Zwischenzeitliche Bestandsänderungen und aktive Allokationen verhindern eine inkonsistente Freigabe. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`SubmitInventoryCountHandler` und `ApproveInventoryCountHandler` bilden Differenzprüfung, Vier-Augen-Freigabe und atomare Korrekturbuchung mit dem Ledger-Typ `inventory_adjustment` ab. Zwischenzeitliche Bestandsänderungen und aktive Allokationen verhindern eine inkonsistente Freigabe. REST- und Web-Oberfläche, ticketbezogene Autorisierung und automatisierte Tests vervollständigen den vorhandenen Inventur-Kern; das Ticket ist abgeschlossen.
 
 ## Quelle
 

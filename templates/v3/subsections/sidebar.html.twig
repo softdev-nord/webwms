@@ -57,7 +57,7 @@
                 </li>
                 {% if is_granted('platform.read') %}<li class="nav-item"><a class="nav-link menu-link {{ currentRoute starts with 'v3_platform_' ? 'active' : '' }}" href="{{ path('v3_platform_index') }}"><i class="ri-apps-2-line"></i><span>Platform Control Center</span></a></li>{% endif %}
 
-                {% if is_granted('inventory.stock.read') or is_granted('inventory.topology.read') or is_granted('inventory.overview.read') or is_granted('inventory.stock.movement.read') or is_granted('inventory.traceability.read') or is_granted('inventory.special_stock.read') or is_granted('inventory.selection_rule.read') or is_granted('inventory.stock_block.read') %}
+                {% if is_granted('inventory.stock.read') or is_granted('inventory.topology.read') or is_granted('inventory.overview.read') or is_granted('inventory.stock.movement.read') or is_granted('inventory.traceability.read') or is_granted('inventory.special_stock.read') or is_granted('inventory.selection_rule.read') or is_granted('inventory.stock_block.read') or is_granted('inventory.control.read') %}
                     <li class="nav-item">
                         <a class="nav-link menu-link {{ inventoryOpen ? '' : 'collapsed' }}" href="#sidebarInventory" data-bs-toggle="collapse" role="button" aria-expanded="{{ inventoryOpen ? 'true' : 'false' }}" aria-controls="sidebarInventory">
                             <i class="ri-store-2-line"></i><span>Lager &amp; Bestand</span>
@@ -73,6 +73,7 @@
                                 {% if is_granted('inventory.special_stock.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_inventory_special_stock' ? 'active' : '' }}" href="{{ path('v3_inventory_special_stock') }}">Sonderbestände</a></li>{% endif %}
                                 {% if is_granted('inventory.selection_rule.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_inventory_selection_rule' ? 'active' : '' }}" href="{{ path('v3_inventory_selection_rules') }}">Entnahmestrategien</a></li>{% endif %}
                                 {% if is_granted('inventory.stock_block.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_inventory_stock_block' ? 'active' : '' }}" href="{{ path('v3_inventory_stock_blocks') }}">Bestandssperren</a></li>{% endif %}
+                                {% if is_granted('inventory.control.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_inventory_control' ? 'active' : '' }}" href="{{ path('v3_inventory_control_index') }}">Inventory Control Center</a></li>{% endif %}
                             </ul>
                         </div>
                     </li>

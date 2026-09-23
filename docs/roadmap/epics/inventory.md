@@ -15,10 +15,10 @@ Alle 18 dokumentierten Funktionen des Bereichs Lagerverwaltung werden fachlich k
 | [WEBWMS-023](../tickets/WEBWMS-023.md) | FIFO/LIFO implementieren | Done | Highest | 8 |
 | [WEBWMS-024](../tickets/WEBWMS-024.md) | FEFO implementieren | Done | High | 8 |
 | [WEBWMS-025](../tickets/WEBWMS-025.md) | Sperrlisten und Sperrgründe implementieren | Done | Highest | 5 |
-| [WEBWMS-026](../tickets/WEBWMS-026.md) | Gefahrstoffverwaltung implementieren | Offen | Medium | 8 |
-| [WEBWMS-027](../tickets/WEBWMS-027.md) | Stücklisten implementieren | Offen | Medium | 8 |
-| [WEBWMS-028](../tickets/WEBWMS-028.md) | LHM-Konto implementieren | Offen | Medium | 5 |
-| [WEBWMS-029](../tickets/WEBWMS-029.md) | Stichtagsinventur implementieren | Backend umgesetzt | Highest | 8 |
-| [WEBWMS-030](../tickets/WEBWMS-030.md) | Permanente Inventur implementieren | Backend umgesetzt | High | 8 |
-| [WEBWMS-031](../tickets/WEBWMS-031.md) | Nulldurchgangsinventur implementieren | Backend umgesetzt | Medium | 5 |
-| [WEBWMS-032](../tickets/WEBWMS-032.md) | Differenz- und Freigabeworkflow implementieren | Backend umgesetzt | Highest | 8 |
+| [WEBWMS-026](../tickets/WEBWMS-026.md) | Gefahrstoffverwaltung implementieren | Done | Medium | 8 |
+| [WEBWMS-027](../tickets/WEBWMS-027.md) | Stücklisten implementieren | Done | Medium | 8 |
+| [WEBWMS-028](../tickets/WEBWMS-028.md) | LHM-Konto implementieren | Done | Medium | 5 |
+| [WEBWMS-029](../tickets/WEBWMS-029.md) | Stichtagsinventur implementieren | Done | Highest | 8 |
+| [WEBWMS-030](../tickets/WEBWMS-030.md) | Permanente Inventur implementieren | Done | High | 8 |
+| [WEBWMS-031](../tickets/WEBWMS-031.md) | Nulldurchgangsinventur implementieren | Done | Medium | 5 |
+| [WEBWMS-032](../tickets/WEBWMS-032.md) | Differenz- und Freigabeworkflow implementieren | Done | Highest | 8 |

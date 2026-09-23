@@ -440,6 +440,49 @@ final readonly class ExtendedDemoDatasetService
             'counted_by' => $number % 2 === 0 ? null : DemoBootstrapService::USER_ID,
             'counted_at' => $number % 2 === 0 ? null : $this->date($createdAt),
         ]);
+        $hazardClassId = $this->id('hazard-class', $number);
+        $bomId = $this->id('bom', $number);
+        $carrierAccountId = $this->id('carrier-account', $number);
+        $this->insert('wms_hazard_class', $hazardClassId, [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'code' => 'HZ-' . $suffix,
+            'name' => 'Demo-Gefahrstoffklasse ' . $suffix, 'un_class' => (string) (($number % 9) + 1),
+            'created_by' => DemoBootstrapService::USER_ID, 'created_at' => $this->date($createdAt),
+        ]);
+        $this->insert('wms_hazardous_material', $this->id('hazardous-material', $number), [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'product_id' => $references['productId'],
+            'hazard_class_id' => $hazardClassId, 'un_number' => 'UN' . (1000 + $number),
+            'packing_group' => 'II', 'description' => 'Demo-Gefahrstoff ' . $suffix,
+            'created_by' => DemoBootstrapService::USER_ID, 'created_at' => $this->date($createdAt),
+        ]);
+        $this->insert('wms_storage_restriction', $this->id('storage-restriction', $number), [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'hazard_class_id' => $hazardClassId,
+            'location_prefix' => 'L-' . $suffix, 'allowed' => 1, 'max_quantity' => 100,
+            'created_by' => DemoBootstrapService::USER_ID, 'created_at' => $this->date($createdAt),
+        ]);
+        $this->insert('wms_bill_of_material', $bomId, [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'product_id' => $references['productId'],
+            'code' => 'BOM-' . $suffix, 'version' => '1', 'active' => 1,
+            'created_by' => DemoBootstrapService::USER_ID, 'created_at' => $this->date($createdAt),
+        ]);
+        $this->insert('wms_bom_item', $this->id('bom-item', $number), [
+            'bill_of_material_id' => $bomId, 'component_product_id' => $references['productId'],
+            'quantity' => ($number % 5) + 1, 'position' => 1,
+        ]);
+        $this->insert('wms_material_requirement', $this->id('material-requirement', $number), [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'bill_of_material_id' => $bomId,
+            'reference' => 'PROD-' . $suffix, 'production_quantity' => 10, 'status' => 'planned',
+            'created_by' => DemoBootstrapService::USER_ID, 'created_at' => $this->date($createdAt),
+        ]);
+        $this->insert('wms_load_carrier_account', $carrierAccountId, [
+            'tenant_id' => DemoBootstrapService::TENANT_ID, 'partner_code' => 'PARTNER-' . $suffix,
+            'carrier_type' => $number % 2 === 0 ? 'EURO' : 'KLT', 'balance' => 10,
+            'created_at' => $this->date($createdAt), 'updated_at' => $this->date($createdAt),
+        ]);
+        $this->insert('wms_load_carrier_movement', $this->id('carrier-movement', $number), [
+            'account_id' => $carrierAccountId, 'tenant_id' => DemoBootstrapService::TENANT_ID,
+            'quantity' => 10, 'reference' => 'LHM-' . $suffix, 'note' => 'Demo-Eröffnungssaldo',
+            'booked_by' => DemoBootstrapService::USER_ID, 'booked_at' => $this->date($createdAt),
+        ]);
     }
 
     /** @param array<string, mixed> $data */

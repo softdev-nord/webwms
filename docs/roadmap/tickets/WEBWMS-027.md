@@ -2,7 +2,7 @@
 id: WEBWMS-027
 issue_type: Story
 epic: WEBWMS-EPIC-INVENTORY
-status: Offen
+status: Done
 priority: Medium
 story_points: 8
 component: "Lagerverwaltung"
@@ -44,9 +44,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Umgesetzt im Inventory Control Center mit mandantenfähigem Application Service, transaktionaler Persistenz, REST- und Web-Oberfläche, fachlich getrennten Berechtigungen, Migration, automatisierten Tests sowie technischer und fachlicher Dokumentation.
 
 ## Quelle
 
