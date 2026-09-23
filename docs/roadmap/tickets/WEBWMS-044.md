@@ -2,7 +2,7 @@
 id: WEBWMS-044
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Umgesetzt
+status: Done
 priority: Highest
 story_points: 5
 component: "Transport & Kommissionierung"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Umgesetzt
+**Status:** Done
 
 `StockTransfer` und `TransferStockHandler` bilden den fachlichen Domain-, Application- und Persistenzkern. Der Transportleitstand und die API v3 ergänzen Planung, Ressourcenzuweisung, Ausführung, Autorisierung und Auditierung.
 

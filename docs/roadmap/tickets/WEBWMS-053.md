@@ -2,7 +2,7 @@
 id: WEBWMS-053
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,13 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 `PackingOrder`, `PackingPackage` und Packabschluss bilden den fachlichen Domain-, Application- und Persistenzkern. Über API v3 und den V3-Packarbeitsplatz kann eine abgeschlossene Pickliste in einen Packauftrag überführt, in Packstücke aufgeteilt, gelesen und abgeschlossen werden. Mandant und Auditbenutzer stammen aus der jeweiligen authentifizierten Identität.
 
 Nachweise: `PackingApiController`, `ApiV3QueryService::packingOrder()`, `CreatePackingOrderHandler`, `AddPackingPackageHandler`, `CompletePackingOrderHandler`, `DbalInventoryRepository`, `PackingOrderTest`, `PackingPackageTest` sowie `docs/technical/packing-api.md` und `docs/user/packing-api.md`.
 
-Packmittelprüfung und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+### Abschlussnachweis
+
+Der geführte V3-Packplatz verarbeitet freigegebene Pickpositionen, Packstücke, Gewichte und Abschluss; Domain-Handler verhindern doppelte Positionen und ungültige Zustandswechsel.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

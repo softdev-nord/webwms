@@ -2,7 +2,7 @@
 id: WEBWMS-065
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,13 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Pick-, Pack-, Versand-, Tracking- und Verladeübergänge schreiben innerhalb ihrer Fachtransaktion eine mandantengebundene `IntegrationStatusEvent` in `wms_integration_outbox`. Offene Meldungen können über `GET /api/v3/outbox` cursorbasiert gelesen und nach erfolgreicher Übernahme idempotent quittiert werden. Das V3-Frontend bietet eine tenantbezogene Status- und Payloadansicht sowie die manuelle Pull-Quittierung.
 
 Nachweise: `IntegrationStatusEvent`, `OutboxRepository`, `DbalOutboxRepository`, `OutboxApiController`, `V3OutboxController`, die transaktionalen Aufrufe in `DbalInventoryRepository`, Migration `Version20260919100000`, Unit-Tests sowie `docs/technical/integration-outbox.md` und `docs/user/integration-outbox.md`.
 
-Herstellerspezifische ERP-/Shop-Adapter und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+### Abschlussnachweis
+
+Pick-, Pack-, Versand-, Tracking- und Verladeübergänge schreiben mandantengebundene Statusereignisse in die transaktionale Outbox. Pull-Quittierung und aktive ERP-Zustellung sind idempotent sowie auditierbar.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

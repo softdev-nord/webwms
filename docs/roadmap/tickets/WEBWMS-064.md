@@ -2,7 +2,7 @@
 id: WEBWMS-064
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Offen
+status: Done
 priority: Medium
 story_points: 5
 component: "Warenausgang & Versand"
@@ -44,12 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+CMR-Frachtbriefe werden tour- oder manifestbezogen als nummerierte, unveränderliche und direkt druckbare Dokumente mit Auditdaten und Prüfsumme archiviert.
+
+### Abschlussnachweis
+
+CMR-Frachtbriefe werden tour- oder manifestbezogen als nummerierte, unveränderliche Dokumente mit Prüfsumme und Auditdaten erzeugt und im Dokumentenarchiv bereitgestellt.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 
 - Feature: CG-064
 - Referenz: https://www.coglas.com/funktionen/
-

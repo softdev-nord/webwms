@@ -2,7 +2,7 @@
 id: WEBWMS-034
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Umgesetzt
+status: Done
 priority: Highest
 story_points: 5
 component: "Transport & Kommissionierung"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Umgesetzt
+**Status:** Done
 
 Der explizite Single-Order-Modus ist über die Auftragsressource der API v3 umgesetzt. Pro freigegebenem Kundenauftrag entsteht höchstens eine Pickliste; alle Positionen referenzieren aktive Allokationen genau dieses Auftrags. Der Lifecycle umfasst Erzeugung, Zuweisung, sequenzierte Bearbeitung und automatischen Abschluss.
 

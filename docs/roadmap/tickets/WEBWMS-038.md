@@ -2,7 +2,7 @@
 id: WEBWMS-038
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Umgesetzt
+**Status:** Done
 
 Pickzuweisung, wegeoptimierte Aufgabenfolge und scannergeeignete Bestätigung sind über API v3 und die responsive V3-Pickansicht bedienbar. Platz, Artikel, Menge und geführte Bestandsdimensionen werden direkt in der Aufgabe angezeigt und geprüft.
 

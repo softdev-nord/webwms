@@ -19,6 +19,7 @@ use WebWMS\Inventory\Application\CompletePackingOrderCommand;
 use WebWMS\Inventory\Application\CompletePackingOrderHandler;
 use WebWMS\Inventory\Application\CreatePackingOrderCommand;
 use WebWMS\Inventory\Application\CreatePackingOrderHandler;
+use WebWMS\Inventory\Application\OutboundProcessService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/packing', name: 'v3_packing_')]
@@ -29,6 +30,7 @@ final class V3PackingController extends AbstractController
         private readonly CreatePackingOrderHandler $createPackingOrder,
         private readonly AddPackingPackageHandler $addPackage,
         private readonly CompletePackingOrderHandler $completePackingOrder,
+        private readonly OutboundProcessService $outboundProcesses,
     ) {
     }
 
@@ -51,6 +53,9 @@ final class V3PackingController extends AbstractController
         $pickList = $this->queries->pickList($user->tenantId(), $pickListId);
         if ($pickList === null || ($pickList['status'] ?? null) !== 'completed') {
             throw $this->createNotFoundException('Eine abgeschlossene Pickliste ist erforderlich.');
+        }
+        if ($this->queries->outboundQualityDecision($user->tenantId(), $pickListId) !== 'released') {
+            throw new \DomainException('Vor dem Packen muss die Ausgangs-QS die Pickliste freigeben.');
         }
         $packingOrderId = Uuid::v7()->toRfc4122();
         ($this->createPackingOrder)(new CreatePackingOrderCommand(
@@ -96,12 +101,14 @@ final class V3PackingController extends AbstractController
             throw new \InvalidArgumentException('Mindestens eine Pickposition muss ausgewählt werden.');
         }
         $user = $this->tenantUser();
+        $weight = $this->positiveInt($request, 'weight_grams');
+        $this->outboundProcesses->assertPackageWeight($user->tenantId(), $weight);
         ($this->addPackage)(new AddPackingPackageCommand(
             Uuid::v7()->toRfc4122(),
             $packingOrderId,
             $user->tenantId(),
             $this->required($request, 'package_number'),
-            $this->positiveInt($request, 'weight_grams'),
+            $weight,
             $taskIds,
             $user->actorId(),
             new DateTimeImmutable(),

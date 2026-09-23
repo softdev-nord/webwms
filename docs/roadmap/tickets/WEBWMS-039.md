@@ -2,7 +2,7 @@
 id: WEBWMS-039
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Umgesetzt
+**Status:** Done
 
 Pickbestätigung und Fehlbestandsmeldung sind über API v3 und V3-Frontend bedienbar. Lagerplatz, Artikel, Menge sowie geführte Chargen- und Seriennummern werden vor der Bestätigung geprüft; erfolgreiche und abgelehnte Scans bleiben nachvollziehbar gespeichert.
 

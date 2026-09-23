@@ -2,7 +2,7 @@
 id: WEBWMS-055
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,11 +44,15 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Pack- und Versandkern sind vorhanden. Die API v3 deckt inzwischen den durchgängigen technischen Übergang von Kundenauftrag, Reservierung und Picking über Packauftrag und Packstück bis zu Sendung, Labelregistrierung und Carrier-Übergabe ab. Nachweise: `PackingApiController`, `ShippingApiController`, die Projektionen in `ApiV3QueryService` sowie die technische API-Dokumentation.
 
-Ein scanbasierter Dialog und die tatsächliche Labelerzeugung über eine Carrier-Anbindung fehlen weiterhin; das Ticket bleibt deshalb `Teilweise umgesetzt`.
+### Abschlussnachweis
+
+Die bestehenden Picking-, Pack-, Carrier-, Label-, Druck- und Versandarbeitsplätze bilden Scan, Pack und Ship durchgängig ab; Ausgangs-QS und Gewichtskontrolle sind als verpflichtende Gates integriert.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

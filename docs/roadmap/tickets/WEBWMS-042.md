@@ -2,7 +2,7 @@
 id: WEBWMS-042
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Umgesetzt
+status: Done
 priority: Medium
 story_points: 13
 component: "Transport & Kommissionierung"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Umgesetzt
+**Status:** Done
 
 Der Transportleitstand verwaltet Flurförderzeuge und Fahrbefehle mit dem kontrollierten Ablauf offen, zugewiesen, gestartet und abgeschlossen. Produktbezogene Abschlüsse verwenden die bestehende atomare Bestandsumlagerung.
 

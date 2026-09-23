@@ -2,7 +2,7 @@
 id: WEBWMS-061
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 5
 component: "Warenausgang & Versand"
@@ -44,13 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Der Endpunkt `POST /api/v3/loading-manifests/{id}/shipments/{shipmentId}/loading` bestätigt eine Sendung nur dann, wenn sie als offene Position genau diesem Manifest, seiner Tour und seinem Mandanten zugeordnet ist. Benutzer und Zeitpunkt werden je Position gespeichert; doppelte Bestätigungen werden verhindert. Dieselbe Operation steht im V3-Frontend positionsbezogen und CSRF-geschützt zur Verfügung.
 
 Nachweise: `LoadingApiController::confirm()`, `V3LoadingController::confirm()`, `ConfirmShipmentLoadingHandler`, `ShipmentLoading`, `DbalInventoryRepository::confirmShipmentLoading()` und `docs/user/loading-api.md`.
 
-Eine echte Barcode-Scanner-Anbindung und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+### Abschlussnachweis
+
+Der mandantenbezogene Verladescan validiert Sendung und Manifest, verhindert Doppelbestätigung und protokolliert Benutzer und Zeitpunkt in Weboberfläche und API.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

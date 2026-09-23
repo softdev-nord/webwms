@@ -2,7 +2,7 @@
 id: WEBWMS-048
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Umgesetzt
+status: Done
 priority: Medium
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Umgesetzt
+**Status:** Done
 
 Feste oder dynamische Routenzüge besitzen geordnete Prozessstationen und optional ein Intervall. Eine Tourauslösung erzeugt für alle benachbarten Stopps ausführbare Fahrbefehle im Transportleitstand.
 

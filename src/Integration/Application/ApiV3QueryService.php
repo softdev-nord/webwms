@@ -452,7 +452,7 @@ final readonly class ApiV3QueryService
     public function outboundOrder(string $tenantId, string $orderId): ?array
     {
         $order = $this->connection->fetchAssociative(
-            'SELECT o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, '
+            'SELECT o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, o.cancelled_at, o.cancellation_reason, '
             . 'l.id pick_list_id, l.code pick_list_code, l.status pick_list_status '
             . 'FROM wms_outbound_order o LEFT JOIN wms_pick_list l ON l.outbound_order_id = o.id '
             . 'WHERE o.id = :orderId AND o.tenant_id = :tenantId',
@@ -477,16 +477,42 @@ final readonly class ApiV3QueryService
     public function outboundOrders(string $tenantId): array
     {
         return $this->connection->fetchAllAssociative(
-            'SELECT o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, '
+            'SELECT o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, o.cancelled_at, o.cancellation_reason, '
             . 'COUNT(i.id) item_count, COALESCE(SUM(i.requested_quantity), 0) requested_quantity, '
             . 'l.id pick_list_id, l.code pick_list_code, l.status pick_list_status '
             . 'FROM wms_outbound_order o LEFT JOIN wms_outbound_order_item i ON i.outbound_order_id = o.id '
             . 'LEFT JOIN wms_pick_list l ON l.outbound_order_id = o.id '
             . 'WHERE o.tenant_id = :tenantId '
-            . 'GROUP BY o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, '
+            . 'GROUP BY o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, o.cancelled_at, o.cancellation_reason, '
             . 'l.id, l.code, l.status ORDER BY o.created_at DESC, o.id DESC',
             ['tenantId' => $tenantId],
         );
+    }
+
+    /** @return array<string, list<array<string, mixed>>> */
+    public function outboundControlCenter(string $tenantId): array
+    {
+        return [
+            'forecast' => $this->connection->fetchAllAssociative(
+                "SELECT i.product_id, p.sku, p.name product_name, SUM(i.requested_quantity) demand_quantity, COALESCE((SELECT SUM(b.quantity) FROM wms_stock_balance b WHERE b.tenant_id = o.tenant_id AND b.product_id = i.product_id AND b.stock_status = 'available'), 0) stock_quantity, GREATEST(SUM(i.requested_quantity) - COALESCE((SELECT SUM(b.quantity) FROM wms_stock_balance b WHERE b.tenant_id = o.tenant_id AND b.product_id = i.product_id AND b.stock_status = 'available'), 0), 0) shortage_quantity FROM wms_outbound_order_item i INNER JOIN wms_outbound_order o ON o.id = i.outbound_order_id INNER JOIN wms_product_reference p ON p.id = i.product_id WHERE o.tenant_id = :tenantId AND o.status IN ('imported', 'released') GROUP BY i.product_id, p.sku, p.name, o.tenant_id ORDER BY shortage_quantity DESC, p.sku",
+                ['tenantId' => $tenantId],
+            ),
+            'qualityChecks' => $this->connection->fetchAllAssociative('SELECT q.id, q.pick_list_id, l.code pick_list_code, o.order_number, q.completeness_passed, q.condition_passed, q.customer_check_passed, q.note, q.decision, q.checked_at FROM wms_outbound_quality_check q INNER JOIN wms_pick_list l ON l.id = q.pick_list_id INNER JOIN wms_outbound_order o ON o.id = l.outbound_order_id WHERE q.tenant_id = :tenantId ORDER BY q.checked_at DESC', ['tenantId' => $tenantId]),
+            'qualityCandidates' => $this->connection->fetchAllAssociative("SELECT l.id, l.code, o.order_number FROM wms_pick_list l INNER JOIN wms_outbound_order o ON o.id = l.outbound_order_id WHERE l.tenant_id = :tenantId AND l.status = 'completed' AND NOT EXISTS (SELECT 1 FROM wms_outbound_quality_check q WHERE q.pick_list_id = l.id AND q.decision = 'released') ORDER BY l.updated_at DESC", ['tenantId' => $tenantId]),
+            'shippingRules' => $this->connection->fetchAllAssociative('SELECT id, code, name, carrier, service, min_weight_grams, max_weight_grams, priority, active FROM wms_shipping_rule WHERE tenant_id = :tenantId ORDER BY priority, code', ['tenantId' => $tenantId]),
+            'trackingEvents' => $this->connection->fetchAllAssociative('SELECT e.id, e.shipment_id, s.shipment_number, e.status, e.location, e.description, e.source, e.occurred_at FROM wms_tracking_event e INNER JOIN wms_shipment s ON s.id = e.shipment_id WHERE e.tenant_id = :tenantId ORDER BY e.occurred_at DESC, e.id DESC', ['tenantId' => $tenantId]),
+            'documents' => $this->connection->fetchAllAssociative('SELECT id, aggregate_type, aggregate_id, document_type, document_number, content_type, checksum, created_at FROM wms_shipping_document WHERE tenant_id = :tenantId ORDER BY created_at DESC', ['tenantId' => $tenantId]),
+            'tours' => $this->connection->fetchAllAssociative('SELECT t.id, t.code, t.carrier, t.vehicle_reference, t.max_weight_grams, t.departure_at, t.status, COUNT(s.id) stop_count, COALESCE(SUM(p.weight_grams), 0) planned_weight_grams FROM wms_transport_tour t LEFT JOIN wms_tour_stop s ON s.tour_id = t.id LEFT JOIN wms_shipment sh ON sh.id = s.shipment_id LEFT JOIN wms_package p ON p.packing_order_id = sh.packing_order_id WHERE t.tenant_id = :tenantId GROUP BY t.id, t.code, t.carrier, t.vehicle_reference, t.max_weight_grams, t.departure_at, t.status ORDER BY t.departure_at, t.code', ['tenantId' => $tenantId]),
+            'weightConstraints' => $this->connection->fetchAllAssociative('SELECT id, scope, reference_code, max_weight_grams, active, created_at FROM wms_weight_constraint WHERE tenant_id = :tenantId ORDER BY scope, reference_code', ['tenantId' => $tenantId]),
+        ];
+    }
+
+    /** @return array<string, mixed>|null */
+    public function shippingDocument(string $tenantId, string $documentId): ?array
+    {
+        $document = $this->connection->fetchAssociative('SELECT id, document_type, document_number, content, content_type FROM wms_shipping_document WHERE id = :id AND tenant_id = :tenantId', ['id' => $documentId, 'tenantId' => $tenantId]);
+
+        return $document === false ? null : $document;
     }
 
     /** @return list<array<string, mixed>> */
@@ -601,6 +627,13 @@ final readonly class ApiV3QueryService
         );
 
         return $pickList;
+    }
+
+    public function outboundQualityDecision(string $tenantId, string $pickListId): ?string
+    {
+        $decision = $this->connection->fetchOne('SELECT decision FROM wms_outbound_quality_check WHERE tenant_id = :tenantId AND pick_list_id = :pickListId ORDER BY checked_at DESC, id DESC LIMIT 1', ['tenantId' => $tenantId, 'pickListId' => $pickListId]);
+
+        return is_string($decision) ? $decision : null;
     }
 
     /** @return array<string, mixed>|null */

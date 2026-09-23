@@ -2,7 +2,7 @@
 id: WEBWMS-043
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Umgesetzt
+status: Done
 priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Umgesetzt
+**Status:** Done
 
 Priorisierte Transportregeln verknüpfen Auslöser, Quell- und Zielpräfixe, Transportart und Ressourcentyp. Passende Regeln erzeugen mandantengetrennt einen Fahrbefehl über API v3.
 

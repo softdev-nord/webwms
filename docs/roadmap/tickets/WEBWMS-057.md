@@ -2,7 +2,7 @@
 id: WEBWMS-057
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,13 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 `ShipmentLabel` speichert Trackingnummer und externe Labelreferenz über den berechtigten Endpunkt `POST /api/v3/shipments/{id}/label`. Der Zustandswechsel von `prepared` nach `labelled` erfolgt transaktional und wird mit Benutzer und Zeitpunkt auditiert.
 
 Nachweise: `ShippingApiController::registerLabel()`, `RegisterShipmentLabelHandler`, `ShipmentLabel`, `DbalInventoryRepository::registerShipmentLabel()` und `ShipmentTest`.
 
-Die generische Carrier-API erzeugt Label und Trackingdaten idempotent und registriert sie im Versandkern. Im V3-Versandarbeitsplatz kann die Labelreferenz registriert und über `WEBWMS-091` als idempotenter Druckauftrag an ein Print-Gateway übergeben werden. Speicherung der Labeldatei sowie vollständige API-Integrationstests fehlen noch; das Ticket ist deshalb nicht `Done`.
+### Abschlussnachweis
+
+CarrierGateway erzeugt Label und Trackingdaten idempotent, registriert diese transaktional an der Sendung und übergibt das Label an die zentrale Druckwarteschlange.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

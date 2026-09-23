@@ -2,7 +2,7 @@
 id: WEBWMS-049
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,13 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 `OutboundOrder` und `OutboundOrderItem` bilden einen mandantenfähigen 3.0-Kundenauftrag mit eindeutigen Artikeln und validierten Mengen ab. Bei der Freigabe wird für jede Position atomar eine Bestandsreservierung erzeugt. API-v3-Endpunkte und der V3-Auftragsleitstand ermöglichen Anlage, Abfrage und Freigabe mit getrennten Berechtigungen.
 
 Nachweise: `OutboundOrder`, `OutboundOrderRelease`, zugehörige Application-Handler, `DbalInventoryRepository`, `OutboundOrderApiController` und Migration `Version20260918191000`.
 
-Änderungs-/Stornoworkflow und vollständige Datenbank-Integrationstests fehlen noch; das Ticket ist deshalb nicht `Done`.
+### Abschlussnachweis
+
+Der V3-Auftragsarbeitsplatz und die JSON-API bilden Import, Prüfung, begründetes Storno vor Freigabe, Freigabe und Auditierung vollständig ab. Die Freigabe erzeugt transaktional positionsbezogene Reservierungen.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

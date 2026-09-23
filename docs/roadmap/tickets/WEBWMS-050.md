@@ -2,7 +2,7 @@
 id: WEBWMS-050
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Offen
+status: Done
 priority: High
 story_points: 5
 component: "Warenausgang & Versand"
@@ -44,12 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Die artikelbezogene Bedarfsvorschau aggregiert offene Ausgangsmengen, verfügbaren Bestand und Engpässe im Warenausgangsleitstand sowie über die JSON-API.
+
+### Abschlussnachweis
+
+`ApiV3QueryService::outboundControlCenter()` aggregiert offene Bedarfe, verfügbare Bestände und Engpassmengen artikelbezogen. Der V3-Leitstand stellt Vorschau und Auftragsprüfung filter- und paginierbar bereit.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 
 - Feature: CG-050
 - Referenz: https://www.coglas.com/funktionen/
-

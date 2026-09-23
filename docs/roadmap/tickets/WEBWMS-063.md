@@ -2,7 +2,7 @@
 id: WEBWMS-063
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 2
 component: "Warenausgang & Versand"
@@ -44,13 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Manifestpositionen bilden die persistente Ladeliste. `GET /api/v3/loading-manifests/{id}` stellt Sendungsnummer, Trackingnummer, Carrier, Service, Ladezustand und Auditdaten standardisiert bereit. Erstellung, Einzelbestätigung und vollständiger Abschluss sind über getrennte Berechtigungen geschützt und im V3-Frontend als Ladeliste bedienbar.
 
 Nachweise: `LoadingApiController`, `V3LoadingController`, `ApiV3QueryService::loadingManifest()`, `ApiV3QueryService::loadingManifests()`, `LoadingManifest`, Migration `Version20260917143000` sowie die technische und fachliche Dokumentation.
 
-Druckausgabe, individuelle Ladelistenlayouts und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+### Abschlussnachweis
+
+Persistente Manifestpositionen bilden standardisierte Ladelisten; zusätzlich können individuelle archivierte Ladelistendokumente erzeugt, geöffnet und gedruckt werden.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

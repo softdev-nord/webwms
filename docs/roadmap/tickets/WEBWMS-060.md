@@ -2,7 +2,7 @@
 id: WEBWMS-060
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,13 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 `LoadingManifest` bündelt etikettierte Sendungen mit Tour- und Fahrzeugreferenz. Über `POST /api/v3/loading-manifests` kann diese Gruppierung mandantengebunden erzeugt und über den Leseendpunkt als Tourfortschritt abgerufen werden. Das V3-Frontend stellt die Manifestübersicht und eine berechtigungsgeschützte Erfassung für noch unverplante Sendungen bereit.
 
 Nachweise: `LoadingApiController`, `V3LoadingController`, `ApiV3QueryService::loadingManifest()`, `ApiV3QueryService::loadingManifests()`, `CreateLoadingManifestHandler`, `LoadingManifest`, `DbalInventoryRepository::saveLoadingManifest()`, `LoadingManifestTest` und `docs/technical/loading-api.md`.
 
-Eigenständige Tourstammdaten, Stoppreihenfolge und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+### Abschlussnachweis
+
+`TransportTour`-Persistenz bildet Carrier, Fahrzeug, Abfahrt, Lastgrenze und geordnete Stopps ab. Lademanifeste bleiben der operative Verladungsbeleg einer Tour.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

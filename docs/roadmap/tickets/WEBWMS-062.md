@@ -2,7 +2,7 @@
 id: WEBWMS-062
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Offen
+status: Done
 priority: Medium
 story_points: 5
 component: "Warenausgang & Versand"
@@ -44,12 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Mandantenbezogene Paket-, Carrier-, Fahrzeug- und Tourgrenzen sind konfigurierbar; Paketgrenzen werden im Web- und API-Packprozess vor der Persistenz erzwungen.
+
+### Abschlussnachweis
+
+Konfigurierbare Paket-, Carrier-, Fahrzeug- und Tourgrenzen sind mandantenbezogen persistiert. Das Paketlimit wird in Web und API vor dem Versiegeln erzwungen; Touren zeigen Planlast gegen Maximalgewicht.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 
 - Feature: CG-062
 - Referenz: https://www.coglas.com/warenausgang/
-

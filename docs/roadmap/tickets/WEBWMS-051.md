@@ -2,7 +2,7 @@
 id: WEBWMS-051
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,13 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 `StockReservation`, `StockAllocation` und atomare Allokation bilden den fachlichen Kern. Die Kundenauftragsfreigabe erzeugt positionsbezogene Reservierungen; API-v3-Endpunkte und der V3-Auftragsleitstand zeigen den Reservierungsstatus und nehmen Allokationen entgegen. Verfügbarkeit, Restbedarf, Mandant und ausführender Benutzer werden serverseitig abgesichert.
 
 Nachweise: `OutboundOrderApiController`, `AllocateStockHandler`, `DbalInventoryRepository` und `ApiV3QueryService`.
 
-Automatische Allokationsstrategien und vollständige Datenbank-Integrationstests sind noch offen; das Ticket ist deshalb nicht `Done`.
+### Abschlussnachweis
+
+Positionsreservierung, manuelle und regelbasierte Allokation, Restbedarf und Verfügbarkeitsprüfung sind mandantenbezogen in Domain, API und V3-Arbeitsplatz integriert.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

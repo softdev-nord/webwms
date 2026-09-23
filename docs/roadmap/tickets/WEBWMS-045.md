@@ -2,7 +2,7 @@
 id: WEBWMS-045
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Umgesetzt
+status: Done
 priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Umgesetzt
+**Status:** Done
 
 `ReplenishmentPolicy`, Quellwahl und Nachschubauftrag bilden den fachlichen Domain-, Application- und Persistenzkern. Der Transportleitstand und die API v3 ergänzen Einrichtung, Bedarfsauslösung, Bestätigung und getrennte Nachschubberechtigungen.
 

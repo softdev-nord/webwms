@@ -2,7 +2,7 @@
 id: WEBWMS-054
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Backend umgesetzt
+status: Done
 priority: Highest
 story_points: 5
 component: "Warenausgang & Versand"
@@ -44,13 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
 Der transaktionale Packabschluss vergleicht die erfolgreich gepickten Positionen mit den eindeutig verpackten Positionen und akzeptiert ausschließlich versiegelte Packstücke. Diese Prüfung ist nun über `POST /api/v3/packing-orders/{id}/complete` berechtigt aufrufbar; die Antwort enthält Packstückanzahl und Gesamtgewicht.
 
 Nachweise: `PackingApiController::complete()`, `CompletePackingOrderHandler`, `DbalInventoryRepository::completePackingOrder()`, der eindeutige Index auf `wms_package_item.pick_task_id` und `docs/technical/packing-api.md`.
 
-Mengen- und Scanprüfung während des Einpackens sowie vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+### Abschlussnachweis
+
+Der transaktionale Packabschluss gleicht gepickte und eindeutig gepackte Positionen ab. Fehlmengen, doppelte Positionen und unversiegelte Pakete verhindern den Abschluss.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

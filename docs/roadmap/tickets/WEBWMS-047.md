@@ -2,7 +2,7 @@
 id: WEBWMS-047
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Umgesetzt
+status: Done
 priority: Medium
 story_points: 13
 component: "Transport & Kommissionierung"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Umgesetzt
+**Status:** Done
 
 Prozessstationen und Transportregeln bilden den Materialfluss zwischen Lager-, Pick-, Konsolidierungs-, Pack-, Versand- und Pufferstationen ab. Fahrbefehle werden im gemeinsamen Leitstand ausgelöst und überwacht.
 

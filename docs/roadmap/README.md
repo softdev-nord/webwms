@@ -9,7 +9,7 @@ Diese Roadmap ersetzt die bisherige Excel-Arbeitsdatei als verbindliche, version
 | `Offen` | Im WebWMS-3.0-Code ist noch keine relevante Umsetzung vorhanden. |
 | `Teilweise umgesetzt` | Einzelne fachliche oder technische Grundlagen sind vorhanden. |
 | `Backend umgesetzt` | Domain-, Application- und Persistenzkern sind vorhanden; API/UI oder weitere Definition-of-Done-Bestandteile fehlen noch. |
-| `Done` | Sämtliche Akzeptanzkriterien einschließlich API/UI, Autorisierung, Auditierung und Tests sind erfüllt. |
+| `Done` | Sämtliche Akzeptanzkriterien einschließlich API/UI, Autorisierung, Auditierung und Tests sind erfüllt. Der frühere Status `Umgesetzt` wurde in `Done` vereinheitlicht. |
 
 Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien vollständig nachgewiesen sind. Ein vorhandener Backendkern allein reicht dafür nicht aus.
 
@@ -25,9 +25,11 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 | [WEBWMS-EPIC-ADMIN](epics/admin.md) | Administration | 9 | 76 |
 | [WEBWMS-EPIC-INTEGRATION](epics/integration.md) | Integration & Technik | 13 | 144 |
 
-## Aktueller Backendfortschritt
+## Aktueller Gesamtfortschritt
 
-Nach dem V3-Slice für Bestandssperren sind 11 Tickets mit 76 Story Points vollständig `Done`. Weitere 14 Tickets mit 99 Story Points besitzen einen substanziellen Backendkern und 34 Tickets mit 278 Story Points sind teilweise umgesetzt. Damit wurden weiterhin 59 von 96 Tickets und 453 von 750 Story Points zumindest fachlich oder technisch begonnen.
+Stand 23.09.2026 sind 66 Tickets mit 467 Story Points vollständig `Done`. Weitere 6 Tickets mit 50 Story Points besitzen einen Backendkern und 11 Tickets mit 113 Story Points sind teilweise umgesetzt. 13 Tickets mit 120 Story Points sind noch offen. Damit wurden 83 von 96 Tickets und 630 von 750 Story Points zumindest fachlich oder technisch begonnen.
+
+Die Epics **Wareneingang**, **Transport & Kommissionierung** sowie **Warenausgang & Versand** sind vollständig abgeschlossen. Die Tabellen der sieben Epic-Dateien wurden mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 
 ## Ergänzende Roadmap-Dokumente
 
@@ -36,6 +38,7 @@ Nach dem V3-Slice für Bestandssperren sind 11 Tickets mit 76 Story Points volls
 - [Quellen](sources.md)
 - [Fortschrittsanalyse vom 18.09.2026](analysis/2026-09-18-progress.md)
 - [Fortschrittsanalyse Wareneingang vom 20.09.2026](analysis/2026-09-20-inbound-progress.md)
+- [Abschlussanalyse Inbound und Outbound vom 23.09.2026](analysis/2026-09-23-inbound-outbound-completion.md)
 - [Abschlussanalyse Lagerbasis vom 21.09.2026](analysis/2026-09-21-inventory-workspace.md)
 - [Abschlussanalyse Bestandsattribute und Rückverfolgung vom 21.09.2026](analysis/2026-09-21-stock-traceability.md)
 - [Abschlussanalyse Entnahmestrategien vom 21.09.2026](analysis/2026-09-21-stock-selection.md)

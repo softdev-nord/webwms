@@ -2,7 +2,7 @@
 id: WEBWMS-046
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Umgesetzt
+status: Done
 priority: Medium
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Umgesetzt
+**Status:** Done
 
 Vorholungen werden als priorisierte Fahrbefehle mit Fälligkeit, Quelle, Ziel und optionalem Artikelbestand geplant, disponiert, ausgeführt und nachvollziehbar abgeschlossen.
 

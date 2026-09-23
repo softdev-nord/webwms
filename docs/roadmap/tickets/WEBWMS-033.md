@@ -2,7 +2,7 @@
 id: WEBWMS-033
 issue_type: Story
 epic: WEBWMS-EPIC-FULFILLMENT
-status: Umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Transport & Kommissionierung"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Implementierungsstand
 
-**Status:** Umgesetzt
+**Status:** Done
 
 Picklisten werden über `POST /api/v3/orders/{id}/pick-lists` ausschließlich aus aktiven Allokationen eines einzelnen Kundenauftrags gebildet. `PickList::outboundOrderId()`, die persistente Auftragsreferenz und die transaktionale Prüfung in `DbalInventoryRepository::savePickList()` erzwingen die Auftragsreinheit. Zuweisung, Abfrage und Pickbestätigung sind mandantengebunden und durch getrennte Berechtigungen geschützt.
 

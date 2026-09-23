@@ -2,7 +2,7 @@
 id: WEBWMS-056
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
@@ -44,13 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Carrier und Service sind Bestandteil des `Shipment`-Modells und werden über API v3 oder den V3-Versandarbeitsplatz explizit ausgewählt. Beide Zugänge sind mandantengebunden und mit `fulfillment.ship.write` geschützt.
 
 Nachweise: `ShippingApiController::create()`, `CreateShipmentHandler`, `Shipment`, `DbalInventoryRepository::saveShipment()`, `ShipmentTest` sowie `docs/technical/shipping-api.md` und `docs/user/shipping-api.md`.
 
-Carrier-Verbindungen und Produktabfrage sind über `WEBWMS-089` ergänzt. Versandregeln, lokale Carrier-Produktstammdaten und vollständige API-Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+### Abschlussnachweis
+
+Mandantenfähige Versandregeln wählen Carrier und Service priorisiert nach Gewichtsbereich. Pflege, Vorschau und Regelauswahl stehen in V3-UI und JSON-API bereit.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

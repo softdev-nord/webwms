@@ -96,7 +96,8 @@
                             <i class="ri-truck-line"></i><span>Warenausgang</span>
                         </a>
                         <div class="collapse menu-dropdown {{ outboundOpen ? 'show' : '' }}" id="sidebarOutbound"><ul class="nav nav-sm flex-column">
-                            {% if is_granted('outbound.order.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_outbound_' ? 'active' : '' }}" href="{{ path('v3_outbound_orders') }}">Aufträge</a></li>{% endif %}
+                            {% if is_granted('outbound.order.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_outbound_control_' ? 'active' : '' }}" href="{{ path('v3_outbound_control_index') }}">Warenausgangsleitstand</a></li>{% endif %}
+                            {% if is_granted('outbound.order.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_outbound_' and not (currentRoute starts with 'v3_outbound_control_') ? 'active' : '' }}" href="{{ path('v3_outbound_orders') }}">Aufträge</a></li>{% endif %}
                             {% if is_granted('fulfillment.pick.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_picking_' and not (currentRoute starts with 'v3_picking_control_') ? 'active' : '' }}" href="{{ path('v3_picking_index') }}">Kommissionierung</a></li>{% endif %}
                             {% if is_granted('fulfillment.pick.control') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_picking_control_' ? 'active' : '' }}" href="{{ path('v3_picking_control_index') }}">Kommissionierleitstand</a></li>{% endif %}
                             {% if is_granted('fulfillment.transport.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_internal_transport_' ? 'active' : '' }}" href="{{ path('v3_internal_transport_index') }}">Interner Transport</a></li>{% endif %}

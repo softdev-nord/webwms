@@ -19,6 +19,7 @@ use WebWMS\Inventory\Application\CompletePackingOrderCommand;
 use WebWMS\Inventory\Application\CompletePackingOrderHandler;
 use WebWMS\Inventory\Application\CreatePackingOrderCommand;
 use WebWMS\Inventory\Application\CreatePackingOrderHandler;
+use WebWMS\Inventory\Application\OutboundProcessService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3', name: 'api_v3_packing_')]
@@ -28,7 +29,8 @@ final class PackingApiController extends AbstractController
         private readonly ApiV3QueryService $queries,
         private readonly CreatePackingOrderHandler $createPackingOrder,
         private readonly AddPackingPackageHandler $addPackingPackage,
-        private readonly CompletePackingOrderHandler $completePackingOrder
+        private readonly CompletePackingOrderHandler $completePackingOrder,
+        private readonly OutboundProcessService $outboundProcesses
     ) {
     }
 
@@ -38,6 +40,9 @@ final class PackingApiController extends AbstractController
     {
         if ($this->queries->pickList($this->apiUser()->tenantId(), $pickListId) === null) {
             throw $this->createNotFoundException('The pick list does not exist.');
+        }
+        if ($this->queries->outboundQualityDecision($this->apiUser()->tenantId(), $pickListId) !== 'released') {
+            throw new \DomainException('The outbound quality check must release the pick list before packing.');
         }
         /** @var array<string, mixed> $payload */
         $payload = $request->toArray();
@@ -69,12 +74,14 @@ final class PackingApiController extends AbstractController
         /** @var array<string, mixed> $payload */
         $payload = $request->toArray();
         $packageId = Uuid::v7()->toRfc4122();
+        $weight = $this->positiveInt($payload, 'weightGrams');
+        $this->outboundProcesses->assertPackageWeight($this->apiUser()->tenantId(), $weight);
         ($this->addPackingPackage)(new AddPackingPackageCommand(
             $packageId,
             $packingOrderId,
             $this->apiUser()->tenantId(),
             $this->string($payload, 'packageNumber'),
-            $this->positiveInt($payload, 'weightGrams'),
+            $weight,
             $this->stringList($payload, 'pickTaskIds'),
             $this->apiUser()->actorId(),
             new DateTimeImmutable(),

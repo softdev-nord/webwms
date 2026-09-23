@@ -2,7 +2,7 @@
 id: WEBWMS-059
 issue_type: Story
 epic: WEBWMS-EPIC-OUTBOUND
-status: Offen
+status: Done
 priority: Highest
 story_points: 5
 component: "Warenausgang & Versand"
@@ -44,12 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Versanddokumente werden nummeriert, mandantenbezogen und mit SHA-256-Prüfsumme als unveränderliche Momentaufnahme archiviert und im Leitstand bereitgestellt.
+
+### Abschlussnachweis
+
+Lieferschein, Packliste und Ladeliste werden als unveränderliche HTML-Momentaufnahme mit Dokumentnummer, Auditdaten und SHA-256-Prüfsumme erzeugt und im V3-Archiv bereitgestellt.
+
+Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 
 - Feature: CG-059
 - Referenz: https://www.coglas.com/versand/
-

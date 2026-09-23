@@ -90,6 +90,10 @@ final readonly class DemoBootstrapService
 
     public const string MILK_RUN_ID = '52d49360-b891-46f8-a091-4063bd674b58';
 
+    public const string SHIPPING_RULE_ID = '7e87d87a-084c-4d57-bb47-aadce9c107d6';
+
+    public const string WEIGHT_CONSTRAINT_ID = '077d476a-b8e9-444b-80fe-b4ec386c6c1c';
+
     public const string EMAIL = 'admin@demo.webwms.local';
 
     public function __construct(
@@ -370,6 +374,12 @@ final readonly class DemoBootstrapService
         }
         if ($this->connection->fetchOne('SELECT 1 FROM wms_quality_checklist WHERE tenant_id = :tenantId AND code = :code', ['tenantId' => self::TENANT_ID, 'code' => 'INBOUND-STANDARD']) === false) {
             $this->connection->insert('wms_quality_checklist', ['id' => Uuid::v7()->toRfc4122(), 'tenant_id' => self::TENANT_ID, 'code' => 'INBOUND-STANDARD', 'name' => 'Standardprüfung Wareneingang', 'questions' => json_encode(['Verpackung unbeschädigt?', 'Artikelidentität korrekt?', 'Menge vollständig?'], JSON_THROW_ON_ERROR), 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_shipping_rule', self::SHIPPING_RULE_ID)) {
+            $this->connection->insert('wms_shipping_rule', ['id' => self::SHIPPING_RULE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'DEMO-STANDARD', 'name' => 'Demo Standardversand', 'carrier' => 'DEMO', 'service' => 'STANDARD', 'min_weight_grams' => 0, 'max_weight_grams' => 31500, 'priority' => 100, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
+        if (!$this->exists('wms_weight_constraint', self::WEIGHT_CONSTRAINT_ID)) {
+            $this->connection->insert('wms_weight_constraint', ['id' => self::WEIGHT_CONSTRAINT_ID, 'tenant_id' => self::TENANT_ID, 'scope' => 'package', 'reference_code' => null, 'max_weight_grams' => 31500, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
         if ($this->connection->fetchOne('SELECT 1 FROM wms_deployment_configuration WHERE tenant_id = :tenantId', ['tenantId' => self::TENANT_ID]) === false) {
             $this->connection->insert('wms_deployment_configuration', ['tenant_id' => self::TENANT_ID, 'deployment_mode' => 'on_premises', 'public_url' => 'http://www.webwms.local', 'storage_driver' => 'local', 'queue_transport' => 'rabbitmq', 'release_channel' => 'stable', 'changed_by' => self::USER_ID, 'changed_at' => $this->date($now)]);
