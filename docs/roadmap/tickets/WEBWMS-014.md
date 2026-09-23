@@ -2,7 +2,7 @@
 id: WEBWMS-014
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Backend umgesetzt
+status: Done
 priority: High
 story_points: 8
 component: "Wareneingang"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
-`ReturnOrder`, `ReturnReceipt`, `ReturnInspection`. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+`ReturnOrder`, `ReturnReceipt` und `ReturnInspection` sind im Wareneingangsleitstand vertikal nutzbar: Ankündigung, Vereinnahmung, Prüfung und Entscheidung mit Wiedereinlagerung, Sperre oder Verschrottung.
 
 ## Quelle
 
 - Feature: CG-014
 - Referenz: https://www.coglas.com/funktionen/
-

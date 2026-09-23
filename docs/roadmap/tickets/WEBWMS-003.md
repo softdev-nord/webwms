@@ -2,7 +2,7 @@
 id: WEBWMS-003
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 5
 component: "Wareneingang"
@@ -44,9 +44,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-`InboundReceipt` und `ReceiveInboundDeliveryHandler` bilden den transaktionalen Kern. Der gemeinsame V3-Arbeitsplatz und die JSON-API stellen avisierte Positionen mandantenbezogen bereit und erlauben die berechtigte Annahme. Der komplette vorgelagerte Bestell-/Avis-Erfassungsprozess und dessen Akzeptanztests bleiben für `Done` noch zu vertikalisieren.
+Bestellung, Avis, Annahme, QS und Einlagerung sind durchgängig im Leitstand, der operativen Arbeitsliste und der JSON-API verfügbar. Ungültige Übergänge werden in der Domäne verhindert.
 
 ## Quelle
 

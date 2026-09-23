@@ -2,7 +2,7 @@
 id: WEBWMS-012
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Offen
+status: Done
 priority: Medium
 story_points: 8
 component: "Wareneingang"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Geprüfte Eingänge können im Leitstand oder per V3-API direkt einem offenen, artikelgleichen Ausgangsbedarf zugeordnet und bereitgestellt werden. Mengen-, Mandanten- und Zustandsprüfung erfolgen transaktional.
 
 ## Quelle
 
 - Feature: CG-012
 - Referenz: https://www.coglas.com/wareneingang/
-

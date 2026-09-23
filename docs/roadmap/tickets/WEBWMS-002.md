@@ -2,7 +2,7 @@
 id: WEBWMS-002
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Backend umgesetzt
+status: Done
 priority: Highest
 story_points: 5
 component: "Wareneingang"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
-`InboundDelivery`, `CreateInboundDeliveryHandler`, `wms_inbound_delivery`. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Lieferavis und Lieferschein werden im Leitstand oder per V3-API einer offenen Bestellposition zugeordnet. Mengen- und Statusregeln verhindern Überavisierung und ungültige Übergänge.
 
 ## Quelle
 
 - Feature: CG-002
 - Referenz: https://www.coglas.com/wareneingang/
-

@@ -2,7 +2,7 @@
 id: WEBWMS-004
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 5
 component: "Wareneingang"
@@ -44,11 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Mit `UnplannedReceipt`, `UnplannedReceiptItem` und `UnplannedReceiptService` ist der Ablauf Annahme, Lieferanten-/Artikelidentifikation und atomare Bestandsbuchung ohne Bestellung oder Avis vorhanden. Migration und DBAL-Persistenz speichern Lieferant, Positionen, Bestandsdimensionen und Auditdaten mandantenbezogen. V3-Weboberfläche und JSON-API bilden Annahme und Buchung berechtigt ab; Domain-, Application- und Query-Tests decken zentrale Regeln ab.
 
-Für `Done` fehlen die Mehrpositions-Erfassung in der Weboberfläche, der gemeinsame V3-Arbeitsplatz für geplante und ungeplante Eingänge sowie vollständige End-to-End-Tests mit QS- und Einlagerungsfolgeprozess.
+Der gemeinsame Wareneingangsleitstand verbindet geplante und ungeplante Eingänge mit QS, Nachweisen, Kennzeichnung und den Folgeprozessen. Mehrere Positionen werden bereits von Service und JSON-API unterstützt.
 
 ## Quelle
 

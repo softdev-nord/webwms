@@ -2,7 +2,7 @@
 id: WEBWMS-007
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Offen
+status: Done
 priority: High
 story_points: 5
 component: "Wareneingang"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Fotos werden über Weboberfläche oder Base64-JSON-API sicher an der Prozessakte gespeichert. Dateigröße, Medientyp, Prüfsumme, Benutzer, Zeitpunkt und Mandant sind nachvollziehbar.
 
 ## Quelle
 
 - Feature: CG-007
 - Referenz: https://www.coglas.com/wareneingang/
-

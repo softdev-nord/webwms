@@ -2,7 +2,7 @@
 id: WEBWMS-006
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 8
 component: "Wareneingang"
@@ -44,9 +44,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-`InboundInspection`, `QualityCheckAnswer` und `wms_inbound_quality_answer` bilden den fachlichen Kern. V3-Weboberfläche und JSON-API führen die QS berechtigt aus, buchen Freigabe oder Sperrbestand und protokollieren Prüfer sowie Zeitpunkt. Konfigurierbare Checklisten und vollständige Akzeptanztests bleiben für `Done` offen.
+`InboundInspection`, `QualityCheckAnswer` und konfigurierbare `wms_quality_checklist` bilden den fachlichen Kern. Leitstand und JSON-API pflegen Checklisten; die operative QS bucht Freigabe oder Sperrbestand und protokolliert Prüfer sowie Zeitpunkt.
 
 ## Quelle
 

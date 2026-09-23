@@ -2,7 +2,7 @@
 id: WEBWMS-008
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Wareneingang"
@@ -44,9 +44,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-Bestandsstatus `blocked` und QS-Entscheidung `block` sind jetzt mit einem expliziten Abweichungsvorgang verbunden. Offene Abweichungen erzwingen Sperrbestand; die auditierte Entscheidung gibt den Bestand atomar frei oder hält ihn abgelehnt gesperrt. UI, JSON-API, Berechtigungen und Domain-Tests sind vorhanden. Lieferantenkommunikation und vollständige Akzeptanztests bleiben für `Done` offen.
+Bestandsstatus `blocked` und QS-Entscheidung `block` sind mit einem expliziten Abweichungsvorgang verbunden. Offene Abweichungen erzwingen Sperrbestand; die auditierte Entscheidung gibt atomar frei oder hält abgelehnte Ware gesperrt. UI, JSON-API, Berechtigungen und Tests sind vorhanden.
 
 ## Quelle
 

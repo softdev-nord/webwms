@@ -2,7 +2,7 @@
 id: WEBWMS-005
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 5
 component: "Wareneingang"
@@ -44,9 +44,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-Der V3-Arbeitsplatz erfasst Soll- und Istmenge, verlangt bei Abweichung einen Grund und dokumentiert Unter- beziehungsweise Überlieferungen als eigenen mandantenbezogenen Vorgang. UI, JSON-API, Autorisierung, Auditdaten und Domain-Tests sind vorhanden. Falschlieferungen mit abweichender Artikelidentität und vollständige Akzeptanztests bleiben für `Done` offen.
+Der V3-Arbeitsplatz erfasst Soll- und Istmenge, verlangt bei Abweichung einen Grund und dokumentiert Unter-, Über- und über die Artikelreferenz erkannte Falschlieferungen mandantenbezogen. UI, JSON-API, Autorisierung, Auditdaten und Tests sind vorhanden.
 
 ## Quelle
 

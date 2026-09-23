@@ -2,7 +2,7 @@
 id: WEBWMS-011
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Wareneingang"
@@ -44,9 +44,9 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
-`PutawayStrategy`, `PutawayRequest` und `ConfirmPutawayHandler` bilden Platzfindung und atomare Umbuchung ab. V3-Weboberfläche und JSON-API erlauben die berechtigte Planung und Bestätigung; Demo-Daten stellen eine ausführbare Strategie bereit. Strategiepflege und vollständige Akzeptanztests bleiben für `Done` offen.
+`PutawayStrategy`, `PutawayRequest` und `ConfirmPutawayHandler` bilden Platzfindung und atomare Umbuchung ab. V3-Weboberfläche und JSON-API erlauben die berechtigte Planung und Bestätigung; Strategiepflege, Kapazitätsprüfung und Demo-Daten sind integriert.
 
 ## Quelle
 

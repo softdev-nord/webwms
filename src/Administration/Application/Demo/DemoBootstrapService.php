@@ -368,6 +368,9 @@ final readonly class DemoBootstrapService
         if ($this->connection->fetchOne('SELECT 1 FROM wms_process_configuration WHERE tenant_id = :tenantId AND process_key = :processKey', ['tenantId' => self::TENANT_ID, 'processKey' => 'inbound.quality']) === false) {
             $this->connection->insert('wms_process_configuration', ['id' => Uuid::v7()->toRfc4122(), 'tenant_id' => self::TENANT_ID, 'process_key' => 'inbound.quality', 'name' => 'Qualitätsprüfung im Wareneingang', 'enabled' => 1, 'configuration' => '{}', 'changed_by' => self::USER_ID, 'changed_at' => $this->date($now)]);
         }
+        if ($this->connection->fetchOne('SELECT 1 FROM wms_quality_checklist WHERE tenant_id = :tenantId AND code = :code', ['tenantId' => self::TENANT_ID, 'code' => 'INBOUND-STANDARD']) === false) {
+            $this->connection->insert('wms_quality_checklist', ['id' => Uuid::v7()->toRfc4122(), 'tenant_id' => self::TENANT_ID, 'code' => 'INBOUND-STANDARD', 'name' => 'Standardprüfung Wareneingang', 'questions' => json_encode(['Verpackung unbeschädigt?', 'Artikelidentität korrekt?', 'Menge vollständig?'], JSON_THROW_ON_ERROR), 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
+        }
         if ($this->connection->fetchOne('SELECT 1 FROM wms_deployment_configuration WHERE tenant_id = :tenantId', ['tenantId' => self::TENANT_ID]) === false) {
             $this->connection->insert('wms_deployment_configuration', ['tenant_id' => self::TENANT_ID, 'deployment_mode' => 'on_premises', 'public_url' => 'http://www.webwms.local', 'storage_driver' => 'local', 'queue_transport' => 'rabbitmq', 'release_channel' => 'stable', 'changed_by' => self::USER_ID, 'changed_at' => $this->date($now)]);
         }

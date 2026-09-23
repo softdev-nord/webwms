@@ -2,7 +2,7 @@
 id: WEBWMS-010
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Offen
+status: Done
 priority: Highest
 story_points: 5
 component: "Wareneingang"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Der Leitstand und die V3-API erzeugen auditierte Druckaufträge für Wareneingangs-, Artikel- und Ladeeinheitenetiketten mit kontrollierter Kopienzahl.
 
 ## Quelle
 
 - Feature: CG-010
 - Referenz: https://www.coglas.com/funktionen/
-

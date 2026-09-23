@@ -2,7 +2,7 @@
 id: WEBWMS-013
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Offen
+status: Done
 priority: Medium
 story_points: 8
 component: "Wareneingang"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Fertigmeldungen werden im Leitstand oder per V3-API mit Fertigungsauftrag, Artikel, Platz, Menge und Charge erfasst und über den gemeinsamen Bestandsledger atomar eingebucht.
 
 ## Quelle
 
 - Feature: CG-013
 - Referenz: https://www.coglas.com/funktionen/
-

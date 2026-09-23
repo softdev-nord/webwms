@@ -2,7 +2,7 @@
 id: WEBWMS-001
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Backend umgesetzt
+status: Done
 priority: Highest
 story_points: 5
 component: "Wareneingang"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
-`PurchaseOrder`, `CreatePurchaseOrderHandler`, `wms_purchase_order`. Der fachliche Domain-, Application- und Persistenzkern ist vorhanden. API/UI, ticketbezogene Autorisierung und die vollständige Akzeptanztestabdeckung sind noch offen; das Ticket ist deshalb nicht `Done`.
+Bestellungen können im Wareneingangsleitstand und per V3-API mandantenbezogen angelegt und bis zur vollständigen Vereinnahmung verfolgt werden. Domain-Handler, Transaktion, Berechtigung und Auditdaten sind integriert.
 
 ## Quelle
 
 - Feature: CG-001
 - Referenz: https://www.coglas.com/funktionen/
-

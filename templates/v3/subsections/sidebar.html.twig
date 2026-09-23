@@ -83,8 +83,9 @@
                             <i class="ri-inbox-archive-line"></i><span>Wareneingang</span>
                         </a>
                         <div class="collapse menu-dropdown {{ inboundOpen ? 'show' : '' }}" id="sidebarInbound"><ul class="nav nav-sm flex-column">
+                            {% if is_granted('inbound.planned.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_inbound_control_' ? 'active' : '' }}" href="{{ path('v3_inbound_control_index') }}">Wareneingangsleitstand</a></li>{% endif %}
                             {% if is_granted('inbound.planned.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_inbound_planned' ? 'active' : '' }}" href="{{ path('v3_inbound_planned') }}">Geplante Eingänge</a></li>{% endif %}
-                            {% if is_granted('inbound.receipt.read') %}<li class="nav-item"><a class="nav-link {{ inboundOpen and not (currentRoute starts with 'v3_inbound_planned') ? 'active' : '' }}" href="{{ path('v3_inbound_index') }}">Ungeplante Eingänge</a></li>{% endif %}
+                            {% if is_granted('inbound.receipt.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_inbound_index' or currentRoute starts with 'v3_inbound_unplanned' or currentRoute == 'v3_inbound_show' ? 'active' : '' }}" href="{{ path('v3_inbound_index') }}">Ungeplante Eingänge</a></li>{% endif %}
                         </ul></div>
                     </li>
                 {% endif %}

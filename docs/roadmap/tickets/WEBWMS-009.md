@@ -2,7 +2,7 @@
 id: WEBWMS-009
 issue_type: Story
 epic: WEBWMS-EPIC-INBOUND
-status: Offen
+status: Done
 priority: High
 story_points: 2
 component: "Wareneingang"
@@ -44,12 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Beliebige Prozessnachweise bis 10 MB können an geplante und ungeplante Eingänge, Retouren und Produktionszugänge gehängt, gelistet und mandantensicher heruntergeladen werden.
 
 ## Quelle
 
 - Feature: CG-009
 - Referenz: https://www.coglas.com/funktionen/
-

@@ -201,6 +201,31 @@ final readonly class ApiV3QueryService
         );
     }
 
+    /** @return array<string, list<array<string, mixed>>> */
+    public function inboundControlCenter(string $tenantId): array
+    {
+        return [
+            'purchaseOrders' => $this->connection->fetchAllAssociative(
+                'SELECT o.id, o.code, o.supplier_reference, o.status, o.created_at, COUNT(i.id) item_count, COALESCE(SUM(i.ordered_quantity), 0) ordered_quantity, COALESCE(SUM(i.received_quantity), 0) received_quantity FROM wms_purchase_order o LEFT JOIN wms_purchase_order_item i ON i.purchase_order_id = o.id WHERE o.tenant_id = :tenantId GROUP BY o.id, o.code, o.supplier_reference, o.status, o.created_at ORDER BY o.created_at DESC',
+                ['tenantId' => $tenantId],
+            ),
+            'purchaseOrderItems' => $this->connection->fetchAllAssociative(
+                'SELECT i.id, i.purchase_order_id, o.code order_code, i.product_id, p.sku, p.name product_name, i.ordered_quantity, i.advised_quantity, i.received_quantity FROM wms_purchase_order_item i INNER JOIN wms_purchase_order o ON o.id = i.purchase_order_id INNER JOIN wms_product_reference p ON p.id = i.product_id WHERE o.tenant_id = :tenantId AND i.advised_quantity < i.ordered_quantity ORDER BY o.created_at DESC, i.id',
+                ['tenantId' => $tenantId],
+            ),
+            'returns' => $this->connection->fetchAllAssociative(
+                'SELECT o.id order_id, o.code, o.order_reference, o.status order_status, i.id item_id, p.sku, p.name product_name, i.expected_quantity, i.reason, i.status item_status, r.id receipt_id, r.status receipt_status, r.quality_decision, r.inspection_note FROM wms_return_order o INNER JOIN wms_return_item i ON i.return_order_id = o.id INNER JOIN wms_product_reference p ON p.id = i.product_id LEFT JOIN wms_return_receipt r ON r.return_item_id = i.id WHERE o.tenant_id = :tenantId ORDER BY o.created_at DESC, i.id',
+                ['tenantId' => $tenantId],
+            ),
+            'checklists' => $this->connection->fetchAllAssociative('SELECT id, code, name, questions, JSON_LENGTH(questions) question_count, active, created_at FROM wms_quality_checklist WHERE tenant_id = :tenantId ORDER BY code', ['tenantId' => $tenantId]),
+            'attachments' => $this->connection->fetchAllAssociative('SELECT id, aggregate_type, aggregate_id, category, original_name, media_type, byte_size, checksum, created_at FROM wms_inbound_attachment WHERE tenant_id = :tenantId ORDER BY created_at DESC', ['tenantId' => $tenantId]),
+            'labels' => $this->connection->fetchAllAssociative('SELECT id, aggregate_type, aggregate_id, label_type, copies, status, created_at, printed_at FROM wms_inbound_label_job WHERE tenant_id = :tenantId ORDER BY created_at DESC', ['tenantId' => $tenantId]),
+            'crossDock' => $this->connection->fetchAllAssociative('SELECT a.id, a.inbound_receipt_id, a.outbound_order_item_id, a.quantity, a.status, a.created_at, p.sku, o.order_number outbound_order_code FROM wms_cross_dock_assignment a INNER JOIN wms_outbound_order_item i ON i.id = a.outbound_order_item_id INNER JOIN wms_outbound_order o ON o.id = i.outbound_order_id INNER JOIN wms_product_reference p ON p.id = i.product_id WHERE a.tenant_id = :tenantId ORDER BY a.created_at DESC', ['tenantId' => $tenantId]),
+            'outboundDemand' => $this->connection->fetchAllAssociative("SELECT i.id, o.order_number order_code, p.sku, p.name product_name, i.requested_quantity FROM wms_outbound_order_item i INNER JOIN wms_outbound_order o ON o.id = i.outbound_order_id INNER JOIN wms_product_reference p ON p.id = i.product_id WHERE o.tenant_id = :tenantId AND o.status IN ('imported', 'released') ORDER BY o.created_at DESC", ['tenantId' => $tenantId]),
+            'productionReceipts' => $this->connection->fetchAllAssociative('SELECT r.id, r.production_order, p.sku, p.name product_name, l.code location_code, r.quantity, r.batch_number, r.status, r.received_at FROM wms_production_receipt r INNER JOIN wms_product_reference p ON p.id = r.product_id INNER JOIN wms_storage_location l ON l.id = r.location_id WHERE r.tenant_id = :tenantId ORDER BY r.received_at DESC', ['tenantId' => $tenantId]),
+        ];
+    }
+
     /** @return list<array<string, mixed>> */
     public function stock(string $tenantId, ?string $warehouseId, int $limit, ?string $cursor): array
     {
