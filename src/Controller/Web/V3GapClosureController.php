@@ -28,6 +28,34 @@ final class V3GapClosureController extends AbstractController
         return $this->render('v3/parity/index.html.twig', ['workspace' => $this->service->workspace($this->user()->tenantId())]);
     }
 
+    #[Route('/configurations/{resource}', name: 'configuration_index', methods: ['GET'])]
+    public function configurations(string $resource): Response
+    {
+        if (!isset(GapClosureService::RESOURCES[$resource])) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('v3/parity/configuration_index.html.twig', [
+            'resource' => $resource,
+            'label' => GapClosureService::RESOURCES[$resource],
+            'configurations' => $this->service->configurations($this->user()->tenantId(), $resource),
+        ]);
+    }
+
+    #[Route('/workflows/{workflow}', name: 'workflow_index', methods: ['GET'])]
+    public function workflows(string $workflow): Response
+    {
+        if (!isset(GapClosureService::WORKFLOWS[$workflow])) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('v3/parity/workflow_index.html.twig', [
+            'workflow' => $workflow,
+            'label' => GapClosureService::WORKFLOWS[$workflow],
+            'workItems' => $this->service->workItems($this->user()->tenantId(), $workflow),
+        ]);
+    }
+
     #[Route('/configurations/{resource}/new', name: 'configuration_new', methods: ['GET', 'POST'])]
     #[Route('/configurations/{resource}/{id}/edit', name: 'configuration_edit', methods: ['GET', 'POST'])]
     #[IsGranted('platform.parity.write')]

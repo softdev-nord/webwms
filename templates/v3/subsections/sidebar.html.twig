@@ -48,6 +48,8 @@
                 {% set integrationOpen = currentRoute starts with 'v3_outbox_' or currentRoute starts with 'v3_erp_connection_' or currentRoute starts with 'v3_carrier_connection_' or currentRoute starts with 'v3_printing_' or currentRoute starts with 'v3_device_' or currentRoute starts with 'v3_measurement_' or currentRoute starts with 'v3_automation_' or currentRoute starts with 'v3_wcs_' or currentRoute starts with 'v3_transport_' %}
                 {% set administrationOpen = currentRoute starts with 'v3_administration_' %}
                 {% set documentationOpen = currentRoute starts with 'v3_documentation_' %}
+                {% set platformOpen = currentRoute starts with 'v3_platform_' or currentRoute starts with 'v3_partner_portal' %}
+                {% set parityOpen = currentRoute starts with 'v3_parity_' %}
 
                 <li class="menu-title"><span>Navigation</span></li>
                 <li class="nav-item">
@@ -55,8 +57,30 @@
                         <i class="ri-dashboard-2-line"></i><span>Dashboard</span>
                     </a>
                 </li>
-                {% if is_granted('platform.read') %}<li class="nav-item"><a class="nav-link menu-link {{ currentRoute starts with 'v3_platform_' ? 'active' : '' }}" href="{{ path('v3_platform_index') }}"><i class="ri-apps-2-line"></i><span>Platform Control Center</span></a></li>{% endif %}
-                {% if is_granted('platform.parity.read') %}<li class="nav-item"><a class="nav-link menu-link {{ currentRoute starts with 'v3_parity_' ? 'active' : '' }}" href="{{ path('v3_parity_index') }}"><i class="ri-git-merge-line"></i><span>Funktionsparität</span></a></li>{% endif %}
+                {% if is_granted('platform.read') %}
+                    <li class="nav-item"><a class="nav-link menu-link {{ platformOpen ? '' : 'collapsed' }}" href="#sidebarPlatform" data-bs-toggle="collapse" role="button" aria-expanded="{{ platformOpen ? 'true' : 'false' }}" aria-controls="sidebarPlatform"><i class="ri-apps-2-line"></i><span>Plattform</span></a>
+                        <div class="collapse menu-dropdown {{ platformOpen ? 'show' : '' }}" id="sidebarPlatform"><ul class="nav nav-sm flex-column">
+                            <li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_platform_' ? 'active' : '' }}" href="{{ path('v3_platform_index') }}">Control Center</a></li>
+                            <li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_partner_portal' ? 'active' : '' }}" href="{{ path('v3_partner_portal') }}">Partnerportal</a></li>
+                        </ul></div>
+                    </li>
+                {% endif %}
+
+                {% if is_granted('platform.parity.read') %}
+                    <li class="nav-item"><a class="nav-link menu-link {{ parityOpen ? '' : 'collapsed' }}" href="#sidebarParity" data-bs-toggle="collapse" role="button" aria-expanded="{{ parityOpen ? 'true' : 'false' }}" aria-controls="sidebarParity"><i class="ri-git-merge-line"></i><span>Funktionsparität</span></a>
+                        <div class="collapse menu-dropdown {{ parityOpen ? 'show' : '' }}" id="sidebarParity"><ul class="nav nav-sm flex-column">
+                            <li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_parity_index' ? 'active' : '' }}" href="{{ path('v3_parity_index') }}">Gesamtübersicht</a></li>
+                            <li class="menu-title px-3 pt-2"><span>Konfiguration</span></li>
+                            {% for resource, label in constant('WebWMS\\Platform\\Application\\GapClosureService::RESOURCES') %}
+                                <li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_parity_configuration_' and app.request.attributes.get('resource') == resource ? 'active' : '' }}" href="{{ path('v3_parity_configuration_index',{resource:resource}) }}">{{ label }}</a></li>
+                            {% endfor %}
+                            <li class="menu-title px-3 pt-2"><span>Prozesse</span></li>
+                            {% for workflow, label in constant('WebWMS\\Platform\\Application\\GapClosureService::WORKFLOWS') %}
+                                <li class="nav-item"><a class="nav-link {{ (currentRoute == 'v3_parity_workflow_index' or currentRoute starts with 'v3_parity_work_item_') and app.request.attributes.get('workflow') == workflow ? 'active' : '' }}" href="{{ path('v3_parity_workflow_index',{workflow:workflow}) }}">{{ label }}</a></li>
+                            {% endfor %}
+                        </ul></div>
+                    </li>
+                {% endif %}
 
                 {% if is_granted('inventory.stock.read') or is_granted('inventory.topology.read') or is_granted('inventory.overview.read') or is_granted('inventory.stock.movement.read') or is_granted('inventory.traceability.read') or is_granted('inventory.special_stock.read') or is_granted('inventory.selection_rule.read') or is_granted('inventory.stock_block.read') or is_granted('inventory.control.read') %}
                     <li class="nav-item">
@@ -93,6 +117,7 @@
                             {% if is_granted('inbound.planned.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_inbound_control_' ? 'active' : '' }}" href="{{ path('v3_inbound_control_index') }}">Wareneingangsleitstand</a></li>{% endif %}
                             {% if is_granted('inbound.planned.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_inbound_planned' ? 'active' : '' }}" href="{{ path('v3_inbound_planned') }}">Geplante Eingänge</a></li>{% endif %}
                             {% if is_granted('inbound.receipt.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_inbound_index' or currentRoute starts with 'v3_inbound_unplanned' or currentRoute == 'v3_inbound_show' ? 'active' : '' }}" href="{{ path('v3_inbound_index') }}">Ungeplante Eingänge</a></li>{% endif %}
+                            {% if is_granted('inbound.receipt.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_inbound_unplanned_new' ? 'active' : '' }}" href="{{ path('v3_inbound_unplanned_new') }}">Eingang anlegen</a></li>{% endif %}
                         </ul></div>
                     </li>
                 {% endif %}
@@ -105,12 +130,14 @@
                         <div class="collapse menu-dropdown {{ outboundOpen ? 'show' : '' }}" id="sidebarOutbound"><ul class="nav nav-sm flex-column">
                             {% if is_granted('outbound.order.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_outbound_control_' ? 'active' : '' }}" href="{{ path('v3_outbound_control_index') }}">Warenausgangsleitstand</a></li>{% endif %}
                             {% if is_granted('outbound.order.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_outbound_' and not (currentRoute starts with 'v3_outbound_control_') ? 'active' : '' }}" href="{{ path('v3_outbound_orders') }}">Aufträge</a></li>{% endif %}
+                            {% if is_granted('outbound.order.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_outbound_order_new' ? 'active' : '' }}" href="{{ path('v3_outbound_order_new') }}">Auftrag anlegen</a></li>{% endif %}
                             {% if is_granted('fulfillment.pick.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_picking_' and not (currentRoute starts with 'v3_picking_control_') ? 'active' : '' }}" href="{{ path('v3_picking_index') }}">Kommissionierung</a></li>{% endif %}
                             {% if is_granted('fulfillment.pick.control') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_picking_control_' ? 'active' : '' }}" href="{{ path('v3_picking_control_index') }}">Kommissionierleitstand</a></li>{% endif %}
                             {% if is_granted('fulfillment.transport.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_internal_transport_' ? 'active' : '' }}" href="{{ path('v3_internal_transport_index') }}">Interner Transport</a></li>{% endif %}
                             {% if is_granted('fulfillment.pack.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_packing_' ? 'active' : '' }}" href="{{ path('v3_packing_index') }}">Packen</a></li>{% endif %}
                             {% if is_granted('fulfillment.ship.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_shipping_' ? 'active' : '' }}" href="{{ path('v3_shipping_index') }}">Versand</a></li>{% endif %}
                             {% if is_granted('fulfillment.loading.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_loading_' ? 'active' : '' }}" href="{{ path('v3_loading_index') }}">Verladung</a></li>{% endif %}
+                            {% if is_granted('fulfillment.loading.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_loading_new' ? 'active' : '' }}" href="{{ path('v3_loading_new') }}">Verladung anlegen</a></li>{% endif %}
                         </ul></div>
                     </li>
                 {% endif %}
@@ -123,13 +150,27 @@
                         <div class="collapse menu-dropdown {{ integrationOpen ? 'show' : '' }}" id="sidebarIntegration"><ul class="nav nav-sm flex-column">
                             {% if is_granted('integration.outbox.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_outbox_' ? 'active' : '' }}" href="{{ path('v3_outbox_index') }}">Integrations-Outbox</a></li>{% endif %}
                             {% if is_granted('integration.erp_connection.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_erp_connection_' ? 'active' : '' }}" href="{{ path('v3_erp_connection_index') }}">ERP-Verbindungen</a></li>{% endif %}
+                            {% if is_granted('integration.erp_connection.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_erp_connection_new' ? 'active' : '' }}" href="{{ path('v3_erp_connection_new') }}">ERP-Verbindung anlegen</a></li>{% endif %}
                             {% if is_granted('integration.carrier_connection.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_carrier_connection_' ? 'active' : '' }}" href="{{ path('v3_carrier_connection_index') }}">Carrier-Verbindungen</a></li>{% endif %}
+                            {% if is_granted('integration.carrier_connection.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_carrier_connection_new' ? 'active' : '' }}" href="{{ path('v3_carrier_connection_new') }}">Carrier-Verbindung anlegen</a></li>{% endif %}
                             {% if is_granted('integration.print_job.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_printing_' ? 'active' : '' }}" href="{{ path('v3_printing_index') }}">Druckwarteschlange</a></li>{% endif %}
+                            {% if is_granted('integration.printer.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_printing_printer_new' ? 'active' : '' }}" href="{{ path('v3_printing_printer_new') }}">Drucker anlegen</a></li>{% endif %}
+                            {% if is_granted('integration.print_job.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_printing_job_new' ? 'active' : '' }}" href="{{ path('v3_printing_job_new') }}">Druckauftrag anlegen</a></li>{% endif %}
                             {% if is_granted('integration.device.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_device_' ? 'active' : '' }}" href="{{ path('v3_device_index') }}">Scanner &amp; MDE</a></li>{% endif %}
+                            {% if is_granted('integration.device.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_device_new' ? 'active' : '' }}" href="{{ path('v3_device_new') }}">Gerät anlegen</a></li>{% endif %}
+                            {% if is_granted('integration.device.scan') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_device_scan' ? 'active' : '' }}" href="{{ path('v3_device_scan') }}">Scan erfassen</a></li>{% endif %}
                             {% if is_granted('integration.measurement.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_measurement_' ? 'active' : '' }}" href="{{ path('v3_measurement_index') }}">Waagen &amp; Volumen</a></li>{% endif %}
+                            {% if is_granted('integration.measurement.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_measurement_device_new' ? 'active' : '' }}" href="{{ path('v3_measurement_device_new') }}">Messgerät anlegen</a></li>{% endif %}
+                            {% if is_granted('integration.measurement.capture') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_measurement_capture' ? 'active' : '' }}" href="{{ path('v3_measurement_capture') }}">Messung erfassen</a></li>{% endif %}
                             {% if is_granted('integration.automation.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_automation_' ? 'active' : '' }}" href="{{ path('v3_automation_index') }}">Lagerautomation</a></li>{% endif %}
+                            {% if is_granted('integration.automation.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_automation_device_new' ? 'active' : '' }}" href="{{ path('v3_automation_device_new') }}">Automationsgerät anlegen</a></li>{% endif %}
+                            {% if is_granted('integration.automation.execute') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_automation_command_new' ? 'active' : '' }}" href="{{ path('v3_automation_command_new') }}">Automationsbefehl anlegen</a></li>{% endif %}
                             {% if is_granted('integration.wcs.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_wcs_' ? 'active' : '' }}" href="{{ path('v3_wcs_index') }}">WCS &amp; MFR</a></li>{% endif %}
+                            {% if is_granted('integration.wcs.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_wcs_connection_new' ? 'active' : '' }}" href="{{ path('v3_wcs_connection_new') }}">WCS-Verbindung anlegen</a></li>{% endif %}
+                            {% if is_granted('integration.wcs.execute') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_wcs_command_new' ? 'active' : '' }}" href="{{ path('v3_wcs_command_new') }}">WCS-Befehl anlegen</a></li>{% endif %}
+                            {% if is_granted('integration.wcs.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_wcs_status_new' ? 'active' : '' }}" href="{{ path('v3_wcs_status_new') }}">WCS-Status erfassen</a></li>{% endif %}
                             {% if is_granted('integration.transport.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_transport_' ? 'active' : '' }}" href="{{ path('v3_transport_index') }}">Transportprotokolle</a></li>{% endif %}
+                            {% if is_granted('integration.transport.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_transport_new' ? 'active' : '' }}" href="{{ path('v3_transport_new') }}">Endpunkt anlegen</a></li>{% endif %}
                         </ul></div>
                     </li>
                 {% endif %}
@@ -142,8 +183,11 @@
                         <div class="collapse menu-dropdown {{ administrationOpen ? 'show' : '' }}" id="sidebarAdministration"><ul class="nav nav-sm flex-column">
                             {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_administration_index' ? 'active' : '' }}" href="{{ path('v3_administration_index') }}">Übersicht</a></li>{% endif %}
                             {% if is_granted('administration.user.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_administration_users' or currentRoute starts with 'v3_administration_user_' ? 'active' : '' }}" href="{{ path('v3_administration_users') }}">Benutzer</a></li>{% endif %}
+                            {% if is_granted('administration.user.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_administration_user_new' ? 'active' : '' }}" href="{{ path('v3_administration_user_new') }}">Benutzer anlegen</a></li>{% endif %}
                             {% if is_granted('administration.role.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_administration_roles' or currentRoute starts with 'v3_administration_role_' ? 'active' : '' }}" href="{{ path('v3_administration_roles') }}">Rollen</a></li>{% endif %}
+                            {% if is_granted('administration.role.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_administration_role_new' ? 'active' : '' }}" href="{{ path('v3_administration_role_new') }}">Rolle anlegen</a></li>{% endif %}
                             {% if is_granted('administration.api_client.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_administration_api_clients' or currentRoute starts with 'v3_administration_api_client_' ? 'active' : '' }}" href="{{ path('v3_administration_api_clients') }}">API-Clients</a></li>{% endif %}
+                            {% if is_granted('administration.api_client.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_administration_api_client_new' ? 'active' : '' }}" href="{{ path('v3_administration_api_client_new') }}">API-Client anlegen</a></li>{% endif %}
                             {% if is_granted('administration.configuration.read') %}<li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_administration_workspace' or currentRoute starts with 'v3_administration_process_' or currentRoute starts with 'v3_administration_deployment_' or currentRoute starts with 'v3_administration_number_range_' ? 'active' : '' }}" href="{{ path('v3_administration_workspace') }}">Mandant &amp; Konfiguration</a></li>{% endif %}
                         </ul></div>
                     </li>

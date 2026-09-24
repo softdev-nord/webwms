@@ -67,6 +67,28 @@ final readonly class GapClosureService
         ];
     }
 
+    /** @return list<array<string, mixed>> */
+    public function configurations(string $tenantId, string $resource): array
+    {
+        $this->assertResource($resource);
+
+        return $this->connection->fetchAllAssociative(
+            'SELECT * FROM wms_parity_configuration WHERE tenant_id = :tenantId AND resource_type = :resource ORDER BY code',
+            ['tenantId' => $tenantId, 'resource' => $resource],
+        );
+    }
+
+    /** @return list<array<string, mixed>> */
+    public function workItems(string $tenantId, string $workflow): array
+    {
+        $this->assertWorkflow($workflow);
+
+        return $this->connection->fetchAllAssociative(
+            'SELECT * FROM wms_parity_work_item WHERE tenant_id = :tenantId AND workflow_type = :workflow ORDER BY changed_at DESC LIMIT 250',
+            ['tenantId' => $tenantId, 'workflow' => $workflow],
+        );
+    }
+
     /** @return array<string, mixed> */
     public function configuration(string $tenantId, string $resource, string $id): array
     {
@@ -104,10 +126,8 @@ final readonly class GapClosureService
     /** @param array<string, mixed> $payload */
     public function createWorkItem(string $tenantId, string $actorId, string $workflow, string $reference, array $payload, DateTimeImmutable $now): string
     {
-        $states = self::TRANSITIONS[$workflow] ?? null;
-        if ($states === null) {
-            throw new \InvalidArgumentException('Der Workflow ist unbekannt.');
-        }
+        $this->assertWorkflow($workflow);
+        $states = self::TRANSITIONS[$workflow];
         $id = Uuid::v7()->toRfc4122();
         $status = (string) array_key_first($states);
         $row = ['id' => $id, 'tenant_id' => $tenantId, 'workflow_type' => $workflow, 'reference' => $this->required($reference, 120), 'status' => $status, 'payload_json' => json_encode($payload, JSON_THROW_ON_ERROR), 'created_by' => $actorId, 'created_at' => $this->date($now), 'changed_by' => $actorId, 'changed_at' => $this->date($now)];
@@ -163,6 +183,13 @@ final readonly class GapClosureService
     {
         if (!isset(self::RESOURCES[$resource])) {
             throw new \InvalidArgumentException('Die Konfigurationsressource ist unbekannt.');
+        }
+    }
+
+    private function assertWorkflow(string $workflow): void
+    {
+        if (!isset(self::TRANSITIONS[$workflow])) {
+            throw new \InvalidArgumentException('Der Workflow ist unbekannt.');
         }
     }
 

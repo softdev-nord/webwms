@@ -48,6 +48,29 @@ final class GapClosureServiceTest extends TestCase
         self::assertSame([], $service->allowedTransitions('unknown', 'draft'));
     }
 
+    public function testItRejectsUnknownWorkflowListsBeforePersistence(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::never())->method('fetchAllAssociative');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->service($connection)->workItems('tenant', 'unknown');
+    }
+
+    public function testItLoadsOnlyTheRequestedConfigurationResource(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects(self::once())->method('fetchAllAssociative')->with(
+            self::stringContains('resource_type = :resource'),
+            ['tenantId' => 'tenant', 'resource' => 'barcode_profile'],
+        )->willReturn([['id' => 'configuration']]);
+
+        self::assertSame(
+            [['id' => 'configuration']],
+            $this->service($connection)->configurations('tenant', 'barcode_profile'),
+        );
+    }
+
     private function service(Connection $connection): GapClosureService
     {
         return new GapClosureService($connection);
