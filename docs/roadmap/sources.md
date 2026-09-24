@@ -18,3 +18,7 @@ Stand der ursprünglichen Recherche: 16.09.2026. Der Katalog beruht ausschließl
 | production | https://www.coglas.com/wms-fuer-produktion/ | Produktion |
 | spares | https://www.coglas.com/wms-fuer-ersatzteillager/ | Ersatzteillager |
 | food | https://www.coglas.com/wms-fuer-lebensmittel/ | Lebensmittel |
+| help-processes | https://help.coglas.com/ger/coglas-prozesse | Vollständiger Basis-/Premium-Prozesskatalog, geprüft am 24.09.2026 |
+| help-menu | https://help.coglas.com/ger/coglas-menu | Menü- und Konfigurationsfunktionen samt Unterseiten, geprüft am 24.09.2026 |
+| help-concepts | https://help.coglas.com/ger/prozesse-konzepte | Prozesskonzepte samt Unterseiten, geprüft am 24.09.2026 |
+| help-changelog | https://help.coglas.com/ger/changelog | Produktänderungen und Detailfunktionen, geprüft am 24.09.2026 |
