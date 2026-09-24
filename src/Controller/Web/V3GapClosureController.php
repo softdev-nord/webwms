@@ -37,7 +37,7 @@ final class V3GapClosureController extends AbstractController
         $configuration = $id === null ? null : $this->service->configuration($user->tenantId(), $resource, $id);
         if ($request->isMethod('POST')) {
             $this->csrf($request, 'v3_parity_configuration');
-            $payload = $this->json((string) $request->request->get('configuration_json'));
+            $payload = $this->decodeJsonObject((string) $request->request->get('configuration_json'));
             $this->service->saveConfiguration($user->tenantId(), $user->actorId(), $resource, $id, $this->required($request, 'code'), $this->required($request, 'name'), $payload, $request->request->getBoolean('active'), new DateTimeImmutable());
             $this->addFlash('success', 'Die Konfiguration wurde gespeichert.');
 
@@ -57,7 +57,7 @@ final class V3GapClosureController extends AbstractController
         if ($request->isMethod('POST')) {
             $this->csrf($request, 'v3_parity_work_item');
             $user = $this->user();
-            $id = $this->service->createWorkItem($user->tenantId(), $user->actorId(), $workflow, $this->required($request, 'reference'), $this->json((string) $request->request->get('payload_json')), new DateTimeImmutable());
+            $id = $this->service->createWorkItem($user->tenantId(), $user->actorId(), $workflow, $this->required($request, 'reference'), $this->decodeJsonObject((string) $request->request->get('payload_json')), new DateTimeImmutable());
             $this->addFlash('success', 'Der Vorgang wurde angelegt.');
 
             return $this->redirectToRoute('v3_parity_work_item_show', ['id' => $id]);
@@ -87,7 +87,7 @@ final class V3GapClosureController extends AbstractController
     }
 
     /** @return array<string, mixed> */
-    private function json(string $value): array
+    private function decodeJsonObject(string $value): array
     {
         $payload = json_decode($value === '' ? '{}' : $value, true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($payload)) {
