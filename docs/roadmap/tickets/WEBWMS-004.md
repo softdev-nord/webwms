@@ -7,7 +7,7 @@ priority: High
 story_points: 5
 component: "Wareneingang"
 feature_group: "Erfassung"
-source_feature: CG-004
+source_feature: WEBWMS-REQ-004
 ---
 
 # WEBWMS-004: Ungeplanter Wareneingang implementieren
@@ -52,5 +52,4 @@ Der gemeinsame Wareneingangsleitstand verbindet geplante und ungeplante Eingäng
 
 ## Quelle
 
-- Feature: CG-004
-- Referenz: https://www.coglas.com/wareneingang/
+- Feature: WEBWMS-REQ-004

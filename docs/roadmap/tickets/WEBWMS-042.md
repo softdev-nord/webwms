@@ -7,7 +7,7 @@ priority: Medium
 story_points: 13
 component: "Transport & Kommissionierung"
 feature_group: "Transport"
-source_feature: CG-042
+source_feature: WEBWMS-REQ-042
 ---
 
 # WEBWMS-042: Staplerleitsystem implementieren
@@ -50,5 +50,4 @@ Der Transportleitstand verwaltet Flurförderzeuge und Fahrbefehle mit dem kontro
 
 ## Quelle
 
-- Feature: CG-042
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-042

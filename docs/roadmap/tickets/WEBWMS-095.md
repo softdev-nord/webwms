@@ -7,7 +7,7 @@ priority: Medium
 story_points: 8
 component: "Integration & Technik"
 feature_group: "Protokolle"
-source_feature: CG-095
+source_feature: WEBWMS-REQ-095
 ---
 
 # WEBWMS-095: TCP/IP und Webservice implementieren
@@ -52,5 +52,4 @@ Zur vollständigen Umsetzung fehlen die laufzeitseitigen Socket-/HTTP-Transporta
 
 ## Quelle
 
-- Feature: CG-095
-- Referenz: https://www.coglas.com/hardware-schnittstelle/
+- Feature: WEBWMS-REQ-095

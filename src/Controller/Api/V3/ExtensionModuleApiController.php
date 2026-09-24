@@ -11,18 +11,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Platform\Application\GapClosureService;
+use WebWMS\Platform\Application\ExtensionModuleService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
-#[Route('/api/v3/parity', name: 'api_v3_parity_')]
-final class GapClosureApiController extends AbstractController
+#[Route('/api/v3/extensions', name: 'api_v3_extension_')]
+final class ExtensionModuleApiController extends AbstractController
 {
-    public function __construct(private readonly GapClosureService $service)
+    public function __construct(private readonly ExtensionModuleService $service)
     {
     }
 
     #[Route('', name: 'index', methods: ['GET'])]
-    #[IsGranted('platform.parity.read')]
+    #[IsGranted('platform.extension.read')]
     public function index(): JsonResponse
     {
         return new JsonResponse(['data' => $this->service->workspace($this->user()->tenantId())]);
@@ -30,7 +30,7 @@ final class GapClosureApiController extends AbstractController
 
     #[Route('/configurations/{resource}', name: 'configuration_create', methods: ['POST'])]
     #[Route('/configurations/{resource}/{id}', name: 'configuration_update', methods: ['PUT', 'PATCH'])]
-    #[IsGranted('platform.parity.write')]
+    #[IsGranted('platform.extension.write')]
     public function configuration(string $resource, Request $request, ?string $id = null): JsonResponse
     {
         $payload = $request->toArray();
@@ -45,7 +45,7 @@ final class GapClosureApiController extends AbstractController
     }
 
     #[Route('/work-items/{workflow}', name: 'work_item_create', methods: ['POST'])]
-    #[IsGranted('platform.parity.execute')]
+    #[IsGranted('platform.extension.execute')]
     public function createWorkItem(string $workflow, Request $request): JsonResponse
     {
         $payload = $request->toArray();
@@ -60,7 +60,7 @@ final class GapClosureApiController extends AbstractController
     }
 
     #[Route('/work-items/{id}', name: 'work_item_show', methods: ['GET'])]
-    #[IsGranted('platform.parity.read')]
+    #[IsGranted('platform.extension.read')]
     public function showWorkItem(string $id): JsonResponse
     {
         $item = $this->service->workItem($this->user()->tenantId(), $id);
@@ -69,7 +69,7 @@ final class GapClosureApiController extends AbstractController
     }
 
     #[Route('/work-items/{id}/transition', name: 'work_item_transition', methods: ['POST'])]
-    #[IsGranted('platform.parity.execute')]
+    #[IsGranted('platform.extension.execute')]
     public function transition(string $id, Request $request): JsonResponse
     {
         $payload = $request->toArray();

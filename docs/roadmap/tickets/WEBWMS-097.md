@@ -1,20 +1,20 @@
 ---
 id: WEBWMS-097
 issue_type: Story
-epic: WEBWMS-EPIC-PARITY
+epic: WEBWMS-EPIC-EXTENSIONS
 status: Done
 priority: Highest
 story_points: 13
-component: "Coglas-Funktionsparität"
+component: "Erweiterte Funktionen"
 feature_group: "Stammdaten"
-source_feature: COGLAS-HELP-097
+source_feature: WEBWMS-REQ-097
 ---
 
 # WEBWMS-097: Erweiterte Artikel-, Barcode- und Mengeneinheitenstammdaten
 
 ## User Story
 
-Als fachlich berechtigter Benutzer möchte ich konfigurierbare Barcodeparser, Mengeneinheiten, Umrechnungen, Gebinde, Übersetzungen und Alternativartikel zentral pflegen, damit WebWMS die im Coglas-Helpcenter dokumentierte Prozessabdeckung erreicht.
+Als fachlich berechtigter Benutzer möchte ich konfigurierbare Barcodeparser, Mengeneinheiten, Umrechnungen, Gebinde, Übersetzungen und Alternativartikel zentral pflegen, damit die Funktion zentral und nachvollziehbar genutzt werden kann.
 
 ## Fachlicher Umfang
 
@@ -31,18 +31,10 @@ Als fachlich berechtigter Benutzer möchte ich konfigurierbare Barcodeparser, Me
 
 ## Abhängigkeiten
 
-Abhängig von den vorhandenen WebWMS-3.0-Basismodulen und den in der Gap-Analyse genannten Vorgängertickets.
+Abhängig von den vorhandenen WebWMS-3.0-Basismodulen und den bestehenden Vorgängertickets.
 
 ## Implementierungsstand
 
 **Status:** Done
 
-Der Gap-Closing-Slice vom 24.09.2026 stellt den mandantensicheren Konfigurations- und Workflowkern, getrennte V3-Ansichten, JSON-API, Berechtigungen, Auditierung und automatisierte Tests bereit.
-
-## Quelle
-
-- [Coglas-Helpcenter-Gap-Analyse](../analysis/2026-09-24-coglas-helpcenter-gap-analysis.md)
-- https://help.coglas.com/ger/coglas-prozesse
-- https://help.coglas.com/ger/coglas-menu
-- https://help.coglas.com/ger/prozesse-konzepte
-- https://help.coglas.com/ger/changelog
+Der Erweiterungsmodul-Slice vom 24.09.2026 stellt den mandantensicheren Konfigurations- und Workflowkern, getrennte V3-Ansichten, JSON-API, Berechtigungen, Auditierung und automatisierte Tests bereit.

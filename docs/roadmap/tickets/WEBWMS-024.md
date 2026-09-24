@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Strategien"
-source_feature: CG-024
+source_feature: WEBWMS-REQ-024
 ---
 
 # WEBWMS-024: FEFO implementieren
@@ -50,5 +50,4 @@ FEFO ist als allgemeine Entnahmeregel für Ausgangsreservierungen umgesetzt. Noc
 
 ## Quelle
 
-- Feature: CG-024
-- Referenz: https://www.coglas.com/wms-fuer-lebensmittel/
+- Feature: WEBWMS-REQ-024

@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Warenausgang & Versand"
 feature_group: "Dokumente"
-source_feature: CG-059
+source_feature: WEBWMS-REQ-059
 ---
 
 # WEBWMS-059: Versanddokumente implementieren
@@ -56,5 +56,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-059
-- Referenz: https://www.coglas.com/versand/
+- Feature: WEBWMS-REQ-059

@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Zusatzfunktionen"
 feature_group: "Reporting"
-source_feature: CG-067
+source_feature: WEBWMS-REQ-067
 ---
 
 # WEBWMS-067: KPI und Dashboards implementieren
@@ -52,5 +52,4 @@ Nachweise: `PlatformControlService::workspace()`, `wms_kpi_definition`, `wms_das
 
 ## Quelle
 
-- Feature: CG-067
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-067

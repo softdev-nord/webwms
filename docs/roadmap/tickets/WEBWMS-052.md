@@ -7,7 +7,7 @@ priority: High
 story_points: 5
 component: "Warenausgang & Versand"
 feature_group: "Qualität"
-source_feature: CG-052
+source_feature: WEBWMS-REQ-052
 ---
 
 # WEBWMS-052: QS-Checklisten im Ausgang implementieren
@@ -56,5 +56,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-052
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-052

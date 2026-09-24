@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Warenausgang & Versand"
 feature_group: "Packen"
-source_feature: CG-054
+source_feature: WEBWMS-REQ-054
 ---
 
 # WEBWMS-054: Automatischer Mengenabgleich implementieren
@@ -58,5 +58,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-054
-- Referenz: https://www.coglas.com/versand/
+- Feature: WEBWMS-REQ-054

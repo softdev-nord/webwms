@@ -7,7 +7,7 @@ priority: High
 story_points: 5
 component: "Warenausgang & Versand"
 feature_group: "Planung"
-source_feature: CG-050
+source_feature: WEBWMS-REQ-050
 ---
 
 # WEBWMS-050: Auftragsvorschau implementieren
@@ -56,5 +56,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-050
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-050

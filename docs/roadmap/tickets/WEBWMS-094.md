@@ -7,7 +7,7 @@ priority: Medium
 story_points: 13
 component: "Integration & Technik"
 feature_group: "Lagertechnik"
-source_feature: CG-094
+source_feature: WEBWMS-REQ-094
 ---
 
 # WEBWMS-094: WCS/MFR/Fördertechnik implementieren
@@ -52,5 +52,4 @@ Zur vollständigen Umsetzung fehlen herstellerspezifische Protokolladapter, die 
 
 ## Quelle
 
-- Feature: CG-094
-- Referenz: https://www.coglas.com/hardware-schnittstelle/
+- Feature: WEBWMS-REQ-094

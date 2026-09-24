@@ -7,7 +7,7 @@ priority: High
 story_points: 2
 component: "Warenausgang & Versand"
 feature_group: "Verladung"
-source_feature: CG-063
+source_feature: WEBWMS-REQ-063
 ---
 
 # WEBWMS-063: Ladelisten implementieren
@@ -58,5 +58,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-063
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-063

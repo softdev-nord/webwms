@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Transport & Kommissionierung"
 feature_group: "Transport"
-source_feature: CG-044
+source_feature: WEBWMS-REQ-044
 ---
 
 # WEBWMS-044: Umlagerung implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Quelle
 
-- Feature: CG-044
-- Referenz: https://www.coglas.com/materialflusssteuerung/
+- Feature: WEBWMS-REQ-044

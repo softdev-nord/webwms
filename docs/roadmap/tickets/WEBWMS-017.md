@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Bestand"
-source_feature: CG-017
+source_feature: WEBWMS-REQ-017
 ---
 
 # WEBWMS-017: Echtzeitbestand implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Quelle
 
-- Feature: CG-017
-- Referenz: https://www.coglas.com/lagerverwaltung/
+- Feature: WEBWMS-REQ-017

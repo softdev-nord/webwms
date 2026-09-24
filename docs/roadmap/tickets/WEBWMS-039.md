@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Transport & Kommissionierung"
 feature_group: "Qualität"
-source_feature: CG-039
+source_feature: WEBWMS-REQ-039
 ---
 
 # WEBWMS-039: Barcode-Scan-Kontrolle implementieren
@@ -50,5 +50,4 @@ Pickbestätigung und Fehlbestandsmeldung sind über API v3 und V3-Frontend bedie
 
 ## Quelle
 
-- Feature: CG-039
-- Referenz: https://www.coglas.com/kommissionierung/
+- Feature: WEBWMS-REQ-039

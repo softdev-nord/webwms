@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Zusatzfunktionen"
 feature_group: "Druck"
-source_feature: CG-074
+source_feature: WEBWMS-REQ-074
 ---
 
 # WEBWMS-074: Druckersteuerung implementieren
@@ -52,5 +52,4 @@ Nachweise: `wms_print_routing_rule`, `PlatformControlService::routePrinter()`, R
 
 ## Quelle
 
-- Feature: CG-074
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-074

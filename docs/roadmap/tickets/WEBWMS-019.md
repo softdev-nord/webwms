@@ -7,7 +7,7 @@ priority: High
 story_points: 5
 component: "Lagerverwaltung"
 feature_group: "Bestand"
-source_feature: CG-019
+source_feature: WEBWMS-REQ-019
 ---
 
 # WEBWMS-019: Sonderbestandskennzeichen implementieren
@@ -50,5 +50,4 @@ Konfigurierbare Sonderbestandsarten unterscheiden Eigentum, Status und Sonderart
 
 ## Quelle
 
-- Feature: CG-019
-- Referenz: https://www.coglas.com/lagerverwaltung/
+- Feature: WEBWMS-REQ-019

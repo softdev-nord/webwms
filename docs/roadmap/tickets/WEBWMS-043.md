@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
 feature_group: "Transport"
-source_feature: CG-043
+source_feature: WEBWMS-REQ-043
 ---
 
 # WEBWMS-043: Transportregeln implementieren
@@ -50,5 +50,4 @@ Priorisierte Transportregeln verknüpfen Auslöser, Quell- und Zielpräfixe, Tra
 
 ## Quelle
 
-- Feature: CG-043
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-043

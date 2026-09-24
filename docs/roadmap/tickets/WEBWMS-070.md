@@ -7,7 +7,7 @@ priority: Medium
 story_points: 13
 component: "Zusatzfunktionen"
 feature_group: "Abrechnung"
-source_feature: CG-070
+source_feature: WEBWMS-REQ-070
 ---
 
 # WEBWMS-070: Lagergeld implementieren
@@ -52,5 +52,4 @@ Nachweise: `wms_storage_fee_rule`, `wms_billable_line`, `PlatformControlService:
 
 ## Quelle
 
-- Feature: CG-070
-- Referenz: https://www.coglas.com/wms-fuer-speditionen-3pl/
+- Feature: WEBWMS-REQ-070

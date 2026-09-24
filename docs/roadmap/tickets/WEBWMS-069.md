@@ -7,7 +7,7 @@ priority: High
 story_points: 13
 component: "Zusatzfunktionen"
 feature_group: "Automatisierung"
-source_feature: CG-069
+source_feature: WEBWMS-REQ-069
 ---
 
 # WEBWMS-069: Eventcenter implementieren
@@ -52,5 +52,4 @@ Nachweise: `wms_automation_rule`, `wms_automation_execution`, `PlatformControlSe
 
 ## Quelle
 
-- Feature: CG-069
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-069

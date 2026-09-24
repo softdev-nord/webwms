@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Lagerverwaltung"
 feature_group: "Qualität"
-source_feature: CG-025
+source_feature: WEBWMS-REQ-025
 ---
 
 # WEBWMS-025: Sperrlisten und Sperrgründe implementieren
@@ -50,5 +50,4 @@ Konfigurierbare Sperrgründe und der vollständige Ablauf Sperren → Prüfen �
 
 ## Quelle
 
-- Feature: CG-025
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-025

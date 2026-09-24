@@ -7,7 +7,7 @@ priority: Medium
 story_points: 5
 component: "Zusatzfunktionen"
 feature_group: "Steuerung"
-source_feature: CG-066
+source_feature: WEBWMS-REQ-066
 ---
 
 # WEBWMS-066: Shopfloor implementieren
@@ -52,5 +52,4 @@ Nachweise: `PlatformControlService`, `V3PlatformController`, `PlatformApiControl
 
 ## Quelle
 
-- Feature: CG-066
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-066

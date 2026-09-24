@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Administration"
 feature_group: "Berechtigungen"
-source_feature: CG-078
+source_feature: WEBWMS-REQ-078
 ---
 
 # WEBWMS-078: Rollen und Rechte implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Quelle
 
-- Feature: CG-078
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-078

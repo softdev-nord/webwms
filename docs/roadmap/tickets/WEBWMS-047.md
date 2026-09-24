@@ -7,7 +7,7 @@ priority: Medium
 story_points: 13
 component: "Transport & Kommissionierung"
 feature_group: "Materialfluss"
-source_feature: CG-047
+source_feature: WEBWMS-REQ-047
 ---
 
 # WEBWMS-047: Materialflusssteuerung implementieren
@@ -50,5 +50,4 @@ Prozessstationen und Transportregeln bilden den Materialfluss zwischen Lager-, P
 
 ## Quelle
 
-- Feature: CG-047
-- Referenz: https://www.coglas.com/materialflusssteuerung/
+- Feature: WEBWMS-REQ-047

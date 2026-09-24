@@ -9,14 +9,14 @@ use Doctrine\DBAL\Connection;
 use DomainException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Platform\Application\GapClosureService;
+use WebWMS\Platform\Application\ExtensionModuleService;
 
-final class GapClosureServiceTest extends TestCase
+final class ExtensionModuleServiceTest extends TestCase
 {
-    public function testItExposesAllGapClosureCapabilities(): void
+    public function testItExposesAllExtensionModuleCapabilities(): void
     {
-        self::assertCount(18, GapClosureService::RESOURCES);
-        self::assertCount(13, GapClosureService::WORKFLOWS);
+        self::assertCount(18, ExtensionModuleService::RESOURCES);
+        self::assertCount(13, ExtensionModuleService::WORKFLOWS);
     }
 
     public function testItRejectsUnknownConfigurationResourcesBeforePersistence(): void
@@ -71,8 +71,8 @@ final class GapClosureServiceTest extends TestCase
         );
     }
 
-    private function service(Connection $connection): GapClosureService
+    private function service(Connection $connection): ExtensionModuleService
     {
-        return new GapClosureService($connection);
+        return new ExtensionModuleService($connection);
     }
 }

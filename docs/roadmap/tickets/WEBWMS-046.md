@@ -7,7 +7,7 @@ priority: Medium
 story_points: 8
 component: "Transport & Kommissionierung"
 feature_group: "Nachschub"
-source_feature: CG-046
+source_feature: WEBWMS-REQ-046
 ---
 
 # WEBWMS-046: Vorholung implementieren
@@ -50,5 +50,4 @@ Vorholungen werden als priorisierte Fahrbefehle mit Fälligkeit, Quelle, Ziel un
 
 ## Quelle
 
-- Feature: CG-046
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-046

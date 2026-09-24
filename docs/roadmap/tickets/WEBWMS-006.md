@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Wareneingang"
 feature_group: "Qualität"
-source_feature: CG-006
+source_feature: WEBWMS-REQ-006
 ---
 
 # WEBWMS-006: Digitale QS-Checklisten implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Quelle
 
-- Feature: CG-006
-- Referenz: https://www.coglas.com/wareneingang/
+- Feature: WEBWMS-REQ-006

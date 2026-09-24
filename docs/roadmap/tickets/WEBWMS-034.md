@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Transport & Kommissionierung"
 feature_group: "Kommissionierung"
-source_feature: CG-034
+source_feature: WEBWMS-REQ-034
 ---
 
 # WEBWMS-034: Single-Order-Picking implementieren
@@ -54,5 +54,4 @@ Die responsive Pickansicht, scannergeeignete Bestätigung und Rundgangoptimierun
 
 ## Quelle
 
-- Feature: CG-034
-- Referenz: https://www.coglas.com/kommissionierung/
+- Feature: WEBWMS-REQ-034

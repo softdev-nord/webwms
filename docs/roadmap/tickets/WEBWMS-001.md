@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Wareneingang"
 feature_group: "Belege"
-source_feature: CG-001
+source_feature: WEBWMS-REQ-001
 ---
 
 # WEBWMS-001: Bestellungen implementieren
@@ -50,5 +50,4 @@ Bestellungen können im Wareneingangsleitstand und per V3-API mandantenbezogen a
 
 ## Quelle
 
-- Feature: CG-001
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-001

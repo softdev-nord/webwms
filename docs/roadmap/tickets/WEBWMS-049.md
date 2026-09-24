@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
 feature_group: "Aufträge"
-source_feature: CG-049
+source_feature: WEBWMS-REQ-049
 ---
 
 # WEBWMS-049: Kundenaufträge implementieren
@@ -58,5 +58,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-049
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-049

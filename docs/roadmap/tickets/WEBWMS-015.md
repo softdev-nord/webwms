@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Struktur"
-source_feature: CG-015
+source_feature: WEBWMS-REQ-015
 ---
 
 # WEBWMS-015: Lagertopologie implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Quelle
 
-- Feature: CG-015
-- Referenz: https://www.coglas.com/lagerverwaltung/
+- Feature: WEBWMS-REQ-015

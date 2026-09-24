@@ -7,7 +7,7 @@ priority: High
 story_points: 5
 component: "Wareneingang"
 feature_group: "Qualität"
-source_feature: CG-007
+source_feature: WEBWMS-REQ-007
 ---
 
 # WEBWMS-007: Foto-Dokumentation implementieren
@@ -50,5 +50,4 @@ Fotos werden über Weboberfläche oder Base64-JSON-API sicher an der Prozessakte
 
 ## Quelle
 
-- Feature: CG-007
-- Referenz: https://www.coglas.com/wareneingang/
+- Feature: WEBWMS-REQ-007

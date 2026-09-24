@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
 feature_group: "Nachschub"
-source_feature: CG-045
+source_feature: WEBWMS-REQ-045
 ---
 
 # WEBWMS-045: Nachschubsteuerung implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 ## Quelle
 
-- Feature: CG-045
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-045

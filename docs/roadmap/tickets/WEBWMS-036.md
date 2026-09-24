@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
 feature_group: "Kommissionierung"
-source_feature: CG-036
+source_feature: WEBWMS-REQ-036
 ---
 
 # WEBWMS-036: Wellenkommissionierung implementieren
@@ -50,5 +50,4 @@ Pickwellen lassen sich nach Zeit, Tour, Carrier oder Priorität selektieren, pla
 
 ## Quelle
 
-- Feature: CG-036
-- Referenz: https://www.coglas.com/kommissionierung/
+- Feature: WEBWMS-REQ-036

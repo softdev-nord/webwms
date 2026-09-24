@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Inventur"
-source_feature: CG-029
+source_feature: WEBWMS-REQ-029
 ---
 
 # WEBWMS-029: Stichtagsinventur implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Quelle
 
-- Feature: CG-029
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-029

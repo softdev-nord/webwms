@@ -7,7 +7,7 @@ priority: Medium
 story_points: 5
 component: "Warenausgang & Versand"
 feature_group: "Dokumente"
-source_feature: CG-064
+source_feature: WEBWMS-REQ-064
 ---
 
 # WEBWMS-064: CMR-Frachtbrief implementieren
@@ -56,5 +56,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-064
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-064

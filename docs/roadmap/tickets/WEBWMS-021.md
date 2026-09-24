@@ -7,7 +7,7 @@ priority: High
 story_points: 5
 component: "Lagerverwaltung"
 feature_group: "Rückverfolgung"
-source_feature: CG-021
+source_feature: WEBWMS-REQ-021
 ---
 
 # WEBWMS-021: MHD-Verwaltung implementieren
@@ -50,5 +50,4 @@ Das MHD wird im geplanten und ungeplanten Wareneingang erfasst und durch alle Be
 
 ## Quelle
 
-- Feature: CG-021
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-021

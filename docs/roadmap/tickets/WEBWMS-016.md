@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Lagerverwaltung"
 feature_group: "Transparenz"
-source_feature: CG-016
+source_feature: WEBWMS-REQ-016
 ---
 
 # WEBWMS-016: Lagerübersicht implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Quelle
 
-- Feature: CG-016
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-016

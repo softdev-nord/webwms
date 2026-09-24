@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Transport & Kommissionierung"
 feature_group: "Mobil"
-source_feature: CG-038
+source_feature: WEBWMS-REQ-038
 ---
 
 # WEBWMS-038: Mobile Pickführung implementieren
@@ -50,5 +50,4 @@ Pickzuweisung, wegeoptimierte Aufgabenfolge und scannergeeignete Bestätigung si
 
 ## Quelle
 
-- Feature: CG-038
-- Referenz: https://www.coglas.com/kommissionierung/
+- Feature: WEBWMS-REQ-038

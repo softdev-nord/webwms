@@ -7,7 +7,7 @@ priority: Medium
 story_points: 5
 component: "Warenausgang & Versand"
 feature_group: "Verladung"
-source_feature: CG-062
+source_feature: WEBWMS-REQ-062
 ---
 
 # WEBWMS-062: Gewichtsrestriktionen implementieren
@@ -56,5 +56,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-062
-- Referenz: https://www.coglas.com/warenausgang/
+- Feature: WEBWMS-REQ-062

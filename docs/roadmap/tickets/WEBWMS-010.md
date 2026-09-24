@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Wareneingang"
 feature_group: "Kennzeichnung"
-source_feature: CG-010
+source_feature: WEBWMS-REQ-010
 ---
 
 # WEBWMS-010: Etikettendruck implementieren
@@ -50,5 +50,4 @@ Der Leitstand und die V3-API erzeugen auditierte Druckaufträge für Wareneingan
 
 ## Quelle
 
-- Feature: CG-010
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-010

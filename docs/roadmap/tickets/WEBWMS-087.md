@@ -7,7 +7,7 @@ priority: Highest
 story_points: 13
 component: "Integration & Technik"
 feature_group: "ERP"
-source_feature: CG-087
+source_feature: WEBWMS-REQ-087
 ---
 
 # WEBWMS-087: ERP-Integration implementieren
@@ -58,5 +58,4 @@ Herstellerspezifische Mappings, aggregierte Betriebsmetriken und vollständige H
 
 ## Quelle
 
-- Feature: CG-087
-- Referenz: https://www.coglas.com/schnittstellen/
+- Feature: WEBWMS-REQ-087

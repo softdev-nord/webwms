@@ -7,7 +7,7 @@ priority: Medium
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Compliance"
-source_feature: CG-026
+source_feature: WEBWMS-REQ-026
 ---
 
 # WEBWMS-026: Gefahrstoffverwaltung implementieren
@@ -50,6 +50,5 @@ Umgesetzt im Inventory Control Center mit mandantenfähigem Application Service,
 
 ## Quelle
 
-- Feature: CG-026
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-026
 

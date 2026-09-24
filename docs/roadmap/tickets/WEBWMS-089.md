@@ -7,7 +7,7 @@ priority: Highest
 story_points: 13
 component: "Integration & Technik"
 feature_group: "Carrier"
-source_feature: CG-089
+source_feature: WEBWMS-REQ-089
 ---
 
 # WEBWMS-089: Carrier-Integration implementieren
@@ -66,5 +66,4 @@ Integrationstests fehlen weiterhin; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
-- Feature: CG-089
-- Referenz: https://www.coglas.com/schnittstellen/
+- Feature: WEBWMS-REQ-089

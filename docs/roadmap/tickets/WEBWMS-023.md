@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Strategien"
-source_feature: CG-023
+source_feature: WEBWMS-REQ-023
 ---
 
 # WEBWMS-023: FIFO/LIFO implementieren
@@ -50,5 +50,4 @@ FIFO und LIFO sind als mandantenfähige, optional lager- und artikelbezogene Ent
 
 ## Quelle
 
-- Feature: CG-023
-- Referenz: https://www.coglas.com/lagerverwaltung/
+- Feature: WEBWMS-REQ-023

@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Wareneingang"
 feature_group: "Erfassung"
-source_feature: CG-003
+source_feature: WEBWMS-REQ-003
 ---
 
 # WEBWMS-003: Geplanter Wareneingang implementieren
@@ -50,5 +50,4 @@ Bestellung, Avis, Annahme, QS und Einlagerung sind durchgängig im Leitstand, de
 
 ## Quelle
 
-- Feature: CG-003
-- Referenz: https://www.coglas.com/wareneingang/
+- Feature: WEBWMS-REQ-003

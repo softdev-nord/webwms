@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Administration"
 feature_group: "Betrieb"
-source_feature: CG-082
+source_feature: WEBWMS-REQ-082
 ---
 
 # WEBWMS-082: Webbasierter Betrieb implementieren
@@ -50,5 +50,4 @@ Die responsive V3-Webanwendung wird um installierbare PWA-Metadaten, einen siche
 
 ## Quelle
 
-- Feature: CG-082
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-082

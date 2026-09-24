@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
-use WebWMS\Platform\Application\GapClosureService;
+use WebWMS\Platform\Application\ExtensionModuleService;
 
 final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -24,7 +24,7 @@ final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly GapClosureService $gapClosure,
+        private readonly ExtensionModuleService $extensionModule,
     ) {
     }
 
@@ -52,7 +52,7 @@ final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     ): Response {
         $user = $token->getUser();
         $tenantId = $user instanceof TenantPermissionUser ? $user->tenantId() : null;
-        $this->gapClosure->recordLogin($tenantId, $user->getUserIdentifier(), true, $request->getClientIp(), $request->headers->get('User-Agent'), null, new DateTimeImmutable());
+        $this->extensionModule->recordLogin($tenantId, $user->getUserIdentifier(), true, $request->getClientIp(), $request->headers->get('User-Agent'), null, new DateTimeImmutable());
 
         return new RedirectResponse($this->urlGenerator->generate('v3_dashboard'));
     }
@@ -61,7 +61,7 @@ final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     {
         $tenantId = trim((string) $request->request->get('tenant_id'));
         $email = strtolower(trim((string) $request->request->get('email')));
-        $this->gapClosure->recordLogin($tenantId !== '' ? $tenantId : null, $email, false, $request->getClientIp(), $request->headers->get('User-Agent'), $exception->getMessageKey(), new DateTimeImmutable());
+        $this->extensionModule->recordLogin($tenantId !== '' ? $tenantId : null, $email, false, $request->getClientIp(), $request->headers->get('User-Agent'), $exception->getMessageKey(), new DateTimeImmutable());
 
         return parent::onAuthenticationFailure($request, $exception);
     }

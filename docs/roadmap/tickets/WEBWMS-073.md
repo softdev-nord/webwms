@@ -7,7 +7,7 @@ priority: Medium
 story_points: 5
 component: "Zusatzfunktionen"
 feature_group: "Medien"
-source_feature: CG-073
+source_feature: WEBWMS-REQ-073
 ---
 
 # WEBWMS-073: Kameranutzung implementieren
@@ -52,5 +52,4 @@ Nachweise: `wms_media_asset`, `PlatformControlService::captureMedia()`, geschüt
 
 ## Quelle
 
-- Feature: CG-073
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-073

@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
 feature_group: "Versand"
-source_feature: CG-057
+source_feature: WEBWMS-REQ-057
 ---
 
 # WEBWMS-057: Carrier-Label implementieren
@@ -58,5 +58,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-057
-- Referenz: https://www.coglas.com/versand/
+- Feature: WEBWMS-REQ-057

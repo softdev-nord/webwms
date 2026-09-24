@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
 feature_group: "Leitstand"
-source_feature: CG-041
+source_feature: WEBWMS-REQ-041
 ---
 
 # WEBWMS-041: Kommissionierleitstand implementieren
@@ -50,5 +50,4 @@ Der mandantengetrennte Leitstand zeigt Picklisten, Aufträge, Wellen, Zielbehäl
 
 ## Quelle
 
-- Feature: CG-041
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-041

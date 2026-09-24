@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Wareneingang"
 feature_group: "Belege"
-source_feature: CG-002
+source_feature: WEBWMS-REQ-002
 ---
 
 # WEBWMS-002: Lieferscheine und Avis implementieren
@@ -50,5 +50,4 @@ Lieferavis und Lieferschein werden im Leitstand oder per V3-API einer offenen Be
 
 ## Quelle
 
-- Feature: CG-002
-- Referenz: https://www.coglas.com/wareneingang/
+- Feature: WEBWMS-REQ-002

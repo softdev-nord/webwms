@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Rückverfolgung"
-source_feature: CG-022
+source_feature: WEBWMS-REQ-022
 ---
 
 # WEBWMS-022: Seriennummernverwaltung implementieren
@@ -50,5 +50,4 @@ Seriennummern besitzen weiterhin die Mengenregel eins und werden zusätzlich man
 
 ## Quelle
 
-- Feature: CG-022
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-022

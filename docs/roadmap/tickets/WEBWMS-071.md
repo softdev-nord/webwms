@@ -7,7 +7,7 @@ priority: Medium
 story_points: 13
 component: "Zusatzfunktionen"
 feature_group: "Abrechnung"
-source_feature: CG-071
+source_feature: WEBWMS-REQ-071
 ---
 
 # WEBWMS-071: Dienstleistungen und VAS implementieren
@@ -52,5 +52,4 @@ Nachweise: `wms_value_added_service`, `wms_billable_line`, `PlatformControlServi
 
 ## Quelle
 
-- Feature: CG-071
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-071

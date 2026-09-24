@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Transport & Kommissionierung"
 feature_group: "Kommissionierung"
-source_feature: CG-033
+source_feature: WEBWMS-REQ-033
 ---
 
 # WEBWMS-033: Auftragsreine Kommissionierung implementieren
@@ -54,5 +54,4 @@ Die responsive Bedienoberfläche, der Kommissionierleitstand, die automatische W
 
 ## Quelle
 
-- Feature: CG-033
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-033

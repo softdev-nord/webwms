@@ -7,7 +7,7 @@ priority: Medium
 story_points: 13
 component: "Administration"
 feature_group: "Betrieb"
-source_feature: CG-083
+source_feature: WEBWMS-REQ-083
 ---
 
 # WEBWMS-083: SaaS und On-Premises implementieren
@@ -50,5 +50,4 @@ Ein validiertes Betriebsprofil bildet SaaS-, On-Premises- und Hybridbetrieb mit 
 
 ## Quelle
 
-- Feature: CG-083
-- Referenz: https://www.coglas.com/lagerverwaltung/
+- Feature: WEBWMS-REQ-083

@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Warenausgang & Versand"
 feature_group: "Versand"
-source_feature: CG-058
+source_feature: WEBWMS-REQ-058
 ---
 
 # WEBWMS-058: Sendungsnummer und Tracking implementieren
@@ -58,5 +58,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-058
-- Referenz: https://www.coglas.com/versand/
+- Feature: WEBWMS-REQ-058

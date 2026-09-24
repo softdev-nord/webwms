@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Zusatzfunktionen"
 feature_group: "Suche"
-source_feature: CG-072
+source_feature: WEBWMS-REQ-072
 ---
 
 # WEBWMS-072: Volltextsuche implementieren
@@ -52,5 +52,4 @@ Nachweise: `wms_search_document`, `PlatformControlService::search()` und die glo
 
 ## Quelle
 
-- Feature: CG-072
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-072

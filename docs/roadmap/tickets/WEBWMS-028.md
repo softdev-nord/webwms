@@ -7,7 +7,7 @@ priority: Medium
 story_points: 5
 component: "Lagerverwaltung"
 feature_group: "Ladehilfsmittel"
-source_feature: CG-028
+source_feature: WEBWMS-REQ-028
 ---
 
 # WEBWMS-028: LHM-Konto implementieren
@@ -50,6 +50,5 @@ Umgesetzt im Inventory Control Center mit mandantenfähigem Application Service,
 
 ## Quelle
 
-- Feature: CG-028
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-028
 

@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Administration"
 feature_group: "Benutzer"
-source_feature: CG-077
+source_feature: WEBWMS-REQ-077
 ---
 
 # WEBWMS-077: Benutzerverwaltung implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Quelle
 
-- Feature: CG-077
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-077

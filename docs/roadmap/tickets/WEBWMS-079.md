@@ -7,7 +7,7 @@ priority: Medium
 story_points: 8
 component: "Administration"
 feature_group: "Sicherheit"
-source_feature: CG-079
+source_feature: WEBWMS-REQ-079
 ---
 
 # WEBWMS-079: Single Sign-on implementieren
@@ -50,5 +50,4 @@ OIDC- und SAML-Identity-Provider sowie externe Identitätszuordnungen sind manda
 
 ## Quelle
 
-- Feature: CG-079
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-079

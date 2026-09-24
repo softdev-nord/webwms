@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Rückverfolgung"
-source_feature: CG-020
+source_feature: WEBWMS-REQ-020
 ---
 
 # WEBWMS-020: Chargenverwaltung implementieren
@@ -50,5 +50,4 @@ Die Chargendimension wird in Wareneingang, Bestand, Umlagerung, Allokation und L
 
 ## Quelle
 
-- Feature: CG-020
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-020

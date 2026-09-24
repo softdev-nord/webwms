@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Administration"
 feature_group: "Standorte"
-source_feature: CG-076
+source_feature: WEBWMS-REQ-076
 ---
 
 # WEBWMS-076: Mehrlager und Standorte implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Quelle
 
-- Feature: CG-076
-- Referenz: https://www.coglas.com/wms-fuer-speditionen-3pl/
+- Feature: WEBWMS-REQ-076

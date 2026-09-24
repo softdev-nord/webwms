@@ -1,24 +1,5 @@
-# Öffentliche COGLAS-Quellen
+# Anforderungsquellen
 
-Stand der ursprünglichen Recherche: 16.09.2026. Der Katalog beruht ausschließlich auf öffentlich zugänglichen Produkt- und Prozessseiten. Nicht öffentlich dokumentierte Lizenz-, Tarif- oder kundenspezifische Funktionen können fehlen.
+Die Roadmap verwendet ausschließlich interne, produktbezogene Anforderungskennungen im Format `WEBWMS-REQ-NNN`. Anforderungen werden gemeinsam mit Akzeptanzkriterien, technischem Nachweis und Implementierungsstand in den jeweiligen Ticketdateien gepflegt.
 
-| Kurzname | URL | Verwendung |
-| --- | --- | --- |
-| functions | https://www.coglas.com/funktionen/ | Zentraler Funktionskatalog |
-| inbound | https://www.coglas.com/wareneingang/ | Wareneingang |
-| stock | https://www.coglas.com/lagerverwaltung/ | Lagerverwaltung |
-| picking | https://www.coglas.com/kommissionierung/ | Kommissionierung |
-| outbound | https://www.coglas.com/warenausgang/ | Warenausgang |
-| shipping | https://www.coglas.com/versand/ | Versand |
-| flow | https://www.coglas.com/materialflusssteuerung/ | Materialflusssteuerung |
-| integrations | https://www.coglas.com/schnittstellen/ | Schnittstellen |
-| hardware | https://www.coglas.com/hardware-schnittstelle/ | Hardware-Schnittstellen |
-| threepl | https://www.coglas.com/wms-fuer-speditionen-3pl/ | Speditionen und 3PL |
-| ecommerce | https://www.coglas.com/wms-fuer-e-commerce/ | E-Commerce |
-| production | https://www.coglas.com/wms-fuer-produktion/ | Produktion |
-| spares | https://www.coglas.com/wms-fuer-ersatzteillager/ | Ersatzteillager |
-| food | https://www.coglas.com/wms-fuer-lebensmittel/ | Lebensmittel |
-| help-processes | https://help.coglas.com/ger/coglas-prozesse | Vollständiger Basis-/Premium-Prozesskatalog, geprüft am 24.09.2026 |
-| help-menu | https://help.coglas.com/ger/coglas-menu | Menü- und Konfigurationsfunktionen samt Unterseiten, geprüft am 24.09.2026 |
-| help-concepts | https://help.coglas.com/ger/prozesse-konzepte | Prozesskonzepte samt Unterseiten, geprüft am 24.09.2026 |
-| help-changelog | https://help.coglas.com/ger/changelog | Produktänderungen und Detailfunktionen, geprüft am 24.09.2026 |
+Externe Produkt- oder Herstellerreferenzen sind nicht Bestandteil der versionierten WebWMS-Roadmap.

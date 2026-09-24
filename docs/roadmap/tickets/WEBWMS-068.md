@@ -7,7 +7,7 @@ priority: Medium
 story_points: 8
 component: "Zusatzfunktionen"
 feature_group: "Portal"
-source_feature: CG-068
+source_feature: WEBWMS-REQ-068
 ---
 
 # WEBWMS-068: Partnerportal implementieren
@@ -52,5 +52,4 @@ Nachweise: `wms_partner_account`, `PlatformControlService::create()`, Partnerpor
 
 ## Quelle
 
-- Feature: CG-068
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-068

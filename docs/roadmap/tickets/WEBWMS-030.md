@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Inventur"
-source_feature: CG-030
+source_feature: WEBWMS-REQ-030
 ---
 
 # WEBWMS-030: Permanente Inventur implementieren
@@ -54,5 +54,4 @@ REST- und Web-Oberfläche, ticketbezogene Autorisierung und automatisierte Tests
 
 ## Quelle
 
-- Feature: CG-030
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-030

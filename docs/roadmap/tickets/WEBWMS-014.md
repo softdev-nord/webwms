@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Wareneingang"
 feature_group: "Retouren"
-source_feature: CG-014
+source_feature: WEBWMS-REQ-014
 ---
 
 # WEBWMS-014: Retourenvereinnahmung implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Quelle
 
-- Feature: CG-014
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-014

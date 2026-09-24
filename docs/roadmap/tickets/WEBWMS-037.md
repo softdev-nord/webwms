@@ -7,7 +7,7 @@ priority: Medium
 story_points: 8
 component: "Transport & Kommissionierung"
 feature_group: "Kommissionierung"
-source_feature: CG-037
+source_feature: WEBWMS-REQ-037
 ---
 
 # WEBWMS-037: Mehrstufige Kommissionierung implementieren
@@ -50,5 +50,4 @@ Zweistufige Pickwellen führen Picklisten über getrennte Zielbehälter in die K
 
 ## Quelle
 
-- Feature: CG-037
-- Referenz: https://www.coglas.com/kommissionierung/
+- Feature: WEBWMS-REQ-037

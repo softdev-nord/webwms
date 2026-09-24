@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Administration"
 feature_group: "Konfiguration"
-source_feature: CG-081
+source_feature: WEBWMS-REQ-081
 ---
 
 # WEBWMS-081: Aktivierbare Prozesse implementieren
@@ -50,5 +50,4 @@ Mandantenbezogene Prozessschalter können über den Admin-Workspace angelegt, ak
 
 ## Quelle
 
-- Feature: CG-081
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-081

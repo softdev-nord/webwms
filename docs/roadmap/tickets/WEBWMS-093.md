@@ -7,7 +7,7 @@ priority: Medium
 story_points: 13
 component: "Integration & Technik"
 feature_group: "Lagertechnik"
-source_feature: CG-093
+source_feature: WEBWMS-REQ-093
 ---
 
 # WEBWMS-093: Lagerlifte und Paternoster implementieren
@@ -52,5 +52,4 @@ Zur vollständigen Umsetzung fehlen herstellerspezifische Protokolladapter, die 
 
 ## Quelle
 
-- Feature: CG-093
-- Referenz: https://www.coglas.com/hardware-schnittstelle/
+- Feature: WEBWMS-REQ-093

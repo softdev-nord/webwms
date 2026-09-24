@@ -7,7 +7,7 @@ priority: High
 story_points: 13
 component: "Administration"
 feature_group: "Mandanten"
-source_feature: CG-075
+source_feature: WEBWMS-REQ-075
 ---
 
 # WEBWMS-075: Geschäftspartner und Mandanten implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Quelle
 
-- Feature: CG-075
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-075

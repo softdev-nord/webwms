@@ -7,7 +7,7 @@ priority: Medium
 story_points: 5
 component: "Lagerverwaltung"
 feature_group: "Inventur"
-source_feature: CG-031
+source_feature: WEBWMS-REQ-031
 ---
 
 # WEBWMS-031: Nulldurchgangsinventur implementieren
@@ -54,5 +54,4 @@ REST- und Web-Oberfläche, ticketbezogene Autorisierung und automatisierte Tests
 
 ## Quelle
 
-- Feature: CG-031
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-031

@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Warenausgang & Versand"
 feature_group: "Packen"
-source_feature: CG-055
+source_feature: WEBWMS-REQ-055
 ---
 
 # WEBWMS-055: Scan, Pack & Ship implementieren
@@ -56,5 +56,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-055
-- Referenz: https://www.coglas.com/kommissionierung/
+- Feature: WEBWMS-REQ-055

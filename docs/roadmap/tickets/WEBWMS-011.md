@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Wareneingang"
 feature_group: "Einlagerung"
-source_feature: CG-011
+source_feature: WEBWMS-REQ-011
 ---
 
 # WEBWMS-011: Einlagerungsauftrag implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INBOUND.
 
 ## Quelle
 
-- Feature: CG-011
-- Referenz: https://www.coglas.com/wareneingang/
+- Feature: WEBWMS-REQ-011

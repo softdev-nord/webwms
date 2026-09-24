@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Integration & Technik"
 feature_group: "Dateiformate"
-source_feature: CG-085
+source_feature: WEBWMS-REQ-085
 ---
 
 # WEBWMS-085: JSON/XML/XLSX/CSV implementieren
@@ -50,5 +50,4 @@ Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden
 
 ## Quelle
 
-- Feature: CG-085
-- Referenz: https://www.coglas.com/schnittstellen/
+- Feature: WEBWMS-REQ-085

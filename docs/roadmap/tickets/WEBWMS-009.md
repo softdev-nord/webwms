@@ -7,7 +7,7 @@ priority: High
 story_points: 2
 component: "Wareneingang"
 feature_group: "Dokumente"
-source_feature: CG-009
+source_feature: WEBWMS-REQ-009
 ---
 
 # WEBWMS-009: Anhänge implementieren
@@ -50,5 +50,4 @@ Beliebige Prozessnachweise bis 10 MB können an geplante und ungeplante Eingäng
 
 ## Quelle
 
-- Feature: CG-009
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-009

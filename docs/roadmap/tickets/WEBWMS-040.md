@@ -7,7 +7,7 @@ priority: High
 story_points: 8
 component: "Transport & Kommissionierung"
 feature_group: "Optimierung"
-source_feature: CG-040
+source_feature: WEBWMS-REQ-040
 ---
 
 # WEBWMS-040: Wegeoptimierung implementieren
@@ -50,5 +50,4 @@ Offene Pickpositionen werden transaktional nach Lagerbereich, Gang, Ebene und Fa
 
 ## Quelle
 
-- Feature: CG-040
-- Referenz: https://www.coglas.com/kommissionierung/
+- Feature: WEBWMS-REQ-040

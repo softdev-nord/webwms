@@ -7,7 +7,7 @@ priority: Highest
 story_points: 13
 component: "Integration & Technik"
 feature_group: "API"
-source_feature: CG-084
+source_feature: WEBWMS-REQ-084
 ---
 
 # WEBWMS-084: JSON-Web-API implementieren
@@ -60,5 +60,4 @@ Ein formaler OpenAPI-Vertrag, vollständige HTTP-Integrationstests mit MariaDB u
 
 ## Quelle
 
-- Feature: CG-084
-- Referenz: https://www.coglas.com/schnittstellen/
+- Feature: WEBWMS-REQ-084

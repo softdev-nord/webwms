@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Uid\Uuid;
 
-final readonly class GapClosureService
+final readonly class ExtensionModuleService
 {
     /** @var array<string, string> */
     public const RESOURCES = [
@@ -61,8 +61,8 @@ final readonly class GapClosureService
         return [
             'resources' => self::RESOURCES,
             'workflows' => self::WORKFLOWS,
-            'configurations' => $this->connection->fetchAllAssociative('SELECT * FROM wms_parity_configuration WHERE tenant_id = :tenantId ORDER BY resource_type, code', ['tenantId' => $tenantId]),
-            'workItems' => $this->connection->fetchAllAssociative('SELECT * FROM wms_parity_work_item WHERE tenant_id = :tenantId ORDER BY changed_at DESC LIMIT 250', ['tenantId' => $tenantId]),
+            'configurations' => $this->connection->fetchAllAssociative('SELECT * FROM wms_extension_configuration WHERE tenant_id = :tenantId ORDER BY resource_type, code', ['tenantId' => $tenantId]),
+            'workItems' => $this->connection->fetchAllAssociative('SELECT * FROM wms_extension_work_item WHERE tenant_id = :tenantId ORDER BY changed_at DESC LIMIT 250', ['tenantId' => $tenantId]),
             'loginEvents' => $this->connection->fetchAllAssociative('SELECT * FROM wms_login_event WHERE tenant_id = :tenantId ORDER BY occurred_at DESC LIMIT 100', ['tenantId' => $tenantId]),
         ];
     }
@@ -73,7 +73,7 @@ final readonly class GapClosureService
         $this->assertResource($resource);
 
         return $this->connection->fetchAllAssociative(
-            'SELECT * FROM wms_parity_configuration WHERE tenant_id = :tenantId AND resource_type = :resource ORDER BY code',
+            'SELECT * FROM wms_extension_configuration WHERE tenant_id = :tenantId AND resource_type = :resource ORDER BY code',
             ['tenantId' => $tenantId, 'resource' => $resource],
         );
     }
@@ -84,7 +84,7 @@ final readonly class GapClosureService
         $this->assertWorkflow($workflow);
 
         return $this->connection->fetchAllAssociative(
-            'SELECT * FROM wms_parity_work_item WHERE tenant_id = :tenantId AND workflow_type = :workflow ORDER BY changed_at DESC LIMIT 250',
+            'SELECT * FROM wms_extension_work_item WHERE tenant_id = :tenantId AND workflow_type = :workflow ORDER BY changed_at DESC LIMIT 250',
             ['tenantId' => $tenantId, 'workflow' => $workflow],
         );
     }
@@ -93,7 +93,7 @@ final readonly class GapClosureService
     public function configuration(string $tenantId, string $resource, string $id): array
     {
         $this->assertResource($resource);
-        $row = $this->connection->fetchAssociative('SELECT * FROM wms_parity_configuration WHERE id = :id AND tenant_id = :tenantId AND resource_type = :resource', ['id' => $id, 'tenantId' => $tenantId, 'resource' => $resource]);
+        $row = $this->connection->fetchAssociative('SELECT * FROM wms_extension_configuration WHERE id = :id AND tenant_id = :tenantId AND resource_type = :resource', ['id' => $id, 'tenantId' => $tenantId, 'resource' => $resource]);
         if ($row === false) {
             throw new \DomainException('Die Konfiguration wurde nicht gefunden.');
         }
@@ -111,13 +111,13 @@ final readonly class GapClosureService
         $id ??= Uuid::v7()->toRfc4122();
         $row = ['resource_type' => $resource, 'code' => $code, 'name' => $name, 'configuration_json' => $payload, 'active' => $active ? 1 : 0, 'updated_by' => $actorId, 'updated_at' => $this->date($now)];
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $actorId, $id, $row, $now): void {
-            $exists = $connection->fetchOne('SELECT 1 FROM wms_parity_configuration WHERE id = :id AND tenant_id = :tenantId', ['id' => $id, 'tenantId' => $tenantId]) !== false;
+            $exists = $connection->fetchOne('SELECT 1 FROM wms_extension_configuration WHERE id = :id AND tenant_id = :tenantId', ['id' => $id, 'tenantId' => $tenantId]) !== false;
             if ($exists) {
-                $connection->update('wms_parity_configuration', $row, ['id' => $id, 'tenant_id' => $tenantId]);
+                $connection->update('wms_extension_configuration', $row, ['id' => $id, 'tenant_id' => $tenantId]);
             } else {
-                $connection->insert('wms_parity_configuration', ['id' => $id, 'tenant_id' => $tenantId, ...$row, 'created_by' => $actorId, 'created_at' => $this->date($now)]);
+                $connection->insert('wms_extension_configuration', ['id' => $id, 'tenant_id' => $tenantId, ...$row, 'created_by' => $actorId, 'created_at' => $this->date($now)]);
             }
-            $this->audit($connection, $tenantId, $actorId, 'parity_configuration', $id, $exists ? 'updated' : 'created', $row, $now);
+            $this->audit($connection, $tenantId, $actorId, 'extension_configuration', $id, $exists ? 'updated' : 'created', $row, $now);
         });
 
         return $id;
@@ -132,8 +132,8 @@ final readonly class GapClosureService
         $status = (string) array_key_first($states);
         $row = ['id' => $id, 'tenant_id' => $tenantId, 'workflow_type' => $workflow, 'reference' => $this->required($reference, 120), 'status' => $status, 'payload_json' => json_encode($payload, JSON_THROW_ON_ERROR), 'created_by' => $actorId, 'created_at' => $this->date($now), 'changed_by' => $actorId, 'changed_at' => $this->date($now)];
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $actorId, $id, $row, $now): void {
-            $connection->insert('wms_parity_work_item', $row);
-            $this->audit($connection, $tenantId, $actorId, 'parity_work_item', $id, 'created', $row, $now);
+            $connection->insert('wms_extension_work_item', $row);
+            $this->audit($connection, $tenantId, $actorId, 'extension_work_item', $id, 'created', $row, $now);
         });
 
         return $id;
@@ -142,7 +142,7 @@ final readonly class GapClosureService
     /** @return array<string, mixed> */
     public function workItem(string $tenantId, string $id): array
     {
-        $row = $this->connection->fetchAssociative('SELECT * FROM wms_parity_work_item WHERE id = :id AND tenant_id = :tenantId', ['id' => $id, 'tenantId' => $tenantId]);
+        $row = $this->connection->fetchAssociative('SELECT * FROM wms_extension_work_item WHERE id = :id AND tenant_id = :tenantId', ['id' => $id, 'tenantId' => $tenantId]);
         if ($row === false) {
             throw new \DomainException('Der Vorgang wurde nicht gefunden.');
         }
@@ -159,15 +159,15 @@ final readonly class GapClosureService
     public function transition(string $tenantId, string $actorId, string $id, string $target, DateTimeImmutable $now): void
     {
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $actorId, $id, $target, $now): void {
-            $item = $connection->fetchAssociative('SELECT workflow_type, status FROM wms_parity_work_item WHERE id = :id AND tenant_id = :tenantId FOR UPDATE', ['id' => $id, 'tenantId' => $tenantId]);
+            $item = $connection->fetchAssociative('SELECT workflow_type, status FROM wms_extension_work_item WHERE id = :id AND tenant_id = :tenantId FOR UPDATE', ['id' => $id, 'tenantId' => $tenantId]);
             if ($item === false || !is_string($item['workflow_type']) || !is_string($item['status'])) {
                 throw new \DomainException('Der Vorgang wurde nicht gefunden.');
             }
             if (!in_array($target, $this->allowedTransitions($item['workflow_type'], $item['status']), true)) {
                 throw new \DomainException('Dieser Statuswechsel ist nicht zulässig.');
             }
-            $connection->update('wms_parity_work_item', ['status' => $target, 'changed_by' => $actorId, 'changed_at' => $this->date($now)], ['id' => $id, 'tenant_id' => $tenantId]);
-            $this->audit($connection, $tenantId, $actorId, 'parity_work_item', $id, 'status_changed', ['from' => $item['status'], 'to' => $target], $now);
+            $connection->update('wms_extension_work_item', ['status' => $target, 'changed_by' => $actorId, 'changed_at' => $this->date($now)], ['id' => $id, 'tenant_id' => $tenantId]);
+            $this->audit($connection, $tenantId, $actorId, 'extension_work_item', $id, 'status_changed', ['from' => $item['status'], 'to' => $target], $now);
         });
     }
 

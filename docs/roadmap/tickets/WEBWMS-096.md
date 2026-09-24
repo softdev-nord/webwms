@@ -7,7 +7,7 @@ priority: Highest
 story_points: 13
 component: "Integration & Technik"
 feature_group: "Zuverlässigkeit"
-source_feature: CG-096
+source_feature: WEBWMS-REQ-096
 ---
 
 # WEBWMS-096: Asynchrone Integrationsverarbeitung implementieren
@@ -56,5 +56,4 @@ Weitere Zieladapter, aggregierte Betriebsmetriken, Alarmierung und vollständige
 
 ## Quelle
 
-- Feature: CG-096
-- Referenz: https://www.coglas.com/schnittstellen/
+- Feature: WEBWMS-REQ-096

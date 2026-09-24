@@ -24,11 +24,11 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 | [WEBWMS-EPIC-PLATFORM](epics/platform.md) | Zusatzfunktionen | 9 | 81 |
 | [WEBWMS-EPIC-ADMIN](epics/admin.md) | Administration | 9 | 76 |
 | [WEBWMS-EPIC-INTEGRATION](epics/integration.md) | Integration & Technik | 13 | 144 |
-| [WEBWMS-EPIC-PARITY](epics/functional-parity.md) | Coglas-Funktionsparität | 14 | 162 |
+| [WEBWMS-EPIC-EXTENSIONS](epics/functional-extensions.md) | Erweiterte Funktionen | 14 | 162 |
 
 ## Aktueller Gesamtfortschritt
 
-Stand 24.09.2026 sind alle 110 Tickets mit 912 Story Points vollständig `Done`. Die acht Epics bilden damit den dokumentierten Funktionsumfang einschließlich des Coglas-Paritätsslices ab.
+Stand 24.09.2026 sind alle 110 Tickets mit 912 Story Points vollständig `Done`. Die acht Epics bilden damit den dokumentierten Funktionsumfang einschließlich der erweiterten Funktionen ab.
 
 Die Epics **Wareneingang**, **Lagerverwaltung**, **Transport & Kommissionierung**, **Warenausgang & Versand** sowie **Zusatzfunktionen** sind vollständig abgeschlossen. Die Tabellen der sieben Epic-Dateien wurden mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 
@@ -42,7 +42,6 @@ Die Epics **Wareneingang**, **Lagerverwaltung**, **Transport & Kommissionierung*
 - [Abschlussanalyse Inbound und Outbound vom 23.09.2026](analysis/2026-09-23-inbound-outbound-completion.md)
 - [Abschlussanalyse Platform vom 23.09.2026](analysis/2026-09-23-platform-completion.md)
 - [Abschlussanalyse Inventory vom 23.09.2026](analysis/2026-09-23-inventory-completion.md)
-- [Coglas-Helpcenter-Gap-Analyse vom 24.09.2026](analysis/2026-09-24-coglas-helpcenter-gap-analysis.md)
 - [Abschlussanalyse Lagerbasis vom 21.09.2026](analysis/2026-09-21-inventory-workspace.md)
 - [Abschlussanalyse Bestandsattribute und Rückverfolgung vom 21.09.2026](analysis/2026-09-21-stock-traceability.md)
 - [Abschlussanalyse Entnahmestrategien vom 21.09.2026](analysis/2026-09-21-stock-selection.md)
@@ -57,4 +56,4 @@ Jeder fachliche Slice aktualisiert gemeinsam mit Implementierung und Dokumentati
 3. bekannte Restarbeiten zur vollständigen Definition of Done;
 4. bei wesentlichen Meilensteinen eine neue datierte Fortschrittsanalyse.
 
-Die ursprünglichen COGLAS-Referenzen bleiben in jeder Ticketdatei erhalten. Die Excel-Datei wird nach dieser Überführung nicht mehr als laufendes Statussystem gepflegt.
+Die ursprünglichen WEBWMS-Referenzen bleiben in jeder Ticketdatei erhalten. Die Excel-Datei wird nach dieser Überführung nicht mehr als laufendes Statussystem gepflegt.

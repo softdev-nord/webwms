@@ -8,9 +8,9 @@ Jeder Funktionsbereich besitzt eine eigene Übersicht. Vorhandene Datensätze we
 
 Anlage- und Erfassungsseiten, die keinen vorher ausgewählten Datensatz benötigen, sind als eingerückte Untermenüpunkte erreichbar. Dazu gehören beispielsweise neue Wareneingänge, Ausgangsaufträge, Benutzer, Rollen, Schnittstellen, Geräte und Druckaufträge.
 
-## Funktionsparität
+## Erweiterte Funktionen
 
-Der Menübereich **Funktionsparität** enthält:
+Der Menübereich **Erweiterte Funktionen** enthält:
 
 - eine Gesamtübersicht,
 - einzelne Übersichten für alle Konfigurationsarten,

@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
 feature_group: "Reservierung"
-source_feature: CG-051
+source_feature: WEBWMS-REQ-051
 ---
 
 # WEBWMS-051: Bestandsreservierung implementieren
@@ -58,5 +58,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-051
-- Referenz: https://www.coglas.com/warenausgang/
+- Feature: WEBWMS-REQ-051

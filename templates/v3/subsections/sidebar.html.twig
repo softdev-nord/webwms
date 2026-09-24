@@ -49,7 +49,7 @@
                 {% set administrationOpen = currentRoute starts with 'v3_administration_' %}
                 {% set documentationOpen = currentRoute starts with 'v3_documentation_' %}
                 {% set platformOpen = currentRoute starts with 'v3_platform_' or currentRoute starts with 'v3_partner_portal' %}
-                {% set parityOpen = currentRoute starts with 'v3_parity_' %}
+                {% set extensionOpen = currentRoute starts with 'v3_extension_' %}
 
                 <li class="menu-title"><span>Navigation</span></li>
                 <li class="nav-item">
@@ -66,17 +66,17 @@
                     </li>
                 {% endif %}
 
-                {% if is_granted('platform.parity.read') %}
-                    <li class="nav-item"><a class="nav-link menu-link {{ parityOpen ? '' : 'collapsed' }}" href="#sidebarParity" data-bs-toggle="collapse" role="button" aria-expanded="{{ parityOpen ? 'true' : 'false' }}" aria-controls="sidebarParity"><i class="ri-git-merge-line"></i><span>Funktionsparität</span></a>
-                        <div class="collapse menu-dropdown {{ parityOpen ? 'show' : '' }}" id="sidebarParity"><ul class="nav nav-sm flex-column">
-                            <li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_parity_index' ? 'active' : '' }}" href="{{ path('v3_parity_index') }}">Gesamtübersicht</a></li>
+                {% if is_granted('platform.extension.read') %}
+                    <li class="nav-item"><a class="nav-link menu-link {{ extensionOpen ? '' : 'collapsed' }}" href="#sidebarExtension" data-bs-toggle="collapse" role="button" aria-expanded="{{ extensionOpen ? 'true' : 'false' }}" aria-controls="sidebarExtension"><i class="ri-git-merge-line"></i><span>Erweiterte Funktionen</span></a>
+                        <div class="collapse menu-dropdown {{ extensionOpen ? 'show' : '' }}" id="sidebarExtension"><ul class="nav nav-sm flex-column">
+                            <li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_extension_index' ? 'active' : '' }}" href="{{ path('v3_extension_index') }}">Gesamtübersicht</a></li>
                             <li class="menu-title px-3 pt-2"><span>Konfiguration</span></li>
-                            {% for resource, label in constant('WebWMS\\Platform\\Application\\GapClosureService::RESOURCES') %}
-                                <li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_parity_configuration_' and app.request.attributes.get('resource') == resource ? 'active' : '' }}" href="{{ path('v3_parity_configuration_index',{resource:resource}) }}">{{ label }}</a></li>
+                            {% for resource, label in constant('WebWMS\\Platform\\Application\\ExtensionModuleService::RESOURCES') %}
+                                <li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_extension_configuration_' and app.request.attributes.get('resource') == resource ? 'active' : '' }}" href="{{ path('v3_extension_configuration_index',{resource:resource}) }}">{{ label }}</a></li>
                             {% endfor %}
                             <li class="menu-title px-3 pt-2"><span>Prozesse</span></li>
-                            {% for workflow, label in constant('WebWMS\\Platform\\Application\\GapClosureService::WORKFLOWS') %}
-                                <li class="nav-item"><a class="nav-link {{ (currentRoute == 'v3_parity_workflow_index' or currentRoute starts with 'v3_parity_work_item_') and app.request.attributes.get('workflow') == workflow ? 'active' : '' }}" href="{{ path('v3_parity_workflow_index',{workflow:workflow}) }}">{{ label }}</a></li>
+                            {% for workflow, label in constant('WebWMS\\Platform\\Application\\ExtensionModuleService::WORKFLOWS') %}
+                                <li class="nav-item"><a class="nav-link {{ (currentRoute == 'v3_extension_workflow_index' or currentRoute starts with 'v3_extension_work_item_') and app.request.attributes.get('workflow') == workflow ? 'active' : '' }}" href="{{ path('v3_extension_workflow_index',{workflow:workflow}) }}">{{ label }}</a></li>
                             {% endfor %}
                         </ul></div>
                     </li>

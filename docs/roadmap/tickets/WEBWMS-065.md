@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
 feature_group: "Integration"
-source_feature: CG-065
+source_feature: WEBWMS-REQ-065
 ---
 
 # WEBWMS-065: Statusrückmeldung implementieren
@@ -58,5 +58,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-065
-- Referenz: https://www.coglas.com/warenausgang/
+- Feature: WEBWMS-REQ-065

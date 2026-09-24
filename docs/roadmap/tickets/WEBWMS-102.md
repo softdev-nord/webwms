@@ -1,20 +1,20 @@
 ---
 id: WEBWMS-102
 issue_type: Story
-epic: WEBWMS-EPIC-PARITY
+epic: WEBWMS-EPIC-EXTENSIONS
 status: Done
 priority: Highest
 story_points: 8
-component: "Coglas-Funktionsparität"
+component: "Erweiterte Funktionen"
 feature_group: "Administration"
-source_feature: COGLAS-HELP-102
+source_feature: WEBWMS-REQ-102
 ---
 
 # WEBWMS-102: Login-Richtlinien, Login-Historie und Arbeitsstationen implementieren
 
 ## User Story
 
-Als fachlich berechtigter Benutzer möchte ich Sicherheitsrichtlinien und arbeitsplatzbezogene Sitzungen zentral administrieren, damit WebWMS die im Coglas-Helpcenter dokumentierte Prozessabdeckung erreicht.
+Als fachlich berechtigter Benutzer möchte ich Sicherheitsrichtlinien und arbeitsplatzbezogene Sitzungen zentral administrieren, damit die Funktion zentral und nachvollziehbar genutzt werden kann.
 
 ## Fachlicher Umfang
 
@@ -31,18 +31,10 @@ Als fachlich berechtigter Benutzer möchte ich Sicherheitsrichtlinien und arbeit
 
 ## Abhängigkeiten
 
-Abhängig von den vorhandenen WebWMS-3.0-Basismodulen und den in der Gap-Analyse genannten Vorgängertickets.
+Abhängig von den vorhandenen WebWMS-3.0-Basismodulen und den bestehenden Vorgängertickets.
 
 ## Implementierungsstand
 
 **Status:** Done
 
-Der Gap-Closing-Slice vom 24.09.2026 stellt den mandantensicheren Konfigurations- und Workflowkern, getrennte V3-Ansichten, JSON-API, Berechtigungen, Auditierung und automatisierte Tests bereit.
-
-## Quelle
-
-- [Coglas-Helpcenter-Gap-Analyse](../analysis/2026-09-24-coglas-helpcenter-gap-analysis.md)
-- https://help.coglas.com/ger/coglas-prozesse
-- https://help.coglas.com/ger/coglas-menu
-- https://help.coglas.com/ger/prozesse-konzepte
-- https://help.coglas.com/ger/changelog
+Der Erweiterungsmodul-Slice vom 24.09.2026 stellt den mandantensicheren Konfigurations- und Workflowkern, getrennte V3-Ansichten, JSON-API, Berechtigungen, Auditierung und automatisierte Tests bereit.

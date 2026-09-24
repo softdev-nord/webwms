@@ -7,7 +7,7 @@ priority: Medium
 story_points: 8
 component: "Wareneingang"
 feature_group: "Optimierung"
-source_feature: CG-012
+source_feature: WEBWMS-REQ-012
 ---
 
 # WEBWMS-012: Cross-Docking implementieren
@@ -50,5 +50,4 @@ Geprüfte Eingänge können im Leitstand oder per V3-API direkt einem offenen, a
 
 ## Quelle
 
-- Feature: CG-012
-- Referenz: https://www.coglas.com/wareneingang/
+- Feature: WEBWMS-REQ-012

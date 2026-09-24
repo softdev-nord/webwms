@@ -10,18 +10,18 @@ Jede im V3-Frontend angebotene Funktion muss über eine berechtigungsabhängige 
 - Lager, Wareneingang und Warenausgang: fachliche Übersichten sowie kontextfreie Anlageviews.
 - Integration & Technik: Übersichten, Verbindungs-, Geräte-, Mess-, Scan-, Druck- und Befehlsviews.
 - Administration: Benutzer, Rollen, API-Clients und Mandantenkonfiguration inklusive Anlageviews.
-- Funktionsparität: Gesamtübersicht, 18 getrennte Konfigurationsübersichten und 13 getrennte Prozessübersichten.
+- Erweiterte Funktionen: Gesamtübersicht, 18 getrennte Konfigurationsübersichten und 13 getrennte Prozessübersichten.
 
 Die Sidebar prüft für jeden Eintrag dieselbe fachliche Berechtigung wie der zugehörige Controller. Detailseiten bleiben bewusst kontextbezogen und werden aus Tabellenzeilen verlinkt.
 
-## Paritätsviews
+## Views für erweiterte Funktionen
 
-`V3GapClosureController` stellt neben der Gesamtübersicht zwei parametrisierte Listentypen bereit:
+`V3ExtensionModuleController` stellt neben der Gesamtübersicht zwei parametrisierte Listentypen bereit:
 
-- `v3_parity_configuration_index` filtert mandantensicher nach Konfigurationsressource.
-- `v3_parity_workflow_index` filtert mandantensicher nach Workflowtyp.
+- `v3_extension_configuration_index` filtert mandantensicher nach Konfigurationsressource.
+- `v3_extension_workflow_index` filtert mandantensicher nach Workflowtyp.
 
-Unbekannte Ressourcen oder Workflows werden abgewiesen. Anlage und Bearbeitung verwenden weiterhin getrennte Formularseiten. Alle Schreiboperationen bleiben über `platform.parity.write` beziehungsweise `platform.parity.execute` geschützt.
+Unbekannte Ressourcen oder Workflows werden abgewiesen. Anlage und Bearbeitung verwenden weiterhin getrennte Formularseiten. Alle Schreiboperationen bleiben über `platform.extension.write` beziehungsweise `platform.extension.execute` geschützt.
 
 ## Prüfregel
 

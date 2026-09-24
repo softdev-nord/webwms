@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Integration & Technik"
 feature_group: "Hardware"
-source_feature: CG-091
+source_feature: WEBWMS-REQ-091
 ---
 
 # WEBWMS-091: Drucker implementieren
@@ -68,5 +68,4 @@ weiterhin; das Ticket ist deshalb nicht `Done`.
 
 ## Quelle
 
-- Feature: CG-091
-- Referenz: https://www.coglas.com/hardware-schnittstelle/
+- Feature: WEBWMS-REQ-091

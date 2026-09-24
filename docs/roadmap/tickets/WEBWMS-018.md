@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Historie"
-source_feature: CG-018
+source_feature: WEBWMS-REQ-018
 ---
 
 # WEBWMS-018: Bewegungshistorie implementieren
@@ -50,5 +50,4 @@ Das unveränderliche `wms_stock_ledger` wird über eine berechtigte, mandantensi
 
 ## Quelle
 
-- Feature: CG-018
-- Referenz: https://www.coglas.com/lagerverwaltung/
+- Feature: WEBWMS-REQ-018

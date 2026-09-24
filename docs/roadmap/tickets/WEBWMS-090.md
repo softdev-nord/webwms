@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Integration & Technik"
 feature_group: "Hardware"
-source_feature: CG-090
+source_feature: WEBWMS-REQ-090
 ---
 
 # WEBWMS-090: Scanner und MDE implementieren
@@ -62,5 +62,4 @@ HTTP-/MariaDB-Integrationstests fehlen noch; das Ticket ist deshalb nicht
 
 ## Quelle
 
-- Feature: CG-090
-- Referenz: https://www.coglas.com/hardware-schnittstelle/
+- Feature: WEBWMS-REQ-090

@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Inventur"
-source_feature: CG-032
+source_feature: WEBWMS-REQ-032
 ---
 
 # WEBWMS-032: Differenz- und Freigabeworkflow implementieren
@@ -50,5 +50,4 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 ## Quelle
 
-- Feature: CG-032
-- Referenz: https://www.coglas.com/lagerverwaltung/
+- Feature: WEBWMS-REQ-032

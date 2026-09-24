@@ -7,7 +7,7 @@ priority: High
 story_points: 13
 component: "Integration & Technik"
 feature_group: "Commerce"
-source_feature: CG-088
+source_feature: WEBWMS-REQ-088
 ---
 
 # WEBWMS-088: Shop- und Marktplatzintegration implementieren
@@ -50,5 +50,4 @@ Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden
 
 ## Quelle
 
-- Feature: CG-088
-- Referenz: https://www.coglas.com/schnittstellen/
+- Feature: WEBWMS-REQ-088

@@ -12,7 +12,7 @@ Alle 91 von V3-Webcontrollern gerenderten Twig-Templates sind vorhanden. Alle re
 | Bereich | Festgestellte Lücke | Umsetzung |
 | --- | --- | --- |
 | Plattform | Partnerportal nur über direkte URL erreichbar | Eigene Plattformgruppe mit Control Center und Partnerportal |
-| Funktionsparität | 18 Konfigurationsarten und 13 Workflows nur auf einer Sammelseite | Je Funktion eigener Untermenüpunkt und gefilterte Übersichtsview |
+| Erweiterte Funktionen | 18 Konfigurationsarten und 13 Workflows nur auf einer Sammelseite | Je Funktion eigener Untermenüpunkt und gefilterte Übersichtsview |
 | Wareneingang | Anlage eines ungeplanten Eingangs nicht direkt navigierbar | Berechtigter Untermenüpunkt zur Anlageview |
 | Warenausgang | Auftrag und Verladung nur aus Übersichten anlegbar | Direkte Untermenüpunkte für beide Anlageviews |
 | Integration | Mehrere vorhandene Anlage-, Scan-, Mess-, Druck- und Befehlsviews nicht im Menü | Berechtigungsabhängige Untermenüpunkte ergänzt |

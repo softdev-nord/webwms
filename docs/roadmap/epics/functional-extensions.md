@@ -1,6 +1,6 @@
-# WEBWMS-EPIC-PARITY: Coglas-Funktionsparität
+# WEBWMS-EPIC-EXTENSIONS: Erweiterte Funktionen
 
-Dieser Epic bündelt die bei der vollständigen Helpcenter-Analyse vom 24.09.2026 erkannten Funktionen, die durch die bisherigen 96 Stories nicht oder nicht ausreichend abgedeckt werden.
+Dieser Epic bündelt zusätzliche fachliche und technische Funktionen, die den WebWMS-Kern um erweiterte Stammdaten, Prozesse, Integrationen und Compliance-Funktionen ergänzen.
 
 **Epic-Status:** Done · 14 von 14 Stories · 162 von 162 Story Points
 

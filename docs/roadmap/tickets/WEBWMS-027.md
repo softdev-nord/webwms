@@ -7,7 +7,7 @@ priority: Medium
 story_points: 8
 component: "Lagerverwaltung"
 feature_group: "Produktion"
-source_feature: CG-027
+source_feature: WEBWMS-REQ-027
 ---
 
 # WEBWMS-027: Stücklisten implementieren
@@ -50,6 +50,5 @@ Umgesetzt im Inventory Control Center mit mandantenfähigem Application Service,
 
 ## Quelle
 
-- Feature: CG-027
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-027
 

@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Wareneingang"
 feature_group: "Qualität"
-source_feature: CG-008
+source_feature: WEBWMS-REQ-008
 ---
 
 # WEBWMS-008: Sperrbestand bei Abweichung implementieren
@@ -50,5 +50,4 @@ Bestandsstatus `blocked` und QS-Entscheidung `block` sind mit einem expliziten A
 
 ## Quelle
 
-- Feature: CG-008
-- Referenz: https://www.coglas.com/wareneingang/
+- Feature: WEBWMS-REQ-008

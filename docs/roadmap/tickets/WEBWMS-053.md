@@ -7,7 +7,7 @@ priority: Highest
 story_points: 8
 component: "Warenausgang & Versand"
 feature_group: "Packen"
-source_feature: CG-053
+source_feature: WEBWMS-REQ-053
 ---
 
 # WEBWMS-053: Geführter Packprozess implementieren
@@ -58,5 +58,4 @@ Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()
 
 ## Quelle
 
-- Feature: CG-053
-- Referenz: https://www.coglas.com/versand/
+- Feature: WEBWMS-REQ-053

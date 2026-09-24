@@ -7,7 +7,7 @@ priority: Highest
 story_points: 5
 component: "Wareneingang"
 feature_group: "Prüfung"
-source_feature: CG-005
+source_feature: WEBWMS-REQ-005
 ---
 
 # WEBWMS-005: Mengen- und Abweichungsprüfung implementieren
@@ -50,5 +50,4 @@ Der V3-Arbeitsplatz erfasst Soll- und Istmenge, verlangt bei Abweichung einen Gr
 
 ## Quelle
 
-- Feature: CG-005
-- Referenz: https://www.coglas.com/wareneingang/
+- Feature: WEBWMS-REQ-005

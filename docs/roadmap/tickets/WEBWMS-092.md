@@ -7,7 +7,7 @@ priority: Medium
 story_points: 8
 component: "Integration & Technik"
 feature_group: "Hardware"
-source_feature: CG-092
+source_feature: WEBWMS-REQ-092
 ---
 
 # WEBWMS-092: Waagen und Volumenmessung implementieren
@@ -62,5 +62,4 @@ deshalb nicht `Done`.
 
 ## Quelle
 
-- Feature: CG-092
-- Referenz: https://www.coglas.com/hardware-schnittstelle/
+- Feature: WEBWMS-REQ-092

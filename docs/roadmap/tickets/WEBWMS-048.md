@@ -7,7 +7,7 @@ priority: Medium
 story_points: 8
 component: "Transport & Kommissionierung"
 feature_group: "Materialfluss"
-source_feature: CG-048
+source_feature: WEBWMS-REQ-048
 ---
 
 # WEBWMS-048: Routenzug implementieren
@@ -50,5 +50,4 @@ Feste oder dynamische Routenzüge besitzen geordnete Prozessstationen und option
 
 ## Quelle
 
-- Feature: CG-048
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-048

@@ -7,7 +7,7 @@ priority: High
 story_points: 5
 component: "Administration"
 feature_group: "Stammdaten"
-source_feature: CG-080
+source_feature: WEBWMS-REQ-080
 ---
 
 # WEBWMS-080: Nummernkreise implementieren
@@ -50,5 +50,4 @@ Mandantenbezogene Nummernkreise unterstützen Präfix, Suffix, Stellenzahl, Star
 
 ## Quelle
 
-- Feature: CG-080
-- Referenz: https://www.coglas.com/funktionen/
+- Feature: WEBWMS-REQ-080
