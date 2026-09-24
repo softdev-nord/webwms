@@ -28,7 +28,7 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Gesamtfortschritt
 
-Stand 24.09.2026 sind 82 Tickets mit 598 Story Points vollständig `Done`. Weitere 2 Tickets mit 21 Story Points besitzen einen Backendkern und 9 Tickets mit 97 Story Points sind teilweise umgesetzt. 17 Tickets mit 196 Story Points sind offen. Damit wurden 93 von 110 Tickets und 716 von 912 Story Points zumindest fachlich oder technisch begonnen.
+Stand 24.09.2026 sind alle 110 Tickets mit 912 Story Points vollständig `Done`. Die acht Epics bilden damit den dokumentierten Funktionsumfang einschließlich des Coglas-Paritätsslices ab.
 
 Die Epics **Wareneingang**, **Lagerverwaltung**, **Transport & Kommissionierung**, **Warenausgang & Versand** sowie **Zusatzfunktionen** sind vollständig abgeschlossen. Die Tabellen der sieben Epic-Dateien wurden mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 

@@ -2,7 +2,7 @@
 id: WEBWMS-095
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Done
 priority: Medium
 story_points: 8
 component: "Integration & Technik"

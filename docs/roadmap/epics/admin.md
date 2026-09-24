@@ -8,7 +8,7 @@ Alle 9 dokumentierten Funktionen des Bereichs Administration werden fachlich kon
 | [WEBWMS-076](../tickets/WEBWMS-076.md) | Mehrlager und Standorte implementieren | Done | High | 8 |
 | [WEBWMS-077](../tickets/WEBWMS-077.md) | Benutzerverwaltung implementieren | Done | Highest | 5 |
 | [WEBWMS-078](../tickets/WEBWMS-078.md) | Rollen und Rechte implementieren | Done | Highest | 8 |
-| [WEBWMS-079](../tickets/WEBWMS-079.md) | Single Sign-on implementieren | Backend umgesetzt | Medium | 8 |
+| [WEBWMS-079](../tickets/WEBWMS-079.md) | Single Sign-on implementieren | Done | Medium | 8 |
 | [WEBWMS-080](../tickets/WEBWMS-080.md) | Nummernkreise implementieren | Done | High | 5 |
 | [WEBWMS-081](../tickets/WEBWMS-081.md) | Aktivierbare Prozesse implementieren | Done | High | 8 |
 | [WEBWMS-082](../tickets/WEBWMS-082.md) | Webbasierter Betrieb implementieren | Done | Highest | 8 |

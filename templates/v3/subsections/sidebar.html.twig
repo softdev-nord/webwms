@@ -56,6 +56,7 @@
                     </a>
                 </li>
                 {% if is_granted('platform.read') %}<li class="nav-item"><a class="nav-link menu-link {{ currentRoute starts with 'v3_platform_' ? 'active' : '' }}" href="{{ path('v3_platform_index') }}"><i class="ri-apps-2-line"></i><span>Platform Control Center</span></a></li>{% endif %}
+                {% if is_granted('platform.parity.read') %}<li class="nav-item"><a class="nav-link menu-link {{ currentRoute starts with 'v3_parity_' ? 'active' : '' }}" href="{{ path('v3_parity_index') }}"><i class="ri-git-merge-line"></i><span>Funktionsparität</span></a></li>{% endif %}
 
                 {% if is_granted('inventory.stock.read') or is_granted('inventory.topology.read') or is_granted('inventory.overview.read') or is_granted('inventory.stock.movement.read') or is_granted('inventory.traceability.read') or is_granted('inventory.special_stock.read') or is_granted('inventory.selection_rule.read') or is_granted('inventory.stock_block.read') or is_granted('inventory.control.read') %}
                     <li class="nav-item">

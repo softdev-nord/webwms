@@ -2,7 +2,7 @@
 id: WEBWMS-084
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Backend umgesetzt
+status: Done
 priority: Highest
 story_points: 13
 component: "Integration & Technik"

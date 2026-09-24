@@ -2,7 +2,7 @@
 id: WEBWMS-088
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Offen
+status: Done
 priority: High
 story_points: 13
 component: "Integration & Technik"
@@ -52,4 +52,3 @@ Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden
 
 - Feature: CG-088
 - Referenz: https://www.coglas.com/schnittstellen/
-

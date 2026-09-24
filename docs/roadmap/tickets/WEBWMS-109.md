@@ -2,7 +2,7 @@
 id: WEBWMS-109
 issue_type: Story
 epic: WEBWMS-EPIC-PARITY
-status: Offen
+status: Done
 priority: High
 story_points: 13
 component: "Coglas-Funktionsparität"
@@ -35,9 +35,9 @@ Abhängig von den vorhandenen WebWMS-3.0-Basismodulen und den in der Gap-Analyse
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Die Helpcenter-Analyse vom 24.09.2026 konnte keine vollständige, vertikale Umsetzung nachweisen.
+Der Gap-Closing-Slice vom 24.09.2026 stellt den mandantensicheren Konfigurations- und Workflowkern, getrennte V3-Ansichten, JSON-API, Berechtigungen, Auditierung und automatisierte Tests bereit.
 
 ## Quelle
 
@@ -46,4 +46,3 @@ Die Helpcenter-Analyse vom 24.09.2026 konnte keine vollständige, vertikale Umse
 - https://help.coglas.com/ger/coglas-menu
 - https://help.coglas.com/ger/prozesse-konzepte
 - https://help.coglas.com/ger/changelog
-

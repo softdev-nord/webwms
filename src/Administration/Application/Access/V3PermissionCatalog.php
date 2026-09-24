@@ -47,6 +47,7 @@ final class V3PermissionCatalog
         'inventory.hazard.write', 'inventory.load_carrier.write',
         'outbound.order.read', 'outbound.order.release', 'outbound.order.write',
         'platform.execute', 'platform.read', 'platform.write',
+        'platform.parity.execute', 'platform.parity.read', 'platform.parity.write',
     ];
 
     public static function contains(string $permission): bool

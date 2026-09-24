@@ -15,7 +15,7 @@ Die Bewertung bedeutet:
 
 Die bisherigen 96 Stories bilden die zentralen Prozessketten von Wareneingang, Bestand, Kommissionierung, Versand, Administration und Integration ab. Eine vollständige Funktionsparität mit dem aktuellen Coglas-Helpcenter besteht dennoch nicht. Der Helpcenter-Abgleich hat vor allem in den Bereichen konfigurierbare Stammdaten, Lageroptimierung, Security-Betrieb, dokumentenweiter Druck, Produktion/Montage, Billing sowie Außenhandel zusätzliche Anforderungen ergeben.
 
-Für die bislang nicht ausreichend abgedeckten Funktionen wurden `WEBWMS-097` bis `WEBWMS-110` im neuen Epic `WEBWMS-EPIC-PARITY` formuliert. Bestehende Integrationsstories `WEBWMS-085` bis `WEBWMS-096` bleiben zusätzlich offen und werden durch die Detailanforderungen aus dieser Analyse präzisiert.
+Für die bislang nicht ausreichend abgedeckten Funktionen wurden `WEBWMS-097` bis `WEBWMS-110` im neuen Epic `WEBWMS-EPIC-PARITY` formuliert. Die 28 Resttickets `WEBWMS-079`, `084` bis `096` und `097` bis `110` wurden im Gap-Closing-Slice vom 24.09.2026 abgeschlossen. Der Slice ergänzt die vorhandenen Integrationskerne um einen mandantensicheren Konfigurations- und Workflowkern, getrennte V3-Ansichten, JSON-API, Berechtigungen, Auditierung und Login-Historie.
 
 ## Funktionsvergleich
 

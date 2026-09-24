@@ -2,7 +2,7 @@
 id: WEBWMS-079
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Backend umgesetzt
+status: Done
 priority: Medium
 story_points: 8
 component: "Administration"
