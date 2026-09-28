@@ -35,7 +35,7 @@ class AddCustomerOrderType extends AbstractType
                 ],
             ])
             ->add('customerOrderNr', TextType::class, [
-                'label' => 'form.customerorder.addcustomerordertype.label.0d68b9e1',
+                'label' => 'form.customerorder.addcustomerordertype.label.order_no',
                 'attr' => [
                     'class' => 'form-control is--transparent',
                     'id' => 'customer_order_nr',
@@ -55,18 +55,18 @@ class AddCustomerOrderType extends AbstractType
                 ],
             ])
             ->add('customerOrderReference', TextType::class, [
-                'label' => 'form.customerorder.addcustomerordertype.label.e89ab1b8',
+                'label' => 'form.customerorder.addcustomerordertype.label.order_reference',
                 'attr' => [
                     'class' => 'form-control',
                     'id' => 'customer_order_reference',
-                    'placeholder' => 'form.customerorder.addcustomerordertype.placeholder.e89ab1b8',
+                    'placeholder' => 'form.customerorder.addcustomerordertype.placeholder.order_reference',
                 ],
             ])
             ->add('customerOrderDate', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'dd.MM.yyyy',
-                'label' => 'form.customerorder.addcustomerordertype.label.f5bd3e41',
+                'label' => 'form.customerorder.addcustomerordertype.label.order_date',
                 'html5' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -76,7 +76,7 @@ class AddCustomerOrderType extends AbstractType
                 'widget' => 'single_text',
                 'input' => 'datetime',
                 'format' => 'dd.MM.yyyy',
-                'label' => 'form.customerorder.addcustomerordertype.label.286db5c0',
+                'label' => 'form.customerorder.addcustomerordertype.label.creation_date',
                 'html5' => false,
                 'attr' => [
                     'class' => 'form-control',
@@ -85,13 +85,13 @@ class AddCustomerOrderType extends AbstractType
                 ],
             ])
             ->add('save', ButtonType::class, [
-                'label' => 'form.customerorder.addcustomerordertype.label.7c87072b',
+                'label' => 'form.customerorder.addcustomerordertype.label.create_order',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.customerorder.addcustomerordertype.label.2d5d70e9',
+                'label' => 'form.customerorder.addcustomerordertype.label.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

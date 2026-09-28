@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<h1 class="h3 mb-1">{{ 'ui.v3.integration.device.scan.versand.31e5fb2'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'ui.v3.shipping.index.labels.tracking.und.ubergabe.an.den.frachtfuhrer.4fb6cef'|trans }}</p>
+		<h1 class="h3 mb-1">{{ 'ui.v3.integration.device.scan.versand'|trans }}</h1>
+		<p class="text-muted mb-0">{{ 'ui.v3.shipping.index.labels.tracking.und.ubergabe.an.den.frachtfuhrer'|trans }}</p>
 	</div>
 
 	<div class="card border-0 shadow-sm">
@@ -11,11 +11,11 @@
 			<table class="table table-hover align-middle mb-0">
 				<thead>
 					<tr>
-						<th>{{ 'ui.v3.integration.device.scan.sendung.fdd2800'|trans }}</th>
-						<th>{{ 'ui.v3.administration.workspace.carrier.91b0ba2'|trans }}</th>
-						<th>{{ 'ui.v3.outbound.control.service.329cb8b'|trans }}</th>
-						<th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th>
-						<th>{{ 'ui.v3.loading.show.tracking.e81a151'|trans }}</th>
+						<th>{{ 'ui.v3.integration.device.scan.sendung'|trans }}</th>
+						<th>{{ 'ui.v3.administration.workspace.carrier'|trans }}</th>
+						<th>{{ 'ui.v3.outbound.control.service'|trans }}</th>
+						<th>{{ 'ui.transport_request.index.status'|trans }}</th>
+						<th>{{ 'ui.v3.loading.show.tracking'|trans }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -28,12 +28,12 @@
 							<td>{{ shipment.status }}</td>
 							<td>{{ shipment.tracking_number ?: '–' }}</td>
 							<td class="text-end">
-								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_shipping_show', {shipmentId: shipment.id}) }}">{{ 'ui.v3.inbound.index.offnen.fc718f8'|trans }}</a>
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_shipping_show', {shipmentId: shipment.id}) }}">{{ 'ui.v3.inbound.index.offnen'|trans }}</a>
 							</td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="6" class="text-center text-muted py-5">{{ 'ui.v3.shipping.index.noch.keine.sendungen.vorhanden.f035e88'|trans }}</td>
+							<td colspan="6" class="text-center text-muted py-5">{{ 'ui.v3.shipping.index.noch.keine.sendungen.vorhanden'|trans }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

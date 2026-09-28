@@ -2,9 +2,9 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_erp_connection_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.erp-connection.new.erp.verbindungen.0d32ca0'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'ui.v3.integration.erp-connection.index.erp.verbindung.anlegen.c77da00'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'ui.v3.integration.erp-connection.new.der.signaturschlussel.bleibt.in.der.laufzeitumgebung.un.a957573'|trans }}</p>
+		<a href="{{ path('v3_erp_connection_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.erp-connection.new.erp.verbindungen'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.integration.erp-connection.index.erp.verbindung.anlegen'|trans }}</h1>
+		<p class="text-muted mb-0">{{ 'ui.v3.integration.erp-connection.new.der.signaturschlussel.bleibt.in.der.laufzeitumgebung.un'|trans }}</p>
 	</div>
 
 	<form method="post" class="card border-0 shadow-sm">
@@ -13,29 +13,29 @@
 			<div class="row g-3">
 				<div class="col-md-6">
 					<label class="form-label" for="name">{{ 'templates.correspondence.name'|trans }}</label>
-					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'ui.v3.integration.erp-connection.new.acme.erp.produktion.549a518'|trans }}">
+					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'ui.v3.integration.erp-connection.new.acme.erp.produktion'|trans }}">
 				</div>
 				<div class="col-md-6">
-					<label class="form-label" for="credential_env">{{ 'ui.v3.integration.automation.device-new.credential.umgebungsvariable.9feb046'|trans }}</label>
-					<input class="form-control font-monospace" id="credential_env" name="credential_env" maxlength="101" pattern="[A-Z][A-Z0-9_]{2,100}" required placeholder="{{ 'ui.v3.integration.erp-connection.new.erp.acme.signing.key.80011c0'|trans }}">
-					<div class="form-text">{{ 'ui.v3.integration.erp-connection.new.nur.der.variablenname.wird.gespeichert.niemals.das.secr.cb30e96'|trans }}</div>
+					<label class="form-label" for="credential_env">{{ 'ui.v3.integration.automation.device-new.credential.umgebungsvariable'|trans }}</label>
+					<input class="form-control font-monospace" id="credential_env" name="credential_env" maxlength="101" pattern="[A-Z][A-Z0-9_]{2,100}" required placeholder="{{ 'ui.v3.integration.erp-connection.new.erp.acme.signing.key'|trans }}">
+					<div class="form-text">{{ 'ui.v3.integration.erp-connection.new.nur.der.variablenname.wird.gespeichert.niemals.das.secr'|trans }}</div>
 				</div>
 				<div class="col-12">
-					<label class="form-label" for="endpoint_url">{{ 'ui.v3.integration.carrier-connection.new.https.basis.url.f542dcf'|trans }}</label>
-					<input class="form-control font-monospace" type="url" id="endpoint_url" name="endpoint_url" maxlength="500" pattern="https://.*" required placeholder="{{ 'ui.v3.integration.erp-connection.new.https.erp.example.com.integrations.webwms.4fb3d90'|trans }}">
-					<div class="form-text">{{ 'ui.v3.integration.erp-connection.new.statusereignisse.werden.an.4155762'|trans }} <code>{{ 'ui.v3.integration.erp-connection.new.status.events.e5ade7b'|trans }}</code> {{ 'ui.v3.integration.erp-connection.new.unterhalb.dieser.url.gesendet.577a9e9'|trans }}</div>
+					<label class="form-label" for="endpoint_url">{{ 'ui.v3.integration.carrier-connection.new.https.basis.url'|trans }}</label>
+					<input class="form-control font-monospace" type="url" id="endpoint_url" name="endpoint_url" maxlength="500" pattern="https://.*" required placeholder="{{ 'ui.v3.integration.erp-connection.new.https.erp.example.com.integrations.webwms'|trans }}">
+					<div class="form-text">{{ 'ui.v3.integration.erp-connection.new.statusereignisse.werden.an'|trans }} <code>{{ 'ui.v3.integration.erp-connection.new.status.events'|trans }}</code> {{ 'ui.v3.integration.erp-connection.new.unterhalb.dieser.url.gesendet'|trans }}</div>
 				</div>
 				<div class="col-12">
 					<div class="form-check form-switch">
 						<input class="form-check-input" type="checkbox" role="switch" id="active" name="active" value="1" checked>
-						<label class="form-check-label" for="active">{{ 'ui.v3.integration.carrier-connection.new.verbindung.sofort.aktivieren.8ffebd8'|trans }}</label>
+						<label class="form-check-label" for="active">{{ 'ui.v3.integration.carrier-connection.new.verbindung.sofort.aktivieren'|trans }}</label>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer d-flex justify-content-end gap-2">
 			<a class="btn btn-light" href="{{ path('v3_erp_connection_index') }}">{{ 'button.cancel'|trans }}</a>
-			<button class="btn btn-primary">{{ 'ui.v3.integration.erp-connection.index.erp.verbindung.anlegen.c77da00'|trans }}</button>
+			<button class="btn btn-primary">{{ 'ui.v3.integration.erp-connection.index.erp.verbindung.anlegen'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

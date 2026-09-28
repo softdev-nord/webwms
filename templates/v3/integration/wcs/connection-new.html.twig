@@ -2,21 +2,21 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_wcs_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.wcs.command-new.wcs.mfr.und.fordertechnik.cc0ecc3'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'ui.v3.integration.wcs.connection-new.wcs.verbindung.anlegen.58e1602'|trans }}</h1>
+		<a href="{{ path('v3_wcs_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.wcs.command-new.wcs.mfr.und.fordertechnik'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.integration.wcs.connection-new.wcs.verbindung.anlegen'|trans }}</h1>
 	</div>
 	<form method="post" class="card border-0 shadow-sm">
 		<div class="card-body">
 			<input type="hidden" name="_token" value="{{ csrf_token('v3_wcs_connection_create') }}">
 			<div class="row g-3">
-				<div class="col-md-3"><label class="form-label" for="code">{{ 'ui.v3.administration.role_new.code.adac693'|trans }}</label><input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" required placeholder="{{ 'ui.v3.integration.wcs.connection-new.wcs.01.2b0e11b'|trans }}"></div>
+				<div class="col-md-3"><label class="form-label" for="code">{{ 'ui.v3.administration.role_new.code'|trans }}</label><input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" required placeholder="{{ 'ui.v3.integration.wcs.connection-new.wcs.01'|trans }}"></div>
 				<div class="col-md-5"><label class="form-label" for="name">{{ 'templates.correspondence.name'|trans }}</label><input class="form-control" id="name" name="name" maxlength="100" required></div>
-				<div class="col-md-4"><label class="form-label" for="system_type">{{ 'ui.v3.integration.wcs.connection-new.systemtyp.33da274'|trans }}</label><select class="form-select" id="system_type" name="system_type"><option value="wcs">{{ 'ui.v3.integration.wcs.connection-new.wcs.3d95acb'|trans }}</option><option value="mfr">{{ 'ui.v3.integration.wcs.connection-new.materialflussrechner.2487fde'|trans }}</option><option value="conveyor">{{ 'ui.v3.integration.wcs.connection-new.fordertechnik.aac72c7'|trans }}</option></select></div>
-				<div class="col-md-7"><label class="form-label" for="endpoint_url">{{ 'ui.v3.integration.automation.device-new.https.endpoint.3f16a99'|trans }}</label><input class="form-control" type="url" id="endpoint_url" name="endpoint_url" required></div>
-				<div class="col-md-5"><label class="form-label" for="credential_env">{{ 'ui.v3.integration.automation.device-new.credential.umgebungsvariable.9feb046'|trans }}</label><input class="form-control font-monospace text-uppercase" id="credential_env" name="credential_env" required></div>
-				<div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="active" name="active" value="1" checked><label class="form-check-label" for="active">{{ 'ui.v3.integration.carrier-connection.new.verbindung.sofort.aktivieren.8ffebd8'|trans }}</label></div></div>
+				<div class="col-md-4"><label class="form-label" for="system_type">{{ 'ui.v3.integration.wcs.connection-new.systemtyp'|trans }}</label><select class="form-select" id="system_type" name="system_type"><option value="wcs">{{ 'ui.v3.integration.wcs.connection-new.wcs'|trans }}</option><option value="mfr">{{ 'ui.v3.integration.wcs.connection-new.materialflussrechner'|trans }}</option><option value="conveyor">{{ 'ui.v3.integration.wcs.connection-new.fordertechnik'|trans }}</option></select></div>
+				<div class="col-md-7"><label class="form-label" for="endpoint_url">{{ 'ui.v3.integration.automation.device-new.https.endpoint'|trans }}</label><input class="form-control" type="url" id="endpoint_url" name="endpoint_url" required></div>
+				<div class="col-md-5"><label class="form-label" for="credential_env">{{ 'ui.v3.integration.automation.device-new.credential.umgebungsvariable'|trans }}</label><input class="form-control font-monospace text-uppercase" id="credential_env" name="credential_env" required></div>
+				<div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="active" name="active" value="1" checked><label class="form-check-label" for="active">{{ 'ui.v3.integration.carrier-connection.new.verbindung.sofort.aktivieren'|trans }}</label></div></div>
 			</div>
 		</div>
-		<div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_wcs_index') }}">{{ 'button.cancel'|trans }}</a><button class="btn btn-primary">{{ 'ui.v3.integration.wcs.connection-new.verbindung.anlegen.38f1add'|trans }}</button></div>
+		<div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_wcs_index') }}">{{ 'button.cancel'|trans }}</a><button class="btn btn-primary">{{ 'ui.v3.integration.wcs.connection-new.verbindung.anlegen'|trans }}</button></div>
 	</form>
 {% endblock %}

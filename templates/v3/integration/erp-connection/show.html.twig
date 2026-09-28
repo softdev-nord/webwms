@@ -3,19 +3,19 @@
 {% block webwms_content %}
 	<div class="d-flex justify-content-between align-items-start mb-4">
 		<div>
-			<a href="{{ path('v3_erp_connection_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.erp-connection.new.erp.verbindungen.0d32ca0'|trans }}</a>
+			<a href="{{ path('v3_erp_connection_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.erp-connection.new.erp.verbindungen'|trans }}</a>
 			<h1 class="h3 mt-2 mb-1">{{ connection.name }}</h1>
 			{% if connection.active %}
-				<span class="badge bg-success-subtle text-success">{{ 'ui.user.user_input_fields.aktiv.16a766c'|trans }}</span>
+				<span class="badge bg-success-subtle text-success">{{ 'ui.user.user_input_fields.aktiv'|trans }}</span>
 			{% else %}
-				<span class="badge bg-secondary-subtle text-secondary">{{ 'ui.v3.integration.carrier-connection.index.pausiert.09b952c'|trans }}</span>
+				<span class="badge bg-secondary-subtle text-secondary">{{ 'ui.v3.integration.carrier-connection.index.pausiert'|trans }}</span>
 			{% endif %}
 		</div>
 		{% if is_granted('integration.erp_connection.write') %}
 			<form method="post" action="{{ path('v3_erp_connection_status', {connectionId: connection.id}) }}">
 				<input type="hidden" name="_token" value="{{ csrf_token('v3_erp_connection_status_' ~ connection.id) }}">
 				<button class="btn {{ connection.active ? 'btn-outline-warning' : 'btn-success' }}">
-					{{ (connection.active ? 'ui.v3.integration.carrier-connection.show.choice.verbindung.pausieren.5eda8fd' : 'ui.v3.integration.carrier-connection.show.choice.verbindung.aktivieren.b26e634')|trans }}
+					{{ (connection.active ? 'ui.v3.integration.carrier-connection.show.choice.verbindung.pausieren' : 'ui.v3.integration.carrier-connection.show.choice.verbindung.aktivieren')|trans }}
 				</button>
 			</form>
 		{% endif %}
@@ -24,14 +24,14 @@
 	<div class="row g-4">
 		<div class="col-lg-8">
 			<div class="card border-0 shadow-sm h-100">
-				<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.carrier-connection.show.verbindungsdaten.536020e'|trans }}</h2></div>
+				<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.carrier-connection.show.verbindungsdaten'|trans }}</h2></div>
 				<div class="card-body">
 					<dl class="row mb-0">
-						<dt class="col-sm-4">{{ 'ui.v3.integration.carrier-connection.new.https.basis.url.f542dcf'|trans }}</dt>
+						<dt class="col-sm-4">{{ 'ui.v3.integration.carrier-connection.new.https.basis.url'|trans }}</dt>
 						<dd class="col-sm-8"><code>{{ connection.endpoint_url }}</code></dd>
-						<dt class="col-sm-4">{{ 'ui.v3.integration.erp-connection.show.status.endpunkt.4dc6902'|trans }}</dt>
-						<dd class="col-sm-8"><code>{{ connection.endpoint_url }}{{ 'ui.v3.integration.erp-connection.new.status.events.e5ade7b'|trans }}</code></dd>
-						<dt class="col-sm-4">{{ 'ui.v3.integration.carrier-connection.show.credential.referenz.08cfc39'|trans }}</dt>
+						<dt class="col-sm-4">{{ 'ui.v3.integration.erp-connection.show.status.endpunkt'|trans }}</dt>
+						<dd class="col-sm-8"><code>{{ connection.endpoint_url }}{{ 'ui.v3.integration.erp-connection.new.status.events'|trans }}</code></dd>
+						<dt class="col-sm-4">{{ 'ui.v3.integration.carrier-connection.show.credential.referenz'|trans }}</dt>
 						<dd class="col-sm-8"><code>{{ connection.credential_env }}</code></dd>
 					</dl>
 				</div>
@@ -39,17 +39,17 @@
 		</div>
 		<div class="col-lg-4">
 			<div class="card border-0 shadow-sm h-100">
-				<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.carrier-connection.show.audit.fa1703d'|trans }}</h2></div>
+				<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.carrier-connection.show.audit'|trans }}</h2></div>
 				<div class="card-body">
 					<dl class="mb-0">
-						<dt>{{ 'ui.v3.integration.carrier-connection.show.angelegt.6cf261d'|trans }}</dt>
+						<dt>{{ 'ui.v3.integration.carrier-connection.show.angelegt'|trans }}</dt>
 						<dd>{{ connection.created_at }}<br><code>{{ connection.created_by }}</code></dd>
-						<dt>{{ 'ui.v3.integration.carrier-connection.show.letzte.statusanderung.1b0bf93'|trans }}</dt>
+						<dt>{{ 'ui.v3.integration.carrier-connection.show.letzte.statusanderung'|trans }}</dt>
 						<dd class="mb-0">
 							{% if connection.changed_at %}
 								{{ connection.changed_at }}<br><code>{{ connection.changed_by }}</code>
 							{% else %}
-								{{ 'ui.v3.integration.carrier-connection.show.noch.keine.statusanderung.2c409f9'|trans }}
+								{{ 'ui.v3.integration.carrier-connection.show.noch.keine.statusanderung'|trans }}
 							{% endif %}
 						</dd>
 					</dl>
@@ -59,8 +59,8 @@
 	</div>
 
 	<div class="alert alert-info mt-4 mb-0">
-		{{ 'ui.v3.integration.erp-connection.show.ausgehende.statusmeldungen.und.zustellfehler.konnen.in..e7dd2bf'|trans }}
-		<a href="{{ path('v3_outbox_index') }}" class="alert-link">{{ 'ui.v3.integration.erp-connection.show.integrations.outbox.7f5baf2'|trans }}</a>
-		{{ 'ui.v3.integration.erp-connection.show.uberwacht.werden.5e6d544'|trans }}
+		{{ 'ui.v3.integration.erp-connection.show.ausgehende.statusmeldungen.und.zustellfehler.konnen.in.'|trans }}
+		<a href="{{ path('v3_outbox_index') }}" class="alert-link">{{ 'ui.v3.integration.erp-connection.show.integrations.outbox'|trans }}</a>
+		{{ 'ui.v3.integration.erp-connection.show.uberwacht.werden'|trans }}
 	</div>
 {% endblock %}

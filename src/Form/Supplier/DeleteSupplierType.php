@@ -36,13 +36,13 @@ class DeleteSupplierType extends AbstractType
                 ],
             ])
             ->add('delete', ButtonType::class, [
-                'label' => 'form.supplier.deletesuppliertype.label.57def7c0',
+                'label' => 'form.supplier.deletesuppliertype.label.delete',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.supplier.deletesuppliertype.label.2d5d70e9',
+                'label' => 'form.supplier.deletesuppliertype.label.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

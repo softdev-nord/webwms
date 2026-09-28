@@ -108,13 +108,13 @@ class EditSupplierType extends AbstractType
                 ],
             ])
             ->add('save', ButtonType::class, [
-                'label' => 'form.supplier.editsuppliertype.label.f80de8fc',
+                'label' => 'form.supplier.editsuppliertype.label.save_changes',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.supplier.editsuppliertype.label.2d5d70e9',
+                'label' => 'form.supplier.editsuppliertype.label.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

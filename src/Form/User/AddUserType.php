@@ -78,7 +78,7 @@ class AddUserType extends AbstractType
             ])
             ->add('password', RepeatedType::class, [
                 'empty_data' => '',
-                'invalid_message' => 'form.user.addusertype.invalid_message.03087644',
+                'invalid_message' => 'form.user.addusertype.invalid_message.the_password_fields_must_match',
                 'options' => ['attr' => ['class' => 'form-control']],
                 'required' => true,
                 'type' => PasswordType::class,
@@ -102,13 +102,13 @@ class AddUserType extends AbstractType
                 ],
             ])
             ->add('save', ButtonType::class, [
-                'label' => 'form.user.addusertype.label.aa410356',
+                'label' => 'form.user.addusertype.label.create_user',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.user.addusertype.label.2d5d70e9',
+                'label' => 'form.user.addusertype.label.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

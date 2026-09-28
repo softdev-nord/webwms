@@ -2,9 +2,9 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.printing.job-new.druckwarteschlange.5fdae01'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'ui.v3.integration.printing.index.drucker.anlegen.5a57e17'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'ui.v3.integration.printing.printer-new.das.zugangstoken.bleibt.in.der.laufzeitumgebung.webwms..31f965c'|trans }}</p>
+		<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.printing.job-new.druckwarteschlange'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.integration.printing.index.drucker.anlegen'|trans }}</h1>
+		<p class="text-muted mb-0">{{ 'ui.v3.integration.printing.printer-new.das.zugangstoken.bleibt.in.der.laufzeitumgebung.webwms.'|trans }}</p>
 	</div>
 
 	<form method="post" class="card border-0 shadow-sm">
@@ -13,27 +13,27 @@
 			<div class="row g-3">
 				<div class="col-md-6">
 					<label class="form-label" for="name">{{ 'templates.correspondence.name'|trans }}</label>
-					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'ui.v3.integration.printing.printer-new.packplatz.1.zpl.5310438'|trans }}">
+					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'ui.v3.integration.printing.printer-new.packplatz.1.zpl'|trans }}">
 				</div>
 				<div class="col-md-6">
-					<label class="form-label" for="credential_env">{{ 'ui.v3.integration.automation.device-new.credential.umgebungsvariable.9feb046'|trans }}</label>
-					<input class="form-control font-monospace" id="credential_env" name="credential_env" maxlength="101" pattern="[A-Z][A-Z0-9_]{2,100}" required placeholder="{{ 'ui.v3.integration.printing.printer-new.printer.pack.1.token.34663c9'|trans }}">
+					<label class="form-label" for="credential_env">{{ 'ui.v3.integration.automation.device-new.credential.umgebungsvariable'|trans }}</label>
+					<input class="form-control font-monospace" id="credential_env" name="credential_env" maxlength="101" pattern="[A-Z][A-Z0-9_]{2,100}" required placeholder="{{ 'ui.v3.integration.printing.printer-new.printer.pack.1.token'|trans }}">
 				</div>
 				<div class="col-12">
-					<label class="form-label" for="endpoint_url">{{ 'ui.v3.integration.printing.printer-new.https.endpunkt.6ed4fe3'|trans }}</label>
-					<input class="form-control font-monospace" type="url" id="endpoint_url" name="endpoint_url" maxlength="500" pattern="https://.*" required placeholder="{{ 'ui.v3.integration.printing.printer-new.https.print.example.com.printers.pack.1.e48f0c9'|trans }}">
+					<label class="form-label" for="endpoint_url">{{ 'ui.v3.integration.printing.printer-new.https.endpunkt'|trans }}</label>
+					<input class="form-control font-monospace" type="url" id="endpoint_url" name="endpoint_url" maxlength="500" pattern="https://.*" required placeholder="{{ 'ui.v3.integration.printing.printer-new.https.print.example.com.printers.pack.1'|trans }}">
 				</div>
 				<div class="col-12">
 					<div class="form-check form-switch">
 						<input class="form-check-input" type="checkbox" role="switch" id="active" name="active" value="1" checked>
-						<label class="form-check-label" for="active">{{ 'ui.v3.integration.printing.printer-new.drucker.sofort.aktivieren.1407a11'|trans }}</label>
+						<label class="form-check-label" for="active">{{ 'ui.v3.integration.printing.printer-new.drucker.sofort.aktivieren'|trans }}</label>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer d-flex justify-content-end gap-2">
 			<a class="btn btn-light" href="{{ path('v3_printing_index') }}">{{ 'button.cancel'|trans }}</a>
-			<button class="btn btn-primary">{{ 'ui.v3.integration.printing.index.drucker.anlegen.5a57e17'|trans }}</button>
+			<button class="btn btn-primary">{{ 'ui.v3.integration.printing.index.drucker.anlegen'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

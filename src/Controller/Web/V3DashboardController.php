@@ -40,7 +40,7 @@ final class V3DashboardController extends AbstractController
             'warehouses' => $queries->warehouses($user->tenantId()),
             'stock' => $queries->stock($user->tenantId(), $warehouseId, 200, null),
             'selectedWarehouse' => $warehouseId,
-            'page' => 'controller.v3dashboard.page.lagerbestand.0c1c06f',
+            'page' => 'controller.v3dashboard.page.lagerbestand',
         ]);
     }
 

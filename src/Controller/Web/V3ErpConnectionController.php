@@ -34,7 +34,7 @@ final class V3ErpConnectionController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/integration/erp-connection/index.html.twig', [
-            'page' => 'ui.v3.integration.erp-connection.index.erp.verbindungen.76c281d',
+            'page' => 'ui.v3.integration.erp-connection.index.erp.verbindungen',
             'connections' => $this->queries->erpConnections($this->tenantUser()->tenantId()),
         ]);
     }
@@ -57,13 +57,13 @@ final class V3ErpConnectionController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             ));
-            $this->addFlash('success', 'controller.v3erp.connection.flash.die.erp.verbindung.wurde.angelegt.4d54cc8');
+            $this->addFlash('success', 'controller.v3erp.connection.flash.die.erp.verbindung.wurde.angelegt');
 
             return $this->redirectToRoute('v3_erp_connection_show', ['connectionId' => $connectionId]);
         }
 
         return $this->render('v3/integration/erp-connection/new.html.twig', [
-            'page' => 'ui.v3.integration.erp-connection.index.erp.verbindung.anlegen.c77da00',
+            'page' => 'ui.v3.integration.erp-connection.index.erp.verbindung.anlegen',
         ]);
     }
 
@@ -72,7 +72,7 @@ final class V3ErpConnectionController extends AbstractController
     public function show(string $connectionId): Response
     {
         return $this->render('v3/integration/erp-connection/show.html.twig', [
-            'page' => 'controller.v3erp.connection.page.erp.verbindung.d1d52a0',
+            'page' => 'controller.v3erp.connection.page.erp.verbindung',
             'connection' => $this->requiredConnection($connectionId),
         ]);
     }

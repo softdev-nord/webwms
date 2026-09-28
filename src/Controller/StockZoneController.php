@@ -47,7 +47,7 @@ class StockZoneController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'controller.stock.zone.page.lagerzonen.9c5760f',
+                'page' => 'controller.stock.zone.page.lagerzonen',
             ]
         );
     }

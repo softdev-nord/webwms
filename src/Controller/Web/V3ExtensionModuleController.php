@@ -26,7 +26,7 @@ final class V3ExtensionModuleController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/extensions/index.html.twig', [
-            'page' => 'ui.v3.extensions.index.erweiterte.funktionen.1c44775',
+            'page' => 'ui.v3.extensions.index.erweiterte.funktionen',
             'workspace' => $this->service->workspace($this->user()->tenantId()),
         ]);
     }
@@ -72,7 +72,7 @@ final class V3ExtensionModuleController extends AbstractController
             $this->csrf($request, 'v3_extension_configuration');
             $payload = $this->decodeJsonObject((string) $request->request->get('configuration_json'));
             $this->service->saveConfiguration($user->tenantId(), $user->actorId(), $resource, $id, $this->required($request, 'code'), $this->required($request, 'name'), $payload, $request->request->getBoolean('active'), new DateTimeImmutable());
-            $this->addFlash('success', 'controller.v3extension.module.flash.die.konfiguration.wurde.gespeichert.2df92c3');
+            $this->addFlash('success', 'controller.v3extension.module.flash.die.konfiguration.wurde.gespeichert');
 
             return $this->redirectToRoute('v3_extension_index');
         }
@@ -99,7 +99,7 @@ final class V3ExtensionModuleController extends AbstractController
             $this->csrf($request, 'v3_extension_work_item');
             $user = $this->user();
             $id = $this->service->createWorkItem($user->tenantId(), $user->actorId(), $workflow, $this->required($request, 'reference'), $this->decodeJsonObject((string) $request->request->get('payload_json')), new DateTimeImmutable());
-            $this->addFlash('success', 'controller.v3extension.module.flash.der.vorgang.wurde.angelegt.85a614a');
+            $this->addFlash('success', 'controller.v3extension.module.flash.der.vorgang.wurde.angelegt');
 
             return $this->redirectToRoute('v3_extension_work_item_show', ['id' => $id]);
         }
@@ -132,7 +132,7 @@ final class V3ExtensionModuleController extends AbstractController
         $this->csrf($request, 'v3_extension_transition_' . $id);
         $user = $this->user();
         $this->service->transition($user->tenantId(), $user->actorId(), $id, $this->required($request, 'status'), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3administration.flash.der.status.wurde.aktualisiert.fa5e32b');
+        $this->addFlash('success', 'controller.v3administration.flash.der.status.wurde.aktualisiert');
 
         return $this->redirectToRoute('v3_extension_work_item_show', ['id' => $id]);
     }

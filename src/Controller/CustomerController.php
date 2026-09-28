@@ -51,7 +51,7 @@ class CustomerController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'controller.customer.page.kundenubersicht.6d7bbee',
+                'page' => 'controller.customer.page.kundenubersicht',
             ]
         );
     }

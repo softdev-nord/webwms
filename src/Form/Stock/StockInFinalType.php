@@ -106,25 +106,25 @@ class StockInFinalType extends AbstractType
                 ],
             ])
             ->add('stock_in_post_final', SubmitType::class, [
-                'label' => 'form.stock.stockinfinaltype.label.5c9b1924',
+                'label' => 'form.stock.stockinfinaltype.label.post',
                 'attr' => [
                     'class' => 'btn btn-dark bg-gradient waves-effect waves-light',
                 ],
             ])
             ->add('stock_in_correction', ButtonType::class, [
-                'label' => 'form.stock.stockinfinaltype.label.11ef2dba',
+                'label' => 'form.stock.stockinfinaltype.label.correction',
                 'attr' => [
                     'class' => 'btn btn-dark bg-gradient waves-effect waves-light',
                 ],
             ])
             ->add('stock_in_graphical', ButtonType::class, [
-                'label' => 'form.stock.stockinfinaltype.label.0ecf00ff',
+                'label' => 'form.stock.stockinfinaltype.label.graphic',
                 'attr' => [
                     'class' => 'btn btn-dark bg-gradient waves-effect waves-light',
                 ],
             ])
             ->add('back_to_stock_in', ButtonType::class, [
-                'label' => 'form.stock.stockinfinaltype.label.d2ea3f5a',
+                'label' => 'form.stock.stockinfinaltype.label.cancel',
                 'attr' => [
                     'class' => 'btn btn-dark bg-gradient waves-effect waves-light',
                 ],

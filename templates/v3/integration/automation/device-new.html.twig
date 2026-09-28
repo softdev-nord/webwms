@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_automation_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.automation.command-new.lagerlifte.und.paternoster.3ad7b77'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'ui.v3.integration.automation.device-new.automationsgerat.anlegen.d1be100'|trans }}</h1>
+		<a href="{{ path('v3_automation_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.automation.command-new.lagerlifte.und.paternoster'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.integration.automation.device-new.automationsgerat.anlegen'|trans }}</h1>
 	</div>
 
 	<form method="post" class="card border-0 shadow-sm">
@@ -11,40 +11,40 @@
 			<input type="hidden" name="_token" value="{{ csrf_token('v3_automation_device_create') }}">
 			<div class="row g-3">
 				<div class="col-md-3">
-					<label class="form-label" for="code">{{ 'ui.v3.integration.automation.device-new.geratecode.ac128c9'|trans }}</label>
-					<input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" pattern="[A-Z0-9][A-Z0-9_-]{1,39}" required placeholder="{{ 'ui.v3.integration.automation.device-new.lift.01.abe0093'|trans }}">
+					<label class="form-label" for="code">{{ 'ui.v3.integration.automation.device-new.geratecode'|trans }}</label>
+					<input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" pattern="[A-Z0-9][A-Z0-9_-]{1,39}" required placeholder="{{ 'ui.v3.integration.automation.device-new.lift.01'|trans }}">
 				</div>
 				<div class="col-md-5">
 					<label class="form-label" for="name">{{ 'templates.correspondence.name'|trans }}</label>
-					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'ui.v3.integration.automation.device-new.lagerlift.halle.1.d09e935'|trans }}">
+					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'ui.v3.integration.automation.device-new.lagerlift.halle.1'|trans }}">
 				</div>
 				<div class="col-md-4">
-					<label class="form-label" for="device_type">{{ 'ui.v3.integration.automation.device-new.geratetyp.b09e80e'|trans }}</label>
+					<label class="form-label" for="device_type">{{ 'ui.v3.integration.automation.device-new.geratetyp'|trans }}</label>
 					<select class="form-select" id="device_type" name="device_type">
-						<option value="storage_lift">{{ 'ui.v3.integration.automation.device-new.lagerlift.1ca166e'|trans }}</option>
-						<option value="paternoster">{{ 'ui.v3.integration.automation.device-new.paternoster.ac2da63'|trans }}</option>
-						<option value="logimat">{{ 'ui.v3.integration.automation.device-new.logimat.44d7838'|trans }}</option>
+						<option value="storage_lift">{{ 'ui.v3.integration.automation.device-new.lagerlift'|trans }}</option>
+						<option value="paternoster">{{ 'ui.v3.integration.automation.device-new.paternoster'|trans }}</option>
+						<option value="logimat">{{ 'ui.v3.integration.automation.device-new.logimat'|trans }}</option>
 					</select>
 				</div>
 				<div class="col-md-7">
-					<label class="form-label" for="endpoint_url">{{ 'ui.v3.integration.automation.device-new.https.endpoint.3f16a99'|trans }}</label>
-					<input class="form-control" type="url" id="endpoint_url" name="endpoint_url" required placeholder="{{ 'ui.v3.integration.automation.device-new.https.lift.internal.example.commands.5f39462'|trans }}">
+					<label class="form-label" for="endpoint_url">{{ 'ui.v3.integration.automation.device-new.https.endpoint'|trans }}</label>
+					<input class="form-control" type="url" id="endpoint_url" name="endpoint_url" required placeholder="{{ 'ui.v3.integration.automation.device-new.https.lift.internal.example.commands'|trans }}">
 				</div>
 				<div class="col-md-5">
-					<label class="form-label" for="credential_env">{{ 'ui.v3.integration.automation.device-new.credential.umgebungsvariable.9feb046'|trans }}</label>
-					<input class="form-control font-monospace text-uppercase" id="credential_env" name="credential_env" required placeholder="{{ 'ui.v3.integration.automation.device-new.lift.01.token.7cdf331'|trans }}">
+					<label class="form-label" for="credential_env">{{ 'ui.v3.integration.automation.device-new.credential.umgebungsvariable'|trans }}</label>
+					<input class="form-control font-monospace text-uppercase" id="credential_env" name="credential_env" required placeholder="{{ 'ui.v3.integration.automation.device-new.lift.01.token'|trans }}">
 				</div>
 				<div class="col-12">
 					<div class="form-check form-switch">
 						<input class="form-check-input" type="checkbox" id="active" name="active" value="1" checked>
-						<label class="form-check-label" for="active">{{ 'ui.v3.integration.automation.device-new.gerat.sofort.aktivieren.43566d7'|trans }}</label>
+						<label class="form-check-label" for="active">{{ 'ui.v3.integration.automation.device-new.gerat.sofort.aktivieren'|trans }}</label>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer d-flex justify-content-end gap-2">
 			<a class="btn btn-light" href="{{ path('v3_automation_index') }}">{{ 'button.cancel'|trans }}</a>
-			<button class="btn btn-primary">{{ 'ui.v3.integration.automation.device-new.gerat.anlegen.805c743'|trans }}</button>
+			<button class="btn btn-primary">{{ 'ui.v3.integration.automation.device-new.gerat.anlegen'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

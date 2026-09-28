@@ -39,7 +39,7 @@ final class V3PackingController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/packing/index.html.twig', [
-            'page' => 'ui.v3.integration.device.scan.packen.9993811',
+            'page' => 'ui.v3.integration.device.scan.packen',
             'packingOrders' => $this->queries->packingOrders($this->tenantUser()->tenantId()),
         ]);
     }
@@ -66,7 +66,7 @@ final class V3PackingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3packing.flash.der.packauftrag.wurde.angelegt.1015712');
+        $this->addFlash('success', 'controller.v3packing.flash.der.packauftrag.wurde.angelegt');
 
         return $this->redirectToRoute('v3_packing_show', ['packingOrderId' => $packingOrderId]);
     }
@@ -78,7 +78,7 @@ final class V3PackingController extends AbstractController
         $user = $this->tenantUser();
 
         return $this->render('v3/packing/show.html.twig', [
-            'page' => 'ui.v3.picking.show.packauftrag.9bb2ecd',
+            'page' => 'ui.v3.picking.show.packauftrag',
             'packingOrder' => $this->requiredPackingOrder($packingOrderId),
             'packableTasks' => $this->queries->packablePickTasks($user->tenantId(), $packingOrderId),
         ]);
@@ -113,7 +113,7 @@ final class V3PackingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3packing.flash.das.paket.wurde.versiegelt.f13b464');
+        $this->addFlash('success', 'controller.v3packing.flash.das.paket.wurde.versiegelt');
 
         return $this->redirectToRoute('v3_packing_show', ['packingOrderId' => $packingOrderId]);
     }
@@ -131,7 +131,7 @@ final class V3PackingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3packing.flash.der.packauftrag.wurde.abgeschlossen.d225411');
+        $this->addFlash('success', 'controller.v3packing.flash.der.packauftrag.wurde.abgeschlossen');
 
         return $this->redirectToRoute('v3_packing_show', ['packingOrderId' => $packingOrderId]);
     }

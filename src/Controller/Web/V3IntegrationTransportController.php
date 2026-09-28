@@ -29,7 +29,7 @@ final class V3IntegrationTransportController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/integration/transport/index.html.twig', [
-            'page' => 'ui.v3.integration.transport.index.tcp.ip.und.webservice.0d754d9',
+            'page' => 'ui.v3.integration.transport.index.tcp.ip.und.webservice',
             'endpoints' => $this->queries->transportEndpoints($this->user()->tenantId()),
         ]);
     }
@@ -56,12 +56,12 @@ final class V3IntegrationTransportController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3integration.transport.flash.der.transport.endpunkt.wurde.angelegt.e0e009c');
+            $this->addFlash('success', 'controller.v3integration.transport.flash.der.transport.endpunkt.wurde.angelegt');
 
             return $this->redirectToRoute('v3_transport_index');
         }
 
-        return $this->render('v3/integration/transport/new.html.twig', ['page' => 'ui.v3.integration.transport.new.transport.endpunkt.anlegen.9e44881']);
+        return $this->render('v3/integration/transport/new.html.twig', ['page' => 'ui.v3.integration.transport.new.transport.endpunkt.anlegen']);
     }
 
     #[Route('/{endpointId}/status', name: 'status', methods: ['POST'])]

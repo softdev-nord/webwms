@@ -3,11 +3,11 @@
 	<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
 		<div>
 			<h1 class="h3 mb-1">{{ summary.tenant }}</h1>
-			<p class="text-muted mb-0">{{ 'ui.v3.dashboard.index.operativer.uberblick.ac0d459'|trans }}</p>
+			<p class="text-muted mb-0">{{ 'ui.v3.dashboard.index.operativer.uberblick'|trans }}</p>
 		</div>
 
 		{% if is_granted('inventory.stock.read') %}
-			<a class="btn btn-primary" href="{{ path('v3_stock') }}">{{ 'ui.v3.dashboard.index.bestand.offnen.0d700bd'|trans }}</a>
+			<a class="btn btn-primary" href="{{ path('v3_stock') }}">{{ 'ui.v3.dashboard.index.bestand.offnen'|trans }}</a>
 		{% endif %}
 	</div>
 
@@ -26,7 +26,7 @@
 
 	<div class="card border-0 shadow-sm">
 		<div class="card-header">
-			<h2 class="h5 mb-0">{{ 'ui.v3.dashboard.index.fulfillment.3ce37f1'|trans }}</h2>
+			<h2 class="h5 mb-0">{{ 'ui.v3.dashboard.index.fulfillment'|trans }}</h2>
 		</div>
 
 		<div class="card-body">

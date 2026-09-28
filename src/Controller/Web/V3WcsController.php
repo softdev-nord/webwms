@@ -32,7 +32,7 @@ final class V3WcsController extends AbstractController
         $tenantId = $this->user()->tenantId();
 
         return $this->render('v3/integration/wcs/index.html.twig', [
-            'page' => 'ui.v3.integration.wcs.index.wcs.mfr.und.fordertechnik.0796567',
+            'page' => 'ui.v3.integration.wcs.index.wcs.mfr.und.fordertechnik',
             'connections' => $this->queries->wcsConnections($tenantId),
             'commands' => $this->queries->machineCommands($tenantId, 50),
             'statuses' => $this->queries->machineStatuses($tenantId, 50),
@@ -47,12 +47,12 @@ final class V3WcsController extends AbstractController
             $this->assertCsrf($request, 'v3_wcs_connection_create');
             $user = $this->user();
             $this->wcs->registerConnection($user->tenantId(), $this->required($request, 'code'), $this->required($request, 'name'), $this->required($request, 'system_type'), $this->required($request, 'endpoint_url'), $this->required($request, 'credential_env'), $request->request->getBoolean('active'), $user->actorId(), new DateTimeImmutable());
-            $this->addFlash('success', 'controller.v3wcs.flash.die.wcs.verbindung.wurde.angelegt.013f60a');
+            $this->addFlash('success', 'controller.v3wcs.flash.die.wcs.verbindung.wurde.angelegt');
 
             return $this->redirectToRoute('v3_wcs_index');
         }
 
-        return $this->render('v3/integration/wcs/connection-new.html.twig', ['page' => 'ui.v3.integration.wcs.connection-new.wcs.verbindung.anlegen.58e1602']);
+        return $this->render('v3/integration/wcs/connection-new.html.twig', ['page' => 'ui.v3.integration.wcs.connection-new.wcs.verbindung.anlegen']);
     }
 
     #[Route('/connections/{connectionId}/status', name: 'connection_status', methods: ['POST'])]
@@ -79,13 +79,13 @@ final class V3WcsController extends AbstractController
         if ($request->isMethod('POST')) {
             $this->assertCsrf($request, 'v3_wcs_command_create');
             $command = $this->wcs->queueCommand($user->tenantId(), $this->required($request, 'connection_id'), $this->required($request, 'command_type'), $this->required($request, 'source'), $this->required($request, 'destination'), $this->required($request, 'load_unit'), $this->required($request, 'request_id'), $user->actorId(), new DateTimeImmutable());
-            $this->addFlash('success', 'controller.v3wcs.flash.der.maschinenbefehl.wurde.idempotent.eingereiht.4ca9825');
+            $this->addFlash('success', 'controller.v3wcs.flash.der.maschinenbefehl.wurde.idempotent.eingereiht');
 
             return $this->redirectToRoute('v3_wcs_command_show', ['commandId' => $command->id]);
         }
 
         return $this->render('v3/integration/wcs/command-new.html.twig', [
-            'page' => 'ui.v3.integration.wcs.command-new.maschinenbefehl.anlegen.3850248',
+            'page' => 'ui.v3.integration.wcs.command-new.maschinenbefehl.anlegen',
             'connections' => array_values(array_filter($this->queries->wcsConnections($user->tenantId()), static fn (array $connection): bool => (bool) ($connection['active'] ?? false))),
             'requestId' => Uuid::v7()->toRfc4122(),
         ]);
@@ -100,7 +100,7 @@ final class V3WcsController extends AbstractController
             throw $this->createNotFoundException('Der Maschinenbefehl wurde nicht gefunden.');
         }
 
-        return $this->render('v3/integration/wcs/command-show.html.twig', ['page' => 'ui.v3.integration.wcs.command-show.maschinenbefehl.4c31388', 'command' => $command]);
+        return $this->render('v3/integration/wcs/command-show.html.twig', ['page' => 'ui.v3.integration.wcs.command-show.maschinenbefehl', 'command' => $command]);
     }
 
     #[Route('/commands/{commandId}/status', name: 'command_status', methods: ['POST'])]
@@ -110,7 +110,7 @@ final class V3WcsController extends AbstractController
         $this->assertCsrf($request, 'v3_wcs_command_status_' . $commandId);
         $user = $this->user();
         $this->wcs->transitionCommand($user->tenantId(), $commandId, $this->required($request, 'status'), $this->optional($request, 'message'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3wcs.flash.der.befehlsstatus.wurde.verarbeitet.54697b5');
+        $this->addFlash('success', 'controller.v3wcs.flash.der.befehlsstatus.wurde.verarbeitet');
 
         return $this->redirectToRoute('v3_wcs_command_show', ['commandId' => $commandId]);
     }
@@ -123,13 +123,13 @@ final class V3WcsController extends AbstractController
         if ($request->isMethod('POST')) {
             $this->assertCsrf($request, 'v3_wcs_status_create');
             $this->wcs->recordStatus($user->tenantId(), $this->required($request, 'connection_id'), $this->optional($request, 'command_id'), $this->required($request, 'machine_code'), $this->required($request, 'status'), $this->optional($request, 'message'), $this->required($request, 'external_event_id'), $user->actorId(), new DateTimeImmutable());
-            $this->addFlash('success', 'controller.v3wcs.flash.der.maschinenstatus.wurde.idempotent.erfasst.3a445b0');
+            $this->addFlash('success', 'controller.v3wcs.flash.der.maschinenstatus.wurde.idempotent.erfasst');
 
             return $this->redirectToRoute('v3_wcs_index');
         }
 
         return $this->render('v3/integration/wcs/status-new.html.twig', [
-            'page' => 'ui.v3.integration.wcs.status-new.maschinenstatus.erfassen.71c0460',
+            'page' => 'ui.v3.integration.wcs.status-new.maschinenstatus.erfassen',
             'connections' => array_values(array_filter($this->queries->wcsConnections($user->tenantId()), static fn (array $connection): bool => (bool) ($connection['active'] ?? false))),
             'commands' => $this->queries->machineCommands($user->tenantId(), 100),
             'eventId' => Uuid::v7()->toRfc4122(),

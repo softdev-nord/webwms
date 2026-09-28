@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.printing.job-new.druckwarteschlange.5fdae01'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'ui.v3.inbound.control.druckauftrag.anlegen.fae70fa'|trans }}</h1>
+		<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.printing.job-new.druckwarteschlange'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.inbound.control.druckauftrag.anlegen'|trans }}</h1>
 	</div>
 	<form method="post" class="card border-0 shadow-sm">
 		<div class="card-body">
@@ -11,7 +11,7 @@
 			<input type="hidden" name="request_id" value="{{ requestId }}">
 			<div class="row g-3">
 				<div class="col-md-6">
-					<label class="form-label" for="printer_id">{{ 'ui.configuration.index.drucker.4b3d759'|trans }}</label>
+					<label class="form-label" for="printer_id">{{ 'ui.configuration.index.drucker'|trans }}</label>
 					<select class="form-select" id="printer_id" name="printer_id" required>
 						{% for printer in printers %}
 							<option value="{{ printer.id }}">{{ printer.name }}</option>
@@ -19,36 +19,36 @@
 					</select>
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="document_type">{{ 'ui.v3.integration.printing.job-new.dokumenttyp.33078b7'|trans }}</label>
+					<label class="form-label" for="document_type">{{ 'ui.v3.integration.printing.job-new.dokumenttyp'|trans }}</label>
 					<select class="form-select" id="document_type" name="document_type">
-						<option value="carrier_label">{{ 'ui.v3.integration.printing.job-new.carrier.label.16e5b18'|trans }}</option>
-						<option value="document">{{ 'ui.v3.integration.printing.index.dokument.2ccbe16'|trans }}</option>
-						<option value="loading_manifest">{{ 'ui.v3.integration.printing.job-new.lademanifest.0009ebe'|trans }}</option>
+						<option value="carrier_label">{{ 'ui.v3.integration.printing.job-new.carrier.label'|trans }}</option>
+						<option value="document">{{ 'ui.v3.integration.printing.index.dokument'|trans }}</option>
+						<option value="loading_manifest">{{ 'ui.v3.integration.printing.job-new.lademanifest'|trans }}</option>
 					</select>
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="format">{{ 'ui.v3.integration.printing.index.format.041a5de'|trans }}</label>
+					<label class="form-label" for="format">{{ 'ui.v3.integration.printing.index.format'|trans }}</label>
 					<select class="form-select" id="format" name="format">
-						<option value="ZPL">{{ 'ui.v3.integration.printing.job-new.zpl.059035d'|trans }}</option>
-						<option value="PDF">{{ 'ui.v3.integration.printing.job-new.pdf.d613d88'|trans }}</option>
+						<option value="ZPL">{{ 'ui.v3.integration.printing.job-new.zpl'|trans }}</option>
+						<option value="PDF">{{ 'ui.v3.integration.printing.job-new.pdf'|trans }}</option>
 					</select>
 				</div>
 				<div class="col-md-9">
-					<label class="form-label" for="document_reference">{{ 'ui.v3.integration.printing.job-new.dokumentreferenz.68691ea'|trans }}</label>
+					<label class="form-label" for="document_reference">{{ 'ui.v3.integration.printing.job-new.dokumentreferenz'|trans }}</label>
 					<input class="form-control" id="document_reference" name="document_reference" maxlength="500" required>
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="copies">{{ 'ui.v3.integration.printing.job-new.exemplare.8be8e1b'|trans }}</label>
+					<label class="form-label" for="copies">{{ 'ui.v3.integration.printing.job-new.exemplare'|trans }}</label>
 					<input class="form-control" type="number" id="copies" name="copies" min="1" max="99" value="1" required>
 				</div>
 			</div>
 			{% if printers is empty %}
-				<div class="alert alert-warning mt-3 mb-0">{{ 'ui.v3.integration.printing.job-new.es.ist.kein.aktiver.drucker.vorhanden.4f90bde'|trans }}</div>
+				<div class="alert alert-warning mt-3 mb-0">{{ 'ui.v3.integration.printing.job-new.es.ist.kein.aktiver.drucker.vorhanden'|trans }}</div>
 			{% endif %}
 		</div>
 		<div class="card-footer d-flex justify-content-end gap-2">
 			<a class="btn btn-light" href="{{ path('v3_printing_index') }}">{{ 'button.cancel'|trans }}</a>
-			<button class="btn btn-primary" {% if printers is empty %}disabled{% endif %}>{{ 'ui.v3.inbound.control.druckauftrag.anlegen.fae70fa'|trans }}</button>
+			<button class="btn btn-primary" {% if printers is empty %}disabled{% endif %}>{{ 'ui.v3.inbound.control.druckauftrag.anlegen'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

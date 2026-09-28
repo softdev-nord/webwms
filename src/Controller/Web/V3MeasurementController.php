@@ -32,7 +32,7 @@ final class V3MeasurementController extends AbstractController
         $tenantId = $this->user()->tenantId();
 
         return $this->render('v3/integration/measurement/index.html.twig', [
-            'page' => 'ui.v3.integration.measurement.index.waagen.und.volumenmessung.0be53d9',
+            'page' => 'ui.v3.integration.measurement.index.waagen.und.volumenmessung',
             'devices' => $this->queries->measurementDevices($tenantId),
             'measurements' => $this->queries->measurements($tenantId, 50),
         ]);
@@ -54,12 +54,12 @@ final class V3MeasurementController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3measurement.flash.das.messgerat.wurde.angelegt.2ec4380');
+            $this->addFlash('success', 'controller.v3measurement.flash.das.messgerat.wurde.angelegt');
 
             return $this->redirectToRoute('v3_measurement_index');
         }
 
-        return $this->render('v3/integration/measurement/device-new.html.twig', ['page' => 'ui.v3.integration.measurement.device-new.messgerat.anlegen.a9db00d']);
+        return $this->render('v3/integration/measurement/device-new.html.twig', ['page' => 'ui.v3.integration.measurement.device-new.messgerat.anlegen']);
     }
 
     #[Route('/devices/{deviceId}/status', name: 'device_status', methods: ['POST'])]
@@ -106,13 +106,13 @@ final class V3MeasurementController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3measurement.flash.die.messung.wurde.idempotent.verarbeitet.d77522d');
+            $this->addFlash('success', 'controller.v3measurement.flash.die.messung.wurde.idempotent.verarbeitet');
 
             return $this->redirectToRoute('v3_measurement_show', ['measurementId' => $measurement->id]);
         }
 
         return $this->render('v3/integration/measurement/capture.html.twig', [
-            'page' => 'ui.v3.integration.measurement.capture.messung.erfassen.88567ba',
+            'page' => 'ui.v3.integration.measurement.capture.messung.erfassen',
             'devices' => array_values(array_filter(
                 $this->queries->measurementDevices($user->tenantId()),
                 static fn (array $device): bool => (bool) ($device['active'] ?? false),
@@ -133,7 +133,7 @@ final class V3MeasurementController extends AbstractController
         }
 
         return $this->render('v3/integration/measurement/show.html.twig', [
-            'page' => 'ui.v3.integration.measurement.show.messung.e225338',
+            'page' => 'ui.v3.integration.measurement.show.messung',
             'measurement' => $measurement,
         ]);
     }

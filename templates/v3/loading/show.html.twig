@@ -3,9 +3,9 @@
 {% block webwms_content %}
 	<div class="d-flex flex-wrap justify-content-between gap-3 mb-4">
 		<div>
-			<a href="{{ path('v3_loading_index') }}" class="text-decoration-none">{{ 'ui.v3.loading.new.verladung.91e2451'|trans }}</a>
+			<a href="{{ path('v3_loading_index') }}" class="text-decoration-none">{{ 'ui.v3.loading.new.verladung'|trans }}</a>
 			<h1 class="h3 mt-2 mb-1">{{ manifest.code }}</h1>
-			<p class="text-muted mb-0">{{ 'ui.v3.loading.index.tour.cd9e8f3'|trans }} {{ manifest.tour_reference }} {{ 'ui.v3.loading.show.fahrzeug.457d517'|trans }} {{ manifest.vehicle_reference }}</p>
+			<p class="text-muted mb-0">{{ 'ui.v3.loading.index.tour'|trans }} {{ manifest.tour_reference }} {{ 'ui.v3.loading.show.fahrzeug'|trans }} {{ manifest.vehicle_reference }}</p>
 		</div>
 		<span class="badge bg-secondary align-self-start fs-6">{{ manifest.status }}</span>
 	</div>
@@ -19,17 +19,17 @@
 
 	<div class="card border-0 shadow-sm mb-4">
 		<div class="card-header d-flex justify-content-between align-items-center">
-			<h2 class="h5 mb-0">{{ 'ui.v3.loading.show.ladeliste.6a0866e'|trans }}</h2>
-			<span>{{ loadedShipments }}/{{ manifest.shipments|length }} {{ 'ui.v3.loading.show.verladen.7792dc0'|trans }}</span>
+			<h2 class="h5 mb-0">{{ 'ui.v3.loading.show.ladeliste'|trans }}</h2>
+			<span>{{ loadedShipments }}/{{ manifest.shipments|length }} {{ 'ui.v3.loading.show.verladen'|trans }}</span>
 		</div>
 		<div class="table-responsive">
 			<table class="table align-middle mb-0">
 				<thead>
 					<tr>
-						<th>{{ 'ui.v3.integration.device.scan.sendung.fdd2800'|trans }}</th>
-						<th>{{ 'ui.v3.administration.workspace.carrier.91b0ba2'|trans }}</th>
-						<th>{{ 'ui.v3.loading.show.tracking.e81a151'|trans }}</th>
-						<th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th>
+						<th>{{ 'ui.v3.integration.device.scan.sendung'|trans }}</th>
+						<th>{{ 'ui.v3.administration.workspace.carrier'|trans }}</th>
+						<th>{{ 'ui.v3.loading.show.tracking'|trans }}</th>
+						<th>{{ 'ui.transport_request.index.status'|trans }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -48,7 +48,7 @@
 								{% if shipment.status == 'pending' and manifest.status in ['open', 'loading'] and is_granted('fulfillment.loading.execute') %}
 									<form method="post" action="{{ path('v3_loading_confirm', {manifestId: manifest.id, shipmentId: shipment.shipment_id}) }}">
 										<input type="hidden" name="_token" value="{{ csrf_token('v3_loading_confirm_' ~ shipment.shipment_id) }}">
-										<button class="btn btn-sm btn-primary">{{ 'ui.v3.loading.show.verladung.bestatigen.c3fe091'|trans }}</button>
+										<button class="btn btn-sm btn-primary">{{ 'ui.v3.loading.show.verladung.bestatigen'|trans }}</button>
 									</form>
 								{% elseif shipment.loaded_at %}
 									<span class="text-muted">{{ shipment.loaded_at }}</span>
@@ -64,7 +64,7 @@
 	{% if manifest.status in ['open', 'loading'] and loadedShipments == manifest.shipments|length and is_granted('fulfillment.loading.execute') %}
 		<form method="post" action="{{ path('v3_loading_complete', {manifestId: manifest.id}) }}">
 			<input type="hidden" name="_token" value="{{ csrf_token('v3_loading_complete_' ~ manifest.id) }}">
-			<button class="btn btn-success">{{ 'ui.v3.loading.show.verladung.abschliessen.3ef00e2'|trans }}</button>
+			<button class="btn btn-success">{{ 'ui.v3.loading.show.verladung.abschliessen'|trans }}</button>
 		</form>
 	{% endif %}
 {% endblock %}

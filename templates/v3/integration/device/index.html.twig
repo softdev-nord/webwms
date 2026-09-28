@@ -3,29 +3,29 @@
 {% block webwms_content %}
 	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
 		<div>
-			<h1 class="h3 mb-1">{{ 'ui.v3.integration.device.index.scanner.und.mde.b8b15f3'|trans }}</h1>
-			<p class="text-muted mb-0">{{ 'ui.v3.integration.device.index.erfassungsgerate.verwalten.und.prozessbezogene.scans.na.abdc2ff'|trans }}</p>
+			<h1 class="h3 mb-1">{{ 'ui.v3.integration.device.index.scanner.und.mde'|trans }}</h1>
+			<p class="text-muted mb-0">{{ 'ui.v3.integration.device.index.erfassungsgerate.verwalten.und.prozessbezogene.scans.na'|trans }}</p>
 		</div>
 		<div class="d-flex gap-2">
 			{% if is_granted('integration.device.write') %}
-				<a class="btn btn-outline-primary" href="{{ path('v3_device_new') }}">{{ 'ui.v3.integration.automation.device-new.gerat.anlegen.805c743'|trans }}</a>
+				<a class="btn btn-outline-primary" href="{{ path('v3_device_new') }}">{{ 'ui.v3.integration.automation.device-new.gerat.anlegen'|trans }}</a>
 			{% endif %}
 			{% if is_granted('integration.device.scan') %}
-				<a class="btn btn-primary" href="{{ path('v3_device_scan') }}">{{ 'ui.v3.integration.device.index.scan.erfassen.29cd2e3'|trans }}</a>
+				<a class="btn btn-primary" href="{{ path('v3_device_scan') }}">{{ 'ui.v3.integration.device.index.scan.erfassen'|trans }}</a>
 			{% endif %}
 		</div>
 	</div>
 
 	<div class="card border-0 shadow-sm mb-4">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.device.index.erfassungsgerate.997d0e3'|trans }}</h2></div>
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.device.index.erfassungsgerate'|trans }}</h2></div>
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
 				<thead>
 					<tr>
-						<th>{{ 'ui.v3.administration.role_new.code.adac693'|trans }}</th>
+						<th>{{ 'ui.v3.administration.role_new.code'|trans }}</th>
 						<th>{{ 'templates.correspondence.name'|trans }}</th>
-						<th>{{ 'ui.v3.administration.workspace.typ.edcaf9a'|trans }}</th>
-						<th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th>
+						<th>{{ 'ui.v3.administration.workspace.typ'|trans }}</th>
+						<th>{{ 'ui.transport_request.index.status'|trans }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -35,14 +35,14 @@
 							<td><code>{{ device.code }}</code></td>
 							<td class="fw-semibold">{{ device.name }}</td>
 							<td>{{ device.device_type }}</td>
-							<td><span class="badge bg-{{ device.active ? 'success' : 'secondary' }}-subtle text-{{ device.active ? 'success' : 'secondary' }}">{{ (device.active ? 'ui.user.user_input_fields.aktiv.16a766c' : 'ui.v3.integration.carrier-connection.index.pausiert.09b952c')|trans }}</span></td>
+							<td><span class="badge bg-{{ device.active ? 'success' : 'secondary' }}-subtle text-{{ device.active ? 'success' : 'secondary' }}">{{ (device.active ? 'ui.user.user_input_fields.aktiv' : 'ui.v3.integration.carrier-connection.index.pausiert')|trans }}</span></td>
 							<td class="text-end">
-								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_show', {deviceId: device.id}) }}">{{ 'ui.v3.inbound.index.offnen.fc718f8'|trans }}</a>
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_show', {deviceId: device.id}) }}">{{ 'ui.v3.inbound.index.offnen'|trans }}</a>
 							</td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="5" class="text-center text-muted py-4">{{ 'ui.v3.integration.device.index.noch.keine.erfassungsgerate.vorhanden.c87686f'|trans }}</td>
+							<td colspan="5" class="text-center text-muted py-4">{{ 'ui.v3.integration.device.index.noch.keine.erfassungsgerate.vorhanden'|trans }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -51,17 +51,17 @@
 	</div>
 
 	<div class="card border-0 shadow-sm">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.device.index.letzte.scanereignisse.6d0064f'|trans }}</h2></div>
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.device.index.letzte.scanereignisse'|trans }}</h2></div>
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
 				<thead>
 					<tr>
-						<th>{{ 'ui.v3.integration.automation.command-new.gerat.945d2bc'|trans }}</th>
-						<th>{{ 'ui.v3.integration.device.index.prozess.beb029c'|trans }}</th>
-						<th>{{ 'ui.v3.integration.device.index.scantyp.6f85cf4'|trans }}</th>
-						<th>{{ 'ui.v3.integration.device.index.wert.9d3fb5b'|trans }}</th>
-						<th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th>
-						<th>{{ 'ui.v3.administration.workspace.zeitpunkt.e2f9e93'|trans }}</th>
+						<th>{{ 'ui.v3.integration.automation.command-new.gerat'|trans }}</th>
+						<th>{{ 'ui.v3.integration.device.index.prozess'|trans }}</th>
+						<th>{{ 'ui.v3.integration.device.index.scantyp'|trans }}</th>
+						<th>{{ 'ui.v3.integration.device.index.wert'|trans }}</th>
+						<th>{{ 'ui.transport_request.index.status'|trans }}</th>
+						<th>{{ 'ui.v3.administration.workspace.zeitpunkt'|trans }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -75,12 +75,12 @@
 							<td><span class="badge bg-{{ event.status == 'accepted' ? 'success' : 'danger' }}-subtle text-{{ event.status == 'accepted' ? 'success' : 'danger' }}">{{ event.status }}</span></td>
 							<td>{{ event.scanned_at }}</td>
 							<td class="text-end">
-								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_scan_show', {eventId: event.id}) }}">{{ 'ui.v3.inbound.index.offnen.fc718f8'|trans }}</a>
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_scan_show', {eventId: event.id}) }}">{{ 'ui.v3.inbound.index.offnen'|trans }}</a>
 							</td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="7" class="text-center text-muted py-5">{{ 'ui.v3.integration.device.index.noch.keine.scanereignisse.vorhanden.5c9066b'|trans }}</td>
+							<td colspan="7" class="text-center text-muted py-5">{{ 'ui.v3.integration.device.index.noch.keine.scanereignisse.vorhanden'|trans }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

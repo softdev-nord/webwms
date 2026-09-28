@@ -10,7 +10,7 @@
                           href="#systeminformation"
                           aria-expanded="true"
                           aria-controls="systeminformation">
-                    </span>{{ 'ui.configuration.index.systeminformationen.50e1465'|trans }}
+                    </span>{{ 'ui.configuration.index.systeminformationen'|trans }}
                 </legend>
                 <div id="systeminformation" class="panel-collapse collapse show" role="tabpanel">
                     <div class="panel-body">
@@ -20,12 +20,12 @@
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-xxl-12">
-                                                <span class="mb-3 lh-1 fs-26 fw-bold">{{ 'ui.configuration.tabs.systeminformation.software.9ad0522'|trans }}</span>
-                                                <h5>{{ 'ui.configuration.tabs.systeminformation.system.bc0792d'|trans }}</h5>
+                                                <span class="mb-3 lh-1 fs-26 fw-bold">{{ 'ui.configuration.tabs.systeminformation.software.software_value'|trans }}</span>
+                                                <h5>{{ 'ui.configuration.tabs.systeminformation.system'|trans }}</h5>
                                                 <ul>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.webwms.version.b4233fb'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.webwms.version'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.software.webWms_version }}
@@ -35,7 +35,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.webwms.revision.10b5ed0'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.webwms.revision'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.software.webWms_version_number }}
@@ -45,7 +45,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.symfony.version.e9b0aa2'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.symfony.version'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.software.webWms_symfony_version }}
@@ -55,11 +55,11 @@
                                                     </li>
                                                 </ul>
 
-                                                <h5>{{ 'ui.configuration.tabs.systeminformation.datenbank.f1b3ad5'|trans }}</h5>
+                                                <h5>{{ 'ui.configuration.tabs.systeminformation.datenbank'|trans }}</h5>
                                                 <ul>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.treiber.c602913'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.treiber'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.sql.driver }}
@@ -69,7 +69,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.server.version.35a47a4'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.server.version'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.sql.server_version }}
@@ -79,7 +79,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.datenbank.name.23b2a1a'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.datenbank.name'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.sql.database_name }}
@@ -89,11 +89,11 @@
                                                     </li>
                                                 </ul>
 
-                                                <h5>{{ 'ui.configuration.tabs.systeminformation.webserver.08ec43f'|trans }}</h5>
+                                                <h5>{{ 'ui.configuration.tabs.systeminformation.webserver'|trans }}</h5>
                                                 <ul>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.software.76522ad'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.software.software_label'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.server.software }}
@@ -103,7 +103,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.host.95ff86a'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.host'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.server.name }} ({{ systemInformation.server.addr }}:{{ systemInformation.server.port }})
@@ -113,11 +113,11 @@
                                                     </li>
                                                 </ul>
 
-                                                <h5>{{ 'ui.configuration.tabs.systeminformation.umgebung.7e68b54'|trans }}</h5>
+                                                <h5>{{ 'ui.configuration.tabs.systeminformation.umgebung'|trans }}</h5>
                                                 <ul>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.username.17dfb03'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.username'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.env.username }}
@@ -127,7 +127,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.home.directory.e99ecb3'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.home.directory'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.env.home_dir }}
@@ -137,7 +137,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.document.root.0dc15d3'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.document.root'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.env.document_root }}
@@ -147,7 +147,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.script.owner.group.d63f3a9'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.script.owner.group'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.env.script_owner }}:{{ systemInformation.env.script_group }}
@@ -167,12 +167,12 @@
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-xxl-12">
-                                                <span class="mb-3 lh-1 fs-26 fw-bold">{{ 'ui.configuration.tabs.systeminformation.php.7daf403'|trans }}</span>
-                                                <h5>{{ 'ui.configuration.tabs.systeminformation.generell.f858711'|trans }}</h5>
+                                                <span class="mb-3 lh-1 fs-26 fw-bold">{{ 'ui.configuration.tabs.systeminformation.php'|trans }}</span>
+                                                <h5>{{ 'ui.configuration.tabs.systeminformation.generell'|trans }}</h5>
                                                 <ul>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.version.9f49127'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.version'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.php.general.version }}
@@ -182,7 +182,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.version.id.ab1e81b'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.version.id'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.php.general.version_id }}
@@ -192,7 +192,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.major.version.a8ca7a6'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.major.version'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.php.general.version_major }}
@@ -202,7 +202,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.minor.version.1bae8d4'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.minor.version'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.php.general.version_minor }}
@@ -212,7 +212,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.release.version.dd6b9d4'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.release.version'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.php.general.version_release }}
@@ -222,7 +222,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.server.api.207064a'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.server.api'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.php.general.server_api }}
@@ -232,7 +232,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.binary.pfad.0148934'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.binary.pfad'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.php.general.binary_dir }}
@@ -242,7 +242,7 @@
                                                     </li>
                                                     <li style="list-style-type: circle;">
                                                         <div class="display-flex">
-                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.php.ini.pfad.13a1721'|trans }}</div>
+                                                            <div class="with-40">{{ 'ui.configuration.tabs.systeminformation.php.ini.pfad'|trans }}</div>
                                                             <div>
                                                                 <code>
                                                                     {{ systemInformation.php.general.php_ini_dir }}
@@ -261,7 +261,7 @@
                                                     <li><code>{{ systemInformation.php.settings.4.setting }} = {{ systemInformation.php.settings.4.raw_value }}</code></li>
                                                 </ul>
 
-                                                <h5>{{ 'ui.configuration.tabs.systeminformation.erweiterungen.d58efa5'|trans }}</h5>
+                                                <h5>{{ 'ui.configuration.tabs.systeminformation.erweiterungen'|trans }}</h5>
                                                 <p class="padding-top-bottom-20">
                                                     {% for key, value in systemInformation.php.extensions.loaded %}
                                                         <code>{{ key }},</code>

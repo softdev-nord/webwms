@@ -3,11 +3,11 @@
 {% block webwms_content %}
 	<div class="d-flex justify-content-between align-items-center mb-4">
 		<div>
-			<h1 class="h3 mb-1">{{ 'ui.v3.integration.erp-connection.index.erp.verbindungen.76c281d'|trans }}</h1>
-			<p class="text-muted mb-0">{{ 'ui.v3.integration.erp-connection.index.statusmeldungen.sicher.an.angebundene.erp.systeme.ubert.29b2e99'|trans }}</p>
+			<h1 class="h3 mb-1">{{ 'ui.v3.integration.erp-connection.index.erp.verbindungen'|trans }}</h1>
+			<p class="text-muted mb-0">{{ 'ui.v3.integration.erp-connection.index.statusmeldungen.sicher.an.angebundene.erp.systeme.ubert'|trans }}</p>
 		</div>
 		{% if is_granted('integration.erp_connection.write') %}
-			<a class="btn btn-primary" href="{{ path('v3_erp_connection_new') }}">{{ 'ui.v3.integration.erp-connection.index.erp.verbindung.anlegen.c77da00'|trans }}</a>
+			<a class="btn btn-primary" href="{{ path('v3_erp_connection_new') }}">{{ 'ui.v3.integration.erp-connection.index.erp.verbindung.anlegen'|trans }}</a>
 		{% endif %}
 	</div>
 
@@ -17,10 +17,10 @@
 				<thead>
 					<tr>
 						<th>{{ 'templates.correspondence.name'|trans }}</th>
-						<th>{{ 'ui.v3.integration.carrier-connection.index.endpunkt.cbb6ce0'|trans }}</th>
-						<th>{{ 'ui.v3.integration.carrier-connection.show.credential.referenz.08cfc39'|trans }}</th>
-						<th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th>
-						<th>{{ 'ui.v3.extensions.configuration_index.geandert.01de835'|trans }}</th>
+						<th>{{ 'ui.v3.integration.carrier-connection.index.endpunkt'|trans }}</th>
+						<th>{{ 'ui.v3.integration.carrier-connection.show.credential.referenz'|trans }}</th>
+						<th>{{ 'ui.transport_request.index.status'|trans }}</th>
+						<th>{{ 'ui.v3.extensions.configuration_index.geandert'|trans }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -32,19 +32,19 @@
 							<td><code>{{ connection.credential_env }}</code></td>
 							<td>
 								{% if connection.active %}
-									<span class="badge bg-success-subtle text-success">{{ 'ui.user.user_input_fields.aktiv.16a766c'|trans }}</span>
+									<span class="badge bg-success-subtle text-success">{{ 'ui.user.user_input_fields.aktiv'|trans }}</span>
 								{% else %}
-									<span class="badge bg-secondary-subtle text-secondary">{{ 'ui.v3.integration.carrier-connection.index.pausiert.09b952c'|trans }}</span>
+									<span class="badge bg-secondary-subtle text-secondary">{{ 'ui.v3.integration.carrier-connection.index.pausiert'|trans }}</span>
 								{% endif %}
 							</td>
 							<td>{{ connection.changed_at|default(connection.created_at) }}</td>
 							<td class="text-end">
-								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_erp_connection_show', {connectionId: connection.id}) }}">{{ 'ui.v3.inbound.index.offnen.fc718f8'|trans }}</a>
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_erp_connection_show', {connectionId: connection.id}) }}">{{ 'ui.v3.inbound.index.offnen'|trans }}</a>
 							</td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="6" class="text-center text-muted py-5">{{ 'ui.v3.integration.erp-connection.index.noch.keine.erp.verbindungen.vorhanden.9e281d1'|trans }}</td>
+							<td colspan="6" class="text-center text-muted py-5">{{ 'ui.v3.integration.erp-connection.index.noch.keine.erp.verbindungen.vorhanden'|trans }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

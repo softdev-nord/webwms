@@ -12,7 +12,7 @@
                             <div class="card-body">
                                 {% block webwms_stock_occupancy_graphical_overview_table %}
                                     <div class="row">
-                                        <span class="text-truncate" style="float: left; padding-top: 8px;padding-right: 10px; width: auto">{{ 'ui.stock.stock_occupancy_graphical.lagerbereich.auswahlen.7fca5b2'|trans }}</span>
+                                        <span class="text-truncate" style="float: left; padding-top: 8px;padding-right: 10px; width: auto">{{ 'ui.stock.stock_occupancy_graphical.lagerbereich.auswahlen'|trans }}</span>
                                         <select id="selectStock" class="form-select col-md-1 stock-select" style="width: 10%">
                                             {% for oneStockSelected in stockSelect|sort %}
                                                 {% set selected = '' %}
@@ -51,7 +51,7 @@
                                                                                             <div class="stock-details-content-inner-desc">
                                                                                                 {% if startFb < fb %}
                                                                                                     <div>
-                                                                                                        <span class="text-truncate">{{ 'ui.stock.stock_occupancy_graphical.ebene.1265171'|trans }} {{ fb }}</span>
+                                                                                                        <span class="text-truncate">{{ 'ui.stock.stock_occupancy_graphical.ebene'|trans }} {{ fb }}</span>
                                                                                                     </div>
                                                                                                 {% endif %}
                                                                                             </div>
@@ -82,7 +82,7 @@
                                                                                             <div class="stock-details-content-inner-desc block">
                                                                                                 {% if startSp < sp %}
                                                                                                     <div>
-                                                                                                        <span class="text-truncate" style="text-align: center;">{{ 'ui.modal.put_into_storage.stellplatz.f0a25a2'|trans }} {{ sp }}</span>
+                                                                                                        <span class="text-truncate" style="text-align: center;">{{ 'ui.modal.put_into_storage.stellplatz'|trans }} {{ sp }}</span>
                                                                                                     </div>
                                                                                                 {% endif %}
                                                                                             </div>

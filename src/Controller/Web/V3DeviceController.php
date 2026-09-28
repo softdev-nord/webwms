@@ -32,7 +32,7 @@ final class V3DeviceController extends AbstractController
         $tenantId = $this->tenantUser()->tenantId();
 
         return $this->render('v3/integration/device/index.html.twig', [
-            'page' => 'ui.v3.integration.device.index.scanner.und.mde.b8b15f3',
+            'page' => 'ui.v3.integration.device.index.scanner.und.mde',
             'devices' => $this->queries->devices($tenantId),
             'scanEvents' => $this->queries->scanEvents($tenantId, 50),
         ]);
@@ -54,12 +54,12 @@ final class V3DeviceController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3device.flash.das.erfassungsgerat.wurde.angelegt.23d3165');
+            $this->addFlash('success', 'controller.v3device.flash.das.erfassungsgerat.wurde.angelegt');
 
             return $this->redirectToRoute('v3_device_show', ['deviceId' => $device->id]);
         }
 
-        return $this->render('v3/integration/device/new.html.twig', ['page' => 'ui.v3.integration.device.new.erfassungsgerat.anlegen.fc512bf']);
+        return $this->render('v3/integration/device/new.html.twig', ['page' => 'ui.v3.integration.device.new.erfassungsgerat.anlegen']);
     }
 
     #[Route('/scan', name: 'scan', methods: ['GET', 'POST'])]
@@ -82,13 +82,13 @@ final class V3DeviceController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3device.flash.der.scan.wurde.idempotent.erfasst.3798f76');
+            $this->addFlash('success', 'controller.v3device.flash.der.scan.wurde.idempotent.erfasst');
 
             return $this->redirectToRoute('v3_device_scan_show', ['eventId' => $event->id]);
         }
 
         return $this->render('v3/integration/device/scan.html.twig', [
-            'page' => 'ui.v3.integration.device.index.scan.erfassen.29cd2e3',
+            'page' => 'ui.v3.integration.device.index.scan.erfassen',
             'devices' => array_values(array_filter(
                 $this->queries->devices($user->tenantId()),
                 static fn (array $device): bool => (bool) ($device['active'] ?? false),
@@ -107,7 +107,7 @@ final class V3DeviceController extends AbstractController
         }
 
         return $this->render('v3/integration/device/scan-show.html.twig', [
-            'page' => 'ui.v3.integration.device.scan-show.scanereignis.f839208',
+            'page' => 'ui.v3.integration.device.scan-show.scanereignis',
             'event' => $event,
         ]);
     }
@@ -117,7 +117,7 @@ final class V3DeviceController extends AbstractController
     public function show(string $deviceId): Response
     {
         return $this->render('v3/integration/device/show.html.twig', [
-            'page' => 'controller.v3device.page.erfassungsgerat.eeadce0',
+            'page' => 'controller.v3device.page.erfassungsgerat',
             'device' => $this->requiredDevice($deviceId),
             'scanEvents' => array_values(array_filter(
                 $this->queries->scanEvents($this->tenantUser()->tenantId()),

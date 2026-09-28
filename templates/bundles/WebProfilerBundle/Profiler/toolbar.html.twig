@@ -22,15 +22,15 @@
         {% if full_stack %}
             <div class="sf-full-stack sf-toolbar-block sf-toolbar-block-full-stack sf-toolbar-status-red sf-toolbar-block-right">
                 <div class="sf-toolbar-icon">
-                    <span class="sf-toolbar-value">{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.using.symfony.symfony.is.not.supported.0b83c38'|trans }}</span>
+                    <span class="sf-toolbar-value">{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.using.symfony.symfony.is.not.supported'|trans }}</span>
                 </div>
                 <div class="sf-toolbar-info sf-toolbar-status-red">
-                    <p>{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.this.project.is.using.symfony.via.the.symfony.symfony.p.595df43'|trans }}</p>
-                    <p>{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.this.is.not.supported.anymore.since.symfony.4.0.9707b78'|trans }}</p>
-                    <p>{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.even.if.it.seems.to.work.well.it.has.some.important.lim.d38583d'|trans }}</p>
-                    <p>{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.using.this.package.also.makes.your.project.slower.81e5d47'|trans }}</p>
+                    <p>{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.this.project.is.using.symfony.via.the.symfony.symfony.p'|trans }}</p>
+                    <p>{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.this.is.not.supported.anymore.since.symfony.4.0'|trans }}</p>
+                    <p>{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.even.if.it.seems.to.work.well.it.has.some.important.lim'|trans }}</p>
+                    <p>{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.using.this.package.also.makes.your.project.slower'|trans }}</p>
 
-                    <strong>{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.please.stop.using.this.package.and.replace.it.with.indi.dc15420'|trans }}</strong>
+                    <strong>{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.please.stop.using.this.package.and.replace.it.with.indi'|trans }}</strong>
                 </div>
                 <div></div>
             </div>
@@ -38,20 +38,20 @@
 
         <div class="sf-toolbar-block-dump sf-toolbar-status-red sf-toolbar-block-right" style="padding: 8px;">
             <div class="sf-toolbar-icon">
-                <span class="sf-toolbar-label" style="font-size: 14px; font-weight: bold">{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.environment.f3d7eb2'|trans }}  </span>
+                <span class="sf-toolbar-label" style="font-size: 14px; font-weight: bold">{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.environment'|trans }}  </span>
                 <span class="sf-toolbar-value sf-toolbar-info-piece-additional"
                       style="font-size: 14px; font-weight: bold; padding-left: 5px; color: {% if app.environment == 'dev' %}red{% else %}orange{% endif %}"
-                > {% if app.environment == 'dev' %}{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.development.4c17aad'|trans }}{% else %}{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.staging.c9fb656'|trans }}{% endif %}</span>
+                > {% if app.environment == 'dev' %}{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.development'|trans }}{% else %}{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.staging'|trans }}{% endif %}</span>
             </div>
         </div>
 
         <div class="sf-toolbar-block-dump sf-toolbar-logo">
-            <span class="text-first-small">{{ 'ui.base.web.ca84d13'|trans }}</span><span class="text-last-small">{{ 'ui.base.wms.89aa6e8'|trans }}</span>
+            <span class="text-first-small">{{ 'ui.base.web'|trans }}</span><span class="text-last-small">{{ 'ui.base.wms'|trans }}</span>
         </div>
 
-    <button class="sf-toolbar-toggle-button" type="button" id="sfToolbarToggleButton-{{ token }}" accesskey="D" aria-expanded="true" aria-controls="sfToolbarMainContent-{{ token }}" aria-label="{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.toggle.symfony.toolbar.349a092'|trans }}">
-        <i class="sf-toolbar-icon-opened" title="{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.close.toolbar.78d470e'|trans }}">{{ source('@WebProfiler/Icon/close.svg') }}</i>
-        <i class="sf-toolbar-icon-closed" title="{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.open.toolbar.5b5bbc8'|trans }}">{{ source('@WebProfiler/Icon/symfony.svg') }}</i>
+    <button class="sf-toolbar-toggle-button" type="button" id="sfToolbarToggleButton-{{ token }}" accesskey="D" aria-expanded="true" aria-controls="sfToolbarMainContent-{{ token }}" aria-label="{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.toggle.symfony.toolbar'|trans }}">
+        <i class="sf-toolbar-icon-opened" title="{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.close.toolbar'|trans }}">{{ source('@WebProfiler/Icon/close.svg') }}</i>
+        <i class="sf-toolbar-icon-closed" title="{{ 'ui.bundles.WebProfilerBundle.Profiler.toolbar.open.toolbar'|trans }}">{{ source('@WebProfiler/Icon/symfony.svg') }}</i>
     </button>
 </div>
 <!-- END of Symfony Web Debug Toolbar own template -->

@@ -47,7 +47,7 @@ final class V3InboundController extends AbstractController
         $tenantId = $this->user()->tenantId();
 
         return $this->render('v3/inbound/planned.html.twig', [
-            'page' => 'ui.v3.inbound.planned.geplanter.wareneingang.fac8053',
+            'page' => 'ui.v3.inbound.planned.geplanter.wareneingang',
             'worklist' => $this->queries->plannedInboundWorklist($tenantId),
             'locations' => $this->queries->receivingLocations($tenantId),
         ]);
@@ -69,7 +69,7 @@ final class V3InboundController extends AbstractController
             $request->request->getInt('actual_quantity'),
             $this->optional($request, 'discrepancy_reason'),
         ));
-        $this->addFlash('success', 'controller.v3inbound.flash.die.avisierte.position.wurde.angenommen.und.an.die.qs.u.9611c9e');
+        $this->addFlash('success', 'controller.v3inbound.flash.die.avisierte.position.wurde.angenommen.und.an.die.qs.u');
 
         return $this->redirectToRoute('v3_inbound_planned');
     }
@@ -91,7 +91,7 @@ final class V3InboundController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3inbound.flash.die.abweichung.wurde.entschieden.6634a28');
+        $this->addFlash('success', 'controller.v3inbound.flash.die.abweichung.wurde.entschieden');
 
         return $this->redirectToRoute('v3_inbound_planned');
     }
@@ -120,7 +120,7 @@ final class V3InboundController extends AbstractController
             $this->optional($request, 'serial_number'),
             ($expiresAt = $this->optional($request, 'expires_at')) === null ? null : new DateTimeImmutable($expiresAt),
         ));
-        $this->addFlash('success', 'controller.v3inbound.flash.die.qs.prufung.wurde.abgeschlossen.und.der.bestand.gebu.69eea0b');
+        $this->addFlash('success', 'controller.v3inbound.flash.die.qs.prufung.wurde.abgeschlossen.und.der.bestand.gebu');
 
         return $this->redirectToRoute('v3_inbound_planned');
     }
@@ -138,7 +138,7 @@ final class V3InboundController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3inbound.flash.der.einlagerungsauftrag.wurde.erzeugt.136d8a8');
+        $this->addFlash('success', 'controller.v3inbound.flash.der.einlagerungsauftrag.wurde.erzeugt');
 
         return $this->redirectToRoute('v3_inbound_planned');
     }
@@ -158,7 +158,7 @@ final class V3InboundController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3inbound.flash.die.einlagerung.wurde.bestatigt.und.atomar.umgebucht.9d222a7');
+        $this->addFlash('success', 'controller.v3inbound.flash.die.einlagerung.wurde.bestatigt.und.atomar.umgebucht');
 
         return $this->redirectToRoute('v3_inbound_planned');
     }
@@ -168,7 +168,7 @@ final class V3InboundController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/inbound/index.html.twig', [
-            'page' => 'ui.v3.inbound.control.wareneingang.ed46dae',
+            'page' => 'ui.v3.inbound.control.wareneingang',
             'receipts' => $this->queries->unplannedReceipts($this->user()->tenantId()),
         ]);
     }
@@ -197,13 +197,13 @@ final class V3InboundController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3inbound.flash.der.ungeplante.wareneingang.wurde.angenommen.ada3176');
+            $this->addFlash('success', 'controller.v3inbound.flash.der.ungeplante.wareneingang.wurde.angenommen');
 
             return $this->redirectToRoute('v3_inbound_show', ['receiptId' => $receipt->id()->value()]);
         }
 
         return $this->render('v3/inbound/new.html.twig', [
-            'page' => 'controller.v3inbound.page.ungeplanter.wareneingang.d7bb7dc',
+            'page' => 'controller.v3inbound.page.ungeplanter.wareneingang',
             'products' => $this->queries->products($user->tenantId(), 500, null),
             'locations' => $this->queries->receivingLocations($user->tenantId()),
         ]);
@@ -218,7 +218,7 @@ final class V3InboundController extends AbstractController
             throw $this->createNotFoundException('Der Wareneingang wurde nicht gefunden.');
         }
 
-        return $this->render('v3/inbound/show.html.twig', ['page' => 'ui.v3.inbound.control.wareneingang.ed46dae', 'receipt' => $receipt]);
+        return $this->render('v3/inbound/show.html.twig', ['page' => 'ui.v3.inbound.control.wareneingang', 'receipt' => $receipt]);
     }
 
     #[Route('/unplanned/{receiptId}/book', name: 'book', methods: ['POST'])]
@@ -228,7 +228,7 @@ final class V3InboundController extends AbstractController
         $this->assertCsrf($request, 'v3_inbound_book_' . $receiptId);
         $user = $this->user();
         $this->receipts->book($user->tenantId(), $receiptId, $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3inbound.flash.der.wareneingang.wurde.atomar.in.den.bestand.gebucht.51fc1cf');
+        $this->addFlash('success', 'controller.v3inbound.flash.der.wareneingang.wurde.atomar.in.den.bestand.gebucht');
 
         return $this->redirectToRoute('v3_inbound_show', ['receiptId' => $receiptId]);
     }

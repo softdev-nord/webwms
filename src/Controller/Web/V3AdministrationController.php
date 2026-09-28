@@ -38,7 +38,7 @@ final class V3AdministrationController extends AbstractController
     {
         return $this->render('v3/administration/workspace.html.twig', [
             'workspace' => $this->workspace->workspace($this->tenantUser()->tenantId()),
-            'page' => 'controller.v3administration.page.mandant.konfiguration.a4551ca',
+            'page' => 'controller.v3administration.page.mandant.konfiguration',
         ]);
     }
 
@@ -49,7 +49,7 @@ final class V3AdministrationController extends AbstractController
         $this->assertCsrf($request, 'v3_administration_workspace_create_' . $resource);
         $user = $this->tenantUser();
         $this->workspace->create($user->tenantId(), $user->actorId(), $resource, $request->request->all(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3administration.flash.die.konfiguration.wurde.angelegt.1fe7aa6');
+        $this->addFlash('success', 'controller.v3administration.flash.die.konfiguration.wurde.angelegt');
 
         return $this->redirectToRoute('v3_administration_workspace');
     }
@@ -61,7 +61,7 @@ final class V3AdministrationController extends AbstractController
         $this->assertCsrf($request, 'v3_administration_workspace_status_' . $resource . '_' . $id);
         $user = $this->tenantUser();
         $this->workspace->setEnabled($user->tenantId(), $user->actorId(), $resource, $id, $this->required($request, 'enabled') === '1', new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3administration.flash.der.status.wurde.aktualisiert.fa5e32b');
+        $this->addFlash('success', 'controller.v3administration.flash.der.status.wurde.aktualisiert');
 
         return $this->redirectToRoute('v3_administration_workspace');
     }
@@ -73,7 +73,7 @@ final class V3AdministrationController extends AbstractController
         $this->assertCsrf($request, 'v3_administration_process_configure');
         $user = $this->tenantUser();
         $this->workspace->configureProcess($user->tenantId(), $user->actorId(), $this->required($request, 'process_key'), $this->required($request, 'name'), $request->request->getBoolean('enabled'), (string) $request->request->get('configuration', '{}'), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3administration.flash.die.prozesskonfiguration.wurde.gespeichert.bed733e');
+        $this->addFlash('success', 'controller.v3administration.flash.die.prozesskonfiguration.wurde.gespeichert');
 
         return $this->redirectToRoute('v3_administration_workspace');
     }
@@ -89,7 +89,7 @@ final class V3AdministrationController extends AbstractController
             $values[$field] = $this->required($request, $field);
         }
         $this->workspace->configureDeployment($user->tenantId(), $user->actorId(), $values, new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3administration.flash.das.betriebsprofil.wurde.gespeichert.1f35165');
+        $this->addFlash('success', 'controller.v3administration.flash.das.betriebsprofil.wurde.gespeichert');
 
         return $this->redirectToRoute('v3_administration_workspace');
     }
@@ -120,7 +120,7 @@ final class V3AdministrationController extends AbstractController
             'users' => $user->hasPermission('administration.user.read') ? $this->administration->users($user->tenantId()) : [],
             'roles' => $user->hasPermission('administration.role.read') ? $this->administration->roles($user->tenantId()) : [],
             'apiClients' => $user->hasPermission('administration.api_client.read') ? $this->administration->apiClients($user->tenantId()) : [],
-            'page' => 'ui.v3.administration.index.administration.b8be3d1',
+            'page' => 'ui.v3.administration.index.administration',
         ]);
     }
 
@@ -148,26 +148,26 @@ final class V3AdministrationController extends AbstractController
             }
             $this->administration->setUserRoles($current->tenantId(), $current->actorId(), $userId, $this->stringList($request, 'role_ids'), new DateTimeImmutable());
             $this->administration->setUserActive($current->tenantId(), $userId, $active, new DateTimeImmutable());
-            $this->addFlash('success', 'controller.v3administration.flash.der.benutzer.wurde.aktualisiert.96e018d');
+            $this->addFlash('success', 'controller.v3administration.flash.der.benutzer.wurde.aktualisiert');
 
             return $this->redirectToRoute('v3_administration_users');
         }
 
-        return $this->render('v3/administration/user_edit.html.twig', ['user' => $users[0], 'roles' => $this->administration->roles($current->tenantId()), 'page' => 'ui.v3.administration.user_edit.benutzer.bearbeiten.2ea88c3']);
+        return $this->render('v3/administration/user_edit.html.twig', ['user' => $users[0], 'roles' => $this->administration->roles($current->tenantId()), 'page' => 'ui.v3.administration.user_edit.benutzer.bearbeiten']);
     }
 
     #[Route('/roles', name: 'roles', methods: ['GET'])]
     #[IsGranted('administration.role.read')]
     public function roles(): Response
     {
-        return $this->render('v3/administration/roles.html.twig', ['roles' => $this->administration->roles($this->tenantUser()->tenantId()), 'page' => 'ui.user.index.rollen.af85c41']);
+        return $this->render('v3/administration/roles.html.twig', ['roles' => $this->administration->roles($this->tenantUser()->tenantId()), 'page' => 'ui.user.index.rollen']);
     }
 
     #[Route('/api-clients', name: 'api_clients', methods: ['GET'])]
     #[IsGranted('administration.api_client.read')]
     public function apiClients(): Response
     {
-        return $this->render('v3/administration/api_clients.html.twig', ['clients' => $this->administration->apiClients($this->tenantUser()->tenantId()), 'page' => 'ui.v3.administration.api_clients.api.clients.757312e']);
+        return $this->render('v3/administration/api_clients.html.twig', ['clients' => $this->administration->apiClients($this->tenantUser()->tenantId()), 'page' => 'ui.v3.administration.api_clients.api.clients']);
     }
 
     #[Route('/api-clients/{clientId}/edit', name: 'api_client_edit', methods: ['GET', 'POST'])]
@@ -182,12 +182,12 @@ final class V3AdministrationController extends AbstractController
         if ($request->isMethod('POST')) {
             $this->assertCsrf($request, 'v3_administration_api_client_edit_' . $clientId);
             $this->administration->setApiClientActive($user->tenantId(), $clientId, $request->request->getBoolean('active'));
-            $this->addFlash('success', 'controller.v3administration.flash.der.api.client.wurde.aktualisiert.71f1d9b');
+            $this->addFlash('success', 'controller.v3administration.flash.der.api.client.wurde.aktualisiert');
 
             return $this->redirectToRoute('v3_administration_api_clients');
         }
 
-        return $this->render('v3/administration/api_client_edit.html.twig', ['client' => $clients[0], 'page' => 'ui.v3.administration.api_client_edit.api.client.bearbeiten.a357066']);
+        return $this->render('v3/administration/api_client_edit.html.twig', ['client' => $clients[0], 'page' => 'ui.v3.administration.api_client_edit.api.client.bearbeiten']);
     }
 
     #[Route('/roles/new', name: 'role_new', methods: ['GET', 'POST'])]
@@ -205,14 +205,14 @@ final class V3AdministrationController extends AbstractController
                 $permissions,
                 new DateTimeImmutable(),
             ));
-            $this->addFlash('success', 'controller.v3administration.flash.die.rolle.wurde.angelegt.d1bd805');
+            $this->addFlash('success', 'controller.v3administration.flash.die.rolle.wurde.angelegt');
 
             return $this->redirectToRoute('v3_administration_roles');
         }
 
         return $this->render('v3/administration/role_new.html.twig', [
             'permissions' => V3PermissionCatalog::ALL,
-            'page' => 'controller.v3administration.page.neue.rolle.1fca361',
+            'page' => 'controller.v3administration.page.neue.rolle',
         ]);
     }
 
@@ -232,14 +232,14 @@ final class V3AdministrationController extends AbstractController
                 $this->stringList($request, 'role_ids'),
                 new DateTimeImmutable(),
             ));
-            $this->addFlash('success', 'controller.v3administration.flash.der.benutzer.wurde.angelegt.65f9a51');
+            $this->addFlash('success', 'controller.v3administration.flash.der.benutzer.wurde.angelegt');
 
             return $this->redirectToRoute('v3_administration_users');
         }
 
         return $this->render('v3/administration/user_new.html.twig', [
             'roles' => $this->administration->roles($user->tenantId()),
-            'page' => 'controller.v3administration.page.neuer.benutzer.93017c9',
+            'page' => 'controller.v3administration.page.neuer.benutzer',
         ]);
     }
 
@@ -254,7 +254,7 @@ final class V3AdministrationController extends AbstractController
             throw new \InvalidArgumentException('Der aktuell angemeldete Benutzer kann sich nicht selbst deaktivieren.');
         }
         $this->administration->setUserActive($user->tenantId(), $userId, $active, new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3administration.flash.der.benutzerstatus.wurde.aktualisiert.1f58e58');
+        $this->addFlash('success', 'controller.v3administration.flash.der.benutzerstatus.wurde.aktualisiert');
 
         return $this->redirectToRoute('v3_administration_index');
     }
@@ -266,7 +266,7 @@ final class V3AdministrationController extends AbstractController
         $this->assertCsrf($request, 'v3_administration_user_roles_' . $userId);
         $user = $this->tenantUser();
         $this->administration->setUserRoles($user->tenantId(), $user->actorId(), $userId, $this->stringList($request, 'role_ids'), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3administration.flash.die.benutzerrollen.wurden.aktualisiert.4733c98');
+        $this->addFlash('success', 'controller.v3administration.flash.die.benutzerrollen.wurden.aktualisiert');
 
         return $this->redirectToRoute('v3_administration_index');
     }
@@ -291,12 +291,12 @@ final class V3AdministrationController extends AbstractController
         if ($request->isMethod('POST')) {
             $this->assertCsrf($request, 'v3_administration_role_edit_' . $roleId);
             $this->administration->updateRole($user->tenantId(), $user->actorId(), $roleId, $this->required($request, 'name'), $this->stringList($request, 'permissions'), new DateTimeImmutable());
-            $this->addFlash('success', 'controller.v3administration.flash.die.rolle.wurde.aktualisiert.dfb1716');
+            $this->addFlash('success', 'controller.v3administration.flash.die.rolle.wurde.aktualisiert');
 
             return $this->redirectToRoute('v3_administration_roles');
         }
 
-        return $this->render('v3/administration/role_edit.html.twig', ['role' => $role, 'permissions' => V3PermissionCatalog::ALL, 'page' => 'controller.v3administration.page.rolle.bearbeiten.5d87f63']);
+        return $this->render('v3/administration/role_edit.html.twig', ['role' => $role, 'permissions' => V3PermissionCatalog::ALL, 'page' => 'controller.v3administration.page.rolle.bearbeiten']);
     }
 
     #[Route('/api-clients/new', name: 'api_client_new', methods: ['GET', 'POST'])]
@@ -321,7 +321,7 @@ final class V3AdministrationController extends AbstractController
         return $this->render('v3/administration/api_client_new.html.twig', [
             'users' => $this->administration->users($user->tenantId()),
             'permissions' => V3PermissionCatalog::ALL,
-            'page' => 'controller.v3administration.page.api.client.72ba3c4',
+            'page' => 'controller.v3administration.page.api.client',
         ]);
     }
 
@@ -335,7 +335,7 @@ final class V3AdministrationController extends AbstractController
         }
 
         return $this->render('v3/administration/api_client_credential.html.twig', [
-            'page' => 'controller.v3administration.page.api.zugangsdaten.6c0666e',
+            'page' => 'controller.v3administration.page.api.zugangsdaten',
             'credential' => $credential,
         ]);
     }
@@ -350,7 +350,7 @@ final class V3AdministrationController extends AbstractController
             $clientId,
             $this->required($request, 'active') === '1',
         );
-        $this->addFlash('success', 'controller.v3administration.flash.der.api.client.status.wurde.aktualisiert.3bace7d');
+        $this->addFlash('success', 'controller.v3administration.flash.der.api.client.status.wurde.aktualisiert');
 
         return $this->redirectToRoute('v3_administration_index');
     }

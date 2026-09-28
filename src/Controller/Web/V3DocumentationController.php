@@ -20,7 +20,7 @@ final class V3DocumentationController extends AbstractController
         $query = trim((string) $request->query->get('q'));
 
         return $this->render('v3/documentation/index.html.twig', [
-            'page' => 'controller.v3documentation.page.hilfe.dokumentation.cc24a86',
+            'page' => 'controller.v3documentation.page.hilfe.dokumentation',
             'groups' => $documentation->groupedDocuments($query),
             'query' => $query,
         ]);

@@ -32,7 +32,7 @@ final class V3PrintingController extends AbstractController
         $tenantId = $this->tenantUser()->tenantId();
 
         return $this->render('v3/integration/printing/index.html.twig', [
-            'page' => 'ui.v3.integration.printing.index.druckwarteschlange.ada9325',
+            'page' => 'ui.v3.integration.printing.index.druckwarteschlange',
             'printers' => $this->queries->printers($tenantId),
             'jobs' => $this->queries->printJobs($tenantId),
         ]);
@@ -54,13 +54,13 @@ final class V3PrintingController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3printing.flash.der.drucker.wurde.angelegt.796ac54');
+            $this->addFlash('success', 'controller.v3printing.flash.der.drucker.wurde.angelegt');
 
             return $this->redirectToRoute('v3_printing_printer_show', ['printerId' => $printer->id]);
         }
 
         return $this->render('v3/integration/printing/printer-new.html.twig', [
-            'page' => 'ui.v3.integration.printing.index.drucker.anlegen.5a57e17',
+            'page' => 'ui.v3.integration.printing.index.drucker.anlegen',
         ]);
     }
 
@@ -71,7 +71,7 @@ final class V3PrintingController extends AbstractController
         $tenantId = $this->tenantUser()->tenantId();
 
         return $this->render('v3/integration/printing/printer-show.html.twig', [
-            'page' => 'ui.configuration.index.drucker.4b3d759',
+            'page' => 'ui.configuration.index.drucker',
             'printer' => $this->requiredPrinter($printerId),
             'jobs' => array_values(array_filter(
                 $this->queries->printJobs($tenantId),
@@ -120,13 +120,13 @@ final class V3PrintingController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3printing.flash.der.druckauftrag.wurde.in.die.warteschlange.gestellt.34b20d2');
+            $this->addFlash('success', 'controller.v3printing.flash.der.druckauftrag.wurde.in.die.warteschlange.gestellt');
 
             return $this->redirectToRoute('v3_printing_job_show', ['jobId' => $job->id]);
         }
 
         return $this->render('v3/integration/printing/job-new.html.twig', [
-            'page' => 'ui.v3.inbound.control.druckauftrag.anlegen.fae70fa',
+            'page' => 'ui.v3.inbound.control.druckauftrag.anlegen',
             'printers' => array_values(array_filter(
                 $this->queries->printers($user->tenantId()),
                 static fn (array $printer): bool => (bool) ($printer['active'] ?? false),
@@ -140,7 +140,7 @@ final class V3PrintingController extends AbstractController
     public function showJob(string $jobId): Response
     {
         return $this->render('v3/integration/printing/job-show.html.twig', [
-            'page' => 'ui.v3.integration.printing.job-show.druckauftrag.1ef8bb3',
+            'page' => 'ui.v3.integration.printing.job-show.druckauftrag',
             'job' => $this->requiredJob($jobId),
         ]);
     }
@@ -157,7 +157,7 @@ final class V3PrintingController extends AbstractController
 
         try {
             $this->gateway->execute($this->tenantUser()->tenantId(), $jobId, new DateTimeImmutable());
-            $this->addFlash('success', 'controller.v3printing.flash.der.druckauftrag.wurde.erfolgreich.ausgefuhrt.56d0564');
+            $this->addFlash('success', 'controller.v3printing.flash.der.druckauftrag.wurde.erfolgreich.ausgefuhrt');
         } catch (\Throwable $exception) {
             $message = trim($exception->getMessage());
             $this->addFlash('danger', $message === ''

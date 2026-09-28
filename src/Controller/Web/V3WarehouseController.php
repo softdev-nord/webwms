@@ -37,7 +37,7 @@ final class V3WarehouseController extends AbstractController
     public function topology(): Response
     {
         return $this->render('v3/inventory/topology.html.twig', [
-            'page' => 'ui.v3.inventory.topology.lagertopologie.c1d7277',
+            'page' => 'ui.v3.inventory.topology.lagertopologie',
             'topology' => $this->queries->warehouseTopology($this->user()->tenantId()),
         ]);
     }
@@ -47,7 +47,7 @@ final class V3WarehouseController extends AbstractController
     public function newTopologyEntry(string $resource): Response
     {
         return $this->render('v3/inventory/topology_form.html.twig', [
-            'page' => 'controller.v3warehouse.page.topologieeintrag.anlegen.0cf5621', 'resource' => $resource, 'entry' => null,
+            'page' => 'controller.v3warehouse.page.topologieeintrag.anlegen', 'resource' => $resource, 'entry' => null,
             'topology' => $this->queries->warehouseTopology($this->user()->tenantId()),
         ]);
     }
@@ -59,7 +59,7 @@ final class V3WarehouseController extends AbstractController
         $user = $this->user();
 
         return $this->render('v3/inventory/topology_form.html.twig', [
-            'page' => 'controller.v3warehouse.page.topologieeintrag.bearbeiten.da31129', 'resource' => $resource,
+            'page' => 'controller.v3warehouse.page.topologieeintrag.bearbeiten', 'resource' => $resource,
             'entry' => $this->topology->topologyEntry($user->tenantId(), $resource, $id),
             'topology' => $this->queries->warehouseTopology($user->tenantId()),
         ]);
@@ -72,7 +72,7 @@ final class V3WarehouseController extends AbstractController
         $this->csrf($request, 'v3_inventory_topology_update_' . $resource . '_' . $id);
         $user = $this->user();
         $this->topology->updateTopologyEntry($user->tenantId(), $user->actorId(), $resource, $id, $request->request->all(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3warehouse.flash.der.topologieeintrag.wurde.aktualisiert.9d8b189');
+        $this->addFlash('success', 'controller.v3warehouse.flash.der.topologieeintrag.wurde.aktualisiert');
 
         return $this->redirectToRoute('v3_inventory_topology');
     }
@@ -84,7 +84,7 @@ final class V3WarehouseController extends AbstractController
         $this->csrf($request, 'v3_inventory_site_create');
         $user = $this->user();
         $this->topology->createSite(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'code'), $this->required($request, 'name'), $this->required($request, 'timezone'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3warehouse.flash.der.standort.wurde.angelegt.f400c5e');
+        $this->addFlash('success', 'controller.v3warehouse.flash.der.standort.wurde.angelegt');
 
         return $this->redirectToRoute('v3_inventory_topology');
     }
@@ -96,7 +96,7 @@ final class V3WarehouseController extends AbstractController
         $this->csrf($request, 'v3_inventory_warehouse_create');
         $user = $this->user();
         $this->topology->createWarehouse(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'site_id'), $this->required($request, 'code'), $this->required($request, 'name'), $this->required($request, 'warehouse_type'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3warehouse.flash.das.lager.wurde.angelegt.3ce0470');
+        $this->addFlash('success', 'controller.v3warehouse.flash.das.lager.wurde.angelegt');
 
         return $this->redirectToRoute('v3_inventory_topology');
     }
@@ -108,7 +108,7 @@ final class V3WarehouseController extends AbstractController
         $this->csrf($request, 'v3_inventory_area_create');
         $user = $this->user();
         $this->topology->createArea(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'warehouse_id'), $this->required($request, 'code'), $this->required($request, 'name'), $this->required($request, 'area_type'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3warehouse.flash.der.lagerbereich.wurde.angelegt.e13182e');
+        $this->addFlash('success', 'controller.v3warehouse.flash.der.lagerbereich.wurde.angelegt');
 
         return $this->redirectToRoute('v3_inventory_topology');
     }
@@ -120,7 +120,7 @@ final class V3WarehouseController extends AbstractController
         $this->csrf($request, 'v3_inventory_aisle_create');
         $user = $this->user();
         $this->topology->createAisle(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'area_id'), $this->required($request, 'code'), $this->required($request, 'name'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3warehouse.flash.der.lagergang.wurde.angelegt.39b27f9');
+        $this->addFlash('success', 'controller.v3warehouse.flash.der.lagergang.wurde.angelegt');
 
         return $this->redirectToRoute('v3_inventory_topology');
     }
@@ -132,7 +132,7 @@ final class V3WarehouseController extends AbstractController
         $this->csrf($request, 'v3_inventory_bin_create');
         $user = $this->user();
         $this->topology->createBin(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'warehouse_id'), $this->required($request, 'area_id'), $this->required($request, 'aisle_id'), $this->required($request, 'code'), $this->required($request, 'level_code'), $this->required($request, 'bin_code'), $this->required($request, 'location_type'), $request->request->getInt('capacity_quantity'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3warehouse.flash.der.lagerplatz.wurde.angelegt.dec7d51');
+        $this->addFlash('success', 'controller.v3warehouse.flash.der.lagerplatz.wurde.angelegt');
 
         return $this->redirectToRoute('v3_inventory_topology');
     }
@@ -142,7 +142,7 @@ final class V3WarehouseController extends AbstractController
     public function overview(): Response
     {
         return $this->render('v3/inventory/overview.html.twig', [
-            'page' => 'ui.v3.inventory.overview.lagerubersicht.9fbcfb6',
+            'page' => 'ui.v3.inventory.overview.lagerubersicht',
             'overview' => $this->queries->warehouseOverview($this->user()->tenantId()),
         ]);
     }
@@ -159,7 +159,7 @@ final class V3WarehouseController extends AbstractController
         }
 
         return $this->render('v3/inventory/occupancy.html.twig', [
-            'page' => 'ui.v3.inventory.occupancy.grafische.lagebelegung.682107d',
+            'page' => 'ui.v3.inventory.occupancy.grafische.lagebelegung',
             'warehouses' => $warehouses,
             'locations' => $this->queries->warehouseOccupancy($user->tenantId(), $warehouseId),
             'selectedWarehouse' => $warehouseId,
@@ -176,7 +176,7 @@ final class V3WarehouseController extends AbstractController
         $movementType = $this->query($request, 'movement_type');
 
         return $this->render('v3/inventory/movements.html.twig', [
-            'page' => 'ui.v3.inventory.movements.bewegungshistorie.dd7b58d',
+            'page' => 'ui.v3.inventory.movements.bewegungshistorie',
             'movements' => $this->queries->stockMovements($user->tenantId(), new StockMovementCriteria($productId, $locationId, null, $movementType), 500, null),
             'products' => $this->queries->products($user->tenantId(), 500, null),
             'locations' => $this->queries->receivingLocations($user->tenantId()),
@@ -193,7 +193,7 @@ final class V3WarehouseController extends AbstractController
         $value = $this->query($request, 'value');
 
         return $this->render('v3/inventory/traceability.html.twig', [
-            'page' => 'ui.v3.inventory.traceability.ruckverfolgung.60c2425',
+            'page' => 'ui.v3.inventory.traceability.ruckverfolgung',
             'traceability' => $this->queries->traceability($user->tenantId()),
             'events' => $dimension !== null && $value !== null ? $this->queries->traceabilityEvents($user->tenantId(), $dimension, $value) : [],
             'selectedDimension' => $dimension,
@@ -208,7 +208,7 @@ final class V3WarehouseController extends AbstractController
         $user = $this->user();
 
         return $this->render('v3/inventory/special_stock.html.twig', [
-            'page' => 'ui.v3.inventory.special_stock.sonderbestande.858fb0a',
+            'page' => 'ui.v3.inventory.special_stock.sonderbestande',
             'types' => $this->queries->specialStockTypes($user->tenantId()),
             'stock' => $this->queries->stock($user->tenantId(), null, 500, null),
         ]);
@@ -218,14 +218,14 @@ final class V3WarehouseController extends AbstractController
     #[IsGranted('inventory.special_stock.write')]
     public function newSpecialStockType(): Response
     {
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'controller.v3warehouse.page.sonderbestandskennzeichen.anlegen.197e5b5', 'kind' => 'special_stock_type', 'entry' => null]);
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'controller.v3warehouse.page.sonderbestandskennzeichen.anlegen', 'kind' => 'special_stock_type', 'entry' => null]);
     }
 
     #[Route('/special-stock/types/{typeId}/edit', name: 'special_stock_type_edit', methods: ['GET'])]
     #[IsGranted('inventory.special_stock.write')]
     public function editSpecialStockType(string $typeId): Response
     {
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'controller.v3warehouse.page.sonderbestandskennzeichen.bearbeiten.ac52b99', 'kind' => 'special_stock_type', 'entry' => $this->specialStock->type($this->user()->tenantId(), $typeId)]);
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'controller.v3warehouse.page.sonderbestandskennzeichen.bearbeiten', 'kind' => 'special_stock_type', 'entry' => $this->specialStock->type($this->user()->tenantId(), $typeId)]);
     }
 
     #[Route('/special-stock/types/{typeId}', name: 'special_stock_type_update', methods: ['POST'])]
@@ -235,7 +235,7 @@ final class V3WarehouseController extends AbstractController
         $this->csrf($request, 'v3_inventory_special_stock_type_update_' . $typeId);
         $user = $this->user();
         $this->specialStock->updateType($user->tenantId(), $typeId, $this->required($request, 'code'), $this->required($request, 'name'), $this->required($request, 'classification_kind'), $request->request->getBoolean('allocatable'), $request->request->getBoolean('active'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3warehouse.flash.das.sonderbestandskennzeichen.wurde.aktualisiert.7f9b65a');
+        $this->addFlash('success', 'controller.v3warehouse.flash.das.sonderbestandskennzeichen.wurde.aktualisiert');
 
         return $this->redirectToRoute('v3_inventory_special_stock');
     }
@@ -256,7 +256,7 @@ final class V3WarehouseController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         );
-        $this->addFlash('success', 'controller.v3warehouse.flash.das.sonderbestandskennzeichen.wurde.angelegt.1b5e133');
+        $this->addFlash('success', 'controller.v3warehouse.flash.das.sonderbestandskennzeichen.wurde.angelegt');
 
         return $this->redirectToRoute('v3_inventory_special_stock');
     }
@@ -278,7 +278,7 @@ final class V3WarehouseController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         );
-        $this->addFlash('success', 'controller.v3warehouse.flash.der.bestand.wurde.neu.klassifiziert.94daf66');
+        $this->addFlash('success', 'controller.v3warehouse.flash.der.bestand.wurde.neu.klassifiziert');
 
         return $this->redirectToRoute('v3_inventory_special_stock');
     }
@@ -296,7 +296,7 @@ final class V3WarehouseController extends AbstractController
             throw $this->createNotFoundException('Der Bestand wurde nicht gefunden.');
         }
 
-        return $this->render('v3/inventory/special_stock_classify.html.twig', ['page' => 'ui.v3.inventory.special_stock_classify.sonderbestand.klassifizieren.793aad9', 'row' => $stock[0], 'types' => $this->queries->specialStockTypes($user->tenantId())]);
+        return $this->render('v3/inventory/special_stock_classify.html.twig', ['page' => 'ui.v3.inventory.special_stock_classify.sonderbestand.klassifizieren', 'row' => $stock[0], 'types' => $this->queries->specialStockTypes($user->tenantId())]);
     }
 
     #[Route('/selection-rules', name: 'selection_rules', methods: ['GET'])]
@@ -306,7 +306,7 @@ final class V3WarehouseController extends AbstractController
         $user = $this->user();
 
         return $this->render('v3/inventory/selection_rules.html.twig', [
-            'page' => 'ui.v3.inventory.selection_rules.entnahmestrategien.a2a42f2',
+            'page' => 'ui.v3.inventory.selection_rules.entnahmestrategien',
             'rules' => $this->queries->stockSelectionRules($user->tenantId()),
             'events' => $this->queries->stockSelectionEvents($user->tenantId()),
             'warehouses' => $this->queries->warehouses($user->tenantId()),
@@ -320,7 +320,7 @@ final class V3WarehouseController extends AbstractController
     {
         $user = $this->user();
 
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'controller.v3warehouse.page.entnahmestrategie.anlegen.0ebec94', 'kind' => 'selection_rule', 'entry' => null, 'warehouses' => $this->queries->warehouses($user->tenantId()), 'products' => $this->queries->products($user->tenantId(), 500, null)]);
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'controller.v3warehouse.page.entnahmestrategie.anlegen', 'kind' => 'selection_rule', 'entry' => null, 'warehouses' => $this->queries->warehouses($user->tenantId()), 'products' => $this->queries->products($user->tenantId(), 500, null)]);
     }
 
     #[Route('/selection-rules/{ruleId}/edit', name: 'selection_rule_edit', methods: ['GET'])]
@@ -329,7 +329,7 @@ final class V3WarehouseController extends AbstractController
     {
         $user = $this->user();
 
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'controller.v3warehouse.page.entnahmestrategie.bearbeiten.b2254e5', 'kind' => 'selection_rule', 'entry' => $this->stockSelection->rule($user->tenantId(), $ruleId), 'warehouses' => $this->queries->warehouses($user->tenantId()), 'products' => $this->queries->products($user->tenantId(), 500, null)]);
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'controller.v3warehouse.page.entnahmestrategie.bearbeiten', 'kind' => 'selection_rule', 'entry' => $this->stockSelection->rule($user->tenantId(), $ruleId), 'warehouses' => $this->queries->warehouses($user->tenantId()), 'products' => $this->queries->products($user->tenantId(), 500, null)]);
     }
 
     #[Route('/selection-rules/{ruleId}', name: 'selection_rule_update', methods: ['POST'])]
@@ -339,7 +339,7 @@ final class V3WarehouseController extends AbstractController
         $this->csrf($request, 'v3_inventory_selection_rule_update_' . $ruleId);
         $user = $this->user();
         $this->stockSelection->updateRule($user->tenantId(), $ruleId, $this->required($request, 'code'), $this->required($request, 'name'), $this->required($request, 'strategy'), $this->positiveInt($request, 'priority'), $request->request->getBoolean('enabled'), $this->optional($request, 'warehouse_id'), $this->optional($request, 'product_id'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3warehouse.flash.die.entnahmestrategie.wurde.aktualisiert.5494eca');
+        $this->addFlash('success', 'controller.v3warehouse.flash.die.entnahmestrategie.wurde.aktualisiert');
 
         return $this->redirectToRoute('v3_inventory_selection_rules');
     }
@@ -363,7 +363,7 @@ final class V3WarehouseController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         );
-        $this->addFlash('success', 'controller.v3warehouse.flash.die.entnahmestrategie.wurde.angelegt.8c56534');
+        $this->addFlash('success', 'controller.v3warehouse.flash.die.entnahmestrategie.wurde.angelegt');
 
         return $this->redirectToRoute('v3_inventory_selection_rules');
     }
@@ -375,7 +375,7 @@ final class V3WarehouseController extends AbstractController
         $user = $this->user();
 
         return $this->render('v3/inventory/stock_blocks.html.twig', [
-            'page' => 'ui.v3.inventory.stock_blocks.bestandssperren.e66f121',
+            'page' => 'ui.v3.inventory.stock_blocks.bestandssperren',
             'reasons' => $this->queries->stockBlockReasons($user->tenantId()),
             'blocks' => $this->queries->stockBlocks($user->tenantId()),
             'stock' => $this->queries->stock($user->tenantId(), null, 500, null),
@@ -392,21 +392,21 @@ final class V3WarehouseController extends AbstractController
             throw $this->createNotFoundException('Die Bestandssperre wurde nicht gefunden.');
         }
 
-        return $this->render('v3/inventory/stock_block_show.html.twig', ['page' => 'ui.v3.inventory.stock_block_show.bestandssperre.bearbeiten.09f0568', 'block' => $blocks[0], 'events' => $this->queries->stockBlockEvents($user->tenantId(), $blockId)]);
+        return $this->render('v3/inventory/stock_block_show.html.twig', ['page' => 'ui.v3.inventory.stock_block_show.bestandssperre.bearbeiten', 'block' => $blocks[0], 'events' => $this->queries->stockBlockEvents($user->tenantId(), $blockId)]);
     }
 
     #[Route('/stock-blocks/reasons/new', name: 'stock_block_reason_new', methods: ['GET'])]
     #[IsGranted('inventory.stock_block.write')]
     public function newStockBlockReason(): Response
     {
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'ui.v3.inventory.stock_block_reasons.sperrgrund.anlegen.b4a9eb6', 'kind' => 'stock_block_reason', 'entry' => null]);
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'ui.v3.inventory.stock_block_reasons.sperrgrund.anlegen', 'kind' => 'stock_block_reason', 'entry' => null]);
     }
 
     #[Route('/stock-blocks/reasons', name: 'stock_block_reasons', methods: ['GET'])]
     #[IsGranted('inventory.stock_block.read')]
     public function stockBlockReasons(): Response
     {
-        return $this->render('v3/inventory/stock_block_reasons.html.twig', ['page' => 'ui.v3.inventory.stock_block_reasons.sperrgrunde.dd2d572', 'reasons' => $this->queries->stockBlockReasons($this->user()->tenantId())]);
+        return $this->render('v3/inventory/stock_block_reasons.html.twig', ['page' => 'ui.v3.inventory.stock_block_reasons.sperrgrunde', 'reasons' => $this->queries->stockBlockReasons($this->user()->tenantId())]);
     }
 
     #[Route('/stock-blocks/new', name: 'stock_block_new', methods: ['GET'])]
@@ -422,14 +422,14 @@ final class V3WarehouseController extends AbstractController
             throw $this->createNotFoundException('Der Bestand wurde nicht gefunden.');
         }
 
-        return $this->render('v3/inventory/stock_block_new.html.twig', ['page' => 'ui.v3.inventory.stock_block_new.bestand.sperren.12d93ab', 'row' => $stock[0], 'reasons' => $this->queries->stockBlockReasons($user->tenantId())]);
+        return $this->render('v3/inventory/stock_block_new.html.twig', ['page' => 'ui.v3.inventory.stock_block_new.bestand.sperren', 'row' => $stock[0], 'reasons' => $this->queries->stockBlockReasons($user->tenantId())]);
     }
 
     #[Route('/stock-blocks/reasons/{reasonId}/edit', name: 'stock_block_reason_edit', methods: ['GET'])]
     #[IsGranted('inventory.stock_block.write')]
     public function editStockBlockReason(string $reasonId): Response
     {
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'controller.v3warehouse.page.sperrgrund.bearbeiten.ff88878', 'kind' => 'stock_block_reason', 'entry' => $this->stockBlocking->reason($this->user()->tenantId(), $reasonId)]);
+        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'controller.v3warehouse.page.sperrgrund.bearbeiten', 'kind' => 'stock_block_reason', 'entry' => $this->stockBlocking->reason($this->user()->tenantId(), $reasonId)]);
     }
 
     #[Route('/stock-blocks/reasons/{reasonId}', name: 'stock_block_reason_update', methods: ['POST'])]
@@ -439,7 +439,7 @@ final class V3WarehouseController extends AbstractController
         $this->csrf($request, 'v3_inventory_stock_block_reason_update_' . $reasonId);
         $user = $this->user();
         $this->stockBlocking->updateReason($user->tenantId(), $reasonId, $this->required($request, 'code'), $this->required($request, 'name'), $this->optional($request, 'description'), $request->request->getBoolean('active'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3warehouse.flash.der.sperrgrund.wurde.aktualisiert.85ea55c');
+        $this->addFlash('success', 'controller.v3warehouse.flash.der.sperrgrund.wurde.aktualisiert');
 
         return $this->redirectToRoute('v3_inventory_stock_blocks');
     }
@@ -460,7 +460,7 @@ final class V3WarehouseController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         );
-        $this->addFlash('success', 'controller.v3warehouse.flash.der.sperrgrund.wurde.angelegt.f17a3e6');
+        $this->addFlash('success', 'controller.v3warehouse.flash.der.sperrgrund.wurde.angelegt');
 
         return $this->redirectToRoute('v3_inventory_stock_blocks');
     }
@@ -486,7 +486,7 @@ final class V3WarehouseController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         );
-        $this->addFlash('success', 'controller.v3warehouse.flash.der.bestand.wurde.gesperrt.und.dem.prufworkflow.ubergeb.26789f2');
+        $this->addFlash('success', 'controller.v3warehouse.flash.der.bestand.wurde.gesperrt.und.dem.prufworkflow.ubergeb');
 
         return $this->redirectToRoute('v3_inventory_stock_blocks');
     }
@@ -498,7 +498,7 @@ final class V3WarehouseController extends AbstractController
         $this->csrf($request, 'v3_inventory_stock_block_review_' . $blockId);
         $user = $this->user();
         $this->stockBlocking->review($user->tenantId(), $blockId, $this->required($request, 'note'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3warehouse.flash.die.bestandssperre.wurde.gepruft.3d345a9');
+        $this->addFlash('success', 'controller.v3warehouse.flash.die.bestandssperre.wurde.gepruft');
 
         return $this->redirectToRoute('v3_inventory_stock_blocks', ['block' => $blockId]);
     }
@@ -510,7 +510,7 @@ final class V3WarehouseController extends AbstractController
         $this->csrf($request, 'v3_inventory_stock_block_release_' . $blockId);
         $user = $this->user();
         $this->stockBlocking->release($user->tenantId(), $blockId, $this->required($request, 'note'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3warehouse.flash.der.geprufte.bestand.wurde.freigegeben.9d9d932');
+        $this->addFlash('success', 'controller.v3warehouse.flash.der.geprufte.bestand.wurde.freigegeben');
 
         return $this->redirectToRoute('v3_inventory_stock_blocks', ['block' => $blockId]);
     }

@@ -109,13 +109,13 @@ class EditCustomerType extends AbstractType
                 ],
             ])
             ->add('save', ButtonType::class, [
-                'label' => 'form.customer.editcustomertype.label.f80de8fc',
+                'label' => 'form.customer.editcustomertype.label.save_changes',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.customer.editcustomertype.label.2d5d70e9',
+                'label' => 'form.customer.editcustomertype.label.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

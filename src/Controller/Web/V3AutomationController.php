@@ -32,7 +32,7 @@ final class V3AutomationController extends AbstractController
         $tenantId = $this->user()->tenantId();
 
         return $this->render('v3/integration/automation/index.html.twig', [
-            'page' => 'ui.v3.integration.automation.index.lagerlifte.und.paternoster.9ece714',
+            'page' => 'ui.v3.integration.automation.index.lagerlifte.und.paternoster',
             'devices' => $this->queries->automationDevices($tenantId),
             'commands' => $this->queries->deviceCommands($tenantId, 50),
         ]);
@@ -56,12 +56,12 @@ final class V3AutomationController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3automation.flash.das.automationsgerat.wurde.angelegt.2b1c0dc');
+            $this->addFlash('success', 'controller.v3automation.flash.das.automationsgerat.wurde.angelegt');
 
             return $this->redirectToRoute('v3_automation_index');
         }
 
-        return $this->render('v3/integration/automation/device-new.html.twig', ['page' => 'ui.v3.integration.automation.device-new.automationsgerat.anlegen.d1be100']);
+        return $this->render('v3/integration/automation/device-new.html.twig', ['page' => 'ui.v3.integration.automation.device-new.automationsgerat.anlegen']);
     }
 
     #[Route('/devices/{deviceId}/status', name: 'device_status', methods: ['POST'])]
@@ -98,13 +98,13 @@ final class V3AutomationController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3automation.flash.der.geratebefehl.wurde.idempotent.eingereiht.8603ca2');
+            $this->addFlash('success', 'controller.v3automation.flash.der.geratebefehl.wurde.idempotent.eingereiht');
 
             return $this->redirectToRoute('v3_automation_command_show', ['commandId' => $command->id]);
         }
 
         return $this->render('v3/integration/automation/command-new.html.twig', [
-            'page' => 'ui.v3.integration.automation.command-new.geratebefehl.anlegen.c79c6a0',
+            'page' => 'ui.v3.integration.automation.command-new.geratebefehl.anlegen',
             'devices' => array_values(array_filter(
                 $this->queries->automationDevices($user->tenantId()),
                 static fn (array $device): bool => (bool) ($device['active'] ?? false),
@@ -124,7 +124,7 @@ final class V3AutomationController extends AbstractController
         }
 
         return $this->render('v3/integration/automation/command-show.html.twig', [
-            'page' => 'ui.v3.integration.automation.command-show.geratebefehl.5b281d7',
+            'page' => 'ui.v3.integration.automation.command-show.geratebefehl',
             'command' => $command,
         ]);
     }
@@ -143,7 +143,7 @@ final class V3AutomationController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         );
-        $this->addFlash('success', 'controller.v3automation.flash.die.gerateruckmeldung.wurde.verarbeitet.d5a4ea8');
+        $this->addFlash('success', 'controller.v3automation.flash.die.gerateruckmeldung.wurde.verarbeitet');
 
         return $this->redirectToRoute('v3_automation_command_show', ['commandId' => $commandId]);
     }

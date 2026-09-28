@@ -41,7 +41,7 @@ final class V3ShippingController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/shipping/index.html.twig', [
-            'page' => 'ui.v3.integration.device.scan.versand.31e5fb2',
+            'page' => 'ui.v3.integration.device.scan.versand',
             'shipments' => $this->queries->shipments($this->tenantUser()->tenantId()),
         ]);
     }
@@ -67,7 +67,7 @@ final class V3ShippingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3shipping.flash.die.sendung.wurde.vorbereitet.3acfdd3');
+        $this->addFlash('success', 'controller.v3shipping.flash.die.sendung.wurde.vorbereitet');
 
         return $this->redirectToRoute('v3_shipping_show', ['shipmentId' => $shipmentId]);
     }
@@ -80,7 +80,7 @@ final class V3ShippingController extends AbstractController
         $shipment = $this->requiredShipment($shipmentId);
 
         return $this->render('v3/shipping/show.html.twig', [
-            'page' => 'ui.v3.integration.device.scan.sendung.fdd2800',
+            'page' => 'ui.v3.integration.device.scan.sendung',
             'shipment' => $shipment,
             'carrierConnectionAvailable' => $this->carrierConnectionAvailable(
                 $this->queries->carrierConnections($user->tenantId()),
@@ -123,7 +123,7 @@ final class V3ShippingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3shipping.flash.das.carrier.label.wurde.erzeugt.und.in.die.sendung.uber.81c1596');
+        $this->addFlash('success', 'controller.v3shipping.flash.das.carrier.label.wurde.erzeugt.und.in.die.sendung.uber');
 
         return $this->redirectToRoute('v3_shipping_show', ['shipmentId' => $shipmentId]);
     }
@@ -143,7 +143,7 @@ final class V3ShippingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3shipping.flash.label.und.trackingnummer.wurden.registriert.3db882a');
+        $this->addFlash('success', 'controller.v3shipping.flash.label.und.trackingnummer.wurden.registriert');
 
         return $this->redirectToRoute('v3_shipping_show', ['shipmentId' => $shipmentId]);
     }
@@ -169,7 +169,7 @@ final class V3ShippingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         );
-        $this->addFlash('success', 'controller.v3shipping.flash.das.versandlabel.wurde.in.die.druckwarteschlange.gestel.0d690fc');
+        $this->addFlash('success', 'controller.v3shipping.flash.das.versandlabel.wurde.in.die.druckwarteschlange.gestel');
 
         return $this->redirectToRoute('v3_shipping_show', ['shipmentId' => $shipmentId]);
     }
@@ -188,7 +188,7 @@ final class V3ShippingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3shipping.flash.die.sendung.wurde.an.den.frachtfuhrer.ubergeben.ee51140');
+        $this->addFlash('success', 'controller.v3shipping.flash.die.sendung.wurde.an.den.frachtfuhrer.ubergeben');
 
         return $this->redirectToRoute('v3_shipping_show', ['shipmentId' => $shipmentId]);
     }

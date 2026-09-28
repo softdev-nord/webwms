@@ -2,40 +2,40 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_measurement_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.measurement.capture.waagen.und.volumenmessung.8803bcb'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'ui.v3.integration.measurement.device-new.messgerat.anlegen.a9db00d'|trans }}</h1>
+		<a href="{{ path('v3_measurement_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.measurement.capture.waagen.und.volumenmessung'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.integration.measurement.device-new.messgerat.anlegen'|trans }}</h1>
 	</div>
 	<form method="post" class="card border-0 shadow-sm">
 		<div class="card-body">
 			<input type="hidden" name="_token" value="{{ csrf_token('v3_measurement_device_create') }}">
 			<div class="row g-3">
 				<div class="col-md-4">
-					<label class="form-label" for="code">{{ 'ui.v3.integration.automation.device-new.geratecode.ac128c9'|trans }}</label>
-					<input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" pattern="[A-Z0-9][A-Z0-9_-]{1,39}" required placeholder="{{ 'ui.v3.integration.measurement.device-new.scale.01.72d11f0'|trans }}">
+					<label class="form-label" for="code">{{ 'ui.v3.integration.automation.device-new.geratecode'|trans }}</label>
+					<input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" pattern="[A-Z0-9][A-Z0-9_-]{1,39}" required placeholder="{{ 'ui.v3.integration.measurement.device-new.scale.01'|trans }}">
 				</div>
 				<div class="col-md-5">
 					<label class="form-label" for="name">{{ 'templates.correspondence.name'|trans }}</label>
-					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'ui.v3.integration.measurement.device-new.packplatzwaage.1.5f8f545'|trans }}">
+					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'ui.v3.integration.measurement.device-new.packplatzwaage.1'|trans }}">
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="device_type">{{ 'ui.v3.integration.automation.device-new.geratetyp.b09e80e'|trans }}</label>
+					<label class="form-label" for="device_type">{{ 'ui.v3.integration.automation.device-new.geratetyp'|trans }}</label>
 					<select class="form-select" id="device_type" name="device_type">
-						<option value="scale">{{ 'ui.v3.integration.measurement.device-new.waage.d233ab5'|trans }}</option>
-						<option value="dimensioner">{{ 'ui.v3.integration.measurement.device-new.volumenmessung.9170291'|trans }}</option>
-						<option value="combined">{{ 'ui.v3.integration.measurement.device-new.kombigerat.aca23fa'|trans }}</option>
+						<option value="scale">{{ 'ui.v3.integration.measurement.device-new.waage'|trans }}</option>
+						<option value="dimensioner">{{ 'ui.v3.integration.measurement.device-new.volumenmessung'|trans }}</option>
+						<option value="combined">{{ 'ui.v3.integration.measurement.device-new.kombigerat'|trans }}</option>
 					</select>
 				</div>
 				<div class="col-12">
 					<div class="form-check form-switch">
 						<input class="form-check-input" type="checkbox" id="active" name="active" value="1" checked>
-						<label class="form-check-label" for="active">{{ 'ui.v3.integration.automation.device-new.gerat.sofort.aktivieren.43566d7'|trans }}</label>
+						<label class="form-check-label" for="active">{{ 'ui.v3.integration.automation.device-new.gerat.sofort.aktivieren'|trans }}</label>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer d-flex justify-content-end gap-2">
 			<a class="btn btn-light" href="{{ path('v3_measurement_index') }}">{{ 'button.cancel'|trans }}</a>
-			<button class="btn btn-primary">{{ 'ui.v3.integration.measurement.device-new.messgerat.anlegen.a9db00d'|trans }}</button>
+			<button class="btn btn-primary">{{ 'ui.v3.integration.measurement.device-new.messgerat.anlegen'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

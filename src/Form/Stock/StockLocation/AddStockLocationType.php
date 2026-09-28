@@ -109,13 +109,13 @@ class AddStockLocationType extends AbstractType
             'required' => false,
           ])
           ->add('save', SubmitType::class, [
-            'label' => 'form.stock.stocklocation.addstocklocationtype.label.ef12a59f',
+            'label' => 'form.stock.stocklocation.addstocklocationtype.label.create_storage_location',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'form.stock.stocklocation.addstocklocationtype.label.2d5d70e9',
+            'label' => 'form.stock.stocklocation.addstocklocationtype.label.cancel',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

@@ -35,7 +35,7 @@ class AddSupplierOrderType extends AbstractType
             ],
           ])
           ->add('supplierOrderNr', TextType::class, [
-            'label' => 'form.supplierorder.addsupplierordertype.label.282ae0ee',
+            'label' => 'form.supplierorder.addsupplierordertype.label.purchase_order_no',
             'attr' => [
               'class' => 'form-control is--transparent',
               'id' => 'supplier_order_nr',
@@ -55,18 +55,18 @@ class AddSupplierOrderType extends AbstractType
             ],
           ])
           ->add('supplierOrderReference', TextType::class, [
-            'label' => 'form.supplierorder.addsupplierordertype.label.04b898ff',
+            'label' => 'form.supplierorder.addsupplierordertype.label.purchase_order_reference',
             'attr' => [
               'class' => 'form-control',
               'id' => 'supplier_order_reference',
-              'placeholder' => 'form.supplierorder.addsupplierordertype.placeholder.04b898ff',
+              'placeholder' => 'form.supplierorder.addsupplierordertype.placeholder.purchase_order_reference',
             ],
           ])
           ->add('supplierOrderDate', DateTimeType::class, [
             'widget' => 'single_text',
             'input' => 'datetime',
             'format' => 'dd.MM.yyyy',
-            'label' => 'form.supplierorder.addsupplierordertype.label.c2b65aed',
+            'label' => 'form.supplierorder.addsupplierordertype.label.order_date',
             'html5' => false,
             'attr' => [
               'class' => 'form-control',
@@ -76,7 +76,7 @@ class AddSupplierOrderType extends AbstractType
             'widget' => 'single_text',
             'input' => 'datetime',
             'format' => 'dd.MM.yyyy',
-            'label' => 'form.supplierorder.addsupplierordertype.label.286db5c0',
+            'label' => 'form.supplierorder.addsupplierordertype.label.creation_date',
             'html5' => false,
             'attr' => [
               'class' => 'form-control',
@@ -85,13 +85,13 @@ class AddSupplierOrderType extends AbstractType
             ],
           ])
           ->add('save', ButtonType::class, [
-            'label' => 'form.supplierorder.addsupplierordertype.label.0e2ca1f8',
+            'label' => 'form.supplierorder.addsupplierordertype.label.create_purchase_order',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'form.supplierorder.addsupplierordertype.label.2d5d70e9',
+            'label' => 'form.supplierorder.addsupplierordertype.label.cancel',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

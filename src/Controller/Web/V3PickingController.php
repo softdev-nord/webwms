@@ -38,7 +38,7 @@ final class V3PickingController extends AbstractController
         $this->assertCsrf($request, 'v3_pick_optimize_' . $pickListId);
         $user = $this->tenantUser();
         $this->advancedPicking->optimizeRoute($user->tenantId(), $user->actorId(), $pickListId, new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3picking.flash.die.pickroute.wurde.anhand.der.lagertopologie.optimiert.d6d1c9c');
+        $this->addFlash('success', 'controller.v3picking.flash.die.pickroute.wurde.anhand.der.lagertopologie.optimiert');
 
         return $this->redirectToRoute('v3_picking_show', ['pickListId' => $pickListId]);
     }
@@ -70,7 +70,7 @@ final class V3PickingController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/picking/index.html.twig', [
-            'page' => 'ui.v3.picking.index.picking.7c3a00c',
+            'page' => 'ui.v3.picking.index.picking',
             'pickLists' => $this->queries->pickLists($this->tenantUser()->tenantId()),
         ]);
     }
@@ -80,7 +80,7 @@ final class V3PickingController extends AbstractController
     public function show(string $pickListId): Response
     {
         return $this->render('v3/picking/show.html.twig', [
-            'page' => 'ui.v3.outbound.control.pickliste.77bddf1',
+            'page' => 'ui.v3.outbound.control.pickliste',
             'pickList' => $this->requiredPickList($pickListId),
         ]);
     }
@@ -99,7 +99,7 @@ final class V3PickingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3picking.flash.die.pickliste.wurde.dir.zugewiesen.49ef502');
+        $this->addFlash('success', 'controller.v3picking.flash.die.pickliste.wurde.dir.zugewiesen');
 
         return $this->redirectToRoute('v3_picking_show', ['pickListId' => $pickListId]);
     }

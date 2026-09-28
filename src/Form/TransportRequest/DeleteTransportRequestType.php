@@ -34,13 +34,13 @@ class DeleteTransportRequestType extends AbstractType
                 ],
             ])
             ->add('delete', ButtonType::class, [
-                'label' => 'form.transportrequest.deletetransportrequesttype.label.57def7c0',
+                'label' => 'form.transportrequest.deletetransportrequesttype.label.delete',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.transportrequest.deletetransportrequesttype.label.2d5d70e9',
+                'label' => 'form.transportrequest.deletetransportrequesttype.label.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],
