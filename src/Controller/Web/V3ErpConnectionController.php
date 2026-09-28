@@ -34,7 +34,7 @@ final class V3ErpConnectionController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/integration/erp-connection/index.html.twig', [
-            'page' => 'ERP-Verbindungen',
+            'page' => 'ui.v3.integration.erp-connection.index.erp.verbindungen.76c281d',
             'connections' => $this->queries->erpConnections($this->tenantUser()->tenantId()),
         ]);
     }
@@ -57,13 +57,13 @@ final class V3ErpConnectionController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             ));
-            $this->addFlash('success', 'Die ERP-Verbindung wurde angelegt.');
+            $this->addFlash('success', 'controller.v3erp.connection.flash.die.erp.verbindung.wurde.angelegt.4d54cc8');
 
             return $this->redirectToRoute('v3_erp_connection_show', ['connectionId' => $connectionId]);
         }
 
         return $this->render('v3/integration/erp-connection/new.html.twig', [
-            'page' => 'ERP-Verbindung anlegen',
+            'page' => 'ui.v3.integration.erp-connection.index.erp.verbindung.anlegen.c77da00',
         ]);
     }
 
@@ -72,7 +72,7 @@ final class V3ErpConnectionController extends AbstractController
     public function show(string $connectionId): Response
     {
         return $this->render('v3/integration/erp-connection/show.html.twig', [
-            'page' => 'ERP-Verbindung',
+            'page' => 'controller.v3erp.connection.page.erp.verbindung.d1d52a0',
             'connection' => $this->requiredConnection($connectionId),
         ]);
     }
@@ -93,8 +93,8 @@ final class V3ErpConnectionController extends AbstractController
             new DateTimeImmutable(),
         ));
         $this->addFlash('success', $active
-            ? 'Die ERP-Verbindung wurde aktiviert.'
-            : 'Die ERP-Verbindung wurde pausiert.');
+            ? 'flash.erp_connection.activated'
+            : 'flash.erp_connection.paused');
 
         return $this->redirectToRoute('v3_erp_connection_show', ['connectionId' => $connectionId]);
     }

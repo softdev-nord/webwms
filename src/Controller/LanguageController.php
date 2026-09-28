@@ -20,7 +20,7 @@ class LanguageController extends AbstractController
 {
     /**
      * @Route("/lang/{_locale}", requirements={
-     *     "_locale"="en|es|de|it|ru"
+     *     "_locale"="en|de"
      * })
      */
     public function index(Request $request): RedirectResponse

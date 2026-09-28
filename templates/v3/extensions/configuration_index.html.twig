@@ -1,11 +1,11 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}{{ label }} | WebWMS 3.0{% endblock %}
+{% block title %}{{ (page|default('ui.v3.subsections.title-meta.choice.webwms.5de7112'))|trans(pageParameters|default({})) }} | WebWMS 3.0{% endblock %}
 {% block webwms_content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <div><h1 class="h3 mb-1">{{ label }}</h1><p class="text-muted mb-0">Konfigurationen verwalten</p></div>
-    <div><a class="btn btn-outline-secondary me-2" href="{{ path('v3_extension_index') }}">Gesamtübersicht</a>{% if is_granted('platform.extension.write') %}<a class="btn btn-primary" href="{{ path('v3_extension_configuration_new',{resource:resource}) }}">Anlegen</a>{% endif %}</div>
+    <div><h1 class="h3 mb-1">{{ label|trans }}</h1><p class="text-muted mb-0">{{ 'ui.v3.extensions.configuration_index.konfigurationen.verwalten.d794bed'|trans }}</p></div>
+    <div><a class="btn btn-outline-secondary me-2" href="{{ path('v3_extension_index') }}">{{ 'ui.v3.extensions.configuration_index.gesamtubersicht.3ae68ec'|trans }}</a>{% if is_granted('platform.extension.write') %}<a class="btn btn-primary" href="{{ path('v3_extension_configuration_new',{resource:resource}) }}">{{ 'ui.v3.administration.workspace.anlegen.846460c'|trans }}</a>{% endif %}</div>
 </div>
-<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>Code</th><th>Name</th><th>Status</th><th>Geändert</th><th class="text-end">Aktion</th></tr></thead><tbody>
-{% for item in configurations %}<tr><td><code>{{ item.code }}</code></td><td>{{ item.name }}</td><td>{{ item.active ? 'Aktiv' : 'Inaktiv' }}</td><td>{{ item.updated_at }}</td><td class="text-end">{% if is_granted('platform.extension.write') %}<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_extension_configuration_edit',{resource:resource,id:item.id}) }}">Bearbeiten</a>{% endif %}</td></tr>{% else %}<tr><td colspan="5" class="text-center text-muted py-4">Keine Einträge vorhanden.</td></tr>{% endfor %}
+<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>{{ 'ui.v3.administration.role_new.code.adac693'|trans }}</th><th>{{ 'templates.correspondence.name'|trans }}</th><th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th><th>{{ 'ui.v3.extensions.configuration_index.geandert.01de835'|trans }}</th><th class="text-end">{{ 'base.action'|trans }}</th></tr></thead><tbody>
+{% for item in configurations %}<tr><td><code>{{ item.code }}</code></td><td>{{ item.name }}</td><td>{{ (item.active ? 'ui.user.user_input_fields.aktiv.16a766c' : 'ui.v3.inventory.selection_rules.inaktiv.cd5be11')|trans }}</td><td>{{ item.updated_at }}</td><td class="text-end">{% if is_granted('platform.extension.write') %}<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_extension_configuration_edit',{resource:resource,id:item.id}) }}">{{ 'button.edit'|trans }}</a>{% endif %}</td></tr>{% else %}<tr><td colspan="5" class="text-center text-muted py-4">{{ 'ui.v3.extensions.configuration_index.keine.eintrage.vorhanden.f644f1c'|trans }}</td></tr>{% endfor %}
 </tbody></table></div></div>
 {% endblock %}

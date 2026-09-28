@@ -2,40 +2,40 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_device_index') }}" class="text-decoration-none">← Scanner und MDE</a>
-		<h1 class="h3 mt-2">Erfassungsgerät anlegen</h1>
+		<a href="{{ path('v3_device_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.device.new.scanner.und.mde.2f34617'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.integration.device.new.erfassungsgerat.anlegen.fc512bf'|trans }}</h1>
 	</div>
 	<form method="post" class="card border-0 shadow-sm">
 		<div class="card-body">
 			<input type="hidden" name="_token" value="{{ csrf_token('v3_device_create') }}">
 			<div class="row g-3">
 				<div class="col-md-4">
-					<label class="form-label" for="code">Gerätecode</label>
-					<input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" pattern="[A-Z0-9][A-Z0-9_-]{1,39}" required placeholder="MDE-01">
+					<label class="form-label" for="code">{{ 'ui.v3.integration.automation.device-new.geratecode.ac128c9'|trans }}</label>
+					<input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" pattern="[A-Z0-9][A-Z0-9_-]{1,39}" required placeholder="{{ 'ui.v3.integration.device.new.mde.01.e53a5f0'|trans }}">
 				</div>
 				<div class="col-md-5">
-					<label class="form-label" for="name">Name</label>
-					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="MDE Warenausgang 1">
+					<label class="form-label" for="name">{{ 'templates.correspondence.name'|trans }}</label>
+					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'ui.v3.integration.device.new.mde.warenausgang.1.43527da'|trans }}">
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="device_type">Gerätetyp</label>
+					<label class="form-label" for="device_type">{{ 'ui.v3.integration.automation.device-new.geratetyp.b09e80e'|trans }}</label>
 					<select class="form-select" id="device_type" name="device_type">
-						<option value="barcode_scanner">Barcode-Scanner</option>
-						<option value="mde">MDE</option>
-						<option value="mobile_browser">Mobiler Browser</option>
+						<option value="barcode_scanner">{{ 'ui.v3.integration.device.new.barcode.scanner.6c99aca'|trans }}</option>
+						<option value="mde">{{ 'ui.v3.integration.device.new.mde.2ae01d5'|trans }}</option>
+						<option value="mobile_browser">{{ 'ui.v3.integration.device.new.mobiler.browser.70ed3e8'|trans }}</option>
 					</select>
 				</div>
 				<div class="col-12">
 					<div class="form-check form-switch">
 						<input class="form-check-input" type="checkbox" role="switch" id="active" name="active" value="1" checked>
-						<label class="form-check-label" for="active">Gerät sofort aktivieren</label>
+						<label class="form-check-label" for="active">{{ 'ui.v3.integration.automation.device-new.gerat.sofort.aktivieren.43566d7'|trans }}</label>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_device_index') }}">Abbrechen</a>
-			<button class="btn btn-primary">Gerät anlegen</button>
+			<a class="btn btn-light" href="{{ path('v3_device_index') }}">{{ 'button.cancel'|trans }}</a>
+			<button class="btn btn-primary">{{ 'ui.v3.integration.automation.device-new.gerat.anlegen.805c743'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

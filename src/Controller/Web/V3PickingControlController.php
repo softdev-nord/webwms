@@ -26,7 +26,7 @@ final class V3PickingControlController extends AbstractController
     #[IsGranted('fulfillment.pick.control')]
     public function index(): Response
     {
-        return $this->render('v3/picking/control.html.twig', ['page' => 'Kommissionierleitstand', 'workspace' => $this->picking->workspace($this->user()->tenantId())]);
+        return $this->render('v3/picking/control.html.twig', ['page' => 'ui.v3.picking.control.kommissionierleitstand.08e85db', 'workspace' => $this->picking->workspace($this->user()->tenantId())]);
     }
 
     #[Route('/waves', name: 'wave_create', methods: ['POST'])]
@@ -37,7 +37,7 @@ final class V3PickingControlController extends AbstractController
         $user = $this->user();
         $planned = trim((string) $request->request->get('planned_start_at'));
         $this->picking->createWave($user->tenantId(), $user->actorId(), $this->required($request, 'code'), $this->required($request, 'name'), $this->required($request, 'strategy'), $this->required($request, 'selection_type'), $this->optional($request, 'selection_value'), max(1, $request->request->getInt('priority', 50)), $planned === '' ? null : new DateTimeImmutable($planned), $this->strings($request, 'pick_list_ids'), new DateTimeImmutable());
-        $this->addFlash('success', 'Die Pickwelle wurde geplant.');
+        $this->addFlash('success', 'controller.v3picking.control.flash.die.pickwelle.wurde.geplant.c090f05');
 
         return $this->redirectToRoute('v3_picking_control_index');
     }
@@ -49,7 +49,7 @@ final class V3PickingControlController extends AbstractController
         $this->csrf($request, 'v3_pick_wave_release_' . $waveId);
         $user = $this->user();
         $this->picking->releaseWave($user->tenantId(), $user->actorId(), $waveId, new DateTimeImmutable());
-        $this->addFlash('success', 'Die Pickwelle wurde freigegeben.');
+        $this->addFlash('success', 'controller.v3picking.control.flash.die.pickwelle.wurde.freigegeben.f8b0b7d');
 
         return $this->redirectToRoute('v3_picking_control_index');
     }
@@ -61,7 +61,7 @@ final class V3PickingControlController extends AbstractController
         $this->csrf($request, 'v3_pick_consolidate_' . $waveId . '_' . $pickListId);
         $user = $this->user();
         $this->picking->consolidate($user->tenantId(), $user->actorId(), $waveId, $pickListId, new DateTimeImmutable());
-        $this->addFlash('success', 'Der Zielbehälter wurde konsolidiert.');
+        $this->addFlash('success', 'controller.v3picking.control.flash.der.zielbehalter.wurde.konsolidiert.ce01ed9');
 
         return $this->redirectToRoute('v3_picking_control_index');
     }

@@ -3,11 +3,11 @@
 {% block webwms_content %}
 	<div class="d-flex justify-content-between align-items-center mb-4">
 		<div>
-			<h1 class="h3 mb-1">Carrier-Verbindungen</h1>
-			<p class="text-muted mb-0">Versandprodukte, Labels, Tracking und Manifestübergaben anbinden</p>
+			<h1 class="h3 mb-1">{{ 'ui.v3.integration.carrier-connection.index.carrier.verbindungen.f04975a'|trans }}</h1>
+			<p class="text-muted mb-0">{{ 'ui.v3.integration.carrier-connection.index.versandprodukte.labels.tracking.und.manifestubergaben.a.605190f'|trans }}</p>
 		</div>
 		{% if is_granted('integration.carrier_connection.write') %}
-			<a class="btn btn-primary" href="{{ path('v3_carrier_connection_new') }}">Carrier-Verbindung anlegen</a>
+			<a class="btn btn-primary" href="{{ path('v3_carrier_connection_new') }}">{{ 'ui.v3.integration.carrier-connection.index.carrier.verbindung.anlegen.415bc9b'|trans }}</a>
 		{% endif %}
 	</div>
 
@@ -16,11 +16,11 @@
 			<table class="table table-hover align-middle mb-0">
 				<thead>
 					<tr>
-						<th>Carrier</th>
-						<th>Name</th>
-						<th>Endpunkt</th>
-						<th>Status</th>
-						<th>Geändert</th>
+						<th>{{ 'ui.v3.administration.workspace.carrier.91b0ba2'|trans }}</th>
+						<th>{{ 'templates.correspondence.name'|trans }}</th>
+						<th>{{ 'ui.v3.integration.carrier-connection.index.endpunkt.cbb6ce0'|trans }}</th>
+						<th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th>
+						<th>{{ 'ui.v3.extensions.configuration_index.geandert.01de835'|trans }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -32,19 +32,19 @@
 							<td><code>{{ connection.endpoint_url }}</code></td>
 							<td>
 								{% if connection.active %}
-									<span class="badge bg-success-subtle text-success">Aktiv</span>
+									<span class="badge bg-success-subtle text-success">{{ 'ui.user.user_input_fields.aktiv.16a766c'|trans }}</span>
 								{% else %}
-									<span class="badge bg-secondary-subtle text-secondary">Pausiert</span>
+									<span class="badge bg-secondary-subtle text-secondary">{{ 'ui.v3.integration.carrier-connection.index.pausiert.09b952c'|trans }}</span>
 								{% endif %}
 							</td>
 							<td>{{ connection.changed_at|default(connection.created_at) }}</td>
 							<td class="text-end">
-								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_carrier_connection_show', {connectionId: connection.id}) }}">Öffnen</a>
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_carrier_connection_show', {connectionId: connection.id}) }}">{{ 'ui.v3.inbound.index.offnen.fc718f8'|trans }}</a>
 							</td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="6" class="text-center text-muted py-5">Noch keine Carrier-Verbindungen vorhanden.</td>
+							<td colspan="6" class="text-center text-muted py-5">{{ 'ui.v3.integration.carrier-connection.index.noch.keine.carrier.verbindungen.vorhanden.ace323f'|trans }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

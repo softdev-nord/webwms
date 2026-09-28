@@ -100,13 +100,13 @@ class AddSupplierType extends AbstractType
                 ],
             ])
             ->add('save', ButtonType::class, [
-                'label' => 'Lieferanten anlegen',
+                'label' => 'form.supplier.addsuppliertype.label.fa643a5e',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'Abbrechen',
+                'label' => 'form.supplier.addsuppliertype.label.2d5d70e9',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

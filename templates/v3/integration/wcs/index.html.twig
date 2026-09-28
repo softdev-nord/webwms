@@ -3,25 +3,25 @@
 {% block webwms_content %}
 	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
 		<div>
-			<h1 class="h3 mb-1">WCS, MFR und Fördertechnik</h1>
-			<p class="text-muted mb-0">Transportbefehle und Maschinenrückmeldungen überwachen</p>
+			<h1 class="h3 mb-1">{{ 'ui.v3.integration.wcs.index.wcs.mfr.und.fordertechnik.0796567'|trans }}</h1>
+			<p class="text-muted mb-0">{{ 'ui.v3.integration.wcs.index.transportbefehle.und.maschinenruckmeldungen.uberwachen.44b3c15'|trans }}</p>
 		</div>
 		<div class="d-flex gap-2">
 			{% if is_granted('integration.wcs.write') %}
-				<a class="btn btn-outline-primary" href="{{ path('v3_wcs_connection_new') }}">Verbindung anlegen</a>
+				<a class="btn btn-outline-primary" href="{{ path('v3_wcs_connection_new') }}">{{ 'ui.v3.integration.wcs.connection-new.verbindung.anlegen.38f1add'|trans }}</a>
 			{% endif %}
 			{% if is_granted('integration.wcs.execute') %}
-				<a class="btn btn-outline-primary" href="{{ path('v3_wcs_status_new') }}">Status erfassen</a>
-				<a class="btn btn-primary" href="{{ path('v3_wcs_command_new') }}">Befehl anlegen</a>
+				<a class="btn btn-outline-primary" href="{{ path('v3_wcs_status_new') }}">{{ 'ui.v3.integration.wcs.index.status.erfassen.e242bef'|trans }}</a>
+				<a class="btn btn-primary" href="{{ path('v3_wcs_command_new') }}">{{ 'ui.v3.integration.automation.index.befehl.anlegen.5c9356d'|trans }}</a>
 			{% endif %}
 		</div>
 	</div>
 
 	<div class="card border-0 shadow-sm mb-4">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Verbindungen</h2></div>
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.wcs.index.verbindungen.9bc993d'|trans }}</h2></div>
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
-				<thead><tr><th>Code</th><th>Name</th><th>System</th><th>Endpoint</th><th>Status</th><th></th></tr></thead>
+				<thead><tr><th>{{ 'ui.v3.administration.role_new.code.adac693'|trans }}</th><th>{{ 'templates.correspondence.name'|trans }}</th><th>{{ 'ui.configuration.tabs.systeminformation.system.bc0792d'|trans }}</th><th>{{ 'ui.v3.integration.automation.index.endpoint.92ec635'|trans }}</th><th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th><th></th></tr></thead>
 				<tbody>
 					{% for connection in connections %}
 						<tr>
@@ -29,18 +29,18 @@
 							<td class="fw-semibold">{{ connection.name }}</td>
 							<td>{{ connection.system_type }}</td>
 							<td><code>{{ connection.endpoint_url }}</code></td>
-							<td><span class="badge bg-{{ connection.active ? 'success' : 'secondary' }}-subtle text-{{ connection.active ? 'success' : 'secondary' }}">{{ connection.active ? 'Aktiv' : 'Pausiert' }}</span></td>
+							<td><span class="badge bg-{{ connection.active ? 'success' : 'secondary' }}-subtle text-{{ connection.active ? 'success' : 'secondary' }}">{{ (connection.active ? 'ui.user.user_input_fields.aktiv.16a766c' : 'ui.v3.integration.carrier-connection.index.pausiert.09b952c')|trans }}</span></td>
 							<td class="text-end">
 								{% if is_granted('integration.wcs.write') %}
 									<form method="post" action="{{ path('v3_wcs_connection_status', {connectionId: connection.id}) }}">
 										<input type="hidden" name="_token" value="{{ csrf_token('v3_wcs_connection_status_' ~ connection.id) }}">
-										<button class="btn btn-sm btn-outline-secondary">{{ connection.active ? 'Pausieren' : 'Aktivieren' }}</button>
+										<button class="btn btn-sm btn-outline-secondary">{{ (connection.active ? 'ui.v3.integration.automation.index.choice.pausieren.95175c7' : 'ui.v3.integration.automation.index.choice.aktivieren.3cc7932')|trans }}</button>
 									</form>
 								{% endif %}
 							</td>
 						</tr>
 					{% else %}
-						<tr><td colspan="6" class="text-center text-muted py-4">Noch keine WCS-Verbindung vorhanden.</td></tr>
+						<tr><td colspan="6" class="text-center text-muted py-4">{{ 'ui.v3.integration.wcs.index.noch.keine.wcs.verbindung.vorhanden.d361f37'|trans }}</td></tr>
 					{% endfor %}
 				</tbody>
 			</table>
@@ -48,10 +48,10 @@
 	</div>
 
 	<div class="card border-0 shadow-sm mb-4">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Transportbefehle</h2></div>
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.wcs.index.transportbefehle.73a7925'|trans }}</h2></div>
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
-				<thead><tr><th>Verbindung</th><th>Ladeeinheit</th><th>Route</th><th>Typ</th><th>Status</th><th></th></tr></thead>
+				<thead><tr><th>{{ 'ui.v3.integration.wcs.command-new.verbindung.5fbdf27'|trans }}</th><th>{{ 'ui.v3.inbound.control.ladeeinheit.acdf148'|trans }}</th><th>{{ 'ui.logging.index.route.4999528'|trans }}</th><th>{{ 'ui.v3.administration.workspace.typ.edcaf9a'|trans }}</th><th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th><th></th></tr></thead>
 				<tbody>
 					{% for command in commands %}
 						<tr>
@@ -60,10 +60,10 @@
 							<td>{{ command.source }} → {{ command.destination }}</td>
 							<td>{{ command.command_type }}</td>
 							<td><span class="badge bg-secondary-subtle text-secondary">{{ command.status }}</span></td>
-							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_wcs_command_show', {commandId: command.id}) }}">Öffnen</a></td>
+							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_wcs_command_show', {commandId: command.id}) }}">{{ 'ui.v3.inbound.index.offnen.fc718f8'|trans }}</a></td>
 						</tr>
 					{% else %}
-						<tr><td colspan="6" class="text-center text-muted py-4">Noch keine Transportbefehle vorhanden.</td></tr>
+						<tr><td colspan="6" class="text-center text-muted py-4">{{ 'ui.v3.integration.wcs.index.noch.keine.transportbefehle.vorhanden.afb71f0'|trans }}</td></tr>
 					{% endfor %}
 				</tbody>
 			</table>
@@ -71,10 +71,10 @@
 	</div>
 
 	<div class="card border-0 shadow-sm">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Maschinenstatus</h2></div>
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.wcs.index.maschinenstatus.2c08ef6'|trans }}</h2></div>
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
-				<thead><tr><th>Verbindung</th><th>Maschine</th><th>Status</th><th>Meldung</th><th>Zeitpunkt</th></tr></thead>
+				<thead><tr><th>{{ 'ui.v3.integration.wcs.command-new.verbindung.5fbdf27'|trans }}</th><th>{{ 'ui.v3.integration.wcs.index.maschine.4f4d950'|trans }}</th><th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th><th>{{ 'ui.v3.integration.wcs.command-show.meldung.60bc5b8'|trans }}</th><th>{{ 'ui.v3.administration.workspace.zeitpunkt.e2f9e93'|trans }}</th></tr></thead>
 				<tbody>
 					{% for machineStatus in statuses %}
 						<tr>
@@ -85,7 +85,7 @@
 							<td>{{ machineStatus.recorded_at }}</td>
 						</tr>
 					{% else %}
-						<tr><td colspan="5" class="text-center text-muted py-4">Noch keine Maschinenrückmeldungen vorhanden.</td></tr>
+						<tr><td colspan="5" class="text-center text-muted py-4">{{ 'ui.v3.integration.wcs.index.noch.keine.maschinenruckmeldungen.vorhanden.5f8f46b'|trans }}</td></tr>
 					{% endfor %}
 				</tbody>
 			</table>

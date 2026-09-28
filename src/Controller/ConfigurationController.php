@@ -47,7 +47,7 @@ class ConfigurationController extends AbstractController
             'appCopyright' => $this->requirementsService->getAppCopyright(),
             'appLizenz' => $this->requirementsService->getAppLizenz(),
             'generalConfiguration' => $form->createView(),
-            'page' => 'Einstellungen',
+            'page' => 'Settings',
             'configurations' => $this->configurationService->getAllConfigurations(),
             'systemInformation' => $this->configurationService->prepareSystemInformation(),
         ]);

@@ -32,7 +32,7 @@
                 </div>
 
             </div>
-            <div class="webwms-page">{{ page }}</div>
+            <div class="webwms-page">{{ (page|default('ui.v3.subsections.title-meta.choice.webwms.5de7112'))|trans(pageParameters|default({})) }}</div>
         </div>
     </div>
 </header>

@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<h1 class="h3 mb-1">Packarbeitsplatz</h1>
-		<p class="text-muted mb-0">Gepickte Positionen verpacken und Packaufträge abschließen</p>
+		<h1 class="h3 mb-1">{{ 'ui.v3.packing.index.packarbeitsplatz.82542e6'|trans }}</h1>
+		<p class="text-muted mb-0">{{ 'ui.v3.packing.index.gepickte.positionen.verpacken.und.packauftrage.abschlie.a26829a'|trans }}</p>
 	</div>
 
 	<div class="row g-3">
@@ -15,17 +15,17 @@
 							<h2 class="h5">{{ order.code }}</h2>
 							<span class="badge bg-secondary-subtle text-secondary">{{ order.status }}</span>
 						</div>
-						<div>Auftrag {{ order.order_number }}</div>
-						<div class="text-muted">{{ order.package_count }} Pakete · {{ order.total_weight_grams }} g</div>
+						<div>{{ 'ui.v3.inbound.control.auftrag.4ec1a90'|trans }} {{ order.order_number }}</div>
+						<div class="text-muted">{{ order.package_count }} {{ 'ui.v3.packing.index.pakete.c33c6f2'|trans }} {{ order.total_weight_grams }} {{ 'ui.v3.outbound.control.g.54fd171'|trans }}</div>
 					</div>
 					<div class="card-footer">
-						<a class="btn btn-primary w-100" href="{{ path('v3_packing_show', {packingOrderId: order.id}) }}">Packauftrag öffnen</a>
+						<a class="btn btn-primary w-100" href="{{ path('v3_packing_show', {packingOrderId: order.id}) }}">{{ 'ui.v3.packing.index.packauftrag.offnen.92ae8b7'|trans }}</a>
 					</div>
 				</div>
 			</div>
 		{% else %}
 			<div class="col-12">
-				<div class="alert alert-light border">Noch keine Packaufträge vorhanden.</div>
+				<div class="alert alert-light border">{{ 'ui.v3.packing.index.noch.keine.packauftrage.vorhanden.3d11ca6'|trans }}</div>
 			</div>
 		{% endfor %}
 	</div>

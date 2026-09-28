@@ -51,13 +51,13 @@ class AddStockZoneType extends AbstractType
             ],
           ])
           ->add('save', ButtonType::class, [
-            'label' => 'Lagerzone anlegen',
+            'label' => 'form.stock.stockzone.addstockzonetype.label.750ca280',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'Abbrechen',
+            'label' => 'form.stock.stockzone.addstockzonetype.label.2d5d70e9',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

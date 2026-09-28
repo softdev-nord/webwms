@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_automation_index') }}" class="text-decoration-none">← Lagerlifte und Paternoster</a>
-		<h1 class="h3 mt-2">Gerätebefehl</h1>
+		<a href="{{ path('v3_automation_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.automation.command-new.lagerlifte.und.paternoster.3ad7b77'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.integration.automation.command-show.geratebefehl.5b281d7'|trans }}</h1>
 	</div>
 
 	<div class="card border-0 shadow-sm mb-4">
@@ -13,12 +13,12 @@
 		</div>
 		<div class="card-body">
 			<dl class="row mb-0">
-				<dt class="col-sm-3">Lagerplatz</dt><dd class="col-sm-9"><code>{{ command.location_code }}</code></dd>
-				<dt class="col-sm-3">Referenz</dt><dd class="col-sm-9">{{ command.reference_type }} · <code>{{ command.reference_id }}</code></dd>
-				<dt class="col-sm-3">Request-ID</dt><dd class="col-sm-9"><code>{{ command.request_id }}</code></dd>
-				<dt class="col-sm-3">Rückmeldung</dt><dd class="col-sm-9">{{ command.message|default('–') }}</dd>
-				<dt class="col-sm-3">Erstellt</dt><dd class="col-sm-9">{{ command.created_at }}</dd>
-				<dt class="col-sm-3">Geändert</dt><dd class="col-sm-9">{{ command.changed_at|default('–') }}</dd>
+				<dt class="col-sm-3">{{ 'ui.modal.show_article_stock_details_modal.lagerplatz.467f59d'|trans }}</dt><dd class="col-sm-9"><code>{{ command.location_code }}</code></dd>
+				<dt class="col-sm-3">{{ 'ui.stock.stock_rotation.referenz.1ac5c0e'|trans }}</dt><dd class="col-sm-9">{{ command.reference_type }} · <code>{{ command.reference_id }}</code></dd>
+				<dt class="col-sm-3">{{ 'ui.v3.integration.automation.command-show.request.id.8c562f0'|trans }}</dt><dd class="col-sm-9"><code>{{ command.request_id }}</code></dd>
+				<dt class="col-sm-3">{{ 'ui.v3.integration.automation.command-show.ruckmeldung.1e9ae42'|trans }}</dt><dd class="col-sm-9">{{ command.message|default('–') }}</dd>
+				<dt class="col-sm-3">{{ 'ui.user.index.erstellt.98607f4'|trans }}</dt><dd class="col-sm-9">{{ command.created_at }}</dd>
+				<dt class="col-sm-3">{{ 'ui.v3.extensions.configuration_index.geandert.01de835'|trans }}</dt><dd class="col-sm-9">{{ command.changed_at|default('–') }}</dd>
 			</dl>
 		</div>
 	</div>
@@ -29,23 +29,23 @@
 				<input type="hidden" name="_token" value="{{ csrf_token('v3_automation_command_status_' ~ command.id) }}">
 				<div class="row g-3">
 					<div class="col-md-4">
-						<label class="form-label" for="status">Rückmeldung</label>
+						<label class="form-label" for="status">{{ 'ui.v3.integration.automation.command-show.ruckmeldung.1e9ae42'|trans }}</label>
 						<select class="form-select" id="status" name="status">
 							{% if command.status == 'queued' %}
-								<option value="dispatched">An Gerät übermittelt</option>
+								<option value="dispatched">{{ 'ui.v3.integration.automation.command-show.an.gerat.ubermittelt.a106a56'|trans }}</option>
 							{% else %}
-								<option value="completed">Erfolgreich abgeschlossen</option>
+								<option value="completed">{{ 'ui.v3.integration.automation.command-show.erfolgreich.abgeschlossen.d2fbb39'|trans }}</option>
 							{% endif %}
-							<option value="failed">Fehlgeschlagen</option>
+							<option value="failed">{{ 'ui.v3.integration.automation.command-show.fehlgeschlagen.f7b1b15'|trans }}</option>
 						</select>
 					</div>
 					<div class="col-md-8">
-						<label class="form-label" for="message">Gerätemeldung</label>
+						<label class="form-label" for="message">{{ 'ui.v3.integration.automation.command-show.geratemeldung.fa271e9'|trans }}</label>
 						<input class="form-control" id="message" name="message" maxlength="500">
 					</div>
 				</div>
 			</div>
-			<div class="card-footer text-end"><button class="btn btn-primary">Rückmeldung verarbeiten</button></div>
+			<div class="card-footer text-end"><button class="btn btn-primary">{{ 'ui.v3.integration.automation.command-show.ruckmeldung.verarbeiten.0d6cac4'|trans }}</button></div>
 		</form>
 	{% endif %}
 {% endblock %}

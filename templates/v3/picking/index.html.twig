@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<h1 class="h3 mb-1">Picking</h1>
-		<p class="text-muted mb-0">Picklisten zuweisen und mobil bearbeiten</p>
+		<h1 class="h3 mb-1">{{ 'ui.v3.picking.index.picking.7c3a00c'|trans }}</h1>
+		<p class="text-muted mb-0">{{ 'ui.v3.picking.index.picklisten.zuweisen.und.mobil.bearbeiten.db48b08'|trans }}</p>
 	</div>
 
 	<div class="row g-3">
@@ -15,18 +15,18 @@
 							<h2 class="h5">{{ list.code }}</h2>
 							<span class="badge bg-secondary-subtle text-secondary">{{ list.status }}</span>
 						</div>
-						<p class="mb-2">Auftrag {{ list.order_number }}</p>
-						<div class="text-muted">{{ list.completed_task_count }}/{{ list.task_count }} Positionen erledigt</div>
-						<div class="text-muted">{{ list.assigned_to_name ?: 'Nicht zugewiesen' }}</div>
+						<p class="mb-2">{{ 'ui.v3.inbound.control.auftrag.4ec1a90'|trans }} {{ list.order_number }}</p>
+						<div class="text-muted">{{ list.completed_task_count }}/{{ list.task_count }} {{ 'ui.v3.picking.index.positionen.erledigt.b163bf4'|trans }}</div>
+						<div class="text-muted">{{ list.assigned_to_name ?: ('ui.v3.platform.index.nicht.zugewiesen.4cfcb86'|trans) }}</div>
 					</div>
 					<div class="card-footer">
-						<a class="btn btn-primary w-100" href="{{ path('v3_picking_show', {pickListId: list.id}) }}">Pickliste öffnen</a>
+						<a class="btn btn-primary w-100" href="{{ path('v3_picking_show', {pickListId: list.id}) }}">{{ 'ui.v3.picking.index.pickliste.offnen.6ffeaa3'|trans }}</a>
 					</div>
 				</div>
 			</div>
 		{% else %}
 			<div class="col-12">
-				<div class="alert alert-light border">Noch keine Picklisten vorhanden.</div>
+				<div class="alert alert-light border">{{ 'ui.v3.picking.index.noch.keine.picklisten.vorhanden.61157fd'|trans }}</div>
 			</div>
 		{% endfor %}
 	</div>

@@ -3,23 +3,23 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Anmelden | WebWMS 3.0</title>
+    <title>{{ 'ui.security.v3_login.anmelden.webwms.3.0.20bbd1c'|trans }}</title>
     {{ include('subsections/head-css.html.twig') }}
 </head>
 <body class="bg-light">
 <main class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-7 col-lg-5">
-            <div class="text-center mb-4"><h1><span class="text-primary">web</span>WMS</h1><p class="text-muted">V3-Arbeitsbereich</p></div>
+            <div class="text-center mb-4"><h1><span class="text-primary">{{ 'ui.base.web.ca84d13'|trans }}</span>{{ 'ui.base.wms.89aa6e8'|trans }}</h1><p class="text-muted">{{ 'ui.security.v3_login.v3.arbeitsbereich.02c46ad'|trans }}</p></div>
             <div class="card shadow-sm border-0"><div class="card-body p-4">
-                <h2 class="h4 mb-3">Mit E-Mail anmelden</h2>
+                <h2 class="h4 mb-3">{{ 'ui.security.v3_login.mit.e.mail.anmelden.fd9f070'|trans }}</h2>
                 {% if error %}<div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>{% endif %}
                 <form method="post">
-                    <div class="mb-3"><label class="form-label" for="tenant_id">Mandanten-ID</label><input id="tenant_id" type="text" name="tenant_id" class="form-control" value="{{ last_tenant_id }}" autocomplete="organization" required autofocus></div>
-                    <div class="mb-3"><label class="form-label" for="email">E-Mail-Adresse</label><input id="email" type="email" name="email" class="form-control" value="{{ last_email }}" autocomplete="email" required></div>
-                    <div class="mb-4"><label class="form-label" for="password">Passwort</label><input id="password" type="password" name="password" class="form-control" autocomplete="current-password" required></div>
+                    <div class="mb-3"><label class="form-label" for="tenant_id">{{ 'ui.security.v3_login.mandanten.id.8bfdd22'|trans }}</label><input id="tenant_id" type="text" name="tenant_id" class="form-control" value="{{ last_tenant_id }}" autocomplete="organization" required autofocus></div>
+                    <div class="mb-3"><label class="form-label" for="email">{{ 'ui.security.v3_login.e.mail.adresse.ce8fdbc'|trans }}</label><input id="email" type="email" name="email" class="form-control" value="{{ last_email }}" autocomplete="email" required></div>
+                    <div class="mb-4"><label class="form-label" for="password">{{ 'ui.security.login.passwort.0719708'|trans }}</label><input id="password" type="password" name="password" class="form-control" autocomplete="current-password" required></div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate_v3') }}">
-                    <button type="submit" class="btn btn-primary w-100">Anmelden</button>
+                    <button type="submit" class="btn btn-primary w-100">{{ 'ui.security.login.anmelden.a13480a'|trans }}</button>
                 </form>
             </div></div>
         </div>

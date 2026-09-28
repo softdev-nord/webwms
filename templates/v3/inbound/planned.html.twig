@@ -2,12 +2,12 @@
 
 {% block webwms_content %}
 	<div class="d-flex justify-content-between align-items-center mb-4">
-		<div><h1 class="h3 mb-1">Geplanter Wareneingang</h1><p class="text-muted mb-0">Avisierte Positionen annehmen, prüfen und einlagern</p></div>
-		<a class="btn btn-outline-secondary" href="{{ path('v3_inbound_index') }}">Ungeplante Eingänge</a>
+		<div><h1 class="h3 mb-1">{{ 'ui.v3.inbound.planned.geplanter.wareneingang.fac8053'|trans }}</h1><p class="text-muted mb-0">{{ 'ui.v3.inbound.planned.avisierte.positionen.annehmen.prufen.und.einlagern.10b121b'|trans }}</p></div>
+		<a class="btn btn-outline-secondary" href="{{ path('v3_inbound_index') }}">{{ 'ui.v3.inbound.planned.ungeplante.eingange.ea0cc6a'|trans }}</a>
 	</div>
 
 	<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0">
-		<thead><tr><th>Avis / Bestellung</th><th>Artikel</th><th>Menge</th><th>Prozessstatus</th><th>Ziel</th><th class="text-end">Aktion</th></tr></thead>
+		<thead><tr><th>{{ 'ui.v3.inbound.planned.avis.bestellung.4fa3b45'|trans }}</th><th>{{ 'nav.master_data.submenu.headline1'|trans }}</th><th>{{ 'ui.customer_order.customer_order_input_fields.menge.ec3e620'|trans }}</th><th>{{ 'ui.v3.inbound.planned.prozessstatus.4b3f160'|trans }}</th><th>{{ 'ui.v3.inbound.planned.ziel.44d1262'|trans }}</th><th class="text-end">{{ 'base.action'|trans }}</th></tr></thead>
 		<tbody>
 		{% for item in worklist %}
 			<tr>
@@ -15,39 +15,39 @@
 				<td><strong>{{ item.sku }}</strong><div class="small text-muted">{{ item.product_name }}</div></td>
 				<td>{{ item.receipt_quantity|default(item.advised_quantity) }}</td>
 				<td>
-					{% if item.discrepancy_status == 'open' and item.receipt_status == 'inspected' %}<span class="badge bg-danger-subtle text-danger">Abweichung offen</span>
-					{% elseif item.discrepancy_status == 'rejected' %}<span class="badge bg-dark-subtle text-dark">Abgelehnt</span>
-					{% elseif item.putaway_status == 'completed' %}<span class="badge bg-success-subtle text-success">Eingelagert</span>
-					{% elseif item.putaway_status == 'open' %}<span class="badge bg-info-subtle text-info">Einlagerung offen</span>
-					{% elseif item.receipt_status == 'inspected' %}<span class="badge bg-primary-subtle text-primary">QS abgeschlossen</span>
-					{% elseif item.receipt_status == 'pending_quality' %}<span class="badge bg-warning-subtle text-warning">QS offen</span>
-					{% else %}<span class="badge bg-secondary-subtle text-secondary">Avisiert</span>{% endif %}
-					{% if item.quality_decision %}<div class="small text-muted mt-1">Entscheidung: {{ item.quality_decision }} / {{ item.stock_status }}</div>{% endif %}
-					{% if item.discrepancy_type %}<div class="small text-danger mt-1">{{ item.discrepancy_type }}: Soll {{ item.expected_quantity }}, Ist {{ item.actual_quantity }}<br>{{ item.discrepancy_reason }}</div>{% endif %}
+					{% if item.discrepancy_status == 'open' and item.receipt_status == 'inspected' %}<span class="badge bg-danger-subtle text-danger">{{ 'ui.v3.inbound.planned.abweichung.offen.840050a'|trans }}</span>
+					{% elseif item.discrepancy_status == 'rejected' %}<span class="badge bg-dark-subtle text-dark">{{ 'ui.v3.inbound.planned.abgelehnt.110d6fe'|trans }}</span>
+					{% elseif item.putaway_status == 'completed' %}<span class="badge bg-success-subtle text-success">{{ 'ui.v3.inbound.planned.eingelagert.0212825'|trans }}</span>
+					{% elseif item.putaway_status == 'open' %}<span class="badge bg-info-subtle text-info">{{ 'ui.v3.inbound.planned.einlagerung.offen.5204188'|trans }}</span>
+					{% elseif item.receipt_status == 'inspected' %}<span class="badge bg-primary-subtle text-primary">{{ 'ui.v3.inbound.planned.qs.abgeschlossen.e473570'|trans }}</span>
+					{% elseif item.receipt_status == 'pending_quality' %}<span class="badge bg-warning-subtle text-warning">{{ 'ui.v3.inbound.planned.qs.offen.a088d78'|trans }}</span>
+					{% else %}<span class="badge bg-secondary-subtle text-secondary">{{ 'ui.v3.inbound.planned.avisiert.6768432'|trans }}</span>{% endif %}
+					{% if item.quality_decision %}<div class="small text-muted mt-1">{{ 'ui.v3.inbound.planned.entscheidung.bacd553'|trans }} {{ item.quality_decision }} / {{ item.stock_status }}</div>{% endif %}
+					{% if item.discrepancy_type %}<div class="small text-danger mt-1">{{ item.discrepancy_type }}{{ 'ui.v3.inbound.planned.soll.b940827'|trans }} {{ item.expected_quantity }}{{ 'ui.v3.inbound.planned.ist.c4e960b'|trans }} {{ item.actual_quantity }}<br>{{ item.discrepancy_reason }}</div>{% endif %}
 				</td>
 				<td>{{ item.target_location_code|default(item.source_location_code|default('–')) }}</td>
 				<td class="text-end" style="min-width: 320px">
 					{% if item.line_status == 'advised' and is_granted('inbound.planned.receive') %}
-						<form method="post" action="{{ path('v3_inbound_planned_receive', {deliveryId: item.delivery_id, lineId: item.line_id}) }}" class="text-start border rounded p-2 bg-light-subtle"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_receive_' ~ item.line_id) }}"><div class="row g-2"><div class="col-4"><input class="form-control form-control-sm" type="number" min="1" name="actual_quantity" value="{{ item.advised_quantity }}" required title="Ist-Menge"></div><div class="col-8"><input class="form-control form-control-sm" name="discrepancy_reason" placeholder="Grund bei Abweichung"></div></div><button class="btn btn-sm btn-primary mt-2">Annehmen</button></form>
+						<form method="post" action="{{ path('v3_inbound_planned_receive', {deliveryId: item.delivery_id, lineId: item.line_id}) }}" class="text-start border rounded p-2 bg-light-subtle"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_receive_' ~ item.line_id) }}"><div class="row g-2"><div class="col-4"><input class="form-control form-control-sm" type="number" min="1" name="actual_quantity" value="{{ item.advised_quantity }}" required title="{{ 'ui.v3.inbound.planned.ist.menge.d145502'|trans }}"></div><div class="col-8"><input class="form-control form-control-sm" name="discrepancy_reason" placeholder="{{ 'ui.v3.inbound.planned.grund.bei.abweichung.5086960'|trans }}"></div></div><button class="btn btn-sm btn-primary mt-2">{{ 'ui.v3.inbound.new.annehmen.c1c1e04'|trans }}</button></form>
 					{% elseif item.receipt_status == 'pending_quality' and is_granted('inbound.planned.inspect') %}
 						<form method="post" action="{{ path('v3_inbound_planned_inspect', {receiptId: item.receipt_id}) }}" class="text-start border rounded p-2 bg-light-subtle">
 							<input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_inspect_' ~ item.receipt_id) }}">
-							<div class="row g-2"><div class="col-7"><select class="form-select form-select-sm" name="location_id" required><option value="">Annahmeplatz</option>{% for location in locations %}<option value="{{ location.id }}">{{ location.warehouse_code }} · {{ location.code }}</option>{% endfor %}</select></div><div class="col-5"><select class="form-select form-select-sm" name="decision">{% if item.discrepancy_status != 'open' %}<option value="accept">Freigeben</option>{% endif %}<option value="block">Sperren</option></select></div></div>
-							<div class="form-check mt-2"><input class="form-check-input" type="checkbox" value="1" id="packaging_{{ item.receipt_id }}" name="packaging_passed"><label class="form-check-label small" for="packaging_{{ item.receipt_id }}">Verpackung unbeschädigt</label></div>
-							<div class="form-check"><input class="form-check-input" type="checkbox" value="1" id="quantity_{{ item.receipt_id }}" name="quantity_passed"><label class="form-check-label small" for="quantity_{{ item.receipt_id }}">Menge vollständig</label></div>
-							<input class="form-control form-control-sm mt-2" name="packaging_note" placeholder="QS-Notiz"><div class="row g-2 mt-0"><div class="col"><input class="form-control form-control-sm" name="batch_number" placeholder="Charge"></div><div class="col"><input class="form-control form-control-sm" name="serial_number" placeholder="Seriennummer"></div><div class="col"><input class="form-control form-control-sm" type="date" name="expires_at" title="Mindesthaltbarkeitsdatum"></div></div>
-							<button class="btn btn-sm btn-primary mt-2">QS abschließen</button>
+							<div class="row g-2"><div class="col-7"><select class="form-select form-select-sm" name="location_id" required><option value="">{{ 'ui.v3.inbound.new.annahmeplatz.3171ab6'|trans }}</option>{% for location in locations %}<option value="{{ location.id }}">{{ location.warehouse_code }} · {{ location.code }}</option>{% endfor %}</select></div><div class="col-5"><select class="form-select form-select-sm" name="decision">{% if item.discrepancy_status != 'open' %}<option value="accept">{{ 'ui.v3.inbound.planned.freigeben.ea3fab2'|trans }}</option>{% endif %}<option value="block">{{ 'ui.v3.inbound.control.sperren.1210909'|trans }}</option></select></div></div>
+							<div class="form-check mt-2"><input class="form-check-input" type="checkbox" value="1" id="packaging_{{ item.receipt_id }}" name="packaging_passed"><label class="form-check-label small" for="packaging_{{ item.receipt_id }}">{{ 'ui.v3.inbound.planned.verpackung.unbeschadigt.d85f7c4'|trans }}</label></div>
+							<div class="form-check"><input class="form-check-input" type="checkbox" value="1" id="quantity_{{ item.receipt_id }}" name="quantity_passed"><label class="form-check-label small" for="quantity_{{ item.receipt_id }}">{{ 'ui.v3.inbound.planned.menge.vollstandig.3321c97'|trans }}</label></div>
+							<input class="form-control form-control-sm mt-2" name="packaging_note" placeholder="{{ 'ui.v3.inbound.planned.qs.notiz.2cec994'|trans }}"><div class="row g-2 mt-0"><div class="col"><input class="form-control form-control-sm" name="batch_number" placeholder="{{ 'ui.modal.stock_in_modal.charge.d4e1aee'|trans }}"></div><div class="col"><input class="form-control form-control-sm" name="serial_number" placeholder="{{ 'ui.v3.inbound.new.seriennummer.22b6f6b'|trans }}"></div><div class="col"><input class="form-control form-control-sm" type="date" name="expires_at" title="{{ 'ui.v3.inbound.planned.mindesthaltbarkeitsdatum.0931ea8'|trans }}"></div></div>
+							<button class="btn btn-sm btn-primary mt-2">{{ 'ui.v3.inbound.planned.qs.abschliessen.1c13f71'|trans }}</button>
 						</form>
 					{% elseif item.receipt_status == 'inspected' and item.discrepancy_status == 'open' and is_granted('inbound.planned.resolve') %}
-						<form method="post" action="{{ path('v3_inbound_planned_resolve', {receiptId: item.receipt_id}) }}" class="text-start border rounded p-2 bg-light-subtle"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_resolve_' ~ item.receipt_id) }}"><select class="form-select form-select-sm" name="action"><option value="release">Freigeben</option><option value="reject">Ablehnen</option></select><input class="form-control form-control-sm mt-2" name="resolution_note" placeholder="Entscheidungsgrund" required><button class="btn btn-sm btn-primary mt-2">Entscheidung speichern</button></form>
+						<form method="post" action="{{ path('v3_inbound_planned_resolve', {receiptId: item.receipt_id}) }}" class="text-start border rounded p-2 bg-light-subtle"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_resolve_' ~ item.receipt_id) }}"><select class="form-select form-select-sm" name="action"><option value="release">{{ 'ui.v3.inbound.planned.freigeben.ea3fab2'|trans }}</option><option value="reject">{{ 'ui.v3.inbound.planned.ablehnen.6a0ac79'|trans }}</option></select><input class="form-control form-control-sm mt-2" name="resolution_note" placeholder="{{ 'ui.v3.inbound.planned.entscheidungsgrund.bf3784e'|trans }}" required><button class="btn btn-sm btn-primary mt-2">{{ 'ui.v3.inbound.planned.entscheidung.speichern.987c309'|trans }}</button></form>
 					{% elseif item.receipt_status == 'inspected' and item.discrepancy_status != 'rejected' and item.putaway_order_id is null and is_granted('inbound.planned.putaway') %}
-						<form method="post" action="{{ path('v3_inbound_planned_putaway', {receiptId: item.receipt_id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_putaway_' ~ item.receipt_id) }}"><button class="btn btn-sm btn-primary">Einlagerung planen</button></form>
+						<form method="post" action="{{ path('v3_inbound_planned_putaway', {receiptId: item.receipt_id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_putaway_' ~ item.receipt_id) }}"><button class="btn btn-sm btn-primary">{{ 'ui.v3.inbound.planned.einlagerung.planen.2831f32'|trans }}</button></form>
 					{% elseif item.putaway_status == 'open' and is_granted('inbound.planned.putaway') %}
-						<form method="post" action="{{ path('v3_inbound_planned_putaway_confirm', {orderId: item.putaway_order_id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_putaway_confirm_' ~ item.putaway_order_id) }}"><button class="btn btn-sm btn-success">Einlagerung bestätigen</button></form>
+						<form method="post" action="{{ path('v3_inbound_planned_putaway_confirm', {orderId: item.putaway_order_id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_putaway_confirm_' ~ item.putaway_order_id) }}"><button class="btn btn-sm btn-success">{{ 'ui.v3.inbound.planned.einlagerung.bestatigen.524e499'|trans }}</button></form>
 					{% else %}–{% endif %}
 				</td>
 			</tr>
-		{% else %}<tr><td colspan="6" class="text-center text-muted py-5">Keine geplanten Wareneingänge vorhanden.</td></tr>{% endfor %}
+		{% else %}<tr><td colspan="6" class="text-center text-muted py-5">{{ 'ui.v3.inbound.planned.keine.geplanten.wareneingange.vorhanden.5ceb8ca'|trans }}</td></tr>{% endfor %}
 		</tbody>
 	</table></div></div>
 {% endblock %}

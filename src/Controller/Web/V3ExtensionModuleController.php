@@ -26,7 +26,7 @@ final class V3ExtensionModuleController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/extensions/index.html.twig', [
-            'page' => 'Erweiterte Funktionen',
+            'page' => 'ui.v3.extensions.index.erweiterte.funktionen.1c44775',
             'workspace' => $this->service->workspace($this->user()->tenantId()),
         ]);
     }
@@ -72,7 +72,7 @@ final class V3ExtensionModuleController extends AbstractController
             $this->csrf($request, 'v3_extension_configuration');
             $payload = $this->decodeJsonObject((string) $request->request->get('configuration_json'));
             $this->service->saveConfiguration($user->tenantId(), $user->actorId(), $resource, $id, $this->required($request, 'code'), $this->required($request, 'name'), $payload, $request->request->getBoolean('active'), new DateTimeImmutable());
-            $this->addFlash('success', 'Die Konfiguration wurde gespeichert.');
+            $this->addFlash('success', 'controller.v3extension.module.flash.die.konfiguration.wurde.gespeichert.2df92c3');
 
             return $this->redirectToRoute('v3_extension_index');
         }
@@ -80,7 +80,8 @@ final class V3ExtensionModuleController extends AbstractController
         $label = ExtensionModuleService::RESOURCES[$resource] ?? $resource;
 
         return $this->render('v3/extensions/configuration_form.html.twig', [
-            'page' => sprintf('%s %s', $label, $configuration === null ? 'anlegen' : 'bearbeiten'),
+            'page' => $configuration === null ? 'ui.extension.page.configuration_new' : 'ui.extension.page.configuration_edit',
+            'pageParameters' => ['%resource%' => $label],
             'resource' => $resource,
             'label' => $label,
             'configuration' => $configuration,
@@ -98,13 +99,14 @@ final class V3ExtensionModuleController extends AbstractController
             $this->csrf($request, 'v3_extension_work_item');
             $user = $this->user();
             $id = $this->service->createWorkItem($user->tenantId(), $user->actorId(), $workflow, $this->required($request, 'reference'), $this->decodeJsonObject((string) $request->request->get('payload_json')), new DateTimeImmutable());
-            $this->addFlash('success', 'Der Vorgang wurde angelegt.');
+            $this->addFlash('success', 'controller.v3extension.module.flash.der.vorgang.wurde.angelegt.85a614a');
 
             return $this->redirectToRoute('v3_extension_work_item_show', ['id' => $id]);
         }
 
         return $this->render('v3/extensions/work_item_form.html.twig', [
-            'page' => sprintf('%s starten', ExtensionModuleService::WORKFLOWS[$workflow]),
+            'page' => 'ui.extension.page.workflow_start',
+            'pageParameters' => ['%workflow%' => ExtensionModuleService::WORKFLOWS[$workflow]],
             'workflow' => $workflow,
             'label' => ExtensionModuleService::WORKFLOWS[$workflow],
         ]);
@@ -116,7 +118,8 @@ final class V3ExtensionModuleController extends AbstractController
         $item = $this->service->workItem($this->user()->tenantId(), $id);
 
         return $this->render('v3/extensions/work_item_show.html.twig', [
-            'page' => sprintf('Vorgang %s', (string) $item['reference']),
+            'page' => 'ui.extension.page.work_item',
+            'pageParameters' => ['%reference%' => (string) $item['reference']],
             'item' => $item,
             'transitions' => $this->service->allowedTransitions((string) $item['workflow_type'], (string) $item['status']),
         ]);
@@ -129,7 +132,7 @@ final class V3ExtensionModuleController extends AbstractController
         $this->csrf($request, 'v3_extension_transition_' . $id);
         $user = $this->user();
         $this->service->transition($user->tenantId(), $user->actorId(), $id, $this->required($request, 'status'), new DateTimeImmutable());
-        $this->addFlash('success', 'Der Status wurde aktualisiert.');
+        $this->addFlash('success', 'controller.v3administration.flash.der.status.wurde.aktualisiert.fa5e32b');
 
         return $this->redirectToRoute('v3_extension_work_item_show', ['id' => $id]);
     }

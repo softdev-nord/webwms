@@ -58,7 +58,7 @@ class SupplierOrderController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Übersicht Bestellungen',
+                'page' => 'nav.supplier_order.headline.entry1',
             ]
         );
     }

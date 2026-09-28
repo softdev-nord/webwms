@@ -43,7 +43,7 @@ class LoggingController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Logs',
+                'page' => 'nav.evaluations.submenu.headline6',
             ]
         );
     }

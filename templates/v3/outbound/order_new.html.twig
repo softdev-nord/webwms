@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_outbound_orders') }}" class="text-decoration-none">← Aufträge</a>
-		<h1 class="h3 mt-2">Ausgangsauftrag anlegen</h1>
+		<a href="{{ path('v3_outbound_orders') }}" class="text-decoration-none">{{ 'ui.v3.outbound.order.auftrage.0c194ea'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.outbound.order_new.ausgangsauftrag.anlegen.0375ac0'|trans }}</h1>
 	</div>
 
 	<form method="post" class="card border-0 shadow-sm">
@@ -12,21 +12,21 @@
 
 			<div class="row g-3 mb-4">
 				<div class="col-md-6">
-					<label class="form-label" for="order_number">Auftragsnummer</label>
+					<label class="form-label" for="order_number">{{ 'ui.v3.outbound.order_new.auftragsnummer.0169975'|trans }}</label>
 					<input class="form-control" id="order_number" name="order_number" required>
 				</div>
 				<div class="col-md-6">
-					<label class="form-label" for="customer_reference">Kundenreferenz</label>
+					<label class="form-label" for="customer_reference">{{ 'ui.v3.outbound.order.kundenreferenz.97ec8e0'|trans }}</label>
 					<input class="form-control" id="customer_reference" name="customer_reference" required>
 				</div>
 			</div>
 
-			<h2 class="h5">Positionen</h2>
+			<h2 class="h5">{{ 'ui.v3.inbound.control.positionen.834a902'|trans }}</h2>
 
 			<div id="order-items">
 				<div class="row g-3 mb-3 order-item">
 					<div class="col-md-9">
-						<label class="form-label">Artikel</label>
+						<label class="form-label">{{ 'nav.master_data.submenu.headline1'|trans }}</label>
 						<select class="form-select" name="product_id[]" required>
 							{% for product in products %}
 								<option value="{{ product.id }}">{{ product.sku }} - {{ product.name }}</option>
@@ -35,18 +35,18 @@
 					</div>
 
 					<div class="col-md-3">
-						<label class="form-label">Menge</label>
+						<label class="form-label">{{ 'ui.customer_order.customer_order_input_fields.menge.ec3e620'|trans }}</label>
 						<input class="form-control" type="number" min="1" name="quantity[]" value="1" required>
 					</div>
 				</div>
 			</div>
 
-			<button class="btn btn-sm btn-outline-secondary" type="button" id="add-item">Weitere Position</button>
+			<button class="btn btn-sm btn-outline-secondary" type="button" id="add-item">{{ 'ui.v3.outbound.order_new.weitere.position.2525268'|trans }}</button>
 		</div>
 
 		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_outbound_orders') }}">Abbrechen</a>
-			<button class="btn btn-primary">Auftrag anlegen</button>
+			<a class="btn btn-light" href="{{ path('v3_outbound_orders') }}">{{ 'button.cancel'|trans }}</a>
+			<button class="btn btn-primary">{{ 'ui.v3.outbound.order_new.auftrag.anlegen.74d749b'|trans }}</button>
 		</div>
 	</form>
 

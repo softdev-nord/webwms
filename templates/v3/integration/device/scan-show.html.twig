@@ -3,8 +3,8 @@
 {% block webwms_content %}
 	<div class="d-flex justify-content-between align-items-start mb-4">
 		<div>
-			<a href="{{ path('v3_device_index') }}" class="text-decoration-none">← Scanner und MDE</a>
-			<h1 class="h3 mt-2 mb-1">Scanereignis</h1>
+			<a href="{{ path('v3_device_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.device.new.scanner.und.mde.2f34617'|trans }}</a>
+			<h1 class="h3 mt-2 mb-1">{{ 'ui.v3.integration.device.scan-show.scanereignis.f839208'|trans }}</h1>
 			<code>{{ event.id }}</code>
 		</div>
 		<span class="badge bg-{{ event.status == 'accepted' ? 'success' : 'danger' }}-subtle text-{{ event.status == 'accepted' ? 'success' : 'danger' }} fs-6">{{ event.status }}</span>
@@ -12,20 +12,20 @@
 	<div class="card border-0 shadow-sm">
 		<div class="card-body">
 			<dl class="row mb-0">
-				<dt class="col-md-3">Gerät</dt>
+				<dt class="col-md-3">{{ 'ui.v3.integration.automation.command-new.gerat.945d2bc'|trans }}</dt>
 				<dd class="col-md-9"><a href="{{ path('v3_device_show', {deviceId: event.device_id}) }}">{{ event.device_code }} · {{ event.device_name }}</a></dd>
-				<dt class="col-md-3">Prozess</dt>
+				<dt class="col-md-3">{{ 'ui.v3.integration.device.index.prozess.beb029c'|trans }}</dt>
 				<dd class="col-md-9">{{ event.process_type }} · <code>{{ event.context_reference }}</code></dd>
-				<dt class="col-md-3">Scantyp</dt>
+				<dt class="col-md-3">{{ 'ui.v3.integration.device.index.scantyp.6f85cf4'|trans }}</dt>
 				<dd class="col-md-9">{{ event.scan_type }}</dd>
-				<dt class="col-md-3">Scanwert</dt>
+				<dt class="col-md-3">{{ 'ui.v3.integration.device.scan-show.scanwert.c0dc33a'|trans }}</dt>
 				<dd class="col-md-9"><code>{{ event.scan_value }}</code></dd>
-				<dt class="col-md-3">Request-ID</dt>
+				<dt class="col-md-3">{{ 'ui.v3.integration.automation.command-show.request.id.8c562f0'|trans }}</dt>
 				<dd class="col-md-9"><code>{{ event.request_id }}</code></dd>
-				<dt class="col-md-3">Erfasst</dt>
+				<dt class="col-md-3">{{ 'ui.v3.integration.device.scan-show.erfasst.c4d26eb'|trans }}</dt>
 				<dd class="col-md-9">{{ event.scanned_at }} · <code>{{ event.scanned_by }}</code></dd>
 				{% if event.message %}
-					<dt class="col-md-3">Prüfhinweis</dt>
+					<dt class="col-md-3">{{ 'ui.v3.integration.device.scan-show.prufhinweis.161936a'|trans }}</dt>
 					<dd class="col-md-9">{{ event.message }}</dd>
 				{% endif %}
 			</dl>

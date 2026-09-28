@@ -3,20 +3,20 @@
 	<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
 		<div>
 			<h1 class="h3 mb-1">{{ summary.tenant }}</h1>
-			<p class="text-muted mb-0">Operativer Überblick</p>
+			<p class="text-muted mb-0">{{ 'ui.v3.dashboard.index.operativer.uberblick.ac0d459'|trans }}</p>
 		</div>
 
 		{% if is_granted('inventory.stock.read') %}
-			<a class="btn btn-primary" href="{{ path('v3_stock') }}">Bestand öffnen</a>
+			<a class="btn btn-primary" href="{{ path('v3_stock') }}">{{ 'ui.v3.dashboard.index.bestand.offnen.0d700bd'|trans }}</a>
 		{% endif %}
 	</div>
 
 	<div class="row g-3 mb-4">
-		{% for label, value in {'Artikel': summary.products, 'Lager': summary.warehouses, 'Lagerplätze': summary.locations, 'Bestandsmenge': summary.stock} %}
+		{% for label, value in {'ui.common.product': summary.products, 'ui.topology.warehouse': summary.warehouses, 'ui.topology.bins': summary.locations, 'ui.common.stock_quantity': summary.stock} %}
 			<div class="col-sm-6 col-xl-3">
 				<div class="card h-100">
 					<div class="card-body card-animate">
-						<div class="text-muted text-uppercase small">{{ label }}</div>
+						<div class="text-muted text-uppercase small">{{ label|trans }}</div>
 						<div class="display-6 mt-2">{{ value|number_format(0, ',', '.') }}</div>
 					</div>
 				</div>
@@ -26,15 +26,15 @@
 
 	<div class="card border-0 shadow-sm">
 		<div class="card-header">
-			<h2 class="h5 mb-0">Fulfillment</h2>
+			<h2 class="h5 mb-0">{{ 'ui.v3.dashboard.index.fulfillment.3ce37f1'|trans }}</h2>
 		</div>
 
 		<div class="card-body">
 			<div class="row g-3 text-center">
-				{% for label, value in {'Ausgangsaufträge': summary.outboundOrders, 'Picklisten': summary.pickLists, 'Packaufträge': summary.packingOrders, 'Sendungen': summary.shipments} %}
+				{% for label, value in {'ui.common.outbound_orders': summary.outboundOrders, 'ui.common.pick_lists': summary.pickLists, 'ui.common.packing_orders': summary.packingOrders, 'ui.common.shipments': summary.shipments} %}
 					<div class="col-6 col-lg-3">
 						<div class="h3 mb-1">{{ value }}</div>
-						<div class="text-muted">{{ label }}</div>
+						<div class="text-muted">{{ label|trans }}</div>
 					</div>
 				{% endfor %}
 			</div>

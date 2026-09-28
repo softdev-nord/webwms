@@ -3,18 +3,18 @@
 {% block webwms_content %}
 	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
 		<div>
-			<h1 class="h3 mb-1">TCP/IP und Webservice</h1>
-			<p class="text-muted mb-0">Transportadapter und Protokolle für Hardware und Anlagen verwalten</p>
+			<h1 class="h3 mb-1">{{ 'ui.v3.integration.transport.index.tcp.ip.und.webservice.0d754d9'|trans }}</h1>
+			<p class="text-muted mb-0">{{ 'ui.v3.integration.transport.index.transportadapter.und.protokolle.fur.hardware.und.anlage.a4cbb9a'|trans }}</p>
 		</div>
 		{% if is_granted('integration.transport.write') %}
-			<a class="btn btn-primary" href="{{ path('v3_transport_new') }}">Endpunkt anlegen</a>
+			<a class="btn btn-primary" href="{{ path('v3_transport_new') }}">{{ 'ui.v3.integration.transport.index.endpunkt.anlegen.16bdac3'|trans }}</a>
 		{% endif %}
 	</div>
 
 	<div class="card border-0 shadow-sm">
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
-				<thead><tr><th>Code</th><th>Name</th><th>Adapter</th><th>Protokoll</th><th>Adresse</th><th>Timeouts</th><th>Status</th><th></th></tr></thead>
+				<thead><tr><th>{{ 'ui.v3.administration.role_new.code.adac693'|trans }}</th><th>{{ 'templates.correspondence.name'|trans }}</th><th>{{ 'ui.v3.integration.transport.index.adapter.e6b4616'|trans }}</th><th>{{ 'ui.v3.integration.transport.index.protokoll.440c156'|trans }}</th><th>{{ 'ui.v3.integration.transport.index.adresse.522e146'|trans }}</th><th>{{ 'ui.v3.integration.transport.index.timeouts.27a4f2c'|trans }}</th><th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th><th></th></tr></thead>
 				<tbody>
 					{% for endpoint in endpoints %}
 						<tr>
@@ -23,19 +23,19 @@
 							<td>{{ endpoint.adapter_type }}</td>
 							<td>{{ endpoint.protocol }} · {{ endpoint.framing }}</td>
 							<td><code>{{ endpoint.address }}</code></td>
-							<td>{{ endpoint.connect_timeout_ms }} / {{ endpoint.read_timeout_ms }} ms</td>
-							<td><span class="badge bg-{{ endpoint.active ? 'success' : 'secondary' }}-subtle text-{{ endpoint.active ? 'success' : 'secondary' }}">{{ endpoint.active ? 'Aktiv' : 'Pausiert' }}</span></td>
+							<td>{{ endpoint.connect_timeout_ms }} / {{ endpoint.read_timeout_ms }} {{ 'ui.v3.integration.transport.index.ms.26cc321'|trans }}</td>
+							<td><span class="badge bg-{{ endpoint.active ? 'success' : 'secondary' }}-subtle text-{{ endpoint.active ? 'success' : 'secondary' }}">{{ (endpoint.active ? 'ui.user.user_input_fields.aktiv.16a766c' : 'ui.v3.integration.carrier-connection.index.pausiert.09b952c')|trans }}</span></td>
 							<td class="text-end">
 								{% if is_granted('integration.transport.write') %}
 									<form method="post" action="{{ path('v3_transport_status', {endpointId: endpoint.id}) }}">
 										<input type="hidden" name="_token" value="{{ csrf_token('v3_transport_status_' ~ endpoint.id) }}">
-										<button class="btn btn-sm btn-outline-secondary">{{ endpoint.active ? 'Pausieren' : 'Aktivieren' }}</button>
+										<button class="btn btn-sm btn-outline-secondary">{{ (endpoint.active ? 'ui.v3.integration.automation.index.choice.pausieren.95175c7' : 'ui.v3.integration.automation.index.choice.aktivieren.3cc7932')|trans }}</button>
 									</form>
 								{% endif %}
 							</td>
 						</tr>
 					{% else %}
-						<tr><td colspan="8" class="text-center text-muted py-5">Noch keine Transport-Endpunkte vorhanden.</td></tr>
+						<tr><td colspan="8" class="text-center text-muted py-5">{{ 'ui.v3.integration.transport.index.noch.keine.transport.endpunkte.vorhanden.e0ae09d'|trans }}</td></tr>
 					{% endfor %}
 				</tbody>
 			</table>

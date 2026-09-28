@@ -2,15 +2,15 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<h1 class="h3 mb-1">Integrations-Outbox</h1>
-		<p class="text-muted mb-0">Statusereignisse überwachen und fehlgeschlagene Zustellungen bearbeiten</p>
+		<h1 class="h3 mb-1">{{ 'ui.v3.integration.erp-connection.show.integrations.outbox.7f5baf2'|trans }}</h1>
+		<p class="text-muted mb-0">{{ 'ui.v3.integration.outbox.index.statusereignisse.uberwachen.und.fehlgeschlagene.zustell.59f29d3'|trans }}</p>
 	</div>
 
 	<div class="card border-0 shadow-sm mb-4">
 		<div class="card-body">
 			<form method="get" class="row g-2 align-items-end">
 				<div class="col-md-5 col-lg-3">
-					<label class="form-label" for="status">Status</label>
+					<label class="form-label" for="status">{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</label>
 					<select class="form-select" id="status" name="status">
 						{% for status in statuses %}
 							<option value="{{ status }}" {% if status == selectedStatus %}selected{% endif %}>{{ status }}</option>
@@ -18,7 +18,7 @@
 					</select>
 				</div>
 				<div class="col-auto">
-					<button class="btn btn-primary">Filtern</button>
+					<button class="btn btn-primary">{{ 'ui.v3.integration.outbox.index.filtern.bfc80a7'|trans }}</button>
 				</div>
 			</form>
 		</div>
@@ -29,11 +29,11 @@
 			<table class="table table-hover align-middle mb-0">
 				<thead>
 					<tr>
-						<th>Ereignis</th>
-						<th>Aggregat</th>
-						<th>Status</th>
-						<th class="text-end">Versuche</th>
-						<th>Zeitpunkt</th>
+						<th>{{ 'ui.v3.administration.workspace.ereignis.9cd7d14'|trans }}</th>
+						<th>{{ 'ui.v3.integration.outbox.index.aggregat.d45683a'|trans }}</th>
+						<th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th>
+						<th class="text-end">{{ 'ui.v3.integration.outbox.index.versuche.b924bff'|trans }}</th>
+						<th>{{ 'ui.v3.administration.workspace.zeitpunkt.e2f9e93'|trans }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -49,12 +49,12 @@
 							<td class="text-end">{{ message.attempt_count }}</td>
 							<td>{{ message.occurred_at }}</td>
 							<td class="text-end">
-								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_outbox_show', {messageId: message.id}) }}">Öffnen</a>
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_outbox_show', {messageId: message.id}) }}">{{ 'ui.v3.inbound.index.offnen.fc718f8'|trans }}</a>
 							</td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="6" class="text-center text-muted py-5">Keine Nachrichten mit diesem Status vorhanden.</td>
+							<td colspan="6" class="text-center text-muted py-5">{{ 'ui.v3.integration.outbox.index.keine.nachrichten.mit.diesem.status.vorhanden.212a5b2'|trans }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -64,7 +64,7 @@
 
 	{% if nextCursor %}
 		<div class="mt-3 text-end">
-			<a class="btn btn-outline-primary" href="{{ path('v3_outbox_index', {status: selectedStatus, cursor: nextCursor}) }}">Weitere Nachrichten</a>
+			<a class="btn btn-outline-primary" href="{{ path('v3_outbox_index', {status: selectedStatus, cursor: nextCursor}) }}">{{ 'ui.v3.integration.outbox.index.weitere.nachrichten.5d1e146'|trans }}</a>
 		</div>
 	{% endif %}
 {% endblock %}

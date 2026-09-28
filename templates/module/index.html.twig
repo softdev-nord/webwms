@@ -47,7 +47,7 @@
                                                                         {% if module.description|default %}
                                                                             {{ module.description }}
                                                                         {% else %}
-                                                                            Dieses Modul ist noch nicht installiert
+                                                                            {{ 'ui.module.index.dieses.modul.ist.noch.nicht.installiert.b2a1963'|trans }}
                                                                         {% endif %}
                                                                     </span>
                                                                 </section>
@@ -55,18 +55,18 @@
                                                             <div class="module-card-base-meta-info">
                                                                 <section>
                                                                     <span class="module-card-base-meta-info-version">
-                                                                        Version:
+                                                                        {{ 'ui.configuration.tabs.systeminformation.version.9f49127'|trans }}
                                                                         {% if module.version %}
                                                                             {{ module.version }}
                                                                         {% endif %}
                                                                     </span>
                                                                 </section>
                                                                 <span>
-                                                                    Installiert:
+                                                                    {{ 'ui.module.index.installiert.397fb17'|trans }}
                                                                     {% if module.installedAt|default %}
                                                                         {{ module.installedAt }}
                                                                     {% else %}
-                                                                        Nicht installiert
+                                                                        {{ 'ui.module.index.nicht.installiert.2b337f9'|trans }}
                                                                     {% endif %}
                                                                 </span>
                                                             </div>

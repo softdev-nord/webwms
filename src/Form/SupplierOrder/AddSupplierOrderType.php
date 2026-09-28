@@ -35,7 +35,7 @@ class AddSupplierOrderType extends AbstractType
             ],
           ])
           ->add('supplierOrderNr', TextType::class, [
-            'label' => 'Bestellungs-Nr',
+            'label' => 'form.supplierorder.addsupplierordertype.label.282ae0ee',
             'attr' => [
               'class' => 'form-control is--transparent',
               'id' => 'supplier_order_nr',
@@ -55,18 +55,18 @@ class AddSupplierOrderType extends AbstractType
             ],
           ])
           ->add('supplierOrderReference', TextType::class, [
-            'label' => 'Bestellungs-Referenz',
+            'label' => 'form.supplierorder.addsupplierordertype.label.04b898ff',
             'attr' => [
               'class' => 'form-control',
               'id' => 'supplier_order_reference',
-              'placeholder' => 'Bestellungs-Referenz',
+              'placeholder' => 'form.supplierorder.addsupplierordertype.placeholder.04b898ff',
             ],
           ])
           ->add('supplierOrderDate', DateTimeType::class, [
             'widget' => 'single_text',
             'input' => 'datetime',
             'format' => 'dd.MM.yyyy',
-            'label' => 'Bestelldatum',
+            'label' => 'form.supplierorder.addsupplierordertype.label.c2b65aed',
             'html5' => false,
             'attr' => [
               'class' => 'form-control',
@@ -76,7 +76,7 @@ class AddSupplierOrderType extends AbstractType
             'widget' => 'single_text',
             'input' => 'datetime',
             'format' => 'dd.MM.yyyy',
-            'label' => 'Anlagedatum',
+            'label' => 'form.supplierorder.addsupplierordertype.label.286db5c0',
             'html5' => false,
             'attr' => [
               'class' => 'form-control',
@@ -85,13 +85,13 @@ class AddSupplierOrderType extends AbstractType
             ],
           ])
           ->add('save', ButtonType::class, [
-            'label' => 'Bestellung anlegen',
+            'label' => 'form.supplierorder.addsupplierordertype.label.0e2ca1f8',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'Abbrechen',
+            'label' => 'form.supplierorder.addsupplierordertype.label.2d5d70e9',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

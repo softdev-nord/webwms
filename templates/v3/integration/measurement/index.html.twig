@@ -3,42 +3,42 @@
 {% block webwms_content %}
 	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
 		<div>
-			<h1 class="h3 mb-1">Waagen und Volumenmessung</h1>
-			<p class="text-muted mb-0">Messgeräte verwalten und Gewicht sowie Abmessungen automatisch übernehmen</p>
+			<h1 class="h3 mb-1">{{ 'ui.v3.integration.measurement.index.waagen.und.volumenmessung.0be53d9'|trans }}</h1>
+			<p class="text-muted mb-0">{{ 'ui.v3.integration.measurement.index.messgerate.verwalten.und.gewicht.sowie.abmessungen.auto.d7754e6'|trans }}</p>
 		</div>
 		<div class="d-flex gap-2">
 			{% if is_granted('integration.measurement.write') %}
-				<a class="btn btn-outline-primary" href="{{ path('v3_measurement_device_new') }}">Messgerät anlegen</a>
+				<a class="btn btn-outline-primary" href="{{ path('v3_measurement_device_new') }}">{{ 'ui.v3.integration.measurement.device-new.messgerat.anlegen.a9db00d'|trans }}</a>
 			{% endif %}
 			{% if is_granted('integration.measurement.capture') %}
-				<a class="btn btn-primary" href="{{ path('v3_measurement_capture') }}">Messung erfassen</a>
+				<a class="btn btn-primary" href="{{ path('v3_measurement_capture') }}">{{ 'ui.v3.integration.measurement.capture.messung.erfassen.88567ba'|trans }}</a>
 			{% endif %}
 		</div>
 	</div>
 
 	<div class="card border-0 shadow-sm mb-4">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Messgeräte</h2></div>
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.measurement.index.messgerate.8d470f3'|trans }}</h2></div>
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
-				<thead><tr><th>Code</th><th>Name</th><th>Typ</th><th>Status</th><th></th></tr></thead>
+				<thead><tr><th>{{ 'ui.v3.administration.role_new.code.adac693'|trans }}</th><th>{{ 'templates.correspondence.name'|trans }}</th><th>{{ 'ui.v3.administration.workspace.typ.edcaf9a'|trans }}</th><th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th><th></th></tr></thead>
 				<tbody>
 					{% for device in devices %}
 						<tr>
 							<td><code>{{ device.code }}</code></td>
 							<td class="fw-semibold">{{ device.name }}</td>
 							<td>{{ device.device_type }}</td>
-							<td><span class="badge bg-{{ device.active ? 'success' : 'secondary' }}-subtle text-{{ device.active ? 'success' : 'secondary' }}">{{ device.active ? 'Aktiv' : 'Pausiert' }}</span></td>
+							<td><span class="badge bg-{{ device.active ? 'success' : 'secondary' }}-subtle text-{{ device.active ? 'success' : 'secondary' }}">{{ (device.active ? 'ui.user.user_input_fields.aktiv.16a766c' : 'ui.v3.integration.carrier-connection.index.pausiert.09b952c')|trans }}</span></td>
 							<td class="text-end">
 								{% if is_granted('integration.measurement.write') %}
 									<form method="post" action="{{ path('v3_measurement_device_status', {deviceId: device.id}) }}">
 										<input type="hidden" name="_token" value="{{ csrf_token('v3_measurement_device_status_' ~ device.id) }}">
-										<button class="btn btn-sm btn-outline-secondary">{{ device.active ? 'Pausieren' : 'Aktivieren' }}</button>
+										<button class="btn btn-sm btn-outline-secondary">{{ (device.active ? 'ui.v3.integration.automation.index.choice.pausieren.95175c7' : 'ui.v3.integration.automation.index.choice.aktivieren.3cc7932')|trans }}</button>
 									</form>
 								{% endif %}
 							</td>
 						</tr>
 					{% else %}
-						<tr><td colspan="5" class="text-center text-muted py-4">Noch keine Messgeräte vorhanden.</td></tr>
+						<tr><td colspan="5" class="text-center text-muted py-4">{{ 'ui.v3.integration.measurement.index.noch.keine.messgerate.vorhanden.52d5756'|trans }}</td></tr>
 					{% endfor %}
 				</tbody>
 			</table>
@@ -46,10 +46,10 @@
 	</div>
 
 	<div class="card border-0 shadow-sm">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Letzte Messungen</h2></div>
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.measurement.index.letzte.messungen.9caa93c'|trans }}</h2></div>
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
-				<thead><tr><th>Gerät</th><th>Ziel</th><th>Gewicht</th><th>Abmessungen</th><th>Status</th><th>Zeitpunkt</th><th></th></tr></thead>
+				<thead><tr><th>{{ 'ui.v3.integration.automation.command-new.gerat.945d2bc'|trans }}</th><th>{{ 'ui.v3.inbound.planned.ziel.44d1262'|trans }}</th><th>{{ 'ui.article.article_input_fields.gewicht.b80121b'|trans }}</th><th>{{ 'ui.v3.integration.measurement.index.abmessungen.7cc7847'|trans }}</th><th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th><th>{{ 'ui.v3.administration.workspace.zeitpunkt.e2f9e93'|trans }}</th><th></th></tr></thead>
 				<tbody>
 					{% for measurement in measurements %}
 						<tr>
@@ -59,10 +59,10 @@
 							<td>{{ measurement.length_mm ? measurement.length_mm ~ ' × ' ~ measurement.width_mm ~ ' × ' ~ measurement.height_mm ~ ' mm' : '–' }}</td>
 							<td><span class="badge bg-{{ measurement.status == 'accepted' ? 'success' : 'danger' }}-subtle text-{{ measurement.status == 'accepted' ? 'success' : 'danger' }}">{{ measurement.status }}</span></td>
 							<td>{{ measurement.measured_at }}</td>
-							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_measurement_show', {measurementId: measurement.id}) }}">Öffnen</a></td>
+							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_measurement_show', {measurementId: measurement.id}) }}">{{ 'ui.v3.inbound.index.offnen.fc718f8'|trans }}</a></td>
 						</tr>
 					{% else %}
-						<tr><td colspan="7" class="text-center text-muted py-5">Noch keine Messungen vorhanden.</td></tr>
+						<tr><td colspan="7" class="text-center text-muted py-5">{{ 'ui.v3.integration.measurement.index.noch.keine.messungen.vorhanden.14361c4'|trans }}</td></tr>
 					{% endfor %}
 				</tbody>
 			</table>

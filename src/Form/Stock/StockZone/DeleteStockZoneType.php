@@ -35,13 +35,13 @@ class DeleteStockZoneType extends AbstractType
             ],
           ])
           ->add('delete', ButtonType::class, [
-            'label' => 'Löschen',
+            'label' => 'form.stock.stockzone.deletestockzonetype.label.57def7c0',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'Abbrechen',
+            'label' => 'form.stock.stockzone.deletestockzonetype.label.2d5d70e9',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

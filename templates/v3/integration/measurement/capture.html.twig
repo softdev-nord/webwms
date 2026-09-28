@@ -2,9 +2,9 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_measurement_index') }}" class="text-decoration-none">← Waagen und Volumenmessung</a>
-		<h1 class="h3 mt-2">Messung erfassen</h1>
-		<p class="text-muted mb-0">Messwerte werden bei Annahme direkt auf Paket oder Artikel übernommen.</p>
+		<a href="{{ path('v3_measurement_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.measurement.capture.waagen.und.volumenmessung.8803bcb'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.integration.measurement.capture.messung.erfassen.88567ba'|trans }}</h1>
+		<p class="text-muted mb-0">{{ 'ui.v3.integration.measurement.capture.messwerte.werden.bei.annahme.direkt.auf.paket.oder.arti.2547105'|trans }}</p>
 	</div>
 	<form method="post" class="card border-0 shadow-sm">
 		<div class="card-body">
@@ -12,7 +12,7 @@
 			<input type="hidden" name="request_id" value="{{ requestId }}">
 			<div class="row g-3">
 				<div class="col-md-6">
-					<label class="form-label" for="device_id">Messgerät</label>
+					<label class="form-label" for="device_id">{{ 'ui.v3.integration.measurement.capture.messgerat.076f137'|trans }}</label>
 					<select class="form-select" id="device_id" name="device_id" required>
 						{% for device in devices %}
 							<option value="{{ device.id }}">{{ device.code }} · {{ device.name }} ({{ device.device_type }})</option>
@@ -20,52 +20,52 @@
 					</select>
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="target_type">Zieltyp</label>
+					<label class="form-label" for="target_type">{{ 'ui.v3.integration.measurement.capture.zieltyp.41d0b09'|trans }}</label>
 					<select class="form-select" id="target_type" name="target_type">
-						<option value="package" {% if app.request.query.get('targetType') == 'package' %}selected{% endif %}>Paket</option>
-						<option value="product" {% if app.request.query.get('targetType') == 'product' %}selected{% endif %}>Artikel</option>
+						<option value="package" {% if app.request.query.get('targetType') == 'package' %}selected{% endif %}>{{ 'ui.v3.integration.measurement.capture.paket.3c97ce0'|trans }}</option>
+						<option value="product" {% if app.request.query.get('targetType') == 'product' %}selected{% endif %}>{{ 'nav.master_data.submenu.headline1'|trans }}</option>
 					</select>
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="target_id">Ziel-ID</label>
+					<label class="form-label" for="target_id">{{ 'ui.v3.integration.measurement.capture.ziel.id.62d40f2'|trans }}</label>
 					<input class="form-control font-monospace" id="target_id" name="target_id" list="measurement-targets" value="{{ app.request.query.get('targetId') }}" required autofocus>
 					<datalist id="measurement-targets">
-						{% for package in packages %}<option value="{{ package.id }}">Paket {{ package.package_number }} · {{ package.packing_order_code }}</option>{% endfor %}
-						{% for product in products %}<option value="{{ product.id }}">Artikel {{ product.sku }} · {{ product.name }}</option>{% endfor %}
+						{% for package in packages %}<option value="{{ package.id }}">{{ 'ui.v3.integration.measurement.capture.paket.3c97ce0'|trans }} {{ package.package_number }} · {{ package.packing_order_code }}</option>{% endfor %}
+						{% for product in products %}<option value="{{ product.id }}">{{ 'nav.master_data.submenu.headline1'|trans }} {{ product.sku }} · {{ product.name }}</option>{% endfor %}
 					</datalist>
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="weight_grams">Gewicht in Gramm</label>
+					<label class="form-label" for="weight_grams">{{ 'ui.v3.integration.measurement.capture.gewicht.in.gramm.9861ec4'|trans }}</label>
 					<input class="form-control" type="number" min="1" id="weight_grams" name="weight_grams">
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="length_mm">Länge in mm</label>
+					<label class="form-label" for="length_mm">{{ 'ui.v3.integration.measurement.capture.lange.in.mm.c01499a'|trans }}</label>
 					<input class="form-control" type="number" min="1" id="length_mm" name="length_mm">
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="width_mm">Breite in mm</label>
+					<label class="form-label" for="width_mm">{{ 'ui.v3.integration.measurement.capture.breite.in.mm.9bb4860'|trans }}</label>
 					<input class="form-control" type="number" min="1" id="width_mm" name="width_mm">
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="height_mm">Höhe in mm</label>
+					<label class="form-label" for="height_mm">{{ 'ui.v3.integration.measurement.capture.hohe.in.mm.b51f6cc'|trans }}</label>
 					<input class="form-control" type="number" min="1" id="height_mm" name="height_mm">
 				</div>
 				<div class="col-md-3">
 					<div class="form-check form-switch mt-4">
 						<input class="form-check-input" type="checkbox" id="accepted" name="accepted" value="1" checked>
-						<label class="form-check-label" for="accepted">Messung akzeptiert</label>
+						<label class="form-check-label" for="accepted">{{ 'ui.v3.integration.measurement.capture.messung.akzeptiert.bbb7278'|trans }}</label>
 					</div>
 				</div>
 				<div class="col-md-9">
-					<label class="form-label" for="message">Prüfhinweis</label>
+					<label class="form-label" for="message">{{ 'ui.v3.integration.device.scan-show.prufhinweis.161936a'|trans }}</label>
 					<input class="form-control" id="message" name="message" maxlength="500">
 				</div>
 			</div>
-			{% if devices is empty %}<div class="alert alert-warning mt-3 mb-0">Es ist kein aktives Messgerät vorhanden.</div>{% endif %}
+			{% if devices is empty %}<div class="alert alert-warning mt-3 mb-0">{{ 'ui.v3.integration.measurement.capture.es.ist.kein.aktives.messgerat.vorhanden.1a4e8e5'|trans }}</div>{% endif %}
 		</div>
 		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_measurement_index') }}">Abbrechen</a>
-			<button class="btn btn-primary" {% if devices is empty %}disabled{% endif %}>Messung verarbeiten</button>
+			<a class="btn btn-light" href="{{ path('v3_measurement_index') }}">{{ 'button.cancel'|trans }}</a>
+			<button class="btn btn-primary" {% if devices is empty %}disabled{% endif %}>{{ 'ui.v3.integration.measurement.capture.messung.verarbeiten.9272fbf'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

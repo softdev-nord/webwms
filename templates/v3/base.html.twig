@@ -118,6 +118,14 @@
     <div class="main-content">
         <div class="page-content">
             <div class="container-fluid">
+                {% for type, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ type == 'error' ? 'danger' : type }} alert-dismissible fade show" role="alert">
+                            {{ message is iterable ? message.id|trans(message.parameters|default({})) : message|trans }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'ui.common.close'|trans }}"></button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
                 {% block webwms_content %}{% endblock %}
             </div>
         </div>
@@ -141,8 +149,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title" id="modalCenterTitle"></h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" class="white-text">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'ui.base.close.bbfa773'|trans }}">
+                        <span aria-hidden="true" class="white-text">{{ 'ui.base.times.77d7c97'|trans }}</span>
                     </button>
                 </div>
                 <div id="modal-content-ajax">
@@ -160,18 +168,18 @@
         <div class="modal-dialog modal-dialog-centered modal-notify modal-success" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Über webWMS</h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" class="white-text">&times;</span>
+                    <h3 class="modal-title">{{ 'nav.help.headline2'|trans }}</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'ui.base.close.bbfa773'|trans }}">
+                        <span aria-hidden="true" class="white-text">{{ 'ui.base.times.77d7c97'|trans }}</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
-                        <span class="text-first">web</span><span class="text-last">WMS</span>
-                        <p class="fs-16" style="text-align: center; font-weight: bold; margin: -20px 0 20px 0;">Das webbasierte Lagerverwaltungssystem</p>
+                        <span class="text-first">{{ 'ui.base.web.ca84d13'|trans }}</span><span class="text-last">{{ 'ui.base.wms.89aa6e8'|trans }}</span>
+                        <p class="fs-16" style="text-align: center; font-weight: bold; margin: -20px 0 20px 0;">{{ 'ui.base.das.webbasierte.lagerverwaltungssystem.4f39b6b'|trans }}</p>
                         <p style="margin-bottom: 5px;">{{ appVersion }} {{ appVersionNumber }}</p>
                         <p style="margin-bottom: 20px;">{{ appCopyright }}</p>
-                        <p style="margin-bottom: 5px;">Lizenziert für:</p>
+                        <p style="margin-bottom: 5px;">{{ 'ui.base.lizenziert.fur.d0a709c'|trans }}</p>
                         <p>{{ appLizenz }}</p>
                     </div>
                 </div>

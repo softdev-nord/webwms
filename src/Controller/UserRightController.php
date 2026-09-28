@@ -42,7 +42,7 @@ class UserRightController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Übersicht Benutzerrechte',
+                'page' => 'controller.user.right.page.ubersicht.benutzerrechte.f98bc4e',
                 'user_rights' => $this->getAllUserRights(),
             ]
         );

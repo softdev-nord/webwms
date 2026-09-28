@@ -51,7 +51,7 @@ class SupplierController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Lieferantenübersicht',
+                'page' => 'controller.supplier.page.lieferantenubersicht.871c784',
             ]
         );
     }

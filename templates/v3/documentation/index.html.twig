@@ -3,16 +3,16 @@
 {% block webwms_content %}
     <div class="row align-items-center mb-4">
         <div class="col-lg-7">
-            <h1 class="h3 mb-1">Hilfe &amp; Dokumentation</h1>
-            <p class="text-muted mb-0">Anleitungen für die tägliche Arbeit mit WebWMS 3.0.</p>
+            <h1 class="h3 mb-1">{{ 'ui.v3.documentation.index.hilfe.amp.dokumentation.2f8107b'|trans }}</h1>
+            <p class="text-muted mb-0">{{ 'ui.v3.documentation.index.anleitungen.fur.die.tagliche.arbeit.mit.webwms.3.0.750a225'|trans }}</p>
         </div>
         <div class="col-lg-5 mt-3 mt-lg-0">
             <form method="get" action="{{ path('v3_documentation_index') }}" role="search">
                 <div class="input-group">
                     <span class="input-group-text"><i class="ri-search-line"></i></span>
-                    <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="Dokumentation durchsuchen" aria-label="Dokumentation durchsuchen">
-                    {% if query %}<a class="btn btn-light" href="{{ path('v3_documentation_index') }}" aria-label="Suche zurücksetzen"><i class="ri-close-line"></i></a>{% endif %}
-                    <button class="btn btn-primary" type="submit">Suchen</button>
+                    <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="{{ 'ui.v3.documentation.index.dokumentation.durchsuchen.e97b3c6'|trans }}" aria-label="{{ 'ui.v3.documentation.index.dokumentation.durchsuchen.e97b3c6'|trans }}">
+                    {% if query %}<a class="btn btn-light" href="{{ path('v3_documentation_index') }}" aria-label="{{ 'ui.v3.documentation.index.suche.zurucksetzen.6366c7d'|trans }}"><i class="ri-close-line"></i></a>{% endif %}
+                    <button class="btn btn-primary" type="submit">{{ 'ui.v3.documentation.index.suchen.20a9691'|trans }}</button>
                 </div>
             </form>
         </div>
@@ -20,7 +20,7 @@
 
     {% if groups is empty %}
         <div class="alert alert-info border-0 shadow-sm">
-            Für „{{ query }}“ wurde keine passende Dokumentation gefunden.
+            {{ 'ui.v3.documentation.index.fur.c39503f'|trans }}{{ query }}{{ 'ui.v3.documentation.index.wurde.keine.passende.dokumentation.gefunden.d0414bd'|trans }}
         </div>
     {% endif %}
 

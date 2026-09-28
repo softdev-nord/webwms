@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_loading_index') }}" class="text-decoration-none">← Verladung</a>
-		<h1 class="h3 mt-2">Lademanifest anlegen</h1>
+		<a href="{{ path('v3_loading_index') }}" class="text-decoration-none">{{ 'ui.v3.loading.new.verladung.91e2451'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.loading.index.lademanifest.anlegen.9653cea'|trans }}</h1>
 	</div>
 
 	<form method="post" class="card border-0 shadow-sm">
@@ -11,36 +11,36 @@
 			<input type="hidden" name="_token" value="{{ csrf_token('v3_loading_create') }}">
 			<div class="row g-3 mb-4">
 				<div class="col-md-4">
-					<label class="form-label" for="code">Manifestnummer</label>
+					<label class="form-label" for="code">{{ 'ui.v3.loading.new.manifestnummer.1c404d1'|trans }}</label>
 					<input class="form-control" id="code" name="code" required>
 				</div>
 				<div class="col-md-4">
-					<label class="form-label" for="tour_reference">Tour</label>
+					<label class="form-label" for="tour_reference">{{ 'ui.v3.loading.index.tour.cd9e8f3'|trans }}</label>
 					<input class="form-control" id="tour_reference" name="tour_reference" required>
 				</div>
 				<div class="col-md-4">
-					<label class="form-label" for="vehicle_reference">Fahrzeug</label>
+					<label class="form-label" for="vehicle_reference">{{ 'ui.v3.loading.index.fahrzeug.f3acd14'|trans }}</label>
 					<input class="form-control" id="vehicle_reference" name="vehicle_reference" required>
 				</div>
 			</div>
 
-			<h2 class="h5">Etikettierte Sendungen</h2>
+			<h2 class="h5">{{ 'ui.v3.loading.new.etikettierte.sendungen.0d73943'|trans }}</h2>
 			{% for shipment in shipments %}
 				<div class="form-check border rounded p-3 ps-5 mb-2">
 					<input class="form-check-input" type="checkbox" name="shipment_id[]" value="{{ shipment.id }}" id="shipment-{{ shipment.id }}">
 					<label class="form-check-label w-100" for="shipment-{{ shipment.id }}">
 						<strong>{{ shipment.shipment_number }}</strong>
 						· {{ shipment.carrier }} {{ shipment.service }}
-						· Tracking {{ shipment.tracking_number }}
+						{{ 'ui.v3.loading.new.tracking.6f1f6e4'|trans }} {{ shipment.tracking_number }}
 					</label>
 				</div>
 			{% else %}
-				<div class="alert alert-light border mb-0">Es ist keine etikettierte, noch unverplante Sendung vorhanden.</div>
+				<div class="alert alert-light border mb-0">{{ 'ui.v3.loading.new.es.ist.keine.etikettierte.noch.unverplante.sendung.vorh.71162ad'|trans }}</div>
 			{% endfor %}
 		</div>
 		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_loading_index') }}">Abbrechen</a>
-			<button class="btn btn-primary" {% if shipments is empty %}disabled{% endif %}>Manifest anlegen</button>
+			<a class="btn btn-light" href="{{ path('v3_loading_index') }}">{{ 'button.cancel'|trans }}</a>
+			<button class="btn btn-primary" {% if shipments is empty %}disabled{% endif %}>{{ 'ui.v3.loading.new.manifest.anlegen.e1ed241'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

@@ -16,13 +16,13 @@
                                             <table class="table table-striped table-bordered table-hover compact">
                                                 <thead style="text-align: center">
                                                 <tr>
-                                                    <th rowspan="2">Id</th>
+                                                    <th rowspan="2">{{ 'ui.user.user_group.index.id.474ae52'|trans }}</th>
                                                     <th colspan="2"></th>
-                                                    <th colspan="4">Rechte</th>
+                                                    <th colspan="4">{{ 'ui.user.user_role.index.rechte.11cf94d'|trans }}</th>
                                                 </tr>
                                                 <tr>
-                                                    <th>Benutzerrolle</th>
-                                                    <th>Beschreibung</th>
+                                                    <th>{{ 'ui.user.user_role.index.benutzerrolle.f8cb7bb'|trans }}</th>
+                                                    <th>{{ 'ui.user.user_group.index.beschreibung.b3c8def'|trans }}</th>
                                                     {% for user_right in user_rights %}
                                                     <th style="text-align: center">{{ user_right.description }}</th>
                                                     {% endfor %}

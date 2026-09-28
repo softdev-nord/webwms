@@ -51,7 +51,7 @@ class ArticleController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Artikelübersicht',
+                'page' => 'controller.article.page.artikelubersicht.d0bd6bf',
             ]
         );
     }

@@ -42,7 +42,7 @@ class StockOccupancyController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Lagerbelegungen',
+                'page' => 'controller.stock.occupancy.page.lagerbelegungen.868507b',
             ]
         );
     }
@@ -124,7 +124,7 @@ class StockOccupancyController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Lagerbelegungen',
+                'page' => 'controller.stock.occupancy.page.lagerbelegungen.868507b',
                 'stockSelect' => $this->stockLocationService->getAllStockLocationsForSelect(),
                 'stockResults' => array_reverse($stockResults, true),
                 'stockSystem' => $stock,

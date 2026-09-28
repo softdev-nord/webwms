@@ -12,26 +12,26 @@ final readonly class ExtensionModuleService
 {
     /** @var array<string, string> */
     public const RESOURCES = [
-        'barcode_profile' => 'Barcodekonfiguration', 'unit_of_measure' => 'Mengeneinheit',
-        'product_extension' => 'Artikel-/Gebindekonfiguration', 'container' => 'Behälterstamm',
-        'storage_constraint' => 'Lagerrestriktion', 'optimization_rule' => 'Optimierungsregel',
-        'login_policy' => 'Login-Richtlinie', 'workstation' => 'Arbeitsstation',
-        'document_template' => 'Dokument-/Reportvorlage', 'interface_mapping' => 'Schnittstellen-Mapping',
-        'interface_endpoint' => 'Schnittstellen-Endpunkt', 'inbound_scan_profile' => 'Wareneingang-Scanprofil',
-        'picking_profile' => 'Pickprofil', 'packing_profile' => 'Pack-/Sortierprofil',
-        'production_profile' => 'Produktionsprofil', 'billing_profile' => 'Billing-/Finanzprofil',
-        'compliance_profile' => 'Compliance-/Stichprobenprofil', 'sso_provider' => 'SSO-Provider',
+        'barcode_profile' => 'ui.extension.resource.barcode_profile', 'unit_of_measure' => 'ui.extension.resource.unit_of_measure',
+        'product_extension' => 'ui.extension.resource.product_extension', 'container' => 'ui.extension.resource.container',
+        'storage_constraint' => 'ui.extension.resource.storage_constraint', 'optimization_rule' => 'ui.extension.resource.optimization_rule',
+        'login_policy' => 'ui.extension.resource.login_policy', 'workstation' => 'ui.extension.resource.workstation',
+        'document_template' => 'ui.extension.resource.document_template', 'interface_mapping' => 'ui.extension.resource.interface_mapping',
+        'interface_endpoint' => 'ui.extension.resource.interface_endpoint', 'inbound_scan_profile' => 'ui.extension.resource.inbound_scan_profile',
+        'picking_profile' => 'ui.extension.resource.picking_profile', 'packing_profile' => 'ui.extension.resource.packing_profile',
+        'production_profile' => 'ui.extension.resource.production_profile', 'billing_profile' => 'ui.extension.resource.billing_profile',
+        'compliance_profile' => 'ui.extension.resource.compliance_profile', 'sso_provider' => 'ui.extension.resource.sso_provider',
     ];
 
     /** @var array<string, string> */
     public const WORKFLOWS = [
-        'container_cycle' => 'Behälterkreislauf', 'optimization' => 'Lageroptimierung',
-        'destruction' => 'Vernichtung', 'purchase_proposal' => 'Bestellvorschlag',
-        'interface_exchange' => 'Schnittstellenaustausch', 'inbound_scan' => 'Geführter Wareneingang',
-        'assisted_pick' => 'Assistierte Kommissionierung', 'automated_outbound' => 'Automatisierter Warenausgang',
-        'production_order' => 'Produktionsauftrag', 'invoice' => 'Rechnungslauf',
-        'compliance_check' => 'Compliance-Prüfung', 'sample_inspection' => 'Stichprobenprüfung',
-        'document_output' => 'Dokumentausgabe',
+        'container_cycle' => 'ui.extension.workflow.container_cycle', 'optimization' => 'ui.extension.workflow.optimization',
+        'destruction' => 'ui.extension.workflow.destruction', 'purchase_proposal' => 'ui.extension.workflow.purchase_proposal',
+        'interface_exchange' => 'ui.extension.workflow.interface_exchange', 'inbound_scan' => 'ui.extension.workflow.inbound_scan',
+        'assisted_pick' => 'ui.extension.workflow.assisted_pick', 'automated_outbound' => 'ui.extension.workflow.automated_outbound',
+        'production_order' => 'ui.extension.workflow.production_order', 'invoice' => 'ui.extension.workflow.invoice',
+        'compliance_check' => 'ui.extension.workflow.compliance_check', 'sample_inspection' => 'ui.extension.workflow.sample_inspection',
+        'document_output' => 'ui.extension.workflow.document_output',
     ];
 
     /** @var array<string, array<string, list<string>>> */

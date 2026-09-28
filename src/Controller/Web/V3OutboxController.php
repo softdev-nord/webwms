@@ -48,7 +48,7 @@ final class V3OutboxController extends AbstractController
         $last = $messages === [] ? null : $messages[array_key_last($messages)]['id'] ?? null;
 
         return $this->render('v3/integration/outbox/index.html.twig', [
-            'page' => 'Integrations-Outbox',
+            'page' => 'ui.v3.integration.erp-connection.show.integrations.outbox.7f5baf2',
             'messages' => $messages,
             'statuses' => self::STATUSES,
             'selectedStatus' => $status,
@@ -61,7 +61,7 @@ final class V3OutboxController extends AbstractController
     public function show(string $messageId): Response
     {
         return $this->render('v3/integration/outbox/show.html.twig', [
-            'page' => 'Outbox-Nachricht',
+            'page' => 'controller.v3outbox.page.outbox.nachricht.e8ca576',
             'message' => $this->requiredMessage($messageId),
         ]);
     }
@@ -82,7 +82,7 @@ final class V3OutboxController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'Die Nachricht wurde erneut in die Verarbeitung eingereiht.');
+        $this->addFlash('success', 'controller.v3outbox.flash.die.nachricht.wurde.erneut.in.die.verarbeitung.eingerei.6e9b70b');
 
         return $this->redirectToRoute('v3_outbox_show', ['messageId' => $messageId]);
     }
@@ -103,7 +103,7 @@ final class V3OutboxController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'Die Nachricht wurde quittiert.');
+        $this->addFlash('success', 'controller.v3outbox.flash.die.nachricht.wurde.quittiert.7c6cb41');
 
         return $this->redirectToRoute('v3_outbox_show', ['messageId' => $messageId]);
     }

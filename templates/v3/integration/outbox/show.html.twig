@@ -3,7 +3,7 @@
 {% block webwms_content %}
 	<div class="d-flex flex-wrap justify-content-between gap-3 mb-4">
 		<div>
-			<a href="{{ path('v3_outbox_index', {status: message.status}) }}" class="text-decoration-none">← Integrations-Outbox</a>
+			<a href="{{ path('v3_outbox_index', {status: message.status}) }}" class="text-decoration-none">{{ 'ui.v3.integration.outbox.show.integrations.outbox.c83cc96'|trans }}</a>
 			<h1 class="h3 mt-2 mb-1">{{ message.event_name }}</h1>
 			<code>{{ message.id }}</code>
 		</div>
@@ -14,23 +14,23 @@
 		<div class="col-lg-5">
 			<div class="card border-0 shadow-sm h-100">
 				<div class="card-header">
-					<h2 class="h5 mb-0">Zustellung</h2>
+					<h2 class="h5 mb-0">{{ 'ui.v3.integration.outbox.show.zustellung.0fcfb81'|trans }}</h2>
 				</div>
 				<div class="card-body">
 					<dl class="row mb-0">
-						<dt class="col-sm-5">Aggregat</dt>
+						<dt class="col-sm-5">{{ 'ui.v3.integration.outbox.index.aggregat.d45683a'|trans }}</dt>
 						<dd class="col-sm-7">{{ message.aggregate_type }}</dd>
-						<dt class="col-sm-5">Aggregat-ID</dt>
+						<dt class="col-sm-5">{{ 'ui.v3.integration.outbox.show.aggregat.id.854c4c6'|trans }}</dt>
 						<dd class="col-sm-7"><code>{{ message.aggregate_id }}</code></dd>
-						<dt class="col-sm-5">Versuche</dt>
+						<dt class="col-sm-5">{{ 'ui.v3.integration.outbox.index.versuche.b924bff'|trans }}</dt>
 						<dd class="col-sm-7">{{ message.attempt_count }}</dd>
-						<dt class="col-sm-5">Entstanden</dt>
+						<dt class="col-sm-5">{{ 'ui.v3.integration.outbox.show.entstanden.942546e'|trans }}</dt>
 						<dd class="col-sm-7">{{ message.occurred_at }}</dd>
-						<dt class="col-sm-5">Nächster Versuch</dt>
+						<dt class="col-sm-5">{{ 'ui.v3.integration.outbox.show.nachster.versuch.d1fc9a8'|trans }}</dt>
 						<dd class="col-sm-7">{{ message.next_attempt_at ?: '–' }}</dd>
-						<dt class="col-sm-5">Veröffentlicht</dt>
+						<dt class="col-sm-5">{{ 'ui.v3.integration.outbox.show.veroffentlicht.6cc7b21'|trans }}</dt>
 						<dd class="col-sm-7">{{ message.published_at ?: '–' }}</dd>
-						<dt class="col-sm-5">Quittiert</dt>
+						<dt class="col-sm-5">{{ 'ui.v3.integration.outbox.show.quittiert.80d005b'|trans }}</dt>
 						<dd class="col-sm-7">{{ message.acknowledged_at ?: '–' }}</dd>
 					</dl>
 				</div>
@@ -39,7 +39,7 @@
 		<div class="col-lg-7">
 			<div class="card border-0 shadow-sm h-100">
 				<div class="card-header">
-					<h2 class="h5 mb-0">Payload</h2>
+					<h2 class="h5 mb-0">{{ 'ui.v3.extensions.work_item_show.payload.c30415e'|trans }}</h2>
 				</div>
 				<div class="card-body">
 					<pre class="bg-light border rounded p-3 mb-0"><code>{{ message.payload|json_encode }}</code></pre>
@@ -50,7 +50,7 @@
 
 	{% if message.last_error %}
 		<div class="alert alert-danger">
-			<strong>Letzter Fehler:</strong> {{ message.last_error }}
+			<strong>{{ 'ui.v3.integration.outbox.show.letzter.fehler.8ca67fe'|trans }}</strong> {{ message.last_error }}
 		</div>
 	{% endif %}
 
@@ -58,14 +58,14 @@
 		{% if message.status == 'dead_letter' and is_granted('integration.outbox.retry') %}
 			<form method="post" action="{{ path('v3_outbox_retry', {messageId: message.id}) }}">
 				<input type="hidden" name="_token" value="{{ csrf_token('v3_outbox_retry_' ~ message.id) }}">
-				<button class="btn btn-primary">Erneut einreihen</button>
+				<button class="btn btn-primary">{{ 'ui.v3.integration.outbox.show.erneut.einreihen.bc4aa68'|trans }}</button>
 			</form>
 		{% endif %}
 
 		{% if message.status == 'pending' and is_granted('integration.outbox.acknowledge') %}
 			<form method="post" action="{{ path('v3_outbox_acknowledge', {messageId: message.id}) }}">
 				<input type="hidden" name="_token" value="{{ csrf_token('v3_outbox_acknowledge_' ~ message.id) }}">
-				<button class="btn btn-outline-success">Manuell quittieren</button>
+				<button class="btn btn-outline-success">{{ 'ui.v3.integration.outbox.show.manuell.quittieren.4d3455f'|trans }}</button>
 			</form>
 		{% endif %}
 	</div>

@@ -36,7 +36,7 @@ final class V3CarrierConnectionController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/integration/carrier-connection/index.html.twig', [
-            'page' => 'Carrier-Verbindungen',
+            'page' => 'ui.v3.integration.carrier-connection.index.carrier.verbindungen.f04975a',
             'connections' => $this->queries->carrierConnections($this->tenantUser()->tenantId()),
         ]);
     }
@@ -60,13 +60,13 @@ final class V3CarrierConnectionController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             ));
-            $this->addFlash('success', 'Die Carrier-Verbindung wurde angelegt.');
+            $this->addFlash('success', 'controller.v3carrier.connection.flash.die.carrier.verbindung.wurde.angelegt.d591b24');
 
             return $this->redirectToRoute('v3_carrier_connection_show', ['connectionId' => $connectionId]);
         }
 
         return $this->render('v3/integration/carrier-connection/new.html.twig', [
-            'page' => 'Carrier-Verbindung anlegen',
+            'page' => 'ui.v3.integration.carrier-connection.index.carrier.verbindung.anlegen.415bc9b',
         ]);
     }
 
@@ -75,7 +75,7 @@ final class V3CarrierConnectionController extends AbstractController
     public function show(string $connectionId): Response
     {
         return $this->render('v3/integration/carrier-connection/show.html.twig', [
-            'page' => 'Carrier-Verbindung',
+            'page' => 'controller.v3carrier.connection.page.carrier.verbindung.b418b12',
             'connection' => $this->requiredConnection($connectionId),
         ]);
     }
@@ -90,7 +90,7 @@ final class V3CarrierConnectionController extends AbstractController
         }
 
         return $this->render('v3/integration/carrier-connection/products.html.twig', [
-            'page' => 'Carrier-Produkte',
+            'page' => 'controller.v3carrier.connection.page.carrier.produkte.b3124e9',
             'connection' => $connection,
             'products' => $this->gateway->products(
                 $this->tenantUser()->tenantId(),
@@ -115,8 +115,8 @@ final class V3CarrierConnectionController extends AbstractController
             new DateTimeImmutable(),
         ));
         $this->addFlash('success', $active
-            ? 'Die Carrier-Verbindung wurde aktiviert.'
-            : 'Die Carrier-Verbindung wurde pausiert.');
+            ? 'flash.carrier_connection.activated'
+            : 'flash.carrier_connection.paused');
 
         return $this->redirectToRoute('v3_carrier_connection_show', ['connectionId' => $connectionId]);
     }

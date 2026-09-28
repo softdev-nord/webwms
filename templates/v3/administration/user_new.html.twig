@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_administration_index') }}" class="text-decoration-none">← Administration</a>
-		<h1 class="h3 mt-2">Benutzer anlegen</h1>
+		<a href="{{ path('v3_administration_index') }}" class="text-decoration-none">{{ 'ui.v3.administration.api_client_new.administration.bd67f16'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'nav.user.add'|trans }}</h1>
 	</div>
 
 	<form method="post" class="card border-0 shadow-sm">
@@ -12,23 +12,23 @@
 
 			<div class="row g-3">
 				<div class="col-md-6">
-					<label class="form-label">Anzeigename</label>
+					<label class="form-label">{{ 'ui.v3.administration.user_new.anzeigename.164d810'|trans }}</label>
 					<input class="form-control" name="display_name" required>
 				</div>
 
 				<div class="col-md-6">
-					<label class="form-label">E-Mail</label>
+					<label class="form-label">{{ 'Email'|trans }}</label>
 					<input class="form-control" type="email" name="email" required>
 				</div>
 
 				<div class="col-md-6">
-					<label class="form-label">Initiales Passwort</label>
+					<label class="form-label">{{ 'ui.v3.administration.user_new.initiales.passwort.198825f'|trans }}</label>
 					<input class="form-control" type="password" minlength="12" name="password" autocomplete="new-password" required>
-					<div class="form-text">Mindestens 12 Zeichen.</div>
+					<div class="form-text">{{ 'ui.v3.administration.user_new.mindestens.12.zeichen.12be5c4'|trans }}</div>
 				</div>
 
 				<div class="col-md-6">
-					<label class="form-label">Rollen</label>
+					<label class="form-label">{{ 'ui.user.index.rollen.af85c41'|trans }}</label>
 					<select class="form-select" name="role_ids[]" multiple size="5">
 						{% for role in roles %}
 							<option value="{{ role.id }}">{{ role.code }} – {{ role.name }}</option>
@@ -39,7 +39,7 @@
 		</div>
 
 		<div class="card-footer text-end">
-			<button class="btn btn-primary">Benutzer anlegen</button>
+			<button class="btn btn-primary">{{ 'nav.user.add'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

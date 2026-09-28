@@ -45,7 +45,7 @@ class UserRoleController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Übersicht Benutzerrollen',
+                'page' => 'controller.user.role.page.ubersicht.benutzerrollen.a47a88a',
                 'user_roles' => $this->getAllUserRoles(),
                 'user_rights' => $this->getAllUserRights(),
 

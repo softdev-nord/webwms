@@ -2,9 +2,9 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_device_index') }}" class="text-decoration-none">← Scanner und MDE</a>
-		<h1 class="h3 mt-2">Scan erfassen</h1>
-		<p class="text-muted mb-0">Generischer Scan-Dialog zur Prüfung der Geräte- und Prozessintegration</p>
+		<a href="{{ path('v3_device_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.device.new.scanner.und.mde.2f34617'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'ui.v3.integration.device.index.scan.erfassen.29cd2e3'|trans }}</h1>
+		<p class="text-muted mb-0">{{ 'ui.v3.integration.device.scan.generischer.scan.dialog.zur.prufung.der.gerate.und.proz.5ae27e9'|trans }}</p>
 	</div>
 	<form method="post" class="card border-0 shadow-sm">
 		<div class="card-body">
@@ -12,7 +12,7 @@
 			<input type="hidden" name="request_id" value="{{ requestId }}">
 			<div class="row g-3">
 				<div class="col-md-6">
-					<label class="form-label" for="device_id">Gerät</label>
+					<label class="form-label" for="device_id">{{ 'ui.v3.integration.automation.command-new.gerat.945d2bc'|trans }}</label>
 					<select class="form-select" id="device_id" name="device_id" required>
 						{% for device in devices %}
 							<option value="{{ device.id }}">{{ device.code }} · {{ device.name }}</option>
@@ -20,53 +20,53 @@
 					</select>
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="process_type">Prozess</label>
+					<label class="form-label" for="process_type">{{ 'ui.v3.integration.device.index.prozess.beb029c'|trans }}</label>
 					<select class="form-select" id="process_type" name="process_type">
-						<option value="inbound">Wareneingang</option>
-						<option value="picking">Kommissionierung</option>
-						<option value="packing">Packen</option>
-						<option value="shipping">Versand</option>
-						<option value="loading">Verladung</option>
-						<option value="inventory">Inventur</option>
+						<option value="inbound">{{ 'ui.v3.inbound.control.wareneingang.ed46dae'|trans }}</option>
+						<option value="picking">{{ 'ui.v3.integration.device.scan.kommissionierung.635fe45'|trans }}</option>
+						<option value="packing">{{ 'ui.v3.integration.device.scan.packen.9993811'|trans }}</option>
+						<option value="shipping">{{ 'ui.v3.integration.device.scan.versand.31e5fb2'|trans }}</option>
+						<option value="loading">{{ 'ui.v3.integration.device.scan.verladung.76c8aa0'|trans }}</option>
+						<option value="inventory">{{ 'nav.inventory.headline'|trans }}</option>
 					</select>
 				</div>
 				<div class="col-md-3">
-					<label class="form-label" for="scan_type">Scantyp</label>
+					<label class="form-label" for="scan_type">{{ 'ui.v3.integration.device.index.scantyp.6f85cf4'|trans }}</label>
 					<select class="form-select" id="scan_type" name="scan_type">
-						<option value="location">Lagerplatz</option>
-						<option value="product">Artikel</option>
-						<option value="batch">Charge</option>
-						<option value="serial">Seriennummer</option>
-						<option value="shipment">Sendung</option>
-						<option value="order">Auftrag</option>
+						<option value="location">{{ 'ui.modal.show_article_stock_details_modal.lagerplatz.467f59d'|trans }}</option>
+						<option value="product">{{ 'nav.master_data.submenu.headline1'|trans }}</option>
+						<option value="batch">{{ 'ui.modal.stock_in_modal.charge.d4e1aee'|trans }}</option>
+						<option value="serial">{{ 'ui.v3.inbound.new.seriennummer.22b6f6b'|trans }}</option>
+						<option value="shipment">{{ 'ui.v3.integration.device.scan.sendung.fdd2800'|trans }}</option>
+						<option value="order">{{ 'ui.v3.inbound.control.auftrag.4ec1a90'|trans }}</option>
 					</select>
 				</div>
 				<div class="col-md-6">
-					<label class="form-label" for="context_reference">Prozessreferenz</label>
+					<label class="form-label" for="context_reference">{{ 'ui.v3.integration.device.scan.prozessreferenz.8e7eeb6'|trans }}</label>
 					<input class="form-control font-monospace" id="context_reference" name="context_reference" maxlength="100" required autofocus>
 				</div>
 				<div class="col-md-6">
-					<label class="form-label" for="scan_value">Scanwert</label>
+					<label class="form-label" for="scan_value">{{ 'ui.v3.integration.device.scan-show.scanwert.c0dc33a'|trans }}</label>
 					<input class="form-control font-monospace" id="scan_value" name="scan_value" maxlength="255" required>
 				</div>
 				<div class="col-md-3">
 					<div class="form-check form-switch mt-4">
 						<input class="form-check-input" type="checkbox" id="accepted" name="accepted" value="1" checked>
-						<label class="form-check-label" for="accepted">Scan akzeptiert</label>
+						<label class="form-check-label" for="accepted">{{ 'ui.v3.integration.device.scan.scan.akzeptiert.fe8bc5d'|trans }}</label>
 					</div>
 				</div>
 				<div class="col-md-9">
-					<label class="form-label" for="message">Prüfhinweis</label>
+					<label class="form-label" for="message">{{ 'ui.v3.integration.device.scan-show.prufhinweis.161936a'|trans }}</label>
 					<input class="form-control" id="message" name="message" maxlength="500">
 				</div>
 			</div>
 			{% if devices is empty %}
-				<div class="alert alert-warning mt-3 mb-0">Es ist kein aktives Erfassungsgerät vorhanden.</div>
+				<div class="alert alert-warning mt-3 mb-0">{{ 'ui.v3.integration.device.scan.es.ist.kein.aktives.erfassungsgerat.vorhanden.d31b2bf'|trans }}</div>
 			{% endif %}
 		</div>
 		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_device_index') }}">Abbrechen</a>
-			<button class="btn btn-primary" {% if devices is empty %}disabled{% endif %}>Scan erfassen</button>
+			<a class="btn btn-light" href="{{ path('v3_device_index') }}">{{ 'button.cancel'|trans }}</a>
+			<button class="btn btn-primary" {% if devices is empty %}disabled{% endif %}>{{ 'ui.v3.integration.device.index.scan.erfassen.29cd2e3'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

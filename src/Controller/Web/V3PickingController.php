@@ -38,7 +38,7 @@ final class V3PickingController extends AbstractController
         $this->assertCsrf($request, 'v3_pick_optimize_' . $pickListId);
         $user = $this->tenantUser();
         $this->advancedPicking->optimizeRoute($user->tenantId(), $user->actorId(), $pickListId, new DateTimeImmutable());
-        $this->addFlash('success', 'Die Pickroute wurde anhand der Lagertopologie optimiert.');
+        $this->addFlash('success', 'controller.v3picking.flash.die.pickroute.wurde.anhand.der.lagertopologie.optimiert.d6d1c9c');
 
         return $this->redirectToRoute('v3_picking_show', ['pickListId' => $pickListId]);
     }
@@ -70,7 +70,7 @@ final class V3PickingController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/picking/index.html.twig', [
-            'page' => 'Picking',
+            'page' => 'ui.v3.picking.index.picking.7c3a00c',
             'pickLists' => $this->queries->pickLists($this->tenantUser()->tenantId()),
         ]);
     }
@@ -80,7 +80,7 @@ final class V3PickingController extends AbstractController
     public function show(string $pickListId): Response
     {
         return $this->render('v3/picking/show.html.twig', [
-            'page' => 'Pickliste',
+            'page' => 'ui.v3.outbound.control.pickliste.77bddf1',
             'pickList' => $this->requiredPickList($pickListId),
         ]);
     }
@@ -99,7 +99,7 @@ final class V3PickingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'Die Pickliste wurde dir zugewiesen.');
+        $this->addFlash('success', 'controller.v3picking.flash.die.pickliste.wurde.dir.zugewiesen.49ef502');
 
         return $this->redirectToRoute('v3_picking_show', ['pickListId' => $pickListId]);
     }
@@ -124,7 +124,7 @@ final class V3PickingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', $outcome === 'picked' ? 'Die Position wurde gepickt.' : 'Der Fehlbestand wurde erfasst.');
+        $this->addFlash('success', $outcome === 'picked' ? 'flash.picking.position_picked' : 'flash.picking.shortage_recorded');
 
         return $this->redirectToRoute('v3_picking_show', ['pickListId' => $pickListId]);
     }

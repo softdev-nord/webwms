@@ -3,19 +3,19 @@
 {% block webwms_content %}
 	<div class="d-flex justify-content-between align-items-start mb-4">
 		<div>
-			<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">← Druckwarteschlange</a>
+			<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.printing.job-new.druckwarteschlange.5fdae01'|trans }}</a>
 			<h1 class="h3 mt-2 mb-1">{{ printer.name }}</h1>
 			{% if printer.active %}
-				<span class="badge bg-success-subtle text-success">Aktiv</span>
+				<span class="badge bg-success-subtle text-success">{{ 'ui.user.user_input_fields.aktiv.16a766c'|trans }}</span>
 			{% else %}
-				<span class="badge bg-secondary-subtle text-secondary">Pausiert</span>
+				<span class="badge bg-secondary-subtle text-secondary">{{ 'ui.v3.integration.carrier-connection.index.pausiert.09b952c'|trans }}</span>
 			{% endif %}
 		</div>
 		{% if is_granted('integration.printer.write') %}
 			<form method="post" action="{{ path('v3_printing_printer_status', {printerId: printer.id}) }}">
 				<input type="hidden" name="_token" value="{{ csrf_token('v3_printing_printer_status_' ~ printer.id) }}">
 				<button class="btn {{ printer.active ? 'btn-outline-warning' : 'btn-success' }}">
-					{{ printer.active ? 'Drucker pausieren' : 'Drucker aktivieren' }}
+					{{ (printer.active ? 'ui.v3.integration.printing.printer-show.choice.drucker.pausieren.bab6abd' : 'ui.v3.integration.printing.printer-show.choice.drucker.aktivieren.6f96f71')|trans }}
 				</button>
 			</form>
 		{% endif %}
@@ -24,12 +24,12 @@
 	<div class="row g-4 mb-4">
 		<div class="col-lg-8">
 			<div class="card border-0 shadow-sm h-100">
-				<div class="card-header bg-transparent"><h2 class="h5 mb-0">Verbindungsdaten</h2></div>
+				<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.carrier-connection.show.verbindungsdaten.536020e'|trans }}</h2></div>
 				<div class="card-body">
 					<dl class="row mb-0">
-						<dt class="col-sm-4">HTTPS-Endpunkt</dt>
+						<dt class="col-sm-4">{{ 'ui.v3.integration.printing.printer-new.https.endpunkt.6ed4fe3'|trans }}</dt>
 						<dd class="col-sm-8"><code>{{ printer.endpoint_url }}</code></dd>
-						<dt class="col-sm-4">Credential-Referenz</dt>
+						<dt class="col-sm-4">{{ 'ui.v3.integration.carrier-connection.show.credential.referenz.08cfc39'|trans }}</dt>
 						<dd class="col-sm-8"><code>{{ printer.credential_env }}</code></dd>
 					</dl>
 				</div>
@@ -37,14 +37,14 @@
 		</div>
 		<div class="col-lg-4">
 			<div class="card border-0 shadow-sm h-100">
-				<div class="card-header bg-transparent"><h2 class="h5 mb-0">Audit</h2></div>
+				<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.carrier-connection.show.audit.fa1703d'|trans }}</h2></div>
 				<div class="card-body">
-					<strong>Angelegt</strong>
+					<strong>{{ 'ui.v3.integration.carrier-connection.show.angelegt.6cf261d'|trans }}</strong>
 					<div>{{ printer.created_at }}</div>
 					<code>{{ printer.created_by }}</code>
 					{% if printer.changed_at %}
 						<hr>
-						<strong>Geändert</strong>
+						<strong>{{ 'ui.v3.extensions.configuration_index.geandert.01de835'|trans }}</strong>
 						<div>{{ printer.changed_at }}</div>
 						<code>{{ printer.changed_by }}</code>
 					{% endif %}
@@ -54,14 +54,14 @@
 	</div>
 
 	<div class="card border-0 shadow-sm">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">Druckaufträge</h2></div>
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.printing.printer-show.druckauftrage.c44bb42'|trans }}</h2></div>
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
 				<thead>
 					<tr>
-						<th>Dokument</th>
-						<th>Status</th>
-						<th>Versuche</th>
+						<th>{{ 'ui.v3.integration.printing.index.dokument.2ccbe16'|trans }}</th>
+						<th>{{ 'ui.transport_request.index.status.bae7d5b'|trans }}</th>
+						<th>{{ 'ui.v3.integration.outbox.index.versuche.b924bff'|trans }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -71,11 +71,11 @@
 							<td>{{ job.document_type }}<br><code>{{ job.document_reference }}</code></td>
 							<td>{{ job.status }}</td>
 							<td>{{ job.attempts }}</td>
-							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_printing_job_show', {jobId: job.id}) }}">Öffnen</a></td>
+							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_printing_job_show', {jobId: job.id}) }}">{{ 'ui.v3.inbound.index.offnen.fc718f8'|trans }}</a></td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="4" class="text-center text-muted py-4">Keine Druckaufträge für diesen Drucker.</td>
+							<td colspan="4" class="text-center text-muted py-4">{{ 'ui.v3.integration.printing.printer-show.keine.druckauftrage.fur.diesen.drucker.76dd43e'|trans }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

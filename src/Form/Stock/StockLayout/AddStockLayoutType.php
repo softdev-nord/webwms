@@ -90,13 +90,13 @@ class AddStockLayoutType extends AbstractType
             ],
           ])
           ->add('save', ButtonType::class, [
-            'label' => 'Lagerlayout anlegen',
+            'label' => 'form.stock.stocklayout.addstocklayouttype.label.f623d2c0',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'Abbrechen',
+            'label' => 'form.stock.stocklayout.addstocklayouttype.label.2d5d70e9',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

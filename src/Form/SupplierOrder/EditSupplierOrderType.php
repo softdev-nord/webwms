@@ -37,7 +37,7 @@ class EditSupplierOrderType extends AbstractType
           ])
           ->add('supplierOrderNr', TextType::class, [
             'empty_data' => '',
-            'label' => 'Bestellungs-Nr',
+            'label' => 'form.supplierorder.editsupplierordertype.label.282ae0ee',
             'attr' => [
               'class' => 'form-control is--transparent',
               'data-type' => 'supplier_order_nr',
@@ -59,7 +59,7 @@ class EditSupplierOrderType extends AbstractType
           ])
           ->add('supplierOrderReference', TextType::class, [
             'empty_data' => '',
-            'label' => 'Bestellungs-Referenz',
+            'label' => 'form.supplierorder.editsupplierordertype.label.04b898ff',
             'attr' => [
               'class' => 'form-control',
             ],
@@ -68,7 +68,7 @@ class EditSupplierOrderType extends AbstractType
             'widget' => 'single_text',
             'input' => 'datetime',
             'format' => 'dd.MM.yyyy',
-            'label' => 'Bestelldatum',
+            'label' => 'form.supplierorder.editsupplierordertype.label.c2b65aed',
             'html5' => false,
             'attr' => [
               'class' => 'form-control',
@@ -78,7 +78,7 @@ class EditSupplierOrderType extends AbstractType
             'widget' => 'single_text',
             'input' => 'datetime',
             'format' => 'dd.MM.yyyy',
-            'label' => 'Anlagedatum',
+            'label' => 'form.supplierorder.editsupplierordertype.label.286db5c0',
             'html5' => false,
             'attr' => [
               'class' => 'form-control',
@@ -87,13 +87,13 @@ class EditSupplierOrderType extends AbstractType
             ],
           ])
           ->add('save', ButtonType::class, [
-            'label' => 'Änderungen speichern',
+            'label' => 'form.supplierorder.editsupplierordertype.label.f80de8fc',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'Abbrechen',
+            'label' => 'form.supplierorder.editsupplierordertype.label.2d5d70e9',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

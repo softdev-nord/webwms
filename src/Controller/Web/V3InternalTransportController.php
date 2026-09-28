@@ -39,7 +39,7 @@ final class V3InternalTransportController extends AbstractController
         $this->csrf($request, 'v3_replenishment_policy_create');
         $user = $this->user();
         ($this->createReplenishmentPolicy)(new CreateReplenishmentPolicyCommand(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'warehouse_id'), $this->required($request, 'product_id'), $this->required($request, 'target_location_id'), $this->required($request, 'code'), $this->required($request, 'source_location_prefix'), $request->request->getInt('minimum_quantity'), $request->request->getInt('target_quantity'), $request->request->getInt('priority'), $user->actorId(), new DateTimeImmutable()));
-        $this->addFlash('success', 'Die Nachschubregel wurde angelegt.');
+        $this->addFlash('success', 'controller.v3internal.transport.flash.die.nachschubregel.wurde.angelegt.398fcb3');
 
         return $this->redirectToRoute('v3_internal_transport_index');
     }
@@ -51,7 +51,7 @@ final class V3InternalTransportController extends AbstractController
         $this->csrf($request, 'v3_replenishment_order_create_' . $policyId);
         $user = $this->user();
         ($this->createReplenishmentOrder)(new CreateReplenishmentOrderCommand(Uuid::v7()->toRfc4122(), $user->tenantId(), $policyId, $user->actorId(), new DateTimeImmutable()));
-        $this->addFlash('success', 'Der Nachschubauftrag wurde erzeugt.');
+        $this->addFlash('success', 'controller.v3internal.transport.flash.der.nachschubauftrag.wurde.erzeugt.1e8ea7c');
 
         return $this->redirectToRoute('v3_internal_transport_index');
     }
@@ -63,7 +63,7 @@ final class V3InternalTransportController extends AbstractController
         $this->csrf($request, 'v3_replenishment_complete_' . $orderId);
         $user = $this->user();
         ($this->confirmReplenishment)(new ConfirmReplenishmentCommand($orderId, Uuid::v7()->toRfc4122(), Uuid::v7()->toRfc4122(), Uuid::v7()->toRfc4122(), $user->tenantId(), $user->actorId(), new DateTimeImmutable()));
-        $this->addFlash('success', 'Der Nachschub wurde quittiert.');
+        $this->addFlash('success', 'controller.v3internal.transport.flash.der.nachschub.wurde.quittiert.ce950db');
 
         return $this->redirectToRoute('v3_internal_transport_index');
     }
@@ -72,7 +72,7 @@ final class V3InternalTransportController extends AbstractController
     #[IsGranted('fulfillment.transport.read')]
     public function index(): Response
     {
-        return $this->render('v3/transport/index.html.twig', ['page' => 'Interner Transport', 'workspace' => $this->transport->workspace($this->user()->tenantId())]);
+        return $this->render('v3/transport/index.html.twig', ['page' => 'ui.v3.subsections.sidebar.interner.transport.7483e11', 'workspace' => $this->transport->workspace($this->user()->tenantId())]);
     }
 
     #[Route('/orders', name: 'order_create', methods: ['POST'])]
@@ -82,7 +82,7 @@ final class V3InternalTransportController extends AbstractController
         $this->csrf($request, 'v3_transport_order_create');
         $user = $this->user();
         $this->transport->createOrder($user->tenantId(), $user->actorId(), $request->request->all(), new DateTimeImmutable());
-        $this->addFlash('success', 'Der Fahrbefehl wurde angelegt.');
+        $this->addFlash('success', 'controller.v3internal.transport.flash.der.fahrbefehl.wurde.angelegt.df3ce04');
 
         return $this->redirectToRoute('v3_internal_transport_index');
     }
@@ -94,7 +94,7 @@ final class V3InternalTransportController extends AbstractController
         $this->csrf($request, 'v3_transport_resource_create_' . $resource);
         $user = $this->user();
         $this->transport->createResource($user->tenantId(), $user->actorId(), $resource, $request->request->all(), new DateTimeImmutable());
-        $this->addFlash('success', 'Die Transportkonfiguration wurde angelegt.');
+        $this->addFlash('success', 'controller.v3internal.transport.flash.die.transportkonfiguration.wurde.angelegt.b186bff');
 
         return $this->redirectToRoute('v3_internal_transport_index');
     }
@@ -106,7 +106,7 @@ final class V3InternalTransportController extends AbstractController
         $this->csrf($request, 'v3_transport_assign_' . $orderId);
         $user = $this->user();
         $this->transport->assign($user->tenantId(), $user->actorId(), $orderId, $this->required($request, 'forklift_id'), new DateTimeImmutable());
-        $this->addFlash('success', 'Der Fahrbefehl wurde zugewiesen.');
+        $this->addFlash('success', 'controller.v3internal.transport.flash.der.fahrbefehl.wurde.zugewiesen.5cdf8d7');
 
         return $this->redirectToRoute('v3_internal_transport_index');
     }
@@ -118,7 +118,7 @@ final class V3InternalTransportController extends AbstractController
         $this->csrf($request, 'v3_transport_start_' . $orderId);
         $user = $this->user();
         $this->transport->start($user->tenantId(), $user->actorId(), $orderId, new DateTimeImmutable());
-        $this->addFlash('success', 'Der Fahrbefehl wurde gestartet.');
+        $this->addFlash('success', 'controller.v3internal.transport.flash.der.fahrbefehl.wurde.gestartet.c81fac5');
 
         return $this->redirectToRoute('v3_internal_transport_index');
     }
@@ -130,7 +130,7 @@ final class V3InternalTransportController extends AbstractController
         $this->csrf($request, 'v3_transport_complete_' . $orderId);
         $user = $this->user();
         $this->transport->complete($user->tenantId(), $user->actorId(), $orderId, new DateTimeImmutable());
-        $this->addFlash('success', 'Der Fahrbefehl wurde quittiert und der Bestand gebucht.');
+        $this->addFlash('success', 'controller.v3internal.transport.flash.der.fahrbefehl.wurde.quittiert.und.der.bestand.gebucht.af80a83');
 
         return $this->redirectToRoute('v3_internal_transport_index');
     }
@@ -142,7 +142,7 @@ final class V3InternalTransportController extends AbstractController
         $this->csrf($request, 'v3_transport_milk_run_stop_' . $milkRunId);
         $user = $this->user();
         $this->transport->addMilkRunStop($user->tenantId(), $user->actorId(), $milkRunId, $this->required($request, 'station_id'), $request->request->getInt('sequence_number'), $request->request->getInt('dwell_minutes'), new DateTimeImmutable());
-        $this->addFlash('success', 'Die Station wurde zur Routenzugtour hinzugefügt.');
+        $this->addFlash('success', 'controller.v3internal.transport.flash.die.station.wurde.zur.routenzugtour.hinzugefugt.86aab27');
 
         return $this->redirectToRoute('v3_internal_transport_index');
     }
@@ -154,7 +154,7 @@ final class V3InternalTransportController extends AbstractController
         $this->csrf($request, 'v3_transport_milk_run_dispatch_' . $milkRunId);
         $user = $this->user();
         $orders = $this->transport->dispatchMilkRun($user->tenantId(), $user->actorId(), $milkRunId, new DateTimeImmutable());
-        $this->addFlash('success', sprintf('%d Routenzug-Fahrbefehle wurden erzeugt.', count($orders)));
+        $this->addFlash('success', ['id' => 'flash.internal_transport.orders_created', 'parameters' => ['%count%' => count($orders)]]);
 
         return $this->redirectToRoute('v3_internal_transport_index');
     }

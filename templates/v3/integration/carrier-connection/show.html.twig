@@ -3,24 +3,24 @@
 {% block webwms_content %}
 	<div class="d-flex justify-content-between align-items-start mb-4">
 		<div>
-			<a href="{{ path('v3_carrier_connection_index') }}" class="text-decoration-none">← Carrier-Verbindungen</a>
+			<a href="{{ path('v3_carrier_connection_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.carrier-connection.new.carrier.verbindungen.f0a1d6a'|trans }}</a>
 			<h1 class="h3 mt-2 mb-1">{{ connection.name }}</h1>
 			<span class="badge bg-primary-subtle text-primary me-1">{{ connection.carrier_code }}</span>
 			{% if connection.active %}
-				<span class="badge bg-success-subtle text-success">Aktiv</span>
+				<span class="badge bg-success-subtle text-success">{{ 'ui.user.user_input_fields.aktiv.16a766c'|trans }}</span>
 			{% else %}
-				<span class="badge bg-secondary-subtle text-secondary">Pausiert</span>
+				<span class="badge bg-secondary-subtle text-secondary">{{ 'ui.v3.integration.carrier-connection.index.pausiert.09b952c'|trans }}</span>
 			{% endif %}
 		</div>
 		<div class="d-flex gap-2">
 			{% if connection.active and is_granted('integration.carrier.read') %}
-				<a class="btn btn-outline-primary" href="{{ path('v3_carrier_connection_products', {connectionId: connection.id}) }}">Versandprodukte abrufen</a>
+				<a class="btn btn-outline-primary" href="{{ path('v3_carrier_connection_products', {connectionId: connection.id}) }}">{{ 'ui.v3.integration.carrier-connection.show.versandprodukte.abrufen.b881ceb'|trans }}</a>
 			{% endif %}
 			{% if is_granted('integration.carrier_connection.write') %}
 				<form method="post" action="{{ path('v3_carrier_connection_status', {connectionId: connection.id}) }}">
 					<input type="hidden" name="_token" value="{{ csrf_token('v3_carrier_connection_status_' ~ connection.id) }}">
 					<button class="btn {{ connection.active ? 'btn-outline-warning' : 'btn-success' }}">
-						{{ connection.active ? 'Verbindung pausieren' : 'Verbindung aktivieren' }}
+						{{ (connection.active ? 'ui.v3.integration.carrier-connection.show.choice.verbindung.pausieren.5eda8fd' : 'ui.v3.integration.carrier-connection.show.choice.verbindung.aktivieren.b26e634')|trans }}
 					</button>
 				</form>
 			{% endif %}
@@ -30,12 +30,12 @@
 	<div class="row g-4">
 		<div class="col-lg-8">
 			<div class="card border-0 shadow-sm h-100">
-				<div class="card-header bg-transparent"><h2 class="h5 mb-0">Verbindungsdaten</h2></div>
+				<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.carrier-connection.show.verbindungsdaten.536020e'|trans }}</h2></div>
 				<div class="card-body">
 					<dl class="row mb-0">
-						<dt class="col-sm-4">HTTPS-Basis-URL</dt>
+						<dt class="col-sm-4">{{ 'ui.v3.integration.carrier-connection.new.https.basis.url.f542dcf'|trans }}</dt>
 						<dd class="col-sm-8"><code>{{ connection.endpoint_url }}</code></dd>
-						<dt class="col-sm-4">Credential-Referenz</dt>
+						<dt class="col-sm-4">{{ 'ui.v3.integration.carrier-connection.show.credential.referenz.08cfc39'|trans }}</dt>
 						<dd class="col-sm-8"><code>{{ connection.credential_env }}</code></dd>
 					</dl>
 				</div>
@@ -43,17 +43,17 @@
 		</div>
 		<div class="col-lg-4">
 			<div class="card border-0 shadow-sm h-100">
-				<div class="card-header bg-transparent"><h2 class="h5 mb-0">Audit</h2></div>
+				<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.carrier-connection.show.audit.fa1703d'|trans }}</h2></div>
 				<div class="card-body">
 					<dl class="mb-0">
-						<dt>Angelegt</dt>
+						<dt>{{ 'ui.v3.integration.carrier-connection.show.angelegt.6cf261d'|trans }}</dt>
 						<dd>{{ connection.created_at }}<br><code>{{ connection.created_by }}</code></dd>
-						<dt>Letzte Statusänderung</dt>
+						<dt>{{ 'ui.v3.integration.carrier-connection.show.letzte.statusanderung.1b0bf93'|trans }}</dt>
 						<dd class="mb-0">
 							{% if connection.changed_at %}
 								{{ connection.changed_at }}<br><code>{{ connection.changed_by }}</code>
 							{% else %}
-								Noch keine Statusänderung
+								{{ 'ui.v3.integration.carrier-connection.show.noch.keine.statusanderung.2c409f9'|trans }}
 							{% endif %}
 						</dd>
 					</dl>

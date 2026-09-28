@@ -9,13 +9,13 @@
                     <div class="row col-md-6">
                         <div class="form-row col-md-12">
                                 <div class="form-group col-md-8">
-                                    <label for="inputSupplier">Lieferanten suchen</label>
+                                    <label for="inputSupplier">{{ 'ui.supplier_order.supplier_order_input_fields.lieferanten.suchen.4be5daf'|trans }}</label>
                                     <input
                                             type="text"
                                             id="supplier_supplierNr"
                                             name="supplier[supplierNr]"
                                             required="required"
-                                            placeholder="Über Lieferanten-Nr suchen"
+                                            placeholder="{{ 'ui.supplier_order.supplier_order_input_fields.uber.lieferanten.nr.suchen.1f7bcf0'|trans }}"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
                                             data-type="supplierNr"
                                             style="background-color:
@@ -38,7 +38,7 @@
                                             id="supplier_supplierName"
                                             name="supplier[supplierName]"
                                             required="required"
-                                            placeholder="Lieferanten Name"
+                                            placeholder="{{ 'ui.supplier_order.supplier_order_input_fields.lieferanten.name.519d8a9'|trans }}"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
                                             data-type="supplierName"
                                             autocomplete="off"
@@ -50,7 +50,7 @@
                                             type="text"
                                             id="supplier_supplierAddressAddition"
                                             name="supplier[supplierAddressAddition]"
-                                            placeholder="Anschrift Zusatz"
+                                            placeholder="{{ 'ui.customer.customer_input_fields.anschrift.zusatz.59481f7'|trans }}"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
                                             data-type="supplierAddressAddition"
                                             autocomplete="off"
@@ -63,7 +63,7 @@
                                             id="supplier_supplierAddressStreet"
                                             name="supplier[supplierAddressStreet]"
                                             required="required"
-                                            placeholder="Straße"
+                                            placeholder="{{ 'ui.customer.customer_input_fields.strasse.880c688'|trans }}"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
                                             data-type="supplierAddressStreet"
                                             autocomplete="off"
@@ -76,7 +76,7 @@
                                             id="supplier_supplierAddressStreetNr"
                                             name="supplier[supplierAddressStreetNr]"
                                             required="required"
-                                            placeholder="Haus-Nr."
+                                            placeholder="{{ 'ui.customer_order.customer_order_input_fields.haus.nr.0c617dc'|trans }}"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
                                             data-type="supplierAddressStreetNr"
                                             autocomplete="off"
@@ -90,7 +90,7 @@
                                             id="supplier_supplierAddressCountryCode"
                                             name="supplier[supplierAddressCountryCode]"
                                             required="required"
-                                            placeholder="Land"
+                                            placeholder="{{ 'ui.customer.customer_input_fields.land.d9df90d'|trans }}"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
                                             data-type="supplierAddressCountryCode"
                                             autocomplete="off"
@@ -103,7 +103,7 @@
                                             id="supplier_supplierAddressZipcode"
                                             name="supplier[supplierAddressZipcode]"
                                             required="required"
-                                            placeholder="PLZ"
+                                            placeholder="{{ 'templates.editor.zip'|trans }}"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
                                             data-type="supplierAddressZipcode"
                                             autocomplete="off"
@@ -116,7 +116,7 @@
                                             id="supplier_supplierAddressCity"
                                             name="supplier[supplierAddressCity]"
                                             required="required"
-                                            placeholder="Ort"
+                                            placeholder="{{ 'ui.customer.customer_input_fields.ort.d95f9e6'|trans }}"
                                             class="form-control autocomplete_suppliers ui-autocomplete-input"
                                             data-type="supplierAddressCity"
                                             autocomplete="off"
@@ -167,7 +167,7 @@
                     <div class="row col-md-6">
                         <div class="form-row col-md-12">
                             <div class="form-group col-md-4">
-                                <label for="inputOrderDat">Bearbeiter</label>
+                                <label for="inputOrderDat">{{ 'ui.customer_order.customer_order_input_fields.bearbeiter.7ea436f'|trans }}</label>
                                 <input class="form-control" type="text" placeholder="{{ app.user.firstname }} {{ app.user.lastname }}" readonly="" style="background-color: transparent;">
                             </div>
                         </div>
@@ -181,9 +181,9 @@
                                 <table id="autocomplete_table" class="table table-hover">
                                     <thead class="thead-dark">
                                     <tr>
-                                        <th width="15%" scope="col">Artikel-Nr</th>
-                                        <th width="35%" style="text-align:center;">Artikel Bezeichnung</th>
-                                        <th width="10%" style="text-align:center;">Menge</th>
+                                        <th width="15%" scope="col">{{ 'ui.article.article_input_fields.artikel.nr.b7761c6'|trans }}</th>
+                                        <th width="35%" style="text-align:center;">{{ 'ui.customer_order.customer_order_input_fields.artikel.bezeichnung.8f7c44b'|trans }}</th>
+                                        <th width="10%" style="text-align:center;">{{ 'ui.customer_order.customer_order_input_fields.menge.ec3e620'|trans }}</th>
                                         <th width="1%" style="text-align:center;">#</th>
                                     </tr>
                                     </thead>
@@ -231,7 +231,7 @@
                                 </table>
                             </div>
                             <div class="btn-container">
-                                <button id="addNewButton" class="btn btn-primary btn-sm btn3d" value="Neue Position">Neue Position</button>
+                                <button id="addNewButton" class="btn btn-primary btn-sm btn3d" value="Neue Position">{{ 'ui.customer_order.customer_order_input_fields.neue.position.3eedc23'|trans }}</button>
                             </div>
                             <input
                                     type="hidden"

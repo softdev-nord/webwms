@@ -41,7 +41,7 @@ final class V3ShippingController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/shipping/index.html.twig', [
-            'page' => 'Versand',
+            'page' => 'ui.v3.integration.device.scan.versand.31e5fb2',
             'shipments' => $this->queries->shipments($this->tenantUser()->tenantId()),
         ]);
     }
@@ -67,7 +67,7 @@ final class V3ShippingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'Die Sendung wurde vorbereitet.');
+        $this->addFlash('success', 'controller.v3shipping.flash.die.sendung.wurde.vorbereitet.3acfdd3');
 
         return $this->redirectToRoute('v3_shipping_show', ['shipmentId' => $shipmentId]);
     }
@@ -80,7 +80,7 @@ final class V3ShippingController extends AbstractController
         $shipment = $this->requiredShipment($shipmentId);
 
         return $this->render('v3/shipping/show.html.twig', [
-            'page' => 'Sendung',
+            'page' => 'ui.v3.integration.device.scan.sendung.fdd2800',
             'shipment' => $shipment,
             'carrierConnectionAvailable' => $this->carrierConnectionAvailable(
                 $this->queries->carrierConnections($user->tenantId()),
@@ -123,7 +123,7 @@ final class V3ShippingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'Das Carrier-Label wurde erzeugt und in die Sendung übernommen.');
+        $this->addFlash('success', 'controller.v3shipping.flash.das.carrier.label.wurde.erzeugt.und.in.die.sendung.uber.81c1596');
 
         return $this->redirectToRoute('v3_shipping_show', ['shipmentId' => $shipmentId]);
     }
@@ -143,7 +143,7 @@ final class V3ShippingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'Label und Trackingnummer wurden registriert.');
+        $this->addFlash('success', 'controller.v3shipping.flash.label.und.trackingnummer.wurden.registriert.3db882a');
 
         return $this->redirectToRoute('v3_shipping_show', ['shipmentId' => $shipmentId]);
     }
@@ -169,7 +169,7 @@ final class V3ShippingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         );
-        $this->addFlash('success', 'Das Versandlabel wurde in die Druckwarteschlange gestellt.');
+        $this->addFlash('success', 'controller.v3shipping.flash.das.versandlabel.wurde.in.die.druckwarteschlange.gestel.0d690fc');
 
         return $this->redirectToRoute('v3_shipping_show', ['shipmentId' => $shipmentId]);
     }
@@ -188,7 +188,7 @@ final class V3ShippingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'Die Sendung wurde an den Frachtführer übergeben.');
+        $this->addFlash('success', 'controller.v3shipping.flash.die.sendung.wurde.an.den.frachtfuhrer.ubergeben.ee51140');
 
         return $this->redirectToRoute('v3_shipping_show', ['shipmentId' => $shipmentId]);
     }

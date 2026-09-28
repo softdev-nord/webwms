@@ -12,9 +12,9 @@
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-xxl-12">
-                                            <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">Allgemeine Daten</span>
+                                            <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'ui.article.article_input_fields.allgemeine.daten.af159f2'|trans }}</span>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Artikel-Nr</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.artikel.nr.b7761c6'|trans }}</label>
                                                 <div class="col-xs-8">
                                                     {% if editArticle %}
                                                         {{ form_row(articleForm.articleNr) }}
@@ -24,13 +24,13 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Artikelname</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.artikelname.1369a4d'|trans }}</label>
                                                 <div class="col-xs-8">
                                                     {{ form_row(articleForm.articleName) }}
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Kategorie</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.kategorie.3582103'|trans }}</label>
                                                 <div class="col-xs-8">
                                                     {{ form_row(articleForm.articleCategory) }}
                                                 </div>
@@ -46,21 +46,21 @@
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-xxl-12">
-                                            <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">Artikel Details</span>
+                                            <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'ui.article.article_input_fields.artikel.details.9458921'|trans }}</span>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Gewicht</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.gewicht.b80121b'|trans }}</label>
                                                 <div class="col-xs-8" style="margin-bottom: 5px;">
                                                     {{ form_row(articleForm.articleWeight) }}
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">EAN-Nr.</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.ean.nr.6f75442'|trans }}</label>
                                                 <div class="col-xs-8" style="margin-bottom: 5px;">
                                                     {{ form_row(articleForm.articleEan) }}
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Einheit (Stk, kg, etc)</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.einheit.stk.kg.etc.905ace9'|trans }}</label>
                                                 <div class="col-xs-8" style="margin-bottom: 5px;">
                                                     {{ form_row(articleForm.articleUnit) }}
                                                 </div>
@@ -78,21 +78,21 @@
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-xxl-12">
-                                            <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">Artikel Abmessungen</span>
+                                            <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'ui.article.article_input_fields.artikel.abmessungen.2af0460'|trans }}</span>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Tiefe</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.tiefe.86a28ff'|trans }}</label>
                                                 <div class="col-xs-8" style="margin-bottom: 5px;">
                                                     {{ form_row(articleForm.articleDepth) }}
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Breite</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.breite.861387c'|trans }}</label>
                                                 <div class="col-xs-8" style="margin-bottom: 5px;">
                                                     {{ form_row(articleForm.articleWidth) }}
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Höhe</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.hohe.f0c362a'|trans }}</label>
                                                 <div class="col-xs-8" style="margin-bottom: 5px;">
                                                     {{ form_row(articleForm.articleHeight) }}
                                                 </div>
@@ -108,21 +108,21 @@
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-xxl-12">
-                                            <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">Logistik</span>
+                                            <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'nav.logistics.headline'|trans }}</span>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Auslagerungsstrategie</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.auslagerungsstrategie.2db2a27'|trans }}</label>
                                                 <div class="col-xs-8" style="margin-bottom: 5px;">
                                                     {{ form_row(articleForm.stockOutStrategy) }}
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">LE-Menge</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.le.menge.80e62b5'|trans }}</label>
                                                 <div class="col-xs-8" style="margin-bottom: 5px;">
                                                     {{ form_row(articleForm.leQuantity) }}
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="text" class="control-label col-xs-4">Standard Ladehilfsmittel</label>
+                                                <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.standard.ladehilfsmittel.2af26c3'|trans }}</label>
                                                 <div class="col-xs-8" style="margin-bottom: 5px;">
                                                     {{ form_row(articleForm.standardLoadingEquipment) }}
                                                 </div>
