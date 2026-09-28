@@ -24,7 +24,7 @@ final class V3DashboardController extends AbstractController
 
         return $this->render('v3/dashboard/index.html.twig', [
             'summary' => $dashboard->summary($user->tenantId()),
-            'page' => 'Dashboard',
+            'page' => 'theme.dashboard',
         ]);
     }
 
@@ -40,7 +40,7 @@ final class V3DashboardController extends AbstractController
             'warehouses' => $queries->warehouses($user->tenantId()),
             'stock' => $queries->stock($user->tenantId(), $warehouseId, 200, null),
             'selectedWarehouse' => $warehouseId,
-            'page' => 'controller.v3dashboard.page.lagerbestand',
+            'page' => 'dashboard.page.inventory',
         ]);
     }
 

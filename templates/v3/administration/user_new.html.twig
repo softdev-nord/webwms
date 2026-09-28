@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_administration_index') }}" class="text-decoration-none">{{ 'ui.v3.administration.api_client_new.administration'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'nav.user.add'|trans }}</h1>
+		<a href="{{ path('v3_administration_index') }}" class="text-decoration-none">{{ 'administration.api_client_new.administration'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'navigation.user.add'|trans }}</h1>
 	</div>
 
 	<form method="post" class="card border-0 shadow-sm">
@@ -12,23 +12,23 @@
 
 			<div class="row g-3">
 				<div class="col-md-6">
-					<label class="form-label">{{ 'ui.v3.administration.user_new.anzeigename'|trans }}</label>
+					<label class="form-label">{{ 'administration.user_new.display_name'|trans }}</label>
 					<input class="form-control" name="display_name" required>
 				</div>
 
 				<div class="col-md-6">
-					<label class="form-label">{{ 'Email'|trans }}</label>
+					<label class="form-label">{{ 'theme.email'|trans }}</label>
 					<input class="form-control" type="email" name="email" required>
 				</div>
 
 				<div class="col-md-6">
-					<label class="form-label">{{ 'ui.v3.administration.user_new.initiales.passwort'|trans }}</label>
+					<label class="form-label">{{ 'administration.user_new.initial_password'|trans }}</label>
 					<input class="form-control" type="password" minlength="12" name="password" autocomplete="new-password" required>
-					<div class="form-text">{{ 'ui.v3.administration.user_new.mindestens.12.zeichen'|trans }}</div>
+					<div class="form-text">{{ 'administration.user_new.at_least_12_characters'|trans }}</div>
 				</div>
 
 				<div class="col-md-6">
-					<label class="form-label">{{ 'ui.user.index.rollen'|trans }}</label>
+					<label class="form-label">{{ 'user.index.roles'|trans }}</label>
 					<select class="form-select" name="role_ids[]" multiple size="5">
 						{% for role in roles %}
 							<option value="{{ role.id }}">{{ role.code }} – {{ role.name }}</option>
@@ -39,7 +39,7 @@
 		</div>
 
 		<div class="card-footer text-end">
-			<button class="btn btn-primary">{{ 'nav.user.add'|trans }}</button>
+			<button class="btn btn-primary">{{ 'navigation.user.add'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

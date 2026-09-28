@@ -1,22 +1,22 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}{{ (page|default('ui.v3.subsections.title-meta.choice.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0{% endblock %}
+{% block title %}{{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0{% endblock %}
 {% block webwms_content %}
 <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
     <div>
-        <h1 class="h3 mb-1">{{ 'ui.article.index.bestand'|trans }}</h1>
-        <p class="text-muted mb-0">{{ 'ui.v3.inventory.stock.mandantensichere.live.sicht.auf.die.v3.bestandsprojekti'|trans }}</p>
+        <h1 class="h3 mb-1">{{ 'article.index.stock'|trans }}</h1>
+        <p class="text-muted mb-0">{{ 'inventory.stock.client_secure_live_view_of_v3_stock_projection'|trans }}</p>
     </div>
 <form method="get" class="d-flex gap-2 align-items-end">
     <div>
-        <label for="warehouse" class="form-label small">{{ 'nav.master_data.submenu.headline4'|trans }}</label>
+        <label for="warehouse" class="form-label small">{{ 'navigation.master_data.submenu.headline4.label'|trans }}</label>
         <select id="warehouse" name="warehouse" class="form-select">
-            <option value="">{{ 'ui.v3.inventory.configuration_form.alle.lager'|trans }}</option>
+            <option value="">{{ 'inventory.configuration_form.all_warehouses'|trans }}</option>
             {% for warehouse in warehouses %}
                 <option value="{{ warehouse.id }}" {{ warehouse.id == selectedWarehouse ? 'selected' : '' }}>{{ warehouse.code }} – {{ warehouse.name }}</option>
             {% endfor %}
         </select>
     </div>
-    <button class="btn btn-primary" type="submit">{{ 'ui.v3.integration.outbox.index.filtern'|trans }}</button>
+    <button class="btn btn-primary" type="submit">{{ 'integration.outbox.index.filter'|trans }}</button>
 </form>
 </div>
 <div class="card border-0 shadow-sm">
@@ -24,17 +24,17 @@
         <table class="table table-hover align-middle mb-0">
             <thead class="table-light">
             <tr>
-                <th>{{ 'ui.v3.inventory.stock.sku'|trans }}</th>
-                <th>{{ 'ui.modal.show_article_stock_details_modal.lagerplatz'|trans }}</th>
-                <th>{{ 'ui.v3.inventory.stock.topologie'|trans }}</th>
-                <th>{{ 'ui.transport_request.index.status'|trans }}</th>
-                <th>{{ 'ui.v3.inventory.stock.sonderbestand'|trans }}</th>
-                <th>{{ 'ui.modal.stock_in_modal.charge'|trans }}</th>
-                <th>{{ 'ui.v3.inbound.new.seriennummer'|trans }}</th>
-                <th>{{ 'ui.v3.inventory.stock.verfall'|trans }}</th>
-                <th class="text-end">{{ 'ui.customer_order.customer_order_input_fields.menge'|trans }}</th>
-                <th class="text-end">{{ 'ui.v3.inbound.new.verfugbar'|trans }}</th>
-                <th>{{ 'ui.v3.inventory.stock.aktualisiert'|trans }}</th>
+                <th>{{ 'inventory.stock.sku'|trans }}</th>
+                <th>{{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}</th>
+                <th>{{ 'inventory.stock.topology'|trans }}</th>
+                <th>{{ 'transport_request.index.status'|trans }}</th>
+                <th>{{ 'inventory.stock.special_stock'|trans }}</th>
+                <th>{{ 'modal.stock_in_modal.batch'|trans }}</th>
+                <th>{{ 'inbound.new.serial_number'|trans }}</th>
+                <th>{{ 'inventory.stock.expiration'|trans }}</th>
+                <th class="text-end">{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</th>
+                <th class="text-end">{{ 'inbound.new.available'|trans }}</th>
+                <th>{{ 'inventory.stock.updated'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -58,7 +58,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="11" class="text-center text-muted py-5">{{ 'ui.v3.inventory.stock.kein.bestand.fur.diesen.filter.vorhanden'|trans }}</td>
+                        <td colspan="11" class="text-center text-muted py-5">{{ 'inventory.stock.no_stock_available_for_this_filter'|trans }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

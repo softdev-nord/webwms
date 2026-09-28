@@ -3,11 +3,11 @@
 {% block webwms_content %}
 	<div class="d-flex justify-content-between align-items-center mb-4">
 		<div>
-			<h1 class="h3 mb-1">{{ 'ui.v3.integration.device.scan.verladung'|trans }}</h1>
-			<p class="text-muted mb-0">{{ 'ui.v3.loading.index.sendungen.nach.tour.und.fahrzeug.gruppieren.und.kontrol'|trans }}</p>
+			<h1 class="h3 mb-1">{{ 'integration.device.scan.loading'|trans }}</h1>
+			<p class="text-muted mb-0">{{ 'loading.index.group_shipments_by_route_and_vehicle_and_load_systematically'|trans }}</p>
 		</div>
 		{% if is_granted('fulfillment.loading.write') %}
-			<a class="btn btn-primary" href="{{ path('v3_loading_new') }}">{{ 'ui.v3.loading.index.lademanifest.anlegen'|trans }}</a>
+			<a class="btn btn-primary" href="{{ path('v3_loading_new') }}">{{ 'loading.index.create_load_manifest'|trans }}</a>
 		{% endif %}
 	</div>
 
@@ -16,11 +16,11 @@
 			<table class="table table-hover align-middle mb-0">
 				<thead>
 					<tr>
-						<th>{{ 'ui.v3.loading.index.manifest'|trans }}</th>
-						<th>{{ 'ui.v3.loading.index.tour'|trans }}</th>
-						<th>{{ 'ui.v3.loading.index.fahrzeug'|trans }}</th>
-						<th>{{ 'ui.transport_request.index.status'|trans }}</th>
-						<th>{{ 'ui.v3.inbound.control.fortschritt'|trans }}</th>
+						<th>{{ 'loading.index.manifest'|trans }}</th>
+						<th>{{ 'loading.index.route'|trans }}</th>
+						<th>{{ 'loading.index.vehicle'|trans }}</th>
+						<th>{{ 'transport_request.index.status'|trans }}</th>
+						<th>{{ 'inbound.control.progress'|trans }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -33,12 +33,12 @@
 							<td><span class="badge bg-secondary-subtle text-secondary">{{ manifest.status }}</span></td>
 							<td>{{ manifest.loaded_shipment_count }}/{{ manifest.shipment_count }}</td>
 							<td class="text-end">
-								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_loading_show', {manifestId: manifest.id}) }}">{{ 'ui.v3.inbound.index.offnen'|trans }}</a>
+								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_loading_show', {manifestId: manifest.id}) }}">{{ 'inbound.index.open'|trans }}</a>
 							</td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="6" class="text-center text-muted py-5">{{ 'ui.v3.loading.index.noch.keine.lademanifeste.vorhanden'|trans }}</td>
+							<td colspan="6" class="text-center text-muted py-5">{{ 'loading.index.no_load_manifests_available_yet'|trans }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

@@ -1,20 +1,20 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4"><a href="{{ path('v3_inbound_index') }}" class="text-decoration-none">{{ 'ui.v3.inbound.new.wareneingang'|trans }}</a><h1 class="h3 mt-2">{{ 'ui.v3.inbound.new.ungeplanten.wareneingang.erfassen'|trans }}</h1></div>
+	<div class="mb-4"><a href="{{ path('v3_inbound_index') }}" class="text-decoration-none">{{ 'inbound.new.goods_receipt'|trans }}</a><h1 class="h3 mt-2">{{ 'inbound.new.record_unplanned_goods_receipt'|trans }}</h1></div>
 	<form method="post" class="card border-0 shadow-sm"><div class="card-body">
 		<input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_unplanned_create') }}">
 		<div class="row g-3">
-			<div class="col-md-4"><label class="form-label" for="code">{{ 'ui.v3.inbound.new.wareneingangsnummer'|trans }}</label><input class="form-control font-monospace" id="code" name="code" required></div>
-			<div class="col-md-3"><label class="form-label" for="supplier_code">{{ 'ui.v3.inbound.new.lieferantencode'|trans }}</label><input class="form-control font-monospace text-uppercase" id="supplier_code" name="supplier_code" required></div>
-			<div class="col-md-5"><label class="form-label" for="supplier_name">{{ 'ui.v3.inbound.new.lieferantenname'|trans }}</label><input class="form-control" id="supplier_name" name="supplier_name" required></div>
-			<div class="col-md-4"><label class="form-label" for="delivery_note">{{ 'ui.v3.inbound.control.lieferschein'|trans }}</label><input class="form-control" id="delivery_note" name="delivery_note"></div>
-			<div class="col-md-4"><label class="form-label" for="product_id">{{ 'nav.master_data.submenu.headline1'|trans }}</label><select class="form-select" id="product_id" name="product_id" required>{% for product in products %}<option value="{{ product.id }}">{{ product.sku }} · {{ product.name }}</option>{% endfor %}</select></div>
-			<div class="col-md-4"><label class="form-label" for="location_id">{{ 'ui.v3.inbound.new.annahmeplatz'|trans }}</label><select class="form-select" id="location_id" name="location_id" required>{% for location in locations %}<option value="{{ location.id }}">{{ location.warehouse_code }} · {{ location.code }}</option>{% endfor %}</select></div>
-			<div class="col-md-3"><label class="form-label" for="quantity">{{ 'ui.customer_order.customer_order_input_fields.menge'|trans }}</label><input class="form-control" type="number" id="quantity" name="quantity" min="1" value="1" required></div>
-			<div class="col-md-3"><label class="form-label" for="stock_status">{{ 'ui.v3.inbound.new.bestandsstatus'|trans }}</label><select class="form-select" id="stock_status" name="stock_status"><option value="available">{{ 'ui.v3.inbound.new.verfugbar'|trans }}</option><option value="quality_inspection">{{ 'ui.v3.inbound.new.qs.prufung'|trans }}</option><option value="blocked">{{ 'ui.v3.inbound.new.gesperrt'|trans }}</option></select></div>
-			<div class="col-md-3"><label class="form-label" for="batch_number">{{ 'ui.modal.stock_in_modal.charge'|trans }}</label><input class="form-control" id="batch_number" name="batch_number"></div>
-			<div class="col-md-3"><label class="form-label" for="serial_number">{{ 'ui.v3.inbound.new.seriennummer'|trans }}</label><input class="form-control" id="serial_number" name="serial_number"></div>
+			<div class="col-md-4"><label class="form-label" for="code">{{ 'inbound.new.goods_receipt_number'|trans }}</label><input class="form-control font-monospace" id="code" name="code" required></div>
+			<div class="col-md-3"><label class="form-label" for="supplier_code">{{ 'inbound.new.supplier_code'|trans }}</label><input class="form-control font-monospace text-uppercase" id="supplier_code" name="supplier_code" required></div>
+			<div class="col-md-5"><label class="form-label" for="supplier_name">{{ 'inbound.new.supplier_name'|trans }}</label><input class="form-control" id="supplier_name" name="supplier_name" required></div>
+			<div class="col-md-4"><label class="form-label" for="delivery_note">{{ 'inbound.control.delivery_note'|trans }}</label><input class="form-control" id="delivery_note" name="delivery_note"></div>
+			<div class="col-md-4"><label class="form-label" for="product_id">{{ 'navigation.master_data.submenu.headline1.label'|trans }}</label><select class="form-select" id="product_id" name="product_id" required>{% for product in products %}<option value="{{ product.id }}">{{ product.sku }} · {{ product.name }}</option>{% endfor %}</select></div>
+			<div class="col-md-4"><label class="form-label" for="location_id">{{ 'inbound.new.receiving_location'|trans }}</label><select class="form-select" id="location_id" name="location_id" required>{% for location in locations %}<option value="{{ location.id }}">{{ location.warehouse_code }} · {{ location.code }}</option>{% endfor %}</select></div>
+			<div class="col-md-3"><label class="form-label" for="quantity">{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</label><input class="form-control" type="number" id="quantity" name="quantity" min="1" value="1" required></div>
+			<div class="col-md-3"><label class="form-label" for="stock_status">{{ 'inbound.new.stock_status'|trans }}</label><select class="form-select" id="stock_status" name="stock_status"><option value="available">{{ 'inbound.new.available'|trans }}</option><option value="quality_inspection">{{ 'inbound.new.quality_inspection'|trans }}</option><option value="blocked">{{ 'inbound.new.blocked'|trans }}</option></select></div>
+			<div class="col-md-3"><label class="form-label" for="batch_number">{{ 'modal.stock_in_modal.batch'|trans }}</label><input class="form-control" id="batch_number" name="batch_number"></div>
+			<div class="col-md-3"><label class="form-label" for="serial_number">{{ 'inbound.new.serial_number'|trans }}</label><input class="form-control" id="serial_number" name="serial_number"></div>
 		</div>
-	</div><div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_inbound_index') }}">{{ 'button.cancel'|trans }}</a><button class="btn btn-primary">{{ 'ui.v3.inbound.new.annehmen'|trans }}</button></div></form>
+	</div><div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_inbound_index') }}">{{ 'common.button.cancel'|trans }}</a><button class="btn btn-primary">{{ 'inbound.new.accept'|trans }}</button></div></form>
 {% endblock %}

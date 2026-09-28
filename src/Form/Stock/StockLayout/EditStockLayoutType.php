@@ -99,13 +99,13 @@ class EditStockLayoutType extends AbstractType
             ],
           ])
           ->add('save', ButtonType::class, [
-            'label' => 'form.stock.stocklayout.editstocklayouttype.label.save_changes',
+            'label' => 'stock.stock_layout.form.edit_stock_layout.save_changes',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'form.stock.stocklayout.editstocklayouttype.label.cancel',
+            'label' => 'stock.stock_layout.form.edit_stock_layout.cancel',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

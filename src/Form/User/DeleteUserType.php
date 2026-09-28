@@ -33,13 +33,13 @@ class DeleteUserType extends AbstractType
                 ],
             ])
             ->add('delete', ButtonType::class, [
-                'label' => 'form.user.deleteusertype.label.delete',
+                'label' => 'user.form.delete_user.delete',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.user.deleteusertype.label.cancel',
+                'label' => 'user.form.delete_user.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

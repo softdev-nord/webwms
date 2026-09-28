@@ -113,13 +113,13 @@ class EditStockLocationType extends AbstractType
             ],
           ])
           ->add('save', SubmitType::class, [
-            'label' => 'form.stock.stocklocation.editstocklocationtype.label.save_changes',
+            'label' => 'stock.stock_location.form.edit_stock_location.save_changes',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'form.stock.stocklocation.editstocklocationtype.label.cancel',
+            'label' => 'stock.stock_location.form.edit_stock_location.cancel',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

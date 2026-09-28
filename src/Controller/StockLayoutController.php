@@ -47,7 +47,7 @@ class StockLayoutController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'controller.stock.layout.page.lagerlayout',
+                'page' => 'stock.layout.page.warehouse_layout',
             ]
         );
     }

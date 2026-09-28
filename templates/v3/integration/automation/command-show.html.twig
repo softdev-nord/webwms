@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_automation_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.automation.command-new.lagerlifte.und.paternoster'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'ui.v3.integration.automation.command-show.geratebefehl'|trans }}</h1>
+		<a href="{{ path('v3_automation_index') }}" class="text-decoration-none">{{ 'integration.automation.command_new.storage_lifts_and_paternoster_systems'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'integration.automation.command_show.device_command'|trans }}</h1>
 	</div>
 
 	<div class="card border-0 shadow-sm mb-4">
@@ -13,12 +13,12 @@
 		</div>
 		<div class="card-body">
 			<dl class="row mb-0">
-				<dt class="col-sm-3">{{ 'ui.modal.show_article_stock_details_modal.lagerplatz'|trans }}</dt><dd class="col-sm-9"><code>{{ command.location_code }}</code></dd>
-				<dt class="col-sm-3">{{ 'ui.stock.stock_rotation.referenz'|trans }}</dt><dd class="col-sm-9">{{ command.reference_type }} · <code>{{ command.reference_id }}</code></dd>
-				<dt class="col-sm-3">{{ 'ui.v3.integration.automation.command-show.request.id'|trans }}</dt><dd class="col-sm-9"><code>{{ command.request_id }}</code></dd>
-				<dt class="col-sm-3">{{ 'ui.v3.integration.automation.command-show.ruckmeldung'|trans }}</dt><dd class="col-sm-9">{{ command.message|default('–') }}</dd>
-				<dt class="col-sm-3">{{ 'ui.user.index.erstellt'|trans }}</dt><dd class="col-sm-9">{{ command.created_at }}</dd>
-				<dt class="col-sm-3">{{ 'ui.v3.extensions.configuration_index.geandert'|trans }}</dt><dd class="col-sm-9">{{ command.changed_at|default('–') }}</dd>
+				<dt class="col-sm-3">{{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}</dt><dd class="col-sm-9"><code>{{ command.location_code }}</code></dd>
+				<dt class="col-sm-3">{{ 'stock.stock_rotation.reference'|trans }}</dt><dd class="col-sm-9">{{ command.reference_type }} · <code>{{ command.reference_id }}</code></dd>
+				<dt class="col-sm-3">{{ 'integration.automation.command_show.request_id'|trans }}</dt><dd class="col-sm-9"><code>{{ command.request_id }}</code></dd>
+				<dt class="col-sm-3">{{ 'integration.automation.command_show.feedback'|trans }}</dt><dd class="col-sm-9">{{ command.message|default('–') }}</dd>
+				<dt class="col-sm-3">{{ 'user.index.created'|trans }}</dt><dd class="col-sm-9">{{ command.created_at }}</dd>
+				<dt class="col-sm-3">{{ 'extensions.configuration_index.modified'|trans }}</dt><dd class="col-sm-9">{{ command.changed_at|default('–') }}</dd>
 			</dl>
 		</div>
 	</div>
@@ -29,23 +29,23 @@
 				<input type="hidden" name="_token" value="{{ csrf_token('v3_automation_command_status_' ~ command.id) }}">
 				<div class="row g-3">
 					<div class="col-md-4">
-						<label class="form-label" for="status">{{ 'ui.v3.integration.automation.command-show.ruckmeldung'|trans }}</label>
+						<label class="form-label" for="status">{{ 'integration.automation.command_show.feedback'|trans }}</label>
 						<select class="form-select" id="status" name="status">
 							{% if command.status == 'queued' %}
-								<option value="dispatched">{{ 'ui.v3.integration.automation.command-show.an.gerat.ubermittelt'|trans }}</option>
+								<option value="dispatched">{{ 'integration.automation.command_show.transmitted_to_device'|trans }}</option>
 							{% else %}
-								<option value="completed">{{ 'ui.v3.integration.automation.command-show.erfolgreich.abgeschlossen'|trans }}</option>
+								<option value="completed">{{ 'integration.automation.command_show.successfully_completed'|trans }}</option>
 							{% endif %}
-							<option value="failed">{{ 'ui.v3.integration.automation.command-show.fehlgeschlagen'|trans }}</option>
+							<option value="failed">{{ 'integration.automation.command_show.failed'|trans }}</option>
 						</select>
 					</div>
 					<div class="col-md-8">
-						<label class="form-label" for="message">{{ 'ui.v3.integration.automation.command-show.geratemeldung'|trans }}</label>
+						<label class="form-label" for="message">{{ 'integration.automation.command_show.device_message'|trans }}</label>
 						<input class="form-control" id="message" name="message" maxlength="500">
 					</div>
 				</div>
 			</div>
-			<div class="card-footer text-end"><button class="btn btn-primary">{{ 'ui.v3.integration.automation.command-show.ruckmeldung.verarbeiten'|trans }}</button></div>
+			<div class="card-footer text-end"><button class="btn btn-primary">{{ 'integration.automation.command_show.process_feedback'|trans }}</button></div>
 		</form>
 	{% endif %}
 {% endblock %}

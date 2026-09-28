@@ -55,7 +55,7 @@ class StockLocationController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'ui.v3.inventory.occupancy.lagerplatze',
+                'page' => 'inventory.occupancy.storage_locations',
             ]
         );
     }

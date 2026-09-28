@@ -3,16 +3,16 @@
 {% block webwms_content %}
     <div class="row align-items-center mb-4">
         <div class="col-lg-7">
-            <h1 class="h3 mb-1">{{ 'ui.v3.documentation.index.hilfe.amp.dokumentation'|trans }}</h1>
-            <p class="text-muted mb-0">{{ 'ui.v3.documentation.index.anleitungen.fur.die.tagliche.arbeit.mit.webwms.3.0'|trans }}</p>
+            <h1 class="h3 mb-1">{{ 'documentation.index.help_and_amp_documentation'|trans }}</h1>
+            <p class="text-muted mb-0">{{ 'documentation.index.guides_for_daily_work_with_webwms_3_0'|trans }}</p>
         </div>
         <div class="col-lg-5 mt-3 mt-lg-0">
             <form method="get" action="{{ path('v3_documentation_index') }}" role="search">
                 <div class="input-group">
                     <span class="input-group-text"><i class="ri-search-line"></i></span>
-                    <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="{{ 'ui.v3.documentation.index.dokumentation.durchsuchen'|trans }}" aria-label="{{ 'ui.v3.documentation.index.dokumentation.durchsuchen'|trans }}">
-                    {% if query %}<a class="btn btn-light" href="{{ path('v3_documentation_index') }}" aria-label="{{ 'ui.v3.documentation.index.suche.zurucksetzen'|trans }}"><i class="ri-close-line"></i></a>{% endif %}
-                    <button class="btn btn-primary" type="submit">{{ 'ui.v3.documentation.index.suchen'|trans }}</button>
+                    <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="{{ 'documentation.index.search_documentation'|trans }}" aria-label="{{ 'documentation.index.search_documentation'|trans }}">
+                    {% if query %}<a class="btn btn-light" href="{{ path('v3_documentation_index') }}" aria-label="{{ 'documentation.index.reset_search'|trans }}"><i class="ri-close-line"></i></a>{% endif %}
+                    <button class="btn btn-primary" type="submit">{{ 'documentation.index.search'|trans }}</button>
                 </div>
             </form>
         </div>
@@ -20,7 +20,7 @@
 
     {% if groups is empty %}
         <div class="alert alert-info border-0 shadow-sm">
-            {{ 'ui.v3.documentation.index.fur'|trans }}{{ query }}{{ 'ui.v3.documentation.index.wurde.keine.passende.dokumentation.gefunden'|trans }}
+            {{ 'documentation.index.for'|trans }}{{ query }}{{ 'documentation.index.no_matching_documentation_was_found'|trans }}
         </div>
     {% endif %}
 

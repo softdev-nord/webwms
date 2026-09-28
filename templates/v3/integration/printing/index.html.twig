@@ -3,29 +3,29 @@
 {% block webwms_content %}
 	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
 		<div>
-			<h1 class="h3 mb-1">{{ 'ui.v3.integration.printing.index.druckwarteschlange'|trans }}</h1>
-			<p class="text-muted mb-0">{{ 'ui.v3.integration.printing.index.drucker.verwalten.und.etiketten.sowie.dokumentenauftrag'|trans }}</p>
+			<h1 class="h3 mb-1">{{ 'integration.printing.index.print_queue'|trans }}</h1>
+			<p class="text-muted mb-0">{{ 'integration.printing.index.manage_printers_and_monitor_label_and_document_jobs'|trans }}</p>
 		</div>
 		<div class="d-flex gap-2">
 			{% if is_granted('integration.printer.write') %}
-				<a class="btn btn-outline-primary" href="{{ path('v3_printing_printer_new') }}">{{ 'ui.v3.integration.printing.index.drucker.anlegen'|trans }}</a>
+				<a class="btn btn-outline-primary" href="{{ path('v3_printing_printer_new') }}">{{ 'integration.printing.index.create_printer'|trans }}</a>
 			{% endif %}
 			{% if is_granted('integration.print_job.write') %}
-				<a class="btn btn-primary" href="{{ path('v3_printing_job_new') }}">{{ 'ui.v3.inbound.control.druckauftrag.anlegen'|trans }}</a>
+				<a class="btn btn-primary" href="{{ path('v3_printing_job_new') }}">{{ 'inbound.control.create_print_job'|trans }}</a>
 			{% endif %}
 		</div>
 	</div>
 
 	{% if is_granted('integration.printer.read') %}
 		<div class="card border-0 shadow-sm mb-4">
-			<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.configuration.index.drucker'|trans }}</h2></div>
+			<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'configuration.index.printer'|trans }}</h2></div>
 			<div class="table-responsive">
 				<table class="table table-hover align-middle mb-0">
 					<thead>
 						<tr>
-							<th>{{ 'templates.correspondence.name'|trans }}</th>
-							<th>{{ 'ui.v3.integration.carrier-connection.index.endpunkt'|trans }}</th>
-							<th>{{ 'ui.transport_request.index.status'|trans }}</th>
+							<th>{{ 'common.template.correspondence.name'|trans }}</th>
+							<th>{{ 'integration.carrier_connection.index.endpoint'|trans }}</th>
+							<th>{{ 'transport_request.index.status'|trans }}</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -36,16 +36,16 @@
 								<td><code>{{ printer.endpoint_url }}</code></td>
 								<td>
 									{% if printer.active %}
-										<span class="badge bg-success-subtle text-success">{{ 'ui.user.user_input_fields.aktiv'|trans }}</span>
+										<span class="badge bg-success-subtle text-success">{{ 'user.user_input_fields.active'|trans }}</span>
 									{% else %}
-										<span class="badge bg-secondary-subtle text-secondary">{{ 'ui.v3.integration.carrier-connection.index.pausiert'|trans }}</span>
+										<span class="badge bg-secondary-subtle text-secondary">{{ 'integration.carrier_connection.index.paused'|trans }}</span>
 									{% endif %}
 								</td>
-								<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_printing_printer_show', {printerId: printer.id}) }}">{{ 'ui.v3.inbound.index.offnen'|trans }}</a></td>
+								<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_printing_printer_show', {printerId: printer.id}) }}">{{ 'inbound.index.open'|trans }}</a></td>
 							</tr>
 						{% else %}
 							<tr>
-								<td colspan="4" class="text-center text-muted py-4">{{ 'ui.v3.integration.printing.index.noch.keine.drucker.vorhanden'|trans }}</td>
+								<td colspan="4" class="text-center text-muted py-4">{{ 'integration.printing.index.no_printers_yet'|trans }}</td>
 							</tr>
 						{% endfor %}
 					</tbody>
@@ -55,17 +55,17 @@
 	{% endif %}
 
 	<div class="card border-0 shadow-sm">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.printing.index.letzte.druckauftrage'|trans }}</h2></div>
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'integration.printing.index.recent_print_jobs'|trans }}</h2></div>
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
 				<thead>
 					<tr>
-						<th>{{ 'ui.v3.integration.printing.index.dokument'|trans }}</th>
-						<th>{{ 'ui.configuration.index.drucker'|trans }}</th>
-						<th>{{ 'ui.v3.integration.printing.index.format'|trans }}</th>
-						<th>{{ 'ui.transport_request.index.status'|trans }}</th>
-						<th>{{ 'ui.v3.integration.outbox.index.versuche'|trans }}</th>
-						<th>{{ 'ui.v3.administration.workspace.zeitpunkt'|trans }}</th>
+						<th>{{ 'integration.printing.index.document'|trans }}</th>
+						<th>{{ 'configuration.index.printer'|trans }}</th>
+						<th>{{ 'integration.printing.index.format'|trans }}</th>
+						<th>{{ 'transport_request.index.status'|trans }}</th>
+						<th>{{ 'integration.outbox.index.attempts'|trans }}</th>
+						<th>{{ 'administration.workspace.time_point_in_time'|trans }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -78,11 +78,11 @@
 							<td><span class="badge bg-secondary-subtle text-secondary">{{ job.status }}</span></td>
 							<td>{{ job.attempts }}</td>
 							<td>{{ job.created_at }}</td>
-							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_printing_job_show', {jobId: job.id}) }}">{{ 'ui.v3.inbound.index.offnen'|trans }}</a></td>
+							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_printing_job_show', {jobId: job.id}) }}">{{ 'inbound.index.open'|trans }}</a></td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="7" class="text-center text-muted py-5">{{ 'ui.v3.integration.printing.index.noch.keine.druckauftrage.vorhanden'|trans }}</td>
+							<td colspan="7" class="text-center text-muted py-5">{{ 'integration.printing.index.no_print_jobs_yet'|trans }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

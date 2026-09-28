@@ -2,8 +2,8 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_measurement_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.measurement.capture.waagen.und.volumenmessung'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'ui.v3.integration.measurement.show.messung'|trans }}</h1>
+		<a href="{{ path('v3_measurement_index') }}" class="text-decoration-none">{{ 'integration.measurement.capture.scales_and_volume_measurement'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'integration.measurement.show.measurement'|trans }}</h1>
 	</div>
 	<div class="card border-0 shadow-sm">
 		<div class="card-header bg-transparent d-flex justify-content-between align-items-center">
@@ -12,12 +12,12 @@
 		</div>
 		<div class="card-body">
 			<dl class="row mb-0">
-				<dt class="col-sm-3">{{ 'ui.v3.integration.measurement.capture.ziel.id'|trans }}</dt><dd class="col-sm-9"><code>{{ measurement.target_id }}</code></dd>
-				<dt class="col-sm-3">{{ 'ui.article.article_input_fields.gewicht'|trans }}</dt><dd class="col-sm-9">{{ measurement.weight_grams ? measurement.weight_grams ~ ' g' : '–' }}</dd>
-				<dt class="col-sm-3">{{ 'ui.v3.integration.measurement.index.abmessungen'|trans }}</dt><dd class="col-sm-9">{{ measurement.length_mm ? measurement.length_mm ~ ' × ' ~ measurement.width_mm ~ ' × ' ~ measurement.height_mm ~ ' mm' : '–' }}</dd>
-				<dt class="col-sm-3">{{ 'ui.v3.integration.automation.command-show.request.id'|trans }}</dt><dd class="col-sm-9"><code>{{ measurement.request_id }}</code></dd>
-				<dt class="col-sm-3">{{ 'ui.v3.administration.workspace.zeitpunkt'|trans }}</dt><dd class="col-sm-9">{{ measurement.measured_at }}</dd>
-				<dt class="col-sm-3">{{ 'ui.v3.integration.measurement.show.hinweis'|trans }}</dt><dd class="col-sm-9">{{ measurement.message|default('–') }}</dd>
+				<dt class="col-sm-3">{{ 'integration.measurement.capture.target_id'|trans }}</dt><dd class="col-sm-9"><code>{{ measurement.target_id }}</code></dd>
+				<dt class="col-sm-3">{{ 'article.article_input_fields.weight'|trans }}</dt><dd class="col-sm-9">{{ measurement.weight_grams ? measurement.weight_grams ~ ' g' : '–' }}</dd>
+				<dt class="col-sm-3">{{ 'integration.measurement.index.dimensions'|trans }}</dt><dd class="col-sm-9">{{ measurement.length_mm ? measurement.length_mm ~ ' × ' ~ measurement.width_mm ~ ' × ' ~ measurement.height_mm ~ ' mm' : '–' }}</dd>
+				<dt class="col-sm-3">{{ 'integration.automation.command_show.request_id'|trans }}</dt><dd class="col-sm-9"><code>{{ measurement.request_id }}</code></dd>
+				<dt class="col-sm-3">{{ 'administration.workspace.time_point_in_time'|trans }}</dt><dd class="col-sm-9">{{ measurement.measured_at }}</dd>
+				<dt class="col-sm-3">{{ 'integration.measurement.show.note'|trans }}</dt><dd class="col-sm-9">{{ measurement.message|default('–') }}</dd>
 			</dl>
 		</div>
 	</div>

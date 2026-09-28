@@ -6,7 +6,7 @@
             <div class="card">
                 {{ form_start(supplierForm) }}
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'ui.supplier.index.lieferanten.nr'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'supplier.index.supplier_no'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {% if editSupplier %}
                             {{ form_row(supplierForm.supplierNr) }}
@@ -16,43 +16,43 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'ui.supplier.index.lieferanten.name'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'supplier.index.supplier_name'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(supplierForm.supplierName) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.anschrift.zusatz'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.address_line_2'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(supplierForm.supplierAddressAddition) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.strasse'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.street'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(supplierForm.supplierAddressStreet) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.haus.nr'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.house_no'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(supplierForm.supplierAddressStreetNr) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.land'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.country'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(supplierForm.supplierAddressCountryCode) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'templates.editor.zip'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'common.template.editor.zip'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(supplierForm.supplierAddressZipcode) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.ort'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.city_town'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(supplierForm.supplierAddressCity) }}
                     </div>

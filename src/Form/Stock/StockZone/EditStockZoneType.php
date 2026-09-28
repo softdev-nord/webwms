@@ -53,13 +53,13 @@ class EditStockZoneType extends AbstractType
             ],
           ])
           ->add('save', ButtonType::class, [
-            'label' => 'form.stock.stockzone.editstockzonetype.label.save_changes',
+            'label' => 'stock.stock_zone.form.edit_stock_zone.save_changes',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'form.stock.stockzone.editstockzonetype.label.cancel',
+            'label' => 'stock.stock_zone.form.edit_stock_zone.cancel',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

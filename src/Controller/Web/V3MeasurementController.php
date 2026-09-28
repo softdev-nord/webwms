@@ -32,7 +32,7 @@ final class V3MeasurementController extends AbstractController
         $tenantId = $this->user()->tenantId();
 
         return $this->render('v3/integration/measurement/index.html.twig', [
-            'page' => 'ui.v3.integration.measurement.index.waagen.und.volumenmessung',
+            'page' => 'integration.measurement.index.scales_and_volume_measurement',
             'devices' => $this->queries->measurementDevices($tenantId),
             'measurements' => $this->queries->measurements($tenantId, 50),
         ]);
@@ -54,12 +54,12 @@ final class V3MeasurementController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3measurement.flash.das.messgerat.wurde.angelegt');
+            $this->addFlash('success', 'measurement.flash.measuring_device_was_created');
 
             return $this->redirectToRoute('v3_measurement_index');
         }
 
-        return $this->render('v3/integration/measurement/device-new.html.twig', ['page' => 'ui.v3.integration.measurement.device-new.messgerat.anlegen']);
+        return $this->render('v3/integration/measurement/device-new.html.twig', ['page' => 'integration.measurement.device_new.add_measuring_device']);
     }
 
     #[Route('/devices/{deviceId}/status', name: 'device_status', methods: ['POST'])]
@@ -79,7 +79,7 @@ final class V3MeasurementController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         );
-        $this->addFlash('success', (bool) $device['active'] ? 'flash.measurement_device.paused' : 'flash.measurement_device.activated');
+        $this->addFlash('success', (bool) $device['active'] ? 'measurement.flash.measuring_device_has_been_paused' : 'measurement.flash.measuring_device_has_been_activated');
 
         return $this->redirectToRoute('v3_measurement_index');
     }
@@ -106,13 +106,13 @@ final class V3MeasurementController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3measurement.flash.die.messung.wurde.idempotent.verarbeitet');
+            $this->addFlash('success', 'measurement.flash.processed_idempotently');
 
             return $this->redirectToRoute('v3_measurement_show', ['measurementId' => $measurement->id]);
         }
 
         return $this->render('v3/integration/measurement/capture.html.twig', [
-            'page' => 'ui.v3.integration.measurement.capture.messung.erfassen',
+            'page' => 'integration.measurement.capture.capture_measurement',
             'devices' => array_values(array_filter(
                 $this->queries->measurementDevices($user->tenantId()),
                 static fn (array $device): bool => (bool) ($device['active'] ?? false),
@@ -133,7 +133,7 @@ final class V3MeasurementController extends AbstractController
         }
 
         return $this->render('v3/integration/measurement/show.html.twig', [
-            'page' => 'ui.v3.integration.measurement.show.messung',
+            'page' => 'integration.measurement.show.measurement',
             'measurement' => $measurement,
         ]);
     }

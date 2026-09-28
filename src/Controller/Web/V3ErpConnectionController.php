@@ -34,7 +34,7 @@ final class V3ErpConnectionController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/integration/erp-connection/index.html.twig', [
-            'page' => 'ui.v3.integration.erp-connection.index.erp.verbindungen',
+            'page' => 'integration.erp_connection.index.erp_connections',
             'connections' => $this->queries->erpConnections($this->tenantUser()->tenantId()),
         ]);
     }
@@ -57,13 +57,13 @@ final class V3ErpConnectionController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             ));
-            $this->addFlash('success', 'controller.v3erp.connection.flash.die.erp.verbindung.wurde.angelegt');
+            $this->addFlash('success', 'erp.connection.flash.erp_connection_has_been_created');
 
             return $this->redirectToRoute('v3_erp_connection_show', ['connectionId' => $connectionId]);
         }
 
         return $this->render('v3/integration/erp-connection/new.html.twig', [
-            'page' => 'ui.v3.integration.erp-connection.index.erp.verbindung.anlegen',
+            'page' => 'integration.erp_connection.index.create_erp_connection',
         ]);
     }
 
@@ -72,7 +72,7 @@ final class V3ErpConnectionController extends AbstractController
     public function show(string $connectionId): Response
     {
         return $this->render('v3/integration/erp-connection/show.html.twig', [
-            'page' => 'controller.v3erp.connection.page.erp.verbindung',
+            'page' => 'erp.connection.page.erp_connection',
             'connection' => $this->requiredConnection($connectionId),
         ]);
     }
@@ -93,8 +93,8 @@ final class V3ErpConnectionController extends AbstractController
             new DateTimeImmutable(),
         ));
         $this->addFlash('success', $active
-            ? 'flash.erp_connection.activated'
-            : 'flash.erp_connection.paused');
+            ? 'integration.erp.flash.erp_connection_was_activated'
+            : 'integration.erp.flash.erp_connection_was_paused');
 
         return $this->redirectToRoute('v3_erp_connection_show', ['connectionId' => $connectionId]);
     }

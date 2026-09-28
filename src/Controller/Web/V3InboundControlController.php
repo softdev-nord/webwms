@@ -51,7 +51,7 @@ final class V3InboundControlController extends AbstractController
         $user = $this->user();
 
         return $this->render('v3/inbound/control.html.twig', [
-            'page' => 'ui.v3.inbound.control.wareneingangsleitstand',
+            'page' => 'inbound.control.goods_receipt_control_center',
             'control' => $this->queries->inboundControlCenter($user->tenantId()),
             'worklist' => $this->queries->plannedInboundWorklist($user->tenantId()),
             'products' => $this->queries->products($user->tenantId(), 500, null),
@@ -66,7 +66,7 @@ final class V3InboundControlController extends AbstractController
         $this->csrf($request, 'v3_inbound_purchase_order');
         $user = $this->user();
         ($this->createPurchaseOrder)(new CreatePurchaseOrderCommand(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'code'), $this->required($request, 'supplier_reference'), [['id' => Uuid::v7()->toRfc4122(), 'productId' => $this->required($request, 'product_id'), 'quantity' => $request->request->getInt('quantity')]], $user->actorId(), new DateTimeImmutable()));
-        $this->addFlash('success', 'controller.v3inbound.control.flash.die.bestellung.wurde.angelegt');
+        $this->addFlash('success', 'inbound.control.flash.order_has_been_created');
 
         return $this->back();
     }
@@ -78,7 +78,7 @@ final class V3InboundControlController extends AbstractController
         $this->csrf($request, 'v3_inbound_delivery');
         $user = $this->user();
         ($this->createDelivery)(new CreateInboundDeliveryCommand(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'purchase_order_id'), $this->required($request, 'code'), $this->required($request, 'delivery_note'), new DateTimeImmutable($this->required($request, 'expected_at')), [['id' => Uuid::v7()->toRfc4122(), 'purchaseOrderItemId' => $this->required($request, 'purchase_order_item_id'), 'quantity' => $request->request->getInt('quantity')]], $user->actorId(), new DateTimeImmutable()));
-        $this->addFlash('success', 'controller.v3inbound.control.flash.das.lieferavis.wurde.der.bestellung.zugeordnet');
+        $this->addFlash('success', 'inbound.control.flash.shipping_notification_has_been_assigned_to_order');
 
         return $this->back();
     }
@@ -90,7 +90,7 @@ final class V3InboundControlController extends AbstractController
         $this->csrf($request, 'v3_inbound_return');
         $user = $this->user();
         ($this->createReturn)(new CreateReturnOrderCommand(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'code'), $this->required($request, 'order_reference'), [['id' => Uuid::v7()->toRfc4122(), 'productId' => $this->required($request, 'product_id'), 'quantity' => $request->request->getInt('quantity'), 'reason' => $this->required($request, 'reason')]], $user->actorId(), new DateTimeImmutable()));
-        $this->addFlash('success', 'controller.v3inbound.control.flash.die.retoure.wurde.angekundigt');
+        $this->addFlash('success', 'inbound.control.flash.return_has_been_announced');
 
         return $this->back();
     }
@@ -102,7 +102,7 @@ final class V3InboundControlController extends AbstractController
         $this->csrf($request, 'v3_inbound_return_receive_' . $itemId);
         $user = $this->user();
         ($this->receiveReturn)(new ReceiveReturnCommand(Uuid::v7()->toRfc4122(), $user->tenantId(), $orderId, $itemId, $user->actorId(), new DateTimeImmutable()));
-        $this->addFlash('success', 'controller.v3inbound.control.flash.die.retoure.wurde.vereinnahmt.und.an.die.prufung.uberge');
+        $this->addFlash('success', 'inbound.control.flash.return_was_received_and_handed_over_for_inspection');
 
         return $this->back();
     }
@@ -114,7 +114,7 @@ final class V3InboundControlController extends AbstractController
         $this->csrf($request, 'v3_inbound_return_inspect_' . $receiptId);
         $user = $this->user();
         ($this->inspectReturn)(new InspectReturnCommand($receiptId, Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'location_id'), $this->required($request, 'decision'), $this->required($request, 'note'), $user->actorId(), new DateTimeImmutable(), $this->optional($request, 'batch_number')));
-        $this->addFlash('success', 'controller.v3inbound.control.flash.die.retourenprufung.wurde.abgeschlossen');
+        $this->addFlash('success', 'inbound.control.flash.return_inspection_was_completed');
 
         return $this->back();
     }
@@ -127,7 +127,7 @@ final class V3InboundControlController extends AbstractController
         $user = $this->user();
         $questions = preg_split('/\R/', $this->required($request, 'questions'));
         $this->processes->createChecklist($user->tenantId(), $this->required($request, 'code'), $this->required($request, 'name'), $questions !== false ? $questions : [], $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3inbound.control.flash.die.qs.checkliste.wurde.aktiviert');
+        $this->addFlash('success', 'inbound.control.flash.qa_checklist_has_been_activated');
 
         return $this->back();
     }
@@ -143,7 +143,7 @@ final class V3InboundControlController extends AbstractController
         }
         $user = $this->user();
         $this->processes->attach($user->tenantId(), $this->required($request, 'aggregate_type'), $this->required($request, 'aggregate_id'), $this->required($request, 'category'), $file->getClientOriginalName(), $file->getMimeType() ?? 'application/octet-stream', $file->getContent(), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3inbound.control.flash.der.nachweis.wurde.an.der.prozessakte.abgelegt');
+        $this->addFlash('success', 'inbound.control.flash.proof_has_been_filed_with_process_record');
 
         return $this->back();
     }
@@ -166,7 +166,7 @@ final class V3InboundControlController extends AbstractController
         $this->csrf($request, 'v3_inbound_label');
         $user = $this->user();
         $this->processes->requestLabel($user->tenantId(), $this->required($request, 'aggregate_type'), $this->required($request, 'aggregate_id'), $this->required($request, 'label_type'), $request->request->getInt('copies'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3inbound.control.flash.der.etikettenauftrag.wurde.in.die.warteschlange.gestell');
+        $this->addFlash('success', 'inbound.control.flash.label_job_has_been_queued');
 
         return $this->back();
     }
@@ -178,7 +178,7 @@ final class V3InboundControlController extends AbstractController
         $this->csrf($request, 'v3_inbound_cross_dock');
         $user = $this->user();
         $this->processes->assignCrossDock($user->tenantId(), $this->required($request, 'receipt_id'), $this->required($request, 'outbound_item_id'), $request->request->getInt('quantity'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3inbound.control.flash.der.eingang.wurde.direkt.fur.den.ausgang.bereitgestellt');
+        $this->addFlash('success', 'inbound.control.flash.inbound_item_has_been_made_available_directly_for_outbound_processing');
 
         return $this->back();
     }
@@ -190,7 +190,7 @@ final class V3InboundControlController extends AbstractController
         $this->csrf($request, 'v3_inbound_production');
         $user = $this->user();
         $this->processes->receiveProduction($user->tenantId(), $this->required($request, 'production_order'), $this->required($request, 'product_id'), $this->required($request, 'location_id'), $request->request->getInt('quantity'), $this->optional($request, 'batch_number'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3inbound.control.flash.die.fertigmeldung.wurde.als.bestand.gebucht');
+        $this->addFlash('success', 'inbound.control.flash.completion_report_has_been_posted_as_inventory');
 
         return $this->back();
     }

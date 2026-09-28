@@ -37,7 +37,7 @@ final class V3LoadingController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/loading/index.html.twig', [
-            'page' => 'ui.v3.integration.device.scan.verladung',
+            'page' => 'integration.device.scan.loading',
             'manifests' => $this->queries->loadingManifests($this->tenantUser()->tenantId()),
         ]);
     }
@@ -60,13 +60,13 @@ final class V3LoadingController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             ));
-            $this->addFlash('success', 'controller.v3loading.flash.das.lademanifest.wurde.angelegt');
+            $this->addFlash('success', 'loading.flash.loading_manifest_was_created');
 
             return $this->redirectToRoute('v3_loading_show', ['manifestId' => $manifestId]);
         }
 
         return $this->render('v3/loading/new.html.twig', [
-            'page' => 'ui.v3.loading.index.lademanifest.anlegen',
+            'page' => 'loading.index.create_load_manifest',
             'shipments' => $this->queries->shipmentsAvailableForLoading($user->tenantId()),
         ]);
     }
@@ -76,7 +76,7 @@ final class V3LoadingController extends AbstractController
     public function show(string $manifestId): Response
     {
         return $this->render('v3/loading/show.html.twig', [
-            'page' => 'ui.v3.integration.printing.job-new.lademanifest',
+            'page' => 'integration.printing.job_new.load_manifest',
             'manifest' => $this->requiredManifest($manifestId),
         ]);
     }
@@ -95,7 +95,7 @@ final class V3LoadingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3loading.flash.die.sendung.wurde.als.verladen.bestatigt');
+        $this->addFlash('success', 'loading.flash.shipment_was_confirmed_as_loaded');
 
         return $this->redirectToRoute('v3_loading_show', ['manifestId' => $manifestId]);
     }
@@ -113,7 +113,7 @@ final class V3LoadingController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3loading.flash.die.verladung.wurde.abgeschlossen');
+        $this->addFlash('success', 'loading.flash.loading_was_completed');
 
         return $this->redirectToRoute('v3_loading_show', ['manifestId' => $manifestId]);
     }

@@ -16,32 +16,32 @@
                                             <div class="card-content">
                                                 {{ form_start(stockInForm, {'action' : path('stock_in')}) }}
                                                 <div class="form-group">
-                                                    <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.artikel.nr'|trans }}</label>
+                                                    <label for="text" class="control-label col-xs-4">{{ 'article.article_input_fields.item_no'|trans }}</label>
                                                     <div class="col-xs-8" style="margin-bottom: 5px;">
                                                         {{ form_row(stockInForm.articleNr) }}
                                                     </div>
                                                     {{ form_row(stockInForm.articleId) }}
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="text" class="control-label col-xs-4">{{ 'ui.modal.stock_in_modal.ladehilfsmittel'|trans }}</label>
+                                                    <label for="text" class="control-label col-xs-4">{{ 'modal.stock_in_modal.load_carrier'|trans }}</label>
                                                     <div class="col-xs-8" style="margin-bottom: 5px;">
                                                         {{ form_row(stockInForm.standardLoadingEquipment) }}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="text" class="control-label col-xs-4">{{ 'ui.modal.stock_in_modal.menge.le'|trans }}</label>
+                                                    <label for="text" class="control-label col-xs-4">{{ 'modal.stock_in_modal.quantity_su'|trans }}</label>
                                                     <div class="col-xs-8" style="margin-bottom: 5px;">
                                                         {{ form_row(stockInForm.leQuantity) }}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="text" class="control-label col-xs-4">{{ 'ui.customer_order.customer_order_input_fields.menge'|trans }}</label>
+                                                    <label for="text" class="control-label col-xs-4">{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</label>
                                                     <div class="col-xs-8" style="margin-bottom: 5px;">
                                                         {{ form_row(stockInForm.quantity) }}
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="text" class="control-label col-xs-4">{{ 'ui.modal.stock_in_modal.charge'|trans }}</label>
+                                                    <label for="text" class="control-label col-xs-4">{{ 'modal.stock_in_modal.batch'|trans }}</label>
                                                     <div class="col-xs-8" style="margin-bottom: 5px;">
                                                         {{ form_row(stockInForm.charge) }}
                                                     </div>
@@ -61,28 +61,28 @@
                                         <div class="card" style="width: 100%">
                                             <div class="card-content">
                                                 <div class="form-group">
-                                                    <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.artikel.nr'|trans }}</label>
+                                                    <label for="text" class="control-label col-xs-4">{{ 'article.article_input_fields.item_no'|trans }}</label>
                                                     <div class="col-xs-8">
                                                         <div class="form-group">
                                                             <input type="text" id="article_nr_right" class="form-control" data-type="article_nr_right" readonly style="background-color: transparent" value=""></div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.artikelname'|trans }}</label>
+                                                    <label for="text" class="control-label col-xs-4">{{ 'article.article_input_fields.item_name'|trans }}</label>
                                                     <div class="col-xs-8">
                                                         <div class="form-group">
                                                             <input type="text" id="article_name_right" class="form-control" data-type="article_name_right" readonly style="background-color: transparent" value=""></div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.le.menge'|trans }}</label>
+                                                    <label for="text" class="control-label col-xs-4">{{ 'article.article_input_fields.load_unit_quantity'|trans }}</label>
                                                     <div class="col-xs-8">
                                                         <div class="form-group">
                                                             <input type="text" id="article_le_quantity_right" class="form-control" data-type="le_quantity_right" readonly style="background-color: transparent" value=""></div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="text" class="control-label col-xs-4">{{ 'ui.article.index.einheit'|trans }}</label>
+                                                    <label for="text" class="control-label col-xs-4">{{ 'article.index.unit'|trans }}</label>
                                                     <div class="col-xs-8">
                                                         <div class="form-group">
                                                             <input type="text" id="article_unit_right" class="form-control" data-type="article_unit_right" readonly style="background-color: transparent" value="">
@@ -90,7 +90,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="text" class="control-label col-xs-4">{{ 'ui.modal.stock_in_modal.standard.ladehilfsmittel'|trans }}</label>
+                                                    <label for="text" class="control-label col-xs-4">{{ 'modal.stock_in_modal.standard_load_carrier'|trans }}</label>
                                                     <div class="col-xs-8">
                                                         <div class="form-group">
                                                             <input type="text" id="standard_loading_equipment_right" class="form-control" data-type="standard_loading_equipment_right" readonly style="background-color: transparent" value="">

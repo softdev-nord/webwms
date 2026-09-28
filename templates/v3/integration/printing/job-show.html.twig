@@ -3,8 +3,8 @@
 {% block webwms_content %}
 	<div class="d-flex justify-content-between align-items-start mb-4">
 		<div>
-			<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.printing.job-new.druckwarteschlange'|trans }}</a>
-			<h1 class="h3 mt-2 mb-1">{{ 'ui.v3.integration.printing.job-show.druckauftrag'|trans }}</h1>
+			<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">{{ 'integration.printing.job_new.print_queue'|trans }}</a>
+			<h1 class="h3 mt-2 mb-1">{{ 'integration.printing.job_show.print_job'|trans }}</h1>
 			<code>{{ job.id }}</code>
 		</div>
 		<span class="badge bg-secondary-subtle text-secondary fs-6">{{ job.status }}</span>
@@ -12,22 +12,22 @@
 	<div class="card border-0 shadow-sm mb-4">
 		<div class="card-body">
 			<dl class="row mb-0">
-				<dt class="col-md-3">{{ 'ui.configuration.index.drucker'|trans }}</dt>
+				<dt class="col-md-3">{{ 'configuration.index.printer'|trans }}</dt>
 				<dd class="col-md-9"><a href="{{ path('v3_printing_printer_show', {printerId: job.printer_id}) }}">{{ job.printer_name }}</a></dd>
-				<dt class="col-md-3">{{ 'ui.v3.integration.printing.index.dokument'|trans }}</dt>
+				<dt class="col-md-3">{{ 'integration.printing.index.document'|trans }}</dt>
 				<dd class="col-md-9">{{ job.document_type }} · <code>{{ job.document_reference }}</code></dd>
-				<dt class="col-md-3">{{ 'ui.v3.integration.printing.index.format'|trans }}</dt>
-				<dd class="col-md-9">{{ job.format }} · {{ job.copies }} {{ 'ui.v3.integration.printing.job-show.exemplar.e'|trans }}</dd>
-				<dt class="col-md-3">{{ 'ui.v3.integration.outbox.index.versuche'|trans }}</dt>
+				<dt class="col-md-3">{{ 'integration.printing.index.format'|trans }}</dt>
+				<dd class="col-md-9">{{ job.format }} · {{ job.copies }} {{ 'integration.printing.job_show.copy_copies'|trans }}</dd>
+				<dt class="col-md-3">{{ 'integration.outbox.index.attempts'|trans }}</dt>
 				<dd class="col-md-9">{{ job.attempts }}</dd>
-				<dt class="col-md-3">{{ 'ui.v3.integration.carrier-connection.show.angelegt'|trans }}</dt>
+				<dt class="col-md-3">{{ 'integration.carrier_connection.show.created'|trans }}</dt>
 				<dd class="col-md-9">{{ job.created_at }} · <code>{{ job.created_by }}</code></dd>
 				{% if job.external_reference %}
-					<dt class="col-md-3">{{ 'ui.v3.integration.printing.job-show.externe.referenz'|trans }}</dt>
+					<dt class="col-md-3">{{ 'integration.printing.job_show.external_reference'|trans }}</dt>
 					<dd class="col-md-9"><code>{{ job.external_reference }}</code></dd>
 				{% endif %}
 				{% if job.completed_at %}
-					<dt class="col-md-3">{{ 'ui.v3.integration.printing.job-show.abgeschlossen'|trans }}</dt>
+					<dt class="col-md-3">{{ 'integration.printing.job_show.completed'|trans }}</dt>
 					<dd class="col-md-9">{{ job.completed_at }}</dd>
 				{% endif %}
 			</dl>
@@ -35,14 +35,14 @@
 	</div>
 	{% if job.last_error %}
 		<div class="alert alert-danger">
-			<strong>{{ 'ui.v3.integration.printing.job-show.letzter.fehler'|trans }}</strong>
+			<strong>{{ 'integration.printing.job_show.last_error'|trans }}</strong>
 			<div>{{ job.last_error }}</div>
 		</div>
 	{% endif %}
 	{% if job.status in ['queued', 'failed'] and is_granted('integration.print_job.execute') %}
 		<form method="post" action="{{ path('v3_printing_job_execute', {jobId: job.id}) }}">
 			<input type="hidden" name="_token" value="{{ csrf_token('v3_printing_job_execute_' ~ job.id) }}">
-			<button class="btn btn-primary">{{ (job.status == 'failed' ? 'ui.v3.integration.printing.job-show.choice.erneut.drucken' : 'ui.v3.integration.printing.job-show.choice.druckauftrag.ausfuhren')|trans }}</button>
+			<button class="btn btn-primary">{{ (job.status == 'failed' ? 'integration.printing.job_show.reprint' : 'integration.printing.job_show.execute_print_job')|trans }}</button>
 		</form>
 	{% endif %}
 {% endblock %}

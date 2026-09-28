@@ -32,7 +32,7 @@ final class V3AutomationController extends AbstractController
         $tenantId = $this->user()->tenantId();
 
         return $this->render('v3/integration/automation/index.html.twig', [
-            'page' => 'ui.v3.integration.automation.index.lagerlifte.und.paternoster',
+            'page' => 'integration.automation.index.storage_lifts_and_paternoster_lifts',
             'devices' => $this->queries->automationDevices($tenantId),
             'commands' => $this->queries->deviceCommands($tenantId, 50),
         ]);
@@ -56,12 +56,12 @@ final class V3AutomationController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3automation.flash.das.automationsgerat.wurde.angelegt');
+            $this->addFlash('success', 'automation.flash.automation_device_has_been_created');
 
             return $this->redirectToRoute('v3_automation_index');
         }
 
-        return $this->render('v3/integration/automation/device-new.html.twig', ['page' => 'ui.v3.integration.automation.device-new.automationsgerat.anlegen']);
+        return $this->render('v3/integration/automation/device-new.html.twig', ['page' => 'integration.automation.device_new.create_automation_device']);
     }
 
     #[Route('/devices/{deviceId}/status', name: 'device_status', methods: ['POST'])]
@@ -75,7 +75,7 @@ final class V3AutomationController extends AbstractController
         }
         $user = $this->user();
         $this->automation->changeDeviceStatus($user->tenantId(), $deviceId, !(bool) $device['active'], $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', (bool) $device['active'] ? 'flash.device.paused' : 'flash.device.activated');
+        $this->addFlash('success', (bool) $device['active'] ? 'integration.flash.device_has_been_paused' : 'integration.flash.device_has_been_activated');
 
         return $this->redirectToRoute('v3_automation_index');
     }
@@ -98,13 +98,13 @@ final class V3AutomationController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3automation.flash.der.geratebefehl.wurde.idempotent.eingereiht');
+            $this->addFlash('success', 'automation.flash.device_command_has_been_queued_idempotently');
 
             return $this->redirectToRoute('v3_automation_command_show', ['commandId' => $command->id]);
         }
 
         return $this->render('v3/integration/automation/command-new.html.twig', [
-            'page' => 'ui.v3.integration.automation.command-new.geratebefehl.anlegen',
+            'page' => 'integration.automation.command_new.create_device_command',
             'devices' => array_values(array_filter(
                 $this->queries->automationDevices($user->tenantId()),
                 static fn (array $device): bool => (bool) ($device['active'] ?? false),
@@ -124,7 +124,7 @@ final class V3AutomationController extends AbstractController
         }
 
         return $this->render('v3/integration/automation/command-show.html.twig', [
-            'page' => 'ui.v3.integration.automation.command-show.geratebefehl',
+            'page' => 'integration.automation.command_show.device_command',
             'command' => $command,
         ]);
     }
@@ -143,7 +143,7 @@ final class V3AutomationController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         );
-        $this->addFlash('success', 'controller.v3automation.flash.die.gerateruckmeldung.wurde.verarbeitet');
+        $this->addFlash('success', 'automation.flash.device_feedback_has_been_processed');
 
         return $this->redirectToRoute('v3_automation_command_show', ['commandId' => $commandId]);
     }

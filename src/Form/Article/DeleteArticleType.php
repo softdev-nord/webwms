@@ -36,13 +36,13 @@ class DeleteArticleType extends AbstractType
                 ],
             ])
             ->add('delete', ButtonType::class, [
-                'label' => 'form.article.deletearticletype.label.delete',
+                'label' => 'article.form.delete_article.delete',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.article.deletearticletype.label.cancel',
+                'label' => 'article.form.delete_article.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

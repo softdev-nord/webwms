@@ -31,7 +31,7 @@ final class V3PlatformController extends AbstractController
         $user = $this->user();
         $query = trim((string) $request->query->get('q'));
 
-        return $this->render('v3/platform/index.html.twig', ['page' => 'ui.v3.platform.index.platform.control.center', 'platform' => $this->platform->workspace($user->tenantId()), 'query' => $query, 'searchResults' => $query === '' ? [] : $this->platform->search($user->tenantId(), $query)]);
+        return $this->render('v3/platform/index.html.twig', ['page' => 'platform.index.platform_control_center', 'platform' => $this->platform->workspace($user->tenantId()), 'query' => $query, 'searchResults' => $query === '' ? [] : $this->platform->search($user->tenantId(), $query)]);
     }
 
     #[Route('/resources/{resource}', name: 'create', requirements: ['resource' => 'task|kpi|dashboard|partner_account|automation_rule|storage_fee_rule|service|print_route'], methods: ['POST'])]
@@ -41,7 +41,7 @@ final class V3PlatformController extends AbstractController
         $this->csrf($request, 'v3_platform_create_' . $resource);
         $user = $this->user();
         $this->platform->create($user->tenantId(), $user->actorId(), $resource, $request->request->all(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3platform.flash.die.plattformkonfiguration.wurde.gespeichert');
+        $this->addFlash('success', 'platform.flash.platform_configuration_was_saved');
 
         return $this->back();
     }
@@ -53,7 +53,7 @@ final class V3PlatformController extends AbstractController
         $this->csrf($request, 'v3_platform_task_' . $taskId);
         $user = $this->user();
         $this->platform->transitionTask($user->tenantId(), $user->actorId(), $taskId, $this->required($request, 'status'), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3platform.flash.der.shopfloor.status.wurde.aktualisiert');
+        $this->addFlash('success', 'platform.flash.shop_floor_status_was_updated');
 
         return $this->back();
     }
@@ -69,7 +69,7 @@ final class V3PlatformController extends AbstractController
             throw new \InvalidArgumentException('Der Event-Payload muss ein JSON-Objekt sein.');
         }
         $count = $this->platform->executeEvent($user->tenantId(), $user->actorId(), $this->required($request, 'event_name'), $payload, new DateTimeImmutable());
-        $this->addFlash('success', ['id' => 'flash.platform.automation_rules_evaluated', 'parameters' => ['%count%' => $count]]);
+        $this->addFlash('success', ['id' => 'platform.flash.automation_rules_were_evaluated', 'parameters' => ['%count%' => $count]]);
 
         return $this->back();
     }
@@ -81,7 +81,7 @@ final class V3PlatformController extends AbstractController
         $this->csrf($request, 'v3_platform_bill_storage');
         $user = $this->user();
         $this->platform->billStorage($user->tenantId(), $user->actorId(), $this->required($request, 'rule_id'), (float) $this->required($request, 'quantity'), $request->request->getInt('days'), $this->required($request, 'reference'), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3platform.flash.die.lagergeldposition.wurde.berechnet');
+        $this->addFlash('success', 'platform.flash.storage_fee_item_was_calculated');
 
         return $this->back();
     }
@@ -93,7 +93,7 @@ final class V3PlatformController extends AbstractController
         $this->csrf($request, 'v3_platform_bill_service');
         $user = $this->user();
         $this->platform->billService($user->tenantId(), $user->actorId(), $this->required($request, 'service_id'), $this->required($request, 'business_partner_id'), (float) $this->required($request, 'quantity'), $this->required($request, 'reference'), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3platform.flash.die.zusatzleistung.wurde.erfasst');
+        $this->addFlash('success', 'platform.flash.additional_service_was_recorded');
 
         return $this->back();
     }
@@ -109,7 +109,7 @@ final class V3PlatformController extends AbstractController
         }
         $user = $this->user();
         $this->platform->captureMedia($user->tenantId(), $user->actorId(), $this->required($request, 'aggregate_type'), $this->required($request, 'aggregate_id'), $file->getClientOriginalName(), (string) $file->getMimeType(), (string) file_get_contents($file->getPathname()), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3platform.flash.die.aufnahme.wurde.revisionssicher.zugeordnet');
+        $this->addFlash('success', 'platform.flash.intake_was_allocated_in_audit_proof_manner');
 
         return $this->back();
     }

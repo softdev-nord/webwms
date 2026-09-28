@@ -36,13 +36,13 @@ class DeleteStockLocationType extends AbstractType
             ],
           ])
           ->add('delete', ButtonType::class, [
-            'label' => 'form.stock.stocklocation.deletestocklocationtype.label.delete',
+            'label' => 'stock.stock_location.form.delete_stock_location.delete',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'form.stock.stocklocation.deletestocklocationtype.label.cancel',
+            'label' => 'stock.stock_location.form.delete_stock_location.cancel',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

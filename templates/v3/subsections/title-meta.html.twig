@@ -1,9 +1,9 @@
 <meta charset="utf-8" />
 {% block title %}
-    <title>{{ (page|default('ui.v3.subsections.title-meta.choice.webwms'))|trans(pageParameters|default({})) }} {{ appName }}</title>
+    <title>{{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} {{ appName }}</title>
 {% endblock %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta content="{{ 'ui.meta.description'|trans }}" name="description" />
+<meta content="{{ 'meta.description.webwms_web_based_warehouse_management_system'|trans }}" name="description" />
 <meta content="SoftDev Nord" name="author" />
 <!-- App favicon -->
 <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">

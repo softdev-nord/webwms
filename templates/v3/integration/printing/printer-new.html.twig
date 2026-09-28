@@ -2,9 +2,9 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.printing.job-new.druckwarteschlange'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'ui.v3.integration.printing.index.drucker.anlegen'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'ui.v3.integration.printing.printer-new.das.zugangstoken.bleibt.in.der.laufzeitumgebung.webwms.'|trans }}</p>
+		<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">{{ 'integration.printing.job_new.print_queue'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'integration.printing.index.create_printer'|trans }}</h1>
+		<p class="text-muted mb-0">{{ 'integration.printing.printer_new.access_token_remains_in_runtime_environment_webwms_stores_only_its_refer'|trans }}</p>
 	</div>
 
 	<form method="post" class="card border-0 shadow-sm">
@@ -12,28 +12,28 @@
 			<input type="hidden" name="_token" value="{{ csrf_token('v3_printing_printer_create') }}">
 			<div class="row g-3">
 				<div class="col-md-6">
-					<label class="form-label" for="name">{{ 'templates.correspondence.name'|trans }}</label>
-					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'ui.v3.integration.printing.printer-new.packplatz.1.zpl'|trans }}">
+					<label class="form-label" for="name">{{ 'common.template.correspondence.name'|trans }}</label>
+					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'integration.printing.printer_new.packing_station_1_zpl'|trans }}">
 				</div>
 				<div class="col-md-6">
-					<label class="form-label" for="credential_env">{{ 'ui.v3.integration.automation.device-new.credential.umgebungsvariable'|trans }}</label>
-					<input class="form-control font-monospace" id="credential_env" name="credential_env" maxlength="101" pattern="[A-Z][A-Z0-9_]{2,100}" required placeholder="{{ 'ui.v3.integration.printing.printer-new.printer.pack.1.token'|trans }}">
+					<label class="form-label" for="credential_env">{{ 'integration.automation.device_new.credential_environment_variable'|trans }}</label>
+					<input class="form-control font-monospace" id="credential_env" name="credential_env" maxlength="101" pattern="[A-Z][A-Z0-9_]{2,100}" required placeholder="{{ 'integration.printing.printer_new.printer_pack_1_token'|trans }}">
 				</div>
 				<div class="col-12">
-					<label class="form-label" for="endpoint_url">{{ 'ui.v3.integration.printing.printer-new.https.endpunkt'|trans }}</label>
-					<input class="form-control font-monospace" type="url" id="endpoint_url" name="endpoint_url" maxlength="500" pattern="https://.*" required placeholder="{{ 'ui.v3.integration.printing.printer-new.https.print.example.com.printers.pack.1'|trans }}">
+					<label class="form-label" for="endpoint_url">{{ 'integration.printing.printer_new.https_endpoint'|trans }}</label>
+					<input class="form-control font-monospace" type="url" id="endpoint_url" name="endpoint_url" maxlength="500" pattern="https://.*" required placeholder="{{ 'integration.printing.printer_new.https_print_example_com_printers_pack_1'|trans }}">
 				</div>
 				<div class="col-12">
 					<div class="form-check form-switch">
 						<input class="form-check-input" type="checkbox" role="switch" id="active" name="active" value="1" checked>
-						<label class="form-check-label" for="active">{{ 'ui.v3.integration.printing.printer-new.drucker.sofort.aktivieren'|trans }}</label>
+						<label class="form-check-label" for="active">{{ 'integration.printing.printer_new.activate_printer_immediately'|trans }}</label>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_printing_index') }}">{{ 'button.cancel'|trans }}</a>
-			<button class="btn btn-primary">{{ 'ui.v3.integration.printing.index.drucker.anlegen'|trans }}</button>
+			<a class="btn btn-light" href="{{ path('v3_printing_index') }}">{{ 'common.button.cancel'|trans }}</a>
+			<button class="btn btn-primary">{{ 'integration.printing.index.create_printer'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

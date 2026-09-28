@@ -29,7 +29,7 @@ final class V3IntegrationTransportController extends AbstractController
     public function index(): Response
     {
         return $this->render('v3/integration/transport/index.html.twig', [
-            'page' => 'ui.v3.integration.transport.index.tcp.ip.und.webservice',
+            'page' => 'integration.transport.index.tcp_ip_and_web_service',
             'endpoints' => $this->queries->transportEndpoints($this->user()->tenantId()),
         ]);
     }
@@ -56,12 +56,12 @@ final class V3IntegrationTransportController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3integration.transport.flash.der.transport.endpunkt.wurde.angelegt');
+            $this->addFlash('success', 'integration.transport.flash.transport_endpoint_was_created');
 
             return $this->redirectToRoute('v3_transport_index');
         }
 
-        return $this->render('v3/integration/transport/new.html.twig', ['page' => 'ui.v3.integration.transport.new.transport.endpunkt.anlegen']);
+        return $this->render('v3/integration/transport/new.html.twig', ['page' => 'integration.transport.new.create_transport_endpoint']);
     }
 
     #[Route('/{endpointId}/status', name: 'status', methods: ['POST'])]
@@ -75,7 +75,7 @@ final class V3IntegrationTransportController extends AbstractController
         }
         $user = $this->user();
         $this->transport->changeStatus($user->tenantId(), $endpointId, !(bool) $endpoint['active'], $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', (bool) $endpoint['active'] ? 'flash.endpoint.paused' : 'flash.endpoint.activated');
+        $this->addFlash('success', (bool) $endpoint['active'] ? 'integration.flash.endpoint_was_paused' : 'integration.flash.endpoint_was_activated');
 
         return $this->redirectToRoute('v3_transport_index');
     }

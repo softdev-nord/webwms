@@ -21,9 +21,9 @@
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col-xxl-12">
-                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'ui.article.article_input_fields.allgemeine.daten'|trans }}</span>
+                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'article.article_input_fields.general_data'|trans }}</span>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.transport_request.transport_request_input_fields.ta.nr'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'transport_request.transport_request_input_fields.task_no'|trans }}</label>
                                             <div class="col-xs-8">
                                                 {% if editTransportRequest %}
                                                     {{ form_row(transportRequestForm.trNr) }}
@@ -33,37 +33,37 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.transport_request.transport_request_input_fields.ta.position'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'transport_request.transport_request_input_fields.task_item'|trans }}</label>
                                             <div class="col-xs-8">
                                                 {{ form_row(transportRequestForm.trPos) }}
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.transport_request.transport_request_input_fields.ta.prioritat'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'transport_request.transport_request_input_fields.task_priority'|trans }}</label>
                                             <div class="col-xs-8">
                                                 {{ form_row(transportRequestForm.trPrio) }}
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.transport_request.index.buchungsmethode'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'transport_request.index.posting_method'|trans }}</label>
                                             <div class="col-xs-8">
                                                 {{ form_row(transportRequestForm.bookingMethod) }}
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.transport_request.transport_request_input_fields.anlagedatum'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'transport_request.transport_request_input_fields.creation_date'|trans }}</label>
                                             <div class="col-xs-8">
                                                 {{ form_row(transportRequestForm.createdAt) }}
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.transport_request.index.status'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'transport_request.index.status'|trans }}</label>
                                             <div class="col-xs-8">
                                                 {{ form_row(transportRequestForm.trState) }}
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.transport_request.index.ta.typ'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'transport_request.index.task_type'|trans }}</label>
                                             <div class="col-xs-8">
                                                 {{ form_row(transportRequestForm.trType) }}
                                             </div>
@@ -79,21 +79,21 @@
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col-xxl-12">
-                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'ui.transport_request.transport_request_input_fields.ta.position.details'|trans }}</span>
+                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'transport_request.transport_request_input_fields.task_item_details'|trans }}</span>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'nav.master_data.submenu.headline1'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'navigation.master_data.submenu.headline1.label'|trans }}</label>
                                             <div class="col-xs-8" style="margin-bottom: 5px;">
                                                 {{ form_row(transportRequestForm.articleNr) }}
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.customer_order.customer_order_input_fields.menge'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</label>
                                             <div class="col-xs-8" style="margin-bottom: 5px;">
                                                 {{ form_row(transportRequestForm.trQuantity) }}
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.modal.show_article_stock_details_modal.lagerplatz'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}</label>
                                             <div class="col-xs-8" style="margin-bottom: 5px;">
                                                 {% set stockLocation = transportRequest.stockNr ~ '-' ~ transportRequest.stockLevel1 ~ '-' ~ transportRequest.stockLevel2 ~ '-' ~ transportRequest.stockLevel3 %}
                                                 <input
@@ -107,7 +107,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.modal.show_stock_details_modal.koordinate'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'modal.show_stock_details_modal.coordinate'|trans }}</label>
                                             <div class="col-xs-8" style="margin-bottom: 5px;">
                                                 {{ form_row(transportRequestForm.stockCoordinate) }}
                                             </div>
@@ -125,21 +125,21 @@
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col-xxl-12">
-                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'ui.article.article_input_fields.artikel.abmessungen'|trans }}</span>
+                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'article.article_input_fields.item_dimensions'|trans }}</span>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.tiefe'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'article.article_input_fields.depth'|trans }}</label>
                                             <div class="col-xs-8" style="margin-bottom: 5px;">
 {#                                                {{ form_row(articleForm.articleDepth) }}#}
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.breite'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'article.article_input_fields.width'|trans }}</label>
                                             <div class="col-xs-8" style="margin-bottom: 5px;">
 {#                                                {{ form_row(articleForm.articleWidth) }}#}
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.hohe'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'article.article_input_fields.height'|trans }}</label>
                                             <div class="col-xs-8" style="margin-bottom: 5px;">
 {#                                                {{ form_row(articleForm.articleHeight) }}#}
                                             </div>
@@ -155,21 +155,21 @@
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col-xxl-12">
-                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'nav.logistics.headline'|trans }}</span>
+                                        <span class="mb-3 lh-1 text-truncate" style="font-weight: bold; font-size: 16px;">{{ 'navigation.logistics.headline'|trans }}</span>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.auslagerungsstrategie'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'article.article_input_fields.retrieval_strategy'|trans }}</label>
                                             <div class="col-xs-8" style="margin-bottom: 5px;">
 {#                                                {{ form_row(articleForm.stockOutStrategy) }}#}
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.le.menge'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'article.article_input_fields.load_unit_quantity'|trans }}</label>
                                             <div class="col-xs-8" style="margin-bottom: 5px;">
 {#                                                {{ form_row(articleForm.leQuantity) }}#}
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="text" class="control-label col-xs-4">{{ 'ui.article.article_input_fields.standard.ladehilfsmittel'|trans }}</label>
+                                            <label for="text" class="control-label col-xs-4">{{ 'article.article_input_fields.standard_load_carrier'|trans }}</label>
                                             <div class="col-xs-8" style="margin-bottom: 5px;">
 {#                                                {{ form_row(articleForm.standardLoadingEquipment) }}#}
                                             </div>

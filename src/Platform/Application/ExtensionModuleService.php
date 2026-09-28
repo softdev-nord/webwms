@@ -12,26 +12,26 @@ final readonly class ExtensionModuleService
 {
     /** @var array<string, string> */
     public const RESOURCES = [
-        'barcode_profile' => 'ui.extension.resource.barcode_profile', 'unit_of_measure' => 'ui.extension.resource.unit_of_measure',
-        'product_extension' => 'ui.extension.resource.product_extension', 'container' => 'ui.extension.resource.container',
-        'storage_constraint' => 'ui.extension.resource.storage_constraint', 'optimization_rule' => 'ui.extension.resource.optimization_rule',
-        'login_policy' => 'ui.extension.resource.login_policy', 'workstation' => 'ui.extension.resource.workstation',
-        'document_template' => 'ui.extension.resource.document_template', 'interface_mapping' => 'ui.extension.resource.interface_mapping',
-        'interface_endpoint' => 'ui.extension.resource.interface_endpoint', 'inbound_scan_profile' => 'ui.extension.resource.inbound_scan_profile',
-        'picking_profile' => 'ui.extension.resource.picking_profile', 'packing_profile' => 'ui.extension.resource.packing_profile',
-        'production_profile' => 'ui.extension.resource.production_profile', 'billing_profile' => 'ui.extension.resource.billing_profile',
-        'compliance_profile' => 'ui.extension.resource.compliance_profile', 'sso_provider' => 'ui.extension.resource.sso_provider',
+        'barcode_profile' => 'extension.resource.barcode_profile.barcode_configuration', 'unit_of_measure' => 'extension.resource.unit_of_measure.unit_of_measure',
+        'product_extension' => 'extension.resource.product_extension.item_packaging_configuration', 'container' => 'extension.resource.container.container_master_data',
+        'storage_constraint' => 'extension.resource.storage_constraint.storage_restriction', 'optimization_rule' => 'extension.resource.optimization_rule.optimization_rule',
+        'login_policy' => 'extension.resource.login_policy.login_policy', 'workstation' => 'extension.resource.workstation.workstation',
+        'document_template' => 'extension.resource.document_template.document_report_template', 'interface_mapping' => 'extension.resource.interface_mapping.interface_mapping',
+        'interface_endpoint' => 'extension.resource.interface_endpoint.interface_endpoint', 'inbound_scan_profile' => 'extension.resource.inbound_scan_profile.goods_receipt_scan_profile',
+        'picking_profile' => 'extension.resource.picking_profile.picking_profile', 'packing_profile' => 'extension.resource.packing_profile.packing_sorting_profile',
+        'production_profile' => 'extension.resource.production_profile.production_profile', 'billing_profile' => 'extension.resource.billing_profile.billing_financial_profile',
+        'compliance_profile' => 'extension.resource.compliance_profile.compliance_sampling_profile', 'sso_provider' => 'extension.resource.sso_provider.sso_provider',
     ];
 
     /** @var array<string, string> */
     public const WORKFLOWS = [
-        'container_cycle' => 'ui.extension.workflow.container_cycle', 'optimization' => 'ui.extension.workflow.optimization',
-        'destruction' => 'ui.extension.workflow.destruction', 'purchase_proposal' => 'ui.extension.workflow.purchase_proposal',
-        'interface_exchange' => 'ui.extension.workflow.interface_exchange', 'inbound_scan' => 'ui.extension.workflow.inbound_scan',
-        'assisted_pick' => 'ui.extension.workflow.assisted_pick', 'automated_outbound' => 'ui.extension.workflow.automated_outbound',
-        'production_order' => 'ui.extension.workflow.production_order', 'invoice' => 'ui.extension.workflow.invoice',
-        'compliance_check' => 'ui.extension.workflow.compliance_check', 'sample_inspection' => 'ui.extension.workflow.sample_inspection',
-        'document_output' => 'ui.extension.workflow.document_output',
+        'container_cycle' => 'extension.workflow.container_cycle.container_cycle', 'optimization' => 'extension.workflow.optimization.warehouse_optimization',
+        'destruction' => 'extension.workflow.destruction.destruction', 'purchase_proposal' => 'extension.workflow.purchase_proposal.order_proposal',
+        'interface_exchange' => 'extension.workflow.interface_exchange.interface_exchange', 'inbound_scan' => 'extension.workflow.inbound_scan.guided_goods_receipt',
+        'assisted_pick' => 'extension.workflow.assisted_pick.assisted_picking', 'automated_outbound' => 'extension.workflow.automated_outbound.automated_goods_issue',
+        'production_order' => 'extension.workflow.production_order.production_order', 'invoice' => 'extension.workflow.invoice.invoicing_run',
+        'compliance_check' => 'extension.workflow.compliance_check.compliance_check', 'sample_inspection' => 'extension.workflow.sample_inspection.sampling_check',
+        'document_output' => 'extension.workflow.document_output.document_output',
     ];
 
     /** @var array<string, array<string, list<string>>> */

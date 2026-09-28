@@ -80,13 +80,13 @@ class StockInType extends AbstractType
                 ],
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'form.stock.stockintype.label.post',
+                'label' => 'stock.form.stock_in.post',
                 'attr' => [
                     'class' => 'btn btn-primary btn-xm btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.stock.stockintype.label.cancel',
+                'label' => 'stock.form.stock_in.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn-xm btn3d',
                 ],

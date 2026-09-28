@@ -74,13 +74,13 @@ class EditUserType extends AbstractType
                 ],
             ])
             ->add('save', ButtonType::class, [
-                'label' => 'form.user.editusertype.label.save_changes',
+                'label' => 'user.form.edit_user.save_changes',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.user.editusertype.label.cancel',
+                'label' => 'user.form.edit_user.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

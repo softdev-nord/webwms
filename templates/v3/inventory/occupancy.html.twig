@@ -22,16 +22,16 @@
 
 {% block webwms_content %}
 	<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
-		<div><h1 class="h3 mb-1">{{ 'ui.v3.inventory.occupancy.grafische.lagebelegung'|trans }}</h1><p class="text-muted mb-0">{{ 'ui.v3.inventory.occupancy.belegung.und.auslastung.jedes.lagerplatzes.nach.lager.u'|trans }}</p></div>
-		<form method="get" class="d-flex gap-2 align-items-end"><div><label for="warehouse" class="form-label small">{{ 'nav.master_data.submenu.headline4'|trans }}</label><select id="warehouse" name="warehouse" class="form-select" required>{% for warehouse in warehouses %}<option value="{{ warehouse.id }}" {{ warehouse.id == selectedWarehouse ? 'selected' : '' }}>{{ warehouse.code }} – {{ warehouse.name }}</option>{% endfor %}</select></div><button class="btn btn-primary">{{ 'ui.v3.inventory.occupancy.anzeigen'|trans }}</button></form>
+		<div><h1 class="h3 mb-1">{{ 'inventory.occupancy.graphical_location_occupancy'|trans }}</h1><p class="text-muted mb-0">{{ 'inventory.occupancy.occupancy_and_utilization_of_each_storage_location_by_warehouse_and_area'|trans }}</p></div>
+		<form method="get" class="d-flex gap-2 align-items-end"><div><label for="warehouse" class="form-label small">{{ 'navigation.master_data.submenu.headline4.label'|trans }}</label><select id="warehouse" name="warehouse" class="form-select" required>{% for warehouse in warehouses %}<option value="{{ warehouse.id }}" {{ warehouse.id == selectedWarehouse ? 'selected' : '' }}>{{ warehouse.code }} – {{ warehouse.name }}</option>{% endfor %}</select></div><button class="btn btn-primary">{{ 'inventory.occupancy.display'|trans }}</button></form>
 	</div>
 
 	<div class="card border-0 shadow-sm mb-4"><div class="card-body py-3"><div class="occupancy-legend small">
-		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-light"></span>{{ 'ui.dashboard.index.frei'|trans }}</span>
-		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-success"></span>{{ 'ui.dashboard.index.belegt'|trans }}</span>
-		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-warning"></span>{{ 'ui.v3.inventory.occupancy.qs.bestand'|trans }}</span>
-		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-danger"></span>{{ 'ui.v3.inventory.occupancy.gesperrt.oder.voll'|trans }}</span>
-		<span class="ms-auto text-muted">{{ 'ui.v3.inventory.occupancy.die.platzkarten.offnen.den.echtzeitbestand.des.gewahlte'|trans }}</span>
+		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-light"></span>{{ 'dashboard.index.available'|trans }}</span>
+		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-success"></span>{{ 'dashboard.index.occupied'|trans }}</span>
+		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-warning"></span>{{ 'inventory.occupancy.qc_stock'|trans }}</span>
+		<span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-danger"></span>{{ 'inventory.occupancy.blocked_or_full'|trans }}</span>
+		<span class="ms-auto text-muted">{{ 'inventory.occupancy.location_cards_open_real_time_stock_view_for_selected_warehouse'|trans }}</span>
 	</div></div></div>
 
 	{% set renderedAreas = [] %}
@@ -40,17 +40,17 @@
 		{% if areaKey not in renderedAreas %}
 			{% set areaLocations = locations|filter(location => (location.area_id ?: 'without-area') == areaKey) %}
 			<section class="occupancy-area card border-0 shadow-sm">
-				<div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2"><div><h2 class="h5 mb-0">{{ area.area_code ?: ('ui.v3.inventory.occupancy.choice.ohne.bereich'|trans) }}{% if area.area_name %} · {{ area.area_name }}{% endif %}</h2><span class="small text-muted">{{ area.warehouse_code }} · {{ area.area_type ?: 'nicht klassifiziert' }}</span></div><span class="badge bg-primary-subtle text-primary">{{ areaLocations|length }} {{ 'ui.v3.inventory.occupancy.lagerplatze'|trans }}</span></div>
+				<div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2"><div><h2 class="h5 mb-0">{{ area.area_code ?: ('inventory.occupancy.no_area'|trans) }}{% if area.area_name %} · {{ area.area_name }}{% endif %}</h2><span class="small text-muted">{{ area.warehouse_code }} · {{ area.area_type ?: 'nicht klassifiziert' }}</span></div><span class="badge bg-primary-subtle text-primary">{{ areaLocations|length }} {{ 'inventory.occupancy.storage_locations'|trans }}</span></div>
 				<div class="card-body"><div class="occupancy-grid">
 					{% for location in areaLocations %}
 						{% set utilization = location.capacity_quantity > 0 ? min(100, (location.stock_quantity / location.capacity_quantity * 100)|round) : 0 %}
 						{% set state = location.stock_quantity == 0 ? 'empty' : (location.blocked_quantity > 0 ? 'blocked' : (location.quality_quantity > 0 ? 'quality' : (location.capacity_quantity > 0 and location.stock_quantity >= location.capacity_quantity ? 'full' : 'occupied'))) %}
-						<a href="{{ path('v3_stock', {warehouse: location.warehouse_id}) }}" class="occupancy-bin occupancy-bin--{{ state }} text-decoration-none" title="{{ location.location_code }} · {{ location.product_skus ?: ('ui.v3.inventory.occupancy.choice.kein.bestand'|trans) }}">
+						<a href="{{ path('v3_stock', {warehouse: location.warehouse_id}) }}" class="occupancy-bin occupancy-bin--{{ state }} text-decoration-none" title="{{ location.location_code }} · {{ location.product_skus ?: ('inventory.occupancy.no_stock'|trans) }}">
 							<div class="d-flex justify-content-between gap-2"><span class="occupancy-bin-code">{{ location.location_code }}</span><span class="badge bg-light text-body">{{ location.location_type }}</span></div>
-							<div class="occupancy-bin-meta mt-1">{{ 'ui.v3.inventory.occupancy.gang'|trans }} {{ location.aisle_code ?: '–' }} {{ 'ui.v3.inventory.occupancy.ebene'|trans }} {{ location.level_code ?: '–' }} {{ 'ui.v3.inventory.occupancy.fach'|trans }} {{ location.bin_code ?: '–' }}</div>
-							<div class="d-flex justify-content-between align-items-end mt-3"><div><div class="occupancy-bin-quantity">{{ location.stock_quantity }}</div><div class="occupancy-bin-meta">{{ 'ui.article.index.bestand'|trans }}{% if location.capacity_quantity > 0 %} / {{ location.capacity_quantity }}{% else %} {{ 'ui.v3.inventory.occupancy.unbegrenzt'|trans }}{% endif %}</div></div><div class="text-end"><strong>{{ location.product_count }}</strong><div class="occupancy-bin-meta">{{ 'nav.master_data.submenu.headline1'|trans }}</div></div></div>
+							<div class="occupancy-bin-meta mt-1">{{ 'inventory.occupancy.aisle'|trans }} {{ location.aisle_code ?: '–' }} {{ 'inventory.occupancy.level'|trans }} {{ location.level_code ?: '–' }} {{ 'inventory.occupancy.bin'|trans }} {{ location.bin_code ?: '–' }}</div>
+							<div class="d-flex justify-content-between align-items-end mt-3"><div><div class="occupancy-bin-quantity">{{ location.stock_quantity }}</div><div class="occupancy-bin-meta">{{ 'article.index.stock'|trans }}{% if location.capacity_quantity > 0 %} / {{ location.capacity_quantity }}{% else %} {{ 'inventory.occupancy.unlimited'|trans }}{% endif %}</div></div><div class="text-end"><strong>{{ location.product_count }}</strong><div class="occupancy-bin-meta">{{ 'navigation.master_data.submenu.headline1.label'|trans }}</div></div></div>
 							{% if location.capacity_quantity > 0 %}<div class="progress mt-2" style="height: 5px"><div class="progress-bar {{ state in ['blocked', 'full'] ? 'bg-danger' : (state == 'quality' ? 'bg-warning' : 'bg-success') }}" style="width: {{ utilization }}%"></div></div>{% endif %}
-							<div class="occupancy-bin-meta text-truncate mt-2">{{ location.product_skus ?: ('ui.dashboard.index.frei'|trans) }}</div>
+							<div class="occupancy-bin-meta text-truncate mt-2">{{ location.product_skus ?: ('dashboard.index.available'|trans) }}</div>
 						</a>
 					{% endfor %}
 				</div></div>
@@ -58,6 +58,6 @@
 			{% set renderedAreas = renderedAreas|merge([areaKey]) %}
 		{% endif %}
 	{% else %}
-		<div class="alert alert-info">{{ 'ui.v3.inventory.occupancy.fur.das.gewahlte.lager.sind.noch.keine.lagerplatze.ange'|trans }}</div>
+		<div class="alert alert-info">{{ 'inventory.occupancy.no_storage_locations_have_been_created_for_selected_warehouse_yet'|trans }}</div>
 	{% endfor %}
 {% endblock %}

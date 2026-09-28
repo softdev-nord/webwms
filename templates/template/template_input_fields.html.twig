@@ -4,7 +4,7 @@
     <fieldset
         id="template-form-fieldset-primary-{{ template.id }}" {% if template.id != "new" %} {% endif %}>
         <div class="row">
-            <label for="name-{{ template.id }}" class="col-sm-4 col-form-label text-end">{{ 'templates.name'|trans }}
+            <label for="name-{{ template.id }}" class="col-sm-4 col-form-label text-end">{{ 'common.template.name'|trans }}
                 *</label>
             <div class="col-sm-8">
                 <input type="text" class="form-control" name="name-{{ template.id }}" style="box-shadow: none"
@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="row">
-            <label for="name-{{ template.id }}" class="col-sm-4 col-form-label text-end">{{ 'templates.type'|trans }}
+            <label for="name-{{ template.id }}" class="col-sm-4 col-form-label text-end">{{ 'common.template.type'|trans }}
                 *</label>
             <div class="col-sm-8">
                 <select name="type-{{ template.id }}" class="form-select" id="template-type" style="box-shadow: none; width: 100%">
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="row">
-            <label for="params-{{ template.id }}" class="col-sm-4 col-form-label text-end">{{ 'templates.params'|trans }}</label>
+            <label for="params-{{ template.id }}" class="col-sm-4 col-form-label text-end">{{ 'common.template.params'|trans }}</label>
             <div class="col-sm-8">
                 {% if template.params|length == 0 %}
                     {% set tParams = '{"orientation": "P", "marginLeft": 25, "marginRight": 20, "marginTop": 20, "marginBottom": 20, "marginHeader": 9, "marginFooter": 9}' %}
@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="row">
-            <label for="default-{{ template.id }}" class="col-sm-4 form-check-label text-end">{{ 'templates.default'|trans }}</label>
+            <label for="default-{{ template.id }}" class="col-sm-4 form-check-label text-end">{{ 'common.template.default'|trans }}</label>
             <div class="col-sm-8 text-start">
                 <input type="checkbox" name="default-{{ template.id }}" class="form-check"
                        {%if template.isDefault %}checked="checked"{%endif %} />

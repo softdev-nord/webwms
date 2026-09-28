@@ -9,13 +9,13 @@
                     <div class="row col-md-6">
                         <div class="form-row col-md-12">
                             <div class="form-group col-md-8">
-                                <label for="inputCustomer">{{ 'ui.customer_order.customer_order_input_fields.kunden.suchen'|trans }}</label>
+                                <label for="inputCustomer">{{ 'customer_order.customer_order_input_fields.search_for_customer'|trans }}</label>
                                 <input
                                         type="text"
                                         id="customer_customerNr"
                                         name="customer[customerNr]"
                                         required="required"
-                                        placeholder="{{ 'ui.customer_order.customer_order_input_fields.uber.kunden.nr.suchen'|trans }}"
+                                        placeholder="{{ 'customer_order.customer_order_input_fields.search_by_customer_no'|trans }}"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
                                         data-type="customerNr"
                                         style="background-color:
@@ -38,7 +38,7 @@
                                         id="customer_customerName"
                                         name="customer[customerName]"
                                         required="required"
-                                        placeholder="{{ 'ui.customer_order.customer_order_input_fields.kunden.name'|trans }}"
+                                        placeholder="{{ 'customer_order.customer_order_input_fields.customer_name'|trans }}"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
                                         data-type="customerName"
                                         autocomplete="off"
@@ -50,7 +50,7 @@
                                         type="text"
                                         id="customer_customerAddressAddition"
                                         name="customer[customerAddressAddition]"
-                                        placeholder="{{ 'ui.customer.customer_input_fields.anschrift.zusatz'|trans }}"
+                                        placeholder="{{ 'customer.customer_input_fields.address_line_2'|trans }}"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
                                         data-type="customerAddressAddition"
                                         autocomplete="off"
@@ -63,7 +63,7 @@
                                         id="customer_customerAddressStreet"
                                         name="customer[customerAddressStreet]"
                                         required="required"
-                                        placeholder="{{ 'ui.customer.customer_input_fields.strasse'|trans }}"
+                                        placeholder="{{ 'customer.customer_input_fields.street'|trans }}"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
                                         data-type="customerAddressStreet"
                                         autocomplete="off"
@@ -76,7 +76,7 @@
                                         id="customer_customerAddressStreetNr"
                                         name="customer[customerAddressStreetNr]"
                                         required="required"
-                                        placeholder="{{ 'ui.customer_order.customer_order_input_fields.haus.nr'|trans }}"
+                                        placeholder="{{ 'customer_order.customer_order_input_fields.house_no'|trans }}"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
                                         data-type="customerAddressStreetNr"
                                         autocomplete="off"
@@ -90,7 +90,7 @@
                                         id="customer_customerAddressCountryCode"
                                         name="customer[customerAddressCountryCode]"
                                         required="required"
-                                        placeholder="{{ 'ui.customer.customer_input_fields.land'|trans }}"
+                                        placeholder="{{ 'customer.customer_input_fields.country'|trans }}"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
                                         data-type="customerAddressCountryCode"
                                         autocomplete="off"
@@ -103,7 +103,7 @@
                                         id="customer_customerAddressZipcode"
                                         name="customer[customerAddressZipcode]"
                                         required="required"
-                                        placeholder="{{ 'templates.editor.zip'|trans }}"
+                                        placeholder="{{ 'common.template.editor.zip'|trans }}"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
                                         data-type="customerAddressZipcode"
                                         autocomplete="off"
@@ -116,7 +116,7 @@
                                         id="customer_customerAddressCity"
                                         name="customer[customerAddressCity]"
                                         required="required"
-                                        placeholder="{{ 'ui.customer.customer_input_fields.ort'|trans }}"
+                                        placeholder="{{ 'customer.customer_input_fields.city_town'|trans }}"
                                         class="form-control autocomplete_customers ui-autocomplete-input"
                                         data-type="customerAddressCity"
                                         autocomplete="off"
@@ -167,7 +167,7 @@
                     <div class="row col-md-6">
                         <div class="form-row col-md-12">
                             <div class="form-group col-md-4">
-                                <label for="inputOrderDat">{{ 'ui.customer_order.customer_order_input_fields.bearbeiter'|trans }}</label>
+                                <label for="inputOrderDat">{{ 'customer_order.customer_order_input_fields.processor'|trans }}</label>
                                 <input class="form-control" type="text" placeholder="{{ app.user.firstname }} {{ app.user.lastname }}" readonly="" style="background-color: transparent;">
                             </div>
                         </div>
@@ -181,9 +181,9 @@
                                 <table id="autocomplete_table" class="table table-hover">
                                     <thead class="thead-dark">
                                     <tr>
-                                        <th width="15%" scope="col">{{ 'ui.article.article_input_fields.artikel.nr'|trans }}</th>
-                                        <th width="35%" style="text-align:center;">{{ 'ui.customer_order.customer_order_input_fields.artikel.bezeichnung'|trans }}</th>
-                                        <th width="10%" style="text-align:center;">{{ 'ui.customer_order.customer_order_input_fields.menge'|trans }}</th>
+                                        <th width="15%" scope="col">{{ 'article.article_input_fields.item_no'|trans }}</th>
+                                        <th width="35%" style="text-align:center;">{{ 'customer_order.customer_order_input_fields.item_description'|trans }}</th>
+                                        <th width="10%" style="text-align:center;">{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</th>
                                         <th width="1%" style="text-align:center;">#</th>
                                     </tr>
                                     </thead>
@@ -231,7 +231,7 @@
                                 </table>
                             </div>
                             <div class="btn-container">
-                                <button id="addNewButton" class="btn btn-primary btn-sm btn3d" value="Neue Position">{{ 'ui.customer_order.customer_order_input_fields.neue.position'|trans }}</button>
+                                <button id="addNewButton" class="btn btn-primary btn-sm btn3d" value="Neue Position">{{ 'customer_order.customer_order_input_fields.new_item'|trans }}</button>
                             </div>
                             <input
                                     type="hidden"

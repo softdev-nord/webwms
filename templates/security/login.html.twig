@@ -6,7 +6,7 @@
         {{ include('subsections/head-css.html.twig') }}
     </head>
 
-    <title>{% block title %}{{ 'ui.security.login.anmelden.webwms.das.webbasierte.lagerverwaltungssystem'|trans }}{% endblock %}</title>
+    <title>{% block title %}{{ 'security.login.log_in_webwms_web_based_warehouse_management_system'|trans }}{% endblock %}</title>
     {% block stylesheets %}
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     {% endblock %}
@@ -21,9 +21,9 @@
                     </div>
                 {% endif %}
                 <div class="mb-3">
-                    <span class="text-first">{{ 'ui.base.web'|trans }}</span><span class="text-last">{{ 'ui.base.wms'|trans }}</span>
+                    <span class="text-first">{{ 'base.web'|trans }}</span><span class="text-last">{{ 'base.wms'|trans }}</span>
                 </div>
-                <h4>{{ 'ui.base.das.webbasierte.lagerverwaltungssystem'|trans }}</h4><br>
+                <h4>{{ 'base.web_based_warehouse_management_system'|trans }}</h4><br>
                 <div class="form-group">
                     <input
                         type="text"
@@ -31,7 +31,7 @@
                         name="username"
                         id="inputUsername"
                         class="form-control"
-                        placeholder="{{ 'ui.security.login.benutzername'|trans }}"
+                        placeholder="{{ 'security.login.username'|trans }}"
                         required
                         autofocus
                     />
@@ -42,7 +42,7 @@
                         name="password"
                         id="inputPassword"
                         class="form-control"
-                        placeholder="{{ 'ui.security.login.passwort'|trans }}"
+                        placeholder="{{ 'security.login.password'|trans }}"
                         required
                     />
                 </div>
@@ -58,11 +58,11 @@
                 </div>#}
                 <input type="hidden" name="_target_path" value="{{ path('homepage') }}" />
                 <div class="form-group">
-                    <button type="submit" name="anmelden" class="btn btn-dark bg-gradient waves-effect waves-light">{{ 'ui.security.login.anmelden'|trans }}</button>
+                    <button type="submit" name="anmelden" class="btn btn-dark bg-gradient waves-effect waves-light">{{ 'security.login.log_in'|trans }}</button>
                 </div>
                 <div class="signup-form-text-info">
-                    {{ 'ui.security.login.copy.2019'|trans }}{{ "now"|date("Y") }} <a href="https://softdev-nord.de"> {{ 'ui.security.login.softdev.nord.rene.irrgang'|trans }} </a><br>
-                    {{ 'ui.security.login.weblvs.reg'|trans }} {{ appVersionNumber }} {{ appVersion }} <br><br>
+                    {{ 'security.login.and_copy_2019'|trans }}{{ "now"|date("Y") }} <a href="https://softdev-nord.de"> {{ 'security.login.softdev_nord_rene_irrgang'|trans }} </a><br>
+                    {{ 'security.login.weblvs_and_reg'|trans }} {{ appVersionNumber }} {{ appVersion }} <br><br>
                     {{ appLizenz }}
                 </div>
                 <div>
@@ -73,12 +73,12 @@
                     <i class="brands-webWMS mdi mdi-language-javascript"></i>
                 </div>
                 <div class="signup-form-text-software">
-                    {{ 'ui.security.login.webserver'|trans }}   {{ webServer }} <br>
-                    {{ 'ui.security.login.server.ip.adresse'|trans }} {{ serverIp }} <br>
-                    {{ 'ui.security.login.server.name'|trans }} {{ serverName }} <br>
-                    {{ 'ui.security.login.freier.speicherplatz'|trans }} {{ freeDiskSpace }} <br>
-                    {{ 'ui.security.login.mysql.version'|trans }} {{ mySqlVersion }} <br>
-                    {{ 'ui.security.login.php.version'|trans }} {{ phpVersion }}
+                    {{ 'security.login.web_server'|trans }}   {{ webServer }} <br>
+                    {{ 'security.login.server_ip_address'|trans }} {{ serverIp }} <br>
+                    {{ 'security.login.server_name'|trans }} {{ serverName }} <br>
+                    {{ 'security.login.free_disk_space'|trans }} {{ freeDiskSpace }} <br>
+                    {{ 'security.login.mysql_version'|trans }} {{ mySqlVersion }} <br>
+                    {{ 'security.login.php_version'|trans }} {{ phpVersion }}
                 </div>
                 </form>
             </div>

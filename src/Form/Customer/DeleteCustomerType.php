@@ -34,13 +34,13 @@ class DeleteCustomerType extends AbstractType
                 ],
             ])
             ->add('delete', ButtonType::class, [
-                'label' => 'form.customer.deletecustomertype.label.delete',
+                'label' => 'customer.form.delete_customer.delete',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.customer.deletecustomertype.label.cancel',
+                'label' => 'customer.form.delete_customer.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

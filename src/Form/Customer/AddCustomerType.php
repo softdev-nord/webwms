@@ -100,13 +100,13 @@ class AddCustomerType extends AbstractType
                 ],
             ])
             ->add('save', ButtonType::class, [
-                'label' => 'form.customer.addcustomertype.label.create_customer',
+                'label' => 'customer.form.add_customer.create_customer',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.customer.addcustomertype.label.cancel',
+                'label' => 'customer.form.add_customer.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

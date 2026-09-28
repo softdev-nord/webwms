@@ -1,20 +1,20 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4"><a href="{{ path('v3_wcs_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.wcs.command-new.wcs.mfr.und.fordertechnik'|trans }}</a><h1 class="h3 mt-2">{{ 'ui.v3.integration.wcs.command-new.maschinenbefehl.anlegen'|trans }}</h1></div>
+	<div class="mb-4"><a href="{{ path('v3_wcs_index') }}" class="text-decoration-none">{{ 'integration.wcs.command_new.wcs_mfr_and_conveyor_system'|trans }}</a><h1 class="h3 mt-2">{{ 'integration.wcs.command_new.create_machine_command'|trans }}</h1></div>
 	<form method="post" class="card border-0 shadow-sm">
 		<div class="card-body">
 			<input type="hidden" name="_token" value="{{ csrf_token('v3_wcs_command_create') }}">
 			<input type="hidden" name="request_id" value="{{ requestId }}">
 			<div class="row g-3">
-				<div class="col-md-6"><label class="form-label" for="connection_id">{{ 'ui.v3.integration.wcs.command-new.verbindung'|trans }}</label><select class="form-select" id="connection_id" name="connection_id" required>{% for connection in connections %}<option value="{{ connection.id }}">{{ connection.code }} · {{ connection.name }}</option>{% endfor %}</select></div>
-				<div class="col-md-6"><label class="form-label" for="command_type">{{ 'ui.v3.integration.automation.command-new.befehl'|trans }}</label><select class="form-select" id="command_type" name="command_type"><option value="transport">{{ 'ui.v3.integration.wcs.command-new.transport'|trans }}</option><option value="route">{{ 'ui.v3.integration.wcs.command-new.route.setzen'|trans }}</option><option value="cancel">{{ 'ui.v3.integration.wcs.command-new.abbruchauftrag'|trans }}</option></select></div>
-				<div class="col-md-4"><label class="form-label" for="source">{{ 'ui.v3.integration.wcs.command-new.quelle'|trans }}</label><input class="form-control font-monospace" id="source" name="source" maxlength="100" required></div>
-				<div class="col-md-4"><label class="form-label" for="destination">{{ 'ui.v3.inbound.planned.ziel'|trans }}</label><input class="form-control font-monospace" id="destination" name="destination" maxlength="100" required></div>
-				<div class="col-md-4"><label class="form-label" for="load_unit">{{ 'ui.v3.inbound.control.ladeeinheit'|trans }}</label><input class="form-control font-monospace" id="load_unit" name="load_unit" maxlength="100" required></div>
+				<div class="col-md-6"><label class="form-label" for="connection_id">{{ 'integration.wcs.command_new.connection'|trans }}</label><select class="form-select" id="connection_id" name="connection_id" required>{% for connection in connections %}<option value="{{ connection.id }}">{{ connection.code }} · {{ connection.name }}</option>{% endfor %}</select></div>
+				<div class="col-md-6"><label class="form-label" for="command_type">{{ 'integration.automation.command_new.command'|trans }}</label><select class="form-select" id="command_type" name="command_type"><option value="transport">{{ 'integration.wcs.command_new.transport'|trans }}</option><option value="route">{{ 'integration.wcs.command_new.set_route'|trans }}</option><option value="cancel">{{ 'integration.wcs.command_new.cancellation_job'|trans }}</option></select></div>
+				<div class="col-md-4"><label class="form-label" for="source">{{ 'integration.wcs.command_new.source'|trans }}</label><input class="form-control font-monospace" id="source" name="source" maxlength="100" required></div>
+				<div class="col-md-4"><label class="form-label" for="destination">{{ 'inbound.planned.destination'|trans }}</label><input class="form-control font-monospace" id="destination" name="destination" maxlength="100" required></div>
+				<div class="col-md-4"><label class="form-label" for="load_unit">{{ 'inbound.control.load_unit'|trans }}</label><input class="form-control font-monospace" id="load_unit" name="load_unit" maxlength="100" required></div>
 			</div>
-			{% if connections is empty %}<div class="alert alert-warning mt-3 mb-0">{{ 'ui.v3.integration.wcs.command-new.es.ist.keine.aktive.wcs.verbindung.vorhanden'|trans }}</div>{% endif %}
+			{% if connections is empty %}<div class="alert alert-warning mt-3 mb-0">{{ 'integration.wcs.command_new.no_active_wcs_connection_exists'|trans }}</div>{% endif %}
 		</div>
-		<div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_wcs_index') }}">{{ 'button.cancel'|trans }}</a><button class="btn btn-primary" {% if connections is empty %}disabled{% endif %}>{{ 'ui.v3.integration.automation.command-new.befehl.einreihen'|trans }}</button></div>
+		<div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_wcs_index') }}">{{ 'common.button.cancel'|trans }}</a><button class="btn btn-primary" {% if connections is empty %}disabled{% endif %}>{{ 'integration.automation.command_new.queue_command'|trans }}</button></div>
 	</form>
 {% endblock %}

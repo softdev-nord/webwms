@@ -145,13 +145,13 @@ class EditArticleType extends AbstractType
             ],
         ])
         ->add('save', SubmitType::class, [
-            'label' => 'form.article.editarticletype.label.save_changes',
+            'label' => 'article.form.edit_article.save_changes',
             'attr' => [
                 'class' => 'btn btn-primary btn3d',
             ],
         ])
         ->add('abort', ButtonType::class, [
-            'label' => 'form.article.editarticletype.label.cancel',
+            'label' => 'article.form.edit_article.cancel',
             'attr' => [
                 'class' => 'btn btn-primary btn3d abort',
             ],

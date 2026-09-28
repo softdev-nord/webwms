@@ -39,13 +39,13 @@ class ChangePasswordType extends AbstractType
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('save', ButtonType::class, [
-                'label' => 'form.user.changepasswordtype.label.save_changes',
+                'label' => 'user.form.change_password.save_changes',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.user.changepasswordtype.label.cancel',
+                'label' => 'user.form.change_password.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

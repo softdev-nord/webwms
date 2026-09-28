@@ -6,7 +6,7 @@
             <div class="card">
                 {{ form_start(customerForm) }}
                     <div class="form-group">
-                        <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.kunden.nr'|trans }}</label>
+                        <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.customer_no'|trans }}</label>
                         <div class="col-xs-8" style="margin-bottom: 5px;">
                             {% if editCustomer %}
                                 {{ form_row(customerForm.customerNr) }}
@@ -16,43 +16,43 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.kunden.name'|trans }}</label>
+                        <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.customer_name'|trans }}</label>
                         <div class="col-xs-8" style="margin-bottom: 5px;">
                             {{ form_row(customerForm.customerName) }}
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.anschrift.zusatz'|trans }}</label>
+                        <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.address_line_2'|trans }}</label>
                         <div class="col-xs-8" style="margin-bottom: 5px;">
                             {{ form_row(customerForm.customerAddressAddition) }}
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.strasse'|trans }}</label>
+                        <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.street'|trans }}</label>
                         <div class="col-xs-8" style="margin-bottom: 5px;">
                             {{ form_row(customerForm.customerAddressStreet) }}
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.haus.nr'|trans }}</label>
+                        <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.house_no'|trans }}</label>
                         <div class="col-xs-8" style="margin-bottom: 5px;">
                             {{ form_row(customerForm.customerAddressStreetNr) }}
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.land'|trans }}</label>
+                        <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.country'|trans }}</label>
                         <div class="col-xs-8" style="margin-bottom: 5px;">
                             {{ form_row(customerForm.customerCountryCode) }}
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="text" class="control-label col-xs-4">{{ 'templates.editor.zip'|trans }}</label>
+                        <label for="text" class="control-label col-xs-4">{{ 'common.template.editor.zip'|trans }}</label>
                         <div class="col-xs-8" style="margin-bottom: 5px;">
                             {{ form_row(customerForm.customerZipCode) }}
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="text" class="control-label col-xs-4">{{ 'ui.customer.customer_input_fields.ort'|trans }}</label>
+                        <label for="text" class="control-label col-xs-4">{{ 'customer.customer_input_fields.city_town'|trans }}</label>
                         <div class="col-xs-8" style="margin-bottom: 5px;">
                             {{ form_row(customerForm.customerCity) }}
                         </div>

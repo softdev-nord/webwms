@@ -37,7 +37,7 @@ class EditSupplierOrderType extends AbstractType
           ])
           ->add('supplierOrderNr', TextType::class, [
             'empty_data' => '',
-            'label' => 'form.supplierorder.editsupplierordertype.label.purchase_order_no',
+            'label' => 'supplier_order.form.edit_supplier_order.purchase_order_no',
             'attr' => [
               'class' => 'form-control is--transparent',
               'data-type' => 'supplier_order_nr',
@@ -59,7 +59,7 @@ class EditSupplierOrderType extends AbstractType
           ])
           ->add('supplierOrderReference', TextType::class, [
             'empty_data' => '',
-            'label' => 'form.supplierorder.editsupplierordertype.label.purchase_order_reference',
+            'label' => 'supplier_order.form.edit_supplier_order.purchase_order_reference',
             'attr' => [
               'class' => 'form-control',
             ],
@@ -68,7 +68,7 @@ class EditSupplierOrderType extends AbstractType
             'widget' => 'single_text',
             'input' => 'datetime',
             'format' => 'dd.MM.yyyy',
-            'label' => 'form.supplierorder.editsupplierordertype.label.order_date',
+            'label' => 'supplier_order.form.edit_supplier_order.order_date',
             'html5' => false,
             'attr' => [
               'class' => 'form-control',
@@ -78,7 +78,7 @@ class EditSupplierOrderType extends AbstractType
             'widget' => 'single_text',
             'input' => 'datetime',
             'format' => 'dd.MM.yyyy',
-            'label' => 'form.supplierorder.editsupplierordertype.label.creation_date',
+            'label' => 'supplier_order.form.edit_supplier_order.creation_date',
             'html5' => false,
             'attr' => [
               'class' => 'form-control',
@@ -87,13 +87,13 @@ class EditSupplierOrderType extends AbstractType
             ],
           ])
           ->add('save', ButtonType::class, [
-            'label' => 'form.supplierorder.editsupplierordertype.label.save_changes',
+            'label' => 'supplier_order.form.edit_supplier_order.save_changes',
             'attr' => [
               'class' => 'btn btn-primary btn3d',
             ],
           ])
           ->add('abort', ButtonType::class, [
-            'label' => 'form.supplierorder.editsupplierordertype.label.cancel',
+            'label' => 'supplier_order.form.edit_supplier_order.cancel',
             'attr' => [
               'class' => 'btn btn-primary btn3d abort',
             ],

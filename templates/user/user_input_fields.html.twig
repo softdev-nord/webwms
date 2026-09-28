@@ -6,56 +6,56 @@
             <div class="card">
                 {{ form_start(userForm) }}
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'ui.security.login.benutzername'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'security.login.username'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(userForm.username) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'templates.editor.firstname'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'common.template.editor.firstname'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(userForm.firstname) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'templates.editor.lastname'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'common.template.editor.lastname'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(userForm.lastname) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'Email'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'theme.email'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(userForm.email) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'ui.user.user_input_fields.aktiv'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'user.user_input_fields.active'|trans }}</label>
                     <div class="form-check form-switch" style="margin-bottom: 5px;">
                         {{ form_row(userForm.enabled) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'ui.user.user_input_fields.benutzerrolle.n'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'user.user_input_fields.user_role_s'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(userForm.role) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="text" class="control-label col-xs-4">{{ 'ui.user.user_input_fields.benutzergruppe.n'|trans }}</label>
+                    <label for="text" class="control-label col-xs-4">{{ 'user.user_input_fields.user_group_s'|trans }}</label>
                     <div class="col-xs-8" style="margin-bottom: 5px;">
                         {{ form_row(userForm.userGroups) }}
                     </div>
                 </div>
                 {% if addUser %}
                     <div class="form-group">
-                        <label for="text" class="control-label col-xs-4">{{ 'ui.security.login.passwort'|trans }}</label>
+                        <label for="text" class="control-label col-xs-4">{{ 'security.login.password'|trans }}</label>
                         <div class="col-xs-8" style="margin-bottom: 5px;">
                             {{ form_row(userForm.password.first) }}
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="text" class="control-label col-xs-4">{{ 'ui.user.user_input_fields.passwort.wiederholen'|trans }}</label>
+                        <label for="text" class="control-label col-xs-4">{{ 'user.user_input_fields.repeat_password'|trans }}</label>
                         <div class="col-xs-8" style="margin-bottom: 5px;">
                             {{ form_row(userForm.password.second) }}
                         </div>

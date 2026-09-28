@@ -62,7 +62,7 @@ class CustomerOrderController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'nav.customer_order.headline.entry1',
+                'page' => 'navigation.customer_order.headline.entry1',
             ]
         );
     }

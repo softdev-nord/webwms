@@ -20,8 +20,8 @@
                                                 <div class="card-body">
                                                     <div class="row align-items-center">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'ui.dashboard.index.wareneingange'|trans }}</span>
-                                                            <span class="ms-1 text-muted font-size-12">{{ 'ui.dashboard.index.letzte.woche'|trans }}</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'dashboard.index.goods_receipts'|trans }}</span>
+                                                            <span class="ms-1 text-muted font-size-12">{{ 'dashboard.index.last_week'|trans }}</span>
                                                             {{ render_chart(incomingGoods) }}
                                                         </div>
                                                     </div>
@@ -34,8 +34,8 @@
                                                 <div class="card-body">
                                                     <div class="row align-items-center">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'ui.dashboard.index.warenausgange'|trans }}</span>
-                                                            <span class="ms-1 text-muted font-size-12">{{ 'ui.dashboard.index.letzte.woche'|trans }}</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'dashboard.index.goods_issues'|trans }}</span>
+                                                            <span class="ms-1 text-muted font-size-12">{{ 'dashboard.index.last_week'|trans }}</span>
                                                             {{ render_chart(outgoingGoods) }}
                                                         </div>
                                                     </div>
@@ -48,8 +48,8 @@
                                                 <div class="card-body">
                                                     <div class="row align-items-center">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'ui.dashboard.index.transportauftrage.positionen'|trans }}</span>
-                                                            <span class="ms-1 text-muted font-size-12">{{ 'ui.dashboard.index.letzte.woche'|trans }}</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'dashboard.index.transport_orders_items'|trans }}</span>
+                                                            <span class="ms-1 text-muted font-size-12">{{ 'dashboard.index.last_week'|trans }}</span>
                                                             {{ render_chart(allTransportRequestsForChart) }}
                                                         </div>
                                                     </div>
@@ -64,14 +64,14 @@
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'ui.dashboard.index.lagerauslastung'|trans }}</span>
-                                                            <span class="ms-1 text-muted font-size-12">{{ 'ui.dashboard.index.anzahl.lagerplatze'|trans }}</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'dashboard.index.warehouse_utilization'|trans }}</span>
+                                                            <span class="ms-1 text-muted font-size-12">{{ 'dashboard.index.number_of_storage_locations'|trans }}</span>
                                                             {% set foo = warehouseUtilization.occupiedStockLocations / warehouseUtilization.allStockLocations *100 %}
                                                             <span class="badge rounded-pill badge-soft-success font-size-12 bg-soft-success text-success">{{ foo|number_format(2) }} %</span>
                                                             <div class="col-xxl-12 d-flex">
-                                                                <span class="col-4-text-center">{{ 'ui.dashboard.index.gesamt'|trans }}</span>
-                                                                <span class="col-4-text-center">{{ 'ui.dashboard.index.belegt'|trans }}</span>
-                                                                <span class="col-4-text-center">{{ 'ui.dashboard.index.frei'|trans }}</span>
+                                                                <span class="col-4-text-center">{{ 'dashboard.index.total'|trans }}</span>
+                                                                <span class="col-4-text-center">{{ 'dashboard.index.occupied'|trans }}</span>
+                                                                <span class="col-4-text-center">{{ 'dashboard.index.available'|trans }}</span>
                                                             </div>
                                                             <div class="col-xxl-12 d-flex">
                                                                 <p class="col-4-form-control text-shadow">
@@ -106,12 +106,12 @@
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'ui.dashboard.index.transportauftrage.positionen'|trans }}</span>
-                                                            <span class="ms-1 text-muted font-size-12">{{ 'ui.dashboard.index.ubersicht'|trans }}</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'dashboard.index.transport_orders_items'|trans }}</span>
+                                                            <span class="ms-1 text-muted font-size-12">{{ 'dashboard.index.overview'|trans }}</span>
                                                             <div class="col-xxl-12 d-flex">
-                                                                <span class="col-4-text-center">{{ 'ui.dashboard.index.gesamt'|trans }}</span>
-                                                                <span class="col-4-text-center">{{ 'ui.customer_order.index.offen'|trans }}</span>
-                                                                <span class="col-4-text-center">{{ 'ui.dashboard.index.in.arbeit'|trans }}</span>
+                                                                <span class="col-4-text-center">{{ 'dashboard.index.total'|trans }}</span>
+                                                                <span class="col-4-text-center">{{ 'customer_order.index.open'|trans }}</span>
+                                                                <span class="col-4-text-center">{{ 'dashboard.index.in_progress'|trans }}</span>
                                                             </div>
                                                             <div class="col-xxl-12 d-flex">
                                                                 <p class="col-4-form-control text-shadow">
@@ -147,13 +147,13 @@
                                                 <div class="card-body">
                                                     <div class="row" style="display: none">
                                                         <div class="col-xxl-12">
-                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'ui.dashboard.index.lagerauslastung'|trans }}</span>
+                                                            <span class="text-muted mb-3 lh-1 text-truncate">{{ 'dashboard.index.warehouse_utilization'|trans }}</span>
                                                             {% set foo = warehouseUtilization.occupiedStockLocations / warehouseUtilization.allStockLocations *100 %}
                                                             <span class="badge rounded-pill badge-soft-success font-size-12 bg-soft-success text-success">{{ foo|number_format(2) }} %</span>
                                                             <div class="col-xxl-12 d-flex">
-                                                                <span class="col-4-text-center">{{ 'ui.dashboard.index.gesamt'|trans }}</span>
-                                                                <span class="col-4-text-center">{{ 'ui.dashboard.index.belegt'|trans }}</span>
-                                                                <span class="col-4-text-center">{{ 'ui.dashboard.index.frei'|trans }}</span>
+                                                                <span class="col-4-text-center">{{ 'dashboard.index.total'|trans }}</span>
+                                                                <span class="col-4-text-center">{{ 'dashboard.index.occupied'|trans }}</span>
+                                                                <span class="col-4-text-center">{{ 'dashboard.index.available'|trans }}</span>
                                                             </div>
                                                             <div class="col-xxl-12 d-flex">
                                                                 <p class="col-4-form-control text-shadow">{{ warehouseUtilization.allStockLocations }}</p>

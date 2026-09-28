@@ -47,7 +47,7 @@
                                                                         {% if module.description|default %}
                                                                             {{ module.description }}
                                                                         {% else %}
-                                                                            {{ 'ui.module.index.dieses.modul.ist.noch.nicht.installiert'|trans }}
+                                                                            {{ 'module.index.this_module_is_not_yet_installed'|trans }}
                                                                         {% endif %}
                                                                     </span>
                                                                 </section>
@@ -55,18 +55,18 @@
                                                             <div class="module-card-base-meta-info">
                                                                 <section>
                                                                     <span class="module-card-base-meta-info-version">
-                                                                        {{ 'ui.configuration.tabs.systeminformation.version'|trans }}
+                                                                        {{ 'configuration.tabs.systeminformation.version'|trans }}
                                                                         {% if module.version %}
                                                                             {{ module.version }}
                                                                         {% endif %}
                                                                     </span>
                                                                 </section>
                                                                 <span>
-                                                                    {{ 'ui.module.index.installiert'|trans }}
+                                                                    {{ 'module.index.installed'|trans }}
                                                                     {% if module.installedAt|default %}
                                                                         {{ module.installedAt }}
                                                                     {% else %}
-                                                                        {{ 'ui.module.index.nicht.installiert'|trans }}
+                                                                        {{ 'module.index.not_installed'|trans }}
                                                                     {% endif %}
                                                                 </span>
                                                             </div>

@@ -43,7 +43,7 @@ final class V3OutboundController extends AbstractController
     {
         return $this->render('v3/outbound/orders.html.twig', [
             'orders' => $this->queries->outboundOrders($this->tenantUser()->tenantId()),
-            'page' => 'ui.v3.outbound.orders.ausgangsauftrage',
+            'page' => 'outbound.orders.outbound_orders',
         ]);
     }
 
@@ -65,14 +65,14 @@ final class V3OutboundController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             ));
-            $this->addFlash('success', 'controller.v3outbound.flash.der.ausgangsauftrag.wurde.angelegt');
+            $this->addFlash('success', 'outbound.flash.outbound_order_was_created');
 
             return $this->redirectToRoute('v3_outbound_order', ['orderId' => $orderId]);
         }
 
         return $this->render('v3/outbound/order_new.html.twig', [
             'products' => $this->queries->products($user->tenantId(), 200, null),
-            'page' => 'controller.v3outbound.page.ausgangsauftrag',
+            'page' => 'outbound.page.outbound_order',
         ]);
     }
 
@@ -92,7 +92,7 @@ final class V3OutboundController extends AbstractController
         return $this->render('v3/outbound/order.html.twig', [
             'order' => $order,
             'selectionRules' => $this->queries->stockSelectionRules($user->tenantId()),
-            'page' => 'controller.v3outbound.page.ausgangsauftrag',
+            'page' => 'outbound.page.outbound_order',
         ]);
     }
 
@@ -117,7 +117,7 @@ final class V3OutboundController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3outbound.flash.der.auftrag.wurde.freigegeben.und.reserviert');
+        $this->addFlash('success', 'outbound.flash.order_was_released_and_reserved');
 
         return $this->redirectToRoute('v3_outbound_order', ['orderId' => $orderId]);
     }
@@ -136,7 +136,7 @@ final class V3OutboundController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         );
-        $this->addFlash('success', ['id' => 'flash.outbound.units_allocated', 'parameters' => ['%quantity%' => $result->allocatedQuantity, '%strategy%' => mb_strtoupper($result->strategy)]]);
+        $this->addFlash('success', ['id' => 'outbound.flash.units_were_automatically_allocated_using', 'parameters' => ['%quantity%' => $result->allocatedQuantity, '%strategy%' => mb_strtoupper($result->strategy)]]);
 
         return $this->redirectToRoute('v3_outbound_order', ['orderId' => $orderId]);
     }
@@ -165,7 +165,7 @@ final class V3OutboundController extends AbstractController
             $this->optional($request, 'serial_number'),
             ($expiresAt = $this->optional($request, 'expires_at')) === null ? null : new DateTimeImmutable($expiresAt),
         ));
-        $this->addFlash('success', 'controller.v3outbound.flash.bestand.wurde.der.reservierung.zugeordnet');
+        $this->addFlash('success', 'outbound.flash.stock_was_allocated_to_reservation');
 
         return $this->redirectToRoute('v3_outbound_order', ['orderId' => $orderId]);
     }
@@ -191,7 +191,7 @@ final class V3OutboundController extends AbstractController
             $user->actorId(),
             new DateTimeImmutable(),
         ));
-        $this->addFlash('success', 'controller.v3outbound.flash.die.pickliste.wurde.erzeugt');
+        $this->addFlash('success', 'outbound.flash.pick_list_was_generated');
 
         return $this->redirectToRoute('v3_picking_show', ['pickListId' => $pickListId]);
     }

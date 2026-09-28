@@ -41,7 +41,7 @@ class HomepageController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'Starter Page',
+                'page' => 'theme.starter_page',
             ]
         );
     }

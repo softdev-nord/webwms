@@ -122,7 +122,7 @@
                     {% for message in messages %}
                         <div class="alert alert-{{ type == 'error' ? 'danger' : type }} alert-dismissible fade show" role="alert">
                             {{ message is iterable ? message.id|trans(message.parameters|default({})) : message|trans }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'ui.common.close'|trans }}"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'common.close'|trans }}"></button>
                         </div>
                     {% endfor %}
                 {% endfor %}
@@ -149,8 +149,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title" id="modalCenterTitle"></h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'ui.base.close'|trans }}">
-                        <span aria-hidden="true" class="white-text">{{ 'ui.base.times'|trans }}</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'base.close'|trans }}">
+                        <span aria-hidden="true" class="white-text">{{ 'base.and_times'|trans }}</span>
                     </button>
                 </div>
                 <div id="modal-content-ajax">
@@ -168,18 +168,18 @@
         <div class="modal-dialog modal-dialog-centered modal-notify modal-success" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">{{ 'nav.help.headline2'|trans }}</h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'ui.base.close'|trans }}">
-                        <span aria-hidden="true" class="white-text">{{ 'ui.base.times'|trans }}</span>
+                    <h3 class="modal-title">{{ 'navigation.help.headline2'|trans }}</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'base.close'|trans }}">
+                        <span aria-hidden="true" class="white-text">{{ 'base.and_times'|trans }}</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
-                        <span class="text-first">{{ 'ui.base.web'|trans }}</span><span class="text-last">{{ 'ui.base.wms'|trans }}</span>
-                        <p class="fs-16" style="text-align: center; font-weight: bold; margin: -20px 0 20px 0;">{{ 'ui.base.das.webbasierte.lagerverwaltungssystem'|trans }}</p>
+                        <span class="text-first">{{ 'base.web'|trans }}</span><span class="text-last">{{ 'base.wms'|trans }}</span>
+                        <p class="fs-16" style="text-align: center; font-weight: bold; margin: -20px 0 20px 0;">{{ 'base.web_based_warehouse_management_system'|trans }}</p>
                         <p style="margin-bottom: 5px;">{{ appVersion }} {{ appVersionNumber }}</p>
                         <p style="margin-bottom: 20px;">{{ appCopyright }}</p>
-                        <p style="margin-bottom: 5px;">{{ 'ui.base.lizenziert.fur'|trans }}</p>
+                        <p style="margin-bottom: 5px;">{{ 'base.licensed_to'|trans }}</p>
                         <p>{{ appLizenz }}</p>
                     </div>
                 </div>

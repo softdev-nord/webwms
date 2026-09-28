@@ -2,19 +2,19 @@
 
 {% block webwms_content %}
     <div class="mb-4">
-        <a href="{{ path('v3_administration_index') }}" class="text-decoration-none">{{ 'ui.v3.administration.api_client_new.administration'|trans }}</a>
-        <h1 class="h3 mt-2">{{ 'ui.v3.administration.api_client_new.api.client.anlegen'|trans }}</h1>
+        <a href="{{ path('v3_administration_index') }}" class="text-decoration-none">{{ 'administration.api_client_new.administration'|trans }}</a>
+        <h1 class="h3 mt-2">{{ 'administration.api_client_new.create_api_client'|trans }}</h1>
     </div>
     <form method="post" class="card border-0 shadow-sm">
         <div class="card-body">
             <input type="hidden" name="_token" value="{{ csrf_token('v3_administration_api_client_create') }}">
             <div class="row g-3 mb-4">
                 <div class="col-md-6">
-                    <label class="form-label">{{ 'templates.correspondence.name'|trans }}</label>
+                    <label class="form-label">{{ 'common.template.correspondence.name'|trans }}</label>
                     <input class="form-control" name="name" required>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">{{ 'ui.v3.administration.api_client_edit.ausfuhrender.benutzer'|trans }}</label>
+                    <label class="form-label">{{ 'administration.api_client_edit.executing_user'|trans }}</label>
                     <select class="form-select" name="acting_user_id" required>
                         {% for user in users %}
                             {% if user.status == 'active' %}
@@ -24,7 +24,7 @@
                     </select>
                 </div>
             </div>
-            <h2 class="h5">{{ 'ui.v3.administration.api_client_new.api.berechtigungen'|trans }}</h2>
+            <h2 class="h5">{{ 'administration.api_client_new.api_permissions'|trans }}</h2>
             <div class="row g-2">
                 {% for permission in permissions %}
                     <div class="col-md-6 col-xl-4">
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="card-footer text-end">
-            <button class="btn btn-primary">{{ 'ui.v3.administration.api_client_new.zugang.erzeugen'|trans }}</button>
+            <button class="btn btn-primary">{{ 'administration.api_client_new.generate_access'|trans }}</button>
         </div>
     </form>
 {% endblock %}

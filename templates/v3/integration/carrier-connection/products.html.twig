@@ -3,8 +3,8 @@
 {% block webwms_content %}
 	<div class="mb-4">
 		<a href="{{ path('v3_carrier_connection_show', {connectionId: connection.id}) }}" class="text-decoration-none">← {{ connection.name }}</a>
-		<h1 class="h3 mt-2 mb-1">{{ 'ui.v3.integration.carrier-connection.products.versandprodukte'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'ui.v3.integration.carrier-connection.products.live.vom.carrier'|trans }} {{ connection.carrier_code }} {{ 'ui.v3.integration.carrier-connection.products.abgerufen'|trans }}</p>
+		<h1 class="h3 mt-2 mb-1">{{ 'integration.carrier_connection.products.shipping_products'|trans }}</h1>
+		<p class="text-muted mb-0">{{ 'integration.carrier_connection.products.live_from_carrier'|trans }} {{ connection.carrier_code }} {{ 'integration.carrier_connection.products.retrieved'|trans }}</p>
 	</div>
 
 	<div class="card border-0 shadow-sm">
@@ -12,8 +12,8 @@
 			<table class="table table-hover align-middle mb-0">
 				<thead>
 					<tr>
-						<th>{{ 'ui.v3.integration.carrier-connection.products.produktcode'|trans }}</th>
-						<th>{{ 'ui.article.index.bezeichnung'|trans }}</th>
+						<th>{{ 'integration.carrier_connection.products.product_code'|trans }}</th>
+						<th>{{ 'article.index.description'|trans }}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -24,7 +24,7 @@
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="2" class="text-center text-muted py-5">{{ 'ui.v3.integration.carrier-connection.products.der.carrier.hat.keine.versandprodukte.geliefert'|trans }}</td>
+							<td colspan="2" class="text-center text-muted py-5">{{ 'integration.carrier_connection.products.carrier_did_not_provide_any_shipping_products'|trans }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

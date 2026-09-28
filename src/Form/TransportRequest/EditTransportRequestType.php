@@ -270,13 +270,13 @@ class EditTransportRequestType extends AbstractType
                 ],
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'form.transportrequest.edittransportrequesttype.label.save_changes',
+                'label' => 'transport_request.form.edit_transport_request.save_changes',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d',
                 ],
             ])
             ->add('abort', ButtonType::class, [
-                'label' => 'form.transportrequest.edittransportrequesttype.label.cancel',
+                'label' => 'transport_request.form.edit_transport_request.cancel',
                 'attr' => [
                     'class' => 'btn btn-primary btn3d abort',
                 ],

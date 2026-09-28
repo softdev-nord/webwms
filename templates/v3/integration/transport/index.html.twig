@@ -3,18 +3,18 @@
 {% block webwms_content %}
 	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
 		<div>
-			<h1 class="h3 mb-1">{{ 'ui.v3.integration.transport.index.tcp.ip.und.webservice'|trans }}</h1>
-			<p class="text-muted mb-0">{{ 'ui.v3.integration.transport.index.transportadapter.und.protokolle.fur.hardware.und.anlage'|trans }}</p>
+			<h1 class="h3 mb-1">{{ 'integration.transport.index.tcp_ip_and_web_service'|trans }}</h1>
+			<p class="text-muted mb-0">{{ 'integration.transport.index.manage_transport_adapters_and_protocols_for_hardware_and_systems'|trans }}</p>
 		</div>
 		{% if is_granted('integration.transport.write') %}
-			<a class="btn btn-primary" href="{{ path('v3_transport_new') }}">{{ 'ui.v3.integration.transport.index.endpunkt.anlegen'|trans }}</a>
+			<a class="btn btn-primary" href="{{ path('v3_transport_new') }}">{{ 'integration.transport.index.create_endpoint'|trans }}</a>
 		{% endif %}
 	</div>
 
 	<div class="card border-0 shadow-sm">
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
-				<thead><tr><th>{{ 'ui.v3.administration.role_new.code'|trans }}</th><th>{{ 'templates.correspondence.name'|trans }}</th><th>{{ 'ui.v3.integration.transport.index.adapter'|trans }}</th><th>{{ 'ui.v3.integration.transport.index.protokoll'|trans }}</th><th>{{ 'ui.v3.integration.transport.index.adresse'|trans }}</th><th>{{ 'ui.v3.integration.transport.index.timeouts'|trans }}</th><th>{{ 'ui.transport_request.index.status'|trans }}</th><th></th></tr></thead>
+				<thead><tr><th>{{ 'administration.role_new.code'|trans }}</th><th>{{ 'common.template.correspondence.name'|trans }}</th><th>{{ 'integration.transport.index.adapter'|trans }}</th><th>{{ 'integration.transport.index.protocol'|trans }}</th><th>{{ 'integration.transport.index.address'|trans }}</th><th>{{ 'integration.transport.index.timeouts'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th></th></tr></thead>
 				<tbody>
 					{% for endpoint in endpoints %}
 						<tr>
@@ -23,19 +23,19 @@
 							<td>{{ endpoint.adapter_type }}</td>
 							<td>{{ endpoint.protocol }} · {{ endpoint.framing }}</td>
 							<td><code>{{ endpoint.address }}</code></td>
-							<td>{{ endpoint.connect_timeout_ms }} / {{ endpoint.read_timeout_ms }} {{ 'ui.v3.integration.transport.index.ms'|trans }}</td>
-							<td><span class="badge bg-{{ endpoint.active ? 'success' : 'secondary' }}-subtle text-{{ endpoint.active ? 'success' : 'secondary' }}">{{ (endpoint.active ? 'ui.user.user_input_fields.aktiv' : 'ui.v3.integration.carrier-connection.index.pausiert')|trans }}</span></td>
+							<td>{{ endpoint.connect_timeout_ms }} / {{ endpoint.read_timeout_ms }} {{ 'integration.transport.index.ms'|trans }}</td>
+							<td><span class="badge bg-{{ endpoint.active ? 'success' : 'secondary' }}-subtle text-{{ endpoint.active ? 'success' : 'secondary' }}">{{ (endpoint.active ? 'user.user_input_fields.active' : 'integration.carrier_connection.index.paused')|trans }}</span></td>
 							<td class="text-end">
 								{% if is_granted('integration.transport.write') %}
 									<form method="post" action="{{ path('v3_transport_status', {endpointId: endpoint.id}) }}">
 										<input type="hidden" name="_token" value="{{ csrf_token('v3_transport_status_' ~ endpoint.id) }}">
-										<button class="btn btn-sm btn-outline-secondary">{{ (endpoint.active ? 'ui.v3.integration.automation.index.choice.pausieren' : 'ui.v3.integration.automation.index.choice.aktivieren')|trans }}</button>
+										<button class="btn btn-sm btn-outline-secondary">{{ (endpoint.active ? 'integration.automation.index.pause' : 'integration.automation.index.activate')|trans }}</button>
 									</form>
 								{% endif %}
 							</td>
 						</tr>
 					{% else %}
-						<tr><td colspan="8" class="text-center text-muted py-5">{{ 'ui.v3.integration.transport.index.noch.keine.transport.endpunkte.vorhanden'|trans }}</td></tr>
+						<tr><td colspan="8" class="text-center text-muted py-5">{{ 'integration.transport.index.no_transport_endpoints_yet'|trans }}</td></tr>
 					{% endfor %}
 				</tbody>
 			</table>

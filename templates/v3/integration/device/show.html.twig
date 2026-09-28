@@ -3,7 +3,7 @@
 {% block webwms_content %}
 	<div class="d-flex justify-content-between align-items-start mb-4">
 		<div>
-			<a href="{{ path('v3_device_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.device.new.scanner.und.mde'|trans }}</a>
+			<a href="{{ path('v3_device_index') }}" class="text-decoration-none">{{ 'integration.device.new.scanners_and_mobile_terminals'|trans }}</a>
 			<h1 class="h3 mt-2 mb-1">{{ device.name }}</h1>
 			<code>{{ device.code }}</code>
 		</div>
@@ -11,7 +11,7 @@
 			<form method="post" action="{{ path('v3_device_status', {deviceId: device.id}) }}">
 				<input type="hidden" name="_token" value="{{ csrf_token('v3_device_status_' ~ device.id) }}">
 				<button class="btn {{ device.active ? 'btn-outline-warning' : 'btn-success' }}">
-					{{ (device.active ? 'ui.v3.integration.device.show.choice.gerat.pausieren' : 'ui.v3.integration.device.show.choice.gerat.aktivieren')|trans }}
+					{{ (device.active ? 'integration.device.show.pause_device' : 'integration.device.show.activate_device')|trans }}
 				</button>
 			</form>
 		{% endif %}
@@ -19,30 +19,30 @@
 	<div class="card border-0 shadow-sm mb-4">
 		<div class="card-body">
 			<dl class="row mb-0">
-				<dt class="col-md-3">{{ 'ui.v3.integration.automation.device-new.geratetyp'|trans }}</dt>
+				<dt class="col-md-3">{{ 'integration.automation.device_new.device_type'|trans }}</dt>
 				<dd class="col-md-9">{{ device.device_type }}</dd>
-				<dt class="col-md-3">{{ 'ui.transport_request.index.status'|trans }}</dt>
-				<dd class="col-md-9">{{ (device.active ? 'ui.user.user_input_fields.aktiv' : 'ui.v3.integration.carrier-connection.index.pausiert')|trans }}</dd>
-				<dt class="col-md-3">{{ 'ui.v3.integration.carrier-connection.show.angelegt'|trans }}</dt>
+				<dt class="col-md-3">{{ 'transport_request.index.status'|trans }}</dt>
+				<dd class="col-md-9">{{ (device.active ? 'user.user_input_fields.active' : 'integration.carrier_connection.index.paused')|trans }}</dd>
+				<dt class="col-md-3">{{ 'integration.carrier_connection.show.created'|trans }}</dt>
 				<dd class="col-md-9">{{ device.created_at }} · <code>{{ device.created_by }}</code></dd>
 				{% if device.changed_at %}
-					<dt class="col-md-3">{{ 'ui.v3.extensions.configuration_index.geandert'|trans }}</dt>
+					<dt class="col-md-3">{{ 'extensions.configuration_index.modified'|trans }}</dt>
 					<dd class="col-md-9">{{ device.changed_at }} · <code>{{ device.changed_by }}</code></dd>
 				{% endif %}
 			</dl>
 		</div>
 	</div>
 	<div class="card border-0 shadow-sm">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'ui.v3.integration.device.show.scanereignisse'|trans }}</h2></div>
+		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'integration.device.show.scan_events'|trans }}</h2></div>
 		<div class="table-responsive">
 			<table class="table table-hover align-middle mb-0">
 				<thead>
 					<tr>
-						<th>{{ 'ui.v3.integration.device.index.prozess'|trans }}</th>
-						<th>{{ 'ui.v3.integration.device.index.scantyp'|trans }}</th>
-						<th>{{ 'ui.v3.integration.device.index.wert'|trans }}</th>
-						<th>{{ 'ui.transport_request.index.status'|trans }}</th>
-						<th>{{ 'ui.v3.administration.workspace.zeitpunkt'|trans }}</th>
+						<th>{{ 'integration.device.index.process'|trans }}</th>
+						<th>{{ 'integration.device.index.scan_type'|trans }}</th>
+						<th>{{ 'integration.device.index.value'|trans }}</th>
+						<th>{{ 'transport_request.index.status'|trans }}</th>
+						<th>{{ 'administration.workspace.time_point_in_time'|trans }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -54,11 +54,11 @@
 							<td><code>{{ event.scan_value }}</code></td>
 							<td>{{ event.status }}</td>
 							<td>{{ event.scanned_at }}</td>
-							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_scan_show', {eventId: event.id}) }}">{{ 'ui.v3.inbound.index.offnen'|trans }}</a></td>
+							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_scan_show', {eventId: event.id}) }}">{{ 'inbound.index.open'|trans }}</a></td>
 						</tr>
 					{% else %}
 						<tr>
-							<td colspan="6" class="text-center text-muted py-4">{{ 'ui.v3.integration.device.show.keine.scanereignisse.fur.dieses.gerat'|trans }}</td>
+							<td colspan="6" class="text-center text-muted py-4">{{ 'integration.device.show.no_scan_events_for_this_device'|trans }}</td>
 						</tr>
 					{% endfor %}
 				</tbody>

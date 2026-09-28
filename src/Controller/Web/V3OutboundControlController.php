@@ -31,7 +31,7 @@ final class V3OutboundControlController extends AbstractController
         $user = $this->user();
 
         return $this->render('v3/outbound/control.html.twig', [
-            'page' => 'ui.v3.outbound.control.warenausgangsleitstand',
+            'page' => 'outbound.control.outbound_dispatch_control_center',
             'control' => $this->queries->outboundControlCenter($user->tenantId()),
             'orders' => $this->queries->outboundOrders($user->tenantId()),
             'shipments' => $this->queries->shipments($user->tenantId()),
@@ -46,7 +46,7 @@ final class V3OutboundControlController extends AbstractController
         $this->csrf($request, 'v3_outbound_cancel_' . $orderId);
         $user = $this->user();
         $this->processes->cancelOrder($user->tenantId(), $orderId, $this->required($request, 'reason'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3outbound.control.flash.der.ausgangsauftrag.wurde.storniert');
+        $this->addFlash('success', 'outbound.control.flash.outbound_order_was_cancelled');
 
         return $this->back();
     }
@@ -58,7 +58,7 @@ final class V3OutboundControlController extends AbstractController
         $this->csrf($request, 'v3_outbound_quality');
         $user = $this->user();
         $this->processes->inspectPickList($user->tenantId(), $this->required($request, 'pick_list_id'), $request->request->getBoolean('completeness_passed'), $request->request->getBoolean('condition_passed'), $request->request->getBoolean('customer_check_passed'), $this->optional($request, 'note') ?? '', $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3outbound.control.flash.die.ausgangs.qs.wurde.dokumentiert');
+        $this->addFlash('success', 'outbound.control.flash.outbound_quality_assurance_was_documented');
 
         return $this->back();
     }
@@ -70,7 +70,7 @@ final class V3OutboundControlController extends AbstractController
         $this->csrf($request, 'v3_outbound_shipping_rule');
         $user = $this->user();
         $this->processes->createShippingRule($user->tenantId(), $this->required($request, 'code'), $this->required($request, 'name'), $this->required($request, 'carrier'), $this->required($request, 'service'), $request->request->getInt('min_weight_grams'), $request->request->getInt('max_weight_grams'), $request->request->getInt('priority'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3outbound.control.flash.die.versandregel.wurde.aktiviert');
+        $this->addFlash('success', 'outbound.control.flash.shipping_rule_was_activated');
 
         return $this->back();
     }
@@ -82,7 +82,7 @@ final class V3OutboundControlController extends AbstractController
         $this->csrf($request, 'v3_outbound_tracking');
         $user = $this->user();
         $this->processes->recordTracking($user->tenantId(), $this->required($request, 'shipment_id'), $this->required($request, 'status'), $this->optional($request, 'location'), $this->required($request, 'description'), 'manual', new DateTimeImmutable($this->required($request, 'occurred_at')), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3outbound.control.flash.das.trackingereignis.wurde.gespeichert.und.steht.zur.ru');
+        $this->addFlash('success', 'outbound.control.flash.tracking_event_was_saved_and_is_ready_for_feedback');
 
         return $this->back();
     }
@@ -97,7 +97,7 @@ final class V3OutboundControlController extends AbstractController
         $body = nl2br(htmlspecialchars($this->required($request, 'body'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
         $content = sprintf('<!doctype html><html lang="de"><head><meta charset="utf-8"><title>%s</title></head><body><h1>%s</h1><p>%s</p></body></html>', $title, $title, $body);
         $this->processes->generateDocument($user->tenantId(), $this->required($request, 'aggregate_type'), $this->required($request, 'aggregate_id'), $this->required($request, 'document_type'), $this->required($request, 'document_number'), $content, $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3outbound.control.flash.das.versanddokument.wurde.unveranderlich.erzeugt');
+        $this->addFlash('success', 'outbound.control.flash.shipping_document_was_generated_as_immutable');
 
         return $this->back();
     }
@@ -120,7 +120,7 @@ final class V3OutboundControlController extends AbstractController
         $this->csrf($request, 'v3_outbound_tour');
         $user = $this->user();
         $this->processes->createTour($user->tenantId(), $this->required($request, 'code'), $this->required($request, 'carrier'), $this->required($request, 'vehicle_reference'), $request->request->getInt('max_weight_grams'), new DateTimeImmutable($this->required($request, 'departure_at')), [['destinationName' => $this->required($request, 'destination_name'), 'destinationAddress' => $this->required($request, 'destination_address'), 'shipmentId' => $this->optional($request, 'shipment_id')]], $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3outbound.control.flash.die.tour.mit.stoppreihenfolge.wurde.geplant');
+        $this->addFlash('success', 'outbound.control.flash.tour_with_stop_sequence_was_planned');
 
         return $this->back();
     }
@@ -132,7 +132,7 @@ final class V3OutboundControlController extends AbstractController
         $this->csrf($request, 'v3_outbound_weight');
         $user = $this->user();
         $this->processes->createWeightConstraint($user->tenantId(), $this->required($request, 'scope'), $this->optional($request, 'reference_code'), $request->request->getInt('max_weight_grams'), $user->actorId(), new DateTimeImmutable());
-        $this->addFlash('success', 'controller.v3outbound.control.flash.die.gewichtsrestriktion.wurde.aktiviert');
+        $this->addFlash('success', 'outbound.control.flash.weight_restriction_was_activated');
 
         return $this->back();
     }

@@ -32,7 +32,7 @@ final class V3PrintingController extends AbstractController
         $tenantId = $this->tenantUser()->tenantId();
 
         return $this->render('v3/integration/printing/index.html.twig', [
-            'page' => 'ui.v3.integration.printing.index.druckwarteschlange',
+            'page' => 'integration.printing.index.print_queue',
             'printers' => $this->queries->printers($tenantId),
             'jobs' => $this->queries->printJobs($tenantId),
         ]);
@@ -54,13 +54,13 @@ final class V3PrintingController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3printing.flash.der.drucker.wurde.angelegt');
+            $this->addFlash('success', 'printing.flash.printer_was_created');
 
             return $this->redirectToRoute('v3_printing_printer_show', ['printerId' => $printer->id]);
         }
 
         return $this->render('v3/integration/printing/printer-new.html.twig', [
-            'page' => 'ui.v3.integration.printing.index.drucker.anlegen',
+            'page' => 'integration.printing.index.create_printer',
         ]);
     }
 
@@ -71,7 +71,7 @@ final class V3PrintingController extends AbstractController
         $tenantId = $this->tenantUser()->tenantId();
 
         return $this->render('v3/integration/printing/printer-show.html.twig', [
-            'page' => 'ui.configuration.index.drucker',
+            'page' => 'configuration.index.printer',
             'printer' => $this->requiredPrinter($printerId),
             'jobs' => array_values(array_filter(
                 $this->queries->printJobs($tenantId),
@@ -96,8 +96,8 @@ final class V3PrintingController extends AbstractController
             new DateTimeImmutable(),
         );
         $this->addFlash('success', $active
-            ? 'flash.printer.activated'
-            : 'flash.printer.paused');
+            ? 'printing.flash.printer_was_activated'
+            : 'printing.flash.printer_was_paused');
 
         return $this->redirectToRoute('v3_printing_printer_show', ['printerId' => $printerId]);
     }
@@ -120,13 +120,13 @@ final class V3PrintingController extends AbstractController
                 $user->actorId(),
                 new DateTimeImmutable(),
             );
-            $this->addFlash('success', 'controller.v3printing.flash.der.druckauftrag.wurde.in.die.warteschlange.gestellt');
+            $this->addFlash('success', 'printing.flash.print_job_was_queued');
 
             return $this->redirectToRoute('v3_printing_job_show', ['jobId' => $job->id]);
         }
 
         return $this->render('v3/integration/printing/job-new.html.twig', [
-            'page' => 'ui.v3.inbound.control.druckauftrag.anlegen',
+            'page' => 'inbound.control.create_print_job',
             'printers' => array_values(array_filter(
                 $this->queries->printers($user->tenantId()),
                 static fn (array $printer): bool => (bool) ($printer['active'] ?? false),
@@ -140,7 +140,7 @@ final class V3PrintingController extends AbstractController
     public function showJob(string $jobId): Response
     {
         return $this->render('v3/integration/printing/job-show.html.twig', [
-            'page' => 'ui.v3.integration.printing.job-show.druckauftrag',
+            'page' => 'integration.printing.job_show.print_job',
             'job' => $this->requiredJob($jobId),
         ]);
     }
@@ -157,12 +157,12 @@ final class V3PrintingController extends AbstractController
 
         try {
             $this->gateway->execute($this->tenantUser()->tenantId(), $jobId, new DateTimeImmutable());
-            $this->addFlash('success', 'controller.v3printing.flash.der.druckauftrag.wurde.erfolgreich.ausgefuhrt');
+            $this->addFlash('success', 'printing.flash.print_job_was_executed_successfully');
         } catch (\Throwable $exception) {
             $message = trim($exception->getMessage());
             $this->addFlash('danger', $message === ''
-                ? 'flash.print_job.failed'
-                : ['id' => 'flash.print_job.failed_with_reason', 'parameters' => ['%reason%' => $message]]);
+                ? 'printing.flash.print_job_failed'
+                : ['id' => 'printing.flash.print_job_failed_with_reason', 'parameters' => ['%reason%' => $message]]);
         }
 
         return $this->redirectToRoute('v3_printing_job_show', ['jobId' => $jobId]);

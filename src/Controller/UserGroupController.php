@@ -42,7 +42,7 @@ class UserGroupController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'controller.user.group.page.ubersicht.benutzergruppen',
+                'page' => 'user.group.page.user_group_overview',
                 'user_groups' => $this->getAllUserGroups(),
             ]
         );

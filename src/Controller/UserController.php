@@ -62,7 +62,7 @@ class UserController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'nav.settings.submenu.headline2.entry1',
+                'page' => 'navigation.settings.submenu.headline2.entry1',
             ]
         );
     }

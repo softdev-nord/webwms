@@ -2,9 +2,9 @@
 
 {% block webwms_content %}
 	<div class="mb-4">
-		<a href="{{ path('v3_carrier_connection_index') }}" class="text-decoration-none">{{ 'ui.v3.integration.carrier-connection.new.carrier.verbindungen'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'ui.v3.integration.carrier-connection.index.carrier.verbindung.anlegen'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'ui.v3.integration.carrier-connection.new.das.secret.bleibt.in.der.laufzeitumgebung.webwms.speich'|trans }}</p>
+		<a href="{{ path('v3_carrier_connection_index') }}" class="text-decoration-none">{{ 'integration.carrier_connection.new.carrier_connections'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'integration.carrier_connection.index.create_carrier_connection'|trans }}</h1>
+		<p class="text-muted mb-0">{{ 'integration.carrier_connection.new.secret_remains_in_runtime_environment_webwms_stores_only_its_reference'|trans }}</p>
 	</div>
 
 	<form method="post" class="card border-0 shadow-sm">
@@ -12,32 +12,32 @@
 			<input type="hidden" name="_token" value="{{ csrf_token('v3_carrier_connection_create') }}">
 			<div class="row g-3">
 				<div class="col-md-6">
-					<label class="form-label" for="name">{{ 'templates.correspondence.name'|trans }}</label>
-					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'ui.v3.integration.carrier-connection.new.dhl.produktion'|trans }}">
+					<label class="form-label" for="name">{{ 'common.template.correspondence.name'|trans }}</label>
+					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'integration.carrier_connection.new.dhl_production'|trans }}">
 				</div>
 				<div class="col-md-6">
-					<label class="form-label" for="carrier_code">{{ 'ui.v3.integration.carrier-connection.new.carrier.code'|trans }}</label>
-					<input class="form-control font-monospace text-uppercase" id="carrier_code" name="carrier_code" maxlength="40" pattern="[A-Z0-9][A-Z0-9_-]{1,39}" required placeholder="{{ 'ui.v3.integration.carrier-connection.new.dhl'|trans }}">
+					<label class="form-label" for="carrier_code">{{ 'integration.carrier_connection.new.carrier_code'|trans }}</label>
+					<input class="form-control font-monospace text-uppercase" id="carrier_code" name="carrier_code" maxlength="40" pattern="[A-Z0-9][A-Z0-9_-]{1,39}" required placeholder="{{ 'integration.carrier_connection.new.dhl'|trans }}">
 				</div>
 				<div class="col-12">
-					<label class="form-label" for="endpoint_url">{{ 'ui.v3.integration.carrier-connection.new.https.basis.url'|trans }}</label>
-					<input class="form-control font-monospace" type="url" id="endpoint_url" name="endpoint_url" maxlength="500" pattern="https://.*" required placeholder="{{ 'ui.v3.integration.carrier-connection.new.https.carrier.example.com.api'|trans }}">
+					<label class="form-label" for="endpoint_url">{{ 'integration.carrier_connection.new.https_base_url'|trans }}</label>
+					<input class="form-control font-monospace" type="url" id="endpoint_url" name="endpoint_url" maxlength="500" pattern="https://.*" required placeholder="{{ 'integration.carrier_connection.new.https_carrier_example_com_api'|trans }}">
 				</div>
 				<div class="col-md-6">
-					<label class="form-label" for="credential_env">{{ 'ui.v3.integration.automation.device-new.credential.umgebungsvariable'|trans }}</label>
-					<input class="form-control font-monospace" id="credential_env" name="credential_env" maxlength="101" pattern="[A-Z][A-Z0-9_]{2,100}" required placeholder="{{ 'ui.v3.integration.carrier-connection.new.dhl.api.token'|trans }}">
+					<label class="form-label" for="credential_env">{{ 'integration.automation.device_new.credential_environment_variable'|trans }}</label>
+					<input class="form-control font-monospace" id="credential_env" name="credential_env" maxlength="101" pattern="[A-Z][A-Z0-9_]{2,100}" required placeholder="{{ 'integration.carrier_connection.new.dhl_api_token'|trans }}">
 				</div>
 				<div class="col-md-6 d-flex align-items-end pb-2">
 					<div class="form-check form-switch">
 						<input class="form-check-input" type="checkbox" role="switch" id="active" name="active" value="1" checked>
-						<label class="form-check-label" for="active">{{ 'ui.v3.integration.carrier-connection.new.verbindung.sofort.aktivieren'|trans }}</label>
+						<label class="form-check-label" for="active">{{ 'integration.carrier_connection.new.activate_connection_immediately'|trans }}</label>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_carrier_connection_index') }}">{{ 'button.cancel'|trans }}</a>
-			<button class="btn btn-primary">{{ 'ui.v3.integration.carrier-connection.index.carrier.verbindung.anlegen'|trans }}</button>
+			<a class="btn btn-light" href="{{ path('v3_carrier_connection_index') }}">{{ 'common.button.cancel'|trans }}</a>
+			<button class="btn btn-primary">{{ 'integration.carrier_connection.index.create_carrier_connection'|trans }}</button>
 		</div>
 	</form>
 {% endblock %}

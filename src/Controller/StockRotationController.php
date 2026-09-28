@@ -41,7 +41,7 @@ class StockRotationController extends AbstractController
                 'appVersionNumber' => $this->requirementsService->getAppVersionNumber(),
                 'appCopyright' => $this->requirementsService->getAppCopyright(),
                 'appLizenz' => $this->requirementsService->getAppLizenz(),
-                'page' => 'nav.evaluations.submenu.headline1',
+                'page' => 'navigation.evaluations.submenu.headline1',
                 'stockRotation' => $this->getAllStockRotations(),
             ]
         );
