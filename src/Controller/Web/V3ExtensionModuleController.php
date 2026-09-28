@@ -25,7 +25,10 @@ final class V3ExtensionModuleController extends AbstractController
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render('v3/extensions/index.html.twig', ['workspace' => $this->service->workspace($this->user()->tenantId())]);
+        return $this->render('v3/extensions/index.html.twig', [
+            'page' => 'Erweiterte Funktionen',
+            'workspace' => $this->service->workspace($this->user()->tenantId()),
+        ]);
     }
 
     #[Route('/configurations/{resource}', name: 'configuration_index', methods: ['GET'])]
@@ -36,6 +39,7 @@ final class V3ExtensionModuleController extends AbstractController
         }
 
         return $this->render('v3/extensions/configuration_index.html.twig', [
+            'page' => ExtensionModuleService::RESOURCES[$resource],
             'resource' => $resource,
             'label' => ExtensionModuleService::RESOURCES[$resource],
             'configurations' => $this->service->configurations($this->user()->tenantId(), $resource),
@@ -50,6 +54,7 @@ final class V3ExtensionModuleController extends AbstractController
         }
 
         return $this->render('v3/extensions/workflow_index.html.twig', [
+            'page' => ExtensionModuleService::WORKFLOWS[$workflow],
             'workflow' => $workflow,
             'label' => ExtensionModuleService::WORKFLOWS[$workflow],
             'workItems' => $this->service->workItems($this->user()->tenantId(), $workflow),
@@ -72,7 +77,14 @@ final class V3ExtensionModuleController extends AbstractController
             return $this->redirectToRoute('v3_extension_index');
         }
 
-        return $this->render('v3/extensions/configuration_form.html.twig', ['resource' => $resource, 'label' => ExtensionModuleService::RESOURCES[$resource] ?? $resource, 'configuration' => $configuration]);
+        $label = ExtensionModuleService::RESOURCES[$resource] ?? $resource;
+
+        return $this->render('v3/extensions/configuration_form.html.twig', [
+            'page' => sprintf('%s %s', $label, $configuration === null ? 'anlegen' : 'bearbeiten'),
+            'resource' => $resource,
+            'label' => $label,
+            'configuration' => $configuration,
+        ]);
     }
 
     #[Route('/work-items/{workflow}/new', name: 'work_item_new', methods: ['GET', 'POST'])]
@@ -91,7 +103,11 @@ final class V3ExtensionModuleController extends AbstractController
             return $this->redirectToRoute('v3_extension_work_item_show', ['id' => $id]);
         }
 
-        return $this->render('v3/extensions/work_item_form.html.twig', ['workflow' => $workflow, 'label' => ExtensionModuleService::WORKFLOWS[$workflow]]);
+        return $this->render('v3/extensions/work_item_form.html.twig', [
+            'page' => sprintf('%s starten', ExtensionModuleService::WORKFLOWS[$workflow]),
+            'workflow' => $workflow,
+            'label' => ExtensionModuleService::WORKFLOWS[$workflow],
+        ]);
     }
 
     #[Route('/work-items/{id}', name: 'work_item_show', methods: ['GET'])]
@@ -99,7 +115,11 @@ final class V3ExtensionModuleController extends AbstractController
     {
         $item = $this->service->workItem($this->user()->tenantId(), $id);
 
-        return $this->render('v3/extensions/work_item_show.html.twig', ['item' => $item, 'transitions' => $this->service->allowedTransitions((string) $item['workflow_type'], (string) $item['status'])]);
+        return $this->render('v3/extensions/work_item_show.html.twig', [
+            'page' => sprintf('Vorgang %s', (string) $item['reference']),
+            'item' => $item,
+            'transitions' => $this->service->allowedTransitions((string) $item['workflow_type'], (string) $item['status']),
+        ]);
     }
 
     #[Route('/work-items/{id}/transition', name: 'work_item_transition', methods: ['POST'])]

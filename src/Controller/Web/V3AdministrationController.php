@@ -335,6 +335,7 @@ final class V3AdministrationController extends AbstractController
         }
 
         return $this->render('v3/administration/api_client_credential.html.twig', [
+            'page' => 'API-Zugangsdaten',
             'credential' => $credential,
         ]);
     }

@@ -1,6 +1,6 @@
 <meta charset="utf-8" />
 {% block title %}
-    <title>{{ page }} {{ appName }}</title>
+    <title>{{ page|default('WebWMS') }} {{ appName }}</title>
 {% endblock %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta content="webWMS Das webbasierte Lagerverwaltungssystem" name="description" />
