@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Integration\Application\CarrierGateway;
 use WebWMS\Integration\Application\ChangeCarrierConnectionStatusCommand;
 use WebWMS\Integration\Application\ChangeCarrierConnectionStatusHandler;
@@ -29,6 +30,7 @@ class CarrierApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly RegisterCarrierConnectionHandler $register,
         private readonly ChangeCarrierConnectionStatusHandler $changeStatus,
         private readonly CarrierGateway $gateway,
@@ -119,7 +121,7 @@ class CarrierApiController extends AbstractController
     #[IsGranted('integration.carrier.execute')]
     public function manifest(string $manifestId, Request $request): JsonResponse
     {
-        $manifest = $this->queries->loadingManifest($this->user()->tenantId(), $manifestId);
+        $manifest = $this->outboundQueries->loadingManifest($this->user()->tenantId(), $manifestId);
         if ($manifest === null || ($manifest['status'] ?? null) !== 'completed') {
             throw new DomainException('Only a completed loading manifest can be handed over.');
         }
@@ -133,7 +135,7 @@ class CarrierApiController extends AbstractController
     /** @return array<string, mixed> */
     private function shipment(string $id): array
     {
-        $shipment = $this->queries->shipment($this->user()->tenantId(), $id);
+        $shipment = $this->outboundQueries->shipment($this->user()->tenantId(), $id);
         if ($shipment === null) {
             throw $this->createNotFoundException('The shipment does not exist.');
         }

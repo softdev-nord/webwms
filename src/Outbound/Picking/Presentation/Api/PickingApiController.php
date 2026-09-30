@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Inventory\Application\AssignPickListCommand;
 use WebWMS\Inventory\Application\AssignPickListHandler;
 use WebWMS\Inventory\Application\ConfirmPickTaskCommand;
@@ -26,7 +26,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class PickingApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly CreatePickListHandler $createPickList,
         private readonly AssignPickListHandler $assignPickList,
         private readonly ConfirmPickTaskHandler $confirmPickTask
@@ -39,11 +39,11 @@ class PickingApiController extends AbstractController
     {
         /** @var array<string, mixed> $payload */
         $payload = $request->toArray();
-        if ($this->queries->outboundOrder($this->apiUser()->tenantId(), $orderId) === null) {
+        if ($this->outboundQueries->outboundOrder($this->apiUser()->tenantId(), $orderId) === null) {
             throw $this->createNotFoundException('The outbound order does not exist.');
         }
 
-        $allocationIds = $this->queries->pickableAllocationIds($this->apiUser()->tenantId(), $orderId);
+        $allocationIds = $this->outboundQueries->pickableAllocationIds($this->apiUser()->tenantId(), $orderId);
         if ($allocationIds === []) {
             throw new InvalidArgumentException('The outbound order must be fully allocated and have active allocations available for picking.');
         }
@@ -125,7 +125,7 @@ class PickingApiController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredPickList(string $pickListId): array
     {
-        $pickList = $this->queries->pickList($this->apiUser()->tenantId(), $pickListId);
+        $pickList = $this->outboundQueries->pickList($this->apiUser()->tenantId(), $pickListId);
         if ($pickList === null) {
             throw $this->createNotFoundException('The pick list does not exist.');
         }

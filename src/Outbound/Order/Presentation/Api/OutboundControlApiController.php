@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Outbound\Application\OutboundProcessService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -21,7 +21,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class OutboundControlApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly OutboundProcessService $processes
     ) {
     }
@@ -30,7 +30,7 @@ class OutboundControlApiController extends AbstractController
     #[IsGranted('outbound.order.read')]
     public function index(): JsonResponse
     {
-        return new JsonResponse(['data' => $this->queries->outboundControlCenter($this->user()->tenantId())]);
+        return new JsonResponse(['data' => $this->outboundQueries->outboundControlCenter($this->user()->tenantId())]);
     }
 
     #[Route('/orders/{orderId}/cancel', name: 'cancel', methods: ['POST'])]

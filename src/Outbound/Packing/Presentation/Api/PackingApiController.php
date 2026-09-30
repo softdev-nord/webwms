@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Inventory\Application\AddPackingPackageCommand;
 use WebWMS\Inventory\Application\AddPackingPackageHandler;
 use WebWMS\Inventory\Application\CompletePackingOrderCommand;
@@ -28,7 +28,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class PackingApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly CreatePackingOrderHandler $createPackingOrder,
         private readonly AddPackingPackageHandler $addPackingPackage,
         private readonly CompletePackingOrderHandler $completePackingOrder,
@@ -40,11 +40,11 @@ class PackingApiController extends AbstractController
     #[IsGranted('fulfillment.pack.write')]
     public function create(string $pickListId, Request $request): JsonResponse
     {
-        if ($this->queries->pickList($this->apiUser()->tenantId(), $pickListId) === null) {
+        if ($this->outboundQueries->pickList($this->apiUser()->tenantId(), $pickListId) === null) {
             throw $this->createNotFoundException('The pick list does not exist.');
         }
 
-        if ($this->queries->outboundQualityDecision($this->apiUser()->tenantId(), $pickListId) !== 'released') {
+        if ($this->outboundQueries->outboundQualityDecision($this->apiUser()->tenantId(), $pickListId) !== 'released') {
             throw new DomainException('The outbound quality check must release the pick list before packing.');
         }
 
@@ -127,7 +127,7 @@ class PackingApiController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredPackingOrder(string $packingOrderId): array
     {
-        $order = $this->queries->packingOrder($this->apiUser()->tenantId(), $packingOrderId);
+        $order = $this->outboundQueries->packingOrder($this->apiUser()->tenantId(), $packingOrderId);
         if ($order === null) {
             throw $this->createNotFoundException('The packing order does not exist.');
         }

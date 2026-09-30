@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Inventory\Application\AllocateStockCommand;
 use WebWMS\Inventory\Application\AllocateStockHandler;
 use WebWMS\Inventory\Application\CreateOutboundOrderCommand;
@@ -28,7 +28,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class OutboundOrderApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly CreateOutboundOrderHandler $createOrder,
         private readonly ReleaseOutboundOrderHandler $releaseOrder,
         private readonly AllocateStockHandler $allocateStock,
@@ -66,7 +66,7 @@ class OutboundOrderApiController extends AbstractController
     #[IsGranted('outbound.order.read')]
     public function getOrder(string $orderId): JsonResponse
     {
-        $order = $this->queries->outboundOrder($this->apiUser()->tenantId(), $orderId);
+        $order = $this->outboundQueries->outboundOrder($this->apiUser()->tenantId(), $orderId);
         if ($order === null) {
             throw $this->createNotFoundException('The outbound order does not exist.');
         }
@@ -78,7 +78,7 @@ class OutboundOrderApiController extends AbstractController
     #[IsGranted('outbound.order.release')]
     public function release(string $orderId): JsonResponse
     {
-        $order = $this->queries->outboundOrder($this->apiUser()->tenantId(), $orderId);
+        $order = $this->outboundQueries->outboundOrder($this->apiUser()->tenantId(), $orderId);
         if ($order === null) {
             throw $this->createNotFoundException('The outbound order does not exist.');
         }
@@ -112,7 +112,7 @@ class OutboundOrderApiController extends AbstractController
     #[IsGranted('inventory.allocation.read')]
     public function getReservation(string $reservationId): JsonResponse
     {
-        $reservation = $this->queries->reservation($this->apiUser()->tenantId(), $reservationId);
+        $reservation = $this->outboundQueries->reservation($this->apiUser()->tenantId(), $reservationId);
         if ($reservation === null) {
             throw $this->createNotFoundException('The stock reservation does not exist.');
         }
@@ -124,7 +124,7 @@ class OutboundOrderApiController extends AbstractController
     #[IsGranted('inventory.allocation.write')]
     public function allocate(string $reservationId, Request $request): JsonResponse
     {
-        $reservation = $this->queries->reservation($this->apiUser()->tenantId(), $reservationId);
+        $reservation = $this->outboundQueries->reservation($this->apiUser()->tenantId(), $reservationId);
         if ($reservation === null || !is_string($reservation['product_id'] ?? null)) {
             throw $this->createNotFoundException('The stock reservation does not exist.');
         }

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Inventory\Application\AddPackingPackageCommand;
 use WebWMS\Inventory\Application\AddPackingPackageHandler;
 use WebWMS\Inventory\Application\CompletePackingOrderCommand;
@@ -29,7 +29,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class PackingController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly CreatePackingOrderHandler $createPackingOrder,
         private readonly AddPackingPackageHandler $addPackage,
         private readonly CompletePackingOrderHandler $completePackingOrder,
@@ -43,7 +43,7 @@ class PackingController extends AbstractController
     {
         return $this->render('outbound/packing/index.html.twig', [
             'page' => 'integration.device.scan.packing',
-            'packingOrders' => $this->queries->packingOrders($this->tenantUser()->tenantId()),
+            'packingOrders' => $this->outboundQueries->packingOrders($this->tenantUser()->tenantId()),
         ]);
     }
 
@@ -53,12 +53,12 @@ class PackingController extends AbstractController
     {
         $this->assertCsrf($request, 'v3_packing_create_' . $pickListId);
         $user = $this->tenantUser();
-        $pickList = $this->queries->pickList($user->tenantId(), $pickListId);
+        $pickList = $this->outboundQueries->pickList($user->tenantId(), $pickListId);
         if ($pickList === null || ($pickList['status'] ?? null) !== 'completed') {
             throw $this->createNotFoundException('Eine abgeschlossene Pickliste ist erforderlich.');
         }
 
-        if ($this->queries->outboundQualityDecision($user->tenantId(), $pickListId) !== 'released') {
+        if ($this->outboundQueries->outboundQualityDecision($user->tenantId(), $pickListId) !== 'released') {
             throw new DomainException('Vor dem Packen muss die Ausgangs-QS die Pickliste freigeben.');
         }
 
@@ -85,7 +85,7 @@ class PackingController extends AbstractController
         return $this->render('outbound/packing/show.html.twig', [
             'page' => 'picking.show.packing_order',
             'packingOrder' => $this->requiredPackingOrder($packingOrderId),
-            'packableTasks' => $this->queries->packablePickTasks($user->tenantId(), $packingOrderId),
+            'packableTasks' => $this->outboundQueries->packablePickTasks($user->tenantId(), $packingOrderId),
         ]);
     }
 
@@ -147,7 +147,7 @@ class PackingController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredPackingOrder(string $packingOrderId): array
     {
-        $order = $this->queries->packingOrder($this->tenantUser()->tenantId(), $packingOrderId);
+        $order = $this->outboundQueries->packingOrder($this->tenantUser()->tenantId(), $packingOrderId);
         if ($order === null) {
             throw $this->createNotFoundException('Der Packauftrag wurde nicht gefunden.');
         }

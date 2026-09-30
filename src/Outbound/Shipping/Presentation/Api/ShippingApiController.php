@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Inventory\Application\CreateShipmentCommand;
 use WebWMS\Inventory\Application\CreateShipmentHandler;
 use WebWMS\Inventory\Application\DispatchShipmentCommand;
@@ -26,7 +26,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class ShippingApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly CreateShipmentHandler $createShipment,
         private readonly RegisterShipmentLabelHandler $registerLabel,
         private readonly DispatchShipmentHandler $dispatchShipment
@@ -37,7 +37,7 @@ class ShippingApiController extends AbstractController
     #[IsGranted('fulfillment.ship.write')]
     public function create(string $packingOrderId, Request $request): JsonResponse
     {
-        if ($this->queries->packingOrder($this->apiUser()->tenantId(), $packingOrderId) === null) {
+        if ($this->outboundQueries->packingOrder($this->apiUser()->tenantId(), $packingOrderId) === null) {
             throw $this->createNotFoundException('The packing order does not exist.');
         }
 
@@ -123,7 +123,7 @@ class ShippingApiController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredShipment(string $shipmentId): array
     {
-        $shipment = $this->queries->shipment($this->apiUser()->tenantId(), $shipmentId);
+        $shipment = $this->outboundQueries->shipment($this->apiUser()->tenantId(), $shipmentId);
         if ($shipment === null) {
             throw $this->createNotFoundException('The shipment does not exist.');
         }

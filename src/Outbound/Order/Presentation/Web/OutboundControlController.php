@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Outbound\Application\OutboundProcessService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -22,7 +22,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class OutboundControlController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly OutboundProcessService $processes
     ) {
     }
@@ -34,10 +34,10 @@ class OutboundControlController extends AbstractController
 
         return $this->render('outbound/order/control.html.twig', [
             'page' => 'outbound.control.outbound_dispatch_control_center',
-            'control' => $this->queries->outboundControlCenter($user->tenantId()),
-            'orders' => $this->queries->outboundOrders($user->tenantId()),
-            'shipments' => $this->queries->shipments($user->tenantId()),
-            'manifests' => $this->queries->loadingManifests($user->tenantId()),
+            'control' => $this->outboundQueries->outboundControlCenter($user->tenantId()),
+            'orders' => $this->outboundQueries->outboundOrders($user->tenantId()),
+            'shipments' => $this->outboundQueries->shipments($user->tenantId()),
+            'manifests' => $this->outboundQueries->loadingManifests($user->tenantId()),
         ]);
     }
 
@@ -107,7 +107,7 @@ class OutboundControlController extends AbstractController
     #[Route('/documents/{documentId}', name: 'document_show', methods: ['GET'])]
     public function showDocument(string $documentId): Response
     {
-        $document = $this->queries->shippingDocument($this->user()->tenantId(), $documentId);
+        $document = $this->outboundQueries->shippingDocument($this->user()->tenantId(), $documentId);
         if ($document === null) {
             throw $this->createNotFoundException('Das Versanddokument wurde nicht gefunden.');
         }

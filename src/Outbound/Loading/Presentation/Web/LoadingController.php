@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Inventory\Application\CompleteLoadingManifestCommand;
 use WebWMS\Inventory\Application\CompleteLoadingManifestHandler;
 use WebWMS\Inventory\Application\ConfirmShipmentLoadingCommand;
@@ -27,7 +27,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class LoadingController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly CreateLoadingManifestHandler $createManifest,
         private readonly ConfirmShipmentLoadingHandler $confirmLoading,
         private readonly CompleteLoadingManifestHandler $completeManifest,
@@ -40,7 +40,7 @@ class LoadingController extends AbstractController
     {
         return $this->render('outbound/loading/index.html.twig', [
             'page' => 'integration.device.scan.loading',
-            'manifests' => $this->queries->loadingManifests($this->tenantUser()->tenantId()),
+            'manifests' => $this->outboundQueries->loadingManifests($this->tenantUser()->tenantId()),
         ]);
     }
 
@@ -69,7 +69,7 @@ class LoadingController extends AbstractController
 
         return $this->render('outbound/loading/new.html.twig', [
             'page' => 'loading.index.create_load_manifest',
-            'shipments' => $this->queries->shipmentsAvailableForLoading($user->tenantId()),
+            'shipments' => $this->outboundQueries->shipmentsAvailableForLoading($user->tenantId()),
         ]);
     }
 
@@ -123,7 +123,7 @@ class LoadingController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredManifest(string $manifestId): array
     {
-        $manifest = $this->queries->loadingManifest($this->tenantUser()->tenantId(), $manifestId);
+        $manifest = $this->outboundQueries->loadingManifest($this->tenantUser()->tenantId(), $manifestId);
         if ($manifest === null) {
             throw $this->createNotFoundException('Das Lademanifest wurde nicht gefunden.');
         }

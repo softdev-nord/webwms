@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Inventory\Application\AssignPickListCommand;
 use WebWMS\Inventory\Application\AssignPickListHandler;
 use WebWMS\Inventory\Application\ConfirmPickTaskCommand;
@@ -26,7 +26,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class PickingController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly AssignPickListHandler $assignPickList,
         private readonly ConfirmPickTaskHandler $confirmPickTask,
         private readonly AdvancedPickingService $advancedPicking,
@@ -75,7 +75,7 @@ class PickingController extends AbstractController
     {
         return $this->render('outbound/picking/index.html.twig', [
             'page' => 'picking.index.picking',
-            'pickLists' => $this->queries->pickLists($this->tenantUser()->tenantId()),
+            'pickLists' => $this->outboundQueries->pickLists($this->tenantUser()->tenantId()),
         ]);
     }
 
@@ -137,7 +137,7 @@ class PickingController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredPickList(string $pickListId): array
     {
-        $pickList = $this->queries->pickList($this->tenantUser()->tenantId(), $pickListId);
+        $pickList = $this->outboundQueries->pickList($this->tenantUser()->tenantId(), $pickListId);
         if ($pickList === null) {
             throw $this->createNotFoundException('Die Pickliste wurde nicht gefunden.');
         }

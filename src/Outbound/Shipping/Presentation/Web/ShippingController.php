@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Integration\Application\CarrierGateway;
 use WebWMS\Integration\Application\PrintGateway;
 use WebWMS\Inventory\Application\CreateShipmentCommand;
@@ -31,6 +32,7 @@ class ShippingController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly CreateShipmentHandler $createShipment,
         private readonly RegisterShipmentLabelHandler $registerLabel,
         private readonly DispatchShipmentHandler $dispatchShipment,
@@ -45,7 +47,7 @@ class ShippingController extends AbstractController
     {
         return $this->render('outbound/shipping/index.html.twig', [
             'page' => 'integration.device.scan.shipping',
-            'shipments' => $this->queries->shipments($this->tenantUser()->tenantId()),
+            'shipments' => $this->outboundQueries->shipments($this->tenantUser()->tenantId()),
         ]);
     }
 
@@ -55,7 +57,7 @@ class ShippingController extends AbstractController
     {
         $this->assertCsrf($request, 'v3_shipping_create_' . $packingOrderId);
         $user = $this->tenantUser();
-        $packingOrder = $this->queries->packingOrder($user->tenantId(), $packingOrderId);
+        $packingOrder = $this->outboundQueries->packingOrder($user->tenantId(), $packingOrderId);
         if ($packingOrder === null || ($packingOrder['status'] ?? null) !== 'completed') {
             throw $this->createNotFoundException('Ein abgeschlossener Packauftrag ist erforderlich.');
         }
@@ -202,7 +204,7 @@ class ShippingController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredShipment(string $shipmentId): array
     {
-        $shipment = $this->queries->shipment($this->tenantUser()->tenantId(), $shipmentId);
+        $shipment = $this->outboundQueries->shipment($this->tenantUser()->tenantId(), $shipmentId);
         if ($shipment === null) {
             throw $this->createNotFoundException('Die Sendung wurde nicht gefunden.');
         }

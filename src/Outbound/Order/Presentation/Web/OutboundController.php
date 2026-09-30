@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Inventory\Application\AllocateStockCommand;
 use WebWMS\Inventory\Application\AllocateStockHandler;
@@ -31,7 +31,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class OutboundController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly OutboundQueryService $outboundQueries,
         private readonly WarehouseQueryService $warehouseQueries,
         private readonly CreateOutboundOrderHandler $createOrder,
         private readonly ReleaseOutboundOrderHandler $releaseOrder,
@@ -46,7 +46,7 @@ class OutboundController extends AbstractController
     public function orders(): Response
     {
         return $this->render('outbound/order/orders.html.twig', [
-            'orders' => $this->queries->outboundOrders($this->tenantUser()->tenantId()),
+            'orders' => $this->outboundQueries->outboundOrders($this->tenantUser()->tenantId()),
             'page' => 'outbound.orders.outbound_orders',
         ]);
     }
@@ -88,7 +88,7 @@ class OutboundController extends AbstractController
         $order = $this->requiredOrder($user->tenantId(), $orderId);
         foreach ($order['items'] as &$item) {
             if (is_array($item) && is_string($item['product_id'] ?? null)) {
-                $item['stock'] = $this->queries->availableStockForProduct($user->tenantId(), $item['product_id']);
+                $item['stock'] = $this->outboundQueries->availableStockForProduct($user->tenantId(), $item['product_id']);
             }
         }
 
@@ -154,7 +154,7 @@ class OutboundController extends AbstractController
     {
         $this->assertCsrf($request, 'v3_outbound_allocate_' . $reservationId);
         $user = $this->tenantUser();
-        $reservation = $this->queries->reservation($user->tenantId(), $reservationId);
+        $reservation = $this->outboundQueries->reservation($user->tenantId(), $reservationId);
         if ($reservation === null || !is_string($reservation['product_id'] ?? null)) {
             throw $this->createNotFoundException('Die Reservierung wurde nicht gefunden.');
         }
@@ -185,7 +185,7 @@ class OutboundController extends AbstractController
         $this->assertCsrf($request, 'v3_outbound_pick_list_' . $orderId);
         $user = $this->tenantUser();
         $this->requiredOrder($user->tenantId(), $orderId);
-        $allocationIds = $this->queries->pickableAllocationIds($user->tenantId(), $orderId);
+        $allocationIds = $this->outboundQueries->pickableAllocationIds($user->tenantId(), $orderId);
         if ($allocationIds === []) {
             throw new LogicException('Der Auftrag ist noch nicht vollständig allokiert.');
         }
@@ -208,7 +208,7 @@ class OutboundController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredOrder(string $tenantId, string $orderId): array
     {
-        $order = $this->queries->outboundOrder($tenantId, $orderId);
+        $order = $this->outboundQueries->outboundOrder($tenantId, $orderId);
         if ($order === null) {
             throw $this->createNotFoundException('Der Ausgangsauftrag wurde nicht gefunden.');
         }
