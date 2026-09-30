@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Api\V3;
+namespace WebWMS\Inbound\Presentation\Api;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
+use WebWMS\Inbound\Application\InboundProcessService;
 use WebWMS\Integration\Application\ApiV3QueryService;
 use WebWMS\Inventory\Application\CreateInboundDeliveryCommand;
 use WebWMS\Inventory\Application\CreateInboundDeliveryHandler;
@@ -21,7 +22,6 @@ use WebWMS\Inventory\Application\CreatePurchaseOrderCommand;
 use WebWMS\Inventory\Application\CreatePurchaseOrderHandler;
 use WebWMS\Inventory\Application\CreateReturnOrderCommand;
 use WebWMS\Inventory\Application\CreateReturnOrderHandler;
-use WebWMS\Inventory\Application\InboundProcessService;
 use WebWMS\Inventory\Application\InspectReturnCommand;
 use WebWMS\Inventory\Application\InspectReturnHandler;
 use WebWMS\Inventory\Application\ReceiveReturnCommand;

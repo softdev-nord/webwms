@@ -1,5 +1,18 @@
 # Wareneingang, Bestellungen, Avis und QS
 
+## Modulstruktur
+
+Die Web- und API-Präsentation des Wareneingangs liegt unter
+`src/Inbound/Presentation`, die Twig-Views unter `templates/inbound`. Der
+eigenständige `InboundProcessService` ist unter `src/Inbound/Application`
+eingeordnet. Die öffentlichen `/v3`- und `/api/v3`-Routen bleiben während der
+Strukturmigration unverändert.
+
+Commands und Domainmodelle, die derzeit noch den gemeinsamen
+`InventoryRepository`-Vertrag verwenden, verbleiben bis zum geplanten
+Repository-Split im Inventory-Modul. Dadurch entstehen während der Migration
+keine zirkulären oder nur kosmetisch verschobenen Abhängigkeiten.
+
 ## Prozessmodell
 
 Der reguläre Wareneingang besteht aus vier getrennten Schritten:

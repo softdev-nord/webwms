@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Inbound\Presentation\Web;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
+use WebWMS\Inbound\Application\InboundProcessService;
 use WebWMS\Integration\Application\ApiV3QueryService;
 use WebWMS\Inventory\Application\CreateInboundDeliveryCommand;
 use WebWMS\Inventory\Application\CreateInboundDeliveryHandler;
@@ -24,7 +25,6 @@ use WebWMS\Inventory\Application\CreatePurchaseOrderCommand;
 use WebWMS\Inventory\Application\CreatePurchaseOrderHandler;
 use WebWMS\Inventory\Application\CreateReturnOrderCommand;
 use WebWMS\Inventory\Application\CreateReturnOrderHandler;
-use WebWMS\Inventory\Application\InboundProcessService;
 use WebWMS\Inventory\Application\InspectReturnCommand;
 use WebWMS\Inventory\Application\InspectReturnHandler;
 use WebWMS\Inventory\Application\ReceiveReturnCommand;
@@ -33,7 +33,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/inbound/control', name: 'v3_inbound_control_')]
 #[IsGranted('inbound.planned.read')]
-class V3InboundControlController extends AbstractController
+class InboundControlController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -52,7 +52,7 @@ class V3InboundControlController extends AbstractController
     {
         $user = $this->user();
 
-        return $this->render('v3/inbound/control.html.twig', [
+        return $this->render('inbound/control.html.twig', [
             'page' => 'inbound.control.goods_receipt_control_center',
             'control' => $this->queries->inboundControlCenter($user->tenantId()),
             'worklist' => $this->queries->plannedInboundWorklist($user->tenantId()),

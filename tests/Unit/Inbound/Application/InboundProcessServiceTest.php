@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Unit\Inventory\Application;
+namespace WebWMS\Tests\Unit\Inbound\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Inventory\Application\InboundProcessService;
+use WebWMS\Inbound\Application\InboundProcessService;
 use WebWMS\Inventory\Application\PostStockHandler;
 use WebWMS\Inventory\Domain\InventoryRepository;
 

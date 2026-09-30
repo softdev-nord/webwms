@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Inbound\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -29,7 +29,7 @@ use WebWMS\Inventory\Application\UnplannedReceiptService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/inbound', name: 'v3_inbound_')]
-class V3InboundController extends AbstractController
+class InboundController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -48,7 +48,7 @@ class V3InboundController extends AbstractController
     {
         $tenantId = $this->user()->tenantId();
 
-        return $this->render('v3/inbound/planned.html.twig', [
+        return $this->render('inbound/planned.html.twig', [
             'page' => 'inbound.planned.planned_goods_receipt',
             'worklist' => $this->queries->plannedInboundWorklist($tenantId),
             'locations' => $this->queries->receivingLocations($tenantId),
@@ -169,7 +169,7 @@ class V3InboundController extends AbstractController
     #[IsGranted('inbound.receipt.read')]
     public function index(): Response
     {
-        return $this->render('v3/inbound/index.html.twig', [
+        return $this->render('inbound/index.html.twig', [
             'page' => 'inbound.control.goods_receipt',
             'receipts' => $this->queries->unplannedReceipts($this->user()->tenantId()),
         ]);
@@ -204,7 +204,7 @@ class V3InboundController extends AbstractController
             return $this->redirectToRoute('v3_inbound_show', ['receiptId' => $receipt->id()->value()]);
         }
 
-        return $this->render('v3/inbound/new.html.twig', [
+        return $this->render('inbound/new.html.twig', [
             'page' => 'inbound.page.unplanned_goods_receipt',
             'products' => $this->queries->products($user->tenantId(), 500, null),
             'locations' => $this->queries->receivingLocations($user->tenantId()),
@@ -220,7 +220,7 @@ class V3InboundController extends AbstractController
             throw $this->createNotFoundException('Der Wareneingang wurde nicht gefunden.');
         }
 
-        return $this->render('v3/inbound/show.html.twig', ['page' => 'inbound.control.goods_receipt', 'receipt' => $receipt]);
+        return $this->render('inbound/show.html.twig', ['page' => 'inbound.control.goods_receipt', 'receipt' => $receipt]);
     }
 
     #[Route('/unplanned/{receiptId}/book', name: 'book', methods: ['POST'])]

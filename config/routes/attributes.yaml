@@ -16,6 +16,12 @@ administration_controllers:
         namespace: WebWMS\Administration\Presentation
     type: attribute
 
+inbound_controllers:
+    resource:
+        path: ../../src/Inbound/Presentation/
+        namespace: WebWMS\Inbound\Presentation
+    type: attribute
+
 kernel:
     resource: WebWMS\Kernel
     type: attribute

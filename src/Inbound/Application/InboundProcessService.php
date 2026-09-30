@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Inventory\Application;
+namespace WebWMS\Inbound\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
+use WebWMS\Inventory\Application\PostStockCommand;
+use WebWMS\Inventory\Application\PostStockHandler;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 
 readonly class InboundProcessService
