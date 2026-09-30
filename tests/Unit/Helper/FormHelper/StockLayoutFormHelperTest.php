@@ -22,12 +22,12 @@ use WebWMS\Helper\FormHelper\StockLayoutFormHelper;
     class: 'StockLayoutFormHelperTest'
 )]
 #[CoversClass(StockLayoutFormHelper::class)]
-final class StockLayoutFormHelperTest extends TestCase
+class StockLayoutFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
         $type = 'SomeType';
         $data = null;
         $options = [];
@@ -47,7 +47,7 @@ final class StockLayoutFormHelperTest extends TestCase
     public function testAddStockLayoutForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
 
         $formFactory
             ->expects($this->once())
@@ -64,8 +64,8 @@ final class StockLayoutFormHelperTest extends TestCase
     public function testEditStockLayoutForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $stockLayout = $this->createMock(StockLayout::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $stockLayout = $this->createStub(StockLayout::class);
 
         $formFactory
             ->expects($this->once())
@@ -82,8 +82,8 @@ final class StockLayoutFormHelperTest extends TestCase
     public function testDeleteStockLayoutForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $stockLayout = $this->createMock(StockLayout::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $stockLayout = $this->createStub(StockLayout::class);
 
         $formFactory
             ->expects($this->once())

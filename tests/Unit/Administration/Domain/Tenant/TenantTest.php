@@ -13,9 +13,9 @@ use WebWMS\Administration\Domain\Tenant\TenantCreated;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Administration\Domain\Tenant\TenantStatus;
 
-final class TenantTest extends TestCase
+class TenantTest extends TestCase
 {
-    private const TENANT_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8';
+    private const string TENANT_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8';
 
     public function testItCreatesAnActiveTenantAndRecordsTheEvent(): void
     {

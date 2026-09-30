@@ -13,7 +13,7 @@ use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Administration\Domain\Tenant\TenantRepository;
 
-final readonly class CreateUserHandler
+readonly class CreateUserHandler
 {
     public function __construct(
         private TenantRepository $tenants,

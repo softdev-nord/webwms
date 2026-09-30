@@ -21,13 +21,13 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'DeleteSupplierOrderTypeTest'
 )]
 #[CoversClass(DeleteSupplierOrderType::class)]
-final class DeleteSupplierOrderTypeTest extends TestCase
+class DeleteSupplierOrderTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects($this->exactly(1))
             ->method('add')
             ->willReturnOnConsecutiveCalls(
                 ['supplierOrderId', HiddenType::class, self::anything()],

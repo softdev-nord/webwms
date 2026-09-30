@@ -10,7 +10,7 @@ use WebWMS\Administration\Domain\Site\SiteCode;
 use WebWMS\Administration\Domain\Site\SiteRepository;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class DoctrineSiteRepository implements SiteRepository
+readonly class DoctrineSiteRepository implements SiteRepository
 {
     public function __construct(
         private Connection $connection

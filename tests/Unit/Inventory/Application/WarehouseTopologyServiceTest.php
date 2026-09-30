@@ -11,12 +11,12 @@ use PHPUnit\Framework\TestCase;
 use WebWMS\Inventory\Application\WarehouseTopologyService;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 
-final class WarehouseTopologyServiceTest extends TestCase
+class WarehouseTopologyServiceTest extends TestCase
 {
     public function testUnknownTopologyResourceIsRejectedBeforeQuerying(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::never())->method('fetchAssociative');
+        $connection->expects($this->never())->method('fetchAssociative');
 
         $this->expectException(InvalidArgumentException::class);
         $this->service($connection)->topologyEntry('tenant', 'unknown', 'id');
@@ -26,7 +26,7 @@ final class WarehouseTopologyServiceTest extends TestCase
     {
         $connection = $this->createMock(Connection::class);
         $connection->method('fetchOne')->willReturn(false);
-        $connection->expects(self::never())->method('update');
+        $connection->expects($this->never())->method('update');
 
         $this->expectException(InventoryReferenceNotFoundException::class);
         $this->service($connection)->updateTopologyEntry('tenant', 'foreign-user', 'site', 'site', ['code' => 'S01', 'name' => 'Standort', 'timezone' => 'Europe/Berlin', 'status' => 'active'], new DateTimeImmutable());

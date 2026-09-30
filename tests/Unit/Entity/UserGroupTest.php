@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'UserGroupTest'
 )]
 #[CoversClass(UserGroup::class)]
-final class UserGroupTest extends TestCase
+class UserGroupTest extends TestCase
 {
     private UserGroup $userGroup;
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,7 +29,7 @@ use WebWMS\Inventory\Application\SubmitInventoryCountHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/inventory/control', name: 'api_v3_inventory_control_')]
-final class InventoryControlApiController extends AbstractController
+class InventoryControlApiController extends AbstractController
 {
     public function __construct(
         private readonly InventoryControlService $control,
@@ -88,15 +89,18 @@ final class InventoryControlApiController extends AbstractController
         $payload = $request->toArray();
         $rawItems = $payload['items'] ?? null;
         if (!is_array($rawItems)) {
-            throw new \InvalidArgumentException('Field "items" must be an array.');
+            throw new InvalidArgumentException('Field "items" must be an array.');
         }
+
         $items = [];
         foreach ($rawItems as $item) {
             if (!is_array($item)) {
-                throw new \InvalidArgumentException('Every item must be an object.');
+                throw new InvalidArgumentException('Every item must be an object.');
             }
+
             $items[] = ['productId' => $this->string($item, 'productId'), 'quantity' => $this->integer($item, 'quantity')];
         }
+
         $user = $this->user();
         $id = $this->control->createBom($user->tenantId(), $user->actorId(), $this->string($payload, 'productId'), $this->string($payload, 'code'), $this->string($payload, 'version'), $items, new DateTimeImmutable());
 
@@ -207,7 +211,7 @@ final class InventoryControlApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -226,7 +230,7 @@ final class InventoryControlApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
         }
 
         return $value;
@@ -245,7 +249,7 @@ final class InventoryControlApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_bool($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a boolean.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a boolean.', $field));
         }
 
         return $value;

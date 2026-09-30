@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\MachineStatus;
 
-final class MachineStatusTest extends TestCase
+class MachineStatusTest extends TestCase
 {
     public function testItAcceptsAFaultStatus(): void
     {
@@ -19,7 +20,7 @@ final class MachineStatusTest extends TestCase
 
     public function testItRejectsAnUnsupportedStatus(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new MachineStatus('id', 'tenant', 'connection', null, 'CONVEYOR-01', 'unknown', null, 'event', 'user', new DateTimeImmutable());
     }

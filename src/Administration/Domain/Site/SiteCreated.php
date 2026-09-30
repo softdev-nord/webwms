@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Shared\Domain\Event\DomainEvent;
 
-final readonly class SiteCreated implements DomainEvent
+readonly class SiteCreated implements DomainEvent
 {
     public function __construct(
         private SiteId $siteId,

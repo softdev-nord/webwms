@@ -11,12 +11,12 @@ use WebWMS\Inventory\Application\ConfirmPickTaskCommand;
 use WebWMS\Inventory\Application\ConfirmPickTaskHandler;
 use WebWMS\Inventory\Domain\InventoryRepository;
 
-final class ConfirmPickTaskHandlerTest extends TestCase
+class ConfirmPickTaskHandlerTest extends TestCase
 {
     public function testItRejectsAnUnknownOutcomeBeforeCallingTheRepository(): void
     {
         $inventory = $this->createMock(InventoryRepository::class);
-        $inventory->expects(self::never())->method('confirmPick');
+        $inventory->expects($this->never())->method('confirmPick');
         $handler = new ConfirmPickTaskHandler($inventory);
 
         $this->expectException(InvalidArgumentException::class);

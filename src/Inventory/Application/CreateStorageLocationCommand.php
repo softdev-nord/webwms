@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class CreateStorageLocationCommand
+readonly class CreateStorageLocationCommand
 {
     public function __construct(
         public string $locationId,

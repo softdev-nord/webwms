@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\MeasurementDevice;
 
-final class MeasurementDeviceTest extends TestCase
+class MeasurementDeviceTest extends TestCase
 {
     public function testItAcceptsACombinedDevice(): void
     {
@@ -22,7 +23,7 @@ final class MeasurementDeviceTest extends TestCase
     #[DataProvider('invalidDeviceProvider')]
     public function testItRejectsInvalidConfiguration(string $code, string $type): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new MeasurementDevice('id', 'tenant', $code, 'Packplatz', $type, true, 'user', new DateTimeImmutable());
     }

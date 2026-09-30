@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Integration\Infrastructure\Console;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use WebWMS\Integration\Application\OutboxPublisher;
 
 #[AsCommand(name: 'webwms:outbox:publish', description: 'Publish due integration outbox messages to the async queue')]
-final class PublishOutboxConsoleCommand extends Command
+class PublishOutboxConsoleCommand extends Command
 {
     public function __construct(
         private readonly OutboxPublisher $publisher
@@ -30,7 +31,7 @@ final class PublishOutboxConsoleCommand extends Command
     {
         $limit = filter_var($input->getOption('limit'), FILTER_VALIDATE_INT);
         if (!is_int($limit) || $limit < 1 || $limit > 1000) {
-            throw new \InvalidArgumentException('The limit must be between 1 and 1000.');
+            throw new InvalidArgumentException('The limit must be between 1 and 1000.');
         }
 
         $report = $this->publisher->publishDue($limit, new DateTimeImmutable());

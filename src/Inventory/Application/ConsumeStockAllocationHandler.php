@@ -12,7 +12,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\StockAllocationTransition;
 use WebWMS\Inventory\Domain\StockFulfillmentResult;
 
-final readonly class ConsumeStockAllocationHandler
+readonly class ConsumeStockAllocationHandler
 {
     public function __construct(
         private InventoryRepository $inventory

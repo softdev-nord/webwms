@@ -13,7 +13,7 @@ use WebWMS\Inventory\Domain\InventoryCountEntry;
 use WebWMS\Inventory\Domain\InventoryCountPlan;
 use WebWMS\Inventory\Domain\InventoryId;
 
-final class InventoryCountPlanTest extends TestCase
+class InventoryCountPlanTest extends TestCase
 {
     public function testItRejectsAnInvalidLocationPrefix(): void
     {

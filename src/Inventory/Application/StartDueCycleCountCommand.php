@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class StartDueCycleCountCommand
+readonly class StartDueCycleCountCommand
 {
     public function __construct(
         public string $planId,

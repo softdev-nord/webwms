@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace WebWMS\Integration\Infrastructure\Transport;
 
+use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use WebWMS\Integration\Application\PublishedIntegrationMessage;
 use WebWMS\Integration\Domain\CredentialProvider;
 use WebWMS\Integration\Domain\ErpConnection;
 use WebWMS\Integration\Domain\ErpStatusTransport;
 
-final readonly class HttpErpStatusTransport implements ErpStatusTransport
+readonly class HttpErpStatusTransport implements ErpStatusTransport
 {
     public function __construct(
         private HttpClientInterface $httpClient,
@@ -41,7 +42,7 @@ final readonly class HttpErpStatusTransport implements ErpStatusTransport
         ]);
         $statusCode = $response->getStatusCode();
         if ($statusCode < 200 || $statusCode >= 300) {
-            throw new \RuntimeException(sprintf(
+            throw new RuntimeException(sprintf(
                 'ERP connection "%s" rejected status event with HTTP %d.',
                 $connection->name,
                 $statusCode,

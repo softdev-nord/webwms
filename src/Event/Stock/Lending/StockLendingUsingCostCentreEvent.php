@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockLendingUsingCostCentreEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_lending_using_cost_centre';
+    final public const string EVENT_NAME = 'stock.stock_lending_using_cost_centre';
 
-    final public const EVENT = 'SL102';
+    final public const string EVENT = 'SL102';
 
     /**
      * SL102 Auftrag auslagern mit Kostenstelle (Auftrag-Liste)

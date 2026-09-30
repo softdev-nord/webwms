@@ -289,7 +289,7 @@ readonly class ConfigurationService
      */
     public function convertPhpValueToBytes(false|string $phpValue): int
     {
-        if ($phpValue === '' || $phpValue === '0' || $phpValue === false) {
+        if (in_array($phpValue, ['', '0', false], true)) {
             return 0;
         }
 
@@ -306,7 +306,7 @@ readonly class ConfigurationService
     private function getPhpMaxExecutionTimeValue(): string
     {
         $maxExecutionTime = @ini_get('fastcgi_read_timeout'); // Nginx
-        if ($maxExecutionTime === '' || $maxExecutionTime === '0' || $maxExecutionTime === false) {
+        if (in_array($maxExecutionTime, ['', '0', false], true)) {
             return @ini_get('max_execution_time');
         }
 

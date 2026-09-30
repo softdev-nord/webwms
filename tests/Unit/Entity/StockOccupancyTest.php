@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'StockOccupancyTest'
 )]
 #[CoversClass(StockOccupancy::class)]
-final class StockOccupancyTest extends TestCase
+class StockOccupancyTest extends TestCase
 {
     private StockOccupancy $stockOccupancy;
 

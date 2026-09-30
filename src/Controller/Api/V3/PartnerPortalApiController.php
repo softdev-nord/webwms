@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use WebWMS\Platform\Application\PlatformControlService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
-final class PartnerPortalApiController extends AbstractController
+class PartnerPortalApiController extends AbstractController
 {
     public function __construct(
         private readonly PlatformControlService $platform

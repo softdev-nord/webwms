@@ -10,7 +10,7 @@ use WebWMS\Integration\Domain\AutomationDevice;
 use WebWMS\Integration\Domain\AutomationRepository;
 use WebWMS\Integration\Domain\DeviceCommand;
 
-final readonly class StorageAutomationAdapter
+readonly class StorageAutomationAdapter
 {
     public function __construct(
         private AutomationRepository $repository,
@@ -62,9 +62,10 @@ final readonly class StorageAutomationAdapter
         DateTimeImmutable $at,
     ): DeviceCommand {
         $existing = $this->repository->commandByRequestId($tenantId, $requestId);
-        if ($existing !== null) {
+        if ($existing instanceof DeviceCommand) {
             return $existing;
         }
+
         $this->repository->device($tenantId, $deviceId, true);
 
         return $this->repository->addCommand(new DeviceCommand(

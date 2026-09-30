@@ -14,7 +14,7 @@ use WebWMS\Inventory\Domain\ReturnItem;
 use WebWMS\Inventory\Domain\ReturnOrder;
 use WebWMS\Inventory\Domain\ReturnQualityDecision;
 
-final class ReturnOrderTest extends TestCase
+class ReturnOrderTest extends TestCase
 {
     public function testItRejectsDuplicateReturnItems(): void
     {

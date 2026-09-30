@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class ReplenishmentPolicy
+readonly class ReplenishmentPolicy
 {
     public function __construct(
         private InventoryId $id,
@@ -28,6 +28,7 @@ final readonly class ReplenishmentPolicy
         if (trim($code) === '' || mb_strlen($code) > 50 || preg_match('/^[A-Z0-9][A-Z0-9._-]{0,49}$/', $sourceLocationPrefix) !== 1) {
             throw new InvalidArgumentException('Policy code and source location prefix are invalid.');
         }
+
         if ($minimumQuantity < 0 || $targetQuantity <= $minimumQuantity || $priority < 1) {
             throw new InvalidArgumentException('Target quantity must exceed the non-negative minimum and priority must be positive.');
         }

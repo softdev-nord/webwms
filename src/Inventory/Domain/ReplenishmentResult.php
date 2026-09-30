@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Inventory\Domain;
 
-final readonly class ReplenishmentResult
+readonly class ReplenishmentResult
 {
     public function __construct(
         public string $status,

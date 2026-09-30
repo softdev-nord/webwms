@@ -17,11 +17,11 @@ use WebWMS\Repository\StockTransferStrategyRepository;
     class: 'StockTransferStrategyRepositoryTest'
 )]
 #[CoversClass(StockTransferStrategyRepository::class)]
-final class StockTransferStrategyRepositoryTest extends TestCase
+class StockTransferStrategyRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $stockTransferStrategyRepository = new StockTransferStrategyRepository($registry);
 
         self::assertInstanceOf(StockTransferStrategyRepository::class, $stockTransferStrategyRepository);

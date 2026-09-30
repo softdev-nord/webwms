@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +18,7 @@ use WebWMS\Inventory\Application\OutboundProcessService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/outbound/control', name: 'api_v3_outbound_control_')]
-final class OutboundControlApiController extends AbstractController
+class OutboundControlApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -101,16 +102,19 @@ final class OutboundControlApiController extends AbstractController
         $payload = $request->toArray();
         $stops = $payload['stops'] ?? null;
         if (!is_array($stops)) {
-            throw new \InvalidArgumentException('Field "stops" must be an array.');
+            throw new InvalidArgumentException('Field "stops" must be an array.');
         }
+
         /** @var list<array{destinationName: string, destinationAddress: string, shipmentId: string|null}> $normalized */
         $normalized = [];
         foreach ($stops as $stop) {
             if (!is_array($stop)) {
-                throw new \InvalidArgumentException('Each tour stop must be an object.');
+                throw new InvalidArgumentException('Each tour stop must be an object.');
             }
+
             $normalized[] = ['destinationName' => $this->string($stop, 'destinationName'), 'destinationAddress' => $this->string($stop, 'destinationAddress'), 'shipmentId' => $this->optionalString($stop, 'shipmentId')];
         }
+
         $user = $this->user();
         $id = $this->processes->createTour($user->tenantId(), $this->string($payload, 'code'), $this->string($payload, 'carrier'), $this->string($payload, 'vehicleReference'), $this->integer($payload, 'maxWeightGrams'), new DateTimeImmutable($this->string($payload, 'departureAt')), $normalized, $user->actorId(), new DateTimeImmutable());
 
@@ -143,7 +147,7 @@ final class OutboundControlApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -162,7 +166,7 @@ final class OutboundControlApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
         }
 
         return $value;
@@ -173,7 +177,7 @@ final class OutboundControlApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_bool($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a boolean.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a boolean.', $field));
         }
 
         return $value;

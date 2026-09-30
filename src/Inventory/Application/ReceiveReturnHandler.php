@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\ReturnReceipt;
 use WebWMS\Inventory\Domain\ReturnResult;
 
-final readonly class ReceiveReturnHandler
+readonly class ReceiveReturnHandler
 {
     public function __construct(
         private InventoryRepository $inventory

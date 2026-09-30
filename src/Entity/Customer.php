@@ -118,7 +118,7 @@ class Customer
     /**
      * @var Collection<int, CustomerOrder>
      */
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: CustomerOrder::class)]
+    #[ORM\OneToMany(targetEntity: CustomerOrder::class, mappedBy: 'customer')]
     #[Groups(['customer:read'])]
     private Collection $customerOrder;
 
@@ -278,7 +278,7 @@ class Customer
     }
 
     /**
-     * @return Collection<CustomerOrder>
+     * @return Collection<int, CustomerOrder>
      */
     public function getCustomerOrders(): Collection
     {

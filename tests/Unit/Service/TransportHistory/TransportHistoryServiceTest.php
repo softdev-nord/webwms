@@ -20,7 +20,7 @@ use WebWMS\Service\TransportHistory\TransportHistoryService;
     class: 'TransportHistoryServiceTest'
 )]
 #[CoversClass(TransportHistoryService::class)]
-final class TransportHistoryServiceTest extends TestCase
+class TransportHistoryServiceTest extends TestCase
 {
     private TransportHistoryService $transportHistoryService;
 

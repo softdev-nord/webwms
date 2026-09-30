@@ -22,12 +22,12 @@ use WebWMS\Helper\FormHelper\StockLocationFormHelper;
     class: 'StockLocationFormHelperTest'
 )]
 #[CoversClass(StockLocationFormHelper::class)]
-final class StockLocationFormHelperTest extends TestCase
+class StockLocationFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
         $type = 'SomeType';
         $data = null;
         $options = [];
@@ -47,7 +47,7 @@ final class StockLocationFormHelperTest extends TestCase
     public function testAddStockLocationForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
 
         $formFactory
             ->expects($this->once())
@@ -64,8 +64,8 @@ final class StockLocationFormHelperTest extends TestCase
     public function testEditStockLocationForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $stockLocation = $this->createMock(StockLocation::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $stockLocation = $this->createStub(StockLocation::class);
 
         $formFactory
             ->expects($this->once())
@@ -82,8 +82,8 @@ final class StockLocationFormHelperTest extends TestCase
     public function testDeleteStockLocationForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $stockLocation = $this->createMock(StockLocation::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $stockLocation = $this->createStub(StockLocation::class);
 
         $formFactory
             ->expects($this->once())

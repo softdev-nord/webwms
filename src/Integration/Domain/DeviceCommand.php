@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace WebWMS\Integration\Domain;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 
-final readonly class DeviceCommand
+readonly class DeviceCommand
 {
     public const string STATUS_QUEUED = 'queued';
+
     public const string STATUS_DISPATCHED = 'dispatched';
+
     public const string STATUS_COMPLETED = 'completed';
+
     public const string STATUS_FAILED = 'failed';
 
     public function __construct(
@@ -31,20 +35,24 @@ final readonly class DeviceCommand
     ) {
         foreach ([$id, $tenantId, $deviceId, $locationId, $referenceId, $requestId, $createdBy] as $identifier) {
             if (trim($identifier) === '') {
-                throw new \InvalidArgumentException('A device command requires complete identifiers.');
+                throw new InvalidArgumentException('A device command requires complete identifiers.');
             }
         }
+
         if (!in_array($commandType, ['present', 'store', 'retrieve'], true)) {
-            throw new \InvalidArgumentException('The automation command type is unsupported.');
+            throw new InvalidArgumentException('The automation command type is unsupported.');
         }
+
         if (!in_array($referenceType, ['pick_task', 'putaway_order', 'replenishment_order', 'manual'], true)) {
-            throw new \InvalidArgumentException('The automation reference type is unsupported.');
+            throw new InvalidArgumentException('The automation reference type is unsupported.');
         }
+
         if (!in_array($status, [self::STATUS_QUEUED, self::STATUS_DISPATCHED, self::STATUS_COMPLETED, self::STATUS_FAILED], true)) {
-            throw new \InvalidArgumentException('The automation command status is unsupported.');
+            throw new InvalidArgumentException('The automation command status is unsupported.');
         }
+
         if ($message !== null && mb_strlen($message) > 500) {
-            throw new \InvalidArgumentException('An automation command message must not exceed 500 characters.');
+            throw new InvalidArgumentException('An automation command message must not exceed 500 characters.');
         }
     }
 }

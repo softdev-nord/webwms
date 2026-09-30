@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\PurchaseOrder;
 use WebWMS\Inventory\Domain\PurchaseOrderItem;
 
-final readonly class CreatePurchaseOrderHandler
+readonly class CreatePurchaseOrderHandler
 {
     public function __construct(
         private InventoryRepository $inventory

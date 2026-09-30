@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\PackingCompletion;
 use WebWMS\Inventory\Domain\PackingResult;
 
-final readonly class CompletePackingOrderHandler
+readonly class CompletePackingOrderHandler
 {
     public function __construct(
         private InventoryRepository $inventory

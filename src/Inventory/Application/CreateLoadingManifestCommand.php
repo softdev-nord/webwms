@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class CreateLoadingManifestCommand
+readonly class CreateLoadingManifestCommand
 {
     /** @param list<string> $shipmentIds */
     public function __construct(

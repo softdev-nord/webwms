@@ -16,7 +16,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'BookingMethodTest'
 )]
 #[CoversClass(BookingMethod::class)]
-final class BookingMethodTest extends TestCase
+class BookingMethodTest extends TestCase
 {
     private BookingMethod $bookingMethod;
 

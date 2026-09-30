@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace WebWMS\Inventory\Domain;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class InboundReceipt
+readonly class InboundReceipt
 {
     public function __construct(
         private InventoryId $id,
@@ -21,10 +22,11 @@ final readonly class InboundReceipt
         private ?string $discrepancyReason = null,
     ) {
         if ($actualQuantity !== null && $actualQuantity < 1) {
-            throw new \InvalidArgumentException('The actual inbound quantity must be positive.');
+            throw new InvalidArgumentException('The actual inbound quantity must be positive.');
         }
+
         if ($discrepancyReason !== null && mb_strlen(trim($discrepancyReason)) > 255) {
-            throw new \InvalidArgumentException('The discrepancy reason must not exceed 255 characters.');
+            throw new InvalidArgumentException('The discrepancy reason must not exceed 255 characters.');
         }
     }
 

@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\LoadingResult;
 use WebWMS\Inventory\Domain\ShipmentLoading;
 
-final readonly class ConfirmShipmentLoadingHandler
+readonly class ConfirmShipmentLoadingHandler
 {
     public function __construct(
         private InventoryRepository $inventory

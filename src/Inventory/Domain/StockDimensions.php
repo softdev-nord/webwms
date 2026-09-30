@@ -7,7 +7,7 @@ namespace WebWMS\Inventory\Domain;
 use DateTimeImmutable;
 use InvalidArgumentException;
 
-final readonly class StockDimensions
+readonly class StockDimensions
 {
     private ?string $batchNumber;
 

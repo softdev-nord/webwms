@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\ReplenishmentRequest;
 use WebWMS\Inventory\Domain\ReplenishmentResult;
 
-final readonly class CreateReplenishmentOrderHandler
+readonly class CreateReplenishmentOrderHandler
 {
     public function __construct(
         private InventoryRepository $inventory

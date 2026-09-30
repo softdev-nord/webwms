@@ -6,12 +6,13 @@ namespace WebWMS\Integration\Application;
 
 use DateTimeImmutable;
 use Symfony\Component\Uid\Uuid;
+use Throwable;
 use WebWMS\Integration\Domain\Printer;
 use WebWMS\Integration\Domain\PrintJob;
 use WebWMS\Integration\Domain\PrintRepository;
 use WebWMS\Integration\Domain\PrintTransport;
 
-final readonly class PrintGateway
+readonly class PrintGateway
 {
     public function __construct(
         private PrintRepository $repository,
@@ -80,13 +81,14 @@ final readonly class PrintGateway
 
         try {
             $job->succeed($this->transport->print($printer, $job), $at);
-        } catch (\Throwable $exception) {
-            $message = trim($exception->getMessage());
-            $job->fail($message === '' ? $exception::class : $message);
+        } catch (Throwable $throwable) {
+            $message = trim($throwable->getMessage());
+            $job->fail($message === '' ? $throwable::class : $message);
             $this->repository->saveJob($job);
 
-            throw $exception;
+            throw $throwable;
         }
+
         $this->repository->saveJob($job);
 
         return $job;

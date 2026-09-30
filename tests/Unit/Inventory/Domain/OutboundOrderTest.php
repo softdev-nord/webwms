@@ -13,7 +13,7 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\OutboundOrder;
 use WebWMS\Inventory\Domain\OutboundOrderItem;
 
-final class OutboundOrderTest extends TestCase
+class OutboundOrderTest extends TestCase
 {
     public function testItCreatesAnOrderWithValidatedItems(): void
     {

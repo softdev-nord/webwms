@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class ShipmentLoading
+readonly class ShipmentLoading
 {
     public function __construct(
         private InventoryId $manifestId,

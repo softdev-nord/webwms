@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class PickList
+readonly class PickList
 {
     /** @param list<InventoryId> $allocationIds */
     public function __construct(
@@ -24,6 +24,7 @@ final readonly class PickList
         if (trim($code) === '' || mb_strlen($code) > 50 || $allocationIds === []) {
             throw new InvalidArgumentException('A pick list requires a code and at least one allocation.');
         }
+
         if (count(array_unique(array_map(static fn (InventoryId $id): string => $id->value(), $allocationIds))) !== count($allocationIds)) {
             throw new InvalidArgumentException('A pick list must not contain duplicate allocations.');
         }

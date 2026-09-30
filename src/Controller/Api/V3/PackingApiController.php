@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use DomainException;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +25,7 @@ use WebWMS\Inventory\Application\OutboundProcessService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3', name: 'api_v3_packing_')]
-final class PackingApiController extends AbstractController
+class PackingApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -41,9 +43,11 @@ final class PackingApiController extends AbstractController
         if ($this->queries->pickList($this->apiUser()->tenantId(), $pickListId) === null) {
             throw $this->createNotFoundException('The pick list does not exist.');
         }
+
         if ($this->queries->outboundQualityDecision($this->apiUser()->tenantId(), $pickListId) !== 'released') {
-            throw new \DomainException('The outbound quality check must release the pick list before packing.');
+            throw new DomainException('The outbound quality check must release the pick list before packing.');
         }
+
         /** @var array<string, mixed> $payload */
         $payload = $request->toArray();
         $packingOrderId = Uuid::v7()->toRfc4122();
@@ -136,7 +140,7 @@ final class PackingApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -147,7 +151,7 @@ final class PackingApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value) || $value <= 0) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
         }
 
         return $value;
@@ -162,13 +166,15 @@ final class PackingApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_array($value) || $value === []) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty array.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty array.', $field));
         }
+
         $items = [];
         foreach ($value as $item) {
             if (!is_string($item) || trim($item) === '') {
-                throw new \InvalidArgumentException(sprintf('Every value in field "%s" must be a non-empty string.', $field));
+                throw new InvalidArgumentException(sprintf('Every value in field "%s" must be a non-empty string.', $field));
             }
+
             $items[] = trim($item);
         }
 

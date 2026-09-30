@@ -5,14 +5,20 @@ declare(strict_types=1);
 namespace WebWMS\Integration\Domain;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 
-final readonly class MachineCommand
+readonly class MachineCommand
 {
     public const string STATUS_QUEUED = 'queued';
+
     public const string STATUS_DISPATCHED = 'dispatched';
+
     public const string STATUS_ACCEPTED = 'accepted';
+
     public const string STATUS_COMPLETED = 'completed';
+
     public const string STATUS_FAILED = 'failed';
+
     public const string STATUS_CANCELLED = 'cancelled';
 
     public function __construct(
@@ -33,17 +39,20 @@ final readonly class MachineCommand
     ) {
         foreach ([$id, $tenantId, $connectionId, $source, $destination, $loadUnit, $requestId, $createdBy] as $value) {
             if (trim($value) === '') {
-                throw new \InvalidArgumentException('A machine command requires complete identifiers and routing data.');
+                throw new InvalidArgumentException('A machine command requires complete identifiers and routing data.');
             }
         }
+
         if (!in_array($commandType, ['transport', 'route', 'cancel'], true)) {
-            throw new \InvalidArgumentException('The machine command type is unsupported.');
+            throw new InvalidArgumentException('The machine command type is unsupported.');
         }
+
         if (!in_array($status, self::statuses(), true)) {
-            throw new \InvalidArgumentException('The machine command status is unsupported.');
+            throw new InvalidArgumentException('The machine command status is unsupported.');
         }
+
         if ($message !== null && mb_strlen($message) > 500) {
-            throw new \InvalidArgumentException('A machine command message must not exceed 500 characters.');
+            throw new InvalidArgumentException('A machine command message must not exceed 500 characters.');
         }
     }
 

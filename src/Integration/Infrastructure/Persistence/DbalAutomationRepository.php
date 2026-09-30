@@ -7,12 +7,14 @@ namespace WebWMS\Integration\Infrastructure\Persistence;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use DomainException;
+use LogicException;
 use WebWMS\Integration\Domain\AutomationDevice;
 use WebWMS\Integration\Domain\AutomationDeviceNotFoundException;
 use WebWMS\Integration\Domain\AutomationRepository;
 use WebWMS\Integration\Domain\DeviceCommand;
 
-final readonly class DbalAutomationRepository implements AutomationRepository
+readonly class DbalAutomationRepository implements AutomationRepository
 {
     public function __construct(
         private Connection $connection,
@@ -98,8 +100,8 @@ final readonly class DbalAutomationRepository implements AutomationRepository
                 ]);
             } catch (UniqueConstraintViolationException) {
                 $existing = $this->commandByRequestId($command->tenantId, $command->requestId);
-                if ($existing === null) {
-                    throw new \LogicException('The idempotent device command could not be resolved.');
+                if (!$existing instanceof DeviceCommand) {
+                    throw new LogicException('The idempotent device command could not be resolved.');
                 }
 
                 return $existing;
@@ -130,6 +132,7 @@ final readonly class DbalAutomationRepository implements AutomationRepository
             if ($row === false) {
                 throw new AutomationDeviceNotFoundException('The device command does not exist in the tenant.');
             }
+
             $current = (string) $row['status'];
             $allowed = [
                 DeviceCommand::STATUS_QUEUED => [DeviceCommand::STATUS_DISPATCHED, DeviceCommand::STATUS_FAILED],
@@ -138,8 +141,9 @@ final readonly class DbalAutomationRepository implements AutomationRepository
                 DeviceCommand::STATUS_FAILED => [],
             ];
             if (!in_array($status, $allowed[$current] ?? [], true)) {
-                throw new \DomainException(sprintf('The command cannot transition from %s to %s.', $current, $status));
+                throw new DomainException(sprintf('The command cannot transition from %s to %s.', $current, $status));
             }
+
             $connection->update('wms_device_command', [
                 'status' => $status,
                 'message' => $message,

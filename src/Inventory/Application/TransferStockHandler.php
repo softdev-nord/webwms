@@ -12,7 +12,7 @@ use WebWMS\Inventory\Domain\StockDimensions;
 use WebWMS\Inventory\Domain\StockTransfer;
 use WebWMS\Inventory\Domain\StockTransferResult;
 
-final readonly class TransferStockHandler
+readonly class TransferStockHandler
 {
     public function __construct(
         private InventoryRepository $inventory

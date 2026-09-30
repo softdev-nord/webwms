@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\StockDimensions;
 use WebWMS\Inventory\Domain\StockPosting;
 
-final readonly class PostStockHandler
+readonly class PostStockHandler
 {
     public function __construct(
         private InventoryRepository $inventory

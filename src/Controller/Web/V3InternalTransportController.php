@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,7 +24,7 @@ use WebWMS\Inventory\Application\CreateReplenishmentPolicyHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/internal-transport', name: 'v3_internal_transport_')]
-final class V3InternalTransportController extends AbstractController
+class V3InternalTransportController extends AbstractController
 {
     public function __construct(
         private readonly InternalTransportService $transport,
@@ -34,7 +36,7 @@ final class V3InternalTransportController extends AbstractController
 
     #[Route('/replenishment-policies', name: 'replenishment_policy_create', methods: ['POST'])]
     #[IsGranted('fulfillment.replenishment.write')]
-    public function createReplenishmentPolicy(Request $request): Response
+    public function createReplenishmentPolicy(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_replenishment_policy_create');
         $user = $this->user();
@@ -46,7 +48,7 @@ final class V3InternalTransportController extends AbstractController
 
     #[Route('/replenishment-policies/{policyId}/orders', name: 'replenishment_order_create', methods: ['POST'])]
     #[IsGranted('fulfillment.replenishment.write')]
-    public function createReplenishmentOrder(string $policyId, Request $request): Response
+    public function createReplenishmentOrder(string $policyId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_replenishment_order_create_' . $policyId);
         $user = $this->user();
@@ -58,7 +60,7 @@ final class V3InternalTransportController extends AbstractController
 
     #[Route('/replenishment-orders/{orderId}/completion', name: 'replenishment_complete', methods: ['POST'])]
     #[IsGranted('fulfillment.replenishment.execute')]
-    public function completeReplenishment(string $orderId, Request $request): Response
+    public function completeReplenishment(string $orderId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_replenishment_complete_' . $orderId);
         $user = $this->user();
@@ -77,7 +79,7 @@ final class V3InternalTransportController extends AbstractController
 
     #[Route('/orders', name: 'order_create', methods: ['POST'])]
     #[IsGranted('fulfillment.transport.write')]
-    public function createOrder(Request $request): Response
+    public function createOrder(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_transport_order_create');
         $user = $this->user();
@@ -89,7 +91,7 @@ final class V3InternalTransportController extends AbstractController
 
     #[Route('/resources/{resource}', name: 'resource_create', requirements: ['resource' => 'forklift|rule|station|milk_run'], methods: ['POST'])]
     #[IsGranted('fulfillment.transport.configure')]
-    public function createResource(string $resource, Request $request): Response
+    public function createResource(string $resource, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_transport_resource_create_' . $resource);
         $user = $this->user();
@@ -101,7 +103,7 @@ final class V3InternalTransportController extends AbstractController
 
     #[Route('/orders/{orderId}/assignment', name: 'assign', methods: ['POST'])]
     #[IsGranted('fulfillment.transport.assign')]
-    public function assign(string $orderId, Request $request): Response
+    public function assign(string $orderId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_transport_assign_' . $orderId);
         $user = $this->user();
@@ -113,7 +115,7 @@ final class V3InternalTransportController extends AbstractController
 
     #[Route('/orders/{orderId}/start', name: 'start', methods: ['POST'])]
     #[IsGranted('fulfillment.transport.execute')]
-    public function start(string $orderId, Request $request): Response
+    public function start(string $orderId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_transport_start_' . $orderId);
         $user = $this->user();
@@ -125,7 +127,7 @@ final class V3InternalTransportController extends AbstractController
 
     #[Route('/orders/{orderId}/completion', name: 'complete', methods: ['POST'])]
     #[IsGranted('fulfillment.transport.execute')]
-    public function complete(string $orderId, Request $request): Response
+    public function complete(string $orderId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_transport_complete_' . $orderId);
         $user = $this->user();
@@ -137,7 +139,7 @@ final class V3InternalTransportController extends AbstractController
 
     #[Route('/milk-runs/{milkRunId}/stops', name: 'milk_run_stop', methods: ['POST'])]
     #[IsGranted('fulfillment.transport.configure')]
-    public function addStop(string $milkRunId, Request $request): Response
+    public function addStop(string $milkRunId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_transport_milk_run_stop_' . $milkRunId);
         $user = $this->user();
@@ -149,7 +151,7 @@ final class V3InternalTransportController extends AbstractController
 
     #[Route('/milk-runs/{milkRunId}/dispatch', name: 'milk_run_dispatch', methods: ['POST'])]
     #[IsGranted('fulfillment.transport.write')]
-    public function dispatch(string $milkRunId, Request $request): Response
+    public function dispatch(string $milkRunId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_transport_milk_run_dispatch_' . $milkRunId);
         $user = $this->user();
@@ -180,7 +182,7 @@ final class V3InternalTransportController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;

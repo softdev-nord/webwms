@@ -18,7 +18,7 @@ use WebWMS\Service\DataHandlers\Configuration\ConfigurationDataHandler;
     class: 'ConfigurationServiceTest'
 )]
 #[CoversClass(ConfigurationService::class)]
-final class ConfigurationServiceTest extends TestCase
+class ConfigurationServiceTest extends TestCase
 {
     private ConfigurationService $configurationService;
 

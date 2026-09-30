@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace WebWMS\Documentation\Application;
 
+use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-final readonly class UserDocumentationService
+readonly class UserDocumentationService
 {
     private const array CATEGORY_ORDER = [
         'Grundlagen & Administration',
@@ -72,7 +73,7 @@ final readonly class UserDocumentationService
             'title' => $this->title($markdown, $slug),
             'markdown' => $markdown,
             'previous' => $index > 0 ? $documents[$index - 1] : null,
-            'next' => isset($documents[$index + 1]) ? $documents[$index + 1] : null,
+            'next' => $documents[$index + 1] ?? null,
         ];
     }
 
@@ -88,6 +89,7 @@ final readonly class UserDocumentationService
         foreach ($files as $file) {
             $documents[pathinfo($file, PATHINFO_FILENAME)] = $file;
         }
+
         ksort($documents);
 
         return $documents;
@@ -97,7 +99,7 @@ final readonly class UserDocumentationService
     {
         $content = file_get_contents($file);
         if ($content === false) {
-            throw new \RuntimeException(sprintf('Die Dokumentationsdatei "%s" konnte nicht gelesen werden.', basename($file)));
+            throw new RuntimeException(sprintf('Die Dokumentationsdatei "%s" konnte nicht gelesen werden.', basename($file)));
         }
 
         return $content;
@@ -135,12 +137,15 @@ final readonly class UserDocumentationService
         if (preg_match('/^(getting-started|tenants-and-sites|access-security|administration-workspace|list-search-and-pagination|v3-demo)$/', $slug) === 1) {
             return 'Grundlagen & Administration';
         }
+
         if (preg_match('/^(inventory-inbound|planned-inbound|unplanned-receipts|inbound-discrepancy|inventory-putaway|inventory-replenishment)/', $slug) === 1) {
             return 'Wareneingang';
         }
+
         if (preg_match('/^(advanced-fulfillment|inventory-pick|inventory-packing|inventory-shipping|inventory-loading|inventory-returns)/', $slug) === 1) {
             return 'Warenausgang';
         }
+
         if (str_contains($slug, 'api') || str_contains($slug, 'integration') || in_array($slug, ['device-integration', 'measurement-integration', 'storage-automation', 'wcs-integration'], true)) {
             return 'Integration & Technik';
         }

@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockInForSupplierOrderEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_in_for_supplier_order';
+    final public const string EVENT_NAME = 'stock.stock_in_for_supplier_order';
 
-    final public const EVENT = 'SI106';
+    final public const string EVENT = 'SI106';
 
     /**
      * SI106 WE zur Bestellung

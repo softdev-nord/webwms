@@ -7,12 +7,13 @@ namespace WebWMS\Integration\Infrastructure\Persistence;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use LogicException;
 use WebWMS\Integration\Domain\Printer;
 use WebWMS\Integration\Domain\PrinterNotFoundException;
 use WebWMS\Integration\Domain\PrintJob;
 use WebWMS\Integration\Domain\PrintRepository;
 
-final readonly class DbalPrintRepository implements PrintRepository
+readonly class DbalPrintRepository implements PrintRepository
 {
     public function __construct(
         private Connection $connection
@@ -66,7 +67,7 @@ final readonly class DbalPrintRepository implements PrintRepository
                 ['tenantId' => $job->tenantId, 'requestId' => $job->idempotencyKey],
             );
             if (!is_string($existing)) {
-                throw new \LogicException('The idempotent print job could not be resolved.');
+                throw new LogicException('The idempotent print job could not be resolved.');
             }
 
             return $this->job($job->tenantId, $existing);

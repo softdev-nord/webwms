@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockInToCostCentreEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_in_to_cost_centre';
+    final public const string EVENT_NAME = 'stock.stock_in_to_cost_centre';
 
-    final public const EVENT = 'SI109';
+    final public const string EVENT = 'SI109';
 
     /**
      * SI109 Einlagern direkt in Kostenstelle

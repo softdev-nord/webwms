@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class PutawayStrategy
+readonly class PutawayStrategy
 {
     public function __construct(
         private InventoryId $id,
@@ -25,9 +25,11 @@ final readonly class PutawayStrategy
         if (trim($code) === '' || mb_strlen($code) > 50) {
             throw new InvalidArgumentException('A putaway strategy code must contain 1 to 50 characters.');
         }
+
         if (preg_match('/^[A-Z0-9][A-Z0-9._-]{0,49}$/', $locationPrefix) !== 1) {
             throw new InvalidArgumentException('A target location prefix must use uppercase location characters.');
         }
+
         if ($priority < 1) {
             throw new InvalidArgumentException('A putaway strategy priority must be positive.');
         }

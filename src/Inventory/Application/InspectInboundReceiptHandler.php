@@ -15,7 +15,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\QualityCheckAnswer;
 use WebWMS\Inventory\Domain\StockDimensions;
 
-final readonly class InspectInboundReceiptHandler
+readonly class InspectInboundReceiptHandler
 {
     public function __construct(
         private InventoryRepository $inventory

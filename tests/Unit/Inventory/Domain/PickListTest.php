@@ -12,7 +12,7 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\PickList;
 
-final class PickListTest extends TestCase
+class PickListTest extends TestCase
 {
     public function testItNormalizesTheCode(): void
     {

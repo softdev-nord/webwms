@@ -15,7 +15,7 @@ use WebWMS\Administration\Domain\Tenant\Tenant;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Administration\Domain\Tenant\TenantRepository;
 
-final class CreateRoleHandlerTest extends TestCase
+class CreateRoleHandlerTest extends TestCase
 {
     public function testItPersistsARoleForAnExistingTenant(): void
     {
@@ -50,7 +50,7 @@ final class CreateRoleHandlerTest extends TestCase
     }
 }
 
-final class ExistingTenantRepository implements TenantRepository
+class ExistingTenantRepository implements TenantRepository
 {
     public function exists(TenantId $id): bool
     {
@@ -62,7 +62,7 @@ final class ExistingTenantRepository implements TenantRepository
     }
 }
 
-final class RoleMemoryRepository implements RoleRepository
+class RoleMemoryRepository implements RoleRepository
 {
     public ?Role $role = null;
 

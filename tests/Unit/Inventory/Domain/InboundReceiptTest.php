@@ -12,7 +12,7 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Inventory\Domain\InboundReceipt;
 use WebWMS\Inventory\Domain\InventoryId;
 
-final class InboundReceiptTest extends TestCase
+class InboundReceiptTest extends TestCase
 {
     public function testItUsesTheAdvisedQuantityWhenNoActualQuantityWasCaptured(): void
     {

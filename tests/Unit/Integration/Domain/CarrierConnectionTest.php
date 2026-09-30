@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\CarrierConnection;
 
-final class CarrierConnectionTest extends TestCase
+class CarrierConnectionTest extends TestCase
 {
     public function testItAcceptsSafeCarrierConfiguration(): void
     {
@@ -22,7 +23,7 @@ final class CarrierConnectionTest extends TestCase
     #[DataProvider('invalidConfiguration')]
     public function testItRejectsUnsafeConfiguration(string $code, string $endpoint, string $credential): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->connection($code, $endpoint, $credential);
     }
 

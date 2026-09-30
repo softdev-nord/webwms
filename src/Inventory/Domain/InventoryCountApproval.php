@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class InventoryCountApproval
+readonly class InventoryCountApproval
 {
     /** @param array<string, InventoryId> $ledgerEntryIds */
     public function __construct(

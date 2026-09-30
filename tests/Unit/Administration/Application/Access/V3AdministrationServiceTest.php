@@ -9,13 +9,13 @@ use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Administration\Application\Access\V3AdministrationService;
 
-final class V3AdministrationServiceTest extends TestCase
+class V3AdministrationServiceTest extends TestCase
 {
     public function testItStoresOnlyTheApiClientSecretHash(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())->method('fetchOne')->willReturn(1);
-        $connection->expects(self::once())
+        $connection->expects($this->once())->method('fetchOne')->willReturn(1);
+        $connection->expects($this->once())
             ->method('insert')
             ->with(
                 'wms_api_client',
@@ -28,7 +28,7 @@ final class V3AdministrationServiceTest extends TestCase
                 }),
             );
 
-        $result = (new V3AdministrationService($connection))->createApiClient(
+        $result = new V3AdministrationService($connection)->createApiClient(
             'tenant-id',
             'user-id',
             'ERP',
@@ -43,11 +43,11 @@ final class V3AdministrationServiceTest extends TestCase
     public function testApiClientStatusUpdateIsTenantScoped(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('update')
             ->with('wms_api_client', ['active' => 0], ['id' => 'client-id', 'tenant_id' => 'tenant-id'])
             ->willReturn(1);
 
-        (new V3AdministrationService($connection))->setApiClientActive('tenant-id', 'client-id', false);
+        new V3AdministrationService($connection)->setApiClientActive('tenant-id', 'client-id', false);
     }
 }

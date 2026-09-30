@@ -118,7 +118,7 @@ class Supplier
     /**
      * @var Collection<int, SupplierOrder>
      */
-    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: SupplierOrder::class)]
+    #[ORM\OneToMany(targetEntity: SupplierOrder::class, mappedBy: 'supplier')]
     #[Groups(['supplier:read'])]
     private Collection $supplierOrder;
 
@@ -260,7 +260,7 @@ class Supplier
     }
 
     /**
-     * @return Collection<SupplierOrder>
+     * @return Collection<int, SupplierOrder>
      */
     public function getSupplierOrders(): Collection
     {

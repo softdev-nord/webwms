@@ -17,7 +17,7 @@ use WebWMS\Twig\VarsExtension;
     class: 'VarsExtensionTest'
 )]
 #[CoversClass(VarsExtension::class)]
-final class VarsExtensionTest extends TestCase
+class VarsExtensionTest extends TestCase
 {
     public function testGetFiltersMethod(): void
     {

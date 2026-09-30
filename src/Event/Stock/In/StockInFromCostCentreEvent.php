@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockInFromCostCentreEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_in_from_cost_centre';
+    final public const string EVENT_NAME = 'stock.stock_in_from_cost_centre';
 
-    final public const EVENT = 'SI104';
+    final public const string EVENT = 'SI104';
 
     /**
      * SI104 Rückgabe von Kostenstelle

@@ -21,7 +21,7 @@ use WebWMS\Service\User\UserService;
     class: 'UserServiceTest'
 )]
 #[CoversClass(UserService::class)]
-final class UserServiceTest extends TestCase
+class UserServiceTest extends TestCase
 {
     private UserService $userService;
 

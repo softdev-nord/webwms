@@ -20,7 +20,7 @@ use WebWMS\Service\Stock\StockLayoutService;
     class: 'StockLayoutServiceTest'
 )]
 #[CoversClass(StockLayoutService::class)]
-final class StockLayoutServiceTest extends TestCase
+class StockLayoutServiceTest extends TestCase
 {
     private StockLayoutService $stockLayoutService;
 

@@ -20,7 +20,7 @@ use WebWMS\Service\Validation\ChangePasswordValidationService;
     class: 'ChangePasswordValidationServiceTest'
 )]
 #[CoversClass(ChangePasswordValidationService::class)]
-final class ChangePasswordValidationServiceTest extends TestCase
+class ChangePasswordValidationServiceTest extends TestCase
 {
     private ChangePasswordValidationService $changePasswordValidationService;
 

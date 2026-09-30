@@ -10,7 +10,7 @@ use WebWMS\Integration\Domain\ErpConnection;
 use WebWMS\Integration\Domain\ErpConnectionNotFoundException;
 use WebWMS\Integration\Domain\ErpConnectionRepository;
 
-final readonly class DbalErpConnectionRepository implements ErpConnectionRepository
+readonly class DbalErpConnectionRepository implements ErpConnectionRepository
 {
     public function __construct(
         private Connection $connection
@@ -27,6 +27,7 @@ final readonly class DbalErpConnectionRepository implements ErpConnectionReposit
         if ($referencesExist === false) {
             throw new ErpConnectionNotFoundException('The ERP connection tenant and creating user must exist.');
         }
+
         $this->connection->insert('wms_erp_connection', [
             'id' => $connection->id,
             'tenant_id' => $connection->tenantId,
@@ -75,6 +76,7 @@ final readonly class DbalErpConnectionRepository implements ErpConnectionReposit
         if ($userExists === false) {
             throw new ErpConnectionNotFoundException('The user changing the ERP connection must exist in the tenant.');
         }
+
         $affected = $this->connection->update('wms_erp_connection', [
             'active' => $active ? 1 : 0,
             'changed_by' => $changedBy,

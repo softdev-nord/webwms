@@ -106,12 +106,7 @@ class CustomerOrder
 
     /** One Customer Order has many Customer Order Positions. This is the inverse side.
      * @var Collection<int, CustomerOrderPos> */
-    #[ORM\OneToMany(
-        mappedBy: 'customerOrder',
-        targetEntity: CustomerOrderPos::class,
-        cascade: ['persist'],
-        fetch: 'EAGER'
-    )]
+    #[ORM\OneToMany(targetEntity: CustomerOrderPos::class, mappedBy: 'customerOrder', cascade: ['persist'], fetch: 'EAGER')]
     #[Groups(['customerOrder:read'])]
     private Collection|ArrayCollection $customerOrderPos;
 
@@ -234,6 +229,9 @@ class CustomerOrder
         return $this;
     }
 
+    /**
+     * @return Collection<int, CustomerOrderPos>
+     */
     public function getCustomerOrderPos(): Collection
     {
         return $this->customerOrderPos;

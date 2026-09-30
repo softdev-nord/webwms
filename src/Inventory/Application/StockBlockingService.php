@@ -8,12 +8,13 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
+use UnexpectedValueException;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Inventory\Domain\StockBlockReasonDefinition;
 use WebWMS\Inventory\Domain\StockBlockStatus;
 use WebWMS\Inventory\Domain\StockDimensions;
 
-final readonly class StockBlockingService
+readonly class StockBlockingService
 {
     public function __construct(
         private Connection $connection,
@@ -88,9 +89,11 @@ final readonly class StockBlockingService
         if ($source->status()->value === 'blocked') {
             throw new InvalidArgumentException('Already blocked stock cannot be blocked again.');
         }
+
         if ($quantity < 1) {
             throw new InvalidArgumentException('The blocked quantity must be positive.');
         }
+
         $blocked = StockDimensions::fromInput('blocked', $batchNumber, $serialNumber, $expiresAt);
 
         $this->connection->transactional(function () use ($id, $tenantId, $reasonId, $productId, $locationId, $source, $blocked, $quantity, $note, $actorId, $now, $batchNumber, $serialNumber, $expiresAt): void {
@@ -149,6 +152,7 @@ final readonly class StockBlockingService
             if (!$status->canReview()) {
                 throw new InvalidArgumentException('Only an open stock block can be reviewed.');
             }
+
             $this->assertUser($tenantId, $actorId);
             $this->connection->update('wms_stock_block', [
                 'status' => StockBlockStatus::Reviewed->value,
@@ -172,10 +176,12 @@ final readonly class StockBlockingService
             if ($row === false) {
                 throw new InventoryReferenceNotFoundException('The stock block does not exist in the tenant.');
             }
+
             $status = StockBlockStatus::from($this->string($row, 'status'));
             if (!$status->canRelease()) {
                 throw new InvalidArgumentException('Only a reviewed stock block can be released.');
             }
+
             $expiresAt = ($expiry = $this->nullableString($row, 'expires_at')) === null ? null : new DateTimeImmutable($expiry);
             ($this->transferStock)(new TransferStockCommand(
                 Uuid::v7()->toRfc4122(),
@@ -252,7 +258,7 @@ final readonly class StockBlockingService
     {
         $value = $row[$field] ?? null;
         if (!is_string($value) || $value === '') {
-            throw new \UnexpectedValueException(sprintf('Expected field "%s" to be a non-empty string.', $field));
+            throw new UnexpectedValueException(sprintf('Expected field "%s" to be a non-empty string.', $field));
         }
 
         return $value;
@@ -271,7 +277,7 @@ final readonly class StockBlockingService
     {
         $value = $row[$field] ?? null;
         if ((!is_int($value) && !is_string($value)) || filter_var($value, FILTER_VALIDATE_INT) === false) {
-            throw new \UnexpectedValueException(sprintf('Expected field "%s" to be numeric.', $field));
+            throw new UnexpectedValueException(sprintf('Expected field "%s" to be numeric.', $field));
         }
 
         return (int) $value;

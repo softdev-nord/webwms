@@ -22,7 +22,7 @@ use WebWMS\Inventory\Domain\StockPosting;
 use WebWMS\Inventory\Domain\StorageLocation;
 use WebWMS\Inventory\Domain\Warehouse;
 
-final readonly class DemoBootstrapService
+readonly class DemoBootstrapService
 {
     public const string TENANT_ID = '83b4f6dd-4ef6-4226-9081-e6a2cedf14dd';
 
@@ -131,6 +131,7 @@ final readonly class DemoBootstrapService
             ]);
             $created = true;
         }
+
         if (!$this->exists('wms_site', self::SITE_ID)) {
             $this->connection->insert('wms_site', [
                 'id' => self::SITE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'DEMO',
@@ -138,12 +139,14 @@ final readonly class DemoBootstrapService
                 'created_at' => $this->date($now), 'updated_at' => $this->date($now),
             ]);
         }
+
         if (!$this->exists('wms_role', self::ROLE_ID)) {
             $this->connection->insert('wms_role', [
                 'id' => self::ROLE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'ROLE_ADMIN',
                 'name' => 'Demo-Administrator', 'created_at' => $this->date($now), 'updated_at' => $this->date($now),
             ]);
         }
+
         foreach (V3PermissionCatalog::ALL as $permission) {
             if ($this->connection->fetchOne(
                 'SELECT 1 FROM wms_role_permission WHERE role_id = :roleId AND permission_key = :permission',
@@ -152,6 +155,7 @@ final readonly class DemoBootstrapService
                 $this->connection->insert('wms_role_permission', ['role_id' => self::ROLE_ID, 'permission_key' => $permission]);
             }
         }
+
         if (!$this->exists('wms_user_account', self::USER_ID)) {
             $password = $plainPassword ?? $this->generatePassword();
             $this->connection->insert('wms_user_account', [
@@ -162,12 +166,14 @@ final readonly class DemoBootstrapService
             $generatedPassword = $plainPassword === null ? $password : null;
             $created = true;
         }
+
         if ($this->connection->fetchOne(
             'SELECT 1 FROM wms_user_role WHERE user_id = :userId AND role_id = :roleId',
             ['userId' => self::USER_ID, 'roleId' => self::ROLE_ID],
         ) === false) {
             $this->connection->insert('wms_user_role', ['user_id' => self::USER_ID, 'role_id' => self::ROLE_ID]);
         }
+
         $this->createAdministrationDemo($now);
         if (!$this->exists('wms_printer', self::PRINTER_ID)) {
             $this->connection->insert('wms_printer', [
@@ -183,27 +189,35 @@ final readonly class DemoBootstrapService
                 'changed_at' => null,
             ]);
         }
+
         if (!$this->exists('wms_shopfloor_task', self::PLATFORM_TASK_ID)) {
             $this->connection->insert('wms_shopfloor_task', ['id' => self::PLATFORM_TASK_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'DEMO-SHOP-001', 'task_type' => 'putaway', 'title' => 'Demo-Wareneingang priorisiert einlagern', 'reference_type' => 'inbound_delivery', 'reference_id' => self::INBOUND_DELIVERY_ID, 'priority' => 90, 'status' => 'planned', 'planned_for' => $this->date($now), 'assigned_to' => self::USER_ID, 'created_by' => self::USER_ID, 'created_at' => $this->date($now), 'changed_by' => null, 'changed_at' => null]);
         }
+
         if (!$this->exists('wms_kpi_definition', self::PLATFORM_KPI_ID)) {
             $this->connection->insert('wms_kpi_definition', ['id' => self::PLATFORM_KPI_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'open-shopfloor', 'name' => 'Offene Shopfloor-Aufgaben', 'metric' => 'open_shopfloor_tasks', 'aggregation' => 'count', 'target_value' => 5, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_print_routing_rule', self::PLATFORM_PRINT_ROUTE_ID)) {
             $this->connection->insert('wms_print_routing_rule', ['id' => self::PLATFORM_PRINT_ROUTE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'demo-inbound-label', 'name' => 'Demo Wareneingangsetikett', 'document_type' => 'inbound_label', 'site_id' => self::SITE_ID, 'workstation' => null, 'process_key' => 'inbound.receipt', 'printer_id' => self::PRINTER_ID, 'priority' => 100, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_partner_account', self::PLATFORM_PARTNER_ACCOUNT_ID)) {
             $this->connection->insert('wms_partner_account', ['id' => self::PLATFORM_PARTNER_ACCOUNT_ID, 'tenant_id' => self::TENANT_ID, 'business_partner_id' => self::BUSINESS_PARTNER_ID, 'user_id' => self::USER_ID, 'permissions' => json_encode(['billing.read', 'media.read'], JSON_THROW_ON_ERROR), 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_automation_rule', self::PLATFORM_AUTOMATION_RULE_ID)) {
             $this->connection->insert('wms_automation_rule', ['id' => self::PLATFORM_AUTOMATION_RULE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'demo-shipment-notification', 'name' => 'Versandmeldung an Partner', 'event_name' => 'shipment.dispatched', 'conditions_json' => '{}', 'action_type' => 'notification', 'action_config' => json_encode(['channel' => 'portal'], JSON_THROW_ON_ERROR), 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_storage_fee_rule', self::PLATFORM_STORAGE_FEE_ID)) {
             $this->connection->insert('wms_storage_fee_rule', ['id' => self::PLATFORM_STORAGE_FEE_ID, 'tenant_id' => self::TENANT_ID, 'business_partner_id' => self::BUSINESS_PARTNER_ID, 'code' => 'demo-standard', 'name' => 'Standard-Lagergeld', 'price_per_unit_day' => 0.15, 'free_days' => 2, 'currency' => 'EUR', 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_value_added_service', self::PLATFORM_SERVICE_ID)) {
             $this->connection->insert('wms_value_added_service', ['id' => self::PLATFORM_SERVICE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'demo-repacking', 'name' => 'Umpacken', 'unit' => 'Stück', 'unit_price' => 1.25, 'currency' => 'EUR', 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_device', self::DEVICE_ID)) {
             $this->connection->insert('wms_device', [
                 'id' => self::DEVICE_ID,
@@ -218,6 +232,7 @@ final readonly class DemoBootstrapService
                 'changed_at' => null,
             ]);
         }
+
         if (!$this->exists('wms_measurement_device', self::MEASUREMENT_DEVICE_ID)) {
             $this->connection->insert('wms_measurement_device', [
                 'id' => self::MEASUREMENT_DEVICE_ID,
@@ -232,6 +247,7 @@ final readonly class DemoBootstrapService
                 'changed_at' => null,
             ]);
         }
+
         if (!$this->exists('wms_automation_device', self::AUTOMATION_DEVICE_ID)) {
             $this->connection->insert('wms_automation_device', [
                 'id' => self::AUTOMATION_DEVICE_ID,
@@ -248,6 +264,7 @@ final readonly class DemoBootstrapService
                 'changed_at' => null,
             ]);
         }
+
         if (!$this->exists('wms_wcs_connection', self::WCS_CONNECTION_ID)) {
             $this->connection->insert('wms_wcs_connection', [
                 'id' => self::WCS_CONNECTION_ID,
@@ -264,6 +281,7 @@ final readonly class DemoBootstrapService
                 'changed_at' => null,
             ]);
         }
+
         if (!$this->exists('wms_transport_endpoint', self::TRANSPORT_ENDPOINT_ID)) {
             $this->connection->insert('wms_transport_endpoint', [
                 'id' => self::TRANSPORT_ENDPOINT_ID,
@@ -299,6 +317,7 @@ final readonly class DemoBootstrapService
                 $now,
             ));
         }
+
         $this->createLocation($tenantId, self::LOCATION_A_ID, 'A-01-01', $now);
         $this->createLocation($tenantId, self::LOCATION_B_ID, 'B-01-01', $now);
         $this->createTopologyDemo($now);
@@ -318,6 +337,7 @@ final readonly class DemoBootstrapService
                 $now,
             ));
         }
+
         $this->createFulfillmentControlDemo($now);
         $this->extendedDataset->generate($now);
 
@@ -337,6 +357,7 @@ final readonly class DemoBootstrapService
                 'created_by' => self::USER_ID, 'created_at' => $this->date($now),
             ]);
         }
+
         if (!$this->exists('wms_warehouse_aisle', self::AISLE_ID)) {
             $this->connection->insert('wms_warehouse_aisle', [
                 'id' => self::AISLE_ID, 'tenant_id' => self::TENANT_ID, 'area_id' => self::AREA_ID,
@@ -344,6 +365,7 @@ final readonly class DemoBootstrapService
                 'created_at' => $this->date($now),
             ]);
         }
+
         $this->connection->update('wms_storage_location', [
             'area_id' => self::AREA_ID, 'aisle_id' => self::AISLE_ID, 'level_code' => '01', 'bin_code' => '01',
             'location_type' => 'storage', 'capacity_quantity' => 100, 'created_by' => self::USER_ID,
@@ -368,6 +390,7 @@ final readonly class DemoBootstrapService
                 'received_quantity' => 0, 'status' => 'advised',
             ]);
         }
+
         if (!$this->exists('wms_inbound_delivery', self::INBOUND_DELIVERY_ID)) {
             $this->connection->insert('wms_inbound_delivery', [
                 'id' => self::INBOUND_DELIVERY_ID, 'tenant_id' => self::TENANT_ID,
@@ -380,6 +403,7 @@ final readonly class DemoBootstrapService
                 'purchase_order_item_id' => self::PURCHASE_ORDER_ITEM_ID, 'advised_quantity' => 5, 'status' => 'advised',
             ]);
         }
+
         if (!$this->exists('wms_putaway_strategy', self::PUTAWAY_STRATEGY_ID)) {
             $this->connection->insert('wms_putaway_strategy', [
                 'id' => self::PUTAWAY_STRATEGY_ID, 'tenant_id' => self::TENANT_ID,
@@ -395,27 +419,35 @@ final readonly class DemoBootstrapService
         if (!$this->exists('wms_business_partner', self::BUSINESS_PARTNER_ID)) {
             $this->connection->insert('wms_business_partner', ['id' => self::BUSINESS_PARTNER_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'demo-customer', 'name' => 'Demo Kunde GmbH', 'partner_type' => 'customer', 'external_reference' => 'ERP-10001', 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_tenant_context', self::TENANT_CONTEXT_ID)) {
             $this->connection->insert('wms_tenant_context', ['id' => self::TENANT_CONTEXT_ID, 'tenant_id' => self::TENANT_ID, 'business_partner_id' => self::BUSINESS_PARTNER_ID, 'code' => 'demo-customer', 'name' => 'Demo Kundendatenraum', 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_number_range', self::NUMBER_RANGE_ID)) {
             $this->connection->insert('wms_number_range', ['id' => self::NUMBER_RANGE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'outbound', 'name' => 'Warenausgang', 'object_type' => 'outbound_order', 'prefix' => 'AU-', 'suffix' => '', 'padding' => 8, 'next_value' => 10001, 'maximum_value' => 99999999, 'gs1_company_prefix' => null, 'enabled' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_device_profile', self::DEVICE_PROFILE_ID)) {
             $this->connection->insert('wms_device_profile', ['id' => self::DEVICE_PROFILE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'mde-default', 'name' => 'Standard MDE', 'device_type' => 'scanner', 'start_route' => '/v3/inbound/planned', 'fullscreen' => 1, 'scan_suffix' => 'Enter', 'enabled' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if ($this->connection->fetchOne('SELECT 1 FROM wms_process_configuration WHERE tenant_id = :tenantId AND process_key = :processKey', ['tenantId' => self::TENANT_ID, 'processKey' => 'inbound.quality']) === false) {
             $this->connection->insert('wms_process_configuration', ['id' => Uuid::v7()->toRfc4122(), 'tenant_id' => self::TENANT_ID, 'process_key' => 'inbound.quality', 'name' => 'Qualitätsprüfung im Wareneingang', 'enabled' => 1, 'configuration' => '{}', 'changed_by' => self::USER_ID, 'changed_at' => $this->date($now)]);
         }
+
         if ($this->connection->fetchOne('SELECT 1 FROM wms_quality_checklist WHERE tenant_id = :tenantId AND code = :code', ['tenantId' => self::TENANT_ID, 'code' => 'INBOUND-STANDARD']) === false) {
             $this->connection->insert('wms_quality_checklist', ['id' => Uuid::v7()->toRfc4122(), 'tenant_id' => self::TENANT_ID, 'code' => 'INBOUND-STANDARD', 'name' => 'Standardprüfung Wareneingang', 'questions' => json_encode(['Verpackung unbeschädigt?', 'Artikelidentität korrekt?', 'Menge vollständig?'], JSON_THROW_ON_ERROR), 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_shipping_rule', self::SHIPPING_RULE_ID)) {
             $this->connection->insert('wms_shipping_rule', ['id' => self::SHIPPING_RULE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'DEMO-STANDARD', 'name' => 'Demo Standardversand', 'carrier' => 'DEMO', 'service' => 'STANDARD', 'min_weight_grams' => 0, 'max_weight_grams' => 31500, 'priority' => 100, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_weight_constraint', self::WEIGHT_CONSTRAINT_ID)) {
             $this->connection->insert('wms_weight_constraint', ['id' => self::WEIGHT_CONSTRAINT_ID, 'tenant_id' => self::TENANT_ID, 'scope' => 'package', 'reference_code' => null, 'max_weight_grams' => 31500, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if ($this->connection->fetchOne('SELECT 1 FROM wms_deployment_configuration WHERE tenant_id = :tenantId', ['tenantId' => self::TENANT_ID]) === false) {
             $this->connection->insert('wms_deployment_configuration', ['tenant_id' => self::TENANT_ID, 'deployment_mode' => 'on_premises', 'public_url' => 'http://www.webwms.local', 'storage_driver' => 'local', 'queue_transport' => 'rabbitmq', 'release_channel' => 'stable', 'changed_by' => self::USER_ID, 'changed_at' => $this->date($now)]);
         }
@@ -426,15 +458,19 @@ final readonly class DemoBootstrapService
         if (!$this->exists('wms_forklift', self::FORKLIFT_ID)) {
             $this->connection->insert('wms_forklift', ['id' => self::FORKLIFT_ID, 'tenant_id' => self::TENANT_ID, 'warehouse_id' => self::WAREHOUSE_ID, 'code' => 'forklift-01', 'name' => 'Demo Stapler 01', 'resource_type' => 'forklift', 'status' => 'available', 'assigned_user_id' => self::USER_ID, 'last_location_id' => self::LOCATION_A_ID, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_transport_rule', self::TRANSPORT_RULE_ID)) {
             $this->connection->insert('wms_transport_rule', ['id' => self::TRANSPORT_RULE_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'storage-to-pick', 'name' => 'Lager zur Zugriffszone', 'trigger_type' => 'prepositioning', 'source_prefix' => 'A-', 'target_prefix' => 'B-', 'transport_type' => 'prepositioning', 'resource_type' => 'forklift', 'priority' => 80, 'enabled' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_process_station', self::STATION_A_ID)) {
             $this->connection->insert('wms_process_station', ['id' => self::STATION_A_ID, 'tenant_id' => self::TENANT_ID, 'warehouse_id' => self::WAREHOUSE_ID, 'location_id' => self::LOCATION_A_ID, 'code' => 'station-a', 'name' => 'Lagerstation A', 'station_type' => 'storage', 'sequence_number' => 10, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_process_station', self::STATION_B_ID)) {
             $this->connection->insert('wms_process_station', ['id' => self::STATION_B_ID, 'tenant_id' => self::TENANT_ID, 'warehouse_id' => self::WAREHOUSE_ID, 'location_id' => self::LOCATION_B_ID, 'code' => 'station-b', 'name' => 'Bereitstellung B', 'station_type' => 'buffer', 'sequence_number' => 20, 'active' => 1, 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
         }
+
         if (!$this->exists('wms_milk_run', self::MILK_RUN_ID)) {
             $this->connection->insert('wms_milk_run', ['id' => self::MILK_RUN_ID, 'tenant_id' => self::TENANT_ID, 'code' => 'milk-run-01', 'name' => 'Demo Routenzug', 'warehouse_id' => self::WAREHOUSE_ID, 'schedule_type' => 'fixed', 'interval_minutes' => 60, 'next_departure_at' => null, 'status' => 'active', 'created_by' => self::USER_ID, 'created_at' => $this->date($now)]);
             $this->connection->insert('wms_milk_run_stop', ['id' => Uuid::v7()->toRfc4122(), 'milk_run_id' => self::MILK_RUN_ID, 'station_id' => self::STATION_A_ID, 'sequence_number' => 1, 'dwell_minutes' => 5]);
@@ -470,6 +506,7 @@ final readonly class DemoBootstrapService
         ) !== false) {
             return;
         }
+
         $this->inventory->post(new StockPosting(
             new InventoryId(Uuid::v7()->toRfc4122()),
             $tenantId,

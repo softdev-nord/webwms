@@ -6,11 +6,12 @@ namespace WebWMS\Integration\Infrastructure\Persistence;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use LogicException;
 use WebWMS\Integration\Domain\CarrierConnection;
 use WebWMS\Integration\Domain\CarrierConnectionNotFoundException;
 use WebWMS\Integration\Domain\CarrierConnectionRepository;
 
-final readonly class DbalCarrierConnectionRepository implements CarrierConnectionRepository
+readonly class DbalCarrierConnectionRepository implements CarrierConnectionRepository
 {
     public function __construct(
         private Connection $connection
@@ -25,6 +26,7 @@ final readonly class DbalCarrierConnectionRepository implements CarrierConnectio
         ) === false) {
             throw new CarrierConnectionNotFoundException('The carrier connection tenant and creating user must exist.');
         }
+
         $this->connection->insert('wms_carrier_connection', [
             'id' => $connection->id, 'tenant_id' => $connection->tenantId, 'name' => $connection->name,
             'carrier_code' => $connection->carrierCode, 'endpoint_url' => $connection->endpointUrl,
@@ -53,6 +55,7 @@ final readonly class DbalCarrierConnectionRepository implements CarrierConnectio
         if ($this->connection->fetchOne('SELECT 1 FROM wms_user_account WHERE id = :id AND tenant_id = :tenantId', ['id' => $actorId, 'tenantId' => $tenantId]) === false) {
             throw new CarrierConnectionNotFoundException('The acting user must exist in the tenant.');
         }
+
         if ($this->connection->update('wms_carrier_connection', [
             'active' => $active ? 1 : 0, 'changed_by' => $actorId, 'changed_at' => $at->format('Y-m-d H:i:s.u'),
         ], ['id' => $id, 'tenant_id' => $tenantId]) !== 1) {
@@ -69,9 +72,10 @@ final readonly class DbalCarrierConnectionRepository implements CarrierConnectio
         if (!is_string($payload)) {
             return null;
         }
+
         $response = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($response)) {
-            throw new \LogicException('The persisted carrier response is invalid.');
+            throw new LogicException('The persisted carrier response is invalid.');
         }
 
         return $response;

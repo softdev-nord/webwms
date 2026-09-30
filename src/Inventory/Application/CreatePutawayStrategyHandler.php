@@ -12,7 +12,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\PutawayStrategy;
 use WebWMS\Inventory\Domain\StockStatus;
 
-final readonly class CreatePutawayStrategyHandler
+readonly class CreatePutawayStrategyHandler
 {
     public function __construct(
         private InventoryRepository $inventory

@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockLendingToCostCentreEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_lending_to_cost_centre';
+    final public const string EVENT_NAME = 'stock.stock_lending_to_cost_centre';
 
-    final public const EVENT = 'SL101';
+    final public const string EVENT = 'SL101';
 
     /**
      * SL101 Ausleihen auf Kostenstelle

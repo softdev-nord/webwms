@@ -16,7 +16,7 @@ use WebWMS\Service\Validation\StockLocationValidationService;
     class: 'StockLocationValidationServiceTest'
 )]
 #[CoversClass(StockLocationValidationService::class)]
-final class StockLocationValidationServiceTest extends TestCase
+class StockLocationValidationServiceTest extends TestCase
 {
     private StockLocationValidationService $stockLocationValidationService;
 

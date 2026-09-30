@@ -21,13 +21,13 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'DeleteUserTypeTest'
 )]
 #[CoversClass(DeleteUserType::class)]
-final class DeleteUserTypeTest extends TestCase
+class DeleteUserTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects($this->exactly(1))
             ->method('add')
             ->willReturnOnConsecutiveCalls(
                 ['username', HiddenType::class, self::anything()],

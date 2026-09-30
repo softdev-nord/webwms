@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class CreatePutawayOrderCommand
+readonly class CreatePutawayOrderCommand
 {
     public function __construct(
         public string $orderId,

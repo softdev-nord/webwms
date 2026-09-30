@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockOutFromContainerEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_out_from_container';
+    final public const string EVENT_NAME = 'stock.stock_out_from_container';
 
-    final public const EVENT = 'SO103';
+    final public const string EVENT = 'SO103';
 
     /**
      * SO103 Auslagern aus Container

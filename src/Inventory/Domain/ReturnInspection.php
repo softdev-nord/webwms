@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class ReturnInspection
+readonly class ReturnInspection
 {
     public function __construct(
         private InventoryId $receiptId,

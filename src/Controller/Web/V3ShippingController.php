@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use DomainException;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,7 +27,7 @@ use WebWMS\Inventory\Application\RegisterShipmentLabelHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/shipping', name: 'v3_shipping_')]
-final class V3ShippingController extends AbstractController
+class V3ShippingController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -48,7 +51,7 @@ final class V3ShippingController extends AbstractController
 
     #[Route('/from-packing-order/{packingOrderId}', name: 'create', methods: ['POST'])]
     #[IsGranted('fulfillment.ship.write')]
-    public function create(string $packingOrderId, Request $request): Response
+    public function create(string $packingOrderId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_shipping_create_' . $packingOrderId);
         $user = $this->tenantUser();
@@ -56,6 +59,7 @@ final class V3ShippingController extends AbstractController
         if ($packingOrder === null || ($packingOrder['status'] ?? null) !== 'completed') {
             throw $this->createNotFoundException('Ein abgeschlossener Packauftrag ist erforderlich.');
         }
+
         $shipmentId = Uuid::v7()->toRfc4122();
         ($this->createShipment)(new CreateShipmentCommand(
             $shipmentId,
@@ -99,13 +103,14 @@ final class V3ShippingController extends AbstractController
 
     #[Route('/{shipmentId}/carrier-label', name: 'carrier_label', methods: ['POST'])]
     #[IsGranted('integration.carrier.execute')]
-    public function carrierLabel(string $shipmentId, Request $request): Response
+    public function carrierLabel(string $shipmentId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_shipping_carrier_label_' . $shipmentId);
         $shipment = $this->requiredShipment($shipmentId);
         if (($shipment['status'] ?? null) !== 'prepared') {
-            throw new \DomainException('Nur eine vorbereitete Sendung kann ein Carrier-Label erhalten.');
+            throw new DomainException('Nur eine vorbereitete Sendung kann ein Carrier-Label erhalten.');
         }
+
         $user = $this->tenantUser();
         $result = $this->carrierGateway->createLabel(
             $user->tenantId(),
@@ -130,7 +135,7 @@ final class V3ShippingController extends AbstractController
 
     #[Route('/{shipmentId}/label', name: 'label', methods: ['POST'])]
     #[IsGranted('fulfillment.ship.label')]
-    public function label(string $shipmentId, Request $request): Response
+    public function label(string $shipmentId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_shipping_label_' . $shipmentId);
         $this->requiredShipment($shipmentId);
@@ -150,13 +155,14 @@ final class V3ShippingController extends AbstractController
 
     #[Route('/{shipmentId}/print-label', name: 'print_label', methods: ['POST'])]
     #[IsGranted('integration.print_job.write')]
-    public function printLabel(string $shipmentId, Request $request): Response
+    public function printLabel(string $shipmentId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_shipping_print_' . $shipmentId);
         $shipment = $this->requiredShipment($shipmentId);
         if (!is_string($shipment['label_reference'] ?? null)) {
             throw new LogicException('Vor dem Druck muss ein Label registriert sein.');
         }
+
         $user = $this->tenantUser();
         $this->printGateway->queue(
             $user->tenantId(),
@@ -176,7 +182,7 @@ final class V3ShippingController extends AbstractController
 
     #[Route('/{shipmentId}/dispatch', name: 'dispatch', methods: ['POST'])]
     #[IsGranted('fulfillment.ship.dispatch')]
-    public function dispatch(string $shipmentId, Request $request): Response
+    public function dispatch(string $shipmentId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_shipping_dispatch_' . $shipmentId);
         $this->requiredShipment($shipmentId);
@@ -207,15 +213,9 @@ final class V3ShippingController extends AbstractController
     /** @param list<array<string, mixed>> $connections */
     private function carrierConnectionAvailable(array $connections, string $carrierCode): bool
     {
-        foreach ($connections as $connection) {
-            if ((bool) ($connection['active'] ?? false)
-                && is_string($connection['carrier_code'] ?? null)
-                && mb_strtoupper($carrierCode) === $connection['carrier_code']) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($connections, fn (array $connection): bool => (bool) ($connection['active'] ?? false)
+            && is_string($connection['carrier_code'] ?? null)
+            && mb_strtoupper($carrierCode) === $connection['carrier_code']);
     }
 
     /** @param array<string, mixed> $shipment */
@@ -233,7 +233,7 @@ final class V3ShippingController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;

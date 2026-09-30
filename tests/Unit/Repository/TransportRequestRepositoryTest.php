@@ -17,11 +17,11 @@ use WebWMS\Repository\TransportRequestRepository;
     class: 'TransportRequestRepositoryTest'
 )]
 #[CoversClass(TransportRequestRepository::class)]
-final class TransportRequestRepositoryTest extends TestCase
+class TransportRequestRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $transportRequestRepository = new TransportRequestRepository($registry);
 
         self::assertInstanceOf(TransportRequestRepository::class, $transportRequestRepository);

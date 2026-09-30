@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Infrastructure\Transport;
 
+use RuntimeException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -13,16 +14,16 @@ use WebWMS\Integration\Domain\CredentialProvider;
 use WebWMS\Integration\Domain\ErpConnection;
 use WebWMS\Integration\Infrastructure\Transport\HttpErpStatusTransport;
 
-final class HttpErpStatusTransportTest extends TestCase
+class HttpErpStatusTransportTest extends TestCase
 {
     public function testItPostsASignedIdempotentStatusEvent(): void
     {
         $response = new MockResponse('', ['http_code' => 202]);
         $client = new MockHttpClient($response);
         $credentials = $this->createMock(CredentialProvider::class);
-        $credentials->expects(self::once())->method('secret')->with('ERP_SIGNING_KEY')->willReturn('test-secret');
+        $credentials->expects($this->once())->method('secret')->with('ERP_SIGNING_KEY')->willReturn('test-secret');
 
-        (new HttpErpStatusTransport($client, $credentials))->deliver($this->connection(), $this->message());
+        new HttpErpStatusTransport($client, $credentials)->deliver($this->connection(), $this->message());
 
         self::assertSame('POST', $response->getRequestMethod());
         self::assertSame('https://erp.example.com/webwms/status-events', $response->getRequestUrl());
@@ -41,8 +42,8 @@ final class HttpErpStatusTransportTest extends TestCase
         $credentials = $this->createStub(CredentialProvider::class);
         $credentials->method('secret')->willReturn('test-secret');
 
-        $this->expectException(\RuntimeException::class);
-        (new HttpErpStatusTransport($client, $credentials))->deliver($this->connection(), $this->message());
+        $this->expectException(RuntimeException::class);
+        new HttpErpStatusTransport($client, $credentials)->deliver($this->connection(), $this->message());
     }
 
     private function connection(): ErpConnection

@@ -6,6 +6,6 @@ namespace WebWMS\Administration\Application\Site\CreateSite;
 
 use DomainException;
 
-final class SiteCodeAlreadyExists extends DomainException
+class SiteCodeAlreadyExists extends DomainException
 {
 }

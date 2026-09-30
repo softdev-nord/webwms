@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\WcsConnection;
 
-final class WcsConnectionTest extends TestCase
+class WcsConnectionTest extends TestCase
 {
     public function testItAcceptsAMaterialFlowController(): void
     {
@@ -19,7 +20,7 @@ final class WcsConnectionTest extends TestCase
 
     public function testItRejectsAnInsecureEndpoint(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new WcsConnection('id', 'tenant', 'WCS-01', 'WCS', 'wcs', 'http://wcs.example/commands', 'WCS_TOKEN', true, 'user', new DateTimeImmutable());
     }

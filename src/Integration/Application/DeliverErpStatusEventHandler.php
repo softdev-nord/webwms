@@ -9,7 +9,7 @@ use WebWMS\Integration\Domain\ErpConnectionRepository;
 use WebWMS\Integration\Domain\ErpStatusTransport;
 
 #[AsMessageHandler]
-final readonly class DeliverErpStatusEventHandler
+readonly class DeliverErpStatusEventHandler
 {
     public function __construct(
         private ErpConnectionRepository $connections,

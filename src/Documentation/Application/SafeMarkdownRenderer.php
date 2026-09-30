@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Documentation\Application;
 
-final class SafeMarkdownRenderer
+class SafeMarkdownRenderer
 {
     /** @return array{html: string, toc: list<array{level: int, id: string, title: string}>} */
     public function render(string $markdown, string $documentationPath): array
@@ -29,13 +29,15 @@ final class SafeMarkdownRenderer
             if ($paragraph === []) {
                 return;
             }
-            $html[] = '<p>' . $this->inline(implode(' ', array_map('trim', $paragraph)), $documentationPath) . '</p>';
+
+            $html[] = '<p>' . $this->inline(implode(' ', array_map(trim(...), $paragraph)), $documentationPath) . '</p>';
             $paragraph = [];
         };
         $flushList = function () use (&$list, &$listType, &$html, $documentationPath): void {
             if ($list === [] || $listType === null) {
                 return;
             }
+
             $items = array_map(fn (string $item): string => '<li>' . $this->inline(trim($item), $documentationPath) . '</li>', $list);
             $html[] = sprintf('<%1$s>%2$s</%1$s>', $listType, implode('', $items));
             $list = [];
@@ -55,6 +57,7 @@ final class SafeMarkdownRenderer
 
                 continue;
             }
+
             if (preg_match('/^```([a-z0-9_-]*)$/i', trim($line), $match) === 1) {
                 $flushParagraph();
                 $flushList();
@@ -62,6 +65,7 @@ final class SafeMarkdownRenderer
 
                 continue;
             }
+
             if (preg_match('/^(#{1,6})\s+(.+)$/', $line, $match) === 1) {
                 $flushParagraph();
                 $flushList();
@@ -71,10 +75,12 @@ final class SafeMarkdownRenderer
                 if ($level >= 2 && $level <= 3) {
                     $toc[] = ['level' => $level, 'id' => $id, 'title' => $title];
                 }
+
                 $html[] = sprintf('<h%d id="%s">%s</h%d>', $level, $id, $this->inline($title, $documentationPath), $level);
 
                 continue;
             }
+
             if ($this->isTableHeader($lines, $index)) {
                 $flushParagraph();
                 $flushList();
@@ -84,23 +90,27 @@ final class SafeMarkdownRenderer
 
                 continue;
             }
+
             if (preg_match('/^\s*[-*]\s+(.+)$/', $line, $match) === 1 || preg_match('/^\s*\d+\.\s+(.+)$/', $line, $match) === 1) {
                 $flushParagraph();
                 $type = preg_match('/^\s*\d+\./', $line) === 1 ? 'ol' : 'ul';
                 if ($listType !== null && $listType !== $type) {
                     $flushList();
                 }
+
                 $listType = $type;
                 $list[] = $match[1];
 
                 continue;
             }
+
             if ($line === '') {
                 $flushParagraph();
                 $flushList();
 
                 continue;
             }
+
             if ($list !== []) {
                 $list[array_key_last($list)] .= ' ' . trim($line);
             } else {
@@ -137,6 +147,7 @@ final class SafeMarkdownRenderer
             $rows[] = $this->cells($lines[$cursor]);
             ++$cursor;
         }
+
         $head = implode('', array_map(fn (string $cell): string => '<th>' . $this->inline($cell, $documentationPath) . '</th>', $headers));
         $body = '';
         foreach ($rows as $row) {
@@ -149,7 +160,7 @@ final class SafeMarkdownRenderer
     /** @return list<string> */
     private function cells(string $line): array
     {
-        return array_map('trim', explode('|', trim(trim($line), '|')));
+        return array_map(trim(...), explode('|', trim(trim($line), '|')));
     }
 
     private function inline(string $text, string $documentationPath): string
@@ -180,6 +191,7 @@ final class SafeMarkdownRenderer
         if (preg_match('/^(https?:\/\/|mailto:|#)/i', $target) === 1) {
             return $target;
         }
+
         if (preg_match('/^(?:\.\/)?([a-z0-9][a-z0-9-]*)\.md(#[a-z0-9-]+)?$/i', $target, $match) === 1) {
             return rtrim($documentationPath, '/') . '/' . strtolower($match[1]) . ($match[2] ?? '');
         }

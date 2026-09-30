@@ -12,7 +12,7 @@ use WebWMS\Administration\Domain\Access\RoleCreated;
 use WebWMS\Administration\Domain\Access\RoleId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final class RoleTest extends TestCase
+class RoleTest extends TestCase
 {
     public function testItNormalizesPermissionsAndPreventsDuplicates(): void
     {

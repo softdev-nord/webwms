@@ -10,15 +10,15 @@ use WebWMS\Inventory\Application\UnplannedReceiptService;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\UnplannedReceipt;
 
-final class UnplannedReceiptServiceTest extends TestCase
+class UnplannedReceiptServiceTest extends TestCase
 {
     public function testItAcceptsAndNormalizesAnUnplannedReceipt(): void
     {
         $inventory = $this->createMock(InventoryRepository::class);
-        $inventory->expects(self::once())->method('saveUnplannedReceipt')->with(self::callback(
+        $inventory->expects($this->once())->method('saveUnplannedReceipt')->with(self::callback(
             static fn (UnplannedReceipt $receipt): bool => $receipt->supplierCode() === 'SUP-1' && count($receipt->items()) === 1,
         ));
-        $receipt = (new UnplannedReceiptService($inventory))->accept(
+        $receipt = new UnplannedReceiptService($inventory)->accept(
             '11111111-1111-4111-8111-111111111111',
             'GR-1',
             'sup-1',

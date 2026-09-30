@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,7 @@ use WebWMS\Inventory\Application\UnplannedReceiptService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/unplanned-receipts', name: 'api_v3_inbound_')]
-final class InboundApiController extends AbstractController
+class InboundApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -40,14 +41,16 @@ final class InboundApiController extends AbstractController
         $payload = $request->toArray();
         $items = $payload['items'] ?? null;
         if (!is_array($items)) {
-            throw new \InvalidArgumentException('Field "items" must be an array.');
+            throw new InvalidArgumentException('Field "items" must be an array.');
         }
+
         /** @var list<array{productId: string, locationId: string, quantity: int, status: string, batchNumber: string|null, serialNumber: string|null}> $normalized */
         $normalized = [];
         foreach ($items as $item) {
             if (!is_array($item)) {
-                throw new \InvalidArgumentException('Each receipt item must be an object.');
+                throw new InvalidArgumentException('Each receipt item must be an object.');
             }
+
             $normalized[] = [
                 'productId' => $this->string($item, 'productId'),
                 'locationId' => $this->string($item, 'locationId'),
@@ -57,6 +60,7 @@ final class InboundApiController extends AbstractController
                 'serialNumber' => $this->optionalString($item, 'serialNumber'),
             ];
         }
+
         $user = $this->user();
         $receipt = $this->receipts->accept($user->tenantId(), $this->string($payload, 'code'), $this->string($payload, 'supplierCode'), $this->string($payload, 'supplierName'), $this->optionalString($payload, 'deliveryNote'), $normalized, $user->actorId(), new DateTimeImmutable());
 
@@ -88,7 +92,7 @@ final class InboundApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -107,7 +111,7 @@ final class InboundApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
         }
 
         return $value;

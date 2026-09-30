@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,7 +16,7 @@ use WebWMS\Platform\Application\PlatformControlService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/platform', name: 'api_v3_platform_')]
-final class PlatformApiController extends AbstractController
+class PlatformApiController extends AbstractController
 {
     public function __construct(
         private readonly PlatformControlService $platform
@@ -64,8 +65,9 @@ final class PlatformApiController extends AbstractController
         $payload = $request->toArray();
         $eventPayload = $payload['payload'] ?? null;
         if (!is_array($eventPayload)) {
-            throw new \InvalidArgumentException('Field "payload" must be an object.');
+            throw new InvalidArgumentException('Field "payload" must be an object.');
         }
+
         $user = $this->user();
 
         return new JsonResponse(['data' => ['evaluatedRules' => $this->platform->executeEvent($user->tenantId(), $user->actorId(), $this->string($payload, 'eventName'), $eventPayload, new DateTimeImmutable())]]);
@@ -101,8 +103,9 @@ final class PlatformApiController extends AbstractController
         $encoded = $this->string($payload, 'contentBase64');
         $content = base64_decode($encoded, true);
         if (!is_string($content)) {
-            throw new \InvalidArgumentException('Field "contentBase64" must contain valid base64.');
+            throw new InvalidArgumentException('Field "contentBase64" must contain valid base64.');
         }
+
         $user = $this->user();
         $id = $this->platform->captureMedia($user->tenantId(), $user->actorId(), $this->string($payload, 'aggregateType'), $this->string($payload, 'aggregateId'), $this->string($payload, 'filename'), $this->string($payload, 'mimeType'), $content, new DateTimeImmutable());
 
@@ -135,7 +138,7 @@ final class PlatformApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -146,7 +149,7 @@ final class PlatformApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
         }
 
         return $value;
@@ -157,7 +160,7 @@ final class PlatformApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value) && !is_float($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be numeric.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be numeric.', $field));
         }
 
         return (float) $value;

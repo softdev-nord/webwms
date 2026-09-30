@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -29,7 +31,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/inventory/control', name: 'v3_inventory_control_')]
 #[IsGranted('inventory.control.read')]
-final class V3InventoryControlController extends AbstractController
+class V3InventoryControlController extends AbstractController
 {
     public function __construct(
         private readonly InventoryControlService $control,
@@ -89,15 +91,18 @@ final class V3InventoryControlController extends AbstractController
         $this->csrf($request, 'inventory_bom');
         $items = json_decode($this->required($request, 'items'), true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($items)) {
-            throw new \InvalidArgumentException('Die Komponenten müssen ein JSON-Array sein.');
+            throw new InvalidArgumentException('Die Komponenten müssen ein JSON-Array sein.');
         }
+
         $normalized = [];
         foreach ($items as $item) {
             if (!is_array($item) || !is_string($item['productId'] ?? null) || !is_int($item['quantity'] ?? null)) {
-                throw new \InvalidArgumentException('Jede Komponente benötigt productId und quantity.');
+                throw new InvalidArgumentException('Jede Komponente benötigt productId und quantity.');
             }
+
             $normalized[] = ['productId' => $item['productId'], 'quantity' => $item['quantity']];
         }
+
         $user = $this->user();
         $this->control->createBom($user->tenantId(), $user->actorId(), $this->required($request, 'product_id'), $this->required($request, 'code'), $this->required($request, 'version'), $normalized, new DateTimeImmutable());
 
@@ -206,7 +211,7 @@ final class V3InventoryControlController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;
@@ -219,7 +224,7 @@ final class V3InventoryControlController extends AbstractController
         }
     }
 
-    private function success(string $message): Response
+    private function success(string $message): RedirectResponse
     {
         $this->addFlash('success', $message);
 

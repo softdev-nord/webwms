@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Inventory\Domain\StorageBinDefinition;
 
-final class StorageBinDefinitionTest extends TestCase
+class StorageBinDefinitionTest extends TestCase
 {
     public function testItDescribesALevelAndBinWithCapacity(): void
     {

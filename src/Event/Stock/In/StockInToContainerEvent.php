@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockInToContainerEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_in_to_container';
+    final public const string EVENT_NAME = 'stock.stock_in_to_container';
 
-    final public const EVENT = 'SI105';
+    final public const string EVENT = 'SI105';
 
     /**
      * SI105 Einlagern in Container

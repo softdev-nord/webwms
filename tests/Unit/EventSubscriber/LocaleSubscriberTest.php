@@ -20,7 +20,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'LocaleSubscriberTest'
 )]
 #[CoversClass(LocaleSubscriber::class)]
-final class LocaleSubscriberTest extends TestCase
+class LocaleSubscriberTest extends TestCase
 {
     public function testOnKernelRequestWithSessionLocale(): void
     {

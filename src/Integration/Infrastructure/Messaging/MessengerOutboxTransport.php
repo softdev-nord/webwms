@@ -9,7 +9,7 @@ use WebWMS\Integration\Application\PublishedIntegrationMessage;
 use WebWMS\Integration\Domain\OutboxMessage;
 use WebWMS\Integration\Domain\OutboxTransport;
 
-final readonly class MessengerOutboxTransport implements OutboxTransport
+readonly class MessengerOutboxTransport implements OutboxTransport
 {
     public function __construct(
         private MessageBusInterface $messageBus

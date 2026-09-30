@@ -16,7 +16,7 @@ use WebWMS\Service\Validation\ArticleValidationService;
     class: 'ArticleValidationServiceTest'
 )]
 #[CoversClass(ArticleValidationService::class)]
-final class ArticleValidationServiceTest extends TestCase
+class ArticleValidationServiceTest extends TestCase
 {
     private ArticleValidationService $articleValidationService;
 

@@ -7,13 +7,15 @@ namespace WebWMS\Integration\Infrastructure\Persistence;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use DomainException;
+use LogicException;
 use WebWMS\Integration\Domain\MachineCommand;
 use WebWMS\Integration\Domain\MachineStatus;
 use WebWMS\Integration\Domain\WcsConnection;
 use WebWMS\Integration\Domain\WcsConnectionNotFoundException;
 use WebWMS\Integration\Domain\WcsRepository;
 
-final readonly class DbalWcsRepository implements WcsRepository
+readonly class DbalWcsRepository implements WcsRepository
 {
     public function __construct(
         private Connection $connection,
@@ -71,8 +73,8 @@ final readonly class DbalWcsRepository implements WcsRepository
                 ]);
             } catch (UniqueConstraintViolationException) {
                 $existing = $this->commandByRequestId($command->tenantId, $command->requestId);
-                if ($existing === null) {
-                    throw new \LogicException('The idempotent machine command could not be resolved.');
+                if (!$existing instanceof MachineCommand) {
+                    throw new LogicException('The idempotent machine command could not be resolved.');
                 }
 
                 return $existing;
@@ -97,6 +99,7 @@ final readonly class DbalWcsRepository implements WcsRepository
             if ($row === false) {
                 throw new WcsConnectionNotFoundException('The machine command does not exist in the tenant.');
             }
+
             $allowed = [
                 MachineCommand::STATUS_QUEUED => [MachineCommand::STATUS_DISPATCHED, MachineCommand::STATUS_CANCELLED, MachineCommand::STATUS_FAILED],
                 MachineCommand::STATUS_DISPATCHED => [MachineCommand::STATUS_ACCEPTED, MachineCommand::STATUS_CANCELLED, MachineCommand::STATUS_FAILED],
@@ -107,8 +110,9 @@ final readonly class DbalWcsRepository implements WcsRepository
             ];
             $current = (string) $row['status'];
             if (!in_array($status, $allowed[$current] ?? [], true)) {
-                throw new \DomainException(sprintf('The machine command cannot transition from %s to %s.', $current, $status));
+                throw new DomainException(sprintf('The machine command cannot transition from %s to %s.', $current, $status));
             }
+
             $connection->update('wms_machine_command', ['status' => $status, 'message' => $message, 'changed_by' => $actorId, 'changed_at' => $this->date($at)], ['id' => $commandId]);
             $row['status'] = $status;
             $row['message'] = $message;
@@ -137,8 +141,8 @@ final readonly class DbalWcsRepository implements WcsRepository
                 ]);
             } catch (UniqueConstraintViolationException) {
                 $existing = $this->statusByExternalEventId($status->tenantId, $status->externalEventId);
-                if ($existing === null) {
-                    throw new \LogicException('The idempotent machine status could not be resolved.');
+                if (!$existing instanceof MachineStatus) {
+                    throw new LogicException('The idempotent machine status could not be resolved.');
                 }
 
                 return $existing;

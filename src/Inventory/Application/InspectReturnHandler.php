@@ -14,7 +14,7 @@ use WebWMS\Inventory\Domain\ReturnQualityDecision;
 use WebWMS\Inventory\Domain\ReturnResult;
 use WebWMS\Inventory\Domain\StockDimensions;
 
-final readonly class InspectReturnHandler
+readonly class InspectReturnHandler
 {
     public function __construct(
         private InventoryRepository $inventory

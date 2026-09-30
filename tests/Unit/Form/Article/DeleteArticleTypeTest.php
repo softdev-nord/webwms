@@ -19,7 +19,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'DeleteArticleTypeTest'
 )]
 #[CoversClass(DeleteArticleType::class)]
-final class DeleteArticleTypeTest extends TypeTestCase
+class DeleteArticleTypeTest extends TypeTestCase
 {
     public function testSubmitValidData(): void
     {

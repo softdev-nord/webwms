@@ -13,7 +13,7 @@ use WebWMS\Administration\Domain\Access\UserAccount;
 use WebWMS\Administration\Domain\Access\UserAccountRepository;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class DoctrineAccessRepository implements RoleRepository, UserAccountRepository
+readonly class DoctrineAccessRepository implements RoleRepository, UserAccountRepository
 {
     public function __construct(
         private Connection $connection

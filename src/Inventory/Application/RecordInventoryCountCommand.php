@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class RecordInventoryCountCommand
+readonly class RecordInventoryCountCommand
 {
     public function __construct(
         public string $countId,

@@ -24,13 +24,13 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'AddStockLocationTypeTest'
 )]
 #[CoversClass(AddStockLocationType::class)]
-final class AddStockLocationTypeTest extends TestCase
+class AddStockLocationTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects($this->exactly(1))
             ->method('add')
             ->willReturnOnConsecutiveCalls(
                 ['stockLocationLn', TextType::class, self::anything()],

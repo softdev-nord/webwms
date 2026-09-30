@@ -23,13 +23,13 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'AddUserTypeTest'
 )]
 #[CoversClass(AddUserType::class)]
-final class AddUserTypeTest extends TestCase
+class AddUserTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects($this->exactly(1))
             ->method('add')
             ->willReturnOnConsecutiveCalls(
                 ['username', TextType::class, self::anything()],

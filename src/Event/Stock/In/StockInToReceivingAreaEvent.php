@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockInToReceivingAreaEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_in_to_receiving_area';
+    final public const string EVENT_NAME = 'stock.stock_in_to_receiving_area';
 
-    final public const EVENT = 'SI108';
+    final public const string EVENT = 'SI108';
 
     /**
      * SI108 Einlagern direkt in WE-Zone

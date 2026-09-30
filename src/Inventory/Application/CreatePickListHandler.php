@@ -10,7 +10,7 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\PickList;
 
-final readonly class CreatePickListHandler
+readonly class CreatePickListHandler
 {
     public function __construct(
         private InventoryRepository $inventory

@@ -112,13 +112,7 @@ class SupplierOrder
 
     /** One Supplier Order has many Supplier Order Positions. This is the inverse side.
      * @var Collection<int, SupplierOrderPos> */
-    #[ORM\OneToMany(
-        mappedBy: 'supplierOrder',
-        targetEntity: SupplierOrderPos::class,
-        cascade: ['persist'],
-        fetch: 'EAGER',
-        orphanRemoval: true
-    )]
+    #[ORM\OneToMany(targetEntity: SupplierOrderPos::class, mappedBy: 'supplierOrder', cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
     #[Groups(['supplierOrder:read'])]
     private Collection $supplierOrderPos;
 
@@ -253,6 +247,9 @@ class SupplierOrder
         return $this;
     }
 
+    /**
+     * @return Collection<int, SupplierOrderPos>
+     */
     public function getSupplierOrderPos(): Collection
     {
         return $this->supplierOrderPos;

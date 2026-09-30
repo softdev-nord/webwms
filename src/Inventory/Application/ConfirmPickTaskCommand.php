@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class ConfirmPickTaskCommand
+readonly class ConfirmPickTaskCommand
 {
     public function __construct(
         public string $taskId,

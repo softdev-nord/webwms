@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\DeviceCommand;
 
-final class DeviceCommandTest extends TestCase
+class DeviceCommandTest extends TestCase
 {
     public function testItCapturesAQueuedRetrievalCommand(): void
     {
@@ -20,7 +21,7 @@ final class DeviceCommandTest extends TestCase
 
     public function testItRejectsAnUnsupportedCommandType(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->command('rotate', DeviceCommand::STATUS_QUEUED);
     }

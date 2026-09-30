@@ -20,7 +20,7 @@ use WebWMS\Service\SupplierOrder\SupplierOrderService;
     class: 'SupplierOrderServiceTest'
 )]
 #[CoversClass(SupplierOrderService::class)]
-final class SupplierOrderServiceTest extends TestCase
+class SupplierOrderServiceTest extends TestCase
 {
     private SupplierOrderService $supplierOrderService;
 

@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InboundDeliveryLine;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 
-final readonly class CreateInboundDeliveryHandler
+readonly class CreateInboundDeliveryHandler
 {
     public function __construct(
         private InventoryRepository $inventory

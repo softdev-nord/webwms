@@ -13,7 +13,7 @@ use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Access\UserStatus;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final class UserAccountTest extends TestCase
+class UserAccountTest extends TestCase
 {
     public function testItCreatesAnActiveUserWithUniqueRoles(): void
     {

@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryCountResult;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 
-final readonly class StartDueCycleCountHandler
+readonly class StartDueCycleCountHandler
 {
     public function __construct(
         private InventoryRepository $inventory

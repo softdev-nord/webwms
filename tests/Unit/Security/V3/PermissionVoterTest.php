@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use WebWMS\Security\V3\PermissionVoter;
 use WebWMS\Security\V3\SecurityUser;
 
-final class PermissionVoterTest extends TestCase
+class PermissionVoterTest extends TestCase
 {
     public function testItGrantsOnlyAssignedPermissions(): void
     {
@@ -25,17 +25,8 @@ final class PermissionVoterTest extends TestCase
         $token = new UsernamePasswordToken($user, 'v3', $user->getRoles());
         $voter = new PermissionVoter();
 
-        self::assertSame(
-            VoterInterface::ACCESS_GRANTED,
-            $voter->vote($token, null, ['inventory.stock.read']),
-        );
-        self::assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $voter->vote($token, null, ['inventory.stock.write']),
-        );
-        self::assertSame(
-            VoterInterface::ACCESS_ABSTAIN,
-            $voter->vote($token, null, ['ROLE_ADMIN']),
-        );
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, null, ['inventory.stock.read']));
+        self::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, null, ['inventory.stock.write']));
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, null, ['ROLE_ADMIN']));
     }
 }

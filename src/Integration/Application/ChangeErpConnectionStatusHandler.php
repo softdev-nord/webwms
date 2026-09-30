@@ -6,7 +6,7 @@ namespace WebWMS\Integration\Application;
 
 use WebWMS\Integration\Domain\ErpConnectionRepository;
 
-final readonly class ChangeErpConnectionStatusHandler
+readonly class ChangeErpConnectionStatusHandler
 {
     public function __construct(
         private ErpConnectionRepository $connections

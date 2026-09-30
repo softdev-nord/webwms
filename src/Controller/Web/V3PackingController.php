@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use DomainException;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,7 +26,7 @@ use WebWMS\Inventory\Application\OutboundProcessService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/packing', name: 'v3_packing_')]
-final class V3PackingController extends AbstractController
+class V3PackingController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -46,7 +49,7 @@ final class V3PackingController extends AbstractController
 
     #[Route('/from-pick-list/{pickListId}', name: 'create', methods: ['POST'])]
     #[IsGranted('fulfillment.pack.write')]
-    public function create(string $pickListId, Request $request): Response
+    public function create(string $pickListId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_packing_create_' . $pickListId);
         $user = $this->tenantUser();
@@ -54,9 +57,11 @@ final class V3PackingController extends AbstractController
         if ($pickList === null || ($pickList['status'] ?? null) !== 'completed') {
             throw $this->createNotFoundException('Eine abgeschlossene Pickliste ist erforderlich.');
         }
+
         if ($this->queries->outboundQualityDecision($user->tenantId(), $pickListId) !== 'released') {
-            throw new \DomainException('Vor dem Packen muss die Ausgangs-QS die Pickliste freigeben.');
+            throw new DomainException('Vor dem Packen muss die Ausgangs-QS die Pickliste freigeben.');
         }
+
         $packingOrderId = Uuid::v7()->toRfc4122();
         ($this->createPackingOrder)(new CreatePackingOrderCommand(
             $packingOrderId,
@@ -86,20 +91,23 @@ final class V3PackingController extends AbstractController
 
     #[Route('/{packingOrderId}/packages', name: 'package', methods: ['POST'])]
     #[IsGranted('fulfillment.pack.write')]
-    public function package(string $packingOrderId, Request $request): Response
+    public function package(string $packingOrderId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_packing_package_' . $packingOrderId);
         $this->requiredPackingOrder($packingOrderId);
         $taskIds = [];
         foreach ($request->request->all('pick_task_id') as $taskId) {
             if (!is_string($taskId) || trim($taskId) === '') {
-                throw new \InvalidArgumentException('Die ausgewählten Pickpositionen sind ungültig.');
+                throw new InvalidArgumentException('Die ausgewählten Pickpositionen sind ungültig.');
             }
+
             $taskIds[] = $taskId;
         }
+
         if ($taskIds === []) {
-            throw new \InvalidArgumentException('Mindestens eine Pickposition muss ausgewählt werden.');
+            throw new InvalidArgumentException('Mindestens eine Pickposition muss ausgewählt werden.');
         }
+
         $user = $this->tenantUser();
         $weight = $this->positiveInt($request, 'weight_grams');
         $this->outboundProcesses->assertPackageWeight($user->tenantId(), $weight);
@@ -120,7 +128,7 @@ final class V3PackingController extends AbstractController
 
     #[Route('/{packingOrderId}/complete', name: 'complete', methods: ['POST'])]
     #[IsGranted('fulfillment.pack.execute')]
-    public function complete(string $packingOrderId, Request $request): Response
+    public function complete(string $packingOrderId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_packing_complete_' . $packingOrderId);
         $this->requiredPackingOrder($packingOrderId);
@@ -151,7 +159,7 @@ final class V3PackingController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;
@@ -161,7 +169,7 @@ final class V3PackingController extends AbstractController
     {
         $value = $this->required($request, $field);
         if (!ctype_digit($value) || (int) $value <= 0) {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" muss eine positive Ganzzahl sein.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" muss eine positive Ganzzahl sein.', $field));
         }
 
         return (int) $value;

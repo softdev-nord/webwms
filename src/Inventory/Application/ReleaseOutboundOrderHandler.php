@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\OutboundOrderRelease;
 use WebWMS\Inventory\Domain\OutboundOrderResult;
 
-final readonly class ReleaseOutboundOrderHandler
+readonly class ReleaseOutboundOrderHandler
 {
     public function __construct(
         private InventoryRepository $inventory

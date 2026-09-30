@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'StockTransferStrategyTest'
 )]
 #[CoversClass(StockTransferStrategy::class)]
-final class StockTransferStrategyTest extends TestCase
+class StockTransferStrategyTest extends TestCase
 {
     private StockTransferStrategy $stockTransferStrategy;
 

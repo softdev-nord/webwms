@@ -17,11 +17,11 @@ use WebWMS\Repository\UserGroupRepository;
     class: 'UserGroupRepositoryTest'
 )]
 #[CoversClass(UserGroupRepository::class)]
-final class UserGroupRepositoryTest extends TestCase
+class UserGroupRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $userGroupRepository = new UserGroupRepository($registry);
 
         self::assertInstanceOf(UserGroupRepository::class, $userGroupRepository);

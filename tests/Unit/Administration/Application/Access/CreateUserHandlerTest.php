@@ -18,7 +18,7 @@ use WebWMS\Administration\Domain\Tenant\Tenant;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Administration\Domain\Tenant\TenantRepository;
 
-final class CreateUserHandlerTest extends TestCase
+class CreateUserHandlerTest extends TestCase
 {
     public function testItPersistsAUserWithTenantRoles(): void
     {
@@ -62,7 +62,7 @@ final class CreateUserHandlerTest extends TestCase
     }
 }
 
-final class FakePasswordHasher implements PasswordHasher
+class FakePasswordHasher implements PasswordHasher
 {
     public function hash(string $plainPassword): string
     {
@@ -70,7 +70,7 @@ final class FakePasswordHasher implements PasswordHasher
     }
 }
 
-final class UserTenantRepository implements TenantRepository
+class UserTenantRepository implements TenantRepository
 {
     public function exists(TenantId $id): bool
     {
@@ -82,9 +82,9 @@ final class UserTenantRepository implements TenantRepository
     }
 }
 
-final class AssignableRoleRepository implements RoleRepository
+readonly class AssignableRoleRepository implements RoleRepository
 {
-    public function __construct(private readonly bool $assignable = true)
+    public function __construct(private bool $assignable = true)
     {
     }
 
@@ -103,7 +103,7 @@ final class AssignableRoleRepository implements RoleRepository
     }
 }
 
-final class UserMemoryRepository implements UserAccountRepository
+class UserMemoryRepository implements UserAccountRepository
 {
     public ?UserAccount $user = null;
 

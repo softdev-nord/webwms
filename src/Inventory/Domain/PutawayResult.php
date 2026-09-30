@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Inventory\Domain;
 
-final readonly class PutawayResult
+readonly class PutawayResult
 {
     public function __construct(
         public string $status,

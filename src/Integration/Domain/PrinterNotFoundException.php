@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Integration\Domain;
 
-final class PrinterNotFoundException extends \DomainException
+use DomainException;
+
+class PrinterNotFoundException extends DomainException
 {
 }

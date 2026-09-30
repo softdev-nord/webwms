@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Domain;
 
 use InvalidArgumentException;
 
-final readonly class QualityCheckAnswer
+readonly class QualityCheckAnswer
 {
     public function __construct(
         private string $question,

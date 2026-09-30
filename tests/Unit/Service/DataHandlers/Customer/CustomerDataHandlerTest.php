@@ -25,7 +25,7 @@ use WebWMS\Service\DateTimeService;
     class: 'CustomerDataHandlerTest'
 )]
 #[CoversClass(CustomerDataHandler::class)]
-final class CustomerDataHandlerTest extends TestCase
+class CustomerDataHandlerTest extends TestCase
 {
     private CustomerDataHandler $customerDataHandler;
 
@@ -46,7 +46,7 @@ final class CustomerDataHandlerTest extends TestCase
 
     public function testSave(): void
     {
-        $customer = $this->createMock(Customer::class);
+        $customer = $this->createStub(Customer::class);
 
         $this->entityManager
             ->expects($this->once())
@@ -61,7 +61,7 @@ final class CustomerDataHandlerTest extends TestCase
 
     public function testDelete(): void
     {
-        $customer = $this->createMock(Customer::class);
+        $customer = $this->createStub(Customer::class);
 
         $this->entityManager
             ->expects($this->once())
@@ -77,7 +77,7 @@ final class CustomerDataHandlerTest extends TestCase
     public function testGetCustomerById(): void
     {
         $customerId = 123;
-        $expectedCustomer = $this->createMock(Customer::class);
+        $expectedCustomer = $this->createStub(Customer::class);
         $repository = $this->createMock(EntityRepository::class);
 
         $repository
@@ -100,7 +100,7 @@ final class CustomerDataHandlerTest extends TestCase
     public function testGetCustomerByNr(): void
     {
         $customerNr = 12345;
-        $expectedCustomer = $this->createMock(Customer::class);
+        $expectedCustomer = $this->createStub(Customer::class);
         $repository = $this->createMock(EntityRepository::class);
 
         $repository

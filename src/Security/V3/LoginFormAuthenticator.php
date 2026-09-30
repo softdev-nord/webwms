@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Security\V3;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Exception as DBALException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +19,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use WebWMS\Platform\Application\ExtensionModuleService;
 
-final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
+class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
-    public const LOGIN_ROUTE = 'app_v3_login';
+    public const string LOGIN_ROUTE = 'app_v3_login';
 
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
@@ -45,18 +46,32 @@ final class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
+    /**
+     * @throws DBALException
+     */
     public function onAuthenticationSuccess(
         Request $request,
         TokenInterface $token,
         string $firewallName,
-    ): Response {
+    ): RedirectResponse {
         $user = $token->getUser();
+
         $tenantId = $user instanceof TenantPermissionUser ? $user->tenantId() : null;
-        $this->extensionModule->recordLogin($tenantId, $user->getUserIdentifier(), true, $request->getClientIp(), $request->headers->get('User-Agent'), null, new DateTimeImmutable());
+        $this->extensionModule->recordLogin(
+            $tenantId,
+            $user?->getUserIdentifier(),
+            true,
+            $request->getClientIp(),
+            $request->headers->get('User-Agent'),
+            null, new DateTimeImmutable()
+        );
 
         return new RedirectResponse($this->urlGenerator->generate('v3_dashboard'));
     }
 
+    /**
+     * @throws DBALException
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         $tenantId = trim((string) $request->request->get('tenant_id'));

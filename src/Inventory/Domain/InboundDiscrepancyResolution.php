@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class InboundDiscrepancyResolution
+readonly class InboundDiscrepancyResolution
 {
     public function __construct(
         private InventoryId $receiptId,
@@ -25,6 +25,7 @@ final readonly class InboundDiscrepancyResolution
         if (!in_array($action, ['release', 'reject'], true)) {
             throw new InvalidArgumentException('The discrepancy action must be release or reject.');
         }
+
         if (trim($note) === '' || mb_strlen(trim($note)) > 255) {
             throw new InvalidArgumentException('A discrepancy resolution note must contain 1 to 255 characters.');
         }

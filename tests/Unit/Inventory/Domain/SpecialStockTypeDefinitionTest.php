@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Inventory\Domain\SpecialStockTypeDefinition;
 
-final class SpecialStockTypeDefinitionTest extends TestCase
+class SpecialStockTypeDefinitionTest extends TestCase
 {
     public function testItNormalizesAValidDefinition(): void
     {

@@ -16,7 +16,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'ConfigurationTest'
 )]
 #[CoversClass(Configuration::class)]
-final class ConfigurationTest extends TestCase
+class ConfigurationTest extends TestCase
 {
     private Configuration $configuration;
 

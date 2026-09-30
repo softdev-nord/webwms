@@ -15,10 +15,11 @@ use WebWMS\Administration\Domain\Site\SiteId;
 use WebWMS\Administration\Domain\Site\SiteStatus;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final class SiteTest extends TestCase
+class SiteTest extends TestCase
 {
-    private const SITE_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b9';
-    private const TENANT_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8';
+    private const string SITE_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b9';
+
+    private const string TENANT_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8';
 
     public function testItCreatesAnActiveSiteAndRecordsTheEvent(): void
     {
@@ -85,6 +86,7 @@ final class SiteTest extends TestCase
             new DateTimeImmutable(),
         );
         $site->deactivate(new DateTimeImmutable('+1 minute'));
+
         $reactivatedAt = new DateTimeImmutable('+2 minutes');
 
         $site->activate($reactivatedAt);

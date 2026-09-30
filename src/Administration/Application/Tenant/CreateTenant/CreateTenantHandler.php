@@ -8,7 +8,7 @@ use WebWMS\Administration\Domain\Tenant\Tenant;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Administration\Domain\Tenant\TenantRepository;
 
-final readonly class CreateTenantHandler
+readonly class CreateTenantHandler
 {
     public function __construct(
         private TenantRepository $tenants

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use WebWMS\Documentation\Application\UserDocumentationService;
 
-final class UserDocumentationServiceTest extends TestCase
+class UserDocumentationServiceTest extends TestCase
 {
     private UserDocumentationService $documentation;
 

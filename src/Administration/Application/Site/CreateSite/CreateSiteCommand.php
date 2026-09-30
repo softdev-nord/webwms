@@ -6,7 +6,7 @@ namespace WebWMS\Administration\Application\Site\CreateSite;
 
 use DateTimeImmutable;
 
-final readonly class CreateSiteCommand
+readonly class CreateSiteCommand
 {
     public function __construct(
         public string $siteId,

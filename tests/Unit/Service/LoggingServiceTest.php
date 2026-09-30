@@ -21,7 +21,7 @@ use WebWMS\Service\LoggingService;
     class: 'LoggingServiceTest'
 )]
 #[CoversClass(LoggingService::class)]
-final class LoggingServiceTest extends TestCase
+class LoggingServiceTest extends TestCase
 {
     private LoggingService $loggingService;
 
@@ -35,7 +35,7 @@ final class LoggingServiceTest extends TestCase
 
     public function testWrite(): void
     {
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $message = 'Log message';
         $username = 'JohnDoe';
 
@@ -52,7 +52,7 @@ final class LoggingServiceTest extends TestCase
      */
     public function testGetAllLogs(): void
     {
-        $jsonResponse = $this->createMock(JsonResponse::class);
+        $jsonResponse = $this->createStub(JsonResponse::class);
 
         $this->mockObject
             ->expects($this->once())

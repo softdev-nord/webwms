@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Integration\Domain;
 
-final class CarrierConnectionNotFoundException extends \RuntimeException
+use RuntimeException;
+
+class CarrierConnectionNotFoundException extends RuntimeException
 {
 }

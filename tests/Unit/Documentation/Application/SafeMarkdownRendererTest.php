@@ -7,7 +7,7 @@ namespace WebWMS\Tests\Unit\Documentation\Application;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Documentation\Application\SafeMarkdownRenderer;
 
-final class SafeMarkdownRendererTest extends TestCase
+class SafeMarkdownRendererTest extends TestCase
 {
     public function testRendersNavigationTablesAndEscapedContent(): void
     {
@@ -23,7 +23,7 @@ Siehe [Picking](picking-api.md) und `<script>alert(1)</script>`.
 | `open` | Offen |
 MARKDOWN;
 
-        $result = (new SafeMarkdownRenderer())->render($markdown, '/v3/help');
+        $result = new SafeMarkdownRenderer()->render($markdown, '/v3/help');
 
         self::assertStringContainsString('href="/v3/help/picking-api"', $result['html']);
         self::assertStringContainsString('&lt;script&gt;', $result['html']);
@@ -34,7 +34,7 @@ MARKDOWN;
 
     public function testRejectsUnsafeLinkTargets(): void
     {
-        $result = (new SafeMarkdownRenderer())->render('[Öffnen](javascript:alert(1))', '/v3/help');
+        $result = new SafeMarkdownRenderer()->render('[Öffnen](javascript:alert(1))', '/v3/help');
 
         self::assertStringContainsString('href="#"', $result['html']);
         self::assertStringNotContainsString('javascript:', $result['html']);

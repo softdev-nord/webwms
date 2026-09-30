@@ -17,11 +17,11 @@ use WebWMS\Repository\ArticleRepository;
     class: 'ArticleRepositoryTest'
 )]
 #[CoversClass(ArticleRepository::class)]
-final class ArticleRepositoryTest extends TestCase
+class ArticleRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $articleRepository = new ArticleRepository($registry);
 
         self::assertInstanceOf(ArticleRepository::class, $articleRepository);

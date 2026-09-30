@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace WebWMS\Administration\Application\Access;
 
-final class V3PermissionCatalog
+class V3PermissionCatalog
 {
     /** @var list<string> */
-    public const ALL = [
+    public const array ALL = [
         'administration.api_client.read', 'administration.api_client.write',
         'administration.configuration.read', 'administration.configuration.write',
         'administration.number_range.use',

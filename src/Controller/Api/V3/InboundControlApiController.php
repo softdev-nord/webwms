@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,7 +29,7 @@ use WebWMS\Inventory\Application\ReceiveReturnHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/inbound/control', name: 'api_v3_inbound_control_')]
-final class InboundControlApiController extends AbstractController
+class InboundControlApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -113,10 +114,11 @@ final class InboundControlApiController extends AbstractController
         $payload = $request->toArray();
         $questions = $payload['questions'] ?? null;
         if (!is_array($questions)) {
-            throw new \InvalidArgumentException('Field "questions" must be an array.');
+            throw new InvalidArgumentException('Field "questions" must be an array.');
         }
+
         $user = $this->user();
-        $id = $this->processes->createChecklist($user->tenantId(), $this->string($payload, 'code'), $this->string($payload, 'name'), array_map('strval', $questions), $user->actorId(), new DateTimeImmutable());
+        $id = $this->processes->createChecklist($user->tenantId(), $this->string($payload, 'code'), $this->string($payload, 'name'), array_map(strval(...), $questions), $user->actorId(), new DateTimeImmutable());
 
         return new JsonResponse(['data' => ['id' => $id]], Response::HTTP_CREATED);
     }
@@ -128,8 +130,9 @@ final class InboundControlApiController extends AbstractController
         $payload = $request->toArray();
         $content = base64_decode($this->string($payload, 'content'), true);
         if ($content === false) {
-            throw new \InvalidArgumentException('Field "content" must contain valid base64.');
+            throw new InvalidArgumentException('Field "content" must contain valid base64.');
         }
+
         $user = $this->user();
         $id = $this->processes->attach($user->tenantId(), $this->string($payload, 'aggregateType'), $this->string($payload, 'aggregateId'), $this->string($payload, 'category'), $this->string($payload, 'name'), $this->string($payload, 'mediaType'), $content, $user->actorId(), new DateTimeImmutable());
 
@@ -184,7 +187,7 @@ final class InboundControlApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -203,7 +206,7 @@ final class InboundControlApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
         }
 
         return $value;

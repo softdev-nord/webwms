@@ -17,11 +17,11 @@ use WebWMS\Repository\BookingMethodRepository;
     class: 'BookingMethodRepositoryTest'
 )]
 #[CoversClass(BookingMethodRepository::class)]
-final class BookingMethodRepositoryTest extends TestCase
+class BookingMethodRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $bookingMethodRepository = new BookingMethodRepository($registry);
 
         self::assertInstanceOf(BookingMethodRepository::class, $bookingMethodRepository);

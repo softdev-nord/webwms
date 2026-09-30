@@ -17,11 +17,11 @@ use WebWMS\Repository\TransportHistoryRepository;
     class: 'TransportHistoryRepositoryTest'
 )]
 #[CoversClass(TransportHistoryRepository::class)]
-final class TransportHistoryRepositoryTest extends TestCase
+class TransportHistoryRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $transportHistoryRepository = new TransportHistoryRepository($registry);
 
         self::assertInstanceOf(TransportHistoryRepository::class, $transportHistoryRepository);

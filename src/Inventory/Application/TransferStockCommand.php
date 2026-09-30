@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class TransferStockCommand
+readonly class TransferStockCommand
 {
     public function __construct(
         public string $transferId,

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace WebWMS\Integration\Domain;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 
-final readonly class IntegrationStatusEvent
+readonly class IntegrationStatusEvent
 {
     /** @param array<string, bool|int|string|null> $payload */
     public function __construct(
@@ -21,11 +22,12 @@ final readonly class IntegrationStatusEvent
     ) {
         foreach ([$id, $tenantId, $eventName, $aggregateType, $aggregateId, $createdBy] as $value) {
             if (trim($value) === '') {
-                throw new \InvalidArgumentException('An integration status event requires complete identifiers and names.');
+                throw new InvalidArgumentException('An integration status event requires complete identifiers and names.');
             }
         }
+
         if (mb_strlen($eventName) > 100 || mb_strlen($aggregateType) > 50 || $payload === []) {
-            throw new \InvalidArgumentException('An integration status event requires bounded names and a payload.');
+            throw new InvalidArgumentException('An integration status event requires bounded names and a payload.');
         }
     }
 }

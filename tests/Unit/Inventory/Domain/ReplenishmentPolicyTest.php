@@ -12,7 +12,7 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\ReplenishmentPolicy;
 
-final class ReplenishmentPolicyTest extends TestCase
+class ReplenishmentPolicyTest extends TestCase
 {
     public function testTargetQuantityMustExceedMinimumQuantity(): void
     {

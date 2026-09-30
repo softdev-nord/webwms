@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,7 +19,7 @@ use WebWMS\Integration\Application\StorageAutomationAdapter;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/integration/automation', name: 'v3_automation_')]
-final class V3AutomationController extends AbstractController
+class V3AutomationController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -66,13 +68,14 @@ final class V3AutomationController extends AbstractController
 
     #[Route('/devices/{deviceId}/status', name: 'device_status', methods: ['POST'])]
     #[IsGranted('integration.automation.write')]
-    public function deviceStatus(string $deviceId, Request $request): Response
+    public function deviceStatus(string $deviceId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_automation_device_status_' . $deviceId);
         $device = $this->queries->automationDevice($this->user()->tenantId(), $deviceId);
         if ($device === null) {
             throw $this->createNotFoundException('Das Automationsgerät wurde nicht gefunden.');
         }
+
         $user = $this->user();
         $this->automation->changeDeviceStatus($user->tenantId(), $deviceId, !(bool) $device['active'], $user->actorId(), new DateTimeImmutable());
         $this->addFlash('success', (bool) $device['active'] ? 'integration.flash.device_has_been_paused' : 'integration.flash.device_has_been_activated');
@@ -131,7 +134,7 @@ final class V3AutomationController extends AbstractController
 
     #[Route('/commands/{commandId}/status', name: 'command_status', methods: ['POST'])]
     #[IsGranted('integration.automation.execute')]
-    public function commandStatus(string $commandId, Request $request): Response
+    public function commandStatus(string $commandId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_automation_command_status_' . $commandId);
         $user = $this->user();
@@ -162,7 +165,7 @@ final class V3AutomationController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;

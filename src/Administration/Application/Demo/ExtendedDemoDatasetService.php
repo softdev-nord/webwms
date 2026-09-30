@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Uid\Uuid;
 
-final readonly class ExtendedDemoDatasetService
+readonly class ExtendedDemoDatasetService
 {
     public const int RECORDS_PER_ENTITY = 100;
 
@@ -167,7 +167,7 @@ final readonly class ExtendedDemoDatasetService
             'occurred_at' => $this->date($createdAt),
         ]);
 
-        return compact('warehouseId', 'locationId', 'productId', 'supplierId', 'strategyId', 'selectionRuleId', 'blockReasonId', 'stockKey', 'batchNumber', 'expiresAt');
+        return ['warehouseId' => $warehouseId, 'locationId' => $locationId, 'productId' => $productId, 'supplierId' => $supplierId, 'strategyId' => $strategyId, 'selectionRuleId' => $selectionRuleId, 'blockReasonId' => $blockReasonId, 'stockKey' => $stockKey, 'batchNumber' => $batchNumber, 'expiresAt' => $expiresAt];
     }
 
     /** @param array<string, string> $references */
@@ -505,6 +505,7 @@ final readonly class ExtendedDemoDatasetService
             $where[] = $column . ' = :' . $column;
             $parameters[$column] = $data[$column];
         }
+
         if ($this->connection->fetchOne(sprintf('SELECT 1 FROM %s WHERE %s', $table, implode(' AND ', $where)), $parameters) === false) {
             $this->connection->insert($table, $data);
         }

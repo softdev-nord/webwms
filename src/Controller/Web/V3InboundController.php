@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,7 +29,7 @@ use WebWMS\Inventory\Application\UnplannedReceiptService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/inbound', name: 'v3_inbound_')]
-final class V3InboundController extends AbstractController
+class V3InboundController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -55,7 +57,7 @@ final class V3InboundController extends AbstractController
 
     #[Route('/planned/{deliveryId}/lines/{lineId}/receive', name: 'planned_receive', methods: ['POST'])]
     #[IsGranted('inbound.planned.receive')]
-    public function receive(string $deliveryId, string $lineId, Request $request): Response
+    public function receive(string $deliveryId, string $lineId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_inbound_receive_' . $lineId);
         $user = $this->user();
@@ -76,7 +78,7 @@ final class V3InboundController extends AbstractController
 
     #[Route('/planned/receipts/{receiptId}/resolve', name: 'planned_resolve', methods: ['POST'])]
     #[IsGranted('inbound.planned.resolve')]
-    public function resolve(string $receiptId, Request $request): Response
+    public function resolve(string $receiptId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_inbound_resolve_' . $receiptId);
         $user = $this->user();
@@ -98,7 +100,7 @@ final class V3InboundController extends AbstractController
 
     #[Route('/planned/receipts/{receiptId}/inspect', name: 'planned_inspect', methods: ['POST'])]
     #[IsGranted('inbound.planned.inspect')]
-    public function inspect(string $receiptId, Request $request): Response
+    public function inspect(string $receiptId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_inbound_inspect_' . $receiptId);
         $user = $this->user();
@@ -127,7 +129,7 @@ final class V3InboundController extends AbstractController
 
     #[Route('/planned/receipts/{receiptId}/putaway', name: 'planned_putaway', methods: ['POST'])]
     #[IsGranted('inbound.planned.putaway')]
-    public function createPutaway(string $receiptId, Request $request): Response
+    public function createPutaway(string $receiptId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_inbound_putaway_' . $receiptId);
         $user = $this->user();
@@ -145,7 +147,7 @@ final class V3InboundController extends AbstractController
 
     #[Route('/planned/putaway/{orderId}/confirm', name: 'planned_putaway_confirm', methods: ['POST'])]
     #[IsGranted('inbound.planned.putaway')]
-    public function confirmPutaway(string $orderId, Request $request): Response
+    public function confirmPutaway(string $orderId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_inbound_putaway_confirm_' . $orderId);
         $user = $this->user();
@@ -223,7 +225,7 @@ final class V3InboundController extends AbstractController
 
     #[Route('/unplanned/{receiptId}/book', name: 'book', methods: ['POST'])]
     #[IsGranted('inbound.receipt.book')]
-    public function book(string $receiptId, Request $request): Response
+    public function book(string $receiptId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_inbound_book_' . $receiptId);
         $user = $this->user();
@@ -247,7 +249,7 @@ final class V3InboundController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;

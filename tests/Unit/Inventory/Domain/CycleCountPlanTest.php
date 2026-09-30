@@ -12,7 +12,7 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Inventory\Domain\CycleCountPlan;
 use WebWMS\Inventory\Domain\InventoryId;
 
-final class CycleCountPlanTest extends TestCase
+class CycleCountPlanTest extends TestCase
 {
     public function testItNormalizesItsCodeAndKeepsTheSchedule(): void
     {

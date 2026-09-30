@@ -6,6 +6,6 @@ namespace WebWMS\Administration\Application\Access\CreateRole;
 
 use DomainException;
 
-final class RoleCodeAlreadyExistsException extends DomainException
+class RoleCodeAlreadyExistsException extends DomainException
 {
 }

@@ -6,9 +6,9 @@ namespace WebWMS\Administration\Domain\Site;
 
 use InvalidArgumentException;
 
-final readonly class SiteCode
+readonly class SiteCode
 {
-    private const CODE_PATTERN = '/^[A-Z0-9][A-Z0-9_-]{1,19}$/';
+    private const string CODE_PATTERN = '/^[A-Z0-9][A-Z0-9_-]{1,19}$/';
 
     private string $value;
 

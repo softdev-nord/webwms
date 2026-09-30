@@ -10,7 +10,7 @@ use WebWMS\Integration\Domain\Device;
 use WebWMS\Integration\Domain\DeviceRepository;
 use WebWMS\Integration\Domain\ScanEvent;
 
-final readonly class DeviceIntegrationService
+readonly class DeviceIntegrationService
 {
     public function __construct(
         private DeviceRepository $repository,
@@ -44,9 +44,10 @@ final readonly class DeviceIntegrationService
         DateTimeImmutable $at,
     ): ScanEvent {
         $existing = $this->repository->scanByRequestId($tenantId, $requestId);
-        if ($existing !== null) {
+        if ($existing instanceof ScanEvent) {
             return $existing;
         }
+
         $this->repository->device($tenantId, $deviceId, true);
         $event = new ScanEvent(
             Uuid::v7()->toRfc4122(),

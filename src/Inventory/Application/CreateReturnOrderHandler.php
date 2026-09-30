@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\ReturnItem;
 use WebWMS\Inventory\Domain\ReturnOrder;
 
-final readonly class CreateReturnOrderHandler
+readonly class CreateReturnOrderHandler
 {
     public function __construct(
         private InventoryRepository $inventory

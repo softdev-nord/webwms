@@ -6,11 +6,12 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Inventory\Domain\SpecialStockTypeDefinition;
 
-final readonly class SpecialStockService
+readonly class SpecialStockService
 {
     public function __construct(
         private Connection $connection
@@ -57,8 +58,9 @@ final readonly class SpecialStockService
         $ownerReference = $this->optional($ownerReference, 100);
         $reason = trim($reason);
         if ($reason === '' || mb_strlen($reason) > 255) {
-            throw new \InvalidArgumentException('A classification reason with up to 255 characters is required.');
+            throw new InvalidArgumentException('A classification reason with up to 255 characters is required.');
         }
+
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $productId, $locationId, $stockKey, $typeId, $ownerReference, $reason, $actorId, $now): void {
             $stockExists = $connection->fetchOne(
                 'SELECT 1 FROM wms_stock_balance WHERE tenant_id = :tenantId AND product_id = :productId AND location_id = :locationId AND stock_key = :stockKey FOR UPDATE',
@@ -71,9 +73,11 @@ final readonly class SpecialStockService
             if (!$stockExists || $typeKind === false || !$this->actorExists($connection, $tenantId, $actorId)) {
                 throw new InventoryReferenceNotFoundException('Stock, special stock type and user must exist in the tenant.');
             }
+
             if ($typeKind === 'owner' && $ownerReference === null) {
-                throw new \InvalidArgumentException('An owner reference is required for owner stock.');
+                throw new InvalidArgumentException('An owner reference is required for owner stock.');
             }
+
             $criteria = ['tenant_id' => $tenantId, 'product_id' => $productId, 'location_id' => $locationId, 'stock_key' => $stockKey];
             $data = [
                 'special_stock_type_id' => $typeId, 'owner_reference' => $ownerReference,
@@ -87,6 +91,7 @@ final readonly class SpecialStockService
             } else {
                 $connection->update('wms_stock_classification', $data, $criteria);
             }
+
             $connection->insert('wms_stock_classification_event', [
                 'id' => Uuid::v7()->toRfc4122(), ...$criteria,
                 'special_stock_type_id' => $typeId, 'owner_reference' => $ownerReference,
@@ -115,9 +120,10 @@ final readonly class SpecialStockService
         if ($value === null || trim($value) === '') {
             return null;
         }
+
         $value = trim($value);
         if (mb_strlen($value) > $maximumLength) {
-            throw new \InvalidArgumentException('The owner reference is too long.');
+            throw new InvalidArgumentException('The owner reference is too long.');
         }
 
         return $value;

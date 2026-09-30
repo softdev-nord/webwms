@@ -16,7 +16,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'ChangePasswordTest'
 )]
 #[CoversClass(ChangePassword::class)]
-final class ChangePasswordTest extends TestCase
+class ChangePasswordTest extends TestCase
 {
     private ChangePassword $changePassword;
 

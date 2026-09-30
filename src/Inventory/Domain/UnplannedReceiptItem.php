@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Domain;
 
 use InvalidArgumentException;
 
-final readonly class UnplannedReceiptItem
+readonly class UnplannedReceiptItem
 {
     public function __construct(
         private InventoryId $id,
@@ -18,6 +18,7 @@ final readonly class UnplannedReceiptItem
         if ($quantity <= 0) {
             throw new InvalidArgumentException('An unplanned receipt quantity must be positive.');
         }
+
         if ($dimensions->serialNumber() !== null && $quantity !== 1) {
             throw new InvalidSerialStockException('An unplanned serial receipt must contain exactly one unit.');
         }

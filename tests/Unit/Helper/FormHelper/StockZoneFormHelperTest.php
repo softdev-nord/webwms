@@ -22,12 +22,12 @@ use WebWMS\Helper\FormHelper\StockZoneFormHelper;
     class: 'StockZoneFormHelperTest'
 )]
 #[CoversClass(StockZoneFormHelper::class)]
-final class StockZoneFormHelperTest extends TestCase
+class StockZoneFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
         $type = 'SomeType';
         $data = null;
         $options = [];
@@ -47,7 +47,7 @@ final class StockZoneFormHelperTest extends TestCase
     public function testAddStockZoneForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
 
         $formFactory
             ->expects($this->once())
@@ -64,8 +64,8 @@ final class StockZoneFormHelperTest extends TestCase
     public function testEditStockZoneForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $stockZone = $this->createMock(StockZone::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $stockZone = $this->createStub(StockZone::class);
 
         $formFactory
             ->expects($this->once())
@@ -82,8 +82,8 @@ final class StockZoneFormHelperTest extends TestCase
     public function testDeleteStockZoneForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $stockZone = $this->createMock(StockZone::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $stockZone = $this->createStub(StockZone::class);
 
         $formFactory
             ->expects($this->once())

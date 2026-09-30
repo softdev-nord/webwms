@@ -21,13 +21,13 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'ChangePasswordTypeTest'
 )]
 #[CoversClass(ChangePasswordType::class)]
-final class ChangePasswordTypeTest extends TestCase
+class ChangePasswordTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects($this->exactly(1))
             ->method('add')
             ->willReturnOnConsecutiveCalls(
                 ['oldPassword', PasswordType::class, self::anything()],

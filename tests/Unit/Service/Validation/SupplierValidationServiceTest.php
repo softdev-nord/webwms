@@ -16,7 +16,7 @@ use WebWMS\Service\Validation\SupplierValidationService;
     class: 'SupplierValidationServiceTest'
 )]
 #[CoversClass(SupplierValidationService::class)]
-final class SupplierValidationServiceTest extends TestCase
+class SupplierValidationServiceTest extends TestCase
 {
     private SupplierValidationService $supplierValidationService;
 

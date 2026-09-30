@@ -20,7 +20,7 @@ use WebWMS\Service\Stock\StockZoneService;
     class: 'StockZoneServiceTest'
 )]
 #[CoversClass(StockZoneService::class)]
-final class StockZoneServiceTest extends TestCase
+class StockZoneServiceTest extends TestCase
 {
     private StockZoneService $stockZoneService;
 

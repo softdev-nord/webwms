@@ -17,9 +17,9 @@ use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\Exception\PoorDocumentationException;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-final class ConvertPhpDocToClassAttributeRector extends AbstractRector
+class ConvertPhpDocToClassAttributeRector extends AbstractRector
 {
-    private const ROOT_NAMESPACE = '\WebWMS\Helper\Attribute';
+    private const string ROOT_NAMESPACE = '\WebWMS\Helper\Attribute';
 
     /**
      * @throws PoorDocumentationException

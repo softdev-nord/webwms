@@ -7,12 +7,13 @@ namespace WebWMS\Integration\Infrastructure\Persistence;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use LogicException;
 use WebWMS\Integration\Domain\Measurement;
 use WebWMS\Integration\Domain\MeasurementDevice;
 use WebWMS\Integration\Domain\MeasurementDeviceNotFoundException;
 use WebWMS\Integration\Domain\MeasurementRepository;
 
-final readonly class DbalMeasurementRepository implements MeasurementRepository
+readonly class DbalMeasurementRepository implements MeasurementRepository
 {
     public function __construct(
         private Connection $connection,
@@ -99,8 +100,8 @@ final readonly class DbalMeasurementRepository implements MeasurementRepository
                 ]);
             } catch (UniqueConstraintViolationException) {
                 $existing = $this->measurementByRequestId($measurement->tenantId, $measurement->requestId);
-                if ($existing === null) {
-                    throw new \LogicException('The idempotent measurement could not be resolved.');
+                if (!$existing instanceof Measurement) {
+                    throw new LogicException('The idempotent measurement could not be resolved.');
                 }
 
                 return $existing;
@@ -142,6 +143,7 @@ final readonly class DbalMeasurementRepository implements MeasurementRepository
             );
             $updated = $package === false ? 0 : $connection->update('wms_package', $values, ['id' => $measurement->targetId]);
         }
+
         if ($updated !== 1) {
             throw new MeasurementDeviceNotFoundException('The measurable target does not exist or cannot be changed in the tenant.');
         }

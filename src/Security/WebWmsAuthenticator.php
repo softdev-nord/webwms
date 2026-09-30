@@ -49,7 +49,7 @@ class WebWmsAuthenticator extends AbstractLoginFormAuthenticator
         $password = (string) $request->request->get('password');
 
         return new Passport(
-            new UserBadge($username, function ($userIdentifier) {
+            new UserBadge($username, function ($userIdentifier): object {
                 $user = $this->userRepository->findOneBy(['username' => $userIdentifier]);
 
                 if ($user === null) {

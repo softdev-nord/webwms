@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Domain;
 
 use InvalidArgumentException;
 
-final readonly class SpecialStockTypeDefinition
+readonly class SpecialStockTypeDefinition
 {
     public string $code;
 
@@ -26,9 +26,11 @@ final readonly class SpecialStockTypeDefinition
         if ($this->code === '' || mb_strlen($this->code) > 30) {
             throw new InvalidArgumentException('The special stock code must contain 1 to 30 characters.');
         }
+
         if ($this->name === '' || mb_strlen($this->name) > 100) {
             throw new InvalidArgumentException('The special stock name must contain 1 to 100 characters.');
         }
+
         if (!in_array($this->kind, ['owner', 'status', 'special'], true)) {
             throw new InvalidArgumentException('The special stock classification kind is invalid.');
         }

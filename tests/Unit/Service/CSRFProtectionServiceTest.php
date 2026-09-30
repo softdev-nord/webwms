@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Service;
 
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -19,17 +19,20 @@ use WebWMS\Service\CSRFProtectionService;
     class: 'CSRFProtectionServiceTest'
 )]
 #[CoversClass(CSRFProtectionService::class)]
-final class CSRFProtectionServiceTest extends TestCase
+class CSRFProtectionServiceTest extends TestCase
 {
     private CSRFProtectionService $csrfProtectionService;
 
-    private MockObject $mockObject;
+    /**
+     * @var Stub&RequestStack
+     */
+    private Stub $mockObject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->mockObject = $this->createMock(RequestStack::class);
+        $this->mockObject = $this->createStub(RequestStack::class);
         $this->csrfProtectionService = new CSRFProtectionService($this->mockObject);
     }
 

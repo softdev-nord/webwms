@@ -10,7 +10,7 @@ use WebWMS\Inventory\Domain\CycleCountPlan;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 
-final readonly class CreateCycleCountPlanHandler
+readonly class CreateCycleCountPlanHandler
 {
     public function __construct(
         private InventoryRepository $inventory

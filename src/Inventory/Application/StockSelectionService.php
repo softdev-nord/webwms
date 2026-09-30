@@ -7,13 +7,14 @@ namespace WebWMS\Inventory\Application;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Uid\Uuid;
+use UnexpectedValueException;
 use WebWMS\Inventory\Domain\AutomaticAllocationResult;
 use WebWMS\Inventory\Domain\InsufficientAvailableStockException;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Inventory\Domain\StockSelectionRuleDefinition;
 use WebWMS\Inventory\Domain\StockSelectionStrategy;
 
-final readonly class StockSelectionService
+readonly class StockSelectionService
 {
     public function __construct(
         private Connection $connection,
@@ -39,6 +40,7 @@ final readonly class StockSelectionService
         if ($warehouseId !== null) {
             $this->assertTenantReference('wms_warehouse', $warehouseId, $tenantId);
         }
+
         if ($productId !== null) {
             $this->assertTenantReference('wms_product_reference', $productId, $tenantId);
         }
@@ -76,9 +78,11 @@ final readonly class StockSelectionService
         if ($warehouseId !== null) {
             $this->assertTenantReference('wms_warehouse', $warehouseId, $tenantId);
         }
+
         if ($productId !== null) {
             $this->assertTenantReference('wms_product_reference', $productId, $tenantId);
         }
+
         $before = $this->rule($tenantId, $ruleId);
         $after = ['warehouse_id' => $warehouseId, 'product_id' => $productId, 'code' => $definition->code, 'name' => $definition->name, 'strategy' => $definition->strategy->value, 'priority' => $definition->priority, 'enabled' => $definition->enabled ? 1 : 0];
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $ruleId, $actorId, $now, $before, $after): void {
@@ -123,6 +127,7 @@ final readonly class StockSelectionService
                 if ($remaining === 0) {
                     break;
                 }
+
                 $available = $this->integer($candidate, 'available_quantity');
                 $quantity = min($remaining, $available);
                 ($this->allocateStock)(new AllocateStockCommand(
@@ -141,6 +146,7 @@ final readonly class StockSelectionService
                 ));
                 $remaining -= $quantity;
             }
+
             if ($remaining > 0) {
                 throw new InsufficientAvailableStockException('The selected strategy cannot fully cover the remaining reservation quantity.');
             }
@@ -203,7 +209,7 @@ final readonly class StockSelectionService
     {
         $value = $row[$field] ?? null;
         if (!is_string($value) || $value === '') {
-            throw new \UnexpectedValueException(sprintf('Expected field "%s" to be a non-empty string.', $field));
+            throw new UnexpectedValueException(sprintf('Expected field "%s" to be a non-empty string.', $field));
         }
 
         return $value;
@@ -222,10 +228,11 @@ final readonly class StockSelectionService
     {
         $value = $row[$field] ?? null;
         if (!is_int($value) && !is_string($value)) {
-            throw new \UnexpectedValueException(sprintf('Expected field "%s" to be numeric.', $field));
+            throw new UnexpectedValueException(sprintf('Expected field "%s" to be numeric.', $field));
         }
+
         if (filter_var($value, FILTER_VALIDATE_INT) === false) {
-            throw new \UnexpectedValueException(sprintf('Expected field "%s" to be numeric.', $field));
+            throw new UnexpectedValueException(sprintf('Expected field "%s" to be numeric.', $field));
         }
 
         return (int) $value;

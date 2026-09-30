@@ -10,7 +10,7 @@ use WebWMS\Integration\Domain\IntegrationTransportRepository;
 use WebWMS\Integration\Domain\ProtocolConfiguration;
 use WebWMS\Integration\Domain\TransportEndpoint;
 
-final readonly class IntegrationTransportService
+readonly class IntegrationTransportService
 {
     public function __construct(
         private IntegrationTransportRepository $repository,

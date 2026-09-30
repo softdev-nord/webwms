@@ -10,7 +10,7 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\LoadingManifest;
 
-final readonly class CreateLoadingManifestHandler
+readonly class CreateLoadingManifestHandler
 {
     public function __construct(
         private InventoryRepository $inventory

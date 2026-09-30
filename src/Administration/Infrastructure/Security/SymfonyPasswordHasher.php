@@ -9,7 +9,7 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use WebWMS\Administration\Domain\Access\PasswordHasher;
 use WebWMS\Security\V3\SecurityUser;
 
-final readonly class SymfonyPasswordHasher implements PasswordHasher
+readonly class SymfonyPasswordHasher implements PasswordHasher
 {
     public function __construct(
         private PasswordHasherFactoryInterface $factory

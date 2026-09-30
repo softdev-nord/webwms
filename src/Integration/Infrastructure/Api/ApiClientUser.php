@@ -6,7 +6,7 @@ namespace WebWMS\Integration\Infrastructure\Api;
 
 use WebWMS\Security\V3\TenantPermissionUser;
 
-final readonly class ApiClientUser implements TenantPermissionUser
+readonly class ApiClientUser implements TenantPermissionUser
 {
     /** @param list<string> $permissions */
     public function __construct(
@@ -41,9 +41,5 @@ final readonly class ApiClientUser implements TenantPermissionUser
     public function hasPermission(string $permission): bool
     {
         return in_array($permission, $this->permissions, true);
-    }
-
-    public function eraseCredentials(): void
-    {
     }
 }

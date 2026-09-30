@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class ReplenishmentConfirmation
+readonly class ReplenishmentConfirmation
 {
     public function __construct(
         private InventoryId $orderId,

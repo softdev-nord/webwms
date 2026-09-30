@@ -20,7 +20,7 @@ use WebWMS\Service\User\UserRight\UserRightService;
     class: 'UserRightServiceTest'
 )]
 #[CoversClass(UserRightService::class)]
-final class UserRightServiceTest extends TestCase
+class UserRightServiceTest extends TestCase
 {
     private UserRightService $userRightService;
 

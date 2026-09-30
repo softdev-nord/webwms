@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class CreateWarehouseCommand
+readonly class CreateWarehouseCommand
 {
     public function __construct(
         public string $warehouseId,

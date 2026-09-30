@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockInToDispatchAreaEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_in_to_dispatch_area';
+    final public const string EVENT_NAME = 'stock.stock_in_to_dispatch_area';
 
-    final public const EVENT = 'SI110';
+    final public const string EVENT = 'SI110';
 
     /**
      * SI110 Einlagern direkt in WA-Zone

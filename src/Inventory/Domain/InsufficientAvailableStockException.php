@@ -6,6 +6,6 @@ namespace WebWMS\Inventory\Domain;
 
 use DomainException;
 
-final class InsufficientAvailableStockException extends DomainException
+class InsufficientAvailableStockException extends DomainException
 {
 }

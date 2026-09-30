@@ -10,12 +10,12 @@ use WebWMS\Integration\Application\AcknowledgeOutboxMessageCommand;
 use WebWMS\Integration\Application\AcknowledgeOutboxMessageHandler;
 use WebWMS\Integration\Domain\OutboxRepository;
 
-final class AcknowledgeOutboxMessageHandlerTest extends TestCase
+class AcknowledgeOutboxMessageHandlerTest extends TestCase
 {
     public function testItDelegatesTheTenantScopedAcknowledgement(): void
     {
         $outbox = $this->createMock(OutboxRepository::class);
-        $outbox->expects(self::once())->method('acknowledge');
+        $outbox->expects($this->once())->method('acknowledge');
         $handler = new AcknowledgeOutboxMessageHandler($outbox);
 
         $handler(new AcknowledgeOutboxMessageCommand(

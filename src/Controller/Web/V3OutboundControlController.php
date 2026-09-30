@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,7 +19,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/outbound/control', name: 'v3_outbound_control_')]
 #[IsGranted('outbound.order.read')]
-final class V3OutboundControlController extends AbstractController
+class V3OutboundControlController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -151,7 +153,7 @@ final class V3OutboundControlController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;
@@ -171,7 +173,7 @@ final class V3OutboundControlController extends AbstractController
         }
     }
 
-    private function back(): Response
+    private function back(): RedirectResponse
     {
         return $this->redirectToRoute('v3_outbound_control_index');
     }

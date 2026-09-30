@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use WebWMS\Inventory\Domain\StockBlockReasonDefinition;
 use WebWMS\Inventory\Domain\StockBlockStatus;
 
-final class StockBlockTest extends TestCase
+class StockBlockTest extends TestCase
 {
     public function testReasonNormalizesInput(): void
     {

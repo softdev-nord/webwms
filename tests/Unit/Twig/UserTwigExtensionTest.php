@@ -22,7 +22,7 @@ use WebWMS\Twig\UserTwigExtension;
     class: 'UserTwigExtensionTest'
 )]
 #[CoversClass(UserTwigExtension::class)]
-final class UserTwigExtensionTest extends TestCase
+class UserTwigExtensionTest extends TestCase
 {
     private UserTwigExtension $userTwigExtension;
 

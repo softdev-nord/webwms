@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class PickConfirmation
+readonly class PickConfirmation
 {
     public function __construct(
         private InventoryId $taskId,
@@ -20,9 +20,10 @@ final readonly class PickConfirmation
         private UserId $confirmedBy,
         private DateTimeImmutable $confirmedAt
     ) {
-        if ($outcome === PickOutcome::Picked && $ledgerEntryId === null) {
+        if ($outcome === PickOutcome::Picked && !$ledgerEntryId instanceof InventoryId) {
             throw new InvalidArgumentException('A picked task requires a ledger entry ID.');
         }
+
         if (trim($note) === '' || mb_strlen($note) > 255) {
             throw new InvalidArgumentException('A pick confirmation note must contain 1 to 255 characters.');
         }

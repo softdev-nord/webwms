@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Domain;
 
 use InvalidArgumentException;
 
-final readonly class StorageBinDefinition
+readonly class StorageBinDefinition
 {
     public function __construct(
         private string $code,
@@ -20,9 +20,11 @@ final readonly class StorageBinDefinition
                 throw new InvalidArgumentException('Topology codes must contain uppercase letters, numbers, dots, underscores or hyphens.');
             }
         }
+
         if (!in_array($locationType, ['storage', 'receiving', 'shipping', 'quality', 'blocked'], true)) {
             throw new InvalidArgumentException('The storage location type is not supported.');
         }
+
         if ($capacityQuantity < 0) {
             throw new InvalidArgumentException('Storage bin capacity must not be negative.');
         }

@@ -11,7 +11,7 @@ use WebWMS\Administration\Domain\Site\SiteRepository;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Administration\Domain\Tenant\TenantRepository;
 
-final readonly class CreateSiteHandler
+readonly class CreateSiteHandler
 {
     public function __construct(
         private TenantRepository $tenants,

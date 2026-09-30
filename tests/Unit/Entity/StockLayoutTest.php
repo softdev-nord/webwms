@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'StockLayoutTest'
 )]
 #[CoversClass(StockLayout::class)]
-final class StockLayoutTest extends TestCase
+class StockLayoutTest extends TestCase
 {
     private StockLayout $stockLayout;
 

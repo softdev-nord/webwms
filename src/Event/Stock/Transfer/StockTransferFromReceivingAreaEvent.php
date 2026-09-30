@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockTransferFromReceivingAreaEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_transfer_from_receiving_area';
+    final public const string EVENT_NAME = 'stock.stock_transfer_from_receiving_area';
 
-    final public const EVENT = 'ST103';
+    final public const string EVENT = 'ST103';
 
     /**
      * ST103 Umlagerung aus WE-Zone ins LV-Lager (aus Artikelbelegung)

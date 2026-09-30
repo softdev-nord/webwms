@@ -11,12 +11,12 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Platform\Application\PlatformControlService;
 
-final class PlatformControlServiceTest extends TestCase
+class PlatformControlServiceTest extends TestCase
 {
     public function testItRejectsUnknownResources(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->service($this->createMock(Connection::class))->create('tenant', 'actor', 'unknown', [], new DateTimeImmutable());
+        $this->service($this->createStub(Connection::class))->create('tenant', 'actor', 'unknown', [], new DateTimeImmutable());
     }
 
     public function testItRejectsAnInvalidTaskTransition(): void
@@ -24,7 +24,7 @@ final class PlatformControlServiceTest extends TestCase
         $connection = $this->createMock(Connection::class);
         $connection->method('transactional')->willReturnCallback(static fn (callable $callback): mixed => $callback($connection));
         $connection->method('fetchOne')->willReturn('planned');
-        $connection->expects(self::never())->method('update');
+        $connection->expects($this->never())->method('update');
 
         $this->expectException(DomainException::class);
         $this->service($connection)->transitionTask('tenant', 'actor', 'task', 'completed', new DateTimeImmutable());
@@ -33,7 +33,7 @@ final class PlatformControlServiceTest extends TestCase
     public function testItRejectsOversizedMediaBeforePersistence(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::never())->method('insert');
+        $connection->expects($this->never())->method('insert');
 
         $this->expectException(InvalidArgumentException::class);
         $this->service($connection)->captureMedia('tenant', 'actor', 'product', 'aggregate', 'photo.jpg', 'image/jpeg', str_repeat('x', 5_000_001), new DateTimeImmutable());
@@ -51,7 +51,7 @@ final class PlatformControlServiceTest extends TestCase
     public function testSearchTermsBelowTwoCharactersDoNotQueryPersistence(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::never())->method('fetchAllAssociative');
+        $connection->expects($this->never())->method('fetchAllAssociative');
 
         self::assertSame([], $this->service($connection)->search('tenant', 'x'));
     }

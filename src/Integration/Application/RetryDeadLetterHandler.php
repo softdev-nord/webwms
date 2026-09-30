@@ -6,7 +6,7 @@ namespace WebWMS\Integration\Application;
 
 use WebWMS\Integration\Domain\OutboxRepository;
 
-final readonly class RetryDeadLetterHandler
+readonly class RetryDeadLetterHandler
 {
     public function __construct(
         private OutboxRepository $outbox

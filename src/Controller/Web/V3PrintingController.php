@@ -5,19 +5,23 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use DomainException;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
+use Throwable;
 use WebWMS\Integration\Application\ApiV3QueryService;
 use WebWMS\Integration\Application\PrintGateway;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/integration/printing', name: 'v3_printing_')]
-final class V3PrintingController extends AbstractController
+class V3PrintingController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -82,7 +86,7 @@ final class V3PrintingController extends AbstractController
 
     #[Route('/printers/{printerId}/status', name: 'printer_status', methods: ['POST'])]
     #[IsGranted('integration.printer.write')]
-    public function printerStatus(string $printerId, Request $request): Response
+    public function printerStatus(string $printerId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_printing_printer_status_' . $printerId);
         $printer = $this->requiredPrinter($printerId);
@@ -147,19 +151,19 @@ final class V3PrintingController extends AbstractController
 
     #[Route('/jobs/{jobId}/execute', name: 'job_execute', methods: ['POST'])]
     #[IsGranted('integration.print_job.execute')]
-    public function executeJob(string $jobId, Request $request): Response
+    public function executeJob(string $jobId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_printing_job_execute_' . $jobId);
         $job = $this->requiredJob($jobId);
         if (!in_array($job['status'] ?? null, ['queued', 'failed'], true)) {
-            throw new \DomainException('Nur wartende oder fehlgeschlagene Druckaufträge können ausgeführt werden.');
+            throw new DomainException('Nur wartende oder fehlgeschlagene Druckaufträge können ausgeführt werden.');
         }
 
         try {
             $this->gateway->execute($this->tenantUser()->tenantId(), $jobId, new DateTimeImmutable());
             $this->addFlash('success', 'printing.flash.print_job_was_executed_successfully');
-        } catch (\Throwable $exception) {
-            $message = trim($exception->getMessage());
+        } catch (Throwable $throwable) {
+            $message = trim($throwable->getMessage());
             $this->addFlash('danger', $message === ''
                 ? 'printing.flash.print_job_failed'
                 : ['id' => 'printing.flash.print_job_failed_with_reason', 'parameters' => ['%reason%' => $message]]);
@@ -194,7 +198,7 @@ final class V3PrintingController extends AbstractController
     {
         $value = filter_var($request->request->get($field), FILTER_VALIDATE_INT);
         if (!is_int($value) || $value < 1) {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" muss eine positive Ganzzahl sein.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" muss eine positive Ganzzahl sein.', $field));
         }
 
         return $value;
@@ -204,7 +208,7 @@ final class V3PrintingController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;

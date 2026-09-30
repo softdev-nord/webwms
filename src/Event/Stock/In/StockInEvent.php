@@ -27,9 +27,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockInEvent extends BaseEvent
 {
-    final public const EVENT_NAME = 'stock.stock_in';
+    final public const string EVENT_NAME = 'stock.stock_in';
 
-    final public const EVENT = 'SI101';
+    final public const string EVENT = 'SI101';
 
     /**
      * SI101 Einlagern direkt.
@@ -85,7 +85,7 @@ class StockInEvent extends BaseEvent
                 }
 
                 if ($fullPal <= $stockUnits) {
-                    $freeStockLocations[] = (new FreeStockLocationDto())
+                    $freeStockLocations[] = new FreeStockLocationDto()
                         ->setId($stockLocation->getId())
                         ->setSuId(++$suId)
                         ->setLn((int) $stockLocation->getLn())

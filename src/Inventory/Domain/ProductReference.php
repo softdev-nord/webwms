@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use InvalidArgumentException;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class ProductReference
+readonly class ProductReference
 {
     public function __construct(
         private InventoryId $id,

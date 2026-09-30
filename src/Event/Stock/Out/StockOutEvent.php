@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockOutEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_out';
+    final public const string EVENT_NAME = 'stock.stock_out';
 
-    final public const EVENT = 'SO101';
+    final public const string EVENT = 'SO101';
 
     /**
      * SO101 Auslagern direkt

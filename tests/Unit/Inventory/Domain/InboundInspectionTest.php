@@ -15,7 +15,7 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\QualityCheckAnswer;
 use WebWMS\Inventory\Domain\StockDimensions;
 
-final class InboundInspectionTest extends TestCase
+class InboundInspectionTest extends TestCase
 {
     public function testItRejectsAcceptanceWithAFailedCheck(): void
     {

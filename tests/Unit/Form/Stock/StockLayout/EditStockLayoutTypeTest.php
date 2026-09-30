@@ -21,13 +21,13 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'EditStockLayoutTypeTest'
 )]
 #[CoversClass(EditStockLayoutType::class)]
-final class EditStockLayoutTypeTest extends TestCase
+class EditStockLayoutTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects($this->exactly(1))
             ->method('add')
             ->willReturnOnConsecutiveCalls(
                 ['stockNr', TextType::class, self::anything()],

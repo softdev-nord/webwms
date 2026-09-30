@@ -11,17 +11,17 @@ use WebWMS\Integration\Domain\IntegrationTransportRepository;
 use WebWMS\Integration\Domain\ProtocolConfiguration;
 use WebWMS\Integration\Domain\TransportEndpoint;
 
-final class IntegrationTransportServiceTest extends TestCase
+class IntegrationTransportServiceTest extends TestCase
 {
     public function testItRegistersEndpointAndProtocolAtomically(): void
     {
         $repository = $this->createMock(IntegrationTransportRepository::class);
-        $repository->expects(self::once())->method('add')->with(
+        $repository->expects($this->once())->method('add')->with(
             self::isInstanceOf(TransportEndpoint::class),
             self::callback(static fn (ProtocolConfiguration $configuration): bool => $configuration->protocol === 'raw_tcp'),
         );
 
-        $endpoint = (new IntegrationTransportService($repository))->register(
+        $endpoint = new IntegrationTransportService($repository)->register(
             'tenant', 'tcp-01', 'Conveyor', 'tcp_client', 'tcp://machine.local:9100', 'tcp_token',
             'raw_tcp', 'stx_etx', 3000, 10000, true, 'user', new DateTimeImmutable(),
         );

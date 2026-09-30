@@ -74,12 +74,12 @@ administration:
         activatable_processes: 'Aktivierbare Prozesse'
         area: 'Bereich'
         azure_blob: 'Azure Blob'
-        business_partner_and_amp_data_rooms: 'Geschäftspartner &amp; Datenräume'
+        business_partner_and_amp_data_rooms: 'Geschäftspartner & Datenräume'
         carrier: 'Carrier'
         centrally_manage_business_partners_data_rooms_sso_number_ranges_processe: 'Geschäftspartner, Datenräume, SSO, Nummernkreise, Prozesse und Betriebsprofile zentral verwalten.'
         change_log: 'Änderungsjournal'
         client: 'Mandant'
-        client_and_amp_configuration: 'Mandant &amp; Konfiguration'
+        client_and_amp_configuration: 'Mandant & Konfiguration'
         create: 'Anlegen'
         create_idp: 'IdP anlegen'
         create_number_range: 'Nummernkreis anlegen'
@@ -96,7 +96,7 @@ administration:
         issuer_metadata_url: 'Issuer-/Metadata-URL'
         local_storage: 'Lokaler Speicher'
         location: 'Standort'
-        locations_and_amp_warehouse: 'Standorte &amp; Lager'
+        locations_and_amp_warehouse: 'Standorte & Lager'
         next_value: 'Nächster Wert'
         no_business_partners_yet: 'Noch keine Geschäftspartner.'
         no_changes_logged_yet: 'Noch keine Änderungen protokolliert.'
@@ -131,7 +131,7 @@ administration:
         test_number: 'Testnummer'
         time_point_in_time: 'Zeitpunkt'
         type: 'Typ'
-        web_scanner_and_amp_operating_profile: 'Web-, Scanner- &amp; Betriebsprofil'
+        web_scanner_and_amp_operating_profile: 'Web-, Scanner- & Betriebsprofil'
         without_partner: 'Ohne Partner'
 article:
     article_delete_ask:
@@ -372,7 +372,7 @@ documentation:
     index:
         for: 'Für „'
         guides_for_daily_work_with_webwms_3_0: 'Anleitungen für die tägliche Arbeit mit WebWMS 3.0.'
-        help_and_amp_documentation: 'Hilfe &amp; Dokumentation'
+        help_and_amp_documentation: 'Hilfe & Dokumentation'
         no_matching_documentation_was_found: '“ wurde keine passende Dokumentation gefunden.'
         reset_search: 'Suche zurücksetzen'
         search: 'Suchen'
@@ -392,7 +392,42 @@ erp:
             erp_connection_has_been_created: 'Die ERP-Verbindung wurde angelegt.'
         page:
             erp_connection: 'ERP-Verbindung'
-extension:
+extensions:
+    configuration_form:
+        configuration_json: 'Konfiguration (JSON)'
+        domain_specific_parameters_are_stored_as_versionable_json_configuration: 'Fachspezifische Parameter werden als versionierbare JSON-Konfiguration gespeichert.'
+        edit_configuration: 'Konfiguration bearbeiten'
+    configuration_index:
+        manage_configurations: 'Konfigurationen verwalten'
+        modified: 'Geändert'
+        no_entries_available: 'Keine Einträge vorhanden.'
+        overall_overview: 'Gesamtübersicht'
+    index:
+        advanced_functions: 'Erweiterte Funktionen'
+        central_configurations_and_operational_processes: 'Zentrale Konfigurationen und operative Vorgänge'
+        configurations: 'Konfigurationen'
+        create_configuration: 'Konfiguration anlegen'
+        identifier: 'Kennung'
+        login_history: 'Login-Historie'
+        no_configurations_yet: 'Noch keine Konfigurationen.'
+        no_login_events_yet: 'Noch keine Login-Ereignisse.'
+        no_processes_yet: 'Noch keine Vorgänge.'
+        operational_processes: 'Operative Vorgänge'
+        result: 'Ergebnis'
+        start_process: 'Vorgang starten'
+        successful: 'Erfolgreich'
+        workflow: 'Workflow'
+    work_item_form:
+        create_process: 'Vorgang anlegen'
+        process_data_json: 'Vorgangsdaten (JSON)'
+    work_item_show:
+        next_status: 'Nächster Status'
+        payload: 'Payload'
+        process: 'Vorgang'
+        process_data: 'Vorgangsdaten'
+        process_is_in_final_status: 'Der Vorgang befindet sich in einem Endstatus.'
+    workflow_index:
+        no_processes_available: 'Keine Vorgänge vorhanden.'
     module:
         flash:
             configuration_has_been_saved: 'Die Konfiguration wurde gespeichert.'
@@ -470,42 +505,6 @@ extension:
             order_proposal: 'Bestellvorschlag'
         sample_inspection:
             sampling_check: 'Stichprobenprüfung'
-extensions:
-    configuration_form:
-        configuration_json: 'Konfiguration (JSON)'
-        domain_specific_parameters_are_stored_as_versionable_json_configuration: 'Fachspezifische Parameter werden als versionierbare JSON-Konfiguration gespeichert.'
-        edit_configuration: 'Konfiguration bearbeiten'
-    configuration_index:
-        manage_configurations: 'Konfigurationen verwalten'
-        modified: 'Geändert'
-        no_entries_available: 'Keine Einträge vorhanden.'
-        overall_overview: 'Gesamtübersicht'
-    index:
-        advanced_functions: 'Erweiterte Funktionen'
-        central_configurations_and_operational_processes: 'Zentrale Konfigurationen und operative Vorgänge'
-        configurations: 'Konfigurationen'
-        create_configuration: 'Konfiguration anlegen'
-        identifier: 'Kennung'
-        login_history: 'Login-Historie'
-        no_configurations_yet: 'Noch keine Konfigurationen.'
-        no_login_events_yet: 'Noch keine Login-Ereignisse.'
-        no_processes_yet: 'Noch keine Vorgänge.'
-        operational_processes: 'Operative Vorgänge'
-        result: 'Ergebnis'
-        start_process: 'Vorgang starten'
-        successful: 'Erfolgreich'
-        workflow: 'Workflow'
-    work_item_form:
-        create_process: 'Vorgang anlegen'
-        process_data_json: 'Vorgangsdaten (JSON)'
-    work_item_show:
-        next_status: 'Nächster Status'
-        payload: 'Payload'
-        process: 'Vorgang'
-        process_data: 'Vorgangsdaten'
-        process_is_in_final_status: 'Der Vorgang befindet sich in einem Endstatus.'
-    workflow_index:
-        no_processes_available: 'Keine Vorgänge vorhanden.'
 inbound:
     control:
         activate_checklist: 'Checkliste aktivieren'
@@ -1252,20 +1251,20 @@ layout:
         create_topology: 'Topologie anlegen'
         create_wcs_command: 'WCS-Befehl anlegen'
         goods_issue: 'Warenausgang'
-        integration_and_amp_technology: 'Integration &amp; Technik'
+        integration_and_amp_technology: 'Integration & Technik'
         internal_transport: 'Interner Transport'
         navigation: 'Navigation'
         platform: 'Plattform'
         processes: 'Prozesse'
         real_time_inventory: 'Echtzeitbestand'
-        scales_and_amp_volume: 'Waagen &amp; Volumen'
-        scanner_and_amp_mde: 'Scanner &amp; MDE'
+        scales_and_amp_volume: 'Waagen & Volumen'
+        scanner_and_amp_mde: 'Scanner & MDE'
         transport_protocols: 'Transportprotokolle'
         user_documentation: 'Benutzerdokumentation'
         user_picture: 'User picture'
-        warehouse_and_amp_inventory: 'Lager &amp; Bestand'
+        warehouse_and_amp_inventory: 'Lager & Bestand'
         warehouse_automation: 'Lagerautomation'
-        wcs_and_amp_mfr: 'WCS &amp; MFR'
+        wcs_and_amp_mfr: 'WCS & MFR'
     title_meta:
         webwms: 'WebWMS'
 loading:
@@ -1633,7 +1632,7 @@ picking:
         report_stock_shortage: 'Fehlbestand melden'
         scan_item: 'Artikel scannen'
         scan_storage_location: 'Lagerplatz scannen'
-        scan_to_pick_and_amp: 'Scannen &amp; picken'
+        scan_to_pick_and_amp: 'Scannen & picken'
 platform:
     flash:
         additional_service_was_recorded: 'Die Zusatzleistung wurde erfasst.'
@@ -1991,7 +1990,7 @@ transport:
         forklift: 'Stapler'
         item_quantity: 'Artikel/Menge'
         material_flow: 'Materialfluss'
-        material_flow_and_amp_tugger_train: 'Materialfluss &amp; Routenzug'
+        material_flow_and_amp_tugger_train: 'Materialfluss & Routenzug'
         no_replenishment_orders: 'Keine Nachschubaufträge.'
         no_transport_commands: 'Keine Fahrbefehle.'
         pre_retrieval: 'Vorholung'
@@ -1999,7 +1998,7 @@ transport:
         replenishment: 'Nachschub'
         replenishment_control: 'Nachschubsteuerung'
         resource: 'Ressource'
-        resources_and_amp_rules: 'Ressourcen &amp; Regeln'
+        resources_and_amp_rules: 'Ressourcen & Regeln'
         rule_code: 'Regelcode'
         source_location: 'Quellplatz'
         source_prefix: 'Quellpräfix'

@@ -19,7 +19,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'SupplierTest'
 )]
 #[CoversClass(Supplier::class)]
-final class SupplierTest extends TestCase
+class SupplierTest extends TestCase
 {
     private Supplier $supplier;
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,7 @@ use WebWMS\Integration\Application\IntegrationTransportService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/transport-endpoints', name: 'api_v3_transport_')]
-final class IntegrationTransportApiController extends AbstractController
+class IntegrationTransportApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -84,7 +85,7 @@ final class IntegrationTransportApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -95,7 +96,7 @@ final class IntegrationTransportApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
         }
 
         return $value;
@@ -106,7 +107,7 @@ final class IntegrationTransportApiController extends AbstractController
     {
         $value = $payload[$field] ?? $default;
         if (!is_bool($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be boolean.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be boolean.', $field));
         }
 
         return $value;

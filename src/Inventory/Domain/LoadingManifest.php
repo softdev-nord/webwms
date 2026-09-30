@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class LoadingManifest
+readonly class LoadingManifest
 {
     /** @param list<InventoryId> $shipmentIds */
     public function __construct(
@@ -27,9 +27,11 @@ final readonly class LoadingManifest
                 throw new InvalidArgumentException('Manifest code, tour and vehicle must contain 1 to 80 characters.');
             }
         }
+
         if ($shipmentIds === []) {
             throw new InvalidArgumentException('A loading manifest requires at least one shipment.');
         }
+
         $unique = array_unique(array_map(static fn (InventoryId $id): string => $id->value(), $shipmentIds));
         if (count($unique) !== count($shipmentIds)) {
             throw new InvalidArgumentException('A shipment may only occur once in a manifest.');

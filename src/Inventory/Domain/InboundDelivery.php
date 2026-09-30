@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class InboundDelivery
+readonly class InboundDelivery
 {
     /** @param list<InboundDeliveryLine> $lines */
     public function __construct(
@@ -28,6 +28,7 @@ final readonly class InboundDelivery
                 throw new InvalidArgumentException('Advice code and delivery note must contain 1 to 80 characters.');
             }
         }
+
         if ($lines === []) {
             throw new InvalidArgumentException('An inbound delivery requires at least one line.');
         }

@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class PackingPackage
+readonly class PackingPackage
 {
     /** @param list<InventoryId> $pickTaskIds */
     public function __construct(
@@ -25,6 +25,7 @@ final readonly class PackingPackage
         if (trim($packageNumber) === '' || mb_strlen($packageNumber) > 50 || $weightGrams <= 0 || $pickTaskIds === []) {
             throw new InvalidArgumentException('A package requires a number, positive weight and at least one pick task.');
         }
+
         if (count(array_unique(array_map(static fn (InventoryId $id): string => $id->value(), $pickTaskIds))) !== count($pickTaskIds)) {
             throw new InvalidArgumentException('A pick task must occur only once within a package.');
         }

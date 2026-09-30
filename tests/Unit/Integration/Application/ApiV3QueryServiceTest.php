@@ -9,12 +9,12 @@ use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Application\ApiV3QueryService;
 use WebWMS\Integration\Application\StockMovementCriteria;
 
-final class ApiV3QueryServiceTest extends TestCase
+class ApiV3QueryServiceTest extends TestCase
 {
     public function testStockBlockViewsAreTenantScoped(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::exactly(3))->method('fetchAllAssociative')->with(
+        $connection->expects($this->exactly(3))->method('fetchAllAssociative')->with(
             self::callback(static fn (string $sql): bool => str_contains($sql, 'tenant_id = :tenantId')),
             self::isType('array'),
         )->willReturn([]);
@@ -28,7 +28,7 @@ final class ApiV3QueryServiceTest extends TestCase
     public function testAvailableStockExcludesBlockedStatus(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())->method('fetchAllAssociative')->with(
+        $connection->expects($this->once())->method('fetchAllAssociative')->with(
             self::callback(static function (string $sql): bool {
                 self::assertStringContainsString("b.stock_status = 'available'", $sql);
 
@@ -37,13 +37,13 @@ final class ApiV3QueryServiceTest extends TestCase
             ['tenantId' => 'tenant-id', 'productId' => 'product-id'],
         )->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->availableStockForProduct('tenant-id', 'product-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->availableStockForProduct('tenant-id', 'product-id'));
     }
 
     public function testStockSelectionConfigurationAndJournalAreTenantScoped(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::exactly(2))->method('fetchAllAssociative')->with(
+        $connection->expects($this->exactly(2))->method('fetchAllAssociative')->with(
             self::callback(static fn (string $sql): bool => str_contains($sql, 'tenant_id = :tenantId')),
             ['tenantId' => 'tenant-id'],
         )->willReturn([]);
@@ -56,12 +56,12 @@ final class ApiV3QueryServiceTest extends TestCase
     public function testTraceabilityViewsAreRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::exactly(3))->method('fetchAllAssociative')->with(
+        $connection->expects($this->exactly(3))->method('fetchAllAssociative')->with(
             self::callback(static fn (string $sql): bool => str_contains($sql, 'tenant_id = :tenantId')),
             ['tenantId' => 'tenant-id'],
         )->willReturn([]);
 
-        $result = (new ApiV3QueryService($connection))->traceability('tenant-id');
+        $result = new ApiV3QueryService($connection)->traceability('tenant-id');
 
         self::assertSame([], $result['serials']);
     }
@@ -69,7 +69,7 @@ final class ApiV3QueryServiceTest extends TestCase
     public function testTraceabilityEventsUseOnlySupportedDimensions(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())->method('fetchAllAssociative')->with(
+        $connection->expects($this->once())->method('fetchAllAssociative')->with(
             self::callback(static function (string $sql): bool {
                 self::assertStringContainsString('e.serial_number = :value', $sql);
                 self::assertStringContainsString('e.tenant_id = :tenantId', $sql);
@@ -79,18 +79,18 @@ final class ApiV3QueryServiceTest extends TestCase
             ['tenantId' => 'tenant-id', 'value' => 'SN-001'],
         )->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->traceabilityEvents('tenant-id', 'serial', 'SN-001'));
+        self::assertSame([], new ApiV3QueryService($connection)->traceabilityEvents('tenant-id', 'serial', 'SN-001'));
     }
 
     public function testWarehouseTopologyIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::exactly(5))->method('fetchAllAssociative')->with(
+        $connection->expects($this->exactly(5))->method('fetchAllAssociative')->with(
             self::callback(static fn (string $sql): bool => str_contains($sql, 'tenant_id = :tenantId')),
             ['tenantId' => 'tenant-id'],
         )->willReturn([]);
 
-        $result = (new ApiV3QueryService($connection))->warehouseTopology('tenant-id');
+        $result = new ApiV3QueryService($connection)->warehouseTopology('tenant-id');
 
         self::assertSame([], $result['bins']);
     }
@@ -98,12 +98,12 @@ final class ApiV3QueryServiceTest extends TestCase
     public function testWarehouseOverviewIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::exactly(2))->method('fetchAllAssociative')->with(
+        $connection->expects($this->exactly(2))->method('fetchAllAssociative')->with(
             self::callback(static fn (string $sql): bool => str_contains($sql, 'tenant_id = :tenantId')),
             ['tenantId' => 'tenant-id'],
         )->willReturn([]);
 
-        $result = (new ApiV3QueryService($connection))->warehouseOverview('tenant-id');
+        $result = new ApiV3QueryService($connection)->warehouseOverview('tenant-id');
 
         self::assertSame([], $result['warehouses']);
     }
@@ -111,7 +111,7 @@ final class ApiV3QueryServiceTest extends TestCase
     public function testWarehouseOccupancyIsTenantAndWarehouseScoped(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())->method('fetchAllAssociative')->with(
+        $connection->expects($this->once())->method('fetchAllAssociative')->with(
             self::callback(static function (string $sql): bool {
                 self::assertStringContainsString('WHERE l.tenant_id = :tenantId', $sql);
                 self::assertStringContainsString('AND l.warehouse_id = :warehouseId', $sql);
@@ -123,34 +123,34 @@ final class ApiV3QueryServiceTest extends TestCase
             ['tenantId' => 'tenant-id', 'warehouseId' => 'warehouse-id'],
         )->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->warehouseOccupancy('tenant-id', 'warehouse-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->warehouseOccupancy('tenant-id', 'warehouse-id'));
     }
 
     public function testPlannedInboundWorklistIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())->method('fetchAllAssociative')->with(
+        $connection->expects($this->once())->method('fetchAllAssociative')->with(
             self::callback(static fn (string $sql): bool => str_contains($sql, 'WHERE d.tenant_id = :tenantId')),
             ['tenantId' => 'tenant-id'],
         )->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->plannedInboundWorklist('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->plannedInboundWorklist('tenant-id'));
     }
 
     public function testUnplannedReceiptsAreRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())->method('fetchAllAssociative')->with(
+        $connection->expects($this->once())->method('fetchAllAssociative')->with(
             self::callback(static fn (string $sql): bool => str_contains($sql, 'WHERE r.tenant_id = :tenantId')),
             ['tenantId' => 'tenant-id'],
         )->willReturn([]);
-        self::assertSame([], (new ApiV3QueryService($connection))->unplannedReceipts('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->unplannedReceipts('tenant-id'));
     }
 
     public function testTransportEndpointsAreRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static fn (string $sql): bool => str_contains($sql, 'WHERE e.tenant_id = :tenantId')),
@@ -158,13 +158,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->transportEndpoints('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->transportEndpoints('tenant-id'));
     }
 
     public function testMachineCommandJournalIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -177,13 +177,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->machineCommands('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->machineCommands('tenant-id'));
     }
 
     public function testAutomationCommandJournalIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -196,13 +196,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->deviceCommands('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->deviceCommands('tenant-id'));
     }
 
     public function testMeasurementJournalIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -215,13 +215,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->measurements('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->measurements('tenant-id'));
     }
 
     public function testStockQuotesTheReservedCursorAliasForMariaDb(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -241,7 +241,7 @@ final class ApiV3QueryServiceTest extends TestCase
     public function testStockMovementJournalIsTenantScopedAndNewestFirst(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -257,13 +257,13 @@ final class ApiV3QueryServiceTest extends TestCase
 
         $criteria = new StockMovementCriteria(null, null, null, null);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->stockMovements('tenant-id', $criteria, 100, null));
+        self::assertSame([], new ApiV3QueryService($connection)->stockMovements('tenant-id', $criteria, 100, null));
     }
 
     public function testOutboundOrderListIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -275,13 +275,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->outboundOrders('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->outboundOrders('tenant-id'));
     }
 
     public function testPickListQueueIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -293,13 +293,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->pickLists('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->pickLists('tenant-id'));
     }
 
     public function testPackingQueueIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -311,13 +311,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->packingOrders('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->packingOrders('tenant-id'));
     }
 
     public function testShippingQueueIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -329,13 +329,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->shipments('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->shipments('tenant-id'));
     }
 
     public function testLoadingManifestListIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -347,13 +347,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->loadingManifests('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->loadingManifests('tenant-id'));
     }
 
     public function testAvailableLoadingShipmentsAreLabelledAndUnassigned(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -367,13 +367,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->shipmentsAvailableForLoading('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->shipmentsAvailableForLoading('tenant-id'));
     }
 
     public function testOutboxListIsRestrictedByTenantAndStatus(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -390,7 +390,7 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->outboxMessages(
+        self::assertSame([], new ApiV3QueryService($connection)->outboxMessages(
             'tenant-id',
             'dead_letter',
             50,
@@ -401,7 +401,7 @@ final class ApiV3QueryServiceTest extends TestCase
     public function testOutboxDetailIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAssociative')
             ->with(
                 self::isType('string'),
@@ -409,13 +409,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn(false);
 
-        self::assertNull((new ApiV3QueryService($connection))->outboxMessage('tenant-id', 'message-id'));
+        self::assertNull(new ApiV3QueryService($connection)->outboxMessage('tenant-id', 'message-id'));
     }
 
     public function testErpConnectionListIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -427,13 +427,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->erpConnections('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->erpConnections('tenant-id'));
     }
 
     public function testErpConnectionDetailIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAssociative')
             ->with(
                 self::isType('string'),
@@ -441,13 +441,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn(false);
 
-        self::assertNull((new ApiV3QueryService($connection))->erpConnection('tenant-id', 'connection-id'));
+        self::assertNull(new ApiV3QueryService($connection)->erpConnection('tenant-id', 'connection-id'));
     }
 
     public function testCarrierConnectionListIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -459,13 +459,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->carrierConnections('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->carrierConnections('tenant-id'));
     }
 
     public function testCarrierConnectionDetailIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAssociative')
             ->with(
                 self::isType('string'),
@@ -473,13 +473,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn(false);
 
-        self::assertNull((new ApiV3QueryService($connection))->carrierConnection('tenant-id', 'connection-id'));
+        self::assertNull(new ApiV3QueryService($connection)->carrierConnection('tenant-id', 'connection-id'));
     }
 
     public function testPrintJobListIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -492,13 +492,13 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->printJobs('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->printJobs('tenant-id'));
     }
 
     public function testPrintJobDetailIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -510,24 +510,24 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn(false);
 
-        self::assertNull((new ApiV3QueryService($connection))->printJob('tenant-id', 'job-id'));
+        self::assertNull(new ApiV3QueryService($connection)->printJob('tenant-id', 'job-id'));
     }
 
     public function testPrinterListIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->with(self::isType('string'), ['tenantId' => 'tenant-id'])
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->printers('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->printers('tenant-id'));
     }
 
     public function testPrinterDetailIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -539,23 +539,23 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn(false);
 
-        self::assertNull((new ApiV3QueryService($connection))->printer('tenant-id', 'printer-id'));
+        self::assertNull(new ApiV3QueryService($connection)->printer('tenant-id', 'printer-id'));
     }
 
     public function testDeviceListIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())->method('fetchAllAssociative')
+        $connection->expects($this->once())->method('fetchAllAssociative')
             ->with(self::isType('string'), ['tenantId' => 'tenant-id'])
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->devices('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->devices('tenant-id'));
     }
 
     public function testScanJournalIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())->method('fetchAllAssociative')
+        $connection->expects($this->once())->method('fetchAllAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
                     self::assertStringContainsString('d.tenant_id = e.tenant_id', $sql);
@@ -567,19 +567,19 @@ final class ApiV3QueryServiceTest extends TestCase
             )
             ->willReturn([]);
 
-        self::assertSame([], (new ApiV3QueryService($connection))->scanEvents('tenant-id'));
+        self::assertSame([], new ApiV3QueryService($connection)->scanEvents('tenant-id'));
     }
 
     public function testScanDetailIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())->method('fetchAssociative')
+        $connection->expects($this->once())->method('fetchAssociative')
             ->with(
                 self::isType('string'),
                 ['tenantId' => 'tenant-id', 'id' => 'event-id'],
             )
             ->willReturn(false);
 
-        self::assertNull((new ApiV3QueryService($connection))->scanEvent('tenant-id', 'event-id'));
+        self::assertNull(new ApiV3QueryService($connection)->scanEvent('tenant-id', 'event-id'));
     }
 }

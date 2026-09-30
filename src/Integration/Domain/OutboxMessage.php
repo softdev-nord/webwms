@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace WebWMS\Integration\Domain;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 
-final readonly class OutboxMessage
+readonly class OutboxMessage
 {
     /** @param array<string, mixed> $payload */
     public function __construct(
@@ -21,7 +22,7 @@ final readonly class OutboxMessage
         public int $attemptNumber
     ) {
         if ($attemptNumber < 1) {
-            throw new \InvalidArgumentException('A claimed outbox message requires a positive attempt number.');
+            throw new InvalidArgumentException('A claimed outbox message requires a positive attempt number.');
         }
     }
 }

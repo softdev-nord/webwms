@@ -16,7 +16,7 @@ use WebWMS\Service\RequirementsService;
     class: 'RequirementsServiceTest'
 )]
 #[CoversClass(RequirementsService::class)]
-final class RequirementsServiceTest extends TestCase
+class RequirementsServiceTest extends TestCase
 {
     private RequirementsService $requirementsService;
 

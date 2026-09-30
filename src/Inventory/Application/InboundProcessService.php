@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 
-final readonly class InboundProcessService
+readonly class InboundProcessService
 {
     public function __construct(
         private Connection $connection,
@@ -23,9 +23,11 @@ final readonly class InboundProcessService
         if ($content === '' || strlen($content) > 10 * 1024 * 1024) {
             throw new InvalidArgumentException('An attachment must contain between 1 byte and 10 MB.');
         }
+
         if (!in_array($aggregateType, ['inbound_receipt', 'unplanned_receipt', 'return_receipt', 'production_receipt'], true)) {
             throw new InvalidArgumentException('The inbound attachment type is not supported.');
         }
+
         $id = Uuid::v7()->toRfc4122();
         $this->connection->transactional(function (Connection $connection) use ($id, $tenantId, $aggregateType, $aggregateId, $category, $name, $mediaType, $content, $actorId, $now): void {
             $this->assertActor($connection, $tenantId, $actorId);
@@ -38,11 +40,12 @@ final readonly class InboundProcessService
     /** @param list<string> $questions */
     public function createChecklist(string $tenantId, string $code, string $name, array $questions, string $actorId, DateTimeImmutable $now): string
     {
-        $questions = array_values(array_filter(array_map('trim', $questions), static fn (string $question): bool => $question !== ''));
+        $questions = array_values(array_filter(array_map(trim(...), $questions), static fn (string $question): bool => $question !== ''));
 
         if ($questions === []) {
             throw new InvalidArgumentException('A quality checklist requires at least one question.');
         }
+
         $id = Uuid::v7()->toRfc4122();
         $this->connection->insert('wms_quality_checklist', ['id' => $id, 'tenant_id' => $tenantId, 'code' => mb_strtoupper(trim($code)), 'name' => trim($name), 'questions' => json_encode($questions, JSON_THROW_ON_ERROR), 'active' => 1, 'created_by' => $actorId, 'created_at' => $this->date($now)]);
 
@@ -54,6 +57,7 @@ final readonly class InboundProcessService
         if ($copies < 1 || $copies > 100 || !in_array($labelType, ['receipt', 'product', 'handling_unit'], true)) {
             throw new InvalidArgumentException('Label type or number of copies is invalid.');
         }
+
         $id = Uuid::v7()->toRfc4122();
         $this->connection->insert('wms_inbound_label_job', ['id' => $id, 'tenant_id' => $tenantId, 'aggregate_type' => $aggregateType, 'aggregate_id' => $aggregateId, 'label_type' => $labelType, 'copies' => $copies, 'payload' => json_encode(['reference' => $aggregateId], JSON_THROW_ON_ERROR), 'status' => 'queued', 'created_by' => $actorId, 'created_at' => $this->date($now)]);
 
@@ -65,6 +69,7 @@ final readonly class InboundProcessService
         if ($quantity < 1) {
             throw new InvalidArgumentException('Cross-dock quantity must be positive.');
         }
+
         $id = Uuid::v7()->toRfc4122();
 
         $this->connection->transactional(function (Connection $connection) use ($id, $tenantId, $receiptId, $outboundItemId, $quantity, $actorId, $now): void {
@@ -72,6 +77,7 @@ final readonly class InboundProcessService
             if ($match === false || $match['inbound_product'] !== $match['outbound_product'] || $quantity > min((int) $match['receipt_quantity'], (int) $match['demand_quantity'])) {
                 throw new InventoryReferenceNotFoundException('An inspected matching receipt and open outbound demand must exist in the tenant.');
             }
+
             $connection->insert('wms_cross_dock_assignment', ['id' => $id, 'tenant_id' => $tenantId, 'inbound_receipt_id' => $receiptId, 'outbound_order_item_id' => $outboundItemId, 'quantity' => $quantity, 'status' => 'staged', 'created_by' => $actorId, 'created_at' => $this->date($now), 'staged_at' => $this->date($now)]);
         });
 
@@ -83,6 +89,7 @@ final readonly class InboundProcessService
         if ($quantity < 1 || trim($productionOrder) === '') {
             throw new InvalidArgumentException('Production order and positive quantity are required.');
         }
+
         $receiptId = Uuid::v7()->toRfc4122();
         $ledgerId = Uuid::v7()->toRfc4122();
         $this->connection->transactional(function (Connection $connection) use ($receiptId, $ledgerId, $tenantId, $productionOrder, $productId, $locationId, $quantity, $batchNumber, $actorId, $now): void {

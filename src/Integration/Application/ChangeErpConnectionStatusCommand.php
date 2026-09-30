@@ -6,7 +6,7 @@ namespace WebWMS\Integration\Application;
 
 use DateTimeImmutable;
 
-final readonly class ChangeErpConnectionStatusCommand
+readonly class ChangeErpConnectionStatusCommand
 {
     public function __construct(
         public string $connectionId,

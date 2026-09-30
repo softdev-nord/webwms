@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'ArticleTest'
 )]
 #[CoversClass(Article::class)]
-final class ArticleTest extends TestCase
+class ArticleTest extends TestCase
 {
     private Article $article;
 

@@ -72,6 +72,7 @@
                             <li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_extension_index' ? 'active' : '' }}" href="{{ path('v3_extension_index') }}">{{ 'extensions.configuration_index.overall_overview'|trans }}</a></li>
                             <li class="menu-title px-3 pt-2"><span>{{ 'layout.sidebar.configuration'|trans }}</span></li>
                             {% for resource, label in constant('WebWMS\\Platform\\Application\\ExtensionModuleService::RESOURCES') %}
+                                {{ dump(label) }}
                                 <li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_extension_configuration_' and app.request.attributes.get('resource') == resource ? 'active' : '' }}" href="{{ path('v3_extension_configuration_index',{resource:resource}) }}">{{ label }}</a></li>
                             {% endfor %}
                             <li class="menu-title px-3 pt-2"><span>{{ 'layout.sidebar.processes'|trans }}</span></li>

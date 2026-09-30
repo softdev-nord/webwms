@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,7 @@ use WebWMS\Integration\Application\WcsIntegrationService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3', name: 'api_v3_wcs_')]
-final class WcsApiController extends AbstractController
+class WcsApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -121,7 +122,7 @@ final class WcsApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -140,7 +141,7 @@ final class WcsApiController extends AbstractController
     {
         $value = $payload[$field] ?? $default;
         if (!is_bool($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be boolean.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be boolean.', $field));
         }
 
         return $value;

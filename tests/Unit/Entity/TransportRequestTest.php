@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'TransportRequestTest'
 )]
 #[CoversClass(TransportRequest::class)]
-final class TransportRequestTest extends TestCase
+class TransportRequestTest extends TestCase
 {
     private TransportRequest $transportRequest;
 

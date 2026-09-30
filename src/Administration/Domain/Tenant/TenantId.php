@@ -6,9 +6,9 @@ namespace WebWMS\Administration\Domain\Tenant;
 
 use InvalidArgumentException;
 
-final readonly class TenantId
+readonly class TenantId
 {
-    private const UUID_PATTERN = '/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i';
+    private const string UUID_PATTERN = '/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i';
 
     public function __construct(
         private string $value

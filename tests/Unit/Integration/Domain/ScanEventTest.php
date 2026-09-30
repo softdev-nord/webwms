@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\ScanEvent;
 
-final class ScanEventTest extends TestCase
+class ScanEventTest extends TestCase
 {
     public function testItCapturesARejectedProcessScan(): void
     {
@@ -20,7 +21,7 @@ final class ScanEventTest extends TestCase
 
     public function testItRejectsAnUnsupportedScanType(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new ScanEvent('id', 'tenant', 'device', 'unknown', 'value', 'picking', 'PICK-1', 'request', ScanEvent::STATUS_ACCEPTED, null, 'user', new DateTimeImmutable());
     }

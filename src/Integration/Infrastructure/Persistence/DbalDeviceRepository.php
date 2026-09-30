@@ -7,12 +7,13 @@ namespace WebWMS\Integration\Infrastructure\Persistence;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use LogicException;
 use WebWMS\Integration\Domain\Device;
 use WebWMS\Integration\Domain\DeviceNotFoundException;
 use WebWMS\Integration\Domain\DeviceRepository;
 use WebWMS\Integration\Domain\ScanEvent;
 
-final readonly class DbalDeviceRepository implements DeviceRepository
+readonly class DbalDeviceRepository implements DeviceRepository
 {
     public function __construct(
         private Connection $connection,
@@ -79,8 +80,8 @@ final readonly class DbalDeviceRepository implements DeviceRepository
             ]);
         } catch (UniqueConstraintViolationException) {
             $existing = $this->scanByRequestId($event->tenantId, $event->requestId);
-            if ($existing === null) {
-                throw new \LogicException('The idempotent scan event could not be resolved.');
+            if (!$existing instanceof ScanEvent) {
+                throw new LogicException('The idempotent scan event could not be resolved.');
             }
 
             return $existing;

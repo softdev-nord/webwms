@@ -21,11 +21,11 @@ use WebWMS\Service\FileUploader;
     class: 'FileUploaderTest'
 )]
 #[CoversClass(FileUploader::class)]
-final class FileUploaderTest extends TestCase
+class FileUploaderTest extends TestCase
 {
-    private const TARGET_DIRECTORY = '/path/to/target/directory';
+    private const string TARGET_DIRECTORY = '/path/to/target/directory';
 
-    private const PUBLIC_DIRECTORY = '/path/to/public/directory';
+    private const string PUBLIC_DIRECTORY = '/path/to/public/directory';
 
     private FileUploader $fileUploader;
 
@@ -58,7 +58,7 @@ final class FileUploaderTest extends TestCase
 
     public function testIsValidImageReturnsTrueForValidImage(): void
     {
-        $file = $this->createMock(UploadedFile::class);
+        $file = $this->createStub(UploadedFile::class);
         $constraintViolationList = new ConstraintViolationList([]);
 
         $this->mockObject
@@ -74,8 +74,8 @@ final class FileUploaderTest extends TestCase
 
     public function testIsValidImageReturnsFalseForInvalidImage(): void
     {
-        $file = $this->createMock(UploadedFile::class);
-        $constraintViolation = $this->createMock(ConstraintViolationInterface::class);
+        $file = $this->createStub(UploadedFile::class);
+        $constraintViolation = $this->createStub(ConstraintViolationInterface::class);
         $constraintViolationList = new ConstraintViolationList([$constraintViolation]);
 
         $this->mockObject

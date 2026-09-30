@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Shared\Domain\Event\DomainEvent;
 
-final readonly class RoleCreated implements DomainEvent
+readonly class RoleCreated implements DomainEvent
 {
     public function __construct(
         private RoleId $roleId,

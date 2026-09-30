@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class PostStockCommand
+readonly class PostStockCommand
 {
     public function __construct(
         public string $postingId,

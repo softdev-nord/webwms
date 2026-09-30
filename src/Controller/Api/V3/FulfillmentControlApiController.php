@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,7 +27,7 @@ use WebWMS\Inventory\Application\CreateReplenishmentPolicyHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/fulfillment-control', name: 'api_v3_fulfillment_control_')]
-final class FulfillmentControlApiController extends AbstractController
+class FulfillmentControlApiController extends AbstractController
 {
     public function __construct(
         private readonly AdvancedPickingService $picking,
@@ -137,6 +138,7 @@ final class FulfillmentControlApiController extends AbstractController
         if (!$result['valid']) {
             return $this->data($result, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
         $confirmation = ($this->confirmPickTask)(new ConfirmPickTaskCommand($taskId, $user->tenantId(), 'picked', Uuid::v7()->toRfc4122(), 'Scannerbestätigt', $user->actorId(), new DateTimeImmutable()));
 
         return $this->data($result + ['taskStatus' => $confirmation->taskStatus, 'pickListStatus' => $confirmation->pickListStatus]);
@@ -177,6 +179,7 @@ final class FulfillmentControlApiController extends AbstractController
         if (!$user->hasPermission($permission)) {
             throw $this->createAccessDeniedException();
         }
+
         $now = new DateTimeImmutable();
         if ($transition === 'assign') {
             $this->transport->assign($user->tenantId(), $user->actorId(), $orderId, $this->string($this->payload($request), 'forkliftId'), $now);
@@ -241,7 +244,7 @@ final class FulfillmentControlApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -260,7 +263,7 @@ final class FulfillmentControlApiController extends AbstractController
     {
         $value = filter_var($payload[$field] ?? null, FILTER_VALIDATE_INT);
         if (!is_int($value) || $value < ($allowZero ? 0 : 1)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
         }
 
         return $value;
@@ -271,10 +274,10 @@ final class FulfillmentControlApiController extends AbstractController
     {
         $values = $payload[$field] ?? null;
         if (!is_array($values)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be an array.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be an array.', $field));
         }
 
-        return array_values(array_filter($values, 'is_string'));
+        return array_values(array_filter($values, is_string(...)));
     }
 
     /** @param array<string, mixed> $payload */

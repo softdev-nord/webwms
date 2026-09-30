@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\ProtocolConfiguration;
 
-final class ProtocolConfigurationTest extends TestCase
+class ProtocolConfigurationTest extends TestCase
 {
     public function testItAcceptsRestOverHttpFraming(): void
     {
@@ -18,7 +19,7 @@ final class ProtocolConfigurationTest extends TestCase
 
     public function testItRejectsHttpFramingForRawTcp(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new ProtocolConfiguration('endpoint', 'raw_tcp', 'http', 3000, 10000);
     }

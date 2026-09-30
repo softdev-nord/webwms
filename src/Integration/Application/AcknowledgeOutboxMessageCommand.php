@@ -6,7 +6,7 @@ namespace WebWMS\Integration\Application;
 
 use DateTimeImmutable;
 
-final readonly class AcknowledgeOutboxMessageCommand
+readonly class AcknowledgeOutboxMessageCommand
 {
     public function __construct(
         public string $messageId,

@@ -16,7 +16,7 @@ use WebWMS\Service\Stock\StockOccupancyService;
 )]
 class StockOccupancyUpdateEvent
 {
-    final public const EVENT_NAME = 'stock_occupancy.update';
+    final public const string EVENT_NAME = 'stock_occupancy.update';
 
     public function __construct(
         private readonly StockOccupancyService $stockOccupancyService

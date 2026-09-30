@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\ErpConnection;
 
-final class ErpConnectionTest extends TestCase
+class ErpConnectionTest extends TestCase
 {
     public function testItAcceptsAnHttpsEndpointAndCredentialReference(): void
     {
@@ -22,7 +23,7 @@ final class ErpConnectionTest extends TestCase
     #[DataProvider('invalidConfiguration')]
     public function testItRejectsUnsafeConfiguration(string $endpoint, string $credential): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->connection($endpoint, $credential);
     }

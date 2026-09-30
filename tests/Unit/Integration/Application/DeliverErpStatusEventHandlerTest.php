@@ -12,7 +12,7 @@ use WebWMS\Integration\Domain\ErpConnection;
 use WebWMS\Integration\Domain\ErpConnectionRepository;
 use WebWMS\Integration\Domain\ErpStatusTransport;
 
-final class DeliverErpStatusEventHandlerTest extends TestCase
+class DeliverErpStatusEventHandlerTest extends TestCase
 {
     public function testItDeliversAnEventToEveryActiveTenantConnection(): void
     {
@@ -28,9 +28,9 @@ final class DeliverErpStatusEventHandlerTest extends TestCase
             '2026-09-19T14:00:00+00:00',
         );
         $connections = $this->createMock(ErpConnectionRepository::class);
-        $connections->expects(self::once())->method('activeForTenant')->with('tenant')->willReturn([$first, $second]);
+        $connections->expects($this->once())->method('activeForTenant')->with('tenant')->willReturn([$first, $second]);
         $transport = $this->createMock(ErpStatusTransport::class);
-        $transport->expects(self::exactly(2))->method('deliver')->willReturnCallback(
+        $transport->expects($this->exactly(2))->method('deliver')->willReturnCallback(
             static function (ErpConnection $connection, PublishedIntegrationMessage $delivered) use ($message): void {
                 self::assertContains($connection->id, ['first', 'second']);
                 self::assertSame($message, $delivered);

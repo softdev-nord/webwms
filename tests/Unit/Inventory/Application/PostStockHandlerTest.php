@@ -67,7 +67,7 @@ use WebWMS\Inventory\Domain\UnplannedReceipt;
 use WebWMS\Inventory\Domain\UnplannedReceiptBooking;
 use WebWMS\Inventory\Domain\Warehouse;
 
-final class PostStockHandlerTest extends TestCase
+class PostStockHandlerTest extends TestCase
 {
     public function testItDelegatesAValidatedPostingAndReturnsTheBalance(): void
     {
@@ -96,7 +96,7 @@ final class PostStockHandlerTest extends TestCase
     }
 }
 
-final class InventoryMemoryRepository implements InventoryRepository
+class InventoryMemoryRepository implements InventoryRepository
 {
     public ?StockPosting $posting = null;
 

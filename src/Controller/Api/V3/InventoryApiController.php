@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ use WebWMS\Inventory\Domain\StockStatus;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3', name: 'api_v3_')]
-final class InventoryApiController extends AbstractController
+class InventoryApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -171,7 +172,7 @@ final class InventoryApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return $value;
@@ -182,7 +183,7 @@ final class InventoryApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value) || $value < 1) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
         }
 
         return $value;
@@ -195,8 +196,9 @@ final class InventoryApiController extends AbstractController
         if ($value === null) {
             return null;
         }
+
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be null or a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be null or a non-empty string.', $field));
         }
 
         return $value;
@@ -209,9 +211,10 @@ final class InventoryApiController extends AbstractController
         if ($value === null) {
             return null;
         }
+
         $date = DateTimeImmutable::createFromFormat('!Y-m-d', $value);
         if ($date === false || $date->format('Y-m-d') !== $value) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must use YYYY-MM-DD.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must use YYYY-MM-DD.', $field));
         }
 
         return $date;
@@ -222,7 +225,7 @@ final class InventoryApiController extends AbstractController
     {
         $value = $this->optionalString($payload, $field);
         if ($value !== null && !Uuid::isValid($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must contain a UUID.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must contain a UUID.', $field));
         }
 
         return $value;
@@ -233,7 +236,7 @@ final class InventoryApiController extends AbstractController
     {
         $value = $payload[$field] ?? $default;
         if (!is_string($value) || StockStatus::tryFrom($value) === null) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" contains an invalid stock status.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" contains an invalid stock status.', $field));
         }
 
         return $value;
@@ -243,7 +246,7 @@ final class InventoryApiController extends AbstractController
     {
         $limit = $request->query->getInt('limit', 50);
         if ($limit < 1 || $limit > 100) {
-            throw new \InvalidArgumentException('The limit must be between 1 and 100.');
+            throw new InvalidArgumentException('The limit must be between 1 and 100.');
         }
 
         return $limit;

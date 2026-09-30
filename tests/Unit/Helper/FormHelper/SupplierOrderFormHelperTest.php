@@ -24,12 +24,12 @@ use WebWMS\Helper\FormHelper\SupplierOrderFormHelper;
     class: 'SupplierOrderFormHelperTest'
 )]
 #[CoversClass(SupplierOrderFormHelper::class)]
-final class SupplierOrderFormHelperTest extends TestCase
+class SupplierOrderFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
         $type = 'SomeType';
         $data = null;
         $options = [];
@@ -49,7 +49,7 @@ final class SupplierOrderFormHelperTest extends TestCase
     public function testAddSupplierOrderForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
 
         $formFactory
             ->expects($this->once())
@@ -66,8 +66,8 @@ final class SupplierOrderFormHelperTest extends TestCase
     public function testEditSupplierOrderForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $supplierOrder = $this->createMock(SupplierOrder::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $supplierOrder = $this->createStub(SupplierOrder::class);
 
         $formFactory
             ->expects($this->once())
@@ -84,8 +84,8 @@ final class SupplierOrderFormHelperTest extends TestCase
     public function testDeleteSupplierOrderForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $supplierOrder = $this->createMock(SupplierOrder::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $supplierOrder = $this->createStub(SupplierOrder::class);
 
         $formFactory
             ->expects($this->once())
@@ -102,7 +102,7 @@ final class SupplierOrderFormHelperTest extends TestCase
     public function testAddSupplierOrderPosForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
 
         $formFactory
             ->expects($this->once())
@@ -119,8 +119,8 @@ final class SupplierOrderFormHelperTest extends TestCase
     public function testEditSupplierOrderPosForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $supplierOrder = $this->createMock(SupplierOrderPos::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $supplierOrder = $this->createStub(SupplierOrderPos::class);
 
         $formFactory
             ->expects($this->once())
@@ -137,8 +137,8 @@ final class SupplierOrderFormHelperTest extends TestCase
     public function testDeleteSupplierOrderPosForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $supplierOrder = $this->createMock(SupplierOrderPos::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $supplierOrder = $this->createStub(SupplierOrderPos::class);
 
         $formFactory
             ->expects($this->once())

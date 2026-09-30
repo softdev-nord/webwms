@@ -13,9 +13,9 @@ use WebWMS\Administration\Domain\Tenant\Tenant;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Administration\Domain\Tenant\TenantRepository;
 
-final class CreateTenantHandlerTest extends TestCase
+class CreateTenantHandlerTest extends TestCase
 {
-    private const TENANT_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8';
+    private const string TENANT_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8';
 
     public function testItPersistsTheNewTenant(): void
     {
@@ -41,7 +41,7 @@ final class CreateTenantHandlerTest extends TestCase
     }
 }
 
-final class InMemoryTenantRepository implements TenantRepository
+class InMemoryTenantRepository implements TenantRepository
 {
     public ?Tenant $tenant = null;
 

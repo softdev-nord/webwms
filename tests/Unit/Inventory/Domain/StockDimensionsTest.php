@@ -15,7 +15,7 @@ use WebWMS\Inventory\Domain\StockDimensions;
 use WebWMS\Inventory\Domain\StockPosting;
 use WebWMS\Inventory\Domain\StockStatus;
 
-final class StockDimensionsTest extends TestCase
+class StockDimensionsTest extends TestCase
 {
     public function testItNormalizesDimensionsAndBuildsAStableKey(): void
     {

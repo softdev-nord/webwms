@@ -20,7 +20,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'UserTest'
 )]
 #[CoversClass(User::class)]
-final class UserTest extends TestCase
+class UserTest extends TestCase
 {
     private User $user;
 
@@ -142,7 +142,7 @@ final class UserTest extends TestCase
     public function testIsEqualToReturnsFalseIfUserIsNotInstanceOfSelf(): void
     {
         $user = new User();
-        $otherUser = $this->createMock(UserInterface::class);
+        $otherUser = $this->createStub(UserInterface::class);
 
         self::assertFalse($user->isEqualTo($otherUser));
     }

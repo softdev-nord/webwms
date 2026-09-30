@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,10 +18,11 @@ use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/extensions', name: 'v3_extension_')]
 #[IsGranted('platform.extension.read')]
-final class V3ExtensionModuleController extends AbstractController
+class V3ExtensionModuleController extends AbstractController
 {
-    public function __construct(private readonly ExtensionModuleService $service)
-    {
+    public function __construct(
+        private readonly ExtensionModuleService $service
+    ) {
     }
 
     #[Route('', name: 'index', methods: ['GET'])]
@@ -95,6 +98,7 @@ final class V3ExtensionModuleController extends AbstractController
         if (!isset(ExtensionModuleService::WORKFLOWS[$workflow])) {
             throw $this->createNotFoundException();
         }
+
         if ($request->isMethod('POST')) {
             $this->csrf($request, 'v3_extension_work_item');
             $user = $this->user();
@@ -127,7 +131,7 @@ final class V3ExtensionModuleController extends AbstractController
 
     #[Route('/work-items/{id}/transition', name: 'work_item_transition', methods: ['POST'])]
     #[IsGranted('platform.extension.execute')]
-    public function transition(string $id, Request $request): Response
+    public function transition(string $id, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_extension_transition_' . $id);
         $user = $this->user();
@@ -142,7 +146,7 @@ final class V3ExtensionModuleController extends AbstractController
     {
         $payload = json_decode($value === '' ? '{}' : $value, true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($payload)) {
-            throw new \InvalidArgumentException('Die Konfiguration muss ein JSON-Objekt sein.');
+            throw new InvalidArgumentException('Die Konfiguration muss ein JSON-Objekt sein.');
         }
 
         return $payload;
@@ -152,7 +156,7 @@ final class V3ExtensionModuleController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use WebWMS\Inventory\Domain\StockSelectionRuleDefinition;
 use WebWMS\Inventory\Domain\StockSelectionStrategy;
 
-final class StockSelectionRuleDefinitionTest extends TestCase
+class StockSelectionRuleDefinitionTest extends TestCase
 {
     /** @return iterable<string, array{StockSelectionStrategy, string}> */
     public static function strategyOrders(): iterable

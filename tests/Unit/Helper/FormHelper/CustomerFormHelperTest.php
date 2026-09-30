@@ -22,12 +22,12 @@ use WebWMS\Helper\FormHelper\CustomerFormHelper;
     class: 'CustomerFormHelperTest'
 )]
 #[CoversClass(CustomerFormHelper::class)]
-final class CustomerFormHelperTest extends TestCase
+class CustomerFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
         $type = 'SomeType';
         $data = null;
         $options = [];
@@ -47,7 +47,7 @@ final class CustomerFormHelperTest extends TestCase
     public function testAddCustomerForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
 
         $formFactory
             ->expects($this->once())
@@ -64,8 +64,8 @@ final class CustomerFormHelperTest extends TestCase
     public function testEditCustomerForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $customer = $this->createMock(Customer::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $customer = $this->createStub(Customer::class);
 
         $formFactory
             ->expects($this->once())
@@ -82,8 +82,8 @@ final class CustomerFormHelperTest extends TestCase
     public function testDeleteCustomerForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $customer = $this->createMock(Customer::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $customer = $this->createStub(Customer::class);
 
         $formFactory
             ->expects($this->once())

@@ -6,6 +6,6 @@ namespace WebWMS\Administration\Application\Access\CreateUser;
 
 use DomainException;
 
-final class EmailAlreadyExistsException extends DomainException
+class EmailAlreadyExistsException extends DomainException
 {
 }

@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\PutawayConfirmation;
 use WebWMS\Inventory\Domain\PutawayResult;
 
-final readonly class ConfirmPutawayHandler
+readonly class ConfirmPutawayHandler
 {
     public function __construct(
         private InventoryRepository $inventory

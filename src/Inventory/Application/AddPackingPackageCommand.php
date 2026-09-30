@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class AddPackingPackageCommand
+readonly class AddPackingPackageCommand
 {
     /** @param list<string> $pickTaskIds */
     public function __construct(

@@ -12,7 +12,7 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\PackingPackage;
 
-final class PackingPackageTest extends TestCase
+class PackingPackageTest extends TestCase
 {
     public function testItNormalizesThePackageNumber(): void
     {

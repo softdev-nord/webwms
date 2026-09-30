@@ -15,14 +15,13 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
-final class ApiKeyAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
+class ApiKeyAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
     public function __construct(
-        private Connection $connection
+        private readonly Connection $connection
     ) {
     }
 
@@ -31,7 +30,7 @@ final class ApiKeyAuthenticator extends AbstractAuthenticator implements Authent
         return str_starts_with($request->getPathInfo(), '/api/v3');
     }
 
-    public function authenticate(Request $request): Passport
+    public function authenticate(Request $request): SelfValidatingPassport
     {
         $credential = trim((string) $request->headers->get('X-API-Key'));
         [$clientId, $secret] = array_pad(explode('.', $credential, 2), 2, '');
@@ -79,6 +78,7 @@ final class ApiKeyAuthenticator extends AbstractAuthenticator implements Authent
         } catch (JsonException) {
             throw new CustomUserMessageAuthenticationException('The API client permissions are invalid.');
         }
+
         if (!is_array($decoded)) {
             throw new CustomUserMessageAuthenticationException('The API client permissions are invalid.');
         }
@@ -88,12 +88,13 @@ final class ApiKeyAuthenticator extends AbstractAuthenticator implements Authent
             if (!is_string($permission)) {
                 throw new CustomUserMessageAuthenticationException('The API client permissions are invalid.');
             }
+
             $permissions[] = $permission;
         }
 
         $this->connection->update(
             'wms_api_client',
-            ['last_used_at' => (new DateTimeImmutable())->format('Y-m-d H:i:s.u')],
+            ['last_used_at' => new DateTimeImmutable()->format('Y-m-d H:i:s.u')],
             ['id' => $clientId],
         );
 

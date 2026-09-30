@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Infrastructure\Transport;
 
+use RuntimeException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -13,7 +14,7 @@ use WebWMS\Integration\Domain\Printer;
 use WebWMS\Integration\Domain\PrintJob;
 use WebWMS\Integration\Infrastructure\Transport\HttpPrintTransport;
 
-final class HttpPrintTransportTest extends TestCase
+class HttpPrintTransportTest extends TestCase
 {
     public function testItSubmitsAnIdempotentPrintJob(): void
     {
@@ -33,8 +34,8 @@ final class HttpPrintTransportTest extends TestCase
         $credentials = $this->createStub(CredentialProvider::class);
         $credentials->method('secret')->willReturn('token');
 
-        $this->expectException(\RuntimeException::class);
-        (new HttpPrintTransport(new MockHttpClient(new MockResponse('{}')), $credentials))->print($this->printer(), $this->job());
+        $this->expectException(RuntimeException::class);
+        new HttpPrintTransport(new MockHttpClient(new MockResponse('{}')), $credentials)->print($this->printer(), $this->job());
     }
 
     private function printer(): Printer

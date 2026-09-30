@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\LoadingCompletion;
 use WebWMS\Inventory\Domain\LoadingResult;
 
-final readonly class CompleteLoadingManifestHandler
+readonly class CompleteLoadingManifestHandler
 {
     public function __construct(
         private InventoryRepository $inventory

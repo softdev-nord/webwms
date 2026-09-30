@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,7 +16,7 @@ use WebWMS\Administration\Application\AdministrationWorkspaceService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/administration', name: 'api_v3_administration_')]
-final class AdministrationApiController extends AbstractController
+class AdministrationApiController extends AbstractController
 {
     public function __construct(
         private readonly AdministrationWorkspaceService $workspace
@@ -71,6 +72,7 @@ final class AdministrationApiController extends AbstractController
         foreach (['deployment_mode', 'public_url', 'storage_driver', 'queue_transport', 'release_channel'] as $field) {
             $values[$field] = $this->string($payload, $field);
         }
+
         $user = $this->user();
         $this->workspace->configureDeployment($user->tenantId(), $user->actorId(), $values, new DateTimeImmutable());
 
@@ -101,7 +103,7 @@ final class AdministrationApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return trim($value);

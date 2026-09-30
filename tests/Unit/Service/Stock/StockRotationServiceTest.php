@@ -20,7 +20,7 @@ use WebWMS\Service\Stock\StockRotationService;
     class: 'StockRotationServiceTest'
 )]
 #[CoversClass(StockRotationService::class)]
-final class StockRotationServiceTest extends TestCase
+class StockRotationServiceTest extends TestCase
 {
     private StockRotationService $stockRotationService;
 

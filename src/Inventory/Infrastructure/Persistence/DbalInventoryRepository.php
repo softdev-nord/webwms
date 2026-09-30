@@ -7,6 +7,8 @@ namespace WebWMS\Inventory\Infrastructure\Persistence;
 use DateInterval;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use InvalidArgumentException;
+use LogicException;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Domain\IntegrationStatusEvent;
 use WebWMS\Integration\Domain\OutboxRepository;
@@ -78,7 +80,7 @@ use WebWMS\Inventory\Domain\UnplannedReceipt;
 use WebWMS\Inventory\Domain\UnplannedReceiptBooking;
 use WebWMS\Inventory\Domain\Warehouse;
 
-final readonly class DbalInventoryRepository implements InventoryRepository
+readonly class DbalInventoryRepository implements InventoryRepository
 {
     public function __construct(
         private Connection $connection,
@@ -162,6 +164,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($posting->dimensions()->serialNumber() !== null && $newQuantity > 1) {
                 throw new InvalidSerialStockException('A serial number can only have a stock quantity of zero or one.');
             }
+
             $this->assertSerialNumberAvailable($connection, $posting, $newQuantity);
 
             $this->persistBalance($connection, $posting, $newQuantity, $current !== false);
@@ -314,6 +317,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                             'Every outbound order product must exist in the tenant.',
                         );
                     }
+
                     $connection->insert('wms_outbound_order_item', [
                         'id' => $item->id()->value(),
                         'outbound_order_id' => $order->id()->value(),
@@ -344,6 +348,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                         'A created or imported outbound order must exist in the tenant.',
                     );
                 }
+
                 if ($connection->fetchOne(
                     'SELECT 1 FROM wms_user_account WHERE id = :userId AND tenant_id = :tenantId',
                     [
@@ -355,6 +360,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                         'The releasing user must exist in the tenant.',
                     );
                 }
+
                 $items = $connection->fetchAllAssociative(
                     'SELECT id, product_id, requested_quantity FROM wms_outbound_order_item '
                     . 'WHERE outbound_order_id = :orderId ORDER BY id FOR UPDATE',
@@ -374,6 +380,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                             'A reservation ID is missing for an outbound order item.',
                         );
                     }
+
                     $connection->insert('wms_stock_reservation', [
                         'id' => $reservationId->value(),
                         'tenant_id' => $release->tenantId()->value(),
@@ -393,6 +400,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                         ['id' => $itemId],
                     );
                 }
+
                 $connection->update('wms_outbound_order', [
                     'status' => 'released',
                     'released_by' => $release->releasedBy()->value(),
@@ -444,6 +452,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($balance !== false && ($balance['stock_status'] !== 'available' || !(bool) $balance['allocatable'] || (is_string($balance['expires_at']) && $balance['expires_at'] < $allocation->createdAt()->format('Y-m-d')))) {
                 throw new InsufficientAvailableStockException('Only available, allocatable and non-expired stock can be allocated.');
             }
+
             $physical = $balance === false ? 0 : (int) $balance['quantity'];
             $reserved = $this->allocatedQuantity($connection, $posting);
             $available = $physical - $reserved;
@@ -543,6 +552,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('A released outbound order and pick list creator must exist in the tenant.');
             }
+
             $pickableAllocationIds = $connection->fetchFirstColumn(
                 "SELECT a.id FROM wms_stock_allocation a INNER JOIN wms_stock_reservation r ON r.id = a.reservation_id INNER JOIN wms_outbound_order_item i ON i.reservation_id = r.id WHERE i.outbound_order_id = :orderId AND a.tenant_id = :tenantId AND a.status = 'active' AND NOT EXISTS (SELECT 1 FROM wms_outbound_order_item pending LEFT JOIN wms_stock_reservation pending_reservation ON pending_reservation.id = pending.reservation_id WHERE pending.outbound_order_id = i.outbound_order_id AND (pending_reservation.id IS NULL OR pending_reservation.allocated_quantity < pending.requested_quantity)) FOR UPDATE",
                 ['orderId' => $pickList->outboundOrderId()->value(), 'tenantId' => $pickList->tenantId()->value()],
@@ -550,16 +560,19 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             $expectedIds = [];
             foreach ($pickableAllocationIds as $allocationId) {
                 if (!is_string($allocationId)) {
-                    throw new \LogicException('The pickable allocation projection is invalid.');
+                    throw new LogicException('The pickable allocation projection is invalid.');
                 }
+
                 $expectedIds[] = $allocationId;
             }
+
             $providedIds = array_map(static fn (InventoryId $id): string => $id->value(), $pickList->allocationIds());
             sort($expectedIds);
             sort($providedIds);
             if ($expectedIds === [] || $providedIds !== $expectedIds) {
                 throw new InsufficientAvailableStockException('A pick list requires every active allocation of a fully allocated outbound order.');
             }
+
             $connection->insert('wms_pick_list', [
                 'id' => $pickList->id()->value(), 'tenant_id' => $pickList->tenantId()->value(),
                 'outbound_order_id' => $pickList->outboundOrderId()->value(),
@@ -575,6 +588,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 ) === false) {
                     throw new InventoryReferenceNotFoundException('Every pick task requires an active allocation from the selected outbound order.');
                 }
+
                 $connection->insert('wms_pick_task', [
                     'id' => $allocationId->value(), 'pick_list_id' => $pickList->id()->value(),
                     'allocation_id' => $allocationId->value(), 'sequence_number' => $sequence + 1,
@@ -595,6 +609,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($users !== $expectedUsers) {
                 throw new InventoryReferenceNotFoundException('Both assignment users must exist in the tenant.');
             }
+
             $updated = $connection->executeStatement(
                 "UPDATE wms_pick_list SET assigned_to = :assignedTo, assigned_by = :assignedBy, assigned_at = :assignedAt, status = 'assigned', updated_at = :assignedAt WHERE id = :id AND tenant_id = :tenantId AND status IN ('open', 'assigned')",
                 ['assignedTo' => $assignment->assignedTo()->value(), 'assignedBy' => $assignment->assignedBy()->value(), 'assignedAt' => $assignment->assignedAt()->format('Y-m-d H:i:s.u'), 'id' => $assignment->pickListId()->value(), 'tenantId' => $assignment->tenantId()->value()],
@@ -615,6 +630,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($task === false) {
                 throw new InventoryReferenceNotFoundException('An open task assigned to the confirming user must exist.');
             }
+
             $transition = new StockAllocationTransition(
                 new InventoryId((string) $task['allocation_id']),
                 $confirmation->tenantId(),
@@ -664,6 +680,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($valid === false) {
                 throw new InventoryReferenceNotFoundException('A completed pick list and creator must exist in the tenant.');
             }
+
             $connection->insert('wms_packing_order', [
                 'id' => $order->id()->value(), 'tenant_id' => $order->tenantId()->value(),
                 'pick_list_id' => $order->pickListId()->value(), 'code' => $order->code(), 'status' => 'open',
@@ -686,6 +703,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('An open packing order and packer must exist in the tenant.');
             }
+
             $connection->insert('wms_package', [
                 'id' => $package->id()->value(), 'packing_order_id' => $package->packingOrderId()->value(),
                 'package_number' => $package->packageNumber(), 'weight_grams' => $package->weightGrams(),
@@ -700,8 +718,10 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 if ($validTask === false) {
                     throw new InventoryReferenceNotFoundException('Every package item must reference a picked task from the source list.');
                 }
+
                 $connection->insert('wms_package_item', ['package_id' => $package->id()->value(), 'pick_task_id' => $taskId->value()]);
             }
+
             $connection->update('wms_packing_order', ['status' => 'packing', 'updated_at' => $package->packedAt()->format('Y-m-d H:i:s.u')], ['id' => $package->packingOrderId()->value()]);
         });
     }
@@ -719,15 +739,18 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('A completable packing order and user must exist in the tenant.');
             }
+
             $expected = (int) $connection->fetchOne("SELECT COUNT(*) FROM wms_pick_task WHERE pick_list_id = :pickListId AND status = 'picked'", ['pickListId' => $order['pick_list_id']]);
             $packed = (int) $connection->fetchOne('SELECT COUNT(*) FROM wms_package_item i INNER JOIN wms_package p ON p.id = i.package_id WHERE p.packing_order_id = :orderId', ['orderId' => $completion->packingOrderId()->value()]);
             if ($expected === 0 || $expected !== $packed) {
                 throw new InsufficientAvailableStockException('Every picked task must be packed exactly once before completion.');
             }
+
             $summary = $connection->fetchAssociative('SELECT COUNT(*) package_count, SUM(weight_grams) total_weight FROM wms_package WHERE packing_order_id = :orderId AND status = :status', ['orderId' => $completion->packingOrderId()->value(), 'status' => 'sealed']);
             if ($summary === false || (int) $summary['package_count'] === 0) {
                 throw new InventoryReferenceNotFoundException('At least one sealed package is required.');
             }
+
             $connection->update('wms_packing_order', ['status' => 'completed', 'completed_by' => $completion->completedBy()->value(), 'completed_at' => $completion->completedAt()->format('Y-m-d H:i:s.u'), 'updated_at' => $completion->completedAt()->format('Y-m-d H:i:s.u')], ['id' => $completion->packingOrderId()->value()]);
             $this->recordStatus(
                 $completion->tenantId()->value(),
@@ -757,6 +780,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($valid === false) {
                 throw new InventoryReferenceNotFoundException('A completed packing order and creator must exist in the tenant.');
             }
+
             $connection->insert('wms_shipment', [
                 'id' => $shipment->id()->value(), 'tenant_id' => $shipment->tenantId()->value(),
                 'packing_order_id' => $shipment->packingOrderId()->value(), 'shipment_number' => $shipment->shipmentNumber(),
@@ -780,6 +804,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('A prepared shipment and registering user must exist in the tenant.');
             }
+
             $connection->update('wms_shipment', [
                 'status' => 'labelled', 'tracking_number' => $label->trackingNumber(),
                 'label_reference' => $label->labelReference(), 'label_registered_by' => $label->registeredBy()->value(),
@@ -813,6 +838,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('A directly dispatchable labelled shipment and dispatching user must exist in the tenant.');
             }
+
             $connection->update('wms_shipment', [
                 'status' => 'dispatched', 'handover_reference' => $dispatch->handoverReference(),
                 'dispatched_by' => $dispatch->dispatchedBy()->value(),
@@ -846,6 +872,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('The manifest creator must exist in the tenant.');
             }
+
             $connection->insert('wms_loading_manifest', [
                 'id' => $manifest->id()->value(), 'tenant_id' => $manifest->tenantId()->value(),
                 'code' => $manifest->code(), 'tour_reference' => $manifest->tourReference(),
@@ -862,6 +889,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 if ($shipment === false) {
                     throw new InventoryReferenceNotFoundException('Every manifest shipment must be labelled and belong to the tenant.');
                 }
+
                 $connection->insert('wms_loading_manifest_shipment', [
                     'manifest_id' => $manifest->id()->value(), 'shipment_id' => $shipmentId->value(),
                     'status' => 'pending',
@@ -883,6 +911,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('A pending manifest shipment and loader must exist in the tenant.');
             }
+
             $connection->update('wms_loading_manifest_shipment', [
                 'status' => 'loaded', 'loaded_by' => $loading->loadedBy()->value(),
                 'loaded_at' => $loading->loadedAt()->format('Y-m-d H:i:s.u'),
@@ -916,6 +945,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('A completable manifest and user must exist in the tenant.');
             }
+
             $total = (int) $connection->fetchOne(
                 'SELECT COUNT(*) FROM wms_loading_manifest_shipment WHERE manifest_id = :manifestId',
                 ['manifestId' => $completion->manifestId()->value()],
@@ -927,6 +957,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($total === 0 || $loaded !== $total) {
                 throw new InsufficientAvailableStockException('Every manifest shipment must be loaded before completion.');
             }
+
             $dispatchedShipments = $connection->fetchAllAssociative(
                 'SELECT s.id, s.tracking_number FROM wms_shipment s INNER JOIN wms_loading_manifest_shipment ms ON ms.shipment_id = s.id WHERE ms.manifest_id = :manifestId AND s.tenant_id = :tenantId',
                 ['manifestId' => $completion->manifestId()->value(), 'tenantId' => $completion->tenantId()->value()],
@@ -946,8 +977,9 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ], ['id' => $completion->manifestId()->value()]);
             foreach ($dispatchedShipments as $shipment) {
                 if (!is_string($shipment['id'] ?? null) || !is_string($shipment['tracking_number'] ?? null)) {
-                    throw new \LogicException('The dispatched shipment projection is invalid.');
+                    throw new LogicException('The dispatched shipment projection is invalid.');
                 }
+
                 $this->recordStatus(
                     $completion->tenantId()->value(),
                     'fulfillment.shipment.dispatched',
@@ -963,6 +995,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                     $completion->completedAt(),
                 );
             }
+
             $this->recordStatus(
                 $completion->tenantId()->value(),
                 'fulfillment.loading.completed',
@@ -986,6 +1019,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('The purchase order creator must exist in the tenant.');
             }
+
             $connection->insert('wms_purchase_order', [
                 'id' => $purchaseOrder->id()->value(), 'tenant_id' => $purchaseOrder->tenantId()->value(),
                 'code' => $purchaseOrder->code(), 'supplier_reference' => $purchaseOrder->supplierReference(),
@@ -1000,6 +1034,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 ) === false) {
                     throw new InventoryReferenceNotFoundException('Every ordered product must exist in the tenant.');
                 }
+
                 $connection->insert('wms_purchase_order_item', [
                     'id' => $item->id()->value(), 'purchase_order_id' => $purchaseOrder->id()->value(),
                     'product_id' => $item->productId()->value(), 'ordered_quantity' => $item->orderedQuantity(),
@@ -1018,6 +1053,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('An open purchase order and advice creator must exist in the tenant.');
             }
+
             $connection->insert('wms_inbound_delivery', [
                 'id' => $delivery->id()->value(), 'tenant_id' => $delivery->tenantId()->value(),
                 'purchase_order_id' => $delivery->purchaseOrderId()->value(), 'code' => $delivery->code(),
@@ -1033,6 +1069,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 if ($item === false || (int) $item['advised_quantity'] + $line->advisedQuantity() > (int) $item['ordered_quantity']) {
                     throw new InsufficientAvailableStockException('The advice exceeds the open purchase order quantity.');
                 }
+
                 $newAdvised = (int) $item['advised_quantity'] + $line->advisedQuantity();
                 $connection->insert('wms_inbound_delivery_line', [
                     'id' => $line->id()->value(), 'inbound_delivery_id' => $delivery->id()->value(),
@@ -1044,6 +1081,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                     'status' => $newAdvised === (int) $item['ordered_quantity'] ? 'advised' : 'partially_advised',
                 ], ['id' => $line->purchaseOrderItemId()->value()]);
             }
+
             $openItems = (int) $connection->fetchOne(
                 'SELECT COUNT(*) FROM wms_purchase_order_item WHERE purchase_order_id = :orderId AND advised_quantity < ordered_quantity',
                 ['orderId' => $delivery->purchaseOrderId()->value()],
@@ -1068,12 +1106,14 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('An advised line and receiver must exist in the tenant.');
             }
+
             $advisedQuantity = (int) $line['advised_quantity'];
             $actualQuantity = $receipt->actualQuantity($advisedQuantity);
             $reason = $receipt->discrepancyReason();
             if ($actualQuantity !== $advisedQuantity && $reason === null) {
-                throw new \InvalidArgumentException('A quantity discrepancy requires a reason.');
+                throw new InvalidArgumentException('A quantity discrepancy requires a reason.');
             }
+
             $connection->insert('wms_inbound_receipt', [
                 'id' => $receipt->id()->value(), 'inbound_delivery_line_id' => $receipt->deliveryLineId()->value(),
                 'quantity' => $actualQuantity, 'status' => 'pending_quality',
@@ -1089,6 +1129,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                     'created_at' => $receipt->receivedAt()->format('Y-m-d H:i:s.u'),
                 ]);
             }
+
             $connection->update('wms_inbound_delivery_line', ['status' => 'received'], ['id' => $receipt->deliveryLineId()->value()]);
             $remaining = (int) $connection->fetchOne(
                 "SELECT COUNT(*) FROM wms_inbound_delivery_line WHERE inbound_delivery_id = :deliveryId AND status = 'advised'",
@@ -1113,9 +1154,11 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($receipt === false) {
                 throw new InventoryReferenceNotFoundException('A pending inbound receipt must exist in the tenant.');
             }
+
             if ($receipt['discrepancy_status'] === 'open' && $inspection->decision()->value === 'accept') {
-                throw new \InvalidArgumentException('A receipt with an open discrepancy must first be booked to blocked stock.');
+                throw new InvalidArgumentException('A receipt with an open discrepancy must first be booked to blocked stock.');
             }
+
             if ($inspection->decision()->value === 'block' && $receipt['discrepancy_status'] === null) {
                 $connection->insert('wms_inbound_discrepancy', [
                     'id' => $inspection->receiptId()->value(), 'tenant_id' => $inspection->tenantId()->value(),
@@ -1126,6 +1169,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                     'created_at' => $inspection->inspectedAt()->format('Y-m-d H:i:s.u'),
                 ]);
             }
+
             $posting = new StockPosting(
                 $inspection->ledgerEntryId(),
                 $inspection->tenantId(),
@@ -1146,6 +1190,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($posting->dimensions()->serialNumber() !== null && $newQuantity > 1) {
                 throw new InvalidSerialStockException('An inbound serial number can only have a stock quantity of one.');
             }
+
             $this->assertSerialNumberAvailable($connection, $posting, $newQuantity);
             $this->persistBalance($connection, $posting, $newQuantity, $current !== false);
             $this->insertLedgerEntry($connection, $posting, $newQuantity, StockMovementType::InboundReceipt);
@@ -1155,6 +1200,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                     'question' => $answer->question(), 'passed' => $answer->passed() ? 1 : 0, 'note' => $answer->note(),
                 ]);
             }
+
             $connection->update('wms_inbound_receipt', [
                 'status' => 'inspected', 'quality_decision' => $inspection->decision()->value,
                 'stock_status' => $inspection->dimensions()->status()->value, 'location_id' => $inspection->locationId()->value(),
@@ -1162,6 +1208,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 'inspected_at' => $inspection->inspectedAt()->format('Y-m-d H:i:s.u'),
             ], ['id' => $inspection->receiptId()->value()]);
             $connection->update('wms_inbound_delivery_line', ['status' => 'processed'], ['id' => $receipt['line_id']]);
+
             $newReceived = (int) $receipt['received_quantity'] + (int) $receipt['quantity'];
             $connection->update('wms_purchase_order_item', [
                 'received_quantity' => $newReceived,
@@ -1201,8 +1248,9 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('An open inbound discrepancy and resolver must exist in the tenant.');
             }
+
             if ($row['stock_status'] !== 'blocked') {
-                throw new \InvalidArgumentException('Only blocked inbound stock can be resolved.');
+                throw new InvalidArgumentException('Only blocked inbound stock can be resolved.');
             }
 
             $resultingQuantity = null;
@@ -1235,6 +1283,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                     'ledger_entry_id' => $resolution->destinationLedgerId()->value(),
                 ], ['id' => $resolution->receiptId()->value()]);
             }
+
             $connection->update('wms_inbound_discrepancy', [
                 'status' => $resolution->action() === 'release' ? 'released' : 'rejected',
                 'resolution_note' => $resolution->note(), 'transfer_id' => $transferId,
@@ -1255,6 +1304,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('The accepting user must exist in the tenant.');
             }
+
             $connection->executeStatement(
                 'INSERT INTO wms_supplier (id, tenant_id, code, name, created_at) VALUES (:id, :tenantId, :code, :name, :createdAt) '
                 . 'ON DUPLICATE KEY UPDATE name = VALUES(name)',
@@ -1290,6 +1340,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 ) === false) {
                     throw new InventoryReferenceNotFoundException('Product and receiving location must exist in the tenant.');
                 }
+
                 $connection->insert('wms_unplanned_receipt_item', [
                     'id' => $item->id()->value(),
                     'receipt_id' => $receipt->id()->value(),
@@ -1318,6 +1369,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('An accepted unplanned receipt and booking user must exist in the tenant.');
             }
+
             $items = $connection->fetchAllAssociative('SELECT * FROM wms_unplanned_receipt_item WHERE receipt_id = :receiptId ORDER BY id', ['receiptId' => $booking->receiptId()->value()]);
             $lastQuantity = null;
             foreach ($items as $item) {
@@ -1327,12 +1379,13 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                     new InventoryId((string) $item['product_id']),
                     new InventoryId((string) $item['location_id']),
                     (int) $item['quantity'],
-                    'Unplanned receipt ' . (string) $receipt['code'],
+                    'Unplanned receipt ' . $receipt['code'],
                     $booking->bookedBy(),
                     $booking->bookedAt(),
                     StockDimensions::fromInput((string) $item['stock_status'], is_string($item['batch_number']) ? $item['batch_number'] : null, is_string($item['serial_number']) ? $item['serial_number'] : null, is_string($item['expires_at']) ? new DateTimeImmutable($item['expires_at']) : null),
                 ));
             }
+
             $connection->update('wms_unplanned_receipt', [
                 'status' => 'booked',
                 'booked_by' => $booking->bookedBy()->value(),
@@ -1351,6 +1404,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
         ) === false) {
             throw new InventoryReferenceNotFoundException('The strategy warehouse and creator must exist in the tenant.');
         }
+
         $this->connection->insert('wms_putaway_strategy', [
             'id' => $strategy->id()->value(), 'tenant_id' => $strategy->tenantId()->value(),
             'warehouse_id' => $strategy->warehouseId()->value(), 'code' => $strategy->code(),
@@ -1373,6 +1427,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('An inspected inbound receipt and creator must exist in the tenant.');
             }
+
             $target = $connection->fetchAssociative(
                 "SELECT s.id strategy_id, l.id target_location_id FROM wms_putaway_strategy s INNER JOIN wms_storage_location l ON l.warehouse_id = s.warehouse_id AND l.tenant_id = s.tenant_id AND l.code LIKE CONCAT(s.location_prefix, '%') WHERE s.tenant_id = :tenantId AND s.warehouse_id = :warehouseId AND s.stock_status = :stockStatus AND s.enabled = 1 AND l.putaway_enabled = 1 AND l.id <> :sourceLocationId AND (l.capacity_quantity = 0 OR (SELECT COALESCE(SUM(b.quantity), 0) FROM wms_stock_balance b WHERE b.location_id = l.id) + (SELECT COALESCE(SUM(po.quantity), 0) FROM wms_putaway_order po WHERE po.target_location_id = l.id AND po.status = 'open') + :quantity <= l.capacity_quantity) ORDER BY s.priority, CASE WHEN EXISTS (SELECT 1 FROM wms_stock_balance b2 WHERE b2.location_id = l.id AND b2.product_id = :productId AND b2.stock_key = :stockKey AND b2.quantity > 0) THEN 0 ELSE 1 END, l.putaway_priority, l.code LIMIT 1 FOR UPDATE",
                 [
@@ -1384,6 +1439,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($target === false) {
                 throw new InventoryReferenceNotFoundException('No enabled putaway strategy can provide a target location with sufficient capacity.');
             }
+
             $connection->insert('wms_putaway_order', [
                 'id' => $request->orderId()->value(), 'tenant_id' => $request->tenantId()->value(),
                 'inbound_receipt_id' => $request->inboundReceiptId()->value(), 'strategy_id' => $target['strategy_id'],
@@ -1409,6 +1465,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($order === false) {
                 throw new InventoryReferenceNotFoundException('An open putaway order must exist in the tenant.');
             }
+
             $dimensions = StockDimensions::fromInput(
                 (string) $order['stock_status'],
                 $order['batch_number'] === null ? null : (string) $order['batch_number'],
@@ -1458,6 +1515,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
         ) === false) {
             throw new InventoryReferenceNotFoundException('The replenishment warehouse, product, target location and creator must exist in the tenant.');
         }
+
         $this->connection->insert('wms_replenishment_policy', [
             'id' => $policy->id()->value(), 'tenant_id' => $policy->tenantId()->value(),
             'warehouse_id' => $policy->warehouseId()->value(), 'product_id' => $policy->productId()->value(),
@@ -1482,6 +1540,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('An enabled replenishment policy and creator must exist in the tenant.');
             }
+
             $targetQuantity = (int) $connection->fetchOne(
                 "SELECT COALESCE(SUM(b.quantity), 0) - (SELECT COALESCE(SUM(a.quantity), 0) FROM wms_stock_allocation a WHERE a.tenant_id = :tenantId AND a.product_id = :productId AND a.location_id = :locationId AND a.status = 'active') FROM wms_stock_balance b WHERE b.tenant_id = :tenantId AND b.product_id = :productId AND b.location_id = :locationId AND b.stock_status = 'available'",
                 ['tenantId' => $request->tenantId()->value(), 'productId' => $policy['product_id'], 'locationId' => $policy['target_location_id']],
@@ -1494,6 +1553,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($effectiveQuantity >= (int) $policy['minimum_quantity']) {
                 throw new InsufficientAvailableStockException('The replenishment minimum has not been reached.');
             }
+
             $source = $connection->fetchAssociative(
                 "SELECT b.*, l.code, b.quantity - (SELECT COALESCE(SUM(a.quantity), 0) FROM wms_stock_allocation a WHERE a.tenant_id = b.tenant_id AND a.product_id = b.product_id AND a.location_id = b.location_id AND a.stock_key = b.stock_key AND a.status = 'active') - (SELECT COALESCE(SUM(ro.quantity), 0) FROM wms_replenishment_order ro WHERE ro.source_location_id = b.location_id AND ro.stock_key = b.stock_key AND ro.status = 'open') available_quantity FROM wms_stock_balance b INNER JOIN wms_storage_location l ON l.id = b.location_id WHERE b.tenant_id = :tenantId AND b.product_id = :productId AND b.stock_status = 'available' AND l.warehouse_id = :warehouseId AND l.code LIKE CONCAT(:sourcePrefix, '%') AND l.id <> :targetLocationId HAVING available_quantity > 0 ORDER BY CASE WHEN b.expires_at IS NULL THEN 1 ELSE 0 END, b.expires_at, l.putaway_priority, l.code LIMIT 1 FOR UPDATE",
                 [
@@ -1505,6 +1565,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($source === false) {
                 throw new InsufficientAvailableStockException('No source location contains available stock for replenishment.');
             }
+
             $quantity = min((int) $policy['target_quantity'] - $effectiveQuantity, (int) $source['available_quantity']);
             $connection->insert('wms_replenishment_order', [
                 'id' => $request->orderId()->value(), 'tenant_id' => $request->tenantId()->value(),
@@ -1530,6 +1591,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($order === false) {
                 throw new InventoryReferenceNotFoundException('An open replenishment order must exist in the tenant.');
             }
+
             $dimensions = StockDimensions::fromInput(
                 (string) $order['stock_status'],
                 $order['batch_number'] === null ? null : (string) $order['batch_number'],
@@ -1570,12 +1632,14 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('The inventory warehouse and creator must exist in the tenant.');
             }
+
             if ($connection->fetchOne(
                 "SELECT 1 FROM wms_inventory_count WHERE warehouse_id = :warehouseId AND location_prefix = :locationPrefix AND status IN ('open', 'counted') FOR UPDATE",
                 ['warehouseId' => $plan->warehouseId()->value(), 'locationPrefix' => $plan->locationPrefix()],
             ) !== false) {
                 throw new InventoryReferenceNotFoundException('An unfinished inventory count already covers this warehouse area.');
             }
+
             $connection->insert('wms_inventory_count', [
                 'id' => $plan->id()->value(), 'tenant_id' => $plan->tenantId()->value(),
                 'warehouse_id' => $plan->warehouseId()->value(), 'code' => $plan->code(),
@@ -1593,6 +1657,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($lineCount === 0) {
                 throw new InventoryReferenceNotFoundException('The inventory scope does not contain stock balances to count.');
             }
+
             $connection->update('wms_inventory_count', ['line_count' => $lineCount], ['id' => $plan->id()->value()]);
 
             return new InventoryCountResult('open', $lineCount, 0);
@@ -1612,6 +1677,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('An open inventory line and counter must exist in the tenant.');
             }
+
             $difference = $entry->countedQuantity() - (int) $line['expected_quantity'];
             $connection->update('wms_inventory_count_line', [
                 'counted_quantity' => $entry->countedQuantity(), 'difference_quantity' => $difference,
@@ -1640,6 +1706,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('An open inventory count and submitter must exist in the tenant.');
             }
+
             $openLines = (int) $connection->fetchOne(
                 'SELECT COUNT(*) FROM wms_inventory_count_line WHERE inventory_count_id = :countId AND counted_quantity IS NULL',
                 ['countId' => $submission->countId()->value()],
@@ -1647,6 +1714,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($openLines !== 0) {
                 throw new InventoryReferenceNotFoundException('Every inventory line must be counted before submission.');
             }
+
             $differenceCount = (int) $connection->fetchOne(
                 'SELECT COUNT(*) FROM wms_inventory_count_line WHERE inventory_count_id = :countId AND difference_quantity <> 0',
                 ['countId' => $submission->countId()->value()],
@@ -1674,9 +1742,11 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('A counted inventory and approver must exist in the tenant.');
             }
+
             if ($count['submitted_by'] === $approval->approvedBy()->value()) {
                 throw new InventoryReferenceNotFoundException('The inventory count must be approved by a different user.');
             }
+
             $lines = $connection->fetchAllAssociative(
                 'SELECT * FROM wms_inventory_count_line WHERE inventory_count_id = :countId AND difference_quantity <> 0 ORDER BY id FOR UPDATE',
                 ['countId' => $approval->countId()->value()],
@@ -1684,12 +1754,14 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if (count($approval->ledgerEntryIds()) !== count($lines)) {
                 throw new InventoryReferenceNotFoundException('Every inventory difference needs exactly one ledger entry ID.');
             }
+
             foreach ($lines as $line) {
                 $lineId = (string) $line['id'];
                 $ledgerEntryId = $approval->ledgerEntryIds()[$lineId] ?? null;
                 if ($ledgerEntryId === null) {
                     throw new InventoryReferenceNotFoundException('A ledger entry ID is missing for an inventory difference.');
                 }
+
                 $currentQuantity = $connection->fetchOne(
                     'SELECT quantity FROM wms_stock_balance WHERE tenant_id = :tenantId AND product_id = :productId AND location_id = :locationId AND stock_key = :stockKey FOR UPDATE',
                     [
@@ -1700,6 +1772,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 if ($currentQuantity === false || (int) $currentQuantity !== (int) $line['expected_quantity']) {
                     throw new InventoryReferenceNotFoundException('Stock changed after the inventory snapshot; the count cannot be approved.');
                 }
+
                 $dimensions = StockDimensions::fromInput(
                     (string) $line['stock_status'],
                     $line['batch_number'] === null ? null : (string) $line['batch_number'],
@@ -1721,10 +1794,12 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 if ($newQuantity < $this->allocatedQuantity($connection, $posting)) {
                     throw new InsufficientAvailableStockException('The inventory adjustment would consume allocated stock.');
                 }
+
                 $this->persistBalance($connection, $posting, $newQuantity, true);
                 $this->insertLedgerEntry($connection, $posting, $newQuantity, StockMovementType::InventoryAdjustment);
                 $connection->update('wms_inventory_count_line', ['ledger_entry_id' => $ledgerEntryId->value()], ['id' => $lineId]);
             }
+
             $connection->update('wms_inventory_count', [
                 'status' => 'completed', 'approved_by' => $approval->approvedBy()->value(),
                 'approved_at' => $approval->approvedAt()->format('Y-m-d H:i:s.u'),
@@ -1790,6 +1865,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                         'A due cycle count plan and executing user must exist in the tenant.',
                     );
                 }
+
                 if ($connection->fetchOne(
                     "SELECT 1 FROM wms_inventory_count WHERE warehouse_id = :warehouseId "
                     . "AND location_prefix = :locationPrefix AND status IN ('open', 'counted') FOR UPDATE",
@@ -1831,6 +1907,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                         'The due cycle count scope does not contain stock balances to count.',
                     );
                 }
+
                 $connection->update(
                     'wms_inventory_count',
                     ['line_count' => $lineCount],
@@ -1858,6 +1935,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('The return creator must exist in the tenant.');
             }
+
             $connection->insert('wms_return_order', [
                 'id' => $returnOrder->id()->value(), 'tenant_id' => $returnOrder->tenantId()->value(),
                 'code' => $returnOrder->code(), 'order_reference' => $returnOrder->orderReference(),
@@ -1872,6 +1950,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 ) === false) {
                     throw new InventoryReferenceNotFoundException('Every return product must exist in the tenant.');
                 }
+
                 $connection->insert('wms_return_item', [
                     'id' => $item->id()->value(), 'return_order_id' => $returnOrder->id()->value(),
                     'product_id' => $item->productId()->value(), 'expected_quantity' => $item->expectedQuantity(),
@@ -1894,6 +1973,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             ) === false) {
                 throw new InventoryReferenceNotFoundException('An expected return item and receiver must exist in the tenant.');
             }
+
             $connection->insert('wms_return_receipt', [
                 'id' => $receipt->id()->value(), 'return_item_id' => $receipt->returnItemId()->value(),
                 'quantity' => (int) $item['expected_quantity'], 'status' => 'pending_inspection',
@@ -1919,6 +1999,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($receipt === false) {
                 throw new InventoryReferenceNotFoundException('A pending return receipt must exist in the tenant.');
             }
+
             $posting = new StockPosting(
                 $inspection->ledgerEntryId(),
                 $inspection->tenantId(),
@@ -1939,6 +2020,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
             if ($posting->dimensions()->serialNumber() !== null && $newQuantity > 1) {
                 throw new InvalidSerialStockException('A returned serial number can only have a stock quantity of one.');
             }
+
             $this->assertSerialNumberAvailable($connection, $posting, $newQuantity);
             $this->persistBalance($connection, $posting, $newQuantity, $current !== false);
             $this->insertLedgerEntry($connection, $posting, $newQuantity, StockMovementType::ReturnReceipt);
@@ -1950,6 +2032,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 'inspected_at' => $inspection->inspectedAt()->format('Y-m-d H:i:s.u'),
             ], ['id' => $inspection->receiptId()->value()]);
             $connection->update('wms_return_item', ['status' => 'processed'], ['id' => $receipt['item_id']]);
+
             $remaining = (int) $connection->fetchOne(
                 "SELECT COUNT(*) FROM wms_return_item i LEFT JOIN wms_return_receipt r ON r.return_item_id = i.id WHERE i.return_order_id = :orderId AND (r.id IS NULL OR r.status <> 'inspected')",
                 ['orderId' => $receipt['return_order_id']],
@@ -2002,6 +2085,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
         if ($newQuantity < 0) {
             throw new InsufficientStockException('The allocated stock is no longer physically available.');
         }
+
         $this->persistBalance($connection, $posting, $newQuantity, true);
         $this->insertLedgerEntry(
             $connection,
@@ -2039,6 +2123,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
                 'The zero-crossing storage location must exist in the posting tenant.',
             );
         }
+
         if ($connection->fetchOne(
             "SELECT 1 FROM wms_inventory_count_line l INNER JOIN wms_inventory_count c "
             . "ON c.id = l.inventory_count_id WHERE c.tenant_id = :tenantId "
@@ -2081,6 +2166,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
         if ($fulfilled === $requested) {
             return 'fulfilled';
         }
+
         if ($allocated === 0) {
             return $fulfilled > 0 ? 'partially_fulfilled' : 'open';
         }
@@ -2235,6 +2321,7 @@ final readonly class DbalInventoryRepository implements InventoryRepository
         if ($serialNumber === null || $newQuantity === 0) {
             return;
         }
+
         $otherQuantity = (int) $connection->fetchOne(
             'SELECT COALESCE(SUM(quantity), 0) FROM wms_stock_balance '
             . 'WHERE tenant_id = :tenantId AND serial_number = :serialNumber '

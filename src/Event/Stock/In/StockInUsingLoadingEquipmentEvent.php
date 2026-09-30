@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockInUsingLoadingEquipmentEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_in_using_loading_equipment';
+    final public const string EVENT_NAME = 'stock.stock_in_using_loading_equipment';
 
-    final public const EVENT = 'SI107';
+    final public const string EVENT = 'SI107';
 
     /**
      * SI107 Einlagern mit Ladehilfsmittel

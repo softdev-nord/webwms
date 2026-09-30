@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class PurchaseOrder
+readonly class PurchaseOrder
 {
     /** @param list<PurchaseOrderItem> $items */
     public function __construct(
@@ -26,6 +26,7 @@ final readonly class PurchaseOrder
                 throw new InvalidArgumentException('Purchase order code and supplier reference must contain 1 to 80 characters.');
             }
         }
+
         if ($items === []) {
             throw new InvalidArgumentException('A purchase order requires at least one item.');
         }

@@ -6,9 +6,9 @@ namespace WebWMS\Administration\Domain\Access;
 
 use InvalidArgumentException;
 
-final readonly class RoleId
+readonly class RoleId
 {
-    private const UUID_PATTERN = '/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i';
+    private const string UUID_PATTERN = '/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i';
 
     public function __construct(
         private string $value

@@ -6,9 +6,11 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use DomainException;
+use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
 
-final readonly class InventoryControlService
+readonly class InventoryControlService
 {
     public function __construct(
         private Connection $connection
@@ -30,7 +32,7 @@ final readonly class InventoryControlService
             'carrierMovements' => $this->rows('SELECT m.*, a.partner_code, a.carrier_type FROM wms_load_carrier_movement m JOIN wms_load_carrier_account a ON a.id = m.account_id WHERE m.tenant_id = :tenantId ORDER BY m.booked_at DESC LIMIT 100', $tenantId),
             'cyclePlans' => $this->rows('SELECT p.*, w.code AS warehouse_code FROM wms_cycle_count_plan p JOIN wms_warehouse w ON w.id = p.warehouse_id WHERE p.tenant_id = :tenantId ORDER BY p.next_due_at', $tenantId),
             'counts' => $this->rows('SELECT c.*, w.code AS warehouse_code FROM wms_inventory_count c JOIN wms_warehouse w ON w.id = c.warehouse_id WHERE c.tenant_id = :tenantId ORDER BY c.created_at DESC LIMIT 100', $tenantId),
-            'countLines' => $this->rows('SELECT l.*, c.code AS count_code, p.sku FROM wms_inventory_count_line l JOIN wms_inventory_count c ON c.id = l.inventory_count_id JOIN wms_product_reference p ON p.id = l.product_id WHERE c.tenant_id = :tenantId AND c.status IN (\'open\', \'counted\', \'pending_approval\') ORDER BY c.created_at DESC, p.sku LIMIT 250', $tenantId),
+            'countLines' => $this->rows("SELECT l.*, c.code AS count_code, p.sku FROM wms_inventory_count_line l JOIN wms_inventory_count c ON c.id = l.inventory_count_id JOIN wms_product_reference p ON p.id = l.product_id WHERE c.tenant_id = :tenantId AND c.status IN ('open', 'counted', 'pending_approval') ORDER BY c.created_at DESC, p.sku LIMIT 250", $tenantId),
         ];
     }
 
@@ -57,8 +59,9 @@ final readonly class InventoryControlService
     public function restrictStorage(string $tenantId, string $actorId, string $hazardClassId, string $locationPrefix, bool $allowed, ?int $maxQuantity, DateTimeImmutable $now): string
     {
         if ($maxQuantity !== null && $maxQuantity < 0) {
-            throw new \InvalidArgumentException('Die Höchstmenge darf nicht negativ sein.');
+            throw new InvalidArgumentException('Die Höchstmenge darf nicht negativ sein.');
         }
+
         $this->assertOwned('wms_hazard_class', $hazardClassId, $tenantId);
         $id = Uuid::v7()->toRfc4122();
         $this->connection->insert('wms_storage_restriction', ['id' => $id, 'tenant_id' => $tenantId, 'hazard_class_id' => $hazardClassId, 'location_prefix' => $this->required($locationPrefix), 'allowed' => $allowed ? 1 : 0, 'max_quantity' => $maxQuantity, 'created_by' => $actorId, 'created_at' => $this->date($now)]);
@@ -70,7 +73,7 @@ final readonly class InventoryControlService
     public function createBom(string $tenantId, string $actorId, string $productId, string $code, string $version, array $items, DateTimeImmutable $now): string
     {
         if ($items === []) {
-            throw new \InvalidArgumentException('Eine Stückliste benötigt mindestens eine Komponente.');
+            throw new InvalidArgumentException('Eine Stückliste benötigt mindestens eine Komponente.');
         }
 
         return $this->connection->transactional(function () use ($tenantId, $actorId, $productId, $code, $version, $items, $now): string {
@@ -79,8 +82,9 @@ final readonly class InventoryControlService
             $this->connection->insert('wms_bill_of_material', ['id' => $id, 'tenant_id' => $tenantId, 'product_id' => $productId, 'code' => $this->required($code), 'version' => $this->required($version), 'active' => 1, 'created_by' => $actorId, 'created_at' => $this->date($now)]);
             foreach ($items as $position => $item) {
                 if ($item['quantity'] <= 0) {
-                    throw new \InvalidArgumentException('Komponentenmengen müssen positiv sein.');
+                    throw new InvalidArgumentException('Komponentenmengen müssen positiv sein.');
                 }
+
                 $this->assertOwned('wms_product_reference', $item['productId'], $tenantId);
                 $this->connection->insert('wms_bom_item', ['id' => Uuid::v7()->toRfc4122(), 'bill_of_material_id' => $id, 'component_product_id' => $item['productId'], 'quantity' => $item['quantity'], 'position' => $position + 1]);
             }
@@ -92,8 +96,9 @@ final readonly class InventoryControlService
     public function planRequirement(string $tenantId, string $actorId, string $bomId, string $reference, int $productionQuantity, DateTimeImmutable $now): string
     {
         if ($productionQuantity <= 0) {
-            throw new \InvalidArgumentException('Die Produktionsmenge muss positiv sein.');
+            throw new InvalidArgumentException('Die Produktionsmenge muss positiv sein.');
         }
+
         $this->assertOwned('wms_bill_of_material', $bomId, $tenantId);
         $id = Uuid::v7()->toRfc4122();
         $this->connection->insert('wms_material_requirement', ['id' => $id, 'tenant_id' => $tenantId, 'bill_of_material_id' => $bomId, 'reference' => $this->required($reference), 'production_quantity' => $productionQuantity, 'status' => 'planned', 'created_by' => $actorId, 'created_at' => $this->date($now)]);
@@ -104,7 +109,7 @@ final readonly class InventoryControlService
     public function bookLoadCarrier(string $tenantId, string $actorId, string $partnerCode, string $carrierType, int $quantity, string $reference, string $note, DateTimeImmutable $now): string
     {
         if ($quantity === 0) {
-            throw new \InvalidArgumentException('Die Buchungsmenge darf nicht null sein.');
+            throw new InvalidArgumentException('Die Buchungsmenge darf nicht null sein.');
         }
 
         return $this->connection->transactional(function () use ($tenantId, $actorId, $partnerCode, $carrierType, $quantity, $reference, $note, $now): string {
@@ -113,6 +118,7 @@ final readonly class InventoryControlService
                 $accountId = Uuid::v7()->toRfc4122();
                 $this->connection->insert('wms_load_carrier_account', ['id' => $accountId, 'tenant_id' => $tenantId, 'partner_code' => $partnerCode, 'carrier_type' => $carrierType, 'balance' => 0, 'created_at' => $this->date($now), 'updated_at' => $this->date($now)]);
             }
+
             $this->connection->executeStatement('UPDATE wms_load_carrier_account SET balance = balance + :quantity, updated_at = :updatedAt WHERE id = :id AND tenant_id = :tenantId', ['quantity' => $quantity, 'updatedAt' => $this->date($now), 'id' => $accountId, 'tenantId' => $tenantId]);
             $id = Uuid::v7()->toRfc4122();
             $this->connection->insert('wms_load_carrier_movement', ['id' => $id, 'account_id' => $accountId, 'tenant_id' => $tenantId, 'quantity' => $quantity, 'reference' => $this->required($reference), 'note' => trim($note), 'booked_by' => $actorId, 'booked_at' => $this->date($now)]);
@@ -144,14 +150,14 @@ final readonly class InventoryControlService
     private function assertOwned(string $table, string $id, string $tenantId): void
     {
         if ($this->connection->fetchOne(sprintf('SELECT 1 FROM %s WHERE id = :id AND tenant_id = :tenantId', $table), ['id' => $id, 'tenantId' => $tenantId]) === false) {
-            throw new \DomainException('Die referenzierte Ressource gehört nicht zum Mandanten.');
+            throw new DomainException('Die referenzierte Ressource gehört nicht zum Mandanten.');
         }
     }
 
     private function required(string $value): string
     {
         if (trim($value) === '') {
-            throw new \InvalidArgumentException('Ein Pflichtwert fehlt.');
+            throw new InvalidArgumentException('Ein Pflichtwert fehlt.');
         }
 
         return trim($value);

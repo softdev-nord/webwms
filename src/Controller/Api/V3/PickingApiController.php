@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ use WebWMS\Inventory\Application\CreatePickListHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3', name: 'api_v3_picking_')]
-final class PickingApiController extends AbstractController
+class PickingApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -41,10 +42,12 @@ final class PickingApiController extends AbstractController
         if ($this->queries->outboundOrder($this->apiUser()->tenantId(), $orderId) === null) {
             throw $this->createNotFoundException('The outbound order does not exist.');
         }
+
         $allocationIds = $this->queries->pickableAllocationIds($this->apiUser()->tenantId(), $orderId);
         if ($allocationIds === []) {
-            throw new \InvalidArgumentException('The outbound order must be fully allocated and have active allocations available for picking.');
+            throw new InvalidArgumentException('The outbound order must be fully allocated and have active allocations available for picking.');
         }
+
         $pickListId = Uuid::v7()->toRfc4122();
         ($this->createPickList)(new CreatePickListCommand(
             $pickListId,
@@ -135,7 +138,7 @@ final class PickingApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);

@@ -17,11 +17,11 @@ use WebWMS\Repository\StockLayoutRepository;
     class: 'StockLayoutRepositoryTest'
 )]
 #[CoversClass(StockLayoutRepository::class)]
-final class StockLayoutRepositoryTest extends TestCase
+class StockLayoutRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $stockLayoutRepository = new StockLayoutRepository($registry);
 
         self::assertInstanceOf(StockLayoutRepository::class, $stockLayoutRepository);

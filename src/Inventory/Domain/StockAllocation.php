@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class StockAllocation
+readonly class StockAllocation
 {
     public function __construct(
         private InventoryId $id,
@@ -25,6 +25,7 @@ final readonly class StockAllocation
         if ($quantity <= 0) {
             throw new InvalidArgumentException('An allocation quantity must be greater than zero.');
         }
+
         if ($dimensions->serialNumber() !== null && $quantity !== 1) {
             throw new InvalidSerialStockException('A serial number must be allocated one unit at a time.');
         }

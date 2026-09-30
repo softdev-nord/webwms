@@ -12,7 +12,7 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\LoadingManifest;
 
-final class LoadingManifestTest extends TestCase
+class LoadingManifestTest extends TestCase
 {
     public function testItNormalizesManifestData(): void
     {

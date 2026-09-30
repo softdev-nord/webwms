@@ -14,7 +14,7 @@ use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockDimensions;
 use WebWMS\Inventory\Domain\StockReservation;
 
-final class StockReservationTest extends TestCase
+class StockReservationTest extends TestCase
 {
     public function testItNormalizesTheOrderReference(): void
     {

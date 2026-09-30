@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\MachineCommand;
 
-final class MachineCommandTest extends TestCase
+class MachineCommandTest extends TestCase
 {
     public function testItCapturesAQueuedTransport(): void
     {
@@ -20,7 +21,7 @@ final class MachineCommandTest extends TestCase
 
     public function testItRejectsAnUnsupportedStatus(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->command('transport', 'unknown');
     }

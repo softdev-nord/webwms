@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use WebWMS\Shared\Domain\Event\DomainEvent;
 use WebWMS\Shared\Domain\Model\AggregateRoot;
 
-final class AggregateRootTest extends TestCase
+class AggregateRootTest extends TestCase
 {
     public function testItReleasesRecordedEventsOnlyOnce(): void
     {
@@ -23,7 +23,8 @@ final class AggregateRootTest extends TestCase
         self::assertSame([], $aggregate->releaseEvents());
     }
 }
-final class TestAggregate extends AggregateRoot
+
+class TestAggregate extends AggregateRoot
 {
     public function change(DomainEvent $event): void
     {
@@ -31,7 +32,7 @@ final class TestAggregate extends AggregateRoot
     }
 }
 
-final readonly class TestDomainEvent implements DomainEvent
+readonly class TestDomainEvent implements DomainEvent
 {
     public function __construct(private DateTimeImmutable $occurredAt)
     {

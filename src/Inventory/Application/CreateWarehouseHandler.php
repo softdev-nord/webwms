@@ -10,7 +10,7 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\Warehouse;
 
-final readonly class CreateWarehouseHandler
+readonly class CreateWarehouseHandler
 {
     public function __construct(
         private InventoryRepository $inventory

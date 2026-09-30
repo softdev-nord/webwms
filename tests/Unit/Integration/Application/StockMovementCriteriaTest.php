@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Application;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Application\StockMovementCriteria;
 
-final class StockMovementCriteriaTest extends TestCase
+class StockMovementCriteriaTest extends TestCase
 {
     public function testItAcceptsACompleteMovementFilter(): void
     {
@@ -21,7 +22,7 @@ final class StockMovementCriteriaTest extends TestCase
     #[DataProvider('invalidFilters')]
     public function testItRejectsInvalidFilters(?string $productId, ?string $movementType): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new StockMovementCriteria($productId, null, null, $movementType);
     }

@@ -17,11 +17,11 @@ use WebWMS\Repository\CustomerOrderRepository;
     class: 'CustomerOrderRepositoryTest'
 )]
 #[CoversClass(CustomerOrderRepository::class)]
-final class CustomerOrderRepositoryTest extends TestCase
+class CustomerOrderRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $customerOrderRepository = new CustomerOrderRepository($registry);
 
         self::assertInstanceOf(CustomerOrderRepository::class, $customerOrderRepository);

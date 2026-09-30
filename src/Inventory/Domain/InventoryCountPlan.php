@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class InventoryCountPlan
+readonly class InventoryCountPlan
 {
     public function __construct(
         private InventoryId $id,
@@ -23,6 +23,7 @@ final readonly class InventoryCountPlan
         if (trim($code) === '' || mb_strlen($code) > 50) {
             throw new InvalidArgumentException('An inventory count code must contain 1 to 50 characters.');
         }
+
         if (preg_match('/^[A-Z0-9][A-Z0-9._-]{0,49}$/', $locationPrefix) !== 1) {
             throw new InvalidArgumentException('The inventory location prefix must use uppercase location characters.');
         }

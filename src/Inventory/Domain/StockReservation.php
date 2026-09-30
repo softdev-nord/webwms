@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class StockReservation
+readonly class StockReservation
 {
     public function __construct(
         private InventoryId $id,
@@ -23,6 +23,7 @@ final readonly class StockReservation
         if (trim($orderReference) === '' || mb_strlen($orderReference) > 100) {
             throw new InvalidArgumentException('An order reference must contain 1 to 100 characters.');
         }
+
         if ($requestedQuantity <= 0) {
             throw new InvalidArgumentException('A reservation quantity must be greater than zero.');
         }

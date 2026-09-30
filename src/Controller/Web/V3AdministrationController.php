@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,7 +24,7 @@ use WebWMS\Administration\Application\AdministrationWorkspaceService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/administration', name: 'v3_administration_')]
-final class V3AdministrationController extends AbstractController
+class V3AdministrationController extends AbstractController
 {
     public function __construct(
         private readonly V3AdministrationService $administration,
@@ -44,7 +46,7 @@ final class V3AdministrationController extends AbstractController
 
     #[Route('/workspace/{resource}', name: 'workspace_create', requirements: ['resource' => 'partner|context|identity_provider|number_range|device_profile'], methods: ['POST'])]
     #[IsGranted('administration.configuration.write')]
-    public function createWorkspaceResource(string $resource, Request $request): Response
+    public function createWorkspaceResource(string $resource, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_administration_workspace_create_' . $resource);
         $user = $this->tenantUser();
@@ -56,7 +58,7 @@ final class V3AdministrationController extends AbstractController
 
     #[Route('/workspace/{resource}/{id}/status', name: 'workspace_status', requirements: ['resource' => 'partner|context|identity_provider|number_range|device_profile'], methods: ['POST'])]
     #[IsGranted('administration.configuration.write')]
-    public function workspaceStatus(string $resource, string $id, Request $request): Response
+    public function workspaceStatus(string $resource, string $id, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_administration_workspace_status_' . $resource . '_' . $id);
         $user = $this->tenantUser();
@@ -68,7 +70,7 @@ final class V3AdministrationController extends AbstractController
 
     #[Route('/workspace/process', name: 'process_configure', methods: ['POST'])]
     #[IsGranted('administration.configuration.write')]
-    public function configureProcess(Request $request): Response
+    public function configureProcess(Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_administration_process_configure');
         $user = $this->tenantUser();
@@ -80,7 +82,7 @@ final class V3AdministrationController extends AbstractController
 
     #[Route('/workspace/deployment', name: 'deployment_configure', methods: ['POST'])]
     #[IsGranted('administration.configuration.write')]
-    public function configureDeployment(Request $request): Response
+    public function configureDeployment(Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_administration_deployment_configure');
         $user = $this->tenantUser();
@@ -88,6 +90,7 @@ final class V3AdministrationController extends AbstractController
         foreach (['deployment_mode', 'public_url', 'storage_driver', 'queue_transport', 'release_channel'] as $field) {
             $values[$field] = $this->required($request, $field);
         }
+
         $this->workspace->configureDeployment($user->tenantId(), $user->actorId(), $values, new DateTimeImmutable());
         $this->addFlash('success', 'administration.flash.operating_profile_has_been_saved');
 
@@ -96,7 +99,7 @@ final class V3AdministrationController extends AbstractController
 
     #[Route('/workspace/number-ranges/{code}/next', name: 'number_range_next', methods: ['POST'])]
     #[IsGranted('administration.number_range.use')]
-    public function nextNumber(string $code, Request $request): Response
+    public function nextNumber(string $code, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_administration_number_range_next_' . $code);
         $user = $this->tenantUser();
@@ -140,12 +143,14 @@ final class V3AdministrationController extends AbstractController
         if (!isset($users[0])) {
             throw $this->createNotFoundException();
         }
+
         if ($request->isMethod('POST')) {
             $this->assertCsrf($request, 'v3_administration_user_edit_' . $userId);
             $active = $request->request->getBoolean('active');
             if (!$active && $userId === $current->actorId()) {
-                throw new \InvalidArgumentException('Der aktuell angemeldete Benutzer kann sich nicht selbst deaktivieren.');
+                throw new InvalidArgumentException('Der aktuell angemeldete Benutzer kann sich nicht selbst deaktivieren.');
             }
+
             $this->administration->setUserRoles($current->tenantId(), $current->actorId(), $userId, $this->stringList($request, 'role_ids'), new DateTimeImmutable());
             $this->administration->setUserActive($current->tenantId(), $userId, $active, new DateTimeImmutable());
             $this->addFlash('success', 'administration.flash.user_has_been_updated');
@@ -179,6 +184,7 @@ final class V3AdministrationController extends AbstractController
         if (!isset($clients[0])) {
             throw $this->createNotFoundException();
         }
+
         if ($request->isMethod('POST')) {
             $this->assertCsrf($request, 'v3_administration_api_client_edit_' . $clientId);
             $this->administration->setApiClientActive($user->tenantId(), $clientId, $request->request->getBoolean('active'));
@@ -245,14 +251,15 @@ final class V3AdministrationController extends AbstractController
 
     #[Route('/users/{userId}/status', name: 'user_status', methods: ['POST'])]
     #[IsGranted('administration.user.write')]
-    public function userStatus(string $userId, Request $request): Response
+    public function userStatus(string $userId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_administration_user_status_' . $userId);
         $user = $this->tenantUser();
         $active = $this->required($request, 'active') === '1';
         if (!$active && $userId === $user->actorId()) {
-            throw new \InvalidArgumentException('Der aktuell angemeldete Benutzer kann sich nicht selbst deaktivieren.');
+            throw new InvalidArgumentException('Der aktuell angemeldete Benutzer kann sich nicht selbst deaktivieren.');
         }
+
         $this->administration->setUserActive($user->tenantId(), $userId, $active, new DateTimeImmutable());
         $this->addFlash('success', 'administration.flash.user_status_has_been_updated');
 
@@ -261,7 +268,7 @@ final class V3AdministrationController extends AbstractController
 
     #[Route('/users/{userId}/roles', name: 'user_roles', methods: ['POST'])]
     #[IsGranted('administration.user.write')]
-    public function userRoles(string $userId, Request $request): Response
+    public function userRoles(string $userId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_administration_user_roles_' . $userId);
         $user = $this->tenantUser();
@@ -277,17 +284,12 @@ final class V3AdministrationController extends AbstractController
     {
         $user = $this->tenantUser();
         $roles = $this->administration->roles($user->tenantId());
-        $role = null;
-        foreach ($roles as $candidate) {
-            if ($candidate['id'] === $roleId) {
-                $role = $candidate;
+        $role = array_find($roles, fn ($candidate): bool => $candidate['id'] === $roleId);
 
-                break;
-            }
-        }
         if ($role === null) {
             throw $this->createNotFoundException();
         }
+
         if ($request->isMethod('POST')) {
             $this->assertCsrf($request, 'v3_administration_role_edit_' . $roleId);
             $this->administration->updateRole($user->tenantId(), $user->actorId(), $roleId, $this->required($request, 'name'), $this->stringList($request, 'permissions'), new DateTimeImmutable());
@@ -342,7 +344,7 @@ final class V3AdministrationController extends AbstractController
 
     #[Route('/api-clients/{clientId}/status', name: 'api_client_status', methods: ['POST'])]
     #[IsGranted('administration.api_client.write')]
-    public function apiClientStatus(string $clientId, Request $request): Response
+    public function apiClientStatus(string $clientId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_administration_api_client_status_' . $clientId);
         $this->administration->setApiClientActive(
@@ -361,8 +363,9 @@ final class V3AdministrationController extends AbstractController
         $values = [];
         foreach ($request->request->all($field) as $value) {
             if (!is_string($value) || trim($value) === '') {
-                throw new \InvalidArgumentException(sprintf('Das Feld "%s" enthält einen ungültigen Wert.', $field));
+                throw new InvalidArgumentException(sprintf('Das Feld "%s" enthält einen ungültigen Wert.', $field));
             }
+
             $values[] = trim($value);
         }
 
@@ -373,7 +376,7 @@ final class V3AdministrationController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Application;
 
+use RuntimeException;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -12,20 +13,20 @@ use WebWMS\Integration\Domain\OutboxMessage;
 use WebWMS\Integration\Domain\OutboxRepository;
 use WebWMS\Integration\Domain\OutboxTransport;
 
-final class OutboxPublisherTest extends TestCase
+class OutboxPublisherTest extends TestCase
 {
     public function testItPublishesAndCompletesAClaimedMessage(): void
     {
         $now = new DateTimeImmutable('2026-09-19 12:00:00');
         $message = $this->message(1);
         $repository = $this->createMock(OutboxRepository::class);
-        $repository->expects(self::once())->method('claimDue')->with(25, $now, $now->modify('-300 seconds'))->willReturn([$message]);
-        $repository->expects(self::once())->method('markPublished')->with($message, $now);
-        $repository->expects(self::never())->method('markFailed');
+        $repository->expects($this->once())->method('claimDue')->with(25, $now, $now->modify('-300 seconds'))->willReturn([$message]);
+        $repository->expects($this->once())->method('markPublished')->with($message, $now);
+        $repository->expects($this->never())->method('markFailed');
         $transport = $this->createMock(OutboxTransport::class);
-        $transport->expects(self::once())->method('publish')->with($message);
+        $transport->expects($this->once())->method('publish')->with($message);
 
-        $report = (new OutboxPublisher($repository, $transport))->publishDue(25, $now);
+        $report = new OutboxPublisher($repository, $transport)->publishDue(25, $now);
 
         self::assertSame(1, $report->claimed);
         self::assertSame(1, $report->published);
@@ -44,16 +45,16 @@ final class OutboxPublisherTest extends TestCase
         $message = $this->message($attempt);
         $repository = $this->createMock(OutboxRepository::class);
         $repository->method('claimDue')->willReturn([$message]);
-        $repository->expects(self::once())->method('markFailed')->with(
+        $repository->expects($this->once())->method('markFailed')->with(
             $message,
             'queue unavailable',
             $now,
             $expectedNextAttempt === null ? null : new DateTimeImmutable($expectedNextAttempt),
         );
         $transport = $this->createMock(OutboxTransport::class);
-        $transport->method('publish')->willThrowException(new \RuntimeException('queue unavailable'));
+        $transport->method('publish')->willThrowException(new RuntimeException('queue unavailable'));
 
-        $report = (new OutboxPublisher($repository, $transport))->publishDue(10, $now);
+        $report = new OutboxPublisher($repository, $transport)->publishDue(10, $now);
 
         self::assertSame($expectedRetries, $report->retryScheduled);
         self::assertSame($expectedDeadLetters, $report->deadLettered);

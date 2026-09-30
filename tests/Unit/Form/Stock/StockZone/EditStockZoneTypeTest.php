@@ -22,13 +22,13 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'EditStockZoneTypeTest'
 )]
 #[CoversClass(EditStockZoneType::class)]
-final class EditStockZoneTypeTest extends TestCase
+class EditStockZoneTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects($this->exactly(1))
             ->method('add')
             ->willReturnOnConsecutiveCalls(
                 ['id', HiddenType::class, self::anything()],

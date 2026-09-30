@@ -14,15 +14,15 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\OutboundOrderRelease;
 use WebWMS\Inventory\Infrastructure\Persistence\DbalInventoryRepository;
 
-final class DbalInventoryRepositoryTest extends TestCase
+class DbalInventoryRepositoryTest extends TestCase
 {
     public function testItReleasesCreatedAndImportedOutboundOrders(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('transactional')
             ->willReturnCallback(static fn (callable $operation): mixed => $operation($connection));
-        $connection->expects(self::once())
+        $connection->expects($this->once())
             ->method('fetchAssociative')
             ->with(
                 self::callback(static function (string $sql): bool {
@@ -33,18 +33,18 @@ final class DbalInventoryRepositoryTest extends TestCase
                 self::isType('array'),
             )
             ->willReturn(['id' => $this->id('001'), 'order_number' => 'ORDER-100']);
-        $connection->expects(self::once())->method('fetchOne')->willReturn(1);
-        $connection->expects(self::once())
+        $connection->expects($this->once())->method('fetchOne')->willReturn(1);
+        $connection->expects($this->once())
             ->method('fetchAllAssociative')
             ->willReturn([[
                 'id' => $this->id('002'),
                 'product_id' => $this->id('003'),
                 'requested_quantity' => 2,
             ]]);
-        $connection->expects(self::once())->method('insert')->willReturn(1);
-        $connection->expects(self::exactly(2))->method('update')->willReturn(1);
+        $connection->expects($this->once())->method('insert')->willReturn(1);
+        $connection->expects($this->exactly(2))->method('update')->willReturn(1);
 
-        $repository = new DbalInventoryRepository($connection, $this->createMock(OutboxRepository::class));
+        $repository = new DbalInventoryRepository($connection, $this->createStub(OutboxRepository::class));
         $result = $repository->releaseOutboundOrder(new OutboundOrderRelease(
             new InventoryId($this->id('001')),
             new TenantId($this->id('004')),

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,7 +23,7 @@ use WebWMS\Inventory\Application\ConfirmPickTaskHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/picking', name: 'v3_picking_')]
-final class V3PickingController extends AbstractController
+class V3PickingController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -33,7 +35,7 @@ final class V3PickingController extends AbstractController
 
     #[Route('/{pickListId}/route-optimization', name: 'optimize', methods: ['POST'])]
     #[IsGranted('fulfillment.pick.optimize')]
-    public function optimize(string $pickListId, Request $request): Response
+    public function optimize(string $pickListId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_pick_optimize_' . $pickListId);
         $user = $this->tenantUser();
@@ -45,13 +47,14 @@ final class V3PickingController extends AbstractController
 
     #[Route('/{pickListId}/tasks/{taskId}/scan', name: 'scan', methods: ['POST'])]
     #[IsGranted('fulfillment.pick.execute')]
-    public function scan(string $pickListId, string $taskId, Request $request): Response
+    public function scan(string $pickListId, string $taskId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_pick_scan_' . $taskId);
         $pickList = $this->requiredPickList($pickListId);
         if (!$this->containsTask($pickList, $taskId)) {
             throw $this->createNotFoundException('Die Pickposition wurde nicht gefunden.');
         }
+
         $user = $this->tenantUser();
         $result = $this->advancedPicking->validateScan($user->tenantId(), $user->actorId(), $taskId, $this->required($request, 'location'), $this->required($request, 'product'), $this->optional($request, 'batch'), $this->optional($request, 'serial'), $request->request->getInt('quantity'), new DateTimeImmutable());
         if (!$result['valid']) {
@@ -59,6 +62,7 @@ final class V3PickingController extends AbstractController
 
             return $this->redirectToRoute('v3_picking_show', ['pickListId' => $pickListId]);
         }
+
         ($this->confirmPickTask)(new ConfirmPickTaskCommand($taskId, $user->tenantId(), 'picked', Uuid::v7()->toRfc4122(), 'Scannerbestätigt', $user->actorId(), new DateTimeImmutable()));
         $this->addFlash('success', $result['message']);
 
@@ -87,7 +91,7 @@ final class V3PickingController extends AbstractController
 
     #[Route('/{pickListId}/assignment', name: 'assign', methods: ['POST'])]
     #[IsGranted('fulfillment.pick.assign')]
-    public function assign(string $pickListId, Request $request): Response
+    public function assign(string $pickListId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_pick_assign_' . $pickListId);
         $this->requiredPickList($pickListId);
@@ -106,13 +110,14 @@ final class V3PickingController extends AbstractController
 
     #[Route('/{pickListId}/tasks/{taskId}/confirmation', name: 'confirm', methods: ['POST'])]
     #[IsGranted('fulfillment.pick.execute')]
-    public function confirm(string $pickListId, string $taskId, Request $request): Response
+    public function confirm(string $pickListId, string $taskId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_pick_confirm_' . $taskId);
         $pickList = $this->requiredPickList($pickListId);
         if (!$this->containsTask($pickList, $taskId)) {
             throw $this->createNotFoundException('Die Pickposition wurde nicht gefunden.');
         }
+
         $user = $this->tenantUser();
         $outcome = trim((string) $request->request->get('outcome'));
         ($this->confirmPickTask)(new ConfirmPickTaskCommand(
@@ -147,13 +152,9 @@ final class V3PickingController extends AbstractController
         if (!is_array($tasks)) {
             return false;
         }
-        foreach ($tasks as $task) {
-            if (is_array($task) && ($task['id'] ?? null) === $taskId) {
-                return true;
-            }
-        }
 
-        return false;
+
+        return array_any($tasks, fn ($task): bool => is_array($task) && ($task['id'] ?? null) === $taskId);
     }
 
     private function assertCsrf(Request $request, string $id): void
@@ -167,7 +168,7 @@ final class V3PickingController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;

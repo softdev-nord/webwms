@@ -59,11 +59,9 @@ readonly class StockLocationDataHandler
      */
     public function getStockLocationDetailsById(string $stockLocationId): array
     {
-        $stockLocation = $this->entityManager
+        return $this->entityManager
             ->getRepository(StockLocation::class)
             ->findBy(['stockLocationId' => $stockLocationId]);
-
-        return $stockLocation;
     }
 
     /**
@@ -153,11 +151,9 @@ readonly class StockLocationDataHandler
      */
     public function getAllStockLocationsAjax(): array
     {
-        $stockLocation = $this->entityManager
+        return $this->entityManager
             ->getRepository(StockLocation::class)
             ->findAll();
-
-        return $stockLocation;
     }
 
     /**

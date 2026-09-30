@@ -20,7 +20,7 @@ use WebWMS\Service\Stock\StockLocationService;
     class: 'StockLocationServiceTest'
 )]
 #[CoversClass(StockLocationService::class)]
-final class StockLocationServiceTest extends TestCase
+class StockLocationServiceTest extends TestCase
 {
     private StockLocationService $stockLocationService;
 

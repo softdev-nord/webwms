@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockInFromProductionEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_in_from_production';
+    final public const string EVENT_NAME = 'stock.stock_in_from_production';
 
-    final public const EVENT = 'SI103';
+    final public const string EVENT = 'SI103';
 
     /**
      * SI103 Zugang aus Produktion

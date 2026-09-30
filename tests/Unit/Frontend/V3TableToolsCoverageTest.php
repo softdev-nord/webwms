@@ -6,7 +6,7 @@ namespace WebWMS\Tests\Unit\Frontend;
 
 use PHPUnit\Framework\TestCase;
 
-final class V3TableToolsCoverageTest extends TestCase
+class V3TableToolsCoverageTest extends TestCase
 {
     public function testEveryV3TemplateTableParticipatesInSharedListNavigation(): void
     {
@@ -23,6 +23,7 @@ final class V3TableToolsCoverageTest extends TestCase
                 if (str_contains($table, 'data-table-tools="false"')) {
                     continue;
                 }
+
                 if (preg_match('/class="[^"]*\btable\b[^"]*"/', $table) !== 1) {
                     $uncovered[] = basename($template) . ': ' . $table;
                 }

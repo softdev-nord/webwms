@@ -7,7 +7,7 @@ namespace WebWMS\Tests\Unit\Security\V3;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Security\V3\SecurityUser;
 
-final class SecurityUserTest extends TestCase
+class SecurityUserTest extends TestCase
 {
     public function testItExposesTenantScopedIdentifierRolesAndPermissions(): void
     {

@@ -6,7 +6,7 @@ namespace WebWMS\Administration\Application\Tenant\CreateTenant;
 
 use DateTimeImmutable;
 
-final readonly class CreateTenantCommand
+readonly class CreateTenantCommand
 {
     public function __construct(
         public string $tenantId,

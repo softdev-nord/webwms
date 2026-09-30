@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,7 +24,7 @@ use WebWMS\Inventory\Application\CreateLoadingManifestHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/loading', name: 'v3_loading_')]
-final class V3LoadingController extends AbstractController
+class V3LoadingController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -83,7 +85,7 @@ final class V3LoadingController extends AbstractController
 
     #[Route('/{manifestId}/shipments/{shipmentId}/loading', name: 'confirm', methods: ['POST'])]
     #[IsGranted('fulfillment.loading.execute')]
-    public function confirm(string $manifestId, string $shipmentId, Request $request): Response
+    public function confirm(string $manifestId, string $shipmentId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_loading_confirm_' . $shipmentId);
         $this->requiredManifest($manifestId);
@@ -102,7 +104,7 @@ final class V3LoadingController extends AbstractController
 
     #[Route('/{manifestId}/complete', name: 'complete', methods: ['POST'])]
     #[IsGranted('fulfillment.loading.execute')]
-    public function complete(string $manifestId, Request $request): Response
+    public function complete(string $manifestId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_loading_complete_' . $manifestId);
         $this->requiredManifest($manifestId);
@@ -135,12 +137,14 @@ final class V3LoadingController extends AbstractController
         $shipmentIds = [];
         foreach ($request->request->all('shipment_id') as $shipmentId) {
             if (!is_string($shipmentId) || trim($shipmentId) === '') {
-                throw new \InvalidArgumentException('Die ausgewählten Sendungen sind ungültig.');
+                throw new InvalidArgumentException('Die ausgewählten Sendungen sind ungültig.');
             }
+
             $shipmentIds[] = trim($shipmentId);
         }
+
         if ($shipmentIds === []) {
-            throw new \InvalidArgumentException('Mindestens eine Sendung muss ausgewählt werden.');
+            throw new InvalidArgumentException('Mindestens eine Sendung muss ausgewählt werden.');
         }
 
         return $shipmentIds;
@@ -150,7 +154,7 @@ final class V3LoadingController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +25,7 @@ use WebWMS\Inventory\Application\StockSelectionService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3', name: 'api_v3_outbound_')]
-final class OutboundOrderApiController extends AbstractController
+class OutboundOrderApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -80,13 +82,16 @@ final class OutboundOrderApiController extends AbstractController
         if ($order === null) {
             throw $this->createNotFoundException('The outbound order does not exist.');
         }
+
         $reservationIds = [];
         foreach ($order['items'] as $item) {
             if (!is_array($item) || !is_string($item['id'] ?? null)) {
-                throw new \LogicException('The outbound order item projection is invalid.');
+                throw new LogicException('The outbound order item projection is invalid.');
             }
+
             $reservationIds[$item['id']] = Uuid::v7()->toRfc4122();
         }
+
         $result = ($this->releaseOrder)(new ReleaseOutboundOrderCommand(
             $orderId,
             $this->apiUser()->tenantId(),
@@ -123,6 +128,7 @@ final class OutboundOrderApiController extends AbstractController
         if ($reservation === null || !is_string($reservation['product_id'] ?? null)) {
             throw $this->createNotFoundException('The stock reservation does not exist.');
         }
+
         /** @var array<string, mixed> $payload */
         $payload = $request->toArray();
         $allocationId = Uuid::v7()->toRfc4122();
@@ -188,13 +194,15 @@ final class OutboundOrderApiController extends AbstractController
     private function items(mixed $value): array
     {
         if (!is_array($value) || $value === []) {
-            throw new \InvalidArgumentException('Field "items" must be a non-empty array.');
+            throw new InvalidArgumentException('Field "items" must be a non-empty array.');
         }
+
         $items = [];
         foreach ($value as $item) {
             if (!is_array($item)) {
-                throw new \InvalidArgumentException('Every order item must be an object.');
+                throw new InvalidArgumentException('Every order item must be an object.');
             }
+
             $items[] = [
                 'id' => Uuid::v7()->toRfc4122(),
                 'productId' => $this->string($item, 'productId'),
@@ -210,7 +218,7 @@ final class OutboundOrderApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -223,8 +231,9 @@ final class OutboundOrderApiController extends AbstractController
         if ($value === null || $value === '') {
             return null;
         }
+
         if (!is_string($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a string.', $field));
         }
 
         return trim($value);
@@ -235,7 +244,7 @@ final class OutboundOrderApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value) || $value <= 0) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
         }
 
         return $value;

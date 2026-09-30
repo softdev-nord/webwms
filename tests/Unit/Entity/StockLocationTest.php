@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'StockLocationTest'
 )]
 #[CoversClass(StockLocation::class)]
-final class StockLocationTest extends TestCase
+class StockLocationTest extends TestCase
 {
     private StockLocation $stockLocation;
 

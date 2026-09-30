@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockOutFromDispatchAreaEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_out_from_dispatch_area';
+    final public const string EVENT_NAME = 'stock.stock_out_from_dispatch_area';
 
-    final public const EVENT = 'SO105';
+    final public const string EVENT = 'SO105';
 
     /**
      * SO105 Auslagern direkt aus WA-Zone

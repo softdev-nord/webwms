@@ -19,7 +19,7 @@ use WebWMS\Entity\UserInterface;
  * Class        UserEntityTest
  */
 #[CoversClass(UserEntity::class)]
-final class UserEntityTest extends TestCase
+class UserEntityTest extends TestCase
 {
     private UserEntity $userEntity;
 
@@ -141,7 +141,7 @@ final class UserEntityTest extends TestCase
     public function testIsEqualToReturnsFalseIfUserIsNotInstanceOfSelf(): void
     {
         $userEntity = new UserEntity();
-        $otherUser = $this->createMock(UserInterface::class);
+        $otherUser = $this->createStub(UserInterface::class);
 
         self::assertFalse($userEntity->isEqualTo($otherUser));
     }

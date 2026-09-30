@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class InboundInspection
+readonly class InboundInspection
 {
     /** @param list<QualityCheckAnswer> $answers */
     public function __construct(
@@ -26,6 +26,7 @@ final readonly class InboundInspection
         if ($answers === []) {
             throw new InvalidArgumentException('An inbound inspection requires a quality checklist.');
         }
+
         if ($decision === InboundQualityDecision::Accept && array_any($answers, static fn (QualityCheckAnswer $answer): bool => !$answer->passed())) {
             throw new InvalidArgumentException('An inbound receipt with failed checks cannot be accepted.');
         }

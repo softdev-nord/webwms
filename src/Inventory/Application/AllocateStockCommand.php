@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class AllocateStockCommand
+readonly class AllocateStockCommand
 {
     public function __construct(
         public string $allocationId,

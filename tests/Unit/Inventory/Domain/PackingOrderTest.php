@@ -11,7 +11,7 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\PackingOrder;
 
-final class PackingOrderTest extends TestCase
+class PackingOrderTest extends TestCase
 {
     public function testItNormalizesTheCodeAndRetainsItsSourcePickList(): void
     {

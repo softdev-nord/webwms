@@ -14,7 +14,7 @@ use WebWMS\Inventory\Domain\StockDimensions;
 use WebWMS\Inventory\Domain\StockStatus;
 use WebWMS\Inventory\Domain\StockTransfer;
 
-final class StockTransferTest extends TestCase
+class StockTransferTest extends TestCase
 {
     public function testItBuildsCorrelatedTransferPostings(): void
     {

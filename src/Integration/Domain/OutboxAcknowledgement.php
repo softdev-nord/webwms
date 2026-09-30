@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace WebWMS\Integration\Domain;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 
-final readonly class OutboxAcknowledgement
+readonly class OutboxAcknowledgement
 {
     public function __construct(
         public string $messageId,
@@ -16,7 +17,7 @@ final readonly class OutboxAcknowledgement
     ) {
         foreach ([$messageId, $tenantId, $acknowledgedBy] as $value) {
             if (trim($value) === '') {
-                throw new \InvalidArgumentException('An outbox acknowledgement requires complete identifiers.');
+                throw new InvalidArgumentException('An outbox acknowledgement requires complete identifiers.');
             }
         }
     }

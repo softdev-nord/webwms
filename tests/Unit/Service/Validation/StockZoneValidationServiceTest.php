@@ -17,7 +17,7 @@ use WebWMS\Service\Validation\StockZoneValidationService;
     class: 'StockZoneValidationServiceTest'
 )]
 #[CoversClass(StockZoneValidationService::class)]
-final class StockZoneValidationServiceTest extends TestCase
+class StockZoneValidationServiceTest extends TestCase
 {
     private StockZoneValidationService $stockZoneValidationService;
 

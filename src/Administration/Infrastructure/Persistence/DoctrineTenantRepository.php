@@ -9,7 +9,7 @@ use WebWMS\Administration\Domain\Tenant\Tenant;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Administration\Domain\Tenant\TenantRepository;
 
-final readonly class DoctrineTenantRepository implements TenantRepository
+readonly class DoctrineTenantRepository implements TenantRepository
 {
     public function __construct(
         private Connection $connection

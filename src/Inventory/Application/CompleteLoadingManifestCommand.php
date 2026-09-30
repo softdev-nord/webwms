@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class CompleteLoadingManifestCommand
+readonly class CompleteLoadingManifestCommand
 {
     public function __construct(
         public string $manifestId,

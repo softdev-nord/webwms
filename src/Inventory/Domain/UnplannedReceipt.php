@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class UnplannedReceipt
+readonly class UnplannedReceipt
 {
     /** @param list<UnplannedReceiptItem> $items */
     public function __construct(
@@ -26,6 +26,7 @@ final readonly class UnplannedReceipt
         if (trim($code) === '' || trim($supplierCode) === '' || trim($supplierName) === '') {
             throw new InvalidArgumentException('An unplanned receipt requires code and supplier identification.');
         }
+
         if ($items === []) {
             throw new InvalidArgumentException('An unplanned receipt requires at least one item.');
         }

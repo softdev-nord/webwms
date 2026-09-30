@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use DomainException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\PrintJob;
 
-final class PrintJobTest extends TestCase
+class PrintJobTest extends TestCase
 {
     public function testItTransitionsFromQueuedToPrinted(): void
     {
@@ -38,7 +39,7 @@ final class PrintJobTest extends TestCase
         $job = $this->job();
         $job->start();
 
-        $this->expectException(\DomainException::class);
+        $this->expectException(DomainException::class);
         $job->start();
     }
 

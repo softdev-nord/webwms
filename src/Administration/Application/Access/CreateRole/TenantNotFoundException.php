@@ -6,6 +6,6 @@ namespace WebWMS\Administration\Application\Access\CreateRole;
 
 use DomainException;
 
-final class TenantNotFoundException extends DomainException
+class TenantNotFoundException extends DomainException
 {
 }

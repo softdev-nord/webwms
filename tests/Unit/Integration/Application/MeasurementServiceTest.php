@@ -11,15 +11,15 @@ use WebWMS\Integration\Domain\Measurement;
 use WebWMS\Integration\Domain\MeasurementDevice;
 use WebWMS\Integration\Domain\MeasurementRepository;
 
-final class MeasurementServiceTest extends TestCase
+class MeasurementServiceTest extends TestCase
 {
     public function testItReturnsAnExistingIdempotentMeasurement(): void
     {
         $existing = $this->measurement();
         $repository = $this->createMock(MeasurementRepository::class);
-        $repository->expects(self::once())->method('measurementByRequestId')->with('tenant', 'request')->willReturn($existing);
-        $repository->expects(self::never())->method('device');
-        $repository->expects(self::never())->method('addMeasurement');
+        $repository->expects($this->once())->method('measurementByRequestId')->with('tenant', 'request')->willReturn($existing);
+        $repository->expects($this->never())->method('device');
+        $repository->expects($this->never())->method('addMeasurement');
 
         self::assertSame($existing, $this->service($repository)->record(
             'tenant', 'device', 'package', 'target', 1000, null, null, null,
@@ -30,11 +30,11 @@ final class MeasurementServiceTest extends TestCase
     public function testItValidatesTheActiveDeviceCapability(): void
     {
         $repository = $this->createMock(MeasurementRepository::class);
-        $repository->expects(self::once())->method('measurementByRequestId')->willReturn(null);
-        $repository->expects(self::once())->method('device')->with('tenant', 'device', true)->willReturn(
+        $repository->expects($this->once())->method('measurementByRequestId')->willReturn(null);
+        $repository->expects($this->once())->method('device')->with('tenant', 'device', true)->willReturn(
             new MeasurementDevice('device', 'tenant', 'SCALE-01', 'Waage', 'scale', true, 'user', new DateTimeImmutable()),
         );
-        $repository->expects(self::once())->method('addMeasurement')->willReturnArgument(0);
+        $repository->expects($this->once())->method('addMeasurement')->willReturnArgument(0);
 
         $measurement = $this->service($repository)->record(
             'tenant', 'device', 'package', 'target', 1000, null, null, null,

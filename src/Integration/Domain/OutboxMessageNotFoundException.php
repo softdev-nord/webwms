@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Integration\Domain;
 
-final class OutboxMessageNotFoundException extends \RuntimeException
+use RuntimeException;
+
+class OutboxMessageNotFoundException extends RuntimeException
 {
 }

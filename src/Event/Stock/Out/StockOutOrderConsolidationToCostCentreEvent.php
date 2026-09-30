@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockOutOrderConsolidationToCostCentreEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_out_order_consolidation_to_cost_centre';
+    final public const string EVENT_NAME = 'stock.stock_out_order_consolidation_to_cost_centre';
 
-    final public const EVENT = 'SO111';
+    final public const string EVENT = 'SO111';
 
     /**
      * SO111 Sammelkommissionierung auf Kostenstelle

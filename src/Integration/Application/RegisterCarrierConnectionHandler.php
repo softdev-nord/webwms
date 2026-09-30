@@ -7,7 +7,7 @@ namespace WebWMS\Integration\Application;
 use WebWMS\Integration\Domain\CarrierConnection;
 use WebWMS\Integration\Domain\CarrierConnectionRepository;
 
-final readonly class RegisterCarrierConnectionHandler
+readonly class RegisterCarrierConnectionHandler
 {
     public function __construct(
         private CarrierConnectionRepository $connections

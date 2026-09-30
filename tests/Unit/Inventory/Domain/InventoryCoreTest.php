@@ -14,7 +14,7 @@ use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\Sku;
 use WebWMS\Inventory\Domain\StockPosting;
 
-final class InventoryCoreTest extends TestCase
+class InventoryCoreTest extends TestCase
 {
     public function testItNormalizesSkuAndProductName(): void
     {

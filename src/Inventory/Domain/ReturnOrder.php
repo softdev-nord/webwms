@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class ReturnOrder
+readonly class ReturnOrder
 {
     /** @param list<ReturnItem> $items */
     public function __construct(
@@ -26,9 +26,11 @@ final readonly class ReturnOrder
                 throw new InvalidArgumentException('Return code and order reference must contain 1 to 80 characters.');
             }
         }
+
         if ($items === []) {
             throw new InvalidArgumentException('A return order requires at least one item.');
         }
+
         $ids = array_map(static fn (ReturnItem $item): string => $item->id()->value(), $items);
         if (count(array_unique($ids)) !== count($ids)) {
             throw new InvalidArgumentException('A return item may only occur once.');

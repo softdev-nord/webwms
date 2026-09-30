@@ -11,17 +11,17 @@ use WebWMS\Integration\Domain\AutomationDevice;
 use WebWMS\Integration\Domain\AutomationRepository;
 use WebWMS\Integration\Domain\DeviceCommand;
 
-final class StorageAutomationAdapterTest extends TestCase
+class StorageAutomationAdapterTest extends TestCase
 {
     public function testItReturnsAnExistingIdempotentCommand(): void
     {
         $existing = $this->command();
         $repository = $this->createMock(AutomationRepository::class);
-        $repository->expects(self::once())->method('commandByRequestId')->with('tenant', 'request')->willReturn($existing);
-        $repository->expects(self::never())->method('device');
-        $repository->expects(self::never())->method('addCommand');
+        $repository->expects($this->once())->method('commandByRequestId')->with('tenant', 'request')->willReturn($existing);
+        $repository->expects($this->never())->method('device');
+        $repository->expects($this->never())->method('addCommand');
 
-        $result = (new StorageAutomationAdapter($repository))->queueCommand(
+        $result = new StorageAutomationAdapter($repository)->queueCommand(
             'tenant',
             'device',
             'present',
@@ -39,8 +39,8 @@ final class StorageAutomationAdapterTest extends TestCase
     public function testItRequiresAnActiveDeviceBeforeQueueing(): void
     {
         $repository = $this->createMock(AutomationRepository::class);
-        $repository->expects(self::once())->method('commandByRequestId')->willReturn(null);
-        $repository->expects(self::once())->method('device')->with('tenant', 'device', true)->willReturn(
+        $repository->expects($this->once())->method('commandByRequestId')->willReturn(null);
+        $repository->expects($this->once())->method('device')->with('tenant', 'device', true)->willReturn(
             new AutomationDevice(
                 'device',
                 'tenant',
@@ -54,9 +54,9 @@ final class StorageAutomationAdapterTest extends TestCase
                 new DateTimeImmutable(),
             ),
         );
-        $repository->expects(self::once())->method('addCommand')->willReturnArgument(0);
+        $repository->expects($this->once())->method('addCommand')->willReturnArgument(0);
 
-        $command = (new StorageAutomationAdapter($repository))->queueCommand(
+        $command = new StorageAutomationAdapter($repository)->queueCommand(
             'tenant',
             'device',
             'present',

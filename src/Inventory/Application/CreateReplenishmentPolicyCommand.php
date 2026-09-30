@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class CreateReplenishmentPolicyCommand
+readonly class CreateReplenishmentPolicyCommand
 {
     public function __construct(
         public string $policyId,

@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockTransferToDispatchAreaEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_transfer_to_dispatch_area';
+    final public const string EVENT_NAME = 'stock.stock_transfer_to_dispatch_area';
 
-    final public const EVENT = 'ST104';
+    final public const string EVENT = 'ST104';
 
     /**
      * ST104 Umlagerung aus LV-Lager in WA-Zone

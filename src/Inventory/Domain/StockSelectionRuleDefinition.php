@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Domain;
 
 use InvalidArgumentException;
 
-final readonly class StockSelectionRuleDefinition
+readonly class StockSelectionRuleDefinition
 {
     public string $code;
 
@@ -24,9 +24,11 @@ final readonly class StockSelectionRuleDefinition
         if ($this->code === '' || mb_strlen($this->code) > 50) {
             throw new InvalidArgumentException('The stock selection rule code must contain 1 to 50 characters.');
         }
+
         if ($this->name === '' || mb_strlen($this->name) > 100) {
             throw new InvalidArgumentException('The stock selection rule name must contain 1 to 100 characters.');
         }
+
         if ($this->priority < 1) {
             throw new InvalidArgumentException('The stock selection rule priority must be positive.');
         }

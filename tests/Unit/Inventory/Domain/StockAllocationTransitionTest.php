@@ -13,7 +13,7 @@ use WebWMS\Inventory\Domain\AllocationTransitionType;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\StockAllocationTransition;
 
-final class StockAllocationTransitionTest extends TestCase
+class StockAllocationTransitionTest extends TestCase
 {
     public function testConsumptionRequiresALedgerEntryId(): void
     {

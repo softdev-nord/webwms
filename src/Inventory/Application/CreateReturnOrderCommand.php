@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class CreateReturnOrderCommand
+readonly class CreateReturnOrderCommand
 {
     /** @param list<array{id: string, productId: string, quantity: int, reason: string}> $items */
     public function __construct(

@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\TransportEndpoint;
 
-final class TransportEndpointTest extends TestCase
+class TransportEndpointTest extends TestCase
 {
     public function testItAcceptsATcpEndpoint(): void
     {
@@ -19,7 +20,7 @@ final class TransportEndpointTest extends TestCase
 
     public function testItRejectsAnInsecureWebservice(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new TransportEndpoint('id', 'tenant', 'HTTP-01', 'Service', 'http_webservice', 'http://machine.local/api', 'HTTP_TOKEN', true, 'user', new DateTimeImmutable());
     }

@@ -16,7 +16,7 @@ use WebWMS\Service\Validation\CustomerValidationService;
     class: 'CustomerValidationServiceTest'
 )]
 #[CoversClass(CustomerValidationService::class)]
-final class CustomerValidationServiceTest extends TestCase
+class CustomerValidationServiceTest extends TestCase
 {
     private CustomerValidationService $customerValidationService;
 

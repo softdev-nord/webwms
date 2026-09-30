@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Integration\Application;
 
-final readonly class OutboxPublishReport
+readonly class OutboxPublishReport
 {
     public function __construct(
         public int $claimed,

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace WebWMS\Integration\Infrastructure\Transport;
 
+use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use WebWMS\Integration\Domain\CredentialProvider;
 use WebWMS\Integration\Domain\Printer;
 use WebWMS\Integration\Domain\PrintJob;
 use WebWMS\Integration\Domain\PrintTransport;
 
-final readonly class HttpPrintTransport implements PrintTransport
+readonly class HttpPrintTransport implements PrintTransport
 {
     public function __construct(
         private HttpClientInterface $client,
@@ -35,7 +36,7 @@ final readonly class HttpPrintTransport implements PrintTransport
         ]);
         $data = $response->toArray();
         if (!is_string($data['jobReference'] ?? null) || trim($data['jobReference']) === '') {
-            throw new \RuntimeException('The printer response does not contain a job reference.');
+            throw new RuntimeException('The printer response does not contain a job reference.');
         }
 
         return $data['jobReference'];

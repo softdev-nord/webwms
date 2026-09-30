@@ -27,7 +27,7 @@ use WebWMS\Service\Stock\StockOccupancyService;
     class: 'ArticleDataHandlerTest'
 )]
 #[CoversClass(ArticleDataHandler::class)]
-final class ArticleDataHandlerTest extends TestCase
+class ArticleDataHandlerTest extends TestCase
 {
     private ArticleDataHandler $articleDataHandler;
 
@@ -39,18 +39,17 @@ final class ArticleDataHandlerTest extends TestCase
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->dateTimeService = $this->createMock(DateTimeService::class);
-        $stockOccupancyService = $this->createMock(StockOccupancyService::class);
 
         $this->articleDataHandler = new ArticleDataHandler(
             $this->entityManager,
-            $stockOccupancyService,
+            $this->createStub(StockOccupancyService::class),
             $this->dateTimeService
         );
     }
 
     public function testSave(): void
     {
-        $article = $this->createMock(Article::class);
+        $article = $this->createStub(Article::class);
 
         $this->entityManager
             ->expects($this->once())
@@ -65,7 +64,7 @@ final class ArticleDataHandlerTest extends TestCase
 
     public function testDelete(): void
     {
-        $article = $this->createMock(Article::class);
+        $article = $this->createStub(Article::class);
 
         $this->entityManager
             ->expects($this->once())
@@ -81,7 +80,7 @@ final class ArticleDataHandlerTest extends TestCase
     public function testGetArticleById(): void
     {
         $articleId = 123;
-        $expectedArticle = $this->createMock(Article::class);
+        $expectedArticle = $this->createStub(Article::class);
         $repository = $this->createMock(EntityRepository::class);
 
         $repository
@@ -104,7 +103,7 @@ final class ArticleDataHandlerTest extends TestCase
     public function testGetArticleByNr(): void
     {
         $articleNr = 'ABC123';
-        $expectedArticle = $this->createMock(Article::class);
+        $expectedArticle = $this->createStub(Article::class);
         $repository = $this->createMock(EntityRepository::class);
 
         $repository
@@ -126,7 +125,7 @@ final class ArticleDataHandlerTest extends TestCase
 
     public function testGetAllArticles(): void
     {
-        $expectedArticles = [$this->createMock(Article::class)];
+        $expectedArticles = [$this->createStub(Article::class)];
         $repository = $this->createMock(EntityRepository::class);
 
         $repository

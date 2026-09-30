@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class DispatchShipmentCommand
+readonly class DispatchShipmentCommand
 {
     public function __construct(
         public string $shipmentId,

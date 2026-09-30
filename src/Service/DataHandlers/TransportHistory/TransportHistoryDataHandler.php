@@ -71,7 +71,7 @@ readonly class TransportHistoryDataHandler
             foreach ($requestData as $key => $data) {
                 $data = StockInFinalDto::hydrate((array) $data);
 
-                $entities[] = (new TransportHistory())
+                $entities[] = new TransportHistory()
                     ->setSuId($data->getStockSuId())
 //                    ->setTrNr($this->getLastTransportHistoryNr() + 1)
                     ->setTrPos($key + 1)

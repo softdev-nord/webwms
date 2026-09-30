@@ -9,7 +9,7 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\StorageLocation;
 
-final readonly class CreateStorageLocationHandler
+readonly class CreateStorageLocationHandler
 {
     public function __construct(
         private InventoryRepository $inventory

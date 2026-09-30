@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockOutFromReceivingAreaEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_out_from_receiving_area';
+    final public const string EVENT_NAME = 'stock.stock_out_from_receiving_area';
 
-    final public const EVENT = 'SO107';
+    final public const string EVENT = 'SO107';
 
     /**
      * SO107 Auslagern direkt aus WE-Zone

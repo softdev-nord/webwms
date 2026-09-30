@@ -6,11 +6,12 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Inventory\Domain\StorageBinDefinition;
 
-final readonly class WarehouseTopologyService
+readonly class WarehouseTopologyService
 {
     public function __construct(
         private Connection $connection
@@ -23,8 +24,9 @@ final readonly class WarehouseTopologyService
         $name = $this->name($name);
         $this->assertActor($tenantId, $actorId);
         if (!in_array($timezone, timezone_identifiers_list(), true)) {
-            throw new \InvalidArgumentException('The site timezone is invalid.');
+            throw new InvalidArgumentException('The site timezone is invalid.');
         }
+
         $this->connection->insert('wms_site', [
             'id' => $id, 'tenant_id' => $tenantId, 'code' => $code, 'name' => $name,
             'timezone' => $timezone, 'status' => 'active', 'created_by' => $actorId,
@@ -40,6 +42,7 @@ final readonly class WarehouseTopologyService
         if (!$this->referenceExists('wms_site', $siteId, $tenantId) || !$this->referenceExists('wms_user_account', $actorId, $tenantId)) {
             throw new InventoryReferenceNotFoundException('Site and creator must exist in the tenant.');
         }
+
         $this->connection->insert('wms_warehouse', [
             'id' => $id, 'tenant_id' => $tenantId, 'site_id' => $siteId, 'code' => $code,
             'name' => $name, 'warehouse_type' => $type, 'created_by' => $actorId, 'created_at' => $this->date($now),
@@ -54,6 +57,7 @@ final readonly class WarehouseTopologyService
         if (!$this->referenceExists('wms_warehouse', $warehouseId, $tenantId) || !$this->referenceExists('wms_user_account', $actorId, $tenantId)) {
             throw new InventoryReferenceNotFoundException('Warehouse and creator must exist in the tenant.');
         }
+
         $this->connection->insert('wms_warehouse_area', [
             'id' => $id, 'tenant_id' => $tenantId, 'warehouse_id' => $warehouseId, 'code' => $code,
             'name' => $name, 'area_type' => $type, 'created_by' => $actorId, 'created_at' => $this->date($now),
@@ -67,6 +71,7 @@ final readonly class WarehouseTopologyService
         if (!$this->referenceExists('wms_warehouse_area', $areaId, $tenantId) || !$this->referenceExists('wms_user_account', $actorId, $tenantId)) {
             throw new InventoryReferenceNotFoundException('Area and creator must exist in the tenant.');
         }
+
         $this->connection->insert('wms_warehouse_aisle', [
             'id' => $id, 'tenant_id' => $tenantId, 'area_id' => $areaId, 'code' => $code,
             'name' => $name, 'created_by' => $actorId, 'created_at' => $this->date($now),
@@ -91,6 +96,7 @@ final readonly class WarehouseTopologyService
         if (!$validHierarchy || !$this->referenceExists('wms_user_account', $actorId, $tenantId)) {
             throw new InventoryReferenceNotFoundException('Warehouse, area, aisle and creator must belong to the tenant.');
         }
+
         $this->connection->insert('wms_storage_location', [
             'id' => $id, 'tenant_id' => $tenantId, 'warehouse_id' => $warehouseId,
             'area_id' => $areaId, 'aisle_id' => $aisleId, 'code' => $bin->code(),
@@ -144,7 +150,7 @@ final readonly class WarehouseTopologyService
                 'name' => $this->name($this->string($data, 'name'), 100),
             ],
             'bin' => $this->binChanges($tenantId, $data),
-            default => throw new \InvalidArgumentException('The topology resource is not supported.'),
+            default => throw new InvalidArgumentException('The topology resource is not supported.'),
         };
 
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $actorId, $resource, $id, $changes, $before, $now): void {
@@ -167,6 +173,7 @@ final readonly class WarehouseTopologyService
         if ($this->connection->fetchOne('SELECT 1 FROM wms_warehouse_aisle a JOIN wms_warehouse_area ar ON ar.id = a.area_id WHERE a.id = :aisle AND ar.id = :area AND ar.warehouse_id = :warehouse AND a.tenant_id = :tenant', ['aisle' => $aisleId, 'area' => $areaId, 'warehouse' => $warehouseId, 'tenant' => $tenantId]) === false) {
             throw new InventoryReferenceNotFoundException('The bin hierarchy is invalid.');
         }
+
         $bin = new StorageBinDefinition($this->string($data, 'code'), $this->string($data, 'level_code'), $this->string($data, 'bin_code'), $this->string($data, 'location_type'), $this->integer($data, 'capacity_quantity'));
 
         return ['warehouse_id' => $warehouseId, 'area_id' => $areaId, 'aisle_id' => $aisleId, 'code' => $bin->code(), 'level_code' => $bin->levelCode(), 'bin_code' => $bin->binCode(), 'location_type' => $bin->locationType(), 'capacity_quantity' => $bin->capacityQuantity(), 'putaway_enabled' => $this->boolean($data, 'putaway_enabled') ? 1 : 0, 'putaway_priority' => $this->integer($data, 'putaway_priority')];
@@ -177,7 +184,7 @@ final readonly class WarehouseTopologyService
         return match ($resource) {
             'site' => 'wms_site', 'warehouse' => 'wms_warehouse', 'area' => 'wms_warehouse_area',
             'aisle' => 'wms_warehouse_aisle', 'bin' => 'wms_storage_location',
-            default => throw new \InvalidArgumentException('The topology resource is not supported.'),
+            default => throw new InvalidArgumentException('The topology resource is not supported.'),
         };
     }
 
@@ -195,7 +202,7 @@ final readonly class WarehouseTopologyService
     {
         $value = $data[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -208,8 +215,9 @@ final readonly class WarehouseTopologyService
         if (is_string($value) && ctype_digit($value)) {
             return (int) $value;
         }
+
         if (!is_int($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
         }
 
         return $value;
@@ -224,7 +232,7 @@ final readonly class WarehouseTopologyService
     private function timezone(string $timezone): string
     {
         if (!in_array($timezone, timezone_identifiers_list(), true)) {
-            throw new \InvalidArgumentException('The site timezone is invalid.');
+            throw new InvalidArgumentException('The site timezone is invalid.');
         }
 
         return $timezone;
@@ -249,7 +257,7 @@ final readonly class WarehouseTopologyService
     {
         $code = mb_strtoupper(trim($code));
         if (preg_match('/^[A-Z0-9][A-Z0-9._-]+$/', $code) !== 1 || mb_strlen($code) > $maxLength) {
-            throw new \InvalidArgumentException('The topology code is invalid.');
+            throw new InvalidArgumentException('The topology code is invalid.');
         }
 
         return $code;
@@ -259,7 +267,7 @@ final readonly class WarehouseTopologyService
     {
         $name = trim($name);
         if ($name === '' || mb_strlen($name) > $maxLength) {
-            throw new \InvalidArgumentException('The topology name is invalid.');
+            throw new InvalidArgumentException('The topology name is invalid.');
         }
 
         return $name;
@@ -269,7 +277,7 @@ final readonly class WarehouseTopologyService
     private function type(string $type, array $supported): string
     {
         if (!in_array($type, $supported, true)) {
-            throw new \InvalidArgumentException('The topology type is not supported.');
+            throw new InvalidArgumentException('The topology type is not supported.');
         }
 
         return $type;

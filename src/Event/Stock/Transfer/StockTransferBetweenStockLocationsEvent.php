@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockTransferBetweenStockLocationsEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_transfer_between_stock_locations';
+    final public const string EVENT_NAME = 'stock.stock_transfer_between_stock_locations';
 
-    final public const EVENT = 'ST101';
+    final public const string EVENT = 'ST101';
 
     /**
      * ST101 Umlagern

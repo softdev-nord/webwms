@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'UserRoleTest'
 )]
 #[CoversClass(UserRole::class)]
-final class UserRoleTest extends TestCase
+class UserRoleTest extends TestCase
 {
     private UserRole $userRole;
 

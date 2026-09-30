@@ -20,7 +20,7 @@ use WebWMS\Service\DataHandlers\Article\ArticleDataHandler;
     class: 'ArticleServiceTest'
 )]
 #[CoversClass(ArticleService::class)]
-final class ArticleServiceTest extends TestCase
+class ArticleServiceTest extends TestCase
 {
     private MockObject $mockObject;
 

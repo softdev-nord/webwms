@@ -18,7 +18,7 @@ use WebWMS\Service\Stock\StockOutStrategyService;
     class: 'StockOutStrategyServiceTest'
 )]
 #[CoversClass(StockOutStrategyService::class)]
-final class StockOutStrategyServiceTest extends TestCase
+class StockOutStrategyServiceTest extends TestCase
 {
     private StockOutStrategyService $stockOutStrategyService;
 

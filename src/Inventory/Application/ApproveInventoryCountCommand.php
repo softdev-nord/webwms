@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class ApproveInventoryCountCommand
+readonly class ApproveInventoryCountCommand
 {
     /** @param array<string, string> $ledgerEntryIds */
     public function __construct(

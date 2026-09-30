@@ -20,7 +20,7 @@ use WebWMS\Service\Supplier\SupplierService;
     class: 'SupplierServiceTest'
 )]
 #[CoversClass(SupplierService::class)]
-final class SupplierServiceTest extends TestCase
+class SupplierServiceTest extends TestCase
 {
     private SupplierService $supplierService;
 
@@ -81,7 +81,7 @@ final class SupplierServiceTest extends TestCase
 
     public function testGetAllSuppliersAjax(): void
     {
-        $jsonResponse = $this->createMock(JsonResponse::class);
+        $jsonResponse = $this->createStub(JsonResponse::class);
         $supplierNrInput = '123';
 
         $this->mockObject->expects($this->once())

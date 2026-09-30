@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'LoggingTest'
 )]
 #[CoversClass(Logging::class)]
-final class LoggingTest extends TestCase
+class LoggingTest extends TestCase
 {
     private Logging $logging;
 

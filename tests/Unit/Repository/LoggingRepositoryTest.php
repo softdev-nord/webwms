@@ -17,11 +17,11 @@ use WebWMS\Repository\LoggingRepository;
     class: 'LoggingRepositoryTest'
 )]
 #[CoversClass(LoggingRepository::class)]
-final class LoggingRepositoryTest extends TestCase
+class LoggingRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $loggingRepository = new LoggingRepository($registry);
 
         self::assertInstanceOf(LoggingRepository::class, $loggingRepository);

@@ -21,7 +21,7 @@ use WebWMS\Service\DataHandlers\CustomerOrder\CustomerOrderDataHandler;
     class: 'CustomerOrderServiceTest'
 )]
 #[CoversClass(CustomerOrderService::class)]
-final class CustomerOrderServiceTest extends TestCase
+class CustomerOrderServiceTest extends TestCase
 {
     private CustomerOrderService $customerOrderService;
 

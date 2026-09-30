@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Domain;
 
 use InvalidArgumentException;
 
-final readonly class InboundDeliveryLine
+readonly class InboundDeliveryLine
 {
     public function __construct(
         private InventoryId $id,

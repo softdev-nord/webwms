@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\AutomationDevice;
 
-final class AutomationDeviceTest extends TestCase
+class AutomationDeviceTest extends TestCase
 {
     public function testItAcceptsAStorageLiftWithCredentialReference(): void
     {
@@ -31,7 +32,7 @@ final class AutomationDeviceTest extends TestCase
 
     public function testItRejectsAnInsecureEndpoint(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         new AutomationDevice(
             'id',

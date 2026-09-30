@@ -6,7 +6,7 @@ namespace WebWMS\Integration\Application;
 
 use DateTimeImmutable;
 
-final readonly class RetryDeadLetterCommand
+readonly class RetryDeadLetterCommand
 {
     public function __construct(
         public string $messageId,

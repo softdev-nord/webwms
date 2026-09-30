@@ -20,7 +20,7 @@ use WebWMS\Service\Stock\StockOccupancyService;
     class: 'StockOccupancyServiceTest'
 )]
 #[CoversClass(StockOccupancyService::class)]
-final class StockOccupancyServiceTest extends TestCase
+class StockOccupancyServiceTest extends TestCase
 {
     private StockOccupancyService $stockOccupancyService;
 

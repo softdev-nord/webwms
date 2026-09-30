@@ -7,7 +7,7 @@ namespace WebWMS\Integration\Application;
 use WebWMS\Integration\Domain\ErpConnection;
 use WebWMS\Integration\Domain\ErpConnectionRepository;
 
-final readonly class RegisterErpConnectionHandler
+readonly class RegisterErpConnectionHandler
 {
     public function __construct(
         private ErpConnectionRepository $connections

@@ -7,7 +7,7 @@ namespace WebWMS\Integration\Application;
 use WebWMS\Integration\Domain\OutboxAcknowledgement;
 use WebWMS\Integration\Domain\OutboxRepository;
 
-final readonly class AcknowledgeOutboxMessageHandler
+readonly class AcknowledgeOutboxMessageHandler
 {
     public function __construct(
         private OutboxRepository $outbox

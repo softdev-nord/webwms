@@ -6,7 +6,7 @@ namespace WebWMS\Integration\Application;
 
 use DateTimeImmutable;
 
-final readonly class ChangeCarrierConnectionStatusCommand
+readonly class ChangeCarrierConnectionStatusCommand
 {
     public function __construct(
         public string $id,

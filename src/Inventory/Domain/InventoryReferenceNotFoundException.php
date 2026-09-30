@@ -6,6 +6,6 @@ namespace WebWMS\Inventory\Domain;
 
 use DomainException;
 
-final class InventoryReferenceNotFoundException extends DomainException
+class InventoryReferenceNotFoundException extends DomainException
 {
 }

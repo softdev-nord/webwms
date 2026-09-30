@@ -13,7 +13,7 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\PutawayStrategy;
 use WebWMS\Inventory\Domain\StockStatus;
 
-final class PutawayStrategyTest extends TestCase
+class PutawayStrategyTest extends TestCase
 {
     public function testItRejectsAnInvalidLocationPrefix(): void
     {

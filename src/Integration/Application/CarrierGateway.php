@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace WebWMS\Integration\Application;
 
 use DateTimeImmutable;
+use LogicException;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Domain\CarrierConnectionRepository;
 use WebWMS\Integration\Domain\CarrierTransport;
 
-final readonly class CarrierGateway
+readonly class CarrierGateway
 {
     public function __construct(
         private CarrierConnectionRepository $connections,
@@ -31,6 +32,7 @@ final readonly class CarrierGateway
         if ($existing !== null) {
             return ['trackingNumber' => $this->string($existing, 'trackingNumber'), 'labelReference' => $this->string($existing, 'labelReference')];
         }
+
         $connection = $this->connections->active($tenantId, $carrierCode);
         $response = $this->transport->createLabel($connection, $shipment, $requestId);
         $this->connections->recordRequest(Uuid::v7()->toRfc4122(), $tenantId, $connection->id, 'label', $requestId, 'shipment', $shipmentId, 'succeeded', $response, $actorId, $at);
@@ -46,6 +48,7 @@ final readonly class CarrierGateway
         if ($existing !== null) {
             return ['handoverReference' => $this->string($existing, 'handoverReference')];
         }
+
         $connection = $this->connections->active($tenantId, $carrierCode);
         $response = $this->transport->handoverManifest($connection, $manifest, $requestId);
         $this->connections->recordRequest(Uuid::v7()->toRfc4122(), $tenantId, $connection->id, 'manifest', $requestId, 'loading_manifest', $manifestId, 'succeeded', $response, $actorId, $at);
@@ -60,6 +63,7 @@ final readonly class CarrierGateway
         if ($existing !== null) {
             return $this->trackingResponse($existing);
         }
+
         $connection = $this->connections->active($tenantId, $carrierCode);
         $response = $this->transport->tracking($connection, $trackingNumber);
         $this->connections->recordRequest(Uuid::v7()->toRfc4122(), $tenantId, $connection->id, 'tracking', $requestId, 'shipment', $shipmentId, 'succeeded', $response, $actorId, $at);
@@ -71,7 +75,7 @@ final readonly class CarrierGateway
     private function string(array $payload, string $field): string
     {
         if (!is_string($payload[$field] ?? null)) {
-            throw new \LogicException(sprintf('Persisted carrier response field "%s" is invalid.', $field));
+            throw new LogicException(sprintf('Persisted carrier response field "%s" is invalid.', $field));
         }
 
         return $payload[$field];

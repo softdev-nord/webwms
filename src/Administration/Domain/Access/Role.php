@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Shared\Domain\Model\AggregateRoot;
 
-final class Role extends AggregateRoot
+class Role extends AggregateRoot
 {
     /** @var array<string, PermissionKey> */
     private array $permissions = [];
@@ -18,7 +18,7 @@ final class Role extends AggregateRoot
         private readonly RoleId $id,
         private readonly TenantId $tenantId,
         private readonly string $code,
-        private string $name,
+        private readonly string $name,
         private readonly DateTimeImmutable $createdAt,
         private DateTimeImmutable $updatedAt,
     ) {

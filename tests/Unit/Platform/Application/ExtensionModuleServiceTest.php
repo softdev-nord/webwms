@@ -11,7 +11,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Platform\Application\ExtensionModuleService;
 
-final class ExtensionModuleServiceTest extends TestCase
+class ExtensionModuleServiceTest extends TestCase
 {
     public function testItExposesAllExtensionModuleCapabilities(): void
     {
@@ -22,7 +22,7 @@ final class ExtensionModuleServiceTest extends TestCase
     public function testItRejectsUnknownConfigurationResourcesBeforePersistence(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::never())->method('insert');
+        $connection->expects($this->never())->method('insert');
 
         $this->expectException(InvalidArgumentException::class);
         $this->service($connection)->saveConfiguration('tenant', 'actor', 'unknown', null, 'CODE', 'Name', [], true, new DateTimeImmutable());
@@ -33,7 +33,7 @@ final class ExtensionModuleServiceTest extends TestCase
         $connection = $this->createMock(Connection::class);
         $connection->method('transactional')->willReturnCallback(static fn (callable $callback): mixed => $callback($connection));
         $connection->method('fetchAssociative')->willReturn(['workflow_type' => 'invoice', 'status' => 'draft']);
-        $connection->expects(self::never())->method('update');
+        $connection->expects($this->never())->method('update');
 
         $this->expectException(DomainException::class);
         $this->service($connection)->transition('tenant', 'actor', 'invoice', 'paid', new DateTimeImmutable());
@@ -41,7 +41,7 @@ final class ExtensionModuleServiceTest extends TestCase
 
     public function testItProvidesOnlyConfiguredNextStates(): void
     {
-        $service = $this->service($this->createMock(Connection::class));
+        $service = $this->service($this->createStub(Connection::class));
 
         self::assertSame(['approved', 'cancelled'], $service->allowedTransitions('invoice', 'draft'));
         self::assertSame([], $service->allowedTransitions('invoice', 'paid'));
@@ -51,7 +51,7 @@ final class ExtensionModuleServiceTest extends TestCase
     public function testItRejectsUnknownWorkflowListsBeforePersistence(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::never())->method('fetchAllAssociative');
+        $connection->expects($this->never())->method('fetchAllAssociative');
 
         $this->expectException(InvalidArgumentException::class);
         $this->service($connection)->workItems('tenant', 'unknown');
@@ -60,15 +60,12 @@ final class ExtensionModuleServiceTest extends TestCase
     public function testItLoadsOnlyTheRequestedConfigurationResource(): void
     {
         $connection = $this->createMock(Connection::class);
-        $connection->expects(self::once())->method('fetchAllAssociative')->with(
+        $connection->expects($this->once())->method('fetchAllAssociative')->with(
             self::stringContains('resource_type = :resource'),
             ['tenantId' => 'tenant', 'resource' => 'barcode_profile'],
         )->willReturn([['id' => 'configuration']]);
 
-        self::assertSame(
-            [['id' => 'configuration']],
-            $this->service($connection)->configurations('tenant', 'barcode_profile'),
-        );
+        self::assertSame([['id' => 'configuration']], $this->service($connection)->configurations('tenant', 'barcode_profile'));
     }
 
     private function service(Connection $connection): ExtensionModuleService

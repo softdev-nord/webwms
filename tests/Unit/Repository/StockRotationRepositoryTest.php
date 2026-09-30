@@ -17,11 +17,11 @@ use WebWMS\Repository\StockRotationRepository;
     class: 'StockRotationRepositoryTest'
 )]
 #[CoversClass(StockRotationRepository::class)]
-final class StockRotationRepositoryTest extends TestCase
+class StockRotationRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $stockRotationRepository = new StockRotationRepository($registry);
 
         self::assertInstanceOf(StockRotationRepository::class, $stockRotationRepository);

@@ -10,7 +10,7 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\ReplenishmentPolicy;
 
-final readonly class CreateReplenishmentPolicyHandler
+readonly class CreateReplenishmentPolicyHandler
 {
     public function __construct(
         private InventoryRepository $inventory

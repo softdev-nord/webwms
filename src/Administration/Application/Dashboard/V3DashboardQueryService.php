@@ -6,7 +6,7 @@ namespace WebWMS\Administration\Application\Dashboard;
 
 use Doctrine\DBAL\Connection;
 
-final readonly class V3DashboardQueryService
+readonly class V3DashboardQueryService
 {
     public function __construct(
         private Connection $connection

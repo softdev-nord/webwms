@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class ReleaseOutboundOrderCommand
+readonly class ReleaseOutboundOrderCommand
 {
     /** @param array<string, string> $reservationIdsByItem */
     public function __construct(

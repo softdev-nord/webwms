@@ -17,10 +17,11 @@ use WebWMS\Administration\Domain\Tenant\Tenant;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Administration\Domain\Tenant\TenantRepository;
 
-final class CreateSiteHandlerTest extends TestCase
+class CreateSiteHandlerTest extends TestCase
 {
-    private const SITE_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b9';
-    private const TENANT_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8';
+    private const string SITE_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b9';
+
+    private const string TENANT_ID = '018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8';
 
     public function testItPersistsANewSiteForAnExistingTenant(): void
     {
@@ -65,9 +66,9 @@ final class CreateSiteHandlerTest extends TestCase
     }
 }
 
-final class TenantExistenceRepository implements TenantRepository
+readonly class TenantExistenceRepository implements TenantRepository
 {
-    public function __construct(private readonly bool $exists)
+    public function __construct(private bool $exists)
     {
     }
 
@@ -81,7 +82,7 @@ final class TenantExistenceRepository implements TenantRepository
     }
 }
 
-final class InMemorySiteRepository implements SiteRepository
+class InMemorySiteRepository implements SiteRepository
 {
     public ?Site $site = null;
 

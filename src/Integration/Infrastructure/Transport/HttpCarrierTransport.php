@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace WebWMS\Integration\Infrastructure\Transport;
 
+use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use WebWMS\Integration\Domain\CarrierConnection;
 use WebWMS\Integration\Domain\CarrierTransport;
 use WebWMS\Integration\Domain\CredentialProvider;
 
-final readonly class HttpCarrierTransport implements CarrierTransport
+readonly class HttpCarrierTransport implements CarrierTransport
 {
     public function __construct(
         private HttpClientInterface $httpClient,
@@ -22,12 +23,12 @@ final readonly class HttpCarrierTransport implements CarrierTransport
         $data = $this->request($connection, 'GET', '/products', null, null);
         $products = $data['products'] ?? null;
         if (!is_array($products)) {
-            throw new \RuntimeException('The carrier products response is invalid.');
+            throw new RuntimeException('The carrier products response is invalid.');
         }
 
         return array_values(array_map(static function (mixed $product): array {
             if (!is_array($product) || !is_string($product['code'] ?? null) || !is_string($product['name'] ?? null)) {
-                throw new \RuntimeException('A carrier product is invalid.');
+                throw new RuntimeException('A carrier product is invalid.');
             }
 
             return ['code' => $product['code'], 'name' => $product['name']];
@@ -66,13 +67,15 @@ final readonly class HttpCarrierTransport implements CarrierTransport
         if ($idempotencyKey !== null) {
             $headers['Idempotency-Key'] = $idempotencyKey;
         }
+
         $options = ['headers' => $headers, 'timeout' => 20];
         if ($payload !== null) {
             $options['json'] = $payload;
         }
+
         $response = $this->httpClient->request($method, $connection->endpointUrl . $path, $options);
         if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
-            throw new \RuntimeException(sprintf('Carrier "%s" rejected %s with HTTP %d.', $connection->name, $path, $response->getStatusCode()));
+            throw new RuntimeException(sprintf('Carrier "%s" rejected %s with HTTP %d.', $connection->name, $path, $response->getStatusCode()));
         }
 
         return $response->toArray(false);
@@ -82,7 +85,7 @@ final readonly class HttpCarrierTransport implements CarrierTransport
     private function string(array $data, string $field): string
     {
         if (!is_string($data[$field] ?? null) || trim($data[$field]) === '') {
-            throw new \RuntimeException(sprintf('Carrier response field "%s" is missing.', $field));
+            throw new RuntimeException(sprintf('Carrier response field "%s" is missing.', $field));
         }
 
         return $data[$field];

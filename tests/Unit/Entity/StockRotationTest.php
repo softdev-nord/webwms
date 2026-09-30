@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'StockRotationTest'
 )]
 #[CoversClass(StockRotation::class)]
-final class StockRotationTest extends TestCase
+class StockRotationTest extends TestCase
 {
     private StockRotation $stockRotation;
 

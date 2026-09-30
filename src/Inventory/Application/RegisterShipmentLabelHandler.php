@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\ShipmentLabel;
 use WebWMS\Inventory\Domain\ShipmentResult;
 
-final readonly class RegisterShipmentLabelHandler
+readonly class RegisterShipmentLabelHandler
 {
     public function __construct(
         private InventoryRepository $inventory

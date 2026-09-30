@@ -20,7 +20,7 @@ use WebWMS\Service\TransportRequest\TransportRequestService;
     class: 'TransportRequestServiceTest'
 )]
 #[CoversClass(TransportRequestService::class)]
-final class TransportRequestServiceTest extends TestCase
+class TransportRequestServiceTest extends TestCase
 {
     private TransportRequestService $transportRequestService;
 

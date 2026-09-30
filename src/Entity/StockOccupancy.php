@@ -18,8 +18,8 @@ use WebWMS\Repository\StockOccupancyRepository;
 )]
 #[ORM\Table(name: 'stock_occupancy')]
 #[ORM\Entity(repositoryClass: StockOccupancyRepository::class)]
-#[ORM\Index(columns: ['stock_location_id'], name: 'stock_location_id_idx')]
-#[ORM\Index(columns: ['article_id'], name: 'article_id_idx')]
+#[ORM\Index(name: 'stock_location_id_idx', columns: ['stock_location_id'])]
+#[ORM\Index(name: 'article_id_idx', columns: ['article_id'])]
 class StockOccupancy
 {
     #[ORM\Id]

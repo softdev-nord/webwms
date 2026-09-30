@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class ShipmentLabel
+readonly class ShipmentLabel
 {
     public function __construct(
         private InventoryId $shipmentId,
@@ -22,6 +22,7 @@ final readonly class ShipmentLabel
         if (trim($trackingNumber) === '' || mb_strlen($trackingNumber) > 100) {
             throw new InvalidArgumentException('A tracking number must contain 1 to 100 characters.');
         }
+
         if (trim($labelReference) === '' || mb_strlen($labelReference) > 255) {
             throw new InvalidArgumentException('A label reference must contain 1 to 255 characters.');
         }

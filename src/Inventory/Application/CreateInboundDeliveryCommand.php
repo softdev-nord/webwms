@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class CreateInboundDeliveryCommand
+readonly class CreateInboundDeliveryCommand
 {
     /** @param list<array{id: string, purchaseOrderItemId: string, quantity: int}> $lines */
     public function __construct(

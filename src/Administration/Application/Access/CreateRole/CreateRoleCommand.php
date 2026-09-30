@@ -6,7 +6,7 @@ namespace WebWMS\Administration\Application\Access\CreateRole;
 
 use DateTimeImmutable;
 
-final readonly class CreateRoleCommand
+readonly class CreateRoleCommand
 {
     /** @param list<string> $permissions */
     public function __construct(

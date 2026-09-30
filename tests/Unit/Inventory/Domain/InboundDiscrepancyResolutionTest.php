@@ -12,7 +12,7 @@ use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Inventory\Domain\InboundDiscrepancyResolution;
 use WebWMS\Inventory\Domain\InventoryId;
 
-final class InboundDiscrepancyResolutionTest extends TestCase
+class InboundDiscrepancyResolutionTest extends TestCase
 {
     public function testItAcceptsReleaseAndRejectActions(): void
     {

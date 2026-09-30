@@ -12,7 +12,7 @@ use WebWMS\Documentation\Application\SafeMarkdownRenderer;
 use WebWMS\Documentation\Application\UserDocumentationService;
 
 #[Route('/v3/help', name: 'v3_documentation_')]
-final class V3DocumentationController extends AbstractController
+class V3DocumentationController extends AbstractController
 {
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(Request $request, UserDocumentationService $documentation): Response

@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\IntegrationStatusEvent;
 
-final class IntegrationStatusEventTest extends TestCase
+class IntegrationStatusEventTest extends TestCase
 {
     public function testItRetainsAStatusPayload(): void
     {

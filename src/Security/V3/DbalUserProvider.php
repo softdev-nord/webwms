@@ -7,12 +7,13 @@ namespace WebWMS\Security\V3;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /** @implements UserProviderInterface<SecurityUser> */
-final readonly class DbalUserProvider implements UserProviderInterface, PasswordUpgraderInterface
+readonly class DbalUserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
     public function __construct(
         private Connection $connection
@@ -80,7 +81,7 @@ final readonly class DbalUserProvider implements UserProviderInterface, Password
     }
 
     public function upgradePassword(
-        \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface $user,
+        PasswordAuthenticatedUserInterface $user,
         string $newHashedPassword,
     ): void {
         if (!$user instanceof SecurityUser) {

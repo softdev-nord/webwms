@@ -21,13 +21,13 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'DeleteStockLocationTypeTest'
 )]
 #[CoversClass(DeleteStockLocationType::class)]
-final class DeleteStockLocationTypeTest extends TestCase
+class DeleteStockLocationTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects($this->exactly(1))
             ->method('add')
             ->willReturnOnConsecutiveCalls(
                 ['stockLocationCoordinate', HiddenType::class, self::anything()],

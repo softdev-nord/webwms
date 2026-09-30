@@ -13,7 +13,7 @@ use WebWMS\Integration\Domain\IntegrationStatusEvent;
 use WebWMS\Integration\Domain\OutboxRepository;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 
-final readonly class OutboundProcessService
+readonly class OutboundProcessService
 {
     public function __construct(
         private Connection $connection,
@@ -26,12 +26,14 @@ final readonly class OutboundProcessService
         if (trim($reason) === '') {
             throw new InvalidArgumentException('A cancellation reason is required.');
         }
+
         $this->assertActor($tenantId, $actorId);
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $orderId, $reason, $actorId, $now): void {
             $status = $connection->fetchOne('SELECT status FROM wms_outbound_order WHERE id = :id AND tenant_id = :tenantId FOR UPDATE', ['id' => $orderId, 'tenantId' => $tenantId]);
             if ($status !== 'imported') {
                 throw new DomainException('Only an imported outbound order may be cancelled.');
             }
+
             $connection->update('wms_outbound_order', ['status' => 'cancelled', 'cancelled_by' => $actorId, 'cancelled_at' => $this->date($now), 'cancellation_reason' => trim($reason)], ['id' => $orderId, 'tenant_id' => $tenantId]);
         });
     }
@@ -45,10 +47,12 @@ final readonly class OutboundProcessService
             if ($status !== 'completed') {
                 throw new DomainException('Only a completed pick list may pass outbound quality control.');
             }
+
             $decision = $complete && $condition && $customerCheck ? 'released' : 'blocked';
             if ($decision === 'blocked' && trim($note) === '') {
                 throw new InvalidArgumentException('A blocked quality check requires a note.');
             }
+
             $connection->insert('wms_outbound_quality_check', ['id' => $id, 'tenant_id' => $tenantId, 'pick_list_id' => $pickListId, 'completeness_passed' => $complete, 'condition_passed' => $condition, 'customer_check_passed' => $customerCheck, 'note' => trim($note), 'decision' => $decision, 'checked_by' => $actorId, 'checked_at' => $this->date($now)]);
         });
 
@@ -60,6 +64,7 @@ final readonly class OutboundProcessService
         if (trim($code) === '' || trim($name) === '' || trim($carrier) === '' || trim($service) === '' || $minWeight < 0 || $maxWeight < 1 || $minWeight > $maxWeight) {
             throw new InvalidArgumentException('The shipping rule weight range is invalid.');
         }
+
         $this->assertActor($tenantId, $actorId);
         $id = Uuid::v7()->toRfc4122();
         $this->connection->insert('wms_shipping_rule', ['id' => $id, 'tenant_id' => $tenantId, 'code' => mb_strtoupper(trim($code)), 'name' => trim($name), 'carrier' => mb_strtoupper(trim($carrier)), 'service' => trim($service), 'min_weight_grams' => $minWeight, 'max_weight_grams' => $maxWeight, 'priority' => $priority, 'active' => 1, 'created_by' => $actorId, 'created_at' => $this->date($now)]);
@@ -73,6 +78,7 @@ final readonly class OutboundProcessService
         if ($weight < 1) {
             throw new InvalidArgumentException('The shipment weight must be positive.');
         }
+
         $rule = $this->connection->fetchAssociative('SELECT id, code, carrier, service FROM wms_shipping_rule WHERE tenant_id = :tenantId AND active = 1 AND :weight BETWEEN min_weight_grams AND max_weight_grams ORDER BY priority, code LIMIT 1', ['tenantId' => $tenantId, 'weight' => $weight]);
         if ($rule === false) {
             throw new InventoryReferenceNotFoundException('No active shipping rule matches the shipment weight.');
@@ -86,6 +92,7 @@ final readonly class OutboundProcessService
         if (trim($status) === '' || trim($description) === '' || trim($source) === '') {
             throw new InvalidArgumentException('Tracking status, description and source are required.');
         }
+
         $this->assertActor($tenantId, $actorId);
         $id = Uuid::v7()->toRfc4122();
         $normalizedStatus = mb_strtolower(trim($status));
@@ -94,6 +101,7 @@ final readonly class OutboundProcessService
             if ($exists === false) {
                 throw new InventoryReferenceNotFoundException('The shipment must exist in the tenant.');
             }
+
             $connection->insert('wms_tracking_event', ['id' => $id, 'tenant_id' => $tenantId, 'shipment_id' => $shipmentId, 'status' => $normalizedStatus, 'location' => $location, 'description' => trim($description), 'source' => mb_strtolower(trim($source)), 'occurred_at' => $this->date($occurredAt), 'recorded_by' => $actorId, 'recorded_at' => $this->date($now)]);
             $this->outbox->append(new IntegrationStatusEvent(Uuid::v7()->toRfc4122(), $tenantId, 'shipment.tracking_updated', 'shipment', $shipmentId, ['trackingEventId' => $id, 'status' => $normalizedStatus, 'location' => $location, 'description' => trim($description)], $actorId, $occurredAt));
         });
@@ -106,6 +114,7 @@ final readonly class OutboundProcessService
         if (!in_array($type, ['delivery_note', 'packing_list', 'loading_list', 'cmr'], true) || trim($number) === '' || trim($content) === '') {
             throw new InvalidArgumentException('Document type and content are required.');
         }
+
         $this->assertActor($tenantId, $actorId);
         $this->assertAggregate($tenantId, $aggregateType, $aggregateId);
         $id = Uuid::v7()->toRfc4122();
@@ -120,11 +129,13 @@ final readonly class OutboundProcessService
         if (trim($code) === '' || trim($carrier) === '' || trim($vehicle) === '' || $maxWeight < 1 || $stops === []) {
             throw new InvalidArgumentException('A tour requires a positive weight limit and at least one stop.');
         }
+
         foreach ($stops as $stop) {
             if (trim($stop['destinationName']) === '' || trim($stop['destinationAddress']) === '') {
                 throw new InvalidArgumentException('Every tour stop requires a destination name and address.');
             }
         }
+
         $this->assertActor($tenantId, $actorId);
         $id = Uuid::v7()->toRfc4122();
         $this->connection->transactional(function (Connection $connection) use ($id, $tenantId, $code, $carrier, $vehicle, $maxWeight, $departureAt, $stops, $actorId, $now): void {
@@ -133,6 +144,7 @@ final readonly class OutboundProcessService
                 if ($stop['shipmentId'] !== null && $connection->fetchOne('SELECT 1 FROM wms_shipment WHERE id = :id AND tenant_id = :tenantId', ['id' => $stop['shipmentId'], 'tenantId' => $tenantId]) === false) {
                     throw new InventoryReferenceNotFoundException('Each assigned shipment must exist in the tenant.');
                 }
+
                 $connection->insert('wms_tour_stop', ['id' => Uuid::v7()->toRfc4122(), 'tour_id' => $id, 'sequence_number' => $index + 1, 'destination_name' => trim($stop['destinationName']), 'destination_address' => trim($stop['destinationAddress']), 'shipment_id' => $stop['shipmentId'], 'status' => 'planned']);
             }
         });
@@ -145,6 +157,7 @@ final readonly class OutboundProcessService
         if (!in_array($scope, ['package', 'carrier', 'vehicle', 'tour'], true) || $maxWeight < 1) {
             throw new InvalidArgumentException('Weight constraint scope or limit is invalid.');
         }
+
         $this->assertActor($tenantId, $actorId);
         $id = Uuid::v7()->toRfc4122();
         $this->connection->insert('wms_weight_constraint', ['id' => $id, 'tenant_id' => $tenantId, 'scope' => $scope, 'reference_code' => $reference, 'max_weight_grams' => $maxWeight, 'active' => 1, 'created_by' => $actorId, 'created_at' => $this->date($now)]);

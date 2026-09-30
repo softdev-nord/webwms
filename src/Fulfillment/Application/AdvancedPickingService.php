@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace WebWMS\Fulfillment\Application;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use DomainException;
+use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
 
-final readonly class AdvancedPickingService
+readonly class AdvancedPickingService
 {
     public function __construct(
         private Connection $connection
@@ -31,7 +34,7 @@ final readonly class AdvancedPickingService
                 'SELECT l.id, l.code, l.status, o.order_number FROM wms_pick_list l INNER JOIN wms_outbound_order o ON o.id = l.outbound_order_id '
                 . 'WHERE l.tenant_id = :tenantId AND l.status IN (:statuses) AND NOT EXISTS (SELECT 1 FROM wms_pick_wave_list wl WHERE wl.pick_list_id = l.id) ORDER BY l.created_at',
                 ['tenantId' => $tenantId, 'statuses' => ['open', 'assigned']],
-                ['statuses' => \Doctrine\DBAL\ArrayParameterType::STRING],
+                ['statuses' => ArrayParameterType::STRING],
             ),
             'controlTower' => $this->connection->fetchAllAssociative(
                 'SELECT l.id, l.code, l.status, l.assigned_to, u.display_name assigned_to_name, o.order_number, '
@@ -53,27 +56,31 @@ final readonly class AdvancedPickingService
     {
         $pickListIds = array_values(array_unique($pickListIds));
         if ($pickListIds === []) {
-            throw new \InvalidArgumentException('Eine Pickwelle benötigt mindestens eine Pickliste.');
+            throw new InvalidArgumentException('Eine Pickwelle benötigt mindestens eine Pickliste.');
         }
+
         $strategy = $this->choice($strategy, ['single_order', 'multi_order', 'two_stage']);
         $selectionType = $this->choice($selectionType, ['manual', 'time', 'tour', 'carrier', 'priority']);
         if ($strategy === 'single_order' && count($pickListIds) !== 1) {
-            throw new \InvalidArgumentException('Single-Order-Wellen enthalten genau eine Pickliste.');
+            throw new InvalidArgumentException('Single-Order-Wellen enthalten genau eine Pickliste.');
         }
+
         $id = Uuid::v7()->toRfc4122();
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $actorId, $code, $name, $strategy, $selectionType, $selectionValue, $priority, $plannedStart, $pickListIds, $now, $id): void {
             $eligibleIds = $connection->fetchFirstColumn(
                 'SELECT l.id FROM wms_pick_list l WHERE l.tenant_id = :tenantId AND l.id IN (:ids) AND l.status IN (:statuses) AND NOT EXISTS (SELECT 1 FROM wms_pick_wave_list wl WHERE wl.pick_list_id = l.id) FOR UPDATE',
                 ['tenantId' => $tenantId, 'ids' => $pickListIds, 'statuses' => ['open', 'assigned']],
-                ['ids' => \Doctrine\DBAL\ArrayParameterType::STRING, 'statuses' => \Doctrine\DBAL\ArrayParameterType::STRING],
+                ['ids' => ArrayParameterType::STRING, 'statuses' => ArrayParameterType::STRING],
             );
             if (count($eligibleIds) !== count($pickListIds)) {
-                throw new \DomainException('Alle Picklisten müssen offen, mandantenzugehörig und noch ungebündelt sein.');
+                throw new DomainException('Alle Picklisten müssen offen, mandantenzugehörig und noch ungebündelt sein.');
             }
+
             $connection->insert('wms_pick_wave', ['id' => $id, 'tenant_id' => $tenantId, 'code' => $this->code($code), 'name' => $this->required($name, 120), 'strategy' => $strategy, 'selection_type' => $selectionType, 'selection_value' => $this->nullable($selectionValue, 100), 'priority' => max(1, min(999, $priority)), 'planned_start_at' => $plannedStart?->format('Y-m-d H:i:s.u'), 'status' => 'planned', 'created_by' => $actorId, 'created_at' => $this->date($now)]);
             foreach ($pickListIds as $index => $pickListId) {
                 $connection->insert('wms_pick_wave_list', ['wave_id' => $id, 'pick_list_id' => $pickListId, 'container_code' => sprintf('%s-%02d', strtoupper($this->code($code)), $index + 1), 'consolidation_status' => $strategy === 'two_stage' ? 'pending' : 'not_required']);
             }
+
             $this->audit($connection, $tenantId, $actorId, 'pick_wave', $id, 'created', ['pick_list_ids' => $pickListIds, 'strategy' => $strategy], $now);
         });
 
@@ -85,8 +92,9 @@ final readonly class AdvancedPickingService
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $actorId, $waveId, $now): void {
             $updated = $connection->executeStatement("UPDATE wms_pick_wave SET status = 'released', released_by = :actorId, released_at = :now WHERE id = :id AND tenant_id = :tenantId AND status = 'planned'", ['actorId' => $actorId, 'now' => $this->date($now), 'id' => $waveId, 'tenantId' => $tenantId]);
             if ($updated !== 1) {
-                throw new \DomainException('Nur geplante Pickwellen können freigegeben werden.');
+                throw new DomainException('Nur geplante Pickwellen können freigegeben werden.');
             }
+
             $this->audit($connection, $tenantId, $actorId, 'pick_wave', $waveId, 'released', [], $now);
         });
     }
@@ -99,12 +107,14 @@ final readonly class AdvancedPickingService
                 ['actorId' => $actorId, 'now' => $this->date($now), 'waveId' => $waveId, 'pickListId' => $pickListId, 'tenantId' => $tenantId],
             );
             if ($updated !== 1) {
-                throw new \DomainException('Nur vollständig gepickte Positionen einer freigegebenen zweistufigen Welle können konsolidiert werden.');
+                throw new DomainException('Nur vollständig gepickte Positionen einer freigegebenen zweistufigen Welle können konsolidiert werden.');
             }
+
             $remaining = (int) $connection->fetchOne("SELECT COUNT(*) FROM wms_pick_wave_list WHERE wave_id = :waveId AND consolidation_status = 'pending'", ['waveId' => $waveId]);
             if ($remaining === 0) {
                 $connection->update('wms_pick_wave', ['status' => 'completed', 'completed_at' => $this->date($now)], ['id' => $waveId, 'tenant_id' => $tenantId]);
             }
+
             $this->audit($connection, $tenantId, $actorId, 'pick_wave', $waveId, 'pick_list_consolidated', ['pick_list_id' => $pickListId], $now);
         });
     }
@@ -117,14 +127,17 @@ final readonly class AdvancedPickingService
                 ['pickListId' => $pickListId, 'tenantId' => $tenantId],
             );
             if ($tasks === []) {
-                throw new \DomainException('Die Pickliste kann nicht optimiert werden.');
+                throw new DomainException('Die Pickliste kann nicht optimiert werden.');
             }
+
             foreach ($tasks as $index => $task) {
                 $connection->update('wms_pick_task', ['sequence_number' => -($index + 1)], ['id' => $task['id']]);
             }
+
             foreach ($tasks as $index => $task) {
                 $connection->update('wms_pick_task', ['sequence_number' => $index + 1], ['id' => $task['id']]);
             }
+
             $this->audit($connection, $tenantId, $actorId, 'pick_list', $pickListId, 'route_optimized', ['task_count' => count($tasks)], $now);
         });
     }
@@ -138,8 +151,9 @@ final readonly class AdvancedPickingService
                 ['taskId' => $taskId, 'tenantId' => $tenantId],
             );
             if ($task === false) {
-                throw new \DomainException('Die offene Pickposition wurde nicht gefunden.');
+                throw new DomainException('Die offene Pickposition wurde nicht gefunden.');
             }
+
             $valid = hash_equals((string) $task['location_code'], trim($location))
                 && hash_equals((string) $task['sku'], trim($product))
                 && ($task['batch_number'] === null || hash_equals((string) $task['batch_number'], trim((string) $batch)))
@@ -155,7 +169,7 @@ final readonly class AdvancedPickingService
     private function choice(string $value, array $choices): string
     {
         if (!in_array($value, $choices, true)) {
-            throw new \InvalidArgumentException('Der ausgewählte Wert ist ungültig.');
+            throw new InvalidArgumentException('Der ausgewählte Wert ist ungültig.');
         }
 
         return $value;
@@ -165,7 +179,7 @@ final readonly class AdvancedPickingService
     {
         $value = strtolower(trim($value));
         if ($value === '' || strlen($value) > 50 || preg_match('/^[a-z0-9][a-z0-9._-]*$/', $value) !== 1) {
-            throw new \InvalidArgumentException('Der Code ist ungültig.');
+            throw new InvalidArgumentException('Der Code ist ungültig.');
         }
 
         return $value;
@@ -175,7 +189,7 @@ final readonly class AdvancedPickingService
     {
         $value = trim($value);
         if ($value === '' || mb_strlen($value) > $maximum) {
-            throw new \InvalidArgumentException('Ein Pflichtfeld ist leer oder zu lang.');
+            throw new InvalidArgumentException('Ein Pflichtfeld ist leer oder zu lang.');
         }
 
         return $value;

@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use DomainException;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,7 +24,7 @@ use WebWMS\Integration\Application\RegisterCarrierConnectionHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/integration/carrier-connections', name: 'v3_carrier_connection_')]
-final class V3CarrierConnectionController extends AbstractController
+class V3CarrierConnectionController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -86,7 +89,7 @@ final class V3CarrierConnectionController extends AbstractController
     {
         $connection = $this->requiredConnection($connectionId);
         if (!(bool) ($connection['active'] ?? false)) {
-            throw new \DomainException('Versandprodukte können nur für eine aktive Carrier-Verbindung abgerufen werden.');
+            throw new DomainException('Versandprodukte können nur für eine aktive Carrier-Verbindung abgerufen werden.');
         }
 
         return $this->render('v3/integration/carrier-connection/products.html.twig', [
@@ -101,7 +104,7 @@ final class V3CarrierConnectionController extends AbstractController
 
     #[Route('/{connectionId}/status', name: 'status', methods: ['POST'])]
     #[IsGranted('integration.carrier_connection.write')]
-    public function status(string $connectionId, Request $request): Response
+    public function status(string $connectionId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_carrier_connection_status_' . $connectionId);
         $connection = $this->requiredConnection($connectionId);
@@ -147,7 +150,7 @@ final class V3CarrierConnectionController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;

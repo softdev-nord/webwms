@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace WebWMS\Integration\Infrastructure\Api;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use DomainException;
+use InvalidArgumentException;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Exception\JsonException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +27,7 @@ use WebWMS\Inventory\Domain\InsufficientAvailableStockException;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 
 #[AsEventListener(event: KernelEvents::EXCEPTION)]
-final readonly class ApiExceptionSubscriber
+readonly class ApiExceptionSubscriber
 {
     public function __invoke(ExceptionEvent $event): void
     {
@@ -47,9 +49,9 @@ final readonly class ApiExceptionSubscriber
             $exception instanceof WcsConnectionNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof TransportEndpointNotFoundException => [404, 'Not Found', $exception->getMessage()],
             $exception instanceof InsufficientAvailableStockException => [409, 'Conflict', $exception->getMessage()],
-            $exception instanceof \DomainException => [409, 'Conflict', $exception->getMessage()],
+            $exception instanceof DomainException => [409, 'Conflict', $exception->getMessage()],
             $exception instanceof UniqueConstraintViolationException => [409, 'Conflict', 'The resource already exists.'],
-            $exception instanceof \InvalidArgumentException => [422, 'Unprocessable Entity', $exception->getMessage()],
+            $exception instanceof InvalidArgumentException => [422, 'Unprocessable Entity', $exception->getMessage()],
             $exception instanceof HttpExceptionInterface => [$exception->getStatusCode(), Response::$statusTexts[$exception->getStatusCode()] ?? 'Request failed', $exception->getMessage()],
             default => [500, 'Internal Server Error', 'The request could not be processed.'],
         };

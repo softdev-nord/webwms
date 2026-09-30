@@ -12,11 +12,11 @@ use PHPUnit\Framework\TestCase;
 use WebWMS\Inventory\Application\OutboundProcessService;
 use WebWMS\Integration\Domain\OutboxRepository;
 
-final class OutboundProcessServiceTest extends TestCase
+class OutboundProcessServiceTest extends TestCase
 {
     public function testItRejectsAnInvalidShippingRuleRange(): void
     {
-        $service = $this->service($this->createMock(Connection::class));
+        $service = $this->service($this->createStub(Connection::class));
 
         $this->expectException(InvalidArgumentException::class);
         $service->createShippingRule('tenant', 'standard', 'Standard', 'DHL', 'Paket', 5000, 1000, 10, 'actor', new DateTimeImmutable());
@@ -44,23 +44,23 @@ final class OutboundProcessServiceTest extends TestCase
     public function testItRejectsAnEmptyCancellationReasonBeforeAccessingPersistence(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->service($this->createMock(Connection::class))->cancelOrder('tenant', 'order', ' ', 'actor', new DateTimeImmutable());
+        $this->service($this->createStub(Connection::class))->cancelOrder('tenant', 'order', ' ', 'actor', new DateTimeImmutable());
     }
 
     public function testItRejectsANonPositiveRuleSelectionWeight(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->service($this->createMock(Connection::class))->selectShippingRule('tenant', 0);
+        $this->service($this->createStub(Connection::class))->selectShippingRule('tenant', 0);
     }
 
     public function testItRejectsATourWithoutStopsBeforeAccessingPersistence(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->service($this->createMock(Connection::class))->createTour('tenant', 'T-1', 'DHL', 'Truck', 1000, new DateTimeImmutable(), [], 'actor', new DateTimeImmutable());
+        $this->service($this->createStub(Connection::class))->createTour('tenant', 'T-1', 'DHL', 'Truck', 1000, new DateTimeImmutable(), [], 'actor', new DateTimeImmutable());
     }
 
     private function service(Connection $connection): OutboundProcessService
     {
-        return new OutboundProcessService($connection, $this->createMock(OutboxRepository::class));
+        return new OutboundProcessService($connection, $this->createStub(OutboxRepository::class));
     }
 }

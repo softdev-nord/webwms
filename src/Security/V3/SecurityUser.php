@@ -6,7 +6,7 @@ namespace WebWMS\Security\V3;
 
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-final class SecurityUser implements TenantPermissionUser, PasswordAuthenticatedUserInterface
+class SecurityUser implements TenantPermissionUser, PasswordAuthenticatedUserInterface
 {
     /**
      * @param list<string> $roles
@@ -72,9 +72,5 @@ final class SecurityUser implements TenantPermissionUser, PasswordAuthenticatedU
     public function replacePasswordHash(string $passwordHash): void
     {
         $this->passwordHash = $passwordHash;
-    }
-
-    public function eraseCredentials(): void
-    {
     }
 }

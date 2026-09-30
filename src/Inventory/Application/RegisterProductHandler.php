@@ -10,7 +10,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\ProductReference;
 use WebWMS\Inventory\Domain\Sku;
 
-final readonly class RegisterProductHandler
+readonly class RegisterProductHandler
 {
     public function __construct(
         private InventoryRepository $inventory

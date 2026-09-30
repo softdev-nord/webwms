@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class ResolveInboundDiscrepancyCommand
+readonly class ResolveInboundDiscrepancyCommand
 {
     public function __construct(
         public string $receiptId,

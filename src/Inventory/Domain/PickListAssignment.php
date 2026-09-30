@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class PickListAssignment
+readonly class PickListAssignment
 {
     public function __construct(
         private InventoryId $pickListId,

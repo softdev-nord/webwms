@@ -42,19 +42,17 @@ class StockInEventTest extends TestCase
 
     protected function setUp(): void
     {
-        $requirementsService = $this->createMock(RequirementsService::class);
         $this->stockLocationService = $this->createMock(StockLocationService::class);
         $this->transportRequestService = $this->createMock(TransportRequestService::class);
-        $transportHistoryService = $this->createMock(TransportHistoryService::class);
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
         $this->twig = $this->createMock(Environment::class);
         $this->form = $this->createMock(FormInterface::class);
 
         $this->stockInEvent = new StockInEvent(
-            $requirementsService,
+            $this->createStub(RequirementsService::class),
             $this->stockLocationService,
             $this->transportRequestService,
-            $transportHistoryService,
+            $this->createStub(TransportHistoryService::class),
             $this->formFactory,
             $this->twig
         );
@@ -62,13 +60,13 @@ class StockInEventTest extends TestCase
 
     public function testStockInReturnsResponseWhenFormIsNotSubmitted(): void
     {
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
 
         $this->formFactory
             ->expects($this->once())
             ->method('create')
             ->with(StockInType::class)
-            ->willReturn($this->createMock(FormInterface::class));
+            ->willReturn($this->createStub(FormInterface::class));
 
         $this->twig
             ->expects($this->once())
@@ -83,7 +81,7 @@ class StockInEventTest extends TestCase
 
     public function testStockInReturnsResponseWhenFormIsSubmittedAndValid(): void
     {
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
 
         $this->form
             ->expects($this->once())
@@ -105,9 +103,9 @@ class StockInEventTest extends TestCase
             ]);
 
         $this->formFactory
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('create')
-            ->willReturnOnConsecutiveCalls($this->form, $this->createMock(FormInterface::class));
+            ->willReturnOnConsecutiveCalls($this->form, $this->createStub(FormInterface::class));
 
         $this->stockLocationService
             ->expects($this->once())

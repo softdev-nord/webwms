@@ -16,7 +16,7 @@ use WebWMS\Service\Validation\StockLayoutValidationService;
     class: 'StockLayoutValidationServiceTest'
 )]
 #[CoversClass(StockLayoutValidationService::class)]
-final class StockLayoutValidationServiceTest extends TestCase
+class StockLayoutValidationServiceTest extends TestCase
 {
     private StockLayoutValidationService $stockLayoutValidationService;
 

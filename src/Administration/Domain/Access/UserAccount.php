@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Shared\Domain\Model\AggregateRoot;
 
-final class UserAccount extends AggregateRoot
+class UserAccount extends AggregateRoot
 {
     /** @var array<string, RoleId> */
     private array $roles = [];
@@ -19,8 +19,8 @@ final class UserAccount extends AggregateRoot
         private readonly UserId $id,
         private readonly TenantId $tenantId,
         private readonly string $email,
-        private string $displayName,
-        private string $passwordHash,
+        private readonly string $displayName,
+        private readonly string $passwordHash,
         private UserStatus $status,
         private readonly DateTimeImmutable $createdAt,
         private DateTimeImmutable $updatedAt,

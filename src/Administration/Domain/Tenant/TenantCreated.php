@@ -7,7 +7,7 @@ namespace WebWMS\Administration\Domain\Tenant;
 use DateTimeImmutable;
 use WebWMS\Shared\Domain\Event\DomainEvent;
 
-final readonly class TenantCreated implements DomainEvent
+readonly class TenantCreated implements DomainEvent
 {
     public function __construct(
         private TenantId $tenantId,

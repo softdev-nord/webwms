@@ -6,9 +6,9 @@ namespace WebWMS\Administration\Domain\Access;
 
 use InvalidArgumentException;
 
-final readonly class PermissionKey
+readonly class PermissionKey
 {
-    private const KEY_PATTERN = '/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*){2,4}$/';
+    private const string KEY_PATTERN = '/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*){2,4}$/';
 
     private string $value;
 

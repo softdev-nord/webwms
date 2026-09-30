@@ -21,7 +21,7 @@ use WebWMS\Service\User\UserService;
     class: 'LastLoginSubscriberTest'
 )]
 #[CoversClass(LastLoginSubscriber::class)]
-final class LastLoginSubscriberTest extends TestCase
+class LastLoginSubscriberTest extends TestCase
 {
     public function testUpdateLastLogin(): void
     {

@@ -18,9 +18,9 @@ use WebWMS\Helper\Attribute\ClassInformation;
 )]
 class StockInFromGoodsReceiptEvent extends Event
 {
-    final public const EVENT_NAME = 'stock.stock_in_from_goods_receipt';
+    final public const string EVENT_NAME = 'stock.stock_in_from_goods_receipt';
 
-    final public const EVENT = 'SI102';
+    final public const string EVENT = 'SI102';
 
     /**
      * SI102 Zugang aus Wareneingang

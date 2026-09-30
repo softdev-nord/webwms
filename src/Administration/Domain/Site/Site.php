@@ -11,7 +11,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Shared\Domain\Model\AggregateRoot;
 
-final class Site extends AggregateRoot
+class Site extends AggregateRoot
 {
     private function __construct(
         private readonly SiteId $id,

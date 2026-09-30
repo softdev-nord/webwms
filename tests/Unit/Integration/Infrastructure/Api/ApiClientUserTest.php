@@ -7,7 +7,7 @@ namespace WebWMS\Tests\Unit\Integration\Infrastructure\Api;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Infrastructure\Api\ApiClientUser;
 
-final class ApiClientUserTest extends TestCase
+class ApiClientUserTest extends TestCase
 {
     public function testItExposesOnlyItsTenantAndGrantedPermissions(): void
     {

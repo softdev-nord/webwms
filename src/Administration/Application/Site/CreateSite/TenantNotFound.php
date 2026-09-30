@@ -6,6 +6,6 @@ namespace WebWMS\Administration\Application\Site\CreateSite;
 
 use DomainException;
 
-final class TenantNotFound extends DomainException
+class TenantNotFound extends DomainException
 {
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ use WebWMS\Integration\Application\RetryDeadLetterHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/outbox', name: 'api_v3_outbox_')]
-final class OutboxApiController extends AbstractController
+class OutboxApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -33,8 +34,9 @@ final class OutboxApiController extends AbstractController
     {
         $status = $request->query->getString('status', 'pending');
         if (!in_array($status, ['pending', 'processing', 'published', 'dead_letter', 'acknowledged'], true)) {
-            throw new \InvalidArgumentException('The outbox status filter is invalid.');
+            throw new InvalidArgumentException('The outbox status filter is invalid.');
         }
+
         $messages = $this->queries->outboxMessages(
             $this->apiUser()->tenantId(),
             $status,
@@ -56,6 +58,7 @@ final class OutboxApiController extends AbstractController
         if ($this->queries->outboxMessage($this->apiUser()->tenantId(), $messageId) === null) {
             throw $this->createNotFoundException('The outbox message does not exist.');
         }
+
         ($this->retryDeadLetter)(new RetryDeadLetterCommand(
             $messageId,
             $this->apiUser()->tenantId(),
@@ -76,6 +79,7 @@ final class OutboxApiController extends AbstractController
         if ($this->queries->outboxMessage($this->apiUser()->tenantId(), $messageId) === null) {
             throw $this->createNotFoundException('The outbox message does not exist.');
         }
+
         ($this->acknowledgeMessage)(new AcknowledgeOutboxMessageCommand(
             $messageId,
             $this->apiUser()->tenantId(),
@@ -102,7 +106,7 @@ final class OutboxApiController extends AbstractController
     {
         $limit = $request->query->getInt('limit', 50);
         if ($limit < 1 || $limit > 100) {
-            throw new \InvalidArgumentException('The limit must be between 1 and 100.');
+            throw new InvalidArgumentException('The limit must be between 1 and 100.');
         }
 
         return $limit;

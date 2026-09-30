@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Integration\Application;
 
-final readonly class PublishedIntegrationMessage
+readonly class PublishedIntegrationMessage
 {
     /** @param array<string, mixed> $payload */
     public function __construct(

@@ -6,6 +6,6 @@ namespace WebWMS\Administration\Application\Access\CreateUser;
 
 use DomainException;
 
-final class InvalidRoleAssignmentException extends DomainException
+class InvalidRoleAssignmentException extends DomainException
 {
 }

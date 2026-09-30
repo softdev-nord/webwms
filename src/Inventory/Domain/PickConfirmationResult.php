@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Inventory\Domain;
 
-final readonly class PickConfirmationResult
+readonly class PickConfirmationResult
 {
     public function __construct(
         public string $taskStatus,

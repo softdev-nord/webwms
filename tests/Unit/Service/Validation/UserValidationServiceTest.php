@@ -17,7 +17,7 @@ use WebWMS\Service\Validation\UserValidationService;
     class: 'UserValidationServiceTest'
 )]
 #[CoversClass(UserValidationService::class)]
-final class UserValidationServiceTest extends TestCase
+class UserValidationServiceTest extends TestCase
 {
     private UserValidationService $userValidationService;
 

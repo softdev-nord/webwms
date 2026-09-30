@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'UserRightTest'
 )]
 #[CoversClass(UserRight::class)]
-final class UserRightTest extends TestCase
+class UserRightTest extends TestCase
 {
     private UserRight $userRight;
 

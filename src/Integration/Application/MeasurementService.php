@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace WebWMS\Integration\Application;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Domain\Measurement;
 use WebWMS\Integration\Domain\MeasurementDevice;
 use WebWMS\Integration\Domain\MeasurementRepository;
 
-final readonly class MeasurementService
+readonly class MeasurementService
 {
     public function __construct(
         private MeasurementRepository $repository,
@@ -67,14 +68,15 @@ final readonly class MeasurementService
         DateTimeImmutable $at,
     ): Measurement {
         $existing = $this->repository->measurementByRequestId($tenantId, $requestId);
-        if ($existing !== null) {
+        if ($existing instanceof Measurement) {
             return $existing;
         }
+
         $device = $this->repository->device($tenantId, $deviceId, true);
         $hasWeight = $weightGrams !== null;
         $hasDimensions = $lengthMillimeters !== null || $widthMillimeters !== null || $heightMillimeters !== null;
         if (($device->type === 'scale' && $hasDimensions) || ($device->type === 'dimensioner' && $hasWeight)) {
-            throw new \InvalidArgumentException('The measurement values do not match the device capability.');
+            throw new InvalidArgumentException('The measurement values do not match the device capability.');
         }
 
         return $this->repository->addMeasurement(new Measurement(

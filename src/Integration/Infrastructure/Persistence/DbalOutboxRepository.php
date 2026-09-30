@@ -6,6 +6,8 @@ namespace WebWMS\Integration\Infrastructure\Persistence;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use DomainException;
+use LogicException;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Domain\IntegrationStatusEvent;
 use WebWMS\Integration\Domain\OutboxAcknowledgement;
@@ -13,7 +15,7 @@ use WebWMS\Integration\Domain\OutboxMessage;
 use WebWMS\Integration\Domain\OutboxMessageNotFoundException;
 use WebWMS\Integration\Domain\OutboxRepository;
 
-final readonly class DbalOutboxRepository implements OutboxRepository
+readonly class DbalOutboxRepository implements OutboxRepository
 {
     public function __construct(
         private Connection $connection
@@ -51,9 +53,11 @@ final readonly class DbalOutboxRepository implements OutboxRepository
             if ($message === false || $userExists === false) {
                 throw new OutboxMessageNotFoundException('An outbox message and acknowledging user must exist in the tenant.');
             }
+
             if ($message['status'] === 'acknowledged') {
                 return;
             }
+
             $connection->update('wms_integration_outbox', [
                 'status' => 'acknowledged',
                 'acknowledged_by' => $acknowledgement->acknowledgedBy,
@@ -102,6 +106,7 @@ final readonly class DbalOutboxRepository implements OutboxRepository
             if ($affected !== 1) {
                 throw new OutboxMessageNotFoundException('The claimed outbox message no longer exists or changed state.');
             }
+
             $this->insertAttempt($connection, $message, 'published', null, $publishedAt);
         });
     }
@@ -114,7 +119,7 @@ final readonly class DbalOutboxRepository implements OutboxRepository
     ): void {
         $this->connection->transactional(function (Connection $connection) use ($message, $error, $failedAt, $nextAttemptAt): void {
             $affected = $connection->update('wms_integration_outbox', [
-                'status' => $nextAttemptAt === null ? 'dead_letter' : 'pending',
+                'status' => $nextAttemptAt instanceof DateTimeImmutable ? 'pending' : 'dead_letter',
                 'claimed_at' => null,
                 'last_error' => $error,
                 'next_attempt_at' => $nextAttemptAt?->format('Y-m-d H:i:s.u'),
@@ -122,10 +127,11 @@ final readonly class DbalOutboxRepository implements OutboxRepository
             if ($affected !== 1) {
                 throw new OutboxMessageNotFoundException('The claimed outbox message no longer exists or changed state.');
             }
+
             $this->insertAttempt(
                 $connection,
                 $message,
-                $nextAttemptAt === null ? 'dead_letter' : 'failed',
+                $nextAttemptAt instanceof DateTimeImmutable ? 'failed' : 'dead_letter',
                 $error,
                 $failedAt,
             );
@@ -150,9 +156,11 @@ final readonly class DbalOutboxRepository implements OutboxRepository
             if ($message === false || $userExists === false) {
                 throw new OutboxMessageNotFoundException('An outbox message and retrying user must exist in the tenant.');
             }
+
             if ($message['status'] !== 'dead_letter') {
-                throw new \DomainException('Only dead-letter outbox messages can be retried manually.');
+                throw new DomainException('Only dead-letter outbox messages can be retried manually.');
             }
+
             $connection->update('wms_integration_outbox', [
                 'status' => 'pending',
                 'attempt_count' => 0,
@@ -169,7 +177,7 @@ final readonly class DbalOutboxRepository implements OutboxRepository
     {
         $payload = json_decode((string) $row['payload'], true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($payload)) {
-            throw new \LogicException('The outbox payload must decode to an object.');
+            throw new LogicException('The outbox payload must decode to an object.');
         }
 
         return new OutboxMessage(

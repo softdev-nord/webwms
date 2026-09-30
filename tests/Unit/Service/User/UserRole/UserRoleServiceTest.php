@@ -20,7 +20,7 @@ use WebWMS\Service\User\UserRole\UserRoleService;
     class: 'UserRoleServiceTest'
 )]
 #[CoversClass(UserRoleService::class)]
-final class UserRoleServiceTest extends TestCase
+class UserRoleServiceTest extends TestCase
 {
     private UserRoleService $userRoleService;
 

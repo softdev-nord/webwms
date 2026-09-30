@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ use WebWMS\Inventory\Application\ResolveInboundDiscrepancyHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/inbound/planned', name: 'api_v3_planned_inbound_')]
-final class PlannedInboundApiController extends AbstractController
+class PlannedInboundApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -94,20 +95,23 @@ final class PlannedInboundApiController extends AbstractController
         $payload = $request->toArray();
         $answers = $payload['answers'] ?? null;
         if (!is_array($answers) || $answers === []) {
-            throw new \InvalidArgumentException('Field "answers" must be a non-empty array.');
+            throw new InvalidArgumentException('Field "answers" must be a non-empty array.');
         }
+
         /** @var list<array{question: string, passed: bool, note: string}> $normalized */
         $normalized = [];
         foreach ($answers as $answer) {
             if (!is_array($answer) || !is_bool($answer['passed'] ?? null)) {
-                throw new \InvalidArgumentException('Each answer requires a boolean "passed" field.');
+                throw new InvalidArgumentException('Each answer requires a boolean "passed" field.');
             }
+
             $normalized[] = [
                 'question' => $this->string($answer, 'question'),
                 'passed' => $answer['passed'],
                 'note' => $this->optionalString($answer, 'note') ?? '',
             ];
         }
+
         $user = $this->user();
         $result = ($this->inspectInbound)(new InspectInboundReceiptCommand(
             $receiptId,
@@ -175,7 +179,7 @@ final class PlannedInboundApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -194,7 +198,7 @@ final class PlannedInboundApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if ($value !== null && !is_int($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be an integer.', $field));
         }
 
         return $value;

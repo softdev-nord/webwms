@@ -6,9 +6,11 @@ namespace WebWMS\Administration\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use DomainException;
+use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
 
-final readonly class AdministrationWorkspaceService
+readonly class AdministrationWorkspaceService
 {
     public function __construct(
         private Connection $connection
@@ -35,10 +37,11 @@ final readonly class AdministrationWorkspaceService
     /** @param array<string, mixed> $values */
     public function create(string $tenantId, string $actorId, string $resource, array $values, DateTimeImmutable $now): string
     {
-        $definitions = self::definitions();
+        $definitions = $this->definitions();
         if (!isset($definitions[$resource])) {
-            throw new \InvalidArgumentException('Die Administrationsressource ist unbekannt.');
+            throw new InvalidArgumentException('Die Administrationsressource ist unbekannt.');
         }
+
         $definition = $definitions[$resource];
         $id = Uuid::v7()->toRfc4122();
         $row = ['id' => $id, 'tenant_id' => $tenantId];
@@ -46,12 +49,15 @@ final readonly class AdministrationWorkspaceService
             $value = $values[$field] ?? null;
             $row[$field] = $this->value($field, $type, $value);
         }
+
         if ($resource === 'identity_provider' && filter_var($row['issuer_url'], FILTER_VALIDATE_URL) === false) {
-            throw new \InvalidArgumentException('Die Issuer-/Metadata-URL ist ungültig.');
+            throw new InvalidArgumentException('Die Issuer-/Metadata-URL ist ungültig.');
         }
+
         if ($resource === 'context' && $row['business_partner_id'] !== null && $this->connection->fetchOne('SELECT 1 FROM wms_business_partner WHERE id = :id AND tenant_id = :tenantId', ['id' => $row['business_partner_id'], 'tenantId' => $tenantId]) === false) {
-            throw new \InvalidArgumentException('Der Geschäftspartner gehört nicht zum Mandanten.');
+            throw new InvalidArgumentException('Der Geschäftspartner gehört nicht zum Mandanten.');
         }
+
         $row['created_by'] = $actorId;
         $row['created_at'] = $this->date($now);
 
@@ -65,16 +71,18 @@ final readonly class AdministrationWorkspaceService
 
     public function setEnabled(string $tenantId, string $actorId, string $resource, string $id, bool $enabled, DateTimeImmutable $now): void
     {
-        $definitions = self::definitions();
+        $definitions = $this->definitions();
         if (!isset($definitions[$resource]) || (!array_key_exists('enabled', $definitions[$resource]['fields']) && !array_key_exists('active', $definitions[$resource]['fields']))) {
-            throw new \InvalidArgumentException('Die Ressource kann nicht geschaltet werden.');
+            throw new InvalidArgumentException('Die Ressource kann nicht geschaltet werden.');
         }
+
         $field = array_key_exists('enabled', $definitions[$resource]['fields']) ? 'enabled' : 'active';
         $this->connection->transactional(function (Connection $connection) use ($definitions, $resource, $field, $enabled, $tenantId, $id, $actorId, $now): void {
             $updated = $connection->update($definitions[$resource]['table'], [$field => $enabled ? 1 : 0, 'changed_by' => $actorId, 'changed_at' => $this->date($now)], ['id' => $id, 'tenant_id' => $tenantId]);
             if ($updated !== 1) {
-                throw new \InvalidArgumentException('Der Datensatz wurde im Mandanten nicht gefunden.');
+                throw new InvalidArgumentException('Der Datensatz wurde im Mandanten nicht gefunden.');
             }
+
             $this->audit($connection, $tenantId, $actorId, $resource, $id, $enabled ? 'enabled' : 'disabled', [], $now);
         });
     }
@@ -93,6 +101,7 @@ final readonly class AdministrationWorkspaceService
             } else {
                 $connection->update('wms_process_configuration', $data, ['id' => $id, 'tenant_id' => $tenantId]);
             }
+
             $this->audit($connection, $tenantId, $actorId, 'process', $id, 'configured', ['process_key' => $key, 'enabled' => $data['enabled']], $now);
         });
     }
@@ -110,14 +119,16 @@ final readonly class AdministrationWorkspaceService
             'changed_at' => $this->date($now),
         ];
         if (filter_var($data['public_url'], FILTER_VALIDATE_URL) === false) {
-            throw new \InvalidArgumentException('Die öffentliche URL ist ungültig.');
+            throw new InvalidArgumentException('Die öffentliche URL ist ungültig.');
         }
+
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $data, $actorId, $now): void {
             if ($connection->fetchOne('SELECT 1 FROM wms_deployment_configuration WHERE tenant_id = :tenantId', ['tenantId' => $tenantId]) === false) {
                 $connection->insert('wms_deployment_configuration', ['tenant_id' => $tenantId] + $data);
             } else {
                 $connection->update('wms_deployment_configuration', $data, ['tenant_id' => $tenantId]);
             }
+
             $this->audit($connection, $tenantId, $actorId, 'deployment', $tenantId, 'configured', $data, $now);
         });
     }
@@ -127,14 +138,16 @@ final readonly class AdministrationWorkspaceService
         return $this->connection->transactional(function (Connection $connection) use ($tenantId, $actorId, $code, $now): string {
             $range = $connection->fetchAssociative('SELECT * FROM wms_number_range WHERE tenant_id = :tenantId AND code = :code AND enabled = 1 FOR UPDATE', ['tenantId' => $tenantId, 'code' => $code]);
             if ($range === false) {
-                throw new \InvalidArgumentException('Der aktive Nummernkreis wurde nicht gefunden.');
+                throw new InvalidArgumentException('Der aktive Nummernkreis wurde nicht gefunden.');
             }
+
             $next = (int) $range['next_value'];
             if ($range['maximum_value'] !== null && $next > (int) $range['maximum_value']) {
-                throw new \DomainException('Der Nummernkreis ist ausgeschöpft.');
+                throw new DomainException('Der Nummernkreis ist ausgeschöpft.');
             }
+
             $connection->update('wms_number_range', ['next_value' => $next + 1, 'changed_by' => $actorId, 'changed_at' => $this->date($now)], ['id' => $range['id'], 'tenant_id' => $tenantId]);
-            $number = (string) $range['prefix'] . str_pad((string) $next, (int) $range['padding'], '0', STR_PAD_LEFT) . (string) $range['suffix'];
+            $number = $range['prefix'] . str_pad((string) $next, (int) $range['padding'], '0', STR_PAD_LEFT) . $range['suffix'];
             $this->audit($connection, $tenantId, $actorId, 'number_range', (string) $range['id'], 'number_allocated', ['number' => $number], $now);
 
             return $number;
@@ -142,7 +155,7 @@ final readonly class AdministrationWorkspaceService
     }
 
     /** @return array<string, array{table: string, fields: array<string, string>}> */
-    private static function definitions(): array
+    private function definitions(): array
     {
         return [
             'partner' => ['table' => 'wms_business_partner', 'fields' => ['code' => 'code:30', 'name' => 'string:150', 'partner_type' => 'choice:customer,supplier,carrier,owner', 'external_reference' => 'nullable:100', 'active' => 'bool']],
@@ -164,23 +177,28 @@ final readonly class AdministrationWorkspaceService
         if ($type === 'bool') {
             return in_array($value, [true, 1, '1', 'true', 'on'], true) ? 1 : 0;
         }
+
         if ($type === 'nullable_int') {
             return $value === null || trim((string) $value) === '' ? null : $this->integer($field, $value, 1, PHP_INT_MAX);
         }
+
         [$kind, $options] = array_pad(explode(':', $type, 2), 2, '');
         if ($kind === 'nullable') {
             $text = trim((string) $value);
 
             return $text === '' ? null : $this->required($field, $text, (int) $options);
         }
+
         if ($kind === 'int') {
-            [$minimum, $maximum] = array_map('intval', explode(',', $options));
+            [$minimum, $maximum] = array_map(intval(...), explode(',', $options));
 
             return $this->integer($field, $value, $minimum, $maximum);
         }
+
         if ($kind === 'choice') {
             return $this->choice($field, (string) $value, explode(',', $options));
         }
+
         if ($kind === 'code') {
             return $this->code((string) $value, (int) $options);
         }
@@ -192,7 +210,7 @@ final readonly class AdministrationWorkspaceService
     {
         $value = trim($value);
         if ($value === '' || mb_strlen($value) > $maximum) {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich und darf höchstens %d Zeichen enthalten.', $field, $maximum));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich und darf höchstens %d Zeichen enthalten.', $field, $maximum));
         }
 
         return $value;
@@ -202,7 +220,7 @@ final readonly class AdministrationWorkspaceService
     {
         $value = strtolower(trim($value));
         if (preg_match('/^[a-z0-9][a-z0-9._-]*$/', $value) !== 1) {
-            throw new \InvalidArgumentException('Codes dürfen nur Kleinbuchstaben, Zahlen, Punkt, Unterstrich und Bindestrich enthalten.');
+            throw new InvalidArgumentException('Codes dürfen nur Kleinbuchstaben, Zahlen, Punkt, Unterstrich und Bindestrich enthalten.');
         }
 
         return $this->required('code', $value, $maximum);
@@ -212,7 +230,7 @@ final readonly class AdministrationWorkspaceService
     private function choice(string $field, string $value, array $choices): string
     {
         if (!in_array($value, $choices, true)) {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" enthält einen ungültigen Wert.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" enthält einen ungültigen Wert.', $field));
         }
 
         return $value;
@@ -222,7 +240,7 @@ final readonly class AdministrationWorkspaceService
     {
         $integer = filter_var($value, FILTER_VALIDATE_INT);
         if (!is_int($integer) || $integer < $minimum || $integer > $maximum) {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" enthält keine gültige Ganzzahl.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" enthält keine gültige Ganzzahl.', $field));
         }
 
         return $integer;

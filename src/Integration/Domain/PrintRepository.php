@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace WebWMS\Integration\Domain;
 
+use DateTimeImmutable;
+
 interface PrintRepository
 {
     public function addPrinter(Printer $printer): void;
 
     public function printer(string $tenantId, string $id, bool $activeOnly = false): Printer;
 
-    public function changePrinterStatus(string $tenantId, string $id, bool $active, string $actorId, \DateTimeImmutable $at): void;
+    public function changePrinterStatus(string $tenantId, string $id, bool $active, string $actorId, DateTimeImmutable $at): void;
 
     public function addJob(PrintJob $job): PrintJob;
 

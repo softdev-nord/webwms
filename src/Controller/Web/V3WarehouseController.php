@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,7 +23,7 @@ use WebWMS\Inventory\Application\WarehouseTopologyService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/inventory', name: 'v3_inventory_')]
-final class V3WarehouseController extends AbstractController
+class V3WarehouseController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -67,7 +69,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/topology/{resource}/{id}', name: 'topology_update', requirements: ['resource' => 'site|warehouse|area|aisle|bin'], methods: ['POST'])]
     #[IsGranted('inventory.topology.write')]
-    public function updateTopologyEntry(string $resource, string $id, Request $request): Response
+    public function updateTopologyEntry(string $resource, string $id, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_topology_update_' . $resource . '_' . $id);
         $user = $this->user();
@@ -79,7 +81,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/topology/sites', name: 'site_create', methods: ['POST'])]
     #[IsGranted('inventory.topology.write')]
-    public function createSite(Request $request): Response
+    public function createSite(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_site_create');
         $user = $this->user();
@@ -91,7 +93,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/topology/warehouses', name: 'warehouse_create', methods: ['POST'])]
     #[IsGranted('inventory.topology.write')]
-    public function createWarehouse(Request $request): Response
+    public function createWarehouse(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_warehouse_create');
         $user = $this->user();
@@ -103,7 +105,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/topology/areas', name: 'area_create', methods: ['POST'])]
     #[IsGranted('inventory.topology.write')]
-    public function createArea(Request $request): Response
+    public function createArea(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_area_create');
         $user = $this->user();
@@ -115,7 +117,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/topology/aisles', name: 'aisle_create', methods: ['POST'])]
     #[IsGranted('inventory.topology.write')]
-    public function createAisle(Request $request): Response
+    public function createAisle(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_aisle_create');
         $user = $this->user();
@@ -127,7 +129,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/topology/bins', name: 'bin_create', methods: ['POST'])]
     #[IsGranted('inventory.topology.write')]
-    public function createBin(Request $request): Response
+    public function createBin(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_bin_create');
         $user = $this->user();
@@ -230,7 +232,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/special-stock/types/{typeId}', name: 'special_stock_type_update', methods: ['POST'])]
     #[IsGranted('inventory.special_stock.write')]
-    public function updateSpecialStockType(string $typeId, Request $request): Response
+    public function updateSpecialStockType(string $typeId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_special_stock_type_update_' . $typeId);
         $user = $this->user();
@@ -242,7 +244,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/special-stock/types', name: 'special_stock_type_create', methods: ['POST'])]
     #[IsGranted('inventory.special_stock.write')]
-    public function createSpecialStockType(Request $request): Response
+    public function createSpecialStockType(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_special_stock_type_create');
         $user = $this->user();
@@ -263,7 +265,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/special-stock/classify', name: 'special_stock_classify', methods: ['POST'])]
     #[IsGranted('inventory.special_stock.write')]
-    public function classifyStock(Request $request): Response
+    public function classifyStock(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_special_stock_classify');
         $user = $this->user();
@@ -334,7 +336,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/selection-rules/{ruleId}', name: 'selection_rule_update', methods: ['POST'])]
     #[IsGranted('inventory.selection_rule.write')]
-    public function updateSelectionRule(string $ruleId, Request $request): Response
+    public function updateSelectionRule(string $ruleId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_selection_rule_update_' . $ruleId);
         $user = $this->user();
@@ -346,7 +348,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/selection-rules', name: 'selection_rule_create', methods: ['POST'])]
     #[IsGranted('inventory.selection_rule.write')]
-    public function createSelectionRule(Request $request): Response
+    public function createSelectionRule(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_selection_rule_create');
         $user = $this->user();
@@ -434,7 +436,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/stock-blocks/reasons/{reasonId}', name: 'stock_block_reason_update', methods: ['POST'])]
     #[IsGranted('inventory.stock_block.write')]
-    public function updateStockBlockReason(string $reasonId, Request $request): Response
+    public function updateStockBlockReason(string $reasonId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_stock_block_reason_update_' . $reasonId);
         $user = $this->user();
@@ -446,7 +448,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/stock-blocks/reasons', name: 'stock_block_reason_create', methods: ['POST'])]
     #[IsGranted('inventory.stock_block.write')]
-    public function createStockBlockReason(Request $request): Response
+    public function createStockBlockReason(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_stock_block_reason_create');
         $user = $this->user();
@@ -467,7 +469,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/stock-blocks', name: 'stock_block_create', methods: ['POST'])]
     #[IsGranted('inventory.stock_block.write')]
-    public function createStockBlock(Request $request): Response
+    public function createStockBlock(Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_stock_block_create');
         $user = $this->user();
@@ -493,7 +495,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/stock-blocks/{blockId}/review', name: 'stock_block_review', methods: ['POST'])]
     #[IsGranted('inventory.stock_block.review')]
-    public function reviewStockBlock(string $blockId, Request $request): Response
+    public function reviewStockBlock(string $blockId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_stock_block_review_' . $blockId);
         $user = $this->user();
@@ -505,7 +507,7 @@ final class V3WarehouseController extends AbstractController
 
     #[Route('/stock-blocks/{blockId}/release', name: 'stock_block_release', methods: ['POST'])]
     #[IsGranted('inventory.stock_block.release')]
-    public function releaseStockBlock(string $blockId, Request $request): Response
+    public function releaseStockBlock(string $blockId, Request $request): RedirectResponse
     {
         $this->csrf($request, 'v3_inventory_stock_block_release_' . $blockId);
         $user = $this->user();
@@ -529,7 +531,7 @@ final class V3WarehouseController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;
@@ -553,7 +555,7 @@ final class V3WarehouseController extends AbstractController
     {
         $value = $this->required($request, $field);
         if (!ctype_digit($value) || (int) $value < 1) {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" muss eine positive Ganzzahl sein.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" muss eine positive Ganzzahl sein.', $field));
         }
 
         return (int) $value;

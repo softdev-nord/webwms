@@ -6,7 +6,7 @@ namespace WebWMS\Integration\Application;
 
 use DateTimeImmutable;
 
-final readonly class RegisterErpConnectionCommand
+readonly class RegisterErpConnectionCommand
 {
     public function __construct(
         public string $id,

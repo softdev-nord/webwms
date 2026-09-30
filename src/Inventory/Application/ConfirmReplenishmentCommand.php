@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class ConfirmReplenishmentCommand
+readonly class ConfirmReplenishmentCommand
 {
     public function __construct(
         public string $orderId,

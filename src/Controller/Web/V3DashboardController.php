@@ -15,7 +15,7 @@ use WebWMS\Integration\Application\ApiV3QueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3', name: 'v3_')]
-final class V3DashboardController extends AbstractController
+class V3DashboardController extends AbstractController
 {
     #[Route('', name: 'dashboard', methods: ['GET'])]
     public function dashboard(V3DashboardQueryService $dashboard): Response

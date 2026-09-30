@@ -6,10 +6,12 @@ namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -31,7 +33,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/inbound/control', name: 'v3_inbound_control_')]
 #[IsGranted('inbound.planned.read')]
-final class V3InboundControlController extends AbstractController
+class V3InboundControlController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -139,8 +141,9 @@ final class V3InboundControlController extends AbstractController
         $this->csrf($request, 'v3_inbound_attachment');
         $file = $request->files->get('file');
         if (!$file instanceof UploadedFile || !$file->isValid()) {
-            throw new \InvalidArgumentException('Eine gültige Datei ist erforderlich.');
+            throw new InvalidArgumentException('Eine gültige Datei ist erforderlich.');
         }
+
         $user = $this->user();
         $this->processes->attach($user->tenantId(), $this->required($request, 'aggregate_type'), $this->required($request, 'aggregate_id'), $this->required($request, 'category'), $file->getClientOriginalName(), $file->getMimeType() ?? 'application/octet-stream', $file->getContent(), $user->actorId(), new DateTimeImmutable());
         $this->addFlash('success', 'inbound.control.flash.proof_has_been_filed_with_process_record');
@@ -209,7 +212,7 @@ final class V3InboundControlController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;
@@ -229,7 +232,7 @@ final class V3InboundControlController extends AbstractController
         }
     }
 
-    private function back(): Response
+    private function back(): RedirectResponse
     {
         return $this->redirectToRoute('v3_inbound_control_index');
     }

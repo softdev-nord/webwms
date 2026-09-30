@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ use WebWMS\Inventory\Application\StockSelectionService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/inventory', name: 'api_v3_inventory_traceability_')]
-final class TraceabilityApiController extends AbstractController
+class TraceabilityApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -120,7 +121,7 @@ final class TraceabilityApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -139,7 +140,7 @@ final class TraceabilityApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_bool($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a boolean.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a boolean.', $field));
         }
 
         return $value;
@@ -150,7 +151,7 @@ final class TraceabilityApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value) || $value < 1) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a positive integer.', $field));
         }
 
         return $value;

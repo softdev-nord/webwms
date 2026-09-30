@@ -9,13 +9,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use WebWMS\Platform\Application\ExtensionModuleService;
 use WebWMS\Security\V3\LoginFormAuthenticator;
 
-final class LoginFormAuthenticatorTest extends TestCase
+class LoginFormAuthenticatorTest extends TestCase
 {
     public function testItBuildsTheTenantScopedEmailIdentifier(): void
     {
-        $authenticator = new LoginFormAuthenticator($this->createMock(UrlGeneratorInterface::class));
+        $authenticator = new LoginFormAuthenticator(
+            self::createStub(UrlGeneratorInterface::class),
+            self::createStub(ExtensionModuleService::class)
+        );
         $request = Request::create('/v3/login', 'POST', [
             'tenant_id' => ' tenant-id ',
             'email' => ' ADMIN@Example.COM ',
@@ -33,12 +37,15 @@ final class LoginFormAuthenticatorTest extends TestCase
     public function testItRedirectsSuccessfulLoginsToTheV3Dashboard(): void
     {
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->expects(self::once())->method('generate')->with('v3_dashboard')->willReturn('/v3');
-        $authenticator = new LoginFormAuthenticator($urlGenerator);
+        $urlGenerator->expects($this->once())->method('generate')->with('v3_dashboard')->willReturn('/v3');
+        $authenticator = new LoginFormAuthenticator(
+            self::createStub(UrlGeneratorInterface::class),
+            self::createStub(ExtensionModuleService::class)
+        );
 
         $response = $authenticator->onAuthenticationSuccess(
             Request::create('/v3/login', 'POST'),
-            $this->createMock(TokenInterface::class),
+            self::createStub(TokenInterface::class),
             'v3',
         );
 

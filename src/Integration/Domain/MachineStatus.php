@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace WebWMS\Integration\Domain;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 
-final readonly class MachineStatus
+readonly class MachineStatus
 {
     public function __construct(
         public string $id,
@@ -22,14 +23,16 @@ final readonly class MachineStatus
     ) {
         foreach ([$id, $tenantId, $connectionId, $machineCode, $externalEventId, $recordedBy] as $value) {
             if (trim($value) === '') {
-                throw new \InvalidArgumentException('A machine status requires complete identifiers.');
+                throw new InvalidArgumentException('A machine status requires complete identifiers.');
             }
         }
+
         if (!in_array($status, ['ready', 'busy', 'blocked', 'fault', 'offline'], true)) {
-            throw new \InvalidArgumentException('The machine status is unsupported.');
+            throw new InvalidArgumentException('The machine status is unsupported.');
         }
+
         if ($message !== null && mb_strlen($message) > 500) {
-            throw new \InvalidArgumentException('A machine status message must not exceed 500 characters.');
+            throw new InvalidArgumentException('A machine status message must not exceed 500 characters.');
         }
     }
 }

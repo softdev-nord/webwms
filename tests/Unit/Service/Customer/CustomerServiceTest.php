@@ -20,7 +20,7 @@ use WebWMS\Service\DataHandlers\Customer\CustomerDataHandler;
     class: 'CustomerServiceTest'
 )]
 #[CoversClass(CustomerService::class)]
-final class CustomerServiceTest extends TestCase
+class CustomerServiceTest extends TestCase
 {
     private CustomerService $customerService;
 
@@ -81,7 +81,7 @@ final class CustomerServiceTest extends TestCase
 
     public function testGetAllCustomersAjax(): void
     {
-        $jsonResponse = $this->createMock(JsonResponse::class);
+        $jsonResponse = $this->createStub(JsonResponse::class);
         $customerNrInput = '123';
 
         $this->mockObject->expects($this->once())

@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class CycleCountPlan
+readonly class CycleCountPlan
 {
     public function __construct(
         private InventoryId $id,
@@ -25,12 +25,15 @@ final readonly class CycleCountPlan
         if (trim($code) === '' || mb_strlen($code) > 50) {
             throw new InvalidArgumentException('A cycle count plan code must contain 1 to 50 characters.');
         }
+
         if (preg_match('/^[A-Z0-9][A-Z0-9._-]{0,49}$/', $locationPrefix) !== 1) {
             throw new InvalidArgumentException('The cycle count location prefix must use uppercase location characters.');
         }
+
         if ($intervalDays < 1 || $intervalDays > 365) {
             throw new InvalidArgumentException('A cycle count interval must contain 1 to 365 days.');
         }
+
         if ($nextDueAt < $createdAt) {
             throw new InvalidArgumentException('The first cycle count due date must not precede creation.');
         }

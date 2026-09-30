@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Domain\Measurement;
 
-final class MeasurementTest extends TestCase
+class MeasurementTest extends TestCase
 {
     public function testItCapturesCombinedPackageValues(): void
     {
@@ -20,7 +21,7 @@ final class MeasurementTest extends TestCase
 
     public function testItRequiresCompleteDimensions(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->measurement(null, 400, null, 200);
     }

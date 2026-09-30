@@ -20,7 +20,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'StockInFinalCollectionTypeTest'
 )]
 #[CoversClass(StockInFinalCollectionType::class)]
-final class StockInFinalCollectionTypeTest extends TestCase
+class StockInFinalCollectionTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {

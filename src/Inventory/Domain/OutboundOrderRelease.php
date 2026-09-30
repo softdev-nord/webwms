@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class OutboundOrderRelease
+readonly class OutboundOrderRelease
 {
     /** @param array<string, InventoryId> $reservationIdsByItem */
     public function __construct(
@@ -22,6 +22,7 @@ final readonly class OutboundOrderRelease
         if ($reservationIdsByItem === []) {
             throw new InvalidArgumentException('An order release requires reservation IDs.');
         }
+
         $ids = array_map(static fn (InventoryId $id): string => $id->value(), $reservationIdsByItem);
         if (count(array_unique($ids)) !== count($ids)) {
             throw new InvalidArgumentException('Reservation IDs must be unique.');

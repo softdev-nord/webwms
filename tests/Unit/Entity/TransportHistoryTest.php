@@ -17,7 +17,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'TransportHistoryTest'
 )]
 #[CoversClass(TransportHistory::class)]
-final class TransportHistoryTest extends TestCase
+class TransportHistoryTest extends TestCase
 {
     private TransportHistory $transportHistory;
 

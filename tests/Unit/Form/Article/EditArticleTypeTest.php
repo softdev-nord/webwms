@@ -18,7 +18,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'EditArticleTypeTest'
 )]
 #[CoversClass(EditArticleType::class)]
-final class EditArticleTypeTest extends TypeTestCase
+class EditArticleTypeTest extends TypeTestCase
 {
     public function testSubmitValidData(): void
     {

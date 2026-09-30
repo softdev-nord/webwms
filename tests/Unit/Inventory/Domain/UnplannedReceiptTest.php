@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Inventory\Domain;
 
+use InvalidArgumentException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Administration\Domain\Access\UserId;
@@ -14,11 +15,11 @@ use WebWMS\Inventory\Domain\StockDimensions;
 use WebWMS\Inventory\Domain\UnplannedReceipt;
 use WebWMS\Inventory\Domain\UnplannedReceiptItem;
 
-final class UnplannedReceiptTest extends TestCase
+class UnplannedReceiptTest extends TestCase
 {
     public function testItRequiresAtLeastOneItem(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         new UnplannedReceipt(
             new InventoryId('11111111-1111-4111-8111-111111111111'),
             new TenantId('22222222-2222-4222-8222-222222222222'),

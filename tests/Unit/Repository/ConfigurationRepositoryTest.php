@@ -17,11 +17,11 @@ use WebWMS\Repository\ConfigurationRepository;
     class: 'ConfigurationRepositoryTest'
 )]
 #[CoversClass(ConfigurationRepository::class)]
-final class ConfigurationRepositoryTest extends TestCase
+class ConfigurationRepositoryTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $registry = $this->createMock(ManagerRegistry::class);
+        $registry = $this->createStub(ManagerRegistry::class);
         $configurationRepository = new ConfigurationRepository($registry);
 
         self::assertInstanceOf(ConfigurationRepository::class, $configurationRepository);

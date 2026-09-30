@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class ReceiveReturnCommand
+readonly class ReceiveReturnCommand
 {
     public function __construct(
         public string $receiptId,

@@ -104,7 +104,7 @@ readonly class TransportRequestDataHandler
             foreach ($requestData as $key => $data) {
                 $data = StockInFinalDto::hydrate((array) $data);
 
-                $entities[] = (new TransportRequest())
+                $entities[] = new TransportRequest()
                     ->setSuId($data->getStockSuId())
                     ->setTrNr($this->getLastTransportRequestNr() + 1)
                     ->setTrPos($key + 1)
@@ -219,7 +219,7 @@ readonly class TransportRequestDataHandler
 
     public function setDataToMove(TransportRequest $transportRequest): TransportHistory
     {
-        return (new TransportHistory())
+        return new TransportHistory()
             ->setSuId($transportRequest->getSuId())
             ->setTrNr($transportRequest->getTrNr())
             ->setTrPos($transportRequest->getTrPos())

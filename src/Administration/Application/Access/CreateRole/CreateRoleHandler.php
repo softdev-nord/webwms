@@ -11,7 +11,7 @@ use WebWMS\Administration\Domain\Access\RoleRepository;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 use WebWMS\Administration\Domain\Tenant\TenantRepository;
 
-final readonly class CreateRoleHandler
+readonly class CreateRoleHandler
 {
     public function __construct(
         private TenantRepository $tenants,

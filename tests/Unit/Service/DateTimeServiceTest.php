@@ -17,7 +17,7 @@ use WebWMS\Service\DateTimeService;
     class: 'DateTimeServiceTest'
 )]
 #[CoversClass(DateTimeService::class)]
-final class DateTimeServiceTest extends TestCase
+class DateTimeServiceTest extends TestCase
 {
     public function testCreateDateTimeReturnsCorrectTimezone(): void
     {

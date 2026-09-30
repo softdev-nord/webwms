@@ -10,7 +10,7 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\StockReservation;
 
-final readonly class CreateStockReservationHandler
+readonly class CreateStockReservationHandler
 {
     public function __construct(
         private InventoryRepository $inventory

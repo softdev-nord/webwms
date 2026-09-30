@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use WebWMS\Administration\Domain\Site\SiteId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
 
-final readonly class Warehouse
+readonly class Warehouse
 {
     public function __construct(
         private InventoryId $id,

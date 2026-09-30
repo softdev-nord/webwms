@@ -22,12 +22,12 @@ use WebWMS\Helper\FormHelper\ArticleFormHelper;
     class: 'ArticleFormHelperTest'
 )]
 #[CoversClass(ArticleFormHelper::class)]
-final class ArticleFormHelperTest extends TestCase
+class ArticleFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
         $type = 'SomeType';
         $data = null;
         $options = [];
@@ -47,7 +47,7 @@ final class ArticleFormHelperTest extends TestCase
     public function testAddArticleForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
 
         $formFactory
             ->expects($this->once())
@@ -64,8 +64,8 @@ final class ArticleFormHelperTest extends TestCase
     public function testEditArticleForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $article = $this->createMock(Article::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $article = $this->createStub(Article::class);
 
         $formFactory
             ->expects($this->once())
@@ -82,8 +82,8 @@ final class ArticleFormHelperTest extends TestCase
     public function testDeleteArticleForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $article = $this->createMock(Article::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $article = $this->createStub(Article::class);
 
         $formFactory
             ->expects($this->once())

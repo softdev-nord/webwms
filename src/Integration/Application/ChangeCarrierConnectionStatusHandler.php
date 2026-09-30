@@ -6,7 +6,7 @@ namespace WebWMS\Integration\Application;
 
 use WebWMS\Integration\Domain\CarrierConnectionRepository;
 
-final readonly class ChangeCarrierConnectionStatusHandler
+readonly class ChangeCarrierConnectionStatusHandler
 {
     public function __construct(
         private CarrierConnectionRepository $connections

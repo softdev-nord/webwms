@@ -6,6 +6,6 @@ namespace WebWMS\Inventory\Domain;
 
 use DomainException;
 
-final class InvalidSerialStockException extends DomainException
+class InvalidSerialStockException extends DomainException
 {
 }

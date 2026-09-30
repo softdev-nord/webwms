@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,7 +19,7 @@ use WebWMS\Integration\Application\WcsIntegrationService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/integration/wcs', name: 'v3_wcs_')]
-final class V3WcsController extends AbstractController
+class V3WcsController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -57,13 +59,14 @@ final class V3WcsController extends AbstractController
 
     #[Route('/connections/{connectionId}/status', name: 'connection_status', methods: ['POST'])]
     #[IsGranted('integration.wcs.write')]
-    public function connectionStatus(string $connectionId, Request $request): Response
+    public function connectionStatus(string $connectionId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_wcs_connection_status_' . $connectionId);
         $connection = $this->queries->wcsConnection($this->user()->tenantId(), $connectionId);
         if ($connection === null) {
             throw $this->createNotFoundException('Die WCS-Verbindung wurde nicht gefunden.');
         }
+
         $user = $this->user();
         $this->wcs->changeConnectionStatus($user->tenantId(), $connectionId, !(bool) $connection['active'], $user->actorId(), new DateTimeImmutable());
         $this->addFlash('success', (bool) $connection['active'] ? 'integration.flash.connection_has_been_paused' : 'integration.flash.connection_has_been_activated');
@@ -105,7 +108,7 @@ final class V3WcsController extends AbstractController
 
     #[Route('/commands/{commandId}/status', name: 'command_status', methods: ['POST'])]
     #[IsGranted('integration.wcs.execute')]
-    public function commandStatus(string $commandId, Request $request): Response
+    public function commandStatus(string $commandId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_wcs_command_status_' . $commandId);
         $user = $this->user();
@@ -150,7 +153,7 @@ final class V3WcsController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;

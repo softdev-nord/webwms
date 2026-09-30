@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InboundResult;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 
-final readonly class ResolveInboundDiscrepancyHandler
+readonly class ResolveInboundDiscrepancyHandler
 {
     public function __construct(
         private InventoryRepository $inventory

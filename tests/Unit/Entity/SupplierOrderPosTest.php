@@ -18,7 +18,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'SupplierOrderPosTest'
 )]
 #[CoversClass(SupplierOrderPos::class)]
-final class SupplierOrderPosTest extends TestCase
+class SupplierOrderPosTest extends TestCase
 {
     private SupplierOrderPos $supplierOrderPos;
 

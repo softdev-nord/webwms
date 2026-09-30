@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
+use Rector\CodingStyle\Rector\ClassConst\RemoveFinalFromConstRector;
 use Rector\Config\RectorConfig;
-use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
-use Rector\Php80\ValueObject\AnnotationToAttribute;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitSelfCallRector;
-use WebWMS\Helper\Development\RectorCustomRule\ConvertPhpDocToClassAttributeRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\NarrowObjectReturnTypeRector;
+use WebWMS\Rector\RemoveFinalFromClassRector;
 
 return RectorConfig::configure()
     ->withPreparedSets(
@@ -17,7 +17,6 @@ return RectorConfig::configure()
         privatization: true,
         instanceOf: true,
         earlyReturn: true,
-//        strictBooleans: true,
         phpunitCodeQuality: true,
         doctrineCodeQuality: true,
         symfonyCodeQuality: true,
@@ -31,7 +30,8 @@ return RectorConfig::configure()
         php84: true
     )
     ->withRules([
-            PreferPHPUnitSelfCallRector::class
+            PreferPHPUnitSelfCallRector::class,
+            RemoveFinalFromClassRector::class,
         ]
     )
     ->withPHPStanConfigs(
@@ -47,6 +47,7 @@ return RectorConfig::configure()
         __DIR__ . '/tests/'
     ])
     ->withSkip([
+        NarrowObjectReturnTypeRector::class,
         __DIR__ . '/src/Kernel.php',
     ]);
 

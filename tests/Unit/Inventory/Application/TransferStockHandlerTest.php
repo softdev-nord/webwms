@@ -67,7 +67,7 @@ use WebWMS\Inventory\Domain\UnplannedReceipt;
 use WebWMS\Inventory\Domain\UnplannedReceiptBooking;
 use WebWMS\Inventory\Domain\Warehouse;
 
-final class TransferStockHandlerTest extends TestCase
+class TransferStockHandlerTest extends TestCase
 {
     public function testItDelegatesAnAtomicStatusTransfer(): void
     {
@@ -96,14 +96,11 @@ final class TransferStockHandlerTest extends TestCase
         self::assertSame(5, $result->sourceQuantity);
         self::assertSame(12, $result->destinationQuantity);
         self::assertSame('LOT-1', $repository->transfer?->sourcePosting()->dimensions()->batchNumber());
-        self::assertSame(
-            'available',
-            $repository->transfer?->destinationPosting()->dimensions()->status()->value,
-        );
+        self::assertSame('available', $repository->transfer?->destinationPosting()->dimensions()->status()->value);
     }
 }
 
-final class TransferMemoryInventoryRepository implements InventoryRepository
+class TransferMemoryInventoryRepository implements InventoryRepository
 {
     public ?StockTransfer $transfer = null;
 

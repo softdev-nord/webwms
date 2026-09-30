@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,7 @@ use WebWMS\Inventory\Application\WarehouseTopologyService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/inventory', name: 'api_v3_inventory_')]
-final class WarehouseTopologyApiController extends AbstractController
+class WarehouseTopologyApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -60,28 +61,14 @@ final class WarehouseTopologyApiController extends AbstractController
         $user = $this->user();
         $id = Uuid::v7()->toRfc4122();
         $now = new DateTimeImmutable();
-        switch ($type) {
-            case 'sites':
-                $this->topology->createSite($id, $user->tenantId(), $this->string($payload, 'code'), $this->string($payload, 'name'), $this->string($payload, 'timezone'), $user->actorId(), $now);
-
-                break;
-            case 'warehouses':
-                $this->topology->createWarehouse($id, $user->tenantId(), $this->string($payload, 'siteId'), $this->string($payload, 'code'), $this->string($payload, 'name'), $this->string($payload, 'warehouseType'), $user->actorId(), $now);
-
-                break;
-            case 'areas':
-                $this->topology->createArea($id, $user->tenantId(), $this->string($payload, 'warehouseId'), $this->string($payload, 'code'), $this->string($payload, 'name'), $this->string($payload, 'areaType'), $user->actorId(), $now);
-
-                break;
-            case 'aisles':
-                $this->topology->createAisle($id, $user->tenantId(), $this->string($payload, 'areaId'), $this->string($payload, 'code'), $this->string($payload, 'name'), $user->actorId(), $now);
-
-                break;
-            case 'bins':
-                $this->topology->createBin($id, $user->tenantId(), $this->string($payload, 'warehouseId'), $this->string($payload, 'areaId'), $this->string($payload, 'aisleId'), $this->string($payload, 'code'), $this->string($payload, 'levelCode'), $this->string($payload, 'binCode'), $this->string($payload, 'locationType'), $this->integer($payload, 'capacityQuantity'), $user->actorId(), $now);
-
-                break;
-        }
+        match ($type) {
+            'sites' => $this->topology->createSite($id, $user->tenantId(), $this->string($payload, 'code'), $this->string($payload, 'name'), $this->string($payload, 'timezone'), $user->actorId(), $now),
+            'warehouses' => $this->topology->createWarehouse($id, $user->tenantId(), $this->string($payload, 'siteId'), $this->string($payload, 'code'), $this->string($payload, 'name'), $this->string($payload, 'warehouseType'), $user->actorId(), $now),
+            'areas' => $this->topology->createArea($id, $user->tenantId(), $this->string($payload, 'warehouseId'), $this->string($payload, 'code'), $this->string($payload, 'name'), $this->string($payload, 'areaType'), $user->actorId(), $now),
+            'aisles' => $this->topology->createAisle($id, $user->tenantId(), $this->string($payload, 'areaId'), $this->string($payload, 'code'), $this->string($payload, 'name'), $user->actorId(), $now),
+            'bins' => $this->topology->createBin($id, $user->tenantId(), $this->string($payload, 'warehouseId'), $this->string($payload, 'areaId'), $this->string($payload, 'aisleId'), $this->string($payload, 'code'), $this->string($payload, 'levelCode'), $this->string($payload, 'binCode'), $this->string($payload, 'locationType'), $this->integer($payload, 'capacityQuantity'), $user->actorId(), $now),
+            default => new JsonResponse(['data' => ['id' => $id, 'type' => $type]], Response::HTTP_CREATED),
+        };
 
         return new JsonResponse(['data' => ['id' => $id, 'type' => $type]], Response::HTTP_CREATED);
     }
@@ -101,7 +88,7 @@ final class WarehouseTopologyApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -112,7 +99,7 @@ final class WarehouseTopologyApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_int($value) || $value < 0) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-negative integer.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-negative integer.', $field));
         }
 
         return $value;

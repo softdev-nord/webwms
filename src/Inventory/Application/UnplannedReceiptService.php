@@ -16,7 +16,7 @@ use WebWMS\Inventory\Domain\UnplannedReceipt;
 use WebWMS\Inventory\Domain\UnplannedReceiptBooking;
 use WebWMS\Inventory\Domain\UnplannedReceiptItem;
 
-final readonly class UnplannedReceiptService
+readonly class UnplannedReceiptService
 {
     public function __construct(
         private InventoryRepository $inventory,

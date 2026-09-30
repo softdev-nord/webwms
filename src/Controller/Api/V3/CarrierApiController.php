@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use DomainException;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +25,7 @@ use WebWMS\Inventory\Application\RegisterShipmentLabelHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3', name: 'api_v3_carrier_')]
-final class CarrierApiController extends AbstractController
+class CarrierApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -86,8 +88,9 @@ final class CarrierApiController extends AbstractController
     {
         $shipment = $this->shipment($shipmentId);
         if (($shipment['status'] ?? null) !== 'prepared') {
-            throw new \DomainException('Only a prepared shipment can receive a carrier label.');
+            throw new DomainException('Only a prepared shipment can receive a carrier label.');
         }
+
         $payload = $this->payload($request);
         $now = new DateTimeImmutable();
         $result = $this->gateway->createLabel($this->user()->tenantId(), $this->string($shipment, 'carrier'), $shipment, $this->string($payload, 'requestId'), $this->user()->actorId(), $now);
@@ -103,8 +106,9 @@ final class CarrierApiController extends AbstractController
         $shipment = $this->shipment($shipmentId);
         $tracking = $shipment['tracking_number'] ?? null;
         if (!is_string($tracking) || $tracking === '') {
-            throw new \DomainException('The shipment has no tracking number.');
+            throw new DomainException('The shipment has no tracking number.');
         }
+
         $payload = $this->payload($request);
         $data = $this->gateway->tracking($this->user()->tenantId(), $this->string($shipment, 'carrier'), $shipmentId, $tracking, $this->string($payload, 'requestId'), $this->user()->actorId(), new DateTimeImmutable());
 
@@ -117,8 +121,9 @@ final class CarrierApiController extends AbstractController
     {
         $manifest = $this->queries->loadingManifest($this->user()->tenantId(), $manifestId);
         if ($manifest === null || ($manifest['status'] ?? null) !== 'completed') {
-            throw new \DomainException('Only a completed loading manifest can be handed over.');
+            throw new DomainException('Only a completed loading manifest can be handed over.');
         }
+
         $payload = $this->payload($request);
         $result = $this->gateway->handoverManifest($this->user()->tenantId(), $this->string($payload, 'carrierCode'), $manifest, $this->string($payload, 'requestId'), $this->user()->actorId(), new DateTimeImmutable());
 
@@ -160,7 +165,7 @@ final class CarrierApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -171,7 +176,7 @@ final class CarrierApiController extends AbstractController
     {
         $value = $payload[$field] ?? $default;
         if (!is_bool($value)) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be boolean.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be boolean.', $field));
         }
 
         return $value;

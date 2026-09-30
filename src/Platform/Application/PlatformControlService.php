@@ -6,9 +6,11 @@ namespace WebWMS\Platform\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use DomainException;
+use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
 
-final readonly class PlatformControlService
+readonly class PlatformControlService
 {
     public function __construct(
         private Connection $connection
@@ -42,8 +44,9 @@ final readonly class PlatformControlService
     {
         $account = $this->connection->fetchAssociative('SELECT a.*, p.code partner_code, p.name partner_name FROM wms_partner_account a INNER JOIN wms_business_partner p ON p.id = a.business_partner_id WHERE a.tenant_id = :tenantId AND a.user_id = :userId AND a.active = 1 AND p.active = 1', ['tenantId' => $tenantId, 'userId' => $userId]);
         if ($account === false) {
-            throw new \DomainException('Für diesen Benutzer ist kein aktiver Partnerzugang vorhanden.');
+            throw new DomainException('Für diesen Benutzer ist kein aktiver Partnerzugang vorhanden.');
         }
+
         $permissions = json_decode((string) $account['permissions'], true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($permissions)) {
             $permissions = [];
@@ -59,26 +62,30 @@ final readonly class PlatformControlService
     /** @param array<string, mixed> $values */
     public function create(string $tenantId, string $actorId, string $resource, array $values, DateTimeImmutable $now): string
     {
-        $definitions = self::definitions();
+        $definitions = $this->definitions();
         if (!isset($definitions[$resource])) {
-            throw new \InvalidArgumentException('Die Plattformressource ist unbekannt.');
+            throw new InvalidArgumentException('Die Plattformressource ist unbekannt.');
         }
+
         $definition = $definitions[$resource];
         $id = Uuid::v7()->toRfc4122();
         $row = ['id' => $id, 'tenant_id' => $tenantId];
         foreach ($definition['fields'] as $field => $type) {
             $row[$field] = $this->value($field, $type, $values[$field] ?? null);
         }
+
         foreach ($definition['references'] as $field => $table) {
             if ($row[$field] !== null) {
                 $this->assertReference($tenantId, $table, (string) $row[$field], $field);
             }
         }
+
         $row['created_by'] = $actorId;
         $row['created_at'] = $this->date($now);
         if ($resource === 'task') {
             $row['status'] = 'planned';
         }
+
         $this->connection->transactional(function (Connection $connection) use ($definition, $row, $tenantId, $actorId, $resource, $id, $now): void {
             $connection->insert($definition['table'], $row);
             $this->audit($connection, $tenantId, $actorId, $resource, $id, 'created', $row, $now);
@@ -91,14 +98,16 @@ final readonly class PlatformControlService
     public function transitionTask(string $tenantId, string $actorId, string $taskId, string $status, DateTimeImmutable $now): void
     {
         if (!in_array($status, ['planned', 'released', 'in_progress', 'completed', 'cancelled'], true)) {
-            throw new \InvalidArgumentException('Der Shopfloor-Status ist ungültig.');
+            throw new InvalidArgumentException('Der Shopfloor-Status ist ungültig.');
         }
+
         $this->connection->transactional(function (Connection $connection) use ($tenantId, $actorId, $taskId, $status, $now): void {
             $current = $connection->fetchOne('SELECT status FROM wms_shopfloor_task WHERE id = :id AND tenant_id = :tenantId FOR UPDATE', ['id' => $taskId, 'tenantId' => $tenantId]);
             $allowed = ['planned' => ['released', 'cancelled'], 'released' => ['in_progress', 'cancelled'], 'in_progress' => ['completed', 'cancelled'], 'completed' => [], 'cancelled' => []];
             if (!is_string($current) || !in_array($status, $allowed[$current] ?? [], true)) {
-                throw new \DomainException('Dieser Shopfloor-Statuswechsel ist nicht zulässig.');
+                throw new DomainException('Dieser Shopfloor-Statuswechsel ist nicht zulässig.');
             }
+
             $connection->update('wms_shopfloor_task', ['status' => $status, 'changed_by' => $actorId, 'changed_at' => $this->date($now)], ['id' => $taskId, 'tenant_id' => $tenantId]);
             $this->audit($connection, $tenantId, $actorId, 'task', $taskId, 'status_changed', ['from' => $current, 'to' => $status], $now);
         });
@@ -115,17 +124,13 @@ final readonly class PlatformControlService
             if (!is_array($conditions)) {
                 continue;
             }
-            $matches = true;
-            foreach ($conditions as $key => $expected) {
-                if (!is_string($key) || ($payload[$key] ?? null) !== $expected) {
-                    $matches = false;
 
-                    break;
-                }
-            }
+            $matches = array_all($conditions, fn ($expected, $key): bool => is_string($key) && ($payload[$key] ?? null) === $expected);
+
             if (!$matches) {
                 continue;
             }
+
             $this->connection->insert('wms_automation_execution', ['id' => Uuid::v7()->toRfc4122(), 'tenant_id' => $tenantId, 'rule_id' => $rule['id'], 'event_name' => $eventName, 'event_payload' => json_encode($payload, JSON_THROW_ON_ERROR), 'status' => 'queued', 'result_message' => sprintf('Aktion %s wurde zur Ausführung vorgemerkt.', $rule['action_type']), 'executed_by' => $actorId, 'executed_at' => $this->date($now)]);
             ++$executed;
         }
@@ -136,12 +141,14 @@ final readonly class PlatformControlService
     public function billStorage(string $tenantId, string $actorId, string $ruleId, float $quantity, int $days, string $reference, DateTimeImmutable $now): string
     {
         if ($quantity <= 0 || $days < 1 || trim($reference) === '') {
-            throw new \InvalidArgumentException('Menge, Lagertage und Referenz sind erforderlich.');
+            throw new InvalidArgumentException('Menge, Lagertage und Referenz sind erforderlich.');
         }
+
         $rule = $this->connection->fetchAssociative('SELECT * FROM wms_storage_fee_rule WHERE id = :id AND tenant_id = :tenantId AND active = 1', ['id' => $ruleId, 'tenantId' => $tenantId]);
         if ($rule === false) {
-            throw new \InvalidArgumentException('Die aktive Lagergeldregel wurde nicht gefunden.');
+            throw new InvalidArgumentException('Die aktive Lagergeldregel wurde nicht gefunden.');
         }
+
         $billableDays = max(0, $days - (int) $rule['free_days']);
 
         return $this->bill($tenantId, $actorId, (string) $rule['business_partner_id'], 'storage', $reference, (string) $rule['name'], $quantity * $billableDays, (float) $rule['price_per_unit_day'], (string) $rule['currency'], $now);
@@ -150,12 +157,13 @@ final readonly class PlatformControlService
     public function billService(string $tenantId, string $actorId, string $serviceId, string $partnerId, float $quantity, string $reference, DateTimeImmutable $now): string
     {
         if ($quantity <= 0 || trim($reference) === '') {
-            throw new \InvalidArgumentException('Leistungsmenge und Referenz sind erforderlich.');
+            throw new InvalidArgumentException('Leistungsmenge und Referenz sind erforderlich.');
         }
+
         $this->assertReference($tenantId, 'wms_business_partner', $partnerId, 'business_partner_id');
         $service = $this->connection->fetchAssociative('SELECT * FROM wms_value_added_service WHERE id = :id AND tenant_id = :tenantId AND active = 1', ['id' => $serviceId, 'tenantId' => $tenantId]);
         if ($service === false) {
-            throw new \InvalidArgumentException('Die aktive Zusatzleistung wurde nicht gefunden.');
+            throw new InvalidArgumentException('Die aktive Zusatzleistung wurde nicht gefunden.');
         }
 
         return $this->bill($tenantId, $actorId, $partnerId, 'vas', $reference, (string) $service['name'], $quantity, (float) $service['unit_price'], (string) $service['currency'], $now);
@@ -164,8 +172,9 @@ final readonly class PlatformControlService
     public function captureMedia(string $tenantId, string $actorId, string $aggregateType, string $aggregateId, string $filename, string $mimeType, string $content, DateTimeImmutable $now): string
     {
         if (!in_array($mimeType, ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'], true) || $content === '' || strlen($content) > 5_000_000) {
-            throw new \InvalidArgumentException('Erlaubt sind JPG, PNG, WebP und PDF bis 5 MB.');
+            throw new InvalidArgumentException('Erlaubt sind JPG, PNG, WebP und PDF bis 5 MB.');
         }
+
         $id = Uuid::v7()->toRfc4122();
         $this->connection->insert('wms_media_asset', ['id' => $id, 'tenant_id' => $tenantId, 'aggregate_type' => $this->required('aggregate_type', $aggregateType, 40), 'aggregate_id' => $this->required('aggregate_id', $aggregateId, 36), 'filename' => $this->required('filename', $filename, 255), 'mime_type' => $mimeType, 'byte_size' => strlen($content), 'checksum' => hash('sha256', $content), 'content' => $content, 'captured_by' => $actorId, 'captured_at' => $this->date($now)]);
 
@@ -210,7 +219,7 @@ final readonly class PlatformControlService
     {
         $printer = $this->connection->fetchOne('SELECT printer_id FROM wms_print_routing_rule WHERE tenant_id = :tenantId AND document_type = :documentType AND active = 1 AND (site_id IS NULL OR site_id = :siteId) AND (workstation IS NULL OR workstation = :workstation) AND (process_key IS NULL OR process_key = :processKey) ORDER BY priority, code LIMIT 1', ['tenantId' => $tenantId, 'documentType' => $documentType, 'siteId' => $siteId, 'workstation' => $workstation, 'processKey' => $processKey]);
         if (!is_string($printer)) {
-            throw new \DomainException('Keine aktive Druckroutingregel passt zum Dokument.');
+            throw new DomainException('Keine aktive Druckroutingregel passt zum Dokument.');
         }
 
         return $printer;
@@ -232,6 +241,7 @@ final readonly class PlatformControlService
             $sql = is_string($metric) ? ($queries[$metric] ?? null) : null;
             $definition['value'] = $sql === null ? null : $this->connection->fetchOne($sql, ['tenantId' => $tenantId]);
         }
+
         unset($definition);
 
         return $definitions;
@@ -246,7 +256,7 @@ final readonly class PlatformControlService
     }
 
     /** @return array<string, array{table: string, fields: array<string, string>, references: array<string, string>}> */
-    private static function definitions(): array
+    private function definitions(): array
     {
         return [
             'task' => ['table' => 'wms_shopfloor_task', 'fields' => ['code' => 'code:50', 'task_type' => 'choice:putaway,retrieval,transport,inventory', 'title' => 'string:150', 'reference_type' => 'nullable:40', 'reference_id' => 'nullable:36', 'priority' => 'int:1,999', 'planned_for' => 'nullable:30', 'assigned_to' => 'nullable:36'], 'references' => ['assigned_to' => 'wms_user_account']],
@@ -271,56 +281,64 @@ final readonly class PlatformControlService
         if ($type === 'bool') {
             return in_array($value, [true, 1, '1', 'true', 'on'], true) ? 1 : 0;
         }
+
         if ($type === 'json') {
             $json = is_string($value) ? $value : json_encode($value, JSON_THROW_ON_ERROR);
             json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
             return $json;
         }
+
         if ($type === 'decimal' || $type === 'nullable_decimal') {
             if ($type === 'nullable_decimal' && ($value === null || trim((string) $value) === '')) {
                 return null;
             }
+
             if (!is_numeric($value) || (float) $value < 0) {
-                throw new \InvalidArgumentException(sprintf('Das Feld "%s" enthält keinen gültigen Betrag.', $field));
+                throw new InvalidArgumentException(sprintf('Das Feld "%s" enthält keinen gültigen Betrag.', $field));
             }
 
             return round((float) $value, 4);
         }
+
         if ($type === 'currency') {
             $currency = strtoupper(trim((string) $value));
             if (preg_match('/^[A-Z]{3}$/', $currency) !== 1) {
-                throw new \InvalidArgumentException('Die Währung muss ein dreistelliger ISO-Code sein.');
+                throw new InvalidArgumentException('Die Währung muss ein dreistelliger ISO-Code sein.');
             }
 
             return $currency;
         }
+
         [$kind, $options] = array_pad(explode(':', $type, 2), 2, '');
         if ($kind === 'nullable') {
             $text = trim((string) $value);
 
             return $text === '' ? null : $this->required($field, $text, (int) $options);
         }
+
         if ($kind === 'int') {
-            [$min, $max] = array_map('intval', explode(',', $options));
+            [$min, $max] = array_map(intval(...), explode(',', $options));
             $integer = filter_var($value, FILTER_VALIDATE_INT);
             if (!is_int($integer) || $integer < $min || $integer > $max) {
-                throw new \InvalidArgumentException(sprintf('Das Feld "%s" enthält keine gültige Ganzzahl.', $field));
+                throw new InvalidArgumentException(sprintf('Das Feld "%s" enthält keine gültige Ganzzahl.', $field));
             }
 
             return $integer;
         }
+
         if ($kind === 'choice') {
             if (!in_array($value, explode(',', $options), true)) {
-                throw new \InvalidArgumentException(sprintf('Das Feld "%s" enthält einen ungültigen Wert.', $field));
+                throw new InvalidArgumentException(sprintf('Das Feld "%s" enthält einen ungültigen Wert.', $field));
             }
 
             return $value;
         }
+
         if ($kind === 'code') {
             $code = strtolower(trim((string) $value));
             if (preg_match('/^[a-z0-9][a-z0-9._-]*$/', $code) !== 1) {
-                throw new \InvalidArgumentException('Codes enthalten nur Kleinbuchstaben, Zahlen, Punkt, Unterstrich und Bindestrich.');
+                throw new InvalidArgumentException('Codes enthalten nur Kleinbuchstaben, Zahlen, Punkt, Unterstrich und Bindestrich.');
             }
 
             return $this->required($field, $code, (int) $options);
@@ -332,7 +350,7 @@ final readonly class PlatformControlService
     private function assertReference(string $tenantId, string $table, string $id, string $field): void
     {
         if ($this->connection->fetchOne(sprintf('SELECT 1 FROM %s WHERE id = :id AND tenant_id = :tenantId', $table), ['id' => $id, 'tenantId' => $tenantId]) === false) {
-            throw new \InvalidArgumentException(sprintf('Die Referenz "%s" gehört nicht zum Mandanten.', $field));
+            throw new InvalidArgumentException(sprintf('Die Referenz "%s" gehört nicht zum Mandanten.', $field));
         }
     }
 
@@ -340,7 +358,7 @@ final readonly class PlatformControlService
     {
         $value = trim($value);
         if ($value === '' || mb_strlen($value) > $maximum) {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich oder zu lang.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich oder zu lang.', $field));
         }
 
         return $value;

@@ -19,7 +19,7 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'AddArticleTypeTest',
     covers: AddArticleType::class
 )]
-final class AddArticleTypeTest extends TypeTestCase
+class AddArticleTypeTest extends TypeTestCase
 {
     public function testSubmitValidData(): void
     {

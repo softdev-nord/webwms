@@ -11,7 +11,7 @@ use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\ShipmentDispatch;
 use WebWMS\Inventory\Domain\ShipmentResult;
 
-final readonly class DispatchShipmentHandler
+readonly class DispatchShipmentHandler
 {
     public function __construct(
         private InventoryRepository $inventory

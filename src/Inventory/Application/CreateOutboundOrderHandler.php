@@ -12,7 +12,7 @@ use WebWMS\Inventory\Domain\OutboundOrder;
 use WebWMS\Inventory\Domain\OutboundOrderItem;
 use WebWMS\Inventory\Domain\OutboundOrderResult;
 
-final readonly class CreateOutboundOrderHandler
+readonly class CreateOutboundOrderHandler
 {
     public function __construct(
         private InventoryRepository $inventory

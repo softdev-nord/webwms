@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Integration\Application;
 
 use Doctrine\DBAL\Connection;
+use InvalidArgumentException;
+use LogicException;
 
-final readonly class ApiV3QueryService
+readonly class ApiV3QueryService
 {
     public function __construct(
         private Connection $connection
@@ -164,6 +166,7 @@ final readonly class ApiV3QueryService
         if ($receipt === false) {
             return null;
         }
+
         $receipt['items'] = $this->connection->fetchAllAssociative(
             'SELECT i.id, i.product_id, p.sku, p.name product_name, i.location_id, l.code location_code, '
             . 'i.quantity, i.stock_status, i.batch_number, i.serial_number, i.expires_at '
@@ -355,7 +358,7 @@ final readonly class ApiV3QueryService
             . 'INNER JOIN wms_user_account blocker ON blocker.id = b.blocked_by AND blocker.tenant_id = b.tenant_id '
             . 'LEFT JOIN wms_user_account reviewer ON reviewer.id = b.reviewed_by AND reviewer.tenant_id = b.tenant_id '
             . 'LEFT JOIN wms_user_account releaser ON releaser.id = b.released_by AND releaser.tenant_id = b.tenant_id '
-            . 'WHERE b.tenant_id = :tenantId ORDER BY CASE b.status WHEN \'open\' THEN 0 WHEN \'reviewed\' THEN 1 ELSE 2 END, b.blocked_at DESC',
+            . "WHERE b.tenant_id = :tenantId ORDER BY CASE b.status WHEN 'open' THEN 0 WHEN 'reviewed' THEN 1 ELSE 2 END, b.blocked_at DESC",
             ['tenantId' => $tenantId],
         );
     }
@@ -411,7 +414,7 @@ final readonly class ApiV3QueryService
         $column = match ($dimension) {
             'batch' => 'e.batch_number',
             'serial' => 'e.serial_number',
-            default => throw new \InvalidArgumentException('The traceability dimension is invalid.'),
+            default => throw new InvalidArgumentException('The traceability dimension is invalid.'),
         };
 
         return $this->connection->fetchAllAssociative(
@@ -461,6 +464,7 @@ final readonly class ApiV3QueryService
         if ($order === false) {
             return null;
         }
+
         $order['items'] = $this->connection->fetchAllAssociative(
             'SELECT i.id, i.product_id, p.sku, i.requested_quantity, i.reservation_id, '
             . 'r.status reservation_status, r.allocated_quantity, r.fulfilled_quantity '
@@ -563,6 +567,7 @@ final readonly class ApiV3QueryService
         if ($reservation === false) {
             return null;
         }
+
         $reservation['allocations'] = $this->connection->fetchAllAssociative(
             'SELECT id, location_id, stock_status, batch_number, serial_number, expires_at, quantity, status '
             . 'FROM wms_stock_allocation WHERE reservation_id = :reservationId AND tenant_id = :tenantId '
@@ -592,8 +597,9 @@ final readonly class ApiV3QueryService
         $allocationIds = [];
         foreach ($ids as $id) {
             if (!is_string($id)) {
-                throw new \LogicException('The allocation ID projection is invalid.');
+                throw new LogicException('The allocation ID projection is invalid.');
             }
+
             $allocationIds[] = $id;
         }
 
@@ -615,6 +621,7 @@ final readonly class ApiV3QueryService
         if ($pickList === false) {
             return null;
         }
+
         $pickList['tasks'] = $this->connection->fetchAllAssociative(
             'SELECT t.id, t.sequence_number, t.status, t.confirmed_by, t.confirmed_at, t.note, '
             . 'a.id allocation_id, a.product_id, p.sku, a.location_id, l.code location_code, '
@@ -651,6 +658,7 @@ final readonly class ApiV3QueryService
         if ($order === false) {
             return null;
         }
+
         $packages = $this->connection->fetchAllAssociative(
             'SELECT id, package_number, weight_grams, length_mm, width_mm, height_mm, status, packed_by, packed_at '
             . 'FROM wms_package WHERE packing_order_id = :packingOrderId ORDER BY packed_at, id',
@@ -658,13 +666,15 @@ final readonly class ApiV3QueryService
         );
         foreach ($packages as &$package) {
             if (!is_string($package['id'] ?? null)) {
-                throw new \LogicException('The package projection is invalid.');
+                throw new LogicException('The package projection is invalid.');
             }
+
             $package['pickTaskIds'] = $this->connection->fetchFirstColumn(
                 'SELECT pick_task_id FROM wms_package_item WHERE package_id = :packageId ORDER BY pick_task_id',
                 ['packageId' => $package['id']],
             );
         }
+
         unset($package);
         $order['packages'] = $packages;
 
@@ -748,6 +758,7 @@ final readonly class ApiV3QueryService
         if ($manifest === false) {
             return null;
         }
+
         $manifest['shipments'] = $this->connection->fetchAllAssociative(
             'SELECT ms.shipment_id, s.shipment_number, s.carrier, s.service, s.tracking_number, '
             . 'ms.status, ms.loaded_by, ms.loaded_at '
@@ -1157,12 +1168,14 @@ final readonly class ApiV3QueryService
     private function decodeOutboxPayload(array $message): array
     {
         if (!is_string($message['payload'] ?? null)) {
-            throw new \LogicException('The outbox payload projection is invalid.');
+            throw new LogicException('The outbox payload projection is invalid.');
         }
+
         $payload = json_decode($message['payload'], true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($payload)) {
-            throw new \LogicException('The outbox payload must decode to an object.');
+            throw new LogicException('The outbox payload must decode to an object.');
         }
+
         $message['payload'] = $payload;
 
         return $message;

@@ -18,7 +18,7 @@ use WebWMS\Twig\DebugExtension;
     class: 'DebugExtensionTest'
 )]
 #[CoversClass(DebugExtension::class)]
-final class DebugExtensionTest extends TestCase
+class DebugExtensionTest extends TestCase
 {
     public function testGetFunctions(): void
     {

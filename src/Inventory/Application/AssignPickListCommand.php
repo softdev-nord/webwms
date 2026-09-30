@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class AssignPickListCommand
+readonly class AssignPickListCommand
 {
     public function __construct(
         public string $pickListId,

@@ -9,7 +9,7 @@ use DomainException;
 use InvalidArgumentException;
 use WebWMS\Shared\Domain\Model\AggregateRoot;
 
-final class Tenant extends AggregateRoot
+class Tenant extends AggregateRoot
 {
     private function __construct(
         private readonly TenantId $id,

@@ -22,13 +22,13 @@ use WebWMS\Helper\Attribute\ClassInformation;
     class: 'EditSupplierOrderTypeTest'
 )]
 #[CoversClass(EditSupplierOrderType::class)]
-final class EditSupplierOrderTypeTest extends TestCase
+class EditSupplierOrderTypeTest extends TestCase
 {
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder
-            ->expects(self::exactly(1))
+            ->expects($this->exactly(1))
             ->method('add')
             ->willReturnOnConsecutiveCalls(
                 ['supplierOrderId', HiddenType::class, self::anything()],

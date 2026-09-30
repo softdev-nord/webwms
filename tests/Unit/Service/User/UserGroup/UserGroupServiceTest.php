@@ -20,7 +20,7 @@ use WebWMS\Service\User\UserGroup\UserGroupService;
     class: 'UserGroupServiceTest'
 )]
 #[CoversClass(UserGroupService::class)]
-final class UserGroupServiceTest extends TestCase
+class UserGroupServiceTest extends TestCase
 {
     private UserGroupService $userGroupService;
 

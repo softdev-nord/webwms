@@ -14,7 +14,7 @@ use WebWMS\Inventory\Domain\Shipment;
 use WebWMS\Inventory\Domain\ShipmentDispatch;
 use WebWMS\Inventory\Domain\ShipmentLabel;
 
-final class ShipmentTest extends TestCase
+class ShipmentTest extends TestCase
 {
     public function testItNormalizesShipmentMasterData(): void
     {

@@ -6,7 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use DateTimeImmutable;
 
-final readonly class InspectInboundReceiptCommand
+readonly class InspectInboundReceiptCommand
 {
     /** @param list<array{question: string, passed: bool, note: string}> $answers */
     public function __construct(

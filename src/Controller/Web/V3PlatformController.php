@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,7 +20,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/platform', name: 'v3_platform_')]
 #[IsGranted('platform.read')]
-final class V3PlatformController extends AbstractController
+class V3PlatformController extends AbstractController
 {
     public function __construct(
         private readonly PlatformControlService $platform
@@ -66,8 +68,9 @@ final class V3PlatformController extends AbstractController
         $user = $this->user();
         $payload = json_decode($this->required($request, 'payload'), true, 512, JSON_THROW_ON_ERROR);
         if (!is_array($payload)) {
-            throw new \InvalidArgumentException('Der Event-Payload muss ein JSON-Objekt sein.');
+            throw new InvalidArgumentException('Der Event-Payload muss ein JSON-Objekt sein.');
         }
+
         $count = $this->platform->executeEvent($user->tenantId(), $user->actorId(), $this->required($request, 'event_name'), $payload, new DateTimeImmutable());
         $this->addFlash('success', ['id' => 'platform.flash.automation_rules_were_evaluated', 'parameters' => ['%count%' => $count]]);
 
@@ -105,8 +108,9 @@ final class V3PlatformController extends AbstractController
         $this->csrf($request, 'v3_platform_media');
         $file = $request->files->get('file');
         if (!$file instanceof UploadedFile || !$file->isValid()) {
-            throw new \InvalidArgumentException('Eine gültige Aufnahme ist erforderlich.');
+            throw new InvalidArgumentException('Eine gültige Aufnahme ist erforderlich.');
         }
+
         $user = $this->user();
         $this->platform->captureMedia($user->tenantId(), $user->actorId(), $this->required($request, 'aggregate_type'), $this->required($request, 'aggregate_id'), $file->getClientOriginalName(), (string) $file->getMimeType(), (string) file_get_contents($file->getPathname()), new DateTimeImmutable());
         $this->addFlash('success', 'platform.flash.intake_was_allocated_in_audit_proof_manner');
@@ -139,7 +143,7 @@ final class V3PlatformController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;
@@ -152,7 +156,7 @@ final class V3PlatformController extends AbstractController
         }
     }
 
-    private function back(): Response
+    private function back(): RedirectResponse
     {
         return $this->redirectToRoute('v3_platform_index');
     }

@@ -10,7 +10,7 @@ use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\PackingPackage;
 
-final readonly class AddPackingPackageHandler
+readonly class AddPackingPackageHandler
 {
     public function __construct(
         private InventoryRepository $inventory

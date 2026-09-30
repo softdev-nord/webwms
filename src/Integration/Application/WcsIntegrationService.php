@@ -11,7 +11,7 @@ use WebWMS\Integration\Domain\MachineStatus;
 use WebWMS\Integration\Domain\WcsConnection;
 use WebWMS\Integration\Domain\WcsRepository;
 
-final readonly class WcsIntegrationService
+readonly class WcsIntegrationService
 {
     public function __construct(
         private WcsRepository $repository,
@@ -34,9 +34,10 @@ final readonly class WcsIntegrationService
     public function queueCommand(string $tenantId, string $connectionId, string $commandType, string $source, string $destination, string $loadUnit, string $requestId, string $actorId, DateTimeImmutable $at): MachineCommand
     {
         $existing = $this->repository->commandByRequestId($tenantId, trim($requestId));
-        if ($existing !== null) {
+        if ($existing instanceof MachineCommand) {
             return $existing;
         }
+
         $this->repository->connection($tenantId, $connectionId, true);
 
         return $this->repository->addCommand(new MachineCommand(Uuid::v7()->toRfc4122(), $tenantId, $connectionId, $commandType, trim($source), trim($destination), trim($loadUnit), trim($requestId), MachineCommand::STATUS_QUEUED, null, $actorId, $at));
@@ -50,9 +51,10 @@ final readonly class WcsIntegrationService
     public function recordStatus(string $tenantId, string $connectionId, ?string $commandId, string $machineCode, string $status, ?string $message, string $externalEventId, string $actorId, DateTimeImmutable $at): MachineStatus
     {
         $existing = $this->repository->statusByExternalEventId($tenantId, trim($externalEventId));
-        if ($existing !== null) {
+        if ($existing instanceof MachineStatus) {
             return $existing;
         }
+
         $this->repository->connection($tenantId, $connectionId, true);
 
         return $this->repository->addMachineStatus(new MachineStatus(Uuid::v7()->toRfc4122(), $tenantId, $connectionId, $commandId, mb_strtoupper(trim($machineCode)), $status, $this->message($message), trim($externalEventId), $actorId, $at));

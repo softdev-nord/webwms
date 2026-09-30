@@ -12,7 +12,7 @@ use WebWMS\Inventory\Domain\StockAllocation;
 use WebWMS\Inventory\Domain\StockAllocationResult;
 use WebWMS\Inventory\Domain\StockDimensions;
 
-final readonly class AllocateStockHandler
+readonly class AllocateStockHandler
 {
     public function __construct(
         private InventoryRepository $inventory

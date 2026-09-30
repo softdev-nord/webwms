@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ use WebWMS\Inventory\Application\CreateLoadingManifestHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/loading-manifests', name: 'api_v3_loading_')]
-final class LoadingApiController extends AbstractController
+class LoadingApiController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -127,7 +128,7 @@ final class LoadingApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);
@@ -142,13 +143,15 @@ final class LoadingApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_array($value) || $value === []) {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty array.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty array.', $field));
         }
+
         $items = [];
         foreach ($value as $item) {
             if (!is_string($item) || trim($item) === '') {
-                throw new \InvalidArgumentException(sprintf('Every value in field "%s" must be a non-empty string.', $field));
+                throw new InvalidArgumentException(sprintf('Every value in field "%s" must be a non-empty string.', $field));
             }
+
             $items[] = trim($item);
         }
 

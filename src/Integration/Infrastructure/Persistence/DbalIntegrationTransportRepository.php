@@ -11,7 +11,7 @@ use WebWMS\Integration\Domain\ProtocolConfiguration;
 use WebWMS\Integration\Domain\TransportEndpoint;
 use WebWMS\Integration\Domain\TransportEndpointNotFoundException;
 
-final readonly class DbalIntegrationTransportRepository implements IntegrationTransportRepository
+readonly class DbalIntegrationTransportRepository implements IntegrationTransportRepository
 {
     public function __construct(
         private Connection $connection,

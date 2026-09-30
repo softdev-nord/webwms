@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Tests\Unit\Integration\Infrastructure\Transport;
 
+use RuntimeException;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -12,7 +13,7 @@ use WebWMS\Integration\Domain\CarrierConnection;
 use WebWMS\Integration\Domain\CredentialProvider;
 use WebWMS\Integration\Infrastructure\Transport\HttpCarrierTransport;
 
-final class HttpCarrierTransportTest extends TestCase
+class HttpCarrierTransportTest extends TestCase
 {
     public function testItCreatesAnIdempotentLabelRequest(): void
     {
@@ -20,7 +21,7 @@ final class HttpCarrierTransportTest extends TestCase
         $credentials = $this->createStub(CredentialProvider::class);
         $credentials->method('secret')->willReturn('token');
 
-        $result = (new HttpCarrierTransport(new MockHttpClient($response), $credentials))->createLabel($this->connection(), ['id' => 'shipment'], 'request-1');
+        $result = new HttpCarrierTransport(new MockHttpClient($response), $credentials)->createLabel($this->connection(), ['id' => 'shipment'], 'request-1');
 
         self::assertSame(['trackingNumber' => 'TRACK-1', 'labelReference' => 'label://1'], $result);
         self::assertSame('https://carrier.example.com/api/labels', $response->getRequestUrl());
@@ -34,7 +35,7 @@ final class HttpCarrierTransportTest extends TestCase
         $credentials->method('secret')->willReturn('token');
         $transport = new HttpCarrierTransport(new MockHttpClient(new MockResponse('{}')), $credentials);
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $transport->createLabel($this->connection(), ['id' => 'shipment'], 'request-1');
     }
 

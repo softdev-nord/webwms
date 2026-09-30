@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Api\V3;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,10 +16,11 @@ use WebWMS\Platform\Application\ExtensionModuleService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/extensions', name: 'api_v3_extension_')]
-final class ExtensionModuleApiController extends AbstractController
+class ExtensionModuleApiController extends AbstractController
 {
-    public function __construct(private readonly ExtensionModuleService $service)
-    {
+    public function __construct(
+        private readonly ExtensionModuleService $service
+    ) {
     }
 
     #[Route('', name: 'index', methods: ['GET'])]
@@ -36,8 +38,9 @@ final class ExtensionModuleApiController extends AbstractController
         $payload = $request->toArray();
         $configuration = $payload['configuration'] ?? null;
         if (!is_array($configuration)) {
-            throw new \InvalidArgumentException('Field "configuration" must be an object.');
+            throw new InvalidArgumentException('Field "configuration" must be an object.');
         }
+
         $user = $this->user();
         $id = $this->service->saveConfiguration($user->tenantId(), $user->actorId(), $resource, $id, $this->string($payload, 'code'), $this->string($payload, 'name'), $configuration, ($payload['active'] ?? true) === true, new DateTimeImmutable());
 
@@ -51,8 +54,9 @@ final class ExtensionModuleApiController extends AbstractController
         $payload = $request->toArray();
         $data = $payload['payload'] ?? null;
         if (!is_array($data)) {
-            throw new \InvalidArgumentException('Field "payload" must be an object.');
+            throw new InvalidArgumentException('Field "payload" must be an object.');
         }
+
         $user = $this->user();
         $id = $this->service->createWorkItem($user->tenantId(), $user->actorId(), $workflow, $this->string($payload, 'reference'), $data, new DateTimeImmutable());
 
@@ -84,7 +88,7 @@ final class ExtensionModuleApiController extends AbstractController
     {
         $value = $payload[$field] ?? null;
         if (!is_string($value) || trim($value) === '') {
-            throw new \InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
+            throw new InvalidArgumentException(sprintf('Field "%s" must be a non-empty string.', $field));
         }
 
         return trim($value);

@@ -23,12 +23,12 @@ use WebWMS\Helper\FormHelper\UserFormHelper;
     class: 'UserFormHelperTest'
 )]
 #[CoversClass(UserFormHelper::class)]
-final class UserFormHelperTest extends TestCase
+class UserFormHelperTest extends TestCase
 {
     public function testCreateForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
         $type = 'SomeType';
         $data = null;
         $options = [];
@@ -48,7 +48,7 @@ final class UserFormHelperTest extends TestCase
     public function testAddUserForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
+        $formInterface = $this->createStub(FormInterface::class);
 
         $formFactory
             ->expects($this->once())
@@ -65,8 +65,8 @@ final class UserFormHelperTest extends TestCase
     public function testEditUserForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $user = $this->createMock(User::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $user = $this->createStub(User::class);
 
         $formFactory
             ->expects($this->once())
@@ -83,8 +83,8 @@ final class UserFormHelperTest extends TestCase
     public function testDeleteUserForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $user = $this->createMock(User::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $user = $this->createStub(User::class);
 
         $formFactory
             ->expects($this->once())
@@ -101,8 +101,8 @@ final class UserFormHelperTest extends TestCase
     public function testChangePasswordForm(): void
     {
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formInterface = $this->createMock(FormInterface::class);
-        $user = $this->createMock(User::class);
+        $formInterface = $this->createStub(FormInterface::class);
+        $user = $this->createStub(User::class);
 
         $formFactory
             ->expects($this->once())

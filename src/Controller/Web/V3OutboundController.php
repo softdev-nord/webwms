@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace WebWMS\Controller\Web;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,7 +27,7 @@ use WebWMS\Inventory\Application\StockSelectionService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/outbound', name: 'v3_outbound_')]
-final class V3OutboundController extends AbstractController
+class V3OutboundController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -87,6 +89,7 @@ final class V3OutboundController extends AbstractController
                 $item['stock'] = $this->queries->availableStockForProduct($user->tenantId(), $item['product_id']);
             }
         }
+
         unset($item);
 
         return $this->render('v3/outbound/order.html.twig', [
@@ -98,7 +101,7 @@ final class V3OutboundController extends AbstractController
 
     #[Route('/orders/{orderId}/release', name: 'order_release', methods: ['POST'])]
     #[IsGranted('outbound.order.release')]
-    public function release(string $orderId, Request $request): Response
+    public function release(string $orderId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_outbound_order_release_' . $orderId);
         $user = $this->tenantUser();
@@ -108,8 +111,10 @@ final class V3OutboundController extends AbstractController
             if (!is_array($item) || !is_string($item['id'] ?? null)) {
                 throw new LogicException('The outbound order item projection is invalid.');
             }
+
             $reservationIds[$item['id']] = Uuid::v7()->toRfc4122();
         }
+
         ($this->releaseOrder)(new ReleaseOutboundOrderCommand(
             $orderId,
             $user->tenantId(),
@@ -124,7 +129,7 @@ final class V3OutboundController extends AbstractController
 
     #[Route('/orders/{orderId}/reservations/{reservationId}/auto-allocate', name: 'automatic_allocation', methods: ['POST'])]
     #[IsGranted('inventory.selection.execute')]
-    public function automaticallyAllocate(string $orderId, string $reservationId, Request $request): Response
+    public function automaticallyAllocate(string $orderId, string $reservationId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_outbound_auto_allocate_' . $reservationId);
         $user = $this->tenantUser();
@@ -143,7 +148,7 @@ final class V3OutboundController extends AbstractController
 
     #[Route('/orders/{orderId}/reservations/{reservationId}/allocate', name: 'allocation', methods: ['POST'])]
     #[IsGranted('inventory.allocation.write')]
-    public function allocate(string $orderId, string $reservationId, Request $request): Response
+    public function allocate(string $orderId, string $reservationId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_outbound_allocate_' . $reservationId);
         $user = $this->tenantUser();
@@ -151,6 +156,7 @@ final class V3OutboundController extends AbstractController
         if ($reservation === null || !is_string($reservation['product_id'] ?? null)) {
             throw $this->createNotFoundException('Die Reservierung wurde nicht gefunden.');
         }
+
         ($this->allocateStock)(new AllocateStockCommand(
             Uuid::v7()->toRfc4122(),
             $reservationId,
@@ -172,7 +178,7 @@ final class V3OutboundController extends AbstractController
 
     #[Route('/orders/{orderId}/pick-list', name: 'pick_list_create', methods: ['POST'])]
     #[IsGranted('fulfillment.pick.write')]
-    public function createPickList(string $orderId, Request $request): Response
+    public function createPickList(string $orderId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_outbound_pick_list_' . $orderId);
         $user = $this->tenantUser();
@@ -181,6 +187,7 @@ final class V3OutboundController extends AbstractController
         if ($allocationIds === []) {
             throw new LogicException('Der Auftrag ist noch nicht vollständig allokiert.');
         }
+
         $pickListId = Uuid::v7()->toRfc4122();
         ($this->createPickList)(new CreatePickListCommand(
             $pickListId,
@@ -216,12 +223,14 @@ final class V3OutboundController extends AbstractController
         foreach ($productIds as $index => $productId) {
             $quantity = $quantities[$index] ?? null;
             if (!is_string($productId) || !is_string($quantity) || (int) $quantity <= 0) {
-                throw new \InvalidArgumentException('Jede Auftragsposition benötigt einen Artikel und eine positive Menge.');
+                throw new InvalidArgumentException('Jede Auftragsposition benötigt einen Artikel und eine positive Menge.');
             }
+
             $items[] = ['id' => Uuid::v7()->toRfc4122(), 'productId' => $productId, 'quantity' => (int) $quantity];
         }
+
         if ($items === []) {
-            throw new \InvalidArgumentException('Mindestens eine Auftragsposition ist erforderlich.');
+            throw new InvalidArgumentException('Mindestens eine Auftragsposition ist erforderlich.');
         }
 
         return $items;
@@ -231,7 +240,7 @@ final class V3OutboundController extends AbstractController
     {
         $value = trim((string) $request->request->get($field));
         if ($value === '') {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" ist erforderlich.', $field));
         }
 
         return $value;
@@ -248,7 +257,7 @@ final class V3OutboundController extends AbstractController
     {
         $value = $this->required($request, $field);
         if (!ctype_digit($value) || (int) $value <= 0) {
-            throw new \InvalidArgumentException(sprintf('Das Feld "%s" muss eine positive Ganzzahl sein.', $field));
+            throw new InvalidArgumentException(sprintf('Das Feld "%s" muss eine positive Ganzzahl sein.', $field));
         }
 
         return (int) $value;

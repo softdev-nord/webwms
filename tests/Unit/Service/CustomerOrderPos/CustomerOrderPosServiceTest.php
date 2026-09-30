@@ -20,7 +20,7 @@ use WebWMS\Service\DataHandlers\CustomerOrderPos\CustomerOrderPosDataHandler;
     class: 'CustomerOrderPosServiceTest'
 )]
 #[CoversClass(CustomerOrderPosService::class)]
-final class CustomerOrderPosServiceTest extends TestCase
+class CustomerOrderPosServiceTest extends TestCase
 {
     private CustomerOrderPosService $customerOrderPosService;
 

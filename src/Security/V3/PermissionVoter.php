@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /** @extends Voter<string, null> */
-final class PermissionVoter extends Voter
+class PermissionVoter extends Voter
 {
     protected function supports(string $attribute, mixed $subject): bool
     {

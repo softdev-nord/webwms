@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Inventory\Domain;
 
-final readonly class StockAllocationResult
+readonly class StockAllocationResult
 {
     public function __construct(
         public int $allocatedQuantity,
