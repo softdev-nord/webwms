@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\DeviceIntegrationService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -20,7 +20,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class DeviceApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly DeviceIntegrationService $devices,
     ) {
     }
@@ -29,7 +29,7 @@ class DeviceApiController extends AbstractController
     #[IsGranted('integration.device.read')]
     public function list(): JsonResponse
     {
-        $data = $this->queries->devices($this->user()->tenantId());
+        $data = $this->integrationQueries->devices($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -50,7 +50,7 @@ class DeviceApiController extends AbstractController
             new DateTimeImmutable(),
         );
 
-        return new JsonResponse(['data' => $this->queries->device($user->tenantId(), $device->id)], Response::HTTP_CREATED);
+        return new JsonResponse(['data' => $this->integrationQueries->device($user->tenantId(), $device->id)], Response::HTTP_CREATED);
     }
 
     #[Route('/devices/{deviceId}/status', name: 'status', methods: ['PATCH'])]
@@ -67,14 +67,14 @@ class DeviceApiController extends AbstractController
             new DateTimeImmutable(),
         );
 
-        return new JsonResponse(['data' => $this->queries->device($user->tenantId(), $deviceId)]);
+        return new JsonResponse(['data' => $this->integrationQueries->device($user->tenantId(), $deviceId)]);
     }
 
     #[Route('/scan-events', name: 'scan_list', methods: ['GET'])]
     #[IsGranted('integration.device.read')]
     public function scans(): JsonResponse
     {
-        $data = $this->queries->scanEvents($this->user()->tenantId());
+        $data = $this->integrationQueries->scanEvents($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -99,7 +99,7 @@ class DeviceApiController extends AbstractController
             new DateTimeImmutable(),
         );
 
-        return new JsonResponse(['data' => $this->queries->scanEvent($user->tenantId(), $event->id)], Response::HTTP_CREATED);
+        return new JsonResponse(['data' => $this->integrationQueries->scanEvent($user->tenantId(), $event->id)], Response::HTTP_CREATED);
     }
 
     private function user(): TenantPermissionUser

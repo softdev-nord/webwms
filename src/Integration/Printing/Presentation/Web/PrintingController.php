@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use Throwable;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\PrintGateway;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -24,7 +24,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class PrintingController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly PrintGateway $gateway,
     ) {
     }
@@ -37,8 +37,8 @@ class PrintingController extends AbstractController
 
         return $this->render('integration/printing/index.html.twig', [
             'page' => 'integration.printing.index.print_queue',
-            'printers' => $this->queries->printers($tenantId),
-            'jobs' => $this->queries->printJobs($tenantId),
+            'printers' => $this->integrationQueries->printers($tenantId),
+            'jobs' => $this->integrationQueries->printJobs($tenantId),
         ]);
     }
 
@@ -78,7 +78,7 @@ class PrintingController extends AbstractController
             'page' => 'configuration.index.printer',
             'printer' => $this->requiredPrinter($printerId),
             'jobs' => array_values(array_filter(
-                $this->queries->printJobs($tenantId),
+                $this->integrationQueries->printJobs($tenantId),
                 static fn (array $job): bool => ($job['printer_id'] ?? null) === $printerId,
             )),
         ]);
@@ -132,7 +132,7 @@ class PrintingController extends AbstractController
         return $this->render('integration/printing/job-new.html.twig', [
             'page' => 'inbound.control.create_print_job',
             'printers' => array_values(array_filter(
-                $this->queries->printers($user->tenantId()),
+                $this->integrationQueries->printers($user->tenantId()),
                 static fn (array $printer): bool => (bool) ($printer['active'] ?? false),
             )),
             'requestId' => Uuid::v7()->toRfc4122(),
@@ -175,7 +175,7 @@ class PrintingController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredPrinter(string $printerId): array
     {
-        $printer = $this->queries->printer($this->tenantUser()->tenantId(), $printerId);
+        $printer = $this->integrationQueries->printer($this->tenantUser()->tenantId(), $printerId);
         if ($printer === null) {
             throw $this->createNotFoundException('Der Drucker wurde nicht gefunden.');
         }
@@ -186,7 +186,7 @@ class PrintingController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredJob(string $jobId): array
     {
-        $job = $this->queries->printJob($this->tenantUser()->tenantId(), $jobId);
+        $job = $this->integrationQueries->printJob($this->tenantUser()->tenantId(), $jobId);
         if ($job === null) {
             throw $this->createNotFoundException('Der Druckauftrag wurde nicht gefunden.');
         }

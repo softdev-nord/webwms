@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\IntegrationTransportService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -21,7 +21,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class IntegrationTransportController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly IntegrationTransportService $transport,
     ) {
     }
@@ -32,7 +32,7 @@ class IntegrationTransportController extends AbstractController
     {
         return $this->render('integration/transport/index.html.twig', [
             'page' => 'integration.transport.index.tcp_ip_and_web_service',
-            'endpoints' => $this->queries->transportEndpoints($this->user()->tenantId()),
+            'endpoints' => $this->integrationQueries->transportEndpoints($this->user()->tenantId()),
         ]);
     }
 
@@ -71,7 +71,7 @@ class IntegrationTransportController extends AbstractController
     public function status(string $endpointId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_transport_status_' . $endpointId);
-        $endpoint = $this->queries->transportEndpoint($this->user()->tenantId(), $endpointId);
+        $endpoint = $this->integrationQueries->transportEndpoint($this->user()->tenantId(), $endpointId);
         if ($endpoint === null) {
             throw $this->createNotFoundException('Der Transport-Endpunkt wurde nicht gefunden.');
         }

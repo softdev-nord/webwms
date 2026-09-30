@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\MeasurementService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -20,7 +20,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class MeasurementApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly MeasurementService $measurements,
     ) {
     }
@@ -29,7 +29,7 @@ class MeasurementApiController extends AbstractController
     #[IsGranted('integration.measurement.read')]
     public function devices(): JsonResponse
     {
-        $data = $this->queries->measurementDevices($this->user()->tenantId());
+        $data = $this->integrationQueries->measurementDevices($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -50,7 +50,7 @@ class MeasurementApiController extends AbstractController
             new DateTimeImmutable(),
         );
 
-        return new JsonResponse(['data' => $this->queries->measurementDevice($user->tenantId(), $device->id)], Response::HTTP_CREATED);
+        return new JsonResponse(['data' => $this->integrationQueries->measurementDevice($user->tenantId(), $device->id)], Response::HTTP_CREATED);
     }
 
     #[Route('/measurement-devices/{deviceId}/status', name: 'device_status', methods: ['PATCH'])]
@@ -67,14 +67,14 @@ class MeasurementApiController extends AbstractController
             new DateTimeImmutable(),
         );
 
-        return new JsonResponse(['data' => $this->queries->measurementDevice($user->tenantId(), $deviceId)]);
+        return new JsonResponse(['data' => $this->integrationQueries->measurementDevice($user->tenantId(), $deviceId)]);
     }
 
     #[Route('/measurements', name: 'list', methods: ['GET'])]
     #[IsGranted('integration.measurement.read')]
     public function list(): JsonResponse
     {
-        $data = $this->queries->measurements($this->user()->tenantId());
+        $data = $this->integrationQueries->measurements($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -101,7 +101,7 @@ class MeasurementApiController extends AbstractController
             new DateTimeImmutable(),
         );
 
-        return new JsonResponse(['data' => $this->queries->measurement($user->tenantId(), $measurement->id)], Response::HTTP_CREATED);
+        return new JsonResponse(['data' => $this->integrationQueries->measurement($user->tenantId(), $measurement->id)], Response::HTTP_CREATED);
     }
 
     private function user(): TenantPermissionUser

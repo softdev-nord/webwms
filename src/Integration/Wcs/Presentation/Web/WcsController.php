@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\WcsIntegrationService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -22,7 +22,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class WcsController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly WcsIntegrationService $wcs,
     ) {
     }
@@ -35,9 +35,9 @@ class WcsController extends AbstractController
 
         return $this->render('integration/wcs/index.html.twig', [
             'page' => 'integration.wcs.index.wcs_mfr_and_conveyor_technology',
-            'connections' => $this->queries->wcsConnections($tenantId),
-            'commands' => $this->queries->machineCommands($tenantId, 50),
-            'statuses' => $this->queries->machineStatuses($tenantId, 50),
+            'connections' => $this->integrationQueries->wcsConnections($tenantId),
+            'commands' => $this->integrationQueries->machineCommands($tenantId, 50),
+            'statuses' => $this->integrationQueries->machineStatuses($tenantId, 50),
         ]);
     }
 
@@ -62,7 +62,7 @@ class WcsController extends AbstractController
     public function connectionStatus(string $connectionId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_wcs_connection_status_' . $connectionId);
-        $connection = $this->queries->wcsConnection($this->user()->tenantId(), $connectionId);
+        $connection = $this->integrationQueries->wcsConnection($this->user()->tenantId(), $connectionId);
         if ($connection === null) {
             throw $this->createNotFoundException('Die WCS-Verbindung wurde nicht gefunden.');
         }
@@ -89,7 +89,7 @@ class WcsController extends AbstractController
 
         return $this->render('integration/wcs/command-new.html.twig', [
             'page' => 'integration.wcs.command_new.create_machine_command',
-            'connections' => array_values(array_filter($this->queries->wcsConnections($user->tenantId()), static fn (array $connection): bool => (bool) ($connection['active'] ?? false))),
+            'connections' => array_values(array_filter($this->integrationQueries->wcsConnections($user->tenantId()), static fn (array $connection): bool => (bool) ($connection['active'] ?? false))),
             'requestId' => Uuid::v7()->toRfc4122(),
         ]);
     }
@@ -98,7 +98,7 @@ class WcsController extends AbstractController
     #[IsGranted('integration.wcs.read')]
     public function showCommand(string $commandId): Response
     {
-        $command = $this->queries->machineCommand($this->user()->tenantId(), $commandId);
+        $command = $this->integrationQueries->machineCommand($this->user()->tenantId(), $commandId);
         if ($command === null) {
             throw $this->createNotFoundException('Der Maschinenbefehl wurde nicht gefunden.');
         }
@@ -133,8 +133,8 @@ class WcsController extends AbstractController
 
         return $this->render('integration/wcs/status-new.html.twig', [
             'page' => 'integration.wcs.status_new.capture_machine_status',
-            'connections' => array_values(array_filter($this->queries->wcsConnections($user->tenantId()), static fn (array $connection): bool => (bool) ($connection['active'] ?? false))),
-            'commands' => $this->queries->machineCommands($user->tenantId(), 100),
+            'connections' => array_values(array_filter($this->integrationQueries->wcsConnections($user->tenantId()), static fn (array $connection): bool => (bool) ($connection['active'] ?? false))),
+            'commands' => $this->integrationQueries->machineCommands($user->tenantId(), 100),
             'eventId' => Uuid::v7()->toRfc4122(),
         ]);
     }

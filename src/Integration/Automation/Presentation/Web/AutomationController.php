@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\StorageAutomationAdapter;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -22,7 +22,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class AutomationController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly StorageAutomationAdapter $automation,
     ) {
     }
@@ -35,8 +35,8 @@ class AutomationController extends AbstractController
 
         return $this->render('integration/automation/index.html.twig', [
             'page' => 'integration.automation.index.storage_lifts_and_paternoster_lifts',
-            'devices' => $this->queries->automationDevices($tenantId),
-            'commands' => $this->queries->deviceCommands($tenantId, 50),
+            'devices' => $this->integrationQueries->automationDevices($tenantId),
+            'commands' => $this->integrationQueries->deviceCommands($tenantId, 50),
         ]);
     }
 
@@ -71,7 +71,7 @@ class AutomationController extends AbstractController
     public function deviceStatus(string $deviceId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_automation_device_status_' . $deviceId);
-        $device = $this->queries->automationDevice($this->user()->tenantId(), $deviceId);
+        $device = $this->integrationQueries->automationDevice($this->user()->tenantId(), $deviceId);
         if ($device === null) {
             throw $this->createNotFoundException('Das Automationsgerät wurde nicht gefunden.');
         }
@@ -109,10 +109,10 @@ class AutomationController extends AbstractController
         return $this->render('integration/automation/command-new.html.twig', [
             'page' => 'integration.automation.command_new.create_device_command',
             'devices' => array_values(array_filter(
-                $this->queries->automationDevices($user->tenantId()),
+                $this->integrationQueries->automationDevices($user->tenantId()),
                 static fn (array $device): bool => (bool) ($device['active'] ?? false),
             )),
-            'locations' => $this->queries->automationLocations($user->tenantId()),
+            'locations' => $this->integrationQueries->automationLocations($user->tenantId()),
             'requestId' => Uuid::v7()->toRfc4122(),
         ]);
     }
@@ -121,7 +121,7 @@ class AutomationController extends AbstractController
     #[IsGranted('integration.automation.read')]
     public function showCommand(string $commandId): Response
     {
-        $command = $this->queries->deviceCommand($this->user()->tenantId(), $commandId);
+        $command = $this->integrationQueries->deviceCommand($this->user()->tenantId(), $commandId);
         if ($command === null) {
             throw $this->createNotFoundException('Der Gerätebefehl wurde nicht gefunden.');
         }

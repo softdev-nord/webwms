@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Integration\Application\CarrierGateway;
 use WebWMS\Integration\Application\ChangeCarrierConnectionStatusCommand;
@@ -29,7 +29,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class CarrierApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly OutboundQueryService $outboundQueries,
         private readonly RegisterCarrierConnectionHandler $register,
         private readonly ChangeCarrierConnectionStatusHandler $changeStatus,
@@ -42,7 +42,7 @@ class CarrierApiController extends AbstractController
     #[IsGranted('integration.carrier_connection.read')]
     public function connections(): JsonResponse
     {
-        $data = $this->queries->carrierConnections($this->user()->tenantId());
+        $data = $this->integrationQueries->carrierConnections($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -74,7 +74,7 @@ class CarrierApiController extends AbstractController
         $payload = $this->payload($request);
         ($this->changeStatus)(new ChangeCarrierConnectionStatusCommand($connectionId, $this->user()->tenantId(), $this->boolean($payload, 'active'), $this->user()->actorId(), new DateTimeImmutable()));
 
-        return new JsonResponse(['data' => $this->queries->carrierConnection($this->user()->tenantId(), $connectionId)]);
+        return new JsonResponse(['data' => $this->integrationQueries->carrierConnection($this->user()->tenantId(), $connectionId)]);
     }
 
     #[Route('/carriers/{carrierCode}/products', name: 'products', methods: ['GET'])]

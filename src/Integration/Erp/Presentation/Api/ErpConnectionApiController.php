@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\ChangeErpConnectionStatusCommand;
 use WebWMS\Integration\Application\ChangeErpConnectionStatusHandler;
 use WebWMS\Integration\Application\RegisterErpConnectionCommand;
@@ -24,7 +24,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class ErpConnectionApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly RegisterErpConnectionHandler $registerConnection,
         private readonly ChangeErpConnectionStatusHandler $changeStatus
     ) {
@@ -34,7 +34,7 @@ class ErpConnectionApiController extends AbstractController
     #[IsGranted('integration.erp_connection.read')]
     public function list(): JsonResponse
     {
-        $connections = $this->queries->erpConnections($this->apiUser()->tenantId());
+        $connections = $this->integrationQueries->erpConnections($this->apiUser()->tenantId());
 
         return new JsonResponse(['data' => $connections, 'meta' => ['count' => count($connections)]]);
     }
@@ -80,7 +80,7 @@ class ErpConnectionApiController extends AbstractController
             new DateTimeImmutable(),
         ));
 
-        return new JsonResponse(['data' => $this->queries->erpConnection(
+        return new JsonResponse(['data' => $this->integrationQueries->erpConnection(
             $this->apiUser()->tenantId(),
             $connectionId,
         )]);

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\PrintGateway;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -20,7 +20,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class PrintApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly PrintGateway $gateway
     ) {
     }
@@ -29,7 +29,7 @@ class PrintApiController extends AbstractController
     #[IsGranted('integration.printer.read')]
     public function printers(): JsonResponse
     {
-        $data = $this->queries->printers($this->user()->tenantId());
+        $data = $this->integrationQueries->printers($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -59,14 +59,14 @@ class PrintApiController extends AbstractController
         $payload = $this->payload($request);
         $this->gateway->changePrinterStatus($this->user()->tenantId(), $printerId, $this->boolean($payload, 'active'), $this->user()->actorId(), new DateTimeImmutable());
 
-        return new JsonResponse(['data' => $this->queries->printer($this->user()->tenantId(), $printerId)]);
+        return new JsonResponse(['data' => $this->integrationQueries->printer($this->user()->tenantId(), $printerId)]);
     }
 
     #[Route('/print-jobs', name: 'jobs', methods: ['GET'])]
     #[IsGranted('integration.print_job.read')]
     public function jobs(): JsonResponse
     {
-        $data = $this->queries->printJobs($this->user()->tenantId());
+        $data = $this->integrationQueries->printJobs($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -88,7 +88,7 @@ class PrintApiController extends AbstractController
             new DateTimeImmutable(),
         );
 
-        return new JsonResponse(['data' => $this->queries->printJob($this->user()->tenantId(), $job->id)], Response::HTTP_CREATED);
+        return new JsonResponse(['data' => $this->integrationQueries->printJob($this->user()->tenantId(), $job->id)], Response::HTTP_CREATED);
     }
 
     #[Route('/print-jobs/{jobId}/execute', name: 'execute', methods: ['POST'])]
@@ -97,7 +97,7 @@ class PrintApiController extends AbstractController
     {
         $job = $this->gateway->execute($this->user()->tenantId(), $jobId, new DateTimeImmutable());
 
-        return new JsonResponse(['data' => $this->queries->printJob($this->user()->tenantId(), $job->id)]);
+        return new JsonResponse(['data' => $this->integrationQueries->printJob($this->user()->tenantId(), $job->id)]);
     }
 
     private function user(): TenantPermissionUser

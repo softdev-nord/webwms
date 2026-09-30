@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\StorageAutomationAdapter;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -20,7 +20,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class AutomationApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly StorageAutomationAdapter $automation,
     ) {
     }
@@ -29,7 +29,7 @@ class AutomationApiController extends AbstractController
     #[IsGranted('integration.automation.read')]
     public function devices(): JsonResponse
     {
-        $data = $this->queries->automationDevices($this->user()->tenantId());
+        $data = $this->integrationQueries->automationDevices($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -52,7 +52,7 @@ class AutomationApiController extends AbstractController
             new DateTimeImmutable(),
         );
 
-        return new JsonResponse(['data' => $this->queries->automationDevice($user->tenantId(), $device->id)], Response::HTTP_CREATED);
+        return new JsonResponse(['data' => $this->integrationQueries->automationDevice($user->tenantId(), $device->id)], Response::HTTP_CREATED);
     }
 
     #[Route('/automation-devices/{deviceId}/status', name: 'device_status', methods: ['PATCH'])]
@@ -63,14 +63,14 @@ class AutomationApiController extends AbstractController
         $user = $this->user();
         $this->automation->changeDeviceStatus($user->tenantId(), $deviceId, $this->boolean($payload, 'active'), $user->actorId(), new DateTimeImmutable());
 
-        return new JsonResponse(['data' => $this->queries->automationDevice($user->tenantId(), $deviceId)]);
+        return new JsonResponse(['data' => $this->integrationQueries->automationDevice($user->tenantId(), $deviceId)]);
     }
 
     #[Route('/automation-commands', name: 'commands', methods: ['GET'])]
     #[IsGranted('integration.automation.read')]
     public function commands(): JsonResponse
     {
-        $data = $this->queries->deviceCommands($this->user()->tenantId());
+        $data = $this->integrationQueries->deviceCommands($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -93,7 +93,7 @@ class AutomationApiController extends AbstractController
             new DateTimeImmutable(),
         );
 
-        return new JsonResponse(['data' => $this->queries->deviceCommand($user->tenantId(), $command->id)], Response::HTTP_CREATED);
+        return new JsonResponse(['data' => $this->integrationQueries->deviceCommand($user->tenantId(), $command->id)], Response::HTTP_CREATED);
     }
 
     #[Route('/automation-commands/{commandId}/status', name: 'command_status', methods: ['PATCH'])]
@@ -111,7 +111,7 @@ class AutomationApiController extends AbstractController
             new DateTimeImmutable(),
         );
 
-        return new JsonResponse(['data' => $this->queries->deviceCommand($user->tenantId(), $command->id)]);
+        return new JsonResponse(['data' => $this->integrationQueries->deviceCommand($user->tenantId(), $command->id)]);
     }
 
     private function user(): TenantPermissionUser

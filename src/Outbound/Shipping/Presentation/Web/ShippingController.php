@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Integration\Application\CarrierGateway;
 use WebWMS\Integration\Application\PrintGateway;
@@ -31,7 +31,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class ShippingController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly OutboundQueryService $outboundQueries,
         private readonly CreateShipmentHandler $createShipment,
         private readonly RegisterShipmentLabelHandler $registerLabel,
@@ -89,15 +89,15 @@ class ShippingController extends AbstractController
             'page' => 'integration.device.scan.shipment',
             'shipment' => $shipment,
             'carrierConnectionAvailable' => $this->carrierConnectionAvailable(
-                $this->queries->carrierConnections($user->tenantId()),
+                $this->integrationQueries->carrierConnections($user->tenantId()),
                 (string) ($shipment['carrier'] ?? ''),
             ),
             'printers' => array_values(array_filter(
-                $this->queries->printers($user->tenantId()),
+                $this->integrationQueries->printers($user->tenantId()),
                 static fn (array $printer): bool => (bool) ($printer['active'] ?? false),
             )),
             'printJobs' => array_values(array_filter(
-                $this->queries->printJobs($user->tenantId()),
+                $this->integrationQueries->printJobs($user->tenantId()),
                 static fn (array $job): bool => ($job['document_reference'] ?? null) === $shipmentId,
             )),
         ]);

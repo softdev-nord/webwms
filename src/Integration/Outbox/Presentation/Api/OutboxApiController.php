@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use WebWMS\Integration\Application\AcknowledgeOutboxMessageCommand;
 use WebWMS\Integration\Application\AcknowledgeOutboxMessageHandler;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\RetryDeadLetterCommand;
 use WebWMS\Integration\Application\RetryDeadLetterHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
@@ -22,7 +22,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class OutboxApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly AcknowledgeOutboxMessageHandler $acknowledgeMessage,
         private readonly RetryDeadLetterHandler $retryDeadLetter
     ) {
@@ -37,7 +37,7 @@ class OutboxApiController extends AbstractController
             throw new InvalidArgumentException('The outbox status filter is invalid.');
         }
 
-        $messages = $this->queries->outboxMessages(
+        $messages = $this->integrationQueries->outboxMessages(
             $this->apiUser()->tenantId(),
             $status,
             $this->limit($request),
@@ -55,7 +55,7 @@ class OutboxApiController extends AbstractController
     #[IsGranted('integration.outbox.retry')]
     public function retry(string $messageId): JsonResponse
     {
-        if ($this->queries->outboxMessage($this->apiUser()->tenantId(), $messageId) === null) {
+        if ($this->integrationQueries->outboxMessage($this->apiUser()->tenantId(), $messageId) === null) {
             throw $this->createNotFoundException('The outbox message does not exist.');
         }
 
@@ -66,7 +66,7 @@ class OutboxApiController extends AbstractController
             new DateTimeImmutable(),
         ));
 
-        return new JsonResponse(['data' => $this->queries->outboxMessage(
+        return new JsonResponse(['data' => $this->integrationQueries->outboxMessage(
             $this->apiUser()->tenantId(),
             $messageId,
         )]);
@@ -76,7 +76,7 @@ class OutboxApiController extends AbstractController
     #[IsGranted('integration.outbox.acknowledge')]
     public function acknowledge(string $messageId): JsonResponse
     {
-        if ($this->queries->outboxMessage($this->apiUser()->tenantId(), $messageId) === null) {
+        if ($this->integrationQueries->outboxMessage($this->apiUser()->tenantId(), $messageId) === null) {
             throw $this->createNotFoundException('The outbox message does not exist.');
         }
 
@@ -87,7 +87,7 @@ class OutboxApiController extends AbstractController
             new DateTimeImmutable(),
         ));
 
-        $message = $this->queries->outboxMessage($this->apiUser()->tenantId(), $messageId);
+        $message = $this->integrationQueries->outboxMessage($this->apiUser()->tenantId(), $messageId);
 
         return new JsonResponse(['data' => $message]);
     }

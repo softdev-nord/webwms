@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\DeviceIntegrationService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -22,7 +22,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class DeviceController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly DeviceIntegrationService $devices,
     ) {
     }
@@ -35,8 +35,8 @@ class DeviceController extends AbstractController
 
         return $this->render('integration/device/index.html.twig', [
             'page' => 'integration.device.index.scanners_and_mobile_terminals',
-            'devices' => $this->queries->devices($tenantId),
-            'scanEvents' => $this->queries->scanEvents($tenantId, 50),
+            'devices' => $this->integrationQueries->devices($tenantId),
+            'scanEvents' => $this->integrationQueries->scanEvents($tenantId, 50),
         ]);
     }
 
@@ -92,7 +92,7 @@ class DeviceController extends AbstractController
         return $this->render('integration/device/scan.html.twig', [
             'page' => 'integration.device.index.capture_scan',
             'devices' => array_values(array_filter(
-                $this->queries->devices($user->tenantId()),
+                $this->integrationQueries->devices($user->tenantId()),
                 static fn (array $device): bool => (bool) ($device['active'] ?? false),
             )),
             'requestId' => Uuid::v7()->toRfc4122(),
@@ -103,7 +103,7 @@ class DeviceController extends AbstractController
     #[IsGranted('integration.device.read')]
     public function showScan(string $eventId): Response
     {
-        $event = $this->queries->scanEvent($this->tenantUser()->tenantId(), $eventId);
+        $event = $this->integrationQueries->scanEvent($this->tenantUser()->tenantId(), $eventId);
         if ($event === null) {
             throw $this->createNotFoundException('Das Scanereignis wurde nicht gefunden.');
         }
@@ -122,7 +122,7 @@ class DeviceController extends AbstractController
             'page' => 'device.page.data_capture_device',
             'device' => $this->requiredDevice($deviceId),
             'scanEvents' => array_values(array_filter(
-                $this->queries->scanEvents($this->tenantUser()->tenantId()),
+                $this->integrationQueries->scanEvents($this->tenantUser()->tenantId()),
                 static fn (array $event): bool => ($event['device_id'] ?? null) === $deviceId,
             )),
         ]);
@@ -145,7 +145,7 @@ class DeviceController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredDevice(string $deviceId): array
     {
-        $device = $this->queries->device($this->tenantUser()->tenantId(), $deviceId);
+        $device = $this->integrationQueries->device($this->tenantUser()->tenantId(), $deviceId);
         if ($device === null) {
             throw $this->createNotFoundException('Das Erfassungsgerät wurde nicht gefunden.');
         }

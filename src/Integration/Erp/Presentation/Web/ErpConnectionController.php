@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\ChangeErpConnectionStatusCommand;
 use WebWMS\Integration\Application\ChangeErpConnectionStatusHandler;
 use WebWMS\Integration\Application\RegisterErpConnectionCommand;
@@ -25,7 +25,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class ErpConnectionController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly RegisterErpConnectionHandler $registerConnection,
         private readonly ChangeErpConnectionStatusHandler $changeStatus,
     ) {
@@ -37,7 +37,7 @@ class ErpConnectionController extends AbstractController
     {
         return $this->render('integration/erp/index.html.twig', [
             'page' => 'integration.erp_connection.index.erp_connections',
-            'connections' => $this->queries->erpConnections($this->tenantUser()->tenantId()),
+            'connections' => $this->integrationQueries->erpConnections($this->tenantUser()->tenantId()),
         ]);
     }
 
@@ -104,7 +104,7 @@ class ErpConnectionController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredConnection(string $connectionId): array
     {
-        $connection = $this->queries->erpConnection($this->tenantUser()->tenantId(), $connectionId);
+        $connection = $this->integrationQueries->erpConnection($this->tenantUser()->tenantId(), $connectionId);
         if ($connection === null) {
             throw $this->createNotFoundException('Die ERP-Verbindung wurde nicht gefunden.');
         }

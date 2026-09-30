@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\IntegrationTransportService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -20,7 +20,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class IntegrationTransportApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly IntegrationTransportService $transport,
     ) {
     }
@@ -29,7 +29,7 @@ class IntegrationTransportApiController extends AbstractController
     #[IsGranted('integration.transport.read')]
     public function index(): JsonResponse
     {
-        $data = $this->queries->transportEndpoints($this->user()->tenantId());
+        $data = $this->integrationQueries->transportEndpoints($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -56,7 +56,7 @@ class IntegrationTransportApiController extends AbstractController
             new DateTimeImmutable(),
         );
 
-        return new JsonResponse(['data' => $this->queries->transportEndpoint($user->tenantId(), $endpoint->id)], Response::HTTP_CREATED);
+        return new JsonResponse(['data' => $this->integrationQueries->transportEndpoint($user->tenantId(), $endpoint->id)], Response::HTTP_CREATED);
     }
 
     #[Route('/{endpointId}/status', name: 'status', methods: ['PATCH'])]
@@ -67,7 +67,7 @@ class IntegrationTransportApiController extends AbstractController
         $user = $this->user();
         $this->transport->changeStatus($user->tenantId(), $endpointId, $this->boolean($payload, 'active'), $user->actorId(), new DateTimeImmutable());
 
-        return new JsonResponse(['data' => $this->queries->transportEndpoint($user->tenantId(), $endpointId)]);
+        return new JsonResponse(['data' => $this->integrationQueries->transportEndpoint($user->tenantId(), $endpointId)]);
     }
 
     private function user(): TenantPermissionUser

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\WcsIntegrationService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -20,7 +20,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class WcsApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly WcsIntegrationService $wcs,
     ) {
     }
@@ -29,7 +29,7 @@ class WcsApiController extends AbstractController
     #[IsGranted('integration.wcs.read')]
     public function connections(): JsonResponse
     {
-        $data = $this->queries->wcsConnections($this->user()->tenantId());
+        $data = $this->integrationQueries->wcsConnections($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -42,7 +42,7 @@ class WcsApiController extends AbstractController
         $user = $this->user();
         $connection = $this->wcs->registerConnection($user->tenantId(), $this->string($payload, 'code'), $this->string($payload, 'name'), $this->string($payload, 'systemType'), $this->string($payload, 'endpointUrl'), $this->string($payload, 'credentialEnv'), $this->boolean($payload, 'active', true), $user->actorId(), new DateTimeImmutable());
 
-        return new JsonResponse(['data' => $this->queries->wcsConnection($user->tenantId(), $connection->id)], Response::HTTP_CREATED);
+        return new JsonResponse(['data' => $this->integrationQueries->wcsConnection($user->tenantId(), $connection->id)], Response::HTTP_CREATED);
     }
 
     #[Route('/wcs-connections/{connectionId}/status', name: 'connection_status', methods: ['PATCH'])]
@@ -53,14 +53,14 @@ class WcsApiController extends AbstractController
         $user = $this->user();
         $this->wcs->changeConnectionStatus($user->tenantId(), $connectionId, $this->boolean($payload, 'active'), $user->actorId(), new DateTimeImmutable());
 
-        return new JsonResponse(['data' => $this->queries->wcsConnection($user->tenantId(), $connectionId)]);
+        return new JsonResponse(['data' => $this->integrationQueries->wcsConnection($user->tenantId(), $connectionId)]);
     }
 
     #[Route('/machine-commands', name: 'commands', methods: ['GET'])]
     #[IsGranted('integration.wcs.read')]
     public function commands(): JsonResponse
     {
-        $data = $this->queries->machineCommands($this->user()->tenantId());
+        $data = $this->integrationQueries->machineCommands($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -73,7 +73,7 @@ class WcsApiController extends AbstractController
         $user = $this->user();
         $command = $this->wcs->queueCommand($user->tenantId(), $this->string($payload, 'connectionId'), $this->string($payload, 'commandType'), $this->string($payload, 'source'), $this->string($payload, 'destination'), $this->string($payload, 'loadUnit'), $this->string($payload, 'requestId'), $user->actorId(), new DateTimeImmutable());
 
-        return new JsonResponse(['data' => $this->queries->machineCommand($user->tenantId(), $command->id)], Response::HTTP_CREATED);
+        return new JsonResponse(['data' => $this->integrationQueries->machineCommand($user->tenantId(), $command->id)], Response::HTTP_CREATED);
     }
 
     #[Route('/machine-commands/{commandId}/status', name: 'command_status', methods: ['PATCH'])]
@@ -84,14 +84,14 @@ class WcsApiController extends AbstractController
         $user = $this->user();
         $command = $this->wcs->transitionCommand($user->tenantId(), $commandId, $this->string($payload, 'status'), $this->optionalString($payload, 'message'), $user->actorId(), new DateTimeImmutable());
 
-        return new JsonResponse(['data' => $this->queries->machineCommand($user->tenantId(), $command->id)]);
+        return new JsonResponse(['data' => $this->integrationQueries->machineCommand($user->tenantId(), $command->id)]);
     }
 
     #[Route('/machine-statuses', name: 'statuses', methods: ['GET'])]
     #[IsGranted('integration.wcs.read')]
     public function statuses(): JsonResponse
     {
-        $data = $this->queries->machineStatuses($this->user()->tenantId());
+        $data = $this->integrationQueries->machineStatuses($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }

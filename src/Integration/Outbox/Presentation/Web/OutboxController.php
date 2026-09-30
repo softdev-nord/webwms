@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use WebWMS\Integration\Application\AcknowledgeOutboxMessageCommand;
 use WebWMS\Integration\Application\AcknowledgeOutboxMessageHandler;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\RetryDeadLetterCommand;
 use WebWMS\Integration\Application\RetryDeadLetterHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
@@ -27,7 +27,7 @@ class OutboxController extends AbstractController
     private const array STATUSES = ['pending', 'processing', 'published', 'dead_letter', 'acknowledged'];
 
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly AcknowledgeOutboxMessageHandler $acknowledgeMessage,
         private readonly RetryDeadLetterHandler $retryDeadLetter,
     ) {
@@ -43,7 +43,7 @@ class OutboxController extends AbstractController
         }
 
         $cursor = trim($request->query->getString('cursor'));
-        $messages = $this->queries->outboxMessages(
+        $messages = $this->integrationQueries->outboxMessages(
             $this->tenantUser()->tenantId(),
             $status,
             50,
@@ -117,7 +117,7 @@ class OutboxController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredMessage(string $messageId): array
     {
-        $message = $this->queries->outboxMessage($this->tenantUser()->tenantId(), $messageId);
+        $message = $this->integrationQueries->outboxMessage($this->tenantUser()->tenantId(), $messageId);
         if ($message === null) {
             throw $this->createNotFoundException('Die Outbox-Nachricht wurde nicht gefunden.');
         }

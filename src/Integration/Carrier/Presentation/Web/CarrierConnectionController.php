@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\CarrierGateway;
 use WebWMS\Integration\Application\ChangeCarrierConnectionStatusCommand;
 use WebWMS\Integration\Application\ChangeCarrierConnectionStatusHandler;
@@ -27,7 +27,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class CarrierConnectionController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly RegisterCarrierConnectionHandler $registerConnection,
         private readonly ChangeCarrierConnectionStatusHandler $changeStatus,
         private readonly CarrierGateway $gateway,
@@ -40,7 +40,7 @@ class CarrierConnectionController extends AbstractController
     {
         return $this->render('integration/carrier/index.html.twig', [
             'page' => 'integration.carrier_connection.index.carrier_connections',
-            'connections' => $this->queries->carrierConnections($this->tenantUser()->tenantId()),
+            'connections' => $this->integrationQueries->carrierConnections($this->tenantUser()->tenantId()),
         ]);
     }
 
@@ -127,7 +127,7 @@ class CarrierConnectionController extends AbstractController
     /** @return array<string, mixed> */
     private function requiredConnection(string $connectionId): array
     {
-        $connection = $this->queries->carrierConnection($this->tenantUser()->tenantId(), $connectionId);
+        $connection = $this->integrationQueries->carrierConnection($this->tenantUser()->tenantId(), $connectionId);
         if ($connection === null) {
             throw $this->createNotFoundException('Die Carrier-Verbindung wurde nicht gefunden.');
         }

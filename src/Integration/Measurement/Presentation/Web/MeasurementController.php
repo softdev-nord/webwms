@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Integration\Application\MeasurementService;
 use WebWMS\Security\V3\TenantPermissionUser;
@@ -23,7 +23,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class MeasurementController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly IntegrationQueryService $integrationQueries,
         private readonly WarehouseQueryService $warehouseQueries,
         private readonly MeasurementService $measurements,
     ) {
@@ -37,8 +37,8 @@ class MeasurementController extends AbstractController
 
         return $this->render('integration/measurement/index.html.twig', [
             'page' => 'integration.measurement.index.scales_and_volume_measurement',
-            'devices' => $this->queries->measurementDevices($tenantId),
-            'measurements' => $this->queries->measurements($tenantId, 50),
+            'devices' => $this->integrationQueries->measurementDevices($tenantId),
+            'measurements' => $this->integrationQueries->measurements($tenantId, 50),
         ]);
     }
 
@@ -71,7 +71,7 @@ class MeasurementController extends AbstractController
     public function status(string $deviceId, Request $request): RedirectResponse
     {
         $this->assertCsrf($request, 'v3_measurement_device_status_' . $deviceId);
-        $device = $this->queries->measurementDevice($this->user()->tenantId(), $deviceId);
+        $device = $this->integrationQueries->measurementDevice($this->user()->tenantId(), $deviceId);
         if ($device === null) {
             throw $this->createNotFoundException('Das Messgerät wurde nicht gefunden.');
         }
@@ -119,10 +119,10 @@ class MeasurementController extends AbstractController
         return $this->render('integration/measurement/capture.html.twig', [
             'page' => 'integration.measurement.capture.capture_measurement',
             'devices' => array_values(array_filter(
-                $this->queries->measurementDevices($user->tenantId()),
+                $this->integrationQueries->measurementDevices($user->tenantId()),
                 static fn (array $device): bool => (bool) ($device['active'] ?? false),
             )),
-            'packages' => $this->queries->measurablePackages($user->tenantId()),
+            'packages' => $this->integrationQueries->measurablePackages($user->tenantId()),
             'products' => $this->warehouseQueries->products($user->tenantId(), 200, null),
             'requestId' => Uuid::v7()->toRfc4122(),
         ]);
@@ -132,7 +132,7 @@ class MeasurementController extends AbstractController
     #[IsGranted('integration.measurement.read')]
     public function show(string $measurementId): Response
     {
-        $measurement = $this->queries->measurement($this->user()->tenantId(), $measurementId);
+        $measurement = $this->integrationQueries->measurement($this->user()->tenantId(), $measurementId);
         if ($measurement === null) {
             throw $this->createNotFoundException('Die Messung wurde nicht gefunden.');
         }
