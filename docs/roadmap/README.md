@@ -28,9 +28,9 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Gesamtfortschritt
 
-Stand 24.09.2026 sind alle 110 Tickets mit 912 Story Points vollständig `Done`. Die acht Epics bilden damit den dokumentierten Funktionsumfang einschließlich der erweiterten Funktionen ab.
+Stand 30.09.2026 sind 96 von 110 Tickets und 760 von 912 Story Points vollständig `Done`. Neun Tickets sind teilweise umgesetzt, zwei besitzen einen Backendkern und drei sind noch offen. Damit verbleiben 14 Tickets mit 152 Story Points bis zur vollständigen Umsetzung.
 
-Die Epics **Wareneingang**, **Lagerverwaltung**, **Transport & Kommissionierung**, **Warenausgang & Versand** sowie **Zusatzfunktionen** sind vollständig abgeschlossen. Die Tabellen der sieben Epic-Dateien wurden mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
+Die Epics **Wareneingang**, **Lagerverwaltung**, **Transport & Kommissionierung**, **Warenausgang & Versand**, **Zusatzfunktionen** und **Plattform** sind vollständig abgeschlossen. In **Administration** fehlt der produktive SSO-Handshake; im Epic **Integration & Technik** sind alle 13 Tickets noch offen oder nur teilweise beziehungsweise im Backend umgesetzt. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 
 ## Ergänzende Roadmap-Dokumente
 
