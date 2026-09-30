@@ -7,9 +7,9 @@ namespace WebWMS\Tests\Unit\Administration\Application\Access;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Administration\Application\Access\V3AdministrationService;
+use WebWMS\Administration\Application\Access\AdministrationService;
 
-class V3AdministrationServiceTest extends TestCase
+class AdministrationServiceTest extends TestCase
 {
     public function testItStoresOnlyTheApiClientSecretHash(): void
     {
@@ -28,7 +28,7 @@ class V3AdministrationServiceTest extends TestCase
                 }),
             );
 
-        $result = new V3AdministrationService($connection)->createApiClient(
+        $result = new AdministrationService($connection)->createApiClient(
             'tenant-id',
             'user-id',
             'ERP',
@@ -48,6 +48,6 @@ class V3AdministrationServiceTest extends TestCase
             ->with('wms_api_client', ['active' => 0], ['id' => 'client-id', 'tenant_id' => 'tenant-id'])
             ->willReturn(1);
 
-        new V3AdministrationService($connection)->setApiClientActive('tenant-id', 'client-id', false);
+        new AdministrationService($connection)->setApiClientActive('tenant-id', 'client-id', false);
     }
 }

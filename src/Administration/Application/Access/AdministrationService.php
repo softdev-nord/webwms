@@ -10,7 +10,7 @@ use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
 
-readonly class V3AdministrationService
+readonly class AdministrationService
 {
     public function __construct(
         private Connection $connection
@@ -76,7 +76,7 @@ readonly class V3AdministrationService
         }
 
         foreach ($permissions as $permission) {
-            if (!V3PermissionCatalog::contains($permission)) {
+            if (!PermissionCatalog::contains($permission)) {
                 throw new InvalidArgumentException('Der API-Client enthält eine unbekannte Berechtigung.');
             }
         }
@@ -170,7 +170,7 @@ readonly class V3AdministrationService
         }
 
         foreach ($permissions as $permission) {
-            if (!V3PermissionCatalog::contains($permission)) {
+            if (!PermissionCatalog::contains($permission)) {
                 throw new InvalidArgumentException('Die Rolle enthält eine unbekannte Berechtigung.');
             }
         }

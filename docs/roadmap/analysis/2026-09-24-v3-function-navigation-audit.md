@@ -28,4 +28,4 @@ Objektbezogene Detail- und Bearbeitungsrouten erhalten keinen globalen Menüpunk
 - Listenabfragen sind nach Mandant und Funktion gefiltert.
 - Schreib- und Ausführungsaktionen bleiben getrennt berechtigt.
 - Unbekannte Workflowtypen werden vor einem Datenbankzugriff abgewiesen.
-- Sidebar-Berechtigungen wurden gegen `V3PermissionCatalog` abgeglichen.
+- Sidebar-Berechtigungen wurden gegen `PermissionCatalog` abgeglichen.

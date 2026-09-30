@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebWMS\Administration\Application\Access;
 
-class V3PermissionCatalog
+class PermissionCatalog
 {
     /** @var list<string> */
     public const array ALL = [

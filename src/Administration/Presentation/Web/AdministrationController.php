@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Administration\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -14,20 +14,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
+use WebWMS\Administration\Application\Access\AdministrationService;
 use WebWMS\Administration\Application\Access\CreateRole\CreateRoleCommand;
 use WebWMS\Administration\Application\Access\CreateRole\CreateRoleHandler;
 use WebWMS\Administration\Application\Access\CreateUser\CreateUserCommand;
 use WebWMS\Administration\Application\Access\CreateUser\CreateUserHandler;
-use WebWMS\Administration\Application\Access\V3AdministrationService;
-use WebWMS\Administration\Application\Access\V3PermissionCatalog;
+use WebWMS\Administration\Application\Access\PermissionCatalog;
 use WebWMS\Administration\Application\AdministrationWorkspaceService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/administration', name: 'v3_administration_')]
-class V3AdministrationController extends AbstractController
+class AdministrationController extends AbstractController
 {
     public function __construct(
-        private readonly V3AdministrationService $administration,
+        private readonly AdministrationService $administration,
         private readonly CreateRoleHandler $createRole,
         private readonly CreateUserHandler $createUser,
         private readonly AdministrationWorkspaceService $workspace,
@@ -38,7 +38,7 @@ class V3AdministrationController extends AbstractController
     #[IsGranted('administration.configuration.read')]
     public function workspace(): Response
     {
-        return $this->render('v3/administration/workspace.html.twig', [
+        return $this->render('administration/workspace.html.twig', [
             'workspace' => $this->workspace->workspace($this->tenantUser()->tenantId()),
             'page' => 'administration.page.tenant_and_configuration',
         ]);
@@ -119,7 +119,7 @@ class V3AdministrationController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        return $this->render('v3/administration/index.html.twig', [
+        return $this->render('administration/index.html.twig', [
             'users' => $user->hasPermission('administration.user.read') ? $this->administration->users($user->tenantId()) : [],
             'roles' => $user->hasPermission('administration.role.read') ? $this->administration->roles($user->tenantId()) : [],
             'apiClients' => $user->hasPermission('administration.api_client.read') ? $this->administration->apiClients($user->tenantId()) : [],
@@ -131,7 +131,7 @@ class V3AdministrationController extends AbstractController
     #[IsGranted('administration.user.read')]
     public function users(): Response
     {
-        return $this->render('v3/administration/users.html.twig', ['users' => $this->administration->users($this->tenantUser()->tenantId()), 'page' => 'navigation.user.user']);
+        return $this->render('administration/users.html.twig', ['users' => $this->administration->users($this->tenantUser()->tenantId()), 'page' => 'navigation.user.user']);
     }
 
     #[Route('/users/{userId}/edit', name: 'user_edit', methods: ['GET', 'POST'])]
@@ -158,21 +158,21 @@ class V3AdministrationController extends AbstractController
             return $this->redirectToRoute('v3_administration_users');
         }
 
-        return $this->render('v3/administration/user_edit.html.twig', ['user' => $users[0], 'roles' => $this->administration->roles($current->tenantId()), 'page' => 'administration.user_edit.edit_user']);
+        return $this->render('administration/user_edit.html.twig', ['user' => $users[0], 'roles' => $this->administration->roles($current->tenantId()), 'page' => 'administration.user_edit.edit_user']);
     }
 
     #[Route('/roles', name: 'roles', methods: ['GET'])]
     #[IsGranted('administration.role.read')]
     public function roles(): Response
     {
-        return $this->render('v3/administration/roles.html.twig', ['roles' => $this->administration->roles($this->tenantUser()->tenantId()), 'page' => 'user.index.roles']);
+        return $this->render('administration/roles.html.twig', ['roles' => $this->administration->roles($this->tenantUser()->tenantId()), 'page' => 'user.index.roles']);
     }
 
     #[Route('/api-clients', name: 'api_clients', methods: ['GET'])]
     #[IsGranted('administration.api_client.read')]
     public function apiClients(): Response
     {
-        return $this->render('v3/administration/api_clients.html.twig', ['clients' => $this->administration->apiClients($this->tenantUser()->tenantId()), 'page' => 'administration.api_clients.api_clients']);
+        return $this->render('administration/api_clients.html.twig', ['clients' => $this->administration->apiClients($this->tenantUser()->tenantId()), 'page' => 'administration.api_clients.api_clients']);
     }
 
     #[Route('/api-clients/{clientId}/edit', name: 'api_client_edit', methods: ['GET', 'POST'])]
@@ -193,7 +193,7 @@ class V3AdministrationController extends AbstractController
             return $this->redirectToRoute('v3_administration_api_clients');
         }
 
-        return $this->render('v3/administration/api_client_edit.html.twig', ['client' => $clients[0], 'page' => 'administration.api_client_edit.edit_api_client']);
+        return $this->render('administration/api_client_edit.html.twig', ['client' => $clients[0], 'page' => 'administration.api_client_edit.edit_api_client']);
     }
 
     #[Route('/roles/new', name: 'role_new', methods: ['GET', 'POST'])]
@@ -216,8 +216,8 @@ class V3AdministrationController extends AbstractController
             return $this->redirectToRoute('v3_administration_roles');
         }
 
-        return $this->render('v3/administration/role_new.html.twig', [
-            'permissions' => V3PermissionCatalog::ALL,
+        return $this->render('administration/role_new.html.twig', [
+            'permissions' => PermissionCatalog::ALL,
             'page' => 'administration.page.new_role',
         ]);
     }
@@ -243,7 +243,7 @@ class V3AdministrationController extends AbstractController
             return $this->redirectToRoute('v3_administration_users');
         }
 
-        return $this->render('v3/administration/user_new.html.twig', [
+        return $this->render('administration/user_new.html.twig', [
             'roles' => $this->administration->roles($user->tenantId()),
             'page' => 'administration.page.new_user',
         ]);
@@ -298,7 +298,7 @@ class V3AdministrationController extends AbstractController
             return $this->redirectToRoute('v3_administration_roles');
         }
 
-        return $this->render('v3/administration/role_edit.html.twig', ['role' => $role, 'permissions' => V3PermissionCatalog::ALL, 'page' => 'administration.page.edit_role']);
+        return $this->render('administration/role_edit.html.twig', ['role' => $role, 'permissions' => PermissionCatalog::ALL, 'page' => 'administration.page.edit_role']);
     }
 
     #[Route('/api-clients/new', name: 'api_client_new', methods: ['GET', 'POST'])]
@@ -320,9 +320,9 @@ class V3AdministrationController extends AbstractController
             return $this->redirectToRoute('v3_administration_api_client_credential');
         }
 
-        return $this->render('v3/administration/api_client_new.html.twig', [
+        return $this->render('administration/api_client_new.html.twig', [
             'users' => $this->administration->users($user->tenantId()),
-            'permissions' => V3PermissionCatalog::ALL,
+            'permissions' => PermissionCatalog::ALL,
             'page' => 'administration.page.api_client',
         ]);
     }
@@ -336,7 +336,7 @@ class V3AdministrationController extends AbstractController
             return $this->redirectToRoute('v3_administration_index');
         }
 
-        return $this->render('v3/administration/api_client_credential.html.twig', [
+        return $this->render('administration/api_client_credential.html.twig', [
             'page' => 'administration.page.api_credentials',
             'credential' => $credential,
         ]);

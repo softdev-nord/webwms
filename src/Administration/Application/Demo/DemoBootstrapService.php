@@ -7,7 +7,7 @@ namespace WebWMS\Administration\Application\Demo;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Administration\Application\Access\V3PermissionCatalog;
+use WebWMS\Administration\Application\Access\PermissionCatalog;
 use WebWMS\Administration\Domain\Access\PasswordHasher;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Site\SiteId;
@@ -147,7 +147,7 @@ readonly class DemoBootstrapService
             ]);
         }
 
-        foreach (V3PermissionCatalog::ALL as $permission) {
+        foreach (PermissionCatalog::ALL as $permission) {
             if ($this->connection->fetchOne(
                 'SELECT 1 FROM wms_role_permission WHERE role_id = :roleId AND permission_key = :permission',
                 ['roleId' => self::ROLE_ID, 'permission' => $permission],

@@ -141,6 +141,10 @@ services:
         resource: '../src/Warehouse/Presentation/'
         tags: ['controller.service_arguments']
 
+    WebWMS\Administration\Presentation\:
+        resource: '../src/Administration/Presentation/'
+        tags: ['controller.service_arguments']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

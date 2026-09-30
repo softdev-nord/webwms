@@ -2,6 +2,12 @@
 
 Der V3-Administrations-Workspace bündelt die Tickets WEBWMS-075 bis WEBWMS-083. Alle operativen Datensätze tragen eine `tenant_id`; Fremdschlüssel und Anwendungsservice prüfen zusätzlich, dass referenzierte Geschäftspartner, Benutzer und Rollen demselben Mandanten angehören.
 
+Die Präsentationsschicht ist fachlich unter `src/Administration/Presentation`
+eingeordnet; ihre Twig-Views liegen unter `templates/administration`. Die
+Anwendungsdienste und der Berechtigungskatalog tragen keine interne
+Versionskennung mehr. Die öffentlichen `/v3`- und `/api/v3`-Verträge bleiben
+davon unberührt.
+
 ## Datenmodell
 
 - `wms_business_partner` und `wms_tenant_context` bilden Geschäftspartner und getrennte Datenräume ab.

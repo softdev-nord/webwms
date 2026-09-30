@@ -10,6 +10,12 @@ warehouse_controllers:
         namespace: WebWMS\Warehouse\Presentation
     type: attribute
 
+administration_controllers:
+    resource:
+        path: ../../src/Administration/Presentation/
+        namespace: WebWMS\Administration\Presentation
+    type: attribute
+
 kernel:
     resource: WebWMS\Kernel
     type: attribute

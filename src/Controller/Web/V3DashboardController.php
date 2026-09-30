@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Administration\Application\Dashboard\V3DashboardQueryService;
+use WebWMS\Administration\Application\Dashboard\DashboardQueryService;
 use WebWMS\Integration\Application\ApiV3QueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -18,7 +18,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class V3DashboardController extends AbstractController
 {
     #[Route('', name: 'dashboard', methods: ['GET'])]
-    public function dashboard(V3DashboardQueryService $dashboard): Response
+    public function dashboard(DashboardQueryService $dashboard): Response
     {
         $user = $this->tenantUser();
 

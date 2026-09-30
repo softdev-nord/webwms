@@ -16,7 +16,7 @@ Alle V3-Templates wurden anhand ihrer Formulare und Routen überprüft.
 - `StockSelectionService`
 - `SpecialStockService`
 - `StockBlockingService`
-- `V3AdministrationController`
+- `AdministrationController`
 - neue Form-, Detail- und Übersichts-Templates unter `templates/warehouse/`
-- getrennte Übersichten und Bearbeitungsseiten unter `templates/v3/administration/`
+- getrennte Übersichten und Bearbeitungsseiten unter `templates/administration/`
 - Navigation unter `templates/v3/subsections/sidebar.html.twig`
