@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Api\V3;
+namespace WebWMS\Outbound\Packing\Presentation\Api;
 
 use DateTimeImmutable;
 use DomainException;
@@ -21,7 +21,7 @@ use WebWMS\Inventory\Application\CompletePackingOrderCommand;
 use WebWMS\Inventory\Application\CompletePackingOrderHandler;
 use WebWMS\Inventory\Application\CreatePackingOrderCommand;
 use WebWMS\Inventory\Application\CreatePackingOrderHandler;
-use WebWMS\Inventory\Application\OutboundProcessService;
+use WebWMS\Outbound\Application\OutboundProcessService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3', name: 'api_v3_packing_')]

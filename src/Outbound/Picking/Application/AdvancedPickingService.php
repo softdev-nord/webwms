@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Fulfillment\Application;
+namespace WebWMS\Outbound\Picking\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\ArrayParameterType;

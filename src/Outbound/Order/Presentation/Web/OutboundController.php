@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Outbound\Order\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -27,7 +27,7 @@ use WebWMS\Inventory\Application\StockSelectionService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/outbound', name: 'v3_outbound_')]
-class V3OutboundController extends AbstractController
+class OutboundController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -43,7 +43,7 @@ class V3OutboundController extends AbstractController
     #[IsGranted('outbound.order.read')]
     public function orders(): Response
     {
-        return $this->render('v3/outbound/orders.html.twig', [
+        return $this->render('outbound/order/orders.html.twig', [
             'orders' => $this->queries->outboundOrders($this->tenantUser()->tenantId()),
             'page' => 'outbound.orders.outbound_orders',
         ]);
@@ -72,7 +72,7 @@ class V3OutboundController extends AbstractController
             return $this->redirectToRoute('v3_outbound_order', ['orderId' => $orderId]);
         }
 
-        return $this->render('v3/outbound/order_new.html.twig', [
+        return $this->render('outbound/order/order_new.html.twig', [
             'products' => $this->queries->products($user->tenantId(), 200, null),
             'page' => 'outbound.page.outbound_order',
         ]);
@@ -92,7 +92,7 @@ class V3OutboundController extends AbstractController
 
         unset($item);
 
-        return $this->render('v3/outbound/order.html.twig', [
+        return $this->render('outbound/order/order.html.twig', [
             'order' => $order,
             'selectionRules' => $this->queries->stockSelectionRules($user->tenantId()),
             'page' => 'outbound.page.outbound_order',

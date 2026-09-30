@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Outbound\Packing\Presentation\Web;
 
 use DateTimeImmutable;
 use DomainException;
@@ -22,11 +22,11 @@ use WebWMS\Inventory\Application\CompletePackingOrderCommand;
 use WebWMS\Inventory\Application\CompletePackingOrderHandler;
 use WebWMS\Inventory\Application\CreatePackingOrderCommand;
 use WebWMS\Inventory\Application\CreatePackingOrderHandler;
-use WebWMS\Inventory\Application\OutboundProcessService;
+use WebWMS\Outbound\Application\OutboundProcessService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/packing', name: 'v3_packing_')]
-class V3PackingController extends AbstractController
+class PackingController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -41,7 +41,7 @@ class V3PackingController extends AbstractController
     #[IsGranted('fulfillment.pack.read')]
     public function index(): Response
     {
-        return $this->render('v3/packing/index.html.twig', [
+        return $this->render('outbound/packing/index.html.twig', [
             'page' => 'integration.device.scan.packing',
             'packingOrders' => $this->queries->packingOrders($this->tenantUser()->tenantId()),
         ]);
@@ -82,7 +82,7 @@ class V3PackingController extends AbstractController
     {
         $user = $this->tenantUser();
 
-        return $this->render('v3/packing/show.html.twig', [
+        return $this->render('outbound/packing/show.html.twig', [
             'page' => 'picking.show.packing_order',
             'packingOrder' => $this->requiredPackingOrder($packingOrderId),
             'packableTasks' => $this->queries->packablePickTasks($user->tenantId(), $packingOrderId),

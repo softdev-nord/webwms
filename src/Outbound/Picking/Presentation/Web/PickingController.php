@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Outbound\Picking\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -14,16 +14,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Fulfillment\Application\AdvancedPickingService;
 use WebWMS\Integration\Application\ApiV3QueryService;
 use WebWMS\Inventory\Application\AssignPickListCommand;
 use WebWMS\Inventory\Application\AssignPickListHandler;
 use WebWMS\Inventory\Application\ConfirmPickTaskCommand;
 use WebWMS\Inventory\Application\ConfirmPickTaskHandler;
+use WebWMS\Outbound\Picking\Application\AdvancedPickingService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/picking', name: 'v3_picking_')]
-class V3PickingController extends AbstractController
+class PickingController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -73,7 +73,7 @@ class V3PickingController extends AbstractController
     #[IsGranted('fulfillment.pick.read')]
     public function index(): Response
     {
-        return $this->render('v3/picking/index.html.twig', [
+        return $this->render('outbound/picking/index.html.twig', [
             'page' => 'picking.index.picking',
             'pickLists' => $this->queries->pickLists($this->tenantUser()->tenantId()),
         ]);
@@ -83,7 +83,7 @@ class V3PickingController extends AbstractController
     #[IsGranted('fulfillment.pick.read')]
     public function show(string $pickListId): Response
     {
-        return $this->render('v3/picking/show.html.twig', [
+        return $this->render('outbound/picking/show.html.twig', [
             'page' => 'outbound.control.pick_list',
             'pickList' => $this->requiredPickList($pickListId),
         ]);

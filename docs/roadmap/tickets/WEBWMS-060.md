@@ -48,7 +48,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 `LoadingManifest` bündelt etikettierte Sendungen mit Tour- und Fahrzeugreferenz. Über `POST /api/v3/loading-manifests` kann diese Gruppierung mandantengebunden erzeugt und über den Leseendpunkt als Tourfortschritt abgerufen werden. Das V3-Frontend stellt die Manifestübersicht und eine berechtigungsgeschützte Erfassung für noch unverplante Sendungen bereit.
 
-Nachweise: `LoadingApiController`, `V3LoadingController`, `ApiV3QueryService::loadingManifest()`, `ApiV3QueryService::loadingManifests()`, `CreateLoadingManifestHandler`, `LoadingManifest`, `DbalInventoryRepository::saveLoadingManifest()`, `LoadingManifestTest` und `docs/technical/loading-api.md`.
+Nachweise: `LoadingApiController`, `LoadingController`, `ApiV3QueryService::loadingManifest()`, `ApiV3QueryService::loadingManifests()`, `CreateLoadingManifestHandler`, `LoadingManifest`, `DbalInventoryRepository::saveLoadingManifest()`, `LoadingManifestTest` und `docs/technical/loading-api.md`.
 
 ### Abschlussnachweis
 

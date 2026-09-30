@@ -57,7 +57,7 @@ Der V3-Arbeitsbereich ergänzt eine mandantengebundene Verbindungsverwaltung mit
 Detail- und Auditansicht, Statuswechseln und Live-Abruf der Versandprodukte.
 Vorbereitete Sendungen können Carrier-Labels idempotent anfordern und übernehmen;
 der vorhandene Druckworkflow verarbeitet die daraus resultierende Labelreferenz.
-Nachweise: `V3CarrierConnectionController`, `V3ShippingController` und die
+Nachweise: `V3CarrierConnectionController`, `ShippingController` und die
 Templates unter `templates/v3/integration/carrier-connection`.
 
 Herstellerspezifische Adapter, Webhooks für proaktive Trackingereignisse,

@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Fulfillment\Application\AdvancedPickingService;
 use WebWMS\Fulfillment\Application\InternalTransportService;
 use WebWMS\Inventory\Application\ConfirmPickTaskCommand;
 use WebWMS\Inventory\Application\ConfirmPickTaskHandler;
@@ -24,6 +23,7 @@ use WebWMS\Inventory\Application\CreateReplenishmentOrderCommand;
 use WebWMS\Inventory\Application\CreateReplenishmentOrderHandler;
 use WebWMS\Inventory\Application\CreateReplenishmentPolicyCommand;
 use WebWMS\Inventory\Application\CreateReplenishmentPolicyHandler;
+use WebWMS\Outbound\Picking\Application\AdvancedPickingService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/fulfillment-control', name: 'api_v3_fulfillment_control_')]

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Inventory\Application;
+namespace WebWMS\Outbound\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;

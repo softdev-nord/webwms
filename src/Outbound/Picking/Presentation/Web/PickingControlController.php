@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Outbound\Picking\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -13,11 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Fulfillment\Application\AdvancedPickingService;
+use WebWMS\Outbound\Picking\Application\AdvancedPickingService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/picking-control', name: 'v3_picking_control_')]
-class V3PickingControlController extends AbstractController
+class PickingControlController extends AbstractController
 {
     public function __construct(
         private readonly AdvancedPickingService $picking
@@ -28,7 +28,7 @@ class V3PickingControlController extends AbstractController
     #[IsGranted('fulfillment.pick.control')]
     public function index(): Response
     {
-        return $this->render('v3/picking/control.html.twig', ['page' => 'picking.control.picking_control_center', 'workspace' => $this->picking->workspace($this->user()->tenantId())]);
+        return $this->render('outbound/picking/control.html.twig', ['page' => 'picking.control.picking_control_center', 'workspace' => $this->picking->workspace($this->user()->tenantId())]);
     }
 
     #[Route('/waves', name: 'wave_create', methods: ['POST'])]

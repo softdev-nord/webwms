@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Api\V3;
+namespace WebWMS\Outbound\Order\Presentation\Api;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use WebWMS\Integration\Application\ApiV3QueryService;
-use WebWMS\Inventory\Application\OutboundProcessService;
+use WebWMS\Outbound\Application\OutboundProcessService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/outbound/control', name: 'api_v3_outbound_control_')]

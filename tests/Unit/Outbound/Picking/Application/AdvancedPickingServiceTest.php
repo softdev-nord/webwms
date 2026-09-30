@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Unit\Fulfillment\Application;
+namespace WebWMS\Tests\Unit\Outbound\Picking\Application;
 
-use InvalidArgumentException;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Fulfillment\Application\AdvancedPickingService;
+use WebWMS\Outbound\Picking\Application\AdvancedPickingService;
 
 class AdvancedPickingServiceTest extends TestCase
 {

@@ -149,6 +149,26 @@ services:
         resource: '../src/Inbound/Presentation/'
         tags: ['controller.service_arguments']
 
+    WebWMS\Outbound\Order\Presentation\:
+        resource: '../src/Outbound/Order/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Outbound\Picking\Presentation\:
+        resource: '../src/Outbound/Picking/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Outbound\Packing\Presentation\:
+        resource: '../src/Outbound/Packing/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Outbound\Shipping\Presentation\:
+        resource: '../src/Outbound/Shipping/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Outbound\Loading\Presentation\:
+        resource: '../src/Outbound/Loading/Presentation/'
+        tags: ['controller.service_arguments']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

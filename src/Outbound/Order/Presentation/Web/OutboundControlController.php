@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Outbound\Order\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -14,12 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use WebWMS\Integration\Application\ApiV3QueryService;
-use WebWMS\Inventory\Application\OutboundProcessService;
+use WebWMS\Outbound\Application\OutboundProcessService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/outbound/control', name: 'v3_outbound_control_')]
 #[IsGranted('outbound.order.read')]
-class V3OutboundControlController extends AbstractController
+class OutboundControlController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -32,7 +32,7 @@ class V3OutboundControlController extends AbstractController
     {
         $user = $this->user();
 
-        return $this->render('v3/outbound/control.html.twig', [
+        return $this->render('outbound/order/control.html.twig', [
             'page' => 'outbound.control.outbound_dispatch_control_center',
             'control' => $this->queries->outboundControlCenter($user->tenantId()),
             'orders' => $this->queries->outboundOrders($user->tenantId()),

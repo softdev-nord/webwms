@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Unit\Inventory\Application;
+namespace WebWMS\Tests\Unit\Outbound\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use DomainException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Inventory\Application\OutboundProcessService;
 use WebWMS\Integration\Domain\OutboxRepository;
+use WebWMS\Outbound\Application\OutboundProcessService;
 
 class OutboundProcessServiceTest extends TestCase
 {

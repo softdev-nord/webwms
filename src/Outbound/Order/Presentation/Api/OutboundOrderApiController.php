@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Api\V3;
+namespace WebWMS\Outbound\Order\Presentation\Api;
 
 use DateTimeImmutable;
 use InvalidArgumentException;

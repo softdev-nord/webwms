@@ -48,7 +48,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 Der Endpunkt `POST /api/v3/loading-manifests/{id}/shipments/{shipmentId}/loading` bestätigt eine Sendung nur dann, wenn sie als offene Position genau diesem Manifest, seiner Tour und seinem Mandanten zugeordnet ist. Benutzer und Zeitpunkt werden je Position gespeichert; doppelte Bestätigungen werden verhindert. Dieselbe Operation steht im V3-Frontend positionsbezogen und CSRF-geschützt zur Verfügung.
 
-Nachweise: `LoadingApiController::confirm()`, `V3LoadingController::confirm()`, `ConfirmShipmentLoadingHandler`, `ShipmentLoading`, `DbalInventoryRepository::confirmShipmentLoading()` und `docs/user/loading-api.md`.
+Nachweise: `LoadingApiController::confirm()`, `LoadingController::confirm()`, `ConfirmShipmentLoadingHandler`, `ShipmentLoading`, `DbalInventoryRepository::confirmShipmentLoading()` und `docs/user/loading-api.md`.
 
 ### Abschlussnachweis
 

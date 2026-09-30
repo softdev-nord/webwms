@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Outbound\Shipping\Presentation\Web;
 
 use DateTimeImmutable;
 use DomainException;
@@ -27,7 +27,7 @@ use WebWMS\Inventory\Application\RegisterShipmentLabelHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/shipping', name: 'v3_shipping_')]
-class V3ShippingController extends AbstractController
+class ShippingController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -43,7 +43,7 @@ class V3ShippingController extends AbstractController
     #[IsGranted('fulfillment.ship.read')]
     public function index(): Response
     {
-        return $this->render('v3/shipping/index.html.twig', [
+        return $this->render('outbound/shipping/index.html.twig', [
             'page' => 'integration.device.scan.shipping',
             'shipments' => $this->queries->shipments($this->tenantUser()->tenantId()),
         ]);
@@ -83,7 +83,7 @@ class V3ShippingController extends AbstractController
         $user = $this->tenantUser();
         $shipment = $this->requiredShipment($shipmentId);
 
-        return $this->render('v3/shipping/show.html.twig', [
+        return $this->render('outbound/shipping/show.html.twig', [
             'page' => 'integration.device.scan.shipment',
             'shipment' => $shipment,
             'carrierConnectionAvailable' => $this->carrierConnectionAvailable(

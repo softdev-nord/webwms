@@ -1,5 +1,19 @@
 # Outbound Control Center
 
+## Modulstruktur
+
+Die Outbound-Präsentation ist nach den Fähigkeiten `Order`, `Picking`,
+`Packing`, `Shipping` und `Loading` unter `src/Outbound` gegliedert. Die
+zugehörigen Views liegen spiegelbildlich unter `templates/outbound`.
+
+`OutboundProcessService` liegt unter `src/Outbound/Application`, die erweiterte
+Picksteuerung unter `src/Outbound/Picking/Application`. Die öffentlichen
+`/v3`- und `/api/v3`-Routen sowie ihre Routennamen bleiben während der
+Strukturmigration unverändert.
+
+Commands und Domainmodelle, die noch den gemeinsamen `InventoryRepository`-
+Vertrag verwenden, verbleiben bis zum Repository-Split im Inventory-Modul.
+
 Der Slice `WEBWMS-049` bis `WEBWMS-065` ergänzt den vorhandenen Fulfillment-Kern um die bislang fehlenden Outbound-Aggregate.
 
 ## Persistenz

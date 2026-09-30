@@ -22,6 +22,12 @@ inbound_controllers:
         namespace: WebWMS\Inbound\Presentation
     type: attribute
 
+outbound_controllers:
+    resource:
+        path: ../../src/Outbound/
+        namespace: WebWMS\Outbound
+    type: attribute
+
 kernel:
     resource: WebWMS\Kernel
     type: attribute

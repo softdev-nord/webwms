@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Outbound\Loading\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -24,7 +24,7 @@ use WebWMS\Inventory\Application\CreateLoadingManifestHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/loading', name: 'v3_loading_')]
-class V3LoadingController extends AbstractController
+class LoadingController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -38,7 +38,7 @@ class V3LoadingController extends AbstractController
     #[IsGranted('fulfillment.loading.read')]
     public function index(): Response
     {
-        return $this->render('v3/loading/index.html.twig', [
+        return $this->render('outbound/loading/index.html.twig', [
             'page' => 'integration.device.scan.loading',
             'manifests' => $this->queries->loadingManifests($this->tenantUser()->tenantId()),
         ]);
@@ -67,7 +67,7 @@ class V3LoadingController extends AbstractController
             return $this->redirectToRoute('v3_loading_show', ['manifestId' => $manifestId]);
         }
 
-        return $this->render('v3/loading/new.html.twig', [
+        return $this->render('outbound/loading/new.html.twig', [
             'page' => 'loading.index.create_load_manifest',
             'shipments' => $this->queries->shipmentsAvailableForLoading($user->tenantId()),
         ]);
@@ -77,7 +77,7 @@ class V3LoadingController extends AbstractController
     #[IsGranted('fulfillment.loading.read')]
     public function show(string $manifestId): Response
     {
-        return $this->render('v3/loading/show.html.twig', [
+        return $this->render('outbound/loading/show.html.twig', [
             'page' => 'integration.printing.job_new.load_manifest',
             'manifest' => $this->requiredManifest($manifestId),
         ]);
