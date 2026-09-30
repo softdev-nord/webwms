@@ -8,6 +8,17 @@ Die JSON-API unter `/api/v3` bleibt davon getrennt: Sie ist zustandslos und verw
 
 Der Slice umfasst:
 
+- Dashboard-Präsentation unter `src/Platform/Presentation/Web` und
+  `templates/platform/dashboard`;
+- Bestandsübersicht unter `src/Warehouse/Stock/Presentation/Web`;
+- Anmeldung und Abmeldung des Arbeitsbereichs unter
+  `src/Security/Presentation/Web` mit dem Template
+  `templates/security/workspace_login.html.twig`.
+
+Interne Controller und Templates tragen damit keine Versionskennung. Die
+öffentlichen Routen `/v3`, `/v3/inventory/stock`, `/v3/login` und `/v3/logout`
+sowie ihre Routennamen bleiben unverändert.
+
 - `/v3/login`: E-Mail- und Passwort-Anmeldung innerhalb eines Mandanten
 - `/v3`: operatives Dashboard mit Stamm-, Bestands- und Fulfillment-Zahlen
 - `/v3/inventory/stock`: berechtigungsgeschützte Bestandsprojektion mit Lagerfilter

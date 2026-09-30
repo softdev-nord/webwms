@@ -52,6 +52,12 @@ documentation_controllers:
         namespace: WebWMS\Documentation\Presentation
     type: attribute
 
+security_controllers:
+    resource:
+        path: ../../src/Security/Presentation/
+        namespace: WebWMS\Security\Presentation
+    type: attribute
+
 kernel:
     resource: WebWMS\Kernel
     type: attribute
