@@ -52,7 +52,7 @@ Artikel- und Auftragsübernahme sowie Bestands- und Bewegungsabfragen nutzen die
 
 Der V3-Arbeitsbereich ergänzt eine mandantengebundene Übersicht und Detailansicht sowie CSRF-geschützte Abläufe zum Anlegen, Pausieren und Aktivieren von ERP-Verbindungen. Dabei wird weiterhin ausschließlich die Referenz auf die Credential-Umgebungsvariable erfasst.
 
-Nachweise: `ErpConnection`, `DbalErpConnectionRepository`, `ErpConnectionApiController`, `V3ErpConnectionController`, `DeliverErpStatusEventHandler`, `HttpErpStatusTransport`, Migration `Version20260919140000`, Unit-Tests sowie `docs/technical/erp-integration.md` und `docs/user/erp-integration.md`.
+Nachweise: `ErpConnection`, `DbalErpConnectionRepository`, `ErpConnectionApiController`, `ErpConnectionController`, `DeliverErpStatusEventHandler`, `HttpErpStatusTransport`, Migration `Version20260919140000`, Unit-Tests sowie `docs/technical/erp-integration.md` und `docs/user/erp-integration.md`.
 
 Herstellerspezifische Mappings, aggregierte Betriebsmetriken und vollständige HTTP-/MariaDB-Integrationstests fehlen noch; das Ticket ist deshalb nicht `Done`.
 

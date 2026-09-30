@@ -169,6 +169,42 @@ services:
         resource: '../src/Outbound/Loading/Presentation/'
         tags: ['controller.service_arguments']
 
+    WebWMS\Integration\Automation\Presentation\:
+        resource: '../src/Integration/Automation/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Integration\Carrier\Presentation\:
+        resource: '../src/Integration/Carrier/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Integration\Device\Presentation\:
+        resource: '../src/Integration/Device/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Integration\Erp\Presentation\:
+        resource: '../src/Integration/Erp/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Integration\Measurement\Presentation\:
+        resource: '../src/Integration/Measurement/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Integration\Outbox\Presentation\:
+        resource: '../src/Integration/Outbox/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Integration\Printing\Presentation\:
+        resource: '../src/Integration/Printing/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Integration\Transport\Presentation\:
+        resource: '../src/Integration/Transport/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Integration\Wcs\Presentation\:
+        resource: '../src/Integration/Wcs/Presentation/'
+        tags: ['controller.service_arguments']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

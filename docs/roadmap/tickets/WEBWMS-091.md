@@ -58,8 +58,8 @@ Der V3-Arbeitsbereich ergänzt Druckerübersicht, Anlage, Detail- und Auditansic
 Statuswechsel sowie eine zentrale Druckwarteschlange. Allgemeine Druckaufträge
 können erfasst und wartende oder fehlgeschlagene Jobs manuell ausgeführt
 beziehungsweise erneut versucht werden. Fehler, Versuche und externe Referenzen
-sind in der Detailansicht nachvollziehbar. Nachweise: `V3PrintingController`,
-die Templates unter `templates/v3/integration/printing` und die erweiterten
+sind in der Detailansicht nachvollziehbar. Nachweise: `PrintingController`,
+die Templates unter `templates/integration/printing` und die erweiterten
 mandantengebundenen Query-Tests.
 
 Standort-/Arbeitsplatz-Routing, herstellerspezifische Adapter, automatische

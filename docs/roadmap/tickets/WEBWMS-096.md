@@ -50,7 +50,7 @@ Eine persistente, transaktionale Outbox mit Pending-Abfrage und idempotenter Qui
 
 Queue-Fehler erzeugen persistente Zustellversuche und exponentielle Wiederholungen. Nach fünf Fehlern folgt `dead_letter`; API und V3-Frontend bieten Statusüberwachung sowie eine autorisierte, auditierte manuelle Wiederaufnahme.
 
-Nachweise: `OutboxPublisher`, `MessengerOutboxTransport`, `DbalOutboxRepository`, `PublishOutboxConsoleCommand`, `OutboxApiController`, `V3OutboxController`, `wms_integration_attempt`, Migration `Version20260919120000`, Unit-Tests sowie die technische und Anwenderdokumentation.
+Nachweise: `OutboxPublisher`, `MessengerOutboxTransport`, `DbalOutboxRepository`, `PublishOutboxConsoleCommand`, `OutboxApiController`, `OutboxController`, `wms_integration_attempt`, Migration `Version20260919120000`, Unit-Tests sowie die technische und Anwenderdokumentation.
 
 Weitere Zieladapter, aggregierte Betriebsmetriken, Alarmierung und vollständige Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
 

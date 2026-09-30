@@ -52,7 +52,7 @@ Kombigeräte sowie eine idempotente, auditierbare Messwertübernahme vorhanden.
 Akzeptierte Messungen aktualisieren Paket oder Artikel transaktional; abgelehnte
 Messungen bleiben ohne Zieländerung im Journal. API v3 und V3-Arbeitsbereich
 decken Geräteanlage, Statuswechsel, Erfassung und Verlauf ab. Nachweise:
-`MeasurementApiController`, `V3MeasurementController`, Migration
+`MeasurementApiController`, `MeasurementController`, Migration
 `Version20260920120000`, Domain-/Application-/Query-Tests sowie technische und
 Anwenderdokumentation.
 

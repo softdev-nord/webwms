@@ -52,7 +52,7 @@ idempotente Scanannahme und ein auditierbares Scanereignisjournal vorhanden.
 API v3 und V3-Arbeitsbereich ermöglichen Anlage, Statuswechsel, Scanerfassung
 sowie Detail- und Verlaufsansichten. Akzeptierte und abgelehnte Scans bilden
 positive und negative Prüfpfade ab. Nachweise: `DeviceApiController`,
-`V3DeviceController`, Migration `Version20260920100000`, Domain- und Query-Tests
+`DeviceController`, Migration `Version20260920100000`, Domain- und Query-Tests
 sowie die technische und Anwenderdokumentation.
 
 Die direkte Ausführung und Validierung konkreter Wareneingangs-, Pick-, Pack-,

@@ -48,7 +48,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 Pick-, Pack-, Versand-, Tracking- und Verladeübergänge schreiben innerhalb ihrer Fachtransaktion eine mandantengebundene `IntegrationStatusEvent` in `wms_integration_outbox`. Offene Meldungen können über `GET /api/v3/outbox` cursorbasiert gelesen und nach erfolgreicher Übernahme idempotent quittiert werden. Das V3-Frontend bietet eine tenantbezogene Status- und Payloadansicht sowie die manuelle Pull-Quittierung.
 
-Nachweise: `IntegrationStatusEvent`, `OutboxRepository`, `DbalOutboxRepository`, `OutboxApiController`, `V3OutboxController`, die transaktionalen Aufrufe in `DbalInventoryRepository`, Migration `Version20260919100000`, Unit-Tests sowie `docs/technical/integration-outbox.md` und `docs/user/integration-outbox.md`.
+Nachweise: `IntegrationStatusEvent`, `OutboxRepository`, `DbalOutboxRepository`, `OutboxApiController`, `OutboxController`, die transaktionalen Aufrufe in `DbalInventoryRepository`, Migration `Version20260919100000`, Unit-Tests sowie `docs/technical/integration-outbox.md` und `docs/user/integration-outbox.md`.
 
 ### Abschlussnachweis
 

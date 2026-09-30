@@ -28,6 +28,12 @@ outbound_controllers:
         namespace: WebWMS\Outbound
     type: attribute
 
+integration_controllers:
+    resource:
+        path: ../../src/Integration/
+        namespace: WebWMS\Integration
+    type: attribute
+
 kernel:
     resource: WebWMS\Kernel
     type: attribute
