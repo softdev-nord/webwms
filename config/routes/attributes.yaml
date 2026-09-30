@@ -46,6 +46,12 @@ fulfillment_controllers:
         namespace: WebWMS\Fulfillment\Presentation
     type: attribute
 
+documentation_controllers:
+    resource:
+        path: ../../src/Documentation/Presentation/
+        namespace: WebWMS\Documentation\Presentation
+    type: attribute
+
 kernel:
     resource: WebWMS\Kernel
     type: attribute

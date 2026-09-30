@@ -6,8 +6,11 @@ Die Markdown-Dateien unter `docs/user` sind die einzige Quelle der Benutzerdokum
 
 - `UserDocumentationService` entdeckt Markdown-Dateien, liest Titel und Kurzbeschreibung aus, gruppiert sie fachlich und stellt Suche sowie Seitennavigation bereit.
 - `SafeMarkdownRenderer` konvertiert den benötigten Markdown-Umfang in HTML. Unterstützt werden Überschriften, Absätze, geordnete und ungeordnete Listen, Tabellen, Codeblöcke, Inline-Code, Hervorhebungen und Links.
-- `V3DocumentationController` liefert Übersicht und Detailseiten.
-- Die Templates unter `templates/v3/documentation` verwenden Karten, Typografie, Farben und responsive Raster der bestehenden V3-Oberfläche.
+- `DocumentationController` unter `src/Documentation/Presentation/Web` liefert Übersicht und Detailseiten.
+- Die Templates unter `templates/documentation` verwenden Karten, Typografie, Farben und responsive Raster der bestehenden V3-Oberfläche.
+
+Der interne Controllername ist nicht an eine Version gekoppelt. Der öffentliche
+Vertrag unter `/v3/help` und die bestehenden Routennamen bleiben unverändert.
 
 ## Sicherheit
 

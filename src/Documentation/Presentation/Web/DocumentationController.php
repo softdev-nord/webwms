@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Documentation\Presentation\Web;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,14 +12,14 @@ use WebWMS\Documentation\Application\SafeMarkdownRenderer;
 use WebWMS\Documentation\Application\UserDocumentationService;
 
 #[Route('/v3/help', name: 'v3_documentation_')]
-class V3DocumentationController extends AbstractController
+class DocumentationController extends AbstractController
 {
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(Request $request, UserDocumentationService $documentation): Response
     {
         $query = trim((string) $request->query->get('q'));
 
-        return $this->render('v3/documentation/index.html.twig', [
+        return $this->render('documentation/index.html.twig', [
             'page' => 'documentation.page.help_and_documentation',
             'groups' => $documentation->groupedDocuments($query),
             'query' => $query,
@@ -32,7 +32,7 @@ class V3DocumentationController extends AbstractController
         $document = $documentation->document($slug);
         $rendered = $markdown->render($document['markdown'], $this->generateUrl('v3_documentation_index'));
 
-        return $this->render('v3/documentation/show.html.twig', [
+        return $this->render('documentation/show.html.twig', [
             'page' => $document['title'],
             'document' => $document,
             'content' => $rendered['html'],
