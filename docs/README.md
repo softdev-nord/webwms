@@ -80,6 +80,12 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 - [Bestände über API v3 umbuchen](user/inventory-movement-api.md)
 - [ERP-System anbinden](user/erp-integration.md)
 
+## Architektur
+
+- [Architekturübersicht](architecture/README.md)
+- [Fachliche Modulübersicht](architecture/module-map.md)
+- [Zielstruktur und Migrationsregeln](architecture/target-module-structure.md)
+
 ## Verbindliche Dokumentationsregel
 
 Jeder neue Slice und jede neue Phase aktualisiert im selben Commit:

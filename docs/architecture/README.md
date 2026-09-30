@@ -39,5 +39,6 @@ and the complete quality suite are available.
 6. State-changing integrations use an outbox and idempotent consumers.
 7. Every stock-changing use case writes an immutable stock-ledger entry.
 
-See [the module map](module-map.md) and the architecture decisions in
-[`adr/`](adr/).
+See [the module map](module-map.md), the
+[target module structure](target-module-structure.md) and the architecture
+decisions in [`adr/`](adr/).
