@@ -1,5 +1,20 @@
 # Inventory Control Center
 
+## Modulstruktur
+
+Die Inventursteuerung liegt unter
+`src/Warehouse/InventoryCount/Presentation` und trennt Web- und API-Eingänge.
+Die Oberfläche spiegelt diese Fähigkeit unter
+`templates/warehouse/inventory_count` wider. Bestandsführung, Sperrbestand und
+Rückverfolgung sind als API-Präsentation unter
+`src/Warehouse/Stock/Presentation/Api` zusammengeführt.
+
+Interne Controller tragen keine Versionskennung. Die bestehenden `/v3`- und
+`/api/v3`-Verträge sowie sämtliche Routennamen bleiben unverändert. Die
+vorhandenen Anwendungsfälle in `src/Inventory/Application` werden zunächst
+weiterverwendet und in einem späteren Application-Slice nach Fähigkeiten
+zerlegt.
+
 Der Slice WEBWMS-026 bis WEBWMS-032 schließt das Inventory-Epic mit einem gemeinsamen, mandantenfähigen Control Center ab.
 
 ## Bausteine
@@ -31,4 +46,3 @@ Web und REST verwenden dieselben Application Services und vorhandenen Inventur-H
 ## Berechtigungen
 
 Lesen erfolgt über `inventory.control.read`. Schreib- und Ausführungsrechte sind fachlich getrennt: `inventory.hazard.write`, `inventory.bom.write`, `inventory.bom.execute`, `inventory.load_carrier.write`, `inventory.count.write`, `inventory.count.execute` und `inventory.count.approve`.
-

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Warehouse\InventoryCount\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -31,7 +31,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/inventory/control', name: 'v3_inventory_control_')]
 #[IsGranted('inventory.control.read')]
-class V3InventoryControlController extends AbstractController
+class InventoryControlController extends AbstractController
 {
     public function __construct(
         private readonly InventoryControlService $control,
@@ -47,7 +47,7 @@ class V3InventoryControlController extends AbstractController
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render('warehouse/control.html.twig', ['page' => 'inventory.control.inventory_control_center', 'inventory' => $this->control->workspace($this->user()->tenantId())]);
+        return $this->render('warehouse/inventory_count/control.html.twig', ['page' => 'inventory.control.inventory_control_center', 'inventory' => $this->control->workspace($this->user()->tenantId())]);
     }
 
     #[Route('/hazard-classes', name: 'hazard_class', methods: ['POST'])]

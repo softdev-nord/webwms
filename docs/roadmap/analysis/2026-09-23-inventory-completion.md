@@ -13,9 +13,8 @@ Mit WEBWMS-026 bis WEBWMS-032 sind alle 18 Tickets des Epics `WEBWMS-EPIC-INVENT
 
 - Migration `Version20260923210000`
 - `InventoryControlService`
-- Web- und API-Controller `V3InventoryControlController` und `InventoryControlApiController`
-- UI `templates/warehouse/control.html.twig`
+- Web- und API-Controller `InventoryControlController` und `InventoryControlApiController`
+- UI `templates/warehouse/inventory_count/control.html.twig`
 - Rechte im `PermissionCatalog`
 - Unit-Tests `InventoryControlServiceTest`
 - technische und fachliche Dokumentation zum Inventory Control Center
-

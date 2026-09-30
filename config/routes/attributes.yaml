@@ -6,8 +6,8 @@ controllers:
 
 warehouse_controllers:
     resource:
-        path: ../../src/Warehouse/Presentation/
-        namespace: WebWMS\Warehouse\Presentation
+        path: ../../src/Warehouse/
+        namespace: WebWMS\Warehouse
     type: attribute
 
 administration_controllers:

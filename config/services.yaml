@@ -141,6 +141,14 @@ services:
         resource: '../src/Warehouse/Presentation/'
         tags: ['controller.service_arguments']
 
+    WebWMS\Warehouse\Stock\Presentation\:
+        resource: '../src/Warehouse/Stock/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Warehouse\InventoryCount\Presentation\:
+        resource: '../src/Warehouse/InventoryCount/Presentation/'
+        tags: ['controller.service_arguments']
+
     WebWMS\Administration\Presentation\:
         resource: '../src/Administration/Presentation/'
         tags: ['controller.service_arguments']
