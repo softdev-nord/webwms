@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3', name: 'v3_')]
@@ -18,7 +18,7 @@ class StockController extends AbstractController
 {
     #[Route('/inventory/stock', name: 'stock', methods: ['GET'])]
     #[IsGranted('inventory.stock.read')]
-    public function stock(Request $request, ApiV3QueryService $queries): Response
+    public function stock(Request $request, WarehouseQueryService $queries): Response
     {
         $user = $this->tenantUser();
         $warehouse = trim((string) $request->query->get('warehouse'));

@@ -18,7 +18,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Inbound\Application\InboundProcessService;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Inbound\Application\Query\InboundQueryService;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Inventory\Application\CreateInboundDeliveryCommand;
 use WebWMS\Inventory\Application\CreateInboundDeliveryHandler;
 use WebWMS\Inventory\Application\CreatePurchaseOrderCommand;
@@ -36,7 +37,8 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class InboundControlController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly InboundQueryService $inboundQueries,
+        private readonly WarehouseQueryService $warehouseQueries,
         private readonly CreatePurchaseOrderHandler $createPurchaseOrder,
         private readonly CreateInboundDeliveryHandler $createDelivery,
         private readonly CreateReturnOrderHandler $createReturn,
@@ -54,10 +56,10 @@ class InboundControlController extends AbstractController
 
         return $this->render('inbound/control.html.twig', [
             'page' => 'inbound.control.goods_receipt_control_center',
-            'control' => $this->queries->inboundControlCenter($user->tenantId()),
-            'worklist' => $this->queries->plannedInboundWorklist($user->tenantId()),
-            'products' => $this->queries->products($user->tenantId(), 500, null),
-            'locations' => $this->queries->receivingLocations($user->tenantId()),
+            'control' => $this->inboundQueries->inboundControlCenter($user->tenantId()),
+            'worklist' => $this->inboundQueries->plannedInboundWorklist($user->tenantId()),
+            'products' => $this->warehouseQueries->products($user->tenantId(), 500, null),
+            'locations' => $this->inboundQueries->receivingLocations($user->tenantId()),
         ]);
     }
 

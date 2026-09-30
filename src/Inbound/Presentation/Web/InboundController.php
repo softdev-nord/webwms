@@ -14,7 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Inbound\Application\Query\InboundQueryService;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Inventory\Application\ConfirmPutawayCommand;
 use WebWMS\Inventory\Application\ConfirmPutawayHandler;
 use WebWMS\Inventory\Application\CreatePutawayOrderCommand;
@@ -32,7 +33,8 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class InboundController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly InboundQueryService $inboundQueries,
+        private readonly WarehouseQueryService $warehouseQueries,
         private readonly UnplannedReceiptService $receipts,
         private readonly ReceiveInboundDeliveryHandler $receiveInbound,
         private readonly InspectInboundReceiptHandler $inspectInbound,
@@ -50,8 +52,8 @@ class InboundController extends AbstractController
 
         return $this->render('inbound/planned.html.twig', [
             'page' => 'inbound.planned.planned_goods_receipt',
-            'worklist' => $this->queries->plannedInboundWorklist($tenantId),
-            'locations' => $this->queries->receivingLocations($tenantId),
+            'worklist' => $this->inboundQueries->plannedInboundWorklist($tenantId),
+            'locations' => $this->inboundQueries->receivingLocations($tenantId),
         ]);
     }
 
@@ -171,7 +173,7 @@ class InboundController extends AbstractController
     {
         return $this->render('inbound/index.html.twig', [
             'page' => 'inbound.control.goods_receipt',
-            'receipts' => $this->queries->unplannedReceipts($this->user()->tenantId()),
+            'receipts' => $this->inboundQueries->unplannedReceipts($this->user()->tenantId()),
         ]);
     }
 
@@ -206,8 +208,8 @@ class InboundController extends AbstractController
 
         return $this->render('inbound/new.html.twig', [
             'page' => 'inbound.page.unplanned_goods_receipt',
-            'products' => $this->queries->products($user->tenantId(), 500, null),
-            'locations' => $this->queries->receivingLocations($user->tenantId()),
+            'products' => $this->warehouseQueries->products($user->tenantId(), 500, null),
+            'locations' => $this->inboundQueries->receivingLocations($user->tenantId()),
         ]);
     }
 
@@ -215,7 +217,7 @@ class InboundController extends AbstractController
     #[IsGranted('inbound.receipt.read')]
     public function show(string $receiptId): Response
     {
-        $receipt = $this->queries->unplannedReceipt($this->user()->tenantId(), $receiptId);
+        $receipt = $this->inboundQueries->unplannedReceipt($this->user()->tenantId(), $receiptId);
         if ($receipt === null) {
             throw $this->createNotFoundException('Der Wareneingang wurde nicht gefunden.');
         }

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Integration\Application\StockMovementCriteria;
 use WebWMS\Inventory\Application\RegisterProductCommand;
 use WebWMS\Inventory\Application\RegisterProductHandler;
@@ -26,7 +26,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class InventoryApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly WarehouseQueryService $warehouseQueries,
         private readonly RegisterProductHandler $registerProduct,
         private readonly TransferStockHandler $transferStock
     ) {
@@ -42,7 +42,7 @@ class InventoryApiController extends AbstractController
     #[IsGranted('inventory.product.read')]
     public function products(Request $request): JsonResponse
     {
-        $items = $this->queries->products(
+        $items = $this->warehouseQueries->products(
             $this->apiUser()->tenantId(),
             $this->limit($request),
             $this->optionalQueryString($request, 'cursor'),
@@ -80,14 +80,14 @@ class InventoryApiController extends AbstractController
     #[IsGranted('inventory.location.read')]
     public function warehouses(): JsonResponse
     {
-        return $this->collection($this->queries->warehouses($this->apiUser()->tenantId()), null);
+        return $this->collection($this->warehouseQueries->warehouses($this->apiUser()->tenantId()), null);
     }
 
     #[Route('/stock', name: 'stock', methods: ['GET'])]
     #[IsGranted('inventory.stock.read')]
     public function stock(Request $request): JsonResponse
     {
-        $items = $this->queries->stock(
+        $items = $this->warehouseQueries->stock(
             $this->apiUser()->tenantId(),
             $this->optionalQueryString($request, 'warehouseId'),
             $this->limit($request),
@@ -101,7 +101,7 @@ class InventoryApiController extends AbstractController
     #[IsGranted('inventory.stock.movement.read')]
     public function stockMovements(Request $request): JsonResponse
     {
-        $items = $this->queries->stockMovements(
+        $items = $this->warehouseQueries->stockMovements(
             $this->apiUser()->tenantId(),
             new StockMovementCriteria(
                 $this->optionalQueryString($request, 'productId'),

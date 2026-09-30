@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Inventory\Application\AllocateStockCommand;
 use WebWMS\Inventory\Application\AllocateStockHandler;
 use WebWMS\Inventory\Application\CreateOutboundOrderCommand;
@@ -31,6 +32,7 @@ class OutboundController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
+        private readonly WarehouseQueryService $warehouseQueries,
         private readonly CreateOutboundOrderHandler $createOrder,
         private readonly ReleaseOutboundOrderHandler $releaseOrder,
         private readonly AllocateStockHandler $allocateStock,
@@ -73,7 +75,7 @@ class OutboundController extends AbstractController
         }
 
         return $this->render('outbound/order/order_new.html.twig', [
-            'products' => $this->queries->products($user->tenantId(), 200, null),
+            'products' => $this->warehouseQueries->products($user->tenantId(), 200, null),
             'page' => 'outbound.page.outbound_order',
         ]);
     }
@@ -94,7 +96,7 @@ class OutboundController extends AbstractController
 
         return $this->render('outbound/order/order.html.twig', [
             'order' => $order,
-            'selectionRules' => $this->queries->stockSelectionRules($user->tenantId()),
+            'selectionRules' => $this->warehouseQueries->stockSelectionRules($user->tenantId()),
             'page' => 'outbound.page.outbound_order',
         ]);
     }

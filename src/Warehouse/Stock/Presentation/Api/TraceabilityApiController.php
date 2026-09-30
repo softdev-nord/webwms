@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Inventory\Application\SpecialStockService;
 use WebWMS\Inventory\Application\StockSelectionService;
 use WebWMS\Security\V3\TenantPermissionUser;
@@ -22,7 +22,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class TraceabilityApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly WarehouseQueryService $warehouseQueries,
         private readonly SpecialStockService $specialStock,
         private readonly StockSelectionService $stockSelection,
     ) {
@@ -32,21 +32,21 @@ class TraceabilityApiController extends AbstractController
     #[IsGranted('inventory.traceability.read')]
     public function index(): JsonResponse
     {
-        return new JsonResponse(['data' => $this->queries->traceability($this->user()->tenantId())]);
+        return new JsonResponse(['data' => $this->warehouseQueries->traceability($this->user()->tenantId())]);
     }
 
     #[Route('/traceability/{dimension}/{value}', name: 'events', requirements: ['dimension' => 'batch|serial'], methods: ['GET'])]
     #[IsGranted('inventory.traceability.read')]
     public function events(string $dimension, string $value): JsonResponse
     {
-        return new JsonResponse(['data' => $this->queries->traceabilityEvents($this->user()->tenantId(), $dimension, $value)]);
+        return new JsonResponse(['data' => $this->warehouseQueries->traceabilityEvents($this->user()->tenantId(), $dimension, $value)]);
     }
 
     #[Route('/special-stock-types', name: 'special_stock_types', methods: ['GET'])]
     #[IsGranted('inventory.special_stock.read')]
     public function types(): JsonResponse
     {
-        return new JsonResponse(['data' => $this->queries->specialStockTypes($this->user()->tenantId())]);
+        return new JsonResponse(['data' => $this->warehouseQueries->specialStockTypes($this->user()->tenantId())]);
     }
 
     #[Route('/special-stock-types', name: 'special_stock_type_create', methods: ['POST'])]
@@ -78,7 +78,7 @@ class TraceabilityApiController extends AbstractController
     #[IsGranted('inventory.selection_rule.read')]
     public function selectionRules(): JsonResponse
     {
-        return new JsonResponse(['data' => $this->queries->stockSelectionRules($this->user()->tenantId())]);
+        return new JsonResponse(['data' => $this->warehouseQueries->stockSelectionRules($this->user()->tenantId())]);
     }
 
     #[Route('/selection-rules', name: 'selection_rule_create', methods: ['POST'])]

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Inbound\Application\Query\InboundQueryService;
 use WebWMS\Inventory\Application\UnplannedReceiptService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -20,7 +20,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class InboundApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly InboundQueryService $inboundQueries,
         private readonly UnplannedReceiptService $receipts,
     ) {
     }
@@ -29,7 +29,7 @@ class InboundApiController extends AbstractController
     #[IsGranted('inbound.receipt.read')]
     public function index(): JsonResponse
     {
-        $data = $this->queries->unplannedReceipts($this->user()->tenantId());
+        $data = $this->inboundQueries->unplannedReceipts($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }
@@ -64,7 +64,7 @@ class InboundApiController extends AbstractController
         $user = $this->user();
         $receipt = $this->receipts->accept($user->tenantId(), $this->string($payload, 'code'), $this->string($payload, 'supplierCode'), $this->string($payload, 'supplierName'), $this->optionalString($payload, 'deliveryNote'), $normalized, $user->actorId(), new DateTimeImmutable());
 
-        return new JsonResponse(['data' => $this->queries->unplannedReceipt($user->tenantId(), $receipt->id()->value())], Response::HTTP_CREATED);
+        return new JsonResponse(['data' => $this->inboundQueries->unplannedReceipt($user->tenantId(), $receipt->id()->value())], Response::HTTP_CREATED);
     }
 
     #[Route('/{receiptId}/book', name: 'book', methods: ['POST'])]
@@ -74,7 +74,7 @@ class InboundApiController extends AbstractController
         $user = $this->user();
         $this->receipts->book($user->tenantId(), $receiptId, $user->actorId(), new DateTimeImmutable());
 
-        return new JsonResponse(['data' => $this->queries->unplannedReceipt($user->tenantId(), $receiptId)]);
+        return new JsonResponse(['data' => $this->inboundQueries->unplannedReceipt($user->tenantId(), $receiptId)]);
     }
 
     private function user(): TenantPermissionUser

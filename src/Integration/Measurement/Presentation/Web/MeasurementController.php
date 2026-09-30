@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Integration\Application\MeasurementService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -23,6 +24,7 @@ class MeasurementController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
+        private readonly WarehouseQueryService $warehouseQueries,
         private readonly MeasurementService $measurements,
     ) {
     }
@@ -121,7 +123,7 @@ class MeasurementController extends AbstractController
                 static fn (array $device): bool => (bool) ($device['active'] ?? false),
             )),
             'packages' => $this->queries->measurablePackages($user->tenantId()),
-            'products' => $this->queries->products($user->tenantId(), 200, null),
+            'products' => $this->warehouseQueries->products($user->tenantId(), 200, null),
             'requestId' => Uuid::v7()->toRfc4122(),
         ]);
     }

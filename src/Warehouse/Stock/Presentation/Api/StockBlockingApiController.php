@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Inventory\Application\StockBlockingService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
@@ -21,7 +21,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class StockBlockingApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly WarehouseQueryService $warehouseQueries,
         private readonly StockBlockingService $stockBlocking,
     ) {
     }
@@ -30,7 +30,7 @@ class StockBlockingApiController extends AbstractController
     #[IsGranted('inventory.stock_block.read')]
     public function reasons(): JsonResponse
     {
-        return new JsonResponse(['data' => $this->queries->stockBlockReasons($this->user()->tenantId())]);
+        return new JsonResponse(['data' => $this->warehouseQueries->stockBlockReasons($this->user()->tenantId())]);
     }
 
     #[Route('/stock-block-reasons', name: 'reason_create', methods: ['POST'])]
@@ -49,14 +49,14 @@ class StockBlockingApiController extends AbstractController
     #[IsGranted('inventory.stock_block.read')]
     public function index(): JsonResponse
     {
-        return new JsonResponse(['data' => $this->queries->stockBlocks($this->user()->tenantId())]);
+        return new JsonResponse(['data' => $this->warehouseQueries->stockBlocks($this->user()->tenantId())]);
     }
 
     #[Route('/stock-blocks/{blockId}/events', name: 'events', methods: ['GET'])]
     #[IsGranted('inventory.stock_block.read')]
     public function events(string $blockId): JsonResponse
     {
-        return new JsonResponse(['data' => $this->queries->stockBlockEvents($this->user()->tenantId(), $blockId)]);
+        return new JsonResponse(['data' => $this->warehouseQueries->stockBlockEvents($this->user()->tenantId(), $blockId)]);
     }
 
     #[Route('/stock-blocks', name: 'create', methods: ['POST'])]

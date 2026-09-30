@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Inbound\Application\Query\InboundQueryService;
 use WebWMS\Inventory\Application\ConfirmPutawayCommand;
 use WebWMS\Inventory\Application\ConfirmPutawayHandler;
 use WebWMS\Inventory\Application\CreatePutawayOrderCommand;
@@ -29,7 +29,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 class PlannedInboundApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly InboundQueryService $inboundQueries,
         private readonly ReceiveInboundDeliveryHandler $receiveInbound,
         private readonly InspectInboundReceiptHandler $inspectInbound,
         private readonly CreatePutawayOrderHandler $createPutaway,
@@ -42,7 +42,7 @@ class PlannedInboundApiController extends AbstractController
     #[IsGranted('inbound.planned.read')]
     public function index(): JsonResponse
     {
-        $data = $this->queries->plannedInboundWorklist($this->user()->tenantId());
+        $data = $this->inboundQueries->plannedInboundWorklist($this->user()->tenantId());
 
         return new JsonResponse(['data' => $data, 'meta' => ['count' => count($data)]]);
     }

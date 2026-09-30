@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\ApiV3QueryService;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
 use WebWMS\Warehouse\Topology\Application\WarehouseTopologyService;
 
@@ -21,7 +21,7 @@ use WebWMS\Warehouse\Topology\Application\WarehouseTopologyService;
 class WarehouseTopologyApiController extends AbstractController
 {
     public function __construct(
-        private readonly ApiV3QueryService $queries,
+        private readonly WarehouseQueryService $warehouseQueries,
         private readonly WarehouseTopologyService $topology,
     ) {
     }
@@ -30,14 +30,14 @@ class WarehouseTopologyApiController extends AbstractController
     #[IsGranted('inventory.topology.read')]
     public function topology(): JsonResponse
     {
-        return new JsonResponse(['data' => $this->queries->warehouseTopology($this->user()->tenantId())]);
+        return new JsonResponse(['data' => $this->warehouseQueries->warehouseTopology($this->user()->tenantId())]);
     }
 
     #[Route('/overview', name: 'overview', methods: ['GET'])]
     #[IsGranted('inventory.overview.read')]
     public function overview(): JsonResponse
     {
-        return new JsonResponse(['data' => $this->queries->warehouseOverview($this->user()->tenantId())]);
+        return new JsonResponse(['data' => $this->warehouseQueries->warehouseOverview($this->user()->tenantId())]);
     }
 
     #[Route('/occupancy', name: 'occupancy', methods: ['GET'])]
@@ -46,7 +46,7 @@ class WarehouseTopologyApiController extends AbstractController
     {
         $warehouse = trim((string) $request->query->get('warehouse'));
 
-        return new JsonResponse(['data' => $this->queries->warehouseOccupancy(
+        return new JsonResponse(['data' => $this->warehouseQueries->warehouseOccupancy(
             $this->user()->tenantId(),
             $warehouse === '' ? null : $warehouse,
         )]);
