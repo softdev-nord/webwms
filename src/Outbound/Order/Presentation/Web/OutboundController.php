@@ -14,8 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Outbound\Application\Query\OutboundQueryService;
-use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Inventory\Application\AllocateStockCommand;
 use WebWMS\Inventory\Application\AllocateStockHandler;
 use WebWMS\Inventory\Application\CreateOutboundOrderCommand;
@@ -25,7 +23,9 @@ use WebWMS\Inventory\Application\CreatePickListHandler;
 use WebWMS\Inventory\Application\ReleaseOutboundOrderCommand;
 use WebWMS\Inventory\Application\ReleaseOutboundOrderHandler;
 use WebWMS\Inventory\Application\StockSelectionService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 
 #[Route('/v3/outbound', name: 'v3_outbound_')]
 class OutboundController extends AbstractController

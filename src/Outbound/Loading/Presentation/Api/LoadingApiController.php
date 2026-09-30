@@ -13,13 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Inventory\Application\CompleteLoadingManifestCommand;
 use WebWMS\Inventory\Application\CompleteLoadingManifestHandler;
 use WebWMS\Inventory\Application\ConfirmShipmentLoadingCommand;
 use WebWMS\Inventory\Application\ConfirmShipmentLoadingHandler;
 use WebWMS\Inventory\Application\CreateLoadingManifestCommand;
 use WebWMS\Inventory\Application\CreateLoadingManifestHandler;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/loading-manifests', name: 'api_v3_loading_')]

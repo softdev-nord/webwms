@@ -54,7 +54,7 @@ Nachweise: `ShippingApiController::create()`, `CreateShipmentHandler`, `Shipment
 
 Mandantenfähige Versandregeln wählen Carrier und Service priorisiert nach Gewichtsbereich. Pflege, Vorschau und Regelauswahl stehen in V3-UI und JSON-API bereit.
 
-Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
+Nachweise: `OutboundProcessService`, `OutboundQueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

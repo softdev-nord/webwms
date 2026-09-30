@@ -13,8 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Warehouse\Topology\Application\WarehouseTopologyService;
 
 #[Route('/api/v3/inventory', name: 'api_v3_inventory_')]

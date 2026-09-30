@@ -50,9 +50,9 @@ Die artikelbezogene Bedarfsvorschau aggregiert offene Ausgangsmengen, verfügbar
 
 ### Abschlussnachweis
 
-`ApiV3QueryService::outboundControlCenter()` aggregiert offene Bedarfe, verfügbare Bestände und Engpassmengen artikelbezogen. Der V3-Leitstand stellt Vorschau und Auftragsprüfung filter- und paginierbar bereit.
+`OutboundQueryService::outboundControlCenter()` aggregiert offene Bedarfe, verfügbare Bestände und Engpassmengen artikelbezogen. Der V3-Leitstand stellt Vorschau und Auftragsprüfung filter- und paginierbar bereit.
 
-Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
+Nachweise: `OutboundProcessService`, `OutboundQueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

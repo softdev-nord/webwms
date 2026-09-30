@@ -14,11 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Inventory\Application\AssignPickListCommand;
 use WebWMS\Inventory\Application\AssignPickListHandler;
 use WebWMS\Inventory\Application\ConfirmPickTaskCommand;
 use WebWMS\Inventory\Application\ConfirmPickTaskHandler;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Outbound\Picking\Application\AdvancedPickingService;
 use WebWMS\Security\V3\TenantPermissionUser;
 

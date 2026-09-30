@@ -14,10 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\Query\IntegrationQueryService;
-use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Integration\Application\MeasurementService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 
 #[Route('/v3/integration/measurements', name: 'v3_measurement_')]
 class MeasurementController extends AbstractController

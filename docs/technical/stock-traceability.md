@@ -10,7 +10,7 @@ Nicht allokierbare Sonderbestände werden aus der Bestandsauswahl im Warenausgan
 
 ## Rückverfolgung
 
-`ApiV3QueryService::traceability()` projiziert:
+`WarehouseQueryService::traceability()` projiziert:
 
 - Chargen mit Artikel, Menge, Lagerplatzanzahl und frühestem MHD,
 - MHD-Bestände mit den Ampelstufen `expired`, `critical` und `ok`,

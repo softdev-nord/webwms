@@ -54,7 +54,7 @@ Nachweise: `PackingApiController::complete()`, `CompletePackingOrderHandler`, `D
 
 Der transaktionale Packabschluss gleicht gepickte und eindeutig gepackte Positionen ab. Fehlmengen, doppelte Positionen und unversiegelte Pakete verhindern den Abschluss.
 
-Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
+Nachweise: `OutboundProcessService`, `OutboundQueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

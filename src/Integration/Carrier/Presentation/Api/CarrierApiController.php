@@ -14,15 +14,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Integration\Application\Query\IntegrationQueryService;
-use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Integration\Application\CarrierGateway;
 use WebWMS\Integration\Application\ChangeCarrierConnectionStatusCommand;
 use WebWMS\Integration\Application\ChangeCarrierConnectionStatusHandler;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\RegisterCarrierConnectionCommand;
 use WebWMS\Integration\Application\RegisterCarrierConnectionHandler;
 use WebWMS\Inventory\Application\RegisterShipmentLabelCommand;
 use WebWMS\Inventory\Application\RegisterShipmentLabelHandler;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3', name: 'api_v3_carrier_')]

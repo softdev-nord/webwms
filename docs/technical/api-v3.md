@@ -101,7 +101,7 @@ Listen akzeptieren `limit` von 1 bis 100. Artikel, Bestände, Bestandsbewegungen
 
 ## Mandantentrennung
 
-Der Client darf keine Mandanten-ID im Request vorgeben. `InventoryApiController` übernimmt den Mandanten immer aus `ApiClientUser`. `ApiV3QueryService` bindet diese ID in jede Abfrage ein; schreibende Operationen erhalten sie über den Application Command.
+Der Client darf keine Mandanten-ID im Request vorgeben. `InventoryApiController` übernimmt den Mandanten immer aus `ApiClientUser`. Die fachbezogenen Query-Services binden diese ID in jede Abfrage ein; schreibende Operationen erhalten sie über den Application Command.
 
 ## Antwort- und Fehlerformat
 

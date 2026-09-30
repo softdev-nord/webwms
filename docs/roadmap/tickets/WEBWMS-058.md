@@ -48,13 +48,13 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-OUTBOUND
 
 Sendungs- und Trackingnummer besitzen mandantenbezogene Eindeutigkeitsregeln und sind über `GET /api/v3/shipments/{id}` abrufbar. Labelregistrierung und Carrier-Übergabe liefern den aktuellen Status und die Trackingnummer zurück.
 
-Nachweise: `ShippingApiController`, `ApiV3QueryService::shipment()`, `ShipmentResult`, die Eindeutigkeitsindizes aus `Version20260917140000` und `docs/technical/shipping-api.md`.
+Nachweise: `ShippingApiController`, `OutboundQueryService::shipment()`, `ShipmentResult`, die Eindeutigkeitsindizes aus `Version20260917140000` und `docs/technical/shipping-api.md`.
 
 ### Abschlussnachweis
 
 Trackingnummern und chronologische Trackingevents sind eindeutig, auditierbar und über UI/API sichtbar. Versand- und Trackingstatus werden über die Outbox an führende Systeme bereitgestellt.
 
-Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
+Nachweise: `OutboundProcessService`, `OutboundQueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

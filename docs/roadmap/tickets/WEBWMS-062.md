@@ -52,7 +52,7 @@ Mandantenbezogene Paket-, Carrier-, Fahrzeug- und Tourgrenzen sind konfigurierba
 
 Konfigurierbare Paket-, Carrier-, Fahrzeug- und Tourgrenzen sind mandantenbezogen persistiert. Das Paketlimit wird in Web und API vor dem Versiegeln erzwungen; Touren zeigen Planlast gegen Maximalgewicht.
 
-Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
+Nachweise: `OutboundProcessService`, `OutboundQueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

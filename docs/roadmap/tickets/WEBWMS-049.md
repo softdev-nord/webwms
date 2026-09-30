@@ -54,7 +54,7 @@ Nachweise: `OutboundOrder`, `OutboundOrderRelease`, zugehörige Application-Hand
 
 Der V3-Auftragsarbeitsplatz und die JSON-API bilden Import, Prüfung, begründetes Storno vor Freigabe, Freigabe und Auditierung vollständig ab. Die Freigabe erzeugt transaktional positionsbezogene Reservierungen.
 
-Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
+Nachweise: `OutboundProcessService`, `OutboundQueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

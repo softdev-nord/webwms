@@ -19,7 +19,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Inbound\Application\InboundProcessService;
 use WebWMS\Inbound\Application\Query\InboundQueryService;
-use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Inventory\Application\CreateInboundDeliveryCommand;
 use WebWMS\Inventory\Application\CreateInboundDeliveryHandler;
 use WebWMS\Inventory\Application\CreatePurchaseOrderCommand;
@@ -31,6 +30,7 @@ use WebWMS\Inventory\Application\InspectReturnHandler;
 use WebWMS\Inventory\Application\ReceiveReturnCommand;
 use WebWMS\Inventory\Application\ReceiveReturnHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 
 #[Route('/v3/inbound/control', name: 'v3_inbound_control_')]
 #[IsGranted('inbound.planned.read')]

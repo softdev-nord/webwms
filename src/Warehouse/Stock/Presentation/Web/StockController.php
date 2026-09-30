@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 
 #[Route('/v3', name: 'v3_')]
 class StockController extends AbstractController

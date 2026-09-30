@@ -15,12 +15,12 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Inbound\Application\Query\InboundQueryService;
-use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Integration\Application\StockMovementCriteria;
 use WebWMS\Inventory\Application\SpecialStockService;
 use WebWMS\Inventory\Application\StockBlockingService;
 use WebWMS\Inventory\Application\StockSelectionService;
 use WebWMS\Security\V3\TenantPermissionUser;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Warehouse\Topology\Application\WarehouseTopologyService;
 
 #[Route('/v3/inventory', name: 'v3_inventory_')]

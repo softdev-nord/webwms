@@ -9,7 +9,7 @@ Der V3-Arbeitsplatz verbindet den vorhandenen Backendkern für avisierte Warenei
 3. `CreatePutawayOrderHandler` wählt mandantenbezogen anhand der aktiven Einlagerungsstrategie einen geeigneten Zielplatz.
 4. `ConfirmPutawayHandler` führt die Bestandsumlagerung atomar aus und schließt den Einlagerungsauftrag ab.
 
-Die Worklist aus `ApiV3QueryService::plannedInboundWorklist()` beschränkt alle Ergebnisse über `wms_inbound_delivery.tenant_id`. Schreibzugriffe verwenden die bestehenden transaktionalen Repository-Operationen und speichern Benutzer sowie Zeitpunkte.
+Die Worklist aus `InboundQueryService::plannedInboundWorklist()` beschränkt alle Ergebnisse über `wms_inbound_delivery.tenant_id`. Schreibzugriffe verwenden die bestehenden transaktionalen Repository-Operationen und speichern Benutzer sowie Zeitpunkte.
 
 ## Endpunkte und Berechtigungen
 

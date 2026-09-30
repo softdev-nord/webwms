@@ -10,9 +10,9 @@ zugehörigen `Presentation`-Verzeichnis; die Views spiegeln diese Struktur unter
 
 Interne Web-Controller tragen keine Versionskennung mehr. Die öffentliche
 Versionierung über `/v3` und `/api/v3` sowie sämtliche Routennamen bleiben
-unverändert. Der derzeit noch bereichsübergreifende `ApiV3QueryService` wird in
-einem separaten Query-Slice zerlegt, damit keine rein kosmetische Verschiebung
-ohne klare Leseverträge entsteht.
+unverändert. Die Leseverträge sind fachlich auf `WarehouseQueryService`,
+`InboundQueryService`, `OutboundQueryService` und `IntegrationQueryService`
+verteilt. Dadurch hängen Controller nur noch von den Projektionen ihres Moduls ab.
 
 Der Slice trennt fachliche Integrationen von ihrem technischen Transport. Ein `TransportEndpoint` beschreibt Adresse und Adapter, während `ProtocolConfiguration` Protokoll, Framing und Timeouts festlegt.
 

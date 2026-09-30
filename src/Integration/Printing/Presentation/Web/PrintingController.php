@@ -16,8 +16,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use Throwable;
-use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\PrintGateway;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/integration/printing', name: 'v3_printing_')]

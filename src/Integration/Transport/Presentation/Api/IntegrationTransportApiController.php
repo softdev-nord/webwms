@@ -12,8 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Integration\Application\IntegrationTransportService;
+use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/api/v3/transport-endpoints', name: 'api_v3_transport_')]

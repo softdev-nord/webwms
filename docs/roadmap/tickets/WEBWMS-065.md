@@ -54,7 +54,7 @@ Nachweise: `IntegrationStatusEvent`, `OutboxRepository`, `DbalOutboxRepository`,
 
 Pick-, Pack-, Versand-, Tracking- und Verladeübergänge schreiben mandantengebundene Statusereignisse in die transaktionale Outbox. Pull-Quittierung und aktive ERP-Zustellung sind idempotent sowie auditierbar.
 
-Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
+Nachweise: `OutboundProcessService`, `OutboundQueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

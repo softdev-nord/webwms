@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Inventory\Application\AddPackingPackageCommand;
 use WebWMS\Inventory\Application\AddPackingPackageHandler;
 use WebWMS\Inventory\Application\CompletePackingOrderCommand;
@@ -23,6 +22,7 @@ use WebWMS\Inventory\Application\CompletePackingOrderHandler;
 use WebWMS\Inventory\Application\CreatePackingOrderCommand;
 use WebWMS\Inventory\Application\CreatePackingOrderHandler;
 use WebWMS\Outbound\Application\OutboundProcessService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/packing', name: 'v3_packing_')]

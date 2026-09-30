@@ -52,7 +52,7 @@ Versanddokumente werden nummeriert, mandantenbezogen und mit SHA-256-Prüfsumme 
 
 Lieferschein, Packliste und Ladeliste werden als unveränderliche HTML-Momentaufnahme mit Dokumentnummer, Auditdaten und SHA-256-Prüfsumme erzeugt und im V3-Archiv bereitgestellt.
 
-Nachweise: `OutboundProcessService`, `ApiV3QueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
+Nachweise: `OutboundProcessService`, `OutboundQueryService::outboundControlCenter()`, V3-Web- und JSON-Controller, Migration `Version20260923160000`, automatisierte Tests sowie die technische und fachliche Dokumentation des Warenausgangsleitstands.
 
 ## Quelle
 

@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Inbound\Application\Query\InboundQueryService;
-use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Inventory\Application\ConfirmPutawayCommand;
 use WebWMS\Inventory\Application\ConfirmPutawayHandler;
 use WebWMS\Inventory\Application\CreatePutawayOrderCommand;
@@ -28,6 +27,7 @@ use WebWMS\Inventory\Application\ResolveInboundDiscrepancyCommand;
 use WebWMS\Inventory\Application\ResolveInboundDiscrepancyHandler;
 use WebWMS\Inventory\Application\UnplannedReceiptService;
 use WebWMS\Security\V3\TenantPermissionUser;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 
 #[Route('/v3/inbound', name: 'v3_inbound_')]
 class InboundController extends AbstractController

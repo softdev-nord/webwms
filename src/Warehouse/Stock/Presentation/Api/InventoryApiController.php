@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
-use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 use WebWMS\Integration\Application\StockMovementCriteria;
 use WebWMS\Inventory\Application\RegisterProductCommand;
 use WebWMS\Inventory\Application\RegisterProductHandler;
@@ -21,6 +20,7 @@ use WebWMS\Inventory\Application\TransferStockCommand;
 use WebWMS\Inventory\Application\TransferStockHandler;
 use WebWMS\Inventory\Domain\StockStatus;
 use WebWMS\Security\V3\TenantPermissionUser;
+use WebWMS\Warehouse\Application\Query\WarehouseQueryService;
 
 #[Route('/api/v3', name: 'api_v3_')]
 class InventoryApiController extends AbstractController

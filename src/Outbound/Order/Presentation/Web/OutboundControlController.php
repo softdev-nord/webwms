@@ -13,8 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Outbound\Application\OutboundProcessService;
+use WebWMS\Outbound\Application\Query\OutboundQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/outbound/control', name: 'v3_outbound_control_')]

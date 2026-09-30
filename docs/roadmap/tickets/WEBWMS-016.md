@@ -46,7 +46,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INVENTOR
 
 **Status:** Done
 
-`ApiV3QueryService::warehouseOverview()` aggregiert Lager- und Bereichsdaten ohne Kapazitätsdoppelzählung. `warehouseOccupancy()` ergänzt eine lagerweise Platzprojektion mit Topologie, Statusverteilung, enthaltenen Artikeln und Auslastung. Die V3-Oberfläche visualisiert jeden Platz farbcodiert nach frei, belegt, QS, gesperrt oder voll; dieselbe mandantensichere Projektion steht berechtigt als JSON-API bereit und ist automatisiert getestet.
+`WarehouseQueryService::warehouseOverview()` aggregiert Lager- und Bereichsdaten ohne Kapazitätsdoppelzählung. `warehouseOccupancy()` ergänzt eine lagerweise Platzprojektion mit Topologie, Statusverteilung, enthaltenen Artikeln und Auslastung. Die V3-Oberfläche visualisiert jeden Platz farbcodiert nach frei, belegt, QS, gesperrt oder voll; dieselbe mandantensichere Projektion steht berechtigt als JSON-API bereit und ist automatisiert getestet.
 
 ## Quelle
 

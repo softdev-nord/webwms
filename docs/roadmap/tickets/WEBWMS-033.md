@@ -48,7 +48,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-FULFILLM
 
 Picklisten werden über `POST /api/v3/orders/{id}/pick-lists` ausschließlich aus aktiven Allokationen eines einzelnen Kundenauftrags gebildet. `PickList::outboundOrderId()`, die persistente Auftragsreferenz und die transaktionale Prüfung in `DbalInventoryRepository::savePickList()` erzwingen die Auftragsreinheit. Zuweisung, Abfrage und Pickbestätigung sind mandantengebunden und durch getrennte Berechtigungen geschützt.
 
-Nachweise: `PickingApiController`, `ApiV3QueryService::pickList()`, `PickList`, `DbalInventoryRepository`, Migration `Version20260918200000`, `PickListTest` sowie die technische und fachliche Dokumentation unter `docs/technical/picking-api.md` und `docs/user/picking-api.md`.
+Nachweise: `PickingApiController`, `OutboundQueryService::pickList()`, `PickList`, `DbalInventoryRepository`, Migration `Version20260918200000`, `PickListTest` sowie die technische und fachliche Dokumentation unter `docs/technical/picking-api.md` und `docs/user/picking-api.md`.
 
 Die responsive Bedienoberfläche, der Kommissionierleitstand, die automatische Wegeoptimierung und die protokollierte Scanprüfung ergänzen den bestehenden transaktionalen Kern.
 
