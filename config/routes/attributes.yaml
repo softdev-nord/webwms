@@ -34,6 +34,12 @@ integration_controllers:
         namespace: WebWMS\Integration
     type: attribute
 
+platform_controllers:
+    resource:
+        path: ../../src/Platform/Presentation/
+        namespace: WebWMS\Platform\Presentation
+    type: attribute
+
 kernel:
     resource: WebWMS\Kernel
     type: attribute

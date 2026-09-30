@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Platform\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -18,7 +18,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/extensions', name: 'v3_extension_')]
 #[IsGranted('platform.extension.read')]
-class V3ExtensionModuleController extends AbstractController
+class ExtensionModuleController extends AbstractController
 {
     public function __construct(
         private readonly ExtensionModuleService $service
@@ -28,7 +28,7 @@ class V3ExtensionModuleController extends AbstractController
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render('v3/extensions/index.html.twig', [
+        return $this->render('platform/extensions/index.html.twig', [
             'page' => 'extensions.index.advanced_functions',
             'workspace' => $this->service->workspace($this->user()->tenantId()),
         ]);
@@ -41,7 +41,7 @@ class V3ExtensionModuleController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        return $this->render('v3/extensions/configuration_index.html.twig', [
+        return $this->render('platform/extensions/configuration_index.html.twig', [
             'page' => ExtensionModuleService::RESOURCES[$resource],
             'resource' => $resource,
             'label' => ExtensionModuleService::RESOURCES[$resource],
@@ -56,7 +56,7 @@ class V3ExtensionModuleController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        return $this->render('v3/extensions/workflow_index.html.twig', [
+        return $this->render('platform/extensions/workflow_index.html.twig', [
             'page' => ExtensionModuleService::WORKFLOWS[$workflow],
             'workflow' => $workflow,
             'label' => ExtensionModuleService::WORKFLOWS[$workflow],
@@ -82,7 +82,7 @@ class V3ExtensionModuleController extends AbstractController
 
         $label = ExtensionModuleService::RESOURCES[$resource] ?? $resource;
 
-        return $this->render('v3/extensions/configuration_form.html.twig', [
+        return $this->render('platform/extensions/configuration_form.html.twig', [
             'page' => $configuration === null ? 'extension.page.configuration_new.create_configuration' : 'extension.page.configuration_edit.edit_configuration',
             'pageParameters' => ['%resource%' => $label],
             'resource' => $resource,
@@ -108,7 +108,7 @@ class V3ExtensionModuleController extends AbstractController
             return $this->redirectToRoute('v3_extension_work_item_show', ['id' => $id]);
         }
 
-        return $this->render('v3/extensions/work_item_form.html.twig', [
+        return $this->render('platform/extensions/work_item_form.html.twig', [
             'page' => 'extension.page.workflow_start.start_process',
             'pageParameters' => ['%workflow%' => ExtensionModuleService::WORKFLOWS[$workflow]],
             'workflow' => $workflow,
@@ -121,7 +121,7 @@ class V3ExtensionModuleController extends AbstractController
     {
         $item = $this->service->workItem($this->user()->tenantId(), $id);
 
-        return $this->render('v3/extensions/work_item_show.html.twig', [
+        return $this->render('platform/extensions/work_item_show.html.twig', [
             'page' => 'extension.page.work_item.process',
             'pageParameters' => ['%reference%' => (string) $item['reference']],
             'item' => $item,

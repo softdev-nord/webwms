@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Platform\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -20,7 +20,7 @@ use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/platform', name: 'v3_platform_')]
 #[IsGranted('platform.read')]
-class V3PlatformController extends AbstractController
+class PlatformController extends AbstractController
 {
     public function __construct(
         private readonly PlatformControlService $platform
@@ -33,7 +33,7 @@ class V3PlatformController extends AbstractController
         $user = $this->user();
         $query = trim((string) $request->query->get('q'));
 
-        return $this->render('v3/platform/index.html.twig', ['page' => 'platform.index.platform_control_center', 'platform' => $this->platform->workspace($user->tenantId()), 'query' => $query, 'searchResults' => $query === '' ? [] : $this->platform->search($user->tenantId(), $query)]);
+        return $this->render('platform/index.html.twig', ['page' => 'platform.index.platform_control_center', 'platform' => $this->platform->workspace($user->tenantId()), 'query' => $query, 'searchResults' => $query === '' ? [] : $this->platform->search($user->tenantId(), $query)]);
     }
 
     #[Route('/resources/{resource}', name: 'create', requirements: ['resource' => 'task|kpi|dashboard|partner_account|automation_rule|storage_fee_rule|service|print_route'], methods: ['POST'])]

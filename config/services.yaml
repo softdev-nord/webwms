@@ -205,6 +205,10 @@ services:
         resource: '../src/Integration/Wcs/Presentation/'
         tags: ['controller.service_arguments']
 
+    WebWMS\Platform\Presentation\:
+        resource: '../src/Platform/Presentation/'
+        tags: ['controller.service_arguments']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

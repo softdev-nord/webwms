@@ -16,7 +16,7 @@ Die Sidebar prüft für jeden Eintrag dieselbe fachliche Berechtigung wie der zu
 
 ## Views für erweiterte Funktionen
 
-`V3ExtensionModuleController` stellt neben der Gesamtübersicht zwei parametrisierte Listentypen bereit:
+`ExtensionModuleController` stellt neben der Gesamtübersicht zwei parametrisierte Listentypen bereit:
 
 - `v3_extension_configuration_index` filtert mandantensicher nach Konfigurationsressource.
 - `v3_extension_workflow_index` filtert mandantensicher nach Workflowtyp.

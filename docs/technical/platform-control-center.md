@@ -1,5 +1,18 @@
 # Platform Control Center
 
+## Modulstruktur
+
+Die Plattform-Präsentation liegt vollständig unter `src/Platform/Presentation`
+und trennt HTML- von JSON-Endpunkten in `Web` und `Api`. Die zugehörigen Views
+liegen unter `templates/platform`; die erweiterbaren Konfigurationen und
+Workflows sind darin im Unterbereich `extensions` gebündelt.
+
+Interne Controller tragen keine Versionskennung mehr. Die öffentlichen
+Verträge über `/v3`, `/api/v3` und die bestehenden Routennamen bleiben
+unverändert. `PlatformControlService` und `ExtensionModuleService` verbleiben
+als Anwendungsdienste unter `src/Platform/Application` und enthalten keine
+HTTP- oder Twig-Abhängigkeiten.
+
 Der Slice `WEBWMS-066` bis `WEBWMS-074` bündelt die Zusatzfunktionen in einem mandantenfähigen Plattformmodul. Die Migration `Version20260923190000` ergänzt Shopfloor-Aufgaben, KPI-Definitionen, Dashboardlayouts, Partnerkonten, Automationsregeln und -ausführungen, Abrechnungstarife und -positionen, Suchdokumente, Medien sowie Druckroutingregeln.
 
 ## Architektur

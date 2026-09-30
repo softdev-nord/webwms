@@ -48,7 +48,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-PLATFORM
 
 Der Shopfloor-Arbeitsvorrat plant Einlagerung, Auslagerung, Transport und Inventur mit Priorität, Termin, Referenz und Benutzerzuordnung. Der transaktionale Zustandsautomat verhindert unzulässige Übergänge; UI und API protokollieren jede Änderung.
 
-Nachweise: `PlatformControlService`, `V3PlatformController`, `PlatformApiController`, Migration `Version20260923190000`, Unit-Tests sowie Platform-Benutzer- und Technikdokumentation.
+Nachweise: `PlatformControlService`, `PlatformController`, `PlatformApiController`, Migration `Version20260923190000`, Unit-Tests sowie Platform-Benutzer- und Technikdokumentation.
 
 ## Quelle
 

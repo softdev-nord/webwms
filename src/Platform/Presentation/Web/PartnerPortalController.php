@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Platform\Presentation\Web;
 
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use WebWMS\Platform\Application\PlatformControlService;
 use WebWMS\Security\V3\TenantPermissionUser;
 
-class V3PartnerPortalController extends AbstractController
+class PartnerPortalController extends AbstractController
 {
     public function __construct(
         private readonly PlatformControlService $platform
@@ -27,7 +27,7 @@ class V3PartnerPortalController extends AbstractController
             throw new LogicException('The V3 session does not contain a tenant user.');
         }
 
-        return $this->render('v3/platform/portal.html.twig', ['page' => 'platform.portal.partner_portal', 'portal' => $this->platform->partnerPortal($user->tenantId(), $user->actorId())]);
+        return $this->render('platform/portal.html.twig', ['page' => 'platform.portal.partner_portal', 'portal' => $this->platform->partnerPortal($user->tenantId(), $user->actorId())]);
     }
 
     #[Route('/v3/partner-portal/media/{mediaId}', name: 'v3_partner_portal_media', methods: ['GET'])]
