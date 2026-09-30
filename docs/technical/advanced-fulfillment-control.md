@@ -1,5 +1,18 @@
 # Erweiterte Kommissionier- und Transportsteuerung
 
+## Modulstruktur
+
+Die bereichsübergreifende Fulfillment-Steuerung liegt unter
+`src/Fulfillment/Presentation` und trennt Web- und API-Eingänge. Der interne
+Transportarbeitsplatz liegt unter `templates/fulfillment/transport`.
+
+Interne Controller tragen keine Versionskennung mehr. Die öffentlichen
+Verträge `/v3/internal-transport` und `/api/v3/fulfillment-control` sowie alle
+bestehenden Routennamen bleiben unverändert. Die Picking-spezifischen
+Arbeitsplätze verbleiben im Modul `Outbound/Picking`; der Fulfillment-Leitstand
+orchestriert diese Anwendungsfälle lediglich gemeinsam mit Transport und
+Nachschub.
+
 Der Slice `WEBWMS-033` bis `WEBWMS-048` ergänzt die vorhandenen Pick-, Umlagerungs- und Nachschubprozesse um einen gemeinsamen operativen Leitstand.
 
 ## Kommissionierung

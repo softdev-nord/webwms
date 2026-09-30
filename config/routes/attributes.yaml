@@ -40,6 +40,12 @@ platform_controllers:
         namespace: WebWMS\Platform\Presentation
     type: attribute
 
+fulfillment_controllers:
+    resource:
+        path: ../../src/Fulfillment/Presentation/
+        namespace: WebWMS\Fulfillment\Presentation
+    type: attribute
+
 kernel:
     resource: WebWMS\Kernel
     type: attribute

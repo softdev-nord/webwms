@@ -217,6 +217,10 @@ services:
         resource: '../src/Platform/Presentation/'
         tags: ['controller.service_arguments']
 
+    WebWMS\Fulfillment\Presentation\:
+        resource: '../src/Fulfillment/Presentation/'
+        tags: ['controller.service_arguments']
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Fulfillment\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -24,7 +24,7 @@ use WebWMS\Inventory\Application\CreateReplenishmentPolicyHandler;
 use WebWMS\Security\V3\TenantPermissionUser;
 
 #[Route('/v3/internal-transport', name: 'v3_internal_transport_')]
-class V3InternalTransportController extends AbstractController
+class InternalTransportController extends AbstractController
 {
     public function __construct(
         private readonly InternalTransportService $transport,
@@ -74,7 +74,7 @@ class V3InternalTransportController extends AbstractController
     #[IsGranted('fulfillment.transport.read')]
     public function index(): Response
     {
-        return $this->render('v3/transport/index.html.twig', ['page' => 'layout.sidebar.internal_transport', 'workspace' => $this->transport->workspace($this->user()->tenantId())]);
+        return $this->render('fulfillment/transport/index.html.twig', ['page' => 'layout.sidebar.internal_transport', 'workspace' => $this->transport->workspace($this->user()->tenantId())]);
     }
 
     #[Route('/orders', name: 'order_create', methods: ['POST'])]
