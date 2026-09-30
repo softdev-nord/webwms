@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Web;
+namespace WebWMS\Warehouse\Presentation\Web;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -19,11 +19,11 @@ use WebWMS\Integration\Application\StockMovementCriteria;
 use WebWMS\Inventory\Application\SpecialStockService;
 use WebWMS\Inventory\Application\StockBlockingService;
 use WebWMS\Inventory\Application\StockSelectionService;
-use WebWMS\Inventory\Application\WarehouseTopologyService;
 use WebWMS\Security\V3\TenantPermissionUser;
+use WebWMS\Warehouse\Topology\Application\WarehouseTopologyService;
 
 #[Route('/v3/inventory', name: 'v3_inventory_')]
-class V3WarehouseController extends AbstractController
+class WarehouseController extends AbstractController
 {
     public function __construct(
         private readonly ApiV3QueryService $queries,
@@ -38,7 +38,7 @@ class V3WarehouseController extends AbstractController
     #[IsGranted('inventory.topology.read')]
     public function topology(): Response
     {
-        return $this->render('v3/inventory/topology.html.twig', [
+        return $this->render('warehouse/topology.html.twig', [
             'page' => 'inventory.topology.warehouse_topology',
             'topology' => $this->queries->warehouseTopology($this->user()->tenantId()),
         ]);
@@ -48,7 +48,7 @@ class V3WarehouseController extends AbstractController
     #[IsGranted('inventory.topology.write')]
     public function newTopologyEntry(string $resource): Response
     {
-        return $this->render('v3/inventory/topology_form.html.twig', [
+        return $this->render('warehouse/topology_form.html.twig', [
             'page' => 'warehouse.page.create_topology_entry', 'resource' => $resource, 'entry' => null,
             'topology' => $this->queries->warehouseTopology($this->user()->tenantId()),
         ]);
@@ -60,7 +60,7 @@ class V3WarehouseController extends AbstractController
     {
         $user = $this->user();
 
-        return $this->render('v3/inventory/topology_form.html.twig', [
+        return $this->render('warehouse/topology_form.html.twig', [
             'page' => 'warehouse.page.edit_topology_entry', 'resource' => $resource,
             'entry' => $this->topology->topologyEntry($user->tenantId(), $resource, $id),
             'topology' => $this->queries->warehouseTopology($user->tenantId()),
@@ -143,7 +143,7 @@ class V3WarehouseController extends AbstractController
     #[IsGranted('inventory.overview.read')]
     public function overview(): Response
     {
-        return $this->render('v3/inventory/overview.html.twig', [
+        return $this->render('warehouse/overview.html.twig', [
             'page' => 'inventory.overview.warehouse_overview',
             'overview' => $this->queries->warehouseOverview($this->user()->tenantId()),
         ]);
@@ -160,7 +160,7 @@ class V3WarehouseController extends AbstractController
             $warehouseId = $warehouses[0]['id'];
         }
 
-        return $this->render('v3/inventory/occupancy.html.twig', [
+        return $this->render('warehouse/occupancy.html.twig', [
             'page' => 'inventory.occupancy.graphical_location_occupancy',
             'warehouses' => $warehouses,
             'locations' => $this->queries->warehouseOccupancy($user->tenantId(), $warehouseId),
@@ -177,7 +177,7 @@ class V3WarehouseController extends AbstractController
         $locationId = $this->query($request, 'location');
         $movementType = $this->query($request, 'movement_type');
 
-        return $this->render('v3/inventory/movements.html.twig', [
+        return $this->render('warehouse/movements.html.twig', [
             'page' => 'inventory.movements.movement_history',
             'movements' => $this->queries->stockMovements($user->tenantId(), new StockMovementCriteria($productId, $locationId, null, $movementType), 500, null),
             'products' => $this->queries->products($user->tenantId(), 500, null),
@@ -194,7 +194,7 @@ class V3WarehouseController extends AbstractController
         $dimension = $this->query($request, 'dimension');
         $value = $this->query($request, 'value');
 
-        return $this->render('v3/inventory/traceability.html.twig', [
+        return $this->render('warehouse/traceability.html.twig', [
             'page' => 'inventory.traceability.traceability',
             'traceability' => $this->queries->traceability($user->tenantId()),
             'events' => $dimension !== null && $value !== null ? $this->queries->traceabilityEvents($user->tenantId(), $dimension, $value) : [],
@@ -209,7 +209,7 @@ class V3WarehouseController extends AbstractController
     {
         $user = $this->user();
 
-        return $this->render('v3/inventory/special_stock.html.twig', [
+        return $this->render('warehouse/special_stock.html.twig', [
             'page' => 'inventory.special_stock.special_stock',
             'types' => $this->queries->specialStockTypes($user->tenantId()),
             'stock' => $this->queries->stock($user->tenantId(), null, 500, null),
@@ -220,14 +220,14 @@ class V3WarehouseController extends AbstractController
     #[IsGranted('inventory.special_stock.write')]
     public function newSpecialStockType(): Response
     {
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'warehouse.page.create_special_stock_indicator', 'kind' => 'special_stock_type', 'entry' => null]);
+        return $this->render('warehouse/configuration_form.html.twig', ['page' => 'warehouse.page.create_special_stock_indicator', 'kind' => 'special_stock_type', 'entry' => null]);
     }
 
     #[Route('/special-stock/types/{typeId}/edit', name: 'special_stock_type_edit', methods: ['GET'])]
     #[IsGranted('inventory.special_stock.write')]
     public function editSpecialStockType(string $typeId): Response
     {
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'warehouse.page.edit_special_stock_indicator', 'kind' => 'special_stock_type', 'entry' => $this->specialStock->type($this->user()->tenantId(), $typeId)]);
+        return $this->render('warehouse/configuration_form.html.twig', ['page' => 'warehouse.page.edit_special_stock_indicator', 'kind' => 'special_stock_type', 'entry' => $this->specialStock->type($this->user()->tenantId(), $typeId)]);
     }
 
     #[Route('/special-stock/types/{typeId}', name: 'special_stock_type_update', methods: ['POST'])]
@@ -298,7 +298,7 @@ class V3WarehouseController extends AbstractController
             throw $this->createNotFoundException('Der Bestand wurde nicht gefunden.');
         }
 
-        return $this->render('v3/inventory/special_stock_classify.html.twig', ['page' => 'inventory.special_stock_classify.classify_special_stock', 'row' => $stock[0], 'types' => $this->queries->specialStockTypes($user->tenantId())]);
+        return $this->render('warehouse/special_stock_classify.html.twig', ['page' => 'inventory.special_stock_classify.classify_special_stock', 'row' => $stock[0], 'types' => $this->queries->specialStockTypes($user->tenantId())]);
     }
 
     #[Route('/selection-rules', name: 'selection_rules', methods: ['GET'])]
@@ -307,7 +307,7 @@ class V3WarehouseController extends AbstractController
     {
         $user = $this->user();
 
-        return $this->render('v3/inventory/selection_rules.html.twig', [
+        return $this->render('warehouse/selection_rules.html.twig', [
             'page' => 'inventory.selection_rules.picking_strategies',
             'rules' => $this->queries->stockSelectionRules($user->tenantId()),
             'events' => $this->queries->stockSelectionEvents($user->tenantId()),
@@ -322,7 +322,7 @@ class V3WarehouseController extends AbstractController
     {
         $user = $this->user();
 
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'warehouse.page.create_picking_strategy', 'kind' => 'selection_rule', 'entry' => null, 'warehouses' => $this->queries->warehouses($user->tenantId()), 'products' => $this->queries->products($user->tenantId(), 500, null)]);
+        return $this->render('warehouse/configuration_form.html.twig', ['page' => 'warehouse.page.create_picking_strategy', 'kind' => 'selection_rule', 'entry' => null, 'warehouses' => $this->queries->warehouses($user->tenantId()), 'products' => $this->queries->products($user->tenantId(), 500, null)]);
     }
 
     #[Route('/selection-rules/{ruleId}/edit', name: 'selection_rule_edit', methods: ['GET'])]
@@ -331,7 +331,7 @@ class V3WarehouseController extends AbstractController
     {
         $user = $this->user();
 
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'warehouse.page.edit_picking_strategy', 'kind' => 'selection_rule', 'entry' => $this->stockSelection->rule($user->tenantId(), $ruleId), 'warehouses' => $this->queries->warehouses($user->tenantId()), 'products' => $this->queries->products($user->tenantId(), 500, null)]);
+        return $this->render('warehouse/configuration_form.html.twig', ['page' => 'warehouse.page.edit_picking_strategy', 'kind' => 'selection_rule', 'entry' => $this->stockSelection->rule($user->tenantId(), $ruleId), 'warehouses' => $this->queries->warehouses($user->tenantId()), 'products' => $this->queries->products($user->tenantId(), 500, null)]);
     }
 
     #[Route('/selection-rules/{ruleId}', name: 'selection_rule_update', methods: ['POST'])]
@@ -376,7 +376,7 @@ class V3WarehouseController extends AbstractController
     {
         $user = $this->user();
 
-        return $this->render('v3/inventory/stock_blocks.html.twig', [
+        return $this->render('warehouse/stock_blocks.html.twig', [
             'page' => 'inventory.stock_blocks.stock_blocks',
             'reasons' => $this->queries->stockBlockReasons($user->tenantId()),
             'blocks' => $this->queries->stockBlocks($user->tenantId()),
@@ -394,21 +394,21 @@ class V3WarehouseController extends AbstractController
             throw $this->createNotFoundException('Die Bestandssperre wurde nicht gefunden.');
         }
 
-        return $this->render('v3/inventory/stock_block_show.html.twig', ['page' => 'inventory.stock_block_show.edit_stock_block', 'block' => $blocks[0], 'events' => $this->queries->stockBlockEvents($user->tenantId(), $blockId)]);
+        return $this->render('warehouse/stock_block_show.html.twig', ['page' => 'inventory.stock_block_show.edit_stock_block', 'block' => $blocks[0], 'events' => $this->queries->stockBlockEvents($user->tenantId(), $blockId)]);
     }
 
     #[Route('/stock-blocks/reasons/new', name: 'stock_block_reason_new', methods: ['GET'])]
     #[IsGranted('inventory.stock_block.write')]
     public function newStockBlockReason(): Response
     {
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'inventory.stock_block_reasons.create_blocking_reason', 'kind' => 'stock_block_reason', 'entry' => null]);
+        return $this->render('warehouse/configuration_form.html.twig', ['page' => 'inventory.stock_block_reasons.create_blocking_reason', 'kind' => 'stock_block_reason', 'entry' => null]);
     }
 
     #[Route('/stock-blocks/reasons', name: 'stock_block_reasons', methods: ['GET'])]
     #[IsGranted('inventory.stock_block.read')]
     public function stockBlockReasons(): Response
     {
-        return $this->render('v3/inventory/stock_block_reasons.html.twig', ['page' => 'inventory.stock_block_reasons.blocking_reasons', 'reasons' => $this->queries->stockBlockReasons($this->user()->tenantId())]);
+        return $this->render('warehouse/stock_block_reasons.html.twig', ['page' => 'inventory.stock_block_reasons.blocking_reasons', 'reasons' => $this->queries->stockBlockReasons($this->user()->tenantId())]);
     }
 
     #[Route('/stock-blocks/new', name: 'stock_block_new', methods: ['GET'])]
@@ -424,14 +424,14 @@ class V3WarehouseController extends AbstractController
             throw $this->createNotFoundException('Der Bestand wurde nicht gefunden.');
         }
 
-        return $this->render('v3/inventory/stock_block_new.html.twig', ['page' => 'inventory.stock_block_new.block_stock', 'row' => $stock[0], 'reasons' => $this->queries->stockBlockReasons($user->tenantId())]);
+        return $this->render('warehouse/stock_block_new.html.twig', ['page' => 'inventory.stock_block_new.block_stock', 'row' => $stock[0], 'reasons' => $this->queries->stockBlockReasons($user->tenantId())]);
     }
 
     #[Route('/stock-blocks/reasons/{reasonId}/edit', name: 'stock_block_reason_edit', methods: ['GET'])]
     #[IsGranted('inventory.stock_block.write')]
     public function editStockBlockReason(string $reasonId): Response
     {
-        return $this->render('v3/inventory/configuration_form.html.twig', ['page' => 'warehouse.page.edit_blocking_reason', 'kind' => 'stock_block_reason', 'entry' => $this->stockBlocking->reason($this->user()->tenantId(), $reasonId)]);
+        return $this->render('warehouse/configuration_form.html.twig', ['page' => 'warehouse.page.edit_blocking_reason', 'kind' => 'stock_block_reason', 'entry' => $this->stockBlocking->reason($this->user()->tenantId(), $reasonId)]);
     }
 
     #[Route('/stock-blocks/reasons/{reasonId}', name: 'stock_block_reason_update', methods: ['POST'])]

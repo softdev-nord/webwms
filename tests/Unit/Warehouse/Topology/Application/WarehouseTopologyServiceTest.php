@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Unit\Inventory\Application;
+namespace WebWMS\Tests\Unit\Warehouse\Topology\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Inventory\Application\WarehouseTopologyService;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
+use WebWMS\Warehouse\Topology\Application\WarehouseTopologyService;
 
 class WarehouseTopologyServiceTest extends TestCase
 {

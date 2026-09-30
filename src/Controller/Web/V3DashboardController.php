@@ -36,7 +36,7 @@ class V3DashboardController extends AbstractController
         $warehouse = trim((string) $request->query->get('warehouse'));
         $warehouseId = $warehouse === '' ? null : $warehouse;
 
-        return $this->render('v3/inventory/stock.html.twig', [
+        return $this->render('warehouse/stock.html.twig', [
             'warehouses' => $queries->warehouses($user->tenantId()),
             'stock' => $queries->stock($user->tenantId(), $warehouseId, 200, null),
             'selectedWarehouse' => $warehouseId,

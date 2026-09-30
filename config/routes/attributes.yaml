@@ -4,6 +4,12 @@ controllers:
         namespace: WebWMS\Controller
     type: attribute
 
+warehouse_controllers:
+    resource:
+        path: ../../src/Warehouse/Presentation/
+        namespace: WebWMS\Warehouse\Presentation
+    type: attribute
+
 kernel:
     resource: WebWMS\Kernel
     type: attribute

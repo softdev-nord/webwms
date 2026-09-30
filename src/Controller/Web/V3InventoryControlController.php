@@ -47,7 +47,7 @@ class V3InventoryControlController extends AbstractController
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render('v3/inventory/control.html.twig', ['page' => 'inventory.control.inventory_control_center', 'inventory' => $this->control->workspace($this->user()->tenantId())]);
+        return $this->render('warehouse/control.html.twig', ['page' => 'inventory.control.inventory_control_center', 'inventory' => $this->control->workspace($this->user()->tenantId())]);
     }
 
     #[Route('/hazard-classes', name: 'hazard_class', methods: ['POST'])]

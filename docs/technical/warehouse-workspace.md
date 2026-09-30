@@ -6,6 +6,12 @@ Der Lagerarbeitsbereich schließt WEBWMS-015 bis WEBWMS-018 als gemeinsamen vert
 
 `WarehouseTopologyService` verwaltet die mandantenbezogene Hierarchie Standort → Lager → Bereich → Gang → Ebene/Fach. Jeder schreibende Vorgang validiert die Elternbeziehungen und speichert den ausführenden Benutzer sowie den Zeitpunkt. `StorageBinDefinition` schützt Codes, Platztypen und Kapazitäten als Domain-Regeln.
 
+Die Funktion ist nach der fachlichen Zielstruktur unter
+`src/Warehouse/Topology` organisiert. Web- und API-Controller liegen gemeinsam
+unter `src/Warehouse/Presentation`, die Twig-Views unter
+`templates/warehouse`. Interne Klassen tragen keine Versionsnummer; die
+öffentlichen `/v3`- und `/api/v3`-Verträge bleiben unverändert.
+
 Die Migration `Version20260921090000` ergänzt Bereiche und Gänge sowie Topologiemetadaten an Lager und Lagerplatz. Bestehende Plätze bleiben durch nullable Beziehungen und kompatible Standardwerte gültig.
 
 ## Projektionen

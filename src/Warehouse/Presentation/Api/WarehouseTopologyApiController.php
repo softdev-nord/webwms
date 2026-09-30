@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Controller\Api\V3;
+namespace WebWMS\Warehouse\Presentation\Api;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -14,8 +14,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\ApiV3QueryService;
-use WebWMS\Inventory\Application\WarehouseTopologyService;
 use WebWMS\Security\V3\TenantPermissionUser;
+use WebWMS\Warehouse\Topology\Application\WarehouseTopologyService;
 
 #[Route('/api/v3/inventory', name: 'api_v3_inventory_')]
 class WarehouseTopologyApiController extends AbstractController

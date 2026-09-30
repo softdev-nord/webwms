@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Inventory\Domain;
+namespace WebWMS\Warehouse\Topology\Domain;
 
 use InvalidArgumentException;
 

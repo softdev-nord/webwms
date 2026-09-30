@@ -11,12 +11,12 @@ Alle V3-Templates wurden anhand ihrer Formulare und Routen überprüft.
 
 ## Technische Nachweise
 
-- `V3WarehouseController`
+- `WarehouseController`
 - `WarehouseTopologyService`
 - `StockSelectionService`
 - `SpecialStockService`
 - `StockBlockingService`
 - `V3AdministrationController`
-- neue Form-, Detail- und Übersichts-Templates unter `templates/v3/inventory/`
+- neue Form-, Detail- und Übersichts-Templates unter `templates/warehouse/`
 - getrennte Übersichten und Bearbeitungsseiten unter `templates/v3/administration/`
 - Navigation unter `templates/v3/subsections/sidebar.html.twig`

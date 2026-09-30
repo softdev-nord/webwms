@@ -69,6 +69,7 @@ services:
             - '../src/Integration/Application/StockMovementCriteria.php'
             - '../src/Inventory/Domain/'
             - '../src/Inventory/Application/*Command.php'
+            - '../src/Warehouse/**/Domain/'
 
     WebWMS\Administration\Domain\Tenant\TenantRepository:
         alias: WebWMS\Administration\Infrastructure\Persistence\DoctrineTenantRepository
@@ -134,6 +135,10 @@ services:
     # as action arguments even if you don't extend any base controller class
     WebWMS\Controller\:
         resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Warehouse\Presentation\:
+        resource: '../src/Warehouse/Presentation/'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed

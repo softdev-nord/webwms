@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Tests\Unit\Inventory\Domain;
+namespace WebWMS\Tests\Unit\Warehouse\Topology\Domain;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use WebWMS\Inventory\Domain\StorageBinDefinition;
+use WebWMS\Warehouse\Topology\Domain\StorageBinDefinition;
 
 class StorageBinDefinitionTest extends TestCase
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Inventory\Application;
+namespace WebWMS\Warehouse\Topology\Application;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
-use WebWMS\Inventory\Domain\StorageBinDefinition;
+use WebWMS\Warehouse\Topology\Domain\StorageBinDefinition;
 
 readonly class WarehouseTopologyService
 {
