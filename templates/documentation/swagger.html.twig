@@ -1,0 +1,31 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/apiplatform/swagger-ui/swagger-ui.css') }}">
+{% endblock %}
+
+{% block webwms_content %}
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">{{ 'documentation.page.api_documentation'|trans }}</h1>
+            <p class="text-muted mb-0">{{ 'documentation.swagger.description'|trans }}</p>
+        </div>
+        <a class="btn btn-soft-primary" href="{{ openapiUrl }}" target="_blank" rel="noopener noreferrer">
+            <i class="ri-file-code-line me-1"></i>
+            {{ 'documentation.swagger.open_raw_contract'|trans }}
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div id="swagger-ui" data-openapi-url="{{ openapiUrl }}"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bodyjs %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/apiplatform/swagger-ui/swagger-ui-bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/v3-swagger-ui.js') }}"></script>
+{% endblock %}

@@ -14,6 +14,10 @@ use WebWMS\Documentation\Application\UserDocumentationService;
 #[Route('/v3/help', name: 'v3_documentation_')]
 class DocumentationController extends AbstractController
 {
+    public function __construct(private readonly string $projectDir)
+    {
+    }
+
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(Request $request, UserDocumentationService $documentation): Response
     {
@@ -24,6 +28,26 @@ class DocumentationController extends AbstractController
             'groups' => $documentation->groupedDocuments($query),
             'query' => $query,
         ]);
+    }
+
+    #[Route('/api-reference', name: 'swagger', methods: ['GET'])]
+    public function swagger(): Response
+    {
+        return $this->render('documentation/swagger.html.twig', [
+            'page' => 'documentation.page.api_documentation',
+            'openapiUrl' => $this->generateUrl('v3_documentation_openapi'),
+        ]);
+    }
+
+    #[Route('/openapi.yaml', name: 'openapi', methods: ['GET'])]
+    public function openApi(): Response
+    {
+        $content = file_get_contents($this->projectDir . '/docs/technical/openapi-v3.yaml');
+        if (!is_string($content)) {
+            throw $this->createNotFoundException('The OpenAPI contract is unavailable.');
+        }
+
+        return new Response($content, Response::HTTP_OK, ['Content-Type' => 'application/yaml']);
     }
 
     #[Route('/{slug}', name: 'show', requirements: ['slug' => '[a-z0-9][a-z0-9-]*'], methods: ['GET'])]
