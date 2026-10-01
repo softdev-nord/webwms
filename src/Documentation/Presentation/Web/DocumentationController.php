@@ -14,8 +14,9 @@ use WebWMS\Documentation\Application\UserDocumentationService;
 #[Route('/v3/help', name: 'v3_documentation_')]
 class DocumentationController extends AbstractController
 {
-    public function __construct(private readonly string $projectDir)
-    {
+    public function __construct(
+        private readonly string $projectDir
+    ) {
     }
 
     #[Route('', name: 'index', methods: ['GET'])]
