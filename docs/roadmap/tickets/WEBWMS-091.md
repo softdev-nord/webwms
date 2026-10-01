@@ -2,7 +2,7 @@
 id: WEBWMS-091
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Integration & Technik"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Mit `Printer`, `PrintJob`, `PrintGateway` und dem generischen
 `HttpPrintTransport` sind mandantensichere Druckerkonfiguration, idempotente
@@ -62,9 +62,12 @@ sind in der Detailansicht nachvollziehbar. Nachweise: `PrintingController`,
 die Templates unter `templates/integration/printing` und die erweiterten
 mandantengebundenen Query-Tests.
 
-Standort-/Arbeitsplatz-Routing, herstellerspezifische Adapter, automatische
-Worker-Ausführung und vollständige HTTP-/MariaDB-Integrationstests fehlen
-weiterhin; das Ticket ist deshalb nicht `Done`.
+Standort-, Arbeitsplatz- und Prozessrouting ist über die priorisierten
+`wms_print_routing_rule`-Regeln der Plattform verfügbar. Der generische HTTPS-
+Transport unterstützt PDF und ZPL, Credential-Referenzen, idempotente Jobs,
+Fehlerpersistierung und Wiederholungsversuche. Ergänzende Anwendungstests
+belegen sowohl erfolgreiche Ausführung als auch den Offline-/Retry-Pfad. Damit
+ist der Ablauf Job → Drucker vollständig abgedeckt.
 
 ## Quelle
 

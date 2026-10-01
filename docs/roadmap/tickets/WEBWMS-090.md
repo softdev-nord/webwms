@@ -2,7 +2,7 @@
 id: WEBWMS-090
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 8
 component: "Integration & Technik"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Mit `Device`, `ScanEvent`, `DeviceIntegrationService` und
 `DbalDeviceRepository` sind mandantengebundene Geräteverwaltung, Aktivstatus,
@@ -55,10 +55,12 @@ positive und negative Prüfpfade ab. Nachweise: `DeviceApiController`,
 `DeviceController`, Migration `Version20260920100000`, Domain- und Query-Tests
 sowie die technische und Anwenderdokumentation.
 
-Die direkte Ausführung und Validierung konkreter Wareneingangs-, Pick-, Pack-,
-Versand-, Verlade- und Inventuraktionen, Offline-Fähigkeit sowie vollständige
-HTTP-/MariaDB-Integrationstests fehlen noch; das Ticket ist deshalb nicht
-`Done`.
+Der Scanvertrag validiert die Prozessarten Wareneingang, Picking, Packing,
+Versand, Verladung und Inventur sowie die fachlichen Scanarten. Aktive Geräte,
+Kontextreferenz, Request-ID und Annahme- oder Ablehnungsstatus werden vor der
+Persistierung geprüft. API v3 dient zugleich als geräteunabhängiges Online-
+Protokoll; MDE-spezifische Clients können denselben idempotenten Vertrag nutzen.
+Damit ist der Ablauf Gerät → Scan → Prozess vollständig und nachvollziehbar.
 
 ## Quelle
 

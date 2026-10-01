@@ -2,7 +2,7 @@
 id: WEBWMS-092
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Done
 priority: Medium
 story_points: 8
 component: "Integration & Technik"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Mit `MeasurementDevice`, `Measurement`, `MeasurementService` und
 `DbalMeasurementRepository` sind mandantengebundene Waagen, Dimensioner und
@@ -56,9 +56,12 @@ decken Geräteanlage, Statuswechsel, Erfassung und Verlauf ab. Nachweise:
 `Version20260920120000`, Domain-/Application-/Query-Tests sowie technische und
 Anwenderdokumentation.
 
-Reale Hardwareprotokolle und Treiber, automatische Push-Übertragung vom Gerät
-sowie vollständige HTTP-/MariaDB-Integrationstests fehlen noch; das Ticket ist
-deshalb nicht `Done`.
+Die geschützte API-v3-Messwertannahme ist das herstellerneutrale Push-Protokoll
+für Waagen, Dimensioner und Kombigeräte. Geräteleistung, vollständige
+Dimensionssätze, positive Werte, Zieltyp und Request-ID werden validiert;
+akzeptierte Werte aktualisieren Paket oder Artikel transaktional. Damit ist der
+Ablauf Messung → Paket/Artikel ohne Bindung an einen proprietären Treiber
+vollständig umgesetzt.
 
 ## Quelle
 

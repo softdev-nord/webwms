@@ -98,6 +98,129 @@ paths:
       responses:
         '201': { $ref: '#/components/responses/Item' }
         '409': { $ref: '#/components/responses/Problem' }
+  /carrier-connections:
+    get:
+      summary: List carrier connections
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Create a carrier connection
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /carriers/{carrierCode}/products:
+    get:
+      summary: Read live carrier products
+      parameters:
+        - { name: carrierCode, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+  /shipments/{shipmentId}/carrier-label:
+    post:
+      summary: Create an idempotent carrier label
+      parameters:
+        - { name: shipmentId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { $ref: '#/components/responses/Item' }
+  /shipments/{shipmentId}/carrier-tracking:
+    post:
+      summary: Synchronize shipment tracking
+      parameters:
+        - { name: shipmentId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { $ref: '#/components/responses/Item' }
+  /loading-manifests/{manifestId}/carrier-handover:
+    post:
+      summary: Hand a completed manifest to a carrier
+      parameters:
+        - { name: manifestId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { $ref: '#/components/responses/Item' }
+  /devices:
+    get:
+      summary: List scanners and mobile data capture devices
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Register a scanner or mobile device
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /scan-events:
+    get:
+      summary: List process-related scan events
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Capture an idempotent process scan
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /printers:
+    get:
+      summary: List printers
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Register a PDF or ZPL printer
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /print-jobs:
+    get:
+      summary: List print jobs
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Queue an idempotent print job
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /print-jobs/{jobId}/execute:
+    post:
+      summary: Execute or retry a print job
+      parameters:
+        - { name: jobId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { $ref: '#/components/responses/Item' }
+  /measurement-devices:
+    get:
+      summary: List scales and dimensioners
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Register a measurement device
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /measurements:
+    get:
+      summary: List measurement events
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Push an idempotent package or product measurement
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /automation-devices:
+    get:
+      summary: List storage lifts and paternosters
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Register a storage automation device
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /automation-commands:
+    get:
+      summary: Pull queued automation commands
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Queue an idempotent automation command
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /automation-commands/{commandId}/status:
+    patch:
+      summary: Report an automation command state
+      parameters:
+        - { name: commandId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { $ref: '#/components/responses/Item' }
 components:
   securitySchemes:
     ApiKey:

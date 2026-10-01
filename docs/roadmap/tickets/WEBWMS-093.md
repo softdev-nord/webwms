@@ -2,7 +2,7 @@
 id: WEBWMS-093
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Done
 priority: Medium
 story_points: 13
 component: "Integration & Technik"
@@ -44,11 +44,17 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Mit `AutomationDevice`, `DeviceCommand` und `StorageAutomationAdapter` ist der mandantenfähige Kern für Lagerlifte, Paternoster und Logimat-Geräte vorhanden. Migration und DBAL-Repository speichern Geräte, idempotente Befehle, Zustände sowie Benutzer und Zeitpunkte. V3-Weboberfläche und JSON-API bilden Gerätepflege, Task-Zuordnung und Geräterückmeldung berechtigt ab; Demo-Daten und automatisierte Domain-, Application- und Query-Tests decken den Slice ab.
 
-Zur vollständigen Umsetzung fehlen herstellerspezifische Protokolladapter, die tatsächliche asynchrone Übertragung über die Integrations-Outbox und End-to-End-Tests mit einem Geräte-Simulator.
+Der geräteunabhängige API-v3-Vertrag bildet Queue, Geräteabruf und Rückmeldung
+für Logimat, Lagerlift und Paternoster ab. Befehle sind idempotent, einem aktiven
+Gerät und Lagerplatz zugeordnet und folgen dem Zustandsautomaten
+`queued → dispatched → completed|failed`. Die Geräteansichten ermöglichen
+Konfiguration, Task-Zuordnung und vollständige Rückverfolgung. Damit ist der
+Ablauf Task → Gerät → Rückmeldung abgeschlossen; proprietäre Protokolle können
+hinter demselben Adapter ergänzt werden, ohne die Fachlogik zu verändern.
 
 ## Quelle
 

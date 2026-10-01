@@ -115,9 +115,14 @@ Der versionierte OpenAPI-3.1-Vertrag liegt unter
 API-Key-Authentifizierung, Kernressourcen, Integrationsaustausch sowie die
 einheitlichen Collection-, Item- und Problem-Antworten.
 
+Die operativen Carrier-, Scanner-, Drucker-, Messgeräte- und
+Lagerautomationsverträge sind in
+[`operational-integrations.md`](operational-integrations.md) beschrieben und im
+OpenAPI-Vertrag enthalten.
+
 ## Bekannte Restarbeiten
 
-- herstellerspezifische ERP-, Shop- und Carrier-Adapter;
-- OpenAPI-Vertrag und API-Integrationstests mit MariaDB;
+- optionale herstellerspezifische Adapter für proprietäre Protokolle;
+- API-Integrationstests mit MariaDB;
 - Rotation und Widerruf von Secrets über eine Administrationsoberfläche;
 - Rate-Limiting und technische Verbrauchsmetriken.

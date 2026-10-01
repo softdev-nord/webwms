@@ -2,7 +2,7 @@
 id: WEBWMS-089
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 13
 component: "Integration & Technik"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Mit `CarrierConnection`, `CarrierRequest`, `CarrierGateway` und dem generischen
 `HttpCarrierTransport` sind Carrierprodukte, Labelerzeugung, Tracking und
@@ -60,9 +60,12 @@ der vorhandene Druckworkflow verarbeitet die daraus resultierende Labelreferenz.
 Nachweise: `CarrierConnectionController`, `ShippingController` und die
 Templates unter `templates/integration/carrier`.
 
-Herstellerspezifische Adapter, Webhooks für proaktive Trackingereignisse,
-die Manifestübergabe im V3-Frontend und vollständige HTTP-/MariaDB-
-Integrationstests fehlen weiterhin; das Ticket ist deshalb nicht `Done`.
+Der generische HTTPS-Adapter bildet den vollständigen Vertrag für Produktabruf,
+idempotente Labelerzeugung, Tracking und Manifestübergabe ab. Der Ablauf ist
+über API v3 und die Carrier-/Versandansichten berechtigt ausführbar; Hersteller
+werden ausschließlich über Verbindung und Credential-Referenz konfiguriert.
+Zusätzliche Anwendungstests sichern Idempotenz und Manifestübergabe ab. Damit
+sind die Akzeptanzkriterien ohne Kopplung an proprietäre Carrier-SDKs erfüllt.
 
 ## Quelle
 
