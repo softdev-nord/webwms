@@ -73,13 +73,23 @@ readonly class DbalIntegrationTransportRepository implements IntegrationTranspor
 
         return new ConfiguredTransportEndpoint(
             new TransportEndpoint(
-                (string) $row['id'], (string) $row['tenant_id'], (string) $row['code'], (string) $row['name'],
-                (string) $row['adapter_type'], (string) $row['address'], (string) $row['credential_env'],
-                (bool) $row['active'], (string) $row['created_by'], new DateTimeImmutable((string) $row['created_at']),
+                (string) $row['id'],
+                (string) $row['tenant_id'],
+                (string) $row['code'],
+                (string) $row['name'],
+                (string) $row['adapter_type'],
+                (string) $row['address'],
+                (string) $row['credential_env'],
+                (bool) $row['active'],
+                (string) $row['created_by'],
+                new DateTimeImmutable((string) $row['created_at']),
             ),
             new ProtocolConfiguration(
-                (string) $row['id'], (string) $row['protocol'], (string) $row['framing'],
-                (int) $row['connect_timeout_ms'], (int) $row['read_timeout_ms'],
+                (string) $row['id'],
+                (string) $row['protocol'],
+                (string) $row['framing'],
+                (int) $row['connect_timeout_ms'],
+                (int) $row['read_timeout_ms'],
             ),
         );
     }
