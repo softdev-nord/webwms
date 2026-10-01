@@ -63,7 +63,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             true,
             $request->getClientIp(),
             $request->headers->get('User-Agent'),
-            null, new DateTimeImmutable()
+            null,
+            new DateTimeImmutable()
         );
 
         return new RedirectResponse($this->urlGenerator->generate('v3_dashboard'));

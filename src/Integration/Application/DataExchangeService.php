@@ -16,8 +16,9 @@ use ZipArchive;
 
 readonly class DataExchangeService
 {
-    public function __construct(private IntegrationExchangeRepository $repository)
-    {
+    public function __construct(
+        private IntegrationExchangeRepository $repository
+    ) {
     }
 
     public function import(
@@ -265,7 +266,7 @@ readonly class DataExchangeService
     /** @return list<array<string, scalar|null>> */
     private function decodeCsv(string $content): array
     {
-        $stream = fopen('php://temp', 'r+');
+        $stream = fopen('php://temp', 'r+b');
         if ($stream === false) {
             throw new InvalidArgumentException('Unable to open the CSV stream.');
         }
@@ -274,11 +275,13 @@ readonly class DataExchangeService
         $headers = fgetcsv($stream, escape: '');
         if (!is_array($headers) || $headers === []) {
             fclose($stream);
+
             return [];
         }
         foreach ($headers as $header) {
             if (!is_string($header) || trim($header) === '') {
                 fclose($stream);
+
                 throw new InvalidArgumentException('Every CSV column requires a header.');
             }
         }
@@ -287,6 +290,7 @@ readonly class DataExchangeService
         while (($values = fgetcsv($stream, escape: '')) !== false) {
             if (count($values) !== count($headers)) {
                 fclose($stream);
+
                 throw new InvalidArgumentException('Every CSV row must match the header column count.');
             }
             $rows[] = array_combine($headers, $values);
@@ -389,7 +393,7 @@ readonly class DataExchangeService
     /** @param list<array<string, scalar|null>> $rows */
     private function encodeCsv(array $rows): string
     {
-        $stream = fopen('php://temp', 'r+');
+        $stream = fopen('php://temp', 'r+b');
         if ($stream === false) {
             throw new InvalidArgumentException('Unable to open the CSV stream.');
         }

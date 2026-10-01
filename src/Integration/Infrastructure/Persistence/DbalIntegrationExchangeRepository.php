@@ -13,8 +13,9 @@ use WebWMS\Integration\Domain\IntegrationMapping;
 
 readonly class DbalIntegrationExchangeRepository implements IntegrationExchangeRepository
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
     public function mappingsFor(string $tenantId, string $systemType, string $messageType): array

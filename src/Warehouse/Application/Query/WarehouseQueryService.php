@@ -6,7 +6,6 @@ namespace WebWMS\Warehouse\Application\Query;
 
 use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
-use LogicException;
 use WebWMS\Integration\Application\StockMovementCriteria;
 
 readonly class WarehouseQueryService
