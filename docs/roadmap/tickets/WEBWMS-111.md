@@ -2,7 +2,7 @@
 id: WEBWMS-111
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Offen
+status: Done
 priority: High
 story_points: 21
 component: "Benutzerhandbuch"
@@ -88,9 +88,15 @@ durch den jeweiligen echten Screenshot ersetzt werden kann.
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Das Ticket ist spezifiziert, aber noch nicht umgesetzt. Der erste
-Implementierungsschritt verwendet eine zentrale generische Platzhaltergrafik.
-Die Erstellung und Zuordnung der finalen Screenshots erfolgt anschließend als
-gesonderter inhaltlicher Nachlauf.
+Der Handbuch-Slice vom 01.10.2026 stellt zwölf fachlich gegliederte Kapitel,
+die vollständige deutsche und englische Laufzeitquelle in den separaten
+Dateien `translations/handbook.de.yaml` und `translations/handbook.en.yaml`,
+Template- und Sidebar-Integration, abschnittsgenaue Suche, Breadcrumbs,
+Kapitel-Navigation, die Berechtigung `documentation.handbook.read` sowie
+automatisierte Abdeckungs-, Paritäts-, Such- und Renderingtests bereit.
+
+Alle Kapitel verwenden zunächst die zentrale, barrierearm beschriftete Grafik
+`public/assets/images/handbook/placeholder.svg`. Die technische Dokumentation
+beschreibt den späteren abschnittsweisen Austausch durch echte Screenshots.

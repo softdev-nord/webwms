@@ -4,152 +4,138 @@ declare(strict_types=1);
 
 namespace WebWMS\Documentation\Application;
 
-use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 readonly class UserDocumentationService
 {
-    private const array CATEGORY_ORDER = [
-        'Grundlagen & Administration',
-        'Lager & Bestand',
-        'Wareneingang',
-        'Warenausgang',
-        'Integration & Technik',
+    /** @var list<array{slug: string, category: string}> */
+    public const array CHAPTERS = [
+        ['slug' => 'getting-started', 'category' => 'basics'],
+        ['slug' => 'navigation-and-lists', 'category' => 'basics'],
+        ['slug' => 'users-roles-and-security', 'category' => 'administration'],
+        ['slug' => 'system-configuration', 'category' => 'administration'],
+        ['slug' => 'warehouse-and-stock', 'category' => 'warehouse'],
+        ['slug' => 'inventory-counting', 'category' => 'warehouse'],
+        ['slug' => 'inbound', 'category' => 'processes'],
+        ['slug' => 'fulfillment-and-outbound', 'category' => 'processes'],
+        ['slug' => 'integrations-and-devices', 'category' => 'integration'],
+        ['slug' => 'platform-and-extensions', 'category' => 'platform'],
+        ['slug' => 'api-and-automation', 'category' => 'integration'],
+        ['slug' => 'troubleshooting', 'category' => 'basics'],
     ];
 
+    /** @var list<string> */
+    private const array CATEGORY_ORDER = ['basics', 'administration', 'warehouse', 'processes', 'integration', 'platform'];
+
     public function __construct(
-        private string $projectDir
+        private TranslatorInterface $translator
     ) {
     }
 
-    /** @return array<string, list<array{slug: string, title: string, summary: string}>> */
-    public function groupedDocuments(?string $query = null): array
+    /** @return array<string, list<array{slug: string, title: string, summary: string, match: null|array{anchor: string, excerpt: string}}>> */
+    public function groupedDocuments(?string $query = null, ?string $locale = null): array
     {
         $needle = mb_strtolower(trim((string) $query));
-        $groups = array_fill_keys(self::CATEGORY_ORDER, []);
+        $groups = [];
+        foreach (self::CATEGORY_ORDER as $category) {
+            $groups[$this->translate('category.' . $category, $locale)] = [];
+        }
 
-        foreach ($this->documentFiles() as $slug => $file) {
-            $markdown = $this->read($file);
-            $title = $this->title($markdown, $slug);
-            $summary = $this->summary($markdown);
-            if ($needle !== '' && !str_contains(mb_strtolower($title . ' ' . $summary . ' ' . $markdown), $needle)) {
+        foreach (self::CHAPTERS as $chapter) {
+            $document = $this->translatedDocument($chapter['slug'], $locale);
+            $match = $needle === '' ? null : $this->match($document['body'], $needle);
+            $haystack = mb_strtolower($document['title'] . ' ' . $document['summary'] . ' ' . $document['body']);
+            if ($needle !== '' && !str_contains($haystack, $needle)) {
                 continue;
             }
 
-            $groups[$this->category($slug)][] = ['slug' => $slug, 'title' => $title, 'summary' => $summary];
+            $category = $this->translate('category.' . $chapter['category'], $locale);
+            $groups[$category][] = [
+                'slug' => $chapter['slug'],
+                'title' => $document['title'],
+                'summary' => $document['summary'],
+                'match' => $match,
+            ];
         }
 
         return array_filter($groups);
     }
 
-    /** @return array{slug: string, title: string, markdown: string, previous: null|array{slug: string, title: string}, next: null|array{slug: string, title: string}} */
-    public function document(string $slug): array
+    /** @return array{slug: string, category: string, title: string, summary: string, markdown: string, previous: null|array{slug: string, title: string}, next: null|array{slug: string, title: string}} */
+    public function document(string $slug, ?string $locale = null): array
     {
         if (preg_match('/^[a-z0-9][a-z0-9-]*$/', $slug) !== 1) {
-            throw new NotFoundHttpException('Die Dokumentationsseite wurde nicht gefunden.');
+            throw new NotFoundHttpException($this->translate('error.not_found', $locale));
         }
 
-        $documents = [];
-        foreach ($this->groupedDocuments() as $group) {
-            foreach ($group as $item) {
-                $documents[] = ['slug' => $item['slug'], 'title' => $item['title']];
-            }
-        }
-
-        $index = array_search($slug, array_column($documents, 'slug'), true);
+        $index = array_search($slug, array_column(self::CHAPTERS, 'slug'), true);
         if ($index === false) {
-            throw new NotFoundHttpException('Die Dokumentationsseite wurde nicht gefunden.');
+            throw new NotFoundHttpException($this->translate('error.not_found', $locale));
         }
 
-        $file = $this->documentFiles()[$slug] ?? null;
-        if ($file === null) {
-            throw new NotFoundHttpException('Die Dokumentationsseite wurde nicht gefunden.');
-        }
-
-        $markdown = $this->read($file);
+        $chapter = self::CHAPTERS[$index];
+        $document = $this->translatedDocument($slug, $locale);
 
         return [
             'slug' => $slug,
-            'title' => $this->title($markdown, $slug),
-            'markdown' => $markdown,
-            'previous' => $index > 0 ? $documents[$index - 1] : null,
-            'next' => $documents[$index + 1] ?? null,
+            'category' => $this->translate('category.' . $chapter['category'], $locale),
+            'title' => $document['title'],
+            'summary' => $document['summary'],
+            'markdown' => '# ' . $document['title'] . "\n\n" . $document['body'],
+            'previous' => $index > 0 ? $this->navigation(self::CHAPTERS[$index - 1]['slug'], $locale) : null,
+            'next' => isset(self::CHAPTERS[$index + 1]) ? $this->navigation(self::CHAPTERS[$index + 1]['slug'], $locale) : null,
         ];
     }
 
-    /** @return array<string, string> */
-    private function documentFiles(): array
+    /** @return array{title: string, summary: string, body: string} */
+    private function translatedDocument(string $slug, ?string $locale): array
     {
-        $files = glob($this->projectDir . '/docs/user/*.md');
-        if ($files === false) {
-            return [];
-        }
+        $prefix = 'chapter.' . str_replace('-', '_', $slug) . '.';
 
-        $documents = [];
-        foreach ($files as $file) {
-            $documents[pathinfo($file, PATHINFO_FILENAME)] = $file;
-        }
-
-        ksort($documents);
-
-        return $documents;
+        return [
+            'title' => $this->translate($prefix . 'title', $locale),
+            'summary' => $this->translate($prefix . 'summary', $locale),
+            'body' => $this->translate($prefix . 'body', $locale),
+        ];
     }
 
-    private function read(string $file): string
+    /** @return array{slug: string, title: string} */
+    private function navigation(string $slug, ?string $locale): array
     {
-        $content = file_get_contents($file);
-        if ($content === false) {
-            throw new RuntimeException(sprintf('Die Dokumentationsdatei "%s" konnte nicht gelesen werden.', basename($file)));
-        }
-
-        return $content;
+        return ['slug' => $slug, 'title' => $this->translatedDocument($slug, $locale)['title']];
     }
 
-    private function title(string $markdown, string $slug): string
+    /** @return null|array{anchor: string, excerpt: string} */
+    private function match(string $body, string $needle): ?array
     {
-        if (preg_match('/^#\s+(.+)$/m', $markdown, $match) === 1) {
-            return trim($match[1]);
-        }
-
-        return ucfirst(str_replace('-', ' ', $slug));
-    }
-
-    private function summary(string $markdown): string
-    {
-        $withoutTitle = preg_replace('/^#\s+.+\R?/', '', $markdown, 1) ?? $markdown;
-        $splitParagraphs = preg_split('/\R\s*\R/', trim($withoutTitle));
-        $paragraphs = $splitParagraphs !== false ? $splitParagraphs : [];
-        foreach ($paragraphs as $paragraph) {
-            if ($paragraph === '' || str_starts_with(ltrim($paragraph), '#') || str_starts_with(ltrim($paragraph), '```')) {
+        $lines = preg_split('/\R/', $body) ?: [];
+        $anchor = '';
+        foreach ($lines as $line) {
+            if (preg_match('/^#{2,3}\s+(.+)$/', trim($line), $heading) === 1) {
+                $anchor = $this->anchor($heading[1]);
+            }
+            if (!str_contains(mb_strtolower($line), $needle)) {
                 continue;
             }
 
-            $text = preg_replace(['/\[([^]]+)]\([^)]+\)/', '/[`*_>#|-]/', '/\s+/'], ['$1', '', ' '], $paragraph) ?? $paragraph;
+            $plain = preg_replace(['/!\[([^]]*)]\([^)]+\)/', '/\[([^]]+)]\([^)]+\)/', '/[`*_>#|-]/', '/\s+/'], ['$1', '$1', '', ' '], $line) ?? $line;
 
-            return mb_strimwidth(trim($text), 0, 180, '…');
+            return ['anchor' => $anchor, 'excerpt' => mb_strimwidth(trim($plain), 0, 220, '…')];
         }
 
-        return 'Anwenderdokumentation für WebWMS 3.0.';
+        return null;
     }
 
-    private function category(string $slug): string
+    private function translate(string $key, ?string $locale): string
     {
-        if (preg_match('/^(getting-started|tenants-and-sites|access-security|administration-workspace|list-search-and-pagination|v3-demo)$/', $slug) === 1) {
-            return 'Grundlagen & Administration';
-        }
+        return $this->translator->trans($key, [], 'handbook', $locale);
+    }
 
-        if (preg_match('/^(inventory-inbound|planned-inbound|unplanned-receipts|inbound-discrepancy|inventory-putaway|inventory-replenishment)/', $slug) === 1) {
-            return 'Wareneingang';
-        }
+    private function anchor(string $title): string
+    {
+        $normalized = strtr(mb_strtolower($title), ['ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss']);
 
-        if (preg_match('/^(advanced-fulfillment|inventory-pick|inventory-packing|inventory-shipping|inventory-loading|inventory-returns)/', $slug) === 1) {
-            return 'Warenausgang';
-        }
-
-        if (str_contains($slug, 'api') || str_contains($slug, 'integration') || in_array($slug, ['device-integration', 'measurement-integration', 'storage-automation', 'wcs-integration'], true)) {
-            return 'Integration & Technik';
-        }
-
-        return 'Lager & Bestand';
+        return trim(preg_replace('/[^a-z0-9]+/', '-', $normalized) ?? '', '-');
     }
 }

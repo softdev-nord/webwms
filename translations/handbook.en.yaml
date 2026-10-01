@@ -1,0 +1,256 @@
+ui:
+    page_title: 'User handbook'
+    headline: 'WebWMS user handbook'
+    introduction: 'Configuration and operation of every WebWMS function—clear, complete and available directly in the application.'
+    search: 'Search the handbook'
+    search_action: 'Search'
+    reset_search: 'Reset search'
+    no_results: 'No matching content was found for “%query%”.'
+    result_for: 'Match in chapter'
+    breadcrumb: 'Breadcrumb navigation'
+    all_chapters: 'All chapters'
+    on_this_page: 'In this chapter'
+    no_subchapters: 'This chapter has no subsections.'
+    previous: 'Previous chapter'
+    next: 'Next chapter'
+    sidebar_section: 'Help & handbook'
+    sidebar_link: 'User handbook'
+category:
+    basics: 'Fundamentals & operating model'
+    administration: 'Administration & configuration'
+    warehouse: 'Warehouse & stock'
+    processes: 'Inbound, fulfilment & shipping'
+    integration: 'Integration & technology'
+    platform: 'Platform & extensions'
+error:
+    not_found: 'The requested handbook chapter was not found.'
+chapter:
+    getting_started:
+        title: 'Getting started and workspace'
+        summary: 'Login, tenant, site, language, dashboard and a secure start to daily work.'
+        body: |-
+            ## Sign in and verify context
+            Open the WebWMS login page and sign in with email and password or the configured OpenID Connect provider. After login, verify the active tenant and site. Data, roles and transactions are always processed in that context.
+
+            1. Sign in.
+            2. Verify user, tenant and site in the header.
+            3. Open the dashboard and review open tasks and warnings.
+            4. Change language or appearance through the user interface.
+
+            ![Placeholder: login and dashboard](/assets/images/handbook/placeholder.svg)
+
+            ## Dashboard and metrics
+            The dashboard combines stock, receipts, issues, transport orders and utilisation. Cards link to the relevant overview. Metrics are tenant-scoped; a missing value can be caused by filters, permissions or the absence of movements rather than a technical error.
+
+            ## Finish securely
+            Close sensitive dialogs, deliberately save or discard changes and sign out through the user menu. Do not store credentials permanently on shared devices.
+    navigation_and_lists:
+        title: 'Navigation, overviews, search and editing'
+        summary: 'Sidebar, tables, filters, pagination, detail pages and recurring interaction patterns.'
+        body: |-
+            ## Sidebar and submenus
+            The sidebar is grouped into platform, warehouse, inbound, outbound, integration and administration. Users only see areas for which they have at least read permission. The active area remains expanded and the current page is highlighted.
+
+            ## Work with overview pages
+            Overviews separate reading from creation. Use global search for document numbers, products, partners or status. Domain filters reduce the result set and page size controls pagination. Reset filters before reporting a missing record.
+
+            1. Enter a search term.
+            2. Select status or domain filters.
+            3. Choose page size and navigate through results.
+            4. Open details or editing from the table row action.
+
+            ![Placeholder: table filters and row actions](/assets/images/handbook/placeholder.svg)
+
+            ## Create, edit and delete
+            New records are created on a dedicated form page. Required fields are marked. Editing starts from the row action and only takes effect after saving. Business documents already in use are usually cancelled, deactivated or completed by a status transition rather than physically deleted.
+
+            ## Messages and validation
+            Success and error messages appear above the content after an action. Correct highlighted fields. For concurrent-edit conflicts, reload the current state and review the change again.
+    users_roles_and_security:
+        title: 'Users, roles, permissions and single sign-on'
+        summary: 'Configure user accounts, permissions, API clients and OpenID Connect securely.'
+        body: |-
+            ## Manage users
+            Under Administration → Users, authorised administrators see all tenant accounts. Email address, display name, state and roles are assigned during creation. Deactivate users who have left; existing audit evidence remains available.
+
+            ## Roles and permissions
+            Roles bundle granular permissions such as read, write, execute, approve and configure. Apply least privilege. Role changes are audited. The `documentation.handbook.read` permission controls access to this handbook.
+
+            ![Placeholder: roles and permissions](/assets/images/handbook/placeholder.svg)
+
+            ## API clients
+            API clients have a name, active state and explicit permissions. Transfer generated secrets securely and manage them as environment secrets. Rotate or deactivate compromised credentials and review last use.
+
+            ## OpenID Connect
+            Configure provider code, display name, HTTPS issuer, client ID and client-secret reference per tenant. Login uses discovery, state, nonce and PKCE. The provider must verify the email. On first login the external identity is mapped to an active user in the same tenant.
+
+            ## Verification
+            Test new roles with a separate user. Verify allowed and deliberately forbidden actions and record who owns the role.
+    system_configuration:
+        title: 'Tenant, site and system configuration'
+        summary: 'Core data, number ranges, strategies, printing, states and operational thresholds.'
+        body: |-
+            ## Tenants and sites
+            Tenants isolate data and permissions. Sites represent organisational warehouse locations. Maintain unique codes, clear names, timezone, address and active state. Only deactivate a site after all open processes referencing it have been closed.
+
+            ## Number ranges and master data
+            Number ranges define prefix, next value and document format. Change productive ranges in a controlled manner. Products, business partners, load carriers and special-stock types must be unique and complete.
+
+            ## Warehouse strategies
+            Putaway, stock selection, FEFO/FIFO/LIFO and replenishment rules define priorities, conditions, source and target areas and thresholds. Specific rules are evaluated before general rules. Review the match set before activation.
+
+            ![Placeholder: configuration form](/assets/images/handbook/placeholder.svg)
+
+            ## Printers, devices and states
+            Printers and capture devices require a unique code, connection, format or device type and active state. Connection secrets are stored as environment references, never in plain text. Test a configuration before operational release.
+
+            ## Control changes
+            Record reason and time for significant changes. Afterwards review the audit log, affected processes and at least one positive and one negative use case.
+    warehouse_and_stock:
+        title: 'Warehouse topology, stock and traceability'
+        summary: 'Warehouse structure, occupancy, stock dimensions, movements, blocks and strategies.'
+        body: |-
+            ## Configure warehouse topology
+            The hierarchy consists of site, warehouse, area and storage bin. Create elements through the dedicated submenu and edit existing elements from their table row. Codes must be unique in context. Capacity, priority, area type and state affect putaway and route optimisation.
+
+            ![Placeholder: warehouse topology](/assets/images/handbook/placeholder.svg)
+
+            ## Read and move stock
+            Real-time stock shows product, bin, quantity, state, batch, serial number, expiry and special stock. Open movement history for the auditable origin of a quantity. Transfers validate source stock, target dimension and permission atomically.
+
+            ## Batches, serial numbers and expiry
+            Batches group equal quantities. Serial numbers identify individual items and cannot be active twice. FEFO prioritises the earliest usable expiry; blocked or expired stock is not allocated normally.
+
+            ## Blocks and special stock
+            Select block reason, quantity and stock dimension. Review and release are logged separately. Special-stock indicators document ownership or purpose and remain attached during movements.
+
+            ## Occupancy and traceability
+            The occupancy view visualises free, occupied, blocked and overloaded bins. Traceability links receipt, movement, allocation, pick, package and shipment. Filter by product, batch, serial number or period.
+    inventory_counting:
+        title: 'Inventory counting and stock control'
+        summary: 'Snapshot, perpetual and zero-crossing counts, entry and discrepancy approval.'
+        body: |-
+            ## Prepare a count
+            Select count type, site, warehouse area and effective date. The system prevents parallel open counts for the same area. The expected stock is an immutable snapshot; later movements remain separately traceable.
+
+            ## Count and submit
+            Enter counted quantity and, where required, batch, serial number or note. Blind count hides the expected value. Submit only after every line has been processed. Zero-crossing counts are event-driven and perpetual counts use due plans.
+
+            ![Placeholder: count document and entry](/assets/images/handbook/placeholder.svg)
+
+            ## Approve discrepancies
+            Differences require an authorised second person. Review expected, actual, movements and reason. Approval posts the adjustment to the ledger; rejection or recount changes workflow state without deleting the original count.
+
+            ## Complete
+            Complete the count only after all discrepancies have been handled. Verify final state, adjustment entries and audit log.
+    inbound:
+        title: 'Inbound and putaway'
+        summary: 'Orders, notices, planned and unplanned receipts, quality, discrepancies and putaway.'
+        body: |-
+            ## Process planned receipts
+            Find the order or notice and verify supplier, products, expected quantities and date. Capture received quantity plus batch, serial number, expiry and load carrier. Partial quantities remain open where the document permits this.
+
+            ## Capture an unplanned receipt
+            Select tenant, site, supplier or origin, product and quantity. Provide a reason. External references and idempotency keys prevent duplicates.
+
+            ![Placeholder: inbound inspection](/assets/images/handbook/placeholder.svg)
+
+            ## Quality and discrepancies
+            Complete the configured checklist. Quantity, identity or quality deviations create a controlled case. Blocked goods remain unavailable until an authorised user approves or rejects them. Decisions require a reason and are audited.
+
+            ## Putaway
+            Request a target bin from the active strategy or select an allowed bin with appropriate permission. Check capacity, hazardous-goods rules, product compatibility and state. Confirm source and target scans; stock is then transferred atomically.
+    fulfillment_and_outbound:
+        title: 'Order, allocation, picking, packing and shipping'
+        summary: 'The complete outbound process from customer order through loading and returns.'
+        body: |-
+            ## Create and release orders
+            Capture or import recipient, delivery date, lines, quantities and shipping requirements. Release validates master data and available stock. Allocations reserve specific stock dimensions according to the active selection strategy.
+
+            ## Pick
+            Create or bundle pick lists, assign a user and optionally optimise the route. Scan bin, product, batch or serial number and confirm quantity. Shortages are recorded as exceptions rather than silently skipped.
+
+            ![Placeholder: mobile picking](/assets/images/handbook/placeholder.svg)
+
+            ## Pack and ship
+            Open the packing order, select packaging and assign lines to a package. Weight and dimensions can be entered or captured by a device. Generate the shipping label after a successful carrier request. Failed requests remain traceable and retryable.
+
+            ## Load and deliver
+            Group shipments into a manifest, confirm loading by scan and complete the manifest. Delivery status and ERP feedback are processed through integrations. Cancellation is only possible in eligible states.
+
+            ## Returns
+            Identify the original shipment and product, capture reason and condition, then choose restock, block, rework or scrap. Each decision creates the appropriate stock movement and audit evidence.
+    integrations_and_devices:
+        title: 'ERP, carriers, printers, scanners, measuring devices and WCS'
+        summary: 'Configure, test, monitor and securely operate external connections.'
+        body: |-
+            ## Configure connections
+            Define connection type, HTTPS endpoint, authentication reference, timeouts, retries and active state per tenant. Secrets are resolved only through environment references. Use the connection test before productive messages are sent.
+
+            ## ERP and data exchange
+            Mappings assign source and target fields plus transformations. Import jobs show format, resource type, row count, state and errors. Correct mapping or source data and restart failed jobs in a controlled manner.
+
+            ## Carriers and printing
+            Carrier connections generate labels and status queries. Printers define queue, format and connection. Review preview, target device and retry state before resending a job.
+
+            ![Placeholder: integration connection and test](/assets/images/handbook/placeholder.svg)
+
+            ## Scanners, scales and dimensioning
+            Register devices with unique code and type. Scans and measurements use a message ID for idempotent processing. Assign the correct site and verify unit, measuring range and timestamp.
+
+            ## WCS and automation
+            Automation commands contain target, command type, payload and state. Monitor acceptance, execution and technical errors. Only retry when the command is idempotent or otherwise uniquely protected.
+    platform_and_extensions:
+        title: 'Platform functions and extended modules'
+        summary: 'Shopfloor, KPI, partner portal, events, VAS and rule-based extensions.'
+        body: |-
+            ## Shopfloor and KPI
+            Shopfloor tasks group work by priority, area and state. KPI definitions set metric, aggregation, target and period. Verify filters and data period before evaluating deviations.
+
+            ## Partner portal and event centre
+            Partner accounts receive explicit permissions for released data. The event centre shows business events and processing state. Acknowledge only events whose cause is understood or resolved.
+
+            ## Storage billing and services
+            Storage billing rules use period, stock, tariff and billing basis. VAS orders describe service, quantity, state and evidence. Check tariff validity and reference data before billing.
+
+            ![Placeholder: platform control centre](/assets/images/handbook/placeholder.svg)
+
+            ## Extended configurations
+            Extension modules cover resources such as compliance, quality, production, dock and yard configuration. Create rules in configuration views and perform work in separate process views. State transitions, approvals and external evidence are audited.
+    api_and_automation:
+        title: 'API, outbox, transport adapters and automation'
+        summary: 'OpenAPI, API keys, reliable messaging, protocols and operational monitoring.'
+        body: |-
+            ## Use the API
+            Open API documentation from its separate sidebar link. Choose resource and operation and verify permission, headers and schema. API keys are sent in headers and never published in URLs, logs or screenshots.
+
+            ## Monitor the outbox
+            The outbox separates business transactions from external delivery. Filter by state, target and period. Review payload and last error. Retry only after resolving the cause; manual acknowledgement requires a business reason.
+
+            ![Placeholder: outbox and transport state](/assets/images/handbook/placeholder.svg)
+
+            ## Transport adapters
+            HTTP, file, TCP and serial adapters require endpoint, timeout, encoding or framing and secret reference. Test reachability and response format. Do not log credentials or unnecessary personal payload data.
+
+            ## Workers and schedules
+            Asynchronous messages require running Messenger workers. Scheduled tasks start due jobs such as counting, replenishment or status reconciliation. Monitor queue depth, failed queue, duration and last successful run.
+    troubleshooting:
+        title: 'Troubleshooting and support'
+        summary: 'Narrow down common operator errors, retry safely and provide useful support data.'
+        body: |-
+            ## A record or menu is missing
+            Verify tenant, site, role, active filters and state. Reset search and pagination. A missing menu item usually indicates a missing read permission.
+
+            ## An action is unavailable
+            Read validation feedback and verify required fields, document state, predecessor actions, stock availability and concurrent editing. Do not repeatedly submit a write action without understanding its result.
+
+            ## An integration reports an error
+            Review connection test, secret reference, target system, outbox state and error message. Determine whether the external order was already processed before retrying.
+
+            ![Placeholder: error message and audit log](/assets/images/handbook/placeholder.svg)
+
+            ## Prepare a support case
+            Provide time with timezone, tenant, site, route, document reference, expected and actual behaviour and correlation or message ID. Remove passwords, API keys and unnecessary personal data from screenshots and logs.
+
+            ## Audit and recovery
+            Use movement history, audit events and outbox to reconstruct the flow. Correct business data through supported reversal, approval or cancellation processes instead of direct database changes.

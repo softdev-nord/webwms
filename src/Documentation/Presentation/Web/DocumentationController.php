@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use WebWMS\Documentation\Application\SafeMarkdownRenderer;
 use WebWMS\Documentation\Application\UserDocumentationService;
 
@@ -20,13 +21,15 @@ class DocumentationController extends AbstractController
     }
 
     #[Route('', name: 'index', methods: ['GET'])]
+    #[IsGranted('documentation.handbook.read')]
     public function index(Request $request, UserDocumentationService $documentation): Response
     {
-        $query = trim((string) $request->query->get('q'));
+        $query = mb_substr(trim((string) $request->query->get('q')), 0, 120);
 
         return $this->render('documentation/index.html.twig', [
-            'page' => 'documentation.page.help_and_documentation',
-            'groups' => $documentation->groupedDocuments($query),
+            'page' => 'ui.page_title',
+            'pageDomain' => 'handbook',
+            'groups' => $documentation->groupedDocuments($query, $request->getLocale()),
             'query' => $query,
         ]);
     }
@@ -52,13 +55,15 @@ class DocumentationController extends AbstractController
     }
 
     #[Route('/{slug}', name: 'show', requirements: ['slug' => '[a-z0-9][a-z0-9-]*'], methods: ['GET'])]
-    public function show(string $slug, UserDocumentationService $documentation, SafeMarkdownRenderer $markdown): Response
+    #[IsGranted('documentation.handbook.read')]
+    public function show(string $slug, Request $request, UserDocumentationService $documentation, SafeMarkdownRenderer $markdown): Response
     {
-        $document = $documentation->document($slug);
+        $document = $documentation->document($slug, $request->getLocale());
         $rendered = $markdown->render($document['markdown'], $this->generateUrl('v3_documentation_index'));
 
         return $this->render('documentation/show.html.twig', [
             'page' => $document['title'],
+            'pageIsTranslated' => true,
             'document' => $document,
             'content' => $rendered['html'],
             'toc' => $rendered['toc'],

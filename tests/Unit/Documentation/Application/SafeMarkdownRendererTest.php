@@ -39,4 +39,16 @@ MARKDOWN;
         self::assertStringContainsString('href="#"', $result['html']);
         self::assertStringNotContainsString('javascript:', $result['html']);
     }
+
+    public function testRendersOnlyWhitelistedHandbookImages(): void
+    {
+        $renderer = new SafeMarkdownRenderer();
+        $valid = $renderer->render('![Stock](/assets/images/handbook/placeholder.svg)', '/v3/help');
+        $invalid = $renderer->render('![Unsafe](https://example.org/tracker.png)', '/v3/help');
+
+        self::assertStringContainsString('src="/assets/images/handbook/placeholder.svg"', $valid['html']);
+        self::assertStringContainsString('alt="Stock"', $valid['html']);
+        self::assertStringContainsString('src="/assets/images/handbook/placeholder.svg"', $invalid['html']);
+        self::assertStringNotContainsString('example.org', $invalid['html']);
+    }
 }

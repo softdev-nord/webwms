@@ -2,7 +2,7 @@
 
 Alle 10 dokumentierten Funktionen des Bereichs Zusatzfunktionen werden fachlich konsistent, berechtigt, nachvollziehbar und testbar umgesetzt.
 
-**Epic-Status:** Offen · 9 von 10 Stories Done · 81 von 102 Story Points Done
+**Epic-Status:** Done · 10 von 10 Stories · 102 von 102 Story Points
 
 | Ticket | Zusammenfassung | Status | Priorität | Story Points |
 | --- | --- | --- | --- | ---: |
@@ -15,4 +15,4 @@ Alle 10 dokumentierten Funktionen des Bereichs Zusatzfunktionen werden fachlich 
 | [WEBWMS-072](../tickets/WEBWMS-072.md) | Volltextsuche implementieren | Done | High | 8 |
 | [WEBWMS-073](../tickets/WEBWMS-073.md) | Kameranutzung implementieren | Done | Medium | 5 |
 | [WEBWMS-074](../tickets/WEBWMS-074.md) | Druckersteuerung implementieren | Done | High | 8 |
-| [WEBWMS-111](../tickets/WEBWMS-111.md) | Vollständiges zweisprachiges Benutzerhandbuch implementieren | Offen | High | 21 |
+| [WEBWMS-111](../tickets/WEBWMS-111.md) | Vollständiges zweisprachiges Benutzerhandbuch implementieren | Done | High | 21 |

@@ -13,6 +13,7 @@ class PermissionCatalog
         'administration.number_range.use',
         'administration.role.read', 'administration.role.write',
         'administration.user.read', 'administration.user.write',
+        'documentation.handbook.read',
         'fulfillment.loading.execute', 'fulfillment.loading.read', 'fulfillment.loading.write',
         'fulfillment.pack.execute', 'fulfillment.pack.read', 'fulfillment.pack.write',
         'fulfillment.pick.assign', 'fulfillment.pick.execute', 'fulfillment.pick.read', 'fulfillment.pick.write',

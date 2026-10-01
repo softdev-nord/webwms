@@ -166,6 +166,13 @@ class SafeMarkdownRenderer
     private function inline(string $text, string $documentationPath): string
     {
         $tokens = [];
+        $text = preg_replace_callback('/!\[([^]]*)]\(([^)]+)\)/', function (array $match) use (&$tokens): string {
+            $token = '%%IMAGE' . count($tokens) . '%%';
+            $source = $this->image($match[2]);
+            $tokens[$token] = '<figure class="handbook-figure"><img class="img-fluid rounded border" src="' . htmlspecialchars($source, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" alt="' . htmlspecialchars($match[1], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" loading="lazy"><figcaption class="small text-muted mt-2">' . htmlspecialchars($match[1], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</figcaption></figure>';
+
+            return $token;
+        }, $text) ?? $text;
         $text = preg_replace_callback('/`([^`]+)`/', function (array $match) use (&$tokens): string {
             $token = '%%CODE' . count($tokens) . '%%';
             $tokens[$token] = '<code>' . htmlspecialchars($match[1], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</code>';
@@ -184,6 +191,15 @@ class SafeMarkdownRenderer
         $text = preg_replace('/(?<!\*)\*([^*]+)\*(?!\*)/', '<em>$1</em>', $text) ?? $text;
 
         return strtr($text, $tokens);
+    }
+
+    private function image(string $source): string
+    {
+        if (preg_match('#^/assets/images/handbook/[a-z0-9._/-]+$#i', $source) === 1) {
+            return $source;
+        }
+
+        return '/assets/images/handbook/placeholder.svg';
     }
 
     private function link(string $target, string $documentationPath): string

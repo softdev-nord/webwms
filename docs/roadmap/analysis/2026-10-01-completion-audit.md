@@ -7,6 +7,9 @@
 > für das vollständige Benutzerhandbuch aufgenommen. Der Audit dokumentiert
 > weiterhin den Abschluss der zuvor definierten 110 Tickets; der aktuelle
 > Roadmap-Stand beträgt damit 110 von 111 Tickets und 912 von 933 Story Points.
+> WEBWMS-111 wurde anschließend vollständig umgesetzt. Der aktuelle Stand ist
+> in der [Abschlussanalyse des Benutzerhandbuchs](2026-10-01-user-handbook-completion.md)
+> dokumentiert.
 
 ## Ergebnis
 

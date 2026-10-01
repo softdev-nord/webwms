@@ -28,9 +28,9 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Gesamtfortschritt
 
-Stand 01.10.2026 sind 110 von 111 Tickets und 912 von 933 Story Points vollständig `Done`. WEBWMS-111 ergänzt als offenes Ticket die Erstellung eines vollständigen, zweisprachigen und durchsuchbaren Benutzerhandbuchs.
+Stand 01.10.2026 sind alle 111 Tickets und 933 Story Points vollständig `Done`. Es verbleibt kein offenes fachliches Roadmap-Ticket.
 
-Sieben der acht Epics sind vollständig abgeschlossen; das Platform-Epic ist durch WEBWMS-111 wieder geöffnet. WEBWMS-079 ergänzt den produktiven OpenID-Connect-Handshake; WEBWMS-084 bis WEBWMS-096 bilden den vollständigen Integrationsumfang einschließlich operativer Transportadapter und zuverlässiger asynchroner Verarbeitung ab. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
+Alle acht Epics sind vollständig abgeschlossen. WEBWMS-079 ergänzt den produktiven OpenID-Connect-Handshake; WEBWMS-084 bis WEBWMS-096 bilden den vollständigen Integrationsumfang einschließlich operativer Transportadapter und zuverlässiger asynchroner Verarbeitung ab. WEBWMS-111 stellt das integrierte, zweisprachige und durchsuchbare Benutzerhandbuch bereit. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 
 ## Ergänzende Roadmap-Dokumente
 
@@ -47,6 +47,7 @@ Sieben der acht Epics sind vollständig abgeschlossen; das Platform-Epic ist dur
 - [Abschlussanalyse Entnahmestrategien vom 21.09.2026](analysis/2026-09-21-stock-selection.md)
 - [Abschlussanalyse Bestandssperren vom 21.09.2026](analysis/2026-09-21-stock-blocking.md)
 - [Abschluss-Audit vom 01.10.2026](analysis/2026-10-01-completion-audit.md)
+- [Abschlussanalyse Benutzerhandbuch vom 01.10.2026](analysis/2026-10-01-user-handbook-completion.md)
 
 ## Pflege
 

@@ -47,7 +47,7 @@
                 {% set outboundOpen = currentRoute starts with 'v3_outbound_' or currentRoute starts with 'v3_picking_' or currentRoute starts with 'v3_packing_' or currentRoute starts with 'v3_shipping_' or currentRoute starts with 'v3_loading_' or currentRoute starts with 'v3_internal_transport_' %}
                 {% set integrationOpen = currentRoute starts with 'v3_outbox_' or currentRoute starts with 'v3_erp_connection_' or currentRoute starts with 'v3_data_exchange_' or currentRoute starts with 'v3_carrier_connection_' or currentRoute starts with 'v3_printing_' or currentRoute starts with 'v3_device_' or currentRoute starts with 'v3_measurement_' or currentRoute starts with 'v3_automation_' or currentRoute starts with 'v3_wcs_' or currentRoute starts with 'v3_transport_' %}
                 {% set administrationOpen = currentRoute starts with 'v3_administration_' %}
-                {% set documentationOpen = currentRoute starts with 'v3_documentation_' %}
+                {% set documentationOpen = currentRoute == 'v3_documentation_index' or currentRoute == 'v3_documentation_show' %}
                 {% set platformOpen = currentRoute starts with 'v3_platform_' or currentRoute starts with 'v3_partner_portal' %}
                 {% set extensionOpen = currentRoute starts with 'v3_extension_' %}
 
@@ -581,14 +581,16 @@
 {#                    </div>#}
 {#                </li>#}
 
-                <li class="menu-title"><i class="ri-more-fill"></i> <span>{{ 'documentation.index.help_and_amp_documentation'|trans }}</span></li>
+                <li class="menu-title"><i class="ri-more-fill"></i> <span>{{ 'ui.sidebar_section'|trans({}, 'handbook') }}</span></li>
 
+                {% if is_granted('documentation.handbook.read') %}
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ documentationOpen ? 'active' : '' }}" href="{{ path('v3_documentation_index') }}">
                         <i class="mdi mdi-information-outline"></i>
-                        <span>{{ 'layout.sidebar.user_documentation'|trans }}</span>
+                        <span>{{ 'ui.sidebar_link'|trans({}, 'handbook') }}</span>
                     </a>
                 </li>
+                {% endif %}
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#aboutWebWMS" data-toggle="modal" data-target="#aboutWebWMS">

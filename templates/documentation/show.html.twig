@@ -1,9 +1,10 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-    <nav aria-label="{{ 'documentation.show.breadcrumb'|trans }}" class="mb-3">
+    <nav aria-label="{{ 'ui.breadcrumb'|trans({}, 'handbook') }}" class="mb-3">
         <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="{{ path('v3_documentation_index') }}">{{ 'navigation.help.headline1'|trans }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('v3_documentation_index') }}">{{ 'ui.sidebar_link'|trans({}, 'handbook') }}</a></li>
+            <li class="breadcrumb-item">{{ document.category }}</li>
             <li class="breadcrumb-item active" aria-current="page">{{ document.title }}</li>
         </ol>
     </nav>
@@ -19,13 +20,13 @@
             <div class="d-flex justify-content-between gap-3 mt-4">
                 {% if document.previous %}
                     <a class="btn btn-light text-start" href="{{ path('v3_documentation_show', {slug: document.previous.slug}) }}">
-                        <span class="d-block small text-muted">{{ 'documentation.show.previous_page'|trans }}</span>
+                        <span class="d-block small text-muted">{{ 'ui.previous'|trans({}, 'handbook') }}</span>
                         <i class="ri-arrow-left-line me-1"></i>{{ document.previous.title }}
                     </a>
                 {% else %}<span></span>{% endif %}
                 {% if document.next %}
                     <a class="btn btn-light text-end" href="{{ path('v3_documentation_show', {slug: document.next.slug}) }}">
-                        <span class="d-block small text-muted">{{ 'documentation.show.next_page'|trans }}</span>
+                        <span class="d-block small text-muted">{{ 'ui.next'|trans({}, 'handbook') }}</span>
                         {{ document.next.title }}<i class="ri-arrow-right-line ms-1"></i>
                     </a>
                 {% endif %}
@@ -34,7 +35,7 @@
 
         <div class="col-xl-3">
             <div class="card border-0 shadow-sm documentation-toc">
-                <div class="card-header"><h2 class="h6 mb-0">{{ 'documentation.show.on_this_page'|trans }}</h2></div>
+                <div class="card-header"><h2 class="h6 mb-0">{{ 'ui.on_this_page'|trans({}, 'handbook') }}</h2></div>
                 <div class="card-body">
                     {% if toc %}
                         <nav class="nav flex-column">
@@ -43,10 +44,10 @@
                             {% endfor %}
                         </nav>
                     {% else %}
-                        <span class="text-muted">{{ 'documentation.show.brief_overview_without_sub_chapters'|trans }}</span>
+                        <span class="text-muted">{{ 'ui.no_subchapters'|trans({}, 'handbook') }}</span>
                     {% endif %}
                     <hr>
-                    <a href="{{ path('v3_documentation_index') }}"><i class="ri-book-open-line me-1"></i>{{ 'documentation.show.all_guides'|trans }}</a>
+                    <a href="{{ path('v3_documentation_index') }}"><i class="ri-book-open-line me-1"></i>{{ 'ui.all_chapters'|trans({}, 'handbook') }}</a>
                 </div>
             </div>
         </div>
@@ -69,6 +70,8 @@
         .documentation-toc { position: sticky; top: 90px; }
         .documentation-toc .nav-link { color: var(--vz-body-color); }
         .documentation-toc .nav-link:hover { color: var(--vz-primary); }
+        .handbook-figure { margin: 1.5rem 0; }
+        .handbook-figure img { width: 100%; max-height: 32rem; object-fit: contain; background: var(--vz-light); }
         @media (max-width: 1199.98px) { .documentation-toc { position: static; } }
     </style>
 {% endblock %}
