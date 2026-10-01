@@ -40,14 +40,31 @@ class UserDocumentationServiceTest extends TestCase
         self::assertStringContainsString('Seriennummern', $stock['match']['excerpt']);
     }
 
+    public function testSearchHandlesEmptyUnknownAndSpecialQueries(): void
+    {
+        self::assertCount(count(UserDocumentationService::CHAPTERS), array_merge(...array_values($this->documentation->groupedDocuments('', 'de'))));
+        self::assertSame([], $this->documentation->groupedDocuments('definitely-unknown-value', 'de'));
+        self::assertSame([], $this->documentation->groupedDocuments('<script>alert(1)</script>', 'de'));
+    }
+
+    public function testSearchIncludesConfigurationGuidance(): void
+    {
+        $groups = $this->documentation->groupedDocuments('Pflichtfelder', 'de');
+        $documents = array_merge(...array_values($groups));
+
+        self::assertNotSame([], $documents);
+        self::assertSame('chapter-guidance', $documents[0]['match']['anchor']);
+    }
+
     #[DataProvider('localeProvider')]
     public function testEveryChapterIsTranslated(string $locale): void
     {
         foreach (UserDocumentationService::CHAPTERS as $chapter) {
             $document = $this->documentation->document($chapter['slug'], $locale);
             self::assertNotSame('', $document['title']);
+            self::assertSame(['prerequisites', 'permissions', 'fields', 'statuses', 'errors'], array_keys($document['guidance']));
             self::assertNotSame([], $document['sections']);
-            self::assertNotSame([], array_filter($document['sections'], static fn (array $section): bool => $section['image'] !== null));
+            self::assertSame([], array_filter($document['sections'], static fn (array $section): bool => $section['image'] === null));
         }
     }
 
@@ -63,6 +80,14 @@ class UserDocumentationServiceTest extends TestCase
         self::assertSame('/assets/images/handbook/placeholder.svg', $section['image']['src']);
     }
 
+    public function testPreviousAndNextNavigationAreLocalized(): void
+    {
+        $document = $this->documentation->document('navigation-and-lists', 'en');
+
+        self::assertSame('Getting started and workspace', $document['previous']['title']);
+        self::assertSame('Users, roles, permissions and single sign-on', $document['next']['title']);
+    }
+
     public function testGermanAndEnglishTranslationKeysAreIdentical(): void
     {
         $root = dirname(__DIR__, 4) . '/translations/handbook.';
@@ -70,6 +95,28 @@ class UserDocumentationServiceTest extends TestCase
         $english = Yaml::parseFile($root . 'en.yaml');
 
         self::assertSame($this->keys($german), $this->keys($english));
+    }
+
+    public function testCatalogueContainsNoUnknownOrUnusedStructures(): void
+    {
+        $root = dirname(__DIR__, 4) . '/translations/handbook.';
+        foreach (['de', 'en'] as $locale) {
+            $catalogue = Yaml::parseFile($root . $locale . '.yaml');
+            self::assertSame(['ui', 'category', 'error', 'chapter'], array_keys($catalogue));
+            self::assertSame(
+                ['page_title', 'headline', 'introduction', 'search', 'search_action', 'reset_search', 'no_results', 'result_for', 'breadcrumb', 'all_chapters', 'on_this_page', 'no_subchapters', 'previous', 'next', 'sidebar_section', 'sidebar_link', 'prerequisites', 'permissions', 'fields', 'statuses', 'errors'],
+                array_keys($catalogue['ui'])
+            );
+
+            foreach ($catalogue['chapter'] as $chapter) {
+                self::assertSame(['title', 'summary', 'sections', 'guidance'], array_keys($chapter));
+                self::assertSame(['prerequisites', 'permissions', 'fields', 'statuses', 'errors'], array_keys($chapter['guidance']));
+                foreach ($chapter['sections'] as $section) {
+                    self::assertSame([], array_diff(array_keys($section), ['title', 'paragraphs', 'steps', 'items', 'image']));
+                    self::assertArrayHasKey('image', $section);
+                }
+            }
+        }
     }
 
     public function testRejectsPathTraversal(): void

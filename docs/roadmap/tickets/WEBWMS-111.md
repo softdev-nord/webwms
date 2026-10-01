@@ -98,6 +98,11 @@ abschnittsgenaue Suche, Breadcrumbs,
 Kapitel-Navigation, die Berechtigung `documentation.handbook.read` sowie
 automatisierte Abdeckungs-, Paritäts-, Such- und Renderingtests bereit.
 
-Alle Kapitel verwenden zunächst die zentrale, barrierearm beschriftete Grafik
+Die maschinenlesbare Abdeckungsmatrix ordnet alle 226 produktiven V3-Webrouten
+genau einem Kapitel zu und lässt die CI bei neuen, nicht dokumentierten Routen
+oder verwaisten Kapiteln fehlschlagen. Alle 53 Bedien- und
+Konfigurationsabschnitte dokumentieren zusätzlich Voraussetzungen,
+Berechtigungen, Eingaben, Statusauswirkungen und Fehlerbehandlung und verwenden
+zunächst die zentrale, barrierearm beschriftete Grafik
 `public/assets/images/handbook/placeholder.svg`. Die technische Dokumentation
 beschreibt den späteren abschnittsweisen Austausch durch echte Screenshots.

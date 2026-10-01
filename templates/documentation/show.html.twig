@@ -13,37 +13,7 @@
         <div class="col-xl-9">
             <article class="card border-0 shadow-sm">
                 <div class="card-body documentation-content p-4 p-lg-5">
-                    <h1>{{ document.title }}</h1>
-                    <p class="lead text-muted">{{ document.summary }}</p>
-
-                    {% for section in document.sections %}
-                        <section aria-labelledby="{{ section.id }}">
-                            <h2 id="{{ section.id }}">{{ section.title }}</h2>
-
-                            {% for paragraph in section.paragraphs %}
-                                <p>{{ paragraph }}</p>
-                            {% endfor %}
-
-                            {% if section.steps %}
-                                <ol>
-                                    {% for step in section.steps %}<li>{{ step }}</li>{% endfor %}
-                                </ol>
-                            {% endif %}
-
-                            {% if section.items %}
-                                <ul>
-                                    {% for item in section.items %}<li>{{ item }}</li>{% endfor %}
-                                </ul>
-                            {% endif %}
-
-                            {% if section.image %}
-                                <figure class="handbook-figure">
-                                    <img class="img-fluid rounded border" src="{{ section.image.src }}" alt="{{ section.image.alt }}" loading="lazy">
-                                    <figcaption class="small text-muted mt-2">{{ section.image.alt }}</figcaption>
-                                </figure>
-                            {% endif %}
-                        </section>
-                    {% endfor %}
+                    {% include 'documentation/_chapter.html.twig' with {document: document} only %}
                 </div>
             </article>
 

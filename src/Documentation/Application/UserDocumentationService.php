@@ -50,6 +50,7 @@ class UserDocumentationService
         foreach (self::CHAPTERS as $chapterDefinition) {
             $chapter = $this->chapter($catalogue, $chapterDefinition['slug']);
             $match = $needle === '' ? null : $this->match($chapter['sections'], $needle);
+            $match ??= $needle === '' ? null : $this->matchGuidance($chapter['guidance'], $needle);
             if ($needle !== '' && $match === null && !str_contains(mb_strtolower($chapter['title'] . ' ' . $chapter['summary']), $needle)) {
                 continue;
             }
@@ -66,7 +67,7 @@ class UserDocumentationService
         return array_filter($groups);
     }
 
-    /** @return array{slug: string, category: string, title: string, summary: string, sections: list<array{id: string, title: string, paragraphs: list<string>, steps: list<string>, items: list<string>, image: null|array{src: string, alt: string}}>, previous: null|array{slug: string, title: string}, next: null|array{slug: string, title: string}} */
+    /** @return array{slug: string, category: string, title: string, summary: string, guidance: array<string, list<string>>, sections: list<array{id: string, title: string, paragraphs: list<string>, steps: list<string>, items: list<string>, image: null|array{src: string, alt: string}}>, previous: null|array{slug: string, title: string}, next: null|array{slug: string, title: string}} */
     public function document(string $slug, ?string $locale = null): array
     {
         $catalogue = $this->catalogue($locale);
@@ -87,13 +88,14 @@ class UserDocumentationService
             'category' => $this->string($catalogue, ['category', $definition['category']]),
             'title' => $chapter['title'],
             'summary' => $chapter['summary'],
+            'guidance' => $chapter['guidance'],
             'sections' => $chapter['sections'],
             'previous' => $index > 0 ? $this->navigation($catalogue, self::CHAPTERS[$index - 1]['slug']) : null,
             'next' => isset(self::CHAPTERS[$index + 1]) ? $this->navigation($catalogue, self::CHAPTERS[$index + 1]['slug']) : null,
         ];
     }
 
-    /** @return array{title: string, summary: string, sections: list<array{id: string, title: string, paragraphs: list<string>, steps: list<string>, items: list<string>, image: null|array{src: string, alt: string}}>} */
+    /** @return array{title: string, summary: string, guidance: array<string, list<string>>, sections: list<array{id: string, title: string, paragraphs: list<string>, steps: list<string>, items: list<string>, image: null|array{src: string, alt: string}}>} */
     private function chapter(array $catalogue, string $slug): array
     {
         $key = str_replace('-', '_', $slug);
@@ -126,8 +128,28 @@ class UserDocumentationService
         return [
             'title' => $this->requiredString($raw, 'title', $slug),
             'summary' => $this->requiredString($raw, 'summary', $slug),
+            'guidance' => $this->guidance($raw['guidance'] ?? null, $slug),
             'sections' => $sections,
         ];
+    }
+
+    /** @return array<string, list<string>> */
+    private function guidance(mixed $guidance, string $slug): array
+    {
+        if (!is_array($guidance)) {
+            throw new RuntimeException(sprintf('Handbook chapter "%s" has no guidance.', $slug));
+        }
+
+        $result = [];
+        foreach (['prerequisites', 'permissions', 'fields', 'statuses', 'errors'] as $key) {
+            $values = $this->stringValues($guidance[$key] ?? null);
+            if ($values === []) {
+                throw new RuntimeException(sprintf('Handbook guidance "%s.%s" is missing.', $slug, $key));
+            }
+            $result[$key] = $values;
+        }
+
+        return $result;
     }
 
     /** @param list<array{id: string, title: string, paragraphs: list<string>, steps: list<string>, items: list<string>, image: null|array{src: string, alt: string}}> $sections @return null|array{anchor: string, excerpt: string} */
@@ -137,6 +159,20 @@ class UserDocumentationService
             foreach ([$section['title'], ...$section['paragraphs'], ...$section['steps'], ...$section['items']] as $text) {
                 if (str_contains(mb_strtolower($text), $needle)) {
                     return ['anchor' => $section['id'], 'excerpt' => mb_strimwidth($text, 0, 220, '…')];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /** @param array<string, list<string>> $guidance @return null|array{anchor: string, excerpt: string} */
+    private function matchGuidance(array $guidance, string $needle): ?array
+    {
+        foreach ($guidance as $values) {
+            foreach ($values as $text) {
+                if (str_contains(mb_strtolower($text), $needle)) {
+                    return ['anchor' => 'chapter-guidance', 'excerpt' => mb_strimwidth($text, 0, 220, '…')];
                 }
             }
         }

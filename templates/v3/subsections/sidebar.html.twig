@@ -585,10 +585,32 @@
 
                 {% if is_granted('documentation.handbook.read') %}
                 <li class="nav-item">
-                    <a class="nav-link menu-link {{ documentationOpen ? 'active' : '' }}" href="{{ path('v3_documentation_index') }}">
+                    <a class="nav-link menu-link {{ documentationOpen ? '' : 'collapsed' }}" href="#sidebarHandbook" data-bs-toggle="collapse" role="button" aria-expanded="{{ documentationOpen ? 'true' : 'false' }}" aria-controls="sidebarHandbook">
                         <i class="mdi mdi-information-outline"></i>
                         <span>{{ 'ui.sidebar_link'|trans({}, 'handbook') }}</span>
                     </a>
+                    <div class="collapse menu-dropdown {{ documentationOpen ? 'show' : '' }}" id="sidebarHandbook">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_documentation_index' ? 'active' : '' }}" href="{{ path('v3_documentation_index') }}">{{ 'ui.all_chapters'|trans({}, 'handbook') }}</a></li>
+                            {% set handbookChapters = {
+                                'getting-started': 'getting_started',
+                                'navigation-and-lists': 'navigation_and_lists',
+                                'users-roles-and-security': 'users_roles_and_security',
+                                'system-configuration': 'system_configuration',
+                                'warehouse-and-stock': 'warehouse_and_stock',
+                                'inventory-counting': 'inventory_counting',
+                                'inbound': 'inbound',
+                                'fulfillment-and-outbound': 'fulfillment_and_outbound',
+                                'integrations-and-devices': 'integrations_and_devices',
+                                'platform-and-extensions': 'platform_and_extensions',
+                                'api-and-automation': 'api_and_automation',
+                                'troubleshooting': 'troubleshooting'
+                            } %}
+                            {% for slug, key in handbookChapters %}
+                                <li class="nav-item"><a class="nav-link {{ currentRoute == 'v3_documentation_show' and app.request.attributes.get('slug') == slug ? 'active' : '' }}" href="{{ path('v3_documentation_show', {slug: slug}) }}">{{ ('chapter.' ~ key ~ '.title')|trans({}, 'handbook') }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </li>
                 {% endif %}
 

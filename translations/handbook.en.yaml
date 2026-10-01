@@ -15,6 +15,11 @@ ui:
   next: Next chapter
   sidebar_section: Help & handbook
   sidebar_link: User handbook
+  prerequisites: Prerequisites
+  permissions: Required permissions
+  fields: Configuration and inputs
+  statuses: States and effects
+  errors: Common errors and resolution
 category:
   basics: Fundamentals & operating model
   administration: Administration & configuration
@@ -32,8 +37,8 @@ chapter:
       section_1:
         title: Sign in and verify context
         paragraphs:
-          paragraph_1: Open the WebWMS login page and sign in with email and password or the configured OpenID Connect provider. After login, verify the active tenant
-            and site. Data, roles and transactions are always processed in that context.
+          paragraph_1: Open the WebWMS login page and sign in with email and password or the configured OpenID Connect provider. After login, verify the active tenant and site. Data,
+            roles and transactions are always processed in that context.
         steps:
           step_1: Sign in.
           step_2: Verify user, tenant and site in the header.
@@ -45,13 +50,29 @@ chapter:
       section_2:
         title: Dashboard and metrics
         paragraphs:
-          paragraph_1: The dashboard combines stock, receipts, issues, transport orders and utilisation. Cards link to the relevant overview. Metrics are tenant-scoped;
-            a missing value can be caused by filters, permissions or the absence of movements rather than a technical error.
+          paragraph_1: The dashboard combines stock, receipts, issues, transport orders and utilisation. Cards link to the relevant overview. Metrics are tenant-scoped; a missing value
+            can be caused by filters, permissions or the absence of movements rather than a technical error.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Dashboard and metrics – screenshot placeholder
       section_3:
         title: Finish securely
         paragraphs:
-          paragraph_1: Close sensitive dialogs, deliberately save or discard changes and sign out through the user menu. Do not store credentials permanently on shared
-            devices.
+          paragraph_1: Close sensitive dialogs, deliberately save or discard changes and sign out through the user menu. Do not store credentials permanently on shared devices.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Finish securely – screenshot placeholder
+    guidance:
+      prerequisites:
+      - Active user account, correct tenant and supported browser; SSO also requires an active OIDC provider with HTTPS issuer, client ID and secret reference.
+      permissions:
+      - Login routes are public; after authentication only menus covered by the user permissions are visible.
+      fields:
+      - 'Password login: email and password. SSO: tenant ID and provider code. Context: tenant, site, language and appearance.'
+      statuses:
+      - Only active users and providers can open a session. Logout ends it; invalid state, nonce or PKCE is rejected.
+      errors:
+      - Unknown tenant, inactive account, unverified email, wrong password or invalid OIDC signature prevents login.
   navigation_and_lists:
     title: Navigation, overviews, search and editing
     summary: Sidebar, tables, filters, pagination, detail pages and recurring interaction patterns.
@@ -59,13 +80,16 @@ chapter:
       section_1:
         title: Sidebar and submenus
         paragraphs:
-          paragraph_1: The sidebar is grouped into platform, warehouse, inbound, outbound, integration and administration. Users only see areas for which they have
-            at least read permission. The active area remains expanded and the current page is highlighted.
+          paragraph_1: The sidebar is grouped into platform, warehouse, inbound, outbound, integration and administration. Users only see areas for which they have at least read permission.
+            The active area remains expanded and the current page is highlighted.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Sidebar and submenus – screenshot placeholder
       section_2:
         title: Work with overview pages
         paragraphs:
-          paragraph_1: Overviews separate reading from creation. Use global search for document numbers, products, partners or status. Domain filters reduce the result
-            set and page size controls pagination. Reset filters before reporting a missing record.
+          paragraph_1: Overviews separate reading from creation. Use global search for document numbers, products, partners or status. Domain filters reduce the result set and page size
+            controls pagination. Reset filters before reporting a missing record.
         steps:
           step_1: Enter a search term.
           step_2: Select status or domain filters.
@@ -77,13 +101,30 @@ chapter:
       section_3:
         title: Create, edit and delete
         paragraphs:
-          paragraph_1: New records are created on a dedicated form page. Required fields are marked. Editing starts from the row action and only takes effect after
-            saving. Business documents already in use are usually cancelled, deactivated or completed by a status transition rather than physically deleted.
+          paragraph_1: New records are created on a dedicated form page. Required fields are marked. Editing starts from the row action and only takes effect after saving. Business documents
+            already in use are usually cancelled, deactivated or completed by a status transition rather than physically deleted.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Create, edit and delete – screenshot placeholder
       section_4:
         title: Messages and validation
         paragraphs:
-          paragraph_1: Success and error messages appear above the content after an action. Correct highlighted fields. For concurrent-edit conflicts, reload the
-            current state and review the change again.
+          paragraph_1: Success and error messages appear above the content after an action. Correct highlighted fields. For concurrent-edit conflicts, reload the current state and review
+            the change again.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Messages and validation – screenshot placeholder
+    guidance:
+      prerequisites:
+      - Authenticated session and read permission for the domain.
+      permissions:
+      - Read permissions show lists/details; write shows create/edit; execute, review and approve control business actions.
+      fields:
+      - Lists use q, state, domain filters, page and limit. Forms mark required fields; row actions open detail, edit, cancellation or state pages.
+      statuses:
+      - Search, filters and pagination do not alter data; saves and transitions apply only after validation.
+      errors:
+      - For empty results reset filters, tenant, site and page; reload after concurrent modification.
   users_roles_and_security:
     title: Users, roles, permissions and single sign-on
     summary: Configure user accounts, permissions, API clients and OpenID Connect securely.
@@ -91,30 +132,53 @@ chapter:
       section_1:
         title: Manage users
         paragraphs:
-          paragraph_1: Under Administration → Users, authorised administrators see all tenant accounts. Email address, display name, state and roles are assigned
-            during creation. Deactivate users who have left; existing audit evidence remains available.
+          paragraph_1: Under Administration → Users, authorised administrators see all tenant accounts. Email address, display name, state and roles are assigned during creation. Deactivate
+            users who have left; existing audit evidence remains available.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Manage users – screenshot placeholder
       section_2:
         title: Roles and permissions
         paragraphs:
-          paragraph_1: Roles bundle granular permissions such as read, write, execute, approve and configure. Apply least privilege. Role changes are audited. The
-            documentation.handbook.read permission controls access to this handbook.
+          paragraph_1: Roles bundle granular permissions such as read, write, execute, approve and configure. Apply least privilege. Role changes are audited. The documentation.handbook.read
+            permission controls access to this handbook.
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: 'Placeholder: roles and permissions'
       section_3:
         title: API clients
         paragraphs:
-          paragraph_1: API clients have a name, active state and explicit permissions. Transfer generated secrets securely and manage them as environment secrets.
-            Rotate or deactivate compromised credentials and review last use.
+          paragraph_1: API clients have a name, active state and explicit permissions. Transfer generated secrets securely and manage them as environment secrets. Rotate or deactivate
+            compromised credentials and review last use.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: API clients – screenshot placeholder
       section_4:
         title: OpenID Connect
         paragraphs:
-          paragraph_1: Configure provider code, display name, HTTPS issuer, client ID and client-secret reference per tenant. Login uses discovery, state, nonce and
-            PKCE. The provider must verify the email. On first login the external identity is mapped to an active user in the same tenant.
+          paragraph_1: Configure provider code, display name, HTTPS issuer, client ID and client-secret reference per tenant. Login uses discovery, state, nonce and PKCE. The provider
+            must verify the email. On first login the external identity is mapped to an active user in the same tenant.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: OpenID Connect – screenshot placeholder
       section_5:
         title: Verification
         paragraphs:
           paragraph_1: Test new roles with a separate user. Verify allowed and deliberately forbidden actions and record who owns the role.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Verification – screenshot placeholder
+    guidance:
+      prerequisites:
+      - Administration access and an agreed least-privilege task profile.
+      permissions:
+      - administration.user.read/write, administration.role.read/write, administration.api_client.read/write and documentation.handbook.read.
+      fields:
+      - 'User: email, display_name, active, role_ids. Role: ROLE_NAME code, name, permissions. API client: name, permissions, active. OIDC: code, issuer_url, client_id, client_secret_env.'
+      statuses:
+      - Users, API clients and providers are active/inactive. Role changes are audited; the final own administration right cannot be removed.
+      errors:
+      - Duplicate email, invalid role code, unknown permission, HTTP issuer or plain-text secret is rejected; generated API secrets are shown once.
   system_configuration:
     title: Tenant, site and system configuration
     summary: Core data, number ranges, strategies, printing, states and operational thresholds.
@@ -122,31 +186,54 @@ chapter:
       section_1:
         title: Tenants and sites
         paragraphs:
-          paragraph_1: Tenants isolate data and permissions. Sites represent organisational warehouse locations. Maintain unique codes, clear names, timezone, address
-            and active state. Only deactivate a site after all open processes referencing it have been closed.
+          paragraph_1: Tenants isolate data and permissions. Sites represent organisational warehouse locations. Maintain unique codes, clear names, timezone, address and active state.
+            Only deactivate a site after all open processes referencing it have been closed.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Tenants and sites – screenshot placeholder
       section_2:
         title: Number ranges and master data
         paragraphs:
-          paragraph_1: Number ranges define prefix, next value and document format. Change productive ranges in a controlled manner. Products, business partners,
-            load carriers and special-stock types must be unique and complete.
+          paragraph_1: Number ranges define prefix, next value and document format. Change productive ranges in a controlled manner. Products, business partners, load carriers and special-stock
+            types must be unique and complete.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Number ranges and master data – screenshot placeholder
       section_3:
         title: Warehouse strategies
         paragraphs:
-          paragraph_1: Putaway, stock selection, FEFO/FIFO/LIFO and replenishment rules define priorities, conditions, source and target areas and thresholds. Specific
-            rules are evaluated before general rules. Review the match set before activation.
+          paragraph_1: Putaway, stock selection, FEFO/FIFO/LIFO and replenishment rules define priorities, conditions, source and target areas and thresholds. Specific rules are evaluated
+            before general rules. Review the match set before activation.
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: 'Placeholder: configuration form'
       section_4:
         title: Printers, devices and states
         paragraphs:
-          paragraph_1: Printers and capture devices require a unique code, connection, format or device type and active state. Connection secrets are stored as environment
-            references, never in plain text. Test a configuration before operational release.
+          paragraph_1: Printers and capture devices require a unique code, connection, format or device type and active state. Connection secrets are stored as environment references,
+            never in plain text. Test a configuration before operational release.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Printers, devices and states – screenshot placeholder
       section_5:
         title: Control changes
         paragraphs:
-          paragraph_1: Record reason and time for significant changes. Afterwards review the audit log, affected processes and at least one positive and one negative
-            use case.
+          paragraph_1: Record reason and time for significant changes. Afterwards review the audit log, affected processes and at least one positive and one negative use case.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Control changes – screenshot placeholder
+    guidance:
+      prerequisites:
+      - administration.configuration access and agreed tenant, site and operating requirements.
+      permissions:
+      - administration.configuration.read/write and administration.number_range.use.
+      fields:
+      - 'Workspace: code, name, address, timezone, active. Number range: prefix, suffix, next_value, padding, gs1_company_prefix. Process: process_key, configuration_json, version, enabled.
+        Deployment: deployment_mode, release_channel, public_url, storage_driver, queue_transport.'
+      statuses:
+      - Disabled sites/processes receive no new work. Test numbers atomically and permanently advance next_value.
+      errors:
+      - Duplicate codes, invalid timezone/URL, malformed JSON or deactivation with open dependencies is rejected.
   warehouse_and_stock:
     title: Warehouse topology, stock and traceability
     summary: Warehouse structure, occupancy, stock dimensions, movements, blocks and strategies.
@@ -154,31 +241,55 @@ chapter:
       section_1:
         title: Configure warehouse topology
         paragraphs:
-          paragraph_1: The hierarchy consists of site, warehouse, area and storage bin. Create elements through the dedicated submenu and edit existing elements from
-            their table row. Codes must be unique in context. Capacity, priority, area type and state affect putaway and route optimisation.
+          paragraph_1: The hierarchy consists of site, warehouse, area and storage bin. Create elements through the dedicated submenu and edit existing elements from their table row.
+            Codes must be unique in context. Capacity, priority, area type and state affect putaway and route optimisation.
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: 'Placeholder: warehouse topology'
       section_2:
         title: Read and move stock
         paragraphs:
-          paragraph_1: Real-time stock shows product, bin, quantity, state, batch, serial number, expiry and special stock. Open movement history for the auditable
-            origin of a quantity. Transfers validate source stock, target dimension and permission atomically.
+          paragraph_1: Real-time stock shows product, bin, quantity, state, batch, serial number, expiry and special stock. Open movement history for the auditable origin of a quantity.
+            Transfers validate source stock, target dimension and permission atomically.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Read and move stock – screenshot placeholder
       section_3:
         title: Batches, serial numbers and expiry
         paragraphs:
-          paragraph_1: Batches group equal quantities. Serial numbers identify individual items and cannot be active twice. FEFO prioritises the earliest usable expiry;
-            blocked or expired stock is not allocated normally.
+          paragraph_1: Batches group equal quantities. Serial numbers identify individual items and cannot be active twice. FEFO prioritises the earliest usable expiry; blocked or expired
+            stock is not allocated normally.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Batches, serial numbers and expiry – screenshot placeholder
       section_4:
         title: Blocks and special stock
         paragraphs:
-          paragraph_1: Select block reason, quantity and stock dimension. Review and release are logged separately. Special-stock indicators document ownership or
-            purpose and remain attached during movements.
+          paragraph_1: Select block reason, quantity and stock dimension. Review and release are logged separately. Special-stock indicators document ownership or purpose and remain
+            attached during movements.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Blocks and special stock – screenshot placeholder
       section_5:
         title: Occupancy and traceability
         paragraphs:
-          paragraph_1: The occupancy view visualises free, occupied, blocked and overloaded bins. Traceability links receipt, movement, allocation, pick, package
-            and shipment. Filter by product, batch, serial number or period.
+          paragraph_1: The occupancy view visualises free, occupied, blocked and overloaded bins. Traceability links receipt, movement, allocation, pick, package and shipment. Filter
+            by product, batch, serial number or period.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Occupancy and traceability – screenshot placeholder
+    guidance:
+      prerequisites:
+      - Active tenant-owned site, warehouse, area, aisle, bin and product.
+      permissions:
+      - inventory.topology.*, inventory.overview.read, inventory.stock.*, inventory.traceability.read and permissions for special stock, rules and blocks.
+      fields:
+      - 'Topology: parent IDs, code, type, capacity_quantity, priority, active. Stock: product_id, location_id, quantity, status, batch_number, serial_number, expires_at, owner_reference.
+        Block/rule: reason_id, selection_type/value, sequence_number.'
+      statuses:
+      - Stock is available, blocked or classified. Blocks move open → reviewed → released; every movement remains in the ledger.
+      errors:
+      - Negative stock, duplicate serial, invalid transition, full target or incompatible storage rule is rejected.
   inventory_counting:
     title: Inventory counting and stock control
     summary: Snapshot, perpetual and zero-crossing counts, entry and discrepancy approval.
@@ -186,25 +297,45 @@ chapter:
       section_1:
         title: Prepare a count
         paragraphs:
-          paragraph_1: Select count type, site, warehouse area and effective date. The system prevents parallel open counts for the same area. The expected stock
-            is an immutable snapshot; later movements remain separately traceable.
+          paragraph_1: Select count type, site, warehouse area and effective date. The system prevents parallel open counts for the same area. The expected stock is an immutable snapshot;
+            later movements remain separately traceable.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Prepare a count – screenshot placeholder
       section_2:
         title: Count and submit
         paragraphs:
-          paragraph_1: Enter counted quantity and, where required, batch, serial number or note. Blind count hides the expected value. Submit only after every line
-            has been processed. Zero-crossing counts are event-driven and perpetual counts use due plans.
+          paragraph_1: Enter counted quantity and, where required, batch, serial number or note. Blind count hides the expected value. Submit only after every line has been processed.
+            Zero-crossing counts are event-driven and perpetual counts use due plans.
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: 'Placeholder: count document and entry'
       section_3:
         title: Approve discrepancies
         paragraphs:
-          paragraph_1: Differences require an authorised second person. Review expected, actual, movements and reason. Approval posts the adjustment to the ledger;
-            rejection or recount changes workflow state without deleting the original count.
+          paragraph_1: Differences require an authorised second person. Review expected, actual, movements and reason. Approval posts the adjustment to the ledger; rejection or recount
+            changes workflow state without deleting the original count.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Approve discrepancies – screenshot placeholder
       section_4:
         title: Complete
         paragraphs:
           paragraph_1: Complete the count only after all discrepancies have been handled. Verify final state, adjustment entries and audit log.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Complete – screenshot placeholder
+    guidance:
+      prerequisites:
+      - A defined warehouse scope; parallel open counts for the same scope are forbidden.
+      permissions:
+      - inventory.control.read, inventory.count.write/execute/approve, inventory.hazard.write, inventory.bom.* and inventory.load_carrier.write.
+      fields:
+      - 'Plan: scope, schedule_type, interval_days, next_due_at. Count: location_id, product_id, batch, serial, actual_quantity, note. Approval: decision, reason.'
+      statuses:
+      - Count moves open → counted → completed. Differences post only after independent approval.
+      errors:
+      - Duplicate open count, missing line, negative quantity, self-approval or completion with open differences is rejected.
   inbound:
     title: Inbound and putaway
     summary: Orders, notices, planned and unplanned receipts, quality, discrepancies and putaway.
@@ -212,8 +343,11 @@ chapter:
       section_1:
         title: Process planned receipts
         paragraphs:
-          paragraph_1: Find the order or notice and verify supplier, products, expected quantities and date. Capture received quantity plus batch, serial number,
-            expiry and load carrier. Partial quantities remain open where the document permits this.
+          paragraph_1: Find the order or notice and verify supplier, products, expected quantities and date. Capture received quantity plus batch, serial number, expiry and load carrier.
+            Partial quantities remain open where the document permits this.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Process planned receipts – screenshot placeholder
       section_2:
         title: Capture an unplanned receipt
         paragraphs:
@@ -224,13 +358,31 @@ chapter:
       section_3:
         title: Quality and discrepancies
         paragraphs:
-          paragraph_1: Complete the configured checklist. Quantity, identity or quality deviations create a controlled case. Blocked goods remain unavailable until
-            an authorised user approves or rejects them. Decisions require a reason and are audited.
+          paragraph_1: Complete the configured checklist. Quantity, identity or quality deviations create a controlled case. Blocked goods remain unavailable until an authorised user
+            approves or rejects them. Decisions require a reason and are audited.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Quality and discrepancies – screenshot placeholder
       section_4:
         title: Putaway
         paragraphs:
-          paragraph_1: Request a target bin from the active strategy or select an allowed bin with appropriate permission. Check capacity, hazardous-goods rules,
-            product compatibility and state. Confirm source and target scans; stock is then transferred atomically.
+          paragraph_1: Request a target bin from the active strategy or select an allowed bin with appropriate permission. Check capacity, hazardous-goods rules, product compatibility
+            and state. Confirm source and target scans; stock is then transferred atomically.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Putaway – screenshot placeholder
+    guidance:
+      prerequisites:
+      - Active supplier, product, site, receiving area and, for planned receipt, order or notice.
+      permissions:
+      - inbound.planned.read/receive/inspect/resolve/putaway and inbound.receipt.read/write/book.
+      fields:
+      - 'Order/notice: order_number, supplier_reference, expected_at, product_id, quantity. Receipt: delivery_note, actual_quantity, batch, serial_number, expires_at, load_unit. Quality/putaway:
+        questions, accepted, discrepancy_reason, source/target location.'
+      statuses:
+      - planned → partially_received/received → inspected → released/blocked → putaway → completed.
+      errors:
+      - Over-notice, over-receipt, duplicate external reference, failed quality, blocked goods or invalid target blocks the next step.
   fulfillment_and_outbound:
     title: Order, allocation, picking, packing and shipping
     summary: The complete outbound process from customer order through loading and returns.
@@ -238,31 +390,55 @@ chapter:
       section_1:
         title: Create and release orders
         paragraphs:
-          paragraph_1: Capture or import recipient, delivery date, lines, quantities and shipping requirements. Release validates master data and available stock.
-            Allocations reserve specific stock dimensions according to the active selection strategy.
+          paragraph_1: Capture or import recipient, delivery date, lines, quantities and shipping requirements. Release validates master data and available stock. Allocations reserve
+            specific stock dimensions according to the active selection strategy.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Create and release orders – screenshot placeholder
       section_2:
         title: Pick
         paragraphs:
-          paragraph_1: Create or bundle pick lists, assign a user and optionally optimise the route. Scan bin, product, batch or serial number and confirm quantity.
-            Shortages are recorded as exceptions rather than silently skipped.
+          paragraph_1: Create or bundle pick lists, assign a user and optionally optimise the route. Scan bin, product, batch or serial number and confirm quantity. Shortages are recorded
+            as exceptions rather than silently skipped.
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: 'Placeholder: mobile picking'
       section_3:
         title: Pack and ship
         paragraphs:
-          paragraph_1: Open the packing order, select packaging and assign lines to a package. Weight and dimensions can be entered or captured by a device. Generate
-            the shipping label after a successful carrier request. Failed requests remain traceable and retryable.
+          paragraph_1: Open the packing order, select packaging and assign lines to a package. Weight and dimensions can be entered or captured by a device. Generate the shipping label
+            after a successful carrier request. Failed requests remain traceable and retryable.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Pack and ship – screenshot placeholder
       section_4:
         title: Load and deliver
         paragraphs:
-          paragraph_1: Group shipments into a manifest, confirm loading by scan and complete the manifest. Delivery status and ERP feedback are processed through
-            integrations. Cancellation is only possible in eligible states.
+          paragraph_1: Group shipments into a manifest, confirm loading by scan and complete the manifest. Delivery status and ERP feedback are processed through integrations. Cancellation
+            is only possible in eligible states.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Load and deliver – screenshot placeholder
       section_5:
         title: Returns
         paragraphs:
-          paragraph_1: Identify the original shipment and product, capture reason and condition, then choose restock, block, rework or scrap. Each decision creates
-            the appropriate stock movement and audit evidence.
+          paragraph_1: Identify the original shipment and product, capture reason and condition, then choose restock, block, rework or scrap. Each decision creates the appropriate stock
+            movement and audit evidence.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Returns – screenshot placeholder
+    guidance:
+      prerequisites:
+      - Released order, available stock, packaging, carrier connection, print route and load plan.
+      permissions:
+      - outbound.order.*, fulfillment.pick.*, fulfillment.pack.*, fulfillment.ship.*, fulfillment.loading.* and fulfillment.transport.*.
+      fields:
+      - 'Order: customer_reference, destination, planned_for, product_id, quantity. Pick: list, assigned_to, scan, actual_quantity. Pack: note, weight and dimensions. Shipping: carrier,
+        service, label, tracking. Loading: shipment_ids, vehicle, departure.'
+      statuses:
+      - Order draft/released/allocated; pick open/assigned/in_progress/completed; pack open/completed; shipment prepared/dispatched; manifest open/completed.
+      errors:
+      - Short stock, wrong scan, excess pick, incomplete package, carrier error, missing label or completed manifest blocks processing.
   integrations_and_devices:
     title: ERP, carriers, printers, scanners, measuring devices and WCS
     summary: Configure, test, monitor and securely operate external connections.
@@ -270,31 +446,55 @@ chapter:
       section_1:
         title: Configure connections
         paragraphs:
-          paragraph_1: Define connection type, HTTPS endpoint, authentication reference, timeouts, retries and active state per tenant. Secrets are resolved only
-            through environment references. Use the connection test before productive messages are sent.
+          paragraph_1: Define connection type, HTTPS endpoint, authentication reference, timeouts, retries and active state per tenant. Secrets are resolved only through environment
+            references. Use the connection test before productive messages are sent.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Configure connections – screenshot placeholder
       section_2:
         title: ERP and data exchange
         paragraphs:
-          paragraph_1: Mappings assign source and target fields plus transformations. Import jobs show format, resource type, row count, state and errors. Correct
-            mapping or source data and restart failed jobs in a controlled manner.
+          paragraph_1: Mappings assign source and target fields plus transformations. Import jobs show format, resource type, row count, state and errors. Correct mapping or source data
+            and restart failed jobs in a controlled manner.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: ERP and data exchange – screenshot placeholder
       section_3:
         title: Carriers and printing
         paragraphs:
-          paragraph_1: Carrier connections generate labels and status queries. Printers define queue, format and connection. Review preview, target device and retry
-            state before resending a job.
+          paragraph_1: Carrier connections generate labels and status queries. Printers define queue, format and connection. Review preview, target device and retry state before resending
+            a job.
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: 'Placeholder: integration connection and test'
       section_4:
         title: Scanners, scales and dimensioning
         paragraphs:
-          paragraph_1: Register devices with unique code and type. Scans and measurements use a message ID for idempotent processing. Assign the correct site and
-            verify unit, measuring range and timestamp.
+          paragraph_1: Register devices with unique code and type. Scans and measurements use a message ID for idempotent processing. Assign the correct site and verify unit, measuring
+            range and timestamp.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Scanners, scales and dimensioning – screenshot placeholder
       section_5:
         title: WCS and automation
         paragraphs:
-          paragraph_1: Automation commands contain target, command type, payload and state. Monitor acceptance, execution and technical errors. Only retry when the
-            command is idempotent or otherwise uniquely protected.
+          paragraph_1: Automation commands contain target, command type, payload and state. Monitor acceptance, execution and technical errors. Only retry when the command is idempotent
+            or otherwise uniquely protected.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: WCS and automation – screenshot placeholder
+    guidance:
+      prerequisites:
+      - Reachable endpoint, agreed protocol, tenant assignment and secret stored as environment variable.
+      permissions:
+      - Matching integration.erp_connection, carrier_connection, device, measurement, printer/print_job and wcs read/write/execute permissions.
+      fields:
+      - 'Connection: name, endpoint_url, credential_env, active, timeouts. Device: code, type, protocol, framing, suffix, site. Mapping: system/message type, source/target field, transformation.
+        Message: ID, payload, reference.'
+      statuses:
+      - Connections/devices active/inactive. Jobs and commands pending → processing/sent → acknowledged/completed or failed.
+      errors:
+      - DNS/timeout, 401/403, certificate, mapping, unknown device or duplicate message ID is recorded as failure.
   platform_and_extensions:
     title: Platform functions and extended modules
     summary: Shopfloor, KPI, partner portal, events, VAS and rule-based extensions.
@@ -302,26 +502,47 @@ chapter:
       section_1:
         title: Shopfloor and KPI
         paragraphs:
-          paragraph_1: Shopfloor tasks group work by priority, area and state. KPI definitions set metric, aggregation, target and period. Verify filters and data
-            period before evaluating deviations.
+          paragraph_1: Shopfloor tasks group work by priority, area and state. KPI definitions set metric, aggregation, target and period. Verify filters and data period before evaluating
+            deviations.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Shopfloor and KPI – screenshot placeholder
       section_2:
         title: Partner portal and event centre
         paragraphs:
-          paragraph_1: Partner accounts receive explicit permissions for released data. The event centre shows business events and processing state. Acknowledge only
-            events whose cause is understood or resolved.
+          paragraph_1: Partner accounts receive explicit permissions for released data. The event centre shows business events and processing state. Acknowledge only events whose cause
+            is understood or resolved.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Partner portal and event centre – screenshot placeholder
       section_3:
         title: Storage billing and services
         paragraphs:
-          paragraph_1: Storage billing rules use period, stock, tariff and billing basis. VAS orders describe service, quantity, state and evidence. Check tariff
-            validity and reference data before billing.
+          paragraph_1: Storage billing rules use period, stock, tariff and billing basis. VAS orders describe service, quantity, state and evidence. Check tariff validity and reference
+            data before billing.
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: 'Placeholder: platform control centre'
       section_4:
         title: Extended configurations
         paragraphs:
-          paragraph_1: Extension modules cover resources such as compliance, quality, production, dock and yard configuration. Create rules in configuration views
-            and perform work in separate process views. State transitions, approvals and external evidence are audited.
+          paragraph_1: Extension modules cover resources such as compliance, quality, production, dock and yard configuration. Create rules in configuration views and perform work in
+            separate process views. State transitions, approvals and external evidence are audited.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Extended configurations – screenshot placeholder
+    guidance:
+      prerequisites:
+      - Enabled feature and valid partner, tariff, rule or workflow configuration.
+      permissions:
+      - platform.read/write/execute and platform.extension.read/write/execute; partner accounts additionally use released scopes.
+      fields:
+      - 'Task/KPI: title, type, priority, metric, aggregation, target. Partner: business_partner_id, user_id, permissions. Billing/VAS: service, quantity, price, free_days. Extension:
+        resource type, configuration, workflow, decision, evidence.'
+      statuses:
+      - Tasks and work items follow defined transitions; billing, compliance and quality decisions are audited.
+      errors:
+      - Missing rule, invalid transition, expired tariff, unknown partner or incomplete evidence prevents execution or approval.
   api_and_automation:
     title: API, outbox, transport adapters and automation
     summary: OpenAPI, API keys, reliable messaging, protocols and operational monitoring.
@@ -329,26 +550,47 @@ chapter:
       section_1:
         title: Use the API
         paragraphs:
-          paragraph_1: Open API documentation from its separate sidebar link. Choose resource and operation and verify permission, headers and schema. API keys are
-            sent in headers and never published in URLs, logs or screenshots.
+          paragraph_1: Open API documentation from its separate sidebar link. Choose resource and operation and verify permission, headers and schema. API keys are sent in headers and
+            never published in URLs, logs or screenshots.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Use the API – screenshot placeholder
       section_2:
         title: Monitor the outbox
         paragraphs:
-          paragraph_1: The outbox separates business transactions from external delivery. Filter by state, target and period. Review payload and last error. Retry
-            only after resolving the cause; manual acknowledgement requires a business reason.
+          paragraph_1: The outbox separates business transactions from external delivery. Filter by state, target and period. Review payload and last error. Retry only after resolving
+            the cause; manual acknowledgement requires a business reason.
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: 'Placeholder: outbox and transport state'
       section_3:
         title: Transport adapters
         paragraphs:
-          paragraph_1: HTTP, file, TCP and serial adapters require endpoint, timeout, encoding or framing and secret reference. Test reachability and response format.
-            Do not log credentials or unnecessary personal payload data.
+          paragraph_1: HTTP, file, TCP and serial adapters require endpoint, timeout, encoding or framing and secret reference. Test reachability and response format. Do not log credentials
+            or unnecessary personal payload data.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Transport adapters – screenshot placeholder
       section_4:
         title: Workers and schedules
         paragraphs:
-          paragraph_1: Asynchronous messages require running Messenger workers. Scheduled tasks start due jobs such as counting, replenishment or status reconciliation.
-            Monitor queue depth, failed queue, duration and last successful run.
+          paragraph_1: Asynchronous messages require running Messenger workers. Scheduled tasks start due jobs such as counting, replenishment or status reconciliation. Monitor queue
+            depth, failed queue, duration and last successful run.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Workers and schedules – screenshot placeholder
+    guidance:
+      prerequisites:
+      - Active API client or adapter, running workers, valid secrets and reachable target.
+      permissions:
+      - Explicit API scopes plus integration.outbox.read/retry/acknowledge, integration.automation.* and integration.transport.*.
+      fields:
+      - 'API: X-API-Key, Content-Type, Idempotency-Key, Request-ID, JSON body. Outbox: aggregate, message type, destination, payload, state. Transport: adapter, destination, protocol,
+        framing, credential, timeouts.'
+      statuses:
+      - Outbox pending → processing → published or failed. Delivery queued → sent/acknowledged or failed; retries increase attempts.
+      errors:
+      - 401/403 authentication, 409 conflict, 422 validation, timeout or negative acknowledgement; retry only after duplicate-processing check.
   troubleshooting:
     title: Troubleshooting and support
     summary: Narrow down common operator errors, retry safely and provide useful support data.
@@ -357,26 +599,48 @@ chapter:
         title: A record or menu is missing
         paragraphs:
           paragraph_1: Verify tenant, site, role, active filters and state. Reset search and pagination. A missing menu item usually indicates a missing read permission.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: A record or menu is missing – screenshot placeholder
       section_2:
         title: An action is unavailable
         paragraphs:
-          paragraph_1: Read validation feedback and verify required fields, document state, predecessor actions, stock availability and concurrent editing. Do not
-            repeatedly submit a write action without understanding its result.
+          paragraph_1: Read validation feedback and verify required fields, document state, predecessor actions, stock availability and concurrent editing. Do not repeatedly submit a
+            write action without understanding its result.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: An action is unavailable – screenshot placeholder
       section_3:
         title: An integration reports an error
         paragraphs:
-          paragraph_1: Review connection test, secret reference, target system, outbox state and error message. Determine whether the external order was already processed
-            before retrying.
+          paragraph_1: Review connection test, secret reference, target system, outbox state and error message. Determine whether the external order was already processed before retrying.
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: 'Placeholder: error message and audit log'
       section_4:
         title: Prepare a support case
         paragraphs:
-          paragraph_1: Provide time with timezone, tenant, site, route, document reference, expected and actual behaviour and correlation or message ID. Remove passwords,
-            API keys and unnecessary personal data from screenshots and logs.
+          paragraph_1: Provide time with timezone, tenant, site, route, document reference, expected and actual behaviour and correlation or message ID. Remove passwords, API keys and
+            unnecessary personal data from screenshots and logs.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Prepare a support case – screenshot placeholder
       section_5:
         title: Audit and recovery
         paragraphs:
-          paragraph_1: Use movement history, audit events and outbox to reconstruct the flow. Correct business data through supported reversal, approval or cancellation
-            processes instead of direct database changes.
+          paragraph_1: Use movement history, audit events and outbox to reconstruct the flow. Correct business data through supported reversal, approval or cancellation processes instead
+            of direct database changes.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: Audit and recovery – screenshot placeholder
+    guidance:
+      prerequisites:
+      - Timestamp with timezone, tenant, site, user action, route, document and correlation reference.
+      permissions:
+      - Domain read permission and integration.outbox.read for delivery errors; retry and acknowledgement need separate permissions.
+      fields:
+      - 'Support case: expected/actual behaviour, route, aggregate_id, message_id, external_event_id, state, error. Never include passwords or API keys.'
+      statuses:
+      - An error remains open until data state and external processing are understood. Retry, acknowledgement, cancellation and reversal are distinct.
+      errors:
+      - Check filters/permission/state, then audit and ledger, then outbox/workers and finally the external target; never patch the database directly.

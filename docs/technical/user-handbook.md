@@ -36,9 +36,24 @@ existiert, alle Kapitel eine strukturierte Abschnittsliste und einen
 Screenshot-Verweis besitzen und die Schlüsselmengen beider YAML-Dateien
 identisch sind.
 
+`HandbookCoverageMap` ist die maschinenlesbare Abdeckungsmatrix. Sie ordnet
+jede produktive Route unter `/v3` genau einem der zwölf Kapitel zu. Die
+Zuordnung unterscheidet unter anderem Benutzerverwaltung und
+Systemkonfiguration, Lagerbetrieb und Inventur sowie Integrationsbetrieb und
+Fehlerbehebung. Der Integrationstest
+`HandbookCoverageTest::testEveryV3WebRouteIsAssignedToExactlyOneChapter`
+liest die echte Symfony-Route-Collection. Eine neue V3-Route ohne Zuordnung
+oder ein Kapitel ohne mindestens eine produktive Route lässt die CI
+fehlschlagen. Zum Zeitpunkt dieses Abschlusses sind 226 Web-Routen abgedeckt.
+
+Jedes Kapitel enthält strukturierte Hinweise zu Voraussetzungen,
+Berechtigungen, Eingaben, Statusauswirkungen und typischen Fehlern. Sämtliche
+53 Bedien- und Konfigurationsabschnitte besitzen eine eigene, lokalisierte
+Bildbeschreibung und eine stabile Platzhalterreferenz.
+
 ## Screenshots ersetzen
 
-Im ersten Schritt referenzieren alle Kapitel die zentrale Grafik
+Im ersten Schritt referenzieren alle Bedien- und Konfigurationsabschnitte die zentrale Grafik
 `public/assets/images/handbook/placeholder.svg`. Für den Austausch wird die
 `image.src` im jeweiligen YAML-Abschnitt auf eine fachlich benannte Datei im
 selben Verzeichnis geändert, beispielsweise
@@ -53,5 +68,8 @@ Der Zugriff benötigt `documentation.handbook.read`. Die Migration
 `Version20261001110000` ergänzt das Recht für bestehende Rollen, damit der
 bisherige Hilfebereich nach dem Update erreichbar bleibt. Bei neuen Rollen
 wird es explizit ausgewählt. Inhaltliche Änderungen müssen immer parallel in
-Deutsch und Englisch erfolgen; der Paritätstest verhindert unvollständige
-Übersetzungen.
+Deutsch und Englisch erfolgen. Die Tests verhindern unvollständige
+Übersetzungen, unbekannte Strukturschlüssel und nicht gerenderte zusätzliche
+Inhaltsbereiche. Weitere Integrationstests prüfen Routengenerierung,
+Berechtigungsattribute, lokalisierte Navigation, Twig-Rendering,
+HTML-Escaping, Suchgrenzfälle und die Kapitel-Untermenüs der Sidebar.
