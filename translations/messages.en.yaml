@@ -1809,6 +1809,12 @@ security:
         username: 'Username'
         web_server: 'Web server:'
         weblvs_and_reg: 'webLVS &reg;'
+    sso:
+        authentication_failed: 'Login through the identity provider failed.'
+        log_in: 'Log in with Single Sign-on'
+        missing_provider: 'Tenant and identity provider code are required.'
+        or: 'or'
+        provider_code: 'Identity provider code'
     v3_login:
         client_id: 'Client ID'
         email_address: 'Email address'

@@ -1808,6 +1808,12 @@ security:
         username: 'Benutzername'
         web_server: 'Webserver:'
         weblvs_and_reg: 'webLVS &reg;'
+    sso:
+        authentication_failed: 'Die Anmeldung über den Identity Provider ist fehlgeschlagen.'
+        log_in: 'Mit Single Sign-on anmelden'
+        missing_provider: 'Mandant und Identity-Provider-Code müssen angegeben werden.'
+        or: 'oder'
+        provider_code: 'Identity-Provider-Code'
     v3_login:
         client_id: 'Mandanten-ID'
         email_address: 'E-Mail-Adresse'

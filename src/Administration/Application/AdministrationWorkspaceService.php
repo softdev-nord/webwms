@@ -160,7 +160,7 @@ readonly class AdministrationWorkspaceService
         return [
             'partner' => ['table' => 'wms_business_partner', 'fields' => ['code' => 'code:30', 'name' => 'string:150', 'partner_type' => 'choice:customer,supplier,carrier,owner', 'external_reference' => 'nullable:100', 'active' => 'bool']],
             'context' => ['table' => 'wms_tenant_context', 'fields' => ['business_partner_id' => 'nullable:36', 'code' => 'code:30', 'name' => 'string:150', 'active' => 'bool']],
-            'identity_provider' => ['table' => 'wms_identity_provider', 'fields' => ['code' => 'code:30', 'name' => 'string:100', 'protocol' => 'choice:oidc,saml', 'issuer_url' => 'string:500', 'client_id' => 'string:255', 'client_secret_env' => 'string:100', 'scopes' => 'string:255', 'enabled' => 'bool']],
+            'identity_provider' => ['table' => 'wms_identity_provider', 'fields' => ['code' => 'code:30', 'name' => 'string:100', 'protocol' => 'choice:oidc', 'issuer_url' => 'string:500', 'client_id' => 'string:255', 'client_secret_env' => 'string:100', 'scopes' => 'string:255', 'enabled' => 'bool']],
             'number_range' => ['table' => 'wms_number_range', 'fields' => ['code' => 'code:30', 'name' => 'string:100', 'object_type' => 'code:50', 'prefix' => 'nullable:30', 'suffix' => 'nullable:30', 'padding' => 'int:1,18', 'next_value' => 'int:1,9223372036854775807', 'maximum_value' => 'nullable_int', 'gs1_company_prefix' => 'nullable:20', 'enabled' => 'bool']],
             'device_profile' => ['table' => 'wms_device_profile', 'fields' => ['code' => 'code:30', 'name' => 'string:100', 'device_type' => 'choice:desktop,tablet,scanner', 'start_route' => 'string:255', 'fullscreen' => 'bool', 'scan_suffix' => 'nullable:20', 'enabled' => 'bool']],
         ];

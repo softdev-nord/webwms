@@ -2,7 +2,7 @@
 id: WEBWMS-079
 issue_type: Story
 epic: WEBWMS-EPIC-ADMIN
-status: Backend umgesetzt
+status: Done
 priority: Medium
 story_points: 8
 component: "Administration"
@@ -44,9 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-ADMIN. K
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
-OIDC- und SAML-Identity-Provider sowie externe Identitätszuordnungen sind mandantenbezogen modelliert und über V3-UI/API konfigurierbar. Client-Secrets werden ausschließlich über Umgebungsvariablen referenziert. Der konkrete Redirect-/Callback-Handshake folgt nach Festlegung der produktiv verwendeten IdP-Bibliothek; das Ticket bleibt deshalb unterhalb von `Done`.
+OpenID-Connect-Provider und externe Identitätszuordnungen sind mandantenbezogen modelliert und über V3-UI/API konfigurierbar. Der produktive Authorization-Code-Flow verwendet Discovery, State, Nonce und PKCE S256. ID Tokens werden ausschließlich mit RS256 und dem über `jwks_uri` veröffentlichten Schlüssel geprüft; Issuer, Audience, Ablaufzeit, Nonce und verifizierte E-Mail sind verpflichtend.
+
+Client-Secrets werden ausschließlich über Umgebungsvariablen referenziert. Nach erfolgreicher Prüfung wird die externe Subject-ID transaktional und auditierbar mit einem bereits aktiven Benutzer desselben Mandanten verknüpft und anschließend die bestehende V3-Symfony-Session aufgebaut. Fehlerhafte oder abgelaufene Transaktionen führen zurück zur Anmeldung und werden im Login-Journal erfasst. Domain-, Service- und OIDC-Client-Tests decken Konfiguration, Zuordnung und Protokollgrenzen ab.
 
 ## Quelle
 

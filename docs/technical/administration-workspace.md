@@ -22,7 +22,9 @@ davon unberührt.
 
 Die Oberfläche liegt unter `/v3/administration/workspace`, die mandantensichere Projektion unter `/api/v3/administration/workspace`. Ressourcen können über `/api/v3/administration/workspace/{resource}` angelegt, Prozesse und Betriebsprofile per `PUT` konfiguriert und Nummern über `/api/v3/administration/number-ranges/{code}/next` atomar bezogen werden. Berechtigungen sind in `administration.configuration.read`, `administration.configuration.write` und `administration.number_range.use` getrennt.
 
-OpenID-Connect- und SAML-Provider können bereits sicher konfiguriert werden. Der eigentliche Redirect-/Callback-Handshake bleibt providerabhängig und wird nach Auswahl der einzusetzenden IdP-Bibliothek ergänzt; WEBWMS-079 bleibt deshalb bewusst auf `Backend umgesetzt`.
+OpenID-Connect-Provider können sicher konfiguriert und produktiv für die V3-Anmeldung verwendet werden. Der Authorization-Code-Flow lädt die Discovery-Metadaten ausschließlich per HTTPS, verwendet State, Nonce und PKCE S256 und tauscht den Code mit dem nur aus der Laufzeitumgebung gelesenen Client-Secret aus. Das ID Token muss RS256-signiert sein; Schlüsselrotation wird über `jwks_uri` und `kid` unterstützt. Issuer, Audience, Ablaufzeit, Nonce, Subject und verifizierte E-Mail werden geprüft.
+
+Beim ersten erfolgreichen Login wird das externe Subject anhand der verifizierten E-Mail einem bereits aktiven Benutzer desselben Mandanten zugeordnet. Die Zuordnung und das Login werden auditierbar gespeichert. Spätere Logins verwenden ausschließlich die feste Subject-Zuordnung. SAML wird nicht als auswählbares Laufzeitprotokoll angeboten; dadurch existiert kein scheinbar konfigurierbarer, aber nicht ausführbarer Anmeldeweg.
 
 ## Webbetrieb
 
