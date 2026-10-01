@@ -1,6 +1,6 @@
 # WebWMS-3.0-Roadmap
 
-Diese Roadmap ersetzt die bisherige Excel-Arbeitsdatei als verbindliche, versionierte Planungsgrundlage. Sie umfasst 110 Stories mit insgesamt 912 Story Points, aufgeteilt auf acht Epics.
+Diese Roadmap ersetzt die bisherige Excel-Arbeitsdatei als verbindliche, versionierte Planungsgrundlage. Sie umfasst 111 Stories mit insgesamt 933 Story Points, aufgeteilt auf acht Epics.
 
 ## Statusmodell
 
@@ -21,16 +21,16 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 | [WEBWMS-EPIC-INVENTORY](epics/inventory.md) | Lagerverwaltung | 18 | 126 |
 | [WEBWMS-EPIC-FULFILLMENT](epics/fulfillment.md) | Transport & Kommissionierung | 16 | 132 |
 | [WEBWMS-EPIC-OUTBOUND](epics/outbound.md) | Warenausgang & Versand | 17 | 106 |
-| [WEBWMS-EPIC-PLATFORM](epics/platform.md) | Zusatzfunktionen | 9 | 81 |
+| [WEBWMS-EPIC-PLATFORM](epics/platform.md) | Zusatzfunktionen | 10 | 102 |
 | [WEBWMS-EPIC-ADMIN](epics/admin.md) | Administration | 9 | 76 |
 | [WEBWMS-EPIC-INTEGRATION](epics/integration.md) | Integration & Technik | 13 | 144 |
 | [WEBWMS-EPIC-EXTENSIONS](epics/functional-extensions.md) | Erweiterte Funktionen | 14 | 162 |
 
 ## Aktueller Gesamtfortschritt
 
-Stand 01.10.2026 sind alle 110 Tickets und 912 Story Points vollständig `Done`. Es verbleibt kein offenes fachliches Roadmap-Ticket.
+Stand 01.10.2026 sind 110 von 111 Tickets und 912 von 933 Story Points vollständig `Done`. WEBWMS-111 ergänzt als offenes Ticket die Erstellung eines vollständigen, zweisprachigen und durchsuchbaren Benutzerhandbuchs.
 
-Alle acht Epics sind vollständig abgeschlossen. WEBWMS-079 ergänzt den produktiven OpenID-Connect-Handshake; WEBWMS-084 bis WEBWMS-096 bilden den vollständigen Integrationsumfang einschließlich operativer Transportadapter und zuverlässiger asynchroner Verarbeitung ab. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
+Sieben der acht Epics sind vollständig abgeschlossen; das Platform-Epic ist durch WEBWMS-111 wieder geöffnet. WEBWMS-079 ergänzt den produktiven OpenID-Connect-Handshake; WEBWMS-084 bis WEBWMS-096 bilden den vollständigen Integrationsumfang einschließlich operativer Transportadapter und zuverlässiger asynchroner Verarbeitung ab. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 
 ## Ergänzende Roadmap-Dokumente
 

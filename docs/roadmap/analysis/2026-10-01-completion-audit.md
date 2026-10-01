@@ -2,6 +2,12 @@
 
 **Stand:** 01.10.2026
 
+> **Nachtrag vom 01.10.2026:** Nach diesem Abschlussstand wurde mit
+> [WEBWMS-111](../tickets/WEBWMS-111.md) ein neuer, querschnittlicher Umfang
+> für das vollständige Benutzerhandbuch aufgenommen. Der Audit dokumentiert
+> weiterhin den Abschluss der zuvor definierten 110 Tickets; der aktuelle
+> Roadmap-Stand beträgt damit 110 von 111 Tickets und 912 von 933 Story Points.
+
 ## Ergebnis
 
 Die fachliche WebWMS-3.0-Roadmap ist vollständig abgeschlossen. Sämtliche 110
