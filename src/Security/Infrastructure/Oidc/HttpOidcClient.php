@@ -136,6 +136,7 @@ readonly class HttpOidcClient implements OidcClient
         foreach ($keys as $key) {
             if (is_array($key) && ($key['kid'] ?? null) === $header['kid'] && ($key['kty'] ?? null) === 'RSA') {
                 $publicKey = $this->rsaPublicKey($key);
+
                 break;
             }
         }

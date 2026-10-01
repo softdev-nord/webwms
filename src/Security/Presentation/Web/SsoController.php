@@ -98,6 +98,7 @@ class SsoController extends AbstractController
             $identifier = $this->sso->resolveUserIdentifier($provider, $identity, new DateTimeImmutable());
             $user = $this->users->loadUserByIdentifier($identifier);
             $response = $this->security->login($user, LoginFormAuthenticator::class, 'v3');
+
             return $response instanceof RedirectResponse ? $response : $this->redirectToRoute('v3_dashboard');
         } catch (Throwable $exception) {
             $this->recordFailure($request, $tenantId, $exception);
