@@ -273,7 +273,7 @@ readonly class DataExchangeService
         fwrite($stream, $content);
         rewind($stream);
         $headers = fgetcsv($stream, escape: '');
-        if (!is_array($headers) || $headers === []) {
+        if (!is_array($headers)) {
             fclose($stream);
 
             return [];
@@ -305,7 +305,8 @@ readonly class DataExchangeService
     {
         $xml = $this->xml($content);
         $values = [];
-        foreach ($xml->xpath('//*[not(*)]') ?: [] as $element) {
+        $elements = $xml->xpath('//*[not(*)]');
+        foreach (is_array($elements) ? $elements : [] as $element) {
             $values[$element->getName()] = (string) $element;
         }
 
@@ -327,9 +328,11 @@ readonly class DataExchangeService
             if (is_string($sharedXml)) {
                 $shared = $this->xml($sharedXml);
                 $shared->registerXPathNamespace('x', 'http://schemas.openxmlformats.org/spreadsheetml/2006/main');
-                foreach ($shared->xpath('//x:si') ?: [] as $item) {
+                $items = $shared->xpath('//x:si');
+                foreach (is_array($items) ? $items : [] as $item) {
                     $item->registerXPathNamespace('x', 'http://schemas.openxmlformats.org/spreadsheetml/2006/main');
-                    $texts = $item->xpath('.//x:t') ?: [];
+                    $textNodes = $item->xpath('.//x:t');
+                    $texts = is_array($textNodes) ? $textNodes : [];
                     $sharedStrings[] = implode('', array_map(static fn (SimpleXMLElement $text): string => (string) $text, $texts));
                 }
             }
@@ -340,10 +343,12 @@ readonly class DataExchangeService
             $sheet = $this->xml($sheetXml);
             $sheet->registerXPathNamespace('x', 'http://schemas.openxmlformats.org/spreadsheetml/2006/main');
             $matrix = [];
-            foreach ($sheet->xpath('//x:sheetData/x:row') ?: [] as $row) {
+            $sheetRows = $sheet->xpath('//x:sheetData/x:row');
+            foreach (is_array($sheetRows) ? $sheetRows : [] as $row) {
                 $row->registerXPathNamespace('x', 'http://schemas.openxmlformats.org/spreadsheetml/2006/main');
                 $values = [];
-                foreach ($row->xpath('./x:c') ?: [] as $cell) {
+                $cells = $row->xpath('./x:c');
+                foreach (is_array($cells) ? $cells : [] as $cell) {
                     $cell->registerXPathNamespace('x', 'http://schemas.openxmlformats.org/spreadsheetml/2006/main');
                     $type = (string) $cell['t'];
                     $nodes = $cell->xpath($type === 'inlineStr' ? './x:is/x:t' : './x:v');
@@ -387,7 +392,9 @@ readonly class DataExchangeService
             }
         }
 
-        return $xml->asXML() ?: throw new InvalidArgumentException('The XML export could not be generated.');
+        $content = $xml->asXML();
+
+        return is_string($content) ? $content : throw new InvalidArgumentException('The XML export could not be generated.');
     }
 
     /** @param list<array<string, scalar|null>> $rows */
