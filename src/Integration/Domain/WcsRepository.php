@@ -14,7 +14,9 @@ interface WcsRepository
 
     public function changeConnectionStatus(string $tenantId, string $connectionId, bool $active, string $actorId, DateTimeImmutable $at): void;
 
-    public function addCommand(MachineCommand $command): MachineCommand;
+    public function addCommand(MachineCommand $command, IntegrationStatusEvent $event): MachineCommand;
+
+    public function command(string $tenantId, string $commandId): MachineCommand;
 
     public function commandByRequestId(string $tenantId, string $requestId): ?MachineCommand;
 

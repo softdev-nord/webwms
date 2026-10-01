@@ -11,4 +11,6 @@ interface IntegrationTransportRepository
     public function add(TransportEndpoint $endpoint, ProtocolConfiguration $configuration): void;
 
     public function changeStatus(string $tenantId, string $endpointId, bool $active, string $actorId, DateTimeImmutable $at): void;
+
+    public function configuredEndpoint(string $tenantId, string $endpointId): ConfiguredTransportEndpoint;
 }

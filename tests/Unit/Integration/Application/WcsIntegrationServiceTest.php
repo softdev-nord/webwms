@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Application\WcsIntegrationService;
 use WebWMS\Integration\Domain\MachineCommand;
+use WebWMS\Integration\Domain\IntegrationStatusEvent;
 use WebWMS\Integration\Domain\MachineStatus;
 use WebWMS\Integration\Domain\WcsRepository;
 
@@ -37,5 +38,23 @@ class WcsIntegrationServiceTest extends TestCase
         $result = new WcsIntegrationService($repository)->recordStatus('tenant', 'connection', null, 'MACHINE', 'ready', null, 'event', 'user', new DateTimeImmutable());
 
         self::assertSame($existing, $result);
+    }
+
+    public function testItQueuesCommandAndOutboxEventTogether(): void
+    {
+        $repository = $this->createMock(WcsRepository::class);
+        $repository->method('commandByRequestId')->willReturn(null);
+        $repository->expects($this->once())->method('connection')->with('tenant', 'connection', true);
+        $repository->expects($this->once())->method('addCommand')->with(
+            self::isInstanceOf(MachineCommand::class),
+            self::callback(static fn (IntegrationStatusEvent $event): bool => $event->eventName === 'integration.wcs.command.queued'
+                && $event->payload['connectionId'] === 'connection'),
+        )->willReturnCallback(static fn (MachineCommand $command): MachineCommand => $command);
+
+        $command = new WcsIntegrationService($repository)->queueCommand(
+            'tenant', 'connection', 'transport', 'A', 'B', 'LOAD', 'request', 'user', new DateTimeImmutable(),
+        );
+
+        self::assertSame(MachineCommand::STATUS_QUEUED, $command->status);
     }
 }

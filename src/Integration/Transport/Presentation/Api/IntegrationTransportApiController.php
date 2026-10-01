@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\IntegrationTransportService;
 use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
@@ -68,6 +69,29 @@ class IntegrationTransportApiController extends AbstractController
         $this->transport->changeStatus($user->tenantId(), $endpointId, $this->boolean($payload, 'active'), $user->actorId(), new DateTimeImmutable());
 
         return new JsonResponse(['data' => $this->integrationQueries->transportEndpoint($user->tenantId(), $endpointId)]);
+    }
+
+    #[Route('/{endpointId}/deliveries', name: 'deliver', methods: ['POST'])]
+    #[IsGranted('integration.transport.write')]
+    public function deliver(string $endpointId, Request $request): JsonResponse
+    {
+        $payload = $request->toArray();
+        $message = $payload['payload'] ?? null;
+        if (!is_array($message)) {
+            throw new InvalidArgumentException('Field "payload" must be an object.');
+        }
+        /** @var array<string, mixed> $message */
+
+        $messageId = isset($payload['messageId']) && is_string($payload['messageId'])
+            ? trim($payload['messageId'])
+            : Uuid::v7()->toRfc4122();
+        if ($messageId === '') {
+            throw new InvalidArgumentException('Field "messageId" must not be empty.');
+        }
+
+        $this->transport->deliver($this->user()->tenantId(), $endpointId, $messageId, $message);
+
+        return new JsonResponse(['data' => ['messageId' => $messageId, 'status' => 'delivered']], Response::HTTP_ACCEPTED);
     }
 
     private function user(): TenantPermissionUser

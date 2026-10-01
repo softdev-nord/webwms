@@ -101,6 +101,12 @@ services:
     WebWMS\Integration\Application\ErpStatusTransport:
         alias: WebWMS\Integration\Infrastructure\Transport\HttpErpStatusTransport
 
+    WebWMS\Integration\Application\WcsCommandTransport:
+        alias: WebWMS\Integration\Infrastructure\Transport\HttpWcsCommandTransport
+
+    WebWMS\Integration\Application\RuntimeIntegrationTransport:
+        alias: WebWMS\Integration\Infrastructure\Transport\NetworkIntegrationTransport
+
     WebWMS\Integration\Domain\IntegrationExchangeRepository:
         alias: WebWMS\Integration\Infrastructure\Persistence\DbalIntegrationExchangeRepository
 

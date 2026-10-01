@@ -967,12 +967,21 @@ integration:
             pause_printer: 'Pause printer'
             print_jobs: 'Print jobs'
     transport:
+        deliver:
+            back: '← TCP/IP and Web Service'
+            deliver: 'Deliver message'
+            deliver_message: 'Deliver message'
+            message_id: 'Message ID'
+            message_id_help: 'The recipient uses this ID for idempotent processing.'
+            payload: 'Payload (JSON)'
         flash:
+            message_was_delivered: 'The message was delivered successfully.'
             transport_endpoint_was_created: 'The transport endpoint was created.'
         index:
             adapter: 'Adapter'
             address: 'Address'
             create_endpoint: 'Create endpoint'
+            deliver: 'Deliver'
             manage_transport_adapters_and_protocols_for_hardware_and_systems: 'Manage transport adapters and protocols for hardware and systems'
             ms: 'ms'
             no_transport_endpoints_yet: 'No transport endpoints yet.'
@@ -994,7 +1003,7 @@ integration:
             soap_xml: 'SOAP/XML'
             stx_etx: 'STX/ETX'
             tcp_client: 'TCP Client'
-            tcp_host_9100_or_https_host_api: 'tcp://host:9100 or https://host/api'
+            tcp_host_9100_or_https_host_api: 'tcp://host:9100, tls://host:9100 or https://host/api'
             tcp_ip_and_web_service: '← TCP/IP and Web Service'
     wcs:
         command_new:

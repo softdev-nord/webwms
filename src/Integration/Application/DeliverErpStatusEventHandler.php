@@ -18,6 +18,10 @@ readonly class DeliverErpStatusEventHandler
 
     public function __invoke(PublishedIntegrationMessage $message): void
     {
+        if ($message->eventName === 'integration.wcs.command.queued') {
+            return;
+        }
+
         foreach ($this->connections->activeForTenant($message->tenantId) as $connection) {
             $this->transport->deliver($connection, $message);
         }

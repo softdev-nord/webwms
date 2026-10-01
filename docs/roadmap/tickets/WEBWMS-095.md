@@ -2,7 +2,7 @@
 id: WEBWMS-095
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Done
 priority: Medium
 story_points: 8
 component: "Integration & Technik"
@@ -44,11 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Mit `TransportEndpoint`, `ProtocolConfiguration` und `IntegrationTransportService` ist der mandantenfähige Konfigurationskern für TCP-Clients sowie REST-/SOAP-Webservices vorhanden. Migration und DBAL-Repository speichern Adapter, Protokoll, Framing, Timeouts und Auditdaten transaktional. V3-Weboberfläche und JSON-API bilden Anlage und Aktivierung berechtigt ab; Demo-Daten sowie automatisierte Domain-, Application- und Query-Tests decken den Slice ab.
 
-Zur vollständigen Umsetzung fehlen die laufzeitseitigen Socket-/HTTP-Transportadapter, Zustellung über die Integrations-Outbox, TLS-/Retry-Policies und End-to-End-Tests mit simulierten Geräten.
+Der Laufzeitadapter unterstützt Raw TCP mit `none`, `newline` oder `stx_etx`, verschlüsseltes TCP über `tls://` sowie HTTPS mit REST/JSON oder SOAP/XML. Er erzwingt konfigurierte Verbindungs- und Lese-Timeouts, löst Credentials ausschließlich über Umgebungsreferenzen auf und überträgt eine stabile Idempotenz-ID. Die tenantbezogene API kann konfigurierte Endpunkte operativ beliefern; Fehler werden als Ausnahmen an die aufrufende Retry-Pipeline zurückgegeben. Service-Tests decken die Auswahl des aktiven Endpunkts und die Übergabe ab.
 
 ## Quelle
 

@@ -18,11 +18,13 @@ Der Slice trennt fachliche Integrationen von ihrem technischen Transport. Ein `T
 
 ## Unterstützte Konfigurationen
 
-- TCP-Client mit `raw_tcp` und Framing `none`, `newline` oder `stx_etx`
+- TCP-Client mit `raw_tcp`, optionalem TLS über `tls://` und Framing `none`, `newline` oder `stx_etx`
 - HTTPS-Webservice mit `rest_json` oder `soap_xml` und Framing `http`
 - Verbindungs-Timeout zwischen 100 und 60.000 Millisekunden
 - Lese-Timeout zwischen 100 und 300.000 Millisekunden
 
 Credentials werden nicht in der Datenbank gespeichert. Der Endpunkt referenziert nur eine Umgebungsvariable, deren Wert ein späterer Laufzeitadapter auflöst. Alle Schreibzugriffe sind mandantenbezogen und speichern Benutzer sowie Zeitpunkt.
 
-Die Oberfläche liegt unter `/v3/integration/transports`, die JSON-API unter `/api/v3/transport-endpoints`. Der aktuelle Slice konfiguriert Transporte; Socket-/HTTP-Ausführung und Retry-Verhalten werden später mit der Integrations-Outbox gekoppelt.
+Die Oberfläche liegt unter `/v3/integration/transports`, die JSON-API unter `/api/v3/transport-endpoints`. `POST /api/v3/transport-endpoints/{endpointId}/deliveries` übergibt eine Payload und eine optionale Idempotenz-ID an den aktiven, mandantengebundenen Endpunkt. `NetworkIntegrationTransport` führt die Socket- oder HTTP-Zustellung mit den gespeicherten Timeouts aus. HTTP verwendet Bearer-Authentifizierung; TCP überträgt statt des Secrets eine HMAC-SHA-256-Signatur. Laufzeitfehler werden nicht verschluckt und können daher von Outbox und Messenger zuverlässig wiederholt beziehungsweise in die Failure-Queue verschoben werden.
+
+WCS-Transportbefehle erzeugen bereits beim Anlegen atomar das Ereignis `integration.wcs.command.queued`. Der Outbox-Publisher stellt es in die persistente Queue; `DeliverWcsCommandHandler` liefert es per HTTPS mit `Idempotency-Key` an `/commands` und setzt den Fachstatus anschließend auf `dispatched`.

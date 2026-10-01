@@ -6,6 +6,7 @@ namespace WebWMS\Integration\Infrastructure\Persistence;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
+use WebWMS\Integration\Domain\ConfiguredTransportEndpoint;
 use WebWMS\Integration\Domain\IntegrationTransportRepository;
 use WebWMS\Integration\Domain\ProtocolConfiguration;
 use WebWMS\Integration\Domain\TransportEndpoint;
@@ -56,6 +57,31 @@ readonly class DbalIntegrationTransportRepository implements IntegrationTranspor
         ], ['tenant_id' => $tenantId, 'id' => $endpointId]) !== 1) {
             throw new TransportEndpointNotFoundException('The transport endpoint does not exist in the tenant.');
         }
+    }
+
+    public function configuredEndpoint(string $tenantId, string $endpointId): ConfiguredTransportEndpoint
+    {
+        $row = $this->connection->fetchAssociative(
+            'SELECT e.*, p.protocol, p.framing, p.connect_timeout_ms, p.read_timeout_ms '
+            . 'FROM wms_transport_endpoint e INNER JOIN wms_protocol_configuration p ON p.endpoint_id = e.id '
+            . 'WHERE e.tenant_id = :tenantId AND e.id = :id AND e.active = 1',
+            ['tenantId' => $tenantId, 'id' => $endpointId],
+        );
+        if ($row === false) {
+            throw new TransportEndpointNotFoundException('The active transport endpoint does not exist in the tenant.');
+        }
+
+        return new ConfiguredTransportEndpoint(
+            new TransportEndpoint(
+                (string) $row['id'], (string) $row['tenant_id'], (string) $row['code'], (string) $row['name'],
+                (string) $row['adapter_type'], (string) $row['address'], (string) $row['credential_env'],
+                (bool) $row['active'], (string) $row['created_by'], new DateTimeImmutable((string) $row['created_at']),
+            ),
+            new ProtocolConfiguration(
+                (string) $row['id'], (string) $row['protocol'], (string) $row['framing'],
+                (int) $row['connect_timeout_ms'], (int) $row['read_timeout_ms'],
+            ),
+        );
     }
 
     private function assertActor(string $tenantId, string $actorId): void

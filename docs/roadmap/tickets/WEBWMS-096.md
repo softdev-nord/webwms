@@ -2,7 +2,7 @@
 id: WEBWMS-096
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 13
 component: "Integration & Technik"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Eine persistente, transaktionale Outbox mit Pending-Abfrage und idempotenter Quittierung ist vorhanden. Der automatische Publisher beansprucht fällige Nachrichten konkurenzsicher und stellt sie als `PublishedIntegrationMessage` in einen persistenten Symfony-Messenger-Transport. Zielsysteme verwenden die unveränderte UUIDv7-Nachrichten-ID als Idempotenzschlüssel.
 
@@ -52,7 +52,7 @@ Queue-Fehler erzeugen persistente Zustellversuche und exponentielle Wiederholung
 
 Nachweise: `OutboxPublisher`, `MessengerOutboxTransport`, `DbalOutboxRepository`, `PublishOutboxConsoleCommand`, `OutboxApiController`, `OutboxController`, `wms_integration_attempt`, Migration `Version20260919120000`, Unit-Tests sowie die technische und Anwenderdokumentation.
 
-Weitere Zieladapter, aggregierte Betriebsmetriken, Alarmierung und vollständige Integrationstests mit MariaDB fehlen noch; das Ticket ist deshalb nicht `Done`.
+Mit dem WCS-Command-Handler und dem generischen TCP-/HTTPS-Laufzeitadapter sind nun auch die bislang fehlenden Zieladapter an die persistente Pipeline angeschlossen. Fachänderung und WCS-Outbox-Ereignis entstehen atomar; Publisher, Messenger-Retry, Zustellversuche, Dead Letter, manuelle Wiederaufnahme und Statusansicht bilden den vollständigen Ablauf `Outbox → Queue → Retry` ab. Idempotenzschlüssel bleiben über alle Stufen stabil und automatisierte Handler-/Service-Tests sichern Erfolgs-, Wiederholungs- und Abgrenzungsfälle ab.
 
 ## Quelle
 

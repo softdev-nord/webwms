@@ -14,6 +14,7 @@ readonly class IntegrationTransportService
 {
     public function __construct(
         private IntegrationTransportRepository $repository,
+        private RuntimeIntegrationTransport $runtimeTransport,
     ) {
     }
 
@@ -52,5 +53,15 @@ readonly class IntegrationTransportService
     public function changeStatus(string $tenantId, string $endpointId, bool $active, string $actorId, DateTimeImmutable $at): void
     {
         $this->repository->changeStatus($tenantId, $endpointId, $active, $actorId, $at);
+    }
+
+    /** @param array<string, mixed> $payload */
+    public function deliver(string $tenantId, string $endpointId, string $messageId, array $payload): void
+    {
+        $this->runtimeTransport->deliver(
+            $this->repository->configuredEndpoint($tenantId, $endpointId),
+            $messageId,
+            $payload,
+        );
     }
 }

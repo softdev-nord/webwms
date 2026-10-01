@@ -221,6 +221,79 @@ paths:
         - { name: commandId, in: path, required: true, schema: { type: string } }
       responses:
         '200': { $ref: '#/components/responses/Item' }
+  /wcs-connections:
+    get:
+      summary: List WCS, MFR and conveyor connections
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Register a WCS, MFR or conveyor connection
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /machine-commands:
+    get:
+      summary: List WCS machine commands
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Queue a machine command transactionally through the integration outbox
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /machine-commands/{commandId}/status:
+    patch:
+      summary: Report a machine command state
+      parameters:
+        - { name: commandId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { $ref: '#/components/responses/Item' }
+  /machine-statuses:
+    get:
+      summary: List machine status events
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Record an idempotent machine status event
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /transport-endpoints:
+    get:
+      summary: List TCP/IP and webservice endpoints
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Register a TCP/IP or webservice endpoint
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /transport-endpoints/{endpointId}/deliveries:
+    post:
+      summary: Deliver a payload through an active tenant transport endpoint
+      parameters:
+        - { name: endpointId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [payload]
+              properties:
+                messageId: { type: string, description: Stable idempotency key; generated when omitted. }
+                payload: { type: object, additionalProperties: true }
+      responses:
+        '202': { $ref: '#/components/responses/Item' }
+        '404': { $ref: '#/components/responses/Problem' }
+  /outbox:
+    get:
+      summary: Monitor tenant-scoped integration messages by status
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+  /outbox/{messageId}/retry:
+    post:
+      summary: Retry a dead-letter integration message
+      parameters:
+        - { name: messageId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { $ref: '#/components/responses/Item' }
 components:
   securitySchemes:
     ApiKey:

@@ -2,7 +2,7 @@
 id: WEBWMS-094
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Done
 priority: Medium
 story_points: 13
 component: "Integration & Technik"
@@ -44,11 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Mit `WcsConnection`, `MachineCommand`, `MachineStatus` und `WcsIntegrationService` ist der mandantenfähige Kern für WCS, Materialflussrechner und Fördertechnik vorhanden. Migration und DBAL-Repository speichern Verbindungen, idempotente Transportbefehle, Maschinenzustände und Auditdaten. V3-Weboberfläche und JSON-API bilden den bidirektionalen Ablauf berechtigt ab; Demo-Daten sowie automatisierte Domain-, Application- und Query-Tests decken den Slice ab.
 
-Zur vollständigen Umsetzung fehlen herstellerspezifische Protokolladapter, die asynchrone Zustellung über die Integrations-Outbox sowie End-to-End-Tests mit einem WCS-Simulator.
+Transportbefehle werden jetzt zusammen mit einem Outbox-Ereignis in derselben DBAL-Transaktion angelegt. Der persistente Messenger-Worker liefert sie mit stabiler Idempotenz-ID über den generischen HTTPS-WCS-Adapter aus und setzt den Befehl erst nach erfolgreicher Annahme auf `dispatched`. Wiederholungen werden durch Outbox und Messenger verarbeitet; bereits weitergeschaltete Befehle werden nicht erneut zugestellt. Damit ist der herstellerneutrale WCS/MFR-Vertrag vollständig umgesetzt und durch Service- und Handler-Tests nachgewiesen.
 
 ## Quelle
 

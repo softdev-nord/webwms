@@ -1,0 +1,29 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block webwms_content %}
+	<div class="mb-4">
+		<a href="{{ path('v3_transport_index') }}" class="text-decoration-none">{{ 'integration.transport.deliver.back'|trans }}</a>
+		<h1 class="h3 mt-2">{{ 'integration.transport.deliver.deliver_message'|trans }}</h1>
+		<p class="text-muted mb-0">{{ endpoint.code }} · {{ endpoint.name }}</p>
+	</div>
+	<form method="post" class="card border-0 shadow-sm">
+		<div class="card-body">
+			<input type="hidden" name="_token" value="{{ csrf_token('v3_transport_deliver_' ~ endpoint.id) }}">
+			<div class="mb-3">
+				<label class="form-label" for="message_id">{{ 'integration.transport.deliver.message_id'|trans }}</label>
+				<input class="form-control font-monospace" id="message_id" name="message_id" value="{{ messageId }}" required>
+				<div class="form-text">{{ 'integration.transport.deliver.message_id_help'|trans }}</div>
+			</div>
+			<div>
+				<label class="form-label" for="payload">{{ 'integration.transport.deliver.payload'|trans }}</label>
+				<textarea class="form-control font-monospace" id="payload" name="payload" rows="12" required>{
+  "type": "connectivity-test"
+}</textarea>
+			</div>
+		</div>
+		<div class="card-footer d-flex justify-content-end gap-2">
+			<a class="btn btn-light" href="{{ path('v3_transport_index') }}">{{ 'common.button.cancel'|trans }}</a>
+			<button class="btn btn-primary">{{ 'integration.transport.deliver.deliver'|trans }}</button>
+		</div>
+	</form>
+{% endblock %}

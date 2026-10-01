@@ -6,6 +6,7 @@ namespace WebWMS\Integration\Application;
 
 use DateTimeImmutable;
 use Symfony\Component\Uid\Uuid;
+use WebWMS\Integration\Domain\IntegrationStatusEvent;
 use WebWMS\Integration\Domain\MachineCommand;
 use WebWMS\Integration\Domain\MachineStatus;
 use WebWMS\Integration\Domain\WcsConnection;
@@ -40,7 +41,28 @@ readonly class WcsIntegrationService
 
         $this->repository->connection($tenantId, $connectionId, true);
 
-        return $this->repository->addCommand(new MachineCommand(Uuid::v7()->toRfc4122(), $tenantId, $connectionId, $commandType, trim($source), trim($destination), trim($loadUnit), trim($requestId), MachineCommand::STATUS_QUEUED, null, $actorId, $at));
+        $command = new MachineCommand(Uuid::v7()->toRfc4122(), $tenantId, $connectionId, $commandType, trim($source), trim($destination), trim($loadUnit), trim($requestId), MachineCommand::STATUS_QUEUED, null, $actorId, $at);
+        $event = new IntegrationStatusEvent(
+            Uuid::v7()->toRfc4122(),
+            $tenantId,
+            'integration.wcs.command.queued',
+            'machine_command',
+            $command->id,
+            [
+                'commandId' => $command->id,
+                'connectionId' => $command->connectionId,
+                'commandType' => $command->commandType,
+                'source' => $command->source,
+                'destination' => $command->destination,
+                'loadUnit' => $command->loadUnit,
+                'requestId' => $command->requestId,
+                'actorId' => $actorId,
+            ],
+            $actorId,
+            $at,
+        );
+
+        return $this->repository->addCommand($command, $event);
     }
 
     public function transitionCommand(string $tenantId, string $commandId, string $status, ?string $message, string $actorId, DateTimeImmutable $at): MachineCommand

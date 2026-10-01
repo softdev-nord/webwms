@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
 use WebWMS\Integration\Application\IntegrationTransportService;
 use WebWMS\Integration\Application\Query\IntegrationQueryService;
 use WebWMS\Security\V3\TenantPermissionUser;
@@ -81,6 +82,38 @@ class IntegrationTransportController extends AbstractController
         $this->addFlash('success', (bool) $endpoint['active'] ? 'integration.flash.endpoint_was_paused' : 'integration.flash.endpoint_was_activated');
 
         return $this->redirectToRoute('v3_transport_index');
+    }
+
+    #[Route('/{endpointId}/deliver', name: 'deliver', methods: ['GET', 'POST'])]
+    #[IsGranted('integration.transport.write')]
+    public function deliver(string $endpointId, Request $request): Response
+    {
+        $user = $this->user();
+        $endpoint = $this->integrationQueries->transportEndpoint($user->tenantId(), $endpointId);
+        if ($endpoint === null) {
+            throw $this->createNotFoundException('The transport endpoint was not found.');
+        }
+
+        if ($request->isMethod('POST')) {
+            $this->assertCsrf($request, 'v3_transport_deliver_' . $endpointId);
+            $payload = json_decode($this->required($request, 'payload'), true, 512, JSON_THROW_ON_ERROR);
+            if (!is_array($payload)) {
+                throw new InvalidArgumentException('The transport payload must be a JSON object.');
+            }
+            /** @var array<string, mixed> $payload */
+
+            $messageId = $this->required($request, 'message_id');
+            $this->transport->deliver($user->tenantId(), $endpointId, $messageId, $payload);
+            $this->addFlash('success', 'integration.transport.flash.message_was_delivered');
+
+            return $this->redirectToRoute('v3_transport_index');
+        }
+
+        return $this->render('integration/transport/deliver.html.twig', [
+            'page' => 'integration.transport.deliver.deliver_message',
+            'endpoint' => $endpoint,
+            'messageId' => Uuid::v7()->toRfc4122(),
+        ]);
     }
 
     private function user(): TenantPermissionUser

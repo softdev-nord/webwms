@@ -35,8 +35,8 @@ readonly class TransportEndpoint
             throw new InvalidArgumentException('The transport adapter type is unsupported.');
         }
 
-        if ($adapterType === 'tcp_client' && preg_match('/^tcp:\/\/[^:\s]+:[1-9][0-9]{0,4}$/', $address) !== 1) {
-            throw new InvalidArgumentException('A TCP endpoint must use tcp://host:port.');
+        if ($adapterType === 'tcp_client' && preg_match('/^(tcp|tls):\/\/[^:\s]+:[1-9][0-9]{0,4}$/', $address) !== 1) {
+            throw new InvalidArgumentException('A TCP endpoint must use tcp://host:port or tls://host:port.');
         }
 
         if ($adapterType === 'http_webservice' && (filter_var($address, FILTER_VALIDATE_URL) === false || !str_starts_with($address, 'https://'))) {

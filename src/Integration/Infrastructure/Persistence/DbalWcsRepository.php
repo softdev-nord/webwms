@@ -9,6 +9,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use DomainException;
 use LogicException;
+use WebWMS\Integration\Domain\IntegrationStatusEvent;
 use WebWMS\Integration\Domain\MachineCommand;
 use WebWMS\Integration\Domain\MachineStatus;
 use WebWMS\Integration\Domain\WcsConnection;
@@ -57,9 +58,9 @@ readonly class DbalWcsRepository implements WcsRepository
         }
     }
 
-    public function addCommand(MachineCommand $command): MachineCommand
+    public function addCommand(MachineCommand $command, IntegrationStatusEvent $event): MachineCommand
     {
-        return $this->connection->transactional(function (Connection $connection) use ($command): MachineCommand {
+        return $this->connection->transactional(function (Connection $connection) use ($command, $event): MachineCommand {
             $this->assertActor($command->tenantId, $command->createdBy);
             $this->connection($command->tenantId, $command->connectionId, true);
 
@@ -70,6 +71,19 @@ readonly class DbalWcsRepository implements WcsRepository
                     'load_unit' => $command->loadUnit, 'request_id' => $command->requestId, 'status' => $command->status,
                     'message' => $command->message, 'created_by' => $command->createdBy, 'created_at' => $this->date($command->createdAt),
                     'changed_by' => null, 'changed_at' => null,
+                ]);
+                $connection->insert('wms_integration_outbox', [
+                    'id' => $event->id,
+                    'tenant_id' => $event->tenantId,
+                    'event_name' => $event->eventName,
+                    'aggregate_type' => $event->aggregateType,
+                    'aggregate_id' => $event->aggregateId,
+                    'payload' => json_encode($event->payload, JSON_THROW_ON_ERROR),
+                    'status' => 'pending',
+                    'occurred_at' => $this->date($event->occurredAt),
+                    'created_by' => $event->createdBy,
+                    'acknowledged_by' => null,
+                    'acknowledged_at' => null,
                 ]);
             } catch (UniqueConstraintViolationException) {
                 $existing = $this->commandByRequestId($command->tenantId, $command->requestId);
@@ -82,6 +96,19 @@ readonly class DbalWcsRepository implements WcsRepository
 
             return $command;
         });
+    }
+
+    public function command(string $tenantId, string $commandId): MachineCommand
+    {
+        $row = $this->connection->fetchAssociative(
+            'SELECT * FROM wms_machine_command WHERE tenant_id = :tenantId AND id = :id',
+            ['tenantId' => $tenantId, 'id' => $commandId],
+        );
+        if ($row === false) {
+            throw new WcsConnectionNotFoundException('The machine command does not exist in the tenant.');
+        }
+
+        return $this->hydrateCommand($row);
     }
 
     public function commandByRequestId(string $tenantId, string $requestId): ?MachineCommand

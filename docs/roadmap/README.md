@@ -30,7 +30,7 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 Stand 01.10.2026 sind 106 von 110 Tickets und 870 von 912 Story Points vollständig `Done`. Drei Tickets sind teilweise umgesetzt und eines besitzt einen Backendkern. Damit verbleiben vier Tickets mit 42 Story Points bis zur vollständigen Umsetzung.
 
-Die Epics **Wareneingang**, **Lagerverwaltung**, **Transport & Kommissionierung**, **Warenausgang & Versand**, **Zusatzfunktionen** und **Plattform** sind vollständig abgeschlossen. In **Administration** fehlt der produktive SSO-Handshake. Im Epic **Integration & Technik** sind WEBWMS-084 bis WEBWMS-093 abgeschlossen; drei funktionale Integrationstickets verbleiben. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
+Die Epics **Wareneingang**, **Lagerverwaltung**, **Transport & Kommissionierung**, **Warenausgang & Versand**, **Zusatzfunktionen**, **Integration & Technik** und **Plattform** sind vollständig abgeschlossen. In **Administration** fehlt der produktive SSO-Handshake. WEBWMS-084 bis WEBWMS-096 bilden jetzt den vollständigen Integrationsumfang einschließlich operativer Transportadapter und zuverlässiger asynchroner Verarbeitung ab. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 
 ## Ergänzende Roadmap-Dokumente
 

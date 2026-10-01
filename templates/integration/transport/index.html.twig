@@ -27,10 +27,13 @@
 							<td><span class="badge bg-{{ endpoint.active ? 'success' : 'secondary' }}-subtle text-{{ endpoint.active ? 'success' : 'secondary' }}">{{ (endpoint.active ? 'user.user_input_fields.active' : 'integration.carrier_connection.index.paused')|trans }}</span></td>
 							<td class="text-end">
 								{% if is_granted('integration.transport.write') %}
+									<div class="d-flex justify-content-end gap-2">
+									{% if endpoint.active %}<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_transport_deliver', {endpointId: endpoint.id}) }}">{{ 'integration.transport.index.deliver'|trans }}</a>{% endif %}
 									<form method="post" action="{{ path('v3_transport_status', {endpointId: endpoint.id}) }}">
 										<input type="hidden" name="_token" value="{{ csrf_token('v3_transport_status_' ~ endpoint.id) }}">
 										<button class="btn btn-sm btn-outline-secondary">{{ (endpoint.active ? 'integration.automation.index.pause' : 'integration.automation.index.activate')|trans }}</button>
 									</form>
+									</div>
 								{% endif %}
 							</td>
 						</tr>
