@@ -1,256 +1,391 @@
 ui:
-    page_title: 'Benutzerhandbuch'
-    headline: 'WebWMS-Benutzerhandbuch'
-    introduction: 'Konfiguration und Bedienung aller WebWMS-Funktionen – verständlich, vollständig und direkt im System.'
-    search: 'Handbuch durchsuchen'
-    search_action: 'Suchen'
-    reset_search: 'Suche zurücksetzen'
-    no_results: 'Für „%query%“ wurden keine passenden Inhalte gefunden.'
-    result_for: 'Fundstelle im Kapitel'
-    breadcrumb: 'Brotkrümelnavigation'
-    all_chapters: 'Alle Kapitel'
-    on_this_page: 'In diesem Kapitel'
-    no_subchapters: 'Dieses Kapitel besitzt keine Unterkapitel.'
-    previous: 'Vorheriges Kapitel'
-    next: 'Nächstes Kapitel'
-    sidebar_section: 'Hilfe & Handbuch'
-    sidebar_link: 'Benutzerhandbuch'
+  page_title: Benutzerhandbuch
+  headline: WebWMS-Benutzerhandbuch
+  introduction: Konfiguration und Bedienung aller WebWMS-Funktionen – verständlich, vollständig und direkt im System.
+  search: Handbuch durchsuchen
+  search_action: Suchen
+  reset_search: Suche zurücksetzen
+  no_results: Für „%query%“ wurden keine passenden Inhalte gefunden.
+  result_for: Fundstelle im Kapitel
+  breadcrumb: Brotkrümelnavigation
+  all_chapters: Alle Kapitel
+  on_this_page: In diesem Kapitel
+  no_subchapters: Dieses Kapitel besitzt keine Unterkapitel.
+  previous: Vorheriges Kapitel
+  next: Nächstes Kapitel
+  sidebar_section: Hilfe & Handbuch
+  sidebar_link: Benutzerhandbuch
 category:
-    basics: 'Grundlagen & Bedienkonzept'
-    administration: 'Administration & Konfiguration'
-    warehouse: 'Lager & Bestand'
-    processes: 'Wareneingang, Fulfillment & Versand'
-    integration: 'Integration & Technik'
-    platform: 'Plattform & Erweiterungen'
+  basics: Grundlagen & Bedienkonzept
+  administration: Administration & Konfiguration
+  warehouse: Lager & Bestand
+  processes: Wareneingang, Fulfillment & Versand
+  integration: Integration & Technik
+  platform: Plattform & Erweiterungen
 error:
-    not_found: 'Das angeforderte Handbuchkapitel wurde nicht gefunden.'
+  not_found: Das angeforderte Handbuchkapitel wurde nicht gefunden.
 chapter:
-    getting_started:
-        title: 'Einstieg und Arbeitsumgebung'
-        summary: 'Anmeldung, Mandant, Standort, Sprache, Dashboard und sicherer Arbeitsbeginn.'
-        body: |-
-            ## Anmelden und Kontext prüfen
-            Öffnen Sie die WebWMS-Anmeldeseite und melden Sie sich mit E-Mail-Adresse und Passwort oder über den eingerichteten OpenID-Connect-Anbieter an. Prüfen Sie nach der Anmeldung den aktiven Mandanten und Standort. Daten, Rollen und Vorgänge werden immer in diesem Kontext verarbeitet.
-
-            1. Melden Sie sich an.
-            2. Prüfen Sie Benutzer, Mandant und Standort in der Kopfleiste.
-            3. Öffnen Sie das Dashboard und kontrollieren Sie offene Aufgaben und Warnungen.
-            4. Wechseln Sie Sprache oder Darstellung über die Benutzeroberfläche.
-
-            ![Platzhalter: Anmeldung und Dashboard](/assets/images/handbook/placeholder.svg)
-
-            ## Dashboard und Kennzahlen
-            Das Dashboard bündelt Bestände, Wareneingänge, Ausgänge, Transportaufträge und Auslastung. Karten führen in die zugehörige Übersicht. Kennzahlen sind mandantenbezogen; fehlende Werte bedeuten nicht automatisch einen technischen Fehler, sondern können auf Filter, Berechtigungen oder noch nicht vorhandene Bewegungen zurückgehen.
-
-            ## Sicher beenden
-            Schließen Sie sensible Dialoge, speichern oder verwerfen Sie Änderungen bewusst und melden Sie sich über das Benutzermenü ab. Verwenden Sie bei gemeinsam genutzten Geräten keine dauerhaft gespeicherten Zugangsdaten.
-    navigation_and_lists:
-        title: 'Navigation, Übersichten, Suche und Bearbeitung'
-        summary: 'Sidebar, Tabellen, Filter, Pagination, Detailseiten und wiederkehrende Bedienmuster.'
-        body: |-
-            ## Sidebar und Untermenüs
-            Die Sidebar ist nach Plattform, Lager, Wareneingang, Warenausgang, Integration und Administration gegliedert. Sichtbar sind nur Bereiche, für die der Benutzer mindestens eine Leseberechtigung besitzt. Der aktive Bereich bleibt aufgeklappt und die aktuelle Seite wird hervorgehoben.
-
-            ## Übersichtsseiten bedienen
-            Übersichten trennen Lesen und Anlegen. Verwenden Sie die globale Suche für Belegnummern, Artikel, Partner oder Status. Fachliche Filter begrenzen die Treffer; die Seitengröße steuert die Pagination. Setzen Sie Filter zurück, bevor Sie einen vermeintlich fehlenden Datensatz melden.
-
-            1. Suchbegriff eingeben.
-            2. Status- oder Fachfilter wählen.
-            3. Seitengröße festlegen und durch Ergebnisse navigieren.
-            4. Über die Aktion in der Tabellenzeile Details oder Bearbeitung öffnen.
-
-            ![Platzhalter: Tabellenfilter und Zeilenaktionen](/assets/images/handbook/placeholder.svg)
-
-            ## Anlegen, Bearbeiten und Löschen
-            Neue Datensätze werden auf einer eigenen Formularseite angelegt. Pflichtfelder sind gekennzeichnet. Bearbeitungen erfolgen über die Zeilenaktion und werden erst mit Speichern wirksam. Fachlich verwendete Belege werden in der Regel storniert, deaktiviert oder durch einen Statuswechsel abgeschlossen statt physisch gelöscht.
-
-            ## Meldungen und Validierung
-            Erfolgs- und Fehlermeldungen erscheinen nach einer Aktion oberhalb des Inhalts. Korrigieren Sie markierte Felder. Bei Konflikten durch parallele Bearbeitung laden Sie den aktuellen Stand neu und prüfen die Änderung erneut.
-    users_roles_and_security:
-        title: 'Benutzer, Rollen, Rechte und Single Sign-on'
-        summary: 'Benutzerkonten, Berechtigungen, API-Clients und OpenID Connect sicher konfigurieren.'
-        body: |-
-            ## Benutzer verwalten
-            Unter Administration → Benutzer sehen berechtigte Administratoren alle Konten des Mandanten. Beim Anlegen werden E-Mail-Adresse, Anzeigename, Status und Rollen vergeben. Deaktivieren Sie ausgeschiedene Benutzer; bestehende Auditnachweise bleiben erhalten.
-
-            ## Rollen und Berechtigungen
-            Rollen bündeln fein granulare Rechte wie Lesen, Schreiben, Ausführen, Freigeben oder Konfigurieren. Vergeben Sie das Minimalprinzip: operative Benutzer erhalten nur die für ihre Aufgabe benötigten Rechte. Änderungen an Rollen werden auditiert. Das Recht `documentation.handbook.read` steuert den Zugriff auf dieses Handbuch.
-
-            ![Platzhalter: Rollen- und Rechteverwaltung](/assets/images/handbook/placeholder.svg)
-
-            ## API-Clients
-            API-Clients besitzen einen Namen, einen aktiven Status und explizite Berechtigungen. Das erzeugte Secret wird nur sicher übergeben und als Umgebungsgeheimnis verwaltet. Rotieren oder deaktivieren Sie kompromittierte Zugangsdaten und prüfen Sie die letzte Nutzung.
-
-            ## OpenID Connect
-            Konfigurieren Sie je Mandant Provider-Code, Anzeigename, HTTPS-Issuer, Client-ID und Referenz auf das Client-Secret. Der Login verwendet Discovery, State, Nonce und PKCE. Die E-Mail muss vom Provider bestätigt sein. Beim ersten Login wird die externe Identität einem aktiven Benutzer desselben Mandanten zugeordnet.
-
-            ## Prüfung
-            Testen Sie neue Rollen mit einem separaten Benutzer. Prüfen Sie sowohl erlaubte als auch bewusst nicht erlaubte Aktionen und dokumentieren Sie den zuständigen Rolleninhaber.
-    system_configuration:
-        title: 'Mandanten-, Standort- und Systemkonfiguration'
-        summary: 'Grunddaten, Nummernkreise, Strategien, Druck, Status und betriebliche Schwellwerte.'
-        body: |-
-            ## Mandanten und Standorte
-            Mandanten trennen Daten und Berechtigungen. Standorte bilden organisatorische Lagerorte ab. Pflegen Sie eindeutige Codes, sprechende Namen, Zeitzone, Adresse und aktiven Status. Deaktivieren Sie einen Standort erst, wenn keine offenen Prozesse mehr darauf verweisen.
-
-            ## Nummernkreise und Stammdaten
-            Nummernkreise definieren Präfix, nächsten Wert und Format für Belege. Ändern Sie produktiv verwendete Nummernkreise nur kontrolliert. Artikel, Geschäftspartner, Ladehilfsmittel und Sonderbestandsarten müssen eindeutig und vollständig gepflegt sein.
-
-            ## Lagerstrategien
-            Einlagerungs-, Entnahme-, FEFO-/FIFO-/LIFO- und Nachschubregeln besitzen Prioritäten, Gültigkeitsbedingungen, Quell- und Zielbereiche sowie Schwellwerte. Spezifische Regeln werden vor allgemeinen Regeln ausgewertet. Simulieren oder prüfen Sie die Treffermenge vor der Aktivierung.
-
-            ![Platzhalter: Konfigurationsformular](/assets/images/handbook/placeholder.svg)
-
-            ## Drucker, Geräte und Statuswerte
-            Drucker und Erfassungsgeräte benötigen eindeutigen Code, Verbindung, Format beziehungsweise Gerätetyp und aktiven Status. Verbindungsgeheimnisse werden als Umgebungsreferenz, niemals als Klartext, gespeichert. Testen Sie eine Konfiguration vor der operativen Freigabe.
-
-            ## Änderungen kontrollieren
-            Dokumentieren Sie Grund und Zeitpunkt größerer Änderungen. Prüfen Sie danach Auditprotokoll, betroffene Prozesse und mindestens einen positiven sowie einen negativen Anwendungsfall.
-    warehouse_and_stock:
-        title: 'Lagertopologie, Bestand und Rückverfolgung'
-        summary: 'Lagerstruktur, Belegung, Bestandsdimensionen, Bewegungen, Sperren und Strategien.'
-        body: |-
-            ## Lagertopologie konfigurieren
-            Die Hierarchie besteht aus Standort, Lager, Bereich und Lagerplatz. Legen Sie über den separaten Menüpunkt neue Elemente an und bearbeiten Sie bestehende Elemente aus der Tabellenzeile. Codes müssen innerhalb ihres Kontexts eindeutig sein. Kapazität, Priorität, Bereichstyp und Status beeinflussen Einlagerung und Wegeoptimierung.
-
-            ![Platzhalter: Lagertopologie](/assets/images/handbook/placeholder.svg)
-
-            ## Bestände lesen und bewegen
-            Echtzeitbestand zeigt Artikel, Lagerplatz, Menge, Status, Charge, Seriennummer, Mindesthaltbarkeitsdatum und Sonderbestand. Öffnen Sie die Bewegungshistorie für den revisionssicheren Ursprung einer Menge. Umlagerungen prüfen Quellbestand, Zieldimension und Berechtigung atomar.
-
-            ## Chargen, Seriennummern und MHD
-            Chargen fassen gleichartige Mengen zusammen. Seriennummern identifizieren Einzelstücke und dürfen nicht mehrfach aktiv geführt werden. FEFO priorisiert das früheste verwendbare MHD; gesperrte oder abgelaufene Bestände werden nicht regulär allokiert.
-
-            ## Sperren und Sonderbestand
-            Wählen Sie Sperrgrund, Menge und betroffene Bestandsdimension. Prüf- und Freigabeschritte werden getrennt protokolliert. Sonderbestandskennzeichen dokumentieren Eigentum oder Verwendungszweck und bleiben bei Bewegungen erhalten.
-
-            ## Grafische Belegung und Rückverfolgung
-            Die Lagebelegung visualisiert freie, belegte, gesperrte und überlastete Plätze. Die Rückverfolgung verbindet Zugang, Bewegung, Allokation, Pick, Packstück und Versand. Grenzen Sie über Artikel, Charge, Seriennummer oder Zeitraum ein.
-    inventory_counting:
-        title: 'Inventur und Bestandskontrolle'
-        summary: 'Stichtag, permanente Inventur, Nulldurchgang, Zählung und Differenzfreigabe.'
-        body: |-
-            ## Inventur vorbereiten
-            Wählen Sie Inventurart, Standort, Lagerbereich und Stichtag. Das System verhindert parallele offene Inventuren desselben Bereichs. Der erzeugte Sollbestand ist ein unveränderlicher Snapshot; Bewegungen nach dem Start werden separat nachvollzogen.
-
-            ## Zählen und einreichen
-            Erfassen Sie Zählmenge und bei Bedarf Charge, Seriennummer oder Bemerkung. Blindzählung blendet den Sollwert aus. Reichen Sie erst ein, wenn alle Positionen bearbeitet sind. Nulldurchgangsinventuren entstehen ereignisbezogen, permanente Inventuren anhand fälliger Pläne.
-
-            ![Platzhalter: Inventurbeleg und Zählung](/assets/images/handbook/placeholder.svg)
-
-            ## Differenzen freigeben
-            Abweichungen benötigen eine berechtigte zweite Person. Prüfen Sie Soll, Ist, Bewegungen und Begründung. Freigabe bucht die Korrektur ins Ledger; Ablehnung oder Nachzählung verändert den Arbeitsstatus, ohne die ursprüngliche Zählung zu löschen.
-
-            ## Abschluss
-            Schließen Sie die Inventur erst nach Bearbeitung aller Differenzen. Kontrollieren Sie Abschlussstatus, Korrekturbuchungen und Auditprotokoll.
-    inbound:
-        title: 'Wareneingang und Einlagerung'
-        summary: 'Bestellungen, Avis, geplante und ungeplante Zugänge, QS, Abweichungen und Putaway.'
-        body: |-
-            ## Geplanten Wareneingang bearbeiten
-            Suchen Sie Bestellung oder Avis, öffnen Sie den Beleg und prüfen Sie Lieferant, Artikel, erwartete Menge und Termin. Erfassen Sie die tatsächlich eingetroffene Menge sowie Charge, Seriennummer, MHD und Ladehilfsmittel. Teilmengen bleiben offen, sofern der Beleg dies zulässt.
-
-            ## Ungeplanten Zugang erfassen
-            Wählen Sie Mandant, Standort, Lieferant beziehungsweise Herkunft, Artikel und Menge. Begründen Sie den ungeplanten Zugang. Dubletten werden über externe Referenzen und Idempotenzschlüssel verhindert.
-
-            ![Platzhalter: Wareneingangsprüfung](/assets/images/handbook/placeholder.svg)
-
-            ## Qualitätsprüfung und Abweichungen
-            Arbeiten Sie die konfigurierte Checkliste ab. Mengen-, Identitäts- oder Qualitätsabweichungen erzeugen einen kontrollierten Fall. Gesperrte Ware bleibt unverfügbar, bis eine berechtigte Person freigibt oder ablehnt. Entscheidungen benötigen einen Grund und werden auditiert.
-
-            ## Einlagerung
-            Lassen Sie anhand der aktiven Strategie einen Zielplatz vorschlagen oder wählen Sie bei entsprechender Berechtigung einen zulässigen Platz. Prüfen Sie Kapazität, Gefahrstoffregeln, Artikelverträglichkeit und Status. Bestätigen Sie Quell- und Zielscan; danach wird der Bestand atomar umgebucht.
-    fulfillment_and_outbound:
-        title: 'Auftrag, Allokation, Kommissionierung, Packen und Versand'
-        summary: 'Der vollständige Ausgangsprozess vom Kundenauftrag bis zur Verladung und Retoure.'
-        body: |-
-            ## Auftrag anlegen und freigeben
-            Erfassen oder importieren Sie Empfänger, Liefertermin, Positionen, Mengen und Versandvorgaben. Die Freigabe prüft Stammdaten und verfügbaren Bestand. Allokationen reservieren konkrete Bestandsdimensionen nach der aktiven Entnahmestrategie.
-
-            ## Kommissionieren
-            Erstellen oder bündeln Sie Picklisten, weisen Sie sie einem Benutzer zu und optimieren Sie bei Bedarf die Route. Scannen Sie Lagerplatz, Artikel, Charge oder Seriennummer und bestätigen Sie die Menge. Fehlmengen werden als Ausnahme erfasst und nicht stillschweigend übersprungen.
-
-            ![Platzhalter: Mobile Kommissionierung](/assets/images/handbook/placeholder.svg)
-
-            ## Packen und Versand
-            Öffnen Sie den Packauftrag, wählen Sie Packmittel und ordnen Sie Positionen einem Packstück zu. Gewicht und Abmessungen können manuell oder über ein Messgerät erfasst werden. Erzeugen Sie nach erfolgreicher Carrier-Anfrage das Versandlabel. Fehlerhafte Anfragen bleiben wiederholbar und nachvollziehbar.
-
-            ## Verladen und zustellen
-            Fassen Sie Sendungen in einem Manifest zusammen, bestätigen Sie Verladung per Scan und schließen Sie das Manifest ab. Zustellstatus und ERP-Rückmeldungen werden über die Integration verarbeitet. Storno ist nur in zulässigen Zuständen möglich.
-
-            ## Retouren
-            Identifizieren Sie ursprüngliche Sendung und Artikel, erfassen Sie Grund und Zustand und entscheiden Sie zwischen Wiedereinlagerung, Sperre, Nacharbeit oder Ausschuss. Jede Entscheidung erzeugt die passende Bestandsbewegung und einen Auditnachweis.
-    integrations_and_devices:
-        title: 'ERP, Carrier, Drucker, Scanner, Messgeräte und WCS'
-        summary: 'Externe Verbindungen konfigurieren, testen, überwachen und sicher betreiben.'
-        body: |-
-            ## Verbindungen konfigurieren
-            Legen Sie pro Mandant Verbindungstyp, HTTPS-Endpunkt, Authentifizierungsreferenz, Zeitlimits, Wiederholungsregeln und aktiven Status fest. Secrets werden ausschließlich über Umgebungsreferenzen aufgelöst. Nutzen Sie die Testfunktion, bevor die Verbindung produktive Nachrichten erhält.
-
-            ## ERP und Datenaustausch
-            Mappings ordnen Quell- und Zielfelder sowie Transformationen zu. Importaufträge zeigen Format, Ressourcentyp, Zeilenzahl, Status und Fehler. Korrigieren Sie Mapping oder Quelldaten und starten Sie fehlerhafte Jobs kontrolliert neu.
-
-            ## Carrier und Druck
-            Carrier-Verbindungen erzeugen Labels und Statusabfragen. Drucker besitzen Warteschlange, Format und Verbindung. Prüfen Sie Druckvorschau, Zielgerät und Wiederholungsstatus, bevor Sie einen Auftrag erneut senden.
-
-            ![Platzhalter: Integrationsverbindung und Test](/assets/images/handbook/placeholder.svg)
-
-            ## Scanner, Waagen und Volumenmessung
-            Registrieren Sie Geräte mit eindeutigem Code und Typ. Scans und Messungen verwenden eine Nachrichten-ID zur idempotenten Verarbeitung. Ordnen Sie das Gerät dem richtigen Standort zu und prüfen Sie Einheit, Messbereich und Zeitstempel.
-
-            ## WCS und Lagerautomation
-            Automationsbefehle besitzen Zielsystem, Befehlstyp, Nutzdaten und Status. Überwachen Sie Annahme, Ausführung und technische Fehler. Ein manueller Retry darf nur bei einem idempotenten oder eindeutig abgesicherten Befehl erfolgen.
-    platform_and_extensions:
-        title: 'Plattformfunktionen und erweiterte Module'
-        summary: 'Shopfloor, KPI, Partnerportal, Events, VAS sowie regelbasierte Erweiterungen.'
-        body: |-
-            ## Shopfloor und KPI
-            Shopfloor-Aufgaben bündeln operative Arbeit nach Priorität, Bereich und Status. KPI-Definitionen legen Metrik, Aggregation, Zielwert und Zeitraum fest. Prüfen Sie Filter und Datenzeitraum, bevor Sie Abweichungen bewerten.
-
-            ## Partnerportal und Eventcenter
-            Partnerkonten erhalten explizite Rechte für freigegebene Daten. Das Eventcenter zeigt fachliche Ereignisse und Bearbeitungsstatus. Quittieren Sie nur Ereignisse, deren Ursache verstanden oder behoben wurde.
-
-            ## Lagergeld und Dienstleistungen
-            Lagergeldregeln verwenden Zeitraum, Bestand, Tarif und Abrechnungsgrundlage. VAS-Aufträge beschreiben Leistung, Menge, Status und Nachweis. Kontrollieren Sie Tarifgültigkeit und Bezugsdaten vor der Abrechnung.
-
-            ![Platzhalter: Plattform-Kontrollzentrum](/assets/images/handbook/placeholder.svg)
-
-            ## Erweiterte Konfigurationen
-            Erweiterungsmodule decken Ressourcen wie Compliance-, Qualitäts-, Produktions-, Dock- und Yard-Konfigurationen ab. Legen Sie Regeln in der Konfigurationsansicht an und führen Sie operative Vorgänge in der getrennten Prozessansicht aus. Statuswechsel, Freigaben und externe Nachweise werden auditiert.
-    api_and_automation:
-        title: 'API, Outbox, Transportadapter und Automatisierung'
-        summary: 'OpenAPI, API-Schlüssel, zuverlässige Nachrichten, Protokolle und Betriebsüberwachung.'
-        body: |-
-            ## API verwenden
-            Öffnen Sie die API-Dokumentation über den separaten Sidebar-Link. Wählen Sie Ressource und Operation, prüfen Sie erforderliche Berechtigung, Header und Schema. API-Schlüssel werden im Header übertragen und niemals in URL, Log oder Screenshot veröffentlicht.
-
-            ## Outbox überwachen
-            Die Outbox entkoppelt fachliche Transaktionen von der externen Zustellung. Filtern Sie nach Status, Ziel und Zeitraum. Prüfen Sie Payload und letzten Fehler. Wiederholen Sie nur nach Beseitigung der Ursache; manuelle Quittierung benötigt eine fachliche Begründung.
-
-            ![Platzhalter: Outbox und Transportstatus](/assets/images/handbook/placeholder.svg)
-
-            ## Transportadapter
-            HTTP-, Datei-, TCP- und serielle Adapter benötigen Endpunkt, Zeitlimit, Zeichensatz beziehungsweise Framing und Secret-Referenz. Testen Sie Erreichbarkeit und Antwortformat. Protokollieren Sie keine Zugangsdaten oder personenbezogenen Nutzdaten unnötig.
-
-            ## Worker und Scheduler
-            Asynchrone Nachrichten benötigen laufende Messenger-Worker. Zeitgesteuerte Aufgaben starten fällige Jobs wie Inventur, Nachschub oder Statusabgleich. Überwachen Sie Queue-Länge, Fehlerschlange, Laufzeit und letzten erfolgreichen Durchlauf.
-    troubleshooting:
-        title: 'Fehlerbehebung und Support'
-        summary: 'Typische Bedienfehler eingrenzen, sichere Wiederholung und verwertbare Supportdaten.'
-        body: |-
-            ## Datensatz oder Menü fehlt
-            Prüfen Sie Mandant, Standort, Rolle, aktive Filter und Status. Setzen Sie Suche und Pagination zurück. Ein fehlender Menüpunkt weist meist auf eine nicht erteilte Leseberechtigung hin.
-
-            ## Aktion ist nicht möglich
-            Lesen Sie die Validierungsmeldung und prüfen Sie Pflichtfelder, Belegstatus, offene Vorgängeraktionen, Bestandsverfügbarkeit und konkurrierende Bearbeitung. Wiederholen Sie eine schreibende Aktion nicht unkontrolliert.
-
-            ## Integration meldet einen Fehler
-            Prüfen Sie Verbindungstest, Secret-Referenz, Zielsystem, Outboxstatus und Fehlermeldung. Entscheiden Sie, ob der externe Auftrag bereits verarbeitet wurde, bevor Sie einen Retry auslösen.
-
-            ![Platzhalter: Fehlermeldung und Auditprotokoll](/assets/images/handbook/placeholder.svg)
-
-            ## Supportfall vorbereiten
-            Übermitteln Sie Zeitpunkt mit Zeitzone, Mandant, Standort, Route, Belegreferenz, erwartetes und tatsächliches Verhalten sowie Korrelations- oder Nachrichten-ID. Entfernen Sie Passwörter, API-Schlüssel und unnötige personenbezogene Daten aus Screenshots und Logs.
-
-            ## Audit und Wiederherstellung
-            Nutzen Sie Bewegungshistorie, Auditereignisse und Outbox, um den Ablauf zu rekonstruieren. Korrigieren Sie fachliche Daten über vorgesehene Gegenbuchungs-, Freigabe- oder Stornoprozesse statt durch direkte Datenbankänderungen.
+  getting_started:
+    title: Einstieg und Arbeitsumgebung
+    summary: Anmeldung, Mandant, Standort, Sprache, Dashboard und sicherer Arbeitsbeginn.
+    sections:
+      section_1:
+        title: Anmelden und Kontext prüfen
+        paragraphs:
+          paragraph_1: Öffnen Sie die WebWMS-Anmeldeseite und melden Sie sich mit E-Mail-Adresse und Passwort oder über den eingerichteten OpenID-Connect-Anbieter
+            an. Prüfen Sie nach der Anmeldung den aktiven Mandanten und Standort. Daten, Rollen und Vorgänge werden immer in diesem Kontext verarbeitet.
+        steps:
+          step_1: Melden Sie sich an.
+          step_2: Prüfen Sie Benutzer, Mandant und Standort in der Kopfleiste.
+          step_3: Öffnen Sie das Dashboard und kontrollieren Sie offene Aufgaben und Warnungen.
+          step_4: Wechseln Sie Sprache oder Darstellung über die Benutzeroberfläche.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Anmeldung und Dashboard'
+      section_2:
+        title: Dashboard und Kennzahlen
+        paragraphs:
+          paragraph_1: Das Dashboard bündelt Bestände, Wareneingänge, Ausgänge, Transportaufträge und Auslastung. Karten führen in die zugehörige Übersicht. Kennzahlen
+            sind mandantenbezogen; fehlende Werte bedeuten nicht automatisch einen technischen Fehler, sondern können auf Filter, Berechtigungen oder noch nicht vorhandene
+            Bewegungen zurückgehen.
+      section_3:
+        title: Sicher beenden
+        paragraphs:
+          paragraph_1: Schließen Sie sensible Dialoge, speichern oder verwerfen Sie Änderungen bewusst und melden Sie sich über das Benutzermenü ab. Verwenden Sie
+            bei gemeinsam genutzten Geräten keine dauerhaft gespeicherten Zugangsdaten.
+  navigation_and_lists:
+    title: Navigation, Übersichten, Suche und Bearbeitung
+    summary: Sidebar, Tabellen, Filter, Pagination, Detailseiten und wiederkehrende Bedienmuster.
+    sections:
+      section_1:
+        title: Sidebar und Untermenüs
+        paragraphs:
+          paragraph_1: Die Sidebar ist nach Plattform, Lager, Wareneingang, Warenausgang, Integration und Administration gegliedert. Sichtbar sind nur Bereiche, für
+            die der Benutzer mindestens eine Leseberechtigung besitzt. Der aktive Bereich bleibt aufgeklappt und die aktuelle Seite wird hervorgehoben.
+      section_2:
+        title: Übersichtsseiten bedienen
+        paragraphs:
+          paragraph_1: Übersichten trennen Lesen und Anlegen. Verwenden Sie die globale Suche für Belegnummern, Artikel, Partner oder Status. Fachliche Filter begrenzen
+            die Treffer; die Seitengröße steuert die Pagination. Setzen Sie Filter zurück, bevor Sie einen vermeintlich fehlenden Datensatz melden.
+        steps:
+          step_1: Suchbegriff eingeben.
+          step_2: Status- oder Fachfilter wählen.
+          step_3: Seitengröße festlegen und durch Ergebnisse navigieren.
+          step_4: Über die Aktion in der Tabellenzeile Details oder Bearbeitung öffnen.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Tabellenfilter und Zeilenaktionen'
+      section_3:
+        title: Anlegen, Bearbeiten und Löschen
+        paragraphs:
+          paragraph_1: Neue Datensätze werden auf einer eigenen Formularseite angelegt. Pflichtfelder sind gekennzeichnet. Bearbeitungen erfolgen über die Zeilenaktion
+            und werden erst mit Speichern wirksam. Fachlich verwendete Belege werden in der Regel storniert, deaktiviert oder durch einen Statuswechsel abgeschlossen
+            statt physisch gelöscht.
+      section_4:
+        title: Meldungen und Validierung
+        paragraphs:
+          paragraph_1: Erfolgs- und Fehlermeldungen erscheinen nach einer Aktion oberhalb des Inhalts. Korrigieren Sie markierte Felder. Bei Konflikten durch parallele
+            Bearbeitung laden Sie den aktuellen Stand neu und prüfen die Änderung erneut.
+  users_roles_and_security:
+    title: Benutzer, Rollen, Rechte und Single Sign-on
+    summary: Benutzerkonten, Berechtigungen, API-Clients und OpenID Connect sicher konfigurieren.
+    sections:
+      section_1:
+        title: Benutzer verwalten
+        paragraphs:
+          paragraph_1: Unter Administration → Benutzer sehen berechtigte Administratoren alle Konten des Mandanten. Beim Anlegen werden E-Mail-Adresse, Anzeigename,
+            Status und Rollen vergeben. Deaktivieren Sie ausgeschiedene Benutzer; bestehende Auditnachweise bleiben erhalten.
+      section_2:
+        title: Rollen und Berechtigungen
+        paragraphs:
+          paragraph_1: 'Rollen bündeln fein granulare Rechte wie Lesen, Schreiben, Ausführen, Freigeben oder Konfigurieren. Vergeben Sie das Minimalprinzip: operative
+            Benutzer erhalten nur die für ihre Aufgabe benötigten Rechte. Änderungen an Rollen werden auditiert. Das Recht documentation.handbook.read steuert den
+            Zugriff auf dieses Handbuch.'
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Rollen- und Rechteverwaltung'
+      section_3:
+        title: API-Clients
+        paragraphs:
+          paragraph_1: API-Clients besitzen einen Namen, einen aktiven Status und explizite Berechtigungen. Das erzeugte Secret wird nur sicher übergeben und als
+            Umgebungsgeheimnis verwaltet. Rotieren oder deaktivieren Sie kompromittierte Zugangsdaten und prüfen Sie die letzte Nutzung.
+      section_4:
+        title: OpenID Connect
+        paragraphs:
+          paragraph_1: Konfigurieren Sie je Mandant Provider-Code, Anzeigename, HTTPS-Issuer, Client-ID und Referenz auf das Client-Secret. Der Login verwendet Discovery,
+            State, Nonce und PKCE. Die E-Mail muss vom Provider bestätigt sein. Beim ersten Login wird die externe Identität einem aktiven Benutzer desselben Mandanten
+            zugeordnet.
+      section_5:
+        title: Prüfung
+        paragraphs:
+          paragraph_1: Testen Sie neue Rollen mit einem separaten Benutzer. Prüfen Sie sowohl erlaubte als auch bewusst nicht erlaubte Aktionen und dokumentieren
+            Sie den zuständigen Rolleninhaber.
+  system_configuration:
+    title: Mandanten-, Standort- und Systemkonfiguration
+    summary: Grunddaten, Nummernkreise, Strategien, Druck, Status und betriebliche Schwellwerte.
+    sections:
+      section_1:
+        title: Mandanten und Standorte
+        paragraphs:
+          paragraph_1: Mandanten trennen Daten und Berechtigungen. Standorte bilden organisatorische Lagerorte ab. Pflegen Sie eindeutige Codes, sprechende Namen,
+            Zeitzone, Adresse und aktiven Status. Deaktivieren Sie einen Standort erst, wenn keine offenen Prozesse mehr darauf verweisen.
+      section_2:
+        title: Nummernkreise und Stammdaten
+        paragraphs:
+          paragraph_1: Nummernkreise definieren Präfix, nächsten Wert und Format für Belege. Ändern Sie produktiv verwendete Nummernkreise nur kontrolliert. Artikel,
+            Geschäftspartner, Ladehilfsmittel und Sonderbestandsarten müssen eindeutig und vollständig gepflegt sein.
+      section_3:
+        title: Lagerstrategien
+        paragraphs:
+          paragraph_1: Einlagerungs-, Entnahme-, FEFO-/FIFO-/LIFO- und Nachschubregeln besitzen Prioritäten, Gültigkeitsbedingungen, Quell- und Zielbereiche sowie
+            Schwellwerte. Spezifische Regeln werden vor allgemeinen Regeln ausgewertet. Simulieren oder prüfen Sie die Treffermenge vor der Aktivierung.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Konfigurationsformular'
+      section_4:
+        title: Drucker, Geräte und Statuswerte
+        paragraphs:
+          paragraph_1: Drucker und Erfassungsgeräte benötigen eindeutigen Code, Verbindung, Format beziehungsweise Gerätetyp und aktiven Status. Verbindungsgeheimnisse
+            werden als Umgebungsreferenz, niemals als Klartext, gespeichert. Testen Sie eine Konfiguration vor der operativen Freigabe.
+      section_5:
+        title: Änderungen kontrollieren
+        paragraphs:
+          paragraph_1: Dokumentieren Sie Grund und Zeitpunkt größerer Änderungen. Prüfen Sie danach Auditprotokoll, betroffene Prozesse und mindestens einen positiven
+            sowie einen negativen Anwendungsfall.
+  warehouse_and_stock:
+    title: Lagertopologie, Bestand und Rückverfolgung
+    summary: Lagerstruktur, Belegung, Bestandsdimensionen, Bewegungen, Sperren und Strategien.
+    sections:
+      section_1:
+        title: Lagertopologie konfigurieren
+        paragraphs:
+          paragraph_1: Die Hierarchie besteht aus Standort, Lager, Bereich und Lagerplatz. Legen Sie über den separaten Menüpunkt neue Elemente an und bearbeiten
+            Sie bestehende Elemente aus der Tabellenzeile. Codes müssen innerhalb ihres Kontexts eindeutig sein. Kapazität, Priorität, Bereichstyp und Status beeinflussen
+            Einlagerung und Wegeoptimierung.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Lagertopologie'
+      section_2:
+        title: Bestände lesen und bewegen
+        paragraphs:
+          paragraph_1: Echtzeitbestand zeigt Artikel, Lagerplatz, Menge, Status, Charge, Seriennummer, Mindesthaltbarkeitsdatum und Sonderbestand. Öffnen Sie die
+            Bewegungshistorie für den revisionssicheren Ursprung einer Menge. Umlagerungen prüfen Quellbestand, Zieldimension und Berechtigung atomar.
+      section_3:
+        title: Chargen, Seriennummern und MHD
+        paragraphs:
+          paragraph_1: Chargen fassen gleichartige Mengen zusammen. Seriennummern identifizieren Einzelstücke und dürfen nicht mehrfach aktiv geführt werden. FEFO
+            priorisiert das früheste verwendbare MHD; gesperrte oder abgelaufene Bestände werden nicht regulär allokiert.
+      section_4:
+        title: Sperren und Sonderbestand
+        paragraphs:
+          paragraph_1: Wählen Sie Sperrgrund, Menge und betroffene Bestandsdimension. Prüf- und Freigabeschritte werden getrennt protokolliert. Sonderbestandskennzeichen
+            dokumentieren Eigentum oder Verwendungszweck und bleiben bei Bewegungen erhalten.
+      section_5:
+        title: Grafische Belegung und Rückverfolgung
+        paragraphs:
+          paragraph_1: Die Lagebelegung visualisiert freie, belegte, gesperrte und überlastete Plätze. Die Rückverfolgung verbindet Zugang, Bewegung, Allokation,
+            Pick, Packstück und Versand. Grenzen Sie über Artikel, Charge, Seriennummer oder Zeitraum ein.
+  inventory_counting:
+    title: Inventur und Bestandskontrolle
+    summary: Stichtag, permanente Inventur, Nulldurchgang, Zählung und Differenzfreigabe.
+    sections:
+      section_1:
+        title: Inventur vorbereiten
+        paragraphs:
+          paragraph_1: Wählen Sie Inventurart, Standort, Lagerbereich und Stichtag. Das System verhindert parallele offene Inventuren desselben Bereichs. Der erzeugte
+            Sollbestand ist ein unveränderlicher Snapshot; Bewegungen nach dem Start werden separat nachvollzogen.
+      section_2:
+        title: Zählen und einreichen
+        paragraphs:
+          paragraph_1: Erfassen Sie Zählmenge und bei Bedarf Charge, Seriennummer oder Bemerkung. Blindzählung blendet den Sollwert aus. Reichen Sie erst ein, wenn
+            alle Positionen bearbeitet sind. Nulldurchgangsinventuren entstehen ereignisbezogen, permanente Inventuren anhand fälliger Pläne.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Inventurbeleg und Zählung'
+      section_3:
+        title: Differenzen freigeben
+        paragraphs:
+          paragraph_1: Abweichungen benötigen eine berechtigte zweite Person. Prüfen Sie Soll, Ist, Bewegungen und Begründung. Freigabe bucht die Korrektur ins Ledger;
+            Ablehnung oder Nachzählung verändert den Arbeitsstatus, ohne die ursprüngliche Zählung zu löschen.
+      section_4:
+        title: Abschluss
+        paragraphs:
+          paragraph_1: Schließen Sie die Inventur erst nach Bearbeitung aller Differenzen. Kontrollieren Sie Abschlussstatus, Korrekturbuchungen und Auditprotokoll.
+  inbound:
+    title: Wareneingang und Einlagerung
+    summary: Bestellungen, Avis, geplante und ungeplante Zugänge, QS, Abweichungen und Putaway.
+    sections:
+      section_1:
+        title: Geplanten Wareneingang bearbeiten
+        paragraphs:
+          paragraph_1: Suchen Sie Bestellung oder Avis, öffnen Sie den Beleg und prüfen Sie Lieferant, Artikel, erwartete Menge und Termin. Erfassen Sie die tatsächlich
+            eingetroffene Menge sowie Charge, Seriennummer, MHD und Ladehilfsmittel. Teilmengen bleiben offen, sofern der Beleg dies zulässt.
+      section_2:
+        title: Ungeplanten Zugang erfassen
+        paragraphs:
+          paragraph_1: Wählen Sie Mandant, Standort, Lieferant beziehungsweise Herkunft, Artikel und Menge. Begründen Sie den ungeplanten Zugang. Dubletten werden
+            über externe Referenzen und Idempotenzschlüssel verhindert.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Wareneingangsprüfung'
+      section_3:
+        title: Qualitätsprüfung und Abweichungen
+        paragraphs:
+          paragraph_1: Arbeiten Sie die konfigurierte Checkliste ab. Mengen-, Identitäts- oder Qualitätsabweichungen erzeugen einen kontrollierten Fall. Gesperrte
+            Ware bleibt unverfügbar, bis eine berechtigte Person freigibt oder ablehnt. Entscheidungen benötigen einen Grund und werden auditiert.
+      section_4:
+        title: Einlagerung
+        paragraphs:
+          paragraph_1: Lassen Sie anhand der aktiven Strategie einen Zielplatz vorschlagen oder wählen Sie bei entsprechender Berechtigung einen zulässigen Platz.
+            Prüfen Sie Kapazität, Gefahrstoffregeln, Artikelverträglichkeit und Status. Bestätigen Sie Quell- und Zielscan; danach wird der Bestand atomar umgebucht.
+  fulfillment_and_outbound:
+    title: Auftrag, Allokation, Kommissionierung, Packen und Versand
+    summary: Der vollständige Ausgangsprozess vom Kundenauftrag bis zur Verladung und Retoure.
+    sections:
+      section_1:
+        title: Auftrag anlegen und freigeben
+        paragraphs:
+          paragraph_1: Erfassen oder importieren Sie Empfänger, Liefertermin, Positionen, Mengen und Versandvorgaben. Die Freigabe prüft Stammdaten und verfügbaren
+            Bestand. Allokationen reservieren konkrete Bestandsdimensionen nach der aktiven Entnahmestrategie.
+      section_2:
+        title: Kommissionieren
+        paragraphs:
+          paragraph_1: Erstellen oder bündeln Sie Picklisten, weisen Sie sie einem Benutzer zu und optimieren Sie bei Bedarf die Route. Scannen Sie Lagerplatz, Artikel,
+            Charge oder Seriennummer und bestätigen Sie die Menge. Fehlmengen werden als Ausnahme erfasst und nicht stillschweigend übersprungen.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Mobile Kommissionierung'
+      section_3:
+        title: Packen und Versand
+        paragraphs:
+          paragraph_1: Öffnen Sie den Packauftrag, wählen Sie Packmittel und ordnen Sie Positionen einem Packstück zu. Gewicht und Abmessungen können manuell oder
+            über ein Messgerät erfasst werden. Erzeugen Sie nach erfolgreicher Carrier-Anfrage das Versandlabel. Fehlerhafte Anfragen bleiben wiederholbar und nachvollziehbar.
+      section_4:
+        title: Verladen und zustellen
+        paragraphs:
+          paragraph_1: Fassen Sie Sendungen in einem Manifest zusammen, bestätigen Sie Verladung per Scan und schließen Sie das Manifest ab. Zustellstatus und ERP-Rückmeldungen
+            werden über die Integration verarbeitet. Storno ist nur in zulässigen Zuständen möglich.
+      section_5:
+        title: Retouren
+        paragraphs:
+          paragraph_1: Identifizieren Sie ursprüngliche Sendung und Artikel, erfassen Sie Grund und Zustand und entscheiden Sie zwischen Wiedereinlagerung, Sperre,
+            Nacharbeit oder Ausschuss. Jede Entscheidung erzeugt die passende Bestandsbewegung und einen Auditnachweis.
+  integrations_and_devices:
+    title: ERP, Carrier, Drucker, Scanner, Messgeräte und WCS
+    summary: Externe Verbindungen konfigurieren, testen, überwachen und sicher betreiben.
+    sections:
+      section_1:
+        title: Verbindungen konfigurieren
+        paragraphs:
+          paragraph_1: Legen Sie pro Mandant Verbindungstyp, HTTPS-Endpunkt, Authentifizierungsreferenz, Zeitlimits, Wiederholungsregeln und aktiven Status fest.
+            Secrets werden ausschließlich über Umgebungsreferenzen aufgelöst. Nutzen Sie die Testfunktion, bevor die Verbindung produktive Nachrichten erhält.
+      section_2:
+        title: ERP und Datenaustausch
+        paragraphs:
+          paragraph_1: Mappings ordnen Quell- und Zielfelder sowie Transformationen zu. Importaufträge zeigen Format, Ressourcentyp, Zeilenzahl, Status und Fehler.
+            Korrigieren Sie Mapping oder Quelldaten und starten Sie fehlerhafte Jobs kontrolliert neu.
+      section_3:
+        title: Carrier und Druck
+        paragraphs:
+          paragraph_1: Carrier-Verbindungen erzeugen Labels und Statusabfragen. Drucker besitzen Warteschlange, Format und Verbindung. Prüfen Sie Druckvorschau, Zielgerät
+            und Wiederholungsstatus, bevor Sie einen Auftrag erneut senden.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Integrationsverbindung und Test'
+      section_4:
+        title: Scanner, Waagen und Volumenmessung
+        paragraphs:
+          paragraph_1: Registrieren Sie Geräte mit eindeutigem Code und Typ. Scans und Messungen verwenden eine Nachrichten-ID zur idempotenten Verarbeitung. Ordnen
+            Sie das Gerät dem richtigen Standort zu und prüfen Sie Einheit, Messbereich und Zeitstempel.
+      section_5:
+        title: WCS und Lagerautomation
+        paragraphs:
+          paragraph_1: Automationsbefehle besitzen Zielsystem, Befehlstyp, Nutzdaten und Status. Überwachen Sie Annahme, Ausführung und technische Fehler. Ein manueller
+            Retry darf nur bei einem idempotenten oder eindeutig abgesicherten Befehl erfolgen.
+  platform_and_extensions:
+    title: Plattformfunktionen und erweiterte Module
+    summary: Shopfloor, KPI, Partnerportal, Events, VAS sowie regelbasierte Erweiterungen.
+    sections:
+      section_1:
+        title: Shopfloor und KPI
+        paragraphs:
+          paragraph_1: Shopfloor-Aufgaben bündeln operative Arbeit nach Priorität, Bereich und Status. KPI-Definitionen legen Metrik, Aggregation, Zielwert und Zeitraum
+            fest. Prüfen Sie Filter und Datenzeitraum, bevor Sie Abweichungen bewerten.
+      section_2:
+        title: Partnerportal und Eventcenter
+        paragraphs:
+          paragraph_1: Partnerkonten erhalten explizite Rechte für freigegebene Daten. Das Eventcenter zeigt fachliche Ereignisse und Bearbeitungsstatus. Quittieren
+            Sie nur Ereignisse, deren Ursache verstanden oder behoben wurde.
+      section_3:
+        title: Lagergeld und Dienstleistungen
+        paragraphs:
+          paragraph_1: Lagergeldregeln verwenden Zeitraum, Bestand, Tarif und Abrechnungsgrundlage. VAS-Aufträge beschreiben Leistung, Menge, Status und Nachweis.
+            Kontrollieren Sie Tarifgültigkeit und Bezugsdaten vor der Abrechnung.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Plattform-Kontrollzentrum'
+      section_4:
+        title: Erweiterte Konfigurationen
+        paragraphs:
+          paragraph_1: Erweiterungsmodule decken Ressourcen wie Compliance-, Qualitäts-, Produktions-, Dock- und Yard-Konfigurationen ab. Legen Sie Regeln in der
+            Konfigurationsansicht an und führen Sie operative Vorgänge in der getrennten Prozessansicht aus. Statuswechsel, Freigaben und externe Nachweise werden
+            auditiert.
+  api_and_automation:
+    title: API, Outbox, Transportadapter und Automatisierung
+    summary: OpenAPI, API-Schlüssel, zuverlässige Nachrichten, Protokolle und Betriebsüberwachung.
+    sections:
+      section_1:
+        title: API verwenden
+        paragraphs:
+          paragraph_1: Öffnen Sie die API-Dokumentation über den separaten Sidebar-Link. Wählen Sie Ressource und Operation, prüfen Sie erforderliche Berechtigung,
+            Header und Schema. API-Schlüssel werden im Header übertragen und niemals in URL, Log oder Screenshot veröffentlicht.
+      section_2:
+        title: Outbox überwachen
+        paragraphs:
+          paragraph_1: Die Outbox entkoppelt fachliche Transaktionen von der externen Zustellung. Filtern Sie nach Status, Ziel und Zeitraum. Prüfen Sie Payload und
+            letzten Fehler. Wiederholen Sie nur nach Beseitigung der Ursache; manuelle Quittierung benötigt eine fachliche Begründung.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Outbox und Transportstatus'
+      section_3:
+        title: Transportadapter
+        paragraphs:
+          paragraph_1: HTTP-, Datei-, TCP- und serielle Adapter benötigen Endpunkt, Zeitlimit, Zeichensatz beziehungsweise Framing und Secret-Referenz. Testen Sie
+            Erreichbarkeit und Antwortformat. Protokollieren Sie keine Zugangsdaten oder personenbezogenen Nutzdaten unnötig.
+      section_4:
+        title: Worker und Scheduler
+        paragraphs:
+          paragraph_1: Asynchrone Nachrichten benötigen laufende Messenger-Worker. Zeitgesteuerte Aufgaben starten fällige Jobs wie Inventur, Nachschub oder Statusabgleich.
+            Überwachen Sie Queue-Länge, Fehlerschlange, Laufzeit und letzten erfolgreichen Durchlauf.
+  troubleshooting:
+    title: Fehlerbehebung und Support
+    summary: Typische Bedienfehler eingrenzen, sichere Wiederholung und verwertbare Supportdaten.
+    sections:
+      section_1:
+        title: Datensatz oder Menü fehlt
+        paragraphs:
+          paragraph_1: Prüfen Sie Mandant, Standort, Rolle, aktive Filter und Status. Setzen Sie Suche und Pagination zurück. Ein fehlender Menüpunkt weist meist
+            auf eine nicht erteilte Leseberechtigung hin.
+      section_2:
+        title: Aktion ist nicht möglich
+        paragraphs:
+          paragraph_1: Lesen Sie die Validierungsmeldung und prüfen Sie Pflichtfelder, Belegstatus, offene Vorgängeraktionen, Bestandsverfügbarkeit und konkurrierende
+            Bearbeitung. Wiederholen Sie eine schreibende Aktion nicht unkontrolliert.
+      section_3:
+        title: Integration meldet einen Fehler
+        paragraphs:
+          paragraph_1: Prüfen Sie Verbindungstest, Secret-Referenz, Zielsystem, Outboxstatus und Fehlermeldung. Entscheiden Sie, ob der externe Auftrag bereits verarbeitet
+            wurde, bevor Sie einen Retry auslösen.
+        image:
+          src: /assets/images/handbook/placeholder.svg
+          alt: 'Platzhalter: Fehlermeldung und Auditprotokoll'
+      section_4:
+        title: Supportfall vorbereiten
+        paragraphs:
+          paragraph_1: Übermitteln Sie Zeitpunkt mit Zeitzone, Mandant, Standort, Route, Belegreferenz, erwartetes und tatsächliches Verhalten sowie Korrelations-
+            oder Nachrichten-ID. Entfernen Sie Passwörter, API-Schlüssel und unnötige personenbezogene Daten aus Screenshots und Logs.
+      section_5:
+        title: Audit und Wiederherstellung
+        paragraphs:
+          paragraph_1: Nutzen Sie Bewegungshistorie, Auditereignisse und Outbox, um den Ablauf zu rekonstruieren. Korrigieren Sie fachliche Daten über vorgesehene
+            Gegenbuchungs-, Freigabe- oder Stornoprozesse statt durch direkte Datenbankänderungen.

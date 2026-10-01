@@ -93,7 +93,8 @@ durch den jeweiligen echten Screenshot ersetzt werden kann.
 Der Handbuch-Slice vom 01.10.2026 stellt zwölf fachlich gegliederte Kapitel,
 die vollständige deutsche und englische Laufzeitquelle in den separaten
 Dateien `translations/handbook.de.yaml` und `translations/handbook.en.yaml`,
-Template- und Sidebar-Integration, abschnittsgenaue Suche, Breadcrumbs,
+rein strukturierte Twig- und Sidebar-Integration ohne Markdown-Rendering,
+abschnittsgenaue Suche, Breadcrumbs,
 Kapitel-Navigation, die Berechtigung `documentation.handbook.read` sowie
 automatisierte Abdeckungs-, Paritäts-, Such- und Renderingtests bereit.
 

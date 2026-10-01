@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace WebWMS\Documentation\Application;
 
+use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Yaml\Yaml;
 
-readonly class UserDocumentationService
+class UserDocumentationService
 {
     /** @var list<array{slug: string, category: string}> */
     public const array CHAPTERS = [
@@ -28,33 +29,36 @@ readonly class UserDocumentationService
     /** @var list<string> */
     private const array CATEGORY_ORDER = ['basics', 'administration', 'warehouse', 'processes', 'integration', 'platform'];
 
+    /** @var array<string, array<string, mixed>> */
+    private array $catalogues = [];
+
     public function __construct(
-        private TranslatorInterface $translator
+        private readonly string $projectDir
     ) {
     }
 
     /** @return array<string, list<array{slug: string, title: string, summary: string, match: null|array{anchor: string, excerpt: string}}>> */
     public function groupedDocuments(?string $query = null, ?string $locale = null): array
     {
+        $catalogue = $this->catalogue($locale);
         $needle = mb_strtolower(trim((string) $query));
         $groups = [];
         foreach (self::CATEGORY_ORDER as $category) {
-            $groups[$this->translate('category.' . $category, $locale)] = [];
+            $groups[$this->string($catalogue, ['category', $category])] = [];
         }
 
-        foreach (self::CHAPTERS as $chapter) {
-            $document = $this->translatedDocument($chapter['slug'], $locale);
-            $match = $needle === '' ? null : $this->match($document['body'], $needle);
-            $haystack = mb_strtolower($document['title'] . ' ' . $document['summary'] . ' ' . $document['body']);
-            if ($needle !== '' && !str_contains($haystack, $needle)) {
+        foreach (self::CHAPTERS as $chapterDefinition) {
+            $chapter = $this->chapter($catalogue, $chapterDefinition['slug']);
+            $match = $needle === '' ? null : $this->match($chapter['sections'], $needle);
+            if ($needle !== '' && $match === null && !str_contains(mb_strtolower($chapter['title'] . ' ' . $chapter['summary']), $needle)) {
                 continue;
             }
 
-            $category = $this->translate('category.' . $chapter['category'], $locale);
+            $category = $this->string($catalogue, ['category', $chapterDefinition['category']]);
             $groups[$category][] = [
-                'slug' => $chapter['slug'],
-                'title' => $document['title'],
-                'summary' => $document['summary'],
+                'slug' => $chapterDefinition['slug'],
+                'title' => $chapter['title'],
+                'summary' => $chapter['summary'],
                 'match' => $match,
             ];
         }
@@ -62,80 +66,153 @@ readonly class UserDocumentationService
         return array_filter($groups);
     }
 
-    /** @return array{slug: string, category: string, title: string, summary: string, markdown: string, previous: null|array{slug: string, title: string}, next: null|array{slug: string, title: string}} */
+    /** @return array{slug: string, category: string, title: string, summary: string, sections: list<array{id: string, title: string, paragraphs: list<string>, steps: list<string>, items: list<string>, image: null|array{src: string, alt: string}}>, previous: null|array{slug: string, title: string}, next: null|array{slug: string, title: string}} */
     public function document(string $slug, ?string $locale = null): array
     {
+        $catalogue = $this->catalogue($locale);
         if (preg_match('/^[a-z0-9][a-z0-9-]*$/', $slug) !== 1) {
-            throw new NotFoundHttpException($this->translate('error.not_found', $locale));
+            throw new NotFoundHttpException($this->string($catalogue, ['error', 'not_found']));
         }
 
         $index = array_search($slug, array_column(self::CHAPTERS, 'slug'), true);
         if ($index === false) {
-            throw new NotFoundHttpException($this->translate('error.not_found', $locale));
+            throw new NotFoundHttpException($this->string($catalogue, ['error', 'not_found']));
         }
 
-        $chapter = self::CHAPTERS[$index];
-        $document = $this->translatedDocument($slug, $locale);
+        $definition = self::CHAPTERS[$index];
+        $chapter = $this->chapter($catalogue, $slug);
 
         return [
             'slug' => $slug,
-            'category' => $this->translate('category.' . $chapter['category'], $locale),
-            'title' => $document['title'],
-            'summary' => $document['summary'],
-            'markdown' => '# ' . $document['title'] . "\n\n" . $document['body'],
-            'previous' => $index > 0 ? $this->navigation(self::CHAPTERS[$index - 1]['slug'], $locale) : null,
-            'next' => isset(self::CHAPTERS[$index + 1]) ? $this->navigation(self::CHAPTERS[$index + 1]['slug'], $locale) : null,
+            'category' => $this->string($catalogue, ['category', $definition['category']]),
+            'title' => $chapter['title'],
+            'summary' => $chapter['summary'],
+            'sections' => $chapter['sections'],
+            'previous' => $index > 0 ? $this->navigation($catalogue, self::CHAPTERS[$index - 1]['slug']) : null,
+            'next' => isset(self::CHAPTERS[$index + 1]) ? $this->navigation($catalogue, self::CHAPTERS[$index + 1]['slug']) : null,
         ];
     }
 
-    /** @return array{title: string, summary: string, body: string} */
-    private function translatedDocument(string $slug, ?string $locale): array
+    /** @return array{title: string, summary: string, sections: list<array{id: string, title: string, paragraphs: list<string>, steps: list<string>, items: list<string>, image: null|array{src: string, alt: string}}>} */
+    private function chapter(array $catalogue, string $slug): array
     {
-        $prefix = 'chapter.' . str_replace('-', '_', $slug) . '.';
+        $key = str_replace('-', '_', $slug);
+        $chapters = $catalogue['chapter'] ?? null;
+        $raw = is_array($chapters) ? ($chapters[$key] ?? null) : null;
+        if (!is_array($raw)) {
+            throw new RuntimeException(sprintf('Handbook chapter "%s" is missing.', $slug));
+        }
 
-        return [
-            'title' => $this->translate($prefix . 'title', $locale),
-            'summary' => $this->translate($prefix . 'summary', $locale),
-            'body' => $this->translate($prefix . 'body', $locale),
-        ];
-    }
+        $sections = [];
+        $rawSections = $raw['sections'] ?? null;
+        if (!is_array($rawSections)) {
+            throw new RuntimeException(sprintf('Handbook chapter "%s" has no sections.', $slug));
+        }
 
-    /** @return array{slug: string, title: string} */
-    private function navigation(string $slug, ?string $locale): array
-    {
-        return ['slug' => $slug, 'title' => $this->translatedDocument($slug, $locale)['title']];
-    }
-
-    /** @return null|array{anchor: string, excerpt: string} */
-    private function match(string $body, string $needle): ?array
-    {
-        $lines = preg_split('/\R/', $body) ?: [];
-        $anchor = '';
-        foreach ($lines as $line) {
-            if (preg_match('/^#{2,3}\s+(.+)$/', trim($line), $heading) === 1) {
-                $anchor = $this->anchor($heading[1]);
-            }
-            if (!str_contains(mb_strtolower($line), $needle)) {
+        foreach ($rawSections as $id => $section) {
+            if (!is_string($id) || !is_array($section)) {
                 continue;
             }
+            $sections[] = [
+                'id' => $id,
+                'title' => $this->requiredString($section, 'title', $slug . '.' . $id),
+                'paragraphs' => $this->stringValues($section['paragraphs'] ?? []),
+                'steps' => $this->stringValues($section['steps'] ?? []),
+                'items' => $this->stringValues($section['items'] ?? []),
+                'image' => $this->image($section['image'] ?? null),
+            ];
+        }
 
-            $plain = preg_replace(['/!\[([^]]*)]\([^)]+\)/', '/\[([^]]+)]\([^)]+\)/', '/[`*_>#|-]/', '/\s+/'], ['$1', '$1', '', ' '], $line) ?? $line;
+        return [
+            'title' => $this->requiredString($raw, 'title', $slug),
+            'summary' => $this->requiredString($raw, 'summary', $slug),
+            'sections' => $sections,
+        ];
+    }
 
-            return ['anchor' => $anchor, 'excerpt' => mb_strimwidth(trim($plain), 0, 220, '…')];
+    /** @param list<array{id: string, title: string, paragraphs: list<string>, steps: list<string>, items: list<string>, image: null|array{src: string, alt: string}}> $sections @return null|array{anchor: string, excerpt: string} */
+    private function match(array $sections, string $needle): ?array
+    {
+        foreach ($sections as $section) {
+            foreach ([$section['title'], ...$section['paragraphs'], ...$section['steps'], ...$section['items']] as $text) {
+                if (str_contains(mb_strtolower($text), $needle)) {
+                    return ['anchor' => $section['id'], 'excerpt' => mb_strimwidth($text, 0, 220, '…')];
+                }
+            }
         }
 
         return null;
     }
 
-    private function translate(string $key, ?string $locale): string
+    /** @return array{slug: string, title: string} */
+    private function navigation(array $catalogue, string $slug): array
     {
-        return $this->translator->trans($key, [], 'handbook', $locale);
+        return ['slug' => $slug, 'title' => $this->chapter($catalogue, $slug)['title']];
     }
 
-    private function anchor(string $title): string
+    /** @return array<string, mixed> */
+    private function catalogue(?string $locale): array
     {
-        $normalized = strtr(mb_strtolower($title), ['ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss']);
+        $language = str_starts_with(mb_strtolower((string) $locale), 'en') ? 'en' : 'de';
+        if (isset($this->catalogues[$language])) {
+            return $this->catalogues[$language];
+        }
 
-        return trim(preg_replace('/[^a-z0-9]+/', '-', $normalized) ?? '', '-');
+        $catalogue = Yaml::parseFile($this->projectDir . '/translations/handbook.' . $language . '.yaml');
+        if (!is_array($catalogue)) {
+            throw new RuntimeException(sprintf('Handbook catalogue "%s" is invalid.', $language));
+        }
+
+        return $this->catalogues[$language] = $catalogue;
+    }
+
+    /** @param list<string> $path */
+    private function string(array $catalogue, array $path): string
+    {
+        $value = $catalogue;
+        foreach ($path as $segment) {
+            $value = is_array($value) ? ($value[$segment] ?? null) : null;
+        }
+        if (!is_string($value)) {
+            throw new RuntimeException(sprintf('Handbook value "%s" is missing.', implode('.', $path)));
+        }
+
+        return $value;
+    }
+
+    private function requiredString(array $values, string $key, string $context): string
+    {
+        $value = $values[$key] ?? null;
+        if (!is_string($value) || trim($value) === '') {
+            throw new RuntimeException(sprintf('Handbook value "%s.%s" is missing.', $context, $key));
+        }
+
+        return $value;
+    }
+
+    /** @return list<string> */
+    private function stringValues(mixed $values): array
+    {
+        if (!is_array($values)) {
+            return [];
+        }
+
+        return array_values(array_filter($values, is_string(...)));
+    }
+
+    /** @return null|array{src: string, alt: string} */
+    private function image(mixed $image): ?array
+    {
+        if (!is_array($image)) {
+            return null;
+        }
+
+        $source = $image['src'] ?? null;
+        $alt = $image['alt'] ?? null;
+        if (!is_string($source) || preg_match('#^/assets/images/handbook/[a-z0-9._/-]+$#i', $source) !== 1 || !is_string($alt)) {
+            throw new RuntimeException('A handbook image definition is invalid.');
+        }
+
+        return ['src' => $source, 'alt' => $alt];
     }
 }

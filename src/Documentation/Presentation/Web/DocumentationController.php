@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use WebWMS\Documentation\Application\SafeMarkdownRenderer;
 use WebWMS\Documentation\Application\UserDocumentationService;
 
 #[Route('/v3/help', name: 'v3_documentation_')]
@@ -56,17 +55,14 @@ class DocumentationController extends AbstractController
 
     #[Route('/{slug}', name: 'show', requirements: ['slug' => '[a-z0-9][a-z0-9-]*'], methods: ['GET'])]
     #[IsGranted('documentation.handbook.read')]
-    public function show(string $slug, Request $request, UserDocumentationService $documentation, SafeMarkdownRenderer $markdown): Response
+    public function show(string $slug, Request $request, UserDocumentationService $documentation): Response
     {
         $document = $documentation->document($slug, $request->getLocale());
-        $rendered = $markdown->render($document['markdown'], $this->generateUrl('v3_documentation_index'));
 
         return $this->render('documentation/show.html.twig', [
             'page' => $document['title'],
             'pageIsTranslated' => true,
             'document' => $document,
-            'content' => $rendered['html'],
-            'toc' => $rendered['toc'],
         ]);
     }
 }

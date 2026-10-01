@@ -7,8 +7,6 @@ namespace WebWMS\Tests\Unit\Documentation\Application;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
-use Symfony\Component\Translation\Translator;
 use Symfony\Component\Yaml\Yaml;
 use WebWMS\Documentation\Application\UserDocumentationService;
 
@@ -18,11 +16,7 @@ class UserDocumentationServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $translator = new Translator('de');
-        $translator->addLoader('yaml', new YamlFileLoader());
-        $translator->addResource('yaml', dirname(__DIR__, 4) . '/translations/handbook.de.yaml', 'de', 'handbook');
-        $translator->addResource('yaml', dirname(__DIR__, 4) . '/translations/handbook.en.yaml', 'en', 'handbook');
-        $this->documentation = new UserDocumentationService($translator);
+        $this->documentation = new UserDocumentationService(dirname(__DIR__, 4));
     }
 
     public function testDiscoversAndGroupsTranslatedHandbook(): void
@@ -42,7 +36,7 @@ class UserDocumentationServiceTest extends TestCase
         $documents = array_merge(...array_values($groups));
         $stock = array_values(array_filter($documents, static fn (array $document): bool => $document['slug'] === 'warehouse-and-stock'))[0];
 
-        self::assertSame('chargen-seriennummern-und-mhd', $stock['match']['anchor']);
+        self::assertSame('section_3', $stock['match']['anchor']);
         self::assertStringContainsString('Seriennummern', $stock['match']['excerpt']);
     }
 
@@ -51,10 +45,22 @@ class UserDocumentationServiceTest extends TestCase
     {
         foreach (UserDocumentationService::CHAPTERS as $chapter) {
             $document = $this->documentation->document($chapter['slug'], $locale);
-            self::assertStringNotContainsString('chapter.', $document['title']);
-            self::assertStringContainsString('## ', $document['markdown']);
-            self::assertStringContainsString('/assets/images/handbook/placeholder.svg', $document['markdown']);
+            self::assertNotSame('', $document['title']);
+            self::assertNotSame([], $document['sections']);
+            self::assertNotSame([], array_filter($document['sections'], static fn (array $section): bool => $section['image'] !== null));
         }
+    }
+
+    public function testRuntimeUsesStructuredSectionsInsteadOfMarkdown(): void
+    {
+        $document = $this->documentation->document('getting-started', 'de');
+        $section = $document['sections'][0];
+
+        self::assertArrayNotHasKey('markdown', $document);
+        self::assertSame('section_1', $section['id']);
+        self::assertIsArray($section['paragraphs']);
+        self::assertIsArray($section['steps']);
+        self::assertSame('/assets/images/handbook/placeholder.svg', $section['image']['src']);
     }
 
     public function testGermanAndEnglishTranslationKeysAreIdentical(): void

@@ -4,15 +4,15 @@
 
 Das Benutzerhandbuch wird unter `/v3/help` innerhalb des bestehenden
 V3-Layouts gerendert. `UserDocumentationService` definiert ausschließlich die
-stabilen Kapitel-Slugs und ihre Reihenfolge. Alle sichtbaren Inhalte liegen in
-den eigenständigen Übersetzungsdateien `translations/handbook.de.yaml` und
-`translations/handbook.en.yaml` im Translation-Domain `handbook`.
+stabilen Kapitel-Slugs und ihre Reihenfolge. Alle sichtbaren Inhalte und ihre
+Struktur liegen in den eigenständigen Dateien `translations/handbook.de.yaml`
+und `translations/handbook.en.yaml` im Translation-Domain `handbook`.
 
 Die Suche arbeitet in der aktiven Sprache über Titel, Zusammenfassung und den
 vollständigen Kapiteltext. Ein Treffer enthält den Kapitelpfad, einen Auszug
-und – soweit bestimmbar – den Anker der zuletzt gelesenen Überschrift. Die
-Markdown-Ausgabe maskiert HTML und erlaubt Bilder ausschließlich unter
-`/assets/images/handbook/`.
+und den stabilen Anker des betroffenen Abschnitts. Twig rendert die
+strukturierten Überschriften, Absätze, Schritte, Aufzählungen und Bilder direkt;
+ein Markdown-Parser oder ungefiltertes `raw`-HTML wird nicht verwendet.
 
 ## Kapitel- und Funktionsabdeckung
 
@@ -32,18 +32,20 @@ Markdown-Ausgabe maskiert HTML und erlaubt Bilder ausschließlich unter
 | Validierung, Berechtigungen, Integration, Audit und Support | Fehlerbehebung und Support |
 
 Die Tests prüfen, dass jeder im Katalog registrierte Eintrag in beiden Sprachen
-existiert, alle Kapitel eine Abschnittsstruktur und einen Screenshot-Verweis
-besitzen und die Schlüsselmengen beider YAML-Dateien identisch sind.
+existiert, alle Kapitel eine strukturierte Abschnittsliste und einen
+Screenshot-Verweis besitzen und die Schlüsselmengen beider YAML-Dateien
+identisch sind.
 
 ## Screenshots ersetzen
 
 Im ersten Schritt referenzieren alle Kapitel die zentrale Grafik
 `public/assets/images/handbook/placeholder.svg`. Für den Austausch wird die
-Referenz im jeweiligen YAML-Kapitel auf eine fachlich benannte Datei im selben
-Verzeichnis geändert, beispielsweise
+`image.src` im jeweiligen YAML-Abschnitt auf eine fachlich benannte Datei im
+selben Verzeichnis geändert, beispielsweise
 `/assets/images/handbook/inventory/stock-overview.webp`. Alternativtext und
-Bildunterschrift bleiben pro Verwendung lokalisiert. Externe Bildquellen werden
-vom Renderer aus Sicherheits- und Datenschutzgründen verworfen.
+Bildunterschrift bleiben pro Verwendung lokalisiert. Der Content-Service lässt
+aus Sicherheits- und Datenschutzgründen ausschließlich lokale Bildpfade unter
+dem Handbuchverzeichnis zu.
 
 ## Berechtigung und Pflege
 
