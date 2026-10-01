@@ -7,10 +7,10 @@ namespace WebWMS\Tests\Unit\Integration\Application;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Integration\Application\DeliverErpStatusEventHandler;
+use WebWMS\Integration\Application\ErpStatusTransport;
 use WebWMS\Integration\Application\PublishedIntegrationMessage;
 use WebWMS\Integration\Domain\ErpConnection;
 use WebWMS\Integration\Domain\ErpConnectionRepository;
-use WebWMS\Integration\Domain\ErpStatusTransport;
 
 class DeliverErpStatusEventHandlerTest extends TestCase
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WebWMS\Integration\Domain;
+namespace WebWMS\Integration\Application;
 
-use WebWMS\Integration\Application\PublishedIntegrationMessage;
+use WebWMS\Integration\Domain\ErpConnection;
 
 interface ErpStatusTransport
 {

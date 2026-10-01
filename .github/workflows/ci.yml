@@ -77,5 +77,8 @@ jobs:
         working-directory: .
         run: composer run phpstan
 
+      - name: Verify modular architecture
+        run: composer run architecture-test
+
       - name: Test WebWMS 3.0 domain foundation
         run: vendor/bin/phpunit tests/Unit/Shared tests/Unit/Administration tests/Unit/Security/V3 tests/Unit/Inventory tests/Unit/Integration tests/Unit/Platform

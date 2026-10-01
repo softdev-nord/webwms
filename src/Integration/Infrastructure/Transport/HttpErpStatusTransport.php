@@ -6,10 +6,10 @@ namespace WebWMS\Integration\Infrastructure\Transport;
 
 use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use WebWMS\Integration\Application\ErpStatusTransport;
 use WebWMS\Integration\Application\PublishedIntegrationMessage;
 use WebWMS\Integration\Domain\CredentialProvider;
 use WebWMS\Integration\Domain\ErpConnection;
-use WebWMS\Integration\Domain\ErpStatusTransport;
 
 readonly class HttpErpStatusTransport implements ErpStatusTransport
 {

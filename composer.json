@@ -105,6 +105,7 @@
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
+        "architecture-test": "vendor/bin/phpunit tests/Architecture",
         "ecs": "vendor/bin/ecs",
         "ecs-fix": "vendor/bin/ecs --fix",
         "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon src --error-format=table --memory-limit=1G",

@@ -42,3 +42,15 @@ and the complete quality suite are available.
 See [the module map](module-map.md), the
 [target module structure](target-module-structure.md) and the architecture
 decisions in [`adr/`](adr/).
+
+## Automated safeguards
+
+Run `composer run architecture-test` to verify the module structure locally.
+The same suite runs as a dedicated CI gate and checks that:
+
+- namespaces match their paths below the migrated module roots;
+- Domain, Application, Infrastructure and Presentation dependencies point in
+  the permitted direction, while Domain stays framework-independent;
+- a module never imports another module's concrete Infrastructure layer;
+- migrated modules do not depend on the central legacy Controller, DTO, Entity,
+  Form, Repository or Service namespaces.

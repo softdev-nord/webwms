@@ -6,7 +6,6 @@ namespace WebWMS\Integration\Application;
 
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use WebWMS\Integration\Domain\ErpConnectionRepository;
-use WebWMS\Integration\Domain\ErpStatusTransport;
 
 #[AsMessageHandler]
 readonly class DeliverErpStatusEventHandler
