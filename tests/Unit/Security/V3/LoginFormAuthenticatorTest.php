@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use WebWMS\Platform\Application\ExtensionModuleService;
 use WebWMS\Security\V3\LoginFormAuthenticator;
+use WebWMS\Security\V3\TenantPermissionUser;
 
 class LoginFormAuthenticatorTest extends TestCase
 {
@@ -39,13 +40,18 @@ class LoginFormAuthenticatorTest extends TestCase
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
         $urlGenerator->expects($this->once())->method('generate')->with('v3_dashboard')->willReturn('/v3');
         $authenticator = new LoginFormAuthenticator(
-            self::createStub(UrlGeneratorInterface::class),
+            $urlGenerator,
             self::createStub(ExtensionModuleService::class)
         );
+        $user = $this->createStub(TenantPermissionUser::class);
+        $user->method('tenantId')->willReturn('tenant-id');
+        $user->method('getUserIdentifier')->willReturn('admin@example.com');
+        $token = $this->createStub(TokenInterface::class);
+        $token->method('getUser')->willReturn($user);
 
         $response = $authenticator->onAuthenticationSuccess(
             Request::create('/v3/login', 'POST'),
-            self::createStub(TokenInterface::class),
+            $token,
             'v3',
         );
 
