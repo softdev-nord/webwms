@@ -2,6 +2,8 @@
 
 Alle 18 dokumentierten Funktionen des Bereichs Lagerverwaltung werden fachlich konsistent, berechtigt, nachvollziehbar und testbar umgesetzt.
 
+**Epic-Status:** Done · 18 von 18 Stories · 126 von 126 Story Points
+
 | Ticket | Zusammenfassung | Status | Priorität | Story Points |
 | --- | --- | --- | --- | ---: |
 | [WEBWMS-015](../tickets/WEBWMS-015.md) | Lagertopologie implementieren | Done | Highest | 8 |
