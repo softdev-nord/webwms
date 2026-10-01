@@ -29,6 +29,7 @@ class DocumentationController extends AbstractController
             'page' => 'ui.page_title',
             'pageDomain' => 'handbook',
             'groups' => $documentation->groupedDocuments($query, $request->getLocale()),
+            'navigationGroups' => $documentation->groupedDocuments(locale: $request->getLocale()),
             'query' => $query,
         ]);
     }
@@ -63,6 +64,7 @@ class DocumentationController extends AbstractController
             'page' => $document['title'],
             'pageIsTranslated' => true,
             'document' => $document,
+            'navigationGroups' => $documentation->groupedDocuments(locale: $request->getLocale()),
         ]);
     }
 }

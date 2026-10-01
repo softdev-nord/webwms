@@ -84,4 +84,20 @@ final class HandbookCoverageTest extends KernelTestCase
             self::assertStringContainsString("'" . $chapter['slug'] . "'", $sidebar);
         }
     }
+
+    public function testHandbookUsesDedicatedResponsiveNavigation(): void
+    {
+        $root = dirname(__DIR__, 3);
+        $navigation = file_get_contents($root . '/templates/documentation/_navigation.html.twig');
+        $header = file_get_contents($root . '/templates/documentation/_header.html.twig');
+        $javascript = file_get_contents($root . '/public/assets/js/handbook.js');
+
+        self::assertIsString($navigation);
+        self::assertIsString($header);
+        self::assertIsString($javascript);
+        self::assertStringContainsString('data-handbook-navigation', $navigation);
+        self::assertStringContainsString('data-handbook-section-link', $navigation);
+        self::assertStringContainsString('data-handbook-menu-open', $header);
+        self::assertStringContainsString('IntersectionObserver', $javascript);
+    }
 }

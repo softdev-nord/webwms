@@ -13,6 +13,13 @@ ui:
   no_subchapters: This chapter has no subsections.
   previous: Previous chapter
   next: Next chapter
+  navigation: Handbook navigation
+  open_navigation: Open navigation
+  close_navigation: Close navigation
+  overview: Handbook overview
+  chapters: Chapters
+  current_chapter: Current chapter
+  content: Handbook content
   sidebar_section: Help & handbook
   sidebar_link: User handbook
   prerequisites: Prerequisites

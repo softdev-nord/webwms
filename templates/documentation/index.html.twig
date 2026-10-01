@@ -1,64 +1,40 @@
 {% extends 'v3/base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/handbook.css') }}">
+{% endblock %}
+
 {% block webwms_content %}
-    <div class="row align-items-center mb-4">
-        <div class="col-lg-7">
-            <h1 class="h3 mb-1">{{ 'ui.headline'|trans({}, 'handbook') }}</h1>
-            <p class="text-muted mb-0">{{ 'ui.introduction'|trans({}, 'handbook') }}</p>
-        </div>
-        <div class="col-lg-5 mt-3 mt-lg-0">
-            <form method="get" action="{{ path('v3_documentation_index') }}" role="search">
-                <div class="input-group">
-                    <span class="input-group-text"><i class="ri-search-line"></i></span>
-                    <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="{{ 'ui.search'|trans({}, 'handbook') }}" aria-label="{{ 'ui.search'|trans({}, 'handbook') }}">
-                    {% if query %}<a class="btn btn-light" href="{{ path('v3_documentation_index') }}" aria-label="{{ 'ui.reset_search'|trans({}, 'handbook') }}"><i class="ri-close-line"></i></a>{% endif %}
-                    <button class="btn btn-primary" type="submit">{{ 'ui.search_action'|trans({}, 'handbook') }}</button>
+    <div class="handbook" data-handbook>
+        {% include 'documentation/_header.html.twig' with {query: query} only %}
+        <div class="handbook-layout">
+            <aside id="handbook-navigation" class="handbook-sidebar">
+                {% include 'documentation/_navigation.html.twig' with {groups: navigationGroups, activeSlug: null} only %}
+            </aside>
+            <button class="handbook-overlay" type="button" data-handbook-menu-close aria-label="{{ 'ui.close_navigation'|trans({}, 'handbook') }}"></button>
+            <main class="handbook-main" aria-label="{{ 'ui.content'|trans({}, 'handbook') }}">
+                <div class="handbook-intro">
+                    <span class="handbook-intro__icon"><i class="ri-book-2-line" aria-hidden="true"></i></span>
+                    <div><h1>{{ 'ui.headline'|trans({}, 'handbook') }}</h1><p>{{ 'ui.introduction'|trans({}, 'handbook') }}</p></div>
                 </div>
-            </form>
+                {% if groups is empty %}<div class="alert alert-info">{{ 'ui.no_results'|trans({'%query%': query}, 'handbook') }}</div>{% endif %}
+                {% for category, documents in groups %}
+                    <section class="handbook-index-section" aria-labelledby="category-{{ loop.index }}">
+                        <div class="handbook-index-section__heading"><h2 id="category-{{ loop.index }}">{{ category }}</h2><span>{{ documents|length }}</span></div>
+                        <div class="handbook-card-grid">
+                            {% for document in documents %}
+                                <a class="handbook-card" href="{{ path('v3_documentation_show', {slug: document.slug}) }}{{ document.match and document.match.anchor ? '#' ~ document.match.anchor : '' }}">
+                                    <div><h3>{{ document.title }}</h3><p>{{ document.summary }}</p>{% if document.match %}<small><strong>{{ 'ui.result_for'|trans({}, 'handbook') }}:</strong> {{ document.match.excerpt }}</small>{% endif %}</div>
+                                    <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% endfor %}
+            </main>
         </div>
     </div>
-
-    {% if groups is empty %}
-        <div class="alert alert-info border-0 shadow-sm">
-            {{ 'ui.no_results'|trans({'%query%': query}, 'handbook') }}
-        </div>
-    {% endif %}
-
-    {% for category, documents in groups %}
-        <div class="mb-4">
-            <div class="d-flex align-items-center gap-2 mb-3">
-                <span class="avatar-xs"><span class="avatar-title rounded bg-primary-subtle text-primary"><i class="ri-folder-open-line"></i></span></span>
-                <h2 class="h5 mb-0">{{ category }}</h2>
-                <span class="badge bg-light text-body">{{ documents|length }}</span>
-            </div>
-            <div class="row g-3">
-                {% for document in documents %}
-                    <div class="col-md-6 col-xl-4">
-                        <a class="card border-0 shadow-sm h-100 text-reset text-decoration-none documentation-card" href="{{ path('v3_documentation_show', {slug: document.slug}) }}{{ document.match and document.match.anchor ? '#' ~ document.match.anchor : '' }}">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between gap-3">
-                                    <div>
-                                        <h3 class="h6 text-primary mb-2">{{ document.title }}</h3>
-                                        <p class="text-muted mb-0">{{ document.summary }}</p>
-                                        {% if document.match %}
-                                            <p class="small mt-2 mb-0"><strong>{{ 'ui.result_for'|trans({}, 'handbook') }}:</strong> {{ document.match.excerpt }}</p>
-                                        {% endif %}
-                                    </div>
-                                    <i class="ri-arrow-right-line fs-20 text-muted"></i>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endfor %}
 {% endblock %}
 
-{% block bodyjs %}
-    {{ parent() }}
-    <style>
-        .documentation-card { transition: transform .15s ease, box-shadow .15s ease; }
-        .documentation-card:hover { transform: translateY(-2px); box-shadow: 0 .5rem 1rem rgba(56, 65, 74, .12) !important; }
-    </style>
-{% endblock %}
+{% block bodyjs %}{{ parent() }}<script src="{{ asset('assets/js/handbook.js') }}" defer></script>{% endblock %}

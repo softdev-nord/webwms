@@ -1,0 +1,39 @@
+<nav class="handbook-navigation" aria-label="{{ 'ui.navigation'|trans({}, 'handbook') }}" data-handbook-navigation>
+    <div class="handbook-navigation__header">
+        <a class="handbook-navigation__brand" href="{{ path('v3_documentation_index') }}">
+            <i class="ri-book-open-line" aria-hidden="true"></i>
+            <span>{{ 'ui.sidebar_link'|trans({}, 'handbook') }}</span>
+        </a>
+        <button class="handbook-navigation__close" type="button" data-handbook-menu-close aria-label="{{ 'ui.close_navigation'|trans({}, 'handbook') }}">
+            <i class="ri-close-line" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <a class="handbook-navigation__overview{{ activeSlug is empty ? ' is-active' : '' }}" href="{{ path('v3_documentation_index') }}">
+        <i class="ri-layout-grid-line" aria-hidden="true"></i>{{ 'ui.overview'|trans({}, 'handbook') }}
+    </a>
+
+    <p class="handbook-navigation__label">{{ 'ui.chapters'|trans({}, 'handbook') }}</p>
+    {% for category, documents in groups %}
+        <div class="handbook-navigation__group">
+            <p>{{ category }}</p>
+            <ul>
+                {% for navigationDocument in documents %}
+                    {% set isActive = navigationDocument.slug == activeSlug %}
+                    <li>
+                        <a class="handbook-navigation__chapter{{ isActive ? ' is-active' : '' }}" href="{{ path('v3_documentation_show', {slug: navigationDocument.slug}) }}"{% if isActive %} aria-current="page"{% endif %}>
+                            {{ navigationDocument.title }}
+                        </a>
+                        {% if isActive and document is defined and document.sections %}
+                            <ul class="handbook-navigation__sections" aria-label="{{ 'ui.current_chapter'|trans({}, 'handbook') }}">
+                                {% for section in document.sections %}
+                                    <li><a href="#{{ section.id }}" data-handbook-section-link="{{ section.id }}">{{ section.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+</nav>

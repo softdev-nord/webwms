@@ -1,77 +1,27 @@
 {% extends 'v3/base.html.twig' %}
 
+{% block stylesheets %}{{ parent() }}<link rel="stylesheet" href="{{ asset('assets/css/handbook.css') }}">{% endblock %}
+
 {% block webwms_content %}
-    <nav aria-label="{{ 'ui.breadcrumb'|trans({}, 'handbook') }}" class="mb-3">
-        <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="{{ path('v3_documentation_index') }}">{{ 'ui.sidebar_link'|trans({}, 'handbook') }}</a></li>
-            <li class="breadcrumb-item">{{ document.category }}</li>
-            <li class="breadcrumb-item active" aria-current="page">{{ document.title }}</li>
-        </ol>
-    </nav>
-
-    <div class="row g-4">
-        <div class="col-xl-9">
-            <article class="card border-0 shadow-sm">
-                <div class="card-body documentation-content p-4 p-lg-5">
-                    {% include 'documentation/_chapter.html.twig' with {document: document} only %}
-                </div>
-            </article>
-
-            <div class="d-flex justify-content-between gap-3 mt-4">
-                {% if document.previous %}
-                    <a class="btn btn-light text-start" href="{{ path('v3_documentation_show', {slug: document.previous.slug}) }}">
-                        <span class="d-block small text-muted">{{ 'ui.previous'|trans({}, 'handbook') }}</span>
-                        <i class="ri-arrow-left-line me-1"></i>{{ document.previous.title }}
-                    </a>
-                {% else %}<span></span>{% endif %}
-                {% if document.next %}
-                    <a class="btn btn-light text-end" href="{{ path('v3_documentation_show', {slug: document.next.slug}) }}">
-                        <span class="d-block small text-muted">{{ 'ui.next'|trans({}, 'handbook') }}</span>
-                        {{ document.next.title }}<i class="ri-arrow-right-line ms-1"></i>
-                    </a>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="col-xl-3">
-            <div class="card border-0 shadow-sm documentation-toc">
-                <div class="card-header"><h2 class="h6 mb-0">{{ 'ui.on_this_page'|trans({}, 'handbook') }}</h2></div>
-                <div class="card-body">
-                    {% if document.sections %}
-                        <nav class="nav flex-column">
-                            {% for section in document.sections %}
-                                <a class="nav-link px-0 py-1" href="#{{ section.id }}">{{ section.title }}</a>
-                            {% endfor %}
-                        </nav>
-                    {% else %}
-                        <span class="text-muted">{{ 'ui.no_subchapters'|trans({}, 'handbook') }}</span>
-                    {% endif %}
-                    <hr>
-                    <a href="{{ path('v3_documentation_index') }}"><i class="ri-book-open-line me-1"></i>{{ 'ui.all_chapters'|trans({}, 'handbook') }}</a>
-                </div>
-            </div>
+    <div class="handbook" data-handbook>
+        {% include 'documentation/_header.html.twig' with {document: document} only %}
+        <div class="handbook-layout">
+            <aside id="handbook-navigation" class="handbook-sidebar">
+                {% include 'documentation/_navigation.html.twig' with {groups: navigationGroups, activeSlug: document.slug, document: document} only %}
+            </aside>
+            <button class="handbook-overlay" type="button" data-handbook-menu-close aria-label="{{ 'ui.close_navigation'|trans({}, 'handbook') }}"></button>
+            <main class="handbook-main" aria-label="{{ 'ui.content'|trans({}, 'handbook') }}">
+                <nav class="handbook-breadcrumb" aria-label="{{ 'ui.breadcrumb'|trans({}, 'handbook') }}">
+                    <a href="{{ path('v3_documentation_index') }}">{{ 'ui.sidebar_link'|trans({}, 'handbook') }}</a><i class="ri-arrow-right-s-line" aria-hidden="true"></i><span>{{ document.category }}</span>
+                </nav>
+                <article class="handbook-article">{% include 'documentation/_chapter.html.twig' with {document: document} only %}</article>
+                <nav class="handbook-pagination" aria-label="{{ 'ui.chapters'|trans({}, 'handbook') }}">
+                    {% if document.previous %}<a href="{{ path('v3_documentation_show', {slug: document.previous.slug}) }}"><small>{{ 'ui.previous'|trans({}, 'handbook') }}</small><span><i class="ri-arrow-left-line" aria-hidden="true"></i>{{ document.previous.title }}</span></a>{% else %}<span></span>{% endif %}
+                    {% if document.next %}<a class="handbook-pagination__next" href="{{ path('v3_documentation_show', {slug: document.next.slug}) }}"><small>{{ 'ui.next'|trans({}, 'handbook') }}</small><span>{{ document.next.title }}<i class="ri-arrow-right-line" aria-hidden="true"></i></span></a>{% endif %}
+                </nav>
+            </main>
         </div>
     </div>
 {% endblock %}
 
-{% block bodyjs %}
-    {{ parent() }}
-    <style>
-        .documentation-content { font-size: 1rem; line-height: 1.75; }
-        .documentation-content h1 { font-size: 1.75rem; margin: 0 0 1.5rem; }
-        .documentation-content h2 { font-size: 1.3rem; margin: 2.25rem 0 .8rem; padding-bottom: .55rem; border-bottom: 1px solid var(--vz-border-color); scroll-margin-top: 90px; }
-        .documentation-content h3 { font-size: 1.1rem; margin: 1.75rem 0 .65rem; scroll-margin-top: 90px; }
-        .documentation-content p, .documentation-content ul, .documentation-content ol { margin-bottom: 1rem; }
-        .documentation-content li + li { margin-top: .35rem; }
-        .documentation-content code { color: var(--vz-code-color); background: var(--vz-light); padding: .15rem .35rem; border-radius: .25rem; }
-        .documentation-content pre { padding: 1rem; color: #ced4da; background: #212529; border-radius: .4rem; overflow-x: auto; }
-        .documentation-content pre code { color: inherit; background: transparent; padding: 0; }
-        .documentation-content .table { margin: 1.25rem 0; }
-        .documentation-toc { position: sticky; top: 90px; }
-        .documentation-toc .nav-link { color: var(--vz-body-color); }
-        .documentation-toc .nav-link:hover { color: var(--vz-primary); }
-        .handbook-figure { margin: 1.5rem 0; }
-        .handbook-figure img { width: 100%; max-height: 32rem; object-fit: contain; background: var(--vz-light); }
-        @media (max-width: 1199.98px) { .documentation-toc { position: static; } }
-    </style>
-{% endblock %}
+{% block bodyjs %}{{ parent() }}<script src="{{ asset('assets/js/handbook.js') }}" defer></script>{% endblock %}

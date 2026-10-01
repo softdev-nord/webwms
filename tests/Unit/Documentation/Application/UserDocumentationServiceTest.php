@@ -104,7 +104,7 @@ class UserDocumentationServiceTest extends TestCase
             $catalogue = Yaml::parseFile($root . $locale . '.yaml');
             self::assertSame(['ui', 'category', 'error', 'chapter'], array_keys($catalogue));
             self::assertSame(
-                ['page_title', 'headline', 'introduction', 'search', 'search_action', 'reset_search', 'no_results', 'result_for', 'breadcrumb', 'all_chapters', 'on_this_page', 'no_subchapters', 'previous', 'next', 'sidebar_section', 'sidebar_link', 'prerequisites', 'permissions', 'fields', 'statuses', 'errors'],
+                ['page_title', 'headline', 'introduction', 'search', 'search_action', 'reset_search', 'no_results', 'result_for', 'breadcrumb', 'all_chapters', 'on_this_page', 'no_subchapters', 'previous', 'next', 'navigation', 'open_navigation', 'close_navigation', 'overview', 'chapters', 'current_chapter', 'content', 'sidebar_section', 'sidebar_link', 'prerequisites', 'permissions', 'fields', 'statuses', 'errors'],
                 array_keys($catalogue['ui'])
             );
 

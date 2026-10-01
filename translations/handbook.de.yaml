@@ -13,6 +13,13 @@ ui:
   no_subchapters: Dieses Kapitel besitzt keine Unterkapitel.
   previous: Vorheriges Kapitel
   next: Nächstes Kapitel
+  navigation: Handbuchnavigation
+  open_navigation: Navigation öffnen
+  close_navigation: Navigation schließen
+  overview: Handbuchübersicht
+  chapters: Kapitel
+  current_chapter: Aktuelles Kapitel
+  content: Handbuchinhalt
   sidebar_section: Hilfe & Handbuch
   sidebar_link: Benutzerhandbuch
   prerequisites: Voraussetzungen
