@@ -107,6 +107,14 @@ Der Client darf keine Mandanten-ID im Request vorgeben. `InventoryApiController`
 
 Erfolgreiche Antworten enthalten `data`, Listen zusätzlich `meta`. Fehler verwenden `application/problem+json` mit `type`, `title`, `status` und `detail`. Validierungsfehler liefern 422, Duplikate 409, fehlende Rechte 403 und ungültige Credentials 401.
 
+## OpenAPI-Vertrag
+
+Der versionierte OpenAPI-3.1-Vertrag liegt unter
+`docs/technical/openapi-v3.yaml` und kann authentifiziert über
+`GET /api/v3/integration/openapi.yaml` abgerufen werden. Er beschreibt die
+API-Key-Authentifizierung, Kernressourcen, Integrationsaustausch sowie die
+einheitlichen Collection-, Item- und Problem-Antworten.
+
 ## Bekannte Restarbeiten
 
 - herstellerspezifische ERP-, Shop- und Carrier-Adapter;

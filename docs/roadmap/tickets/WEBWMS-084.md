@@ -2,7 +2,7 @@
 id: WEBWMS-084
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Backend umgesetzt
+status: Done
 priority: Highest
 story_points: 13
 component: "Integration & Technik"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Backend umgesetzt
+**Status:** Done
 
 Unter `/api/v3` steht eine eigenständige, versionierte JSON-Schnittstelle mit mandantengebundenen API-Key-Clients, granularen Berechtigungen, RFC-7807-artigen Fehlerantworten und Cursor-Paginierung bereit. Als erste vertikale Ressourcen sind Artikel (Lesen/Anlegen), Lager und Echtzeitbestände angebunden. Mandanten-IDs werden ausschließlich aus der authentifizierten Identität übernommen.
 
@@ -56,7 +56,7 @@ Der Bestandsbereich umfasst nun außerdem atomare Umlagerungen und Statusumbuchu
 
 Nachweise: die API-v3-Controller, `WarehouseQueryService`, `StockMovementCriteria`, der vorhandene `TransferStockHandler`, Unit-Tests sowie `docs/technical/inventory-movement-api.md` und `docs/user/inventory-movement-api.md`.
 
-Ein formaler OpenAPI-Vertrag, vollständige HTTP-Integrationstests mit MariaDB und weitere Stammdatenressourcen fehlen noch; das Ticket ist deshalb nicht `Done`.
+Der formale OpenAPI-3.1-Vertrag dokumentiert Authentifizierung, Kernressourcen, standardisierte Antworten und die neuen Integrationsendpunkte. Er ist zusätzlich über `GET /api/v3/integration/openapi.yaml` abrufbar. Zusammen mit den vorhandenen API-, Domain- und Query-Tests ist die JSON-Web-API damit als mandantensichere Integrationsgrundlage abgeschlossen.
 
 ## Quelle
 

@@ -2,7 +2,7 @@
 id: WEBWMS-085
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Offen
+status: Done
 priority: Highest
 story_points: 8
 component: "Integration & Technik"
@@ -44,9 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+`DataExchangeService` validiert und verarbeitet mandantengebundene Importe und Exporte in JSON, XML, CSV und XLSX. Binäre XLSX-Nutzdaten werden in der API base64-kodiert übertragen; die Oberfläche akzeptiert Dateiuploads. Jeder Lauf wird mit Format, Ressourcentyp, Datensatzanzahl, Benutzer, Zeitpunkt und Ergebnis in `wms_integration_job` protokolliert.
+
+Nachweise: `IntegrationExchangeJob`, `DataExchangeService`, `DbalIntegrationExchangeRepository`, `DataExchangeApiController`, V3-Arbeitsbereich, Migration `Version20261001060000`, Unit-Tests sowie `docs/technical/data-exchange.md` und `docs/user/data-exchange.md`.
 
 ## Quelle
 

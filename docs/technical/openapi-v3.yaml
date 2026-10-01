@@ -1,0 +1,157 @@
+openapi: 3.1.0
+info:
+  title: WebWMS API v3
+  version: 3.0.0
+  description: Tenant-scoped API for master data, warehouse processes and integrations.
+servers:
+  - url: /api/v3
+security:
+  - ApiKey: []
+paths:
+  /products:
+    get:
+      summary: List products
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Register a product
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /warehouses:
+    get:
+      summary: List warehouses
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+  /stock:
+    get:
+      summary: Read tenant stock
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+  /stock-transfers:
+    post:
+      summary: Transfer or reclassify stock atomically
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /stock-movements:
+    get:
+      summary: Read the immutable stock journal
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+  /orders:
+    get:
+      summary: List outbound orders
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Import an outbound order
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /integration/jobs:
+    get:
+      summary: List import and export jobs
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+  /integration/import:
+    post:
+      summary: Import JSON, XML, CSV, XLSX or SAP IDoc
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportRequest'
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+        '422': { $ref: '#/components/responses/Problem' }
+  /integration/export:
+    post:
+      summary: Export records as JSON, XML, CSV or XLSX
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /integration/mappings:
+    get:
+      summary: List ERP, SAP and commerce mappings
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Create a field mapping
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /integration/commerce-connections:
+    get:
+      summary: List shop and marketplace connections
+      responses:
+        '200': { $ref: '#/components/responses/Collection' }
+    post:
+      summary: Create a shop or marketplace connection
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+  /integration/commerce-orders:
+    post:
+      summary: Import a channel order idempotently by connection and external order ID
+      responses:
+        '201': { $ref: '#/components/responses/Item' }
+        '409': { $ref: '#/components/responses/Problem' }
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    ImportRequest:
+      type: object
+      required: [format, resourceType, content]
+      properties:
+        format: { type: string, enum: [json, xml, csv, xlsx, idoc] }
+        resourceType: { type: string }
+        sourceReference: { type: [string, 'null'] }
+        content: { type: string, description: XLSX content is base64 encoded. }
+    ExportRequest:
+      type: object
+      required: [format, resourceType, rows]
+      properties:
+        format: { type: string, enum: [json, xml, csv, xlsx] }
+        resourceType: { type: string }
+        rows:
+          type: array
+          items: { type: object, additionalProperties: true }
+    Problem:
+      type: object
+      required: [type, title, status, detail]
+      properties:
+        type: { type: string, format: uri-reference }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+  responses:
+    Collection:
+      description: Tenant-scoped collection
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [data, meta]
+            properties:
+              data: { type: array, items: {} }
+              meta: { type: object, additionalProperties: true }
+    Item:
+      description: Tenant-scoped resource
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [data]
+            properties:
+              data: { type: object, additionalProperties: true }
+    Problem:
+      description: RFC-7807-style error
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }

@@ -98,8 +98,11 @@ services:
     WebWMS\Integration\Domain\ErpConnectionRepository:
         alias: WebWMS\Integration\Infrastructure\Persistence\DbalErpConnectionRepository
 
-    WebWMS\Integration\Domain\ErpStatusTransport:
+    WebWMS\Integration\Application\ErpStatusTransport:
         alias: WebWMS\Integration\Infrastructure\Transport\HttpErpStatusTransport
+
+    WebWMS\Integration\Domain\IntegrationExchangeRepository:
+        alias: WebWMS\Integration\Infrastructure\Persistence\DbalIntegrationExchangeRepository
 
     WebWMS\Integration\Domain\CarrierConnectionRepository:
         alias: WebWMS\Integration\Infrastructure\Persistence\DbalCarrierConnectionRepository
@@ -191,6 +194,10 @@ services:
 
     WebWMS\Integration\Erp\Presentation\:
         resource: '../src/Integration/Erp/Presentation/'
+        tags: ['controller.service_arguments']
+
+    WebWMS\Integration\Exchange\Presentation\:
+        resource: '../src/Integration/Exchange/Presentation/'
         tags: ['controller.service_arguments']
 
     WebWMS\Integration\Measurement\Presentation\:

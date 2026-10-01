@@ -108,6 +108,14 @@ readonly class DemoBootstrapService
 
     public const string PLATFORM_SERVICE_ID = '4caf15cc-b884-454b-a21d-7856f4031d64';
 
+    public const string INTEGRATION_MAPPING_ID = '9c758f7d-cd13-43ee-9385-df14108b780f';
+
+    public const string INTEGRATION_JOB_ID = '22c68a47-5dbf-4b8a-aa1f-a75f8e9424bf';
+
+    public const string COMMERCE_CONNECTION_ID = '90d7291a-3a47-4ac0-a584-3e0a0a65922d';
+
+    public const string CHANNEL_ORDER_ID = 'bd447ca2-adc4-4f95-a175-59022d4958a9';
+
     public const string EMAIL = 'admin@demo.webwms.local';
 
     public function __construct(
@@ -173,6 +181,8 @@ readonly class DemoBootstrapService
         ) === false) {
             $this->connection->insert('wms_user_role', ['user_id' => self::USER_ID, 'role_id' => self::ROLE_ID]);
         }
+
+        $this->createIntegrationDemo($now);
 
         $this->createAdministrationDemo($now);
         if (!$this->exists('wms_printer', self::PRINTER_ID)) {
@@ -488,6 +498,68 @@ readonly class DemoBootstrapService
                 $code,
                 $now,
             ));
+        }
+    }
+
+    private function createIntegrationDemo(DateTimeImmutable $now): void
+    {
+        if (!$this->exists('wms_integration_mapping', self::INTEGRATION_MAPPING_ID)) {
+            $this->connection->insert('wms_integration_mapping', [
+                'id' => self::INTEGRATION_MAPPING_ID,
+                'tenant_id' => self::TENANT_ID,
+                'system_type' => 'erp',
+                'message_type' => 'sales_order',
+                'source_field' => 'customerNumber',
+                'target_field' => 'customer_number',
+                'transformation' => 'trim',
+                'created_by' => self::USER_ID,
+                'created_at' => $this->date($now),
+            ]);
+        }
+
+        if (!$this->exists('wms_integration_job', self::INTEGRATION_JOB_ID)) {
+            $this->connection->insert('wms_integration_job', [
+                'id' => self::INTEGRATION_JOB_ID,
+                'tenant_id' => self::TENANT_ID,
+                'direction' => 'import',
+                'format' => 'json',
+                'resource_type' => 'sales_order',
+                'source_reference' => 'demo-bootstrap.json',
+                'status' => 'completed',
+                'row_count' => 1,
+                'payload' => json_encode([['external_order_id' => 'SHOP-DEMO-1001']], JSON_THROW_ON_ERROR),
+                'error_message' => null,
+                'created_by' => self::USER_ID,
+                'created_at' => $this->date($now),
+                'completed_at' => $this->date($now),
+            ]);
+        }
+
+        if (!$this->exists('wms_commerce_connection', self::COMMERCE_CONNECTION_ID)) {
+            $this->connection->insert('wms_commerce_connection', [
+                'id' => self::COMMERCE_CONNECTION_ID,
+                'tenant_id' => self::TENANT_ID,
+                'name' => 'Demo Shopware',
+                'channel_type' => 'shopware',
+                'endpoint_url' => 'https://shop.demo.webwms.local/api',
+                'credential_env' => 'DEMO_SHOPWARE_TOKEN',
+                'active' => 1,
+                'created_by' => self::USER_ID,
+                'created_at' => $this->date($now),
+            ]);
+        }
+
+        if (!$this->exists('wms_channel_order', self::CHANNEL_ORDER_ID)) {
+            $this->connection->insert('wms_channel_order', [
+                'id' => self::CHANNEL_ORDER_ID,
+                'tenant_id' => self::TENANT_ID,
+                'connection_id' => self::COMMERCE_CONNECTION_ID,
+                'external_order_id' => 'SHOP-DEMO-1001',
+                'status' => 'imported',
+                'payload' => json_encode(['currency' => 'EUR', 'total' => 129.9], JSON_THROW_ON_ERROR),
+                'imported_by' => self::USER_ID,
+                'imported_at' => $this->date($now),
+            ]);
         }
     }
 

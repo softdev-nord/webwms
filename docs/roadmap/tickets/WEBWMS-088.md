@@ -2,7 +2,7 @@
 id: WEBWMS-088
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Offen
+status: Done
 priority: High
 story_points: 13
 component: "Integration & Technik"
@@ -44,9 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+Shop- und Marktplatzverbindungen für Shopware, Amazon, eBay und generische HTTPS-Kanäle werden mandantenbezogen mit externer Credential-Referenz gepflegt. Kanalaufträge sind je Verbindung und externer Auftragsnummer eindeutig und werden mit Originalpayload, Benutzer und Zeitpunkt auditierbar importiert. Verfügbarkeiten und Trackingdaten können über den formatunabhängigen Export beziehungsweise die vorhandene Integrations-Outbox bereitgestellt werden.
+
+Nachweise: `CommerceConnection`, `DataExchangeService::importChannelOrder()`, `DbalIntegrationExchangeRepository`, API- und V3-Arbeitsbereich, Migration `Version20261001060000`, Unit-Tests und Datenaustausch-Dokumentation.
 
 ## Quelle
 

@@ -14,6 +14,46 @@ readonly class IntegrationQueryService
     ) {
     }
 
+    public function exchangeJobs(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, direction, format, resource_type, source_reference, status, row_count, error_message, '
+            . 'created_by, created_at, completed_at FROM wms_integration_job '
+            . 'WHERE tenant_id = :tenantId ORDER BY created_at DESC, id DESC',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    public function integrationMappings(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, system_type, message_type, source_field, target_field, transformation, created_by, created_at '
+            . 'FROM wms_integration_mapping WHERE tenant_id = :tenantId '
+            . 'ORDER BY system_type, message_type, source_field',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    public function commerceConnections(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT id, name, channel_type, endpoint_url, credential_env, active, created_by, created_at '
+            . 'FROM wms_commerce_connection WHERE tenant_id = :tenantId ORDER BY channel_type, name, id',
+            ['tenantId' => $tenantId],
+        );
+    }
+
+    public function channelOrders(string $tenantId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT o.id, o.connection_id, c.name connection_name, o.external_order_id, o.status, '
+            . 'o.imported_by, o.imported_at FROM wms_channel_order o '
+            . 'JOIN wms_commerce_connection c ON c.id = o.connection_id AND c.tenant_id = o.tenant_id '
+            . 'WHERE o.tenant_id = :tenantId ORDER BY o.imported_at DESC, o.id DESC',
+            ['tenantId' => $tenantId],
+        );
+    }
+
     public function erpConnections(string $tenantId): array
     {
         return $this->connection->fetchAllAssociative(

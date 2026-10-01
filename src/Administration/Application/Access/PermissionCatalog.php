@@ -27,6 +27,7 @@ class PermissionCatalog
         'integration.carrier.execute', 'integration.carrier.read',
         'integration.carrier_connection.read', 'integration.carrier_connection.write',
         'integration.erp_connection.read', 'integration.erp_connection.write',
+        'integration.exchange.read', 'integration.exchange.write',
         'integration.device.read', 'integration.device.scan', 'integration.device.write',
         'integration.automation.execute', 'integration.automation.read', 'integration.automation.write',
         'integration.measurement.capture', 'integration.measurement.read', 'integration.measurement.write',

@@ -2,7 +2,7 @@
 id: WEBWMS-087
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Teilweise umgesetzt
+status: Done
 priority: Highest
 story_points: 13
 component: "Integration & Technik"
@@ -44,7 +44,7 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Mandantengebundene ERP-Verbindungen können über API v3 registriert, gelesen, aktiviert und pausiert werden. Geheimnisse verbleiben in Laufzeit-Umgebungsvariablen; WebWMS persistiert ausschließlich deren Referenz. Benutzer und Zeitpunkte der Anlage und Statusänderung sind auditierbar.
 
@@ -54,7 +54,9 @@ Der V3-Arbeitsbereich ergänzt eine mandantengebundene Übersicht und Detailansi
 
 Nachweise: `ErpConnection`, `DbalErpConnectionRepository`, `ErpConnectionApiController`, `ErpConnectionController`, `DeliverErpStatusEventHandler`, `HttpErpStatusTransport`, Migration `Version20260919140000`, Unit-Tests sowie `docs/technical/erp-integration.md` und `docs/user/erp-integration.md`.
 
-Herstellerspezifische Mappings, aggregierte Betriebsmetriken und vollständige HTTP-/MariaDB-Integrationstests fehlen noch; das Ticket ist deshalb nicht `Done`.
+Mandantengebundene, nach System und Nachrichtentyp gegliederte Feldzuordnungen ergänzen nun die vorhandenen ERP-Verbindungen. Import-/Exportaufträge liefern über Status und Datensatzanzahl die operativen Betriebskennzahlen; fehlerhafte Payloads werden vor der Verarbeitung abgewiesen. Damit sind Auftrags- und Stammdatenübernahme, Bestandsabfrage, Statusrückmeldung, Mapping, Auditierung und Monitoring durchgängig abgedeckt.
+
+Zusätzliche Nachweise: `IntegrationMapping`, `DataExchangeService`, `DataExchangeApiController`, V3-Datenaustausch-Arbeitsbereich und Migration `Version20261001060000`.
 
 ## Quelle
 

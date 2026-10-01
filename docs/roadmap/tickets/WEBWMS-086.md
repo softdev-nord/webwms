@@ -2,7 +2,7 @@
 id: WEBWMS-086
 issue_type: Story
 epic: WEBWMS-EPIC-INTEGRATION
-status: Offen
+status: Done
 priority: Medium
 story_points: 13
 component: "Integration & Technik"
@@ -44,9 +44,11 @@ Abhängig von den Stammdaten und Basiskomponenten des Epics WEBWMS-EPIC-INTEGRAT
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Done
 
-Für dieses Ticket ist noch keine relevante WebWMS-3.0-Implementierung vorhanden.
+SAP-IDoc-XML wird ohne externe Entitäten eingelesen und anhand des Kontrollsatzes `EDI_DC40` validiert. `MESTYP` bestimmt den Nachrichtentyp, `DOCNUM` die nachvollziehbare Quellreferenz. Feldzuordnungen und Transformationen werden mandantenbezogen als `IntegrationMapping` gepflegt; ungültige oder unvollständige IDocs werden vor der Persistierung abgewiesen.
+
+Nachweise: `DataExchangeService::receiveIdoc()`, `IntegrationMapping`, API- und V3-Import, Migration `Version20261001060000`, Unit-Tests und die Datenaustausch-Dokumentation.
 
 ## Quelle
 

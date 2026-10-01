@@ -10,6 +10,22 @@ use WebWMS\Integration\Application\Query\IntegrationQueryService;
 
 class IntegrationQueryServiceTest extends TestCase
 {
+    public function testDataExchangeViewsAreRestrictedToTheAuthenticatedTenant(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects($this->exactly(4))->method('fetchAllAssociative')->with(
+            self::callback(static fn (string $sql): bool => str_contains($sql, 'tenant_id = :tenantId')
+                || str_contains($sql, 'tenant_id = o.tenant_id')),
+            ['tenantId' => 'tenant-id'],
+        )->willReturn([]);
+        $queries = new IntegrationQueryService($connection);
+
+        self::assertSame([], $queries->exchangeJobs('tenant-id'));
+        self::assertSame([], $queries->integrationMappings('tenant-id'));
+        self::assertSame([], $queries->commerceConnections('tenant-id'));
+        self::assertSame([], $queries->channelOrders('tenant-id'));
+    }
+
     public function testTransportEndpointsAreRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);
