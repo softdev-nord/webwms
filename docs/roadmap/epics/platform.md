@@ -1,8 +1,8 @@
 # WEBWMS-EPIC-PLATFORM: Zusatzfunktionen
 
-Alle 10 dokumentierten Funktionen des Bereichs Zusatzfunktionen werden fachlich konsistent, berechtigt, nachvollziehbar und testbar umgesetzt.
+Alle 11 dokumentierten Funktionen des Bereichs Zusatzfunktionen werden fachlich konsistent, berechtigt, nachvollziehbar und testbar umgesetzt.
 
-**Epic-Status:** Done · 10 von 10 Stories · 102 von 102 Story Points
+**Epic-Status:** Teilweise umgesetzt · 10 von 11 Stories Done · 102 von 136 Story Points Done
 
 | Ticket | Zusammenfassung | Status | Priorität | Story Points |
 | --- | --- | --- | --- | ---: |
@@ -16,3 +16,4 @@ Alle 10 dokumentierten Funktionen des Bereichs Zusatzfunktionen werden fachlich 
 | [WEBWMS-073](../tickets/WEBWMS-073.md) | Kameranutzung implementieren | Done | Medium | 5 |
 | [WEBWMS-074](../tickets/WEBWMS-074.md) | Druckersteuerung implementieren | Done | High | 8 |
 | [WEBWMS-111](../tickets/WEBWMS-111.md) | Vollständiges zweisprachiges Benutzerhandbuch implementieren | Done | High | 21 |
+| [WEBWMS-112](../tickets/WEBWMS-112.md) | Benutzerhandbuch auf vollständige View- und Formularabdeckung erweitern | Offen | High | 34 |

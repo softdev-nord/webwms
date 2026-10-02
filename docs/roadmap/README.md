@@ -1,6 +1,6 @@
 # WebWMS-3.0-Roadmap
 
-Diese Roadmap ersetzt die bisherige Excel-Arbeitsdatei als verbindliche, versionierte Planungsgrundlage. Sie umfasst 111 Stories mit insgesamt 933 Story Points, aufgeteilt auf acht Epics.
+Diese Roadmap ersetzt die bisherige Excel-Arbeitsdatei als verbindliche, versionierte Planungsgrundlage. Sie umfasst 112 Stories mit insgesamt 967 Story Points, aufgeteilt auf acht Epics.
 
 ## Statusmodell
 
@@ -21,16 +21,16 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 | [WEBWMS-EPIC-INVENTORY](epics/inventory.md) | Lagerverwaltung | 18 | 126 |
 | [WEBWMS-EPIC-FULFILLMENT](epics/fulfillment.md) | Transport & Kommissionierung | 16 | 132 |
 | [WEBWMS-EPIC-OUTBOUND](epics/outbound.md) | Warenausgang & Versand | 17 | 106 |
-| [WEBWMS-EPIC-PLATFORM](epics/platform.md) | Zusatzfunktionen | 10 | 102 |
+| [WEBWMS-EPIC-PLATFORM](epics/platform.md) | Zusatzfunktionen | 11 | 136 |
 | [WEBWMS-EPIC-ADMIN](epics/admin.md) | Administration | 9 | 76 |
 | [WEBWMS-EPIC-INTEGRATION](epics/integration.md) | Integration & Technik | 13 | 144 |
 | [WEBWMS-EPIC-EXTENSIONS](epics/functional-extensions.md) | Erweiterte Funktionen | 14 | 162 |
 
 ## Aktueller Gesamtfortschritt
 
-Stand 01.10.2026 sind alle 111 Tickets und 933 Story Points vollständig `Done`. Es verbleibt kein offenes fachliches Roadmap-Ticket.
+Stand 02.10.2026 sind 111 von 112 Tickets und 933 von 967 Story Points `Done`. WEBWMS-112 ist als offenes Folgeticket aus der inhaltlichen Vollständigkeitsprüfung des Benutzerhandbuchs hervorgegangen.
 
-Alle acht Epics sind vollständig abgeschlossen. WEBWMS-079 ergänzt den produktiven OpenID-Connect-Handshake; WEBWMS-084 bis WEBWMS-096 bilden den vollständigen Integrationsumfang einschließlich operativer Transportadapter und zuverlässiger asynchroner Verarbeitung ab. WEBWMS-111 stellt das integrierte, zweisprachige und durchsuchbare Benutzerhandbuch bereit. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
+Sieben Epics sind vollständig abgeschlossen. Das Plattform-Epic enthält mit WEBWMS-112 noch die vollständige View-, Formular- und Feldabdeckung des Benutzerhandbuchs. WEBWMS-111 stellt hierfür weiterhin die integrierte, zweisprachige und durchsuchbare technische Handbuchplattform bereit. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 
 ## Ergänzende Roadmap-Dokumente
 
