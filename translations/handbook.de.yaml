@@ -41,6 +41,7 @@ ui:
   effect: Auswirkung
   validation: Validierung
   actions: Aktionen
+  used_for: Verwendet für
 category:
   basics: Grundlagen & Bedienkonzept
   administration: Administration & Konfiguration
@@ -257,8 +258,8 @@ chapter:
         overview:
         - Jede sichtbare Kachel zeigt die Anzahl der Datensätze und öffnet die zugehörige Übersicht. Kacheln ohne Leserecht werden vollständig ausgeblendet.
         actions:
-          open_area: {label: "Bereich öffnen", description: "Öffnet Benutzer, Rollen oder API-Clients abhängig von der gewählten Kachel.", result: "Die fachliche Übersicht wird ohne Datenänderung geladen."}
-        image: {src: "/assets/images/handbook/administration/overview.svg", alt: "Administrationsübersicht mit Kacheln für Benutzer, Rollen und API-Clients"}
+          open_area: {label: "\"Bereich öffnen\"", description: "\"Öffnet Benutzer, Rollen oder API-Clients abhängig von der gewählten Kachel.\"", result: "\"Die fachliche Übersicht wird ohne Datenänderung geladen.\""}
+        image: {src: "\"/assets/images/handbook/administration/overview.svg\"", alt: "\"Administrationsübersicht mit Kacheln für Benutzer, Rollen und API-Clients\""}
       users_overview:
         template: administration/users.html.twig
         title: Benutzerübersicht
@@ -269,9 +270,9 @@ chapter:
         - Spalten zeigen Anzeigename, E-Mail-Adresse, Rollen und Status. Ein Gedankenstrich bedeutet, dass keine Rolle zugeordnet ist.
         - Bei leerem Bestand erscheint ein erklärender Leerzustand. Die Zeilenaktion öffnet die separate Bearbeitungsseite.
         actions:
-          create: {label: "Benutzer hinzufügen", description: "Öffnet das Formular für ein neues Benutzerkonto.", result: "Daten werden erst beim Speichern des Formulars verändert."}
-          edit: {label: "Bearbeiten", description: "Öffnet Rollen und Aktivstatus des gewählten Kontos.", result: "Die Benutzer-ID und Auditzuordnung bleiben erhalten."}
-        image: {src: "/assets/images/handbook/administration/users-overview.svg", alt: "Benutzerübersicht mit Rollen, Status und Bearbeiten-Aktion"}
+          create: {label: "\"Benutzer hinzufügen\"", description: "\"Öffnet das Formular für ein neues Benutzerkonto.\"", result: "\"Daten werden erst beim Speichern des Formulars verändert.\""}
+          edit: {label: "\"Bearbeiten\"", description: "\"Öffnet Rollen und Aktivstatus des gewählten Kontos.\"", result: "\"Die Benutzer-ID und Auditzuordnung bleiben erhalten.\""}
+        image: {src: "\"/assets/images/handbook/administration/users-overview.svg\"", alt: "\"Benutzerübersicht mit Rollen, Status und Bearbeiten-Aktion\""}
       user_create:
         template: administration/user_new.html.twig
         title: Benutzer anlegen
@@ -280,13 +281,13 @@ chapter:
         permissions: ["administration.user.write; zuweisbare Rollen müssen im Mandanten vorhanden sein."]
         overview: ["Mehrere Rollen werden mit Strg beziehungsweise Cmd ausgewählt. Vergeben Sie ausschließlich die für die Aufgabe benötigten Rechte."]
         fields:
-          display_name: {label: "Anzeigename", required: true, format: "Klarname oder eindeutiger betrieblicher Name", example: "Erika Muster", help: "Erscheint in Listen und Auditprotokollen.", effect: "Wird als sichtbare Identität gespeichert.", errors: "Leere Namen sind ungültig."}
-          email: {label: "E-Mail-Adresse", required: true, format: "Gültige und im Mandanten eindeutige E-Mail-Adresse", example: "erika.muster@example.org", help: "Dient als Anmeldekennung und SSO-Zuordnung.", effect: "Identifiziert das Konto dauerhaft.", errors: "Ungültige oder bereits verwendete Adressen werden abgewiesen."}
-          password: {label: "Initiales Passwort", required: true, format: "Mindestens 12 Zeichen", example: "'************'", help: "Sicher und getrennt übermitteln; niemals ein Standardpasswort verwenden.", effect: "Wird nur gehasht gespeichert und ermöglicht die erste Anmeldung.", errors: "Zu kurze Kennwörter verhindern das Anlegen."}
-          role_ids: {label: "Rollen", required: false, format: "Mehrfachauswahl aus Mandantenrollen", example: "ROLE_WAREHOUSE_OPERATOR", help: "Rollen nach dem Minimalprinzip auswählen.", effect: "Die vereinigten Rollenrechte gelten bei der nächsten Berechtigungsprüfung.", errors: "Unbekannte oder mandantenfremde Rollen werden abgewiesen."}
+          display_name: {label: "\"Anzeigename\"", required: true, format: "\"Klarname oder eindeutiger betrieblicher Name\"", example: "\"Erika Muster\"", help: "\"Erscheint in Listen und Auditprotokollen.\"", effect: "\"Wird als sichtbare Identität gespeichert.\"", errors: "\"Leere Namen sind ungültig.\""}
+          email: {label: "\"E-Mail-Adresse\"", required: true, format: "\"Gültige und im Mandanten eindeutige E-Mail-Adresse\"", example: "\"erika.muster@example.org\"", help: "\"Dient als Anmeldekennung und SSO-Zuordnung.\"", effect: "\"Identifiziert das Konto dauerhaft.\"", errors: "\"Ungültige oder bereits verwendete Adressen werden abgewiesen.\""}
+          password: {label: "\"Initiales Passwort\"", required: true, format: "\"Mindestens 12 Zeichen\"", example: "\"'************'\"", help: "\"Sicher und getrennt übermitteln; niemals ein Standardpasswort verwenden.\"", effect: "\"Wird nur gehasht gespeichert und ermöglicht die erste Anmeldung.\"", errors: "\"Zu kurze Kennwörter verhindern das Anlegen.\""}
+          role_ids: {label: "\"Rollen\"", required: false, format: "\"Mehrfachauswahl aus Mandantenrollen\"", example: "\"ROLE_WAREHOUSE_OPERATOR\"", help: "\"Rollen nach dem Minimalprinzip auswählen.\"", effect: "\"Die vereinigten Rollenrechte gelten bei der nächsten Berechtigungsprüfung.\"", errors: "\"Unbekannte oder mandantenfremde Rollen werden abgewiesen.\""}
         actions:
-          save: {label: "Benutzer hinzufügen", description: "Prüft Identität, Passwort und Rollen und legt das Konto an.", result: "Bei Erfolg öffnet sich die Benutzerübersicht mit Bestätigung."}
-        image: {src: "/assets/images/handbook/administration/user-create.svg", alt: "Formular zum Anlegen eines Benutzers"}
+          save: {label: "\"Benutzer hinzufügen\"", description: "\"Prüft Identität, Passwort und Rollen und legt das Konto an.\"", result: "\"Bei Erfolg öffnet sich die Benutzerübersicht mit Bestätigung.\""}
+        image: {src: "\"/assets/images/handbook/administration/user-create.svg\"", alt: "\"Formular zum Anlegen eines Benutzers\""}
       user_edit:
         template: administration/user_edit.html.twig
         title: Benutzer bearbeiten
@@ -295,11 +296,11 @@ chapter:
         permissions: ["administration.user.write; der Benutzer muss zum aktiven Mandanten gehören."]
         overview: ["Name und E-Mail identifizieren das gewählte Konto und sind hier nicht änderbar. Deaktivieren beendet die weitere Nutzung, ohne Auditdaten zu löschen."]
         fields:
-          role_ids: {label: "Rollen", required: false, format: "Mehrfachauswahl aus Mandantenrollen", example: "ROLE_WAREHOUSE_MANAGER", help: "Entfernen Sie keine für den Betrieb oder die letzte Administration erforderliche Rolle.", effect: "Ersetzt die bisherigen Rollenzuordnungen vollständig.", errors: "Unbekannte Rollen und unzulässiger Entzug des letzten Verwaltungsrechts werden abgewiesen."}
-          active: {label: "Benutzer aktiv", required: false, format: "Checkbox; aktiviert oder deaktiviert", example: "aktiviert", help: "Nur aktive Benutzer können neue Sitzungen eröffnen.", effect: "Deaktivieren sperrt künftige Anmeldungen; Historie und Audit bleiben erhalten.", errors: "Das eigene letzte Administrationskonto darf nicht unbrauchbar gemacht werden."}
+          role_ids: {label: "\"Rollen\"", required: false, format: "\"Mehrfachauswahl aus Mandantenrollen\"", example: "\"ROLE_WAREHOUSE_MANAGER\"", help: "\"Entfernen Sie keine für den Betrieb oder die letzte Administration erforderliche Rolle.\"", effect: "\"Ersetzt die bisherigen Rollenzuordnungen vollständig.\"", errors: "\"Unbekannte Rollen und unzulässiger Entzug des letzten Verwaltungsrechts werden abgewiesen.\""}
+          active: {label: "\"Benutzer aktiv\"", required: false, format: "\"Checkbox; aktiviert oder deaktiviert\"", example: "\"aktiviert\"", help: "\"Nur aktive Benutzer können neue Sitzungen eröffnen.\"", effect: "\"Deaktivieren sperrt künftige Anmeldungen; Historie und Audit bleiben erhalten.\"", errors: "\"Das eigene letzte Administrationskonto darf nicht unbrauchbar gemacht werden.\""}
         actions:
-          save: {label: "Änderungen speichern", description: "Validiert Rollen und Status und speichert sie atomar.", result: "Bei Erfolg öffnet sich die aktualisierte Übersicht."}
-        image: {src: "/assets/images/handbook/administration/user-edit.svg", alt: "Benutzer bearbeiten mit Rollen und Aktivstatus"}
+          save: {label: "\"Änderungen speichern\"", description: "\"Validiert Rollen und Status und speichert sie atomar.\"", result: "\"Bei Erfolg öffnet sich die aktualisierte Übersicht.\""}
+        image: {src: "\"/assets/images/handbook/administration/user-edit.svg\"", alt: "\"Benutzer bearbeiten mit Rollen und Aktivstatus\""}
       roles_overview:
         template: administration/roles.html.twig
         title: Rollenübersicht
@@ -308,9 +309,9 @@ chapter:
         permissions: ["administration.role.read; administration.role.write für Anlegen und Bearbeiten."]
         overview: ["Spalten zeigen stabilen Code, Namen, Benutzeranzahl und Anzahl der Rechte. Der Code bleibt die technische Referenz., Die Bearbeiten-Aktion öffnet Name und Berechtigungen; bei leerem Bestand erscheint ein Leerzustand."]
         actions:
-          create: {label: "Rolle erstellen", description: "Öffnet ein separates Rollenformular.", result: "Die Rolle ist erst nach erfolgreichem Speichern verfügbar."}
-          edit: {label: "Bearbeiten", description: "Öffnet die gewählte Rolle und alle angebotenen Rechte.", result: "Bestehende Benutzer erhalten die geänderten Rechte bei der nächsten Prüfung."}
-        image: {src: "/assets/images/handbook/administration/roles-overview.svg", alt: "Rollenübersicht mit Benutzer- und Berechtigungsanzahl"}
+          create: {label: "\"Rolle erstellen\"", description: "\"Öffnet ein separates Rollenformular.\"", result: "\"Die Rolle ist erst nach erfolgreichem Speichern verfügbar.\""}
+          edit: {label: "\"Bearbeiten\"", description: "\"Öffnet die gewählte Rolle und alle angebotenen Rechte.\"", result: "\"Bestehende Benutzer erhalten die geänderten Rechte bei der nächsten Prüfung.\""}
+        image: {src: "\"/assets/images/handbook/administration/roles-overview.svg\"", alt: "\"Rollenübersicht mit Benutzer- und Berechtigungsanzahl\""}
       role_create:
         template: administration/role_new.html.twig
         title: Rolle anlegen
@@ -319,12 +320,12 @@ chapter:
         permissions: ["administration.role.write"]
         overview: ["Rechte werden als Mehrfachauswahl angeboten. Fassen Sie nur Berechtigungen zusammen, die zu einem klaren Aufgabenprofil gehören."]
         fields:
-          code: {label: "Code", required: true, format: "Großbuchstaben und Unterstriche mit Präfix ROLE_", example: "ROLE_INBOUND_OPERATOR", help: "Stabiler technischer Schlüssel; nach Vergabe nicht für einen anderen Zweck wiederverwenden.", effect: "Referenziert die Rolle in Zuordnungen und Prüfungen.", errors: "Ungültige oder doppelte Codes werden abgewiesen."}
-          name: {label: "Name", required: true, format: "Verständliche Aufgabenbezeichnung", example: "Wareneingang operativ", help: "Erklärt Administratoren den fachlichen Zweck.", effect: "Wird in Auswahllisten angezeigt.", errors: "Ein leerer Name ist ungültig."}
-          permissions: {label: "Berechtigungen", required: false, format: "Mehrfachauswahl bekannter Berechtigungscodes", example: "inbound.receipt.read", help: "Lesen, Schreiben, Ausführen und Freigeben bewusst getrennt vergeben.", effect: "Bestimmt die erlaubten Aktionen aller zugeordneten Benutzer.", errors: "Unbekannte Berechtigungscodes werden nicht gespeichert."}
+          code: {label: "\"Code\"", required: true, format: "\"Großbuchstaben und Unterstriche mit Präfix ROLE_\"", example: "\"ROLE_INBOUND_OPERATOR\"", help: "\"Stabiler technischer Schlüssel; nach Vergabe nicht für einen anderen Zweck wiederverwenden.\"", effect: "\"Referenziert die Rolle in Zuordnungen und Prüfungen.\"", errors: "\"Ungültige oder doppelte Codes werden abgewiesen.\""}
+          name: {label: "\"Name\"", required: true, format: "\"Verständliche Aufgabenbezeichnung\"", example: "\"Wareneingang operativ\"", help: "\"Erklärt Administratoren den fachlichen Zweck.\"", effect: "\"Wird in Auswahllisten angezeigt.\"", errors: "\"Ein leerer Name ist ungültig.\""}
+          permissions: {label: "\"Berechtigungen\"", required: false, format: "\"Mehrfachauswahl bekannter Berechtigungscodes\"", example: "\"inbound.receipt.read\"", help: "\"Lesen, Schreiben, Ausführen und Freigeben bewusst getrennt vergeben.\"", effect: "\"Bestimmt die erlaubten Aktionen aller zugeordneten Benutzer.\"", errors: "\"Unbekannte Berechtigungscodes werden nicht gespeichert.\""}
         actions:
-          save: {label: "Rolle erstellen", description: "Prüft Code, Namen und Rechte und legt die Rolle an.", result: "Bei Erfolg kann die Rolle Benutzern zugewiesen werden."}
-        image: {src: "/assets/images/handbook/administration/role-create.svg", alt: "Formular zum Erstellen einer Rolle"}
+          save: {label: "\"Rolle erstellen\"", description: "\"Prüft Code, Namen und Rechte und legt die Rolle an.\"", result: "\"Bei Erfolg kann die Rolle Benutzern zugewiesen werden.\""}
+        image: {src: "\"/assets/images/handbook/administration/role-create.svg\"", alt: "\"Formular zum Erstellen einer Rolle\""}
       role_edit:
         template: administration/role_edit.html.twig
         title: Rolle bearbeiten
@@ -333,11 +334,11 @@ chapter:
         permissions: ["administration.role.write"]
         overview: ["Prüfen Sie vor dem Entzug eines Rechts die Anzahl betroffener Benutzer und testen Sie kritische Rollen mit einem separaten Konto."]
         fields:
-          name: {label: "Name", required: true, format: "Verständliche Aufgabenbezeichnung", example: "Wareneingang Leitung", help: "Beschreibt das aktuelle Aufgabenprofil der Rolle.", effect: "Ändert die Anzeige in Benutzer- und Rollenlisten.", errors: "Ein leerer Name verhindert das Speichern."}
-          permissions: {label: "Berechtigungen", required: false, format: "Mehrfachauswahl aller bekannten Rechte", example: "inbound.receipt.approve", help: "Nicht markierte Rechte werden beim Speichern aus der Rolle entfernt.", effect: "Wirkt auf alle zugeordneten Benutzer bei der nächsten Berechtigungsprüfung.", errors: "Der Schutz vor Verlust des letzten Verwaltungszugangs kann die Änderung ablehnen."}
+          name: {label: "\"Name\"", required: true, format: "\"Verständliche Aufgabenbezeichnung\"", example: "\"Wareneingang Leitung\"", help: "\"Beschreibt das aktuelle Aufgabenprofil der Rolle.\"", effect: "\"Ändert die Anzeige in Benutzer- und Rollenlisten.\"", errors: "\"Ein leerer Name verhindert das Speichern.\""}
+          permissions: {label: "\"Berechtigungen\"", required: false, format: "\"Mehrfachauswahl aller bekannten Rechte\"", example: "\"inbound.receipt.approve\"", help: "\"Nicht markierte Rechte werden beim Speichern aus der Rolle entfernt.\"", effect: "\"Wirkt auf alle zugeordneten Benutzer bei der nächsten Berechtigungsprüfung.\"", errors: "\"Der Schutz vor Verlust des letzten Verwaltungszugangs kann die Änderung ablehnen.\""}
         actions:
-          save: {label: "Änderungen speichern", description: "Ersetzt Namen und Berechtigungsmenge atomar.", result: "Die Änderung wird auditiert und sofort für neue Prüfungen verwendet."}
-        image: {src: "/assets/images/handbook/administration/role-edit.svg", alt: "Rolle bearbeiten mit vollständiger Berechtigungsauswahl"}
+          save: {label: "\"Änderungen speichern\"", description: "\"Ersetzt Namen und Berechtigungsmenge atomar.\"", result: "\"Die Änderung wird auditiert und sofort für neue Prüfungen verwendet.\""}
+        image: {src: "\"/assets/images/handbook/administration/role-edit.svg\"", alt: "\"Rolle bearbeiten mit vollständiger Berechtigungsauswahl\""}
       api_clients_overview:
         template: administration/api_clients.html.twig
         title: API-Client-Übersicht
@@ -346,9 +347,9 @@ chapter:
         permissions: ["administration.api_client.read; Schreibrecht für Erstellen und Bearbeiten."]
         overview: ["Spalten zeigen Name, Client-ID, ausführenden Benutzer, letzte Nutzung und Status. Niemals bedeutet, dass noch kein erfolgreicher Aufruf registriert wurde., Deaktivierte Clients bleiben zur Nachvollziehbarkeit sichtbar, können sich aber nicht mehr authentifizieren."]
         actions:
-          create: {label: "API-Client erstellen", description: "Öffnet die sichere Erzeugung eines technischen Zugangs.", result: "Client-ID und Secret entstehen erst nach dem Speichern."}
-          edit: {label: "Bearbeiten", description: "Öffnet den Aktivstatus des ausgewählten Clients.", result: "Der bestehende Zugang kann gesperrt oder wieder freigegeben werden."}
-        image: {src: "/assets/images/handbook/administration/api-clients-overview.svg", alt: "API-Client-Übersicht mit letzter Nutzung und Status"}
+          create: {label: "\"API-Client erstellen\"", description: "\"Öffnet die sichere Erzeugung eines technischen Zugangs.\"", result: "\"Client-ID und Secret entstehen erst nach dem Speichern.\""}
+          edit: {label: "\"Bearbeiten\"", description: "\"Öffnet den Aktivstatus des ausgewählten Clients.\"", result: "\"Der bestehende Zugang kann gesperrt oder wieder freigegeben werden.\""}
+        image: {src: "\"/assets/images/handbook/administration/api-clients-overview.svg\"", alt: "\"API-Client-Übersicht mit letzter Nutzung und Status\""}
       api_client_create:
         template: administration/api_client_new.html.twig
         title: API-Client anlegen
@@ -357,12 +358,12 @@ chapter:
         permissions: ["administration.api_client.write; der ausführende Benutzer muss aktiv sein."]
         overview: ["Effektiv gilt nur die Schnittmenge aus Client-Rechten und Rechten des ausführenden Benutzers. Verwenden Sie ein dediziertes Dienstkonto."]
         fields:
-          name: {label: "Name", required: true, format: "Eindeutiger System- und Zweckname", example: "ERP Produktion", help: "Ermöglicht die eindeutige Zuordnung in Audit und Nutzung.", effect: "Wird in Übersicht und Protokollen angezeigt.", errors: "Leere Namen sind ungültig."}
-          acting_user_id: {label: "Ausführender Benutzer", required: true, format: "Einzelauswahl eines aktiven Mandantenkontos", example: "svc.erp@example.org", help: "Kein persönliches Administratorkonto verwenden.", effect: "Fachaktionen werden unter dieser Identität autorisiert und auditiert.", errors: "Inaktive oder mandantenfremde Benutzer werden abgewiesen."}
-          permissions: {label: "Berechtigungen", required: false, format: "Mehrfachauswahl angebotener API-Rechte", example: "inventory.stock.read", help: "Nur tatsächlich benötigte Endpunkte freigeben.", effect: "Begrenzt den Zugang zusätzlich zu den Benutzerrechten.", errors: "Unbekannte Rechte werden nicht gespeichert; fehlende Rechte führen zu Zugriff verweigert."}
+          name: {label: "\"Name\"", required: true, format: "\"Eindeutiger System- und Zweckname\"", example: "\"ERP Produktion\"", help: "\"Ermöglicht die eindeutige Zuordnung in Audit und Nutzung.\"", effect: "\"Wird in Übersicht und Protokollen angezeigt.\"", errors: "\"Leere Namen sind ungültig.\""}
+          acting_user_id: {label: "\"Ausführender Benutzer\"", required: true, format: "\"Einzelauswahl eines aktiven Mandantenkontos\"", example: "\"svc.erp@example.org\"", help: "\"Kein persönliches Administratorkonto verwenden.\"", effect: "\"Fachaktionen werden unter dieser Identität autorisiert und auditiert.\"", errors: "\"Inaktive oder mandantenfremde Benutzer werden abgewiesen.\""}
+          permissions: {label: "\"Berechtigungen\"", required: false, format: "\"Mehrfachauswahl angebotener API-Rechte\"", example: "\"inventory.stock.read\"", help: "\"Nur tatsächlich benötigte Endpunkte freigeben.\"", effect: "\"Begrenzt den Zugang zusätzlich zu den Benutzerrechten.\"", errors: "\"Unbekannte Rechte werden nicht gespeichert; fehlende Rechte führen zu Zugriff verweigert.\""}
         actions:
-          generate: {label: "Zugang erzeugen", description: "Erstellt Client-ID und Secret einmalig.", result: "Das Secret erscheint genau einmal auf der Credential-Seite und muss sofort sicher gespeichert werden."}
-        image: {src: "/assets/images/handbook/administration/api-client-create.svg", alt: "API-Client anlegen mit Benutzer und Berechtigungen"}
+          generate: {label: "\"Zugang erzeugen\"", description: "\"Erstellt Client-ID und Secret einmalig.\"", result: "\"Das Secret erscheint genau einmal auf der Credential-Seite und muss sofort sicher gespeichert werden.\""}
+        image: {src: "\"/assets/images/handbook/administration/api-client-create.svg\"", alt: "\"API-Client anlegen mit Benutzer und Berechtigungen\""}
       api_client_edit:
         template: administration/api_client_edit.html.twig
         title: API-Client bearbeiten
@@ -371,10 +372,10 @@ chapter:
         permissions: ["administration.api_client.write"]
         overview: ["Der ausführende Benutzer wird nur lesbar angezeigt. Für einen Identitätswechsel ist ein neuer Client mit neuem Secret anzulegen."]
         fields:
-          active: {label: "API-Client aktiv", required: false, format: "Checkbox; aktiviert oder deaktiviert", example: "deaktiviert", help: "Bei Verdacht auf Kompromittierung sofort deaktivieren.", effect: "Deaktivieren sperrt weitere Authentifizierungen, ohne Audit- und Nutzungsdaten zu löschen.", errors: "Bereits laufende Requests können beendet werden; künftige Anmeldungen werden abgewiesen."}
+          active: {label: "\"API-Client aktiv\"", required: false, format: "\"Checkbox; aktiviert oder deaktiviert\"", example: "\"deaktiviert\"", help: "\"Bei Verdacht auf Kompromittierung sofort deaktivieren.\"", effect: "\"Deaktivieren sperrt weitere Authentifizierungen, ohne Audit- und Nutzungsdaten zu löschen.\"", errors: "\"Bereits laufende Requests können beendet werden; künftige Anmeldungen werden abgewiesen.\""}
         actions:
-          save: {label: "Änderungen speichern", description: "Speichert den Aktivstatus nach CSRF- und Berechtigungsprüfung.", result: "Die Übersicht zeigt den neuen Status."}
-        image: {src: "/assets/images/handbook/administration/api-client-edit.svg", alt: "API-Client bearbeiten und Aktivstatus ändern"}
+          save: {label: "\"Änderungen speichern\"", description: "\"Speichert den Aktivstatus nach CSRF- und Berechtigungsprüfung.\"", result: "\"Die Übersicht zeigt den neuen Status.\""}
+        image: {src: "\"/assets/images/handbook/administration/api-client-edit.svg\"", alt: "\"API-Client bearbeiten und Aktivstatus ändern\""}
       api_client_credential:
         template: administration/api_client_credential.html.twig
         title: API-Zugangsdaten sichern
@@ -383,9 +384,9 @@ chapter:
         permissions: ["administration.api_client.write; nur unmittelbar nach erfolgreicher Erzeugung erreichbar."]
         overview: ["Das schreibgeschützte Feld enthält das vollständige Credential. Speichern Sie es direkt in einem Secret-Store und niemals in Quellcode, Ticket oder Chat., Nach Verlassen der Seite kann das Secret nicht wiederhergestellt werden; erzeugen Sie bei Verlust einen neuen Zugang."]
         actions:
-          copy: {label: "Kopieren", description: "Kopiert das Credential über die Browser-Zwischenablage.", result: "Der Inhalt bleibt nur lokal in der Zwischenablage und muss anschließend sicher eingefügt und aus der Zwischenablage entfernt werden."}
-          back: {label: "Zur Administration", description: "Verlässt die Einmalanzeige endgültig.", result: "Das Credential kann danach nicht erneut angezeigt werden."}
-        image: {src: "/assets/images/handbook/administration/api-client-credential.svg", alt: "Einmalige Anzeige eines neu erzeugten API-Credentials"}
+          copy: {label: "\"Kopieren\"", description: "\"Kopiert das Credential über die Browser-Zwischenablage.\"", result: "\"Der Inhalt bleibt nur lokal in der Zwischenablage und muss anschließend sicher eingefügt und aus der Zwischenablage entfernt werden.\""}
+          back: {label: "\"Zur Administration\"", description: "\"Verlässt die Einmalanzeige endgültig.\"", result: "\"Das Credential kann danach nicht erneut angezeigt werden.\""}
+        image: {src: "\"/assets/images/handbook/administration/api-client-credential.svg\"", alt: "\"Einmalige Anzeige eines neu erzeugten API-Credentials\""}
     guidance:
       prerequisites:
       - Administrationszugriff und abgestimmtes Aufgabenprofil nach Minimalprinzip.
@@ -442,6 +443,63 @@ chapter:
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: Änderungen kontrollieren – Screenshot-Platzhalter
+    views:
+      administration_workspace:
+        template: administration/workspace.html.twig
+        title: Mandanten- und Systemkonfiguration
+        purpose: Die Seite verwaltet Geschäftspartner, Datenräume, OIDC, Nummernkreise, Prozessschalter, Geräteprofile und das technische Betriebsprofil des aktiven Mandanten.
+        navigation: Administration → Konfiguration
+        permissions:
+        - administration.configuration.read zeigt Konfiguration und Änderungsprotokoll; administration.configuration.write erlaubt Änderungen; administration.number_range.use erlaubt Testnummern.
+        overview:
+        - Jeder Kartenbereich besitzt ein eigenes Formular. Speichern wirkt nur auf diesen Bereich; bereits vorhandene Einträge erscheinen direkt darunter.
+        - Lager und Standorte werden nur angezeigt und über die verlinkte Lagertopologie gepflegt. Das Änderungsprotokoll nennt Zeitpunkt, Bereich, Ereignis und Benutzer.
+        fields:
+          code:
+            label: Code
+            required: true
+            format: Eindeutiger technischer Schlüssel ohne Leerzeichen
+            example: CUSTOMER_DE
+            help: Nach produktiver Nutzung nicht für einen anderen Zweck wiederverwenden.
+            effect: Identifiziert den Datensatz in Prozessen, Schnittstellen und Auditdaten.
+            errors: Leere, ungültige oder im jeweiligen Bereich doppelte Codes werden abgewiesen.
+            usages: [Geschäftspartner, Datenraum, Identitätsanbieter, Nummernkreis und Geräteprofil]
+          name: {label: "Name oder Beschreibung", required: true, format: "Verständliche fachliche Bezeichnung", example: "Hauptkunde Deutschland", help: "Beschreibt den Datensatz für Benutzer und Administratoren.", effect: "Erscheint in Listen und Auswahlen.", errors: "Ein leerer Name verhindert das Speichern.", usages: ["Geschäftspartner, Datenraum, Identitätsanbieter, Nummernkreis, Prozess und Geräteprofil"]}
+          partner_type: {label: "Geschäftspartnertyp", required: true, format: "customer; supplier; carrier oder owner", example: "customer", help: "Kunde steht für Empfänger; Lieferant für Beschaffung; Frachtführer für Versand; Eigentümer für Sonderbestand.", effect: "Steuert die fachlich zulässige Verwendung des Partners.", errors: "Nicht angebotene Werte werden abgewiesen."}
+          active: {label: "Geschäftspartner aktiv", required: true, format: "Versteckter Standardwert 1 bei Neuanlage", example: "'1'", help: "Neue Partner werden in dieser Maske immer aktiv angelegt.", effect: "Der Partner kann sofort in neuen Vorgängen verwendet werden.", errors: "Eine spätere Deaktivierung darf offene Abhängigkeiten nicht verletzen."}
+          business_partner_id: {label: "Zugeordneter Geschäftspartner", required: false, format: "Auswahl eines vorhandenen Partners oder leer", example: "CUSTOMER_DE", help: "Verknüpft den Datenraum optional mit einem Partner.", effect: "Begrenzt beziehungsweise kennzeichnet den organisatorischen Datenkontext.", errors: "Unbekannte oder mandantenfremde IDs werden abgewiesen."}
+          protocol: {label: "Identitätsprotokoll", required: true, format: "Auswahl; aktuell oidc", example: "oidc", help: "Bestimmt das unterstützte Single-Sign-on-Verfahren.", effect: "Aktiviert Discovery, State, Nonce und PKCE für den Provider.", errors: "Nicht unterstützte Protokolle werden nicht gespeichert."}
+          issuer_url: {label: "Issuer-URL", required: true, format: "Absolute HTTPS-URL des OIDC-Issuers", example: "'https://login.example.org/realms/webwms'", help: "Muss exakt dem Issuer in Discovery und Token entsprechen.", effect: "Liefert Autorisierungs-, Token- und Schlüsselendpunkte.", errors: "HTTP, ungültige URLs oder abweichende Discovery-Issuer werden abgewiesen."}
+          client_id: {label: "OIDC Client-ID", required: true, format: "Beim Provider registrierte öffentliche Kennung", example: "webwms-production", help: "Keine Secret-Werte in dieses Feld eintragen.", effect: "Identifiziert WebWMS beim Identitätsanbieter.", errors: "Eine falsche Client-ID führt beim Provider zum Anmeldefehler."}
+          client_secret_env: {label: "Umgebungsvariable für Client-Secret", required: true, format: "Name einer Server-Umgebungsvariable", example: "WEBWMS_OIDC_CLIENT_SECRET", help: "Nur die Referenz speichern; das Secret niemals im Formular eingeben.", effect: "WebWMS liest das Secret zur Laufzeit aus der Betriebsumgebung.", errors: "Fehlende oder nicht gesetzte Variablen verhindern den SSO-Callback."}
+          scopes: {label: "OIDC Scopes", required: true, format: "Leerzeichengetrennte Scope-Namen", example: "openid profile email", help: "openid ist verpflichtend; email wird für die Benutzerzuordnung benötigt.", effect: "Bestimmt die vom Provider angeforderten Claims.", errors: "Fehlende openid- oder email-Claims verhindern eine sichere Zuordnung."}
+          enabled: {label: "Aktiviert", required: true, format: "Checkbox beziehungsweise versteckter Standardwert 1", example: "'1'", help: "Aktiviert den jeweils neu angelegten Provider, Nummernkreis, Prozess oder das Geräteprofil.", effect: "Nur aktivierte Konfigurationen werden operativ ausgewertet.", errors: "Deaktivierte Konfigurationen stehen neuen Vorgängen nicht zur Verfügung.", usages: ["Identitätsanbieter, Nummernkreis, Prozessschalter und Geräteprofil"]}
+          object_type: {label: "Objektart", required: true, format: "Stabiler fachlicher Belegtyp", example: "outbound_order", help: "Legt fest, für welche Entität der Nummernkreis verwendet wird.", effect: "Verknüpft die nächste Nummer eindeutig mit einem Belegtyp.", errors: "Doppelte aktive Zuordnungen können zu uneindeutigen Nummern führen und werden abgewiesen."}
+          prefix: {label: "Präfix", required: false, format: "Kurzer statischer Text vor der laufenden Nummer", example: "OUT-", help: "Verwenden Sie nur Zeichen, die Zielsysteme und Etiketten unterstützen.", effect: "Wird jeder erzeugten Nummer vorangestellt.", errors: "Zu lange oder unzulässige Zeichenfolgen werden abgewiesen."}
+          padding: {label: "Stellenzahl", required: true, format: "Ganzzahl von 1 bis 18", example: "'8'", help: "Füllt den laufenden Wert links mit Nullen auf.", effect: "Aus Wert 42 und Stellenzahl 8 wird 00000042.", errors: "Werte außerhalb 1 bis 18 verhindern das Speichern."}
+          next_value: {label: "Nächster Wert", required: true, format: "Positive Ganzzahl", example: "'10001'", help: "Bei produktiven Nummernkreisen nur nach Abstimmung erhöhen; niemals zurücksetzen.", effect: "Die nächste Vergabe verwendet diesen Wert und erhöht ihn atomar.", errors: "Null, negative Werte oder Rücksprünge mit Kollisionsrisiko werden abgewiesen."}
+          gs1_company_prefix: {label: GS1-Unternehmenspräfix, required: false, format: Von GS1 vergebene Ziffernfolge, example: '426012345', help: Nur für GS1-konforme Identifikatoren pflegen., effect: Wird bei unterstützten SSCC- oder GS1-Nummern berücksichtigt., errors: Nicht numerische oder fachlich unpassende Werte führen zu ungültigen Kennzeichen.}
+          suffix: {label: "Suffix", required: false, format: "In dieser Maske leerer versteckter Wert", example: "''", help: "Die Neuanlage verwendet kein Suffix.", effect: "Hinter der laufenden Nummer wird kein Text ergänzt.", errors: "Suffixe sind über diese vereinfachte Maske nicht konfigurierbar."}
+          maximum_value: {label: "Maximalwert", required: false, format: "In dieser Maske leerer versteckter Wert", example: "''", help: "Es wird bei der Neuanlage keine zusätzliche Obergrenze gesetzt.", effect: "Die technische Zahlenkapazität bleibt die Grenze.", errors: "Überlauf oder erschöpfter Zahlenraum verhindert weitere Vergaben."}
+          process_key: {label: "Prozessschlüssel", required: true, format: "Stabiler Schlüssel in Kleinbuchstaben und Unterstrichen", example: "inbound_quality", help: "Muss dem von der Anwendung ausgewerteten Prozess entsprechen.", effect: "Wählt den aktivierbaren Prozess und seine Konfiguration.", errors: "Unbekannte oder doppelte Schlüssel werden abgewiesen."}
+          configuration: {label: "Prozesskonfiguration", required: false, format: "Valides JSON-Objekt", example: "'{\"require_photo\":true,\"max_deviation_percent\":5}'", help: "Erlaubt prozessabhängige Parameter; unbekannte Eigenschaften vermeiden und keine Secrets eintragen.", effect: "Wird bei der Prozessausführung versioniert ausgewertet.", errors: "Ungültiges JSON, falsche Datentypen oder nicht unterstützte Eigenschaften verhindern das Speichern."}
+          device_type: {label: "Gerätetyp", required: true, format: "desktop; tablet oder scanner", example: "scanner", help: "Wählen Sie scanner für MDE-Geräte mit Hardware-Scanereignissen.", effect: "Steuert Darstellung und gerätespezifische Eingabelogik.", errors: "Nicht angebotene Typen werden abgewiesen."}
+          start_route: {label: "Startroute", required: true, format: "Interner absoluter Pfad beginnend mit /", example: "/v3/inbound/receipts", help: "Muss auf eine für das Geräteprofil berechtigte WebWMS-Seite zeigen.", effect: "Öffnet diese Ansicht nach Anmeldung beziehungsweise Profilstart.", errors: "Externe URLs, unbekannte oder nicht erlaubte Routen werden abgewiesen oder führen zu Zugriff verweigert."}
+          scan_suffix: {label: "Scan-Abschlusszeichen", required: false, format: "Tastenname des Scanner-Suffixes", example: "Enter", help: "Muss zur Gerätekonfiguration passen; häufig Enter oder Tab.", effect: "Löst nach einem Hardware-Scan die Verarbeitung der Eingabe aus.", errors: "Ein abweichendes Suffix lässt Scans wie unvollständige Tastatureingaben erscheinen."}
+          fullscreen: {label: "Vollbildmodus", required: true, format: "Versteckter Standardwert 1", example: "'1'", help: "Neue Geräteprofile starten in der reduzierten Vollbilddarstellung.", effect: "Blendet für operative Geräte nicht benötigte Navigationselemente aus.", errors: "Der Wert ist in dieser Maske nicht änderbar."}
+          deployment_mode: {label: "Betriebsmodus", required: true, format: "saas; on_premises oder hybrid", example: "on_premises", help: "Beschreibt die technische Bereitstellungsform, nicht den fachlichen Mandanten.", effect: "Steuert betriebliche Hinweise und verfügbare Integrationswege.", errors: "Ein falscher Modus kann zu ungeeigneten Betriebsannahmen führen."}
+          public_url: {label: "Öffentliche URL", required: true, format: "Absolute HTTPS-Basis-URL ohne internen Hostnamen", example: "'https://wms.example.org'", help: "Muss von Browsern und angebundenen Systemen erreichbar sein.", effect: "Basis für Rückleitungen, Links und externe Callbacks.", errors: "Ungültige oder nicht erreichbare URLs brechen SSO und Integrationscallbacks."}
+          storage_driver: {label: "Speicher-Treiber", required: true, format: "local; s3 oder azure", example: "s3", help: "Muss mit der bereitgestellten Serverkonfiguration und den Credentials übereinstimmen.", effect: "Bestimmt den Ablageort für Dokumente und Medien.", errors: "Fehlende Bucket-, Container- oder Dateisystemrechte verursachen Speicherfehler."}
+          queue_transport: {label: "Queue-Transport", required: true, format: "sync; doctrine oder rabbitmq", example: "rabbitmq", help: "sync nur für einfache Entwicklung; produktiv einen überwachten asynchronen Transport verwenden.", effect: "Bestimmt, ob Hintergrundaufgaben direkt oder über eine Warteschlange laufen.", errors: "Fehlende Worker oder Verbindungsdaten lassen Nachrichten unbearbeitet."}
+          release_channel: {label: "Release-Kanal", required: true, format: "stable oder preview", example: "stable", help: "Stable für Produktivbetrieb; Preview nur für kontrollierte Vorabtests verwenden.", effect: "Legt den vorgesehenen Aktualisierungskanal fest.", errors: "Preview kann noch nicht freigegebene Änderungen enthalten."}
+        actions:
+          create_resource: {label: "Konfiguration anlegen", description: "Validiert und speichert ausschließlich den jeweiligen Kartenbereich.", result: "Der neue Eintrag erscheint in der zugehörigen Liste und wird auditiert."}
+          next_number: {label: "Testnummer", description: "Vergibt tatsächlich die nächste Nummer des gewählten Nummernkreises.", result: "next_value wird dauerhaft und atomar erhöht; die Aktion ist nicht nur eine Vorschau."}
+          save_deployment: {label: "Betriebsprofil speichern", description: "Speichert Modus, URL, Speicher, Queue und Release-Kanal gemeinsam.", result: "Neue Hintergrund- und Integrationsvorgänge verwenden die aktualisierte Konfiguration."}
+          open_topology: {label: "Lagertopologie öffnen", description: "Wechselt zur separaten Pflege von Standort, Lager, Bereichen und Plätzen.", result: "Auf dieser Workspace-Seite werden keine Topologiedaten geändert."}
+        image:
+          src: /assets/images/handbook/administration/system-configuration.svg
+          alt: Systemkonfiguration mit Partnern, OIDC, Nummernkreisen, Prozessen, Geräten und Betriebsprofil
     guidance:
       prerequisites:
       - administration.configuration.read/write und abgestimmte Mandanten-, Standort- und Betriebsvorgaben.

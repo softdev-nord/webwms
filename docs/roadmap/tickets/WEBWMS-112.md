@@ -290,6 +290,22 @@ Zusätzlich prüft er, dass jede View eine vorhandene und innerhalb des Slices
 eindeutige Screenshot-Referenz besitzt. Damit sind einschließlich Anmeldung
 12 von 101 produktiven Views auf den neuen Dokumentationsstandard migriert.
 
-Offen bleibt die Übertragung dieses Standards auf die übrigen 89 produktiven
+Der dritte Slice dokumentiert die zentrale Mandanten- und Systemkonfiguration
+als weitere konkrete View. Die sieben Konfigurationsbereiche Geschäftspartner,
+Datenräume, OIDC, Nummernkreise, Prozessschalter, Geräteprofile und Deployment
+sind mit Bedienung, Berechtigungen und Seiteneffekten beschrieben. Alle 29
+fachlich relevanten Template-Felder sind abgedeckt; dies schließt versteckte
+Standardwerte wie `active`, `enabled` und `fullscreen` sowie die versteckten
+Nummernkreisgrenzen `suffix` und `maximum_value` ausdrücklich ein. Das freie
+JSON-Feld `configuration` enthält ein valides, geheimnisfreies Beispiel und
+Hinweise zu Datentypen und unbekannten Eigenschaften.
+
+Das View-Modell unterstützt nun außerdem Verwendungskontexte für Feldnamen,
+die in mehreren Formularbereichen vorkommen. Die automatische Coverage prüft
+Template, sämtliche sichtbaren und fachlich relevanten versteckten Felder,
+Sprachparität und die eindeutige Screenshot-Referenz. Damit sind 13 von 101
+produktiven Views migriert.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 88 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.

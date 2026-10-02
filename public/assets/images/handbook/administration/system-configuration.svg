@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title description">
+  <title id="title">System configuration screenshot placeholder</title>
+  <desc id="description">Placeholder for business partners, OIDC, number ranges, processes, device profiles and deployment settings.</desc>
+  <rect width="1280" height="720" rx="24" fill="#f3f6f9"/>
+  <rect x="48" y="48" width="1184" height="624" rx="16" fill="#fff" stroke="#d7dde4" stroke-width="4"/>
+  <rect x="48" y="48" width="1184" height="64" rx="16" fill="#405189"/>
+  <g fill="#eef1f5" stroke="#d7dde4" stroke-width="2"><rect x="88" y="152" width="520" height="208" rx="12"/><rect x="672" y="152" width="520" height="208" rx="12"/><rect x="88" y="400" width="520" height="208" rx="12"/><rect x="672" y="400" width="520" height="208" rx="12"/></g>
+  <g fill="#405189" opacity=".75"><rect x="120" y="184" width="224" height="18" rx="9"/><rect x="704" y="184" width="224" height="18" rx="9"/><rect x="120" y="432" width="224" height="18" rx="9"/><rect x="704" y="432" width="224" height="18" rx="9"/></g>
+</svg>

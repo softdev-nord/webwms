@@ -131,6 +131,29 @@ class UserDocumentationServiceTest extends TestCase
     }
 
     #[DataProvider('localeProvider')]
+    public function testSystemConfigurationDocumentsVisibleAndBusinessRelevantHiddenFields(string $locale): void
+    {
+        $views = $this->documentation->document('system-configuration', $locale)['views'];
+        self::assertCount(1, $views);
+        $view = $views[0];
+        self::assertSame('administration/workspace.html.twig', $view['template']);
+
+        $template = file_get_contents(dirname(__DIR__, 4) . '/templates/' . $view['template']);
+        self::assertIsString($template);
+        preg_match_all('/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/i', $template, $matches);
+        $templateFields = array_values(array_unique(array_filter($matches[1], static fn (string $name): bool => $name !== '_token')));
+        sort($templateFields);
+        $documentedFields = array_column($view['fields'], 'id');
+        sort($documentedFields);
+
+        self::assertSame($templateFields, $documentedFields);
+        self::assertContains('active', $documentedFields, 'Business-relevant hidden defaults must be documented.');
+        self::assertContains('maximum_value', $documentedFields, 'Business-relevant hidden limits must be documented.');
+        self::assertNotSame([], $view['fields'][0]['usages'], 'Shared field names must explain their form-specific usages.');
+        self::assertFileExists(dirname(__DIR__, 4) . '/public' . $view['image']['src']);
+    }
+
+    #[DataProvider('localeProvider')]
     public function testEveryChapterIsTranslated(string $locale): void
     {
         foreach (UserDocumentationService::CHAPTERS as $chapter) {
@@ -178,7 +201,7 @@ class UserDocumentationServiceTest extends TestCase
             $catalogue = Yaml::parseFile($root . $locale . '.yaml');
             self::assertSame(['ui', 'category', 'error', 'chapter'], array_keys($catalogue));
             self::assertSame(
-                ['page_title', 'headline', 'introduction', 'search', 'search_action', 'reset_search', 'no_results', 'result_for', 'breadcrumb', 'all_chapters', 'on_this_page', 'no_subchapters', 'previous', 'next', 'navigation', 'open_navigation', 'close_navigation', 'overview', 'chapters', 'current_chapter', 'content', 'sidebar_section', 'sidebar_link', 'prerequisites', 'permissions', 'fields', 'statuses', 'errors', 'documented_views', 'navigation_path', 'displayed_information', 'fields_and_inputs', 'field_name', 'input_help', 'effect_and_errors', 'required', 'optional', 'format', 'example', 'effect', 'validation', 'actions'],
+                ['page_title', 'headline', 'introduction', 'search', 'search_action', 'reset_search', 'no_results', 'result_for', 'breadcrumb', 'all_chapters', 'on_this_page', 'no_subchapters', 'previous', 'next', 'navigation', 'open_navigation', 'close_navigation', 'overview', 'chapters', 'current_chapter', 'content', 'sidebar_section', 'sidebar_link', 'prerequisites', 'permissions', 'fields', 'statuses', 'errors', 'documented_views', 'navigation_path', 'displayed_information', 'fields_and_inputs', 'field_name', 'input_help', 'effect_and_errors', 'required', 'optional', 'format', 'example', 'effect', 'validation', 'actions', 'used_for'],
                 array_keys($catalogue['ui'])
             );
 

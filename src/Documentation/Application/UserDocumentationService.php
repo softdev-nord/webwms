@@ -136,7 +136,7 @@ class UserDocumentationService
         ];
     }
 
-    /** @return list<array{id: string, template: string, title: string, purpose: string, navigation: string, permissions: list<string>, overview: list<string>, fields: list<array{id: string, label: string, required: bool, format: string, example: string, help: string, effect: string, errors: string}>, actions: list<array{id: string, label: string, description: string, result: string}>, image: array{src: string, alt: string}}> */
+    /** @return list<array{id: string, template: string, title: string, purpose: string, navigation: string, permissions: list<string>, overview: list<string>, fields: list<array{id: string, label: string, required: bool, format: string, example: string, help: string, effect: string, errors: string, usages: list<string>}>, actions: list<array{id: string, label: string, description: string, result: string}>, image: array{src: string, alt: string}}> */
     private function views(mixed $views, string $slug): array
     {
         if (!is_array($views)) {
@@ -168,6 +168,7 @@ class UserDocumentationService
                     'help' => $this->requiredString($field, 'help', $context),
                     'effect' => $this->requiredString($field, 'effect', $context),
                     'errors' => $this->requiredString($field, 'errors', $context),
+                    'usages' => $this->stringValues($field['usages'] ?? []),
                 ];
             }
 
@@ -258,7 +259,7 @@ class UserDocumentationService
         foreach ($views as $view) {
             $texts = [$view['title'], $view['purpose'], $view['navigation'], ...$view['permissions'], ...$view['overview']];
             foreach ($view['fields'] as $field) {
-                array_push($texts, $field['id'], $field['label'], $field['format'], $field['example'], $field['help'], $field['effect'], $field['errors']);
+                array_push($texts, $field['id'], $field['label'], $field['format'], $field['example'], $field['help'], $field['effect'], $field['errors'], ...$field['usages']);
             }
             foreach ($view['actions'] as $action) {
                 array_push($texts, $action['label'], $action['description'], $action['result']);

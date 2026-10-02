@@ -73,7 +73,7 @@
                                             {% for field in view.fields %}
                                                 <tr id="field-{{ view.id }}-{{ field.id }}">
                                                     <th scope="row"><code>{{ field.id }}</code><span class="d-block">{{ field.label }}</span><small>{{ (field.required ? 'ui.required' : 'ui.optional')|trans({}, 'handbook') }}</small></th>
-                                                    <td><strong>{{ 'ui.format'|trans({}, 'handbook') }}:</strong> {{ field.format }}<br><strong>{{ 'ui.example'|trans({}, 'handbook') }}:</strong> <code>{{ field.example }}</code><br>{{ field.help }}</td>
+                                                    <td><strong>{{ 'ui.format'|trans({}, 'handbook') }}:</strong> {{ field.format }}<br><strong>{{ 'ui.example'|trans({}, 'handbook') }}:</strong> <code>{{ field.example }}</code><br>{{ field.help }}{% if field.usages %}<br><strong>{{ 'ui.used_for'|trans({}, 'handbook') }}:</strong><ul class="mb-0">{% for usage in field.usages %}<li>{{ usage }}</li>{% endfor %}</ul>{% endif %}</td>
                                                     <td><strong>{{ 'ui.effect'|trans({}, 'handbook') }}:</strong> {{ field.effect }}<br><strong>{{ 'ui.validation'|trans({}, 'handbook') }}:</strong> {{ field.errors }}</td>
                                                 </tr>
                                             {% endfor %}
