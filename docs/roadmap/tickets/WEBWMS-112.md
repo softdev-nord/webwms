@@ -322,6 +322,23 @@ sprachparametrisierter Test weist exakt 13 Formulare, 27 Felder, zehn Aktionen
 und die vorhandene Screenshot-Referenz nach. Damit sind 14 von 101 produktiven
 Views migriert.
 
-Offen bleibt die Übertragung dieses Standards auf die übrigen 87 produktiven
+Der fünfte Slice migriert vier der fünf operativen Wareneingangs-Views:
+Übersicht ungeplanter Eingänge, separate Erfassung, Detail mit atomarer
+Bestandsbuchung sowie die Arbeitsliste geplanter Eingänge. Die Dokumentation
+deckt 22 Formularfelddefinitionen und acht Prozessaktionen ab. Sie erläutert
+Lieferanten- und Belegreferenzen, Empfangsplatz, Menge, Bestandsstatus, Charge,
+Seriennummer und Haltbarkeit sowie die Qualitätsmerkmale Verpackung und
+Mengenprüfung.
+
+Für geplante Eingänge sind die Statusfolge von Avis und Annahme über QS und
+Abweichungsentscheidung bis zur Einlagerung, die jeweils nächste zulässige
+Aktion, atomare Buchung und Schutz vor Wiederholung beschrieben. Der
+sprachparametrisierte Test gleicht alle vier Templates und ihre fünf sichtbaren
+Formulare mit 22 Dokumentationseinträgen ab und prüft eindeutige vorhandene
+Bildreferenzen. Damit sind 18 von 101 produktiven Views migriert. Die separate
+Wareneingangs-Steuerungszentrale mit zehn Formularen bleibt als nächster
+Inbound-Slice offen.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 83 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.

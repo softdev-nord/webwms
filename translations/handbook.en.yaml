@@ -645,6 +645,85 @@ chapter:
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: Putaway – screenshot placeholder
+    views:
+      unplanned_receipts_overview:
+        template: inbound/index.html.twig
+        title: Unplanned receipts
+        purpose: The overview shows recorded unplanned receipts and links to creation, details or planned receipt processing.
+        navigation: Inbound → Unplanned receipts
+        permissions: ["inbound.receipt.read; inbound.receipt.write for creation; inbound.planned.read to open planned receipts."]
+        overview:
+        - Columns show receipt number, supplier, delivery note, line count, total quantity and state. Open leads to the immutable detail and posting view.
+        - The empty state means that no unplanned receipt exists in the active tenant; this table has no filters or pagination.
+        actions:
+          create: {label: "Record unplanned receipt", description: "Opens the separate receipt form.", result: "The overview changes only after successful saving."}
+          open: {label: "Open", description: "Shows header, lines, stock dimensions and posting state.", result: "Navigation does not change data."}
+          planned: {label: "Planned receipts", description: "Opens ASN and purchase-order receipt processing.", result: "Open planned lines are displayed."}
+        image: {src: "/assets/images/handbook/inbound/unplanned-overview.svg", alt: "Unplanned receipt overview with state and open action"}
+      unplanned_receipt_create:
+        template: inbound/new.html.twig
+        title: Record unplanned receipt
+        purpose: The form receives goods without a preceding purchase order or ASN at a receiving bin.
+        navigation: Inbound → Unplanned receipts → Record unplanned receipt
+        permissions: ["inbound.receipt.write; product and receiving bin must exist in the active tenant."]
+        overview: ["Verify supplier, product, quantity, stock state and any batch or serial number. Saving creates a controlled receipt but not the final stock posting."]
+        fields:
+          code: {label: "Receipt number", required: true, format: "Document code unique in the tenant", example: "UR-2026-0042", help: "Use a traceable external or internal reference.", effect: "Identifies the receipt and prevents accidental duplicates.", errors: "Empty or previously used codes are rejected."}
+          supplier_code: {label: "Supplier code", required: true, format: "Stable uppercase letter/digit code", example: "SUP-1000", help: "Identifies the sender without a purchase-order reference.", effect: "Stored on the receipt and in reports.", errors: "Empty codes prevent receipt."}
+          supplier_name: {label: "Supplier name", required: true, format: "Full understandable name", example: "Example Supply Ltd", help: "Complements the code for users and evidence.", effect: "Appears in overview and details.", errors: "An empty name is invalid."}
+          delivery_note: {label: "Delivery note", required: false, format: "Exact supplier reference", example: "DN-84711", help: "Supports enquiries and duplicate checks.", effect: "Stored as an additional external reference.", errors: "Ambiguous or reused references must be checked before posting."}
+          product_id: {label: "Product", required: true, format: "Selection of an existing product", example: "SKU-4711", help: "Verify SKU and description against delivered goods.", effect: "Determines the stock created later.", errors: "Unknown or cross-tenant products are rejected."}
+          location_id: {label: "Receiving bin", required: true, format: "Selection of a permitted bin", example: "WH1-RECEIVING", help: "Use an approved receiving or inspection bin.", effect: "Later posting initially creates stock at this bin.", errors: "Unknown, blocked or unsuitable bins prevent receipt."}
+          quantity: {label: "Quantity", required: true, format: "Positive integer in the product base unit", example: "'20'", help: "Count or measure the quantity actually received.", effect: "Used as receipt quantity for later stock posting.", errors: "Zero, negative or non-numeric quantities are invalid."}
+          stock_status: {label: "Stock status", required: true, format: "available; quality_inspection or blocked", example: "quality_inspection", help: "Available can be used; quality inspection stays controlled; blocked prevents operational use.", effect: "Determines availability of posted stock.", errors: "Values not offered by the form are rejected."}
+          batch_number: {label: "Batch", required: false, format: "Exact manufacturer batch identifier", example: "LOT-20261002", help: "Mandatory for batch-managed products and copied from the label.", effect: "Creates the batch stock dimension and traceability.", errors: "A missing or invalid batch prevents posting for batch-required products."}
+          serial_number: {label: "Serial number", required: false, format: "Globally unique serial number", example: "SN-0001842", help: "Reference exactly one unit for serial-managed products.", effect: "Permanently identifies the concrete stock unit.", errors: "Duplicate or existing serial numbers are rejected."}
+        actions:
+          accept: {label: "Accept", description: "Validates references, product, bin, quantity and stock dimensions and creates the receipt.", result: "The detail view can then perform controlled stock posting."}
+          cancel: {label: "Cancel", description: "Discards unsaved input and returns to the overview.", result: "No receipt is created."}
+        image: {src: "/assets/images/handbook/inbound/unplanned-create.svg", alt: "Form for recording an unplanned receipt"}
+      unplanned_receipt_detail:
+        template: inbound/show.html.twig
+        title: Review and post unplanned receipt
+        purpose: The detail view verifies supplier, delivery note, lines, bins, quantities and stock dimensions before posting.
+        navigation: Inbound → Unplanned receipts → Open
+        permissions: ["inbound.receipt.read; inbound.receipt.book for stock posting."]
+        overview:
+        - Header data shows supplier, delivery note, state and acceptance time. Lines show product, receiving bin, quantity, state, batch and serial number.
+        - Posting is available only in accepted state. After success it disappears and the state prevents duplicate posting.
+        actions:
+          book: {label: "Post to stock", description: "Checks permission and current document state and atomically creates stock receipts.", result: "On success document and lines become posted; an error creates no partial posting."}
+          back: {label: "Inbound", description: "Returns to the overview without a change.", result: "Current document state is retained."}
+        image: {src: "/assets/images/handbook/inbound/unplanned-detail.svg", alt: "Unplanned receipt details with stock posting"}
+      planned_receipts:
+        template: inbound/planned.html.twig
+        title: Receive and put away planned receipts
+        purpose: The worklist takes advised lines through receipt, quality inspection, discrepancy resolution and putaway.
+        navigation: Inbound → Planned receipts
+        permissions: ["inbound.planned.read plus receive, inspect, resolve and putaway for their respective state actions."]
+        overview:
+        - Columns show ASN and order, product, advised or received quantity, process state, destination and the currently permitted action.
+        - States distinguish advised, QA open, QA completed, open discrepancy, rejected, open putaway and put away. Each row offers only the next valid step.
+        fields:
+          actual_quantity: {label: "Actual quantity", required: true, format: "Positive integer", example: "'18'", help: "Enter the counted quantity rather than blindly accepting the ASN value.", effect: "A difference from expected quantity opens a discrepancy.", errors: "Zero or negative values are rejected; excess quantities need an explanation."}
+          discrepancy_reason: {label: "Discrepancy reason", required: false, format: "Short functional explanation", example: "Two cartons missing", help: "Complete specifically whenever quantity differs.", effect: "Stored on the discrepancy and in audit.", errors: "A discrepancy without sufficient reason cannot be resolved safely."}
+          location_id: {label: "Receiving or inspection bin", required: true, format: "Selection of a permitted bin", example: "WH1-QA-01", help: "Bin holding inspected goods until putaway.", effect: "Becomes source bin for stock and the later putaway order.", errors: "Unknown or blocked bins prevent QA completion."}
+          decision: {label: "QA decision", required: true, format: "accept or block", example: "accept", help: "Acceptance is unavailable while a discrepancy is open; block keeps goods unavailable.", effect: "Sets quality and stock state and controls the next step.", errors: "Acceptance with an open discrepancy is rejected."}
+          packaging_passed: {label: "Packaging undamaged", required: false, format: "Checkbox", example: "enabled", help: "Enable only after checking packaging and tamper protection.", effect: "Stored as a QA result.", errors: "Failed inspection should include a QA note and block decision."}
+          quantity_passed: {label: "Quantity complete", required: false, format: "Checkbox", example: "disabled", help: "Compare count with advised quantity.", effect: "Documents completeness independently from actual quantity.", errors: "Conflicts between checkbox and actual quantity must be resolved."}
+          packaging_note: {label: "QA note", required: false, format: "Factual inspection description", example: "Outer carton dented; inner packaging intact", help: "Describe damage, evidence and decision traceably.", effect: "Stored in quality evidence.", errors: "Vague notes make later resolution difficult."}
+          batch_number: {label: "Batch", required: false, format: "Exact manufacturer batch", example: "LOT-20261002", help: "Copy from the product label for batch-managed products.", effect: "Stored as stock dimension on release.", errors: "Missing or invalid batch prevents completion for batch-required products."}
+          serial_number: {label: "Serial number", required: false, format: "Unique serial number", example: "SN-0001842", help: "Scan or enter exactly for serial-required products.", effect: "Assigns later stock to the concrete unit.", errors: "Duplicate or unknown serial numbers are rejected."}
+          expires_at: {label: "Best-before date", required: false, format: "Date in YYYY-MM-DD format", example: "'2028-10-31'", help: "Copy from the product and always maintain for FEFO-relevant goods.", effect: "Controls shelf-life validation and FEFO picking.", errors: "Expired or implausible dates can block release and putaway."}
+          action: {label: "Discrepancy decision", required: true, format: "release or reject", example: "release", help: "Release permits putaway; reject retains or sets blocked stock.", effect: "Closes the open discrepancy with audit evidence.", errors: "A resolved case cannot be closed again."}
+          resolution_note: {label: "Decision reason", required: true, format: "Concrete and verifiable explanation", example: "Shortage confirmed with supplier; partial quantity released", help: "Record basis, agreement and follow-up action.", effect: "Audited immutably with the decision.", errors: "An empty explanation prevents saving."}
+        actions:
+          receive: {label: "Receive", description: "Records actual quantity and opens a controlled discrepancy when needed.", result: "The line advances to quality inspection."}
+          inspect: {label: "Complete QA", description: "Stores bin, decision, checks and stock dimensions.", result: "Goods are released or blocked; open discrepancies still require resolution."}
+          resolve: {label: "Save decision", description: "Releases or rejects the discrepancy with a reason.", result: "Released goods can be put away; rejected goods remain blocked."}
+          plan_putaway: {label: "Plan putaway", description: "Uses the active strategy to find a permitted target and creates an order.", result: "State changes to open putaway."}
+          confirm_putaway: {label: "Confirm putaway", description: "Confirms the order and atomically moves stock to its target.", result: "State changes to put away and repetition is excluded."}
+        image: {src: "/assets/images/handbook/inbound/planned-receipts.svg", alt: "Planned receipt worklist with QA, discrepancy and putaway"}
     guidance:
       prerequisites:
       - Active supplier, product, site, receiving area and, for planned receipt, order or notice.

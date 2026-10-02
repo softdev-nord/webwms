@@ -652,6 +652,85 @@ chapter:
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: Einlagerung – Screenshot-Platzhalter
+    views:
+      unplanned_receipts_overview:
+        template: inbound/index.html.twig
+        title: Ungeplante Wareneingänge
+        purpose: Die Übersicht zeigt bereits erfasste ungeplante Zugänge und führt zur Erfassung, Detailansicht oder geplanten Annahme.
+        navigation: Wareneingang → Ungeplante Wareneingänge
+        permissions: ["inbound.receipt.read; inbound.receipt.write für die Neuanlage; inbound.planned.read für den Wechsel zu geplanten Eingängen."]
+        overview:
+        - Spalten zeigen Wareneingangsnummer, Lieferant, Lieferschein, Positionsanzahl, Gesamtmenge und Status. Öffnen führt zur unveränderlichen Detail- und Buchungsansicht.
+        - Ein leerer Zustand bedeutet, dass im aktiven Mandanten noch kein ungeplanter Eingang erfasst wurde; Filter oder Pagination besitzt diese Tabelle nicht.
+        actions:
+          create: {label: "Ungeplanten Eingang erfassen", description: "Öffnet das separate Annahmeformular.", result: "Die Übersicht wird erst nach erfolgreichem Speichern ergänzt."}
+          open: {label: "Öffnen", description: "Zeigt Kopf, Positionen, Bestandsdimensionen und Buchungsstatus des gewählten Eingangs.", result: "Die Navigation verändert keine Daten."}
+          planned: {label: "Geplante Eingänge", description: "Wechselt zur Avis- und Bestellannahme.", result: "Offene geplante Positionen werden angezeigt."}
+        image: {src: "/assets/images/handbook/inbound/unplanned-overview.svg", alt: "Übersicht ungeplanter Wareneingänge mit Status und Öffnen-Aktion"}
+      unplanned_receipt_create:
+        template: inbound/new.html.twig
+        title: Ungeplanten Wareneingang erfassen
+        purpose: Das Formular nimmt Ware ohne vorherige Bestellung oder Avis direkt an einem Empfangsplatz an.
+        navigation: Wareneingang → Ungeplante Wareneingänge → Ungeplanten Eingang erfassen
+        permissions: ["inbound.receipt.write; Artikel und Empfangsplatz müssen im aktiven Mandanten vorhanden sein."]
+        overview: ["Prüfen Sie vor der Annahme Lieferant, Artikel, Menge, Bestandsstatus und gegebenenfalls Charge oder Seriennummer. Speichern erzeugt zunächst einen kontrollierten Wareneingang, noch keine endgültige Bestandsbuchung."]
+        fields:
+          code: {label: "Wareneingangsnummer", required: true, format: "Im Mandanten eindeutiger Belegcode", example: "UE-2026-0042", help: "Verwenden Sie eine nachvollziehbare externe oder interne Referenz.", effect: "Identifiziert den Eingang und verhindert unbeabsichtigte Dubletten.", errors: "Leere oder bereits verwendete Codes werden abgewiesen."}
+          supplier_code: {label: "Lieferantencode", required: true, format: "Stabiler Großbuchstaben-/Zifferncode", example: "SUP-1000", help: "Identifiziert den Absender auch ohne angelegten Bestellbezug.", effect: "Wird am Wareneingang und in Auswertungen gespeichert.", errors: "Leere Codes verhindern die Annahme."}
+          supplier_name: {label: "Lieferantenname", required: true, format: "Vollständige verständliche Bezeichnung", example: "Muster Liefertechnik GmbH", help: "Ergänzt den Code für Benutzer und Nachweise.", effect: "Erscheint in Übersicht und Detailansicht.", errors: "Ein leerer Name ist ungültig."}
+          delivery_note: {label: "Lieferschein", required: false, format: "Exakte Lieferantenreferenz", example: "LS-84711", help: "Erleichtert Rückfragen und Dublettenprüfung.", effect: "Wird als zusätzliche externe Referenz gespeichert.", errors: "Unklare oder wiederverwendete Referenzen müssen vor der Buchung geprüft werden."}
+          product_id: {label: "Artikel", required: true, format: "Auswahl eines vorhandenen Artikels", example: "SKU-4711", help: "Prüfen Sie SKU und Beschreibung gegen die gelieferte Ware.", effect: "Bestimmt den später erzeugten Bestand.", errors: "Unbekannte oder mandantenfremde Artikel werden abgewiesen."}
+          location_id: {label: "Empfangslagerplatz", required: true, format: "Auswahl eines zulässigen Lagerplatzes", example: "WH1-RECEIVING", help: "Verwenden Sie einen freigegebenen Empfangs- oder Prüfplatz.", effect: "Die spätere Buchung legt den Bestand zunächst auf diesem Platz an.", errors: "Unbekannte, gesperrte oder unzulässige Plätze verhindern die Annahme."}
+          quantity: {label: "Menge", required: true, format: "Positive Ganzzahl in der Artikelbasiseinheit", example: "'20'", help: "Zählen oder messen Sie die tatsächlich angenommene Menge.", effect: "Wird als Zugangsmenge für die spätere Bestandsbuchung verwendet.", errors: "Null, negative oder nicht numerische Mengen sind ungültig."}
+          stock_status: {label: "Bestandsstatus", required: true, format: "available; quality_inspection oder blocked", example: "quality_inspection", help: "Verfügbar ist sofort nutzbar; Qualitätsprüfung bleibt kontrolliert; Gesperrt verhindert operative Verwendung.", effect: "Bestimmt die Verfügbarkeit des gebuchten Bestands.", errors: "Nicht angebotene Statuswerte werden abgewiesen."}
+          batch_number: {label: "Charge", required: false, format: "Exakte Chargenkennung des Herstellers", example: "LOT-20261002", help: "Bei chargengeführten Artikeln verpflichtend und vom Etikett zu übernehmen.", effect: "Erzeugt die Bestandsdimension Charge und ermöglicht Rückverfolgung.", errors: "Fehlende oder ungültige Charge verhindert die Buchung eines chargenpflichtigen Artikels."}
+          serial_number: {label: "Seriennummer", required: false, format: "Global eindeutige Seriennummer", example: "SN-0001842", help: "Bei seriennummerngeführten Artikeln pro Eingang genau eine Einheit referenzieren.", effect: "Identifiziert den konkreten Bestand dauerhaft.", errors: "Doppelte oder bereits vorhandene Seriennummern werden abgewiesen."}
+        actions:
+          accept: {label: "Annehmen", description: "Validiert Referenzen, Artikel, Platz, Menge und Bestandsdimensionen und erstellt den Eingang.", result: "Die Detailansicht kann anschließend die kontrollierte Bestandsbuchung ausführen."}
+          cancel: {label: "Abbrechen", description: "Verwirft nicht gespeicherte Eingaben und kehrt zur Übersicht zurück.", result: "Es wird kein Wareneingang erzeugt."}
+        image: {src: "/assets/images/handbook/inbound/unplanned-create.svg", alt: "Formular zur Erfassung eines ungeplanten Wareneingangs"}
+      unplanned_receipt_detail:
+        template: inbound/show.html.twig
+        title: Ungeplanten Wareneingang prüfen und buchen
+        purpose: Die Detailansicht kontrolliert Lieferant, Lieferschein, Positionen, Lagerplätze, Mengen und Bestandsdimensionen vor der Buchung.
+        navigation: Wareneingang → Ungeplante Wareneingänge → Öffnen
+        permissions: ["inbound.receipt.read; inbound.receipt.book für die Bestandsbuchung."]
+        overview:
+        - Kopfdaten zeigen Lieferant, Lieferschein, Status und Annahmezeitpunkt. Positionen zeigen Artikel, Empfangsplatz, Menge, Status, Charge und Seriennummer.
+        - Die Buchungsaktion erscheint nur im Status accepted. Nach erfolgreicher Buchung ist sie nicht erneut verfügbar und der Status verhindert Doppelbuchungen.
+        actions:
+          book: {label: "In Bestand buchen", description: "Prüft Berechtigung und aktuellen Belegstatus und erzeugt die Bestandszugänge atomar.", result: "Bei Erfolg wechseln Beleg und Positionen in den gebuchten Zustand; ein Fehler erzeugt keine Teilbuchung."}
+          back: {label: "Wareneingang", description: "Kehrt ohne Änderung zur Übersicht zurück.", result: "Der aktuelle Belegstatus bleibt erhalten."}
+        image: {src: "/assets/images/handbook/inbound/unplanned-detail.svg", alt: "Detailansicht eines ungeplanten Wareneingangs mit Bestandsbuchung"}
+      planned_receipts:
+        template: inbound/planned.html.twig
+        title: Geplante Wareneingänge annehmen und einlagern
+        purpose: Die Arbeitsliste führt avisierte Positionen durch Annahme, Qualitätsprüfung, Abweichungsentscheidung und Einlagerung.
+        navigation: Wareneingang → Geplante Wareneingänge
+        permissions: ["inbound.planned.read sowie receive, inspect, resolve und putaway für die jeweiligen Statusaktionen."]
+        overview:
+        - Spalten zeigen Avis und Bestellung, Artikel, avisierte oder angenommene Menge, Prozessstatus, Zielplatz und die aktuell zulässige Aktion.
+        - Die Statusanzeige unterscheidet avisiert, QS offen, QS abgeschlossen, offene Abweichung, abgelehnt, offene Einlagerung und eingelagert. Pro Zeile wird immer nur der nächste zulässige Schritt angeboten.
+        fields:
+          actual_quantity: {label: "Tatsächliche Menge", required: true, format: "Positive Ganzzahl", example: "'18'", help: "Erfassen Sie die gezählte Annahmemenge statt ungeprüft die Avismenge zu übernehmen.", effect: "Abweichungen zur erwarteten Menge eröffnen einen Abweichungsfall.", errors: "Null oder negative Werte werden abgewiesen; Übermengen benötigen einen nachvollziehbaren Grund."}
+          discrepancy_reason: {label: "Abweichungsgrund", required: false, format: "Kurze fachliche Begründung", example: "Zwei Kartons fehlen", help: "Bei Mengenabweichung konkret und prüfbar ausfüllen.", effect: "Wird am Abweichungsfall und im Audit gespeichert.", errors: "Eine Abweichung ohne ausreichenden Grund kann nicht kontrolliert entschieden werden."}
+          location_id: {label: "Empfangs- oder Prüfplatz", required: true, format: "Auswahl eines zulässigen Lagerplatzes", example: "WH1-QA-01", help: "Platz, auf dem die geprüfte Ware bis zur Einlagerung geführt wird.", effect: "Wird Quellplatz des Bestands und späteren Einlagerungsauftrags.", errors: "Unbekannte oder gesperrte Plätze verhindern den QS-Abschluss."}
+          decision: {label: "QS-Entscheidung", required: true, format: "accept oder block", example: "accept", help: "Freigeben ist bei offener Abweichung nicht verfügbar; Sperren hält Ware unverfügbar.", effect: "Setzt Qualitäts- und Bestandsstatus und steuert den Folgeschritt.", errors: "Unzulässige Freigabe bei offener Abweichung wird abgewiesen."}
+          packaging_passed: {label: "Verpackung unbeschädigt", required: false, format: "Checkbox", example: "aktiviert", help: "Nur aktivieren, wenn Verpackung und Manipulationsschutz geprüft wurden.", effect: "Wird als QS-Prüfergebnis dokumentiert.", errors: "Nicht bestandene Prüfung sollte mit QS-Notiz und Sperrentscheidung erfasst werden."}
+          quantity_passed: {label: "Menge vollständig", required: false, format: "Checkbox", example: "deaktiviert", help: "Mit Zählung und Avismenge abgleichen.", effect: "Dokumentiert die Vollständigkeitsprüfung unabhängig von der erfassten Istmenge.", errors: "Widersprüche zwischen Checkbox und Istmenge müssen vor Abschluss geklärt werden."}
+          packaging_note: {label: "QS-Notiz", required: false, format: "Sachliche Beschreibung der Prüfung", example: "Außenkarton eingedrückt; Innenverpackung intakt", help: "Schäden, Fotos und Entscheidung nachvollziehbar beschreiben.", effect: "Wird im Qualitätsnachweis gespeichert.", errors: "Unklare Notizen erschweren spätere Abweichungsentscheidungen."}
+          batch_number: {label: "Charge", required: false, format: "Exakte Herstellercharge", example: "LOT-20261002", help: "Bei chargengeführten Artikeln vom Produktetikett übernehmen.", effect: "Wird bei Freigabe als Bestandsdimension gespeichert.", errors: "Fehlende oder ungültige Charge verhindert den Abschluss bei chargenpflichtigen Artikeln."}
+          serial_number: {label: "Seriennummer", required: false, format: "Eindeutige Seriennummer", example: "SN-0001842", help: "Bei Serienpflicht exakt scannen oder eingeben.", effect: "Ordnet den späteren Bestand der konkreten Einheit zu.", errors: "Doppelte oder unbekannte Seriennummern werden abgewiesen."}
+          expires_at: {label: "Mindesthaltbarkeitsdatum", required: false, format: "Datum im Format JJJJ-MM-TT", example: "'2028-10-31'", help: "Vom Produkt übernehmen und bei FEFO-relevanten Artikeln zwingend pflegen.", effect: "Steuert Haltbarkeitsprüfung und FEFO-Entnahme.", errors: "Abgelaufene oder unplausible Daten können Freigabe und Einlagerung blockieren."}
+          action: {label: "Abweichungsentscheidung", required: true, format: "release oder reject", example: "release", help: "Freigeben erlaubt Einlagerung; Ablehnen hält beziehungsweise setzt Bestand gesperrt.", effect: "Schließt den offenen Abweichungsfall auditiert ab.", errors: "Bereits entschiedene Fälle können nicht erneut abgeschlossen werden."}
+          resolution_note: {label: "Entscheidungsgrund", required: true, format: "Konkrete und prüfbare Begründung", example: "Fehlmenge mit Lieferant bestätigt; Teilmenge freigegeben", help: "Grundlage, Abstimmung und Folgemaßnahme dokumentieren.", effect: "Wird unveränderlich mit der Abweichungsentscheidung auditiert.", errors: "Eine leere Begründung verhindert das Speichern."}
+        actions:
+          receive: {label: "Annehmen", description: "Übernimmt die Istmenge und eröffnet bei Abweichung einen kontrollierten Fall.", result: "Die Position wechselt zur Qualitätsprüfung."}
+          inspect: {label: "QS abschließen", description: "Speichert Platz, Entscheidung, Prüfpunkte und Bestandsdimensionen.", result: "Ware wird freigegeben oder gesperrt; offene Abweichungen bleiben entscheidungspflichtig."}
+          resolve: {label: "Entscheidung speichern", description: "Gibt die Abweichung begründet frei oder lehnt sie ab.", result: "Freigegebene Ware kann eingelagert werden; abgelehnte bleibt gesperrt."}
+          plan_putaway: {label: "Einlagerung planen", description: "Ermittelt anhand der aktiven Strategie einen zulässigen Zielplatz und erstellt einen Auftrag.", result: "Der Status wechselt zu offene Einlagerung."}
+          confirm_putaway: {label: "Einlagerung bestätigen", description: "Quittiert den offenen Einlagerungsauftrag und bucht den Bestand atomar auf das Ziel.", result: "Der Status wechselt zu eingelagert; Wiederholung ist ausgeschlossen."}
+        image: {src: "/assets/images/handbook/inbound/planned-receipts.svg", alt: "Arbeitsliste geplanter Wareneingänge mit QS, Abweichung und Einlagerung"}
     guidance:
       prerequisites:
       - Aktiver Lieferant, Artikel, Standort, Empfangsbereich und bei geplantem Zugang Bestellung beziehungsweise Avis.
