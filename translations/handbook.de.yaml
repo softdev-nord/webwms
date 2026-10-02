@@ -27,6 +27,20 @@ ui:
   fields: Konfiguration und Eingaben
   statuses: Status und Auswirkungen
   errors: Typische Fehler und Behebung
+  documented_views: Dokumentierte Ansichten
+  navigation_path: Aufrufweg
+  displayed_information: Angezeigte Informationen und Bedienung
+  fields_and_inputs: Felder und Ausfüllhinweise
+  field_name: Feld
+  input_help: Format, Beispiel und Bedeutung
+  effect_and_errors: Auswirkung und Fehlerbehebung
+  required: Pflichtfeld
+  optional: Optional
+  format: Format
+  example: Beispiel
+  effect: Auswirkung
+  validation: Validierung
+  actions: Aktionen
 category:
   basics: Grundlagen & Bedienkonzept
   administration: Administration & Konfiguration
@@ -70,6 +84,62 @@ chapter:
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: Sicher beenden – Screenshot-Platzhalter
+    views:
+      workspace_login:
+        template: security/workspace_login.html.twig
+        title: Anmeldung am WebWMS-Arbeitsbereich
+        purpose: Die Seite eröffnet eine Sitzung per Passwort oder über einen für den Mandanten konfigurierten OpenID-Connect-Anbieter.
+        navigation: Öffentliche Startseite → Anmelden
+        permissions:
+        - Keine Vorab-Berechtigung; Benutzerkonto und Mandant müssen aktiv sein.
+        overview:
+        - Der Passwortbereich prüft Mandant, E-Mail-Adresse und Passwort gemeinsam.
+        - Der SSO-Bereich leitet nach Prüfung von Mandant und Provider-Code zum Identitätsanbieter weiter.
+        fields:
+          tenant_id:
+            label: Mandanten-ID
+            required: true
+            format: UUID des Mandanten ohne Leerzeichen
+            example: 018f2f5a-73ad-7c42-9d84-2dcb65bcb410
+            help: Identifiziert den Daten- und Berechtigungskontext. Verwenden Sie die von der Administration mitgeteilte ID.
+            effect: Alle Anmeldeprüfungen und die spätere Sitzung werden diesem Mandanten zugeordnet.
+            errors: Eine unbekannte, inaktive oder syntaktisch ungültige ID verhindert die Anmeldung.
+          email:
+            label: E-Mail-Adresse
+            required: true
+            format: Vollständige E-Mail-Adresse des aktiven Benutzerkontos
+            example: lagerleitung@example.org
+            help: Die Adresse muss innerhalb des angegebenen Mandanten eindeutig sein.
+            effect: Bestimmt Benutzer, Rollen und protokollierte Identität der Sitzung.
+            errors: Unbekannte, unbestätigte oder inaktive Konten werden abgewiesen.
+          password:
+            label: Passwort
+            required: true
+            format: Persönliches Kennwort; Groß- und Kleinschreibung beachten
+            example: '************'
+            help: Geben Sie das Kennwort verdeckt ein und teilen Sie es niemals mit anderen Personen.
+            effect: Bei erfolgreicher Prüfung wird die authentifizierte Sitzung erzeugt.
+            errors: Bei falscher Eingabe bleibt die Anmeldung ohne Offenlegung von Kontodetails gesperrt.
+          provider:
+            label: Provider-Code
+            required: true
+            format: Exakter Code des eingerichteten OIDC-Providers
+            example: corporate_sso
+            help: Nur für Single Sign-on erforderlich; der Code wird von der Administration vorgegeben.
+            effect: Wählt Discovery-Endpunkt, Client und Anmelderichtlinie für die Weiterleitung aus.
+            errors: Unbekannte oder deaktivierte Provider sowie unsichere Discovery-Daten werden abgewiesen.
+        actions:
+          password_login:
+            label: Anmelden
+            description: Prüft Mandant, E-Mail-Adresse, Passwort und Kontostatus.
+            result: Bei Erfolg öffnet sich der Arbeitsbereich; bei Fehlern bleiben Eingaben außer dem Passwort erhalten.
+          sso_login:
+            label: Mit SSO anmelden
+            description: Startet den OIDC-Ablauf mit State, Nonce und PKCE.
+            result: Nach erfolgreicher Anmeldung beim Provider erfolgt die sichere Rückleitung in den Mandanten.
+        image:
+          src: /assets/images/handbook/security/workspace-login.svg
+          alt: Anmeldung am WebWMS-Arbeitsbereich mit Passwort- und SSO-Bereich
     guidance:
       prerequisites:
       - Aktives Benutzerkonto, korrekter Mandant und unterstützter Browser. Für SSO muss ein aktiver OIDC-Provider mit HTTPS-Issuer, Client-ID und Secret-Referenz konfiguriert sein.

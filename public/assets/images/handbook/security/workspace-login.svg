@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title description">
+  <title id="title">WebWMS workspace sign-in placeholder</title>
+  <desc id="description">Placeholder for the password and single sign-on view.</desc>
+  <rect width="1280" height="720" rx="24" fill="#f3f6f9"/>
+  <rect x="340" y="72" width="600" height="576" rx="16" fill="#fff" stroke="#d7dde4" stroke-width="4"/>
+  <rect x="420" y="144" width="440" height="52" rx="8" fill="#405189" opacity=".9"/>
+  <rect x="420" y="248" width="440" height="52" rx="8" fill="#e5e9ef"/>
+  <rect x="420" y="324" width="440" height="52" rx="8" fill="#e5e9ef"/>
+  <rect x="420" y="400" width="440" height="52" rx="8" fill="#e5e9ef"/>
+  <rect x="420" y="492" width="440" height="56" rx="8" fill="#405189"/>
+  <rect x="496" y="582" width="288" height="14" rx="7" fill="#d7dde4"/>
+</svg>

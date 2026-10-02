@@ -29,6 +29,9 @@
                                 {% for section in document.sections %}
                                     <li><a href="#{{ section.id }}" data-handbook-section-link="{{ section.id }}">{{ section.title }}</a></li>
                                 {% endfor %}
+                                {% for view in document.views %}
+                                    <li><a href="#view-{{ view.id }}" data-handbook-section-link="view-{{ view.id }}">{{ view.title }}</a></li>
+                                {% endfor %}
                             </ul>
                         {% endif %}
                     </li>

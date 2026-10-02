@@ -16,4 +16,4 @@ Alle 11 dokumentierten Funktionen des Bereichs Zusatzfunktionen werden fachlich 
 | [WEBWMS-073](../tickets/WEBWMS-073.md) | Kameranutzung implementieren | Done | Medium | 5 |
 | [WEBWMS-074](../tickets/WEBWMS-074.md) | Druckersteuerung implementieren | Done | High | 8 |
 | [WEBWMS-111](../tickets/WEBWMS-111.md) | Vollständiges zweisprachiges Benutzerhandbuch implementieren | Done | High | 21 |
-| [WEBWMS-112](../tickets/WEBWMS-112.md) | Benutzerhandbuch auf vollständige View- und Formularabdeckung erweitern | Offen | High | 34 |
+| [WEBWMS-112](../tickets/WEBWMS-112.md) | Benutzerhandbuch auf vollständige View- und Formularabdeckung erweitern | Teilweise umgesetzt | High | 34 |

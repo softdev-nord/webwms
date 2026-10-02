@@ -2,7 +2,7 @@
 id: WEBWMS-112
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Offen
+status: Teilweise umgesetzt
 priority: High
 story_points: 34
 component: "Benutzerhandbuch"
@@ -258,9 +258,23 @@ abgleichen.
 
 ## Implementierungsstand
 
-**Status:** Offen
+**Status:** Teilweise umgesetzt
 
-Die technische Handbuchplattform ist vorhanden. Offen sind die vollständige
-View-orientierte Inhaltsstruktur, detaillierte Feld- und Aktionshilfen,
-View-spezifische Screenshot-Platzhalter sowie eine automatische Feld- und
-Template-Coverage.
+Der erste Umsetzungsslice stellt das verbindliche View-Datenmodell bereit:
+Template-Zuordnung, Zweck, Aufrufweg, Berechtigungen, Ansichtsdetails,
+strukturierte Feldhilfen, Aktionen und eine eindeutige Bildreferenz werden aus
+den separaten deutschen und englischen Handbuchkatalogen gerendert. Navigation
+und Suche berücksichtigen View-, Feld-, Aktions- und Fehlertexte einschließlich
+stabiler Direktanker.
+
+Die Anmeldung am WebWMS-Arbeitsbereich ist als erste Referenz-View vollständig
+in beiden Sprachen erfasst. Alle vier fachlichen Eingaben (`tenant_id`, `email`,
+`password`, `provider`), beide Anmeldewege und die typische Fehlerbehandlung
+sind beschrieben. Ein automatischer Test vergleicht die realen Eingabefelder
+des Twig-Templates mit den strukturierten Feldkennungen; `_csrf_token` ist als
+technisches Feld explizit ausgeschlossen. Eine eigene barrierearme
+Screenshot-Platzhalterdatei ist vorhanden.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 100 produktiven
+Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
+Ticket bleibt deshalb bewusst unterhalb von `Done`.

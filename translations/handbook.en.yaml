@@ -27,6 +27,20 @@ ui:
   fields: Configuration and inputs
   statuses: States and effects
   errors: Common errors and resolution
+  documented_views: Documented views
+  navigation_path: Navigation path
+  displayed_information: Displayed information and operation
+  fields_and_inputs: Fields and input guidance
+  field_name: Field
+  input_help: Format, example and meaning
+  effect_and_errors: Effect and troubleshooting
+  required: Required
+  optional: Optional
+  format: Format
+  example: Example
+  effect: Effect
+  validation: Validation
+  actions: Actions
 category:
   basics: Fundamentals & operating model
   administration: Administration & configuration
@@ -69,6 +83,62 @@ chapter:
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: Finish securely – screenshot placeholder
+    views:
+      workspace_login:
+        template: security/workspace_login.html.twig
+        title: Sign in to the WebWMS workspace
+        purpose: This page opens a session with a password or through an OpenID Connect provider configured for the tenant.
+        navigation: Public start page → Sign in
+        permissions:
+        - No prior permission; the user account and tenant must be active.
+        overview:
+        - The password area validates tenant, email address and password together.
+        - The SSO area redirects to the identity provider after validating tenant and provider code.
+        fields:
+          tenant_id:
+            label: Tenant ID
+            required: true
+            format: Tenant UUID without whitespace
+            example: 018f2f5a-73ad-7c42-9d84-2dcb65bcb410
+            help: Identifies the data and permission context. Use the ID supplied by your administrator.
+            effect: All sign-in checks and the resulting session are assigned to this tenant.
+            errors: An unknown, inactive or syntactically invalid ID prevents sign-in.
+          email:
+            label: Email address
+            required: true
+            format: Full email address of the active user account
+            example: warehouse.manager@example.org
+            help: The address must be unique within the selected tenant.
+            effect: Determines the user, roles and audited identity of the session.
+            errors: Unknown, unconfirmed or inactive accounts are rejected.
+          password:
+            label: Password
+            required: true
+            format: Personal password; case-sensitive
+            example: '************'
+            help: Enter the password privately and never share it with another person.
+            effect: A successful check creates the authenticated session.
+            errors: A wrong value blocks sign-in without exposing account details.
+          provider:
+            label: Provider code
+            required: true
+            format: Exact code of the configured OIDC provider
+            example: corporate_sso
+            help: Required only for single sign-on; the code is supplied by the administrator.
+            effect: Selects discovery endpoint, client and sign-in policy for the redirect.
+            errors: Unknown or disabled providers and unsafe discovery data are rejected.
+        actions:
+          password_login:
+            label: Sign in
+            description: Validates tenant, email address, password and account status.
+            result: On success the workspace opens; on error all inputs except the password remain available.
+          sso_login:
+            label: Sign in with SSO
+            description: Starts the OIDC flow with state, nonce and PKCE.
+            result: Successful provider authentication redirects securely back into the tenant.
+        image:
+          src: /assets/images/handbook/security/workspace-login.svg
+          alt: WebWMS workspace sign-in with password and SSO areas
     guidance:
       prerequisites:
       - Active user account, correct tenant and supported browser; SSO also requires an active OIDC provider with HTTPS issuer, client ID and secret reference.

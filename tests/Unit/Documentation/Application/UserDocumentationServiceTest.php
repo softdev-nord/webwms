@@ -56,6 +56,41 @@ class UserDocumentationServiceTest extends TestCase
         self::assertSame('chapter-guidance', $documents[0]['match']['anchor']);
     }
 
+    public function testSearchIndexesViewFieldsAndReturnsStableViewAnchor(): void
+    {
+        $groups = $this->documentation->groupedDocuments('Provider-Code', 'de');
+        $documents = array_merge(...array_values($groups));
+        $gettingStarted = array_values(array_filter($documents, static fn (array $document): bool => $document['slug'] === 'getting-started'))[0];
+
+        self::assertSame('view-workspace_login', $gettingStarted['match']['anchor']);
+    }
+
+    public function testLoginViewHasStructuredCoverageForEveryBusinessField(): void
+    {
+        $view = $this->documentation->document('getting-started', 'de')['views'][0];
+
+        self::assertSame('security/workspace_login.html.twig', $view['template']);
+        self::assertSame(['tenant_id', 'email', 'password', 'provider'], array_column($view['fields'], 'id'));
+        self::assertSame([], array_filter($view['fields'], static fn (array $field): bool => in_array('', [$field['format'], $field['example'], $field['help'], $field['effect'], $field['errors']], true)));
+        self::assertSame('/assets/images/handbook/security/workspace-login.svg', $view['image']['src']);
+    }
+
+    public function testLoginTemplateAndHandbookFieldCoverageStayInSync(): void
+    {
+        $view = $this->documentation->document('getting-started', 'de')['views'][0];
+        $template = file_get_contents(dirname(__DIR__, 4) . '/templates/' . $view['template']);
+        self::assertIsString($template);
+        preg_match_all('/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/i', $template, $matches);
+
+        $technicalFields = ['_csrf_token'];
+        $templateFields = array_values(array_unique(array_diff($matches[1], $technicalFields)));
+        sort($templateFields);
+        $documentedFields = array_column($view['fields'], 'id');
+        sort($documentedFields);
+
+        self::assertSame($templateFields, $documentedFields, 'Every business input in the documented view needs structured field guidance.');
+    }
+
     #[DataProvider('localeProvider')]
     public function testEveryChapterIsTranslated(string $locale): void
     {
@@ -104,12 +139,12 @@ class UserDocumentationServiceTest extends TestCase
             $catalogue = Yaml::parseFile($root . $locale . '.yaml');
             self::assertSame(['ui', 'category', 'error', 'chapter'], array_keys($catalogue));
             self::assertSame(
-                ['page_title', 'headline', 'introduction', 'search', 'search_action', 'reset_search', 'no_results', 'result_for', 'breadcrumb', 'all_chapters', 'on_this_page', 'no_subchapters', 'previous', 'next', 'navigation', 'open_navigation', 'close_navigation', 'overview', 'chapters', 'current_chapter', 'content', 'sidebar_section', 'sidebar_link', 'prerequisites', 'permissions', 'fields', 'statuses', 'errors'],
+                ['page_title', 'headline', 'introduction', 'search', 'search_action', 'reset_search', 'no_results', 'result_for', 'breadcrumb', 'all_chapters', 'on_this_page', 'no_subchapters', 'previous', 'next', 'navigation', 'open_navigation', 'close_navigation', 'overview', 'chapters', 'current_chapter', 'content', 'sidebar_section', 'sidebar_link', 'prerequisites', 'permissions', 'fields', 'statuses', 'errors', 'documented_views', 'navigation_path', 'displayed_information', 'fields_and_inputs', 'field_name', 'input_help', 'effect_and_errors', 'required', 'optional', 'format', 'example', 'effect', 'validation', 'actions'],
                 array_keys($catalogue['ui'])
             );
 
             foreach ($catalogue['chapter'] as $chapter) {
-                self::assertSame(['title', 'summary', 'sections', 'guidance'], array_keys($chapter));
+                self::assertSame([], array_diff(array_keys($chapter), ['title', 'summary', 'sections', 'views', 'guidance']));
                 self::assertSame(['prerequisites', 'permissions', 'fields', 'statuses', 'errors'], array_keys($chapter['guidance']));
                 foreach ($chapter['sections'] as $section) {
                     self::assertSame([], array_diff(array_keys($section), ['title', 'paragraphs', 'steps', 'items', 'image']));

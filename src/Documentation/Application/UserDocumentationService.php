@@ -50,6 +50,7 @@ class UserDocumentationService
         foreach (self::CHAPTERS as $chapterDefinition) {
             $chapter = $this->chapter($catalogue, $chapterDefinition['slug']);
             $match = $needle === '' ? null : $this->match($chapter['sections'], $needle);
+            $match ??= $needle === '' ? null : $this->matchViews($chapter['views'], $needle);
             $match ??= $needle === '' ? null : $this->matchGuidance($chapter['guidance'], $needle);
             if ($needle !== '' && $match === null && !str_contains(mb_strtolower($chapter['title'] . ' ' . $chapter['summary']), $needle)) {
                 continue;
@@ -67,7 +68,7 @@ class UserDocumentationService
         return array_filter($groups);
     }
 
-    /** @return array{slug: string, category: string, title: string, summary: string, guidance: array<string, list<string>>, sections: list<array{id: string, title: string, paragraphs: list<string>, steps: list<string>, items: list<string>, image: null|array{src: string, alt: string}}>, previous: null|array{slug: string, title: string}, next: null|array{slug: string, title: string}} */
+    /** @return array<string, mixed> */
     public function document(string $slug, ?string $locale = null): array
     {
         $catalogue = $this->catalogue($locale);
@@ -90,12 +91,13 @@ class UserDocumentationService
             'summary' => $chapter['summary'],
             'guidance' => $chapter['guidance'],
             'sections' => $chapter['sections'],
+            'views' => $chapter['views'],
             'previous' => $index > 0 ? $this->navigation($catalogue, self::CHAPTERS[$index - 1]['slug']) : null,
             'next' => isset(self::CHAPTERS[$index + 1]) ? $this->navigation($catalogue, self::CHAPTERS[$index + 1]['slug']) : null,
         ];
     }
 
-    /** @return array{title: string, summary: string, guidance: array<string, list<string>>, sections: list<array{id: string, title: string, paragraphs: list<string>, steps: list<string>, items: list<string>, image: null|array{src: string, alt: string}}>} */
+    /** @return array<string, mixed> */
     private function chapter(array $catalogue, string $slug): array
     {
         $key = str_replace('-', '_', $slug);
@@ -130,7 +132,78 @@ class UserDocumentationService
             'summary' => $this->requiredString($raw, 'summary', $slug),
             'guidance' => $this->guidance($raw['guidance'] ?? null, $slug),
             'sections' => $sections,
+            'views' => $this->views($raw['views'] ?? [], $slug),
         ];
+    }
+
+    /** @return list<array{id: string, template: string, title: string, purpose: string, navigation: string, permissions: list<string>, overview: list<string>, fields: list<array{id: string, label: string, required: bool, format: string, example: string, help: string, effect: string, errors: string}>, actions: list<array{id: string, label: string, description: string, result: string}>, image: array{src: string, alt: string}}> */
+    private function views(mixed $views, string $slug): array
+    {
+        if (!is_array($views)) {
+            throw new RuntimeException(sprintf('Handbook views "%s" are invalid.', $slug));
+        }
+
+        $result = [];
+        foreach ($views as $id => $view) {
+            if (!is_string($id) || !is_array($view)) {
+                throw new RuntimeException(sprintf('A handbook view in "%s" is invalid.', $slug));
+            }
+            $template = $this->requiredString($view, 'template', $slug . '.' . $id);
+            if (preg_match('#^[a-z0-9_/-]+\.html\.twig$#', $template) !== 1) {
+                throw new RuntimeException(sprintf('Handbook template "%s" is invalid.', $template));
+            }
+
+            $fields = [];
+            foreach (($view['fields'] ?? []) as $fieldId => $field) {
+                if (!is_string($fieldId) || !is_array($field)) {
+                    throw new RuntimeException(sprintf('A handbook field in "%s.%s" is invalid.', $slug, $id));
+                }
+                $context = $slug . '.' . $id . '.' . $fieldId;
+                $fields[] = [
+                    'id' => $fieldId,
+                    'label' => $this->requiredString($field, 'label', $context),
+                    'required' => ($field['required'] ?? false) === true,
+                    'format' => $this->requiredString($field, 'format', $context),
+                    'example' => $this->requiredString($field, 'example', $context),
+                    'help' => $this->requiredString($field, 'help', $context),
+                    'effect' => $this->requiredString($field, 'effect', $context),
+                    'errors' => $this->requiredString($field, 'errors', $context),
+                ];
+            }
+
+            $actions = [];
+            foreach (($view['actions'] ?? []) as $actionId => $action) {
+                if (!is_string($actionId) || !is_array($action)) {
+                    throw new RuntimeException(sprintf('A handbook action in "%s.%s" is invalid.', $slug, $id));
+                }
+                $context = $slug . '.' . $id . '.' . $actionId;
+                $actions[] = [
+                    'id' => $actionId,
+                    'label' => $this->requiredString($action, 'label', $context),
+                    'description' => $this->requiredString($action, 'description', $context),
+                    'result' => $this->requiredString($action, 'result', $context),
+                ];
+            }
+
+            $image = $this->image($view['image'] ?? null);
+            if ($image === null) {
+                throw new RuntimeException(sprintf('Handbook view "%s.%s" has no image.', $slug, $id));
+            }
+            $result[] = [
+                'id' => $id,
+                'template' => $template,
+                'title' => $this->requiredString($view, 'title', $slug . '.' . $id),
+                'purpose' => $this->requiredString($view, 'purpose', $slug . '.' . $id),
+                'navigation' => $this->requiredString($view, 'navigation', $slug . '.' . $id),
+                'permissions' => $this->stringValues($view['permissions'] ?? []),
+                'overview' => $this->stringValues($view['overview'] ?? []),
+                'fields' => $fields,
+                'actions' => $actions,
+                'image' => $image,
+            ];
+        }
+
+        return $result;
     }
 
     /** @return array<string, list<string>> */
@@ -173,6 +246,26 @@ class UserDocumentationService
             foreach ($values as $text) {
                 if (str_contains(mb_strtolower($text), $needle)) {
                     return ['anchor' => 'chapter-guidance', 'excerpt' => mb_strimwidth($text, 0, 220, '…')];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private function matchViews(array $views, string $needle): ?array
+    {
+        foreach ($views as $view) {
+            $texts = [$view['title'], $view['purpose'], $view['navigation'], ...$view['permissions'], ...$view['overview']];
+            foreach ($view['fields'] as $field) {
+                array_push($texts, $field['id'], $field['label'], $field['format'], $field['example'], $field['help'], $field['effect'], $field['errors']);
+            }
+            foreach ($view['actions'] as $action) {
+                array_push($texts, $action['label'], $action['description'], $action['result']);
+            }
+            foreach ($texts as $text) {
+                if (str_contains(mb_strtolower($text), $needle)) {
+                    return ['anchor' => 'view-' . $view['id'], 'excerpt' => mb_strimwidth($text, 0, 220, '…')];
                 }
             }
         }
