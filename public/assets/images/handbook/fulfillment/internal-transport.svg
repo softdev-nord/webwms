@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title description">
+  <title id="title">Internal transport screenshot placeholder</title>
+  <desc id="description">Placeholder for transport orders, resources, milk runs and replenishment.</desc>
+  <rect width="1280" height="720" rx="24" fill="#f3f6f9"/><rect x="48" y="48" width="1184" height="624" rx="16" fill="#fff" stroke="#d7dde4" stroke-width="4"/><rect x="48" y="48" width="1184" height="64" rx="16" fill="#405189"/>
+  <rect x="88" y="152" width="1104" height="176" rx="12" fill="#eef1f5"/><path d="M144 246h220l70-54h250l76 54h240" fill="none" stroke="#405189" stroke-width="12" stroke-linecap="round"/><g fill="#405189"><circle cx="144" cy="246" r="18"/><circle cx="434" cy="192" r="18"/><circle cx="760" cy="246" r="18"/><circle cx="1000" cy="246" r="18"/></g>
+  <rect x="88" y="368" width="704" height="240" rx="12" fill="#f7f8fa" stroke="#d7dde4" stroke-width="3"/><rect x="832" y="368" width="360" height="240" rx="12" fill="#eef1f5"/><g fill="#d7dde4"><rect x="120" y="408" width="640" height="24" rx="8"/><rect x="120" y="456" width="640" height="24" rx="8"/><rect x="120" y="504" width="640" height="24" rx="8"/><rect x="864" y="408" width="296" height="44" rx="8"/><rect x="864" y="480" width="296" height="44" rx="8"/></g>
+</svg>

@@ -306,6 +306,22 @@ Template, sämtliche sichtbaren und fachlich relevanten versteckten Felder,
 Sprachparität und die eindeutige Screenshot-Referenz. Damit sind 13 von 101
 produktiven Views migriert.
 
-Offen bleibt die Übertragung dieses Standards auf die übrigen 88 produktiven
+Der vierte Slice deckt die Leitstelle für internen Transport und Nachschub ab.
+Die einzige View enthält 13 eigenständige Formulare für Transportanlage,
+Ressourcenzuweisung, Start und Quittierung, Ressourcen und Transportregeln,
+Stationen, Routenzüge und Stopps sowie Nachschubregel, Auslösung und Abschluss.
+Alle 27 fachlichen Feldkennungen sind dokumentiert. Auswahlwerte für Transport-,
+Ressourcen-, Auslöser- und Planungstypen werden erklärt; Charge, Seriennummer,
+Bestandsstatus, Mengen, Prioritäten, Präfixe, Stoppreihenfolge und Schwellwerte
+enthalten konkrete Format-, Wirkungs- und Fehlerhinweise.
+
+Die Dokumentation beschreibt die Statusfolge `open → assigned → started →
+completed`, die mögliche Bestandsbuchung beim Abschluss, Wiederholbarkeit der
+Aktionen und die dauerhafte Wirkung der Routenzug- und Nachschubauslösung. Ein
+sprachparametrisierter Test weist exakt 13 Formulare, 27 Felder, zehn Aktionen
+und die vorhandene Screenshot-Referenz nach. Damit sind 14 von 101 produktiven
+Views migriert.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 87 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.

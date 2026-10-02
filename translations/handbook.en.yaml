@@ -256,8 +256,8 @@ chapter:
         overview:
         - Each visible card shows the number of records and opens its overview. Cards without read permission are completely hidden.
         actions:
-          open_area: {label: "\"Open area\"", description: "\"Opens users, roles or API clients depending on the selected card.\"", result: "\"The functional overview loads without changing data.\""}
-        image: {src: "\"/assets/images/handbook/administration/overview.svg\"", alt: "\"Administration overview with cards for users, roles and API clients\""}
+          open_area: {label: "\"\\\"Open area\\\"\"", description: "\"\\\"Opens users, roles or API clients depending on the selected card.\\\"\"", result: "\"\\\"The functional overview loads without changing data.\\\"\""}
+        image: {src: "\"\\\"/assets/images/handbook/administration/overview.svg\\\"\"", alt: "\"\\\"Administration overview with cards for users, roles and API clients\\\"\""}
       users_overview:
         template: administration/users.html.twig
         title: User overview
@@ -268,9 +268,9 @@ chapter:
         - Columns show display name, email address, roles and status. A dash means that no role is assigned.
         - An explanatory empty state appears if no account exists. The row action opens the separate edit page.
         actions:
-          create: {label: "\"Add user\"", description: "\"Opens the form for a new user account.\"", result: "\"Data changes only after the form is saved.\""}
-          edit: {label: "\"Edit\"", description: "\"Opens roles and active state for the selected account.\"", result: "\"The user ID and audit attribution are retained.\""}
-        image: {src: "\"/assets/images/handbook/administration/users-overview.svg\"", alt: "\"User overview with roles, status and edit action\""}
+          create: {label: "\"\\\"Add user\\\"\"", description: "\"\\\"Opens the form for a new user account.\\\"\"", result: "\"\\\"Data changes only after the form is saved.\\\"\""}
+          edit: {label: "\"\\\"Edit\\\"\"", description: "\"\\\"Opens roles and active state for the selected account.\\\"\"", result: "\"\\\"The user ID and audit attribution are retained.\\\"\""}
+        image: {src: "\"\\\"/assets/images/handbook/administration/users-overview.svg\\\"\"", alt: "\"\\\"User overview with roles, status and edit action\\\"\""}
       user_create:
         template: administration/user_new.html.twig
         title: Create user
@@ -279,13 +279,13 @@ chapter:
         permissions: ["administration.user.write; assignable roles must exist in the tenant."]
         overview: ["Select multiple roles with Ctrl or Cmd. Grant only the permissions needed for the task."]
         fields:
-          display_name: {label: "\"Display name\"", required: true, format: "\"Clear name or unique operational name\"", example: "\"Erica Example\"", help: "\"Appears in lists and audit logs.\"", effect: "\"Stored as the visible identity.\"", errors: "\"Empty names are invalid.\""}
-          email: {label: "\"Email address\"", required: true, format: "\"Valid email address unique in the tenant\"", example: "\"erica.example@example.org\"", help: "\"Used as sign-in identifier and SSO assignment.\"", effect: "\"Identifies the account permanently.\"", errors: "\"Invalid or previously used addresses are rejected.\""}
-          password: {label: "\"Initial password\"", required: true, format: "\"At least 12 characters\"", example: "\"'************'\"", help: "\"Transmit securely and separately; never use a standard password.\"", effect: "\"Stored only as a hash and permits the first sign-in.\"", errors: "\"Passwords that are too short prevent creation.\""}
-          role_ids: {label: "\"Roles\"", required: false, format: "\"Multiple selection from tenant roles\"", example: "\"ROLE_WAREHOUSE_OPERATOR\"", help: "\"Select roles according to least privilege.\"", effect: "\"Combined role permissions apply at the next authorization check.\"", errors: "\"Unknown or cross-tenant roles are rejected.\""}
+          display_name: {label: "\"\\\"Display name\\\"\"", required: true, format: "\"\\\"Clear name or unique operational name\\\"\"", example: "\"\\\"Erica Example\\\"\"", help: "\"\\\"Appears in lists and audit logs.\\\"\"", effect: "\"\\\"Stored as the visible identity.\\\"\"", errors: "\"\\\"Empty names are invalid.\\\"\""}
+          email: {label: "\"\\\"Email address\\\"\"", required: true, format: "\"\\\"Valid email address unique in the tenant\\\"\"", example: "\"\\\"erica.example@example.org\\\"\"", help: "\"\\\"Used as sign-in identifier and SSO assignment.\\\"\"", effect: "\"\\\"Identifies the account permanently.\\\"\"", errors: "\"\\\"Invalid or previously used addresses are rejected.\\\"\""}
+          password: {label: "\"\\\"Initial password\\\"\"", required: true, format: "\"\\\"At least 12 characters\\\"\"", example: "\"\\\"'************'\\\"\"", help: "\"\\\"Transmit securely and separately; never use a standard password.\\\"\"", effect: "\"\\\"Stored only as a hash and permits the first sign-in.\\\"\"", errors: "\"\\\"Passwords that are too short prevent creation.\\\"\""}
+          role_ids: {label: "\"\\\"Roles\\\"\"", required: false, format: "\"\\\"Multiple selection from tenant roles\\\"\"", example: "\"\\\"ROLE_WAREHOUSE_OPERATOR\\\"\"", help: "\"\\\"Select roles according to least privilege.\\\"\"", effect: "\"\\\"Combined role permissions apply at the next authorization check.\\\"\"", errors: "\"\\\"Unknown or cross-tenant roles are rejected.\\\"\""}
         actions:
-          save: {label: "\"Add user\"", description: "\"Validates identity, password and roles and creates the account.\"", result: "\"On success the user overview opens with confirmation.\""}
-        image: {src: "\"/assets/images/handbook/administration/user-create.svg\"", alt: "\"Form for creating a user\""}
+          save: {label: "\"\\\"Add user\\\"\"", description: "\"\\\"Validates identity, password and roles and creates the account.\\\"\"", result: "\"\\\"On success the user overview opens with confirmation.\\\"\""}
+        image: {src: "\"\\\"/assets/images/handbook/administration/user-create.svg\\\"\"", alt: "\"\\\"Form for creating a user\\\"\""}
       user_edit:
         template: administration/user_edit.html.twig
         title: Edit user
@@ -294,11 +294,11 @@ chapter:
         permissions: ["administration.user.write; the user must belong to the active tenant."]
         overview: ["Name and email identify the selected account and cannot be changed here. Deactivation blocks further use without deleting audit data."]
         fields:
-          role_ids: {label: "\"Roles\"", required: false, format: "\"Multiple selection from tenant roles\"", example: "\"ROLE_WAREHOUSE_MANAGER\"", help: "\"Do not remove a role required for operations or the last administration access.\"", effect: "\"Completely replaces previous role assignments.\"", errors: "\"Unknown roles and removal of the last administrative access are rejected.\""}
-          active: {label: "\"User active\"", required: false, format: "\"Checkbox; enabled or disabled\"", example: "\"enabled\"", help: "\"Only active users can open new sessions.\"", effect: "\"Disabling blocks future sign-ins; history and audit remain.\"", errors: "\"The final usable administration account must not be disabled.\""}
+          role_ids: {label: "\"\\\"Roles\\\"\"", required: false, format: "\"\\\"Multiple selection from tenant roles\\\"\"", example: "\"\\\"ROLE_WAREHOUSE_MANAGER\\\"\"", help: "\"\\\"Do not remove a role required for operations or the last administration access.\\\"\"", effect: "\"\\\"Completely replaces previous role assignments.\\\"\"", errors: "\"\\\"Unknown roles and removal of the last administrative access are rejected.\\\"\""}
+          active: {label: "\"\\\"User active\\\"\"", required: false, format: "\"\\\"Checkbox; enabled or disabled\\\"\"", example: "\"\\\"enabled\\\"\"", help: "\"\\\"Only active users can open new sessions.\\\"\"", effect: "\"\\\"Disabling blocks future sign-ins; history and audit remain.\\\"\"", errors: "\"\\\"The final usable administration account must not be disabled.\\\"\""}
         actions:
-          save: {label: "\"Save changes\"", description: "\"Validates roles and state and saves them atomically.\"", result: "\"On success the updated overview opens.\""}
-        image: {src: "\"/assets/images/handbook/administration/user-edit.svg\"", alt: "\"Edit user with roles and active state\""}
+          save: {label: "\"\\\"Save changes\\\"\"", description: "\"\\\"Validates roles and state and saves them atomically.\\\"\"", result: "\"\\\"On success the updated overview opens.\\\"\""}
+        image: {src: "\"\\\"/assets/images/handbook/administration/user-edit.svg\\\"\"", alt: "\"\\\"Edit user with roles and active state\\\"\""}
       roles_overview:
         template: administration/roles.html.twig
         title: Role overview
@@ -307,9 +307,9 @@ chapter:
         permissions: ["administration.role.read; administration.role.write for creating and editing."]
         overview: ["Columns show stable code, name, user count and permission count. The code remains the technical reference., The edit action opens name and permissions; an empty state appears if no role exists."]
         actions:
-          create: {label: "\"Create role\"", description: "\"Opens a separate role form.\"", result: "\"The role is available only after successful saving.\""}
-          edit: {label: "\"Edit\"", description: "\"Opens the selected role and every offered permission.\"", result: "\"Assigned users receive changed rights at the next check.\""}
-        image: {src: "\"/assets/images/handbook/administration/roles-overview.svg\"", alt: "\"Role overview with user and permission counts\""}
+          create: {label: "\"\\\"Create role\\\"\"", description: "\"\\\"Opens a separate role form.\\\"\"", result: "\"\\\"The role is available only after successful saving.\\\"\""}
+          edit: {label: "\"\\\"Edit\\\"\"", description: "\"\\\"Opens the selected role and every offered permission.\\\"\"", result: "\"\\\"Assigned users receive changed rights at the next check.\\\"\""}
+        image: {src: "\"\\\"/assets/images/handbook/administration/roles-overview.svg\\\"\"", alt: "\"\\\"Role overview with user and permission counts\\\"\""}
       role_create:
         template: administration/role_new.html.twig
         title: Create role
@@ -318,12 +318,12 @@ chapter:
         permissions: ["administration.role.write"]
         overview: ["Permissions are offered as a multiple selection. Combine only rights belonging to a clear task profile."]
         fields:
-          code: {label: "\"Code\"", required: true, format: "\"Uppercase letters and underscores with ROLE_ prefix\"", example: "\"ROLE_INBOUND_OPERATOR\"", help: "\"Stable technical key; never reuse it for another purpose.\"", effect: "\"References the role in assignments and checks.\"", errors: "\"Invalid or duplicate codes are rejected.\""}
-          name: {label: "\"Name\"", required: true, format: "\"Understandable task description\"", example: "\"Inbound operations\"", help: "\"Explains the functional purpose to administrators.\"", effect: "\"Displayed in selection lists.\"", errors: "\"An empty name is invalid.\""}
-          permissions: {label: "\"Permissions\"", required: false, format: "\"Multiple selection of known permission codes\"", example: "\"inbound.receipt.read\"", help: "\"Grant read, write, execute and approve deliberately.\"", effect: "\"Determines permitted actions for every assigned user.\"", errors: "\"Unknown permission codes are not stored.\""}
+          code: {label: "\"\\\"Code\\\"\"", required: true, format: "\"\\\"Uppercase letters and underscores with ROLE_ prefix\\\"\"", example: "\"\\\"ROLE_INBOUND_OPERATOR\\\"\"", help: "\"\\\"Stable technical key; never reuse it for another purpose.\\\"\"", effect: "\"\\\"References the role in assignments and checks.\\\"\"", errors: "\"\\\"Invalid or duplicate codes are rejected.\\\"\""}
+          name: {label: "\"\\\"Name\\\"\"", required: true, format: "\"\\\"Understandable task description\\\"\"", example: "\"\\\"Inbound operations\\\"\"", help: "\"\\\"Explains the functional purpose to administrators.\\\"\"", effect: "\"\\\"Displayed in selection lists.\\\"\"", errors: "\"\\\"An empty name is invalid.\\\"\""}
+          permissions: {label: "\"\\\"Permissions\\\"\"", required: false, format: "\"\\\"Multiple selection of known permission codes\\\"\"", example: "\"\\\"inbound.receipt.read\\\"\"", help: "\"\\\"Grant read, write, execute and approve deliberately.\\\"\"", effect: "\"\\\"Determines permitted actions for every assigned user.\\\"\"", errors: "\"\\\"Unknown permission codes are not stored.\\\"\""}
         actions:
-          save: {label: "\"Create role\"", description: "\"Validates code, name and rights and creates the role.\"", result: "\"On success the role can be assigned to users.\""}
-        image: {src: "\"/assets/images/handbook/administration/role-create.svg\"", alt: "\"Form for creating a role\""}
+          save: {label: "\"\\\"Create role\\\"\"", description: "\"\\\"Validates code, name and rights and creates the role.\\\"\"", result: "\"\\\"On success the role can be assigned to users.\\\"\""}
+        image: {src: "\"\\\"/assets/images/handbook/administration/role-create.svg\\\"\"", alt: "\"\\\"Form for creating a role\\\"\""}
       role_edit:
         template: administration/role_edit.html.twig
         title: Edit role
@@ -332,11 +332,11 @@ chapter:
         permissions: ["administration.role.write"]
         overview: ["Before removing a right check the number of affected users and test critical roles with a separate account."]
         fields:
-          name: {label: "\"Name\"", required: true, format: "\"Understandable task description\"", example: "\"Inbound management\"", help: "\"Describes the current task profile.\"", effect: "\"Changes display in user and role lists.\"", errors: "\"An empty name prevents saving.\""}
-          permissions: {label: "\"Permissions\"", required: false, format: "\"Multiple selection of all known rights\"", example: "\"inbound.receipt.approve\"", help: "\"Unchecked rights are removed from the role when saving.\"", effect: "\"Applies to all assigned users at the next authorization check.\"", errors: "\"Protection against losing the final administration access can reject the change.\""}
+          name: {label: "\"\\\"Name\\\"\"", required: true, format: "\"\\\"Understandable task description\\\"\"", example: "\"\\\"Inbound management\\\"\"", help: "\"\\\"Describes the current task profile.\\\"\"", effect: "\"\\\"Changes display in user and role lists.\\\"\"", errors: "\"\\\"An empty name prevents saving.\\\"\""}
+          permissions: {label: "\"\\\"Permissions\\\"\"", required: false, format: "\"\\\"Multiple selection of all known rights\\\"\"", example: "\"\\\"inbound.receipt.approve\\\"\"", help: "\"\\\"Unchecked rights are removed from the role when saving.\\\"\"", effect: "\"\\\"Applies to all assigned users at the next authorization check.\\\"\"", errors: "\"\\\"Protection against losing the final administration access can reject the change.\\\"\""}
         actions:
-          save: {label: "\"Save changes\"", description: "\"Atomically replaces name and permission set.\"", result: "\"The change is audited and immediately used for new checks.\""}
-        image: {src: "\"/assets/images/handbook/administration/role-edit.svg\"", alt: "\"Edit role with full permission selection\""}
+          save: {label: "\"\\\"Save changes\\\"\"", description: "\"\\\"Atomically replaces name and permission set.\\\"\"", result: "\"\\\"The change is audited and immediately used for new checks.\\\"\""}
+        image: {src: "\"\\\"/assets/images/handbook/administration/role-edit.svg\\\"\"", alt: "\"\\\"Edit role with full permission selection\\\"\""}
       api_clients_overview:
         template: administration/api_clients.html.twig
         title: API client overview
@@ -345,9 +345,9 @@ chapter:
         permissions: ["administration.api_client.read; write permission for creating and editing."]
         overview: ["Columns show name, client ID, acting user, last usage and state. Never means that no successful call has been registered., Disabled clients remain visible for traceability but can no longer authenticate."]
         actions:
-          create: {label: "\"Create API client\"", description: "\"Opens secure creation of technical access.\"", result: "\"Client ID and secret are created only after saving.\""}
-          edit: {label: "\"Edit\"", description: "\"Opens the active state of the selected client.\"", result: "\"Existing access can be blocked or enabled again.\""}
-        image: {src: "\"/assets/images/handbook/administration/api-clients-overview.svg\"", alt: "\"API client overview with last usage and state\""}
+          create: {label: "\"\\\"Create API client\\\"\"", description: "\"\\\"Opens secure creation of technical access.\\\"\"", result: "\"\\\"Client ID and secret are created only after saving.\\\"\""}
+          edit: {label: "\"\\\"Edit\\\"\"", description: "\"\\\"Opens the active state of the selected client.\\\"\"", result: "\"\\\"Existing access can be blocked or enabled again.\\\"\""}
+        image: {src: "\"\\\"/assets/images/handbook/administration/api-clients-overview.svg\\\"\"", alt: "\"\\\"API client overview with last usage and state\\\"\""}
       api_client_create:
         template: administration/api_client_new.html.twig
         title: Create API client
@@ -356,12 +356,12 @@ chapter:
         permissions: ["administration.api_client.write; the acting user must be active."]
         overview: ["Only the intersection of client rights and acting user rights is effective. Use a dedicated service account."]
         fields:
-          name: {label: "\"Name\"", required: true, format: "\"Unique system and purpose name\"", example: "\"Production ERP\"", help: "\"Enables unambiguous audit and usage assignment.\"", effect: "\"Displayed in overview and logs.\"", errors: "\"Empty names are invalid.\""}
-          acting_user_id: {label: "\"Acting user\"", required: true, format: "\"Single selection of an active tenant account\"", example: "\"svc.erp@example.org\"", help: "\"Do not use a personal administrator account.\"", effect: "\"Operations are authorized and audited under this identity.\"", errors: "\"Inactive or cross-tenant users are rejected.\""}
-          permissions: {label: "\"Permissions\"", required: false, format: "\"Multiple selection of offered API rights\"", example: "\"inventory.stock.read\"", help: "\"Enable only endpoints that are actually required.\"", effect: "\"Restricts access in addition to user rights.\"", errors: "\"Unknown rights are not stored; missing rights cause access denied.\""}
+          name: {label: "\"\\\"Name\\\"\"", required: true, format: "\"\\\"Unique system and purpose name\\\"\"", example: "\"\\\"Production ERP\\\"\"", help: "\"\\\"Enables unambiguous audit and usage assignment.\\\"\"", effect: "\"\\\"Displayed in overview and logs.\\\"\"", errors: "\"\\\"Empty names are invalid.\\\"\""}
+          acting_user_id: {label: "\"\\\"Acting user\\\"\"", required: true, format: "\"\\\"Single selection of an active tenant account\\\"\"", example: "\"\\\"svc.erp@example.org\\\"\"", help: "\"\\\"Do not use a personal administrator account.\\\"\"", effect: "\"\\\"Operations are authorized and audited under this identity.\\\"\"", errors: "\"\\\"Inactive or cross-tenant users are rejected.\\\"\""}
+          permissions: {label: "\"\\\"Permissions\\\"\"", required: false, format: "\"\\\"Multiple selection of offered API rights\\\"\"", example: "\"\\\"inventory.stock.read\\\"\"", help: "\"\\\"Enable only endpoints that are actually required.\\\"\"", effect: "\"\\\"Restricts access in addition to user rights.\\\"\"", errors: "\"\\\"Unknown rights are not stored; missing rights cause access denied.\\\"\""}
         actions:
-          generate: {label: "\"Generate access\"", description: "\"Creates client ID and secret once.\"", result: "\"The credential page displays the secret exactly once and it must be stored securely immediately.\""}
-        image: {src: "\"/assets/images/handbook/administration/api-client-create.svg\"", alt: "\"Create API client with user and permissions\""}
+          generate: {label: "\"\\\"Generate access\\\"\"", description: "\"\\\"Creates client ID and secret once.\\\"\"", result: "\"\\\"The credential page displays the secret exactly once and it must be stored securely immediately.\\\"\""}
+        image: {src: "\"\\\"/assets/images/handbook/administration/api-client-create.svg\\\"\"", alt: "\"\\\"Create API client with user and permissions\\\"\""}
       api_client_edit:
         template: administration/api_client_edit.html.twig
         title: Edit API client
@@ -370,10 +370,10 @@ chapter:
         permissions: ["administration.api_client.write"]
         overview: ["The acting user is read-only. Create a new client with a new secret to change the identity."]
         fields:
-          active: {label: "\"API client active\"", required: false, format: "\"Checkbox; enabled or disabled\"", example: "\"disabled\"", help: "\"Disable immediately if compromise is suspected.\"", effect: "\"Disabling blocks further authentication without deleting audit and usage data.\"", errors: "\"Requests already in progress may finish; future authentication is rejected.\""}
+          active: {label: "\"\\\"API client active\\\"\"", required: false, format: "\"\\\"Checkbox; enabled or disabled\\\"\"", example: "\"\\\"disabled\\\"\"", help: "\"\\\"Disable immediately if compromise is suspected.\\\"\"", effect: "\"\\\"Disabling blocks further authentication without deleting audit and usage data.\\\"\"", errors: "\"\\\"Requests already in progress may finish; future authentication is rejected.\\\"\""}
         actions:
-          save: {label: "\"Save changes\"", description: "\"Saves active state after CSRF and permission checks.\"", result: "\"The overview shows the new state.\""}
-        image: {src: "\"/assets/images/handbook/administration/api-client-edit.svg\"", alt: "\"Edit API client and change active state\""}
+          save: {label: "\"\\\"Save changes\\\"\"", description: "\"\\\"Saves active state after CSRF and permission checks.\\\"\"", result: "\"\\\"The overview shows the new state.\\\"\""}
+        image: {src: "\"\\\"/assets/images/handbook/administration/api-client-edit.svg\\\"\"", alt: "\"\\\"Edit API client and change active state\\\"\""}
       api_client_credential:
         template: administration/api_client_credential.html.twig
         title: Secure API credentials
@@ -382,9 +382,9 @@ chapter:
         permissions: ["administration.api_client.write; available only immediately after successful creation."]
         overview: ["The read-only field contains the complete credential. Store it directly in a secret store and never in source code, a ticket or chat., The secret cannot be recovered after leaving the page; create new access if it is lost."]
         actions:
-          copy: {label: "\"Copy\"", description: "\"Copies the credential using the browser clipboard.\"", result: "\"The value remains locally in the clipboard and must be pasted securely and then cleared.\""}
-          back: {label: "\"Back to administration\"", description: "\"Permanently leaves the one-time display.\"", result: "\"The credential cannot be displayed again afterwards.\""}
-        image: {src: "\"/assets/images/handbook/administration/api-client-credential.svg\"", alt: "\"One-time display of a newly generated API credential\""}
+          copy: {label: "\"\\\"Copy\\\"\"", description: "\"\\\"Copies the credential using the browser clipboard.\\\"\"", result: "\"\\\"The value remains locally in the clipboard and must be pasted securely and then cleared.\\\"\""}
+          back: {label: "\"\\\"Back to administration\\\"\"", description: "\"\\\"Permanently leaves the one-time display.\\\"\"", result: "\"\\\"The credential cannot be displayed again afterwards.\\\"\""}
+        image: {src: "\"\\\"/assets/images/handbook/administration/api-client-credential.svg\\\"\"", alt: "\"\\\"One-time display of a newly generated API credential\\\"\""}
     guidance:
       prerequisites:
       - Administration access and an agreed least-privilege task profile.
@@ -460,39 +460,39 @@ chapter:
             effect: Identifies the record in processes, integrations and audit data.
             errors: Empty, invalid or duplicate codes within the respective area are rejected.
             usages: [Business partner, data room, identity provider, number range and device profile]
-          name: {label: "Name or description", required: true, format: "Understandable functional name", example: "Main customer Germany", help: "Describes the record for users and administrators.", effect: "Appears in lists and selections.", errors: "An empty name prevents saving.", usages: ["Business partner, data room, identity provider, number range, process and device profile"]}
-          partner_type: {label: "Business partner type", required: true, format: "customer; supplier; carrier or owner", example: "customer", help: "Customer is a recipient; supplier is procurement; carrier is shipping; owner is special stock.", effect: "Controls the partner's permitted functional use.", errors: "Values not offered by the form are rejected."}
-          active: {label: "Business partner active", required: true, format: "Hidden default value 1 on creation", example: "'1'", help: "New partners are always created active on this page.", effect: "The partner can immediately be used in new processes.", errors: "Later deactivation must not violate open dependencies."}
-          business_partner_id: {label: "Assigned business partner", required: false, format: "Selection of an existing partner or empty", example: "CUSTOMER_DE", help: "Optionally links the data room to a partner.", effect: "Restricts or identifies the organizational data context.", errors: "Unknown or cross-tenant IDs are rejected."}
-          protocol: {label: "Identity protocol", required: true, format: "Selection; currently oidc", example: "oidc", help: "Determines the supported single sign-on method.", effect: "Enables discovery, state, nonce and PKCE for the provider.", errors: "Unsupported protocols are not stored."}
-          issuer_url: {label: "Issuer URL", required: true, format: "Absolute HTTPS URL of the OIDC issuer", example: "'https://login.example.org/realms/webwms'", help: "Must exactly match the issuer in discovery and token.", effect: "Supplies authorization, token and key endpoints.", errors: "HTTP, invalid URLs or differing discovery issuers are rejected."}
-          client_id: {label: "OIDC client ID", required: true, format: "Public identifier registered with the provider", example: "webwms-production", help: "Do not enter secret values in this field.", effect: "Identifies WebWMS to the identity provider.", errors: "A wrong client ID causes provider sign-in failure."}
-          client_secret_env: {label: "Environment variable for client secret", required: true, format: "Name of a server environment variable", example: "WEBWMS_OIDC_CLIENT_SECRET", help: "Store only the reference; never enter the secret in the form.", effect: "WebWMS reads the secret from the runtime environment.", errors: "Missing or unset variables prevent the SSO callback."}
-          scopes: {label: "OIDC scopes", required: true, format: "Space-separated scope names", example: "openid profile email", help: "openid is mandatory; email is required for user assignment.", effect: "Determines claims requested from the provider.", errors: "Missing openid or email claims prevent secure assignment."}
-          enabled: {label: "Enabled", required: true, format: "Checkbox or hidden default value 1", example: "'1'", help: "Enables the newly created provider, number range, process or device profile.", effect: "Only enabled configurations are evaluated operationally.", errors: "Disabled configurations are unavailable to new processes.", usages: ["Identity provider, number range, process switch and device profile"]}
-          object_type: {label: "Object type", required: true, format: "Stable functional document type", example: "outbound_order", help: "Defines which entity uses the number range.", effect: "Unambiguously links the next number to a document type.", errors: "Duplicate active assignments can cause ambiguity and are rejected."}
-          prefix: {label: "Prefix", required: false, format: "Short static text before the running number", example: "OUT-", help: "Use only characters supported by target systems and labels.", effect: "Prepended to every generated number.", errors: "Excessive length or prohibited characters are rejected."}
-          padding: {label: "Number of digits", required: true, format: "Integer from 1 to 18", example: "'8'", help: "Pads the running value with leading zeroes.", effect: "Value 42 with eight digits becomes 00000042.", errors: "Values outside 1 to 18 prevent saving."}
-          next_value: {label: "Next value", required: true, format: "Positive integer", example: "'10001'", help: "Increase productive ranges only after agreement; never reset them.", effect: "The next allocation uses this value and increments it atomically.", errors: "Zero, negative values or backward changes with collision risk are rejected."}
+          name: {label: "\"Name or description\"", required: true, format: "\"Understandable functional name\"", example: "\"Main customer Germany\"", help: "\"Describes the record for users and administrators.\"", effect: "\"Appears in lists and selections.\"", errors: "\"An empty name prevents saving.\"", usages: ["\"Business partner, data room, identity provider, number range, process and device profile\""]}
+          partner_type: {label: "\"Business partner type\"", required: true, format: "\"customer; supplier; carrier or owner\"", example: "\"customer\"", help: "\"Customer is a recipient; supplier is procurement; carrier is shipping; owner is special stock.\"", effect: "\"Controls the partner's permitted functional use.\"", errors: "\"Values not offered by the form are rejected.\""}
+          active: {label: "\"Business partner active\"", required: true, format: "\"Hidden default value 1 on creation\"", example: "\"'1'\"", help: "\"New partners are always created active on this page.\"", effect: "\"The partner can immediately be used in new processes.\"", errors: "\"Later deactivation must not violate open dependencies.\""}
+          business_partner_id: {label: "\"Assigned business partner\"", required: false, format: "\"Selection of an existing partner or empty\"", example: "\"CUSTOMER_DE\"", help: "\"Optionally links the data room to a partner.\"", effect: "\"Restricts or identifies the organizational data context.\"", errors: "\"Unknown or cross-tenant IDs are rejected.\""}
+          protocol: {label: "\"Identity protocol\"", required: true, format: "\"Selection; currently oidc\"", example: "\"oidc\"", help: "\"Determines the supported single sign-on method.\"", effect: "\"Enables discovery, state, nonce and PKCE for the provider.\"", errors: "\"Unsupported protocols are not stored.\""}
+          issuer_url: {label: "\"Issuer URL\"", required: true, format: "\"Absolute HTTPS URL of the OIDC issuer\"", example: "\"'https://login.example.org/realms/webwms'\"", help: "\"Must exactly match the issuer in discovery and token.\"", effect: "\"Supplies authorization, token and key endpoints.\"", errors: "\"HTTP, invalid URLs or differing discovery issuers are rejected.\""}
+          client_id: {label: "\"OIDC client ID\"", required: true, format: "\"Public identifier registered with the provider\"", example: "\"webwms-production\"", help: "\"Do not enter secret values in this field.\"", effect: "\"Identifies WebWMS to the identity provider.\"", errors: "\"A wrong client ID causes provider sign-in failure.\""}
+          client_secret_env: {label: "\"Environment variable for client secret\"", required: true, format: "\"Name of a server environment variable\"", example: "\"WEBWMS_OIDC_CLIENT_SECRET\"", help: "\"Store only the reference; never enter the secret in the form.\"", effect: "\"WebWMS reads the secret from the runtime environment.\"", errors: "\"Missing or unset variables prevent the SSO callback.\""}
+          scopes: {label: "\"OIDC scopes\"", required: true, format: "\"Space-separated scope names\"", example: "\"openid profile email\"", help: "\"openid is mandatory; email is required for user assignment.\"", effect: "\"Determines claims requested from the provider.\"", errors: "\"Missing openid or email claims prevent secure assignment.\""}
+          enabled: {label: "\"Enabled\"", required: true, format: "\"Checkbox or hidden default value 1\"", example: "\"'1'\"", help: "\"Enables the newly created provider, number range, process or device profile.\"", effect: "\"Only enabled configurations are evaluated operationally.\"", errors: "\"Disabled configurations are unavailable to new processes.\"", usages: ["\"Identity provider, number range, process switch and device profile\""]}
+          object_type: {label: "\"Object type\"", required: true, format: "\"Stable functional document type\"", example: "\"outbound_order\"", help: "\"Defines which entity uses the number range.\"", effect: "\"Unambiguously links the next number to a document type.\"", errors: "\"Duplicate active assignments can cause ambiguity and are rejected.\""}
+          prefix: {label: "\"Prefix\"", required: false, format: "\"Short static text before the running number\"", example: "\"OUT-\"", help: "\"Use only characters supported by target systems and labels.\"", effect: "\"Prepended to every generated number.\"", errors: "\"Excessive length or prohibited characters are rejected.\""}
+          padding: {label: "\"Number of digits\"", required: true, format: "\"Integer from 1 to 18\"", example: "\"'8'\"", help: "\"Pads the running value with leading zeroes.\"", effect: "\"Value 42 with eight digits becomes 00000042.\"", errors: "\"Values outside 1 to 18 prevent saving.\""}
+          next_value: {label: "\"Next value\"", required: true, format: "\"Positive integer\"", example: "\"'10001'\"", help: "\"Increase productive ranges only after agreement; never reset them.\"", effect: "\"The next allocation uses this value and increments it atomically.\"", errors: "\"Zero, negative values or backward changes with collision risk are rejected.\""}
           gs1_company_prefix: {label: GS1 company prefix, required: false, format: Digit sequence assigned by GS1, example: '426012345', help: Maintain only for GS1-compliant identifiers., effect: Used for supported SSCC or GS1 numbers., errors: Non-numeric or unsuitable values produce invalid identifiers.}
-          suffix: {label: "Suffix", required: false, format: "Empty hidden value on this page", example: "''", help: "New ranges use no suffix.", effect: "No text is appended after the running number.", errors: "Suffixes cannot be configured through this simplified form."}
-          maximum_value: {label: "Maximum value", required: false, format: "Empty hidden value on this page", example: "''", help: "Creation sets no additional upper limit.", effect: "Technical numeric capacity remains the limit.", errors: "Overflow or an exhausted range prevents further allocations."}
-          process_key: {label: "Process key", required: true, format: "Stable key using lowercase letters and underscores", example: "inbound_quality", help: "Must match the process evaluated by the application.", effect: "Selects the configurable process and its configuration.", errors: "Unknown or duplicate keys are rejected."}
-          configuration: {label: "Process configuration", required: false, format: "Valid JSON object", example: "'{\"require_photo\":true,\"max_deviation_percent\":5}'", help: "Supplies process-specific parameters; avoid unknown properties and never enter secrets.", effect: "Evaluated with versioning during process execution.", errors: "Invalid JSON, wrong data types or unsupported properties prevent saving."}
-          device_type: {label: "Device type", required: true, format: "desktop; tablet or scanner", example: "scanner", help: "Select scanner for mobile devices producing hardware scan events.", effect: "Controls layout and device-specific input behavior.", errors: "Types not offered by the form are rejected."}
-          start_route: {label: "Start route", required: true, format: "Internal absolute path starting with /", example: "/v3/inbound/receipts", help: "Must point to a WebWMS page permitted for the device profile.", effect: "Opens this view after sign-in or profile start.", errors: "External, unknown or unauthorized routes are rejected or lead to access denied."}
-          scan_suffix: {label: "Scan terminator", required: false, format: "Key name used as scanner suffix", example: "Enter", help: "Must match device configuration; commonly Enter or Tab.", effect: "Triggers input processing after a hardware scan.", errors: "A mismatched suffix makes scans appear as incomplete keyboard input."}
-          fullscreen: {label: "Full-screen mode", required: true, format: "Hidden default value 1", example: "'1'", help: "New device profiles start with the reduced full-screen layout.", effect: "Hides navigation elements not needed on operational devices.", errors: "The value cannot be changed on this page."}
-          deployment_mode: {label: "Deployment mode", required: true, format: "saas; on_premises or hybrid", example: "on_premises", help: "Describes technical deployment rather than the functional tenant.", effect: "Controls operating guidance and available integration paths.", errors: "A wrong mode can cause unsuitable operating assumptions."}
-          public_url: {label: "Public URL", required: true, format: "Absolute HTTPS base URL without an internal host name", example: "'https://wms.example.org'", help: "Must be reachable by browsers and connected systems.", effect: "Base for redirects, links and external callbacks.", errors: "Invalid or unreachable URLs break SSO and integration callbacks."}
-          storage_driver: {label: "Storage driver", required: true, format: "local; s3 or azure", example: "s3", help: "Must match server configuration and available credentials.", effect: "Determines storage for documents and media.", errors: "Missing bucket, container or filesystem permissions cause storage failures."}
-          queue_transport: {label: "Queue transport", required: true, format: "sync; doctrine or rabbitmq", example: "rabbitmq", help: "Use sync only for simple development; use a monitored asynchronous transport in production.", effect: "Determines whether background tasks run directly or through a queue.", errors: "Missing workers or connection settings leave messages unprocessed."}
-          release_channel: {label: "Release channel", required: true, format: "stable or preview", example: "stable", help: "Use Stable for production and Preview only for controlled advance testing.", effect: "Defines the intended update channel.", errors: "Preview can contain changes that are not yet generally released."}
+          suffix: {label: "\"Suffix\"", required: false, format: "\"Empty hidden value on this page\"", example: "\"''\"", help: "\"New ranges use no suffix.\"", effect: "\"No text is appended after the running number.\"", errors: "\"Suffixes cannot be configured through this simplified form.\""}
+          maximum_value: {label: "\"Maximum value\"", required: false, format: "\"Empty hidden value on this page\"", example: "\"''\"", help: "\"Creation sets no additional upper limit.\"", effect: "\"Technical numeric capacity remains the limit.\"", errors: "\"Overflow or an exhausted range prevents further allocations.\""}
+          process_key: {label: "\"Process key\"", required: true, format: "\"Stable key using lowercase letters and underscores\"", example: "\"inbound_quality\"", help: "\"Must match the process evaluated by the application.\"", effect: "\"Selects the configurable process and its configuration.\"", errors: "\"Unknown or duplicate keys are rejected.\""}
+          configuration: {label: "\"Process configuration\"", required: false, format: "\"Valid JSON object\"", example: "\"'{\\\"require_photo\\\":true,\\\"max_deviation_percent\\\":5}'\"", help: "\"Supplies process-specific parameters; avoid unknown properties and never enter secrets.\"", effect: "\"Evaluated with versioning during process execution.\"", errors: "\"Invalid JSON, wrong data types or unsupported properties prevent saving.\""}
+          device_type: {label: "\"Device type\"", required: true, format: "\"desktop; tablet or scanner\"", example: "\"scanner\"", help: "\"Select scanner for mobile devices producing hardware scan events.\"", effect: "\"Controls layout and device-specific input behavior.\"", errors: "\"Types not offered by the form are rejected.\""}
+          start_route: {label: "\"Start route\"", required: true, format: "\"Internal absolute path starting with /\"", example: "\"/v3/inbound/receipts\"", help: "\"Must point to a WebWMS page permitted for the device profile.\"", effect: "\"Opens this view after sign-in or profile start.\"", errors: "\"External, unknown or unauthorized routes are rejected or lead to access denied.\""}
+          scan_suffix: {label: "\"Scan terminator\"", required: false, format: "\"Key name used as scanner suffix\"", example: "\"Enter\"", help: "\"Must match device configuration; commonly Enter or Tab.\"", effect: "\"Triggers input processing after a hardware scan.\"", errors: "\"A mismatched suffix makes scans appear as incomplete keyboard input.\""}
+          fullscreen: {label: "\"Full-screen mode\"", required: true, format: "\"Hidden default value 1\"", example: "\"'1'\"", help: "\"New device profiles start with the reduced full-screen layout.\"", effect: "\"Hides navigation elements not needed on operational devices.\"", errors: "\"The value cannot be changed on this page.\""}
+          deployment_mode: {label: "\"Deployment mode\"", required: true, format: "\"saas; on_premises or hybrid\"", example: "\"on_premises\"", help: "\"Describes technical deployment rather than the functional tenant.\"", effect: "\"Controls operating guidance and available integration paths.\"", errors: "\"A wrong mode can cause unsuitable operating assumptions.\""}
+          public_url: {label: "\"Public URL\"", required: true, format: "\"Absolute HTTPS base URL without an internal host name\"", example: "\"'https://wms.example.org'\"", help: "\"Must be reachable by browsers and connected systems.\"", effect: "\"Base for redirects, links and external callbacks.\"", errors: "\"Invalid or unreachable URLs break SSO and integration callbacks.\""}
+          storage_driver: {label: "\"Storage driver\"", required: true, format: "\"local; s3 or azure\"", example: "\"s3\"", help: "\"Must match server configuration and available credentials.\"", effect: "\"Determines storage for documents and media.\"", errors: "\"Missing bucket, container or filesystem permissions cause storage failures.\""}
+          queue_transport: {label: "\"Queue transport\"", required: true, format: "\"sync; doctrine or rabbitmq\"", example: "\"rabbitmq\"", help: "\"Use sync only for simple development; use a monitored asynchronous transport in production.\"", effect: "\"Determines whether background tasks run directly or through a queue.\"", errors: "\"Missing workers or connection settings leave messages unprocessed.\""}
+          release_channel: {label: "\"Release channel\"", required: true, format: "\"stable or preview\"", example: "\"stable\"", help: "\"Use Stable for production and Preview only for controlled advance testing.\"", effect: "\"Defines the intended update channel.\"", errors: "\"Preview can contain changes that are not yet generally released.\""}
         actions:
-          create_resource: {label: "Create configuration", description: "Validates and stores only the respective card area.", result: "The new entry appears in its list and is audited."}
-          next_number: {label: "Test number", description: "Actually allocates the next number from the selected range.", result: "next_value is permanently and atomically incremented; the action is not merely a preview."}
-          save_deployment: {label: "Save operating profile", description: "Stores mode, URL, storage, queue and release channel together.", result: "New background and integration processes use the updated configuration."}
-          open_topology: {label: "Open warehouse topology", description: "Opens separate maintenance of site, warehouse, areas and bins.", result: "No topology data is changed on the workspace page."}
+          create_resource: {label: "\"Create configuration\"", description: "\"Validates and stores only the respective card area.\"", result: "\"The new entry appears in its list and is audited.\""}
+          next_number: {label: "\"Test number\"", description: "\"Actually allocates the next number from the selected range.\"", result: "\"next_value is permanently and atomically incremented; the action is not merely a preview.\""}
+          save_deployment: {label: "\"Save operating profile\"", description: "\"Stores mode, URL, storage, queue and release channel together.\"", result: "\"New background and integration processes use the updated configuration.\""}
+          open_topology: {label: "\"Open warehouse topology\"", description: "\"Opens separate maintenance of site, warehouse, areas and bins.\"", result: "\"No topology data is changed on the workspace page.\""}
         image:
           src: /assets/images/handbook/administration/system-configuration.svg
           alt: System configuration with partners, OIDC, number ranges, processes, devices and operating profile
@@ -701,6 +701,60 @@ chapter:
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: Returns – screenshot placeholder
+    views:
+      internal_transport:
+        template: fulfillment/transport/index.html.twig
+        title: Internal transport and replenishment
+        purpose: The control center creates, assigns and confirms transport and replenishment orders and maintains resources, rules, stations and milk runs.
+        navigation: Fulfilment → Internal transport
+        permissions:
+        - fulfillment.transport.read for the control center; write for orders and milk-run dispatch; assign and execute for state actions; configure for master data; fulfillment.replenishment.write/execute for replenishment.
+        overview:
+        - The transport table shows order code and priority, type, source and target, product or load carrier, quantity, resource and state.
+        - State actions follow open → assigned → started → completed. Only the currently permitted action is displayed; completion may post stock.
+        - Replenishment orders show rule, product, route, quantity and state. Empty tables explicitly state that no orders exist.
+        fields:
+          code: {label: "Code", required: true, format: "Unique technical key", example: "TR-2026-0042", help: "Use traceable codes unique within each area.", effect: "Identifies order, resource, rule, station, milk run or replenishment policy.", errors: "Empty or duplicate codes are rejected.", usages: ["Transport order, resource, transport rule, station, milk run and replenishment policy"]}
+          transport_type: {label: "Transport type", required: true, format: "relocation; replenishment; prepositioning; material_flow or milk_run", example: "replenishment", help: "Relocation moves stock; replenishment fills a target; prepositioning stages stock; material flow follows a rule; milk run combines stops.", effect: "Determines functional processing and reporting.", errors: "Unsupported values are rejected.", usages: ["Transport order and transport rule"]}
+          source_location_id: {label: "Source bin", required: true, format: "Selection of a tenant bin", example: "WH1-RESERVE-01", help: "Bin from which stock or a load carrier is collected.", effect: "Used as the issue location on completion.", errors: "Source and target must exist and stock and state must permit posting."}
+          target_location_id: {label: "Target bin", required: true, format: "Selection of a tenant bin", example: "WH1-PICK-01", help: "Destination of transport or replenishment.", effect: "Used as receipt location on completion.", errors: "Unknown, blocked or identical source and target bins are rejected.", usages: ["Transport order and replenishment policy"]}
+          priority: {label: "Priority", required: true, format: "Positive integer; transport order from 1 to 999", example: "'50'", help: "Use an agreed scale matching the implemented control-center ordering.", effect: "Influences ordering of open orders and rules.", errors: "Non-numeric or prohibited values prevent saving.", usages: ["Transport order, transport rule and replenishment policy"]}
+          product_id: {label: "Product", required: false, format: "Product selection or empty for a pure load-carrier move", example: "SKU-4711", help: "Required for stock-effective transports and replenishment.", effect: "Determines which product is posted or replenished.", errors: "Unknown products or a missing product for quantity posting are rejected.", usages: ["Transport order and replenishment policy"]}
+          quantity: {label: "Quantity", required: false, format: "Positive integer in the product base unit", example: "'20'", help: "Enter only together with a product.", effect: "This quantity is moved on successful completion.", errors: "Zero, negative values or insufficient source stock prevent posting."}
+          stock_status: {label: "Stock status", required: false, format: "Known status code", example: "available", help: "Selects stock quality to move; defaults to available.", effect: "Restricts source stock used for posting.", errors: "Unknown states or non-matching stock prevent completion."}
+          batch_number: {label: "Batch", required: false, format: "Exact batch identifier", example: "LOT-20261002", help: "Use for unambiguous selection of batch-managed stock.", effect: "Restricts posting to this batch.", errors: "Missing or unavailable batches prevent posting."}
+          serial_number: {label: "Serial number", required: false, format: "Exact unique serial number", example: "SN-0001842", help: "Reference exactly one existing unit for serial-managed products.", effect: "Moves the specifically identified unit.", errors: "Unknown, duplicate or absent serial numbers are rejected."}
+          forklift_id: {label: "Assign resource", required: true, format: "Selection of an available resource", example: "FL-01", help: "Only currently available forklifts, AGVs or tugger trains are offered.", effect: "Changes the open order to assigned and binds the resource.", errors: "Busy, inactive or cross-tenant resources cannot be assigned."}
+          name: {label: "Name", required: true, format: "Understandable description", example: "Assembly North milk run", help: "Explains the purpose to dispatchers and drivers.", effect: "Appears in configuration and selections.", errors: "An empty name prevents creation.", usages: ["Resource, transport rule, station and milk run"]}
+          warehouse_id: {label: "Warehouse", required: true, format: "Selection of an existing warehouse", example: "WH1", help: "Assigns configuration and execution to a warehouse.", effect: "Restricts resources, stations, tours and replenishment to this warehouse.", errors: "Unknown or cross-tenant warehouses are rejected.", usages: ["Resource, station, milk run and replenishment policy"]}
+          resource_type: {label: "Resource type", required: true, format: "forklift; tugger_train or agv", example: "agv", help: "Forklifts are manual, milk runs are stop-oriented and AGVs are automated.", effect: "Filters suitable resources for orders and rules.", errors: "Types not offered by the form are rejected.", usages: ["Resource and transport rule"]}
+          trigger_type: {label: "Trigger", required: true, format: "manual; replenishment; prepositioning or material_flow", example: "material_flow", help: "Determines which event uses the rule.", effect: "Controls automatic or manual order creation.", errors: "Unsupported triggers are rejected."}
+          source_prefix: {label: "Source prefix", required: true, format: "Beginning of a bin code", example: "RES-", help: "Restricts rule-based sources by code.", effect: "The rule considers only matching source bins.", errors: "Overly broad prefixes can match unintended bins."}
+          target_prefix: {label: "Target prefix", required: true, format: "Beginning of a bin code", example: "PICK-", help: "Restricts rule-based destinations by code.", effect: "The rule creates transports only for matching targets.", errors: "No order can be created without a matching target."}
+          location_id: {label: "Station bin", required: true, format: "Selection of a bin", example: "STATION-01", help: "Physical handover or buffer bin of the station.", effect: "Links material flow and milk-run stop to the bin.", errors: "Unknown bins or bins from another warehouse are rejected."}
+          sequence_number: {label: "Sequence", required: true, format: "Positive integer", example: "'10'", help: "Lower values occur earlier in station or tour order.", effect: "Sorts stations and stops deterministically.", errors: "Invalid or conflicting sequences must be corrected before dispatch.", usages: ["Station and milk-run stop"]}
+          station_type: {label: "Station type", required: true, format: "Hidden default value buffer", example: "buffer", help: "New stations are created as buffer stations on this page.", effect: "Marks the station as a temporary handover point.", errors: "Other station types cannot be configured here."}
+          schedule_type: {label: "Tour schedule", required: true, format: "fixed or dynamic", example: "fixed", help: "Fixed uses recurring intervals; dynamic permits demand-based dispatch.", effect: "Determines milk-run planning logic.", errors: "Values not offered by the form are rejected."}
+          interval_minutes: {label: "Interval in minutes", required: true, format: "Positive integer of at least 1", example: "'60'", help: "Time between planned milk runs with fixed scheduling.", effect: "Defines intended recurrence.", errors: "Zero or negative intervals are rejected."}
+          station_id: {label: "Station", required: true, format: "Selection of an existing station", example: "ST-01", help: "Adds the station as a new milk-run stop.", effect: "The station is visited in the specified order.", errors: "Unknown stations or stations in another warehouse are rejected."}
+          dwell_minutes: {label: "Dwell time in minutes", required: true, format: "Integer of at least 0", example: "'5'", help: "Planned time for handover, loading or unloading at the stop.", effect: "Contributes to tour timing.", errors: "Negative values are invalid."}
+          source_location_prefix: {label: "Replenishment source prefix", required: true, format: "Beginning of a bin code", example: "RESERVE-", help: "Defines the source area permitted for replenishment.", effect: "Replenishment searches only matching bins for stock.", errors: "No order can be created without matching available stock."}
+          minimum_quantity: {label: "Minimum quantity", required: true, format: "Integer of at least 0", example: "'10'", help: "Replenishment is needed below this target-bin stock.", effect: "Acts as the policy trigger threshold.", errors: "Negative values are invalid; a value above target quantity is contradictory."}
+          target_quantity: {label: "Target quantity", required: true, format: "Positive integer", example: "'50'", help: "Stock level to which the target bin should be replenished.", effect: "Target minus current stock determines replenishment quantity.", errors: "Must be greater than minimum quantity and zero."}
+        actions:
+          create_order: {label: "Create transport order", description: "Validates route, stock dimensions and priority and creates an open order.", result: "The order appears in the control center and can be assigned."}
+          assign: {label: "Assign", description: "Binds an available resource to an open order.", result: "State changes idempotently from open to assigned."}
+          start: {label: "Start", description: "Confirms acceptance of an assigned order.", result: "State changes to started; starting again is not permitted."}
+          complete: {label: "Confirm", description: "Completes the started order and performs stock posting when applicable.", result: "State changes to completed; posting errors leave the order incomplete."}
+          create_configuration: {label: "Create resource or rule", description: "Stores a resource, transport rule, station or milk run after area validation.", result: "The configuration is available for new orders after successful creation."}
+          add_stop: {label: "Add stop", description: "Adds station, sequence and dwell time to a milk run.", result: "The tour can be dispatched once at least two stops exist."}
+          dispatch_milk_run: {label: "Dispatch tour", description: "Creates transport orders for the configured stop sequence.", result: "The number of orders is confirmed; dispatching again creates a new run."}
+          create_replenishment_policy: {label: "Create replenishment policy", description: "Stores product, target, source prefix and quantity thresholds.", result: "The policy appears as manually triggerable replenishment configuration."}
+          trigger_replenishment: {label: "Trigger replenishment", description: "Determines demand and available source stock from the policy.", result: "An open order is created when needed; missing stock produces an error."}
+          complete_replenishment: {label: "Confirm replenishment", description: "Confirms the open replenishment and posts its quantity.", result: "The order completes and target stock is updated; repetition is excluded."}
+        image:
+          src: /assets/images/handbook/fulfillment/internal-transport.svg
+          alt: Internal transport control center with orders, resources, milk runs and replenishment
     guidance:
       prerequisites:
       - Released order, available stock, packaging, carrier connection, print route and load plan.
