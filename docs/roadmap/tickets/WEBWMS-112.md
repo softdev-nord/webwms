@@ -275,6 +275,21 @@ des Twig-Templates mit den strukturierten Feldkennungen; `_csrf_token` ist als
 technisches Feld explizit ausgeschlossen. Eine eigene barrierearme
 Screenshot-Platzhalterdatei ist vorhanden.
 
-Offen bleibt die Übertragung dieses Standards auf die übrigen 100 produktiven
+Der zweite Slice ergänzt elf konkrete Administrationsansichten für den
+Administrationseinstieg sowie Benutzer-, Rollen- und API-Client-Verwaltung.
+Alle fachlich editierbaren Felder der sechs Formularseiten sind strukturiert
+beschrieben. Dazu gehören Pflichtstatus, Eingabeformat, Beispiel, fachliche
+Bedeutung, Auswirkung und typische Validierungsfehler. Übersichten erläutern
+Spalten, Leerzustände, Sichtbarkeit nach Berechtigung und Folgeaktionen. Die
+Einmalanzeige eines API-Secrets beschreibt sichere Übernahme und
+Nicht-Wiederherstellbarkeit ausdrücklich.
+
+Ein sprachparametrisierter Abdeckungstest gleicht für diese elf Views die
+produktiven Twig-Templates und deren Formularfeldkennungen mit dem Handbuch ab.
+Zusätzlich prüft er, dass jede View eine vorhandene und innerhalb des Slices
+eindeutige Screenshot-Referenz besitzt. Damit sind einschließlich Anmeldung
+12 von 101 produktiven Views auf den neuen Dokumentationsstandard migriert.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 89 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.

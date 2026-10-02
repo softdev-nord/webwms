@@ -245,6 +245,145 @@ chapter:
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: Verification – screenshot placeholder
+    views:
+      administration_overview:
+        template: administration/index.html.twig
+        title: Administration overview
+        purpose: The landing page combines users, roles and technical API access for the active tenant.
+        navigation: Administration
+        permissions: ["At least one of administration.user.read, administration.role.read or administration.api_client.read."]
+        overview:
+        - Each visible card shows the number of records and opens its overview. Cards without read permission are completely hidden.
+        actions:
+          open_area: {label: "Open area", description: "Opens users, roles or API clients depending on the selected card.", result: "The functional overview loads without changing data."}
+        image: {src: "/assets/images/handbook/administration/overview.svg", alt: "Administration overview with cards for users, roles and API clients"}
+      users_overview:
+        template: administration/users.html.twig
+        title: User overview
+        purpose: The table shows all tenant accounts with roles and current active state.
+        navigation: Administration → Users
+        permissions: ["administration.user.read; write permission is required to create and edit."]
+        overview:
+        - Columns show display name, email address, roles and status. A dash means that no role is assigned.
+        - An explanatory empty state appears if no account exists. The row action opens the separate edit page.
+        actions:
+          create: {label: "Add user", description: "Opens the form for a new user account.", result: "Data changes only after the form is saved."}
+          edit: {label: "Edit", description: "Opens roles and active state for the selected account.", result: "The user ID and audit attribution are retained."}
+        image: {src: "/assets/images/handbook/administration/users-overview.svg", alt: "User overview with roles, status and edit action"}
+      user_create:
+        template: administration/user_new.html.twig
+        title: Create user
+        purpose: The form creates an account in the active tenant and assigns its initial roles.
+        navigation: Administration → Users → Add user
+        permissions: ["administration.user.write; assignable roles must exist in the tenant."]
+        overview: ["Select multiple roles with Ctrl or Cmd. Grant only the permissions needed for the task."]
+        fields:
+          display_name: {label: "Display name", required: true, format: "Clear name or unique operational name", example: "Erica Example", help: "Appears in lists and audit logs.", effect: "Stored as the visible identity.", errors: "Empty names are invalid."}
+          email: {label: "Email address", required: true, format: "Valid email address unique in the tenant", example: "erica.example@example.org", help: "Used as sign-in identifier and SSO assignment.", effect: "Identifies the account permanently.", errors: "Invalid or previously used addresses are rejected."}
+          password: {label: "Initial password", required: true, format: "At least 12 characters", example: "'************'", help: "Transmit securely and separately; never use a standard password.", effect: "Stored only as a hash and permits the first sign-in.", errors: "Passwords that are too short prevent creation."}
+          role_ids: {label: "Roles", required: false, format: "Multiple selection from tenant roles", example: "ROLE_WAREHOUSE_OPERATOR", help: "Select roles according to least privilege.", effect: "Combined role permissions apply at the next authorization check.", errors: "Unknown or cross-tenant roles are rejected."}
+        actions:
+          save: {label: "Add user", description: "Validates identity, password and roles and creates the account.", result: "On success the user overview opens with confirmation."}
+        image: {src: "/assets/images/handbook/administration/user-create.svg", alt: "Form for creating a user"}
+      user_edit:
+        template: administration/user_edit.html.twig
+        title: Edit user
+        purpose: The page changes role assignments and active state for an existing account.
+        navigation: Administration → Users → Edit
+        permissions: ["administration.user.write; the user must belong to the active tenant."]
+        overview: ["Name and email identify the selected account and cannot be changed here. Deactivation blocks further use without deleting audit data."]
+        fields:
+          role_ids: {label: "Roles", required: false, format: "Multiple selection from tenant roles", example: "ROLE_WAREHOUSE_MANAGER", help: "Do not remove a role required for operations or the last administration access.", effect: "Completely replaces previous role assignments.", errors: "Unknown roles and removal of the last administrative access are rejected."}
+          active: {label: "User active", required: false, format: "Checkbox; enabled or disabled", example: "enabled", help: "Only active users can open new sessions.", effect: "Disabling blocks future sign-ins; history and audit remain.", errors: "The final usable administration account must not be disabled."}
+        actions:
+          save: {label: "Save changes", description: "Validates roles and state and saves them atomically.", result: "On success the updated overview opens."}
+        image: {src: "/assets/images/handbook/administration/user-edit.svg", alt: "Edit user with roles and active state"}
+      roles_overview:
+        template: administration/roles.html.twig
+        title: Role overview
+        purpose: The table shows roles, assigned user count and number of permissions.
+        navigation: Administration → Roles
+        permissions: ["administration.role.read; administration.role.write for creating and editing."]
+        overview: ["Columns show stable code, name, user count and permission count. The code remains the technical reference., The edit action opens name and permissions; an empty state appears if no role exists."]
+        actions:
+          create: {label: "Create role", description: "Opens a separate role form.", result: "The role is available only after successful saving."}
+          edit: {label: "Edit", description: "Opens the selected role and every offered permission.", result: "Assigned users receive changed rights at the next check."}
+        image: {src: "/assets/images/handbook/administration/roles-overview.svg", alt: "Role overview with user and permission counts"}
+      role_create:
+        template: administration/role_new.html.twig
+        title: Create role
+        purpose: The form creates a reusable role with a stable identifier and selected permissions.
+        navigation: Administration → Roles → Create role
+        permissions: ["administration.role.write"]
+        overview: ["Permissions are offered as a multiple selection. Combine only rights belonging to a clear task profile."]
+        fields:
+          code: {label: "Code", required: true, format: "Uppercase letters and underscores with ROLE_ prefix", example: "ROLE_INBOUND_OPERATOR", help: "Stable technical key; never reuse it for another purpose.", effect: "References the role in assignments and checks.", errors: "Invalid or duplicate codes are rejected."}
+          name: {label: "Name", required: true, format: "Understandable task description", example: "Inbound operations", help: "Explains the functional purpose to administrators.", effect: "Displayed in selection lists.", errors: "An empty name is invalid."}
+          permissions: {label: "Permissions", required: false, format: "Multiple selection of known permission codes", example: "inbound.receipt.read", help: "Grant read, write, execute and approve deliberately.", effect: "Determines permitted actions for every assigned user.", errors: "Unknown permission codes are not stored."}
+        actions:
+          save: {label: "Create role", description: "Validates code, name and rights and creates the role.", result: "On success the role can be assigned to users."}
+        image: {src: "/assets/images/handbook/administration/role-create.svg", alt: "Form for creating a role"}
+      role_edit:
+        template: administration/role_edit.html.twig
+        title: Edit role
+        purpose: The page changes display name and rights of an existing role while its code remains stable.
+        navigation: Administration → Roles → Edit
+        permissions: ["administration.role.write"]
+        overview: ["Before removing a right check the number of affected users and test critical roles with a separate account."]
+        fields:
+          name: {label: "Name", required: true, format: "Understandable task description", example: "Inbound management", help: "Describes the current task profile.", effect: "Changes display in user and role lists.", errors: "An empty name prevents saving."}
+          permissions: {label: "Permissions", required: false, format: "Multiple selection of all known rights", example: "inbound.receipt.approve", help: "Unchecked rights are removed from the role when saving.", effect: "Applies to all assigned users at the next authorization check.", errors: "Protection against losing the final administration access can reject the change."}
+        actions:
+          save: {label: "Save changes", description: "Atomically replaces name and permission set.", result: "The change is audited and immediately used for new checks."}
+        image: {src: "/assets/images/handbook/administration/role-edit.svg", alt: "Edit role with full permission selection"}
+      api_clients_overview:
+        template: administration/api_clients.html.twig
+        title: API client overview
+        purpose: The table monitors technical access, acting users, usage and active state.
+        navigation: Administration → API clients
+        permissions: ["administration.api_client.read; write permission for creating and editing."]
+        overview: ["Columns show name, client ID, acting user, last usage and state. Never means that no successful call has been registered., Disabled clients remain visible for traceability but can no longer authenticate."]
+        actions:
+          create: {label: "Create API client", description: "Opens secure creation of technical access.", result: "Client ID and secret are created only after saving."}
+          edit: {label: "Edit", description: "Opens the active state of the selected client.", result: "Existing access can be blocked or enabled again."}
+        image: {src: "/assets/images/handbook/administration/api-clients-overview.svg", alt: "API client overview with last usage and state"}
+      api_client_create:
+        template: administration/api_client_new.html.twig
+        title: Create API client
+        purpose: The form creates technical access with an acting user and explicit rights.
+        navigation: Administration → API clients → Create API client
+        permissions: ["administration.api_client.write; the acting user must be active."]
+        overview: ["Only the intersection of client rights and acting user rights is effective. Use a dedicated service account."]
+        fields:
+          name: {label: "Name", required: true, format: "Unique system and purpose name", example: "Production ERP", help: "Enables unambiguous audit and usage assignment.", effect: "Displayed in overview and logs.", errors: "Empty names are invalid."}
+          acting_user_id: {label: "Acting user", required: true, format: "Single selection of an active tenant account", example: "svc.erp@example.org", help: "Do not use a personal administrator account.", effect: "Operations are authorized and audited under this identity.", errors: "Inactive or cross-tenant users are rejected."}
+          permissions: {label: "Permissions", required: false, format: "Multiple selection of offered API rights", example: "inventory.stock.read", help: "Enable only endpoints that are actually required.", effect: "Restricts access in addition to user rights.", errors: "Unknown rights are not stored; missing rights cause access denied."}
+        actions:
+          generate: {label: "Generate access", description: "Creates client ID and secret once.", result: "The credential page displays the secret exactly once and it must be stored securely immediately."}
+        image: {src: "/assets/images/handbook/administration/api-client-create.svg", alt: "Create API client with user and permissions"}
+      api_client_edit:
+        template: administration/api_client_edit.html.twig
+        title: Edit API client
+        purpose: The page shows the immutable acting user and controls the active state of access.
+        navigation: Administration → API clients → Edit
+        permissions: ["administration.api_client.write"]
+        overview: ["The acting user is read-only. Create a new client with a new secret to change the identity."]
+        fields:
+          active: {label: "API client active", required: false, format: "Checkbox; enabled or disabled", example: "disabled", help: "Disable immediately if compromise is suspected.", effect: "Disabling blocks further authentication without deleting audit and usage data.", errors: "Requests already in progress may finish; future authentication is rejected."}
+        actions:
+          save: {label: "Save changes", description: "Saves active state after CSRF and permission checks.", result: "The overview shows the new state."}
+        image: {src: "/assets/images/handbook/administration/api-client-edit.svg", alt: "Edit API client and change active state"}
+      api_client_credential:
+        template: administration/api_client_credential.html.twig
+        title: Secure API credentials
+        purpose: The security page displays the newly generated credential exactly once for secure transfer.
+        navigation: Administration → API clients → Create API client → Generate access
+        permissions: ["administration.api_client.write; available only immediately after successful creation."]
+        overview: ["The read-only field contains the complete credential. Store it directly in a secret store and never in source code, a ticket or chat., The secret cannot be recovered after leaving the page; create new access if it is lost."]
+        actions:
+          copy: {label: "Copy", description: "Copies the credential using the browser clipboard.", result: "The value remains locally in the clipboard and must be pasted securely and then cleared."}
+          back: {label: "Back to administration", description: "Permanently leaves the one-time display.", result: "The credential cannot be displayed again afterwards."}
+        image: {src: "/assets/images/handbook/administration/api-client-credential.svg", alt: "One-time display of a newly generated API credential"}
     guidance:
       prerequisites:
       - Administration access and an agreed least-privilege task profile.

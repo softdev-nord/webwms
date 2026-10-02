@@ -92,6 +92,45 @@ class UserDocumentationServiceTest extends TestCase
     }
 
     #[DataProvider('localeProvider')]
+    public function testAdministrationViewsHaveCompleteTemplateFieldAndImageCoverage(string $locale): void
+    {
+        $views = $this->documentation->document('users-roles-and-security', $locale)['views'];
+        self::assertSame([
+            'administration/index.html.twig',
+            'administration/users.html.twig',
+            'administration/user_new.html.twig',
+            'administration/user_edit.html.twig',
+            'administration/roles.html.twig',
+            'administration/role_new.html.twig',
+            'administration/role_edit.html.twig',
+            'administration/api_clients.html.twig',
+            'administration/api_client_new.html.twig',
+            'administration/api_client_edit.html.twig',
+            'administration/api_client_credential.html.twig',
+        ], array_column($views, 'template'));
+
+        $imageSources = [];
+        foreach ($views as $view) {
+            $template = file_get_contents(dirname(__DIR__, 4) . '/templates/' . $view['template']);
+            self::assertIsString($template);
+            preg_match_all('/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/i', $template, $matches);
+            $templateFields = array_values(array_unique(array_map(
+                static fn (string $name): string => str_replace('[]', '', $name),
+                array_filter($matches[1], static fn (string $name): bool => !str_starts_with($name, '_'))
+            )));
+            sort($templateFields);
+            $documentedFields = array_column($view['fields'], 'id');
+            sort($documentedFields);
+            self::assertSame($templateFields, $documentedFields, sprintf('Field coverage differs for "%s".', $view['template']));
+
+            self::assertFileExists(dirname(__DIR__, 4) . '/public' . $view['image']['src']);
+            $imageSources[] = $view['image']['src'];
+        }
+
+        self::assertCount(count($imageSources), array_unique($imageSources), 'Every documented view needs a unique screenshot reference.');
+    }
+
+    #[DataProvider('localeProvider')]
     public function testEveryChapterIsTranslated(string $locale): void
     {
         foreach (UserDocumentationService::CHAPTERS as $chapter) {
