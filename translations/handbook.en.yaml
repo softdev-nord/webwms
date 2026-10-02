@@ -257,7 +257,7 @@ chapter:
         - Each visible card shows the number of records and opens its overview. Cards without read permission are completely hidden.
         actions:
           open_area: {label: "\"\\\"Open area\\\"\"", description: "\"\\\"Opens users, roles or API clients depending on the selected card.\\\"\"", result: "\"\\\"The functional overview loads without changing data.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/overview.svg\\\"\"", alt: "\"\\\"Administration overview with cards for users, roles and API clients\\\"\""}
+        image: {src: "/assets/images/handbook/administration/overview.svg", alt: "Administration overview with cards for users, roles and API clients"}
       users_overview:
         template: administration/users.html.twig
         title: User overview
@@ -270,7 +270,7 @@ chapter:
         actions:
           create: {label: "\"\\\"Add user\\\"\"", description: "\"\\\"Opens the form for a new user account.\\\"\"", result: "\"\\\"Data changes only after the form is saved.\\\"\""}
           edit: {label: "\"\\\"Edit\\\"\"", description: "\"\\\"Opens roles and active state for the selected account.\\\"\"", result: "\"\\\"The user ID and audit attribution are retained.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/users-overview.svg\\\"\"", alt: "\"\\\"User overview with roles, status and edit action\\\"\""}
+        image: {src: "/assets/images/handbook/administration/users-overview.svg", alt: "User overview with roles, status and edit action"}
       user_create:
         template: administration/user_new.html.twig
         title: Create user
@@ -285,7 +285,7 @@ chapter:
           role_ids: {label: "\"\\\"Roles\\\"\"", required: false, format: "\"\\\"Multiple selection from tenant roles\\\"\"", example: "\"\\\"ROLE_WAREHOUSE_OPERATOR\\\"\"", help: "\"\\\"Select roles according to least privilege.\\\"\"", effect: "\"\\\"Combined role permissions apply at the next authorization check.\\\"\"", errors: "\"\\\"Unknown or cross-tenant roles are rejected.\\\"\""}
         actions:
           save: {label: "\"\\\"Add user\\\"\"", description: "\"\\\"Validates identity, password and roles and creates the account.\\\"\"", result: "\"\\\"On success the user overview opens with confirmation.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/user-create.svg\\\"\"", alt: "\"\\\"Form for creating a user\\\"\""}
+        image: {src: "/assets/images/handbook/administration/user-create.svg", alt: "Form for creating a user"}
       user_edit:
         template: administration/user_edit.html.twig
         title: Edit user
@@ -298,7 +298,7 @@ chapter:
           active: {label: "\"\\\"User active\\\"\"", required: false, format: "\"\\\"Checkbox; enabled or disabled\\\"\"", example: "\"\\\"enabled\\\"\"", help: "\"\\\"Only active users can open new sessions.\\\"\"", effect: "\"\\\"Disabling blocks future sign-ins; history and audit remain.\\\"\"", errors: "\"\\\"The final usable administration account must not be disabled.\\\"\""}
         actions:
           save: {label: "\"\\\"Save changes\\\"\"", description: "\"\\\"Validates roles and state and saves them atomically.\\\"\"", result: "\"\\\"On success the updated overview opens.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/user-edit.svg\\\"\"", alt: "\"\\\"Edit user with roles and active state\\\"\""}
+        image: {src: "/assets/images/handbook/administration/user-edit.svg", alt: "Edit user with roles and active state"}
       roles_overview:
         template: administration/roles.html.twig
         title: Role overview
@@ -309,7 +309,7 @@ chapter:
         actions:
           create: {label: "\"\\\"Create role\\\"\"", description: "\"\\\"Opens a separate role form.\\\"\"", result: "\"\\\"The role is available only after successful saving.\\\"\""}
           edit: {label: "\"\\\"Edit\\\"\"", description: "\"\\\"Opens the selected role and every offered permission.\\\"\"", result: "\"\\\"Assigned users receive changed rights at the next check.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/roles-overview.svg\\\"\"", alt: "\"\\\"Role overview with user and permission counts\\\"\""}
+        image: {src: "/assets/images/handbook/administration/roles-overview.svg", alt: "Role overview with user and permission counts"}
       role_create:
         template: administration/role_new.html.twig
         title: Create role
@@ -323,7 +323,7 @@ chapter:
           permissions: {label: "\"\\\"Permissions\\\"\"", required: false, format: "\"\\\"Multiple selection of known permission codes\\\"\"", example: "\"\\\"inbound.receipt.read\\\"\"", help: "\"\\\"Grant read, write, execute and approve deliberately.\\\"\"", effect: "\"\\\"Determines permitted actions for every assigned user.\\\"\"", errors: "\"\\\"Unknown permission codes are not stored.\\\"\""}
         actions:
           save: {label: "\"\\\"Create role\\\"\"", description: "\"\\\"Validates code, name and rights and creates the role.\\\"\"", result: "\"\\\"On success the role can be assigned to users.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/role-create.svg\\\"\"", alt: "\"\\\"Form for creating a role\\\"\""}
+        image: {src: "/assets/images/handbook/administration/role-create.svg", alt: "Form for creating a role"}
       role_edit:
         template: administration/role_edit.html.twig
         title: Edit role
@@ -336,7 +336,7 @@ chapter:
           permissions: {label: "\"\\\"Permissions\\\"\"", required: false, format: "\"\\\"Multiple selection of all known rights\\\"\"", example: "\"\\\"inbound.receipt.approve\\\"\"", help: "\"\\\"Unchecked rights are removed from the role when saving.\\\"\"", effect: "\"\\\"Applies to all assigned users at the next authorization check.\\\"\"", errors: "\"\\\"Protection against losing the final administration access can reject the change.\\\"\""}
         actions:
           save: {label: "\"\\\"Save changes\\\"\"", description: "\"\\\"Atomically replaces name and permission set.\\\"\"", result: "\"\\\"The change is audited and immediately used for new checks.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/role-edit.svg\\\"\"", alt: "\"\\\"Edit role with full permission selection\\\"\""}
+        image: {src: "/assets/images/handbook/administration/role-edit.svg", alt: "Edit role with full permission selection"}
       api_clients_overview:
         template: administration/api_clients.html.twig
         title: API client overview
@@ -347,7 +347,7 @@ chapter:
         actions:
           create: {label: "\"\\\"Create API client\\\"\"", description: "\"\\\"Opens secure creation of technical access.\\\"\"", result: "\"\\\"Client ID and secret are created only after saving.\\\"\""}
           edit: {label: "\"\\\"Edit\\\"\"", description: "\"\\\"Opens the active state of the selected client.\\\"\"", result: "\"\\\"Existing access can be blocked or enabled again.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/api-clients-overview.svg\\\"\"", alt: "\"\\\"API client overview with last usage and state\\\"\""}
+        image: {src: "/assets/images/handbook/administration/api-clients-overview.svg", alt: "API client overview with last usage and state"}
       api_client_create:
         template: administration/api_client_new.html.twig
         title: Create API client
@@ -361,7 +361,7 @@ chapter:
           permissions: {label: "\"\\\"Permissions\\\"\"", required: false, format: "\"\\\"Multiple selection of offered API rights\\\"\"", example: "\"\\\"inventory.stock.read\\\"\"", help: "\"\\\"Enable only endpoints that are actually required.\\\"\"", effect: "\"\\\"Restricts access in addition to user rights.\\\"\"", errors: "\"\\\"Unknown rights are not stored; missing rights cause access denied.\\\"\""}
         actions:
           generate: {label: "\"\\\"Generate access\\\"\"", description: "\"\\\"Creates client ID and secret once.\\\"\"", result: "\"\\\"The credential page displays the secret exactly once and it must be stored securely immediately.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/api-client-create.svg\\\"\"", alt: "\"\\\"Create API client with user and permissions\\\"\""}
+        image: {src: "/assets/images/handbook/administration/api-client-create.svg", alt: "Create API client with user and permissions"}
       api_client_edit:
         template: administration/api_client_edit.html.twig
         title: Edit API client
@@ -373,7 +373,7 @@ chapter:
           active: {label: "\"\\\"API client active\\\"\"", required: false, format: "\"\\\"Checkbox; enabled or disabled\\\"\"", example: "\"\\\"disabled\\\"\"", help: "\"\\\"Disable immediately if compromise is suspected.\\\"\"", effect: "\"\\\"Disabling blocks further authentication without deleting audit and usage data.\\\"\"", errors: "\"\\\"Requests already in progress may finish; future authentication is rejected.\\\"\""}
         actions:
           save: {label: "\"\\\"Save changes\\\"\"", description: "\"\\\"Saves active state after CSRF and permission checks.\\\"\"", result: "\"\\\"The overview shows the new state.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/api-client-edit.svg\\\"\"", alt: "\"\\\"Edit API client and change active state\\\"\""}
+        image: {src: "/assets/images/handbook/administration/api-client-edit.svg", alt: "Edit API client and change active state"}
       api_client_credential:
         template: administration/api_client_credential.html.twig
         title: Secure API credentials
@@ -384,7 +384,7 @@ chapter:
         actions:
           copy: {label: "\"\\\"Copy\\\"\"", description: "\"\\\"Copies the credential using the browser clipboard.\\\"\"", result: "\"\\\"The value remains locally in the clipboard and must be pasted securely and then cleared.\\\"\""}
           back: {label: "\"\\\"Back to administration\\\"\"", description: "\"\\\"Permanently leaves the one-time display.\\\"\"", result: "\"\\\"The credential cannot be displayed again afterwards.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/api-client-credential.svg\\\"\"", alt: "\"\\\"One-time display of a newly generated API credential\\\"\""}
+        image: {src: "/assets/images/handbook/administration/api-client-credential.svg", alt: "One-time display of a newly generated API credential"}
     guidance:
       prerequisites:
       - Administration access and an agreed least-privilege task profile.
@@ -882,6 +882,59 @@ chapter:
         image:
           src: /assets/images/handbook/fulfillment/internal-transport.svg
           alt: Internal transport control center with orders, resources, milk runs and replenishment
+      outbound_orders:
+        template: outbound/order/orders.html.twig
+        title: Outbound orders
+        purpose: The overview shows customer orders with reference and state and links to creation or process details.
+        navigation: Outbound → Orders
+        permissions: ["outbound.order.read; outbound.order.write for creation."]
+        overview:
+        - The table shows order number, customer reference and current state. Open leads to release, reservation, allocation and handover to picking.
+        - The empty state means that no order exists in the active tenant; this view currently has no search, filters or pagination.
+        actions:
+          create: {label: "Create order", description: "Opens a separate form for references, product and quantity.", result: "After saving the order appears in created or imported state."}
+          open: {label: "Open", description: "Opens lines, reservations and the next permitted process actions.", result: "Navigation itself does not change data."}
+        image: {src: "/assets/images/handbook/outbound/orders-overview.svg", alt: "Outbound order overview with state and open action"}
+      outbound_order_create:
+        template: outbound/order/order_new.html.twig
+        title: Create outbound order
+        purpose: The form creates a customer order with its first product line as the basis for reservation and picking.
+        navigation: Outbound → Orders → Create order
+        permissions: ["outbound.order.write; the product must exist in the active tenant."]
+        overview: ["Verify external references and quantity before saving. Further processing starts only after separate order release."]
+        fields:
+          order_number: {label: "Order number", required: true, format: "Document code unique in the tenant", example: "SO-2026-0815", help: "Use the external ERP number or a controlled internal number.", effect: "Identifies the order in every downstream process.", errors: "Empty or previously used numbers are rejected."}
+          customer_reference: {label: "Customer reference", required: true, format: "Unique customer or recipient reference", example: "CUSTOMER-DE-1000", help: "Must permit functional assignment for shipping and enquiries.", effect: "Appears in overview and order details.", errors: "An empty reference prevents creation."}
+          product_id: {label: "Product", required: true, format: "Selection of an existing product", example: "SKU-4711", help: "Verify SKU and description against customer demand.", effect: "Creates the first order line and later stock reservation.", errors: "Unknown or cross-tenant products are rejected."}
+          quantity: {label: "Quantity", required: true, format: "Positive integer in the product base unit", example: "'10'", help: "Enter the quantity actually requested.", effect: "Determines reservation, allocation and pick demand.", errors: "Zero, negative or non-numeric values are invalid."}
+        actions:
+          save: {label: "Create order", description: "Validates references, product and quantity and atomically creates order and line.", result: "Order details open for review and release."}
+          cancel: {label: "Cancel", description: "Discards unsaved input.", result: "No order is created."}
+        image: {src: "/assets/images/handbook/outbound/order-create.svg", alt: "Form for creating an outbound order"}
+      outbound_order_detail:
+        template: outbound/order/order.html.twig
+        title: Release, reserve and allocate order
+        purpose: The detail view takes an order from release through automatic or manual stock allocation to its pick list.
+        navigation: Outbound → Orders → Open
+        permissions: ["outbound.order.read/release; inventory.allocation.write; inventory.selection.execute; fulfillment.pick.write depending on action."]
+        overview:
+        - Each line shows requested, reserved, allocated and fulfilled quantities plus available stock dimensions. Order state limits offered actions.
+        - Release reserves demand. Fully allocated released orders can create exactly one pick list; an existing pick list is linked directly.
+        fields:
+          rule_id: {label: "Selection rule", required: true, format: "Active rule matching product and warehouse", example: "FIFO-WH1", help: "Verify strategy, warehouse and priority before execution.", effect: "Automatically allocates all remaining quantity using this rule.", errors: "No matching rule or insufficient stock prevents full allocation."}
+          location_id: {label: "Bin ID", required: true, format: "Hidden UUID of the displayed stock row", example: "018f2f5a-73ad-7c42-9d84-2dcb65bcb410", help: "Taken from the selected stock row and must not be manipulated.", effect: "Binds manual allocation to the concrete bin.", errors: "Unknown or cross-tenant bins are rejected."}
+          stock_status: {label: "Stock status", required: true, format: "Hidden state of the stock row", example: "available", help: "Must match actually available stock.", effect: "Reserves only stock of this quality.", errors: "Blocked or differing state prevents allocation."}
+          batch_number: {label: "Batch", required: false, format: "Hidden exact batch of the stock row", example: "LOT-20261002", help: "Keeps manual selection batch-specific.", effect: "Allocates stock only from this batch.", errors: "A batch no longer available causes a conflict."}
+          serial_number: {label: "Serial number", required: false, format: "Hidden unique serial number", example: "SN-0001842", help: "Serial stock is allocated by unit with quantity one.", effect: "Reserves the concrete unit.", errors: "Already reserved or moved serial numbers are rejected."}
+          expires_at: {label: "Expiry date", required: false, format: "Hidden date of the stock dimension", example: "'2028-10-31'", help: "Secures the displayed FEFO-relevant stock choice.", effect: "Belongs to the unique allocation dimension.", errors: "Stock changed in parallel causes a conflict."}
+          quantity: {label: "Allocation quantity", required: true, format: "Integer from 1 to the lower of remaining or available quantity", example: "'5'", help: "Only quantity one is allowed for serial numbers.", effect: "Atomically increases allocated reservation quantity.", errors: "Excess, short stock or concurrent allocation prevents posting."}
+          code: {label: "Pick-list code", required: true, format: "Unique code prefilled with PICK plus order number", example: "PICK-SO-2026-0815", help: "Verify uniqueness and numbering convention before creation.", effect: "Identifies the new pick list throughout fulfilment.", errors: "Empty or duplicate codes are rejected."}
+        actions:
+          release: {label: "Release and reserve order", description: "Validates master data and creates demand reservations for every line.", result: "Order changes to released; errors create no partial reservations."}
+          auto_allocate: {label: "Automatically allocate remainder", description: "Applies the selected rule to open quantity.", result: "Suitable stock dimensions are bound atomically and shortages remain visible."}
+          allocate: {label: "Allocate", description: "Manually binds entered quantity of the displayed stock dimension.", result: "Reserved, allocated and available values are recalculated immediately."}
+          create_pick_list: {label: "Create pick list", description: "Hands a fully allocated released order to picking.", result: "Exactly one open pick list is created and linked."}
+        image: {src: "/assets/images/handbook/outbound/order-detail.svg", alt: "Order details with release and automatic and manual allocation"}
     guidance:
       prerequisites:
       - Released order, available stock, packaging, carrier connection, print route and load plan.

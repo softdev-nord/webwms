@@ -259,7 +259,7 @@ chapter:
         - Jede sichtbare Kachel zeigt die Anzahl der Datensätze und öffnet die zugehörige Übersicht. Kacheln ohne Leserecht werden vollständig ausgeblendet.
         actions:
           open_area: {label: "\"\\\"Bereich öffnen\\\"\"", description: "\"\\\"Öffnet Benutzer, Rollen oder API-Clients abhängig von der gewählten Kachel.\\\"\"", result: "\"\\\"Die fachliche Übersicht wird ohne Datenänderung geladen.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/overview.svg\\\"\"", alt: "\"\\\"Administrationsübersicht mit Kacheln für Benutzer, Rollen und API-Clients\\\"\""}
+        image: {src: "/assets/images/handbook/administration/overview.svg", alt: "Administrationsübersicht mit Kacheln für Benutzer, Rollen und API-Clients"}
       users_overview:
         template: administration/users.html.twig
         title: Benutzerübersicht
@@ -272,7 +272,7 @@ chapter:
         actions:
           create: {label: "\"\\\"Benutzer hinzufügen\\\"\"", description: "\"\\\"Öffnet das Formular für ein neues Benutzerkonto.\\\"\"", result: "\"\\\"Daten werden erst beim Speichern des Formulars verändert.\\\"\""}
           edit: {label: "\"\\\"Bearbeiten\\\"\"", description: "\"\\\"Öffnet Rollen und Aktivstatus des gewählten Kontos.\\\"\"", result: "\"\\\"Die Benutzer-ID und Auditzuordnung bleiben erhalten.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/users-overview.svg\\\"\"", alt: "\"\\\"Benutzerübersicht mit Rollen, Status und Bearbeiten-Aktion\\\"\""}
+        image: {src: "/assets/images/handbook/administration/users-overview.svg", alt: "Benutzerübersicht mit Rollen, Status und Bearbeiten-Aktion"}
       user_create:
         template: administration/user_new.html.twig
         title: Benutzer anlegen
@@ -287,7 +287,7 @@ chapter:
           role_ids: {label: "\"\\\"Rollen\\\"\"", required: false, format: "\"\\\"Mehrfachauswahl aus Mandantenrollen\\\"\"", example: "\"\\\"ROLE_WAREHOUSE_OPERATOR\\\"\"", help: "\"\\\"Rollen nach dem Minimalprinzip auswählen.\\\"\"", effect: "\"\\\"Die vereinigten Rollenrechte gelten bei der nächsten Berechtigungsprüfung.\\\"\"", errors: "\"\\\"Unbekannte oder mandantenfremde Rollen werden abgewiesen.\\\"\""}
         actions:
           save: {label: "\"\\\"Benutzer hinzufügen\\\"\"", description: "\"\\\"Prüft Identität, Passwort und Rollen und legt das Konto an.\\\"\"", result: "\"\\\"Bei Erfolg öffnet sich die Benutzerübersicht mit Bestätigung.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/user-create.svg\\\"\"", alt: "\"\\\"Formular zum Anlegen eines Benutzers\\\"\""}
+        image: {src: "/assets/images/handbook/administration/user-create.svg", alt: "Formular zum Anlegen eines Benutzers"}
       user_edit:
         template: administration/user_edit.html.twig
         title: Benutzer bearbeiten
@@ -300,7 +300,7 @@ chapter:
           active: {label: "\"\\\"Benutzer aktiv\\\"\"", required: false, format: "\"\\\"Checkbox; aktiviert oder deaktiviert\\\"\"", example: "\"\\\"aktiviert\\\"\"", help: "\"\\\"Nur aktive Benutzer können neue Sitzungen eröffnen.\\\"\"", effect: "\"\\\"Deaktivieren sperrt künftige Anmeldungen; Historie und Audit bleiben erhalten.\\\"\"", errors: "\"\\\"Das eigene letzte Administrationskonto darf nicht unbrauchbar gemacht werden.\\\"\""}
         actions:
           save: {label: "\"\\\"Änderungen speichern\\\"\"", description: "\"\\\"Validiert Rollen und Status und speichert sie atomar.\\\"\"", result: "\"\\\"Bei Erfolg öffnet sich die aktualisierte Übersicht.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/user-edit.svg\\\"\"", alt: "\"\\\"Benutzer bearbeiten mit Rollen und Aktivstatus\\\"\""}
+        image: {src: "/assets/images/handbook/administration/user-edit.svg", alt: "Benutzer bearbeiten mit Rollen und Aktivstatus"}
       roles_overview:
         template: administration/roles.html.twig
         title: Rollenübersicht
@@ -311,7 +311,7 @@ chapter:
         actions:
           create: {label: "\"\\\"Rolle erstellen\\\"\"", description: "\"\\\"Öffnet ein separates Rollenformular.\\\"\"", result: "\"\\\"Die Rolle ist erst nach erfolgreichem Speichern verfügbar.\\\"\""}
           edit: {label: "\"\\\"Bearbeiten\\\"\"", description: "\"\\\"Öffnet die gewählte Rolle und alle angebotenen Rechte.\\\"\"", result: "\"\\\"Bestehende Benutzer erhalten die geänderten Rechte bei der nächsten Prüfung.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/roles-overview.svg\\\"\"", alt: "\"\\\"Rollenübersicht mit Benutzer- und Berechtigungsanzahl\\\"\""}
+        image: {src: "/assets/images/handbook/administration/roles-overview.svg", alt: "Rollenübersicht mit Benutzer- und Berechtigungsanzahl"}
       role_create:
         template: administration/role_new.html.twig
         title: Rolle anlegen
@@ -325,7 +325,7 @@ chapter:
           permissions: {label: "\"\\\"Berechtigungen\\\"\"", required: false, format: "\"\\\"Mehrfachauswahl bekannter Berechtigungscodes\\\"\"", example: "\"\\\"inbound.receipt.read\\\"\"", help: "\"\\\"Lesen, Schreiben, Ausführen und Freigeben bewusst getrennt vergeben.\\\"\"", effect: "\"\\\"Bestimmt die erlaubten Aktionen aller zugeordneten Benutzer.\\\"\"", errors: "\"\\\"Unbekannte Berechtigungscodes werden nicht gespeichert.\\\"\""}
         actions:
           save: {label: "\"\\\"Rolle erstellen\\\"\"", description: "\"\\\"Prüft Code, Namen und Rechte und legt die Rolle an.\\\"\"", result: "\"\\\"Bei Erfolg kann die Rolle Benutzern zugewiesen werden.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/role-create.svg\\\"\"", alt: "\"\\\"Formular zum Erstellen einer Rolle\\\"\""}
+        image: {src: "/assets/images/handbook/administration/role-create.svg", alt: "Formular zum Erstellen einer Rolle"}
       role_edit:
         template: administration/role_edit.html.twig
         title: Rolle bearbeiten
@@ -338,7 +338,7 @@ chapter:
           permissions: {label: "\"\\\"Berechtigungen\\\"\"", required: false, format: "\"\\\"Mehrfachauswahl aller bekannten Rechte\\\"\"", example: "\"\\\"inbound.receipt.approve\\\"\"", help: "\"\\\"Nicht markierte Rechte werden beim Speichern aus der Rolle entfernt.\\\"\"", effect: "\"\\\"Wirkt auf alle zugeordneten Benutzer bei der nächsten Berechtigungsprüfung.\\\"\"", errors: "\"\\\"Der Schutz vor Verlust des letzten Verwaltungszugangs kann die Änderung ablehnen.\\\"\""}
         actions:
           save: {label: "\"\\\"Änderungen speichern\\\"\"", description: "\"\\\"Ersetzt Namen und Berechtigungsmenge atomar.\\\"\"", result: "\"\\\"Die Änderung wird auditiert und sofort für neue Prüfungen verwendet.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/role-edit.svg\\\"\"", alt: "\"\\\"Rolle bearbeiten mit vollständiger Berechtigungsauswahl\\\"\""}
+        image: {src: "/assets/images/handbook/administration/role-edit.svg", alt: "Rolle bearbeiten mit vollständiger Berechtigungsauswahl"}
       api_clients_overview:
         template: administration/api_clients.html.twig
         title: API-Client-Übersicht
@@ -349,7 +349,7 @@ chapter:
         actions:
           create: {label: "\"\\\"API-Client erstellen\\\"\"", description: "\"\\\"Öffnet die sichere Erzeugung eines technischen Zugangs.\\\"\"", result: "\"\\\"Client-ID und Secret entstehen erst nach dem Speichern.\\\"\""}
           edit: {label: "\"\\\"Bearbeiten\\\"\"", description: "\"\\\"Öffnet den Aktivstatus des ausgewählten Clients.\\\"\"", result: "\"\\\"Der bestehende Zugang kann gesperrt oder wieder freigegeben werden.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/api-clients-overview.svg\\\"\"", alt: "\"\\\"API-Client-Übersicht mit letzter Nutzung und Status\\\"\""}
+        image: {src: "/assets/images/handbook/administration/api-clients-overview.svg", alt: "API-Client-Übersicht mit letzter Nutzung und Status"}
       api_client_create:
         template: administration/api_client_new.html.twig
         title: API-Client anlegen
@@ -363,7 +363,7 @@ chapter:
           permissions: {label: "\"\\\"Berechtigungen\\\"\"", required: false, format: "\"\\\"Mehrfachauswahl angebotener API-Rechte\\\"\"", example: "\"\\\"inventory.stock.read\\\"\"", help: "\"\\\"Nur tatsächlich benötigte Endpunkte freigeben.\\\"\"", effect: "\"\\\"Begrenzt den Zugang zusätzlich zu den Benutzerrechten.\\\"\"", errors: "\"\\\"Unbekannte Rechte werden nicht gespeichert; fehlende Rechte führen zu Zugriff verweigert.\\\"\""}
         actions:
           generate: {label: "\"\\\"Zugang erzeugen\\\"\"", description: "\"\\\"Erstellt Client-ID und Secret einmalig.\\\"\"", result: "\"\\\"Das Secret erscheint genau einmal auf der Credential-Seite und muss sofort sicher gespeichert werden.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/api-client-create.svg\\\"\"", alt: "\"\\\"API-Client anlegen mit Benutzer und Berechtigungen\\\"\""}
+        image: {src: "/assets/images/handbook/administration/api-client-create.svg", alt: "API-Client anlegen mit Benutzer und Berechtigungen"}
       api_client_edit:
         template: administration/api_client_edit.html.twig
         title: API-Client bearbeiten
@@ -375,7 +375,7 @@ chapter:
           active: {label: "\"\\\"API-Client aktiv\\\"\"", required: false, format: "\"\\\"Checkbox; aktiviert oder deaktiviert\\\"\"", example: "\"\\\"deaktiviert\\\"\"", help: "\"\\\"Bei Verdacht auf Kompromittierung sofort deaktivieren.\\\"\"", effect: "\"\\\"Deaktivieren sperrt weitere Authentifizierungen, ohne Audit- und Nutzungsdaten zu löschen.\\\"\"", errors: "\"\\\"Bereits laufende Requests können beendet werden; künftige Anmeldungen werden abgewiesen.\\\"\""}
         actions:
           save: {label: "\"\\\"Änderungen speichern\\\"\"", description: "\"\\\"Speichert den Aktivstatus nach CSRF- und Berechtigungsprüfung.\\\"\"", result: "\"\\\"Die Übersicht zeigt den neuen Status.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/api-client-edit.svg\\\"\"", alt: "\"\\\"API-Client bearbeiten und Aktivstatus ändern\\\"\""}
+        image: {src: "/assets/images/handbook/administration/api-client-edit.svg", alt: "API-Client bearbeiten und Aktivstatus ändern"}
       api_client_credential:
         template: administration/api_client_credential.html.twig
         title: API-Zugangsdaten sichern
@@ -386,7 +386,7 @@ chapter:
         actions:
           copy: {label: "\"\\\"Kopieren\\\"\"", description: "\"\\\"Kopiert das Credential über die Browser-Zwischenablage.\\\"\"", result: "\"\\\"Der Inhalt bleibt nur lokal in der Zwischenablage und muss anschließend sicher eingefügt und aus der Zwischenablage entfernt werden.\\\"\""}
           back: {label: "\"\\\"Zur Administration\\\"\"", description: "\"\\\"Verlässt die Einmalanzeige endgültig.\\\"\"", result: "\"\\\"Das Credential kann danach nicht erneut angezeigt werden.\\\"\""}
-        image: {src: "\"\\\"/assets/images/handbook/administration/api-client-credential.svg\\\"\"", alt: "\"\\\"Einmalige Anzeige eines neu erzeugten API-Credentials\\\"\""}
+        image: {src: "/assets/images/handbook/administration/api-client-credential.svg", alt: "Einmalige Anzeige eines neu erzeugten API-Credentials"}
     guidance:
       prerequisites:
       - Administrationszugriff und abgestimmtes Aufgabenprofil nach Minimalprinzip.
@@ -889,6 +889,59 @@ chapter:
         image:
           src: /assets/images/handbook/fulfillment/internal-transport.svg
           alt: Interne Transportleitstelle mit Aufträgen, Ressourcen, Routenzügen und Nachschub
+      outbound_orders:
+        template: outbound/order/orders.html.twig
+        title: Warenausgangsaufträge
+        purpose: Die Übersicht zeigt Kundenaufträge mit Referenz und Status und führt zur Neuanlage oder Bearbeitung des Prozessstands.
+        navigation: Warenausgang → Aufträge
+        permissions: ["outbound.order.read; outbound.order.write für die Neuanlage."]
+        overview:
+        - Die Tabelle zeigt Auftragsnummer, Kundenreferenz und aktuellen Status. Öffnen führt zur Freigabe, Reservierung, Allokation und Übergabe an die Kommissionierung.
+        - Der Leerzustand bedeutet, dass im aktiven Mandanten kein Auftrag vorhanden ist; die Ansicht besitzt derzeit keine Suche, Filter oder Pagination.
+        actions:
+          create: {label: "Auftrag anlegen", description: "Öffnet ein separates Formular für Referenz, Artikel und Menge.", result: "Der Auftrag erscheint nach erfolgreichem Speichern im Status created beziehungsweise imported."}
+          open: {label: "Öffnen", description: "Öffnet Positionen, Reservierungen und die nächsten zulässigen Prozessaktionen.", result: "Die Navigation selbst verändert keine Daten."}
+        image: {src: "/assets/images/handbook/outbound/orders-overview.svg", alt: "Übersicht der Warenausgangsaufträge mit Status und Öffnen-Aktion"}
+      outbound_order_create:
+        template: outbound/order/order_new.html.twig
+        title: Warenausgangsauftrag anlegen
+        purpose: Das Formular erstellt einen Kundenauftrag mit einer ersten Artikelposition als Grundlage für Reservierung und Kommissionierung.
+        navigation: Warenausgang → Aufträge → Auftrag anlegen
+        permissions: ["outbound.order.write; der Artikel muss im aktiven Mandanten vorhanden sein."]
+        overview: ["Prüfen Sie externe Referenzen und Menge vor dem Speichern. Weitere Prozessschritte erfolgen erst nach der separaten Freigabe des Auftrags."]
+        fields:
+          order_number: {label: "Auftragsnummer", required: true, format: "Im Mandanten eindeutiger Belegcode", example: "SO-2026-0815", help: "Externe ERP-Nummer oder kontrollierte interne Nummer verwenden.", effect: "Identifiziert den Auftrag in allen Folgeprozessen.", errors: "Leere oder bereits verwendete Nummern werden abgewiesen."}
+          customer_reference: {label: "Kundenreferenz", required: true, format: "Eindeutige Kunden- oder Empfängerreferenz", example: "CUSTOMER-DE-1000", help: "Muss die fachliche Zuordnung für Versand und Rückfragen erlauben.", effect: "Erscheint in Übersicht und Auftragsdetail.", errors: "Eine leere Referenz verhindert die Anlage."}
+          product_id: {label: "Artikel", required: true, format: "Auswahl eines vorhandenen Artikels", example: "SKU-4711", help: "SKU und Beschreibung gegen den Kundenbedarf prüfen.", effect: "Erzeugt die erste Auftragsposition und spätere Bestandsreservierung.", errors: "Unbekannte oder mandantenfremde Artikel werden abgewiesen."}
+          quantity: {label: "Menge", required: true, format: "Positive Ganzzahl in der Artikelbasiseinheit", example: "'10'", help: "Tatsächlich angeforderte Menge erfassen.", effect: "Bestimmt Reservierungs-, Allokations- und Pickbedarf.", errors: "Null, negative oder nicht numerische Werte sind ungültig."}
+        actions:
+          save: {label: "Auftrag anlegen", description: "Validiert Referenzen, Artikel und Menge und erzeugt Auftrag und Position atomar.", result: "Das Auftragsdetail öffnet sich für Prüfung und Freigabe."}
+          cancel: {label: "Abbrechen", description: "Verwirft nicht gespeicherte Eingaben.", result: "Es wird kein Auftrag erzeugt."}
+        image: {src: "/assets/images/handbook/outbound/order-create.svg", alt: "Formular zum Anlegen eines Warenausgangsauftrags"}
+      outbound_order_detail:
+        template: outbound/order/order.html.twig
+        title: Auftrag freigeben, reservieren und allokieren
+        purpose: Die Detailansicht führt einen Auftrag von der Freigabe über automatische oder manuelle Bestandsallokation bis zur Pickliste.
+        navigation: Warenausgang → Aufträge → Öffnen
+        permissions: ["outbound.order.read/release; inventory.allocation.write; inventory.selection.execute; fulfillment.pick.write abhängig von der Aktion."]
+        overview:
+        - Jede Position zeigt angeforderte, reservierte, allokierte und erfüllte Menge sowie verfügbare Bestandsdimensionen. Der Auftragsstatus begrenzt die angebotenen Aktionen.
+        - Freigabe reserviert Bedarf. Vollständig allokierte freigegebene Aufträge können genau eine Pickliste erzeugen; vorhandene Picklisten werden direkt verlinkt.
+        fields:
+          rule_id: {label: "Entnahmeregel", required: true, format: "Auswahl einer aktiven auf Artikel und Lager passenden Regel", example: "FIFO-WH1", help: "Strategie, Lagerbezug und Priorität vor Ausführung prüfen.", effect: "Allokiert die gesamte Restmenge automatisch nach der gewählten Regel.", errors: "Keine passende Regel oder unzureichender Bestand verhindert die vollständige Allokation."}
+          location_id: {label: "Lagerplatz-ID", required: true, format: "Versteckte UUID des angezeigten Bestands", example: "018f2f5a-73ad-7c42-9d84-2dcb65bcb410", help: "Wird aus der gewählten Bestandszeile übernommen und darf nicht manipuliert werden.", effect: "Bindet manuelle Allokation an den konkreten Platz.", errors: "Unbekannte oder mandantenfremde Plätze werden abgewiesen."}
+          stock_status: {label: "Bestandsstatus", required: true, format: "Versteckter Status der Bestandszeile", example: "available", help: "Muss zum tatsächlich verfügbaren Bestand passen.", effect: "Reserviert nur Bestand dieser Qualitätsstufe.", errors: "Gesperrter oder abweichender Status verhindert die Allokation."}
+          batch_number: {label: "Charge", required: false, format: "Versteckte exakte Charge der Bestandszeile", example: "LOT-20261002", help: "Hält die manuelle Auswahl chargengenau.", effect: "Allokiert Bestand ausschließlich aus dieser Charge.", errors: "Nicht mehr verfügbare Chargen führen zu einem Konflikt."}
+          serial_number: {label: "Seriennummer", required: false, format: "Versteckte eindeutige Seriennummer", example: "SN-0001842", help: "Serienbestand wird stückgenau mit Menge eins allokiert.", effect: "Reserviert die konkrete Einheit.", errors: "Bereits reservierte oder bewegte Seriennummern werden abgewiesen."}
+          expires_at: {label: "Haltbarkeitsdatum", required: false, format: "Verstecktes Datum der Bestandsdimension", example: "'2028-10-31'", help: "Sichert die angezeigte FEFO-relevante Bestandsauswahl.", effect: "Gehört zur eindeutigen Allokationsdimension.", errors: "Zwischenzeitlich geänderter Bestand erzeugt einen Konflikt."}
+          quantity: {label: "Allokationsmenge", required: true, format: "Ganzzahl von 1 bis zur kleineren Rest- oder verfügbaren Menge", example: "'5'", help: "Bei Seriennummern ist nur Menge eins zulässig.", effect: "Erhöht die allokierte Menge der Reservierung atomar.", errors: "Übermenge, Fehlbestand oder parallele Allokation verhindert die Buchung."}
+          code: {label: "Picklistencode", required: true, format: "Eindeutiger Code; vorbelegt mit PICK-Auftragsnummer", example: "PICK-SO-2026-0815", help: "Vor Erzeugung auf Eindeutigkeit und betriebliche Nummernkonvention prüfen.", effect: "Identifiziert die neue Pickliste im gesamten Fulfillment.", errors: "Leere oder doppelte Codes werden abgewiesen."}
+        actions:
+          release: {label: "Auftrag freigeben und reservieren", description: "Prüft Stammdaten und legt Bedarfsreservierungen für alle Positionen an.", result: "Der Auftrag wechselt zu released; bei einem Fehler entstehen keine Teilreservierungen."}
+          auto_allocate: {label: "Restmenge automatisch allokieren", description: "Wendet die ausgewählte Entnahmeregel auf die offene Menge an.", result: "Geeignete Bestandsdimensionen werden atomar gebunden; Fehlbestand bleibt sichtbar."}
+          allocate: {label: "Allokieren", description: "Bindet die eingegebene Menge der angezeigten Bestandsdimension manuell.", result: "Reserviert, allokiert und verfügbar werden sofort neu berechnet."}
+          create_pick_list: {label: "Pickliste erzeugen", description: "Übergibt einen vollständig allokierten freigegebenen Auftrag an die Kommissionierung.", result: "Genau eine offene Pickliste entsteht und wird anschließend verlinkt."}
+        image: {src: "/assets/images/handbook/outbound/order-detail.svg", alt: "Auftragsdetail mit Freigabe, automatischer und manueller Allokation"}
     guidance:
       prerequisites:
       - Freigegebener Auftrag, verfügbarer Bestand, Packmittel, Carrier-Verbindung, Druckroute und Verladeplanung.

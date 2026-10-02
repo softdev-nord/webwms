@@ -353,6 +353,22 @@ Bildreferenz in beiden Sprachen nach. Damit ist der Wareneingang mit allen fünf
 produktiven Views vollständig auf den View- und Feldstandard migriert.
 Insgesamt sind 19 von 101 produktiven Views abgedeckt.
 
-Offen bleibt die Übertragung dieses Standards auf die übrigen 82 produktiven
+Der siebte Slice beginnt den Warenausgang mit Auftragsübersicht, Neuanlage und
+Auftragsdetail. Die Dokumentation erläutert die Freigabe mit atomarer
+Reservierung, automatische Allokation über Entnahmeregeln, manuelle Bindung an
+Lagerplatz, Status, Charge, Seriennummer und Haltbarkeit sowie die einmalige
+Übergabe eines vollständig allokierten Auftrags an die Kommissionierung. Zwölf
+Felddefinitionen und acht Auftragsaktionen sind gegen die drei produktiven
+Templates geprüft.
+
+Im selben Slice wurde ein Laufzeitfehler der Handbuchnavigation behoben. Elf
+Administrations-Bildpfade waren durch mehrfaches YAML-Quoting als Strings mit
+zusätzlichen Anführungszeichen gespeichert und wurden deshalb vom sicheren
+Pfadvalidator abgewiesen. Die Referenzen sind bereinigt. Ein neuer
+sprachparametrisierter Regressionstest lädt nun jedes Kapitel und prüft für
+sämtliche Abschnitts- und View-Bilder Pfadmuster, Alternativtext und die
+tatsächliche Datei. Damit sind 22 von 101 produktiven Views migriert.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 79 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.

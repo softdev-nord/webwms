@@ -195,7 +195,10 @@ class UserDocumentationServiceTest extends TestCase
             self::assertIsString($template);
             self::assertSame($expectedFormCounts[$index], preg_match_all('/<form\b.*?<\/form>/is', $template));
             preg_match_all('/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/i', $template, $matches);
-            $templateFields = array_values(array_unique(array_filter($matches[1], static fn (string $name): bool => $name !== '_token')));
+            $templateFields = array_values(array_unique(array_map(
+                static fn (string $name): string => str_replace('[]', '', $name),
+                array_filter($matches[1], static fn (string $name): bool => $name !== '_token')
+            )));
             sort($templateFields);
             $documentedFields = array_column($view['fields'], 'id');
             sort($documentedFields);
@@ -229,6 +232,30 @@ class UserDocumentationServiceTest extends TestCase
     }
 
     #[DataProvider('localeProvider')]
+    public function testOutboundOrderViewsHaveCompleteTemplateFieldCoverage(string $locale): void
+    {
+        $views = array_values(array_filter(
+            $this->documentation->document('fulfillment-and-outbound', $locale)['views'],
+            static fn (array $view): bool => str_starts_with($view['template'], 'outbound/order/') && $view['template'] !== 'outbound/order/control.html.twig'
+        ));
+        self::assertSame(['outbound/order/orders.html.twig', 'outbound/order/order_new.html.twig', 'outbound/order/order.html.twig'], array_column($views, 'template'));
+
+        foreach ($views as $view) {
+            $template = file_get_contents(dirname(__DIR__, 4) . '/templates/' . $view['template']);
+            self::assertIsString($template);
+            preg_match_all('/<(?:input|select|textarea)\\b[^>]*\\bname="([^"]+)"/i', $template, $matches);
+            $templateFields = array_values(array_unique(array_map(
+                static fn (string $name): string => str_replace('[]', '', $name),
+                array_filter($matches[1], static fn (string $name): bool => $name !== '_token')
+            )));
+            sort($templateFields);
+            $documentedFields = array_column($view['fields'], 'id');
+            sort($documentedFields);
+            self::assertSame($templateFields, $documentedFields, sprintf('Field coverage differs for "%s".', $view['template']));
+        }
+    }
+
+    #[DataProvider('localeProvider')]
     public function testEveryChapterIsTranslated(string $locale): void
     {
         foreach (UserDocumentationService::CHAPTERS as $chapter) {
@@ -237,6 +264,22 @@ class UserDocumentationServiceTest extends TestCase
             self::assertSame(['prerequisites', 'permissions', 'fields', 'statuses', 'errors'], array_keys($document['guidance']));
             self::assertNotSame([], $document['sections']);
             self::assertSame([], array_filter($document['sections'], static fn (array $section): bool => $section['image'] === null));
+        }
+    }
+
+    #[DataProvider('localeProvider')]
+    public function testEveryHandbookImageDefinitionIsValidAndReferencesAnExistingAsset(string $locale): void
+    {
+        foreach (UserDocumentationService::CHAPTERS as $chapter) {
+            $document = $this->documentation->document($chapter['slug'], $locale);
+            $images = array_column($document['sections'], 'image');
+            array_push($images, ...array_column($document['views'], 'image'));
+            foreach ($images as $image) {
+                self::assertIsArray($image);
+                self::assertMatchesRegularExpression('#^/assets/images/handbook/[a-z0-9._/-]+$#i', $image['src']);
+                self::assertNotSame('', trim($image['alt']));
+                self::assertFileExists(dirname(__DIR__, 4) . '/public' . $image['src']);
+            }
         }
     }
 
