@@ -208,6 +208,27 @@ class UserDocumentationServiceTest extends TestCase
     }
 
     #[DataProvider('localeProvider')]
+    public function testInboundControlCenterDocumentsAllFormsAndFields(string $locale): void
+    {
+        $views = $this->documentation->document('inbound', $locale)['views'];
+        $view = array_values(array_filter($views, static fn (array $candidate): bool => $candidate['template'] === 'inbound/control.html.twig'))[0];
+        $template = file_get_contents(dirname(__DIR__, 4) . '/templates/' . $view['template']);
+        self::assertIsString($template);
+        self::assertSame(10, preg_match_all('/<form\b.*?<\/form>/is', $template));
+        preg_match_all('/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/i', $template, $matches);
+        $templateFields = array_values(array_unique(array_filter($matches[1], static fn (string $name): bool => $name !== '_token')));
+        sort($templateFields);
+        $documentedFields = array_column($view['fields'], 'id');
+        sort($documentedFields);
+
+        self::assertCount(25, $documentedFields);
+        self::assertSame($templateFields, $documentedFields);
+        self::assertContains('purchase_order_id', $documentedFields, 'The business-relevant hidden purchase-order reference must be documented.');
+        self::assertCount(10, $view['actions']);
+        self::assertFileExists(dirname(__DIR__, 4) . '/public' . $view['image']['src']);
+    }
+
+    #[DataProvider('localeProvider')]
     public function testEveryChapterIsTranslated(string $locale): void
     {
         foreach (UserDocumentationService::CHAPTERS as $chapter) {

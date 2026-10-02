@@ -339,6 +339,20 @@ Bildreferenzen. Damit sind 18 von 101 produktiven Views migriert. Die separate
 Wareneingangs-Steuerungszentrale mit zehn Formularen bleibt als nächster
 Inbound-Slice offen.
 
-Offen bleibt die Übertragung dieses Standards auf die übrigen 83 produktiven
+Der sechste Slice schließt diese Wareneingangs-Steuerungszentrale ab. Ihre zehn
+Formulare für Bestellung, Avis, QS-Checkliste, Dateianhang, Etikett,
+Cross-Docking, Produktionszugang, Retourenankündigung, Retourenannahme und
+Retourenprüfung sind vollständig beschrieben. Die 25 eindeutigen Feldkennungen
+decken neben den sichtbaren Eingaben auch die automatisch gepflegte versteckte
+`purchase_order_id` ab. Dateiarten und sichere Ablage, Druckkopien,
+Cross-Dock-Mengenbindung, Produktionscharge sowie die Entscheidung zwischen
+Wiedereinlagerung und Sperre werden einschließlich Fehlerfolgen erläutert.
+
+Der Test weist zehn Formulare, 25 Felder, zehn Aktionen und die eindeutige
+Bildreferenz in beiden Sprachen nach. Damit ist der Wareneingang mit allen fünf
+produktiven Views vollständig auf den View- und Feldstandard migriert.
+Insgesamt sind 19 von 101 produktiven Views abgedeckt.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 82 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.
