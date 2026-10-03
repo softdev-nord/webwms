@@ -395,6 +395,22 @@ Der sprachparametrisierte Regressionstest gleicht beide Templates, drei
 Formulare, sechs Geschäftsfelder, fünf Aktionen und eindeutige vorhandene
 Bildreferenzen ab. Damit sind 27 von 101 produktiven Views migriert.
 
-Offen bleibt die Übertragung dieses Standards auf die übrigen 74 produktiven
+Der zehnte, bewusst größere Slice schließt den gesamten restlichen Warenausgang
+mit sechs Views ab. Sendungsübersicht und Versanddetail beschreiben automatische
+und manuelle Labelregistrierung, Druckerauswahl, Druckaufträge, Tracking und die
+nachgewiesene Carrierübergabe. Verladeübersicht, Manifestanlage und Ladeliste
+erläutern die Auswahl etikettierter Sendungen, Route, Fahrzeug, einzelne
+Ladebestätigungen und den erst nach vollständiger Beladung zulässigen Abschluss.
+
+Die Outbound-Leitstelle dokumentiert zusätzlich Bedarfs- und Engpassanalyse,
+Auftragsstorno, die drei Kriterien der Ausgangs-QS, priorisierte Versandregeln,
+manuelle Trackingereignisse, Touren und Stopps, globale oder referenzbezogene
+Gewichtsgrenzen sowie unveränderliche Versanddokumente mit Aggregatbezug und
+Prüfsumme. Der sprachparametrisierte Test gleicht sechs Templates, 14 Formulare,
+35 statische und drei dynamisch erzeugte Geschäftsfelder sowie eindeutige
+Bildreferenzen ab. Damit ist der gesamte Warenausgang dokumentiert und 33 von
+101 produktiven Views sind migriert.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 68 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.

@@ -1031,6 +1031,132 @@ chapter:
           create_shipment: {label: "Create shipment", description: "Creates a prepared shipment from completed packing order, shipment number, carrier and service.", result: "Shipment details open for label, printing and handover."}
           open_shipment: {label: "Open shipment", description: "Opens the shipment already linked to the packing order.", result: "Navigation creates no additional shipment."}
         image: {src: "/assets/images/handbook/outbound/packing-detail.svg", alt: "Packing order with package creation, weight, measurement and shipping handover"}
+      shipping_overview:
+        template: outbound/shipping/index.html.twig
+        title: Shipment overview
+        purpose: The overview tracks prepared, labelled and dispatched shipments with carrier, service and tracking number.
+        navigation: Outbound → Shipping
+        permissions: ["fulfillment.ship.read"]
+        overview:
+        - Each row shows shipment number, carrier, service, state and available tracking number. Open leads to label generation, printing and carrier handover.
+        - The empty state means no completed packing order has yet been handed to shipping; search, filters and pagination are currently unavailable.
+        actions:
+          open: {label: "Open", description: "Opens the selected shipment with the currently permitted shipping actions.", result: "Navigation does not change shipment state."}
+        image: {src: "/assets/images/handbook/outbound/shipping-overview.svg", alt: "Shipment overview with carrier, service, state and tracking number"}
+      shipping_detail:
+        template: outbound/shipping/show.html.twig
+        title: Shipping label, printing and carrier handover
+        purpose: Shipment details generate or register a label, print it through an active printer and then confirm physical handover.
+        navigation: Outbound → Shipping → Open shipment
+        permissions: ["fulfillment.ship.read; integration.carrier.execute for carrier labels; fulfillment.ship.label for manual labels; integration.print_job.write for printing; fulfillment.ship.dispatch for handover."]
+        overview:
+        - In prepared state, an active carrier connection can request a label automatically, or tracking and label reference can be registered manually.
+        - In labelled state, label printing and carrier handover become available. Existing print jobs, tracking number and label reference remain visible.
+        fields:
+          tracking_number: {label: "Tracking number", required: true, format: "Unique shipment tracking number assigned by the carrier", example: "00340434161094000000", help: "For manual registration, copy it exactly from the carrier portal.", effect: "Enables tracking and, together with the label reference, changes the shipment to labelled.", errors: "Empty or contradictory numbers prevent registration."}
+          label_reference: {label: "Label reference", required: true, format: "Securely accessible document reference or internal path", example: "carrier-labels/SHIP-0815.zpl", help: "Reference the label that actually belongs to the tracking number.", effect: "Serves as the source for the later print job.", errors: "A missing reference prevents label registration and printing."}
+          printer_id: {label: "Printer", required: true, format: "Selection of an active configured printer", example: "ZEBRA-PACK-01", help: "Choose the printer at the physical shipping or packing station.", effect: "Queues one ZPL carrier-label copy for printing.", errors: "Inactive, unknown or unreachable printers cause a failed print job."}
+          handover_reference: {label: "Handover reference", required: true, format: "Carrier receipt, scan or collection reference", example: "DHL-PICKUP-20261003-42", help: "Enter only after physical handover or confirmed collection scan.", effect: "Marks the shipment as dispatched and records proof of handover.", errors: "An empty reference or an unlabelled shipment cannot be dispatched."}
+        actions:
+          request_carrier_label: {label: "Request label from carrier", description: "Retrieves label and tracking number idempotently through the active carrier connection.", result: "The data is registered and the shipment changes to labelled."}
+          register_label: {label: "Register label", description: "Manually registers an externally generated tracking number and label reference.", result: "The shipment is labelled for printing and handover."}
+          print_label: {label: "Create print job", description: "Sends the registered label in ZPL format to the selected printer.", result: "A traceable print job appears for the shipment."}
+          dispatch: {label: "Mark as dispatched", description: "Confirms physical carrier handover with a reference.", result: "The shipment changes to dispatched state."}
+        image: {src: "/assets/images/handbook/outbound/shipping-detail.svg", alt: "Shipment details with label registration, printer selection and handover confirmation"}
+      loading_overview:
+        template: outbound/loading/index.html.twig
+        title: Loading overview
+        purpose: The overview groups loading manifests by route and vehicle and shows current loading progress.
+        navigation: Outbound → Loading
+        permissions: ["fulfillment.loading.read; fulfillment.loading.write for creation."]
+        overview:
+        - Each row shows manifest code, tour, vehicle, state and the ratio of loaded to planned shipments.
+        - Open leads to scan confirmation of individual shipments; new manifests require write permission.
+        actions:
+          create: {label: "Create loading manifest", description: "Opens selection of labelled shipments not yet assigned.", result: "Data changes only after saving the subsequent form."}
+          open: {label: "Open", description: "Opens the loading list and its progress.", result: "Opening does not change loading state."}
+        image: {src: "/assets/images/handbook/outbound/loading-overview.svg", alt: "Loading overview with route, vehicle, state and progress"}
+      loading_create:
+        template: outbound/loading/new.html.twig
+        title: Create loading manifest
+        purpose: The form assigns one or more labelled and unplanned shipments to a route and vehicle.
+        navigation: Outbound → Loading → Create loading manifest
+        permissions: ["fulfillment.loading.write"]
+        overview:
+        - Only shipments available for loading are offered. Creation remains blocked without at least one selection.
+        fields:
+          code: {label: "Manifest number", required: true, format: "Manifest code unique in the tenant", example: "LOAD-2026-0042", help: "Use the agreed numbering convention for the tour or collection.", effect: "Identifies the manifest and loading list.", errors: "Empty or duplicate codes prevent creation."}
+          tour_reference: {label: "Route", required: true, format: "Unique tour or route reference", example: "TOUR-NORTH-03", help: "Must match the planned delivery sequence or collection.", effect: "Groups shipments under the intended route.", errors: "An empty route prevents saving."}
+          vehicle_reference: {label: "Vehicle", required: true, format: "Registration or operational vehicle identifier", example: "HH-WMS-42", help: "Verify vehicle, capacity and actual availability before assignment.", effect: "Records the vehicle onto which shipments are loaded.", errors: "An empty vehicle reference prevents creation."}
+          shipment_id: {label: "Shipments", required: true, format: "Multiple selection of labelled, unplanned shipments", example: "SHIP-0815 and SHIP-0816", help: "Select only shipments physically staged for this route.", effect: "Binds every selection to the new manifest and removes it from free loading selection.", errors: "No selection or a shipment assigned in the meantime prevents creation."}
+        actions:
+          save: {label: "Create manifest", description: "Validates header data and shipment selection and creates the open loading list.", result: "Manifest details open for scan-based loading."}
+          cancel: {label: "Cancel", description: "Discards the unsaved grouping.", result: "Shipments remain freely available."}
+        image: {src: "/assets/images/handbook/outbound/loading-create.svg", alt: "Form for manifest number, route, vehicle and shipment selection"}
+      loading_detail:
+        template: outbound/loading/show.html.twig
+        title: Load shipments and complete manifest
+        purpose: The loading list confirms every planned shipment individually and permits completion only after full loading.
+        navigation: Outbound → Loading → Open manifest
+        permissions: ["fulfillment.loading.read; fulfillment.loading.execute for loading confirmation and completion."]
+        overview:
+        - The table shows shipment number, carrier, service, tracking number, state and loading time where available. The counter compares loaded and planned shipments.
+        - Only pending shipments of an open or loading manifest can be confirmed. Completion appears only when every shipment is loaded.
+        actions:
+          confirm_loading: {label: "Confirm loading", description: "Confirms the physical shipment on the intended vehicle.", result: "The shipment changes to loaded and receives a loading timestamp."}
+          complete: {label: "Complete loading", description: "Closes the fully loaded manifest against further changes.", result: "The manifest changes to completed state."}
+        image: {src: "/assets/images/handbook/outbound/loading-detail.svg", alt: "Loading manifest with shipment states, loading progress and completion action"}
+      outbound_control:
+        template: outbound/order/control.html.twig
+        title: Outbound control centre
+        purpose: The control centre combines demand and shortage visibility, order cancellation, outbound quality, shipping rules, tracking, tours, weight constraints and immutable shipping documents.
+        navigation: Outbound → Control centre
+        permissions: ["outbound.order.read; outbound.order.write for cancellation; fulfillment.pack.execute for quality; fulfillment.ship.write for rules, tracking and documents; fulfillment.loading.write for tours and weight constraints."]
+        overview:
+        - Demand forecast and order review show demand, stock, shortage and open orders. Cancellation is possible only in imported state with a reason.
+        - Outbound quality decides release or hold from completeness, condition and customer requirements.
+        - Shipping and tracking configure weight ranges per carrier service and record events with location and time. Tours group stops under vehicle and weight constraints.
+        - Shipping documents are assigned to an existing aggregate, generated with safe HTML, archived with a checksum and then provided read-only.
+        fields:
+          reason: {label: "Cancellation reason", required: true, format: "Traceable functional text", example: "Customer cancellation before release", help: "Describe the trigger so audit and customer service can understand it.", effect: "Is audited with the cancelled imported order.", errors: "Empty text or an order already processed further cannot be cancelled."}
+          pick_list_id: {label: "Inspected pick list", required: true, format: "Selection of a completed quality candidate", example: "PICK-SO-0815", help: "Compare physical goods with order and pick list before deciding.", effect: "Binds all inspection results to exactly this pick list.", errors: "Unknown, incomplete or already decided pick lists are rejected."}
+          completeness_passed: {label: "Completeness confirmed", required: false, format: "Checkbox", example: "enabled", help: "Enable only when every target line and quantity is present.", effect: "Contributes to release or hold decision.", errors: "Unconfirmed completeness causes a hold."}
+          condition_passed: {label: "Condition flawless", required: false, format: "Checkbox", example: "enabled", help: "Check goods and packaging for damage and quality deviations.", effect: "Records the condition check.", errors: "A negative check prevents packing release."}
+          customer_check_passed: {label: "Customer requirements met", required: false, format: "Checkbox", example: "enabled", help: "Check labelling, documents and customer-specific packing instructions.", effect: "Records fulfilment of customer-specific requirements.", errors: "Unmet requirements cause a hold."}
+          note: {label: "Inspection or hold note", required: false, format: "Free text", example: "Outer carton damaged, goods intact", help: "Record deviations and required follow-up work concretely.", effect: "Appears in quality history and explains the decision.", errors: "Vague notes make rework difficult."}
+          code: {label: "Rule or tour code", required: true, format: "Code unique in its area", example: "DHL-STD-31500", help: "Use a stable numbering convention for shipping rule or tour.", effect: "Identifies the new shipping rule or tour.", errors: "Empty or duplicate codes are rejected.", usages: ["Shipping rule and tour"]}
+          name: {label: "Rule name", required: true, format: "Understandable name", example: "DHL Standard up to 31.5 kg", help: "Summarise carrier, service and weight range clearly.", effect: "Appears in the active shipping-method list.", errors: "An empty name prevents rule creation."}
+          carrier: {label: "Carrier", required: true, format: "Exact carrier code", example: "DHL", help: "Must match shipping rule or tour and an available connection.", effect: "Assigns the rule or tour to the carrier.", errors: "Empty or unknown codes prevent later automation.", usages: ["Shipping rule and tour"]}
+          service: {label: "Service", required: true, format: "Carrier service code", example: "STANDARD", help: "Enter the service valid at the carrier.", effect: "The shipping rule selects this service in its weight range.", errors: "Unsupported services fail on label request."}
+          min_weight_grams: {label: "Minimum weight", required: true, format: "Integer from 0 in grams", example: "0", help: "Set the inclusive lower boundary of the shipping rule.", effect: "Limits the rule from below.", errors: "Negative values or overlaps are functionally invalid."}
+          max_weight_grams: {label: "Maximum weight", required: true, format: "Positive integer in grams", example: "31500", help: "Must exceed minimum weight and match carrier, vehicle or tour limits.", effect: "Limits shipping rule, tour or weight constraint.", errors: "Zero, negative or contradictory limits are rejected.", usages: ["Shipping rule, tour and weight constraint"]}
+          priority: {label: "Priority", required: true, format: "Integer", example: "100", help: "Use a consistent scheme for ordering matching shipping rules.", effect: "Decides rule selection when several rules match.", errors: "Unsuitable priorities may prefer the wrong rule."}
+          shipment_id: {label: "Shipment", required: false, format: "Selection of an existing shipment", example: "SHIP-0815", help: "Required for tracking; optional for a tour stop without shipment.", effect: "Binds event or tour stop to the shipment.", errors: "Unknown or cross-tenant shipments are rejected.", usages: ["Tracking event and optional tour stop"]}
+          status: {label: "Tracking state", required: true, format: "External or internal state code", example: "in_transit", help: "Enter the carrier state unchanged and unambiguously.", effect: "Adds to chronological tracking history.", errors: "An empty state prevents capture."}
+          location: {label: "Tracking location", required: false, format: "Location or hub", example: "Hamburg parcel centre", help: "Enter only when the event has a reliable location.", effect: "Adds spatial context to the state.", errors: "Free text is not validated as a master-data location."}
+          occurred_at: {label: "Event time", required: true, format: "Local date and time", example: "2026-10-03 18:45", help: "Use the actual carrier time, not capture time.", effect: "Sorts tracking history chronologically.", errors: "Empty or invalid date values are rejected."}
+          description: {label: "Event description", required: true, format: "Short understandable text", example: "Processed at origin parcel centre", help: "Explain the state clearly for service and recipient.", effect: "Adds context to the technical tracking state.", errors: "An empty description prevents saving."}
+          vehicle_reference: {label: "Vehicle", required: true, format: "Registration or vehicle identifier", example: "HH-WMS-42", help: "Plan only an available vehicle with sufficient capacity.", effect: "Assigns the tour to the vehicle.", errors: "An empty reference prevents tour creation."}
+          departure_at: {label: "Planned departure", required: true, format: "Local date and time", example: "2026-10-04 06:00", help: "Coordinate with cut-off, driver and dock plan.", effect: "Defines the planned tour start.", errors: "Invalid time values are rejected."}
+          destination_name: {label: "Recipient or stop name", required: true, format: "Understandable name", example: "Customer North Ltd", help: "Name the first tour stop unambiguously.", effect: "Creates the initial tour stop.", errors: "An empty name prevents tour creation."}
+          destination_address: {label: "Destination address", required: true, format: "Complete deliverable address", example: "1 Sample Street, Hamburg 20095", help: "Enter street, number, postal code and city completely.", effect: "Defines the physical destination of the tour stop.", errors: "Empty or incomplete addresses jeopardise delivery."}
+          scope: {label: "Scope", required: true, format: "package, carrier, vehicle or tour", example: "vehicle", help: "Choose the level at which the weight limit is checked.", effect: "Controls which objects use the active limit.", errors: "Other values are rejected."}
+          reference_code: {label: "Optional reference", required: false, format: "Carrier, vehicle or tour code", example: "HH-WMS-42", help: "Leave empty for a global scope limit; set it for one concrete object.", effect: "Restricts the weight limit to the reference.", errors: "A mismatching reference leaves the rule ineffective."}
+          document_type: {label: "Document type", required: true, format: "delivery_note, packing_list, loading_list or cmr", example: "cmr", help: "Choose the document type appropriate to process and recipient.", effect: "Classifies the immutable shipping document.", errors: "Types not offered are rejected."}
+          aggregate_type: {label: "Reference type", required: true, format: "shipment, loading_manifest or tour", example: "shipment", help: "Determines the process object to which the document belongs.", effect: "Controls validation and archive assignment.", errors: "Unsupported reference types are rejected."}
+          aggregate_id: {label: "Reference ID", required: true, format: "UUID of the existing process object", example: "018f2f5a-73ad-7c42-9d84-2dcb65bcb410", help: "Copy an ID matching the selected reference type from the system.", effect: "Immutably links the document to shipment, manifest or tour.", errors: "Unknown or cross-tenant IDs are rejected."}
+          document_number: {label: "Document number", required: true, format: "Unique functional number", example: "CMR-2026-0042", help: "Follow operational or legal numbering rules.", effect: "Identifies the document in the archive.", errors: "Empty or duplicate numbers prevent generation."}
+          title: {label: "Document title", required: true, format: "Short plain text", example: "CMR consignment note North tour", help: "Name purpose and reference clearly; HTML is safely escaped.", effect: "Is rendered as document title and heading.", errors: "An empty title prevents generation."}
+          body: {label: "Document content", required: true, format: "Multiline plain text", example: "Sender, recipient, packages and instructions", help: "Enter all required shipping details completely; line breaks are retained.", effect: "Is safely converted to immutable HTML and protected by a checksum.", errors: "Empty content prevents generation; later changes require a new document."}
+        actions:
+          cancel_order: {label: "Cancel order", description: "Cancels an imported order with an audited reason.", result: "The order is removed from further processing."}
+          quality_check: {label: "Complete quality check", description: "Stores three criteria and a note and decides release or hold.", result: "Only released pick lists may subsequently be packed."}
+          create_shipping_rule: {label: "Activate shipping rule", description: "Stores carrier, service, weight range and priority.", result: "The rule is available for future shipping decisions."}
+          record_tracking: {label: "Save tracking event", description: "Manually records state, location, time and description.", result: "The event appears chronologically and is available for feedback."}
+          create_tour: {label: "Create tour", description: "Plans vehicle, departure, weight limit and first stop.", result: "The tour appears with planned load in the control centre."}
+          create_weight_constraint: {label: "Activate weight constraint", description: "Stores a global or reference-specific active upper limit.", result: "Subsequent package, carrier, vehicle or tour checks use it."}
+          generate_document: {label: "Generate document", description: "Validates reference and content and archives a safe immutable HTML version.", result: "The document appears with checksum in the archive and can be opened."}
+        image: {src: "/assets/images/handbook/outbound/outbound-control.svg", alt: "Outbound control centre with demand, quality, shipping rules, tracking, tours and documents"}
     guidance:
       prerequisites:
       - Released order, available stock, packaging, carrier connection, print route and load plan.

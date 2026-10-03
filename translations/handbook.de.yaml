@@ -1038,6 +1038,132 @@ chapter:
           create_shipment: {label: "Sendung erstellen", description: "Erzeugt aus abgeschlossenem Packauftrag, Sendungsnummer, Carrier und Service eine vorbereitete Sendung.", result: "Die Versanddetailansicht öffnet sich für Label, Druck und Übergabe."}
           open_shipment: {label: "Sendung öffnen", description: "Öffnet die bereits mit dem Packauftrag verbundene Sendung.", result: "Die Navigation erzeugt keine weitere Sendung."}
         image: {src: "/assets/images/handbook/outbound/packing-detail.svg", alt: "Packauftrag mit Packstückbildung, Gewicht, Messung und Versandübergabe"}
+      shipping_overview:
+        template: outbound/shipping/index.html.twig
+        title: Sendungsübersicht
+        purpose: Die Übersicht verfolgt vorbereitete, etikettierte und übergebene Sendungen mit Carrier, Service und Trackingnummer.
+        navigation: Warenausgang → Versand
+        permissions: ["fulfillment.ship.read"]
+        overview:
+        - Jede Zeile zeigt Sendungsnummer, Carrier, Service, Status und vorhandene Trackingnummer. Öffnen führt zu Labelerzeugung, Druck und Carrierübergabe.
+        - Der Leerzustand bedeutet, dass noch kein abgeschlossener Packauftrag an den Versand übergeben wurde; Suche, Filter und Pagination sind derzeit nicht vorhanden.
+        actions:
+          open: {label: "Öffnen", description: "Öffnet die ausgewählte Sendung mit den jeweils zulässigen Versandaktionen.", result: "Die Navigation verändert den Sendungsstatus nicht."}
+        image: {src: "/assets/images/handbook/outbound/shipping-overview.svg", alt: "Sendungsübersicht mit Carrier, Service, Status und Trackingnummer"}
+      shipping_detail:
+        template: outbound/shipping/show.html.twig
+        title: Versandlabel, Druck und Carrierübergabe
+        purpose: Die Versanddetailansicht erzeugt oder registriert ein Label, druckt es über einen aktiven Drucker und bestätigt anschließend die physische Übergabe.
+        navigation: Warenausgang → Versand → Sendung öffnen
+        permissions: ["fulfillment.ship.read; integration.carrier.execute für Carrier-Label; fulfillment.ship.label für manuelle Labels; integration.print_job.write für Druck; fulfillment.ship.dispatch für Übergabe."]
+        overview:
+        - Im Status prepared kann bei aktiver Carrier-Verbindung automatisch ein Label angefordert oder Tracking und Labelreferenz manuell registriert werden.
+        - Im Status labelled stehen Labeldruck und Carrierübergabe bereit. Vorhandene Druckaufträge, Trackingnummer und Labelreferenz bleiben sichtbar.
+        fields:
+          tracking_number: {label: "Trackingnummer", required: true, format: "Eindeutige vom Carrier vergebene Sendungsverfolgungsnummer", example: "00340434161094000000", help: "Bei manueller Registrierung exakt aus dem Carrierportal übernehmen.", effect: "Ermöglicht Sendungsverfolgung und setzt die Sendung zusammen mit der Labelreferenz auf labelled.", errors: "Leere oder widersprüchliche Nummern verhindern die Registrierung."}
+          label_reference: {label: "Labelreferenz", required: true, format: "Sicher erreichbare Dokumentreferenz oder interner Pfad", example: "carrier-labels/SHIP-0815.zpl", help: "Referenzieren Sie das tatsächlich zur Trackingnummer gehörende Label.", effect: "Dient als Quelle für den späteren Druckauftrag.", errors: "Eine fehlende Referenz verhindert Labelregistrierung und Druck."}
+          printer_id: {label: "Drucker", required: true, format: "Auswahl eines aktiven konfigurierten Druckers", example: "ZEBRA-PACK-01", help: "Wählen Sie den Drucker an der tatsächlichen Versand- oder Packstation.", effect: "Stellt einen ZPL-Carrier-Labelauftrag mit einer Kopie in die Druckwarteschlange.", errors: "Inaktive, unbekannte oder nicht erreichbare Drucker führen zu einem fehlgeschlagenen Druckauftrag."}
+          handover_reference: {label: "Übergabereferenz", required: true, format: "Quittungs-, Scan- oder Abholreferenz des Carriers", example: "DHL-PICKUP-20261003-42", help: "Erst nach physischer Übergabe beziehungsweise bestätigtem Abholscan erfassen.", effect: "Markiert die Sendung als versandt und dokumentiert den Übergabenachweis.", errors: "Eine leere Referenz oder eine nicht etikettierte Sendung kann nicht übergeben werden."}
+        actions:
+          request_carrier_label: {label: "Label beim Carrier anfordern", description: "Ruft über die aktive Carrier-Verbindung Label und Trackingnummer idempotent ab.", result: "Die Daten werden registriert und die Sendung wechselt zu labelled."}
+          register_label: {label: "Label übernehmen", description: "Registriert eine extern erzeugte Trackingnummer und Labelreferenz manuell.", result: "Die Sendung ist für Druck und Übergabe etikettiert."}
+          print_label: {label: "Druckauftrag anlegen", description: "Übergibt das registrierte Label im ZPL-Format an den ausgewählten Drucker.", result: "Ein nachvollziehbarer Druckauftrag erscheint für die Sendung."}
+          dispatch: {label: "Als versandt markieren", description: "Bestätigt die physische Carrierübergabe mit Referenz.", result: "Die Sendung wechselt in den Versandstatus dispatched."}
+        image: {src: "/assets/images/handbook/outbound/shipping-detail.svg", alt: "Versanddetail mit Labelregistrierung, Druckerauswahl und Übergabebestätigung"}
+      loading_overview:
+        template: outbound/loading/index.html.twig
+        title: Verladeübersicht
+        purpose: Die Übersicht bündelt Lademanifeste nach Route und Fahrzeug und zeigt den aktuellen Ladefortschritt.
+        navigation: Warenausgang → Verladung
+        permissions: ["fulfillment.loading.read; fulfillment.loading.write für die Neuanlage."]
+        overview:
+        - Jede Zeile zeigt Manifestcode, Tour, Fahrzeug, Status und das Verhältnis geladener zu geplanter Sendungen.
+        - Öffnen führt zur Scanbestätigung der einzelnen Sendungen; neue Manifeste können nur mit Schreibrecht angelegt werden.
+        actions:
+          create: {label: "Lademanifest erstellen", description: "Öffnet die Auswahl etikettierter und noch nicht zugeordneter Sendungen.", result: "Daten werden erst beim Speichern des Folgeformulars geändert."}
+          open: {label: "Öffnen", description: "Öffnet die Ladeliste und deren Fortschritt.", result: "Das Öffnen verändert keinen Ladestatus."}
+        image: {src: "/assets/images/handbook/outbound/loading-overview.svg", alt: "Verladeübersicht mit Route, Fahrzeug, Status und Fortschritt"}
+      loading_create:
+        template: outbound/loading/new.html.twig
+        title: Lademanifest anlegen
+        purpose: Das Formular ordnet eine oder mehrere etikettierte, noch unverplante Sendungen einer Route und einem Fahrzeug zu.
+        navigation: Warenausgang → Verladung → Lademanifest erstellen
+        permissions: ["fulfillment.loading.write"]
+        overview:
+        - Es werden ausschließlich für die Verladung verfügbare Sendungen angeboten. Ohne mindestens eine Auswahl bleibt die Anlage gesperrt.
+        fields:
+          code: {label: "Manifestnummer", required: true, format: "Im Mandanten eindeutiger Manifestcode", example: "LOAD-2026-0042", help: "Verwenden Sie die abgestimmte Nummernkonvention für Tour oder Abholung.", effect: "Identifiziert Manifest und Ladeliste.", errors: "Leere oder doppelte Codes verhindern die Anlage."}
+          tour_reference: {label: "Route", required: true, format: "Eindeutige Tour- oder Routenreferenz", example: "TOUR-NORD-03", help: "Muss zur geplanten Zustellfolge beziehungsweise Abholung passen.", effect: "Bündelt die Sendungen unter der vorgesehenen Route.", errors: "Eine leere Route verhindert das Speichern."}
+          vehicle_reference: {label: "Fahrzeug", required: true, format: "Kennzeichen oder betriebliche Fahrzeugkennung", example: "HH-WMS-42", help: "Prüfen Sie Fahrzeug, Kapazität und tatsächliche Bereitstellung vor der Zuordnung.", effect: "Dokumentiert, auf welches Fahrzeug die Sendungen geladen werden.", errors: "Eine leere Fahrzeugreferenz verhindert die Anlage."}
+          shipment_id: {label: "Sendungen", required: true, format: "Mehrfachauswahl etikettierter, unverplanter Sendungen", example: "SHIP-0815 und SHIP-0816", help: "Markieren Sie nur physisch für diese Route bereitgestellte Sendungen.", effect: "Bindet jede Auswahl an das neue Manifest und entfernt sie aus der freien Verladeauswahl.", errors: "Ohne Auswahl oder bei zwischenzeitlich gebundener Sendung wird kein Manifest angelegt."}
+        actions:
+          save: {label: "Manifest erstellen", description: "Validiert Kopfdaten und Sendungsauswahl und legt die offene Ladeliste an.", result: "Das Manifestdetail öffnet sich zur scanbasierten Verladung."}
+          cancel: {label: "Abbrechen", description: "Verwirft die noch nicht gespeicherte Zusammenstellung.", result: "Sendungen bleiben frei verfügbar."}
+        image: {src: "/assets/images/handbook/outbound/loading-create.svg", alt: "Formular für Manifestnummer, Route, Fahrzeug und Sendungsauswahl"}
+      loading_detail:
+        template: outbound/loading/show.html.twig
+        title: Sendungen verladen und Manifest abschließen
+        purpose: Die Ladeliste bestätigt jede geplante Sendung einzeln und erlaubt den Abschluss erst nach vollständiger Verladung.
+        navigation: Warenausgang → Verladung → Manifest öffnen
+        permissions: ["fulfillment.loading.read; fulfillment.loading.execute für Ladebestätigung und Abschluss."]
+        overview:
+        - Die Tabelle zeigt Sendungsnummer, Carrier, Service, Trackingnummer, Status und gegebenenfalls Ladezeitpunkt. Der Zähler vergleicht geladene und geplante Sendungen.
+        - Nur pending-Sendungen eines offenen oder laufenden Manifests können bestätigt werden. Der Abschluss erscheint erst, wenn jede Sendung loaded ist.
+        actions:
+          confirm_loading: {label: "Verladung bestätigen", description: "Bestätigt die physische Sendung auf dem vorgesehenen Fahrzeug.", result: "Die Sendung wechselt zu loaded und erhält einen Ladezeitpunkt."}
+          complete: {label: "Verladung abschließen", description: "Schließt das vollständig geladene Manifest gegen weitere Änderungen.", result: "Das Manifest wechselt in den abgeschlossenen Status."}
+        image: {src: "/assets/images/handbook/outbound/loading-detail.svg", alt: "Lademanifest mit Sendungsstatus, Ladefortschritt und Abschlussaktion"}
+      outbound_control:
+        template: outbound/order/control.html.twig
+        title: Outbound-Leitstelle
+        purpose: Die Leitstelle vereint Bedarfs- und Engpasssicht, Auftragsstorno, Ausgangs-QS, Versandregeln, Tracking, Touren, Gewichtsgrenzen und unveränderliche Versanddokumente.
+        navigation: Warenausgang → Leitstelle
+        permissions: ["outbound.order.read; outbound.order.write für Storno; fulfillment.pack.execute für QS; fulfillment.ship.write für Regeln, Tracking und Dokumente; fulfillment.loading.write für Touren und Gewichtsgrenzen."]
+        overview:
+        - Bedarfsvorschau und Auftragsprüfung zeigen Nachfrage, Bestand, Fehlmenge und offene Aufträge. Storno ist nur im Status imported mit Begründung möglich.
+        - Die Ausgangs-QS entscheidet anhand Vollständigkeit, Zustand und Kundenvorgaben über Freigabe oder Sperre der Pickliste.
+        - Versand und Tracking konfigurieren Gewichtsbereiche je Carrier-Service und erfassen Ereignisse mit Ort und Zeitpunkt. Touren bündeln Stopps unter Fahrzeug- und Gewichtsgrenzen.
+        - Versanddokumente werden einem vorhandenen Aggregat zugeordnet, HTML-sicher erzeugt, mit Prüfsumme archiviert und anschließend schreibgeschützt bereitgestellt.
+        fields:
+          reason: {label: "Stornogrund", required: true, format: "Nachvollziehbarer fachlicher Freitext", example: "Kundenstorno vor Freigabe", help: "Beschreiben Sie den Auslöser so, dass Audit und Kundenservice ihn nachvollziehen können.", effect: "Wird mit dem stornierten importierten Auftrag auditiert.", errors: "Leertext oder ein bereits weiterverarbeiteter Auftrag kann nicht storniert werden."}
+          pick_list_id: {label: "Geprüfte Pickliste", required: true, format: "Auswahl einer abgeschlossenen QS-Kandidatenliste", example: "PICK-SO-0815", help: "Vergleichen Sie die physische Ware mit Auftrag und Pickliste vor der Entscheidung.", effect: "Bindet alle Prüfergebnisse an genau diese Pickliste.", errors: "Unbekannte, unvollständige oder bereits entschiedene Picklisten werden abgewiesen."}
+          completeness_passed: {label: "Vollständigkeit bestätigt", required: false, format: "Checkbox", example: "aktiviert", help: "Nur markieren, wenn alle Sollpositionen und Mengen vorhanden sind.", effect: "Fließt in Freigabe oder Sperrentscheidung ein.", errors: "Nicht bestätigte Vollständigkeit führt zur Sperre."}
+          condition_passed: {label: "Zustand einwandfrei", required: false, format: "Checkbox", example: "aktiviert", help: "Ware und Verpackung auf Schäden und Qualitätsabweichungen prüfen.", effect: "Dokumentiert die Zustandsprüfung.", errors: "Eine negative Prüfung verhindert die Packfreigabe."}
+          customer_check_passed: {label: "Kundenvorgaben erfüllt", required: false, format: "Checkbox", example: "aktiviert", help: "Kennzeichnung, Dokumente und kundenspezifische Packvorgaben prüfen.", effect: "Dokumentiert die Erfüllung kundenspezifischer Anforderungen.", errors: "Nicht erfüllte Vorgaben führen zur Sperre."}
+          note: {label: "Prüf- oder Sperrnotiz", required: false, format: "Freitext", example: "Umkarton beschädigt, Ware unversehrt", help: "Abweichungen und erforderliche Folgearbeiten konkret festhalten.", effect: "Erscheint in der QS-Historie und erklärt die Entscheidung.", errors: "Unklare Notizen erschweren die Nachbearbeitung."}
+          code: {label: "Regel- oder Tourcode", required: true, format: "Im jeweiligen Bereich eindeutiger Code", example: "DHL-STD-31500", help: "Für Versandregel beziehungsweise Tour eine stabile Nummernkonvention verwenden.", effect: "Identifiziert die neue Versandregel oder Tour.", errors: "Leere oder doppelte Codes werden abgewiesen.", usages: ["Versandregel und Tour"]}
+          name: {label: "Regelname", required: true, format: "Verständliche Bezeichnung", example: "DHL Standard bis 31,5 kg", help: "Carrier, Service und Gewichtsbereich verständlich zusammenfassen.", effect: "Erscheint in der Liste aktiver Versandmethoden.", errors: "Ein leerer Name verhindert die Regelanlage."}
+          carrier: {label: "Carrier", required: true, format: "Exakter Carrier-Code", example: "DHL", help: "Muss zu Versandregel beziehungsweise Tour und vorhandener Anbindung passen.", effect: "Ordnet Regel oder Tour dem Versanddienstleister zu.", errors: "Leere oder unbekannte Codes verhindern spätere automatische Verarbeitung.", usages: ["Versandregel und Tour"]}
+          service: {label: "Service", required: true, format: "Carrier-Servicecode", example: "STANDARD", help: "Den beim Carrier gültigen Service erfassen.", effect: "Die Versandregel wählt diesen Service im Gewichtsbereich.", errors: "Nicht unterstützte Services scheitern bei der Labelanforderung."}
+          min_weight_grams: {label: "Mindestgewicht", required: true, format: "Ganzzahl ab 0 in Gramm", example: "0", help: "Untere inklusive Grenze der Versandregel setzen.", effect: "Grenzt die Regel nach unten ab.", errors: "Negative Werte oder Überschneidungen sind fachlich ungültig."}
+          max_weight_grams: {label: "Maximalgewicht", required: true, format: "Positive Ganzzahl in Gramm", example: "31500", help: "Muss über dem Mindestgewicht liegen und zur Carrier-, Fahrzeug- oder Tourgrenze passen.", effect: "Begrenzt Versandregel, Tour oder Gewichtsrestriktion.", errors: "Null, negative oder widersprüchliche Grenzen werden abgewiesen.", usages: ["Versandregel, Tour und Gewichtsrestriktion"]}
+          priority: {label: "Priorität", required: true, format: "Ganzzahl", example: "100", help: "Verwenden Sie ein konsistentes Schema zur Reihenfolge passender Versandregeln.", effect: "Entscheidet bei mehreren Treffern über die Regelauswahl.", errors: "Ungeeignete Prioritäten können eine falsche Regel bevorzugen."}
+          shipment_id: {label: "Sendung", required: false, format: "Auswahl einer vorhandenen Sendung", example: "SHIP-0815", help: "Beim Tracking erforderlich; beim Tourstopp optional, wenn ein Stopp ohne Sendung geplant wird.", effect: "Bindet Ereignis oder Tourstopp an die Sendung.", errors: "Unbekannte oder mandantenfremde Sendungen werden abgewiesen.", usages: ["Trackingereignis und optionaler Tourstopp"]}
+          status: {label: "Trackingstatus", required: true, format: "Externer oder interner Statuscode", example: "in_transit", help: "Den Status aus der Carrier-Rückmeldung unverändert und eindeutig erfassen.", effect: "Erweitert die chronologische Trackinghistorie.", errors: "Ein leerer Status verhindert die Erfassung."}
+          location: {label: "Trackingort", required: false, format: "Ort oder Umschlagpunkt", example: "Hamburg Paketzentrum", help: "Nur erfassen, wenn das Ereignis einem belastbaren Ort zugeordnet ist.", effect: "Ergänzt den Status um räumlichen Kontext.", errors: "Freitext wird nicht als Stammdatenort validiert."}
+          occurred_at: {label: "Ereigniszeitpunkt", required: true, format: "Lokales Datum und Uhrzeit", example: "2026-10-03 18:45", help: "Den tatsächlichen Carrierzeitpunkt und nicht die Erfassungszeit verwenden.", effect: "Sortiert die Trackinghistorie chronologisch.", errors: "Leere oder ungültige Datumswerte werden abgewiesen."}
+          description: {label: "Ereignisbeschreibung", required: true, format: "Kurzer verständlicher Text", example: "Im Start-Paketzentrum bearbeitet", help: "Status für Service und Empfänger verständlich erläutern.", effect: "Ergänzt den technischen Trackingstatus.", errors: "Eine leere Beschreibung verhindert das Speichern."}
+          vehicle_reference: {label: "Fahrzeug", required: true, format: "Kennzeichen oder Fahrzeugkennung", example: "HH-WMS-42", help: "Nur ein tatsächlich verfügbares Fahrzeug mit ausreichender Kapazität einplanen.", effect: "Ordnet die Tour dem Fahrzeug zu.", errors: "Eine leere Referenz verhindert die Touranlage."}
+          departure_at: {label: "Geplante Abfahrt", required: true, format: "Lokales Datum und Uhrzeit", example: "2026-10-04 06:00", help: "Mit Cut-off, Fahrer und Rampenplanung abstimmen.", effect: "Definiert den geplanten Tourstart.", errors: "Ungültige Zeitwerte werden abgewiesen."}
+          destination_name: {label: "Empfänger oder Stoppname", required: true, format: "Verständliche Bezeichnung", example: "Kunde Nord GmbH", help: "Den ersten Tourstopp eindeutig benennen.", effect: "Erzeugt den initialen Tourstopp.", errors: "Ein leerer Name verhindert die Touranlage."}
+          destination_address: {label: "Zieladresse", required: true, format: "Vollständige zustellfähige Adresse", example: "Musterstraße 1, 20095 Hamburg", help: "Straße, Hausnummer, Postleitzahl und Ort vollständig erfassen.", effect: "Definiert das physische Ziel des Tourstopps.", errors: "Leere oder unvollständige Adressen gefährden die Zustellung."}
+          scope: {label: "Geltungsbereich", required: true, format: "package, carrier, vehicle oder tour", example: "vehicle", help: "Wählen Sie die Ebene, auf der die Gewichtsgrenze geprüft werden soll.", effect: "Steuert, welche Objekte die aktive Grenze verwenden.", errors: "Andere Werte werden abgewiesen."}
+          reference_code: {label: "Optionale Referenz", required: false, format: "Carrier-, Fahrzeug- oder Tourcode", example: "HH-WMS-42", help: "Leer lassen für eine globale Grenze des Bereichs; setzen für ein konkretes Objekt.", effect: "Beschränkt die Gewichtsgrenze auf die Referenz.", errors: "Eine nicht passende Referenz lässt die Regel wirkungslos."}
+          document_type: {label: "Dokumenttyp", required: true, format: "delivery_note, packing_list, loading_list oder cmr", example: "cmr", help: "Den zum Prozess und Empfänger passenden Dokumenttyp wählen.", effect: "Klassifiziert das unveränderliche Versanddokument.", errors: "Nicht angebotene Typen werden abgewiesen."}
+          aggregate_type: {label: "Bezugsart", required: true, format: "shipment, loading_manifest oder tour", example: "shipment", help: "Bestimmt, zu welchem Prozessobjekt das Dokument gehört.", effect: "Steuert Validierung und Archivzuordnung.", errors: "Nicht unterstützte Bezugsarten werden abgewiesen."}
+          aggregate_id: {label: "Bezugs-ID", required: true, format: "UUID des vorhandenen Prozessobjekts", example: "018f2f5a-73ad-7c42-9d84-2dcb65bcb410", help: "ID passend zur gewählten Bezugsart aus dem System übernehmen.", effect: "Verknüpft das Dokument unveränderlich mit Sendung, Manifest oder Tour.", errors: "Unbekannte oder mandantenfremde IDs werden abgewiesen."}
+          document_number: {label: "Dokumentnummer", required: true, format: "Eindeutige fachliche Nummer", example: "CMR-2026-0042", help: "Betriebliche oder gesetzliche Nummernkonvention einhalten.", effect: "Identifiziert das Dokument im Archiv.", errors: "Leere oder doppelte Nummern verhindern die Erzeugung."}
+          title: {label: "Dokumenttitel", required: true, format: "Kurzer Klartext", example: "CMR-Frachtbrief Tour Nord", help: "Zweck und Bezug verständlich benennen; HTML wird sicher maskiert.", effect: "Wird als Titel und Überschrift des Dokuments gerendert.", errors: "Ein leerer Titel verhindert die Erzeugung."}
+          body: {label: "Dokumentinhalt", required: true, format: "Mehrzeiliger Klartext", example: "Absender, Empfänger, Packstücke und Hinweise", help: "Alle erforderlichen Versandinformationen vollständig eingeben; Zeilenumbrüche bleiben erhalten.", effect: "Wird sicher in ein unveränderliches HTML-Dokument überführt und per Prüfsumme gesichert.", errors: "Leerer Inhalt verhindert die Erzeugung; nachträgliche Änderung erfordert ein neues Dokument."}
+        actions:
+          cancel_order: {label: "Auftrag stornieren", description: "Storniert einen noch importierten Auftrag mit Auditgrund.", result: "Der Auftrag wird aus der weiteren Bearbeitung genommen."}
+          quality_check: {label: "QS abschließen", description: "Speichert drei Prüfkriterien und Notiz und entscheidet über Freigabe oder Sperre.", result: "Nur released-Picklisten dürfen anschließend gepackt werden."}
+          create_shipping_rule: {label: "Versandregel aktivieren", description: "Speichert Carrier, Service, Gewichtsbereich und Priorität.", result: "Die Regel steht für künftige Versandentscheidungen bereit."}
+          record_tracking: {label: "Trackingereignis speichern", description: "Erfasst Status, Ort, Zeitpunkt und Beschreibung manuell.", result: "Das Ereignis erscheint chronologisch und ist für Rückmeldungen verfügbar."}
+          create_tour: {label: "Tour erstellen", description: "Plant Fahrzeug, Abfahrt, Gewichtslimit und ersten Stopp.", result: "Die Tour erscheint mit geplanter Last in der Leitstelle."}
+          create_weight_constraint: {label: "Gewichtsgrenze aktivieren", description: "Speichert eine globale oder referenzbezogene aktive Obergrenze.", result: "Nachfolgende Pack-, Carrier-, Fahrzeug- oder Tourprüfungen berücksichtigen sie."}
+          generate_document: {label: "Dokument erzeugen", description: "Validiert Bezug und Inhalt und archiviert eine sichere unveränderliche HTML-Fassung.", result: "Das Dokument erscheint mit Prüfsumme im Archiv und kann geöffnet werden."}
+        image: {src: "/assets/images/handbook/outbound/outbound-control.svg", alt: "Outbound-Leitstelle mit Bedarf, QS, Versandregeln, Tracking, Touren und Dokumenten"}
     guidance:
       prerequisites:
       - Freigegebener Auftrag, verfügbarer Bestand, Packmittel, Carrier-Verbindung, Druckroute und Verladeplanung.
