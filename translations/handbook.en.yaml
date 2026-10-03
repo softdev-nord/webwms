@@ -935,6 +935,66 @@ chapter:
           allocate: {label: "Allocate", description: "Manually binds entered quantity of the displayed stock dimension.", result: "Reserved, allocated and available values are recalculated immediately."}
           create_pick_list: {label: "Create pick list", description: "Hands a fully allocated released order to picking.", result: "Exactly one open pick list is created and linked."}
         image: {src: "/assets/images/handbook/outbound/order-detail.svg", alt: "Order details with release and automatic and manual allocation"}
+      picking_overview:
+        template: outbound/picking/index.html.twig
+        title: Pick-list overview
+        purpose: The overview brings together all pick lists with order reference, processing state, progress and current assignment.
+        navigation: Outbound → Picking
+        permissions: ["fulfillment.pick.read"]
+        overview:
+        - Each card shows pick-list code, state, order number, completed and total tasks and the assigned employee.
+        - Unassigned lists remain visibly open. The view currently has no search, filters or pagination.
+        actions:
+          open: {label: "Open", description: "Opens the operational pick list with route, scan fields and shortage action.", result: "Navigation changes neither state nor assignment."}
+        image: {src: "/assets/images/handbook/outbound/picking-overview.svg", alt: "Pick-list overview with state, progress and employee assignment"}
+      picking_control:
+        template: outbound/picking/control.html.twig
+        title: Picking control centre and wave planning
+        purpose: The control centre plans pick waves, bundles pick lists by strategy and monitors progress, shortages and two-stage consolidation.
+        navigation: Outbound → Picking control centre
+        permissions: ["fulfillment.pick.control for reading; fulfillment.pick.wave.write for planning, release and consolidation."]
+        overview:
+        - Wave cards show strategy, order and pick-list counts, state and achieved progress. The live control centre adds employee, container and shortage information.
+        - A planned wave must be released before operational processing. Two-stage waves additionally require consolidation after picking is complete.
+        fields:
+          code: {label: "Wave code", required: true, format: "Code unique in the tenant", example: "WAVE-2026-0042", help: "Use a traceable code that follows the operational numbering convention.", effect: "Identifies the wave in the control centre and subsequent actions.", errors: "Empty or previously used codes are rejected."}
+          name: {label: "Wave name", required: true, format: "Understandable short name", example: "Late collection carrier north", help: "Describe the purpose, shift or collection window of the bundle.", effect: "Makes dispatching and operational assignment easier.", errors: "An empty name prevents creation."}
+          strategy: {label: "Strategy", required: true, format: "single_order, multi_order or two_stage", example: "multi_order", help: "Single order keeps orders separate; multi-order bundles orders; two-stage separates batch picking and consolidation.", effect: "Determines workflow, container use and required follow-up actions.", errors: "An unsuitable strategy cannot be changed operationally without replanning."}
+          selection_type: {label: "Selection type", required: true, format: "manual, time, tour, carrier or priority", example: "carrier", help: "Choose the criterion by which pick lists are functionally bundled.", effect: "Defines the meaning of the optional filter value.", errors: "An unsupported criterion is rejected."}
+          selection_value: {label: "Filter value", required: false, format: "Value matching the selection type", example: "DHL", help: "Leave empty for manual selection; otherwise enter a time window, tour, carrier or priority, for example.", effect: "Documents and limits the functional selection of the wave.", errors: "A value that does not match the selection type produces no meaningful bundle."}
+          priority: {label: "Priority", required: true, format: "Integer from 1 to 999", example: "50", help: "Use the agreed priority scheme of the control centre.", effect: "Influences the processing sequence of the wave.", errors: "Values outside the range or non-numeric input are invalid."}
+          planned_start_at: {label: "Planned start", required: false, format: "Local date and time", example: "2026-10-03 14:30", help: "Set only when the wave is bound to a concrete processing window.", effect: "Makes planned operational release traceable in time.", errors: "Invalid date values cannot be processed."}
+          pick_list_ids: {label: "Pick lists", required: true, format: "Multiple selection of available pick lists", example: "PICK-SO-0815 and PICK-SO-0816", help: "Select all functionally related lists; use Ctrl or Cmd to select multiple entries.", effect: "Assigns the selected lists to exactly this wave.", errors: "No selection or lists bound in the meantime prevent wave creation."}
+        actions:
+          create_wave: {label: "Plan wave", description: "Validates header data and pick-list selection and creates a planned wave.", result: "The wave appears with its lists in the control centre and progress indicator."}
+          release_wave: {label: "Release wave", description: "Releases a planned wave for operational processing.", result: "State changes to released; repetition is not required."}
+          open_pick_list: {label: "Open pick list", description: "Moves from the live control centre to the operational scanning view.", result: "Navigation does not change process state."}
+          consolidate: {label: "Consolidate", description: "Confirms merging a fully picked list in a two-stage wave.", result: "Consolidation state advances and the list is prepared for the next process."}
+        image: {src: "/assets/images/handbook/outbound/picking-control.svg", alt: "Picking control centre with wave planning, progress and consolidation"}
+      picking_detail:
+        template: outbound/picking/show.html.twig
+        title: Scan and complete pick list
+        purpose: The operational view guides the picker in optimised order through bin, product, batch, serial-number and quantity scans up to handover to packing.
+        navigation: Outbound → Picking → Open pick list
+        permissions: ["fulfillment.pick.read; fulfillment.pick.assign for self-assignment; fulfillment.pick.optimize for route sorting; fulfillment.pick.execute for scans and shortages; fulfillment.pack.write for packing handover."]
+        overview:
+        - Each task shows sequence, bin, SKU, target quantity and state. Scan fields appear only to the assigned employee for an open task.
+        - Bin and product are always validated; batch and serial number only for correspondingly managed stock. Exactly one packing order can be created after complete picking.
+        fields:
+          location: {label: "Bin scan", required: true, format: "Exact code of the displayed bin", example: "WH1-PICK-01-02", help: "Scan the physical bin first and compare the display with its label.", effect: "Confirms that withdrawal takes place at the intended source.", errors: "A differing bin blocks confirmation."}
+          product: {label: "Product scan", required: true, format: "Exact SKU or permitted product barcode", example: "SKU-4711", help: "Scan the withdrawn product, not the shelf label.", effect: "Prevents picking the wrong product.", errors: "An SKU that does not match the task is rejected."}
+          batch: {label: "Batch scan", required: false, format: "Exact expected batch", example: "LOT-20261002", help: "The field appears for a batch-managed task and must be scanned from the product.", effect: "Binds withdrawal to the allocated batch.", errors: "Missing or differing batches prevent posting."}
+          serial: {label: "Serial-number scan", required: false, format: "Exact unique serial number", example: "SN-0001842", help: "The field appears for serial-managed stock; scan each unit uniquely.", effect: "Confirms the specifically allocated unit.", errors: "Wrong, previously used or duplicate serial numbers are rejected."}
+          quantity: {label: "Pick quantity", required: true, format: "Positive integer up to the open target quantity", example: "5", help: "Accept the target quantity only if it is physically complete; serial numbers are posted by unit.", effect: "Posts the confirmed quantity from the task and updates progress.", errors: "Zero, excess or a quantity incompatible with serial management is invalid."}
+          note: {label: "Shortage note", required: true, format: "Automatically set note", example: "Short stock via mobile device", help: "The view sets a fixed origin note when a shortage is reported.", effect: "Documents the source path of the exceptional confirmation.", errors: "The note must not be used as a regular pick confirmation."}
+          code: {label: "Packing-order code", required: true, format: "Unique code prefilled with PACK plus pick-list code", example: "PACK-PICK-SO-2026-0815", help: "Verify the proposed code against the operational numbering convention.", effect: "Creates and identifies the packing order for this pick list.", errors: "Empty or duplicate codes prevent handover."}
+        actions:
+          assign: {label: "Assign to me and start", description: "Binds the open pick list to the signed-in employee and starts processing.", result: "Scan fields become available for the employee's own open tasks."}
+          optimize: {label: "Optimise route", description: "Reorders open tasks using the warehouse structure.", result: "Sequence numbers represent the optimised walking order."}
+          scan: {label: "Scan and pick", description: "Validates bin, product, optional stock characteristics and quantity and posts withdrawal.", result: "The task advances or completes and progress updates."}
+          shortage: {label: "Report shortage", description: "Confirms an open task through the exception path with a fixed mobile-device note.", result: "The shortage becomes visible to the control centre and further dispatching."}
+          create_packing: {label: "Create packing order", description: "Hands a fully completed pick list to packing with a unique code.", result: "The packing order is created and linked directly afterwards."}
+        image: {src: "/assets/images/handbook/outbound/picking-detail.svg", alt: "Operational pick list with scan validation, shortage and packing handover"}
     guidance:
       prerequisites:
       - Released order, available stock, packaging, carrier connection, print route and load plan.

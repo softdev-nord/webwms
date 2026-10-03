@@ -369,6 +369,20 @@ sprachparametrisierter Regressionstest lädt nun jedes Kapitel und prüft für
 sämtliche Abschnitts- und View-Bilder Pfadmuster, Alternativtext und die
 tatsächliche Datei. Damit sind 22 von 101 produktiven Views migriert.
 
-Offen bleibt die Übertragung dieses Standards auf die übrigen 79 produktiven
+Der achte Slice dokumentiert die vollständige Kommissionierung mit
+Picklistenübersicht, Picking-Leitstelle und operativer Scanansicht. Für die
+Wellenplanung sind Einzelauftrag, Multi-Order und zweistufige Strategie, die
+Auswahl nach Zeit, Tour, Carrier oder Priorität, Mehrfachzuordnung, Freigabe und
+Konsolidierung beschrieben. Die operative Anleitung erklärt Selbstzuordnung,
+Routenoptimierung, Lagerplatz- und Artikelscan, bedingte Chargen- und
+Seriennummernprüfung, Mengengrenzen, Fehlmengenmeldung sowie die eindeutige
+Übergabe an den Packprozess.
+
+Ein sprachparametrisierter Regressionstest gleicht drei Templates, acht Felder
+der Wellenplanung, sieben Felder der Pickausführung, Formularanzahlen und
+eindeutige vorhandene Bildreferenzen ab. Damit sind 25 von 101 produktiven Views
+migriert.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 76 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.

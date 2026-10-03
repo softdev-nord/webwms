@@ -942,6 +942,66 @@ chapter:
           allocate: {label: "Allokieren", description: "Bindet die eingegebene Menge der angezeigten Bestandsdimension manuell.", result: "Reserviert, allokiert und verfügbar werden sofort neu berechnet."}
           create_pick_list: {label: "Pickliste erzeugen", description: "Übergibt einen vollständig allokierten freigegebenen Auftrag an die Kommissionierung.", result: "Genau eine offene Pickliste entsteht und wird anschließend verlinkt."}
         image: {src: "/assets/images/handbook/outbound/order-detail.svg", alt: "Auftragsdetail mit Freigabe, automatischer und manueller Allokation"}
+      picking_overview:
+        template: outbound/picking/index.html.twig
+        title: Picklistenübersicht
+        purpose: Die Übersicht bündelt alle Picklisten mit Auftragsbezug, Bearbeitungsstand, Fortschritt und aktueller Zuordnung.
+        navigation: Warenausgang → Kommissionierung
+        permissions: ["fulfillment.pick.read"]
+        overview:
+        - Jede Karte zeigt Picklistencode, Status, Auftragsnummer, erledigte und gesamte Aufgaben sowie den zugewiesenen Mitarbeiter.
+        - Nicht zugewiesene Listen bleiben als offen erkennbar. Die Ansicht besitzt derzeit keine Suche, Filter oder Pagination.
+        actions:
+          open: {label: "Öffnen", description: "Öffnet die operative Pickliste mit Route, Scanfeldern und Fehlmengenaktion.", result: "Die Navigation verändert weder Status noch Zuordnung."}
+        image: {src: "/assets/images/handbook/outbound/picking-overview.svg", alt: "Picklistenübersicht mit Status, Fortschritt und Mitarbeiterzuordnung"}
+      picking_control:
+        template: outbound/picking/control.html.twig
+        title: Picking-Leitstelle und Wellenplanung
+        purpose: Die Leitstelle plant Pickwellen, bündelt Picklisten nach Strategie und überwacht Fortschritt, Fehlmengen und zweistufige Konsolidierung.
+        navigation: Warenausgang → Picking-Leitstelle
+        permissions: ["fulfillment.pick.control zum Lesen; fulfillment.pick.wave.write zum Planen, Freigeben und Konsolidieren."]
+        overview:
+        - Wellenkarten zeigen Strategie, Auftrags- und Picklistenanzahl, Status sowie den erreichten Fortschritt. Die Live-Leitstelle ergänzt Mitarbeiter, Behälter und Fehlmengen.
+        - Eine geplante Welle muss freigegeben werden, bevor sie operativ bearbeitet wird. Zweistufige Wellen verlangen nach vollständigem Pick zusätzlich die Konsolidierung.
+        fields:
+          code: {label: "Wellencode", required: true, format: "Im Mandanten eindeutiger Code", example: "WAVE-2026-0042", help: "Verwenden Sie einen nachvollziehbaren Code gemäß betrieblicher Nummernkonvention.", effect: "Identifiziert die Welle in Leitstelle und Folgeaktionen.", errors: "Leere oder bereits verwendete Codes werden abgewiesen."}
+          name: {label: "Wellenname", required: true, format: "Verständliche Kurzbezeichnung", example: "Spätabholung Carrier Nord", help: "Beschreiben Sie Zweck, Schicht oder Abholfenster der Bündelung.", effect: "Erleichtert Disposition und operative Zuordnung.", errors: "Ein leerer Name verhindert die Anlage."}
+          strategy: {label: "Strategie", required: true, format: "single_order, multi_order oder two_stage", example: "multi_order", help: "Einzelauftrag hält Aufträge getrennt; Multi-Order bündelt mehrere Aufträge; zweistufig trennt Sammelpick und Konsolidierung.", effect: "Bestimmt Ablauf, Behälternutzung und notwendige Folgeaktionen.", errors: "Eine ungeeignete Strategie kann operativ nicht ohne neue Planung gewechselt werden."}
+          selection_type: {label: "Auswahlart", required: true, format: "manual, time, tour, carrier oder priority", example: "carrier", help: "Wählen Sie, nach welchem Kriterium Picklisten fachlich gebündelt werden.", effect: "Legt die Bedeutung des optionalen Filterwerts fest.", errors: "Ein nicht unterstütztes Kriterium wird abgewiesen."}
+          selection_value: {label: "Filterwert", required: false, format: "Wert passend zur Auswahlart", example: "DHL", help: "Bei manueller Auswahl leer lassen; sonst beispielsweise Zeitfenster, Tour, Carrier oder Priorität eintragen.", effect: "Dokumentiert und begrenzt die fachliche Auswahl der Welle.", errors: "Ein zur Auswahlart unpassender Wert liefert keine sinnvolle Bündelung."}
+          priority: {label: "Priorität", required: true, format: "Ganzzahl von 1 bis 999", example: "50", help: "Verwenden Sie das abgestimmte Prioritätsschema der Leitstelle.", effect: "Beeinflusst die Bearbeitungsreihenfolge der Welle.", errors: "Werte außerhalb des Bereichs oder nicht numerische Eingaben sind ungültig."}
+          planned_start_at: {label: "Geplanter Start", required: false, format: "Lokales Datum und Uhrzeit", example: "2026-10-03 14:30", help: "Nur setzen, wenn die Welle an ein konkretes Bearbeitungsfenster gebunden ist.", effect: "Macht die geplante operative Freigabe zeitlich nachvollziehbar.", errors: "Ungültige Datumswerte können nicht verarbeitet werden."}
+          pick_list_ids: {label: "Picklisten", required: true, format: "Mehrfachauswahl verfügbarer Picklisten", example: "PICK-SO-0815 und PICK-SO-0816", help: "Wählen Sie alle fachlich zusammengehörigen Listen; mit Strg beziehungsweise Cmd sind mehrere Einträge auswählbar.", effect: "Ordnet die ausgewählten Listen genau dieser Welle zu.", errors: "Ohne Auswahl oder bei zwischenzeitlich gebundenen Listen wird keine Welle angelegt."}
+        actions:
+          create_wave: {label: "Welle planen", description: "Validiert Kopfdaten und Picklistenauswahl und erzeugt eine geplante Welle.", result: "Die Welle erscheint mit ihren Listen in Leitstelle und Fortschrittsanzeige."}
+          release_wave: {label: "Welle freigeben", description: "Gibt eine geplante Welle für die operative Bearbeitung frei.", result: "Der Status wechselt zu released; eine Wiederholung ist nicht erforderlich."}
+          open_pick_list: {label: "Pickliste öffnen", description: "Wechselt aus der Live-Leitstelle in die operative Scanansicht.", result: "Die Navigation verändert den Prozessstatus nicht."}
+          consolidate: {label: "Konsolidieren", description: "Bestätigt die Zusammenführung einer vollständig gepickten Liste in einer zweistufigen Welle.", result: "Der Konsolidierungsstatus wird fortgeschrieben und die Liste für den Folgeprozess bereitgestellt."}
+        image: {src: "/assets/images/handbook/outbound/picking-control.svg", alt: "Picking-Leitstelle mit Wellenplanung, Fortschritt und Konsolidierung"}
+      picking_detail:
+        template: outbound/picking/show.html.twig
+        title: Pickliste scannen und abschließen
+        purpose: Die operative Ansicht führt den Kommissionierer in optimierter Reihenfolge durch Lagerplatz-, Artikel-, Chargen-, Seriennummern- und Mengenscans bis zur Packübergabe.
+        navigation: Warenausgang → Kommissionierung → Pickliste öffnen
+        permissions: ["fulfillment.pick.read; fulfillment.pick.assign für Selbstzuordnung; fulfillment.pick.optimize für Routensortierung; fulfillment.pick.execute für Scans und Fehlmengen; fulfillment.pack.write für die Packübergabe."]
+        overview:
+        - Jede Aufgabe zeigt Sequenz, Lagerplatz, SKU, Sollmenge und Status. Scanfelder erscheinen nur dem zugewiesenen Mitarbeiter bei offener Aufgabe.
+        - Lagerplatz und Artikel werden immer validiert; Charge und Seriennummer nur bei entsprechend geführtem Bestand. Nach vollständigem Pick kann genau ein Packauftrag angelegt werden.
+        fields:
+          location: {label: "Lagerplatzscan", required: true, format: "Exakter Code des angezeigten Lagerplatzes", example: "WH1-PICK-01-02", help: "Scannen Sie zuerst den physischen Platz und vergleichen Sie Anzeige und Beschriftung.", effect: "Bestätigt, dass die Entnahme an der vorgesehenen Quelle erfolgt.", errors: "Ein abweichender Lagerplatz blockiert die Quittierung."}
+          product: {label: "Artikelscan", required: true, format: "Exakte SKU oder zulässiger Artikelbarcode", example: "SKU-4711", help: "Scannen Sie den entnommenen Artikel, nicht die Fachbeschriftung.", effect: "Verhindert die Entnahme eines falschen Artikels.", errors: "Eine nicht zur Aufgabe passende SKU wird abgewiesen."}
+          batch: {label: "Chargenscan", required: false, format: "Exakte erwartete Charge", example: "LOT-20261002", help: "Das Feld erscheint bei chargengeführter Aufgabe und muss vom Produkt gescannt werden.", effect: "Bindet die Entnahme an die allokierte Charge.", errors: "Fehlende oder abweichende Chargen verhindern die Buchung."}
+          serial: {label: "Seriennummernscan", required: false, format: "Exakte eindeutige Seriennummer", example: "SN-0001842", help: "Das Feld erscheint bei seriennummerngeführtem Bestand; scannen Sie jede Einheit eindeutig.", effect: "Quittiert die konkret allokierte Einheit.", errors: "Falsche, bereits verwendete oder doppelte Seriennummern werden abgewiesen."}
+          quantity: {label: "Pickmenge", required: true, format: "Positive Ganzzahl bis zur offenen Sollmenge", example: "5", help: "Übernehmen Sie die Sollmenge nur, wenn sie vollständig physisch vorhanden ist; Seriennummern werden stückweise gebucht.", effect: "Bucht die bestätigte Menge aus der Aufgabe und aktualisiert den Fortschritt.", errors: "Null, Übermenge oder eine mit Serienführung unvereinbare Menge ist ungültig."}
+          note: {label: "Fehlmengennotiz", required: true, format: "Automatisch gesetzter Hinweis", example: "Fehlbestand per MDE", help: "Die Ansicht setzt beim Melden einer Fehlmenge einen festen Herkunftshinweis.", effect: "Dokumentiert den Grundpfad der abweichenden Quittierung.", errors: "Die Notiz darf nicht als reguläre Pickbestätigung verwendet werden."}
+          code: {label: "Packauftragscode", required: true, format: "Eindeutiger Code; vorbelegt mit PACK-Picklistencode", example: "PACK-PICK-SO-2026-0815", help: "Prüfen Sie den vorgeschlagenen Code gegen die betriebliche Nummernkonvention.", effect: "Erzeugt und identifiziert den Packauftrag für diese Pickliste.", errors: "Leere oder doppelte Codes verhindern die Übergabe."}
+        actions:
+          assign: {label: "Mir zuweisen und starten", description: "Bindet die offene Pickliste an den angemeldeten Mitarbeiter und startet die Bearbeitung.", result: "Scanfelder werden für die eigenen offenen Aufgaben verfügbar."}
+          optimize: {label: "Route optimieren", description: "Sortiert offene Aufgaben anhand der Lagerstruktur neu.", result: "Sequenznummern bilden die optimierte Laufreihenfolge ab."}
+          scan: {label: "Scannen und entnehmen", description: "Validiert Platz, Artikel, optionale Bestandsmerkmale und Menge und bucht die Entnahme.", result: "Die Aufgabe wird fortgeschrieben oder abgeschlossen; der Fortschritt aktualisiert sich."}
+          shortage: {label: "Fehlbestand melden", description: "Quittiert eine offene Aufgabe über den Abweichungspfad mit fester MDE-Notiz.", result: "Die Fehlmenge ist für Leitstelle und weitere Disposition sichtbar."}
+          create_packing: {label: "Packauftrag erstellen", description: "Übergibt eine vollständig abgeschlossene Pickliste mit eindeutigem Code an den Packprozess.", result: "Der Packauftrag wird angelegt und anschließend direkt verlinkt."}
+        image: {src: "/assets/images/handbook/outbound/picking-detail.svg", alt: "Operative Pickliste mit Scanvalidierung, Fehlmenge und Packübergabe"}
     guidance:
       prerequisites:
       - Freigegebener Auftrag, verfügbarer Bestand, Packmittel, Carrier-Verbindung, Druckroute und Verladeplanung.

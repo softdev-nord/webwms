@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Pick-list overview placeholder</title>
+  <desc id="desc">Placeholder for the pick-list overview with status and progress cards.</desc>
+  <rect width="1280" height="720" fill="#f4f7fb"/>
+  <rect x="80" y="72" width="1120" height="88" rx="12" fill="#17365d"/>
+  <text x="120" y="126" fill="#fff" font-family="sans-serif" font-size="32">Pick-list overview</text>
+  <g fill="#fff" stroke="#c8d4e3" stroke-width="2">
+    <rect x="80" y="208" width="344" height="360" rx="14"/><rect x="468" y="208" width="344" height="360" rx="14"/><rect x="856" y="208" width="344" height="360" rx="14"/>
+  </g>
+  <g fill="#2f6fbb"><rect x="112" y="424" width="280" height="14" rx="7"/><rect x="500" y="424" width="196" height="14" rx="7"/><rect x="888" y="424" width="238" height="14" rx="7"/></g>
+  <text x="640" y="660" text-anchor="middle" fill="#50647d" font-family="sans-serif" font-size="24">Screenshot placeholder – replace during visual documentation pass</text>
+</svg>

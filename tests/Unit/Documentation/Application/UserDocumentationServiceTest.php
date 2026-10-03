@@ -256,6 +256,43 @@ class UserDocumentationServiceTest extends TestCase
     }
 
     #[DataProvider('localeProvider')]
+    public function testPickingViewsHaveCompleteTemplateFieldAndImageCoverage(string $locale): void
+    {
+        $views = array_values(array_filter(
+            $this->documentation->document('fulfillment-and-outbound', $locale)['views'],
+            static fn (array $view): bool => str_starts_with($view['template'], 'outbound/picking/')
+        ));
+        self::assertSame([
+            'outbound/picking/index.html.twig',
+            'outbound/picking/control.html.twig',
+            'outbound/picking/show.html.twig',
+        ], array_column($views, 'template'));
+
+        $expectedFormCounts = [0, 3, 5];
+        $imageSources = [];
+        foreach ($views as $index => $view) {
+            $template = file_get_contents(dirname(__DIR__, 4) . '/templates/' . $view['template']);
+            self::assertIsString($template);
+            self::assertSame($expectedFormCounts[$index], preg_match_all('/<form\b.*?<\/form>/is', $template));
+            preg_match_all('/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/i', $template, $matches);
+            $templateFields = array_values(array_unique(array_map(
+                static fn (string $name): string => str_replace('[]', '', $name),
+                array_filter($matches[1], static fn (string $name): bool => $name !== '_token')
+            )));
+            sort($templateFields);
+            $documentedFields = array_column($view['fields'], 'id');
+            sort($documentedFields);
+            self::assertSame($templateFields, $documentedFields, sprintf('Field coverage differs for "%s".', $view['template']));
+            self::assertFileExists(dirname(__DIR__, 4) . '/public' . $view['image']['src']);
+            $imageSources[] = $view['image']['src'];
+        }
+
+        self::assertCount(8, $views[1]['fields']);
+        self::assertCount(7, $views[2]['fields']);
+        self::assertCount(count($imageSources), array_unique($imageSources));
+    }
+
+    #[DataProvider('localeProvider')]
     public function testEveryChapterIsTranslated(string $locale): void
     {
         foreach (UserDocumentationService::CHAPTERS as $chapter) {

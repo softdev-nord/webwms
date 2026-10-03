@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Operational pick-list placeholder</title>
+  <desc id="desc">Placeholder for task sequence, scan validation and packing handover.</desc>
+  <rect width="1280" height="720" fill="#f4f7fb"/>
+  <rect x="80" y="72" width="1120" height="88" rx="12" fill="#17365d"/>
+  <text x="120" y="126" fill="#fff" font-family="sans-serif" font-size="32">Operational pick list</text>
+  <g fill="#fff" stroke="#c8d4e3" stroke-width="2"><rect x="80" y="200" width="1120" height="154" rx="14"/><rect x="80" y="384" width="1120" height="154" rx="14"/></g>
+  <g fill="#e8eef6"><rect x="112" y="246" width="72" height="62" rx="8"/><rect x="216" y="246" width="230" height="62" rx="8"/><rect x="478" y="246" width="128" height="62" rx="8"/><rect x="638" y="246" width="230" height="62" rx="8"/></g>
+  <rect x="900" y="246" width="268" height="62" rx="8" fill="#2f6fbb"/>
+  <text x="640" y="650" text-anchor="middle" fill="#50647d" font-family="sans-serif" font-size="24">Screenshot placeholder – replace during visual documentation pass</text>
+</svg>
