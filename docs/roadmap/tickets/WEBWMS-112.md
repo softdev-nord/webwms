@@ -383,6 +383,18 @@ der Wellenplanung, sieben Felder der Pickausführung, Formularanzahlen und
 eindeutige vorhandene Bildreferenzen ab. Damit sind 25 von 101 produktiven Views
 migriert.
 
-Offen bleibt die Übertragung dieses Standards auf die übrigen 76 produktiven
+Der neunte Slice schließt die Packstation mit Übersicht und operativem
+Packauftrag ab. Beschrieben sind die Zuordnung offener Pickpositionen zu einem
+Packstück, eindeutige Packstücknummer, tatsächliches Gewicht einschließlich
+konfigurierter Gewichtsgrenze, nachträgliche Messung, Abschlussbedingungen und
+die einmalige Versandübergabe mit Sendungsnummer, Carrier und Service. Die
+Hinweise erklären außerdem, wann eine manuelle Labelerfassung statt einer
+Carrier-Anbindung erforderlich sein kann.
+
+Der sprachparametrisierte Regressionstest gleicht beide Templates, drei
+Formulare, sechs Geschäftsfelder, fünf Aktionen und eindeutige vorhandene
+Bildreferenzen ab. Damit sind 27 von 101 produktiven Views migriert.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 74 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.

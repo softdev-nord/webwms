@@ -1002,6 +1002,42 @@ chapter:
           shortage: {label: "Fehlbestand melden", description: "Quittiert eine offene Aufgabe über den Abweichungspfad mit fester MDE-Notiz.", result: "Die Fehlmenge ist für Leitstelle und weitere Disposition sichtbar."}
           create_packing: {label: "Packauftrag erstellen", description: "Übergibt eine vollständig abgeschlossene Pickliste mit eindeutigem Code an den Packprozess.", result: "Der Packauftrag wird angelegt und anschließend direkt verlinkt."}
         image: {src: "/assets/images/handbook/outbound/picking-detail.svg", alt: "Operative Pickliste mit Scanvalidierung, Fehlmenge und Packübergabe"}
+      packing_overview:
+        template: outbound/packing/index.html.twig
+        title: Packauftragsübersicht
+        purpose: Die Packstation zeigt alle aus abgeschlossenen Picklisten erzeugten Packaufträge mit Status, Auftragsbezug, Packstückanzahl und Gesamtgewicht.
+        navigation: Warenausgang → Packen
+        permissions: ["fulfillment.pack.read"]
+        overview:
+        - Jede Karte zeigt Packauftragscode, Status, Kundenauftrag, Anzahl der bereits versiegelten Packstücke und deren summiertes Gewicht.
+        - Ein leerer Zustand bedeutet, dass noch keine freigegebene und vollständig gepickte Liste an die Packstation übergeben wurde. Suche, Filter und Pagination sind derzeit nicht vorhanden.
+        actions:
+          open: {label: "Packauftrag öffnen", description: "Öffnet Packstücke, noch nicht verpackte Pickpositionen, Messfunktion und Versandübergabe.", result: "Das Öffnen verändert weder Status noch Packinhalt."}
+        image: {src: "/assets/images/handbook/outbound/packing-overview.svg", alt: "Packauftragsübersicht mit Status, Packstückanzahl und Gesamtgewicht"}
+      packing_detail:
+        template: outbound/packing/show.html.twig
+        title: Packstücke bilden und Packauftrag abschließen
+        purpose: Die Packansicht ordnet gepickte Positionen eindeutigen Packstücken zu, erfasst das Istgewicht, unterstützt nachträgliche Messungen und übergibt den abgeschlossenen Auftrag an den Versand.
+        navigation: Warenausgang → Packen → Packauftrag öffnen
+        permissions: ["fulfillment.pack.read; fulfillment.pack.write zum Versiegeln; fulfillment.pack.execute zum Abschluss; integration.measurement.capture zum Messen; fulfillment.ship.write zur Versandübergabe."]
+        overview:
+        - Die Packstücktabelle zeigt Nummer, Gewicht, optionale Abmessungen, Status und Anzahl enthaltener Pickpositionen. Messen ergänzt beziehungsweise korrigiert Gewicht und Abmessungen über den Messprozess.
+        - Solange Positionen offen sind, werden sie einem neuen Packstück zugeordnet. Erst wenn alle Positionen verpackt und mindestens ein Packstück vorhanden sind, kann der Packauftrag abgeschlossen werden.
+        - Nach dem Abschluss erzeugen Sendungsnummer, Carrier und Service genau eine vorbereitete Sendung; eine bereits vorhandene Sendung wird direkt verlinkt.
+        fields:
+          package_number: {label: "Packstücknummer", required: true, format: "Im Packauftrag eindeutiger Code", example: "PKG-PACK-PICK-SO-0815-1", help: "Prüfen Sie den vorbelegten Code gegen das physische Packstücketikett und die Nummernkonvention.", effect: "Identifiziert das versiegelte Packstück in Messung, Druck und Versand.", errors: "Leere oder doppelte Packstücknummern werden abgewiesen."}
+          weight_grams: {label: "Gewicht in Gramm", required: true, format: "Positive Ganzzahl innerhalb des konfigurierten Packstücklimits", example: "3150", help: "Wiegen Sie das vollständig gepackte Packstück einschließlich Verpackungsmaterial und erfassen Sie Gramm ohne Dezimalstellen.", effect: "Fließt in Gesamtgewicht, Carrierprüfung und Gewichtsrestriktionen ein.", errors: "Null, negative, nicht numerische oder über dem aktiven Packstücklimit liegende Werte verhindern das Versiegeln."}
+          pick_task_id: {label: "Pickpositionen", required: true, format: "Mehrfachauswahl noch nicht verpackter Pickaufgaben", example: "SKU-4711 Menge 2 und SKU-815 Menge 1", help: "Entfernen Sie die Markierung für Positionen, die physisch nicht in diesem Packstück liegen. Mindestens eine Position muss ausgewählt bleiben.", effect: "Ordnet jede gewählte Pickposition genau diesem Packstück zu und entfernt sie aus der offenen Packmenge.", errors: "Keine Auswahl, unbekannte oder bereits verpackte Positionen verhindern das Versiegeln."}
+          shipment_number: {label: "Sendungsnummer", required: true, format: "Im Mandanten eindeutiger Sendungscode", example: "SHIP-PACK-PICK-SO-0815", help: "Verwenden Sie die vorbelegte Nummer oder die abgestimmte interne beziehungsweise ERP-Nummer.", effect: "Identifiziert die vorbereitete Sendung in Versand, Tracking und Verladung.", errors: "Leere oder bereits verwendete Nummern verhindern die Anlage."}
+          carrier: {label: "Carrier", required: true, format: "Carrier-Code passend zu einer aktiven Verbindung", example: "DHL", help: "Erfassen Sie den exakten Code der konfigurierten Carrier-Anbindung; DEMO ist nur für Testabläufe vorgesehen.", effect: "Bestimmt, welche Anbindung später Label und Tracking erzeugt.", errors: "Ein unbekannter Code erlaubt gegebenenfalls nur die manuelle Labelerfassung."}
+          service: {label: "Versandservice", required: true, format: "Beim Carrier verfügbarer Servicecode", example: "STANDARD", help: "Wählen Sie den mit Auftrag und Carrier abgestimmten Service, beispielsweise STANDARD oder EXPRESS.", effect: "Wird an die Labelerzeugung und Versandabwicklung übergeben.", errors: "Leere oder beim Carrier unzulässige Services führen spätestens bei der Labelanforderung zu einem Fehler."}
+        actions:
+          measure: {label: "Messen", description: "Öffnet die Messwerterfassung für das vorhandene Packstück.", result: "Gewicht und Abmessungen werden nach erfolgreicher Erfassung am Packstück angezeigt."}
+          seal_package: {label: "Packstück versiegeln", description: "Validiert Nummer, Gewicht und ausgewählte Pickpositionen und bildet daraus ein unverwechselbares Packstück.", result: "Das Packstück erscheint in der Tabelle; enthaltene Positionen sind nicht mehr offen."}
+          complete: {label: "Packauftrag abschließen", description: "Schließt den Auftrag, sobald alle Pickpositionen verpackt und Packstücke vorhanden sind.", result: "Der Packauftrag wechselt zu completed und wird für die Versandvorbereitung freigegeben."}
+          create_shipment: {label: "Sendung erstellen", description: "Erzeugt aus abgeschlossenem Packauftrag, Sendungsnummer, Carrier und Service eine vorbereitete Sendung.", result: "Die Versanddetailansicht öffnet sich für Label, Druck und Übergabe."}
+          open_shipment: {label: "Sendung öffnen", description: "Öffnet die bereits mit dem Packauftrag verbundene Sendung.", result: "Die Navigation erzeugt keine weitere Sendung."}
+        image: {src: "/assets/images/handbook/outbound/packing-detail.svg", alt: "Packauftrag mit Packstückbildung, Gewicht, Messung und Versandübergabe"}
     guidance:
       prerequisites:
       - Freigegebener Auftrag, verfügbarer Bestand, Packmittel, Carrier-Verbindung, Druckroute und Verladeplanung.

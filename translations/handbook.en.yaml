@@ -995,6 +995,42 @@ chapter:
           shortage: {label: "Report shortage", description: "Confirms an open task through the exception path with a fixed mobile-device note.", result: "The shortage becomes visible to the control centre and further dispatching."}
           create_packing: {label: "Create packing order", description: "Hands a fully completed pick list to packing with a unique code.", result: "The packing order is created and linked directly afterwards."}
         image: {src: "/assets/images/handbook/outbound/picking-detail.svg", alt: "Operational pick list with scan validation, shortage and packing handover"}
+      packing_overview:
+        template: outbound/packing/index.html.twig
+        title: Packing-order overview
+        purpose: The packing station shows all packing orders created from completed pick lists with state, order reference, package count and total weight.
+        navigation: Outbound → Packing
+        permissions: ["fulfillment.pack.read"]
+        overview:
+        - Each card shows packing-order code, state, customer order, number of sealed packages and their combined weight.
+        - An empty state means that no released and fully picked list has yet been handed to packing. Search, filters and pagination are currently unavailable.
+        actions:
+          open: {label: "Open packing order", description: "Opens packages, unpacked pick tasks, measurement and shipping handover.", result: "Opening changes neither state nor package contents."}
+        image: {src: "/assets/images/handbook/outbound/packing-overview.svg", alt: "Packing-order overview with state, package count and total weight"}
+      packing_detail:
+        template: outbound/packing/show.html.twig
+        title: Build packages and complete packing order
+        purpose: The packing view assigns picked tasks to uniquely identified packages, captures actual weight, supports subsequent measurement and hands the completed order to shipping.
+        navigation: Outbound → Packing → Open packing order
+        permissions: ["fulfillment.pack.read; fulfillment.pack.write for sealing; fulfillment.pack.execute for completion; integration.measurement.capture for measurement; fulfillment.ship.write for shipping handover."]
+        overview:
+        - The package table shows number, weight, optional dimensions, state and contained pick-task count. Measurement adds or corrects weight and dimensions through the measurement workflow.
+        - While tasks remain open, they are assigned to a new package. The packing order can be completed only after every task is packed and at least one package exists.
+        - After completion, shipment number, carrier and service create exactly one prepared shipment; an existing shipment is linked directly.
+        fields:
+          package_number: {label: "Package number", required: true, format: "Code unique within the packing order", example: "PKG-PACK-PICK-SO-0815-1", help: "Verify the prefilled code against the physical package label and numbering convention.", effect: "Identifies the sealed package in measurement, printing and shipping.", errors: "Empty or duplicate package numbers are rejected."}
+          weight_grams: {label: "Weight in grams", required: true, format: "Positive integer within the configured package limit", example: "3150", help: "Weigh the fully packed package including packaging material and enter grams without decimals.", effect: "Contributes to total weight, carrier validation and weight restrictions.", errors: "Zero, negative, non-numeric values or values above the active package limit prevent sealing."}
+          pick_task_id: {label: "Pick tasks", required: true, format: "Multiple selection of unpacked pick tasks", example: "SKU-4711 quantity 2 and SKU-815 quantity 1", help: "Clear the checkbox for tasks not physically contained in this package. At least one task must remain selected.", effect: "Assigns each selected pick task to exactly this package and removes it from the unpacked quantity.", errors: "No selection, unknown or already packed tasks prevent sealing."}
+          shipment_number: {label: "Shipment number", required: true, format: "Shipment code unique in the tenant", example: "SHIP-PACK-PICK-SO-0815", help: "Use the prefilled number or the agreed internal or ERP number.", effect: "Identifies the prepared shipment in shipping, tracking and loading.", errors: "Empty or previously used numbers prevent creation."}
+          carrier: {label: "Carrier", required: true, format: "Carrier code matching an active connection", example: "DHL", help: "Enter the exact code of the configured carrier connection; DEMO is intended only for test workflows.", effect: "Determines which connection later creates the label and tracking data.", errors: "An unknown code may permit only manual label registration."}
+          service: {label: "Shipping service", required: true, format: "Service code available from the carrier", example: "STANDARD", help: "Choose the service agreed for order and carrier, such as STANDARD or EXPRESS.", effect: "Is passed to label generation and shipment processing.", errors: "Empty services or services unsupported by the carrier fail no later than label request."}
+        actions:
+          measure: {label: "Measure", description: "Opens measurement capture for the existing package.", result: "Weight and dimensions are displayed on the package after successful capture."}
+          seal_package: {label: "Seal package", description: "Validates number, weight and selected pick tasks and forms a uniquely identified package.", result: "The package appears in the table; contained tasks are no longer open."}
+          complete: {label: "Complete packing order", description: "Completes the order once all pick tasks are packed and packages exist.", result: "The packing order changes to completed and becomes available for shipment preparation."}
+          create_shipment: {label: "Create shipment", description: "Creates a prepared shipment from completed packing order, shipment number, carrier and service.", result: "Shipment details open for label, printing and handover."}
+          open_shipment: {label: "Open shipment", description: "Opens the shipment already linked to the packing order.", result: "Navigation creates no additional shipment."}
+        image: {src: "/assets/images/handbook/outbound/packing-detail.svg", alt: "Packing order with package creation, weight, measurement and shipping handover"}
     guidance:
       prerequisites:
       - Released order, available stock, packaging, carrier connection, print route and load plan.
