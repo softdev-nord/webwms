@@ -552,6 +552,146 @@ chapter:
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: Occupancy and traceability – screenshot placeholder
+    views:
+      warehouse_overview:
+        template: warehouse/overview.html.twig
+        title: Warehouse overview and capacity
+        purpose: The warehouse dashboard aggregates stock, bins and capacity utilisation by warehouse and area.
+        navigation: Warehouse & stock → Warehouse overview
+        permissions: ["inventory.overview.read"]
+        overview:
+        - Warehouse cards show type, occupied and total bins, stock quantity, free capacity and percentage utilisation. Zero capacity is displayed as unlimited.
+        - The area table breaks the same metrics down by warehouse area and reveals bottlenecks or structures not yet configured.
+        actions: {}
+        image: {src: "/assets/images/handbook/warehouse/overview.svg", alt: "Warehouse overview with capacity, stock and area utilisation"}
+      stock_overview:
+        template: warehouse/stock.html.twig
+        title: Real-time stock
+        purpose: The stock view shows the current tenant-safe projection of every stock dimension and available quantity.
+        navigation: Warehouse & stock → Stock
+        permissions: ["inventory.stock.read"]
+        overview:
+        - Each row contains SKU, bin and topology, stock state, special stock and owner, batch, serial number, expiry date, total and available quantity and last update.
+        - Available quantity may be below physical total due to reservations, blocks or quality state. A maximum of 200 rows is loaded.
+        fields:
+          warehouse: {label: "Warehouse filter", required: false, format: "Selection of an active warehouse or all warehouses", example: "WH-HAMBURG", help: "Choose a warehouse to limit the stock projection spatially.", effect: "Loads only stock from the selected warehouse; empty shows all tenant warehouses.", errors: "An unknown or cross-tenant ID produces no useful selection."}
+        actions:
+          filter: {label: "Filter", description: "Reloads the stock projection for the selected warehouse.", result: "The selection remains in the filter; no stock is changed."}
+        image: {src: "/assets/images/handbook/warehouse/stock.svg", alt: "Real-time stock with topology, state, stock dimensions and availability"}
+      warehouse_occupancy:
+        template: warehouse/occupancy.html.twig
+        title: Graphical bin occupancy
+        purpose: Graphical occupancy visualises bins by area, utilisation and critical stock state.
+        navigation: Warehouse & stock → Occupancy
+        permissions: ["inventory.overview.read"]
+        overview:
+        - Colours distinguish empty, occupied, quality stock and blocked or full. Every card shows bin type, aisle, level, bin, quantity, capacity and product count.
+        - The progress bar calculates quantity utilisation. Clicking opens real-time stock for the associated warehouse.
+        fields:
+          warehouse: {label: "Warehouse", required: true, format: "Selection of an existing warehouse", example: "WH-HAMBURG", help: "Choose the warehouse whose complete bin structure is to be visualised.", effect: "Groups all warehouse bins by area and calculates state and utilisation.", errors: "Without an existing warehouse or bins, the view remains empty."}
+        actions:
+          display: {label: "Display", description: "Loads all bins and stock metrics for the selected warehouse.", result: "Colour-coded occupancy is rebuilt without changing stock."}
+          open_stock: {label: "Open bin", description: "Moves from a bin card to real-time stock for the warehouse.", result: "Stock is read only."}
+        image: {src: "/assets/images/handbook/warehouse/occupancy.svg", alt: "Graphical bin occupancy with state colours and capacity bars"}
+      stock_movements:
+        template: warehouse/movements.html.twig
+        title: Movement history
+        purpose: The immutable stock ledger shows every quantity change with product, bin, dimension, reason, user and resulting stock.
+        navigation: Warehouse & stock → Movements
+        permissions: ["inventory.stock.movement.read"]
+        overview:
+        - Positive and negative deltas are shown with the resulting stock. Batch, serial number and state remain part of the posted dimension.
+        - The view returns at most 500 hits; combine product, bin and movement type for a focused audit review.
+        fields:
+          product: {label: "Product", required: false, format: "Selection of an SKU or all products", example: "SKU-4711", help: "Select for the complete history of a product regardless of bin.", effect: "Limits the ledger to the selected product.", errors: "Unknown IDs return no hits."}
+          location: {label: "Bin", required: false, format: "Selection of an existing bin", example: "WH1-PICK-01", help: "Use the filter to inspect all receipts and issues of a bin.", effect: "Limits movements to the selected bin.", errors: "A cross-tenant bin returns no data."}
+          movement_type: {label: "Movement type", required: false, format: "Exact technical movement code", example: "inbound_receipt", help: "Enter the code used in the ledger, such as inbound_receipt, transfer_out or pick.", effect: "Shows only postings of this movement type.", errors: "Free text without an exact match produces an empty result."}
+        actions:
+          filter: {label: "Filter", description: "Applies the combined criteria to the immutable ledger.", result: "Only matching movements are read; no posting is changed."}
+        image: {src: "/assets/images/handbook/warehouse/movements.svg", alt: "Movement history with stock delta, reason, user and resulting quantity"}
+      stock_traceability:
+        template: warehouse/traceability.html.twig
+        title: Batch, serial-number and expiry traceability
+        purpose: Traceability identifies critical expiry stock and follows batches or serial numbers through all ledger movements.
+        navigation: Warehouse & stock → Traceability
+        permissions: ["inventory.traceability.read"]
+        overview:
+        - The expiry table marks expired and time-critical batches by remaining days; serial numbers show current bin, state and update.
+        - Clicking a batch or serial number sets dimension and value in the URL and opens the chronological history with quantity change and resulting stock.
+        actions:
+          trace_batch: {label: "Trace batch", description: "Opens every ledger event for the selected batch number.", result: "Receipts, movements and issues are shown chronologically."}
+          trace_serial: {label: "Trace serial number", description: "Opens the unit-specific history of the selected serial number.", result: "Current and historical location, state and posting reason become visible."}
+        image: {src: "/assets/images/handbook/warehouse/traceability.svg", alt: "Traceability with expiry risks, batches, serial numbers and movement history"}
+      special_stock_overview:
+        template: warehouse/special_stock.html.twig
+        title: Special stock and classifications
+        purpose: The overview manages special-stock classifications and shows their assignment to concrete stock dimensions and owners.
+        navigation: Warehouse & stock → Special stock
+        permissions: ["inventory.special_stock.read; inventory.special_stock.write for classifications and assignment."]
+        overview:
+        - Classifications have code, name, classification kind, allocatability and active state. Only active types should be used for new assignments.
+        - The stock table shows dimension, quantity, classification and owner. Classify opens a separate form for exactly the selected stock key.
+        actions:
+          create_type: {label: "Create classification", description: "Opens the shared configuration form for a new special-stock type.", result: "Creation occurs only after saving."}
+          edit_type: {label: "Edit classification", description: "Opens code, name, kind, allocatability and active state.", result: "Existing classifications remain referenced."}
+          classify: {label: "Classify stock", description: "Opens the selected product, bin and stock key for assignment.", result: "The concrete dimension can be reclassified."}
+        image: {src: "/assets/images/handbook/warehouse/special-stock.svg", alt: "Special-stock classifications and classified stock dimensions"}
+      special_stock_classify:
+        template: warehouse/special_stock_classify.html.twig
+        title: Classify stock
+        purpose: The form assigns a special-stock classification, optional owner and audit reason to a uniquely identified stock dimension.
+        navigation: Warehouse & stock → Special stock → Classify
+        permissions: ["inventory.special_stock.write"]
+        overview:
+        - Product, bin and stock key are taken from the selected table row and cannot be freely changed.
+        fields:
+          product_id: {label: "Product ID", required: true, format: "Hidden UUID of the selected product", example: "018f2f5a-73ad-7c42-9d84-2dcb65bcb410", help: "Automatically taken from the stock row.", effect: "Binds classification to the product.", errors: "Manipulated or unknown IDs are rejected."}
+          location_id: {label: "Bin ID", required: true, format: "Hidden UUID of the selected bin", example: "018f2f5a-73ad-7c42-9d84-2dcb65bcb411", help: "Automatically taken from the stock row.", effect: "Binds classification to the bin.", errors: "An unknown or cross-tenant bin is rejected."}
+          stock_key: {label: "Stock key", required: true, format: "Hidden key of the complete stock dimension", example: "available|LOT-42||2027-12-31", help: "Do not change manually; it contains state and optional batch, serial number and expiry.", effect: "Ensures exactly the displayed dimension is classified.", errors: "A key no longer present causes a conflict."}
+          special_stock_type_id: {label: "Special-stock classification", required: true, format: "Selection of a configured type", example: "CUSTOMER_OWNED", help: "Verify classification kind and allocatability before selection.", effect: "Determines classification and availability for downstream processes.", errors: "Unknown or inactive types must not be newly assigned."}
+          owner_reference: {label: "Owner", required: false, format: "Customer, supplier or partner reference", example: "CUSTOMER-DE-1000", help: "For ownership classifications, identify the actual third-party owner unambiguously.", effect: "Is retained on the stock dimension and downstream movements.", errors: "A missing owner makes ownership stock functionally incomplete."}
+          reason: {label: "Reason", required: true, format: "Traceable audit text", example: "Customer-supplied stock for order SO-0815", help: "Record trigger and document reference concretely.", effect: "Is logged auditably with reclassification.", errors: "An empty reason prevents saving."}
+        actions:
+          save: {label: "Save classification", description: "Validates dimension, classification, owner and reason and classifies atomically.", result: "The special-stock overview shows the new assignment."}
+          cancel: {label: "Cancel", description: "Discards the unsaved change.", result: "Stock classification remains unchanged."}
+        image: {src: "/assets/images/handbook/warehouse/special-stock-classify.svg", alt: "Special-stock classification form with type, owner and reason"}
+      selection_rules:
+        template: warehouse/selection_rules.html.twig
+        title: Stock-selection rules and execution log
+        purpose: The overview prioritises FIFO, LIFO and FEFO rules and records every automatic stock selection.
+        navigation: Warehouse & stock → Selection rules
+        permissions: ["inventory.selection_rule.read; inventory.selection_rule.write for creation and editing."]
+        overview:
+        - Rules show priority, strategy, optional warehouse and product and active state. Specific rules can override global rules through priority.
+        - The execution log shows rule, strategy, product, reservation, requested and allocated quantity, candidate count and executing user.
+        actions:
+          create: {label: "Create rule", description: "Opens the configuration form for strategy, priority and scope.", result: "The rule becomes active only after successful saving."}
+          edit: {label: "Edit", description: "Opens the selected rule with its current scope.", result: "Changes apply to subsequent automatic selections."}
+        image: {src: "/assets/images/handbook/warehouse/selection-rules.svg", alt: "Selection rules with priority, strategy, scope and execution log"}
+      inventory_configuration:
+        template: warehouse/configuration_form.html.twig
+        title: Configure warehouse rules and classifications
+        purpose: The shared form creates and edits selection rules, special-stock classifications and block reasons depending on the calling area.
+        navigation: Warehouse & stock → Selection rules, special stock or stock blocks → Create/Edit
+        permissions: ["inventory.selection_rule.write, inventory.special_stock.write or inventory.stock_block.write depending on configuration type."]
+        overview:
+        - Only fields belonging to the selected type are displayed. Code and name are shared by all three configurations.
+        fields:
+          code: {label: "Code", required: true, format: "Code unique within its configuration area", example: "FEFO-WH1", help: "Use stable, descriptive codes and avoid changing their business meaning after creation.", effect: "Identifies rule, special-stock type or block reason.", errors: "Empty or duplicate codes are rejected.", usages: ["Selection rule, special-stock classification and block reason"]}
+          name: {label: "Name", required: true, format: "Understandable name", example: "FEFO central warehouse", help: "Name purpose and scope clearly for operators.", effect: "Appears in overviews and selection lists.", errors: "An empty name prevents saving.", usages: ["Selection rule, special-stock classification and block reason"]}
+          strategy: {label: "Strategy", required: true, format: "fifo, lifo or fefo", example: "fefo", help: "FIFO takes oldest receipt, LIFO newest and FEFO earliest usable expiry.", effect: "Determines ordering of suitable stock candidates.", errors: "FEFO requires maintained expiry data for relevant products."}
+          priority: {label: "Priority", required: true, format: "Positive integer", example: "100", help: "Use an agreed scheme to order specific before general rules.", effect: "Determines the order of matching active selection rules.", errors: "Zero, negative or contradictory priorities are rejected or cause unexpected selection."}
+          warehouse_id: {label: "Warehouse", required: false, format: "Selection of a warehouse or all warehouses", example: "WH1", help: "Leave empty when the rule should apply tenant-wide.", effect: "Limits the selection rule spatially.", errors: "Unknown or cross-tenant warehouses are rejected."}
+          product_id: {label: "Product", required: false, format: "Selection of a product or all products", example: "SKU-4711", help: "Set only when strategy differs for this product.", effect: "Limits the selection rule to this product.", errors: "Unknown or cross-tenant products are rejected."}
+          enabled: {label: "Rule active", required: false, format: "Checkbox", example: "enabled", help: "Disable when the rule should temporarily not be evaluated.", effect: "Only active rules participate in automatic selection.", errors: "Without a matching active rule, rule-based allocation is unavailable."}
+          classification_kind: {label: "Classification kind", required: true, format: "owner, status or special", example: "owner", help: "Choose owner for third-party stock, status for business quality and special for other purposes.", effect: "Describes the meaning of the special-stock classification.", errors: "Unsupported values are rejected."}
+          allocatable: {label: "Allocatable", required: false, format: "Checkbox", example: "disabled", help: "Enable only when this special stock may be regularly assigned to customer orders.", effect: "Controls inclusion in reservation and allocation.", errors: "Incorrect enabling can release third-party or inspection stock for picking."}
+          active: {label: "Active", required: false, format: "Checkbox", example: "enabled", help: "When editing, disable if the classification or block reason must no longer be used for new operations.", effect: "Disabled entries remain historical but are unavailable for new operations.", errors: "Existing references are not deleted.", usages: ["Special-stock classification while editing and block reason"]}
+          description: {label: "Description", required: false, format: "Multiline free text", example: "Damage pending quality decision", help: "Explain use case and required follow-up action for the block reason.", effect: "Helps users select the correct reason.", errors: "An unclear description can lead to incorrect block reasons."}
+        actions:
+          save: {label: "Save", description: "Validates only fields of the current configuration type and creates or updates the entry.", result: "The associated overview opens with the saved entry."}
+          cancel: {label: "Cancel", description: "Returns to the functional overview without saving.", result: "Previous values remain unchanged."}
+        image: {src: "/assets/images/handbook/warehouse/configuration-form.svg", alt: "Shared configuration form for selection rule, special stock and block reason"}
     guidance:
       prerequisites:
       - Active tenant-owned site, warehouse, area, aisle, bin and product.

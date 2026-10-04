@@ -556,6 +556,146 @@ chapter:
         image:
           src: /assets/images/handbook/placeholder.svg
           alt: Grafische Belegung und Rückverfolgung – Screenshot-Platzhalter
+    views:
+      warehouse_overview:
+        template: warehouse/overview.html.twig
+        title: Lagerübersicht und Kapazität
+        purpose: Das Lagerdashboard verdichtet Bestand, Lagerplätze und Kapazitätsauslastung je Lager und Bereich.
+        navigation: Lager & Bestand → Lagerübersicht
+        permissions: ["inventory.overview.read"]
+        overview:
+        - Lagerkarten zeigen Typ, belegte und gesamte Plätze, Bestandsmenge, freie Kapazität und prozentuale Auslastung. Eine Kapazität von null wird als unbegrenzt dargestellt.
+        - Die Bereichstabelle schlüsselt dieselben Kennzahlen nach Lagerbereich auf und macht Engpässe oder noch nicht konfigurierte Strukturen sichtbar.
+        actions: {}
+        image: {src: "/assets/images/handbook/warehouse/overview.svg", alt: "Lagerübersicht mit Kapazität, Bestand und Bereichsauslastung"}
+      stock_overview:
+        template: warehouse/stock.html.twig
+        title: Echtzeitbestand
+        purpose: Die Bestandsansicht zeigt die aktuelle, mandantensichere Projektion aller Bestandsdimensionen und verfügbaren Mengen.
+        navigation: Lager & Bestand → Bestand
+        permissions: ["inventory.stock.read"]
+        overview:
+        - Jede Zeile enthält SKU, Lagerplatz und Topologie, Bestandsstatus, Sonderbestand und Eigentümer, Charge, Seriennummer, MHD, Gesamt- und verfügbare Menge sowie letzte Aktualisierung.
+        - Die verfügbare Menge kann durch Reservierungen, Sperren oder Qualitätsstatus unter der physischen Gesamtmenge liegen. Maximal 200 Zeilen werden geladen.
+        fields:
+          warehouse: {label: "Lagerfilter", required: false, format: "Auswahl eines aktiven Lagers oder alle Lager", example: "WH-HAMBURG", help: "Wählen Sie ein Lager, um die Bestandsprojektion räumlich einzugrenzen.", effect: "Lädt ausschließlich Bestände des gewählten Lagers; leer zeigt alle Lager des Mandanten.", errors: "Eine unbekannte oder mandantenfremde ID liefert keine verwertbare Auswahl."}
+        actions:
+          filter: {label: "Filtern", description: "Lädt die Bestandsprojektion für das ausgewählte Lager neu.", result: "Die Auswahl bleibt im Filter erhalten; Bestände werden nicht verändert."}
+        image: {src: "/assets/images/handbook/warehouse/stock.svg", alt: "Echtzeitbestand mit Topologie, Status, Bestandsdimensionen und Verfügbarkeit"}
+      warehouse_occupancy:
+        template: warehouse/occupancy.html.twig
+        title: Grafische Lagerplatzbelegung
+        purpose: Die grafische Belegung visualisiert Lagerplätze nach Bereich, Auslastung und kritischem Bestandszustand.
+        navigation: Lager & Bestand → Belegung
+        permissions: ["inventory.overview.read"]
+        overview:
+        - Farbcodes unterscheiden leer, belegt, Qualitätsbestand sowie gesperrt oder voll. Jede Karte zeigt Platztyp, Gang, Ebene, Fach, Menge, Kapazität und Artikelanzahl.
+        - Der Fortschrittsbalken berechnet die mengenbezogene Auslastung. Ein Klick öffnet den Echtzeitbestand des zugehörigen Lagers.
+        fields:
+          warehouse: {label: "Lager", required: true, format: "Auswahl eines vorhandenen Lagers", example: "WH-HAMBURG", help: "Wählen Sie das Lager, dessen vollständige Platzstruktur visualisiert werden soll.", effect: "Gruppiert alle Plätze des Lagers nach Bereich und berechnet Zustand und Auslastung.", errors: "Ohne vorhandenes Lager beziehungsweise ohne Plätze bleibt die Ansicht leer."}
+        actions:
+          display: {label: "Anzeigen", description: "Lädt alle Lagerplätze und Bestandskennzahlen des gewählten Lagers.", result: "Die farbcodierte Belegung wird ohne Bestandsänderung neu aufgebaut."}
+          open_stock: {label: "Lagerplatz öffnen", description: "Wechselt von einer Platzkarte in den Echtzeitbestand des Lagers.", result: "Der Bestand wird nur gelesen."}
+        image: {src: "/assets/images/handbook/warehouse/occupancy.svg", alt: "Grafische Lagerplatzbelegung mit Zustandsfarben und Kapazitätsbalken"}
+      stock_movements:
+        template: warehouse/movements.html.twig
+        title: Bewegungshistorie
+        purpose: Das unveränderliche Bestandsledger zeigt jede Mengenänderung mit Artikel, Lagerplatz, Dimension, Grund, Benutzer und resultierendem Bestand.
+        navigation: Lager & Bestand → Bewegungen
+        permissions: ["inventory.stock.movement.read"]
+        overview:
+        - Positive und negative Deltas werden mit dem danach gültigen Bestand angezeigt. Charge, Seriennummer und Status bleiben Teil der gebuchten Dimension.
+        - Die Ansicht liefert höchstens 500 Treffer; kombinieren Sie Artikel, Lagerplatz und Bewegungsart für eine gezielte Auditprüfung.
+        fields:
+          product: {label: "Artikel", required: false, format: "Auswahl einer SKU oder alle Artikel", example: "SKU-4711", help: "Für die vollständige Historie eines Artikels unabhängig vom Platz auswählen.", effect: "Beschränkt das Ledger auf den gewählten Artikel.", errors: "Unbekannte IDs liefern keine Treffer."}
+          location: {label: "Lagerplatz", required: false, format: "Auswahl eines vorhandenen Lagerplatzes", example: "WH1-PICK-01", help: "Verwenden Sie den Filter zur Prüfung aller Zu- und Abgänge eines Platzes.", effect: "Beschränkt Bewegungen auf den gewählten Platz.", errors: "Ein mandantenfremder Platz liefert keine Daten."}
+          movement_type: {label: "Bewegungsart", required: false, format: "Exakter technischer Bewegungscode", example: "inbound_receipt", help: "Geben Sie den im Ledger verwendeten Code ein, beispielsweise inbound_receipt, transfer_out oder pick.", effect: "Zeigt nur Buchungen dieser Bewegungsart.", errors: "Freitext ohne exakte Übereinstimmung führt zu einer leeren Trefferliste."}
+        actions:
+          filter: {label: "Filtern", description: "Wendet die kombinierten Kriterien auf das unveränderliche Ledger an.", result: "Es werden nur passende Bewegungen gelesen; keine Buchung wird verändert."}
+        image: {src: "/assets/images/handbook/warehouse/movements.svg", alt: "Bewegungshistorie mit Bestandsdelta, Grund, Benutzer und resultierender Menge"}
+      stock_traceability:
+        template: warehouse/traceability.html.twig
+        title: Chargen-, Seriennummern- und MHD-Rückverfolgung
+        purpose: Die Rückverfolgung identifiziert kritische MHD-Bestände und verfolgt Chargen oder Seriennummern durch sämtliche Ledgerbewegungen.
+        navigation: Lager & Bestand → Rückverfolgung
+        permissions: ["inventory.traceability.read"]
+        overview:
+        - Die MHD-Tabelle kennzeichnet abgelaufene und zeitkritische Chargen anhand der verbleibenden Tage; Seriennummern werden mit aktuellem Platz, Status und Aktualisierung gezeigt.
+        - Ein Klick auf Charge oder Seriennummer setzt Dimension und Wert in der URL und öffnet darunter die chronologische Historie mit Mengenänderung und resultierendem Bestand.
+        actions:
+          trace_batch: {label: "Charge verfolgen", description: "Öffnet alle Ledgerereignisse zur ausgewählten Chargennummer.", result: "Zugänge, Bewegungen und Abgänge werden chronologisch angezeigt."}
+          trace_serial: {label: "Seriennummer verfolgen", description: "Öffnet die stückgenaue Historie der ausgewählten Seriennummer.", result: "Aktueller und historischer Ort, Status und Buchungsgrund werden sichtbar."}
+        image: {src: "/assets/images/handbook/warehouse/traceability.svg", alt: "Rückverfolgung mit MHD-Risiken, Chargen, Seriennummern und Bewegungshistorie"}
+      special_stock_overview:
+        template: warehouse/special_stock.html.twig
+        title: Sonderbestand und Kennzeichen
+        purpose: Die Übersicht verwaltet Sonderbestandskennzeichen und zeigt ihre Zuordnung zu konkreten Bestandsdimensionen und Eigentümern.
+        navigation: Lager & Bestand → Sonderbestand
+        permissions: ["inventory.special_stock.read; inventory.special_stock.write für Kennzeichen und Klassifizierung."]
+        overview:
+        - Kennzeichen besitzen Code, Name, Klassifizierungsart, Allokierbarkeit und Aktivstatus. Nur aktive Typen sollten für neue Klassifizierungen verwendet werden.
+        - Die Bestandstabelle zeigt Dimension, Menge, Kennzeichen und Eigentümer. Klassifizieren öffnet ein separates Formular für genau den gewählten Bestandsschlüssel.
+        actions:
+          create_type: {label: "Kennzeichen anlegen", description: "Öffnet das gemeinsame Konfigurationsformular für einen neuen Sonderbestandstyp.", result: "Die Anlage erfolgt erst nach dem Speichern."}
+          edit_type: {label: "Kennzeichen bearbeiten", description: "Öffnet Code, Name, Art, Allokierbarkeit und Aktivstatus des Typs.", result: "Bestehende Klassifizierungen bleiben referenziert."}
+          classify: {label: "Bestand klassifizieren", description: "Öffnet den ausgewählten Artikel-, Platz- und Bestandsschlüssel zur Zuordnung.", result: "Die konkrete Dimension kann neu klassifiziert werden."}
+        image: {src: "/assets/images/handbook/warehouse/special-stock.svg", alt: "Sonderbestandskennzeichen und klassifizierte Bestandsdimensionen"}
+      special_stock_classify:
+        template: warehouse/special_stock_classify.html.twig
+        title: Bestand klassifizieren
+        purpose: Das Formular ordnet einer unverwechselbaren Bestandsdimension ein Sonderbestandskennzeichen, optional einen Eigentümer und einen Auditgrund zu.
+        navigation: Lager & Bestand → Sonderbestand → Klassifizieren
+        permissions: ["inventory.special_stock.write"]
+        overview:
+        - Artikel, Lagerplatz und Bestandsschlüssel werden aus der gewählten Tabellenzeile übernommen und dürfen nicht frei geändert werden.
+        fields:
+          product_id: {label: "Artikel-ID", required: true, format: "Versteckte UUID des ausgewählten Artikels", example: "018f2f5a-73ad-7c42-9d84-2dcb65bcb410", help: "Wird automatisch aus der Bestandszeile übernommen.", effect: "Bindet die Klassifizierung an den Artikel.", errors: "Manipulierte oder unbekannte IDs werden abgewiesen."}
+          location_id: {label: "Lagerplatz-ID", required: true, format: "Versteckte UUID des ausgewählten Lagerplatzes", example: "018f2f5a-73ad-7c42-9d84-2dcb65bcb411", help: "Wird automatisch aus der Bestandszeile übernommen.", effect: "Bindet die Klassifizierung an den Lagerplatz.", errors: "Ein unbekannter oder mandantenfremder Platz wird abgewiesen."}
+          stock_key: {label: "Bestandsschlüssel", required: true, format: "Versteckter Schlüssel der vollständigen Bestandsdimension", example: "available|LOT-42||2027-12-31", help: "Nicht manuell verändern; er enthält Status und optionale Charge, Seriennummer und MHD.", effect: "Stellt sicher, dass genau die angezeigte Dimension klassifiziert wird.", errors: "Ein zwischenzeitlich nicht mehr vorhandener Schlüssel führt zu einem Konflikt."}
+          special_stock_type_id: {label: "Sonderbestandskennzeichen", required: true, format: "Auswahl eines konfigurierten Typs", example: "CUSTOMER_OWNED", help: "Prüfen Sie Klassifizierungsart und Allokierbarkeit vor der Auswahl.", effect: "Bestimmt Kennzeichnung und Verfügbarkeit für Folgeprozesse.", errors: "Unbekannte oder inaktive Typen dürfen nicht neu zugeordnet werden."}
+          owner_reference: {label: "Eigentümer", required: false, format: "Kunden-, Lieferanten- oder Partnerreferenz", example: "CUSTOMER-DE-1000", help: "Bei eigentumsbezogenen Kennzeichen den tatsächlichen Fremdeigentümer eindeutig erfassen.", effect: "Wird an der Bestandsdimension und in Folgebewegungen geführt.", errors: "Fehlende Eigentümerreferenz macht eigentumsbezogene Bestände fachlich unvollständig."}
+          reason: {label: "Grund", required: true, format: "Nachvollziehbarer Audittext", example: "Kundenbeistellung laut Auftrag SO-0815", help: "Auslöser und Belegbezug konkret dokumentieren.", effect: "Wird mit der Umklassifizierung revisionssicher protokolliert.", errors: "Ein leerer Grund verhindert das Speichern."}
+        actions:
+          save: {label: "Klassifizierung speichern", description: "Validiert Dimension, Kennzeichen, Eigentümer und Grund und klassifiziert atomar.", result: "Die Sonderbestandsübersicht zeigt die neue Zuordnung."}
+          cancel: {label: "Abbrechen", description: "Verwirft die nicht gespeicherte Änderung.", result: "Die Bestandsklassifizierung bleibt unverändert."}
+        image: {src: "/assets/images/handbook/warehouse/special-stock-classify.svg", alt: "Formular zur Sonderbestandsklassifizierung mit Kennzeichen, Eigentümer und Grund"}
+      selection_rules:
+        template: warehouse/selection_rules.html.twig
+        title: Entnahmeregeln und Ausführungsprotokoll
+        purpose: Die Übersicht priorisiert FIFO-, LIFO- und FEFO-Regeln und dokumentiert jede automatische Bestandsauswahl.
+        navigation: Lager & Bestand → Entnahmeregeln
+        permissions: ["inventory.selection_rule.read; inventory.selection_rule.write für Anlage und Bearbeitung."]
+        overview:
+        - Regeln zeigen Priorität, Strategie, optionales Lager und optionalen Artikel sowie Aktivstatus. Spezifische Regeln können globale Regeln über die Priorität übersteuern.
+        - Das Ausführungsprotokoll nennt Regel, Strategie, Artikel, Reservierung, angeforderte und allokierte Menge, Kandidatenanzahl und ausführenden Benutzer.
+        actions:
+          create: {label: "Regel anlegen", description: "Öffnet das Konfigurationsformular für Strategie, Priorität und Geltungsbereich.", result: "Die Regel wird erst nach erfolgreichem Speichern aktiv."}
+          edit: {label: "Bearbeiten", description: "Öffnet die ausgewählte Regel mit ihrem aktuellen Geltungsbereich.", result: "Änderungen wirken auf nachfolgende automatische Auswahlen."}
+        image: {src: "/assets/images/handbook/warehouse/selection-rules.svg", alt: "Entnahmeregeln mit Priorität, Strategie, Geltungsbereich und Ausführungsprotokoll"}
+      inventory_configuration:
+        template: warehouse/configuration_form.html.twig
+        title: Lagerbezogene Regeln und Kennzeichen konfigurieren
+        purpose: Das gemeinsame Formular erstellt und bearbeitet Entnahmeregeln, Sonderbestandskennzeichen und Sperrgründe abhängig vom aufrufenden Bereich.
+        navigation: Lager & Bestand → Entnahmeregeln, Sonderbestand oder Bestandssperren → Anlegen/Bearbeiten
+        permissions: ["inventory.selection_rule.write, inventory.special_stock.write oder inventory.stock_block.write abhängig vom Konfigurationstyp."]
+        overview:
+        - Angezeigt werden ausschließlich die zum gewählten Typ gehörenden Felder. Code und Name werden von allen drei Konfigurationen geteilt.
+        fields:
+          code: {label: "Code", required: true, format: "Im jeweiligen Konfigurationsbereich eindeutiger Code", example: "FEFO-WH1", help: "Stabile, sprechende Codes verwenden und nach Anlage möglichst nicht fachlich umdeuten.", effect: "Identifiziert Regel, Sonderbestandstyp oder Sperrgrund.", errors: "Leere oder doppelte Codes werden abgewiesen.", usages: ["Entnahmeregel, Sonderbestandskennzeichen und Sperrgrund"]}
+          name: {label: "Name", required: true, format: "Verständliche Bezeichnung", example: "FEFO Zentrallager", help: "Zweck und Geltungsbereich für Bediener verständlich benennen.", effect: "Erscheint in Übersichten und Auswahllisten.", errors: "Ein leerer Name verhindert das Speichern.", usages: ["Entnahmeregel, Sonderbestandskennzeichen und Sperrgrund"]}
+          strategy: {label: "Strategie", required: true, format: "fifo, lifo oder fefo", example: "fefo", help: "FIFO nimmt ältesten Zugang, LIFO den neuesten und FEFO das früheste verwendbare MHD.", effect: "Bestimmt die Sortierung geeigneter Bestandskandidaten.", errors: "FEFO benötigt bei relevanten Artikeln gepflegte MHD-Daten."}
+          priority: {label: "Priorität", required: true, format: "Positive Ganzzahl", example: "100", help: "Mit einem abgestimmten Schema spezifische vor allgemeinen Regeln anordnen.", effect: "Bestimmt die Reihenfolge passender aktiver Entnahmeregeln.", errors: "Null, negative oder widersprüchliche Prioritäten werden abgewiesen beziehungsweise liefern unerwartete Auswahl."}
+          warehouse_id: {label: "Lager", required: false, format: "Auswahl eines Lagers oder alle Lager", example: "WH1", help: "Leer lassen, wenn die Regel mandantenweit gelten soll.", effect: "Beschränkt die Entnahmeregel räumlich.", errors: "Unbekannte oder mandantenfremde Lager werden abgewiesen."}
+          product_id: {label: "Artikel", required: false, format: "Auswahl eines Artikels oder alle Artikel", example: "SKU-4711", help: "Nur setzen, wenn die Strategie artikelspezifisch abweicht.", effect: "Beschränkt die Entnahmeregel auf diesen Artikel.", errors: "Unbekannte oder mandantenfremde Artikel werden abgewiesen."}
+          enabled: {label: "Regel aktiv", required: false, format: "Checkbox", example: "aktiviert", help: "Deaktivieren, wenn die Regel vorübergehend nicht ausgewertet werden soll.", effect: "Nur aktive Regeln nehmen an automatischer Auswahl teil.", errors: "Ohne passende aktive Regel ist keine regelbasierte Allokation möglich."}
+          classification_kind: {label: "Klassifizierungsart", required: true, format: "owner, status oder special", example: "owner", help: "Eigentum für Fremdbestand, Status für fachliche Qualität und Sonderart für weitere Zwecke wählen.", effect: "Beschreibt die Bedeutung des Sonderbestandskennzeichens.", errors: "Nicht unterstützte Werte werden abgewiesen."}
+          allocatable: {label: "Allokierbar", required: false, format: "Checkbox", example: "deaktiviert", help: "Nur aktivieren, wenn dieser Sonderbestand regulär Kundenaufträgen zugeteilt werden darf.", effect: "Steuert die Berücksichtigung in Reservierung und Allokation.", errors: "Falsche Aktivierung kann Fremd- oder Prüfbestand zur Entnahme freigeben."}
+          active: {label: "Aktiv", required: false, format: "Checkbox", example: "aktiviert", help: "Bei Bearbeitung deaktivieren, wenn Kennzeichen oder Sperrgrund nicht mehr neu verwendet werden soll.", effect: "Deaktivierte Einträge bleiben historisch erhalten, stehen aber nicht für neue Vorgänge bereit.", errors: "Bestehende Referenzen werden nicht gelöscht.", usages: ["Sonderbestandskennzeichen bei Bearbeitung und Sperrgrund"]}
+          description: {label: "Beschreibung", required: false, format: "Mehrzeiliger Freitext", example: "Beschädigung bis zur QS-Entscheidung", help: "Anwendungsfall und erforderliche Folgehandlung des Sperrgrunds erläutern.", effect: "Unterstützt Benutzer bei der korrekten Grundauswahl.", errors: "Eine unklare Beschreibung kann zu falschen Sperrgründen führen."}
+        actions:
+          save: {label: "Speichern", description: "Validiert ausschließlich die Felder des aktuellen Konfigurationstyps und legt den Eintrag an beziehungsweise aktualisiert ihn.", result: "Die zugehörige Übersicht öffnet sich mit dem gespeicherten Eintrag."}
+          cancel: {label: "Abbrechen", description: "Kehrt ohne Speicherung zur fachlichen Übersicht zurück.", result: "Vorherige Werte bleiben unverändert."}
+        image: {src: "/assets/images/handbook/warehouse/configuration-form.svg", alt: "Gemeinsames Konfigurationsformular für Entnahmeregel, Sonderbestand und Sperrgrund"}
     guidance:
       prerequisites:
       - Standort, Lager, Bereich, Gang, Platz und Artikel sind aktiv und mandantenzugehörig.

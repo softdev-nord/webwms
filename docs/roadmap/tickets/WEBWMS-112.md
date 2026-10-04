@@ -411,6 +411,20 @@ Prüfsumme. Der sprachparametrisierte Test gleicht sechs Templates, 14 Formulare
 Bildreferenzen ab. Damit ist der gesamte Warenausgang dokumentiert und 33 von
 101 produktiven Views sind migriert.
 
-Offen bleibt die Übertragung dieses Standards auf die übrigen 68 produktiven
+Der elfte größere Slice dokumentiert neun zusammengehörige Lager- und
+Bestandsviews: Lagerdashboard, Echtzeitbestand, grafische Platzbelegung,
+Bewegungsledger, Chargen-/Seriennummern-/MHD-Rückverfolgung, Sonderbestände mit
+separater Klassifizierung sowie Entnahmeregeln und deren gemeinsames
+Konfigurationsformular. Neben den dargestellten Kennzahlen werden Filtergrenzen,
+Bestandsverfügbarkeit, Farblogik, revisionssichere Bewegungen, Eigentümerbezug,
+FIFO/LIFO/FEFO, Prioritäten und Geltungsbereiche ausführlich erklärt.
+
+Das gemeinsame Formular berücksichtigt zusätzlich bereits die im nächsten
+Bestandssperren-Slice verwendeten Sperrgründe und erläutert alle elf möglichen
+Geschäftsfelder typabhängig. Der sprachparametrisierte Regressionstest gleicht
+neun Templates, fünf gerenderte Formulare, 22 dokumentierte Feldvorkommen und
+eindeutige Bildreferenzen ab. Damit sind 42 von 101 produktiven Views migriert.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 59 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.
