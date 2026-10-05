@@ -6,6 +6,7 @@ namespace WebWMS\Inventory\Application;
 
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
+use WebWMS\Inventory\Domain\ContactAddress;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\OutboundOrder;
@@ -35,6 +36,7 @@ readonly class CreateOutboundOrderHandler
             new TenantId($command->tenantId),
             $command->orderNumber,
             $command->customerReference,
+            new ContactAddress(...$command->recipientAddress),
             $items,
             new UserId($command->createdBy),
             $command->createdAt,

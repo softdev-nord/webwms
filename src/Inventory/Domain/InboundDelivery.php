@@ -19,6 +19,7 @@ readonly class InboundDelivery
         private string $code,
         private string $deliveryNote,
         private DateTimeImmutable $expectedAt,
+        private ContactAddress $senderAddress,
         private array $lines,
         private UserId $createdBy,
         private DateTimeImmutable $createdAt
@@ -62,6 +63,11 @@ readonly class InboundDelivery
     public function expectedAt(): DateTimeImmutable
     {
         return $this->expectedAt;
+    }
+
+    public function senderAddress(): ContactAddress
+    {
+        return $this->senderAddress;
     }
 
     /** @return list<InboundDeliveryLine> */

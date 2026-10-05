@@ -21,6 +21,15 @@
 				</div>
 			</div>
 
+			<h2 class="h5">{{ 'address.recipient'|trans }}</h2>
+			<div class="row g-3 mb-4">
+				<div class="col-md-6"><label class="form-label" for="recipient_name">{{ 'address.name'|trans }}</label><input class="form-control" id="recipient_name" name="recipient_name" required></div>
+				<div class="col-md-6"><label class="form-label" for="recipient_street">{{ 'address.street'|trans }}</label><input class="form-control" id="recipient_street" name="recipient_street" required></div>
+				<div class="col-md-3"><label class="form-label" for="recipient_postal_code">{{ 'address.postal_code'|trans }}</label><input class="form-control" id="recipient_postal_code" name="recipient_postal_code" required></div>
+				<div class="col-md-6"><label class="form-label" for="recipient_city">{{ 'address.city'|trans }}</label><input class="form-control" id="recipient_city" name="recipient_city" required></div>
+				<div class="col-md-3"><label class="form-label" for="recipient_country_code">{{ 'address.country_code'|trans }}</label><input class="form-control text-uppercase" id="recipient_country_code" name="recipient_country_code" minlength="2" maxlength="2" value="DE" required></div>
+			</div>
+
 			<h2 class="h5">{{ 'inbound.control.items'|trans }}</h2>
 
 			<div id="order-items">

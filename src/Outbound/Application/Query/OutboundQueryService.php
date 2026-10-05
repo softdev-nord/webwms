@@ -17,7 +17,7 @@ readonly class OutboundQueryService
     public function outboundOrder(string $tenantId, string $orderId): ?array
     {
         $order = $this->connection->fetchAssociative(
-            'SELECT o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, o.cancelled_at, o.cancellation_reason, '
+            'SELECT o.id, o.order_number, o.customer_reference, o.recipient_name, o.recipient_street, o.recipient_postal_code, o.recipient_city, o.recipient_country_code, o.status, o.created_at, o.released_at, o.cancelled_at, o.cancellation_reason, '
             . 'l.id pick_list_id, l.code pick_list_code, l.status pick_list_status '
             . 'FROM wms_outbound_order o LEFT JOIN wms_pick_list l ON l.outbound_order_id = o.id '
             . 'WHERE o.id = :orderId AND o.tenant_id = :tenantId',
@@ -42,13 +42,13 @@ readonly class OutboundQueryService
     public function outboundOrders(string $tenantId): array
     {
         return $this->connection->fetchAllAssociative(
-            'SELECT o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, o.cancelled_at, o.cancellation_reason, '
+            'SELECT o.id, o.order_number, o.customer_reference, o.recipient_name, o.recipient_street, o.recipient_postal_code, o.recipient_city, o.recipient_country_code, o.status, o.created_at, o.released_at, o.cancelled_at, o.cancellation_reason, '
             . 'COUNT(i.id) item_count, COALESCE(SUM(i.requested_quantity), 0) requested_quantity, '
             . 'l.id pick_list_id, l.code pick_list_code, l.status pick_list_status '
             . 'FROM wms_outbound_order o LEFT JOIN wms_outbound_order_item i ON i.outbound_order_id = o.id '
             . 'LEFT JOIN wms_pick_list l ON l.outbound_order_id = o.id '
             . 'WHERE o.tenant_id = :tenantId '
-            . 'GROUP BY o.id, o.order_number, o.customer_reference, o.status, o.created_at, o.released_at, o.cancelled_at, o.cancellation_reason, '
+            . 'GROUP BY o.id, o.order_number, o.customer_reference, o.recipient_name, o.recipient_street, o.recipient_postal_code, o.recipient_city, o.recipient_country_code, o.status, o.created_at, o.released_at, o.cancelled_at, o.cancellation_reason, '
             . 'l.id, l.code, l.status ORDER BY o.created_at DESC, o.id DESC',
             ['tenantId' => $tenantId],
         );

@@ -1005,7 +1005,7 @@ chapter:
         navigation: Inbound → Planned receipts
         permissions: ["inbound.planned.read plus receive, inspect, resolve and putaway for their respective state actions."]
         overview:
-        - Columns show ASN and order, product, advised or received quantity, process state, destination and the currently permitted action.
+        - Columns show ASN and order, sender address, product, advised or received quantity, process state, destination and the currently permitted action. The address stored with the ASN remains available as a document snapshot.
         - States distinguish advised, QA open, QA completed, open discrepancy, rejected, open putaway and put away. Each row offers only the next valid step.
         fields:
           actual_quantity: {label: "Actual quantity", required: true, format: "Positive integer", example: "'18'", help: "Enter the counted quantity rather than blindly accepting the ASN value.", effect: "A difference from expected quantity opens a discrepancy.", errors: "Zero or negative values are rejected; excess quantities need an explanation."}
@@ -1046,6 +1046,11 @@ chapter:
           purchase_order_item_id: {label: "Open purchase-order line", required: true, format: "Selection of a line not fully advised", example: "PO-2026-10042 / SKU-4711", help: "The selection shows order, product and remaining quantity.", effect: "Binds the ASN to product and quantity progress.", errors: "Closed, unknown or fully advised lines are rejected."}
           purchase_order_id: {label: "Purchase-order ID", required: true, format: "Automatically populated hidden UUID of the selected line", example: "018f2f5a-73ad-7c42-9d84-2dcb65bcb410", help: "Updated when the line changes and never maintained manually.", effect: "Secures consistent assignment of ASN and order header.", errors: "A missing or mismatched value prevents acceptance."}
           expected_at: {label: "Expected time", required: true, format: "Local date and time", example: "'2026-10-05T08:30'", help: "Use the planned time from ASN or supplier confirmation.", effect: "Controls worklist and operational planning.", errors: "Invalid dates are rejected."}
+          sender_name: {label: "Sender/company", required: true, format: "Full supplier or sender name", example: "Sample Supplier Ltd", help: "Enter the actual shipping company so goods receiving can identify the delivery.", effect: "Stored as an immutable address snapshot on the ASN and shown in the worklist.", errors: "An empty name or one longer than 160 characters is rejected."}
+          sender_street: {label: "Street and number", required: true, format: "Complete sender street address", example: "Supply Road 12", help: "Copy the address from the ASN, delivery note or supplier confirmation.", effect: "Identifies the origin of the announced goods.", errors: "An empty street or one longer than 255 characters is rejected."}
+          sender_postal_code: {label: "Postal code", required: true, format: "Postal code in the country's customary format", example: "20095", help: "Enter the postal code without the city.", effect: "Forms part of the documented origin address.", errors: "An empty postal code or one longer than 32 characters is rejected."}
+          sender_city: {label: "City", required: true, format: "Full city name", example: "Hamburg", help: "Use the city of the shipping address.", effect: "Forms part of the documented origin address.", errors: "An empty city or one longer than 120 characters is rejected."}
+          sender_country_code: {label: "Country code", required: true, format: "ISO 3166-1 alpha-2, exactly two letters", example: "DE", help: "Use the two-letter country code of the shipping address.", effect: "Normalized and stored in uppercase.", errors: "Values other than exactly two letters are rejected."}
           name: {label: "Checklist name", required: true, format: "Understandable inspection purpose", example: "Standard packaging inspection", help: "Must explain scope clearly to inspectors.", effect: "Appears in active checklist overview.", errors: "An empty name prevents activation."}
           questions: {label: "Inspection questions", required: true, format: "One concrete question per line", example: "'Is packaging undamaged?\\nDoes quantity match?'", help: "Phrase questions so they can be answered and evidenced unambiguously.", effect: "Each line becomes one QA checkpoint.", errors: "Empty checklists or only blank lines are rejected."}
           aggregate_type: {label: "Process type", required: true, format: "inbound_receipt; unplanned_receipt; return_receipt or production_receipt", example: "inbound_receipt", help: "Selects the referenced process type for an attachment or label.", effect: "Controls resolution, permission and storage or print data.", errors: "Values not offered by the form are rejected.", usages: ["Attachment and label"]}
@@ -1065,7 +1070,7 @@ chapter:
           note: {label: "Inspection note", required: true, format: "Traceable description of condition and decision", example: "Packaging damaged; product intact; quarantined for clarification", help: "Record condition, evidence and follow-up action.", effect: "Audited with the return inspection.", errors: "An empty note prevents completion."}
         actions:
           purchase_order: {label: "Create purchase order", description: "Creates an order header and first product line.", result: "The open line is available for ASN quantities."}
-          delivery: {label: "Accept ASN", description: "Links delivery note, quantity and expected time to the selected order line.", result: "The line appears in planned operational receipt."}
+          delivery: {label: "Accept ASN", description: "Links delivery note, sender address, quantity and expected time to the selected order line.", result: "The line appears with documented origin in planned operational receipt."}
           checklist: {label: "Activate checklist", description: "Creates one active checkpoint from each text line.", result: "New QA inspections can use the checklist."}
           attachment: {label: "Store securely", description: "Validates file, category and process reference and stores evidence.", result: "The file appears in process evidence and can be downloaded with permission."}
           label: {label: "Create print job", description: "Creates the requested number of labels for process and type.", result: "The job is passed to the configured print route."}
@@ -1188,14 +1193,14 @@ chapter:
       outbound_orders:
         template: outbound/order/orders.html.twig
         title: Outbound orders
-        purpose: The overview shows customer orders with reference and state and links to creation or process details.
+        purpose: The overview shows customer orders with reference, recipient address and state and links to creation or process details.
         navigation: Outbound → Orders
         permissions: ["outbound.order.read; outbound.order.write for creation."]
         overview:
-        - The table shows order number, customer reference and current state. Open leads to release, reservation, allocation and handover to picking.
+        - The table shows order number, customer reference, recipient address and current state. Open leads to release, reservation, allocation and handover to picking.
         - The empty state means that no order exists in the active tenant; this view currently has no search, filters or pagination.
         actions:
-          create: {label: "Create order", description: "Opens a separate form for references, product and quantity.", result: "After saving the order appears in created or imported state."}
+          create: {label: "Create order", description: "Opens a separate form for references, delivery address, product and quantity.", result: "After saving the order appears in created or imported state."}
           open: {label: "Open", description: "Opens lines, reservations and the next permitted process actions.", result: "Navigation itself does not change data."}
         image: {src: "/assets/images/handbook/outbound/orders-overview.svg", alt: "Outbound order overview with state and open action"}
       outbound_order_create:
@@ -1204,14 +1209,19 @@ chapter:
         purpose: The form creates a customer order with its first product line as the basis for reservation and picking.
         navigation: Outbound → Orders → Create order
         permissions: ["outbound.order.write; the product must exist in the active tenant."]
-        overview: ["Verify external references and quantity before saving. Further processing starts only after separate order release."]
+        overview: ["Verify external references, the complete recipient address and quantity before saving. The address is retained as a document snapshot even if master data changes later. Further processing starts only after separate order release."]
         fields:
           order_number: {label: "Order number", required: true, format: "Document code unique in the tenant", example: "SO-2026-0815", help: "Use the external ERP number or a controlled internal number.", effect: "Identifies the order in every downstream process.", errors: "Empty or previously used numbers are rejected."}
           customer_reference: {label: "Customer reference", required: true, format: "Unique customer or recipient reference", example: "CUSTOMER-DE-1000", help: "Must permit functional assignment for shipping and enquiries.", effect: "Appears in overview and order details.", errors: "An empty reference prevents creation."}
+          recipient_name: {label: "Recipient/company", required: true, format: "Full goods-recipient name", example: "Example Trading Ltd", help: "Enter the company or person to whom the warehouse must ship.", effect: "Stored as an immutable delivery-address snapshot on the order.", errors: "An empty name or one longer than 160 characters is rejected."}
+          recipient_street: {label: "Street and number", required: true, format: "Complete delivery street address", example: "Customer Street 24", help: "Use the actual delivery address rather than automatically using a billing address.", effect: "Defines the order-specific shipping address.", errors: "An empty street or one longer than 255 characters is rejected."}
+          recipient_postal_code: {label: "Postal code", required: true, format: "Postal code in the country's customary format", example: "50667", help: "Enter the postal code without the city.", effect: "Forms part of the documented delivery address.", errors: "An empty postal code or one longer than 32 characters is rejected."}
+          recipient_city: {label: "City", required: true, format: "Full city name", example: "Cologne", help: "Use the city of the actual delivery address.", effect: "Forms part of the documented delivery address.", errors: "An empty city or one longer than 120 characters is rejected."}
+          recipient_country_code: {label: "Country code", required: true, format: "ISO 3166-1 alpha-2, exactly two letters", example: "DE", help: "Use the two-letter country code of the delivery destination.", effect: "Normalized and stored in uppercase.", errors: "Values other than exactly two letters are rejected."}
           product_id: {label: "Product", required: true, format: "Selection of an existing product", example: "SKU-4711", help: "Verify SKU and description against customer demand.", effect: "Creates the first order line and later stock reservation.", errors: "Unknown or cross-tenant products are rejected."}
           quantity: {label: "Quantity", required: true, format: "Positive integer in the product base unit", example: "'10'", help: "Enter the quantity actually requested.", effect: "Determines reservation, allocation and pick demand.", errors: "Zero, negative or non-numeric values are invalid."}
         actions:
-          save: {label: "Create order", description: "Validates references, product and quantity and atomically creates order and line.", result: "Order details open for review and release."}
+          save: {label: "Create order", description: "Validates references, recipient address, product and quantity and atomically creates order and line.", result: "Order details open with the stored delivery address for review and release."}
           cancel: {label: "Cancel", description: "Discards unsaved input.", result: "No order is created."}
         image: {src: "/assets/images/handbook/outbound/order-create.svg", alt: "Form for creating an outbound order"}
       outbound_order_detail:
@@ -1221,7 +1231,7 @@ chapter:
         navigation: Outbound → Orders → Open
         permissions: ["outbound.order.read/release; inventory.allocation.write; inventory.selection.execute; fulfillment.pick.write depending on action."]
         overview:
-        - Each line shows requested, reserved, allocated and fulfilled quantities plus available stock dimensions. Order state limits offered actions.
+        - The order header shows the recipient and delivery address stored at creation time. Each line shows requested, reserved, allocated and fulfilled quantities plus available stock dimensions. Order state limits offered actions.
         - Release reserves demand. Fully allocated released orders can create exactly one pick list; an existing pick list is linked directly.
         fields:
           rule_id: {label: "Selection rule", required: true, format: "Active rule matching product and warehouse", example: "FIFO-WH1", help: "Verify strategy, warehouse and priority before execution.", effect: "Automatically allocates all remaining quantity using this rule.", errors: "No matching rule or insufficient stock prevents full allocation."}

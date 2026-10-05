@@ -1,3 +1,12 @@
+address:
+    city: 'Ort'
+    country_code: 'Ländercode'
+    name: 'Firma / Name'
+    not_recorded: 'Keine Adresse erfasst'
+    postal_code: 'Postleitzahl'
+    recipient: 'Lieferadresse / Empfänger'
+    sender: 'Absender / Lieferant'
+    street: 'Straße und Hausnummer'
 administration:
     api_client_credential:
         go_to_administration: 'Zur Administration'

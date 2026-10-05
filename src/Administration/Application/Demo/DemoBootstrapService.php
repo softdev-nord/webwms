@@ -12,6 +12,7 @@ use WebWMS\Administration\Domain\Access\PasswordHasher;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Site\SiteId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
+use WebWMS\Inventory\Domain\ContactAddress;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\InventoryRepository;
 use WebWMS\Inventory\Domain\OutboundOrder;
@@ -342,6 +343,7 @@ readonly class DemoBootstrapService
                 $tenantId,
                 'DEMO-ORDER-001',
                 'DEMO-CUSTOMER-001',
+                new ContactAddress('Demo Empfänger GmbH', 'Musterstraße 10', '20095', 'Hamburg', 'DE'),
                 [new OutboundOrderItem(new InventoryId(self::ORDER_ITEM_ID), new InventoryId(self::PRODUCT_A_ID), 2)],
                 new UserId(self::USER_ID),
                 $now,
@@ -406,6 +408,8 @@ readonly class DemoBootstrapService
                 'id' => self::INBOUND_DELIVERY_ID, 'tenant_id' => self::TENANT_ID,
                 'purchase_order_id' => self::PURCHASE_ORDER_ID, 'code' => 'DEMO-IN-001',
                 'delivery_note' => 'LS-DEMO-001', 'expected_at' => $this->date($now), 'status' => 'advised',
+                'sender_name' => 'Demo Lieferant GmbH', 'sender_street' => 'Industriestraße 1',
+                'sender_postal_code' => '28195', 'sender_city' => 'Bremen', 'sender_country_code' => 'DE',
                 'created_by' => self::USER_ID, 'created_at' => $this->date($now), 'updated_at' => $this->date($now),
             ]);
             $this->connection->insert('wms_inbound_delivery_line', [

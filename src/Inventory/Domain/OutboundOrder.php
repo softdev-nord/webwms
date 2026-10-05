@@ -17,6 +17,7 @@ readonly class OutboundOrder
         private TenantId $tenantId,
         private string $orderNumber,
         private string $customerReference,
+        private ContactAddress $recipientAddress,
         private array $items,
         private UserId $createdBy,
         private DateTimeImmutable $createdAt
@@ -66,6 +67,11 @@ readonly class OutboundOrder
     public function customerReference(): string
     {
         return trim($this->customerReference);
+    }
+
+    public function recipientAddress(): ContactAddress
+    {
+        return $this->recipientAddress;
     }
 
     /** @return list<OutboundOrderItem> */

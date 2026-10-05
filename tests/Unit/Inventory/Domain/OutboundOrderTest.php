@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use WebWMS\Administration\Domain\Access\UserId;
 use WebWMS\Administration\Domain\Tenant\TenantId;
+use WebWMS\Inventory\Domain\ContactAddress;
 use WebWMS\Inventory\Domain\InventoryId;
 use WebWMS\Inventory\Domain\OutboundOrder;
 use WebWMS\Inventory\Domain\OutboundOrderItem;
@@ -23,6 +24,8 @@ class OutboundOrderTest extends TestCase
         ]);
 
         self::assertSame('ORDER-100', $order->orderNumber());
+        self::assertSame('Customer GmbH', $order->recipientAddress()->name());
+        self::assertSame('DE', $order->recipientAddress()->countryCode());
         self::assertCount(2, $order->items());
     }
 
@@ -44,6 +47,7 @@ class OutboundOrderTest extends TestCase
             new TenantId('018f6b7f-75d2-7c4e-8c33-31f91b1cf2b8'),
             'ORDER-100',
             'CUSTOMER-1',
+            new ContactAddress('Customer GmbH', 'Main Street 1', '20095', 'Hamburg', 'DE'),
             $items,
             new UserId('018f6b7f-75d2-7c4e-8c33-31f91b1cf302'),
             new DateTimeImmutable('2026-09-18 19:00:00'),

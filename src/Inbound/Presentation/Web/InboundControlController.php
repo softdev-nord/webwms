@@ -81,7 +81,7 @@ class InboundControlController extends AbstractController
     {
         $this->csrf($request, 'v3_inbound_delivery');
         $user = $this->user();
-        ($this->createDelivery)(new CreateInboundDeliveryCommand(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'purchase_order_id'), $this->required($request, 'code'), $this->required($request, 'delivery_note'), new DateTimeImmutable($this->required($request, 'expected_at')), [['id' => Uuid::v7()->toRfc4122(), 'purchaseOrderItemId' => $this->required($request, 'purchase_order_item_id'), 'quantity' => $request->request->getInt('quantity')]], $user->actorId(), new DateTimeImmutable()));
+        ($this->createDelivery)(new CreateInboundDeliveryCommand(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'purchase_order_id'), $this->required($request, 'code'), $this->required($request, 'delivery_note'), new DateTimeImmutable($this->required($request, 'expected_at')), $this->address($request, 'sender'), [['id' => Uuid::v7()->toRfc4122(), 'purchaseOrderItemId' => $this->required($request, 'purchase_order_item_id'), 'quantity' => $request->request->getInt('quantity')]], $user->actorId(), new DateTimeImmutable()));
         $this->addFlash('success', 'inbound.control.flash.shipping_notification_has_been_assigned_to_order');
 
         return $this->back();
@@ -225,6 +225,18 @@ class InboundControlController extends AbstractController
         $value = trim((string) $request->request->get($field));
 
         return $value === '' ? null : $value;
+    }
+
+    /** @return array{name: string, street: string, postalCode: string, city: string, countryCode: string} */
+    private function address(Request $request, string $prefix): array
+    {
+        return [
+            'name' => $this->required($request, $prefix . '_name'),
+            'street' => $this->required($request, $prefix . '_street'),
+            'postalCode' => $this->required($request, $prefix . '_postal_code'),
+            'city' => $this->required($request, $prefix . '_city'),
+            'countryCode' => $this->required($request, $prefix . '_country_code'),
+        ];
     }
 
     private function csrf(Request $request, string $id): void

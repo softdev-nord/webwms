@@ -63,6 +63,7 @@ readonly class InboundQueryService
     {
         return $this->connection->fetchAllAssociative(
             'SELECT d.id delivery_id, d.code delivery_code, d.delivery_note, d.expected_at, d.status delivery_status, '
+            . 'd.sender_name, d.sender_street, d.sender_postal_code, d.sender_city, d.sender_country_code, '
             . 'o.code order_number, l.id line_id, l.advised_quantity, l.status line_status, p.sku, p.name product_name, '
             . 'r.id receipt_id, r.quantity receipt_quantity, r.status receipt_status, r.quality_decision, '
             . 'r.stock_status, r.location_id, source.code source_location_code, r.received_at, r.inspected_at, '

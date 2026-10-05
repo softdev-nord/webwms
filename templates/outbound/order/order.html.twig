@@ -9,6 +9,7 @@
 		</div>
 		<span class="badge bg-secondary fs-6">{{ order.status }}</span>
 	</div>
+	<div class="card border-0 shadow-sm mb-4"><div class="card-body"><h2 class="h5">{{ 'address.recipient'|trans }}</h2>{% if order.recipient_name %}<address class="mb-0"><strong>{{ order.recipient_name }}</strong><br>{{ order.recipient_street }}<br>{{ order.recipient_postal_code }} {{ order.recipient_city }}<br>{{ order.recipient_country_code }}</address>{% else %}<span class="text-muted">{{ 'address.not_recorded'|trans }}</span>{% endif %}</div></div>
 
 	{% if order.status in ['created', 'imported'] and is_granted('outbound.order.release') %}
 		<form method="post" action="{{ path('v3_outbound_order_release', {orderId: order.id}) }}" class="mb-4">

@@ -287,6 +287,9 @@ readonly class ExtendedDemoDatasetService
         $this->insert('wms_outbound_order', $orderId, [
             'tenant_id' => DemoBootstrapService::TENANT_ID, 'order_number' => 'SO-' . $suffix,
             'customer_reference' => 'CUSTOMER-' . $suffix, 'status' => $completed ? 'completed' : 'released',
+            'recipient_name' => 'Kunde ' . $suffix, 'recipient_street' => 'Musterstraße ' . $number,
+            'recipient_postal_code' => str_pad((string) (20000 + $number), 5, '0', STR_PAD_LEFT),
+            'recipient_city' => 'Hamburg', 'recipient_country_code' => 'DE',
             'created_by' => DemoBootstrapService::USER_ID, 'created_at' => $this->date($createdAt),
             'released_by' => DemoBootstrapService::USER_ID, 'released_at' => $this->date($createdAt),
         ]);

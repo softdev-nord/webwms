@@ -68,7 +68,7 @@ class InboundControlApiController extends AbstractController
         $payload = $request->toArray();
         $user = $this->user();
         $id = Uuid::v7()->toRfc4122();
-        ($this->createDelivery)(new CreateInboundDeliveryCommand($id, $user->tenantId(), $this->string($payload, 'purchaseOrderId'), $this->string($payload, 'code'), $this->string($payload, 'deliveryNote'), new DateTimeImmutable($this->string($payload, 'expectedAt')), [['id' => Uuid::v7()->toRfc4122(), 'purchaseOrderItemId' => $this->string($payload, 'purchaseOrderItemId'), 'quantity' => $this->integer($payload, 'quantity')]], $user->actorId(), new DateTimeImmutable()));
+        ($this->createDelivery)(new CreateInboundDeliveryCommand($id, $user->tenantId(), $this->string($payload, 'purchaseOrderId'), $this->string($payload, 'code'), $this->string($payload, 'deliveryNote'), new DateTimeImmutable($this->string($payload, 'expectedAt')), $this->address($payload, 'senderAddress'), [['id' => Uuid::v7()->toRfc4122(), 'purchaseOrderItemId' => $this->string($payload, 'purchaseOrderItemId'), 'quantity' => $this->integer($payload, 'quantity')]], $user->actorId(), new DateTimeImmutable()));
 
         return new JsonResponse(['data' => ['id' => $id]], Response::HTTP_CREATED);
     }
@@ -210,5 +210,26 @@ class InboundControlApiController extends AbstractController
         }
 
         return $value;
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     *
+     * @return array{name: string, street: string, postalCode: string, city: string, countryCode: string}
+     */
+    private function address(array $payload, string $field): array
+    {
+        $address = $payload[$field] ?? null;
+        if (!is_array($address)) {
+            throw new InvalidArgumentException(sprintf('Field "%s" must be an address object.', $field));
+        }
+
+        return [
+            'name' => $this->string($address, 'name'),
+            'street' => $this->string($address, 'street'),
+            'postalCode' => $this->string($address, 'postalCode'),
+            'city' => $this->string($address, 'city'),
+            'countryCode' => $this->string($address, 'countryCode'),
+        ];
     }
 }

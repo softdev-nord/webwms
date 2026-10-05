@@ -7,11 +7,12 @@
 	</div>
 
 	<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0">
-		<thead><tr><th>{{ 'inbound.planned.advice_purchase_order'|trans }}</th><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</th><th>{{ 'inbound.planned.process_status'|trans }}</th><th>{{ 'inbound.planned.destination'|trans }}</th><th class="text-end">{{ 'common.action'|trans }}</th></tr></thead>
+		<thead><tr><th>{{ 'inbound.planned.advice_purchase_order'|trans }}</th><th>{{ 'address.sender'|trans }}</th><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</th><th>{{ 'inbound.planned.process_status'|trans }}</th><th>{{ 'inbound.planned.destination'|trans }}</th><th class="text-end">{{ 'common.action'|trans }}</th></tr></thead>
 		<tbody>
 		{% for item in worklist %}
 			<tr>
 				<td><code>{{ item.delivery_code }}</code><div class="small text-muted">{{ item.order_number }} · {{ item.delivery_note }}<br>{{ item.expected_at|date('d.m.Y H:i') }}</div></td>
+				<td>{% if item.sender_name %}<strong>{{ item.sender_name }}</strong><div class="small text-muted">{{ item.sender_street }}<br>{{ item.sender_postal_code }} {{ item.sender_city }} · {{ item.sender_country_code }}</div>{% else %}<span class="text-muted">{{ 'address.not_recorded'|trans }}</span>{% endif %}</td>
 				<td><strong>{{ item.sku }}</strong><div class="small text-muted">{{ item.product_name }}</div></td>
 				<td>{{ item.receipt_quantity|default(item.advised_quantity) }}</td>
 				<td>
@@ -47,7 +48,7 @@
 					{% else %}–{% endif %}
 				</td>
 			</tr>
-		{% else %}<tr><td colspan="6" class="text-center text-muted py-5">{{ 'inbound.planned.no_planned_goods_receipts_available'|trans }}</td></tr>{% endfor %}
+		{% else %}<tr><td colspan="7" class="text-center text-muted py-5">{{ 'inbound.planned.no_planned_goods_receipts_available'|trans }}</td></tr>{% endfor %}
 		</tbody>
 	</table></div></div>
 {% endblock %}

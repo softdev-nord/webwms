@@ -1012,7 +1012,7 @@ chapter:
         navigation: Wareneingang → Geplante Wareneingänge
         permissions: ["inbound.planned.read sowie receive, inspect, resolve und putaway für die jeweiligen Statusaktionen."]
         overview:
-        - Spalten zeigen Avis und Bestellung, Artikel, avisierte oder angenommene Menge, Prozessstatus, Zielplatz und die aktuell zulässige Aktion.
+        - Spalten zeigen Avis und Bestellung, Absenderadresse, Artikel, avisierte oder angenommene Menge, Prozessstatus, Zielplatz und die aktuell zulässige Aktion. Die beim Avis gespeicherte Adresse bleibt als Belegsnapshot erhalten.
         - Die Statusanzeige unterscheidet avisiert, QS offen, QS abgeschlossen, offene Abweichung, abgelehnt, offene Einlagerung und eingelagert. Pro Zeile wird immer nur der nächste zulässige Schritt angeboten.
         fields:
           actual_quantity: {label: "Tatsächliche Menge", required: true, format: "Positive Ganzzahl", example: "'18'", help: "Erfassen Sie die gezählte Annahmemenge statt ungeprüft die Avismenge zu übernehmen.", effect: "Abweichungen zur erwarteten Menge eröffnen einen Abweichungsfall.", errors: "Null oder negative Werte werden abgewiesen; Übermengen benötigen einen nachvollziehbaren Grund."}
@@ -1053,6 +1053,11 @@ chapter:
           purchase_order_item_id: {label: "Offene Bestellposition", required: true, format: "Auswahl einer noch nicht vollständig avisierten Position", example: "PO-2026-10042 / SKU-4711", help: "Die Auswahl zeigt Bestellung, Artikel und noch offene Menge.", effect: "Bindet das Avis an Artikel und Mengenfortschritt der Position.", errors: "Geschlossene, unbekannte oder vollständig avisierte Positionen werden abgewiesen."}
           purchase_order_id: {label: "Bestell-ID", required: true, format: "Automatisch gesetzte versteckte UUID der gewählten Position", example: "018f2f5a-73ad-7c42-9d84-2dcb65bcb410", help: "Wird beim Wechsel der Bestellposition automatisch aktualisiert und nicht manuell gepflegt.", effect: "Sichert die konsistente Zuordnung von Avis und Bestellkopf.", errors: "Ein fehlender oder nicht zur Position passender Wert verhindert die Übernahme."}
           expected_at: {label: "Erwarteter Zeitpunkt", required: true, format: "Lokales Datum und Uhrzeit", example: "'2026-10-05T08:30'", help: "Geplanten Lieferzeitpunkt aus Avis oder Lieferantenbestätigung verwenden.", effect: "Steuert Arbeitsliste und operative Planung.", errors: "Ungültige Datumswerte werden abgewiesen."}
+          sender_name: {label: "Absender/Firma", required: true, format: "Vollständiger Name des Lieferanten oder Absenders", example: "Musterlieferant GmbH", help: "Tragen Sie den tatsächlich versendenden Betrieb ein, damit die Warenannahme die Lieferung eindeutig zuordnen kann.", effect: "Wird als unveränderlicher Adresssnapshot am Avis gespeichert und in der Arbeitsliste angezeigt.", errors: "Ein leerer oder mehr als 160 Zeichen langer Name wird abgewiesen."}
+          sender_street: {label: "Straße und Hausnummer", required: true, format: "Vollständige Absenderanschrift", example: "Lieferweg 12", help: "Übernehmen Sie die Anschrift aus Avis, Lieferschein oder Lieferantenbestätigung.", effect: "Kennzeichnet den Herkunftsort der angekündigten Ware.", errors: "Eine leere oder mehr als 255 Zeichen lange Straße wird abgewiesen."}
+          sender_postal_code: {label: "Postleitzahl", required: true, format: "Landesübliches Postleitzahlenformat", example: "20095", help: "Geben Sie die Postleitzahl ohne zusätzliche Ortsangabe ein.", effect: "Ist Bestandteil der dokumentierten Herkunftsadresse.", errors: "Eine leere oder mehr als 32 Zeichen lange Postleitzahl wird abgewiesen."}
+          sender_city: {label: "Ort", required: true, format: "Vollständiger Ortsname", example: "Hamburg", help: "Verwenden Sie den Ort der Versandanschrift.", effect: "Ist Bestandteil der dokumentierten Herkunftsadresse.", errors: "Ein leerer oder mehr als 120 Zeichen langer Ort wird abgewiesen."}
+          sender_country_code: {label: "Ländercode", required: true, format: "ISO 3166-1 Alpha-2, genau zwei Buchstaben", example: "DE", help: "Verwenden Sie den zweistelligen Ländercode der Versandanschrift.", effect: "Wird normalisiert in Großbuchstaben gespeichert.", errors: "Andere Werte als genau zwei Buchstaben werden abgewiesen."}
           name: {label: "Checklistenname", required: true, format: "Verständliche Bezeichnung des Prüfzwecks", example: "Standardprüfung Verpackung", help: "Muss Prüfern den Geltungsbereich eindeutig erklären.", effect: "Erscheint in der Liste aktiver Checklisten.", errors: "Ein leerer Name verhindert die Aktivierung."}
           questions: {label: "Prüffragen", required: true, format: "Eine konkrete Frage pro Zeile", example: "'Ist die Verpackung unbeschädigt?\\nStimmt die gelieferte Menge?'", help: "Fragen so formulieren, dass sie eindeutig beantwortbar und nachweisbar sind.", effect: "Jede Zeile wird zu einem QS-Prüfpunkt.", errors: "Leere oder nur aus Leerzeilen bestehende Checklisten werden abgewiesen."}
           aggregate_type: {label: "Vorgangstyp", required: true, format: "inbound_receipt; unplanned_receipt; return_receipt oder production_receipt", example: "inbound_receipt", help: "Wählt den Typ des referenzierten Vorgangs für Anhang oder Etikett.", effect: "Steuert Auflösung, Berechtigung und Ablage des Nachweises beziehungsweise Druckauftrags.", errors: "Nicht angebotene Typen werden abgewiesen.", usages: ["Anhang und Etikett"]}
@@ -1072,7 +1077,7 @@ chapter:
           note: {label: "Prüfnotiz", required: true, format: "Nachvollziehbare Zustands- und Entscheidungsbeschreibung", example: "Verpackung beschädigt; Artikel unversehrt; zur Klärung gesperrt", help: "Zustand, Nachweis und Folgemaßnahme dokumentieren.", effect: "Wird auditiert mit der Retourenprüfung gespeichert.", errors: "Eine leere Notiz verhindert den Abschluss."}
         actions:
           purchase_order: {label: "Bestellung anlegen", description: "Erstellt Bestellkopf und erste Artikelposition.", result: "Die offene Position steht für Avismengen bereit."}
-          delivery: {label: "Avis übernehmen", description: "Verknüpft Lieferschein, Menge und Erwartungszeit mit der gewählten Bestellposition.", result: "Die Position erscheint in der geplanten operativen Annahme."}
+          delivery: {label: "Avis übernehmen", description: "Verknüpft Lieferschein, Absenderadresse, Menge und Erwartungszeit mit der gewählten Bestellposition.", result: "Die Position erscheint mit dokumentierter Herkunft in der geplanten operativen Annahme."}
           checklist: {label: "Checkliste aktivieren", description: "Erzeugt aus jeder Textzeile einen aktiven Prüfpunkt.", result: "Neue QS-Prüfungen können die Checkliste verwenden."}
           attachment: {label: "Sicher speichern", description: "Prüft Datei, Kategorie und Vorgangsbezug und legt den Nachweis ab.", result: "Die Datei erscheint im Prozessnachweis und kann berechtigt heruntergeladen werden."}
           label: {label: "Druckauftrag erstellen", description: "Erzeugt die gewünschte Anzahl Etiketten für Vorgang und Typ.", result: "Der Auftrag wird an die konfigurierte Druckroute übergeben."}
@@ -1195,14 +1200,14 @@ chapter:
       outbound_orders:
         template: outbound/order/orders.html.twig
         title: Warenausgangsaufträge
-        purpose: Die Übersicht zeigt Kundenaufträge mit Referenz und Status und führt zur Neuanlage oder Bearbeitung des Prozessstands.
+        purpose: Die Übersicht zeigt Kundenaufträge mit Referenz, Empfängeradresse und Status und führt zur Neuanlage oder Bearbeitung des Prozessstands.
         navigation: Warenausgang → Aufträge
         permissions: ["outbound.order.read; outbound.order.write für die Neuanlage."]
         overview:
-        - Die Tabelle zeigt Auftragsnummer, Kundenreferenz und aktuellen Status. Öffnen führt zur Freigabe, Reservierung, Allokation und Übergabe an die Kommissionierung.
+        - Die Tabelle zeigt Auftragsnummer, Kundenreferenz, Empfängeradresse und aktuellen Status. Öffnen führt zur Freigabe, Reservierung, Allokation und Übergabe an die Kommissionierung.
         - Der Leerzustand bedeutet, dass im aktiven Mandanten kein Auftrag vorhanden ist; die Ansicht besitzt derzeit keine Suche, Filter oder Pagination.
         actions:
-          create: {label: "Auftrag anlegen", description: "Öffnet ein separates Formular für Referenz, Artikel und Menge.", result: "Der Auftrag erscheint nach erfolgreichem Speichern im Status created beziehungsweise imported."}
+          create: {label: "Auftrag anlegen", description: "Öffnet ein separates Formular für Referenz, Lieferadresse, Artikel und Menge.", result: "Der Auftrag erscheint nach erfolgreichem Speichern im Status created beziehungsweise imported."}
           open: {label: "Öffnen", description: "Öffnet Positionen, Reservierungen und die nächsten zulässigen Prozessaktionen.", result: "Die Navigation selbst verändert keine Daten."}
         image: {src: "/assets/images/handbook/outbound/orders-overview.svg", alt: "Übersicht der Warenausgangsaufträge mit Status und Öffnen-Aktion"}
       outbound_order_create:
@@ -1211,14 +1216,19 @@ chapter:
         purpose: Das Formular erstellt einen Kundenauftrag mit einer ersten Artikelposition als Grundlage für Reservierung und Kommissionierung.
         navigation: Warenausgang → Aufträge → Auftrag anlegen
         permissions: ["outbound.order.write; der Artikel muss im aktiven Mandanten vorhanden sein."]
-        overview: ["Prüfen Sie externe Referenzen und Menge vor dem Speichern. Weitere Prozessschritte erfolgen erst nach der separaten Freigabe des Auftrags."]
+        overview: ["Prüfen Sie externe Referenzen, vollständige Empfängeradresse und Menge vor dem Speichern. Die Adresse wird als Belegsnapshot gespeichert und bleibt dadurch auch bei späteren Stammdatenänderungen nachvollziehbar. Weitere Prozessschritte erfolgen erst nach der separaten Freigabe des Auftrags."]
         fields:
           order_number: {label: "Auftragsnummer", required: true, format: "Im Mandanten eindeutiger Belegcode", example: "SO-2026-0815", help: "Externe ERP-Nummer oder kontrollierte interne Nummer verwenden.", effect: "Identifiziert den Auftrag in allen Folgeprozessen.", errors: "Leere oder bereits verwendete Nummern werden abgewiesen."}
           customer_reference: {label: "Kundenreferenz", required: true, format: "Eindeutige Kunden- oder Empfängerreferenz", example: "CUSTOMER-DE-1000", help: "Muss die fachliche Zuordnung für Versand und Rückfragen erlauben.", effect: "Erscheint in Übersicht und Auftragsdetail.", errors: "Eine leere Referenz verhindert die Anlage."}
+          recipient_name: {label: "Empfänger/Firma", required: true, format: "Vollständiger Name des Warenempfängers", example: "Beispielhandel AG", help: "Geben Sie die Firma oder Person an, an die das Lager versenden soll.", effect: "Wird als unveränderlicher Lieferadress-Snapshot am Auftrag gespeichert.", errors: "Ein leerer oder mehr als 160 Zeichen langer Name wird abgewiesen."}
+          recipient_street: {label: "Straße und Hausnummer", required: true, format: "Vollständige Lieferanschrift", example: "Kundenstraße 24", help: "Verwenden Sie die tatsächliche Anlieferadresse, nicht automatisch die Rechnungsadresse.", effect: "Steuert die auftragsbezogene Versandanschrift.", errors: "Eine leere oder mehr als 255 Zeichen lange Straße wird abgewiesen."}
+          recipient_postal_code: {label: "Postleitzahl", required: true, format: "Landesübliches Postleitzahlenformat", example: "50667", help: "Geben Sie die Postleitzahl ohne zusätzliche Ortsangabe ein.", effect: "Ist Bestandteil der dokumentierten Lieferadresse.", errors: "Eine leere oder mehr als 32 Zeichen lange Postleitzahl wird abgewiesen."}
+          recipient_city: {label: "Ort", required: true, format: "Vollständiger Ortsname", example: "Köln", help: "Verwenden Sie den Ort der tatsächlichen Lieferanschrift.", effect: "Ist Bestandteil der dokumentierten Lieferadresse.", errors: "Ein leerer oder mehr als 120 Zeichen langer Ort wird abgewiesen."}
+          recipient_country_code: {label: "Ländercode", required: true, format: "ISO 3166-1 Alpha-2, genau zwei Buchstaben", example: "DE", help: "Verwenden Sie den zweistelligen Ländercode des Lieferziels.", effect: "Wird normalisiert in Großbuchstaben gespeichert.", errors: "Andere Werte als genau zwei Buchstaben werden abgewiesen."}
           product_id: {label: "Artikel", required: true, format: "Auswahl eines vorhandenen Artikels", example: "SKU-4711", help: "SKU und Beschreibung gegen den Kundenbedarf prüfen.", effect: "Erzeugt die erste Auftragsposition und spätere Bestandsreservierung.", errors: "Unbekannte oder mandantenfremde Artikel werden abgewiesen."}
           quantity: {label: "Menge", required: true, format: "Positive Ganzzahl in der Artikelbasiseinheit", example: "'10'", help: "Tatsächlich angeforderte Menge erfassen.", effect: "Bestimmt Reservierungs-, Allokations- und Pickbedarf.", errors: "Null, negative oder nicht numerische Werte sind ungültig."}
         actions:
-          save: {label: "Auftrag anlegen", description: "Validiert Referenzen, Artikel und Menge und erzeugt Auftrag und Position atomar.", result: "Das Auftragsdetail öffnet sich für Prüfung und Freigabe."}
+          save: {label: "Auftrag anlegen", description: "Validiert Referenzen, Empfängeradresse, Artikel und Menge und erzeugt Auftrag und Position atomar.", result: "Das Auftragsdetail öffnet sich mit der gespeicherten Lieferadresse für Prüfung und Freigabe."}
           cancel: {label: "Abbrechen", description: "Verwirft nicht gespeicherte Eingaben.", result: "Es wird kein Auftrag erzeugt."}
         image: {src: "/assets/images/handbook/outbound/order-create.svg", alt: "Formular zum Anlegen eines Warenausgangsauftrags"}
       outbound_order_detail:
@@ -1228,7 +1238,7 @@ chapter:
         navigation: Warenausgang → Aufträge → Öffnen
         permissions: ["outbound.order.read/release; inventory.allocation.write; inventory.selection.execute; fulfillment.pick.write abhängig von der Aktion."]
         overview:
-        - Jede Position zeigt angeforderte, reservierte, allokierte und erfüllte Menge sowie verfügbare Bestandsdimensionen. Der Auftragsstatus begrenzt die angebotenen Aktionen.
+        - Der Auftragskopf zeigt die beim Anlegen gespeicherte Empfänger- und Lieferadresse. Jede Position zeigt angeforderte, reservierte, allokierte und erfüllte Menge sowie verfügbare Bestandsdimensionen. Der Auftragsstatus begrenzt die angebotenen Aktionen.
         - Freigabe reserviert Bedarf. Vollständig allokierte freigegebene Aufträge können genau eine Pickliste erzeugen; vorhandene Picklisten werden direkt verlinkt.
         fields:
           rule_id: {label: "Entnahmeregel", required: true, format: "Auswahl einer aktiven auf Artikel und Lager passenden Regel", example: "FIFO-WH1", help: "Strategie, Lagerbezug und Priorität vor Ausführung prüfen.", effect: "Allokiert die gesamte Restmenge automatisch nach der gewählten Regel.", errors: "Keine passende Regel oder unzureichender Bestand verhindert die vollständige Allokation."}

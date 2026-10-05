@@ -49,6 +49,7 @@ class OutboundOrderApiController extends AbstractController
             $this->apiUser()->tenantId(),
             $this->string($payload, 'orderNumber'),
             $this->string($payload, 'customerReference'),
+            $this->address($payload, 'recipientAddress'),
             $items,
             $this->apiUser()->actorId(),
             new DateTimeImmutable(),
@@ -256,6 +257,27 @@ class OutboundOrderApiController extends AbstractController
         $value = $this->optionalString($payload, $field);
 
         return $value === null ? null : new DateTimeImmutable($value);
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     *
+     * @return array{name: string, street: string, postalCode: string, city: string, countryCode: string}
+     */
+    private function address(array $payload, string $field): array
+    {
+        $address = $payload[$field] ?? null;
+        if (!is_array($address)) {
+            throw new InvalidArgumentException(sprintf('Field "%s" must be an address object.', $field));
+        }
+
+        return [
+            'name' => $this->string($address, 'name'),
+            'street' => $this->string($address, 'street'),
+            'postalCode' => $this->string($address, 'postalCode'),
+            'city' => $this->string($address, 'city'),
+            'countryCode' => $this->string($address, 'countryCode'),
+        ];
     }
 
     /** @param array<string, mixed> $payload */

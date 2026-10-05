@@ -65,6 +65,7 @@ class OutboundController extends AbstractController
                 $user->tenantId(),
                 $this->required($request, 'order_number'),
                 $this->required($request, 'customer_reference'),
+                $this->address($request, 'recipient'),
                 $items,
                 $user->actorId(),
                 new DateTimeImmutable(),
@@ -253,6 +254,18 @@ class OutboundController extends AbstractController
         $value = trim((string) $request->request->get($field));
 
         return $value === '' ? null : $value;
+    }
+
+    /** @return array{name: string, street: string, postalCode: string, city: string, countryCode: string} */
+    private function address(Request $request, string $prefix): array
+    {
+        return [
+            'name' => $this->required($request, $prefix . '_name'),
+            'street' => $this->required($request, $prefix . '_street'),
+            'postalCode' => $this->required($request, $prefix . '_postal_code'),
+            'city' => $this->required($request, $prefix . '_city'),
+            'countryCode' => $this->required($request, $prefix . '_country_code'),
+        ];
     }
 
     private function positiveInt(Request $request, string $field): int
