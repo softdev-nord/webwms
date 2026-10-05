@@ -3,7 +3,9 @@
 ## Laufzeitstruktur
 
 Das Benutzerhandbuch wird unter `/v3/help` in einem eigenständigen,
-CoderDocs-inspirierten Twig-Layout gerendert. Es verwendet Farben, Typografie
+CoderDocs-inspirierten Twig-Layout gerendert. Die Startseite kombiniert einen
+zentrierten Suchbereich mit einer dreispaltigen Kachelübersicht aller Themen;
+die feste Kapitelnavigation erscheint erst auf den Detailseiten. Es verwendet Farben, Typografie
 und Icons der V3-Oberfläche, enthält aber weder deren Topbar noch deren
 Anwendungssidebar. Der Handbuchlink in der V3- und Legacy-Sidebar öffnet dieses
 Layout wie die frühere externe Dokumentation in einem neuen Tab. Symfony-Sitzung

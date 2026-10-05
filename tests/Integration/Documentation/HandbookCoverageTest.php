@@ -101,6 +101,7 @@ final class HandbookCoverageTest extends KernelTestCase
         $show = file_get_contents($root . '/templates/documentation/show.html.twig');
         $navigation = file_get_contents($root . '/templates/documentation/_navigation.html.twig');
         $header = file_get_contents($root . '/templates/documentation/_header.html.twig');
+        $stylesheet = file_get_contents($root . '/public/assets/css/handbook.css');
         $javascript = file_get_contents($root . '/public/assets/js/handbook.js');
 
         self::assertIsString($base);
@@ -108,6 +109,7 @@ final class HandbookCoverageTest extends KernelTestCase
         self::assertIsString($show);
         self::assertIsString($navigation);
         self::assertIsString($header);
+        self::assertIsString($stylesheet);
         self::assertIsString($javascript);
         self::assertStringContainsString("extends 'documentation/base.html.twig'", $index);
         self::assertStringContainsString("extends 'documentation/base.html.twig'", $show);
@@ -117,6 +119,12 @@ final class HandbookCoverageTest extends KernelTestCase
         self::assertStringContainsString('data-handbook-section-link', $navigation);
         self::assertStringContainsString('data-handbook-menu-open', $header);
         self::assertStringContainsString("path('v3_dashboard')", $header);
+        self::assertStringContainsString('class="handbook-hero"', $index);
+        self::assertStringContainsString('class="handbook-hero__search"', $index);
+        self::assertStringContainsString('class="handbook-topic-grid"', $index);
+        self::assertStringContainsString('class="handbook-topic-card"', $index);
+        self::assertStringNotContainsString('class="handbook-sidebar"', $index);
+        self::assertStringContainsString('grid-template-columns: repeat(3, minmax(0, 1fr))', $stylesheet);
         self::assertStringContainsString('IntersectionObserver', $javascript);
     }
 }
