@@ -483,3 +483,21 @@ Damit sind 75 von 101 produktiven Views migriert.
 Offen bleibt die Übertragung des Standards auf die übrigen 26 produktiven Views
 sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das Ticket
 bleibt deshalb bewusst unterhalb von `Done`.
+
+Der fünfzehnte größere Slice dokumentiert die technische Automationsbasis in
+zwölf Views: WCS, Materialflussrechner und Fördertechnik mit Verbindungen,
+Transportbefehlen und Maschinenmeldungen; Lagerlifte, Paternoster und Logimat
+mit Gerätebefehlen und Feedback; sowie TCP- und HTTP-Transportadapter mit
+Protokoll, Framing, Zeitgrenzen und manueller Nachrichtenzustellung.
+
+Besonderes Augenmerk liegt auf idempotenten Request-, Event- und Message-IDs,
+zulässigen Befehlsstatusfolgen, eindeutigen Ladeeinheiten und Fachreferenzen,
+sicheren Credential-Referenzen, den vollständigen Auswahlwerten für Geräte,
+Befehle und Maschinenzustände sowie den Grenzwerten für Connect- und
+Read-Timeout. Der Regressionstest gleicht zwölf Templates, zwölf Formulare,
+46 Geschäftsfelder und zwölf eindeutige vorhandene Bildreferenzen ab. Damit
+sind 87 von 101 produktiven Views migriert.
+
+Offen bleibt die Übertragung des Standards auf die übrigen 14 produktiven Views
+sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das Ticket
+bleibt deshalb bewusst unterhalb von `Done`.

@@ -570,6 +570,58 @@ class UserDocumentationServiceTest extends TestCase
     }
 
     #[DataProvider('localeProvider')]
+    public function testAutomationAndTransportViewsHaveCompleteTemplateFieldAndImageCoverage(string $locale): void
+    {
+        $expectedTemplates = [
+            'integration/wcs/index.html.twig',
+            'integration/wcs/connection-new.html.twig',
+            'integration/wcs/command-new.html.twig',
+            'integration/wcs/command-show.html.twig',
+            'integration/wcs/status-new.html.twig',
+            'integration/automation/index.html.twig',
+            'integration/automation/device-new.html.twig',
+            'integration/automation/command-new.html.twig',
+            'integration/automation/command-show.html.twig',
+            'integration/transport/index.html.twig',
+            'integration/transport/new.html.twig',
+            'integration/transport/deliver.html.twig',
+        ];
+        $views = array_merge(
+            $this->documentation->document('integrations-and-devices', $locale)['views'],
+            $this->documentation->document('api-and-automation', $locale)['views'],
+        );
+        $views = array_values(array_filter(
+            $views,
+            static fn (array $view): bool => in_array($view['template'], $expectedTemplates, true)
+        ));
+        self::assertSame($expectedTemplates, array_column($views, 'template'));
+
+        $expectedFieldCounts = [0, 6, 6, 2, 6, 0, 6, 6, 2, 0, 10, 2];
+        $imageSources = [];
+        foreach ($views as $index => $view) {
+            $template = file_get_contents(dirname(__DIR__, 4) . '/templates/' . $view['template']);
+            self::assertIsString($template);
+            self::assertSame(1, preg_match_all('/<form\b.*?<\/form>/is', $template));
+            preg_match_all('/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/i', $template, $matches);
+            $templateFields = array_values(array_unique(array_map(
+                static fn (string $name): string => str_replace('[]', '', $name),
+                array_filter($matches[1], static fn (string $name): bool => $name !== '_token')
+            )));
+            sort($templateFields);
+            $documentedFields = array_column($view['fields'], 'id');
+            sort($documentedFields);
+            self::assertCount($expectedFieldCounts[$index], $documentedFields);
+            self::assertSame($templateFields, $documentedFields, sprintf('Field coverage differs for "%s".', $view['template']));
+            self::assertFileExists(dirname(__DIR__, 4) . '/public' . $view['image']['src']);
+            $imageSources[] = $view['image']['src'];
+        }
+
+        self::assertCount(12, array_unique($imageSources));
+        self::assertStringContainsString('300000', $views[10]['fields'][8]['format']);
+        self::assertStringContainsString('JSON', $views[11]['fields'][1]['format']);
+    }
+
+    #[DataProvider('localeProvider')]
     public function testEveryChapterIsTranslated(string $locale): void
     {
         foreach (UserDocumentationService::CHAPTERS as $chapter) {
