@@ -28,9 +28,9 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Gesamtfortschritt
 
-Stand 05.10.2026 sind 111 von 112 Tickets und 933 von 967 Story Points `Done`. WEBWMS-112 befindet sich in Umsetzung; 87 produktive Views einschließlich vollständigem Wareneingang, Warenausgang, Lager und den Integrationsbereichen ERP, Carrier, Datenaustausch, Geräte, Druck, WCS, Automation und Transportadapter sind auf den Dokumentationsstandard migriert. Die Formular-, Feld- und Bildabdeckung dieser Bereiche wird automatisiert validiert.
+Stand 05.10.2026 sind 112 von 112 Tickets und 967 von 967 Story Points `Done`. Das zweisprachige Benutzerhandbuch dokumentiert alle 101 produktiven V3-Views, 146 gerenderte Formulare und 422 viewbezogene Geschäftsfelder. Template-, Formular-, Feld-, Sprach- und Bildabdeckung werden automatisiert validiert.
 
-Sieben Epics sind vollständig abgeschlossen. Das Plattform-Epic enthält mit WEBWMS-112 noch die vollständige View-, Formular- und Feldabdeckung des Benutzerhandbuchs. WEBWMS-111 stellt hierfür weiterhin die integrierte, zweisprachige und durchsuchbare technische Handbuchplattform bereit. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
+Alle acht Epics sind vollständig abgeschlossen. WEBWMS-111 stellt die integrierte, zweisprachige und durchsuchbare Handbuchplattform bereit; WEBWMS-112 schließt deren vollständige View-, Formular-, Feld- und Screenshotmatrix ab. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 
 ## Ergänzende Roadmap-Dokumente
 
@@ -48,6 +48,7 @@ Sieben Epics sind vollständig abgeschlossen. Das Plattform-Epic enthält mit WE
 - [Abschlussanalyse Bestandssperren vom 21.09.2026](analysis/2026-09-21-stock-blocking.md)
 - [Abschluss-Audit vom 01.10.2026](analysis/2026-10-01-completion-audit.md)
 - [Abschlussanalyse Benutzerhandbuch vom 01.10.2026](analysis/2026-10-01-user-handbook-completion.md)
+- [Abschlussanalyse der vollständigen Handbuchabdeckung vom 05.10.2026](analysis/2026-10-05-user-handbook-view-coverage.md)
 
 ## Pflege
 

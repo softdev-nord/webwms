@@ -622,6 +622,70 @@ class UserDocumentationServiceTest extends TestCase
     }
 
     #[DataProvider('localeProvider')]
+    public function testFinalPlatformOutboxAndDocumentationViewsCompleteTheCoverageMatrix(string $locale): void
+    {
+        $expected = [
+            'documentation/index.html.twig' => [0, 0],
+            'documentation/show.html.twig' => [0, 0],
+            'platform/dashboard/index.html.twig' => [0, 0],
+            'platform/index.html.twig' => [14, 42],
+            'platform/portal.html.twig' => [0, 0],
+            'platform/extensions/index.html.twig' => [0, 0],
+            'platform/extensions/configuration_index.html.twig' => [0, 0],
+            'platform/extensions/configuration_form.html.twig' => [1, 4],
+            'platform/extensions/workflow_index.html.twig' => [0, 0],
+            'platform/extensions/work_item_form.html.twig' => [1, 2],
+            'platform/extensions/work_item_show.html.twig' => [1, 1],
+            'integration/outbox/index.html.twig' => [1, 1],
+            'integration/outbox/show.html.twig' => [2, 0],
+            'documentation/swagger.html.twig' => [0, 0],
+        ];
+        $views = [];
+        foreach (UserDocumentationService::CHAPTERS as $chapter) {
+            foreach ($this->documentation->document($chapter['slug'], $locale)['views'] as $view) {
+                if (isset($expected[$view['template']])) {
+                    $views[$view['template']] = $view;
+                }
+            }
+        }
+        self::assertSame(array_keys($expected), array_keys($views));
+
+        $imageSources = [];
+        foreach ($expected as $templateName => [$formCount, $fieldCount]) {
+            $view = $views[$templateName];
+            $template = file_get_contents(dirname(__DIR__, 4) . '/templates/' . $templateName);
+            self::assertIsString($template);
+            self::assertSame($formCount, preg_match_all('/<form\b.*?<\/form>/is', $template), sprintf('Form coverage differs for "%s".', $templateName));
+            preg_match_all('/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/i', $template, $matches);
+            $templateFields = array_values(array_unique(array_map(
+                static fn (string $name): string => str_replace('[]', '', $name),
+                array_filter($matches[1], static fn (string $name): bool => !str_starts_with($name, '_'))
+            )));
+            sort($templateFields);
+            $documentedFields = array_column($view['fields'], 'id');
+            sort($documentedFields);
+            self::assertCount($fieldCount, $documentedFields);
+            self::assertSame($templateFields, $documentedFields, sprintf('Field coverage differs for "%s".', $templateName));
+            self::assertFileExists(dirname(__DIR__, 4) . '/public' . $view['image']['src']);
+            $imageSources[] = $view['image']['src'];
+        }
+
+        self::assertCount(14, array_unique($imageSources));
+    }
+
+    #[DataProvider('localeProvider')]
+    public function testAllProductiveV3ViewsAreDocumentedExactlyOnce(string $locale): void
+    {
+        $templates = [];
+        foreach (UserDocumentationService::CHAPTERS as $chapter) {
+            array_push($templates, ...array_column($this->documentation->document($chapter['slug'], $locale)['views'], 'template'));
+        }
+
+        self::assertCount(101, $templates);
+        self::assertCount(101, array_unique($templates), 'Every productive V3 template must have exactly one handbook entry.');
+    }
+
+    #[DataProvider('localeProvider')]
     public function testEveryChapterIsTranslated(string $locale): void
     {
         foreach (UserDocumentationService::CHAPTERS as $chapter) {

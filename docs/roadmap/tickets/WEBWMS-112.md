@@ -2,7 +2,7 @@
 id: WEBWMS-112
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Teilweise umgesetzt
+status: Done
 priority: High
 story_points: 34
 component: "Benutzerhandbuch"
@@ -258,7 +258,7 @@ abgleichen.
 
 ## Implementierungsstand
 
-**Status:** Teilweise umgesetzt
+**Status:** Done
 
 Der erste Umsetzungsslice stellt das verbindliche View-Datenmodell bereit:
 Template-Zuordnung, Zweck, Aufrufweg, Berechtigungen, Ansichtsdetails,
@@ -501,3 +501,24 @@ sind 87 von 101 produktiven Views migriert.
 Offen bleibt die Übertragung des Standards auf die übrigen 14 produktiven Views
 sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das Ticket
 bleibt deshalb bewusst unterhalb von `Done`.
+
+Der sechzehnte und abschließende Slice dokumentiert die verbleibenden 14 Views:
+Plattformdashboard und -Kontrollzentrum, Partnerportal, sechs
+Erweiterungsansichten, Outboxübersicht und -detail, Handbuchübersicht und
+-kapitel sowie Swagger UI. Das Plattform-Kontrollzentrum erläutert alle 14
+Formulare und 42 Geschäftsfelder einschließlich Statusübergängen,
+JSON-Schemata, Abrechnung, Medien und Druckrouting. Outbox-Retry und
+-Quittierung sowie autorisierte OpenAPI-Testaufrufe sind mit Voraussetzungen,
+Seiteneffekten und Fehlerbehandlung beschrieben.
+
+Der sprachparametrisierte Regressionstest gleicht die 14 Templates, 20
+Formulare, 50 Feldvorkommen und 14 eindeutige Bildreferenzen ab. Zusätzlich
+sichert eine globale Matrix 101 eindeutige Handbucheinträge für 101 produktive
+V3-Views in Deutsch und Englisch. Insgesamt dokumentiert das Handbuch 146
+gerenderte Formulare und 422 viewbezogene Geschäftsfelder. Produktive
+Nicht-V3-Ansichten gehören nicht zu dieser V3-Baseline; ihre weitere Nutzung,
+Migration oder Stilllegung erfordert eine separate, explizite Entscheidung.
+
+Alle Akzeptanzkriterien sind damit erfüllt. Die detaillierten Kennzahlen und
+Prüfnachweise stehen in der
+[Abschlussanalyse](../analysis/2026-10-05-user-handbook-view-coverage.md).
