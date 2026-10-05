@@ -481,7 +481,10 @@ class UserDocumentationServiceTest extends TestCase
             'integration/exchange/mapping-new.html.twig',
             'integration/exchange/commerce-new.html.twig',
         ];
-        $views = $this->documentation->document('integrations-and-devices', $locale)['views'];
+        $views = array_values(array_filter(
+            $this->documentation->document('integrations-and-devices', $locale)['views'],
+            static fn (array $view): bool => in_array($view['template'], $expectedTemplates, true)
+        ));
         self::assertSame($expectedTemplates, array_column($views, 'template'));
 
         $expectedFormCounts = [0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1];
@@ -513,6 +516,57 @@ class UserDocumentationServiceTest extends TestCase
         foreach (['copy', 'trim', 'uppercase', 'lowercase', 'integer', 'decimal'] as $option) {
             self::assertStringContainsString($option, $transformation['format']);
         }
+    }
+
+    #[DataProvider('localeProvider')]
+    public function testPeripheralIntegrationViewsHaveCompleteTemplateFieldAndImageCoverage(string $locale): void
+    {
+        $expectedTemplates = [
+            'integration/device/index.html.twig',
+            'integration/device/new.html.twig',
+            'integration/device/show.html.twig',
+            'integration/device/scan.html.twig',
+            'integration/device/scan-show.html.twig',
+            'integration/measurement/index.html.twig',
+            'integration/measurement/device-new.html.twig',
+            'integration/measurement/capture.html.twig',
+            'integration/measurement/show.html.twig',
+            'integration/printing/index.html.twig',
+            'integration/printing/printer-new.html.twig',
+            'integration/printing/printer-show.html.twig',
+            'integration/printing/job-new.html.twig',
+            'integration/printing/job-show.html.twig',
+        ];
+        $views = array_values(array_filter(
+            $this->documentation->document('integrations-and-devices', $locale)['views'],
+            static fn (array $view): bool => in_array($view['template'], $expectedTemplates, true)
+        ));
+        self::assertSame($expectedTemplates, array_column($views, 'template'));
+
+        $expectedFormCounts = [0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1];
+        $expectedFieldCounts = [0, 4, 0, 8, 0, 0, 4, 10, 0, 0, 4, 0, 6, 0];
+        $imageSources = [];
+        foreach ($views as $index => $view) {
+            $template = file_get_contents(dirname(__DIR__, 4) . '/templates/' . $view['template']);
+            self::assertIsString($template);
+            self::assertSame($expectedFormCounts[$index], preg_match_all('/<form\b.*?<\/form>/is', $template));
+            preg_match_all('/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/i', $template, $matches);
+            $templateFields = array_values(array_unique(array_map(
+                static fn (string $name): string => str_replace('[]', '', $name),
+                array_filter($matches[1], static fn (string $name): bool => $name !== '_token')
+            )));
+            sort($templateFields);
+            $documentedFields = array_column($view['fields'], 'id');
+            sort($documentedFields);
+            self::assertCount($expectedFieldCounts[$index], $documentedFields);
+            self::assertSame($templateFields, $documentedFields, sprintf('Field coverage differs for "%s".', $view['template']));
+            self::assertFileExists(dirname(__DIR__, 4) . '/public' . $view['image']['src']);
+            $imageSources[] = $view['image']['src'];
+        }
+
+        self::assertCount(14, array_unique($imageSources));
+        self::assertStringContainsString('99', $views[12]['fields'][5]['format']);
+        self::assertNotSame([], $views[13]['actions'], 'Print execution and retry need explicit guidance.');
     }
 
     #[DataProvider('localeProvider')]

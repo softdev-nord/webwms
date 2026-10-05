@@ -465,3 +465,21 @@ sind 61 von 101 produktiven Views migriert.
 Offen bleibt die Übertragung des Standards auf die übrigen 40 produktiven Views
 sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das Ticket
 bleibt deshalb bewusst unterhalb von `Done`.
+
+Der vierzehnte größere Slice schließt die Geräteperipherie mit 14 Views ab:
+Scanner und mobile Terminals einschließlich idempotenter Scanerfassung,
+Messgeräte mit direkter Übernahme von Gewicht und Abmessungen auf Packstücke
+oder Artikel sowie Drucker und Druckaufträge mit kontrollierter Ausführung und
+Wiederholung. Übersichten, Geräte- und Ereignisdetails sowie sämtliche Anlage-
+und Prozessdialoge sind nun zweisprachig beschrieben.
+
+Die Feldhilfen decken alle Geräte- und Prozesstypen, akzeptierte und abgelehnte
+Ergebnisse, UUID-basierte Request-Idempotenz, Gramm und Millimeter,
+Zielzuordnung, ZPL/PDF, Dokumenttypen, sichere Drucker-Credentials und die
+Kopiengrenze von 1 bis 99 ab. Der Regressionstest gleicht 14 Templates, zehn
+Formulare, 36 Geschäftsfelder und 14 eindeutige vorhandene Bildreferenzen ab.
+Damit sind 75 von 101 produktiven Views migriert.
+
+Offen bleibt die Übertragung des Standards auf die übrigen 26 produktiven Views
+sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das Ticket
+bleibt deshalb bewusst unterhalb von `Done`.
