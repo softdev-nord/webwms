@@ -446,3 +446,22 @@ Insgesamt sind 49 von 101 produktiven Views migriert.
 Offen bleibt die Übertragung dieses Standards auf die übrigen 52 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.
+
+Der dreizehnte größere Slice eröffnet den Integrationsbereich mit zwölf
+zusammengehörigen Views. Vollständig dokumentiert sind ERP-Verbindungen mit
+Statusendpunkt und Outbox-Verweis, Carrier-Verbindungen mit Live-Abruf der
+Versandprodukte sowie der Datenaustausch mit Jobübersicht, Import, Export,
+Feldmappings und Commerce-Kanälen für Shopware, Amazon, eBay und generische
+Systeme.
+
+Die Feldhilfen erläutern insbesondere sichere Secret-Referenzen statt
+Klartext-Credentials, HTTPS-Endpunkte, Aktivstatus, alle Import- und
+Exportformate, Ressourcentypen, optionale Mappings, Dateiuploads, das erwartete
+JSON-Array und sämtliche sechs Mapping-Transformationen. Der
+sprachparametrisierte Regressionstest gleicht zwölf Templates, acht Formulare,
+26 Geschäftsfelder und zwölf eindeutige vorhandene Bildreferenzen ab. Damit
+sind 61 von 101 produktiven Views migriert.
+
+Offen bleibt die Übertragung des Standards auf die übrigen 40 produktiven Views
+sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das Ticket
+bleibt deshalb bewusst unterhalb von `Done`.

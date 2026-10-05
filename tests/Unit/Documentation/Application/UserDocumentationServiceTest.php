@@ -465,6 +465,57 @@ class UserDocumentationServiceTest extends TestCase
     }
 
     #[DataProvider('localeProvider')]
+    public function testIntegrationCoreViewsHaveCompleteTemplateFieldAndImageCoverage(string $locale): void
+    {
+        $expectedTemplates = [
+            'integration/erp/index.html.twig',
+            'integration/erp/new.html.twig',
+            'integration/erp/show.html.twig',
+            'integration/carrier/index.html.twig',
+            'integration/carrier/new.html.twig',
+            'integration/carrier/show.html.twig',
+            'integration/carrier/products.html.twig',
+            'integration/exchange/index.html.twig',
+            'integration/exchange/import.html.twig',
+            'integration/exchange/export.html.twig',
+            'integration/exchange/mapping-new.html.twig',
+            'integration/exchange/commerce-new.html.twig',
+        ];
+        $views = $this->documentation->document('integrations-and-devices', $locale)['views'];
+        self::assertSame($expectedTemplates, array_column($views, 'template'));
+
+        $expectedFormCounts = [0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1];
+        $expectedFieldCounts = [0, 4, 0, 0, 5, 0, 0, 0, 4, 3, 5, 5];
+        $imageSources = [];
+        foreach ($views as $index => $view) {
+            $template = file_get_contents(dirname(__DIR__, 4) . '/templates/' . $view['template']);
+            self::assertIsString($template);
+            self::assertSame($expectedFormCounts[$index], preg_match_all('/<form\b.*?<\/form>/is', $template));
+            preg_match_all('/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/i', $template, $matches);
+            $templateFields = array_values(array_unique(array_map(
+                static fn (string $name): string => str_replace('[]', '', $name),
+                array_filter($matches[1], static fn (string $name): bool => $name !== '_token')
+            )));
+            sort($templateFields);
+            $documentedFields = array_column($view['fields'], 'id');
+            sort($documentedFields);
+            self::assertCount($expectedFieldCounts[$index], $documentedFields);
+            self::assertSame($templateFields, $documentedFields, sprintf('Field coverage differs for "%s".', $view['template']));
+            self::assertFileExists(dirname(__DIR__, 4) . '/public' . $view['image']['src']);
+            $imageSources[] = $view['image']['src'];
+        }
+
+        self::assertCount(12, array_unique($imageSources));
+        $transformation = array_values(array_filter(
+            $views[10]['fields'],
+            static fn (array $field): bool => $field['id'] === 'transformation'
+        ))[0];
+        foreach (['copy', 'trim', 'uppercase', 'lowercase', 'integer', 'decimal'] as $option) {
+            self::assertStringContainsString($option, $transformation['format']);
+        }
+    }
+
+    #[DataProvider('localeProvider')]
     public function testEveryChapterIsTranslated(string $locale): void
     {
         foreach (UserDocumentationService::CHAPTERS as $chapter) {
