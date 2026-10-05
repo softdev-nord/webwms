@@ -115,6 +115,7 @@ final class HandbookCoverageTest extends KernelTestCase
         self::assertStringContainsString("extends 'documentation/base.html.twig'", $show);
         self::assertStringNotContainsString("include('v3/subsections/menu.html.twig')", $base);
         self::assertStringContainsString('class="handbook-page"', $base);
+        self::assertStringContainsString("asset('assets/css/handbook.css') }}?v=2", $base);
         self::assertStringContainsString('data-handbook-navigation', $navigation);
         self::assertStringContainsString('data-handbook-section-link', $navigation);
         self::assertStringContainsString('data-handbook-menu-open', $header);

@@ -13,13 +13,13 @@
 
         {% block stylesheets %}
             {{ include('v3/subsections/head-css.html.twig') }}
-            <link rel="stylesheet" href="{{ asset('assets/css/handbook.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/handbook.css') }}?v=2">
         {% endblock %}
     </head>
     <body class="handbook-page">
         {% block handbook_content %}
         {% endblock %}
 
-        <script src="{{ asset('assets/js/handbook.js') }}" defer></script>
+        <script src="{{ asset('assets/js/handbook.js') }}?v=2" defer></script>
     </body>
 </html>
