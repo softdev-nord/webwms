@@ -35,6 +35,16 @@ readonly class WarehouseQueryService
         );
     }
 
+    public function warehouseAisles(string $tenantId, string $warehouseId): array
+    {
+        return $this->connection->fetchAllAssociative(
+            'SELECT ai.id, ai.code, ai.name, ai.storage_model, a.code area_code FROM wms_warehouse_aisle ai '
+            . 'INNER JOIN wms_warehouse_area a ON a.id = ai.area_id AND a.tenant_id = ai.tenant_id '
+            . 'WHERE ai.tenant_id = :tenantId AND a.warehouse_id = :warehouseId ORDER BY a.code, ai.code',
+            ['tenantId' => $tenantId, 'warehouseId' => $warehouseId],
+        );
+    }
+
     public function warehouseTopology(string $tenantId): array
     {
         return [
@@ -54,14 +64,16 @@ readonly class WarehouseQueryService
                 ['tenantId' => $tenantId],
             ),
             'aisles' => $this->connection->fetchAllAssociative(
-                'SELECT id, area_id, code, name, created_at FROM wms_warehouse_aisle '
+                'SELECT id, area_id, code, name, storage_model, created_at FROM wms_warehouse_aisle '
                 . 'WHERE tenant_id = :tenantId ORDER BY area_id, code',
                 ['tenantId' => $tenantId],
             ),
             'bins' => $this->connection->fetchAllAssociative(
                 'SELECT id, warehouse_id, area_id, aisle_id, code, level_code, bin_code, location_type, '
-                . 'capacity_quantity, putaway_enabled, putaway_priority, created_at FROM wms_storage_location '
-                . 'WHERE tenant_id = :tenantId ORDER BY warehouse_id, area_id, aisle_id, level_code, bin_code, code',
+                . 'capacity_quantity, warehouse_number, level_number, slot_number, depth_number, coordinate, '
+                . 'description, width_mm, physical_depth_mm, height_mm, zone_code, putaway_enabled, putaway_priority, created_at '
+                . 'FROM wms_storage_location WHERE tenant_id = :tenantId '
+                . 'ORDER BY warehouse_id, area_id, aisle_id, level_number, slot_number, depth_number, code',
                 ['tenantId' => $tenantId],
             ),
         ];
@@ -91,19 +103,25 @@ readonly class WarehouseQueryService
         ];
     }
 
-    public function warehouseOccupancy(string $tenantId, ?string $warehouseId = null): array
+    public function warehouseOccupancy(string $tenantId, ?string $warehouseId = null, ?string $aisleId = null, int $limit = 5000): array
     {
         $warehouseFilter = $warehouseId === null ? '' : 'AND l.warehouse_id = :warehouseId ';
+        $aisleFilter = $aisleId === null ? '' : 'AND l.aisle_id = :aisleId ';
         $parameters = ['tenantId' => $tenantId];
         if ($warehouseId !== null) {
             $parameters['warehouseId'] = $warehouseId;
+        }
+        if ($aisleId !== null) {
+            $parameters['aisleId'] = $aisleId;
         }
 
         return $this->connection->fetchAllAssociative(
             'SELECT l.id, l.warehouse_id, w.code warehouse_code, w.name warehouse_name, '
             . 'l.area_id, a.code area_code, a.name area_name, a.area_type, '
-            . 'l.aisle_id, g.code aisle_code, g.name aisle_name, l.code location_code, '
-            . 'l.level_code, l.bin_code, l.location_type, l.capacity_quantity, '
+            . 'l.aisle_id, g.code aisle_code, g.name aisle_name, g.storage_model, l.code location_code, '
+            . 'l.level_code, l.bin_code, l.location_type, l.capacity_quantity, l.warehouse_number, '
+            . 'l.level_number, l.slot_number, l.depth_number, l.coordinate, l.description, '
+            . 'l.width_mm, l.physical_depth_mm, l.height_mm, l.zone_code, '
             . 'COALESCE(SUM(CASE WHEN b.quantity > 0 THEN b.quantity ELSE 0 END), 0) stock_quantity, '
             . 'COUNT(DISTINCT CASE WHEN b.quantity > 0 THEN b.product_id END) product_count, '
             . 'COUNT(DISTINCT CASE WHEN b.quantity > 0 THEN b.stock_key END) stock_position_count, '
@@ -116,10 +134,12 @@ readonly class WarehouseQueryService
             . 'LEFT JOIN wms_warehouse_aisle g ON g.id = l.aisle_id AND g.tenant_id = l.tenant_id '
             . 'LEFT JOIN wms_stock_balance b ON b.location_id = l.id AND b.tenant_id = l.tenant_id '
             . 'LEFT JOIN wms_product_reference p ON p.id = b.product_id AND p.tenant_id = b.tenant_id '
-            . 'WHERE l.tenant_id = :tenantId ' . $warehouseFilter
+            . 'WHERE l.tenant_id = :tenantId ' . $warehouseFilter . $aisleFilter
             . 'GROUP BY l.id, l.warehouse_id, w.code, w.name, l.area_id, a.code, a.name, a.area_type, '
-            . 'l.aisle_id, g.code, g.name, l.code, l.level_code, l.bin_code, l.location_type, l.capacity_quantity '
-            . 'ORDER BY w.code, a.code, g.code, l.level_code DESC, l.bin_code, l.code',
+            . 'l.aisle_id, g.code, g.name, g.storage_model, l.code, l.level_code, l.bin_code, l.location_type, l.capacity_quantity, '
+            . 'l.warehouse_number, l.level_number, l.slot_number, l.depth_number, l.coordinate, l.description, '
+            . 'l.width_mm, l.physical_depth_mm, l.height_mm, l.zone_code '
+            . 'ORDER BY w.code, a.code, g.code, l.level_number DESC, l.slot_number, l.depth_number, l.code LIMIT ' . max(1, min(10000, $limit)),
             $parameters,
         );
     }

@@ -1152,6 +1152,7 @@ inventory:
         occupancy_and_utilization_of_each_storage_location_by_warehouse_and_area: 'Occupancy and utilization of each storage location by warehouse and area.'
         qc_stock: 'QC stock'
         storage_locations: 'Storage locations'
+        unclassified: 'unclassified'
         unlimited: '· unlimited'
     overview:
         capacity: 'Capacity'
@@ -2199,6 +2200,33 @@ warehouse:
         edit_picking_strategy: 'Edit picking strategy'
         edit_special_stock_indicator: 'Edit special stock indicator'
         edit_topology_entry: 'Edit topology entry'
+    topology_fields:
+        coordinate: 'Storage location coordinate'
+        depth: 'Depth position'
+        description: 'Description'
+        height_mm: 'Height (mm)'
+        level: 'Level'
+        physical_depth_mm: 'Physical depth (mm)'
+        slot: 'Slot'
+        warehouse_number: 'Warehouse number'
+        width_mm: 'Width (mm)'
+        zone: 'Storage zone'
+    topology_generator:
+        create: 'Generate storage-location grid'
+        depths: 'Depth positions per slot'
+        introduction: 'Creates every combination of warehouse number, level, slot and depth as an individually addressable storage location.'
+        levels: 'Number of levels'
+        result: '%created% storage locations were created and %skipped% existing coordinates skipped.'
+        slots: 'Slots per level'
+        title: 'Generate storage-location grid'
+    topology_import:
+        csv_file: 'Topology CSV'
+        dry_run: 'Validate and calculate preview only'
+        help: 'The preview does not modify data. Select the file again and disable preview to perform the import.'
+        introduction: 'Imports the warehouse export and creates areas, aisles and every four-dimensional storage-location coordinate.'
+        result: '%rows% rows describe %locations% storage locations. Created: %created%, skipped: %skipped%.'
+        title: 'Import warehouse topology'
+        upload: 'Validate or import CSV'
 wcs:
     flash:
         command_status_was_processed: 'The command status was processed.'

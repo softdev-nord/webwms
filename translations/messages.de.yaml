@@ -1151,6 +1151,7 @@ inventory:
         occupancy_and_utilization_of_each_storage_location_by_warehouse_and_area: 'Belegung und Auslastung jedes Lagerplatzes nach Lager und Bereich.'
         qc_stock: 'QS-Bestand'
         storage_locations: 'Lagerplätze'
+        unclassified: 'nicht klassifiziert'
         unlimited: '· unbegrenzt'
     overview:
         capacity: 'Kapazität'
@@ -2198,6 +2199,33 @@ warehouse:
         edit_picking_strategy: 'Entnahmestrategie bearbeiten'
         edit_special_stock_indicator: 'Sonderbestandskennzeichen bearbeiten'
         edit_topology_entry: 'Topologieeintrag bearbeiten'
+    topology_fields:
+        coordinate: 'Lagerplatzkoordinate'
+        depth: 'Tiefe'
+        description: 'Beschreibung'
+        height_mm: 'Höhe (mm)'
+        level: 'Fachboden'
+        physical_depth_mm: 'Physische Tiefe (mm)'
+        slot: 'Stellplatz'
+        warehouse_number: 'Lagernummer'
+        width_mm: 'Breite (mm)'
+        zone: 'Lagerzone'
+    topology_generator:
+        create: 'Lagerplatzraster erzeugen'
+        depths: 'Tiefenplätze je Stellplatz'
+        introduction: 'Erzeugt jede Kombination aus Lagernummer, Fachboden, Stellplatz und Tiefe als eigenständigen Lagerplatz.'
+        levels: 'Anzahl Fachböden'
+        result: '%created% Lagerplätze wurden erzeugt, %skipped% bereits vorhandene Koordinaten übersprungen.'
+        slots: 'Stellplätze je Fachboden'
+        title: 'Lagerplatzraster erzeugen'
+    topology_import:
+        csv_file: 'Topologie-CSV'
+        dry_run: 'Nur prüfen und Vorschau berechnen'
+        help: 'Die Vorschau verändert keine Daten. Für den Import die Datei erneut auswählen und die Vorschauoption deaktivieren.'
+        introduction: 'Importiert den Lagerexport und erzeugt Bereiche, Gänge und jede vierdimensionale Lagerplatzkoordinate.'
+        result: '%rows% Zeilen beschreiben %locations% Lagerplätze. Erzeugt: %created%, übersprungen: %skipped%.'
+        title: 'Lagertopologie importieren'
+        upload: 'CSV prüfen oder importieren'
 wcs:
     flash:
         command_status_was_processed: 'Der Befehlsstatus wurde verarbeitet.'

@@ -1,0 +1,29 @@
+{% extends 'v3/base.html.twig' %}
+
+{% block title %}{{ page|trans }} | WebWMS 3.0{% endblock %}
+
+{% block webwms_content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">{{ 'warehouse.topology_import.title'|trans }}</h1>
+            <p class="text-muted mb-0">{{ 'warehouse.topology_import.introduction'|trans }}</p>
+        </div>
+        <a class="btn btn-outline-secondary" href="{{ path('v3_inventory_topology') }}">{{ 'administration.api_client_edit.go_to_overview'|trans }}</a>
+    </div>
+
+    {% if result %}
+        <div class="alert {{ result.created > 0 ? 'alert-success' : 'alert-info' }}">{{ 'warehouse.topology_import.result'|trans({'%rows%': result.rows, '%locations%': result.locations, '%created%': result.created, '%skipped%': result.skipped}) }}</div>
+    {% endif %}
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" class="row g-3">
+                <input type="hidden" name="_token" value="{{ csrf_token('v3_inventory_topology_import') }}">
+                <div class="col-md-6"><label class="form-label">{{ 'navigation.master_data.submenu.headline4.label'|trans }}</label><select class="form-select" name="warehouse_id" required>{% for row in warehouses %}<option value="{{ row.id }}">{{ row.code }} · {{ row.name }}</option>{% endfor %}</select></div>
+                <div class="col-md-6"><label class="form-label">{{ 'warehouse.topology_import.csv_file'|trans }}</label><input class="form-control" type="file" name="csv_file" accept=".csv,text/csv" required></div>
+                <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" name="dry_run" value="1" id="dry-run" checked><label class="form-check-label" for="dry-run">{{ 'warehouse.topology_import.dry_run'|trans }}</label></div><div class="form-text">{{ 'warehouse.topology_import.help'|trans }}</div></div>
+                <div class="col-12 d-flex justify-content-end"><button class="btn btn-primary">{{ 'warehouse.topology_import.upload'|trans }}</button></div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

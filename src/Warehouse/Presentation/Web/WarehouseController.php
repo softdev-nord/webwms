@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use InvalidArgumentException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -135,10 +136,59 @@ class WarehouseController extends AbstractController
     {
         $this->csrf($request, 'v3_inventory_bin_create');
         $user = $this->user();
-        $this->topology->createBin(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'warehouse_id'), $this->required($request, 'area_id'), $this->required($request, 'aisle_id'), $this->required($request, 'code'), $this->required($request, 'level_code'), $this->required($request, 'bin_code'), $this->required($request, 'location_type'), $request->request->getInt('capacity_quantity'), $user->actorId(), new DateTimeImmutable());
+        $warehouseNumber = $request->request->getInt('warehouse_number');
+        $levelNumber = $request->request->getInt('level_number');
+        $slotNumber = $request->request->getInt('slot_number');
+        $depthNumber = $request->request->getInt('depth_number');
+        $coordinate = sprintf('%03d%04d%04d%04d', $warehouseNumber, $levelNumber, $slotNumber, $depthNumber);
+        $this->topology->createBin(Uuid::v7()->toRfc4122(), $user->tenantId(), $this->required($request, 'warehouse_id'), $this->required($request, 'area_id'), $this->required($request, 'aisle_id'), $coordinate, (string) $levelNumber, sprintf('%04d-%04d', $slotNumber, $depthNumber), $this->required($request, 'location_type'), 0, $user->actorId(), new DateTimeImmutable(), $warehouseNumber, $levelNumber, $slotNumber, $depthNumber, $this->required($request, 'description'), $this->required($request, 'zone_code'), (float) $this->required($request, 'width_mm'), (float) $this->required($request, 'physical_depth_mm'), (float) $this->required($request, 'height_mm'));
         $this->addFlash('success', 'warehouse.flash.storage_bin_was_created');
 
         return $this->redirectToRoute('v3_inventory_topology');
+    }
+
+    #[Route('/topology/generator', name: 'topology_generator', methods: ['GET', 'POST'])]
+    #[IsGranted('inventory.topology.write')]
+    public function topologyGenerator(Request $request): Response
+    {
+        $result = null;
+        if ($request->isMethod('POST')) {
+            $this->csrf($request, 'v3_inventory_topology_generator');
+            $user = $this->user();
+            $result = $this->topology->generateGrid($user->tenantId(), $this->required($request, 'warehouse_id'), $this->required($request, 'area_id'), $this->required($request, 'aisle_id'), $request->request->getInt('warehouse_number'), $request->request->getInt('levels'), $request->request->getInt('slots'), $request->request->getInt('depths'), $this->required($request, 'description'), $this->required($request, 'zone_code'), $this->required($request, 'location_type'), (float) $this->required($request, 'width_mm'), (float) $this->required($request, 'physical_depth_mm'), (float) $this->required($request, 'height_mm'), $user->actorId(), new DateTimeImmutable());
+        }
+
+        return $this->render('warehouse/topology_generator.html.twig', [
+            'page' => 'warehouse.topology_generator.title',
+            'topology' => $this->warehouseQueries->warehouseTopology($this->user()->tenantId()),
+            'result' => $result,
+        ]);
+    }
+
+    #[Route('/topology/import', name: 'topology_import', methods: ['GET', 'POST'])]
+    #[IsGranted('inventory.topology.write')]
+    public function topologyImport(Request $request): Response
+    {
+        $result = null;
+        if ($request->isMethod('POST')) {
+            $this->csrf($request, 'v3_inventory_topology_import');
+            $file = $request->files->get('csv_file');
+            if (!$file instanceof UploadedFile || !$file->isValid() || $file->getSize() === false || $file->getSize() > 2_000_000) {
+                throw new InvalidArgumentException('A valid topology CSV file with at most 2 MB is required.');
+            }
+            $content = file_get_contents($file->getPathname());
+            if (!is_string($content)) {
+                throw new InvalidArgumentException('The topology CSV file cannot be read.');
+            }
+            $user = $this->user();
+            $result = $this->topology->importCsv($user->tenantId(), $this->required($request, 'warehouse_id'), $content, $request->request->getBoolean('dry_run'), $user->actorId(), new DateTimeImmutable());
+        }
+
+        return $this->render('warehouse/topology_import.html.twig', [
+            'page' => 'warehouse.topology_import.title',
+            'warehouses' => $this->warehouseQueries->warehouses($this->user()->tenantId()),
+            'result' => $result,
+        ]);
     }
 
     #[Route('/overview', name: 'overview', methods: ['GET'])]
@@ -161,12 +211,20 @@ class WarehouseController extends AbstractController
         if ($warehouseId === null && isset($warehouses[0]['id']) && is_string($warehouses[0]['id'])) {
             $warehouseId = $warehouses[0]['id'];
         }
+        $aisles = $warehouseId === null ? [] : $this->warehouseQueries->warehouseAisles($user->tenantId(), $warehouseId);
+        $aisleId = $this->query($request, 'aisle');
+        $validAisleIds = array_column($aisles, 'id');
+        if (!in_array($aisleId, $validAisleIds, true) && isset($aisles[0]['id']) && is_string($aisles[0]['id'])) {
+            $aisleId = $aisles[0]['id'];
+        }
 
         return $this->render('warehouse/occupancy.html.twig', [
             'page' => 'inventory.occupancy.graphical_location_occupancy',
             'warehouses' => $warehouses,
-            'locations' => $this->warehouseQueries->warehouseOccupancy($user->tenantId(), $warehouseId),
+            'aisles' => $aisles,
+            'locations' => $this->warehouseQueries->warehouseOccupancy($user->tenantId(), $warehouseId, $aisleId),
             'selectedWarehouse' => $warehouseId,
+            'selectedAisle' => $aisleId,
         ]);
     }
 

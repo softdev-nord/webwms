@@ -10,6 +10,7 @@ use InvalidArgumentException;
 use Symfony\Component\Uid\Uuid;
 use WebWMS\Inventory\Domain\InventoryReferenceNotFoundException;
 use WebWMS\Warehouse\Topology\Domain\StorageBinDefinition;
+use WebWMS\Warehouse\Topology\Domain\StorageLocationCoordinate;
 
 readonly class WarehouseTopologyService
 {
@@ -78,7 +79,7 @@ readonly class WarehouseTopologyService
         ]);
     }
 
-    public function createBin(string $id, string $tenantId, string $warehouseId, string $areaId, string $aisleId, string $code, string $levelCode, string $binCode, string $type, int $capacity, string $actorId, DateTimeImmutable $now): void
+    public function createBin(string $id, string $tenantId, string $warehouseId, string $areaId, string $aisleId, string $code, string $levelCode, string $binCode, string $type, int $capacity, string $actorId, DateTimeImmutable $now, ?int $warehouseNumber = null, ?int $levelNumber = null, ?int $slotNumber = null, ?int $depthNumber = null, ?string $description = null, ?string $zoneCode = null, ?float $widthMm = null, ?float $physicalDepthMm = null, ?float $heightMm = null): void
     {
         $bin = new StorageBinDefinition(
             mb_strtoupper(trim($code)),
@@ -102,9 +103,113 @@ readonly class WarehouseTopologyService
             'area_id' => $areaId, 'aisle_id' => $aisleId, 'code' => $bin->code(),
             'level_code' => $bin->levelCode(), 'bin_code' => $bin->binCode(),
             'location_type' => $bin->locationType(), 'capacity_quantity' => $bin->capacityQuantity(),
+            'warehouse_number' => $warehouseNumber, 'level_number' => $levelNumber,
+            'slot_number' => $slotNumber, 'depth_number' => $depthNumber,
+            'coordinate' => $warehouseNumber === null || $levelNumber === null || $slotNumber === null || $depthNumber === null
+                ? null : $this->coordinate($warehouseNumber, $levelNumber, $slotNumber, $depthNumber),
+            'description' => $description === null ? null : $this->name($description),
+            'zone_code' => $zoneCode === null ? null : $this->code($zoneCode, 30),
+            'width_mm' => $this->dimension($widthMm), 'physical_depth_mm' => $this->dimension($physicalDepthMm),
+            'height_mm' => $this->dimension($heightMm),
             'putaway_enabled' => 1, 'putaway_priority' => 100,
             'created_by' => $actorId, 'created_at' => $this->date($now),
         ]);
+    }
+
+    /**
+     * @return array{created: int, skipped: int}
+     */
+    public function generateGrid(string $tenantId, string $warehouseId, string $areaId, string $aisleId, int $warehouseNumber, int $levels, int $slots, int $depths, string $description, string $zoneCode, string $locationType, float $widthMm, float $physicalDepthMm, float $heightMm, string $actorId, DateTimeImmutable $now): array
+    {
+        $this->assertGrid($warehouseNumber, $levels, $slots, $depths);
+        $this->assertActor($tenantId, $actorId);
+        if ($this->connection->fetchOne('SELECT 1 FROM wms_warehouse_aisle a INNER JOIN wms_warehouse_area ar ON ar.id = a.area_id WHERE a.id = :aisleId AND ar.id = :areaId AND ar.warehouse_id = :warehouseId AND a.tenant_id = :tenantId AND ar.tenant_id = :tenantId', ['aisleId' => $aisleId, 'areaId' => $areaId, 'warehouseId' => $warehouseId, 'tenantId' => $tenantId]) === false) {
+            throw new InventoryReferenceNotFoundException('Warehouse, area and aisle must form a valid tenant hierarchy.');
+        }
+        $description = $this->name($description);
+        $zoneCode = $this->code($zoneCode, 30);
+        $locationType = $this->type($locationType, ['storage', 'receiving', 'shipping', 'quality', 'blocked']);
+        $existingCoordinates = [];
+        foreach ($this->connection->fetchFirstColumn('SELECT coordinate FROM wms_storage_location WHERE tenant_id = :tenantId AND coordinate IS NOT NULL', ['tenantId' => $tenantId]) as $existingCoordinate) {
+            if (is_string($existingCoordinate)) {
+                $existingCoordinates[$existingCoordinate] = true;
+            }
+        }
+        $created = 0;
+        $skipped = 0;
+
+        $this->connection->transactional(function () use ($tenantId, $warehouseId, $areaId, $aisleId, $warehouseNumber, $levels, $slots, $depths, $description, $zoneCode, $locationType, $widthMm, $physicalDepthMm, $heightMm, $actorId, $now, $existingCoordinates, &$created, &$skipped): void {
+            for ($level = 1; $level <= $levels; ++$level) {
+                for ($slot = 1; $slot <= $slots; ++$slot) {
+                    for ($depth = 1; $depth <= $depths; ++$depth) {
+                        $coordinate = $this->coordinate($warehouseNumber, $level, $slot, $depth);
+                        if (isset($existingCoordinates[$coordinate])) {
+                            ++$skipped;
+                            continue;
+                        }
+
+                        $this->connection->insert('wms_storage_location', [
+                            'id' => Uuid::v7()->toRfc4122(), 'tenant_id' => $tenantId,
+                            'warehouse_id' => $warehouseId, 'area_id' => $areaId, 'aisle_id' => $aisleId,
+                            'code' => $coordinate, 'level_code' => (string) $level,
+                            'bin_code' => sprintf('%04d-%04d', $slot, $depth), 'location_type' => $locationType,
+                            'capacity_quantity' => 0, 'warehouse_number' => $warehouseNumber,
+                            'level_number' => $level, 'slot_number' => $slot, 'depth_number' => $depth,
+                            'coordinate' => $coordinate, 'description' => $description, 'zone_code' => $zoneCode,
+                            'width_mm' => $this->dimension($widthMm), 'physical_depth_mm' => $this->dimension($physicalDepthMm),
+                            'height_mm' => $this->dimension($heightMm), 'putaway_enabled' => 1, 'putaway_priority' => 100,
+                            'created_by' => $actorId, 'created_at' => $this->date($now),
+                        ]);
+                        $existingCoordinates[$coordinate] = true;
+                        ++$created;
+                    }
+                }
+            }
+        });
+
+        return ['created' => $created, 'skipped' => $skipped];
+    }
+
+    /**
+     * @return array{rows: int, locations: int, created: int, skipped: int}
+     */
+    public function importCsv(string $tenantId, string $warehouseId, string $csv, bool $dryRun, string $actorId, DateTimeImmutable $now): array
+    {
+        if (!$this->referenceExists('wms_warehouse', $warehouseId, $tenantId)) {
+            throw new InventoryReferenceNotFoundException('The warehouse does not exist in the tenant.');
+        }
+        $this->assertActor($tenantId, $actorId);
+        $rows = $this->csvRows($csv);
+        $locations = 0;
+        foreach ($rows as $row) {
+            $warehouseNumber = $this->csvInteger($row, 'Lagernummer');
+            $levels = $this->csvInteger($row, 'Fachboden');
+            $slots = $this->csvInteger($row, 'Stellplatz');
+            $depths = $this->csvInteger($row, 'Tiefe');
+            $this->assertGrid($warehouseNumber, $levels, $slots, $depths);
+            $this->name($this->csvString($row, 'Bezeichnung'), 100);
+            $this->name($this->csvString($row, 'Bezeichnung Lang'), 100);
+            $this->code($this->csvString($row, 'Lager-Model'), 20);
+            $this->code($this->csvString($row, 'Lager-Typ'), 30);
+            $locations += $levels * $slots * $depths;
+        }
+        if ($dryRun) {
+            return ['rows' => count($rows), 'locations' => $locations, 'created' => 0, 'skipped' => 0];
+        }
+
+        $created = 0;
+        $skipped = 0;
+        foreach ($rows as $row) {
+            $zoneCode = $this->code($this->csvString($row, 'Lager-Typ'), 30);
+            $areaId = $this->ensureArea($tenantId, $warehouseId, $zoneCode, $this->csvString($row, 'Bezeichnung Lang'), $actorId, $now);
+            $warehouseNumber = $this->csvInteger($row, 'Lagernummer');
+            $aisleId = $this->ensureAisle($tenantId, $areaId, (string) $warehouseNumber, $this->csvString($row, 'Bezeichnung'), $this->csvString($row, 'Lager-Model'), $actorId, $now);
+            $result = $this->generateGrid($tenantId, $warehouseId, $areaId, $aisleId, $warehouseNumber, $this->csvInteger($row, 'Fachboden'), $this->csvInteger($row, 'Stellplatz'), $this->csvInteger($row, 'Tiefe'), $this->csvString($row, 'Bezeichnung Lang'), $zoneCode, $zoneCode === 'WAZ' ? 'shipping' : 'storage', 0, 0, 0, $actorId, $now);
+            $created += $result['created'];
+            $skipped += $result['skipped'];
+        }
+
+        return ['rows' => count($rows), 'locations' => $locations, 'created' => $created, 'skipped' => $skipped];
     }
 
     /** @return array<string, mixed> */
@@ -174,9 +279,14 @@ readonly class WarehouseTopologyService
             throw new InventoryReferenceNotFoundException('The bin hierarchy is invalid.');
         }
 
-        $bin = new StorageBinDefinition($this->string($data, 'code'), $this->string($data, 'level_code'), $this->string($data, 'bin_code'), $this->string($data, 'location_type'), $this->integer($data, 'capacity_quantity'));
+        $warehouseNumber = $this->integer($data, 'warehouse_number');
+        $levelNumber = $this->integer($data, 'level_number');
+        $slotNumber = $this->integer($data, 'slot_number');
+        $depthNumber = $this->integer($data, 'depth_number');
+        $coordinate = $this->coordinate($warehouseNumber, $levelNumber, $slotNumber, $depthNumber);
+        $bin = new StorageBinDefinition($coordinate, (string) $levelNumber, sprintf('%04d-%04d', $slotNumber, $depthNumber), $this->string($data, 'location_type'), 0);
 
-        return ['warehouse_id' => $warehouseId, 'area_id' => $areaId, 'aisle_id' => $aisleId, 'code' => $bin->code(), 'level_code' => $bin->levelCode(), 'bin_code' => $bin->binCode(), 'location_type' => $bin->locationType(), 'capacity_quantity' => $bin->capacityQuantity(), 'putaway_enabled' => $this->boolean($data, 'putaway_enabled') ? 1 : 0, 'putaway_priority' => $this->integer($data, 'putaway_priority')];
+        return ['warehouse_id' => $warehouseId, 'area_id' => $areaId, 'aisle_id' => $aisleId, 'code' => $bin->code(), 'level_code' => $bin->levelCode(), 'bin_code' => $bin->binCode(), 'location_type' => $bin->locationType(), 'capacity_quantity' => 0, 'warehouse_number' => $warehouseNumber, 'level_number' => $levelNumber, 'slot_number' => $slotNumber, 'depth_number' => $depthNumber, 'coordinate' => $coordinate, 'description' => $this->name($this->string($data, 'description')), 'zone_code' => $this->code($this->string($data, 'zone_code'), 30), 'width_mm' => $this->dimension($this->decimal($data, 'width_mm')), 'physical_depth_mm' => $this->dimension($this->decimal($data, 'physical_depth_mm')), 'height_mm' => $this->dimension($this->decimal($data, 'height_mm')), 'putaway_enabled' => $this->boolean($data, 'putaway_enabled') ? 1 : 0, 'putaway_priority' => $this->integer($data, 'putaway_priority')];
     }
 
     private function table(string $resource): string
@@ -227,6 +337,17 @@ readonly class WarehouseTopologyService
     private function boolean(array $data, string $field): bool
     {
         return filter_var($data[$field] ?? false, FILTER_VALIDATE_BOOL);
+    }
+
+    /** @param array<string, mixed> $data */
+    private function decimal(array $data, string $field): float
+    {
+        $value = $data[$field] ?? null;
+        if (!is_int($value) && !is_float($value) && (!is_string($value) || !is_numeric($value))) {
+            throw new InvalidArgumentException(sprintf('Field "%s" must be numeric.', $field));
+        }
+
+        return (float) $value;
     }
 
     private function timezone(string $timezone): string
@@ -281,6 +402,121 @@ readonly class WarehouseTopologyService
         }
 
         return $type;
+    }
+
+    private function coordinate(int $warehouseNumber, int $level, int $slot, int $depth): string
+    {
+        return new StorageLocationCoordinate($warehouseNumber, $level, $slot, $depth)->value();
+    }
+
+    private function assertGrid(int $warehouseNumber, int $levels, int $slots, int $depths): void
+    {
+        if ($warehouseNumber < 1 || $warehouseNumber > 999 || $levels < 1 || $levels > 9999 || $slots < 1 || $slots > 9999 || $depths < 1 || $depths > 9999) {
+            throw new InvalidArgumentException('Warehouse number, levels, slots and depths must fit the V2 coordinate format.');
+        }
+
+        if ($levels * $slots * $depths > 100000) {
+            throw new InvalidArgumentException('A single topology grid must not create more than 100,000 storage locations.');
+        }
+    }
+
+    private function dimension(?float $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+        if ($value < 0 || $value > 999999.99) {
+            throw new InvalidArgumentException('A storage location dimension is invalid.');
+        }
+
+        return number_format($value, 2, '.', '');
+    }
+
+    /** @return list<array<string, string>> */
+    private function csvRows(string $csv): array
+    {
+        $stream = fopen('php://temp', 'w+');
+        if ($stream === false) {
+            throw new InvalidArgumentException('The CSV input cannot be read.');
+        }
+        fwrite($stream, preg_replace('/^\xEF\xBB\xBF/', '', $csv) ?? $csv);
+        rewind($stream);
+        $headers = fgetcsv($stream, separator: ',', escape: '');
+        $required = ['Lagernummer', 'Bezeichnung', 'Fachboden', 'Stellplatz', 'Tiefe', 'Lager-Model', 'Lager-Typ', 'Bezeichnung Lang', 'Letzte Änderung'];
+        if ($headers !== $required) {
+            throw new InvalidArgumentException('The topology CSV headers do not match the expected export format.');
+        }
+        $headers = $required;
+
+        $rows = [];
+        while (($values = fgetcsv($stream, separator: ',', escape: '')) !== false) {
+            if ($values === [null] || $values === []) {
+                continue;
+            }
+            if (count($values) !== count($headers)) {
+                throw new InvalidArgumentException('A topology CSV row has an invalid number of columns.');
+            }
+            $combined = array_combine($headers, array_map(static fn (?string $value): string => trim((string) $value), $values));
+            if ($combined === false) {
+                throw new InvalidArgumentException('A topology CSV row cannot be mapped to its headers.');
+            }
+            /** @var array<string, string> $row */
+            $row = $combined;
+            $rows[] = $row;
+        }
+        fclose($stream);
+        if ($rows === []) {
+            throw new InvalidArgumentException('The topology CSV does not contain any data rows.');
+        }
+
+        return $rows;
+    }
+
+    /** @param array<string, string> $row */
+    private function csvInteger(array $row, string $field): int
+    {
+        $value = $this->csvString($row, $field);
+        if (!ctype_digit($value)) {
+            throw new InvalidArgumentException(sprintf('CSV field "%s" must be a positive integer.', $field));
+        }
+
+        return (int) $value;
+    }
+
+    /** @param array<string, string> $row */
+    private function csvString(array $row, string $field): string
+    {
+        $value = trim($row[$field] ?? '');
+        if ($value === '') {
+            throw new InvalidArgumentException(sprintf('CSV field "%s" must not be empty.', $field));
+        }
+
+        return $value;
+    }
+
+    private function ensureArea(string $tenantId, string $warehouseId, string $code, string $name, string $actorId, DateTimeImmutable $now): string
+    {
+        $id = $this->connection->fetchOne('SELECT id FROM wms_warehouse_area WHERE tenant_id = :tenantId AND warehouse_id = :warehouseId AND code = :code', ['tenantId' => $tenantId, 'warehouseId' => $warehouseId, 'code' => $code]);
+        if (is_string($id)) {
+            return $id;
+        }
+
+        $id = Uuid::v7()->toRfc4122();
+        $this->createArea($id, $tenantId, $warehouseId, $code, $name, $code === 'WAZ' ? 'shipping' : 'storage', $actorId, $now);
+
+        return $id;
+    }
+
+    private function ensureAisle(string $tenantId, string $areaId, string $code, string $name, string $storageModel, string $actorId, DateTimeImmutable $now): string
+    {
+        $id = $this->connection->fetchOne('SELECT id FROM wms_warehouse_aisle WHERE tenant_id = :tenantId AND area_id = :areaId AND code = :code', ['tenantId' => $tenantId, 'areaId' => $areaId, 'code' => $code]);
+        if (!is_string($id)) {
+            $id = Uuid::v7()->toRfc4122();
+            $this->createAisle($id, $tenantId, $areaId, $code, $name, $actorId, $now);
+        }
+        $this->connection->update('wms_warehouse_aisle', ['storage_model' => $this->code($storageModel, 20)], ['id' => $id, 'tenant_id' => $tenantId]);
+
+        return $id;
     }
 
     private function date(DateTimeImmutable $date): string

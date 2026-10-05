@@ -111,6 +111,22 @@ class WarehouseQueryServiceTest extends TestCase
         self::assertSame([], new WarehouseQueryService($connection)->warehouseOccupancy('tenant-id', 'warehouse-id'));
     }
 
+    public function testWarehouseOccupancyCanBeRestrictedToOneAisle(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects($this->once())->method('fetchAllAssociative')->with(
+            self::callback(static function (string $sql): bool {
+                self::assertStringContainsString('AND l.aisle_id = :aisleId', $sql);
+                self::assertStringContainsString('l.depth_number', $sql);
+
+                return true;
+            }),
+            ['tenantId' => 'tenant-id', 'warehouseId' => 'warehouse-id', 'aisleId' => 'aisle-id'],
+        )->willReturn([]);
+
+        self::assertSame([], new WarehouseQueryService($connection)->warehouseOccupancy('tenant-id', 'warehouse-id', 'aisle-id'));
+    }
+
     public function testStockQuotesTheReservedCursorAliasForMariaDb(): void
     {
         $connection = $this->createMock(Connection::class);

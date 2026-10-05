@@ -41,6 +41,22 @@ class WarehouseTopologyServiceTest extends TestCase
         $this->service($connection)->topologyEntry('tenant', 'site', 'missing');
     }
 
+    public function testCsvDryRunCalculatesEveryAddressableStorageLocationWithoutWriting(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects($this->exactly(2))->method('fetchOne')->willReturn(1);
+        $connection->expects($this->never())->method('insert');
+        $csv = <<<'CSV'
+"Lagernummer","Bezeichnung","Fachboden","Stellplatz","Tiefe","Lager-Model","Lager-Typ","Bezeichnung Lang","Letzte Änderung"
+"101","Block","1","9","32","L2","BLL","Block","2019-03-01 00:00:00"
+CSV;
+
+        self::assertSame(
+            ['rows' => 1, 'locations' => 288, 'created' => 0, 'skipped' => 0],
+            $this->service($connection)->importCsv('tenant', 'warehouse', $csv, true, 'actor', new DateTimeImmutable()),
+        );
+    }
+
     private function service(Connection $connection): WarehouseTopologyService
     {
         return new WarehouseTopologyService($connection);

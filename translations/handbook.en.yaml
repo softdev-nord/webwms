@@ -598,10 +598,11 @@ chapter:
         navigation: Warehouse & stock → Occupancy
         permissions: ["inventory.overview.read"]
         overview:
-        - Colours distinguish empty, occupied, quality stock and blocked or full. Every card shows bin type, aisle, level, bin, quantity, capacity and product count.
+        - Colours distinguish empty, occupied, quality stock and blocked or full. Every card shows its unique coordinate plus warehouse number, level, slot, depth position, quantity and product count.
         - The progress bar calculates quantity utilisation. Clicking opens real-time stock for the associated warehouse.
         fields:
           warehouse: {label: "Warehouse", required: true, format: "Selection of an existing warehouse", example: "WH-HAMBURG", help: "Choose the warehouse whose complete bin structure is to be visualised.", effect: "Groups all warehouse bins by area and calculates state and utilisation.", errors: "Without an existing warehouse or bins, the view remains empty."}
+          aisle: {label: "Storage area/aisle", required: true, format: "Selection of an aisle in the chosen warehouse", example: "101 · Block", help: "Limit large topologies to one physical storage area.", effect: "Loads up to 5,000 individual depth positions from the selected aisle.", errors: "An aisle outside the warehouse is automatically replaced by the first valid aisle."}
         actions:
           display: {label: "Display", description: "Loads all bins and stock metrics for the selected warehouse.", result: "Colour-coded occupancy is rebuilt without changing stock."}
           open_stock: {label: "Open bin", description: "Moves from a bin card to real-time stock for the warehouse.", result: "Stock is read only."}
@@ -712,8 +713,8 @@ chapter:
         navigation: Warehouse & stock → Warehouse topology
         permissions: ["inventory.topology.read; inventory.topology.write for creation and editing."]
         overview:
-        - The five tabs show the count and core data of each hierarchy level. Bins resolve their parents as site, warehouse, area and aisle.
-        - A capacity of zero is displayed as unlimited. With write permission, every row links to a separate edit page and new elements are created by resource type.
+        - The five tabs show the count and core data of each hierarchy level. Every bin has a unique V2-compatible coordinate made from warehouse number, level, slot and depth.
+        - With write permission, every row links to a separate edit page. Grid generator and CSV import are available as dedicated subpages.
         actions:
           create: {label: "Create topology element", description: "Opens the type-specific form for a site, warehouse, area, aisle or bin.", result: "The overview remains unchanged until the form is saved."}
           edit: {label: "Edit", description: "Opens the selected element with its type-specific fields.", result: "Identity and hierarchy assignment remain controlled."}
@@ -731,22 +732,51 @@ chapter:
           warehouse_id: {label: "Warehouse", required: true, format: "Selection of an existing warehouse", example: "WH-HH-01", help: "Select the responsible warehouse for an area or bin.", effect: "Limits the area or bin to this warehouse.", errors: "Inconsistent parent assignments prevent saving.", usages: ["Warehouse area and bin"]}
           area_id: {label: "Warehouse area", required: true, format: "Selection of an existing area", example: "PICK-A", help: "Select the correct functional area for an aisle or bin.", effect: "Assigns the aisle or bin to the area.", errors: "An area outside the selected warehouse is invalid.", usages: ["Warehouse aisle and bin"]}
           aisle_id: {label: "Warehouse aisle", required: true, format: "Selection of an existing aisle", example: "A-01", help: "The aisle must belong to the selected area and warehouse.", effect: "Completes the bin's parent chain.", errors: "An inconsistent aisle is rejected."}
-          code: {label: "Code", required: true, format: "Code unique within its parent context", example: "BIN-A-01-02-03", help: "Use short, scannable and permanently stable codes.", effect: "Identifies the element in selection, scanning and process control.", errors: "Empty or duplicate contextual codes are rejected.", usages: ["Site, warehouse, area, aisle and bin"]}
+          code: {label: "Code", required: true, format: "Code unique within its parent context", example: "PICK-A", help: "Use short, scannable and permanently stable codes.", effect: "Identifies a site, warehouse, area or aisle.", errors: "Empty or duplicate contextual codes are rejected.", usages: ["Site, warehouse, area and aisle"]}
           name: {label: "Name", required: true, format: "Understandable name", example: "Northern picking area", help: "Describe the operational purpose for planners and operators.", effect: "Appears in overviews and selections.", errors: "An empty name prevents creation.", usages: ["Site, warehouse, area and aisle"]}
           timezone: {label: "Time zone", required: true, format: "Valid IANA time zone", example: "Europe/Berlin", help: "Enter the physical site's local time zone.", effect: "Controls local times and time-dependent processes.", errors: "Invalid time zones are rejected."}
           status: {label: "Site state", required: false, format: "active or inactive", example: "active", help: "Disable while editing only when the site must accept no new operations.", effect: "Controls whether the site is operationally usable.", errors: "Open dependencies can prevent deactivation."}
           warehouse_type: {label: "Warehouse type", required: true, format: "standard, high_bay, block or automated", example: "high_bay", help: "Select the physical and operational warehouse type.", effect: "Classifies the warehouse for planning and reporting.", errors: "Types not offered are rejected."}
           area_type: {label: "Area type", required: true, format: "storage, receiving, shipping, quality or blocked", example: "quality", help: "The type must reflect the actual process function.", effect: "Controls suitability for receipt, storage, shipping or blocking.", errors: "An incorrect type can prevent putaway and routing."}
-          level_code: {label: "Level", required: true, format: "Short level code", example: "02", help: "Name the physical rack level consistently and scannably.", effect: "Is used with compartment and bin code for display and routing.", errors: "An empty level prevents bin creation."}
-          bin_code: {label: "Compartment", required: true, format: "Short compartment code", example: "03", help: "Enter the physical compartment within aisle and level.", effect: "Completes the exact bin position.", errors: "An empty or duplicate combination is invalid."}
+          warehouse_number: {label: "Warehouse number", required: true, format: "Integer from 1 to 999", example: "101", help: "Use the physical storage-area number from the established numbering scheme.", effect: "Forms the first three coordinate digits.", errors: "Zero, negative or values longer than three digits are rejected."}
+          level_number: {label: "Level", required: true, format: "Integer from 1 to 9999", example: "1", help: "Usually 1 for block areas; use the actual rack level for racking.", effect: "Forms the second four-digit coordinate block.", errors: "Values outside the coordinate format are rejected."}
+          slot_number: {label: "Slot", required: true, format: "Integer from 1 to 9999", example: "2", help: "Enter the position within the level.", effect: "Forms the third four-digit coordinate block.", errors: "Duplicate combinations are rejected."}
+          depth_number: {label: "Depth position", required: true, format: "Integer from 1 to 9999", example: "17", help: "Every physical depth or stacking position receives an individual bin.", effect: "Forms the final four-digit coordinate block.", errors: "Duplicate combinations are rejected."}
+          zone_code: {label: "Storage zone", required: true, format: "Code up to 30 characters", example: "BLOCK", help: "Retain the V2 zone or operational zone code.", effect: "Preserves the functional storage classification.", errors: "Empty or syntactically invalid codes are rejected."}
+          dimensions: {label: "Width, depth and height", required: true, format: "Non-negative millimetre values", example: "800 × 1200 × 2000", help: "Maintain physical dimensions of the individual position.", effect: "Supports later load-carrier and suitability checks.", errors: "Negative or excessive values are invalid."}
           location_type: {label: "Bin type", required: true, format: "storage, receiving, shipping, quality or blocked", example: "storage", help: "Choose only a type matching physical use.", effect: "Limits permitted storage and process operations.", errors: "An unsuitable type can block stock movements."}
-          capacity_quantity: {label: "Capacity", required: false, format: "Integer from 0; 0 means unlimited", example: "100", help: "Maintain capacity in the operational quantity unit.", effect: "Controls utilisation display and capacity validation.", errors: "Negative values are invalid."}
           putaway_priority: {label: "Putaway priority", required: false, format: "Integer from 0", example: "100", help: "Available only when editing a bin; align it with the operational priority scheme.", effect: "Influences the order of suitable putaway destinations.", errors: "Contradictory priorities produce unexpected destination order."}
           putaway_enabled: {label: "Putaway enabled", required: false, format: "Checkbox", example: "enabled", help: "Disable when the bin must temporarily not be a putaway destination.", effect: "Removes the bin from automatic putaway selection.", errors: "Existing stock remains and must be handled separately."}
         actions:
           save: {label: "Save", description: "Validates resource type, parent chain and type-specific values and creates or updates the element.", result: "The element appears updated in its topology tab."}
           cancel: {label: "Cancel", description: "Returns to topology without saving.", result: "Existing values remain unchanged."}
         image: {src: "/assets/images/handbook/warehouse/topology-form.svg", alt: "Form for hierarchy, type, capacity and putaway control"}
+      topology_generator:
+        template: warehouse/topology_generator.html.twig
+        title: Generate storage-location grid
+        purpose: The generator creates every combination of warehouse number, level, slot and depth as an individually addressable storage location.
+        navigation: Warehouse & stock → Warehouse topology → Generate storage-location grid
+        permissions: ["inventory.topology.write"]
+        overview: ["Block 101 with 1 level, 9 slots and 32 depth positions creates 288 storage locations. Existing coordinates are skipped idempotently."]
+        fields:
+          grid: {label: "Grid values", required: true, format: "Warehouse number 1–999; levels, slots and depths 1–9999", example: "101 / 1 / 9 / 32", help: "Enter the maximum existing positions for every dimension.", effect: "Creates the Cartesian product of all four dimensions.", errors: "More than 100,000 locations per grid or invalid parent relationships are rejected."}
+          dimensions: {label: "Dimensions", required: true, format: "Millimetre values from 0", example: "800 / 1200 / 2000", help: "Enter width, physical depth and height of one position.", effect: "Copied to every generated location.", errors: "Negative values are rejected."}
+        actions:
+          create: {label: "Generate storage-location grid", description: "Validates hierarchy and grid and atomically creates every missing coordinate.", result: "The numbers of created and skipped locations are shown."}
+        image: {src: "/assets/images/handbook/placeholder.svg", alt: "Storage-location grid generator"}
+      topology_import:
+        template: warehouse/topology_import.html.twig
+        title: Import warehouse topology from CSV
+        purpose: The import processes the established warehouse export and creates areas, aisles and individual bins using the V2 coordinate format.
+        navigation: Warehouse & stock → Warehouse topology → Import warehouse topology
+        permissions: ["inventory.topology.write"]
+        overview: ["Dry run validates headers and values and calculates the number of resulting locations without changing data. The subsequent import skips existing coordinates."]
+        fields:
+          csv_file: {label: "Topology CSV", required: true, format: "UTF-8 CSV with the nine established German columns; maximum 2 MB", example: "Export.csv", help: "Always run validation first with dry run enabled.", effect: "Areas derive from storage type, aisles from warehouse number and locations from level × slot × depth.", errors: "Different headers, empty required values and invalid numbers abort processing."}
+          dry_run: {label: "Validate only", required: false, format: "Checkbox", example: "enabled", help: "Disable for the actual import and select the file again.", effect: "Prevents every write operation during validation.", errors: "Disabling dry run executes the import immediately."}
+        actions:
+          upload: {label: "Validate or import CSV", description: "Validates the file and performs idempotent creation depending on dry-run state.", result: "Row, expected, created and skipped counts are shown."}
+        image: {src: "/assets/images/handbook/placeholder.svg", alt: "CSV import for warehouse topology"}
       stock_blocks_overview:
         template: warehouse/stock_blocks.html.twig
         title: Stock blocks

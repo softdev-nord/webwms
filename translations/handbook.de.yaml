@@ -602,10 +602,11 @@ chapter:
         navigation: Lager & Bestand → Belegung
         permissions: ["inventory.overview.read"]
         overview:
-        - Farbcodes unterscheiden leer, belegt, Qualitätsbestand sowie gesperrt oder voll. Jede Karte zeigt Platztyp, Gang, Ebene, Fach, Menge, Kapazität und Artikelanzahl.
+        - Farbcodes unterscheiden leer, belegt, Qualitätsbestand sowie gesperrt oder voll. Jede Karte zeigt die eindeutige Koordinate sowie Lagernummer, Fachboden, Stellplatz, Tiefe, Menge und Artikelanzahl.
         - Der Fortschrittsbalken berechnet die mengenbezogene Auslastung. Ein Klick öffnet den Echtzeitbestand des zugehörigen Lagers.
         fields:
           warehouse: {label: "Lager", required: true, format: "Auswahl eines vorhandenen Lagers", example: "WH-HAMBURG", help: "Wählen Sie das Lager, dessen vollständige Platzstruktur visualisiert werden soll.", effect: "Gruppiert alle Plätze des Lagers nach Bereich und berechnet Zustand und Auslastung.", errors: "Ohne vorhandenes Lager beziehungsweise ohne Plätze bleibt die Ansicht leer."}
+          aisle: {label: "Lagerfläche/Gang", required: true, format: "Auswahl eines Gangs der gewählten Lagerstruktur", example: "101 · Block", help: "Grenzen Sie große Topologien auf eine physische Lagerfläche ein.", effect: "Lädt bis zu 5.000 einzelne Tiefenplätze des ausgewählten Gangs.", errors: "Ein nicht zum Lager gehörender Gang wird automatisch durch den ersten gültigen Gang ersetzt."}
         actions:
           display: {label: "Anzeigen", description: "Lädt alle Lagerplätze und Bestandskennzahlen des gewählten Lagers.", result: "Die farbcodierte Belegung wird ohne Bestandsänderung neu aufgebaut."}
           open_stock: {label: "Lagerplatz öffnen", description: "Wechselt von einer Platzkarte in den Echtzeitbestand des Lagers.", result: "Der Bestand wird nur gelesen."}
@@ -716,8 +717,8 @@ chapter:
         navigation: Lager & Bestand → Lagertopologie
         permissions: ["inventory.topology.read; inventory.topology.write für Anlage und Bearbeitung."]
         overview:
-        - Die fünf Register zeigen Anzahl und Kerndaten jeder Hierarchieebene. Lagerplätze lösen ihre Eltern lesbar als Standort, Lager, Bereich und Gang auf.
-        - Kapazität null wird als unbegrenzt angezeigt. Jede Tabellenzeile besitzt bei Schreibrecht eine separate Bearbeiten-Seite; neue Elemente werden nach Ressourcentyp angelegt.
+        - Die fünf Register zeigen Anzahl und Kerndaten jeder Hierarchieebene. Jeder Lagerplatz besitzt eine eindeutige V2-kompatible Koordinate aus Lagernummer, Fachboden, Stellplatz und Tiefe.
+        - Jede Tabellenzeile besitzt bei Schreibrecht eine separate Bearbeiten-Seite. Rastergenerator und CSV-Import stehen als eigene Unterseiten bereit.
         actions:
           create: {label: "Topologieelement anlegen", description: "Öffnet das typabhängige Formular für Standort, Lager, Bereich, Gang oder Lagerplatz.", result: "Die Übersicht bleibt bis zum Speichern unverändert."}
           edit: {label: "Bearbeiten", description: "Öffnet das ausgewählte Element mit seinen typabhängigen Feldern.", result: "Identität und Hierarchiezuordnung bleiben kontrolliert erhalten."}
@@ -735,22 +736,51 @@ chapter:
           warehouse_id: {label: "Lager", required: true, format: "Auswahl eines vorhandenen Lagers", example: "WH-HH-01", help: "Für Bereich und Lagerplatz das tatsächlich zuständige Lager auswählen.", effect: "Begrenzt Bereich beziehungsweise Platz auf dieses Lager.", errors: "Inkonsistente Elternzuordnungen verhindern das Speichern.", usages: ["Lagerbereich und Lagerplatz"]}
           area_id: {label: "Lagerbereich", required: true, format: "Auswahl eines vorhandenen Bereichs", example: "PICK-A", help: "Für Gang oder Platz den fachlich richtigen Bereich auswählen.", effect: "Ordnet Gang beziehungsweise Platz dem Bereich zu.", errors: "Ein Bereich außerhalb des gewählten Lagers ist ungültig.", usages: ["Lagergang und Lagerplatz"]}
           aisle_id: {label: "Lagergang", required: true, format: "Auswahl eines vorhandenen Gangs", example: "A-01", help: "Der Gang muss zum gewählten Bereich und Lager gehören.", effect: "Vervollständigt die Elternkette des Lagerplatzes.", errors: "Ein inkonsistenter Gang wird abgewiesen."}
-          code: {label: "Code", required: true, format: "Im jeweiligen Elternkontext eindeutiger Code", example: "BIN-A-01-02-03", help: "Kurze, scanbare und dauerhaft stabile Codes verwenden.", effect: "Identifiziert das Element in Auswahl, Scan und Prozesssteuerung.", errors: "Leere oder im Kontext doppelte Codes werden abgewiesen.", usages: ["Standort, Lager, Bereich, Gang und Lagerplatz"]}
+          code: {label: "Code", required: true, format: "Im jeweiligen Elternkontext eindeutiger Code", example: "PICK-A", help: "Kurze, scanbare und dauerhaft stabile Codes verwenden.", effect: "Identifiziert Standort, Lager, Bereich oder Gang.", errors: "Leere oder im Kontext doppelte Codes werden abgewiesen.", usages: ["Standort, Lager, Bereich und Gang"]}
           name: {label: "Name", required: true, format: "Verständliche Bezeichnung", example: "Kommissionierung Nord", help: "Den betrieblichen Zweck für Disponenten und Bediener benennen.", effect: "Erscheint in Übersichten und Auswahlfeldern.", errors: "Ein leerer Name verhindert die Anlage.", usages: ["Standort, Lager, Bereich und Gang"]}
           timezone: {label: "Zeitzone", required: true, format: "Gültige IANA-Zeitzone", example: "Europe/Berlin", help: "Die lokale Zeitzone des physischen Standorts angeben.", effect: "Steuert lokale Zeitdarstellung und zeitabhängige Prozesse.", errors: "Ungültige Zeitzonen werden abgewiesen."}
           status: {label: "Standortstatus", required: false, format: "active oder inactive", example: "active", help: "Nur bei Bearbeitung deaktivieren, wenn der Standort keine neuen Vorgänge annehmen soll.", effect: "Steuert die operative Nutzbarkeit des Standorts.", errors: "Offene Abhängigkeiten können eine Deaktivierung verhindern."}
           warehouse_type: {label: "Lagertyp", required: true, format: "standard, high_bay, block oder automated", example: "high_bay", help: "Den baulichen und operativen Lagertyp auswählen.", effect: "Klassifiziert das Lager für Planung und Auswertung.", errors: "Nicht angebotene Typen werden abgewiesen."}
           area_type: {label: "Bereichstyp", required: true, format: "storage, receiving, shipping, quality oder blocked", example: "quality", help: "Der Typ muss der tatsächlichen Prozessfunktion entsprechen.", effect: "Steuert fachliche Eignung für Zugang, Lagerung, Versand oder Sperrung.", errors: "Falsche Typisierung kann Einlagerung und Routing verhindern."}
-          level_code: {label: "Ebene", required: true, format: "Kurzer Ebenencode", example: "02", help: "Physische Regalebene konsistent und scanbar bezeichnen.", effect: "Wird mit Fach und Platzcode in Anzeige und Wegeplanung verwendet.", errors: "Ein leerer Ebenencode verhindert die Platzanlage."}
-          bin_code: {label: "Fach", required: true, format: "Kurzer Fachcode", example: "03", help: "Die physische Fachposition innerhalb von Gang und Ebene angeben.", effect: "Ergänzt die genaue Lagerplatzposition.", errors: "Ein leerer oder doppelt kombinierter Fachcode ist ungültig."}
+          warehouse_number: {label: "Lagernummer", required: true, format: "Ganzzahl 1 bis 999", example: "101", help: "Nummer der physischen Lagerfläche aus dem bestehenden Nummernplan verwenden.", effect: "Bildet die ersten drei Stellen der Koordinate.", errors: "Null, negative oder mehr als dreistellige Werte werden abgewiesen."}
+          level_number: {label: "Fachboden", required: true, format: "Ganzzahl 1 bis 9999", example: "1", help: "Bei Blockflächen üblicherweise 1, bei Regalen die tatsächliche Ebene eintragen.", effect: "Bildet den zweiten vierstelligen Koordinatenblock.", errors: "Werte außerhalb des Koordinatenformats werden abgewiesen."}
+          slot_number: {label: "Stellplatz", required: true, format: "Ganzzahl 1 bis 9999", example: "2", help: "Position innerhalb des Fachbodens angeben.", effect: "Bildet den dritten vierstelligen Koordinatenblock.", errors: "Doppelte Kombinationen sind unzulässig."}
+          depth_number: {label: "Tiefe", required: true, format: "Ganzzahl 1 bis 9999", example: "17", help: "Jede physische Tiefen- oder Stapelposition erhält einen eigenen Lagerplatz.", effect: "Bildet den letzten vierstelligen Koordinatenblock.", errors: "Doppelte Kombinationen sind unzulässig."}
+          zone_code: {label: "Lagerzone", required: true, format: "Code bis 30 Zeichen", example: "BLOCK", help: "V2-Zone beziehungsweise den betrieblichen Zonencode übernehmen.", effect: "Erhält die fachliche Lagerklassifikation.", errors: "Leere oder syntaktisch ungültige Codes werden abgewiesen."}
+          dimensions: {label: "Breite, Tiefe und Höhe", required: true, format: "Nichtnegative Millimeterwerte", example: "800 × 1200 × 2000", help: "Physische Abmessungen der einzelnen Position pflegen.", effect: "Ermöglicht spätere Ladehilfsmittel- und Eignungsprüfungen.", errors: "Negative oder zu große Werte sind ungültig."}
           location_type: {label: "Lagerplatztyp", required: true, format: "storage, receiving, shipping, quality oder blocked", example: "storage", help: "Nur einen Typ wählen, der der physischen Nutzung entspricht.", effect: "Begrenzt zulässige Lager- und Prozessoperationen.", errors: "Unpassende Typen können Bestandsbewegungen blockieren."}
-          capacity_quantity: {label: "Kapazität", required: false, format: "Ganzzahl ab 0; 0 bedeutet unbegrenzt", example: "100", help: "Kapazität in der betrieblich verwendeten Mengeneinheit pflegen.", effect: "Steuert Auslastungsanzeige und Kapazitätsprüfung.", errors: "Negative Werte sind ungültig."}
           putaway_priority: {label: "Einlagerungspriorität", required: false, format: "Ganzzahl ab 0", example: "100", help: "Nur beim Bearbeiten eines Platzes; mit dem betrieblichen Prioritätsschema abstimmen.", effect: "Beeinflusst die Reihenfolge geeigneter Einlagerungsziele.", errors: "Widersprüchliche Prioritäten liefern unerwartete Zielreihenfolgen."}
           putaway_enabled: {label: "Einlagerung erlaubt", required: false, format: "Checkbox", example: "aktiviert", help: "Deaktivieren, wenn der Platz vorübergehend kein Einlagerungsziel sein darf.", effect: "Entfernt den Platz aus der automatischen Einlagerungsauswahl.", errors: "Bestehender Bestand bleibt erhalten und muss separat behandelt werden."}
         actions:
           save: {label: "Speichern", description: "Validiert Ressourcentyp, Elternkette und typabhängige Werte und legt an beziehungsweise aktualisiert.", result: "Das Element erscheint aktualisiert in seinem Topologieregister."}
           cancel: {label: "Abbrechen", description: "Kehrt ohne Speicherung zur Topologie zurück.", result: "Vorhandene Werte bleiben unverändert."}
         image: {src: "/assets/images/handbook/warehouse/topology-form.svg", alt: "Formular für Hierarchie, Typ, Kapazität und Einlagerungssteuerung"}
+      topology_generator:
+        template: warehouse/topology_generator.html.twig
+        title: Lagerplatzraster erzeugen
+        purpose: Der Generator erzeugt jede Kombination aus Lagernummer, Fachboden, Stellplatz und Tiefe als eigenständigen adressierbaren Lagerplatz.
+        navigation: Lager & Bestand → Lagertopologie → Lagerplatzraster erzeugen
+        permissions: ["inventory.topology.write"]
+        overview: ["Für Block 101 mit 1 Fachboden, 9 Stellplätzen und 32 Tiefen entstehen 288 Lagerplätze. Vorhandene Koordinaten werden idempotent übersprungen."]
+        fields:
+          grid: {label: "Rasterwerte", required: true, format: "Lagernummer 1–999; Fachböden, Stellplätze und Tiefen 1–9999", example: "101 / 1 / 9 / 32", help: "Die maximal vorhandenen Positionen je Dimension eingeben.", effect: "Erzeugt das kartesische Produkt aller vier Dimensionen.", errors: "Mehr als 100.000 Plätze pro Raster oder ungültige Elternzuordnungen werden abgewiesen."}
+          dimensions: {label: "Abmessungen", required: true, format: "Millimeterwerte ab 0", example: "800 / 1200 / 2000", help: "Breite, physische Tiefe und Höhe einer einzelnen Position eintragen.", effect: "Wird auf jeden erzeugten Platz übernommen.", errors: "Negative Werte werden abgewiesen."}
+        actions:
+          create: {label: "Lagerplatzraster erzeugen", description: "Validiert Hierarchie und Raster und erzeugt alle noch fehlenden Koordinaten atomar.", result: "Anzahl erzeugter und übersprungener Plätze wird angezeigt."}
+        image: {src: "/assets/images/handbook/placeholder.svg", alt: "Rastergenerator für Lagerplätze"}
+      topology_import:
+        template: warehouse/topology_import.html.twig
+        title: Lagertopologie aus CSV importieren
+        purpose: Der Import verarbeitet den bekannten Lagerexport und erzeugt Bereiche, Gänge und einzelne Lagerplätze im V2-Koordinatenformat.
+        navigation: Lager & Bestand → Lagertopologie → Lagertopologie importieren
+        permissions: ["inventory.topology.write"]
+        overview: ["Der Dry-Run prüft Überschriften und Werte und berechnet die Anzahl entstehender Lagerplätze ohne Datenänderung. Der anschließende Import überspringt vorhandene Koordinaten."]
+        fields:
+          csv_file: {label: "Topologie-CSV", required: true, format: "UTF-8-CSV mit den neun bekannten deutschen Spalten; maximal 2 MB", example: "Export.csv", help: "Zuerst immer mit aktiviertem Dry-Run prüfen.", effect: "Bereiche entstehen aus Lager-Typ, Gänge aus Lagernummer und Lagerplätze aus Fachboden × Stellplatz × Tiefe.", errors: "Abweichende Überschriften, leere Pflichtwerte und ungültige Zahlen brechen die Verarbeitung ab."}
+          dry_run: {label: "Nur prüfen", required: false, format: "Checkbox", example: "aktiviert", help: "Für den tatsächlichen Import deaktivieren und die Datei erneut auswählen.", effect: "Verhindert im Prüfmodus sämtliche Schreibzugriffe.", errors: "Ein deaktivierter Dry-Run führt den Import unmittelbar aus."}
+        actions:
+          upload: {label: "CSV prüfen oder importieren", description: "Validiert die Datei und führt abhängig vom Dry-Run die idempotente Erzeugung aus.", result: "Zeilen-, Soll-, Erzeugt- und Übersprungen-Anzahl werden angezeigt."}
+        image: {src: "/assets/images/handbook/placeholder.svg", alt: "CSV-Import für die Lagertopologie"}
       stock_blocks_overview:
         template: warehouse/stock_blocks.html.twig
         title: Bestandssperren
