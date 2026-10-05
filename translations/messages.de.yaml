@@ -1811,11 +1811,10 @@ security:
     sso:
         authentication_failed: 'Die Anmeldung über den Identity Provider ist fehlgeschlagen.'
         log_in: 'Mit Single Sign-on anmelden'
-        missing_provider: 'Mandant und Identity-Provider-Code müssen angegeben werden.'
+        missing_provider: 'Der Identity-Provider-Code muss angegeben werden.'
         or: 'oder'
         provider_code: 'Identity-Provider-Code'
     v3_login:
-        client_id: 'Mandanten-ID'
         email_address: 'E-Mail-Adresse'
         log_in_webwms_3_0: 'Anmelden | WebWMS 3.0'
         log_in_with_email: 'Mit E-Mail anmelden'

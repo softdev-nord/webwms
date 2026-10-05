@@ -55,11 +55,11 @@ readonly class DoctrineAccessRepository implements RoleRepository, UserAccountRe
         $this->saveUser($aggregate);
     }
 
-    public function existsByEmail(TenantId $tenantId, string $email): bool
+    public function existsByEmail(string $email): bool
     {
         return $this->connection->fetchOne(
-            'SELECT 1 FROM wms_user_account WHERE tenant_id = :tenantId AND email = :email',
-            ['tenantId' => $tenantId->value(), 'email' => $email],
+            'SELECT 1 FROM wms_user_account WHERE email = :email',
+            ['email' => $email],
         ) !== false;
     }
 

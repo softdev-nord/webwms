@@ -34,16 +34,17 @@ class SsoController extends AbstractController
     #[Route('/login', name: 'login', methods: ['GET'])]
     public function login(Request $request): RedirectResponse
     {
-        $tenantId = trim((string) $request->query->get('tenant_id'));
+        $tenantId = '';
         $providerCode = strtolower(trim((string) $request->query->get('provider')));
-        if ($tenantId === '' || $providerCode === '') {
+        if ($providerCode === '') {
             $this->addFlash('error', 'security.sso.missing_provider');
 
             return $this->redirectToRoute('app_v3_login');
         }
 
         try {
-            $provider = $this->sso->provider($tenantId, $providerCode);
+            $provider = $this->sso->providerByCode($providerCode);
+            $tenantId = $provider->tenantId;
             $callbackUrl = $this->generateUrl('app_v3_sso_callback', [
                 'tenantId' => $provider->tenantId,
                 'providerCode' => $provider->code,

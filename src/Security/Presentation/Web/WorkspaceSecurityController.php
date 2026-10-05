@@ -18,8 +18,7 @@ class WorkspaceSecurityController extends AbstractController
         $identifier = explode('|', $authenticationUtils->getLastUsername(), 2);
 
         return $this->render('security/workspace_login.html.twig', [
-            'last_tenant_id' => count($identifier) === 2 ? $identifier[0] : '',
-            'last_email' => count($identifier) === 2 ? $identifier[1] : '',
+            'last_email' => count($identifier) === 2 ? $identifier[1] : $identifier[0],
             'error' => $authenticationUtils->getLastAuthenticationError(),
         ]);
     }

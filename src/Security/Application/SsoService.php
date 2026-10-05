@@ -27,6 +27,26 @@ readonly class SsoService
             throw new SsoAuthenticationException('The active OIDC provider was not found.');
         }
 
+        return $this->createProvider($row);
+    }
+
+    public function providerByCode(string $code): IdentityProvider
+    {
+        $rows = $this->connection->fetchAllAssociative(
+            'SELECT id, tenant_id, code, name, protocol, issuer_url, client_id, client_secret_env, scopes '
+            . 'FROM wms_identity_provider WHERE code = :code AND enabled = 1',
+            ['code' => strtolower(trim($code))],
+        );
+        if (count($rows) !== 1 || $rows[0]['protocol'] !== 'oidc') {
+            throw new SsoAuthenticationException('The active OIDC provider was not found or is ambiguous.');
+        }
+
+        return $this->createProvider($rows[0]);
+    }
+
+    /** @param array<string, mixed> $row */
+    private function createProvider(array $row): IdentityProvider
+    {
         $scopes = preg_split('/\s+/', trim((string) $row['scopes']));
         if (!is_array($scopes)) {
             throw new SsoAuthenticationException('The OIDC scopes are invalid.');

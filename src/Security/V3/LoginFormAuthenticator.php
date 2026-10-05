@@ -36,11 +36,10 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $tenantId = trim((string) $request->request->get('tenant_id'));
         $email = strtolower(trim((string) $request->request->get('email')));
 
         return new Passport(
-            new UserBadge($tenantId . '|' . $email),
+            new UserBadge($email),
             new PasswordCredentials((string) $request->request->get('password')),
             [new CsrfTokenBadge('authenticate_v3', (string) $request->request->get('_csrf_token'))],
         );
@@ -75,9 +74,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
-        $tenantId = trim((string) $request->request->get('tenant_id'));
         $email = strtolower(trim((string) $request->request->get('email')));
-        $this->extensionModule->recordLogin($tenantId !== '' ? $tenantId : null, $email, false, $request->getClientIp(), $request->headers->get('User-Agent'), $exception->getMessageKey(), new DateTimeImmutable());
+        $this->extensionModule->recordLogin(null, $email, false, $request->getClientIp(), $request->headers->get('User-Agent'), $exception->getMessageKey(), new DateTimeImmutable());
 
         return parent::onAuthenticationFailure($request, $exception);
     }

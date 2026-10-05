@@ -33,7 +33,7 @@ readonly class CreateUserHandler
 
         $email = strtolower(trim($command->email));
 
-        if ($this->users->existsByEmail($tenantId, $email)) {
+        if ($this->users->existsByEmail($email)) {
             throw new EmailAlreadyExistsException(sprintf('Email "%s" already exists.', $email));
         }
 

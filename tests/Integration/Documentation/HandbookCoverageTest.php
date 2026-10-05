@@ -69,7 +69,8 @@ final class HandbookCoverageTest extends KernelTestCase
             self::assertStringContainsString($headline, $html);
             self::assertStringContainsString('/assets/images/handbook/placeholder.svg', $html);
             self::assertStringContainsString('/assets/images/handbook/security/workspace-login.svg', $html);
-            self::assertStringContainsString('field-workspace_login-tenant_id', $html);
+            self::assertStringContainsString('field-workspace_login-email', $html);
+            self::assertStringNotContainsString('field-workspace_login-tenant_id', $html);
             self::assertStringContainsString('&lt;script&gt;alert(1)&lt;/script&gt;', $html);
             self::assertStringNotContainsString('<script>', $html);
         }

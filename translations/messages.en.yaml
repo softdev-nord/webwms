@@ -1812,11 +1812,10 @@ security:
     sso:
         authentication_failed: 'Login through the identity provider failed.'
         log_in: 'Log in with Single Sign-on'
-        missing_provider: 'Tenant and identity provider code are required.'
+        missing_provider: 'The identity provider code is required.'
         or: 'or'
         provider_code: 'Identity provider code'
     v3_login:
-        client_id: 'Client ID'
         email_address: 'Email address'
         log_in_webwms_3_0: 'Log in | WebWMS 3.0'
         log_in_with_email: 'Log in with email'

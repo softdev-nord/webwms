@@ -16,15 +16,13 @@
                 {% if error %}<div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>{% endif %}
                 {% for message in app.flashes('error') %}<div class="alert alert-danger" role="alert">{{ message|trans }}</div>{% endfor %}
                 <form method="post">
-                    <div class="mb-3"><label class="form-label" for="tenant_id">{{ 'security.v3_login.client_id'|trans }}</label><input id="tenant_id" type="text" name="tenant_id" class="form-control" value="{{ last_tenant_id }}" autocomplete="organization" required autofocus></div>
-                    <div class="mb-3"><label class="form-label" for="email">{{ 'security.v3_login.email_address'|trans }}</label><input id="email" type="email" name="email" class="form-control" value="{{ last_email }}" autocomplete="email" required></div>
+                    <div class="mb-3"><label class="form-label" for="email">{{ 'security.v3_login.email_address'|trans }}</label><input id="email" type="email" name="email" class="form-control" value="{{ last_email }}" autocomplete="email" required autofocus></div>
                     <div class="mb-4"><label class="form-label" for="password">{{ 'security.login.password'|trans }}</label><input id="password" type="password" name="password" class="form-control" autocomplete="current-password" required></div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate_v3') }}">
                     <button type="submit" class="btn btn-primary w-100">{{ 'security.login.log_in'|trans }}</button>
                 </form>
                 <div class="d-flex align-items-center gap-3 my-4"><hr class="flex-grow-1"><span class="text-muted">{{ 'security.sso.or'|trans }}</span><hr class="flex-grow-1"></div>
                 <form method="get" action="{{ path('app_v3_sso_login') }}">
-                    <div class="mb-3"><label class="form-label" for="sso_tenant_id">{{ 'security.v3_login.client_id'|trans }}</label><input id="sso_tenant_id" type="text" name="tenant_id" class="form-control" value="{{ last_tenant_id }}" autocomplete="organization" required></div>
                     <div class="mb-3"><label class="form-label" for="provider">{{ 'security.sso.provider_code'|trans }}</label><input id="provider" type="text" name="provider" class="form-control" autocomplete="organization-title" required></div>
                     <button type="submit" class="btn btn-outline-primary w-100">{{ 'security.sso.log_in'|trans }}</button>
                 </form>

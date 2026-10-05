@@ -15,14 +15,13 @@ use WebWMS\Security\V3\TenantPermissionUser;
 
 class LoginFormAuthenticatorTest extends TestCase
 {
-    public function testItBuildsTheTenantScopedEmailIdentifier(): void
+    public function testItBuildsTheEmailIdentifierWithoutTenantInput(): void
     {
         $authenticator = new LoginFormAuthenticator(
             self::createStub(UrlGeneratorInterface::class),
             self::createStub(ExtensionModuleService::class)
         );
         $request = Request::create('/v3/login', 'POST', [
-            'tenant_id' => ' tenant-id ',
             'email' => ' ADMIN@Example.COM ',
             'password' => 'secret',
             '_csrf_token' => 'token',
@@ -32,7 +31,7 @@ class LoginFormAuthenticatorTest extends TestCase
         self::assertTrue($authenticator->supports($request));
         $badge = $authenticator->authenticate($request)->getBadge(UserBadge::class);
         self::assertInstanceOf(UserBadge::class, $badge);
-        self::assertSame('tenant-id|admin@example.com', $badge->getUserIdentifier());
+        self::assertSame('admin@example.com', $badge->getUserIdentifier());
     }
 
     public function testItRedirectsSuccessfulLoginsToTheV3Dashboard(): void

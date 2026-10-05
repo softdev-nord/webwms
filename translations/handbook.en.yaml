@@ -93,23 +93,15 @@ chapter:
         permissions:
         - No prior permission; the user account and tenant must be active.
         overview:
-        - The password area validates tenant, email address and password together.
-        - The SSO area redirects to the identity provider after validating tenant and provider code.
+        - The password area derives the tenant from the user account and validates email address and password.
+        - The SSO area derives the tenant from the unique provider code and redirects to the identity provider.
         fields:
-          tenant_id:
-            label: Tenant ID
-            required: true
-            format: Tenant UUID without whitespace
-            example: 018f2f5a-73ad-7c42-9d84-2dcb65bcb410
-            help: Identifies the data and permission context. Use the ID supplied by your administrator.
-            effect: All sign-in checks and the resulting session are assigned to this tenant.
-            errors: An unknown, inactive or syntactically invalid ID prevents sign-in.
           email:
             label: Email address
             required: true
             format: Full email address of the active user account
             example: warehouse.manager@example.org
-            help: The address must be unique within the selected tenant.
+            help: The address must belong to exactly one active user account; its tenant is selected automatically.
             effect: Determines the user, roles and audited identity of the session.
             errors: Unknown, unconfirmed or inactive accounts are rejected.
           password:
@@ -131,7 +123,7 @@ chapter:
         actions:
           password_login:
             label: Sign in
-            description: Validates tenant, email address, password and account status.
+            description: Derives the tenant from the user account and validates email address, password and account status.
             result: On success the workspace opens; on error all inputs except the password remain available.
           sso_login:
             label: Sign in with SSO
@@ -163,15 +155,15 @@ chapter:
         image: {src: "/assets/images/handbook/documentation/handbook-chapter.svg", alt: "Handbook chapter with contents and view guidance"}
     guidance:
       prerequisites:
-      - Active user account, correct tenant and supported browser; SSO also requires an active OIDC provider with HTTPS issuer, client ID and secret reference.
+      - Active user account and supported browser; SSO also requires a uniquely named active OIDC provider with HTTPS issuer, client ID and secret reference.
       permissions:
       - Login routes are public; after authentication only menus covered by the user permissions are visible.
       fields:
-      - 'Password login: email and password. SSO: tenant ID and provider code. Context: tenant, site, language and appearance.'
+      - 'Password login: email and password. SSO: provider code. The tenant is derived automatically in both cases. Context: tenant, site, language and appearance.'
       statuses:
       - Only active users and providers can open a session. Logout ends it; invalid state, nonce or PKCE is rejected.
       errors:
-      - Unknown tenant, inactive account, unverified email, wrong password or invalid OIDC signature prevents login.
+      - Unknown or ambiguous email, inactive account, wrong password, unknown or ambiguous provider code, or invalid OIDC signature prevents login.
   navigation_and_lists:
     title: Navigation, overviews, search and editing
     summary: Sidebar, tables, filters, pagination, detail pages and recurring interaction patterns.

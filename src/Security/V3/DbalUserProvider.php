@@ -23,6 +23,12 @@ readonly class DbalUserProvider implements UserProviderInterface, PasswordUpgrad
     public function loadUserByIdentifier(string $identifier): SecurityUser
     {
         [$tenantId, $email] = $this->splitIdentifier($identifier);
+        $tenantCondition = $tenantId === null ? '' : 'u.tenant_id = :tenantId AND ';
+        $parameters = ['email' => strtolower($email), 'status' => 'active'];
+        if ($tenantId !== null) {
+            $parameters['tenantId'] = $tenantId;
+        }
+
         $rows = $this->connection->fetchAllAssociative(
             'SELECT u.id, u.tenant_id, u.email, u.display_name, u.password_hash, '
             . 'r.code AS role_code, rp.permission_key '
@@ -30,11 +36,12 @@ readonly class DbalUserProvider implements UserProviderInterface, PasswordUpgrad
             . 'LEFT JOIN wms_user_role ur ON ur.user_id = u.id '
             . 'LEFT JOIN wms_role r ON r.id = ur.role_id AND r.tenant_id = u.tenant_id '
             . 'LEFT JOIN wms_role_permission rp ON rp.role_id = r.id '
-            . 'WHERE u.tenant_id = :tenantId AND u.email = :email AND u.status = :status',
-            ['tenantId' => $tenantId, 'email' => strtolower($email), 'status' => 'active'],
+            . 'WHERE ' . $tenantCondition . 'u.email = :email AND u.status = :status',
+            $parameters,
         );
 
-        if ($rows === []) {
+        $userIds = array_unique(array_column($rows, 'id'));
+        if (count($userIds) !== 1) {
             $exception = new UserNotFoundException();
             $exception->setUserIdentifier($identifier);
 
@@ -96,10 +103,14 @@ readonly class DbalUserProvider implements UserProviderInterface, PasswordUpgrad
         $user->replacePasswordHash($newHashedPassword);
     }
 
-    /** @return array{string, string} */
+    /** @return array{string|null, string} */
     private function splitIdentifier(string $identifier): array
     {
         $parts = explode('|', $identifier, 2);
+
+        if (count($parts) === 1 && $parts[0] !== '') {
+            return [null, $parts[0]];
+        }
 
         if (count($parts) !== 2 || $parts[0] === '' || $parts[1] === '') {
             $exception = new UserNotFoundException('The user identifier is invalid.');

@@ -107,7 +107,7 @@ class UserMemoryRepository implements UserAccountRepository
 {
     public ?UserAccount $user = null;
 
-    public function existsByEmail(TenantId $tenantId, string $email): bool
+    public function existsByEmail(string $email): bool
     {
         return false;
     }

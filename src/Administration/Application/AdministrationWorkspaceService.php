@@ -54,6 +54,10 @@ readonly class AdministrationWorkspaceService
             throw new InvalidArgumentException('Die Issuer-/Metadata-URL ist ungültig.');
         }
 
+        if ($resource === 'identity_provider' && $this->connection->fetchOne('SELECT 1 FROM wms_identity_provider WHERE code = :code', ['code' => $row['code']]) !== false) {
+            throw new InvalidArgumentException('Der Identity-Provider-Code wird bereits verwendet.');
+        }
+
         if ($resource === 'context' && $row['business_partner_id'] !== null && $this->connection->fetchOne('SELECT 1 FROM wms_business_partner WHERE id = :id AND tenant_id = :tenantId', ['id' => $row['business_partner_id'], 'tenantId' => $tenantId]) === false) {
             throw new InvalidArgumentException('Der Geschäftspartner gehört nicht zum Mandanten.');
         }
