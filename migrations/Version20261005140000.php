@@ -16,17 +16,19 @@ final class Version20261005140000 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('DROP INDEX UNIQ_WMS_USER_TENANT_EMAIL ON wms_user_account');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_WMS_USER_EMAIL ON wms_user_account (email)');
-        $this->addSql('DROP INDEX UNIQ_WMS_IDP_CODE ON wms_identity_provider');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_WMS_IDP_GLOBAL_CODE ON wms_identity_provider (code)');
+        $this->addSql('CREATE UNIQUE INDEX IF NOT EXISTS UNIQ_WMS_USER_EMAIL ON wms_user_account (email)');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_WMS_USER_TENANT_EMAIL ON wms_user_account');
+        $this->addSql('CREATE INDEX IF NOT EXISTS IDX_WMS_IDP_TENANT ON wms_identity_provider (tenant_id)');
+        $this->addSql('CREATE UNIQUE INDEX IF NOT EXISTS UNIQ_WMS_IDP_GLOBAL_CODE ON wms_identity_provider (code)');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_WMS_IDP_CODE ON wms_identity_provider');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('DROP INDEX UNIQ_WMS_USER_EMAIL ON wms_user_account');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_WMS_USER_TENANT_EMAIL ON wms_user_account (tenant_id, email)');
-        $this->addSql('DROP INDEX UNIQ_WMS_IDP_GLOBAL_CODE ON wms_identity_provider');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_WMS_IDP_CODE ON wms_identity_provider (tenant_id, code)');
+        $this->addSql('CREATE UNIQUE INDEX IF NOT EXISTS UNIQ_WMS_USER_TENANT_EMAIL ON wms_user_account (tenant_id, email)');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_WMS_USER_EMAIL ON wms_user_account');
+        $this->addSql('CREATE UNIQUE INDEX IF NOT EXISTS UNIQ_WMS_IDP_CODE ON wms_identity_provider (tenant_id, code)');
+        $this->addSql('DROP INDEX IF EXISTS UNIQ_WMS_IDP_GLOBAL_CODE ON wms_identity_provider');
+        $this->addSql('DROP INDEX IF EXISTS IDX_WMS_IDP_TENANT ON wms_identity_provider');
     }
 }
