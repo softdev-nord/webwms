@@ -2,11 +2,20 @@
 
 ## Laufzeitstruktur
 
-Das Benutzerhandbuch wird unter `/v3/help` innerhalb des bestehenden
-V3-Layouts gerendert. `UserDocumentationService` definiert ausschließlich die
-stabilen Kapitel-Slugs und ihre Reihenfolge. Alle sichtbaren Inhalte und ihre
-Struktur liegen in den eigenständigen Dateien `translations/handbook.de.yaml`
-und `translations/handbook.en.yaml` im Translation-Domain `handbook`.
+Das Benutzerhandbuch wird unter `/v3/help` in einem eigenständigen,
+CoderDocs-inspirierten Twig-Layout gerendert. Es verwendet Farben, Typografie
+und Icons der V3-Oberfläche, enthält aber weder deren Topbar noch deren
+Anwendungssidebar. Der Handbuchlink in der V3- und Legacy-Sidebar öffnet dieses
+Layout wie die frühere externe Dokumentation in einem neuen Tab. Symfony-Sitzung
+und Berechtigungsprüfung bleiben dabei erhalten.
+
+`UserDocumentationService` definiert ausschließlich die stabilen Kapitel-Slugs
+und ihre Reihenfolge. Alle sichtbaren Inhalte und ihre Struktur liegen in den
+eigenständigen Dateien `translations/handbook.de.yaml` und
+`translations/handbook.en.yaml` im Translation-Domain `handbook`. Es werden
+keine CoderDocs-Assets oder fremde Bootstrap-Builds eingebunden; die
+responsive Dokumentationsstruktur ist mit lokalen Twig-, CSS- und
+JavaScript-Komponenten umgesetzt.
 
 Die Suche arbeitet in der aktiven Sprache über Titel, Zusammenfassung und den
 vollständigen Kapiteltext. Ein Treffer enthält den Kapitelpfad, einen Auszug
@@ -47,17 +56,15 @@ oder ein Kapitel ohne mindestens eine produktive Route lässt die CI
 fehlschlagen. Zum Zeitpunkt dieses Abschlusses sind 226 Web-Routen abgedeckt.
 
 Jedes Kapitel enthält strukturierte Hinweise zu Voraussetzungen,
-Berechtigungen, Eingaben, Statusauswirkungen und typischen Fehlern. Sämtliche
-53 Bedien- und Konfigurationsabschnitte besitzen eine eigene, lokalisierte
-Bildbeschreibung und eine stabile Platzhalterreferenz.
+Berechtigungen, Eingaben, Statusauswirkungen und typischen Fehlern. Alle 101
+produktiven V3-Views besitzen eine eigene, lokalisierte Bildbeschreibung und
+eine eindeutige stabile Bildreferenz.
 
 ## Screenshots ersetzen
 
-Im ersten Schritt referenzieren alle Bedien- und Konfigurationsabschnitte die zentrale Grafik
-`public/assets/images/handbook/placeholder.svg`. Für den Austausch wird die
-`image.src` im jeweiligen YAML-Abschnitt auf eine fachlich benannte Datei im
-selben Verzeichnis geändert, beispielsweise
-`/assets/images/handbook/inventory/stock-overview.webp`. Alternativtext und
+Die produktiven Views referenzieren fachlich benannte Platzhalterdateien unter
+`public/assets/images/handbook`. Zum Austausch wird die jeweilige Datei bei
+gleichbleibendem Pfad durch den echten Screenshot ersetzt. Alternativtext und
 Bildunterschrift bleiben pro Verwendung lokalisiert. Der Content-Service lässt
 aus Sicherheits- und Datenschutzgründen ausschließlich lokale Bildpfade unter
 dem Handbuchverzeichnis zu.
@@ -72,4 +79,6 @@ Deutsch und Englisch erfolgen. Die Tests verhindern unvollständige
 Übersetzungen, unbekannte Strukturschlüssel und nicht gerenderte zusätzliche
 Inhaltsbereiche. Weitere Integrationstests prüfen Routengenerierung,
 Berechtigungsattribute, lokalisierte Navigation, Twig-Rendering,
-HTML-Escaping, Suchgrenzfälle und die Kapitel-Untermenüs der Sidebar.
+HTML-Escaping und Suchgrenzfälle. Zusätzlich wird geprüft, dass beide
+Anwendungssidebars ausschließlich auf die Handbuchübersicht verlinken und
+`target="_blank"` zusammen mit `rel="noopener noreferrer"` verwenden.

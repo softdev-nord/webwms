@@ -75,31 +75,48 @@ final class HandbookCoverageTest extends KernelTestCase
         }
     }
 
-    public function testSidebarContainsPermissionAndChapterNavigation(): void
+    public function testSidebarOpensProtectedHandbookInSeparateTab(): void
     {
-        $sidebar = file_get_contents(dirname(__DIR__, 3) . '/templates/v3/subsections/sidebar.html.twig');
+        $root = dirname(__DIR__, 3);
+        $sidebar = file_get_contents($root . '/templates/v3/subsections/sidebar.html.twig');
+        $legacySidebar = file_get_contents($root . '/templates/subsections/sidebar.html.twig');
         self::assertIsString($sidebar);
+        self::assertIsString($legacySidebar);
 
         self::assertStringContainsString("is_granted('documentation.handbook.read')", $sidebar);
-        self::assertStringContainsString('sidebarHandbook', $sidebar);
-        foreach (UserDocumentationService::CHAPTERS as $chapter) {
-            self::assertStringContainsString("'" . $chapter['slug'] . "'", $sidebar);
+        foreach ([$sidebar, $legacySidebar] as $template) {
+            self::assertStringContainsString("href=\"{{ path('v3_documentation_index') }}\"", $template);
+            self::assertStringContainsString('target="_blank"', $template);
+            self::assertStringContainsString('rel="noopener noreferrer"', $template);
         }
+        self::assertStringNotContainsString('sidebarHandbook', $sidebar);
+        self::assertStringNotContainsString('doku_weblvs', $legacySidebar);
     }
 
     public function testHandbookUsesDedicatedResponsiveNavigation(): void
     {
         $root = dirname(__DIR__, 3);
+        $base = file_get_contents($root . '/templates/documentation/base.html.twig');
+        $index = file_get_contents($root . '/templates/documentation/index.html.twig');
+        $show = file_get_contents($root . '/templates/documentation/show.html.twig');
         $navigation = file_get_contents($root . '/templates/documentation/_navigation.html.twig');
         $header = file_get_contents($root . '/templates/documentation/_header.html.twig');
         $javascript = file_get_contents($root . '/public/assets/js/handbook.js');
 
+        self::assertIsString($base);
+        self::assertIsString($index);
+        self::assertIsString($show);
         self::assertIsString($navigation);
         self::assertIsString($header);
         self::assertIsString($javascript);
+        self::assertStringContainsString("extends 'documentation/base.html.twig'", $index);
+        self::assertStringContainsString("extends 'documentation/base.html.twig'", $show);
+        self::assertStringNotContainsString("include('v3/subsections/menu.html.twig')", $base);
+        self::assertStringContainsString('class="handbook-page"', $base);
         self::assertStringContainsString('data-handbook-navigation', $navigation);
         self::assertStringContainsString('data-handbook-section-link', $navigation);
         self::assertStringContainsString('data-handbook-menu-open', $header);
+        self::assertStringContainsString("path('v3_dashboard')", $header);
         self::assertStringContainsString('IntersectionObserver', $javascript);
     }
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html
+    lang="{{ app.request.locale|split('_')[0] }}"
+    data-layout="vertical"
+    data-topbar="light"
+    data-sidebar="light"
+    data-sidebar-size="lg"
+    data-sidebar-image="none"
+    data-preloader="disable"
+>
+    <head>
+        {{ include('v3/subsections/title-meta.html.twig') }}
+
+        {% block stylesheets %}
+            {{ include('v3/subsections/head-css.html.twig') }}
+            <link rel="stylesheet" href="{{ asset('assets/css/handbook.css') }}">
+        {% endblock %}
+    </head>
+    <body class="handbook-page">
+        {% block handbook_content %}
+        {% endblock %}
+
+        <script src="{{ asset('assets/js/handbook.js') }}" defer></script>
+    </body>
+</html>

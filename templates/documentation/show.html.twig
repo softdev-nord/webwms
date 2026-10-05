@@ -1,8 +1,6 @@
-{% extends 'v3/base.html.twig' %}
+{% extends 'documentation/base.html.twig' %}
 
-{% block stylesheets %}{{ parent() }}<link rel="stylesheet" href="{{ asset('assets/css/handbook.css') }}">{% endblock %}
-
-{% block webwms_content %}
+{% block handbook_content %}
     <div class="handbook" data-handbook>
         {% include 'documentation/_header.html.twig' with {document: document} only %}
         <div class="handbook-layout">
@@ -23,5 +21,3 @@
         </div>
     </div>
 {% endblock %}
-
-{% block bodyjs %}{{ parent() }}<script src="{{ asset('assets/js/handbook.js') }}" defer></script>{% endblock %}
