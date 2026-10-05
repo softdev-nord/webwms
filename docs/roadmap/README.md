@@ -28,7 +28,7 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 
 ## Aktueller Gesamtfortschritt
 
-Stand 04.10.2026 sind 111 von 112 Tickets und 933 von 967 Story Points `Done`. WEBWMS-112 befindet sich in Umsetzung; 42 produktive Views einschließlich vollständigem Wareneingang, Warenausgang und dem operativen Lager-/Bestandskern sind auf den Dokumentationsstandard migriert. Die Bildreferenzen aller Handbuchkapitel werden automatisiert validiert.
+Stand 05.10.2026 sind 111 von 112 Tickets und 933 von 967 Story Points `Done`. WEBWMS-112 befindet sich in Umsetzung; 49 produktive Views einschließlich vollständigem Wareneingang, Warenausgang und sämtlichen modernen Lageransichten sind auf den Dokumentationsstandard migriert. Die Formular-, Feld- und Bildabdeckung dieser Bereiche wird automatisiert validiert.
 
 Sieben Epics sind vollständig abgeschlossen. Das Plattform-Epic enthält mit WEBWMS-112 noch die vollständige View-, Formular- und Feldabdeckung des Benutzerhandbuchs. WEBWMS-111 stellt hierfür weiterhin die integrierte, zweisprachige und durchsuchbare technische Handbuchplattform bereit. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 

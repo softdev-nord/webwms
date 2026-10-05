@@ -388,7 +388,10 @@ class UserDocumentationServiceTest extends TestCase
             'warehouse/selection_rules.html.twig',
             'warehouse/configuration_form.html.twig',
         ];
-        $views = $this->documentation->document('warehouse-and-stock', $locale)['views'];
+        $views = array_values(array_filter(
+            $this->documentation->document('warehouse-and-stock', $locale)['views'],
+            static fn (array $view): bool => in_array($view['template'], $expectedTemplates, true)
+        ));
         self::assertSame($expectedTemplates, array_column($views, 'template'));
 
         $expectedFormCounts = [0, 1, 1, 1, 0, 0, 1, 0, 1];
@@ -413,6 +416,51 @@ class UserDocumentationServiceTest extends TestCase
         }
 
         self::assertNotSame([], $views[8]['fields'][0]['usages'], 'Shared configuration fields must document their usages.');
+        self::assertCount(count($imageSources), array_unique($imageSources));
+    }
+
+    #[DataProvider('localeProvider')]
+    public function testRemainingWarehouseViewsHaveCompleteTemplateFieldAndImageCoverage(string $locale): void
+    {
+        $expectedTemplates = [
+            'warehouse/topology.html.twig',
+            'warehouse/topology_form.html.twig',
+            'warehouse/stock_blocks.html.twig',
+            'warehouse/stock_block_reasons.html.twig',
+            'warehouse/stock_block_new.html.twig',
+            'warehouse/stock_block_show.html.twig',
+            'warehouse/inventory_count/control.html.twig',
+        ];
+        $views = array_values(array_filter(
+            $this->documentation->document('warehouse-and-stock', $locale)['views'],
+            static fn (array $view): bool => in_array($view['template'], $expectedTemplates, true)
+        ));
+        self::assertSame($expectedTemplates, array_column($views, 'template'));
+
+        $expectedFormCounts = [0, 1, 0, 0, 1, 2, 11];
+        $expectedFieldCounts = [0, 16, 0, 0, 9, 1, 23];
+        $imageSources = [];
+        foreach ($views as $index => $view) {
+            $template = file_get_contents(dirname(__DIR__, 4) . '/templates/' . $view['template']);
+            self::assertIsString($template);
+            self::assertSame($expectedFormCounts[$index], preg_match_all('/<form\b.*?<\/form>/is', $template));
+            preg_match_all('/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/i', $template, $matches);
+            $templateFields = array_values(array_unique(array_map(
+                static fn (string $name): string => str_replace('[]', '', $name),
+                array_filter($matches[1], static fn (string $name): bool => $name !== '_token')
+            )));
+            sort($templateFields);
+            $documentedFields = array_column($view['fields'], 'id');
+            sort($documentedFields);
+            self::assertCount($expectedFieldCounts[$index], $documentedFields);
+            self::assertSame($templateFields, $documentedFields, sprintf('Field coverage differs for "%s".', $view['template']));
+            self::assertFileExists(dirname(__DIR__, 4) . '/public' . $view['image']['src']);
+            $imageSources[] = $view['image']['src'];
+        }
+
+        self::assertNotSame([], $views[1]['fields'][1]['usages'], 'Shared topology fields must document their usages.');
+        self::assertNotSame([], $views[5]['fields'][0]['usages'], 'The shared workflow note must document both usages.');
+        self::assertCount(11, $views[6]['actions']);
         self::assertCount(count($imageSources), array_unique($imageSources));
     }
 

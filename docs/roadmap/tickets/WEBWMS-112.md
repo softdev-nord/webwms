@@ -428,3 +428,21 @@ eindeutige Bildreferenzen ab. Damit sind 42 von 101 produktiven Views migriert.
 Offen bleibt die Übertragung dieses Standards auf die übrigen 59 produktiven
 Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
 Ticket bleibt deshalb bewusst unterhalb von `Done`.
+
+Der zwölfte größere Slice schließt die sieben noch fehlenden modernen
+Lageransichten ab. Dokumentiert sind nun die komplette Lagertopologie mit ihren
+fünf Hierarchieebenen und dem typabhängigen Pflegeformular, Bestandssperren samt
+Gründen, Anlage, unabhängiger Prüfung und Freigabe sowie die Inventur- und
+Materialleitstelle. Letztere umfasst Gefahrstoffklassen und Lagerrestriktionen,
+Stücklisten und Bedarfsermittlung, Ladehilfsmittelkonten sowie Stichtags- und
+permanente Inventur einschließlich getrennter Zählung und Freigabe.
+
+Der zweisprachige Regressionstest gleicht sieben Templates, 15 gerenderte
+Formulare, 49 Geschäftsfelder, 11 Aktionen der Leitstelle und eindeutige
+vorhandene Bildreferenzen ab. Gemeinsam mit dem vorigen Slice sind damit alle
+16 produktiven Templates unter `templates/warehouse/` vollständig dokumentiert.
+Insgesamt sind 49 von 101 produktiven Views migriert.
+
+Offen bleibt die Übertragung dieses Standards auf die übrigen 52 produktiven
+Views sowie die abschließende globale View-, Feld- und Screenshotmatrix. Das
+Ticket bleibt deshalb bewusst unterhalb von `Done`.
