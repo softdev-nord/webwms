@@ -10,6 +10,7 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Tools\DsnParser;
 use RuntimeException;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use WebWMS\Administration\Application\Access\PermissionCatalog;
 use WebWMS\Administration\Domain\Access\PasswordHasher;
@@ -211,8 +212,13 @@ final readonly class InstallationManager
 
     private function runMigrations(InstallationConfiguration $configuration): void
     {
+        $phpExecutable = (new PhpExecutableFinder())->find(false);
+        if (!is_string($phpExecutable) || $phpExecutable === '') {
+            throw new RuntimeException('The PHP CLI executable required for database migrations could not be found.');
+        }
+
         $process = new Process([
-            PHP_BINARY, $this->projectDir . '/bin/console', 'doctrine:migrations:migrate',
+            $phpExecutable, $this->projectDir . '/bin/console', 'doctrine:migrations:migrate',
             '--no-interaction', '--allow-no-migration',
         ], $this->projectDir, ['DATABASE_URL' => $configuration->databaseUrl(), 'APP_ENV' => 'prod']);
         $process->setTimeout(600);
