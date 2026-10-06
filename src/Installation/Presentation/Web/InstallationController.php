@@ -24,6 +24,7 @@ final class InstallationController extends AbstractController
     }
 
     #[Route('', name: 'index', methods: ['GET'])]
+    #[Route('/', name: 'index_trailing_slash', methods: ['GET'])]
     public function index(): RedirectResponse
     {
         return $this->redirectToRoute($this->installationManager->isInstalled() ? 'app_v3_login' : 'installation_step', ['step' => 'welcome']);
