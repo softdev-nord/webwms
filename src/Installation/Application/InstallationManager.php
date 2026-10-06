@@ -218,9 +218,15 @@ final readonly class InstallationManager
         }
 
         $process = new Process([
-            $phpExecutable, $this->projectDir . '/bin/console', '--env=prod', '--no-debug', 'doctrine:migrations:migrate',
+            $phpExecutable, '-d', 'variables_order=EGPCS', $this->projectDir . '/bin/console',
+            '--env=prod', '--no-debug', 'doctrine:migrations:migrate',
             '--no-interaction', '--allow-no-migration',
-        ], $this->projectDir, ['DATABASE_URL' => $configuration->databaseUrl(), 'APP_ENV' => 'prod']);
+        ], $this->projectDir, [
+            'DATABASE_URL' => $configuration->databaseUrl(),
+            'APP_ENV' => 'prod',
+            'APP_DEBUG' => '0',
+            'SHELL_VERBOSITY' => '0',
+        ]);
         $process->setTimeout(600);
         $process->run();
         if (!$process->isSuccessful()) {
@@ -239,6 +245,17 @@ final readonly class InstallationManager
         $contents = implode("\n", $lines) . "\n";
         if (file_put_contents($path . '.tmp', $contents, LOCK_EX) === false || !rename($path . '.tmp', $path)) {
             throw new RuntimeException('The local environment configuration could not be written.');
+        }
+
+        $compiledEnvironment = $this->projectDir . '/.env.local.php';
+        if (is_file($compiledEnvironment)) {
+            $backup = $this->projectDir . '/var/installation.env.local.php.backup';
+            if (is_file($backup)) {
+                $backup .= '.' . (new DateTimeImmutable())->format('YmdHis');
+            }
+            if (!rename($compiledEnvironment, $backup)) {
+                throw new RuntimeException('The compiled environment cache could not be invalidated.');
+            }
         }
     }
 

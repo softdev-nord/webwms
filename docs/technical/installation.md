@@ -45,6 +45,7 @@ Die Topologieübersicht ist auf einen physischen Standort filterbar. Nach Auswah
 ## Betriebshinweise
 
 - Der Webserver benötigt Schreibrechte für `.env.local` und `var/installation.lock`.
+- Eine vorhandene kompilierte `.env.local.php` wird vor den Migrationen nach `var/installation.env.local.php.backup` verschoben. Dadurch verwendet Symfony garantiert die vom Installer geschriebene Datenbankverbindung; der Cache kann nach der Installation erneut mit `composer dump-env prod` erzeugt werden.
 - Bei einem Abbruch nach gestarteten Migrationen muss die für die Neuinstallation vorgesehene Datenbank geleert oder neu angelegt werden.
 - Das Datenbankkennwort wird während des Assistenten vorübergehend in der serverseitigen Session gehalten, nach erfolgreicher Installation daraus entfernt und weder in der Ergebnisansicht noch in der Lockdatei ausgegeben. Dauerhaft wird es ausschließlich in `.env.local` gespeichert.
 - Die Installationsroute wird nach erfolgreicher Einrichtung zur V3-Anmeldung umgeleitet.
