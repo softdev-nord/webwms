@@ -112,6 +112,8 @@
         "rector-dry": "vendor/bin/rector process --dry-run",
         "rector-refactor": "vendor/bin/rector process",
         "phpmetrics": "vendor/bin/phpmetrics --config=php-metrics-config.yml",
+        "twig-cs": "vendor/bin/twig-cs-fixer lint --config=.twig-cs-fixer.php",
+        "twig-cs-fix": "vendor/bin/twig-cs-fixer fix --config=.twig-cs-fixer.php",
         "post-install-cmd": [
             "@auto-scripts"
         ],
