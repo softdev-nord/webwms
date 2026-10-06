@@ -58,6 +58,12 @@ security_controllers:
         namespace: WebWMS\Security\Presentation
     type: attribute
 
+installation_controllers:
+    resource:
+        path: ../../src/Installation/Presentation/
+        namespace: WebWMS\Installation\Presentation
+    type: attribute
+
 kernel:
     resource: WebWMS\Kernel
     type: attribute
