@@ -39,7 +39,7 @@ readonly class WarehouseQueryService
     {
         return $this->connection->fetchAllAssociative(
             'SELECT ai.id, ai.code, ai.name, ai.storage_model, a.code area_code, '
-            . 'MIN(l.location_type) storage_type FROM wms_warehouse_aisle ai '
+            . 'MIN(l.zone_code) storage_type FROM wms_warehouse_aisle ai '
             . 'INNER JOIN wms_warehouse_area a ON a.id = ai.area_id AND a.tenant_id = ai.tenant_id '
             . 'LEFT JOIN wms_storage_location l ON l.aisle_id = ai.id AND l.tenant_id = ai.tenant_id '
             . 'WHERE ai.tenant_id = :tenantId AND a.warehouse_id = :warehouseId '

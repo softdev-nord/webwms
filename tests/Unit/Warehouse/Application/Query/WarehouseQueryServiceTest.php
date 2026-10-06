@@ -114,6 +114,25 @@ class WarehouseQueryServiceTest extends TestCase
         self::assertSame([], $result['warehouses']);
     }
 
+    public function testWarehouseAislesExposeTheTopologyTypeFromTheZoneCode(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects($this->once())->method('fetchAllAssociative')->with(
+            self::callback(static function (string $sql): bool {
+                self::assertStringContainsString('MIN(l.zone_code) storage_type', $sql);
+                self::assertStringNotContainsString('MIN(l.location_type) storage_type', $sql);
+
+                return true;
+            }),
+            ['tenantId' => 'tenant-id', 'warehouseId' => 'warehouse-id'],
+        )->willReturn([['storage_type' => 'BLL']]);
+
+        self::assertSame(
+            [['storage_type' => 'BLL']],
+            new WarehouseQueryService($connection)->warehouseAisles('tenant-id', 'warehouse-id'),
+        );
+    }
+
     public function testWarehouseOccupancyIsTenantAndWarehouseScoped(): void
     {
         $connection = $this->createMock(Connection::class);

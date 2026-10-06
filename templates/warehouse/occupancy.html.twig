@@ -8,12 +8,17 @@
         .occupancy-legend-swatch { width: .85rem; height: .85rem; border: 1px solid rgba(0, 0, 0, .12); border-radius: .2rem; }
         .occupancy-type-icon { display: grid; width: 3rem; height: 3rem; place-items: center; color: var(--vz-primary); background: rgba(var(--vz-primary-rgb), .1); border-radius: .5rem; font-size: 1.5rem; }
         .occupancy-visual { overflow-x: auto; padding: 1rem; background: rgba(var(--vz-light-rgb), .45); border: 1px solid var(--vz-border-color); border-radius: .5rem; }
-        .occupancy-grid { display: grid; gap: .55rem; min-width: max-content; }
-        .occupancy-grid--rack { grid-template-columns: repeat(var(--occupancy-columns), minmax(125px, 1fr)); align-items: stretch; padding: 0 .35rem; border-right: .35rem solid #6c757d; border-bottom: .55rem solid #6c757d; border-left: .35rem solid #6c757d; }
-        .occupancy-grid--block { grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); min-width: 100%; padding: .65rem; background-image: linear-gradient(rgba(108, 117, 125, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(108, 117, 125, .08) 1px, transparent 1px); background-size: 24px 24px; border: 2px dashed #6c757d; }
-        .occupancy-grid--tray { grid-template-columns: repeat(var(--occupancy-columns), minmax(145px, 1fr)); padding: 1rem; background: var(--vz-card-bg); border: .45rem solid #6c757d; }
-        .occupancy-grid--flow { grid-template-columns: repeat(var(--occupancy-columns), minmax(135px, 1fr)); padding: .5rem .5rem 1.2rem; border: .3rem solid #6c757d; transform: skewX(-1deg); }
-        .occupancy-grid--zone { grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); min-width: 100%; }
+        .occupancy-generic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: .65rem; }
+        .occupancy-rack { display: grid; grid-template-columns: 4rem repeat(var(--slot-count), minmax(125px, 1fr)); gap: .35rem; min-width: max-content; padding: .75rem .75rem 1rem; background: #6c757d; border-radius: .25rem; }
+        .occupancy-rack-heading, .occupancy-rack-level { display: grid; place-items: center; min-height: 2rem; color: #fff; font-size: .72rem; font-weight: 700; }
+        .occupancy-rack-cell { display: grid; gap: .25rem; min-height: 105px; padding: .2rem; background: rgba(255, 255, 255, .22); }
+        .occupancy-block { display: grid; gap: .85rem; padding: 1rem; background-color: rgba(108, 117, 125, .08); background-image: linear-gradient(rgba(108, 117, 125, .12) 1px, transparent 1px), linear-gradient(90deg, rgba(108, 117, 125, .12) 1px, transparent 1px); background-size: 24px 24px; border: 2px dashed #6c757d; }
+        .occupancy-block-lane { display: grid; grid-template-columns: 5rem 1fr; gap: .65rem; align-items: stretch; }
+        .occupancy-block-label { display: grid; place-items: center; color: #fff; background: #6c757d; border-radius: .25rem; font-size: .75rem; font-weight: 700; }
+        .occupancy-block-depths { display: grid; grid-template-columns: repeat(var(--depth-count), minmax(105px, 1fr)); gap: .35rem; min-width: max-content; }
+        .occupancy-flow { display: grid; gap: .8rem; min-width: max-content; }
+        .occupancy-flow-lane { display: grid; grid-template-columns: 5rem repeat(var(--depth-count), minmax(105px, 1fr)); gap: .25rem; align-items: stretch; padding: .5rem; background: linear-gradient(170deg, rgba(108, 117, 125, .12) 0 72%, #6c757d 73% 78%, transparent 79%); border: 1px solid #6c757d; }
+        .occupancy-flow-label { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: .75rem; font-weight: 700; }
         .occupancy-bin { position: relative; min-height: 120px; padding: .75rem; color: inherit; background: var(--vz-card-bg); border: 1px solid var(--vz-border-color); border-top-width: 5px; border-radius: .3rem; transition: transform .15s ease, box-shadow .15s ease; }
         .occupancy-bin:hover { z-index: 2; transform: translateY(-2px); box-shadow: 0 .35rem .9rem rgba(15, 34, 58, .14); }
         .occupancy-bin--empty { border-top-color: #adb5bd; background: rgba(173, 181, 189, .08); }
@@ -23,6 +28,9 @@
         .occupancy-bin-code { font-size: .9rem; font-weight: 700; }
         .occupancy-bin-meta { color: var(--vz-secondary-color); font-size: .7rem; }
         .occupancy-bin-quantity { font-size: 1.25rem; font-weight: 700; line-height: 1.2; }
+        .occupancy-bin--compact { min-height: 100px; padding: .55rem; border-top-width: 4px; }
+        .occupancy-bin--compact .occupancy-bin-code { font-size: .72rem; }
+        .occupancy-bin--compact .occupancy-bin-quantity { font-size: 1rem; }
         .occupancy-axis { display: flex; justify-content: space-between; margin-top: .5rem; color: var(--vz-secondary-color); font-size: .7rem; }
     </style>
 {% endblock %}
@@ -73,7 +81,7 @@
 
     {% if locations is not empty %}
         {% set firstLocation = locations|first %}
-        {% set storageType = firstLocation.location_type|upper %}
+        {% set storageType = firstLocation.zone_code|upper %}
         {% set isBlock = storageType in ['BLL', 'BLOCK', 'BLOCKLAGER'] %}
         {% set isRack = storageType in ['HRL', 'FBL', 'RACK', 'REGAL', 'SHELF'] %}
         {% set isFlow = storageType in ['RGL', 'LV', 'DLK', 'FLOW'] %}
@@ -81,7 +89,6 @@
         {% set presentation = isBlock ? 'block' : (isRack ? 'rack' : (isFlow ? 'flow' : (isTray ? 'tray' : 'zone'))) %}
         {% set typeKey = isBlock ? 'block' : (isRack ? 'rack' : (isFlow ? 'flow' : (isTray ? 'tray' : 'functional_zone'))) %}
         {% set typeIcon = isBlock ? 'ri-layout-grid-line' : (isRack ? 'ri-building-4-line' : (isFlow ? 'ri-arrow-right-down-line' : (isTray ? 'ri-layout-masonry-line' : 'ri-map-pin-line'))) %}
-        {% set columnCount = isBlock or presentation == 'zone' ? 1 : occupancyColumns %}
 
         <section class="card border-0 shadow-sm">
             <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
@@ -107,40 +114,63 @@
 
             <div class="card-body">
                 <div class="occupancy-visual">
-                    <div class="occupancy-grid occupancy-grid--{{ presentation }}" style="--occupancy-columns: {{ columnCount }}">
-                        {% for location in locations %}
-                            {% set utilization = location.capacity_quantity > 0 ? min(100, (location.stock_quantity / location.capacity_quantity * 100)|round) : 0 %}
-                            {% set state = location.stock_quantity == 0 ? 'empty' : (location.blocked_quantity > 0 ? 'blocked' : (location.quality_quantity > 0 ? 'quality' : (location.capacity_quantity > 0 and location.stock_quantity >= location.capacity_quantity ? 'full' : 'occupied'))) %}
+                    {% if isRack %}
+                        <div class="occupancy-rack" style="--slot-count: {{ occupancySlots|length }}">
+                            <div class="occupancy-rack-heading">{{ 'warehouse.topology_fields.level'|trans }}</div>
 
-                            <a href="{{ path('v3_stock', {warehouse: location.warehouse_id}) }}" class="occupancy-bin occupancy-bin--{{ state }} text-decoration-none" title="{{ location.location_code }} · {{ location.product_skus ?: ('inventory.occupancy.no_stock'|trans) }}">
-                                <div class="d-flex justify-content-between gap-2">
-                                    <span class="occupancy-bin-code">{{ location.location_code }}</span>
-                                    <span class="badge bg-light text-body">{{ 'warehouse.topology_fields.depth'|trans }} {{ location.depth_number ?: '–' }}</span>
+                            {% for slot in occupancySlots %}
+                                <div class="occupancy-rack-heading">{{ 'warehouse.topology_fields.slot'|trans }} {{ slot }}</div>
+                            {% endfor %}
+
+                            {% for level in occupancyLevels %}
+                                <div class="occupancy-rack-level">{{ level }}</div>
+
+                                {% for slot in occupancySlots %}
+                                    <div class="occupancy-rack-cell">
+                                        {% for location in locations|filter(location => location.level_number == level and location.slot_number == slot) %}
+                                            {% include 'warehouse/_occupancy_location.html.twig' with {location: location, variant: 'compact', showDepth: occupancyDepths|length > 1} only %}
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    {% elseif isBlock %}
+                        <div class="occupancy-block" style="--depth-count: {{ occupancyDepths|length }}">
+                            {% for slot in occupancySlots %}
+                                <div class="occupancy-block-lane">
+                                    <div class="occupancy-block-label">{{ 'warehouse.topology_fields.slot'|trans }} {{ slot }}</div>
+                                    <div class="occupancy-block-depths">
+                                        {% for location in locations|filter(location => location.slot_number == slot) %}
+                                            {% include 'warehouse/_occupancy_location.html.twig' with {location: location, variant: 'compact', showDepth: true} only %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
+                            {% endfor %}
+                        </div>
+                    {% elseif isFlow %}
+                        <div class="occupancy-flow" style="--depth-count: {{ occupancyDepths|length }}">
+                            {% for level in occupancyLevels %}
+                                {% for slot in occupancySlots %}
+                                    <div class="occupancy-flow-lane">
+                                        <div class="occupancy-flow-label">
+                                            <span>{{ 'warehouse.topology_fields.level'|trans }} {{ level }}</span>
+                                            <span>{{ 'warehouse.topology_fields.slot'|trans }} {{ slot }}</span>
+                                        </div>
 
-                                <div class="occupancy-bin-meta mt-1">{{ 'warehouse.topology_fields.level'|trans }} {{ location.level_number ?: location.level_code ?: '–' }} · {{ 'warehouse.topology_fields.slot'|trans }} {{ location.slot_number ?: '–' }}</div>
-
-                                <div class="d-flex justify-content-between align-items-end mt-3">
-                                    <div>
-                                        <div class="occupancy-bin-quantity">{{ location.stock_quantity }}{% if location.capacity_quantity > 0 %} / {{ location.capacity_quantity }}{% endif %}</div>
-                                        <div class="occupancy-bin-meta">{{ 'article.index.stock'|trans }}{% if location.capacity_quantity <= 0 %} {{ 'inventory.occupancy.unlimited'|trans }}{% endif %}</div>
+                                        {% for location in locations|filter(location => location.level_number == level and location.slot_number == slot) %}
+                                            {% include 'warehouse/_occupancy_location.html.twig' with {location: location, variant: 'compact', showDepth: true} only %}
+                                        {% endfor %}
                                     </div>
-                                    <div class="text-end">
-                                        <strong>{{ location.product_count }}</strong>
-                                        <div class="occupancy-bin-meta">{{ 'navigation.master_data.submenu.headline1.label'|trans }}</div>
-                                    </div>
-                                </div>
-
-                                {% if location.capacity_quantity > 0 %}
-                                    <div class="progress mt-2" style="height: 5px">
-                                        <div class="progress-bar {{ state in ['blocked', 'full'] ? 'bg-danger' : (state == 'quality' ? 'bg-warning' : 'bg-success') }}" style="width: {{ utilization }}%"></div>
-                                    </div>
-                                {% endif %}
-
-                                <div class="occupancy-bin-meta text-truncate mt-2">{{ location.product_skus ?: ('dashboard.index.available'|trans) }}</div>
-                            </a>
-                        {% endfor %}
-                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="occupancy-generic-grid">
+                            {% for location in locations %}
+                                {% include 'warehouse/_occupancy_location.html.twig' with {location: location, variant: 'card', showDepth: true} only %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
                     <div class="occupancy-axis">
                         <span>{{ (isTray or isBlock ? 'inventory.occupancy.top_view' : 'inventory.occupancy.front_view')|trans({}, 'occupancy') }}</span>

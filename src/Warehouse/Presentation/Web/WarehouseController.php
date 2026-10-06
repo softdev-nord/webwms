@@ -226,14 +226,21 @@ class WarehouseController extends AbstractController
             $aisleId = $aisles[0]['id'];
         }
         $locations = $this->warehouseQueries->warehouseOccupancy($user->tenantId(), $warehouseId, $aisleId);
-        $slotNumbers = array_map(static fn (array $location): int => (int) ($location['slot_number'] ?? 0), $locations);
+        $levels = array_values(array_unique(array_map(static fn (array $location): int => (int) ($location['level_number'] ?? 0), $locations)));
+        $slots = array_values(array_unique(array_map(static fn (array $location): int => (int) ($location['slot_number'] ?? 0), $locations)));
+        $depths = array_values(array_unique(array_map(static fn (array $location): int => (int) ($location['depth_number'] ?? 0), $locations)));
+        rsort($levels);
+        sort($slots);
+        sort($depths);
 
         return $this->render('warehouse/occupancy.html.twig', [
             'page' => 'inventory.occupancy.graphical_location_occupancy',
             'warehouses' => $warehouses,
             'aisles' => $aisles,
             'locations' => $locations,
-            'occupancyColumns' => max(1, ...$slotNumbers),
+            'occupancyLevels' => $levels,
+            'occupancySlots' => $slots,
+            'occupancyDepths' => $depths,
             'selectedWarehouse' => $warehouseId,
             'selectedAisle' => $aisleId,
         ]);

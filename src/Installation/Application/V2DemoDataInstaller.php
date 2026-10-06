@@ -171,7 +171,7 @@ readonly class V2DemoDataInstaller
             'id' => $this->id($tenantId, 'location', $coordinate), 'tenant_id' => $tenantId,
             'warehouse_id' => $warehouseId, 'area_id' => $areaId, 'aisle_id' => $aisleId,
             'code' => $coordinate, 'level_code' => (string) $level, 'bin_code' => sprintf('%04d-%04d', $slot, $depth),
-            'location_type' => $zone === 'WAZ' ? 'shipping' : 'storage', 'capacity_quantity' => 0,
+            'location_type' => $zone, 'capacity_quantity' => 0,
             'warehouse_number' => (int) $location['stock_location_ln'], 'level_number' => $level,
             'slot_number' => $slot, 'depth_number' => $depth, 'coordinate' => $coordinate,
             'description' => (string) $location['stock_location_desc'],
