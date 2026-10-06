@@ -41,6 +41,7 @@ final class InstallationController extends AbstractController
         /** @var array<string, mixed> $data */
         $data = $session->get('installation.data', $this->defaults());
         $error = null;
+        $errorDetail = null;
         $databaseStatus = null;
 
         if ($request->isMethod('POST')) {
@@ -73,9 +74,12 @@ final class InstallationController extends AbstractController
 
                 return $this->redirectToRoute('installation_step', ['step' => self::STEPS[array_search($step, self::STEPS, true) + 1]]);
             } catch (\Throwable $exception) {
-                $error = str_starts_with($exception->getMessage(), 'installation.')
-                    ? $exception->getMessage()
-                    : 'installation.error.failed';
+                if (str_starts_with($exception->getMessage(), 'installation.')) {
+                    $error = $exception->getMessage();
+                } else {
+                    $error = 'installation.error.failed';
+                    $errorDetail = $this->safeErrorDetail($exception);
+                }
             }
         }
 
@@ -84,6 +88,7 @@ final class InstallationController extends AbstractController
             'steps' => self::STEPS,
             'data' => $data,
             'error' => $error,
+            'errorDetail' => $errorDetail,
             'databaseStatus' => $databaseStatus,
             'result' => $session->get('installation.result'),
         ]);
@@ -168,5 +173,17 @@ final class InstallationController extends AbstractController
             'site_timezone' => 'UTC', 'admin_name' => 'pending', 'admin_email' => 'pending@example.invalid',
             'admin_password' => 'pending-password',
         ]));
+    }
+
+    private function safeErrorDetail(\Throwable $exception): string
+    {
+        $detail = $exception->getMessage();
+        $masked = preg_replace(
+            '#(mysql|mariadb)://[^\s/@:]+(?::[^\s/@]*)?@#i',
+            '$1://***:***@',
+            $detail,
+        );
+
+        return $masked ?? $detail;
     }
 }

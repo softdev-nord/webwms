@@ -68,3 +68,4 @@ installation:
         timezone: 'Die angegebene Zeitzone ist ungültig.'
         required: 'Bitte füllen Sie alle Pflichtfelder aus.'
         failed: 'Die Installation konnte nicht abgeschlossen werden. Die technische Meldung steht nachfolgend.'
+        technical_details: 'Technische Meldung'

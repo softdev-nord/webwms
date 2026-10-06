@@ -68,3 +68,4 @@ installation:
         timezone: 'The specified timezone is invalid.'
         required: 'Please complete all required fields.'
         failed: 'The installation could not be completed. The technical message is shown below.'
+        technical_details: 'Technical message'
