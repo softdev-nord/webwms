@@ -50,7 +50,7 @@
                 <form method="post" class="grid">
                     <input type="hidden" name="_token" value="{{ csrf_token('installation.' ~ step) }}">
                     {% for field in ['database_host', 'database_port', 'database_name', 'database_user', 'database_password', 'database_version'] %}
-                        <label>{{ ('installation.field.' ~ field)|trans }}<input name="{{ field }}" type="{{ field == 'database_password' ? 'password' : 'text' }}" value="{{ field == 'database_password' ? '' : attribute(data, field) }}" required></label>
+                        <label>{{ ('installation.field.' ~ field)|trans }}<input name="{{ field }}" type="{{ field == 'database_password' ? 'password' : 'text' }}" value="{{ attribute(data, field) }}" required></label>
                     {% endfor %}
                     <label class="full">{{ 'installation.field.demo_data'|trans }}
                         <select name="demo_data"><option value="1" {{ data.demo_data ? 'selected' : '' }}>{{ 'installation.option.with_demo'|trans }}</option><option value="0" {{ not data.demo_data ? 'selected' : '' }}>{{ 'installation.option.schema_only'|trans }}</option></select>

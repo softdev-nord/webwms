@@ -4,6 +4,8 @@
 
 Die Webinstallation unter `/v3/install` führt durch Datenbank, Installationsumfang, Mandant, physischen Standort und das erste Administratorkonto. Die Datenbank muss vor dem Start existieren und vollständig leer sein. Der Installer besitzt absichtlich keine Berechtigung zum Erstellen oder Löschen einer Datenbank. Der bisherige Einstieg `/install` leitet auf die V3-Route weiter.
 
+Ist `DATABASE_URL` bereits in der effektiven Prozessumgebung, `.env.local` oder `.env` gesetzt, übernimmt der Datenbank-Schritt Host, Port, Datenbankname, Benutzer, Kennwort und `serverVersion` automatisch. Bereits im Installationsassistenten geänderte Werte haben anschließend Vorrang, weil sie in der serverseitigen Installationssession gehalten werden.
+
 Nach der Bestätigung führt WebWMS sämtliche Doctrine-Migrationen aus, legt die Erstdaten transaktional an und prüft Schema, Mandant, Standort, Administrator, Rolle und Berechtigungen. Erst nach bestandener Prüfung wird `var/installation.lock` geschrieben.
 
 ## Installationsvarianten

@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use RuntimeException;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Process\Process;
 use WebWMS\Administration\Application\Access\PermissionCatalog;
 use WebWMS\Administration\Domain\Access\PasswordHasher;
@@ -25,6 +26,32 @@ final readonly class InstallationManager
     public function isInstalled(): bool
     {
         return is_file($this->projectDir . '/var/installation.lock');
+    }
+
+    /** @return array<string, int|string> */
+    public function databaseDefaults(): array
+    {
+        $databaseUrl = $this->databaseUrlFromEnvironment();
+        if ($databaseUrl === null) {
+            return [];
+        }
+
+        $parts = parse_url($databaseUrl);
+        if (!is_array($parts) || !in_array($parts['scheme'] ?? null, ['mysql', 'mariadb'], true)) {
+            return [];
+        }
+
+        $query = [];
+        parse_str((string) ($parts['query'] ?? ''), $query);
+
+        return array_filter([
+            'database_host' => isset($parts['host']) ? rawurldecode($parts['host']) : null,
+            'database_port' => isset($parts['port']) ? (int) $parts['port'] : 3306,
+            'database_name' => isset($parts['path']) ? rawurldecode(ltrim($parts['path'], '/')) : null,
+            'database_user' => isset($parts['user']) ? rawurldecode($parts['user']) : null,
+            'database_password' => isset($parts['pass']) ? rawurldecode($parts['pass']) : '',
+            'database_version' => isset($query['serverVersion']) && is_string($query['serverVersion']) ? $query['serverVersion'] : null,
+        ], static fn (int|string|null $value): bool => $value !== null && $value !== '');
     }
 
     /** @return array{database: string, tables: int} */
@@ -149,6 +176,31 @@ final readonly class InstallationManager
         } catch (\Throwable $exception) {
             throw new RuntimeException('The database connection failed: ' . $exception->getMessage(), 0, $exception);
         }
+    }
+
+    private function databaseUrlFromEnvironment(): ?string
+    {
+        $runtimeValue = $_SERVER['DATABASE_URL'] ?? $_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL');
+        if (is_string($runtimeValue) && trim($runtimeValue) !== '') {
+            return trim($runtimeValue);
+        }
+
+        $values = [];
+        $dotenv = new Dotenv();
+        foreach (['.env', '.env.local'] as $filename) {
+            $path = $this->projectDir . '/' . $filename;
+            if (!is_file($path)) {
+                continue;
+            }
+            $contents = file_get_contents($path);
+            if (is_string($contents)) {
+                $values = array_replace($values, $dotenv->parse($contents, $path));
+            }
+        }
+
+        $value = $values['DATABASE_URL'] ?? null;
+
+        return is_string($value) && trim($value) !== '' ? trim($value) : null;
     }
 
     private function runMigrations(InstallationConfiguration $configuration): void
