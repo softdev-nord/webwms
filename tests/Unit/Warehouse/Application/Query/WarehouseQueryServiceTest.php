@@ -80,6 +80,27 @@ class WarehouseQueryServiceTest extends TestCase
         self::assertSame([], $result['bins']);
     }
 
+    public function testWarehouseTopologyCanBeRestrictedToAPhysicalSite(): void
+    {
+        $connection = $this->createMock(Connection::class);
+        $connection->expects($this->exactly(5))->method('fetchAllAssociative')->with(
+            self::callback(static function (string $sql): bool {
+                if (str_contains($sql, 'FROM wms_site WHERE')) {
+                    return true;
+                }
+
+                self::assertStringContainsString('s.id = :siteId', $sql);
+
+                return true;
+            }),
+            self::callback(static fn (array $parameters): bool => $parameters === ['tenantId' => 'tenant-id'] || $parameters === ['tenantId' => 'tenant-id', 'siteId' => 'site-id']),
+        )->willReturn([]);
+
+        $result = new WarehouseQueryService($connection)->warehouseTopology('tenant-id', 'site-id');
+
+        self::assertSame([], $result['warehouses']);
+    }
+
     public function testWarehouseOverviewIsRestrictedToTheAuthenticatedTenant(): void
     {
         $connection = $this->createMock(Connection::class);

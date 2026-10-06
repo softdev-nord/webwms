@@ -212,6 +212,7 @@ common:
     blocked:
         blocked: 'Gesperrt'
     button:
+        apply: 'Anwenden'
         cancel: 'Abbrechen'
         delete: 'Löschen'
         details: 'Details Anzeigen'
@@ -2174,6 +2175,9 @@ user:
             rights: 'Rechte'
             user_role: 'Benutzerrolle'
 warehouse:
+    topology:
+        site_filter: 'Physischer Standort'
+        site_scope_hint: 'Lagerstruktur und Lagerplätze sind physisch standortbezogen; der Mandant begrenzt lediglich den Zugriff.'
     flash:
         blocking_reason_was_created: 'Der Sperrgrund wurde angelegt.'
         blocking_reason_was_updated: 'Der Sperrgrund wurde aktualisiert.'

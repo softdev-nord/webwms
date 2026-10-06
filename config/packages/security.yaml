@@ -63,6 +63,7 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
+    - { path: ^/install, roles: PUBLIC_ACCESS }
     - { path: ^/api/v3, roles: ROLE_API_CLIENT }
     - { path: ^/v3/login$, roles: PUBLIC_ACCESS }
     - { path: ^/v3/sso, roles: PUBLIC_ACCESS }

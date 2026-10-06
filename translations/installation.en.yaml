@@ -1,0 +1,70 @@
+installation:
+    title: 'WebWMS Installation'
+    progress: 'Installation progress'
+    step:
+        welcome: 'Start'
+        database: 'Database'
+        organization: 'Organisation'
+        administrator: 'Administrator'
+        review: 'Review'
+    subtitle:
+        welcome: 'Guided initial setup'
+        database: 'Connection and data scope'
+        organization: 'Tenant and physical site'
+        administrator: 'Initial administrator account'
+        review: 'Review configuration and install'
+        complete: 'Installation completed'
+    welcome:
+        heading: 'Welcome to WebWMS'
+        text: 'This assistant configures the database schema, tenant, site, permissions, and initial administrator account.'
+        requirement: 'The empty target database must be created by a database administrator beforehand. The assistant does not create databases.'
+    database:
+        heading: 'Connect database'
+        text: 'The connection is verified. For safety, only an existing and completely empty database is accepted.'
+        empty_hint: 'Demo mode installs V2-based master, order, stock and complete warehouse topology data. Without demo data, only the schema plus tenant, site and administrator are configured.'
+    organization:
+        heading: 'Configure organisation'
+        site_hint: 'The physical warehouse topology belongs to the site and its warehouse. The tenant remains the access and security boundary.'
+    administrator:
+        heading: 'Create administrator'
+        password_hint: 'The password must contain at least 12 characters.'
+    review:
+        heading: 'Confirm installation'
+        text: 'All migrations are run, initial data is created, and startup readiness is checked automatically.'
+    complete:
+        heading: 'WebWMS is ready'
+        text: 'Schema, tenant, site, administrator, and permissions passed the readiness checks.'
+        locations: '%count% individually addressable storage locations were generated from the V2 topology.'
+    field:
+        database_host: 'Database host'
+        database_port: 'Port'
+        database_name: 'Database name'
+        database_user: 'Database user'
+        database_password: 'Database password'
+        database_version: 'MySQL/MariaDB version'
+        demo_data: 'Installation scope'
+        tenant_name: 'Tenant name'
+        site_code: 'Site code'
+        site_name: 'Site name'
+        site_timezone: 'Timezone'
+        admin_name: 'Display name'
+        admin_email: 'E-mail address'
+        admin_password: 'Password'
+        admin_password_confirmation: 'Repeat password'
+    option:
+        with_demo: 'Schema and V2-based demo data'
+        schema_only: 'Database schema and initial setup only'
+    action:
+        start: 'Start installation'
+        test_continue: 'Test connection and continue'
+        continue: 'Continue'
+        install: 'Install now'
+        login: 'Go to login'
+    error:
+        database_not_empty: 'The selected database is not empty. Please use a newly created empty database.'
+        email: 'Please enter a valid e-mail address.'
+        password_length: 'The administrator password must contain at least 12 characters.'
+        password_confirmation: 'The passwords do not match.'
+        timezone: 'The specified timezone is invalid.'
+        required: 'Please complete all required fields.'
+        failed: 'The installation could not be completed. The technical message is shown below.'

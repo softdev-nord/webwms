@@ -38,6 +38,6 @@ Topologieelemente werden über `POST /api/v3/inventory/topology/{sites|warehouse
 
 ## Erweiterter Demodatensatz
 
-`ExtendedDemoDatasetService` ergänzt beim Demo-Bootstrap für jede fachliche Kernentität mindestens 100 deterministische Datensätze. Dazu gehören Topologie, Artikel, Bestand und Ledger, geplanter und ungeplanter Wareneingang, Qualitätsabweichungen, Einlagerung, der vollständige Warenausgang von Reservierung bis Verladung sowie Retouren, Nachschub und Inventur.
+Die frühere künstliche V3-Datengenerierung wurde entfernt. Die Installationsroutine verwendet stattdessen den normalisierten V2-Demodatenbestand als fachliche Quelle. Dabei wird die vollständige V2-Lagerstruktur in eigenständig adressierbare Lagerplätze überführt; V3-spezifische Konfigurationen werden anschließend gezielt auf dieser realistischen Grundlage ergänzt.
 
 Die UUIDv5-IDs werden aus Mandant, Entität und laufender Nummer gebildet. Der Generator ist dadurch idempotent und kann nach Schemaänderungen oder zum Wiederauffüllen erneut ausgeführt werden. Mandanten, Benutzer und technische Integrationskonfigurationen bleiben bewusst bei ihren kompakten, manuell nachvollziehbaren Beispielen.

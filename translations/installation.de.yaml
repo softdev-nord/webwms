@@ -1,0 +1,70 @@
+installation:
+    title: 'WebWMS Installation'
+    progress: 'Installationsfortschritt'
+    step:
+        welcome: 'Start'
+        database: 'Datenbank'
+        organization: 'Organisation'
+        administrator: 'Administrator'
+        review: 'Prüfung'
+    subtitle:
+        welcome: 'Schrittweise Ersteinrichtung'
+        database: 'Verbindung und Datenumfang'
+        organization: 'Mandant und physischer Standort'
+        administrator: 'Erstes Administratorkonto'
+        review: 'Konfiguration prüfen und installieren'
+        complete: 'Installation abgeschlossen'
+    welcome:
+        heading: 'Willkommen bei WebWMS'
+        text: 'Dieser Assistent richtet Datenbankschema, Mandant, Standort, Berechtigungen und das erste Administratorkonto ein.'
+        requirement: 'Die leere Zieldatenbank muss vorab durch einen Datenbank-Administrator angelegt worden sein. Der Assistent legt keine Datenbank an.'
+    database:
+        heading: 'Datenbank verbinden'
+        text: 'Die Verbindung wird geprüft. Aus Sicherheitsgründen wird ausschließlich eine bereits vorhandene, vollständig leere Datenbank akzeptiert.'
+        empty_hint: 'Mit Demodaten werden die auf V2 basierenden Stamm-, Auftrags-, Bestands- und vollständigen Lagerstrukturdaten installiert. Ohne Demodaten wird nur das Schema mit Mandant, Standort und Administrator eingerichtet.'
+    organization:
+        heading: 'Organisation einrichten'
+        site_hint: 'Die physische Lagerstruktur wird dem Standort beziehungsweise dessen Lager zugeordnet. Der Mandant bleibt die Zugriffs- und Sicherheitsgrenze.'
+    administrator:
+        heading: 'Administrator anlegen'
+        password_hint: 'Das Kennwort muss mindestens 12 Zeichen enthalten.'
+    review:
+        heading: 'Installation bestätigen'
+        text: 'Nach dem Start werden alle Migrationen ausgeführt, die Erstdaten angelegt und die Startbereitschaft automatisch geprüft.'
+    complete:
+        heading: 'WebWMS ist startbereit'
+        text: 'Schema, Mandant, Standort, Administrator und Berechtigungen wurden erfolgreich geprüft.'
+        locations: '%count% eigenständig adressierbare Lagerplätze wurden aus der V2-Struktur erzeugt.'
+    field:
+        database_host: 'Datenbankserver'
+        database_port: 'Port'
+        database_name: 'Datenbankname'
+        database_user: 'Datenbankbenutzer'
+        database_password: 'Datenbankkennwort'
+        database_version: 'MySQL-/MariaDB-Version'
+        demo_data: 'Installationsumfang'
+        tenant_name: 'Mandantenname'
+        site_code: 'Standortkürzel'
+        site_name: 'Standortname'
+        site_timezone: 'Zeitzone'
+        admin_name: 'Anzeigename'
+        admin_email: 'E-Mail-Adresse'
+        admin_password: 'Kennwort'
+        admin_password_confirmation: 'Kennwort wiederholen'
+    option:
+        with_demo: 'Schema und V2-basierte Demodaten'
+        schema_only: 'Nur Datenbankschema und Ersteinrichtung'
+    action:
+        start: 'Installation starten'
+        test_continue: 'Verbindung prüfen und weiter'
+        continue: 'Weiter'
+        install: 'Jetzt installieren'
+        login: 'Zur Anmeldung'
+    error:
+        database_not_empty: 'Die gewählte Datenbank ist nicht leer. Bitte verwenden Sie eine neu angelegte, leere Datenbank.'
+        email: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.'
+        password_length: 'Das Administratorkennwort muss mindestens 12 Zeichen lang sein.'
+        password_confirmation: 'Die Kennwörter stimmen nicht überein.'
+        timezone: 'Die angegebene Zeitzone ist ungültig.'
+        required: 'Bitte füllen Sie alle Pflichtfelder aus.'
+        failed: 'Die Installation konnte nicht abgeschlossen werden. Die technische Meldung steht nachfolgend.'

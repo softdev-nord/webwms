@@ -45,8 +45,15 @@ readonly class WarehouseQueryService
         );
     }
 
-    public function warehouseTopology(string $tenantId): array
+    public function warehouseTopology(string $tenantId, ?string $siteId = null): array
     {
+        $parameters = ['tenantId' => $tenantId];
+        $siteFilter = '';
+        if ($siteId !== null) {
+            $parameters['siteId'] = $siteId;
+            $siteFilter = ' AND s.id = :siteId';
+        }
+
         return [
             'sites' => $this->connection->fetchAllAssociative(
                 'SELECT id, code, name, timezone, status, created_at FROM wms_site WHERE tenant_id = :tenantId ORDER BY code',
@@ -55,26 +62,32 @@ readonly class WarehouseQueryService
             'warehouses' => $this->connection->fetchAllAssociative(
                 'SELECT w.id, w.site_id, w.code, w.name, w.warehouse_type, s.code site_code, w.created_at '
                 . 'FROM wms_warehouse w INNER JOIN wms_site s ON s.id = w.site_id AND s.tenant_id = w.tenant_id '
-                . 'WHERE w.tenant_id = :tenantId ORDER BY s.code, w.code',
-                ['tenantId' => $tenantId],
+                . 'WHERE w.tenant_id = :tenantId' . $siteFilter . ' ORDER BY s.code, w.code',
+                $parameters,
             ),
             'areas' => $this->connection->fetchAllAssociative(
-                'SELECT id, warehouse_id, code, name, area_type, created_at FROM wms_warehouse_area '
-                . 'WHERE tenant_id = :tenantId ORDER BY warehouse_id, code',
-                ['tenantId' => $tenantId],
+                'SELECT a.id, a.warehouse_id, a.code, a.name, a.area_type, a.created_at, w.code warehouse_code, s.code site_code '
+                . 'FROM wms_warehouse_area a INNER JOIN wms_warehouse w ON w.id = a.warehouse_id '
+                . 'INNER JOIN wms_site s ON s.id = w.site_id WHERE a.tenant_id = :tenantId' . $siteFilter . ' ORDER BY w.code, a.code',
+                $parameters,
             ),
             'aisles' => $this->connection->fetchAllAssociative(
-                'SELECT id, area_id, code, name, storage_model, created_at FROM wms_warehouse_aisle '
-                . 'WHERE tenant_id = :tenantId ORDER BY area_id, code',
-                ['tenantId' => $tenantId],
+                'SELECT ai.id, ai.area_id, ai.code, ai.name, ai.storage_model, ai.created_at, a.code area_code, w.code warehouse_code, s.code site_code '
+                . 'FROM wms_warehouse_aisle ai INNER JOIN wms_warehouse_area a ON a.id = ai.area_id '
+                . 'INNER JOIN wms_warehouse w ON w.id = a.warehouse_id INNER JOIN wms_site s ON s.id = w.site_id '
+                . 'WHERE ai.tenant_id = :tenantId' . $siteFilter . ' ORDER BY w.code, a.code, ai.code',
+                $parameters,
             ),
             'bins' => $this->connection->fetchAllAssociative(
-                'SELECT id, warehouse_id, area_id, aisle_id, code, level_code, bin_code, location_type, '
+                'SELECT l.id, l.warehouse_id, l.area_id, l.aisle_id, l.code, l.level_code, l.bin_code, l.location_type, '
                 . 'capacity_quantity, warehouse_number, level_number, slot_number, depth_number, coordinate, '
-                . 'description, width_mm, physical_depth_mm, height_mm, zone_code, putaway_enabled, putaway_priority, created_at '
-                . 'FROM wms_storage_location WHERE tenant_id = :tenantId '
-                . 'ORDER BY warehouse_id, area_id, aisle_id, level_number, slot_number, depth_number, code',
-                ['tenantId' => $tenantId],
+                . 'description, width_mm, physical_depth_mm, height_mm, zone_code, putaway_enabled, putaway_priority, l.created_at, '
+                . 'w.code warehouse_code, a.code area_code, ai.code aisle_code, s.code site_code '
+                . 'FROM wms_storage_location l INNER JOIN wms_warehouse w ON w.id = l.warehouse_id '
+                . 'INNER JOIN wms_site s ON s.id = w.site_id LEFT JOIN wms_warehouse_area a ON a.id = l.area_id '
+                . 'LEFT JOIN wms_warehouse_aisle ai ON ai.id = l.aisle_id WHERE l.tenant_id = :tenantId' . $siteFilter . ' '
+                . 'ORDER BY w.code, a.code, ai.code, level_number, slot_number, depth_number, l.code LIMIT 5000',
+                $parameters,
             ),
         ];
     }

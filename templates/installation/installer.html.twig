@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ 'installation.title'|trans }}</title>
+    <style>
+        :root { color-scheme: light; --primary: #175cd3; --border: #d0d5dd; --muted: #667085; --danger: #b42318; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f2f4f7; color: #101828; font: 16px/1.5 system-ui, sans-serif; }
+        main { width: min(940px, calc(100% - 32px)); margin: 48px auto; }
+        .card { background: white; border: 1px solid #eaecf0; border-radius: 14px; box-shadow: 0 8px 24px rgb(16 24 40 / 8%); overflow: hidden; }
+        header, section { padding: 28px 32px; } header { color: white; background: #0b2b52; }
+        h1, h2 { margin: 0 0 8px; } p { margin: 6px 0 18px; }
+        nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 20px; }
+        nav span { padding: 7px 11px; border-radius: 99px; background: #e4e7ec; color: var(--muted); font-size: 14px; }
+        nav .active { background: var(--primary); color: white; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+        label { display: block; font-weight: 650; } input, select { width: 100%; margin-top: 6px; padding: 11px; border: 1px solid var(--border); border-radius: 8px; }
+        .full { grid-column: 1 / -1; } .hint { color: var(--muted); font-size: 14px; }
+        .actions { display: flex; justify-content: flex-end; margin-top: 24px; }
+        button, .button { display: inline-block; border: 0; border-radius: 8px; background: var(--primary); color: white; padding: 11px 18px; text-decoration: none; cursor: pointer; }
+        .alert { padding: 12px 14px; margin-bottom: 18px; border-radius: 8px; background: #fee4e2; color: var(--danger); }
+        dl { display: grid; grid-template-columns: 220px 1fr; } dt, dd { padding: 8px 0; border-bottom: 1px solid #eaecf0; } dd { margin: 0; }
+        @media (max-width: 650px) { .grid { grid-template-columns: 1fr; } header, section { padding: 22px; } }
+    </style>
+</head>
+<body>
+<main>
+    <nav aria-label="{{ 'installation.progress'|trans }}">
+        {% for progressStep in steps %}
+            <span class="{{ progressStep == step ? 'active' : '' }}">{{ ('installation.step.' ~ progressStep)|trans }}</span>
+        {% endfor %}
+    </nav>
+    <div class="card">
+        <header>
+            <h1>{{ 'installation.title'|trans }}</h1>
+            <div>{{ ('installation.subtitle.' ~ step)|trans }}</div>
+        </header>
+        <section>
+            {% if error %}<div class="alert">{{ error|trans }}</div>{% endif %}
+            {% if step == 'welcome' %}
+                <h2>{{ 'installation.welcome.heading'|trans }}</h2>
+                <p>{{ 'installation.welcome.text'|trans }}</p>
+                <p class="hint">{{ 'installation.welcome.requirement'|trans }}</p>
+                <form method="post"><input type="hidden" name="_token" value="{{ csrf_token('installation.' ~ step) }}"><div class="actions"><button>{{ 'installation.action.start'|trans }}</button></div></form>
+            {% elseif step == 'database' %}
+                <h2>{{ 'installation.database.heading'|trans }}</h2>
+                <p>{{ 'installation.database.text'|trans }}</p>
+                <form method="post" class="grid">
+                    <input type="hidden" name="_token" value="{{ csrf_token('installation.' ~ step) }}">
+                    {% for field in ['database_host', 'database_port', 'database_name', 'database_user', 'database_password', 'database_version'] %}
+                        <label>{{ ('installation.field.' ~ field)|trans }}<input name="{{ field }}" type="{{ field == 'database_password' ? 'password' : 'text' }}" value="{{ field == 'database_password' ? '' : attribute(data, field) }}" required></label>
+                    {% endfor %}
+                    <label class="full">{{ 'installation.field.demo_data'|trans }}
+                        <select name="demo_data"><option value="1" {{ data.demo_data ? 'selected' : '' }}>{{ 'installation.option.with_demo'|trans }}</option><option value="0" {{ not data.demo_data ? 'selected' : '' }}>{{ 'installation.option.schema_only'|trans }}</option></select>
+                    </label>
+                    <p class="hint full">{{ 'installation.database.empty_hint'|trans }}</p>
+                    <div class="actions full"><button>{{ 'installation.action.test_continue'|trans }}</button></div>
+                </form>
+            {% elseif step == 'organization' %}
+                <h2>{{ 'installation.organization.heading'|trans }}</h2>
+                <form method="post" class="grid"><input type="hidden" name="_token" value="{{ csrf_token('installation.' ~ step) }}">
+                    {% for field in ['tenant_name', 'site_code', 'site_name', 'site_timezone'] %}<label>{{ ('installation.field.' ~ field)|trans }}<input name="{{ field }}" value="{{ attribute(data, field) }}" required></label>{% endfor %}
+                    <p class="hint full">{{ 'installation.organization.site_hint'|trans }}</p><div class="actions full"><button>{{ 'installation.action.continue'|trans }}</button></div>
+                </form>
+            {% elseif step == 'administrator' %}
+                <h2>{{ 'installation.administrator.heading'|trans }}</h2>
+                <form method="post" class="grid"><input type="hidden" name="_token" value="{{ csrf_token('installation.' ~ step) }}">
+                    {% for field in ['admin_name', 'admin_email', 'admin_password', 'admin_password_confirmation'] %}<label class="{{ field starts with 'admin_password' ? 'full' : '' }}">{{ ('installation.field.' ~ field)|trans }}<input name="{{ field }}" type="{{ field starts with 'admin_password' ? 'password' : (field == 'admin_email' ? 'email' : 'text') }}" value="{{ field starts with 'admin_password' ? '' : attribute(data, field) }}" required></label>{% endfor %}
+                    <p class="hint full">{{ 'installation.administrator.password_hint'|trans }}</p><div class="actions full"><button>{{ 'installation.action.continue'|trans }}</button></div>
+                </form>
+            {% elseif step == 'review' %}
+                <h2>{{ 'installation.review.heading'|trans }}</h2>
+                <dl><dt>{{ 'installation.field.database_name'|trans }}</dt><dd>{{ data.database_name }}</dd><dt>{{ 'installation.field.demo_data'|trans }}</dt><dd>{{ (data.demo_data ? 'installation.option.with_demo' : 'installation.option.schema_only')|trans }}</dd><dt>{{ 'installation.field.tenant_name'|trans }}</dt><dd>{{ data.tenant_name }}</dd><dt>{{ 'installation.field.site_name'|trans }}</dt><dd>{{ data.site_name }}</dd><dt>{{ 'installation.field.admin_email'|trans }}</dt><dd>{{ data.admin_email }}</dd></dl>
+                <p class="hint">{{ 'installation.review.text'|trans }}</p><form method="post"><input type="hidden" name="_token" value="{{ csrf_token('installation.' ~ step) }}"><div class="actions"><button>{{ 'installation.action.install'|trans }}</button></div></form>
+            {% elseif step == 'complete' %}
+                <h2>{{ 'installation.complete.heading'|trans }}</h2><p>{{ 'installation.complete.text'|trans }}</p>
+                {% if result %}<p>{{ 'installation.complete.locations'|trans({'%count%': result.locations}) }}</p>{% endif %}
+                <div class="actions"><a class="button" href="{{ path('app_v3_login') }}">{{ 'installation.action.login'|trans }}</a></div>
+            {% endif %}
+        </section>
+    </div>
+</main>
+</body>
+</html>

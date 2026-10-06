@@ -212,6 +212,7 @@ common:
     blocked:
         blocked: 'Blocked'
     button:
+        apply: 'Apply'
         cancel: 'Cancel'
         delete: 'Delete'
         details: 'View details'
@@ -2175,6 +2176,9 @@ user:
             rights: 'Rights'
             user_role: 'User role'
 warehouse:
+    topology:
+        site_filter: 'Physical site'
+        site_scope_hint: 'Warehouse topology and storage locations physically belong to the site; the tenant only limits access.'
     flash:
         blocking_reason_was_created: 'The blocking reason was created.'
         blocking_reason_was_updated: 'The blocking reason was updated.'

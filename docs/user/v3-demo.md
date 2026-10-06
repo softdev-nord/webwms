@@ -1,49 +1,33 @@
-# WebWMS V3 lokal testen
+# WebWMS mit Demodaten installieren
 
-Der erste vertikale V3-Slice stellt einen eigenen, mandantenfähigen Arbeitsbereich mit E-Mail-Login, Dashboard und Bestandsübersicht bereit.
+## Voraussetzungen
 
-## Demo-Daten anlegen
+Legen Sie auf dem MySQL- oder MariaDB-Server eine neue, vollständig leere Datenbank und einen Benutzer mit Schema- und Datenrechten für diese Datenbank an. WebWMS erstellt und löscht die Datenbank bewusst nicht selbst.
 
-Nach dem Start der lokalen Umgebung werden zuerst alle Migrationen und anschließend der idempotente Demo-Bootstrap ausgeführt:
+Der Webserver benötigt Schreibrechte für `.env.local` sowie das Verzeichnis `var/`.
 
-```shell
-docker compose exec php bin/console doctrine:migrations:migrate --no-interaction
-docker compose exec php bin/console webwms:v3:demo-bootstrap
-```
+## Geführte Installation
 
-Der Befehl zeigt beim ersten Lauf ein zufällig erzeugtes Passwort genau einmal an. Alternativ kann für ein lokales Testsystem ein eigenes Passwort aus einer lokalen Umgebungsvariable gesetzt werden:
+1. Öffnen Sie `/install`.
+2. Tragen Sie Host, Port, Datenbankname, Benutzer, Kennwort und Serverversion ein.
+3. Wählen Sie **Schema und V2-basierte Demodaten**. Mit **Nur Datenbankschema und Ersteinrichtung** werden keine fachlichen Beispieldaten angelegt.
+4. Erfassen Sie den Namen des Mandanten und den physischen Hauptstandort einschließlich Zeitzone.
+5. Erfassen Sie Anzeigename, E-Mail-Adresse und ein mindestens zwölf Zeichen langes Kennwort für den ersten Administrator.
+6. Prüfen Sie die Zusammenfassung und starten Sie die Installation.
+7. Warten Sie, bis alle Bereitschaftsprüfungen erfolgreich abgeschlossen sind, und öffnen Sie anschließend die Anmeldung.
 
-```shell
-docker compose exec php bin/console webwms:v3:demo-bootstrap --password="$WEBWMS_DEMO_PASSWORD"
-```
+## Umfang der Demodaten
 
-Der zweite und jeder weitere Lauf verändert den bestehenden Benutzer und seinen Bestand nicht.
+Die Demodaten stammen aus dem bereitgestellten V2-Datenbankexport. Sie enthalten dessen Artikel, Kunden, Lieferanten, Bestellungen, geplante Wareneingänge mit Absenderadressen, Warenausgänge mit Empfängeradressen, Bestände und die vollständige Lagerstruktur. Jede Kombination aus Lagernummer, Fachboden, Stellplatz und Tiefe ist ein eigenständig adressierbarer Lagerplatz.
 
-## Anmeldung und Smoke-Test
+Für Funktionen, die in V2 nicht vorhanden waren, ergänzt der Installer geeignete V3-Erstkonfigurationen: Einlagerungs- und Entnahmeregeln, Sperrgrund, Nummernkreise, Standardkontext und mobiles Geräteprofil. Die früheren künstlichen V3-Massendaten werden nicht mehr verwendet.
 
-1. `/v3/login` im Browser öffnen.
-2. Als Mandanten-ID `11111111-1111-4111-8111-111111111111` verwenden.
-3. Mit `admin@demo.webwms.local` und dem beim Bootstrap verwendeten Passwort anmelden.
-4. Dashboard-Zahlen prüfen und anschließend **Bestand** öffnen.
-5. Im Lagerfilter `DEMO-01` wählen. Erwartet werden `DEMO-1000` mit Menge 25 und `DEMO-2000` mit Menge 100.
-6. Unter **Aufträge** den Auftrag `DEMO-ORDER-001` öffnen, freigeben und die Menge 2 vom Lagerplatz `A-01-01` allokieren.
-7. Eine Pickliste erzeugen, unter **Picking** selbst zuweisen und die Position bestätigen.
-8. Aus der abgeschlossenen Pickliste einen Packauftrag erzeugen, die Position in ein Paket übernehmen und den Packauftrag abschließen.
-9. Eine Sendung erzeugen, Demo-Tracking und Label-Referenz registrieren und das Label an den `Demo ZPL Drucker` senden.
-10. Unter **Verladung** ein Manifest für die etikettierte Sendung mit Tour- und Fahrzeugreferenz anlegen.
-11. Die Sendung als verladen bestätigen und anschließend das vollständige Manifest abschließen. Die Sendung wechselt dabei auf `dispatched`.
-12. Unter **Integrations-Outbox** die beim Pick-, Pack-, Versand- und Verladeprozess entstandenen Statusmeldungen nach Status filtern und ihre Payload öffnen.
-13. Unter **Waagen und Volumenmessung** das Demo-Kombigerät öffnen und eine akzeptierte Gewichts- und Volumenmessung für ein noch offenes Paket oder einen Demo-Artikel erfassen.
-14. Unter **Lagerlifte und Paternoster** das aktive Demo-Gerät prüfen, einen manuellen Befehl für einen Lagerplatz einreihen und die Rückmeldungen `dispatched` und `completed` verarbeiten.
-15. Unter **WCS, MFR und Fördertechnik** die Demo-Verbindung prüfen, einen Transportbefehl einreihen, über `dispatched` und `accepted` abschließen und einen Maschinenstatus erfassen.
-16. Unter **TCP/IP und Webservice** den Demo-TCP-Endpunkt prüfen, pausieren und erneut aktivieren. Zusätzlich kann ein HTTPS-Endpunkt mit REST/JSON und HTTP-Framing angelegt werden.
-17. Unter **ERP-Verbindungen** eine Verbindung mit einer lokalen HTTPS-Test-URL und einer Credential-Umgebungsvariablen anlegen, anschließend pausieren und erneut aktivieren.
-18. Unter **Carrier-Verbindungen** eine Verbindung für den in der Sendung verwendeten Carrier-Code anlegen, pausieren und erneut aktivieren. Mit einem kompatiblen HTTPS-Testadapter können zusätzlich Versandprodukte und die automatische Labelerzeugung geprüft werden.
-19. Unter **Druckwarteschlange** den vorhandenen Demo-ZPL-Drucker sowie den aus der Sendung erzeugten Druckauftrag prüfen. Mit einem kompatiblen HTTPS-Printadapter kann der Auftrag ausgeführt und ein fehlgeschlagener Versuch erneut gestartet werden.
-20. Unter **Scanner und MDE** das Demo-MDE öffnen und einen akzeptierten sowie einen abgelehnten Scan mit Prozessreferenz erfassen.
-21. Unter **Administration** eine eingeschränkte Rolle und einen Benutzer mit E-Mail-Anmeldung anlegen.
-22. Einen API-Client erzeugen und das nur einmal angezeigte Credential sicher kopieren.
+## Prüfung nach der Installation
 
-Der Bootstrap legt einen Demo-Mandanten, Standort, Administrator mit allen derzeitigen V3-Berechtigungen, ein Lager, zwei Lagerplätze, zwei Artikel, Anfangsbestände, einen offenen Beispielauftrag, einen Demo-ZPL-Drucker, ein Demo-MDE, einen Demo-Lagerlift, eine Demo-MFR-Verbindung und einen Demo-TCP-Endpunkt an. Die Integrationen dienen nur zum Testen der Konfiguration und Warteschlangen; eine Ausführung erfordert echte Geräteadapter. Es werden keine Zugangsdaten im Repository gespeichert.
+1. Melden Sie sich mit der im Installer vergebenen E-Mail-Adresse und dem Kennwort an.
+2. Öffnen Sie **Bestand → Lagertopologie** und wählen Sie den Hauptstandort.
+3. Prüfen Sie Lager, Bereiche, Lagerstrukturen und exemplarische Koordinaten. Die Demoinstallation enthält 17.926 Lagerplätze.
+4. Öffnen Sie **Wareneingang → Geplante Eingänge** und prüfen Sie die Absenderadressen.
+5. Öffnen Sie die Warenausgangsaufträge und prüfen Sie die Empfängeradressen.
 
-API-Client-Secrets werden ausschließlich beim Erzeugen angezeigt. In der Datenbank wird nur ihr SHA-256-Hash gespeichert; ein verlorenes Secret muss durch einen neuen Client ersetzt werden.
+Die Installation legt keine Zugangsdaten im Repository ab. Das Datenbankkennwort befindet sich ausschließlich in der lokalen `.env.local`; die Installationssitzung wird nach erfolgreichem Abschluss bereinigt.

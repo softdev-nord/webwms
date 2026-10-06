@@ -39,11 +39,19 @@ class WarehouseController extends AbstractController
 
     #[Route('/topology', name: 'topology', methods: ['GET'])]
     #[IsGranted('inventory.topology.read')]
-    public function topology(): Response
+    public function topology(Request $request): Response
     {
+        $allTopology = $this->warehouseQueries->warehouseTopology($this->user()->tenantId());
+        $siteId = $this->query($request, 'site');
+        $validSiteIds = array_column($allTopology['sites'], 'id');
+        if (!in_array($siteId, $validSiteIds, true)) {
+            $siteId = isset($validSiteIds[0]) && is_string($validSiteIds[0]) ? $validSiteIds[0] : null;
+        }
+
         return $this->render('warehouse/topology.html.twig', [
             'page' => 'inventory.topology.warehouse_topology',
-            'topology' => $this->warehouseQueries->warehouseTopology($this->user()->tenantId()),
+            'topology' => $siteId === null ? $allTopology : $this->warehouseQueries->warehouseTopology($this->user()->tenantId(), $siteId),
+            'selectedSiteId' => $siteId,
         ]);
     }
 

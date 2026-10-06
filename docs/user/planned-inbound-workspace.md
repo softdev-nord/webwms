@@ -7,4 +7,4 @@
 3. Mit **Einlagerung planen** ermittelt WebWMS anhand der Strategie automatisch einen Zielplatz.
 4. Prüfen Sie den angezeigten Zielplatz und wählen Sie **Einlagerung bestätigen**. WebWMS bucht den Bestand atomar vom Annahme- auf den Lagerplatz um.
 
-Der Demo-Datensatz `DEMO-IN-001` steht nach `webwms:v3:demo-bootstrap` als avisierter Eingang bereit.
+Bei einer Installation mit Demodaten stehen die V2-Lieferantenbestellungen als geplante Eingänge inklusive vollständiger Absenderadresse bereit.
