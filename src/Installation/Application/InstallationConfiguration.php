@@ -6,6 +6,24 @@ namespace WebWMS\Installation\Application;
 
 final readonly class InstallationConfiguration
 {
+    public function __construct(
+        public string $databaseHost,
+        public int $databasePort,
+        public string $databaseName,
+        public string $databaseUser,
+        public string $databasePassword,
+        public string $databaseVersion,
+        public bool $demoData,
+        public string $tenantName,
+        public string $siteCode,
+        public string $siteName,
+        public string $siteTimezone,
+        public string $adminName,
+        public string $adminEmail,
+        public string $adminPassword,
+    ) {
+    }
+
     /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
@@ -25,24 +43,6 @@ final readonly class InstallationConfiguration
             self::string($data, 'admin_email'),
             self::string($data, 'admin_password'),
         );
-    }
-
-    public function __construct(
-        public string $databaseHost,
-        public int $databasePort,
-        public string $databaseName,
-        public string $databaseUser,
-        public string $databasePassword,
-        public string $databaseVersion,
-        public bool $demoData,
-        public string $tenantName,
-        public string $siteCode,
-        public string $siteName,
-        public string $siteTimezone,
-        public string $adminName,
-        public string $adminEmail,
-        public string $adminPassword,
-    ) {
     }
 
     public function databaseUrl(): string

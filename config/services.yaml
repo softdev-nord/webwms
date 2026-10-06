@@ -21,7 +21,7 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: true         // <---- This is the new additional config.
+        public: true         # <---- This is the new additional config.
 
         bind:
             string $appName: '%env(APP_NAME)%'

@@ -60,6 +60,7 @@ final readonly class InstallationManager
     public function inspectDatabase(InstallationConfiguration $configuration): array
     {
         $connection = $this->connect($configuration);
+
         try {
             $database = (string) $connection->fetchOne('SELECT DATABASE()');
             $tables = (int) $connection->fetchOne(
@@ -101,6 +102,7 @@ final readonly class InstallationManager
 
         $connection = $this->connect($configuration);
         $locationCount = 0;
+
         try {
             $connection->transactional(function (Connection $connection) use ($configuration, &$locationCount): void {
                 $now = new DateTimeImmutable();

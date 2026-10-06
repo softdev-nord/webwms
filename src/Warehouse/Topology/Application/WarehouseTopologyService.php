@@ -145,6 +145,7 @@ readonly class WarehouseTopologyService
                         $coordinate = $this->coordinate($warehouseNumber, $level, $slot, $depth);
                         if (isset($existingCoordinates[$coordinate])) {
                             ++$skipped;
+
                             continue;
                         }
 
@@ -435,7 +436,7 @@ readonly class WarehouseTopologyService
     /** @return list<array<string, string>> */
     private function csvRows(string $csv): array
     {
-        $stream = fopen('php://temp', 'w+');
+        $stream = fopen('php://temp', 'w+b');
         if ($stream === false) {
             throw new InvalidArgumentException('The CSV input cannot be read.');
         }

@@ -44,26 +44,6 @@ readonly class SsoService
         return $this->createProvider($rows[0]);
     }
 
-    /** @param array<string, mixed> $row */
-    private function createProvider(array $row): IdentityProvider
-    {
-        $scopes = preg_split('/\s+/', trim((string) $row['scopes']));
-        if (!is_array($scopes)) {
-            throw new SsoAuthenticationException('The OIDC scopes are invalid.');
-        }
-
-        return new IdentityProvider(
-            (string) $row['id'],
-            (string) $row['tenant_id'],
-            (string) $row['code'],
-            (string) $row['name'],
-            rtrim((string) $row['issuer_url'], '/'),
-            (string) $row['client_id'],
-            (string) $row['client_secret_env'],
-            array_values(array_filter($scopes, static fn (string $scope): bool => $scope !== '')),
-        );
-    }
-
     public function resolveUserIdentifier(IdentityProvider $provider, ExternalIdentity $identity, DateTimeImmutable $now): string
     {
         return $this->connection->transactional(function (Connection $connection) use ($provider, $identity, $now): string {
@@ -106,5 +86,25 @@ readonly class SsoService
 
             return $provider->tenantId . '|' . (string) $user['email'];
         });
+    }
+
+    /** @param array<string, mixed> $row */
+    private function createProvider(array $row): IdentityProvider
+    {
+        $scopes = preg_split('/\s+/', trim((string) $row['scopes']));
+        if (!is_array($scopes)) {
+            throw new SsoAuthenticationException('The OIDC scopes are invalid.');
+        }
+
+        return new IdentityProvider(
+            (string) $row['id'],
+            (string) $row['tenant_id'],
+            (string) $row['code'],
+            (string) $row['name'],
+            rtrim((string) $row['issuer_url'], '/'),
+            (string) $row['client_id'],
+            (string) $row['client_secret_env'],
+            array_values(array_filter($scopes, static fn (string $scope): bool => $scope !== '')),
+        );
     }
 }

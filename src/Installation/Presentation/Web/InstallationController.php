@@ -48,6 +48,7 @@ final class InstallationController extends AbstractController
             if (!$this->isCsrfTokenValid('installation.' . $step, (string) $request->request->get('_token'))) {
                 throw $this->createAccessDeniedException('Invalid installation CSRF token.');
             }
+
             try {
                 $data = array_replace($data, $this->stepData($request, $step));
                 $this->validateStep($step, $data);
