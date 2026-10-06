@@ -218,7 +218,7 @@ final readonly class InstallationManager
         }
 
         $process = new Process([
-            $phpExecutable, $this->projectDir . '/bin/console', 'doctrine:migrations:migrate',
+            $phpExecutable, $this->projectDir . '/bin/console', '--env=prod', '--no-debug', 'doctrine:migrations:migrate',
             '--no-interaction', '--allow-no-migration',
         ], $this->projectDir, ['DATABASE_URL' => $configuration->databaseUrl(), 'APP_ENV' => 'prod']);
         $process->setTimeout(600);

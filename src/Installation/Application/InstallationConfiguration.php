@@ -47,11 +47,13 @@ final readonly class InstallationConfiguration
 
     public function databaseUrl(): string
     {
+        $host = strtolower($this->databaseHost) === 'localhost' ? '127.0.0.1' : $this->databaseHost;
+
         return sprintf(
             'mysql://%s:%s@%s:%d/%s?serverVersion=%s&charset=utf8mb4',
             rawurlencode($this->databaseUser),
             rawurlencode($this->databasePassword),
-            $this->databaseHost,
+            $host,
             $this->databasePort,
             rawurlencode($this->databaseName),
             rawurlencode($this->databaseVersion),

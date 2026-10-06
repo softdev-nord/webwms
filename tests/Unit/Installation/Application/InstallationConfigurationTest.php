@@ -39,4 +39,17 @@ final class InstallationConfigurationTest extends TestCase
             'admin_password' => 'a-secure-password',
         ]);
     }
+
+    public function testLocalhostUsesTcpInsteadOfAnImplicitMysqlSocket(): void
+    {
+        $configuration = InstallationConfiguration::fromArray([
+            'database_host' => 'localhost', 'database_port' => 3306, 'database_name' => 'webWMS',
+            'database_user' => 'installer', 'database_password' => 'password', 'database_version' => '8.0',
+            'tenant_name' => 'Example', 'site_code' => 'MAIN', 'site_name' => 'Main',
+            'site_timezone' => 'UTC', 'admin_name' => 'Admin', 'admin_email' => 'admin@example.test',
+            'admin_password' => 'a-secure-password',
+        ]);
+
+        self::assertStringContainsString('@127.0.0.1:3306/', $configuration->databaseUrl());
+    }
 }
