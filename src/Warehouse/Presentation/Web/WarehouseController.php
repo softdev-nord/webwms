@@ -225,12 +225,15 @@ class WarehouseController extends AbstractController
         if (!in_array($aisleId, $validAisleIds, true) && isset($aisles[0]['id']) && is_string($aisles[0]['id'])) {
             $aisleId = $aisles[0]['id'];
         }
+        $locations = $this->warehouseQueries->warehouseOccupancy($user->tenantId(), $warehouseId, $aisleId);
+        $slotNumbers = array_map(static fn (array $location): int => (int) ($location['slot_number'] ?? 0), $locations);
 
         return $this->render('warehouse/occupancy.html.twig', [
             'page' => 'inventory.occupancy.graphical_location_occupancy',
             'warehouses' => $warehouses,
             'aisles' => $aisles,
-            'locations' => $this->warehouseQueries->warehouseOccupancy($user->tenantId(), $warehouseId, $aisleId),
+            'locations' => $locations,
+            'occupancyColumns' => max(1, ...$slotNumbers),
             'selectedWarehouse' => $warehouseId,
             'selectedAisle' => $aisleId,
         ]);

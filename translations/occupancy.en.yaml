@@ -1,0 +1,19 @@
+inventory:
+    occupancy:
+        front_view: 'Front view'
+        picking_side_left: 'Picking side left · depth from left to right'
+        presentations:
+            block: 'Floor view with positions and capacities'
+            flow: 'Front view with visible storage depth'
+            rack: 'Rack view by level and position'
+            tray: 'Top view with proportional surface arrangement'
+            zone: 'Overview of functional locations'
+        storage_model: 'Structure model'
+        storage_structure: 'Storage structure'
+        storage_types:
+            block: 'Block storage'
+            flow: 'Flow rack'
+            functional_zone: 'Functional zone'
+            rack: 'High-bay/shelf storage'
+            tray: 'Tray storage'
+        top_view: 'Top view'

@@ -1,0 +1,19 @@
+inventory:
+    occupancy:
+        front_view: 'Frontalansicht'
+        picking_side_left: 'Entnahmeseite links · Tiefe von links nach rechts'
+        presentations:
+            block: 'Flächenansicht mit Stellplätzen und Kapazitäten'
+            flow: 'Frontalansicht mit sichtbarer Lagertiefe'
+            rack: 'Regalansicht nach Ebene und Stellplatz'
+            tray: 'Draufsicht mit maßstäblicher Flächenanordnung'
+            zone: 'Übersicht der Funktionsplätze'
+        storage_model: 'Strukturmodell'
+        storage_structure: 'Lagerstruktur'
+        storage_types:
+            block: 'Blocklager'
+            flow: 'Durchlauflager'
+            functional_zone: 'Funktionszone'
+            rack: 'Hochregal-/Fachbodenlager'
+            tray: 'Tablarlager'
+        top_view: 'Draufsicht'
