@@ -7,6 +7,7 @@ namespace WebWMS\Installation\Application;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Tools\DsnParser;
 use RuntimeException;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Process\Process;
@@ -172,7 +173,12 @@ final readonly class InstallationManager
     private function connect(InstallationConfiguration $configuration): Connection
     {
         try {
-            return DriverManager::getConnection(['url' => $configuration->databaseUrl()]);
+            $parser = new DsnParser([
+                'mysql' => 'pdo_mysql',
+                'mariadb' => 'pdo_mysql',
+            ]);
+
+            return DriverManager::getConnection($parser->parse($configuration->databaseUrl()));
         } catch (\Throwable $exception) {
             throw new RuntimeException('The database connection failed: ' . $exception->getMessage(), 0, $exception);
         }
