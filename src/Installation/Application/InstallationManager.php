@@ -189,7 +189,7 @@ final readonly class InstallationManager
     {
         $runtimeValue = $_SERVER['DATABASE_URL'] ?? $_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL');
         if (is_string($runtimeValue) && trim($runtimeValue) !== '') {
-            return trim($runtimeValue);
+            return $this->normalizeDatabaseUrl($runtimeValue);
         }
 
         $values = [];
@@ -207,7 +207,12 @@ final readonly class InstallationManager
 
         $value = $values['DATABASE_URL'] ?? null;
 
-        return is_string($value) && trim($value) !== '' ? trim($value) : null;
+        return is_string($value) && trim($value) !== '' ? $this->normalizeDatabaseUrl($value) : null;
+    }
+
+    private function normalizeDatabaseUrl(string $databaseUrl): string
+    {
+        return str_replace('\/', '/', trim($databaseUrl));
     }
 
     private function runMigrations(InstallationConfiguration $configuration): void
@@ -240,7 +245,10 @@ final readonly class InstallationManager
         $existing = is_file($path) ? (string) file_get_contents($path) : '';
         $lines = preg_split('/\R/', $existing) ?: [];
         $lines = array_values(array_filter($lines, static fn (string $line): bool => !str_starts_with($line, 'DATABASE_URL=') && !str_starts_with($line, 'APP_SECRET=')));
-        $lines[] = 'DATABASE_URL=' . json_encode($configuration->databaseUrl(), JSON_THROW_ON_ERROR);
+        $lines[] = 'DATABASE_URL=' . json_encode(
+            $configuration->databaseUrl(),
+            JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES,
+        );
         $lines[] = 'APP_SECRET=' . bin2hex(random_bytes(32));
         $contents = implode("\n", $lines) . "\n";
         if (file_put_contents($path . '.tmp', $contents, LOCK_EX) === false || !rename($path . '.tmp', $path)) {
