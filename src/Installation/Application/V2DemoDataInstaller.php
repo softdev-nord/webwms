@@ -189,6 +189,8 @@ readonly class V2DemoDataInstaller
             $connection->insert('wms_product_reference', [
                 'id' => $this->id($tenantId, 'product', (string) $article['article_id']),
                 'tenant_id' => $tenantId, 'sku' => (string) $article['article_nr'], 'name' => (string) $article['article_name'],
+                'gtin' => (string) $article['article_ean'], 'category' => (string) $article['article_category'],
+                'base_unit' => strtoupper((string) $article['article_unit']), 'active' => 1,
                 'weight_grams' => (int) $article['article_weight'], 'length_mm' => (int) $article['article_depth'],
                 'width_mm' => (int) $article['article_width'], 'height_mm' => (int) $article['article_height'],
                 'created_at' => $article['created_at'] ?? $fallbackDate,

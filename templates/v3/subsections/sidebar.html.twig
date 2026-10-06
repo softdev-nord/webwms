@@ -42,6 +42,7 @@
             <div id="two-column-menu"></div>
             <ul class="navbar-nav" id="navbar-nav">
                 {% set currentRoute = app.request.attributes.get('_route')|default('') %}
+                {% set masterDataOpen = currentRoute starts with 'v3_product_' %}
                 {% set inventoryOpen = currentRoute == 'v3_stock' or currentRoute starts with 'v3_inventory_' %}
                 {% set inboundOpen = currentRoute starts with 'v3_inbound_' %}
                 {% set outboundOpen = currentRoute starts with 'v3_outbound_' or currentRoute starts with 'v3_picking_' or currentRoute starts with 'v3_packing_' or currentRoute starts with 'v3_shipping_' or currentRoute starts with 'v3_loading_' or currentRoute starts with 'v3_internal_transport_' %}
@@ -79,6 +80,20 @@
                                 <li class="nav-item"><a class="nav-link {{ (currentRoute == 'v3_extension_workflow_index' or currentRoute starts with 'v3_extension_work_item_') and app.request.attributes.get('workflow') == workflow ? 'active' : '' }}" href="{{ path('v3_extension_workflow_index',{workflow:workflow}) }}">{{ label }}</a></li>
                             {% endfor %}
                         </ul></div>
+                    </li>
+                {% endif %}
+
+                {% if is_granted('inventory.product.read') %}
+                    <li class="nav-item">
+                        <a class="nav-link menu-link {{ masterDataOpen ? '' : 'collapsed' }}" href="#sidebarMasterData" data-bs-toggle="collapse" role="button" aria-expanded="{{ masterDataOpen ? 'true' : 'false' }}" aria-controls="sidebarMasterData">
+                            <i class="ri-database-2-line"></i><span>{{ 'navigation.master_data.headline'|trans }}</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ masterDataOpen ? 'show' : '' }}" id="sidebarMasterData">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item"><a class="nav-link {{ currentRoute starts with 'v3_product_' and currentRoute != 'v3_product_new' ? 'active' : '' }}" href="{{ path('v3_product_index') }}">{{ 'navigation.master_data.submenu.headline1.entry1'|trans }}</a></li>
+                                {% if is_granted('inventory.product.write') %}<li class="nav-item"><a class="nav-link ps-4 {{ currentRoute == 'v3_product_new' ? 'active' : '' }}" href="{{ path('v3_product_new') }}">{{ 'product.action.create'|trans({}, 'product') }}</a></li>{% endif %}
+                            </ul>
+                        </div>
                     </li>
                 {% endif %}
 

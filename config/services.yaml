@@ -163,6 +163,10 @@ services:
         resource: '../src/Warehouse/Stock/Presentation/'
         tags: ['controller.service_arguments']
 
+    WebWMS\Warehouse\Product\Presentation\:
+        resource: '../src/Warehouse/Product/Presentation/'
+        tags: ['controller.service_arguments']
+
     WebWMS\Warehouse\InventoryCount\Presentation\:
         resource: '../src/Warehouse/InventoryCount/Presentation/'
         tags: ['controller.service_arguments']
