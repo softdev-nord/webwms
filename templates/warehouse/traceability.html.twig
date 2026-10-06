@@ -1,14 +1,358 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}{{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0{% endblock %}
+
+{% block title %}
+    {{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0
+{% endblock %}
+
 {% block webwms_content %}
-<div class="mb-4"><h1 class="h3 mb-1">{{ 'inventory.traceability.traceability'|trans }}</h1><p class="text-muted mb-0">{{ 'inventory.traceability.batches_best_before_dates_and_serial_numbers_from_inbound_to_outbound'|trans }}</p></div>
-<div class="row g-3 mb-4">
-    <div class="col-md-4"><div class="card border-0 shadow-sm"><div class="card-body"><div class="text-muted">{{ 'inventory.traceability.batches'|trans }}</div><div class="fs-3 fw-semibold">{{ traceability.batches|length }}</div></div></div></div>
-    <div class="col-md-4"><div class="card border-0 shadow-sm"><div class="card-body"><div class="text-muted">{{ 'inventory.traceability.critical_shelf_life_expired'|trans }}</div><div class="fs-3 fw-semibold text-warning">{{ traceability.expiries|filter(row => row.expiry_status != 'ok')|length }}</div></div></div></div>
-    <div class="col-md-4"><div class="card border-0 shadow-sm"><div class="card-body"><div class="text-muted">{{ 'inventory.traceability.serial_numbers'|trans }}</div><div class="fs-3 fw-semibold">{{ traceability.serials|length }}</div></div></div></div>
-</div>
-<div class="card border-0 shadow-sm mb-4"><div class="card-header"><h2 class="h5 mb-0">{{ 'inventory.traceability.batches'|trans }}</h2></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'modal.stock_in_modal.batch'|trans }}</th><th>{{ 'inventory.traceability.earliest_bbd'|trans }}</th><th class="text-end">{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</th><th class="text-end">{{ 'inventory.overview.locations'|trans }}</th></tr></thead><tbody>{% for row in traceability.batches %}<tr><td><strong>{{ row.sku }}</strong><div class="small text-muted">{{ row.product_name }}</div></td><td><a href="{{ path('v3_inventory_traceability', {dimension: 'batch', value: row.batch_number}) }}"><code>{{ row.batch_number }}</code></a></td><td>{{ row.earliest_expiry ? row.earliest_expiry|date('d.m.Y') : '–' }}</td><td class="text-end">{{ row.quantity }}</td><td class="text-end">{{ row.location_count }}</td></tr>{% else %}<tr><td colspan="5" class="text-center text-muted py-4">{{ 'inventory.traceability.no_batches_available'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>
-<div class="card border-0 shadow-sm mb-4"><div class="card-header"><h2 class="h5 mb-0">{{ 'inventory.traceability.shelf_life_monitoring'|trans }}</h2></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>{{ 'inventory.stock_blocks.bbd'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'modal.stock_in_modal.batch'|trans }}</th><th class="text-end">{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</th></tr></thead><tbody>{% for row in traceability.expiries %}<tr><td>{{ row.expires_at|date('d.m.Y') }}</td><td>{% if row.expiry_status == 'expired' %}<span class="badge bg-danger-subtle text-danger">{{ 'inventory.traceability.expired'|trans }}</span>{% elseif row.expiry_status == 'critical' %}<span class="badge bg-warning-subtle text-warning">{{ 'inventory.traceability.critical'|trans }}</span>{% else %}<span class="badge bg-success-subtle text-success">{{ 'inventory.traceability.no_issues'|trans }}</span>{% endif %}</td><td>{{ row.sku }} · {{ row.product_name }}</td><td>{{ row.batch_number ?: '–' }}</td><td class="text-end">{{ row.quantity }}</td></tr>{% else %}<tr><td colspan="5" class="text-center text-muted py-4">{{ 'inventory.traceability.no_stock_with_bbd_available'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>
-<div class="card border-0 shadow-sm mb-4"><div class="card-header"><h2 class="h5 mb-0">{{ 'inventory.traceability.serial_numbers'|trans }}</h2></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>{{ 'inbound.new.serial_number'|trans }}</th><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th>{{ 'inventory.stock.updated'|trans }}</th></tr></thead><tbody>{% for row in traceability.serials %}<tr><td><a href="{{ path('v3_inventory_traceability', {dimension: 'serial', value: row.serial_number}) }}"><code>{{ row.serial_number }}</code></a></td><td>{{ row.sku }} · {{ row.product_name }}</td><td>{{ row.location_code }}</td><td>{{ row.stock_status }}</td><td>{{ row.updated_at|date('d.m.Y H:i') }}</td></tr>{% else %}<tr><td colspan="5" class="text-center text-muted py-4">{{ 'inventory.traceability.no_serial_numbers_available'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>
-{% if selectedValue %}<div class="card border-primary shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'inventory.traceability.history'|trans }} {{ selectedValue }}</h2></div><div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>{{ 'administration.workspace.time_point_in_time'|trans }}</th><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'inbound.control.slot'|trans }}</th><th>{{ 'inventory.movements.movement'|trans }}</th><th>{{ 'inventory.movements.reason'|trans }}</th><th class="text-end">{{ 'inventory.movements.change'|trans }}</th><th class="text-end">{{ 'article.index.stock'|trans }}</th></tr></thead><tbody>{% for event in events %}<tr><td>{{ event.occurred_at|date('d.m.Y H:i:s') }}</td><td>{{ event.sku }}</td><td>{{ event.location_code }}</td><td>{{ event.movement_type }}</td><td>{{ event.reason }}<div class="small text-muted">{{ event.performed_by_name }}</div></td><td class="text-end">{{ event.quantity_delta }}</td><td class="text-end">{{ event.resulting_quantity }}</td></tr>{% else %}<tr><td colspan="7" class="text-center text-muted py-4">{{ 'inventory.traceability.no_movements_yet'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>{% endif %}
+    <div class="mb-4">
+        <h1 class="h3 mb-1">
+            {{ 'inventory.traceability.traceability'|trans }}
+        </h1>
+        <p class="text-muted mb-0">
+            {{ 'inventory.traceability.batches_best_before_dates_and_serial_numbers_from_inbound_to_outbound'|trans }}
+        </p>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-muted">
+                        {{ 'inventory.traceability.batches'|trans }}
+                    </div>
+                    <div class="fs-3 fw-semibold">
+                        {{ traceability.batches|length }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-muted">
+                        {{ 'inventory.traceability.critical_shelf_life_expired'|trans }}
+                    </div>
+                    <div class="fs-3 fw-semibold text-warning">
+                        {{ traceability.expiries|filter(row => row.expiry_status != 'ok')|length }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-muted">
+                        {{ 'inventory.traceability.serial_numbers'|trans }}
+                    </div>
+                    <div class="fs-3 fw-semibold">
+                        {{ traceability.serials|length }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header">
+            <h2 class="h5 mb-0">
+                {{ 'inventory.traceability.batches'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                        </th>
+                        <th>
+                            {{ 'modal.stock_in_modal.batch'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.traceability.earliest_bbd'|trans }}
+                        </th>
+                        <th class="text-end">
+                            {{ 'customer_order.customer_order_input_fields.quantity'|trans }}
+                        </th>
+                        <th class="text-end">
+                            {{ 'inventory.overview.locations'|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for row in traceability.batches %}
+
+                        <tr>
+                            <td>
+                                <strong>
+                                    {{ row.sku }}
+                                </strong>
+                                <div class="small text-muted">
+                                    {{ row.product_name }}
+                                </div>
+                            </td>
+                            <td>
+                                <a href="{{ path('v3_inventory_traceability', {dimension: 'batch', value: row.batch_number}) }}">
+                                    <code>
+                                        {{ row.batch_number }}
+                                    </code>
+                                </a>
+                            </td>
+                            <td>
+                                {{ row.earliest_expiry ? row.earliest_expiry|date('d.m.Y') : '–' }}
+                            </td>
+                            <td class="text-end">
+                                {{ row.quantity }}
+                            </td>
+                            <td class="text-end">
+                                {{ row.location_count }}
+                            </td>
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                {{ 'inventory.traceability.no_batches_available'|trans }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header">
+            <h2 class="h5 mb-0">
+                {{ 'inventory.traceability.shelf_life_monitoring'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'inventory.stock_blocks.bbd'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                        </th>
+                        <th>
+                            {{ 'modal.stock_in_modal.batch'|trans }}
+                        </th>
+                        <th class="text-end">
+                            {{ 'customer_order.customer_order_input_fields.quantity'|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for row in traceability.expiries %}
+
+                        <tr>
+                            <td>
+                                {{ row.expires_at|date('d.m.Y') }}
+                            </td>
+                            <td>
+
+                                {% if row.expiry_status == 'expired' %}
+
+                                    <span class="badge bg-danger-subtle text-danger">
+                                        {{ 'inventory.traceability.expired'|trans }}
+                                    </span>
+
+                                {% elseif row.expiry_status == 'critical' %}
+
+                                    <span class="badge bg-warning-subtle text-warning">
+                                        {{ 'inventory.traceability.critical'|trans }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-success-subtle text-success">
+                                        {{ 'inventory.traceability.no_issues'|trans }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+                            <td>
+                                {{ row.sku }} · {{ row.product_name }}
+                            </td>
+                            <td>
+                                {{ row.batch_number ?: '–' }}
+                            </td>
+                            <td class="text-end">
+                                {{ row.quantity }}
+                            </td>
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                {{ 'inventory.traceability.no_stock_with_bbd_available'|trans }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header">
+            <h2 class="h5 mb-0">
+                {{ 'inventory.traceability.serial_numbers'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'inbound.new.serial_number'|trans }}
+                        </th>
+                        <th>
+                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                        </th>
+                        <th>
+                            {{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.stock.updated'|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for row in traceability.serials %}
+
+                        <tr>
+                            <td>
+                                <a href="{{ path('v3_inventory_traceability', {dimension: 'serial', value: row.serial_number}) }}">
+                                    <code>
+                                        {{ row.serial_number }}
+                                    </code>
+                                </a>
+                            </td>
+                            <td>
+                                {{ row.sku }} · {{ row.product_name }}
+                            </td>
+                            <td>
+                                {{ row.location_code }}
+                            </td>
+                            <td>
+                                {{ row.stock_status }}
+                            </td>
+                            <td>
+                                {{ row.updated_at|date('d.m.Y H:i') }}
+                            </td>
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                {{ 'inventory.traceability.no_serial_numbers_available'|trans }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if selectedValue %}
+
+        <div class="card border-primary shadow-sm">
+            <div class="card-header">
+                <h2 class="h5 mb-0">
+                    {{ 'inventory.traceability.history'|trans }} {{ selectedValue }}
+                </h2>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>
+                                {{ 'administration.workspace.time_point_in_time'|trans }}
+                            </th>
+                            <th>
+                                {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                            </th>
+                            <th>
+                                {{ 'inbound.control.slot'|trans }}
+                            </th>
+                            <th>
+                                {{ 'inventory.movements.movement'|trans }}
+                            </th>
+                            <th>
+                                {{ 'inventory.movements.reason'|trans }}
+                            </th>
+                            <th class="text-end">
+                                {{ 'inventory.movements.change'|trans }}
+                            </th>
+                            <th class="text-end">
+                                {{ 'article.index.stock'|trans }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for event in events %}
+
+                            <tr>
+                                <td>
+                                    {{ event.occurred_at|date('d.m.Y H:i:s') }}
+                                </td>
+                                <td>
+                                    {{ event.sku }}
+                                </td>
+                                <td>
+                                    {{ event.location_code }}
+                                </td>
+                                <td>
+                                    {{ event.movement_type }}
+                                </td>
+                                <td>
+                                    {{ event.reason }}
+                                    <div class="small text-muted">
+                                        {{ event.performed_by_name }}
+                                    </div>
+                                </td>
+                                <td class="text-end">
+                                    {{ event.quantity_delta }}
+                                </td>
+                                <td class="text-end">
+                                    {{ event.resulting_quantity }}
+                                </td>
+                            </tr>
+
+                        {% else %}
+
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    {{ 'inventory.traceability.no_movements_yet'|trans }}
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    {% endif %}
 {% endblock %}

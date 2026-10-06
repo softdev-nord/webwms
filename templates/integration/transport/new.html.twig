@@ -1,26 +1,119 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<a href="{{ path('v3_transport_index') }}" class="text-decoration-none">{{ 'integration.transport.new.tcp_ip_and_web_service'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'integration.transport.new.create_transport_endpoint'|trans }}</h1>
-	</div>
-	<form method="post" class="card border-0 shadow-sm">
-		<div class="card-body">
-			<input type="hidden" name="_token" value="{{ csrf_token('v3_transport_create') }}">
-			<div class="row g-3">
-				<div class="col-md-3"><label class="form-label" for="code">{{ 'administration.role_new.code'|trans }}</label><input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" required></div>
-				<div class="col-md-5"><label class="form-label" for="name">{{ 'common.template.correspondence.name'|trans }}</label><input class="form-control" id="name" name="name" maxlength="100" required></div>
-				<div class="col-md-4"><label class="form-label" for="adapter_type">{{ 'integration.transport.index.adapter'|trans }}</label><select class="form-select" id="adapter_type" name="adapter_type"><option value="tcp_client">{{ 'integration.transport.new.tcp_client'|trans }}</option><option value="http_webservice">{{ 'integration.transport.new.http_web_service'|trans }}</option></select></div>
-				<div class="col-md-7"><label class="form-label" for="address">{{ 'integration.transport.index.address'|trans }}</label><input class="form-control font-monospace" id="address" name="address" required placeholder="{{ 'integration.transport.new.tcp_host_9100_or_https_host_api'|trans }}"></div>
-				<div class="col-md-5"><label class="form-label" for="credential_env">{{ 'integration.automation.device_new.credential_environment_variable'|trans }}</label><input class="form-control font-monospace text-uppercase" id="credential_env" name="credential_env" required></div>
-				<div class="col-md-4"><label class="form-label" for="protocol">{{ 'integration.transport.index.protocol'|trans }}</label><select class="form-select" id="protocol" name="protocol"><option value="raw_tcp">{{ 'integration.transport.new.raw_tcp'|trans }}</option><option value="rest_json">{{ 'integration.transport.new.rest_json'|trans }}</option><option value="soap_xml">{{ 'integration.transport.new.soap_xml'|trans }}</option></select></div>
-				<div class="col-md-4"><label class="form-label" for="framing">{{ 'integration.transport.new.framing'|trans }}</label><select class="form-select" id="framing" name="framing"><option value="stx_etx">{{ 'integration.transport.new.stx_etx'|trans }}</option><option value="newline">{{ 'integration.transport.new.newline'|trans }}</option><option value="none">{{ 'integration.transport.new.none'|trans }}</option><option value="http">{{ 'integration.transport.new.http'|trans }}</option></select></div>
-				<div class="col-md-2"><label class="form-label" for="connect_timeout_ms">{{ 'integration.transport.new.connect_ms'|trans }}</label><input class="form-control" type="number" id="connect_timeout_ms" name="connect_timeout_ms" min="100" max="60000" value="3000" required></div>
-				<div class="col-md-2"><label class="form-label" for="read_timeout_ms">{{ 'integration.transport.new.read_ms'|trans }}</label><input class="form-control" type="number" id="read_timeout_ms" name="read_timeout_ms" min="100" max="300000" value="10000" required></div>
-				<div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="active" name="active" value="1" checked><label class="form-check-label" for="active">{{ 'integration.transport.new.activate_endpoint_immediately'|trans }}</label></div></div>
-			</div>
-		</div>
-		<div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_transport_index') }}">{{ 'common.button.cancel'|trans }}</a><button class="btn btn-primary">{{ 'integration.transport.index.create_endpoint'|trans }}</button></div>
-	</form>
+    <div class="mb-4">
+        <a href="{{ path('v3_transport_index') }}" class="text-decoration-none">
+            {{ 'integration.transport.new.tcp_ip_and_web_service'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'integration.transport.new.create_transport_endpoint'|trans }}
+        </h1>
+    </div>
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_transport_create') }}">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label" for="code">
+                        {{ 'administration.role_new.code'|trans }}
+                    </label>
+                    <input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" required>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label" for="name">
+                        {{ 'common.template.correspondence.name'|trans }}
+                    </label>
+                    <input class="form-control" id="name" name="name" maxlength="100" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="adapter_type">
+                        {{ 'integration.transport.index.adapter'|trans }}
+                    </label>
+                    <select class="form-select" id="adapter_type" name="adapter_type">
+                        <option value="tcp_client">
+                            {{ 'integration.transport.new.tcp_client'|trans }}
+                        </option>
+                        <option value="http_webservice">
+                            {{ 'integration.transport.new.http_web_service'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-7">
+                    <label class="form-label" for="address">
+                        {{ 'integration.transport.index.address'|trans }}
+                    </label>
+                    <input class="form-control font-monospace" id="address" name="address" required placeholder="{{ 'integration.transport.new.tcp_host_9100_or_https_host_api'|trans }}">
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label" for="credential_env">
+                        {{ 'integration.automation.device_new.credential_environment_variable'|trans }}
+                    </label>
+                    <input class="form-control font-monospace text-uppercase" id="credential_env" name="credential_env" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="protocol">
+                        {{ 'integration.transport.index.protocol'|trans }}
+                    </label>
+                    <select class="form-select" id="protocol" name="protocol">
+                        <option value="raw_tcp">
+                            {{ 'integration.transport.new.raw_tcp'|trans }}
+                        </option>
+                        <option value="rest_json">
+                            {{ 'integration.transport.new.rest_json'|trans }}
+                        </option>
+                        <option value="soap_xml">
+                            {{ 'integration.transport.new.soap_xml'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="framing">
+                        {{ 'integration.transport.new.framing'|trans }}
+                    </label>
+                    <select class="form-select" id="framing" name="framing">
+                        <option value="stx_etx">
+                            {{ 'integration.transport.new.stx_etx'|trans }}
+                        </option>
+                        <option value="newline">
+                            {{ 'integration.transport.new.newline'|trans }}
+                        </option>
+                        <option value="none">
+                            {{ 'integration.transport.new.none'|trans }}
+                        </option>
+                        <option value="http">
+                            {{ 'integration.transport.new.http'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" for="connect_timeout_ms">
+                        {{ 'integration.transport.new.connect_ms'|trans }}
+                    </label>
+                    <input class="form-control" type="number" id="connect_timeout_ms" name="connect_timeout_ms" min="100" max="60000" value="3000" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" for="read_timeout_ms">
+                        {{ 'integration.transport.new.read_ms'|trans }}
+                    </label>
+                    <input class="form-control" type="number" id="read_timeout_ms" name="read_timeout_ms" min="100" max="300000" value="10000" required>
+                </div>
+                <div class="col-12">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="active" name="active" value="1" checked>
+                        <label class="form-check-label" for="active">
+                            {{ 'integration.transport.new.activate_endpoint_immediately'|trans }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <a class="btn btn-light" href="{{ path('v3_transport_index') }}">
+                {{ 'common.button.cancel'|trans }}
+            </a>
+            <button class="btn btn-primary">
+                {{ 'integration.transport.index.create_endpoint'|trans }}
+            </button>
+        </div>
+    </form>
 {% endblock %}

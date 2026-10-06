@@ -1,69 +1,118 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<a href="{{ path('v3_outbound_orders') }}" class="text-decoration-none">{{ 'outbound.order.orders'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'outbound.order_new.create_outbound_order'|trans }}</h1>
-	</div>
+    <div class="mb-4">
+        <a href="{{ path('v3_outbound_orders') }}" class="text-decoration-none">
+            {{ 'outbound.order.orders'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'outbound.order_new.create_outbound_order'|trans }}
+        </h1>
+    </div>
 
-	<form method="post" class="card border-0 shadow-sm">
-		<div class="card-body">
-			<input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_order_create') }}">
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_order_create') }}">
 
-			<div class="row g-3 mb-4">
-				<div class="col-md-6">
-					<label class="form-label" for="order_number">{{ 'outbound.order_new.order_number'|trans }}</label>
-					<input class="form-control" id="order_number" name="order_number" required>
-				</div>
-				<div class="col-md-6">
-					<label class="form-label" for="customer_reference">{{ 'outbound.order.customer_reference'|trans }}</label>
-					<input class="form-control" id="customer_reference" name="customer_reference" required>
-				</div>
-			</div>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label" for="order_number">
+                        {{ 'outbound.order_new.order_number'|trans }}
+                    </label>
+                    <input class="form-control" id="order_number" name="order_number" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="customer_reference">
+                        {{ 'outbound.order.customer_reference'|trans }}
+                    </label>
+                    <input class="form-control" id="customer_reference" name="customer_reference" required>
+                </div>
+            </div>
 
-			<h2 class="h5">{{ 'address.recipient'|trans }}</h2>
-			<div class="row g-3 mb-4">
-				<div class="col-md-6"><label class="form-label" for="recipient_name">{{ 'address.name'|trans }}</label><input class="form-control" id="recipient_name" name="recipient_name" required></div>
-				<div class="col-md-6"><label class="form-label" for="recipient_street">{{ 'address.street'|trans }}</label><input class="form-control" id="recipient_street" name="recipient_street" required></div>
-				<div class="col-md-3"><label class="form-label" for="recipient_postal_code">{{ 'address.postal_code'|trans }}</label><input class="form-control" id="recipient_postal_code" name="recipient_postal_code" required></div>
-				<div class="col-md-6"><label class="form-label" for="recipient_city">{{ 'address.city'|trans }}</label><input class="form-control" id="recipient_city" name="recipient_city" required></div>
-				<div class="col-md-3"><label class="form-label" for="recipient_country_code">{{ 'address.country_code'|trans }}</label><input class="form-control text-uppercase" id="recipient_country_code" name="recipient_country_code" minlength="2" maxlength="2" value="DE" required></div>
-			</div>
+            <h2 class="h5">
+                {{ 'address.recipient'|trans }}
+            </h2>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label" for="recipient_name">
+                        {{ 'address.name'|trans }}
+                    </label>
+                    <input class="form-control" id="recipient_name" name="recipient_name" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="recipient_street">
+                        {{ 'address.street'|trans }}
+                    </label>
+                    <input class="form-control" id="recipient_street" name="recipient_street" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="recipient_postal_code">
+                        {{ 'address.postal_code'|trans }}
+                    </label>
+                    <input class="form-control" id="recipient_postal_code" name="recipient_postal_code" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="recipient_city">
+                        {{ 'address.city'|trans }}
+                    </label>
+                    <input class="form-control" id="recipient_city" name="recipient_city" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="recipient_country_code">
+                        {{ 'address.country_code'|trans }}
+                    </label>
+                    <input class="form-control text-uppercase" id="recipient_country_code" name="recipient_country_code" minlength="2" maxlength="2" value="DE" required>
+                </div>
+            </div>
 
-			<h2 class="h5">{{ 'inbound.control.items'|trans }}</h2>
+            <h2 class="h5">
+                {{ 'inbound.control.items'|trans }}
+            </h2>
 
-			<div id="order-items">
-				<div class="row g-3 mb-3 order-item">
-					<div class="col-md-9">
-						<label class="form-label">{{ 'navigation.master_data.submenu.headline1.label'|trans }}</label>
-						<select class="form-select" name="product_id[]" required>
-							{% for product in products %}
-								<option value="{{ product.id }}">{{ product.sku }} - {{ product.name }}</option>
-							{% endfor %}
-						</select>
-					</div>
+            <div id="order-items">
+                <div class="row g-3 mb-3 order-item">
+                    <div class="col-md-9">
+                        <label class="form-label">
+                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                        </label>
+                        <select class="form-select" name="product_id[]" required>
+                            {% for product in products %}
+                                <option value="{{ product.id }}">
+                                    {{ product.sku }} - {{ product.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-					<div class="col-md-3">
-						<label class="form-label">{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</label>
-						<input class="form-control" type="number" min="1" name="quantity[]" value="1" required>
-					</div>
-				</div>
-			</div>
+                    <div class="col-md-3">
+                        <label class="form-label">
+                            {{ 'customer_order.customer_order_input_fields.quantity'|trans }}
+                        </label>
+                        <input class="form-control" type="number" min="1" name="quantity[]" value="1" required>
+                    </div>
+                </div>
+            </div>
 
-			<button class="btn btn-sm btn-outline-secondary" type="button" id="add-item">{{ 'outbound.order_new.additional_line_item'|trans }}</button>
-		</div>
+            <button class="btn btn-sm btn-outline-secondary" type="button" id="add-item">
+                {{ 'outbound.order_new.additional_line_item'|trans }}
+            </button>
+        </div>
 
-		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_outbound_orders') }}">{{ 'common.button.cancel'|trans }}</a>
-			<button class="btn btn-primary">{{ 'outbound.order_new.create_order'|trans }}</button>
-		</div>
-	</form>
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <a class="btn btn-light" href="{{ path('v3_outbound_orders') }}">
+                {{ 'common.button.cancel'|trans }}
+            </a>
+            <button class="btn btn-primary">
+                {{ 'outbound.order_new.create_order'|trans }}
+            </button>
+        </div>
+    </form>
 
-	<script>
-		document.getElementById('add-item').addEventListener('click', function() {
-			const item = document.querySelector('.order-item').cloneNode(true);
-			item.querySelector('input').value = '1';
-			document.getElementById('order-items').appendChild(item);
-		});
-	</script>
+    <script>
+        document.getElementById('add-item').addEventListener('click', function() {
+        const item = document.querySelector('.order-item').cloneNode(true);
+        item.querySelector('input').value = '1';
+        document.getElementById('order-items').appendChild(item);
+        });
+    </script>
 {% endblock %}

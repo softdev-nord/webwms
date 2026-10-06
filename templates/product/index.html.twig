@@ -1,17 +1,25 @@
 {% extends 'v3/base.html.twig' %}
 
-{% block title %}{{ 'product.page.index'|trans({}, 'product') }} | WebWMS 3.0{% endblock %}
+{% block title %}
+    {{ 'product.page.index'|trans({}, 'product') }} | WebWMS 3.0
+{% endblock %}
 
 {% block webwms_content %}
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
-            <h1 class="h3 mb-1">{{ 'product.index.title'|trans({}, 'product') }}</h1>
-            <p class="text-muted mb-0">{{ 'product.index.description'|trans({}, 'product') }}</p>
+            <h1 class="h3 mb-1">
+                {{ 'product.index.title'|trans({}, 'product') }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'product.index.description'|trans({}, 'product') }}
+            </p>
         </div>
 
         {% if is_granted('inventory.product.write') %}
             <a class="btn btn-primary" href="{{ path('v3_product_new') }}">
-                <i class="ri-add-line me-1"></i>{{ 'product.action.create'|trans({}, 'product') }}
+                <i class="ri-add-line me-1">
+                </i>
+                {{ 'product.action.create'|trans({}, 'product') }}
             </a>
         {% endif %}
     </div>
@@ -21,35 +29,81 @@
             <table class="table table-hover align-middle mb-0">
                 <thead>
                     <tr>
-                        <th>{{ 'product.field.sku'|trans({}, 'product') }}</th>
-                        <th>{{ 'product.field.name'|trans({}, 'product') }}</th>
-                        <th>{{ 'product.field.category'|trans({}, 'product') }}</th>
-                        <th>{{ 'product.field.gtin'|trans({}, 'product') }}</th>
-                        <th>{{ 'product.field.base_unit'|trans({}, 'product') }}</th>
-                        <th class="text-end">{{ 'product.index.stock'|trans({}, 'product') }}</th>
-                        <th>{{ 'product.field.active'|trans({}, 'product') }}</th>
-                        <th class="text-end"></th>
+                        <th>
+                            {{ 'product.field.sku'|trans({}, 'product') }}
+                        </th>
+                        <th>
+                            {{ 'product.field.name'|trans({}, 'product') }}
+                        </th>
+                        <th>
+                            {{ 'product.field.category'|trans({}, 'product') }}
+                        </th>
+                        <th>
+                            {{ 'product.field.gtin'|trans({}, 'product') }}
+                        </th>
+                        <th>
+                            {{ 'product.field.base_unit'|trans({}, 'product') }}
+                        </th>
+                        <th class="text-end">
+                            {{ 'product.index.stock'|trans({}, 'product') }}
+                        </th>
+                        <th>
+                            {{ 'product.field.active'|trans({}, 'product') }}
+                        </th>
+                        <th class="text-end">
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for product in products %}
                         <tr>
-                            <td><a class="fw-semibold" href="{{ path('v3_product_show', {productId: product.id}) }}">{{ product.sku }}</a></td>
-                            <td>{{ product.name }}</td>
-                            <td>{{ product.category ?: '–' }}</td>
-                            <td>{{ product.gtin ?: '–' }}</td>
-                            <td>{{ product.base_unit }}</td>
-                            <td class="text-end">{{ product.stock_quantity }} <span class="small text-muted">/ {{ product.location_count }} {{ 'product.index.locations'|trans({}, 'product') }}</span></td>
-                            <td><span class="badge bg-{{ product.active ? 'success' : 'secondary' }}-subtle text-{{ product.active ? 'success' : 'secondary' }}">{{ (product.active ? 'product.status.active' : 'product.status.inactive')|trans({}, 'product') }}</span></td>
+                            <td>
+                                <a class="fw-semibold" href="{{ path('v3_product_show', {productId: product.id}) }}">
+                                    {{ product.sku }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ product.name }}
+                            </td>
+                            <td>
+                                {{ product.category ?: '–' }}
+                            </td>
+                            <td>
+                                {{ product.gtin ?: '–' }}
+                            </td>
+                            <td>
+                                {{ product.base_unit }}
+                            </td>
                             <td class="text-end">
-                                <a class="btn btn-sm btn-outline-secondary" href="{{ path('v3_product_show', {productId: product.id}) }}">{{ 'product.action.show'|trans({}, 'product') }}</a>
+                                {{ product.stock_quantity }}
+                                <span class="small text-muted">
+                                    / {{ product.location_count }} {{ 'product.index.locations'|trans({}, 'product') }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ product.active ? 'success' : 'secondary' }}-subtle text-{{ product.active ? 'success' : 'secondary' }}">
+                                    {{ (product.active ? 'product.status.active' : 'product.status.inactive')|trans({}, 'product') }}
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-secondary" href="{{ path('v3_product_show', {productId: product.id}) }}">
+                                    {{ 'product.action.show'|trans({}, 'product') }}
+                                </a>
                                 {% if is_granted('inventory.product.write') %}
-                                    <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_product_edit', {productId: product.id}) }}"><i class="ri-pencil-line me-1"></i>{{ 'product.action.edit'|trans({}, 'product') }}</a>
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_product_edit', {productId: product.id}) }}">
+                                        <i class="ri-pencil-line me-1">
+                                        </i>
+                                        {{ 'product.action.edit'|trans({}, 'product') }}
+                                    </a>
                                 {% endif %}
                             </td>
                         </tr>
                     {% else %}
-                        <tr><td colspan="8" class="text-center text-muted py-5">{{ 'product.index.empty'|trans({}, 'product') }}</td></tr>
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-5">
+                                {{ 'product.index.empty'|trans({}, 'product') }}
+                            </td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>

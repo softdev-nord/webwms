@@ -1,54 +1,86 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">{{ 'integration.printing.job_new.print_queue'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'inbound.control.create_print_job'|trans }}</h1>
-	</div>
-	<form method="post" class="card border-0 shadow-sm">
-		<div class="card-body">
-			<input type="hidden" name="_token" value="{{ csrf_token('v3_printing_job_create') }}">
-			<input type="hidden" name="request_id" value="{{ requestId }}">
-			<div class="row g-3">
-				<div class="col-md-6">
-					<label class="form-label" for="printer_id">{{ 'configuration.index.printer'|trans }}</label>
-					<select class="form-select" id="printer_id" name="printer_id" required>
-						{% for printer in printers %}
-							<option value="{{ printer.id }}">{{ printer.name }}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label class="form-label" for="document_type">{{ 'integration.printing.job_new.document_type'|trans }}</label>
-					<select class="form-select" id="document_type" name="document_type">
-						<option value="carrier_label">{{ 'integration.printing.job_new.carrier_label'|trans }}</option>
-						<option value="document">{{ 'integration.printing.index.document'|trans }}</option>
-						<option value="loading_manifest">{{ 'integration.printing.job_new.load_manifest'|trans }}</option>
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label class="form-label" for="format">{{ 'integration.printing.index.format'|trans }}</label>
-					<select class="form-select" id="format" name="format">
-						<option value="ZPL">{{ 'integration.printing.job_new.zpl'|trans }}</option>
-						<option value="PDF">{{ 'integration.printing.job_new.pdf'|trans }}</option>
-					</select>
-				</div>
-				<div class="col-md-9">
-					<label class="form-label" for="document_reference">{{ 'integration.printing.job_new.document_reference'|trans }}</label>
-					<input class="form-control" id="document_reference" name="document_reference" maxlength="500" required>
-				</div>
-				<div class="col-md-3">
-					<label class="form-label" for="copies">{{ 'integration.printing.job_new.copies'|trans }}</label>
-					<input class="form-control" type="number" id="copies" name="copies" min="1" max="99" value="1" required>
-				</div>
-			</div>
-			{% if printers is empty %}
-				<div class="alert alert-warning mt-3 mb-0">{{ 'integration.printing.job_new.no_active_printer_available'|trans }}</div>
-			{% endif %}
-		</div>
-		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_printing_index') }}">{{ 'common.button.cancel'|trans }}</a>
-			<button class="btn btn-primary" {% if printers is empty %}disabled{% endif %}>{{ 'inbound.control.create_print_job'|trans }}</button>
-		</div>
-	</form>
+    <div class="mb-4">
+        <a href="{{ path('v3_printing_index') }}" class="text-decoration-none">
+            {{ 'integration.printing.job_new.print_queue'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'inbound.control.create_print_job'|trans }}
+        </h1>
+    </div>
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_printing_job_create') }}">
+            <input type="hidden" name="request_id" value="{{ requestId }}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="printer_id">
+                        {{ 'configuration.index.printer'|trans }}
+                    </label>
+                    <select class="form-select" id="printer_id" name="printer_id" required>
+                        {% for printer in printers %}
+                            <option value="{{ printer.id }}">
+                                {{ printer.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="document_type">
+                        {{ 'integration.printing.job_new.document_type'|trans }}
+                    </label>
+                    <select class="form-select" id="document_type" name="document_type">
+                        <option value="carrier_label">
+                            {{ 'integration.printing.job_new.carrier_label'|trans }}
+                        </option>
+                        <option value="document">
+                            {{ 'integration.printing.index.document'|trans }}
+                        </option>
+                        <option value="loading_manifest">
+                            {{ 'integration.printing.job_new.load_manifest'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="format">
+                        {{ 'integration.printing.index.format'|trans }}
+                    </label>
+                    <select class="form-select" id="format" name="format">
+                        <option value="ZPL">
+                            {{ 'integration.printing.job_new.zpl'|trans }}
+                        </option>
+                        <option value="PDF">
+                            {{ 'integration.printing.job_new.pdf'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-9">
+                    <label class="form-label" for="document_reference">
+                        {{ 'integration.printing.job_new.document_reference'|trans }}
+                    </label>
+                    <input class="form-control" id="document_reference" name="document_reference" maxlength="500" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="copies">
+                        {{ 'integration.printing.job_new.copies'|trans }}
+                    </label>
+                    <input class="form-control" type="number" id="copies" name="copies" min="1" max="99" value="1" required>
+                </div>
+            </div>
+            {% if printers is empty %}
+                <div class="alert alert-warning mt-3 mb-0">
+                    {{ 'integration.printing.job_new.no_active_printer_available'|trans }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <a class="btn btn-light" href="{{ path('v3_printing_index') }}">
+                {{ 'common.button.cancel'|trans }}
+            </a>
+            <button class="btn btn-primary" {% if printers is empty %}disabled{% endif %}>
+                {{ 'inbound.control.create_print_job'|trans }}
+            </button>
+        </div>
+    </form>
 {% endblock %}

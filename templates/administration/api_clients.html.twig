@@ -1,3 +1,107 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}{{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0{% endblock %}
-{% block webwms_content %}<div class="d-flex justify-content-between align-items-center mb-4"><div><h1 class="h3 mb-1">{{ 'administration.api_clients.api_clients'|trans }}</h1><p class="text-muted mb-0">{{ 'administration.api_clients.technical_access_overview'|trans }}</p></div>{% if is_granted('administration.api_client.write') %}<a class="btn btn-primary" href="{{ path('v3_administration_api_client_new') }}"><i class="ri-add-line me-1"></i>{{ 'administration.api_client_new.create_api_client'|trans }}</a>{% endif %}</div><div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>{{ 'common.template.correspondence.name'|trans }}</th><th>{{ 'administration.api_clients.client_id'|trans }}</th><th>{{ 'administration.api_client_edit.executing_user'|trans }}</th><th>{{ 'administration.api_clients.last_used'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th class="text-end" data-orderable="false" data-searchable="false">{{ 'administration.api_clients.actions'|trans }}</th></tr></thead><tbody>{% for client in clients %}<tr><td>{{ client.name }}</td><td><code>{{ client.id }}</code></td><td>{{ client.acting_user_email }}</td><td>{{ client.last_used_at ?: ('administration.api_clients.never'|trans) }}</td><td>{{ (client.active ? 'user.user_input_fields.active' : 'inventory.selection_rules.inactive')|trans }}</td><td class="text-end">{% if is_granted('administration.api_client.write') %}<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_administration_api_client_edit',{clientId:client.id}) }}"><i class="ri-pencil-line me-1"></i>{{ 'common.button.edit'|trans }}</a>{% endif %}</td></tr>{% else %}<tr><td colspan="6" class="text-center text-muted py-5">{{ 'administration.api_clients.no_api_clients_available'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>{% endblock %}
+
+{% block title %}
+    {{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0
+{% endblock %}
+
+{% block webwms_content %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ 'administration.api_clients.api_clients'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'administration.api_clients.technical_access_overview'|trans }}
+            </p>
+        </div>
+
+        {% if is_granted('administration.api_client.write') %}
+
+            <a class="btn btn-primary" href="{{ path('v3_administration_api_client_new') }}">
+                <i class="ri-add-line me-1">
+                </i>
+                {{ 'administration.api_client_new.create_api_client'|trans }}
+            </a>
+
+        {% endif %}
+
+    </div>
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'common.template.correspondence.name'|trans }}
+                        </th>
+                        <th>
+                            {{ 'administration.api_clients.client_id'|trans }}
+                        </th>
+                        <th>
+                            {{ 'administration.api_client_edit.executing_user'|trans }}
+                        </th>
+                        <th>
+                            {{ 'administration.api_clients.last_used'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th class="text-end" data-orderable="false" data-searchable="false">
+                            {{ 'administration.api_clients.actions'|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for client in clients %}
+
+                        <tr>
+                            <td>
+                                {{ client.name }}
+                            </td>
+                            <td>
+                                <code>
+                                    {{ client.id }}
+                                </code>
+                            </td>
+                            <td>
+                                {{ client.acting_user_email }}
+                            </td>
+                            <td>
+                                {{ client.last_used_at ?: ('administration.api_clients.never'|trans) }}
+                            </td>
+                            <td>
+                                {{ (client.active ? 'user.user_input_fields.active' : 'inventory.selection_rules.inactive')|trans }}
+                            </td>
+                            <td class="text-end">
+
+                                {% if is_granted('administration.api_client.write') %}
+
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_administration_api_client_edit', {clientId: client.id}) }}">
+                                        <i class="ri-pencil-line me-1">
+                                        </i>
+                                        {{ 'common.button.edit'|trans }}
+                                    </a>
+
+                                {% endif %}
+
+                            </td>
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-5">
+                                {{ 'administration.api_clients.no_api_clients_available'|trans }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

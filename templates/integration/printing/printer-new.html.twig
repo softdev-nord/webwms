@@ -1,39 +1,57 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<a href="{{ path('v3_printing_index') }}" class="text-decoration-none">{{ 'integration.printing.job_new.print_queue'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'integration.printing.index.create_printer'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'integration.printing.printer_new.access_token_remains_in_runtime_environment_webwms_stores_only_its_refer'|trans }}</p>
-	</div>
+    <div class="mb-4">
+        <a href="{{ path('v3_printing_index') }}" class="text-decoration-none">
+            {{ 'integration.printing.job_new.print_queue'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'integration.printing.index.create_printer'|trans }}
+        </h1>
+        <p class="text-muted mb-0">
+            {{ 'integration.printing.printer_new.access_token_remains_in_runtime_environment_webwms_stores_only_its_refer'|trans }}
+        </p>
+    </div>
 
-	<form method="post" class="card border-0 shadow-sm">
-		<div class="card-body">
-			<input type="hidden" name="_token" value="{{ csrf_token('v3_printing_printer_create') }}">
-			<div class="row g-3">
-				<div class="col-md-6">
-					<label class="form-label" for="name">{{ 'common.template.correspondence.name'|trans }}</label>
-					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'integration.printing.printer_new.packing_station_1_zpl'|trans }}">
-				</div>
-				<div class="col-md-6">
-					<label class="form-label" for="credential_env">{{ 'integration.automation.device_new.credential_environment_variable'|trans }}</label>
-					<input class="form-control font-monospace" id="credential_env" name="credential_env" maxlength="101" pattern="[A-Z][A-Z0-9_]{2,100}" required placeholder="{{ 'integration.printing.printer_new.printer_pack_1_token'|trans }}">
-				</div>
-				<div class="col-12">
-					<label class="form-label" for="endpoint_url">{{ 'integration.printing.printer_new.https_endpoint'|trans }}</label>
-					<input class="form-control font-monospace" type="url" id="endpoint_url" name="endpoint_url" maxlength="500" pattern="https://.*" required placeholder="{{ 'integration.printing.printer_new.https_print_example_com_printers_pack_1'|trans }}">
-				</div>
-				<div class="col-12">
-					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="active" name="active" value="1" checked>
-						<label class="form-check-label" for="active">{{ 'integration.printing.printer_new.activate_printer_immediately'|trans }}</label>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_printing_index') }}">{{ 'common.button.cancel'|trans }}</a>
-			<button class="btn btn-primary">{{ 'integration.printing.index.create_printer'|trans }}</button>
-		</div>
-	</form>
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_printing_printer_create') }}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="name">
+                        {{ 'common.template.correspondence.name'|trans }}
+                    </label>
+                    <input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'integration.printing.printer_new.packing_station_1_zpl'|trans }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="credential_env">
+                        {{ 'integration.automation.device_new.credential_environment_variable'|trans }}
+                    </label>
+                    <input class="form-control font-monospace" id="credential_env" name="credential_env" maxlength="101" pattern="[A-Z][A-Z0-9_]{2,100}" required placeholder="{{ 'integration.printing.printer_new.printer_pack_1_token'|trans }}">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="endpoint_url">
+                        {{ 'integration.printing.printer_new.https_endpoint'|trans }}
+                    </label>
+                    <input class="form-control font-monospace" type="url" id="endpoint_url" name="endpoint_url" maxlength="500" pattern="https://.*" required placeholder="{{ 'integration.printing.printer_new.https_print_example_com_printers_pack_1'|trans }}">
+                </div>
+                <div class="col-12">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="active" name="active" value="1" checked>
+                        <label class="form-check-label" for="active">
+                            {{ 'integration.printing.printer_new.activate_printer_immediately'|trans }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <a class="btn btn-light" href="{{ path('v3_printing_index') }}">
+                {{ 'common.button.cancel'|trans }}
+            </a>
+            <button class="btn btn-primary">
+                {{ 'integration.printing.index.create_printer'|trans }}
+            </button>
+        </div>
+    </form>
 {% endblock %}

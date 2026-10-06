@@ -1,43 +1,60 @@
 {% extends 'v3/base.html.twig' %}
+
 {% block webwms_content %}
-	<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
-		<div>
-			<h1 class="h3 mb-1">{{ summary.tenant }}</h1>
-			<p class="text-muted mb-0">{{ 'dashboard.index.operational_overview'|trans }}</p>
-		</div>
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ summary.tenant }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'dashboard.index.operational_overview'|trans }}
+            </p>
+        </div>
 
-		{% if is_granted('inventory.stock.read') %}
-			<a class="btn btn-primary" href="{{ path('v3_stock') }}">{{ 'dashboard.index.open_inventory'|trans }}</a>
-		{% endif %}
-	</div>
+        {% if is_granted('inventory.stock.read') %}
+            <a class="btn btn-primary" href="{{ path('v3_stock') }}">
+                {{ 'dashboard.index.open_inventory'|trans }}
+            </a>
+        {% endif %}
+    </div>
 
-	<div class="row g-3 mb-4">
-		{% for label, value in {'common.product.items': summary.products, 'topology.warehouse.warehouse': summary.warehouses, 'topology.bins.storage_locations': summary.locations, 'common.stock_quantity.stock_quantity': summary.stock} %}
-			<div class="col-sm-6 col-xl-3">
-				<div class="card h-100">
-					<div class="card-body card-animate">
-						<div class="text-muted text-uppercase small">{{ label|trans }}</div>
-						<div class="display-6 mt-2">{{ value|number_format(0, ',', '.') }}</div>
-					</div>
-				</div>
-			</div>
-		{% endfor %}
-	</div>
+    <div class="row g-3 mb-4">
+        {% for label, value in {'common.product.items': summary.products, 'topology.warehouse.warehouse': summary.warehouses, 'topology.bins.storage_locations': summary.locations, 'common.stock_quantity.stock_quantity': summary.stock} %}
+            <div class="col-sm-6 col-xl-3">
+                <div class="card h-100">
+                    <div class="card-body card-animate">
+                        <div class="text-muted text-uppercase small">
+                            {{ label|trans }}
+                        </div>
+                        <div class="display-6 mt-2">
+                            {{ value|number_format(0, ',', '.') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
-	<div class="card border-0 shadow-sm">
-		<div class="card-header">
-			<h2 class="h5 mb-0">{{ 'dashboard.index.fulfillment'|trans }}</h2>
-		</div>
+    <div class="card border-0 shadow-sm">
+        <div class="card-header">
+            <h2 class="h5 mb-0">
+                {{ 'dashboard.index.fulfillment'|trans }}
+            </h2>
+        </div>
 
-		<div class="card-body">
-			<div class="row g-3 text-center">
-				{% for label, value in {'common.outbound_orders.outbound_orders': summary.outboundOrders, 'common.pick_lists.pick_lists': summary.pickLists, 'common.packing_orders.packing_orders': summary.packingOrders, 'common.shipments.shipments': summary.shipments} %}
-					<div class="col-6 col-lg-3">
-						<div class="h3 mb-1">{{ value }}</div>
-						<div class="text-muted">{{ label|trans }}</div>
-					</div>
-				{% endfor %}
-			</div>
-		</div>
-	</div>
+        <div class="card-body">
+            <div class="row g-3 text-center">
+                {% for label, value in {'common.outbound_orders.outbound_orders': summary.outboundOrders, 'common.pick_lists.pick_lists': summary.pickLists, 'common.packing_orders.packing_orders': summary.packingOrders, 'common.shipments.shipments': summary.shipments} %}
+                    <div class="col-6 col-lg-3">
+                        <div class="h3 mb-1">
+                            {{ value }}
+                        </div>
+                        <div class="text-muted">
+                            {{ label|trans }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

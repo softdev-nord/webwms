@@ -1,90 +1,168 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-		<div>
-			<h1 class="h3 mb-1">{{ 'integration.device.index.scanners_and_mobile_terminals'|trans }}</h1>
-			<p class="text-muted mb-0">{{ 'integration.device.index.manage_scanning_devices_and_track_process_related_scans'|trans }}</p>
-		</div>
-		<div class="d-flex gap-2">
-			{% if is_granted('integration.device.write') %}
-				<a class="btn btn-outline-primary" href="{{ path('v3_device_new') }}">{{ 'integration.automation.device_new.create_device'|trans }}</a>
-			{% endif %}
-			{% if is_granted('integration.device.scan') %}
-				<a class="btn btn-primary" href="{{ path('v3_device_scan') }}">{{ 'integration.device.index.capture_scan'|trans }}</a>
-			{% endif %}
-		</div>
-	</div>
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ 'integration.device.index.scanners_and_mobile_terminals'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'integration.device.index.manage_scanning_devices_and_track_process_related_scans'|trans }}
+            </p>
+        </div>
+        <div class="d-flex gap-2">
+            {% if is_granted('integration.device.write') %}
+                <a class="btn btn-outline-primary" href="{{ path('v3_device_new') }}">
+                    {{ 'integration.automation.device_new.create_device'|trans }}
+                </a>
+            {% endif %}
+            {% if is_granted('integration.device.scan') %}
+                <a class="btn btn-primary" href="{{ path('v3_device_scan') }}">
+                    {{ 'integration.device.index.capture_scan'|trans }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
 
-	<div class="card border-0 shadow-sm mb-4">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'integration.device.index.scanning_devices'|trans }}</h2></div>
-		<div class="table-responsive">
-			<table class="table table-hover align-middle mb-0">
-				<thead>
-					<tr>
-						<th>{{ 'administration.role_new.code'|trans }}</th>
-						<th>{{ 'common.template.correspondence.name'|trans }}</th>
-						<th>{{ 'administration.workspace.type'|trans }}</th>
-						<th>{{ 'transport_request.index.status'|trans }}</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for device in devices %}
-						<tr>
-							<td><code>{{ device.code }}</code></td>
-							<td class="fw-semibold">{{ device.name }}</td>
-							<td>{{ device.device_type }}</td>
-							<td><span class="badge bg-{{ device.active ? 'success' : 'secondary' }}-subtle text-{{ device.active ? 'success' : 'secondary' }}">{{ (device.active ? 'user.user_input_fields.active' : 'integration.carrier_connection.index.paused')|trans }}</span></td>
-							<td class="text-end">
-								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_show', {deviceId: device.id}) }}">{{ 'inbound.index.open'|trans }}</a>
-							</td>
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="5" class="text-center text-muted py-4">{{ 'integration.device.index.no_scanning_devices_available_yet'|trans }}</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-transparent">
+            <h2 class="h5 mb-0">
+                {{ 'integration.device.index.scanning_devices'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'administration.role_new.code'|trans }}
+                        </th>
+                        <th>
+                            {{ 'common.template.correspondence.name'|trans }}
+                        </th>
+                        <th>
+                            {{ 'administration.workspace.type'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for device in devices %}
+                        <tr>
+                            <td>
+                                <code>
+                                    {{ device.code }}
+                                </code>
+                            </td>
+                            <td class="fw-semibold">
+                                {{ device.name }}
+                            </td>
+                            <td>
+                                {{ device.device_type }}
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ device.active ? 'success' : 'secondary' }}-subtle text-{{ device.active ? 'success' : 'secondary' }}">
+                                    {{ (device.active ? 'user.user_input_fields.active' : 'integration.carrier_connection.index.paused')|trans }}
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_show', {deviceId: device.id}) }}">
+                                    {{ 'inbound.index.open'|trans }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                {{ 'integration.device.index.no_scanning_devices_available_yet'|trans }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-	<div class="card border-0 shadow-sm">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'integration.device.index.recent_scan_events'|trans }}</h2></div>
-		<div class="table-responsive">
-			<table class="table table-hover align-middle mb-0">
-				<thead>
-					<tr>
-						<th>{{ 'integration.automation.command_new.device'|trans }}</th>
-						<th>{{ 'integration.device.index.process'|trans }}</th>
-						<th>{{ 'integration.device.index.scan_type'|trans }}</th>
-						<th>{{ 'integration.device.index.value'|trans }}</th>
-						<th>{{ 'transport_request.index.status'|trans }}</th>
-						<th>{{ 'administration.workspace.time_point_in_time'|trans }}</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for event in scanEvents %}
-						<tr>
-							<td>{{ event.device_code }}</td>
-							<td>{{ event.process_type }}<br><code>{{ event.context_reference }}</code></td>
-							<td>{{ event.scan_type }}</td>
-							<td><code>{{ event.scan_value }}</code></td>
-							<td><span class="badge bg-{{ event.status == 'accepted' ? 'success' : 'danger' }}-subtle text-{{ event.status == 'accepted' ? 'success' : 'danger' }}">{{ event.status }}</span></td>
-							<td>{{ event.scanned_at }}</td>
-							<td class="text-end">
-								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_scan_show', {eventId: event.id}) }}">{{ 'inbound.index.open'|trans }}</a>
-							</td>
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="7" class="text-center text-muted py-5">{{ 'integration.device.index.no_scan_events_available_yet'|trans }}</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-transparent">
+            <h2 class="h5 mb-0">
+                {{ 'integration.device.index.recent_scan_events'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'integration.automation.command_new.device'|trans }}
+                        </th>
+                        <th>
+                            {{ 'integration.device.index.process'|trans }}
+                        </th>
+                        <th>
+                            {{ 'integration.device.index.scan_type'|trans }}
+                        </th>
+                        <th>
+                            {{ 'integration.device.index.value'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                            {{ 'administration.workspace.time_point_in_time'|trans }}
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in scanEvents %}
+                        <tr>
+                            <td>
+                                {{ event.device_code }}
+                            </td>
+                            <td>
+                                {{ event.process_type }}
+                                <br>
+                                <code>
+                                    {{ event.context_reference }}
+                                </code>
+                            </td>
+                            <td>
+                                {{ event.scan_type }}
+                            </td>
+                            <td>
+                                <code>
+                                    {{ event.scan_value }}
+                                </code>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ event.status == 'accepted' ? 'success' : 'danger' }}-subtle text-{{ event.status == 'accepted' ? 'success' : 'danger' }}">
+                                    {{ event.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {{ event.scanned_at }}
+                            </td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_device_scan_show', {eventId: event.id}) }}">
+                                    {{ 'inbound.index.open'|trans }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-5">
+                                {{ 'integration.device.index.no_scan_events_available_yet'|trans }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

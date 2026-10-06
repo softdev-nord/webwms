@@ -2,24 +2,31 @@
     <div class="handbook-header__brand">
         {% if document is defined %}
             <button class="handbook-header__menu" type="button" data-handbook-menu-open aria-label="{{ 'ui.open_navigation'|trans({}, 'handbook') }}" aria-controls="handbook-navigation" aria-expanded="false">
-                <i class="ri-menu-line" aria-hidden="true"></i>
+                <i class="ri-menu-line" aria-hidden="true">
+                </i>
             </button>
         {% endif %}
         <a class="handbook-header__logo" href="{{ path('v3_documentation_index') }}">
             <span class="handbook-header__logo-mark">
-                <i class="ri-book-open-line" aria-hidden="true"></i>
+                <i class="mdi mdi-book-open-page-variant-outline" aria-hidden="true">
+                </i>
             </span>
             <span class="handbook-header__title">
-                <strong>{{ 'ui.headline'|trans({}, 'handbook') }}</strong>
+                <strong>
+                    {{ 'ui.headline'|trans({}, 'handbook') }}
+                </strong>
                 {% if document is defined %}
-                    <small>{{ document.title }}</small>
+                    <small>
+                        {{ document.title }}
+                    </small>
                 {% endif %}
             </span>
         </a>
     </div>
     {% if document is defined %}
         <form class="handbook-search" method="get" action="{{ path('v3_documentation_index') }}" role="search">
-            <i class="ri-search-line" aria-hidden="true"></i>
+            <i class="mdi mdi-magnify">
+            </i>
             <input type="search" name="q" placeholder="{{ 'ui.search'|trans({}, 'handbook') }}" aria-label="{{ 'ui.search'|trans({}, 'handbook') }}">
             <button type="submit">
                 {{ 'ui.search_action'|trans({}, 'handbook') }}
@@ -27,7 +34,10 @@
         </form>
     {% endif %}
     <a class="handbook-header__application" href="{{ path('v3_dashboard') }}">
-        <i class="ri-external-link-line" aria-hidden="true"></i>
-        <span>WebWMS 3.0</span>
+        <i class="mdi mdi-open-in-new" aria-hidden="true">
+        </i>
+        <span>
+            WebWMS 3.0
+        </span>
     </a>
 </header>

@@ -1,72 +1,124 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<a href="{{ path('v3_device_index') }}" class="text-decoration-none">{{ 'integration.device.new.scanners_and_mobile_terminals'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'integration.device.index.capture_scan'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'integration.device.scan.generic_scan_dialog_for_testing_device_and_process_integration'|trans }}</p>
-	</div>
-	<form method="post" class="card border-0 shadow-sm">
-		<div class="card-body">
-			<input type="hidden" name="_token" value="{{ csrf_token('v3_device_scan') }}">
-			<input type="hidden" name="request_id" value="{{ requestId }}">
-			<div class="row g-3">
-				<div class="col-md-6">
-					<label class="form-label" for="device_id">{{ 'integration.automation.command_new.device'|trans }}</label>
-					<select class="form-select" id="device_id" name="device_id" required>
-						{% for device in devices %}
-							<option value="{{ device.id }}">{{ device.code }} · {{ device.name }}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label class="form-label" for="process_type">{{ 'integration.device.index.process'|trans }}</label>
-					<select class="form-select" id="process_type" name="process_type">
-						<option value="inbound">{{ 'inbound.control.goods_receipt'|trans }}</option>
-						<option value="picking">{{ 'integration.device.scan.picking'|trans }}</option>
-						<option value="packing">{{ 'integration.device.scan.packing'|trans }}</option>
-						<option value="shipping">{{ 'integration.device.scan.shipping'|trans }}</option>
-						<option value="loading">{{ 'integration.device.scan.loading'|trans }}</option>
-						<option value="inventory">{{ 'navigation.inventory.headline'|trans }}</option>
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label class="form-label" for="scan_type">{{ 'integration.device.index.scan_type'|trans }}</label>
-					<select class="form-select" id="scan_type" name="scan_type">
-						<option value="location">{{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}</option>
-						<option value="product">{{ 'navigation.master_data.submenu.headline1.label'|trans }}</option>
-						<option value="batch">{{ 'modal.stock_in_modal.batch'|trans }}</option>
-						<option value="serial">{{ 'inbound.new.serial_number'|trans }}</option>
-						<option value="shipment">{{ 'integration.device.scan.shipment'|trans }}</option>
-						<option value="order">{{ 'inbound.control.order'|trans }}</option>
-					</select>
-				</div>
-				<div class="col-md-6">
-					<label class="form-label" for="context_reference">{{ 'integration.device.scan.process_reference'|trans }}</label>
-					<input class="form-control font-monospace" id="context_reference" name="context_reference" maxlength="100" required autofocus>
-				</div>
-				<div class="col-md-6">
-					<label class="form-label" for="scan_value">{{ 'integration.device.scan_show.scan_value'|trans }}</label>
-					<input class="form-control font-monospace" id="scan_value" name="scan_value" maxlength="255" required>
-				</div>
-				<div class="col-md-3">
-					<div class="form-check form-switch mt-4">
-						<input class="form-check-input" type="checkbox" id="accepted" name="accepted" value="1" checked>
-						<label class="form-check-label" for="accepted">{{ 'integration.device.scan.scan_accepted'|trans }}</label>
-					</div>
-				</div>
-				<div class="col-md-9">
-					<label class="form-label" for="message">{{ 'integration.device.scan_show.verification_note'|trans }}</label>
-					<input class="form-control" id="message" name="message" maxlength="500">
-				</div>
-			</div>
-			{% if devices is empty %}
-				<div class="alert alert-warning mt-3 mb-0">{{ 'integration.device.scan.no_active_scanning_device_available'|trans }}</div>
-			{% endif %}
-		</div>
-		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_device_index') }}">{{ 'common.button.cancel'|trans }}</a>
-			<button class="btn btn-primary" {% if devices is empty %}disabled{% endif %}>{{ 'integration.device.index.capture_scan'|trans }}</button>
-		</div>
-	</form>
+    <div class="mb-4">
+        <a href="{{ path('v3_device_index') }}" class="text-decoration-none">
+            {{ 'integration.device.new.scanners_and_mobile_terminals'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'integration.device.index.capture_scan'|trans }}
+        </h1>
+        <p class="text-muted mb-0">
+            {{ 'integration.device.scan.generic_scan_dialog_for_testing_device_and_process_integration'|trans }}
+        </p>
+    </div>
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_device_scan') }}">
+            <input type="hidden" name="request_id" value="{{ requestId }}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="device_id">
+                        {{ 'integration.automation.command_new.device'|trans }}
+                    </label>
+                    <select class="form-select" id="device_id" name="device_id" required>
+                        {% for device in devices %}
+                            <option value="{{ device.id }}">
+                                {{ device.code }} · {{ device.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="process_type">
+                        {{ 'integration.device.index.process'|trans }}
+                    </label>
+                    <select class="form-select" id="process_type" name="process_type">
+                        <option value="inbound">
+                            {{ 'inbound.control.goods_receipt'|trans }}
+                        </option>
+                        <option value="picking">
+                            {{ 'integration.device.scan.picking'|trans }}
+                        </option>
+                        <option value="packing">
+                            {{ 'integration.device.scan.packing'|trans }}
+                        </option>
+                        <option value="shipping">
+                            {{ 'integration.device.scan.shipping'|trans }}
+                        </option>
+                        <option value="loading">
+                            {{ 'integration.device.scan.loading'|trans }}
+                        </option>
+                        <option value="inventory">
+                            {{ 'navigation.inventory.headline'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="scan_type">
+                        {{ 'integration.device.index.scan_type'|trans }}
+                    </label>
+                    <select class="form-select" id="scan_type" name="scan_type">
+                        <option value="location">
+                            {{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}
+                        </option>
+                        <option value="product">
+                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                        </option>
+                        <option value="batch">
+                            {{ 'modal.stock_in_modal.batch'|trans }}
+                        </option>
+                        <option value="serial">
+                            {{ 'inbound.new.serial_number'|trans }}
+                        </option>
+                        <option value="shipment">
+                            {{ 'integration.device.scan.shipment'|trans }}
+                        </option>
+                        <option value="order">
+                            {{ 'inbound.control.order'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="context_reference">
+                        {{ 'integration.device.scan.process_reference'|trans }}
+                    </label>
+                    <input class="form-control font-monospace" id="context_reference" name="context_reference" maxlength="100" required autofocus>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="scan_value">
+                        {{ 'integration.device.scan_show.scan_value'|trans }}
+                    </label>
+                    <input class="form-control font-monospace" id="scan_value" name="scan_value" maxlength="255" required>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check form-switch mt-4">
+                        <input class="form-check-input" type="checkbox" id="accepted" name="accepted" value="1" checked>
+                        <label class="form-check-label" for="accepted">
+                            {{ 'integration.device.scan.scan_accepted'|trans }}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <label class="form-label" for="message">
+                        {{ 'integration.device.scan_show.verification_note'|trans }}
+                    </label>
+                    <input class="form-control" id="message" name="message" maxlength="500">
+                </div>
+            </div>
+            {% if devices is empty %}
+                <div class="alert alert-warning mt-3 mb-0">
+                    {{ 'integration.device.scan.no_active_scanning_device_available'|trans }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <a class="btn btn-light" href="{{ path('v3_device_index') }}">
+                {{ 'common.button.cancel'|trans }}
+            </a>
+            <button class="btn btn-primary" {% if devices is empty %}disabled{% endif %}>
+                {{ 'integration.device.index.capture_scan'|trans }}
+            </button>
+        </div>
+    </form>
 {% endblock %}

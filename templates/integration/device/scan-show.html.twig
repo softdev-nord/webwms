@@ -1,34 +1,82 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="d-flex justify-content-between align-items-start mb-4">
-		<div>
-			<a href="{{ path('v3_device_index') }}" class="text-decoration-none">{{ 'integration.device.new.scanners_and_mobile_terminals'|trans }}</a>
-			<h1 class="h3 mt-2 mb-1">{{ 'integration.device.scan_show.scan_event'|trans }}</h1>
-			<code>{{ event.id }}</code>
-		</div>
-		<span class="badge bg-{{ event.status == 'accepted' ? 'success' : 'danger' }}-subtle text-{{ event.status == 'accepted' ? 'success' : 'danger' }} fs-6">{{ event.status }}</span>
-	</div>
-	<div class="card border-0 shadow-sm">
-		<div class="card-body">
-			<dl class="row mb-0">
-				<dt class="col-md-3">{{ 'integration.automation.command_new.device'|trans }}</dt>
-				<dd class="col-md-9"><a href="{{ path('v3_device_show', {deviceId: event.device_id}) }}">{{ event.device_code }} · {{ event.device_name }}</a></dd>
-				<dt class="col-md-3">{{ 'integration.device.index.process'|trans }}</dt>
-				<dd class="col-md-9">{{ event.process_type }} · <code>{{ event.context_reference }}</code></dd>
-				<dt class="col-md-3">{{ 'integration.device.index.scan_type'|trans }}</dt>
-				<dd class="col-md-9">{{ event.scan_type }}</dd>
-				<dt class="col-md-3">{{ 'integration.device.scan_show.scan_value'|trans }}</dt>
-				<dd class="col-md-9"><code>{{ event.scan_value }}</code></dd>
-				<dt class="col-md-3">{{ 'integration.automation.command_show.request_id'|trans }}</dt>
-				<dd class="col-md-9"><code>{{ event.request_id }}</code></dd>
-				<dt class="col-md-3">{{ 'integration.device.scan_show.captured'|trans }}</dt>
-				<dd class="col-md-9">{{ event.scanned_at }} · <code>{{ event.scanned_by }}</code></dd>
-				{% if event.message %}
-					<dt class="col-md-3">{{ 'integration.device.scan_show.verification_note'|trans }}</dt>
-					<dd class="col-md-9">{{ event.message }}</dd>
-				{% endif %}
-			</dl>
-		</div>
-	</div>
+    <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+            <a href="{{ path('v3_device_index') }}" class="text-decoration-none">
+                {{ 'integration.device.new.scanners_and_mobile_terminals'|trans }}
+            </a>
+            <h1 class="h3 mt-2 mb-1">
+                {{ 'integration.device.scan_show.scan_event'|trans }}
+            </h1>
+            <code>
+                {{ event.id }}
+            </code>
+        </div>
+        <span class="badge bg-{{ event.status == 'accepted' ? 'success' : 'danger' }}-subtle text-{{ event.status == 'accepted' ? 'success' : 'danger' }} fs-6">
+            {{ event.status }}
+        </span>
+    </div>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-md-3">
+                    {{ 'integration.automation.command_new.device'|trans }}
+                </dt>
+                <dd class="col-md-9">
+                    <a href="{{ path('v3_device_show', {deviceId: event.device_id}) }}">
+                        {{ event.device_code }} · {{ event.device_name }}
+                    </a>
+                </dd>
+                <dt class="col-md-3">
+                    {{ 'integration.device.index.process'|trans }}
+                </dt>
+                <dd class="col-md-9">
+                    {{ event.process_type }} ·
+                    <code>
+                        {{ event.context_reference }}
+                    </code>
+                </dd>
+                <dt class="col-md-3">
+                    {{ 'integration.device.index.scan_type'|trans }}
+                </dt>
+                <dd class="col-md-9">
+                    {{ event.scan_type }}
+                </dd>
+                <dt class="col-md-3">
+                    {{ 'integration.device.scan_show.scan_value'|trans }}
+                </dt>
+                <dd class="col-md-9">
+                    <code>
+                        {{ event.scan_value }}
+                    </code>
+                </dd>
+                <dt class="col-md-3">
+                    {{ 'integration.automation.command_show.request_id'|trans }}
+                </dt>
+                <dd class="col-md-9">
+                    <code>
+                        {{ event.request_id }}
+                    </code>
+                </dd>
+                <dt class="col-md-3">
+                    {{ 'integration.device.scan_show.captured'|trans }}
+                </dt>
+                <dd class="col-md-9">
+                    {{ event.scanned_at }} ·
+                    <code>
+                        {{ event.scanned_by }}
+                    </code>
+                </dd>
+                {% if event.message %}
+                    <dt class="col-md-3">
+                        {{ 'integration.device.scan_show.verification_note'|trans }}
+                    </dt>
+                    <dd class="col-md-9">
+                        {{ event.message }}
+                    </dd>
+                {% endif %}
+            </dl>
+        </div>
+    </div>
 {% endblock %}

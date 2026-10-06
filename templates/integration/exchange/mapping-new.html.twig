@@ -1,2 +1,85 @@
 {% extends 'v3/base.html.twig' %}
-{% block webwms_content %}<div class="mb-4"><a href="{{ path('v3_data_exchange_index') }}">{{ 'integration.exchange.action.back'|trans }}</a><h1 class="h3 mt-2">{{ 'integration.exchange.page.mapping'|trans }}</h1></div><form method="post" class="card border-0 shadow-sm"><div class="card-body"><input type="hidden" name="_token" value="{{ csrf_token('v3_data_exchange_mapping') }}"><div class="row g-3"><div class="col-md-4"><label class="form-label" for="system_type">{{ 'integration.exchange.field.system'|trans }}</label><select class="form-select" id="system_type" name="system_type"><option value="erp">ERP</option><option value="sap_idoc">SAP IDoc</option><option value="commerce">Commerce</option></select></div><div class="col-md-8"><label class="form-label" for="message_type">{{ 'integration.exchange.field.message'|trans }}</label><input class="form-control" id="message_type" name="message_type" required></div><div class="col-md-5"><label class="form-label" for="source_field">{{ 'integration.exchange.field.source'|trans }}</label><input class="form-control" id="source_field" name="source_field" required></div><div class="col-md-5"><label class="form-label" for="target_field">{{ 'integration.exchange.field.target'|trans }}</label><input class="form-control" id="target_field" name="target_field" required></div><div class="col-md-2"><label class="form-label" for="transformation">{{ 'integration.exchange.field.transformation'|trans }}</label><select class="form-select" id="transformation" name="transformation"><option value="copy">copy</option><option value="trim">trim</option><option value="uppercase">uppercase</option><option value="lowercase">lowercase</option><option value="integer">integer</option><option value="decimal">decimal</option></select></div></div></div><div class="card-footer text-end"><button class="btn btn-primary">{{ 'integration.exchange.action.save'|trans }}</button></div></form>{% endblock %}
+
+{% block webwms_content %}
+
+    <div class="mb-4">
+        <a href="{{ path('v3_data_exchange_index') }}">
+            {{ 'integration.exchange.action.back'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'integration.exchange.page.mapping'|trans }}
+        </h1>
+    </div>
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_data_exchange_mapping') }}">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label" for="system_type">
+                        {{ 'integration.exchange.field.system'|trans }}
+                    </label>
+                    <select class="form-select" id="system_type" name="system_type">
+                        <option value="erp">
+                            ERP
+                        </option>
+                        <option value="sap_idoc">
+                            SAP IDoc
+                        </option>
+                        <option value="commerce">
+                            Commerce
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label" for="message_type">
+                        {{ 'integration.exchange.field.message'|trans }}
+                    </label>
+                    <input class="form-control" id="message_type" name="message_type" required>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label" for="source_field">
+                        {{ 'integration.exchange.field.source'|trans }}
+                    </label>
+                    <input class="form-control" id="source_field" name="source_field" required>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label" for="target_field">
+                        {{ 'integration.exchange.field.target'|trans }}
+                    </label>
+                    <input class="form-control" id="target_field" name="target_field" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" for="transformation">
+                        {{ 'integration.exchange.field.transformation'|trans }}
+                    </label>
+                    <select class="form-select" id="transformation" name="transformation">
+                        <option value="copy">
+                            copy
+                        </option>
+                        <option value="trim">
+                            trim
+                        </option>
+                        <option value="uppercase">
+                            uppercase
+                        </option>
+                        <option value="lowercase">
+                            lowercase
+                        </option>
+                        <option value="integer">
+                            integer
+                        </option>
+                        <option value="decimal">
+                            decimal
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button class="btn btn-primary">
+                {{ 'integration.exchange.action.save'|trans }}
+            </button>
+        </div>
+    </form>
+
+{% endblock %}

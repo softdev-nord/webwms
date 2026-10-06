@@ -1,38 +1,163 @@
 {% extends 'v3/base.html.twig' %}
 
-{% block title %}{{ page|trans }} | WebWMS 3.0{% endblock %}
+{% block title %}
+    {{ page|trans }} | WebWMS 3.0
+{% endblock %}
 
 {% block webwms_content %}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-1">{{ 'warehouse.topology_generator.title'|trans }}</h1>
-            <p class="text-muted mb-0">{{ 'warehouse.topology_generator.introduction'|trans }}</p>
+            <h1 class="h3 mb-1">
+                {{ 'warehouse.topology_generator.title'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'warehouse.topology_generator.introduction'|trans }}
+            </p>
         </div>
-        <a class="btn btn-outline-secondary" href="{{ path('v3_inventory_topology') }}">{{ 'administration.api_client_edit.go_to_overview'|trans }}</a>
+        <a class="btn btn-outline-secondary" href="{{ path('v3_inventory_topology') }}">
+            {{ 'administration.api_client_edit.go_to_overview'|trans }}
+        </a>
     </div>
 
     {% if result %}
-        <div class="alert alert-success">{{ 'warehouse.topology_generator.result'|trans({'%created%': result.created, '%skipped%': result.skipped}) }}</div>
+        <div class="alert alert-success">
+            {{ 'warehouse.topology_generator.result'|trans({'%created%': result.created, '%skipped%': result.skipped}) }}
+        </div>
     {% endif %}
 
     <div class="card border-0 shadow-sm">
         <div class="card-body">
             <form method="post" class="row g-3">
                 <input type="hidden" name="_token" value="{{ csrf_token('v3_inventory_topology_generator') }}">
-                <div class="col-md-4"><label class="form-label">{{ 'navigation.master_data.submenu.headline4.label'|trans }}</label><select class="form-select" name="warehouse_id" required>{% for row in topology.warehouses %}<option value="{{ row.id }}">{{ row.site_code }} / {{ row.code }} · {{ row.name }}</option>{% endfor %}</select></div>
-                <div class="col-md-4"><label class="form-label">{{ 'administration.workspace.area'|trans }}</label><select class="form-select" name="area_id" required>{% for row in topology.areas %}<option value="{{ row.id }}">{{ row.code }} · {{ row.name }}</option>{% endfor %}</select></div>
-                <div class="col-md-4"><label class="form-label">{{ 'inventory.occupancy.aisle'|trans }}</label><select class="form-select" name="aisle_id" required>{% for row in topology.aisles %}<option value="{{ row.id }}">{{ row.code }} · {{ row.name }}</option>{% endfor %}</select></div>
-                <div class="col-md-3"><label class="form-label">{{ 'warehouse.topology_fields.warehouse_number'|trans }}</label><input class="form-control" type="number" min="1" max="999" name="warehouse_number" required></div>
-                <div class="col-md-3"><label class="form-label">{{ 'warehouse.topology_generator.levels'|trans }}</label><input class="form-control" type="number" min="1" max="9999" name="levels" value="1" required></div>
-                <div class="col-md-3"><label class="form-label">{{ 'warehouse.topology_generator.slots'|trans }}</label><input class="form-control" type="number" min="1" max="9999" name="slots" value="1" required></div>
-                <div class="col-md-3"><label class="form-label">{{ 'warehouse.topology_generator.depths'|trans }}</label><input class="form-control" type="number" min="1" max="9999" name="depths" value="1" required></div>
-                <div class="col-md-6"><label class="form-label">{{ 'warehouse.topology_fields.description'|trans }}</label><input class="form-control" name="description" maxlength="255" required></div>
-                <div class="col-md-3"><label class="form-label">{{ 'warehouse.topology_fields.zone'|trans }}</label><input class="form-control text-uppercase" name="zone_code" maxlength="30" required></div>
-                <div class="col-md-3"><label class="form-label">{{ 'administration.workspace.type'|trans }}</label><select class="form-select" name="location_type"><option value="storage">{{ 'topology.type.storage.storage'|trans }}</option><option value="receiving">{{ 'topology.type.receiving.goods_receipt'|trans }}</option><option value="shipping">{{ 'topology.type.shipping.shipping'|trans }}</option><option value="quality">{{ 'topology.type.quality.quality'|trans }}</option><option value="blocked">{{ 'topology.type.blocked.blocked'|trans }}</option></select></div>
-                <div class="col-md-4"><label class="form-label">{{ 'warehouse.topology_fields.width_mm'|trans }}</label><input class="form-control" type="number" min="0" step="0.01" name="width_mm" value="0" required></div>
-                <div class="col-md-4"><label class="form-label">{{ 'warehouse.topology_fields.physical_depth_mm'|trans }}</label><input class="form-control" type="number" min="0" step="0.01" name="physical_depth_mm" value="0" required></div>
-                <div class="col-md-4"><label class="form-label">{{ 'warehouse.topology_fields.height_mm'|trans }}</label><input class="form-control" type="number" min="0" step="0.01" name="height_mm" value="0" required></div>
-                <div class="col-12 d-flex justify-content-end"><button class="btn btn-primary">{{ 'warehouse.topology_generator.create'|trans }}</button></div>
+                <div class="col-md-4">
+                    <label class="form-label">
+                        {{ 'navigation.master_data.submenu.headline4.label'|trans }}
+                    </label>
+                    <select class="form-select" name="warehouse_id" required>
+
+                        {% for row in topology.warehouses %}
+
+                            <option value="{{ row.id }}">
+                                {{ row.site_code }} / {{ row.code }} · {{ row.name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">
+                        {{ 'administration.workspace.area'|trans }}
+                    </label>
+                    <select class="form-select" name="area_id" required>
+
+                        {% for row in topology.areas %}
+
+                            <option value="{{ row.id }}">
+                                {{ row.code }} · {{ row.name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">
+                        {{ 'inventory.occupancy.aisle'|trans }}
+                    </label>
+                    <select class="form-select" name="aisle_id" required>
+
+                        {% for row in topology.aisles %}
+
+                            <option value="{{ row.id }}">
+                                {{ row.code }} · {{ row.name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">
+                        {{ 'warehouse.topology_fields.warehouse_number'|trans }}
+                    </label>
+                    <input class="form-control" type="number" min="1" max="999" name="warehouse_number" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">
+                        {{ 'warehouse.topology_generator.levels'|trans }}
+                    </label>
+                    <input class="form-control" type="number" min="1" max="9999" name="levels" value="1" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">
+                        {{ 'warehouse.topology_generator.slots'|trans }}
+                    </label>
+                    <input class="form-control" type="number" min="1" max="9999" name="slots" value="1" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">
+                        {{ 'warehouse.topology_generator.depths'|trans }}
+                    </label>
+                    <input class="form-control" type="number" min="1" max="9999" name="depths" value="1" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">
+                        {{ 'warehouse.topology_fields.description'|trans }}
+                    </label>
+                    <input class="form-control" name="description" maxlength="255" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">
+                        {{ 'warehouse.topology_fields.zone'|trans }}
+                    </label>
+                    <input class="form-control text-uppercase" name="zone_code" maxlength="30" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">
+                        {{ 'administration.workspace.type'|trans }}
+                    </label>
+                    <select class="form-select" name="location_type">
+                        <option value="storage">
+                            {{ 'topology.type.storage.storage'|trans }}
+                        </option>
+                        <option value="receiving">
+                            {{ 'topology.type.receiving.goods_receipt'|trans }}
+                        </option>
+                        <option value="shipping">
+                            {{ 'topology.type.shipping.shipping'|trans }}
+                        </option>
+                        <option value="quality">
+                            {{ 'topology.type.quality.quality'|trans }}
+                        </option>
+                        <option value="blocked">
+                            {{ 'topology.type.blocked.blocked'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">
+                        {{ 'warehouse.topology_fields.width_mm'|trans }}
+                    </label>
+                    <input class="form-control" type="number" min="0" step="0.01" name="width_mm" value="0" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">
+                        {{ 'warehouse.topology_fields.physical_depth_mm'|trans }}
+                    </label>
+                    <input class="form-control" type="number" min="0" step="0.01" name="physical_depth_mm" value="0" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">
+                        {{ 'warehouse.topology_fields.height_mm'|trans }}
+                    </label>
+                    <input class="form-control" type="number" min="0" step="0.01" name="height_mm" value="0" required>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <button class="btn btn-primary">
+                        {{ 'warehouse.topology_generator.create'|trans }}
+                    </button>
+                </div>
             </form>
         </div>
     </div>

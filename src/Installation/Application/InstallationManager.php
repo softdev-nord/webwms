@@ -241,7 +241,7 @@ final readonly class InstallationManager
 
     private function writeEnvironment(InstallationConfiguration $configuration): void
     {
-        $path = $this->projectDir . '/.env.local';
+        $path = $this->projectDir . '/.env';
         $existing = is_file($path) ? (string) file_get_contents($path) : '';
         $lines = preg_split('/\R/', $existing) ?: [];
         $lines = array_values(array_filter($lines, static fn (string $line): bool => !str_starts_with($line, 'DATABASE_URL=') && !str_starts_with($line, 'APP_SECRET=')));

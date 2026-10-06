@@ -98,7 +98,7 @@ final class InstallationController extends AbstractController
     private function defaults(): array
     {
         return array_replace([
-            'database_host' => 'database', 'database_port' => 3306, 'database_name' => 'webWMS',
+            'database_host' => 'database', 'database_port' => 3306, 'database_name' => 'webwms_v3',
             'database_user' => '', 'database_password' => '', 'database_version' => '8.0', 'demo_data' => true,
             'tenant_name' => '', 'site_code' => 'MAIN', 'site_name' => '', 'site_timezone' => 'Europe/Berlin',
             'admin_name' => '', 'admin_email' => '', 'admin_password' => '',

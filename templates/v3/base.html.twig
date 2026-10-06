@@ -1,104 +1,104 @@
-{#<!doctype html>#}
-{#<html lang="de">#}
-{#    <head>#}
-{#        {{ include('subsections/title-meta.html.twig') }}#}
-{#        <title>{% block title %}WebWMS 3.0{% endblock %}</title>#}
-{#        {{ include('subsections/head-css.html.twig') }}#}
-{#    </head>#}
-{#    <body class="bg-light">#}
-{#        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">#}
-{#            <div class="container-fluid px-lg-4">#}
-{#                <a class="navbar-brand" href="{{ path('v3_dashboard') }}">#}
-{#                    <span class="text-info">web</span>WMS 3.0#}
-{#                </a>#}
-{#                <button#}
-{#                    class="navbar-toggler"#}
-{#                    type="button"#}
-{#                    data-bs-toggle="collapse"#}
-{#                    data-bs-target="#v3Navigation"#}
-{#                    aria-controls="v3Navigation"#}
-{#                    aria-expanded="false"#}
-{#                    aria-label="Navigation öffnen"#}
-{#                >#}
-{#                    <span class="navbar-toggler-icon"></span>#}
-{#                </button>#}
+{# <!doctype html> #}
+{# <html lang="de"> #}
+    {# <head> #}
+        {# {{ include('subsections/title-meta.html.twig') }} #}
+        {# <title>{% block title %}WebWMS 3.0{% endblock %}</title> #}
+        {# {{ include('subsections/head-css.html.twig') }} #}
+        {# </head> #}
+    {# <body class="bg-light"> #}
+        {# <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> #}
+            {# <div class="container-fluid px-lg-4"> #}
+                {# <a class="navbar-brand" href="{{ path('v3_dashboard') }}"> #}
+                    {# <span class="text-info">web</span>WMS 3.0 #}
+                    {# </a> #}
+                {# <button #}
+                {# class="navbar-toggler" #}
+                {# type="button" #}
+                {# data-bs-toggle="collapse" #}
+                {# data-bs-target="#v3Navigation" #}
+                {# aria-controls="v3Navigation" #}
+                {# aria-expanded="false" #}
+                {# aria-label="Navigation öffnen" #}
+                {# > #}
+                {# <span class="navbar-toggler-icon"></span> #}
+                {# </button> #}
 
-{#                <div class="collapse navbar-collapse" id="v3Navigation">#}
-{#                    <ul class="navbar-nav me-auto">#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="{{ path('v3_dashboard') }}">Dashboard</a>#}
-{#                        </li>#}
+                {# <div class="collapse navbar-collapse" id="v3Navigation"> #}
+                    {# <ul class="navbar-nav me-auto"> #}
+                        {# <li class="nav-item"> #}
+                            {# <a class="nav-link" href="{{ path('v3_dashboard') }}">Dashboard</a> #}
+                            {# </li> #}
 
-{#                        {% if is_granted('inventory.stock.read') %}#}
-{#                            <li class="nav-item">#}
-{#                                <a class="nav-link" href="{{ path('v3_stock') }}">Bestand</a>#}
-{#                            </li>#}
-{#                        {% endif %}#}
+                        {# {% if is_granted('inventory.stock.read') %} #}
+                        {# <li class="nav-item"> #}
+                            {# <a class="nav-link" href="{{ path('v3_stock') }}">Bestand</a> #}
+                            {# </li> #}
+                        {# {% endif %} #}
 
-{#                        {% if is_granted('outbound.order.read') %}#}
-{#                            <li class="nav-item">#}
-{#                                <a class="nav-link" href="{{ path('v3_outbound_orders') }}">Aufträge</a>#}
-{#                            </li>#}
-{#                        {% endif %}#}
+                        {# {% if is_granted('outbound.order.read') %} #}
+                        {# <li class="nav-item"> #}
+                            {# <a class="nav-link" href="{{ path('v3_outbound_orders') }}">Aufträge</a> #}
+                            {# </li> #}
+                        {# {% endif %} #}
 
-{#                        {% if is_granted('fulfillment.pick.read') %}#}
-{#                            <li class="nav-item">#}
-{#                                <a class="nav-link" href="{{ path('v3_picking_index') }}">Picking</a>#}
-{#                            </li>#}
-{#                        {% endif %}#}
+                        {# {% if is_granted('fulfillment.pick.read') %} #}
+                        {# <li class="nav-item"> #}
+                            {# <a class="nav-link" href="{{ path('v3_picking_index') }}">Picking</a> #}
+                            {# </li> #}
+                        {# {% endif %} #}
 
-{#                        {% if is_granted('fulfillment.pack.read') %}#}
-{#                            <li class="nav-item">#}
-{#                                <a class="nav-link" href="{{ path('v3_packing_index') }}">Packen</a>#}
-{#                            </li>#}
-{#                        {% endif %}#}
+                        {# {% if is_granted('fulfillment.pack.read') %} #}
+                        {# <li class="nav-item"> #}
+                            {# <a class="nav-link" href="{{ path('v3_packing_index') }}">Packen</a> #}
+                            {# </li> #}
+                        {# {% endif %} #}
 
-{#                        {% if is_granted('fulfillment.ship.read') %}#}
-{#                            <li class="nav-item">#}
-{#                                <a class="nav-link" href="{{ path('v3_shipping_index') }}">Versand</a>#}
-{#                            </li>#}
-{#                        {% endif %}#}
+                        {# {% if is_granted('fulfillment.ship.read') %} #}
+                        {# <li class="nav-item"> #}
+                            {# <a class="nav-link" href="{{ path('v3_shipping_index') }}">Versand</a> #}
+                            {# </li> #}
+                        {# {% endif %} #}
 
-{#                        {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') %}#}
-{#                            <li class="nav-item">#}
-{#                                <a class="nav-link" href="{{ path('v3_administration_index') }}">Administration</a>#}
-{#                            </li>#}
-{#                        {% endif %}#}
-{#                    </ul>#}
+                        {# {% if is_granted('administration.user.read') or is_granted('administration.role.read') or is_granted('administration.api_client.read') %} #}
+                        {# <li class="nav-item"> #}
+                            {# <a class="nav-link" href="{{ path('v3_administration_index') }}">Administration</a> #}
+                            {# </li> #}
+                        {# {% endif %} #}
+                        {# </ul> #}
 
-{#                    <span class="navbar-text me-3">{{ app.user.displayName }}</span>#}
-{#                    <a class="btn btn-outline-light btn-sm" href="{{ path('app_v3_logout') }}">Abmelden</a>#}
-{#                </div>#}
-{#            </div>#}
-{#        </nav>#}
+                    {# <span class="navbar-text me-3">{{ app.user.displayName }}</span> #}
+                    {# <a class="btn btn-outline-light btn-sm" href="{{ path('app_v3_logout') }}">Abmelden</a> #}
+                    {# </div> #}
+                {# </div> #}
+            {# </nav> #}
 
-{#        <main class="container-fluid px-lg-4 py-4">#}
-{#            {% for type, messages in app.flashes %}#}
-{#                {% for message in messages %}#}
-{#                    <div class="alert alert-{{ type == 'error' ? 'danger' : type }} alert-dismissible fade show" role="alert">#}
-{#                        {{ message }}#}
-{#                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{#            {% endfor %}#}
+        {# <main class="container-fluid px-lg-4 py-4"> #}
+            {# {% for type, messages in app.flashes %} #}
+            {# {% for message in messages %} #}
+            {# <div class="alert alert-{{ type == 'error' ? 'danger' : type }} alert-dismissible fade show" role="alert"> #}
+                {# {{ message }} #}
+                {# <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button> #}
+                {# </div> #}
+            {# {% endfor %} #}
+            {# {% endfor %} #}
 
-{#            {% block body %}{% endblock %}#}
-{#        </main>#}
+            {# {% block body %}{% endblock %} #}
+            {# </main> #}
 
-{#        {{ include('v3/subsections/vendor-scripts.html.twig') }}#}
-{#    </body>#}
-{#</html>#}
+        {# {{ include('v3/subsections/vendor-scripts.html.twig') }} #}
+        {# </body> #}
+    {# </html> #}
 
 {# templates/v3/base.html.twig #}
 
 <!DOCTYPE html>
 <html lang="{{ app.request.locale|split('_')[0] }}"
-      data-layout="vertical"
-      data-topbar="light"
-      data-sidebar="light"
-      data-sidebar-size="lg"
-      data-sidebar-image="none"
-      data-preloader="disable">
+data-layout="vertical"
+data-topbar="light"
+data-sidebar="light"
+data-sidebar-size="lg"
+data-sidebar-image="none"
+data-preloader="disable">
 <head>
     {{ include('v3/subsections/title-meta.html.twig') }}
 
@@ -111,90 +111,128 @@
     {% endblock %}
 </head>
 <body>
-<div id="layout-wrapper">
-    {% block webwms_header_navigation %}
-        {{ include('v3/subsections/menu.html.twig') }}
-    {% endblock %}
-    <div class="main-content">
-        <div class="page-content">
-            <div class="container-fluid">
-                {% for type, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ type == 'error' ? 'danger' : type }} alert-dismissible fade show" role="alert">
-                            {{ message is iterable ? message.id|trans(message.parameters|default({})) : message|trans }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'common.close'|trans }}"></button>
-                        </div>
+    <div id="layout-wrapper">
+
+        {% block webwms_header_navigation %}
+            {{ include('v3/subsections/menu.html.twig') }}
+        {% endblock %}
+        <div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+                    {% for type, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ type == 'error' ? 'danger' : type }} alert-dismissible fade show" role="alert">
+                                {{ message is iterable ? message.id|trans(message.parameters|default({})) : message|trans }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'common.close'|trans }}">
+                                </button>
+                            </div>
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-                {% block webwms_content %}{% endblock %}
+
+                    {% block webwms_content %}
+
+                    {% endblock %}
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => navigator.serviceWorker.register('{{ asset('service-worker.js') }}'));
-    }
-</script>
-{% block bodyjs %}
     <script>
-        const loader = '<img src="{{ asset('assets/images/ajax-loader.gif') }}" />';
-        const modalLoader = '<div class="modal-body">' + loader + '</div>';
+        if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('{{ asset('service-worker.js') }}'));
+        }
     </script>
-{% endblock %}
-{% block modal %}
-    <!-- Modal -->
-    <div class="modal" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="modalCenterTitle"></h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'base.close'|trans }}">
-                        <span aria-hidden="true" class="white-text">{{ 'base.and_times'|trans }}</span>
-                    </button>
-                </div>
-                <div id="modal-content-ajax">
-                    <div class="modal-body">
-                        <img src="{{ asset('assets/images/ajax-loader.gif') }}" alt=""/>
+
+    {% block bodyjs %}
+        <script>
+            const loader = '
+            <img src="{{ asset('assets/images/ajax-loader.gif') }}" />
+            ';
+            const modalLoader = '
+            <div class="modal-body">
+                ' + loader + '
+            </div>
+            ';
+        </script>
+    {% endblock %}
+
+    {% block modal %}
+        <!-- Modal -->
+        <div class="modal" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modalCenterTitle">
+                        </h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'base.close'|trans }}">
+                            <span aria-hidden="true" class="white-text">
+                                {{ 'base.and_times'|trans }}
+                            </span>
+                        </button>
+                    </div>
+                    <div id="modal-content-ajax">
+                        <div class="modal-body">
+                            <img src="{{ asset('assets/images/ajax-loader.gif') }}" alt=""/>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-{% endblock %}
-{% block webwms_about_modal %}
-    <div class="modal" id="aboutWebWMS" tabindex="-1" role="dialog" aria-labelledby="aboutWebWMS"
-         aria-hidden="true">
+    {% endblock %}
+
+    {% block webwms_about_modal %}
+        <div class="modal" id="aboutWebWMS" tabindex="-1" role="dialog" aria-labelledby="aboutWebWMS"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-notify modal-success" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">{{ 'navigation.help.headline2'|trans }}</h3>
+                    <h3 class="modal-title">
+                        {{ 'navigation.help.headline2'|trans }}
+                    </h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'base.close'|trans }}">
-                        <span aria-hidden="true" class="white-text">{{ 'base.and_times'|trans }}</span>
+                        <span aria-hidden="true" class="white-text">
+                            {{ 'base.and_times'|trans }}
+                        </span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
-                        <span class="text-first">{{ 'base.web'|trans }}</span><span class="text-last">{{ 'base.wms'|trans }}</span>
-                        <p class="fs-16" style="text-align: center; font-weight: bold; margin: -20px 0 20px 0;">{{ 'base.web_based_warehouse_management_system'|trans }}</p>
-                        <p style="margin-bottom: 5px;">{{ appVersion }} {{ appVersionNumber }}</p>
-                        <p style="margin-bottom: 20px;">{{ appCopyright }}</p>
-                        <p style="margin-bottom: 5px;">{{ 'base.licensed_to'|trans }}</p>
-                        <p>{{ appLizenz }}</p>
+                        <span class="text-first">
+                            {{ 'base.web'|trans }}
+                        </span>
+                        <span class="text-last">
+                            {{ 'base.wms'|trans }}
+                        </span>
+                        <p class="fs-16" style="text-align: center; font-weight: bold; margin: -20px 0 20px 0;">
+                            {{ 'base.web_based_warehouse_management_system'|trans }}
+                        </p>
+                        <p style="margin-bottom: 5px;">
+                            {{ appVersion }} {{ appVersionNumber }}
+                        </p>
+                        <p style="margin-bottom: 20px;">
+                            {{ appCopyright }}
+                        </p>
+                        <p style="margin-bottom: 5px;">
+                            {{ 'base.licensed_to'|trans }}
+                        </p>
+                        <p>
+                            {{ appLizenz }}
+                        </p>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
                 </div>
             </div>
         </div>
-    </div>
-{% endblock %}
+        </div>
+    {% endblock %}
 
-{{ include('v3/subsections/vendor-scripts.html.twig') }}
+    {{ include('v3/subsections/vendor-scripts.html.twig') }}
 
-<script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}">
+    </script>
 
-<!-- App js -->
-<script src="{{ asset('assets/js/app.js') }}"></script>
+    <!-- App js -->
+    <script src="{{ asset('assets/js/app.js') }}">
+    </script>
 </body>
 </html>

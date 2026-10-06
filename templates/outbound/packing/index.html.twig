@@ -1,32 +1,48 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<h1 class="h3 mb-1">{{ 'packing.index.packing_station'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'packing.index.pack_picked_items_and_complete_packing_orders'|trans }}</p>
-	</div>
+    <div class="mb-4">
+        <h1 class="h3 mb-1">
+            {{ 'packing.index.packing_station'|trans }}
+        </h1>
+        <p class="text-muted mb-0">
+            {{ 'packing.index.pack_picked_items_and_complete_packing_orders'|trans }}
+        </p>
+    </div>
 
-	<div class="row g-3">
-		{% for order in packingOrders %}
-			<div class="col-md-6 col-xl-4">
-				<div class="card h-100 border-0 shadow-sm">
-					<div class="card-body">
-						<div class="d-flex justify-content-between">
-							<h2 class="h5">{{ order.code }}</h2>
-							<span class="badge bg-secondary-subtle text-secondary">{{ order.status }}</span>
-						</div>
-						<div>{{ 'inbound.control.order'|trans }} {{ order.order_number }}</div>
-						<div class="text-muted">{{ order.package_count }} {{ 'packing.index.packages'|trans }} {{ order.total_weight_grams }} {{ 'outbound.control.g'|trans }}</div>
-					</div>
-					<div class="card-footer">
-						<a class="btn btn-primary w-100" href="{{ path('v3_packing_show', {packingOrderId: order.id}) }}">{{ 'packing.index.open_packing_order'|trans }}</a>
-					</div>
-				</div>
-			</div>
-		{% else %}
-			<div class="col-12">
-				<div class="alert alert-light border">{{ 'packing.index.no_packing_orders_yet'|trans }}</div>
-			</div>
-		{% endfor %}
-	</div>
+    <div class="row g-3">
+        {% for order in packingOrders %}
+            <div class="col-md-6 col-xl-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h2 class="h5">
+                                {{ order.code }}
+                            </h2>
+                            <span class="badge bg-secondary-subtle text-secondary">
+                                {{ order.status }}
+                            </span>
+                        </div>
+                        <div>
+                            {{ 'inbound.control.order'|trans }} {{ order.order_number }}
+                        </div>
+                        <div class="text-muted">
+                            {{ order.package_count }} {{ 'packing.index.packages'|trans }} {{ order.total_weight_grams }} {{ 'outbound.control.g'|trans }}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-primary w-100" href="{{ path('v3_packing_show', {packingOrderId: order.id}) }}">
+                            {{ 'packing.index.open_packing_order'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-light border">
+                    {{ 'packing.index.no_packing_orders_yet'|trans }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

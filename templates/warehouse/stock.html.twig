@@ -1,68 +1,154 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}{{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0{% endblock %}
+
+{% block title %}
+    {{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0
+{% endblock %}
+
 {% block webwms_content %}
-<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
-    <div>
-        <h1 class="h3 mb-1">{{ 'article.index.stock'|trans }}</h1>
-        <p class="text-muted mb-0">{{ 'inventory.stock.client_secure_live_view_of_v3_stock_projection'|trans }}</p>
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ 'article.index.stock'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'inventory.stock.client_secure_live_view_of_v3_stock_projection'|trans }}
+            </p>
+        </div>
+        <form method="get" class="d-flex gap-2 align-items-end">
+            <div>
+                <label for="warehouse" class="form-label small">
+                    {{ 'navigation.master_data.submenu.headline4.label'|trans }}
+                </label>
+                <select id="warehouse" name="warehouse" class="form-select">
+                    <option value="">
+                        {{ 'inventory.configuration_form.all_warehouses'|trans }}
+                    </option>
+                    {% for warehouse in warehouses %}
+                        <option value="{{ warehouse.id }}" {{ warehouse.id == selectedWarehouse ? 'selected' : '' }}>
+                            {{ warehouse.code }} – {{ warehouse.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="btn btn-primary" type="submit">
+                {{ 'integration.outbox.index.filter'|trans }}
+            </button>
+        </form>
     </div>
-<form method="get" class="d-flex gap-2 align-items-end">
-    <div>
-        <label for="warehouse" class="form-label small">{{ 'navigation.master_data.submenu.headline4.label'|trans }}</label>
-        <select id="warehouse" name="warehouse" class="form-select">
-            <option value="">{{ 'inventory.configuration_form.all_warehouses'|trans }}</option>
-            {% for warehouse in warehouses %}
-                <option value="{{ warehouse.id }}" {{ warehouse.id == selectedWarehouse ? 'selected' : '' }}>{{ warehouse.code }} – {{ warehouse.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <button class="btn btn-primary" type="submit">{{ 'integration.outbox.index.filter'|trans }}</button>
-</form>
-</div>
-<div class="card border-0 shadow-sm">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-            <tr>
-                <th>{{ 'inventory.stock.sku'|trans }}</th>
-                <th>{{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}</th>
-                <th>{{ 'inventory.stock.topology'|trans }}</th>
-                <th>{{ 'transport_request.index.status'|trans }}</th>
-                <th>{{ 'inventory.stock.special_stock'|trans }}</th>
-                <th>{{ 'modal.stock_in_modal.batch'|trans }}</th>
-                <th>{{ 'inbound.new.serial_number'|trans }}</th>
-                <th>{{ 'inventory.stock.expiration'|trans }}</th>
-                <th class="text-end">{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</th>
-                <th class="text-end">{{ 'inbound.new.available'|trans }}</th>
-                <th>{{ 'inventory.stock.updated'|trans }}</th>
-            </tr>
-            </thead>
-            <tbody>
-                {% for row in stock %}
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
                     <tr>
-                        <td class="fw-semibold">{{ row.sku }}</td>
-                        <td>{{ row.location_code }}</td>
-                        <td>{{ row.warehouse_code }}{% if row.area_code %} / {{ row.area_code }}{% endif %}{% if row.aisle_code %} / {{ row.aisle_code }}{% endif %}</td>
-                        <td>
-                            <span class="badge bg-success-subtle text-success">
-                                {{ row.stock_status }}
-                            </span>
-                        </td>
-                        <td>{% if row.special_stock_code %}<span class="badge bg-info-subtle text-info">{{ row.special_stock_code }}</span>{% if row.owner_reference %}<div class="small text-muted">{{ row.owner_reference }}</div>{% endif %}{% else %}–{% endif %}</td>
-                        <td>{{ row.batch_number ?: '–' }}</td>
-                        <td>{{ row.serial_number ?: '–' }}</td>
-                        <td>{{ row.expires_at ?: '–' }}</td>
-                        <td class="text-end">{{ row.quantity }}</td>
-                        <td class="text-end fw-semibold">{{ row.available_quantity }}</td>
-                        <td class="text-nowrap">{{ row.updated_at|date('d.m.Y H:i:s') }}</td>
+                        <th>
+                            {{ 'inventory.stock.sku'|trans }}
+                        </th>
+                        <th>
+                            {{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.stock.topology'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.stock.special_stock'|trans }}
+                        </th>
+                        <th>
+                            {{ 'modal.stock_in_modal.batch'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inbound.new.serial_number'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.stock.expiration'|trans }}
+                        </th>
+                        <th class="text-end">
+                            {{ 'customer_order.customer_order_input_fields.quantity'|trans }}
+                        </th>
+                        <th class="text-end">
+                            {{ 'inbound.new.available'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.stock.updated'|trans }}
+                        </th>
                     </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="11" class="text-center text-muted py-5">{{ 'inventory.stock.no_stock_available_for_this_filter'|trans }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for row in stock %}
+                        <tr>
+                            <td class="fw-semibold">
+                                {{ row.sku }}
+                            </td>
+                            <td>
+                                {{ row.location_code }}
+                            </td>
+                            <td>
+                                {{ row.warehouse_code }}
+                                {% if row.area_code %}
+                                    / {{ row.area_code }}
+                                {% endif %}
+
+                                {% if row.aisle_code %}
+                                    / {{ row.aisle_code }}
+                                {% endif %}
+
+                            </td>
+                            <td>
+                                <span class="badge bg-success-subtle text-success">
+                                    {{ row.stock_status }}
+                                </span>
+                            </td>
+                            <td>
+
+                                {% if row.special_stock_code %}
+
+                                    <span class="badge bg-info-subtle text-info">
+                                        {{ row.special_stock_code }}
+                                    </span>
+
+                                    {% if row.owner_reference %}
+
+                                        <div class="small text-muted">
+                                            {{ row.owner_reference }}
+                                        </div>
+
+                                    {% endif %}
+
+                                {% else %}
+                                    –
+                                {% endif %}
+
+                            </td>
+                            <td>
+                                {{ row.batch_number ?: '–' }}
+                            </td>
+                            <td>
+                                {{ row.serial_number ?: '–' }}
+                            </td>
+                            <td>
+                                {{ row.expires_at ?: '–' }}
+                            </td>
+                            <td class="text-end">
+                                {{ row.quantity }}
+                            </td>
+                            <td class="text-end fw-semibold">
+                                {{ row.available_quantity }}
+                            </td>
+                            <td class="text-nowrap">
+                                {{ row.updated_at|date('d.m.Y H:i:s') }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="11" class="text-center text-muted py-5">
+                                {{ 'inventory.stock.no_stock_available_for_this_filter'|trans }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 {% endblock %}

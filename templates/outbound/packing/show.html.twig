@@ -1,115 +1,165 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="d-flex justify-content-between mb-4">
-		<div>
-			<a href="{{ path('v3_packing_index') }}" class="text-decoration-none">{{ 'packing.show.packing'|trans }}</a>
-			<h1 class="h3 mt-2">{{ packingOrder.code }}</h1>
-		</div>
-		<span class="badge bg-secondary align-self-start fs-6">{{ packingOrder.status }}</span>
-	</div>
+    <div class="d-flex justify-content-between mb-4">
+        <div>
+            <a href="{{ path('v3_packing_index') }}" class="text-decoration-none">
+                {{ 'packing.show.packing'|trans }}
+            </a>
+            <h1 class="h3 mt-2">
+                {{ packingOrder.code }}
+            </h1>
+        </div>
+        <span class="badge bg-secondary align-self-start fs-6">
+            {{ packingOrder.status }}
+        </span>
+    </div>
 
-	<div class="card border-0 shadow-sm mb-4">
-		<div class="card-header">
-			<h2 class="h5 mb-0">{{ 'packing.show.packages'|trans }}</h2>
-		</div>
-		<div class="table-responsive">
-			<table class="table mb-0">
-				<thead>
-					<tr>
-						<th>{{ 'packing.show.package_number'|trans }}</th>
-						<th class="text-end">{{ 'article.article_input_fields.weight'|trans }}</th>
-						<th>{{ 'integration.measurement.index.dimensions'|trans }}</th>
-						<th>{{ 'transport_request.index.status'|trans }}</th>
-						<th>{{ 'packing.show.pick_items'|trans }}</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for package in packingOrder.packages %}
-						<tr>
-							<td>{{ package.package_number }}</td>
-							<td class="text-end">{{ package.weight_grams }} {{ 'outbound.control.g'|trans }}</td>
-							<td>{{ package.length_mm ? package.length_mm ~ ' × ' ~ package.width_mm ~ ' × ' ~ package.height_mm ~ ' mm' : '–' }}</td>
-							<td>{{ package.status }}</td>
-							<td>{{ package.pickTaskIds|length }}</td>
-							<td class="text-end">
-								{% if packingOrder.status in ['open', 'packing'] and is_granted('integration.measurement.capture') %}
-									<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_measurement_capture', {targetType: 'package', targetId: package.id}) }}">{{ 'packing.show.measure'|trans }}</a>
-								{% endif %}
-							</td>
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="6" class="text-center text-muted py-4">{{ 'packing.show.no_package_sealed_yet'|trans }}</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header">
+            <h2 class="h5 mb-0">
+                {{ 'packing.show.packages'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'packing.show.package_number'|trans }}
+                        </th>
+                        <th class="text-end">
+                            {{ 'article.article_input_fields.weight'|trans }}
+                        </th>
+                        <th>
+                            {{ 'integration.measurement.index.dimensions'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                            {{ 'packing.show.pick_items'|trans }}
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for package in packingOrder.packages %}
+                        <tr>
+                            <td>
+                                {{ package.package_number }}
+                            </td>
+                            <td class="text-end">
+                                {{ package.weight_grams }} {{ 'outbound.control.g'|trans }}
+                            </td>
+                            <td>
+                                {{ package.length_mm ? package.length_mm ~ ' × ' ~ package.width_mm ~ ' × ' ~ package.height_mm ~ ' mm' : '–' }}
+                            </td>
+                            <td>
+                                {{ package.status }}
+                            </td>
+                            <td>
+                                {{ package.pickTaskIds|length }}
+                            </td>
+                            <td class="text-end">
+                                {% if packingOrder.status in ['open', 'packing'] and is_granted('integration.measurement.capture') %}
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_measurement_capture', {targetType: 'package', targetId: package.id}) }}">
+                                        {{ 'packing.show.measure'|trans }}
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                {{ 'packing.show.no_package_sealed_yet'|trans }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-	{% if packingOrder.status in ['open', 'packing'] and packableTasks is not empty and is_granted('fulfillment.pack.write') %}
-		<form method="post" action="{{ path('v3_packing_package', {packingOrderId: packingOrder.id}) }}" class="card border-0 shadow-sm mb-4">
-			<div class="card-body">
-				<h2 class="h5">{{ 'packing.show.seal_package'|trans }}</h2>
-				<input type="hidden" name="_token" value="{{ csrf_token('v3_packing_package_' ~ packingOrder.id) }}">
-				<div class="row g-3 mb-3">
-					<div class="col-md-6">
-						<label class="form-label">{{ 'packing.show.package_number'|trans }}</label>
-						<input class="form-control" name="package_number" value="PKG-{{ packingOrder.code }}-{{ packingOrder.packages|length + 1 }}" required>
-					</div>
-					<div class="col-md-6">
-						<label class="form-label">{{ 'integration.measurement.capture.weight_in_grams'|trans }}</label>
-						<input class="form-control" type="number" min="1" name="weight_grams" required>
-					</div>
-				</div>
-				{% for task in packableTasks %}
-					<div class="form-check border rounded p-3 ps-5 mb-2">
-						<input class="form-check-input" type="checkbox" name="pick_task_id[]" value="{{ task.id }}" id="task-{{ task.id }}" checked>
-						<label class="form-check-label w-100" for="task-{{ task.id }}">
-							<strong>{{ task.sku }}</strong> {{ 'packing.show.quantity'|trans }} {{ task.quantity }} {{ 'packing.show.location'|trans }} {{ task.location_code }}
-						</label>
-					</div>
-				{% endfor %}
-			</div>
-			<div class="card-footer text-end">
-				<button class="btn btn-primary">{{ 'packing.show.seal_package'|trans }}</button>
-			</div>
-		</form>
-	{% endif %}
+    {% if packingOrder.status in ['open', 'packing'] and packableTasks is not empty and is_granted('fulfillment.pack.write') %}
+        <form method="post" action="{{ path('v3_packing_package', {packingOrderId: packingOrder.id}) }}" class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="h5">
+                    {{ 'packing.show.seal_package'|trans }}
+                </h2>
+                <input type="hidden" name="_token" value="{{ csrf_token('v3_packing_package_' ~ packingOrder.id) }}">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            {{ 'packing.show.package_number'|trans }}
+                        </label>
+                        <input class="form-control" name="package_number" value="PKG-{{ packingOrder.code }}-{{ packingOrder.packages|length + 1 }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">
+                            {{ 'integration.measurement.capture.weight_in_grams'|trans }}
+                        </label>
+                        <input class="form-control" type="number" min="1" name="weight_grams" required>
+                    </div>
+                </div>
+                {% for task in packableTasks %}
+                    <div class="form-check border rounded p-3 ps-5 mb-2">
+                        <input class="form-check-input" type="checkbox" name="pick_task_id[]" value="{{ task.id }}" id="task-{{ task.id }}" checked>
+                        <label class="form-check-label w-100" for="task-{{ task.id }}">
+                            <strong>
+                                {{ task.sku }}
+                            </strong>
+                            {{ 'packing.show.quantity'|trans }} {{ task.quantity }} {{ 'packing.show.location'|trans }} {{ task.location_code }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="card-footer text-end">
+                <button class="btn btn-primary">
+                    {{ 'packing.show.seal_package'|trans }}
+                </button>
+            </div>
+        </form>
+    {% endif %}
 
-	{% if packingOrder.status in ['open', 'packing'] and packableTasks is empty and packingOrder.packages is not empty and is_granted('fulfillment.pack.execute') %}
-		<form method="post" action="{{ path('v3_packing_complete', {packingOrderId: packingOrder.id}) }}" class="mb-4">
-			<input type="hidden" name="_token" value="{{ csrf_token('v3_packing_complete_' ~ packingOrder.id) }}">
-			<button class="btn btn-success">{{ 'packing.show.complete_packing_order'|trans }}</button>
-		</form>
-	{% endif %}
+    {% if packingOrder.status in ['open', 'packing'] and packableTasks is empty and packingOrder.packages is not empty and is_granted('fulfillment.pack.execute') %}
+        <form method="post" action="{{ path('v3_packing_complete', {packingOrderId: packingOrder.id}) }}" class="mb-4">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_packing_complete_' ~ packingOrder.id) }}">
+            <button class="btn btn-success">
+                {{ 'packing.show.complete_packing_order'|trans }}
+            </button>
+        </form>
+    {% endif %}
 
-	{% if packingOrder.shipment_id %}
-		<a class="btn btn-primary" href="{{ path('v3_shipping_show', {shipmentId: packingOrder.shipment_id}) }}">
-			{{ 'integration.device.scan.shipment'|trans }} {{ packingOrder.shipment_number }} {{ 'outbound.order.open'|trans }}
-		</a>
-	{% elseif packingOrder.status == 'completed' %}
-		<div class="card border-0 shadow-sm">
-			<div class="card-body">
-				<h2 class="h5">{{ 'packing.show.prepare_shipment'|trans }}</h2>
-				<form method="post" action="{{ path('v3_shipping_create', {packingOrderId: packingOrder.id}) }}" class="row g-2">
-					<input type="hidden" name="_token" value="{{ csrf_token('v3_shipping_create_' ~ packingOrder.id) }}">
-					<div class="col-md-4">
-						<input class="form-control" name="shipment_number" value="SHIP-{{ packingOrder.code }}" placeholder="{{ 'packing.show.shipment_number'|trans }}" required>
-					</div>
-					<div class="col-md-3">
-						<input class="form-control" name="carrier" value="DEMO" placeholder="{{ 'administration.workspace.carrier'|trans }}" required>
-					</div>
-					<div class="col-md-3">
-						<input class="form-control" name="service" value="STANDARD" placeholder="{{ 'outbound.control.service'|trans }}" required>
-					</div>
-					<div class="col-md-2">
-						<button class="btn btn-primary w-100">{{ 'packing.show.create'|trans }}</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	{% endif %}
+    {% if packingOrder.shipment_id %}
+        <a class="btn btn-primary" href="{{ path('v3_shipping_show', {shipmentId: packingOrder.shipment_id}) }}">
+            {{ 'integration.device.scan.shipment'|trans }} {{ packingOrder.shipment_number }} {{ 'outbound.order.open'|trans }}
+        </a>
+    {% elseif packingOrder.status == 'completed' %}
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">
+                    {{ 'packing.show.prepare_shipment'|trans }}
+                </h2>
+                <form method="post" action="{{ path('v3_shipping_create', {packingOrderId: packingOrder.id}) }}" class="row g-2">
+                    <input type="hidden" name="_token" value="{{ csrf_token('v3_shipping_create_' ~ packingOrder.id) }}">
+                    <div class="col-md-4">
+                        <input class="form-control" name="shipment_number" value="SHIP-{{ packingOrder.code }}" placeholder="{{ 'packing.show.shipment_number'|trans }}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" name="carrier" value="DEMO" placeholder="{{ 'administration.workspace.carrier'|trans }}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" name="service" value="STANDARD" placeholder="{{ 'outbound.control.service'|trans }}" required>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100">
+                            {{ 'packing.show.create'|trans }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

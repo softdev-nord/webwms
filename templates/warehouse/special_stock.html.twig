@@ -1,7 +1,225 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}{{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0{% endblock %}
+
+{% block title %}
+    {{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0
+{% endblock %}
+
 {% block webwms_content %}
-<div class="d-flex justify-content-between align-items-center mb-4"><div><h1 class="h3 mb-1">{{ 'inventory.special_stock.special_stock'|trans }}</h1><p class="text-muted mb-0">{{ 'inventory.special_stock.tag_stock_by_ownership_status_or_special_type'|trans }}</p></div>{% if is_granted('inventory.special_stock.write') %}<a class="btn btn-primary" href="{{ path('v3_inventory_special_stock_type_new') }}"><i class="ri-add-line me-1"></i>{{ 'inventory.special_stock.create_tag'|trans }}</a>{% endif %}</div>
-<div class="card border-0 shadow-sm mb-4"><div class="card-header"><h2 class="h5 mb-0">{{ 'inventory.special_stock.special_stock_tag'|trans }}</h2></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>{{ 'administration.role_new.code'|trans }}</th><th>{{ 'article.index.description'|trans }}</th><th>{{ 'inventory.configuration_form.type'|trans }}</th><th>{{ 'inventory.configuration_form.allocatable'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th class="text-end" data-orderable="false" data-searchable="false">{{ 'administration.api_clients.actions'|trans }}</th></tr></thead><tbody>{% for type in types %}<tr><td><strong>{{ type.code }}</strong></td><td>{{ type.name }}</td><td>{{ type.classification_kind }}</td><td>{{ (type.allocatable ? 'inventory.special_stock.yes' : 'inventory.special_stock.no')|trans }}</td><td><span class="badge bg-{{ type.active ? 'success':'secondary' }}-subtle text-{{ type.active ? 'success':'secondary' }}">{{ (type.active ? 'user.user_input_fields.active' : 'inventory.selection_rules.inactive')|trans }}</span></td><td class="text-end">{% if is_granted('inventory.special_stock.write') %}<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_inventory_special_stock_type_edit',{typeId:type.id}) }}"><i class="ri-pencil-line me-1"></i>{{ 'common.button.edit'|trans }}</a>{% endif %}</td></tr>{% else %}<tr><td colspan="6" class="text-center text-muted py-4">{{ 'inventory.special_stock.no_tags_available'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>
-<div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'inventory.special_stock.stock'|trans }}</h2></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'article.index.stock'|trans }}</th><th>{{ 'inventory.special_stock.dimension'|trans }}</th><th>{{ 'inventory.special_stock.tag'|trans }}</th><th>{{ 'inventory.special_stock.owner'|trans }}</th><th class="text-end" data-orderable="false" data-searchable="false">{{ 'administration.api_clients.actions'|trans }}</th></tr></thead><tbody>{% for row in stock %}<tr><td><strong>{{ row.sku }}</strong><div class="small text-muted">{{ row.product_name }}</div></td><td>{{ row.location_code }} · {{ row.quantity }}</td><td>{{ row.stock_status }}{% if row.batch_number %}<div class="small">{{ 'modal.stock_in_modal.batch'|trans }} {{ row.batch_number }}</div>{% endif %}{% if row.serial_number %}<div class="small">{{ 'inventory.movements.sn'|trans }} {{ row.serial_number }}</div>{% endif %}</td><td>{% if row.special_stock_code %}<span class="badge bg-info-subtle text-info">{{ row.special_stock_code }}</span><div class="small text-muted">{{ row.special_stock_name }}</div>{% else %}–{% endif %}</td><td>{{ row.owner_reference ?: '–' }}</td><td class="text-end">{% if is_granted('inventory.special_stock.write') and types is not empty %}<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_inventory_special_stock_classify_form',{product:row.product_id,location:row.location_id,stock_key:row.stock_key}) }}"><i class="ri-pencil-line me-1"></i>{{ 'inventory.control.classify'|trans }}</a>{% endif %}</td></tr>{% else %}<tr><td colspan="6" class="text-center text-muted py-5">{{ 'inventory.special_stock.no_stock_available'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ 'inventory.special_stock.special_stock'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'inventory.special_stock.tag_stock_by_ownership_status_or_special_type'|trans }}
+            </p>
+        </div>
+
+        {% if is_granted('inventory.special_stock.write') %}
+
+            <a class="btn btn-primary" href="{{ path('v3_inventory_special_stock_type_new') }}">
+                <i class="ri-add-line me-1">
+                </i>
+                {{ 'inventory.special_stock.create_tag'|trans }}
+            </a>
+
+        {% endif %}
+
+    </div>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header">
+            <h2 class="h5 mb-0">
+                {{ 'inventory.special_stock.special_stock_tag'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'administration.role_new.code'|trans }}
+                        </th>
+                        <th>
+                            {{ 'article.index.description'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.configuration_form.type'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.configuration_form.allocatable'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th class="text-end" data-orderable="false" data-searchable="false">
+                            {{ 'administration.api_clients.actions'|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for type in types %}
+
+                        <tr>
+                            <td>
+                                <strong>
+                                    {{ type.code }}
+                                </strong>
+                            </td>
+                            <td>
+                                {{ type.name }}
+                            </td>
+                            <td>
+                                {{ type.classification_kind }}
+                            </td>
+                            <td>
+                                {{ (type.allocatable ? 'inventory.special_stock.yes' : 'inventory.special_stock.no')|trans }}
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ type.active ? 'success' : 'secondary' }}-subtle text-{{ type.active ? 'success' : 'secondary' }}">
+                                    {{ (type.active ? 'user.user_input_fields.active' : 'inventory.selection_rules.inactive')|trans }}
+                                </span>
+                            </td>
+                            <td class="text-end">
+
+                                {% if is_granted('inventory.special_stock.write') %}
+
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_inventory_special_stock_type_edit', {typeId: type.id}) }}">
+                                        <i class="ri-pencil-line me-1">
+                                        </i>
+                                        {{ 'common.button.edit'|trans }}
+                                    </a>
+
+                                {% endif %}
+
+                            </td>
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                {{ 'inventory.special_stock.no_tags_available'|trans }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card border-0 shadow-sm">
+        <div class="card-header">
+            <h2 class="h5 mb-0">
+                {{ 'inventory.special_stock.stock'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                        </th>
+                        <th>
+                            {{ 'article.index.stock'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.special_stock.dimension'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.special_stock.tag'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.special_stock.owner'|trans }}
+                        </th>
+                        <th class="text-end" data-orderable="false" data-searchable="false">
+                            {{ 'administration.api_clients.actions'|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for row in stock %}
+
+                        <tr>
+                            <td>
+                                <strong>
+                                    {{ row.sku }}
+                                </strong>
+                                <div class="small text-muted">
+                                    {{ row.product_name }}
+                                </div>
+                            </td>
+                            <td>
+                                {{ row.location_code }} · {{ row.quantity }}
+                            </td>
+                            <td>
+                                {{ row.stock_status }}
+                                {% if row.batch_number %}
+
+                                    <div class="small">
+                                        {{ 'modal.stock_in_modal.batch'|trans }} {{ row.batch_number }}
+                                    </div>
+
+                                {% endif %}
+
+                                {% if row.serial_number %}
+
+                                    <div class="small">
+                                        {{ 'inventory.movements.sn'|trans }} {{ row.serial_number }}
+                                    </div>
+
+                                {% endif %}
+
+                            </td>
+                            <td>
+
+                                {% if row.special_stock_code %}
+
+                                    <span class="badge bg-info-subtle text-info">
+                                        {{ row.special_stock_code }}
+                                    </span>
+                                    <div class="small text-muted">
+                                        {{ row.special_stock_name }}
+                                    </div>
+
+                                {% else %}
+                                    –
+                                {% endif %}
+
+                            </td>
+                            <td>
+                                {{ row.owner_reference ?: '–' }}
+                            </td>
+                            <td class="text-end">
+
+                                {% if is_granted('inventory.special_stock.write') and types is not empty %}
+
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_inventory_special_stock_classify_form', {product: row.product_id, location: row.location_id, stock_key: row.stock_key}) }}">
+                                        <i class="ri-pencil-line me-1">
+                                        </i>
+                                        {{ 'inventory.control.classify'|trans }}
+                                    </a>
+
+                                {% endif %}
+
+                            </td>
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-5">
+                                {{ 'inventory.special_stock.no_stock_available'|trans }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

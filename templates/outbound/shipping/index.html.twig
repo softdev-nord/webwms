@@ -1,43 +1,72 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<h1 class="h3 mb-1">{{ 'integration.device.scan.shipping'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'shipping.index.labels_tracking_and_handover_to_carrier'|trans }}</p>
-	</div>
+    <div class="mb-4">
+        <h1 class="h3 mb-1">
+            {{ 'integration.device.scan.shipping'|trans }}
+        </h1>
+        <p class="text-muted mb-0">
+            {{ 'shipping.index.labels_tracking_and_handover_to_carrier'|trans }}
+        </p>
+    </div>
 
-	<div class="card border-0 shadow-sm">
-		<div class="table-responsive">
-			<table class="table table-hover align-middle mb-0">
-				<thead>
-					<tr>
-						<th>{{ 'integration.device.scan.shipment'|trans }}</th>
-						<th>{{ 'administration.workspace.carrier'|trans }}</th>
-						<th>{{ 'outbound.control.service'|trans }}</th>
-						<th>{{ 'transport_request.index.status'|trans }}</th>
-						<th>{{ 'loading.show.tracking'|trans }}</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for shipment in shipments %}
-						<tr>
-							<td class="fw-semibold">{{ shipment.shipment_number }}</td>
-							<td>{{ shipment.carrier }}</td>
-							<td>{{ shipment.service }}</td>
-							<td>{{ shipment.status }}</td>
-							<td>{{ shipment.tracking_number ?: '–' }}</td>
-							<td class="text-end">
-								<a class="btn btn-sm btn-outline-primary" href="{{ path('v3_shipping_show', {shipmentId: shipment.id}) }}">{{ 'inbound.index.open'|trans }}</a>
-							</td>
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="6" class="text-center text-muted py-5">{{ 'shipping.index.no_shipments_yet'|trans }}</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'integration.device.scan.shipment'|trans }}
+                        </th>
+                        <th>
+                            {{ 'administration.workspace.carrier'|trans }}
+                        </th>
+                        <th>
+                            {{ 'outbound.control.service'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                            {{ 'loading.show.tracking'|trans }}
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shipment in shipments %}
+                        <tr>
+                            <td class="fw-semibold">
+                                {{ shipment.shipment_number }}
+                            </td>
+                            <td>
+                                {{ shipment.carrier }}
+                            </td>
+                            <td>
+                                {{ shipment.service }}
+                            </td>
+                            <td>
+                                {{ shipment.status }}
+                            </td>
+                            <td>
+                                {{ shipment.tracking_number ?: '–' }}
+                            </td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_shipping_show', {shipmentId: shipment.id}) }}">
+                                    {{ 'inbound.index.open'|trans }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-5">
+                                {{ 'shipping.index.no_shipments_yet'|trans }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

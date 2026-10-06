@@ -2,20 +2,61 @@
 
 {% block handbook_content %}
     <div class="handbook" data-handbook>
-        {% include 'documentation/_header.html.twig' with {document: document} only %}
+        {{ include('documentation/_header.html.twig', {document: document}, false) }}
         <div class="handbook-layout">
             <aside id="handbook-navigation" class="handbook-sidebar">
-                {% include 'documentation/_navigation.html.twig' with {groups: navigationGroups, activeSlug: document.slug, document: document} only %}
+                {{ include('documentation/_navigation.html.twig', {groups: navigationGroups, activeSlug: document.slug, document: document}, false) }}
             </aside>
-            <button class="handbook-overlay" type="button" data-handbook-menu-close aria-label="{{ 'ui.close_navigation'|trans({}, 'handbook') }}"></button>
+            <button class="handbook-overlay" type="button" data-handbook-menu-close aria-label="{{ 'ui.close_navigation'|trans({}, 'handbook') }}">
+            </button>
             <main class="handbook-main" aria-label="{{ 'ui.content'|trans({}, 'handbook') }}">
                 <nav class="handbook-breadcrumb" aria-label="{{ 'ui.breadcrumb'|trans({}, 'handbook') }}">
-                    <a href="{{ path('v3_documentation_index') }}">{{ 'ui.sidebar_link'|trans({}, 'handbook') }}</a><i class="ri-arrow-right-s-line" aria-hidden="true"></i><span>{{ document.category }}</span>
+                    <a href="{{ path('v3_documentation_index') }}">
+                        {{ 'ui.sidebar_link'|trans({}, 'handbook') }}
+                    </a>
+                    <i class="ri-arrow-right-s-line" aria-hidden="true">
+                    </i>
+                    <span>
+                        {{ document.category }}
+                    </span>
                 </nav>
-                <article class="handbook-article">{% include 'documentation/_chapter.html.twig' with {document: document} only %}</article>
+                <article class="handbook-article">
+                    {{ include('documentation/_chapter.html.twig', {document: document}, false) }}
+                </article>
                 <nav class="handbook-pagination" aria-label="{{ 'ui.chapters'|trans({}, 'handbook') }}">
-                    {% if document.previous %}<a href="{{ path('v3_documentation_show', {slug: document.previous.slug}) }}"><small>{{ 'ui.previous'|trans({}, 'handbook') }}</small><span><i class="ri-arrow-left-line" aria-hidden="true"></i>{{ document.previous.title }}</span></a>{% else %}<span></span>{% endif %}
-                    {% if document.next %}<a class="handbook-pagination__next" href="{{ path('v3_documentation_show', {slug: document.next.slug}) }}"><small>{{ 'ui.next'|trans({}, 'handbook') }}</small><span>{{ document.next.title }}<i class="ri-arrow-right-line" aria-hidden="true"></i></span></a>{% endif %}
+                    {% if document.previous %}
+
+                        <a href="{{ path('v3_documentation_show', {slug: document.previous.slug}) }}">
+                            <small>
+                                {{ 'ui.previous'|trans({}, 'handbook') }}
+                            </small>
+                            <span>
+                                <i class="ri-arrow-left-line" aria-hidden="true">
+                                </i>
+                                {{ document.previous.title }}
+                            </span>
+                        </a>
+
+                    {% else %}
+
+                        <span>
+                        </span>
+
+                    {% endif %}
+                    {% if document.next %}
+
+                        <a class="handbook-pagination__next" href="{{ path('v3_documentation_show', {slug: document.next.slug}) }}">
+                            <small>
+                                {{ 'ui.next'|trans({}, 'handbook') }}
+                            </small>
+                            <span>
+                                {{ document.next.title }}
+                                <i class="ri-arrow-right-line" aria-hidden="true">
+                                </i>
+                            </span>
+                        </a>
+
+                    {% endif %}
                 </nav>
             </main>
         </div>

@@ -1,6 +1,171 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}{{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0{% endblock %}
+
+{% block title %}
+    {{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0
+{% endblock %}
+
 {% block webwms_content %}
-<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4"><div><h1 class="h3 mb-1">{{ 'inventory.movements.movement_history'|trans }}</h1><p class="text-muted mb-0">{{ 'inventory.movements.immutable_log_of_all_warehouse_movements'|trans }}</p></div><form method="get" class="row g-2 align-items-end"><div class="col-auto"><label class="form-label small">{{ 'navigation.master_data.submenu.headline1.label'|trans }}</label><select class="form-select" name="product"><option value="">{{ 'inventory.movements.all'|trans }}</option>{% for product in products %}<option value="{{ product.id }}" {{ filters.product == product.id ? 'selected' : '' }}>{{ product.sku }}</option>{% endfor %}</select></div><div class="col-auto"><label class="form-label small">{{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}</label><select class="form-select" name="location"><option value="">{{ 'inventory.movements.all'|trans }}</option>{% for location in locations %}<option value="{{ location.id }}" {{ filters.location == location.id ? 'selected' : '' }}>{{ location.warehouse_code }} · {{ location.code }}</option>{% endfor %}</select></div><div class="col-auto"><label class="form-label small">{{ 'inventory.movements.movement'|trans }}</label><input class="form-control" name="movement_type" value="{{ filters.movement_type }}" placeholder="{{ 'inventory.movements.e_g_inbound_receipt'|trans }}"></div><div class="col-auto"><button class="btn btn-primary">{{ 'integration.outbox.index.filter'|trans }}</button></div></form></div>
-<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>{{ 'administration.workspace.time_point_in_time'|trans }}</th><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}</th><th>{{ 'inventory.movements.movement'|trans }}</th><th>{{ 'inventory.movements.status_dimension'|trans }}</th><th>{{ 'inventory.movements.reason'|trans }}</th><th>{{ 'navigation.user.user'|trans }}</th><th class="text-end">{{ 'inventory.movements.change'|trans }}</th><th class="text-end">{{ 'article.index.stock'|trans }}</th></tr></thead><tbody>{% for movement in movements %}<tr><td class="text-nowrap">{{ movement.occurred_at|date('d.m.Y H:i:s') }}</td><td><strong>{{ movement.sku }}</strong></td><td>{{ movement.location_code }}</td><td><span class="badge bg-secondary-subtle text-secondary">{{ movement.movement_type }}</span></td><td>{{ movement.stock_status }}{% if movement.batch_number %}<div class="small text-muted">{{ 'modal.stock_in_modal.batch'|trans }} {{ movement.batch_number }}</div>{% endif %}{% if movement.serial_number %}<div class="small text-muted">{{ 'inventory.movements.sn'|trans }} {{ movement.serial_number }}</div>{% endif %}</td><td>{{ movement.reason }}</td><td>{{ movement.performed_by_name }}</td><td class="text-end {{ movement.quantity_delta >= 0 ? 'text-success' : 'text-danger' }}">{{ movement.quantity_delta > 0 ? '+' : '' }}{{ movement.quantity_delta }}</td><td class="text-end fw-semibold">{{ movement.resulting_quantity }}</td></tr>{% else %}<tr><td colspan="9" class="text-center text-muted py-5">{{ 'inventory.movements.no_movements_found_for_this_filter'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ 'inventory.movements.movement_history'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'inventory.movements.immutable_log_of_all_warehouse_movements'|trans }}
+            </p>
+        </div>
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-auto">
+                <label class="form-label small">
+                    {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                </label>
+                <select class="form-select" name="product">
+                    <option value="">
+                        {{ 'inventory.movements.all'|trans }}
+                    </option>
+
+                    {% for product in products %}
+
+                        <option value="{{ product.id }}" {{ filters.product == product.id ? 'selected' : '' }}>
+                            {{ product.sku }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="form-label small">
+                    {{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}
+                </label>
+                <select class="form-select" name="location">
+                    <option value="">
+                        {{ 'inventory.movements.all'|trans }}
+                    </option>
+
+                    {% for location in locations %}
+
+                        <option value="{{ location.id }}" {{ filters.location == location.id ? 'selected' : '' }}>
+                            {{ location.warehouse_code }} · {{ location.code }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="form-label small">
+                    {{ 'inventory.movements.movement'|trans }}
+                </label>
+                <input class="form-control" name="movement_type" value="{{ filters.movement_type }}" placeholder="{{ 'inventory.movements.e_g_inbound_receipt'|trans }}">
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary">
+                    {{ 'integration.outbox.index.filter'|trans }}
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>
+                            {{ 'administration.workspace.time_point_in_time'|trans }}
+                        </th>
+                        <th>
+                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                        </th>
+                        <th>
+                            {{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.movements.movement'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.movements.status_dimension'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inventory.movements.reason'|trans }}
+                        </th>
+                        <th>
+                            {{ 'navigation.user.user'|trans }}
+                        </th>
+                        <th class="text-end">
+                            {{ 'inventory.movements.change'|trans }}
+                        </th>
+                        <th class="text-end">
+                            {{ 'article.index.stock'|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for movement in movements %}
+
+                        <tr>
+                            <td class="text-nowrap">
+                                {{ movement.occurred_at|date('d.m.Y H:i:s') }}
+                            </td>
+                            <td>
+                                <strong>
+                                    {{ movement.sku }}
+                                </strong>
+                            </td>
+                            <td>
+                                {{ movement.location_code }}
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary-subtle text-secondary">
+                                    {{ movement.movement_type }}
+                                </span>
+                            </td>
+                            <td>
+                                {{ movement.stock_status }}
+                                {% if movement.batch_number %}
+
+                                    <div class="small text-muted">
+                                        {{ 'modal.stock_in_modal.batch'|trans }} {{ movement.batch_number }}
+                                    </div>
+
+                                {% endif %}
+
+                                {% if movement.serial_number %}
+
+                                    <div class="small text-muted">
+                                        {{ 'inventory.movements.sn'|trans }} {{ movement.serial_number }}
+                                    </div>
+
+                                {% endif %}
+
+                            </td>
+                            <td>
+                                {{ movement.reason }}
+                            </td>
+                            <td>
+                                {{ movement.performed_by_name }}
+                            </td>
+                            <td class="text-end {{ movement.quantity_delta >= 0 ? 'text-success' : 'text-danger' }}">
+                                {{ movement.quantity_delta > 0 ? '+' : '' }}{{ movement.quantity_delta }}
+                            </td>
+                            <td class="text-end fw-semibold">
+                                {{ movement.resulting_quantity }}
+                            </td>
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="9" class="text-center text-muted py-5">
+                                {{ 'inventory.movements.no_movements_found_for_this_filter'|trans }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

@@ -1,54 +1,279 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="d-flex justify-content-between align-items-center mb-4">
-		<div><h1 class="h3 mb-1">{{ 'inbound.planned.planned_goods_receipt'|trans }}</h1><p class="text-muted mb-0">{{ 'inbound.planned.accept_inspect_and_put_away_advised_items'|trans }}</p></div>
-		<a class="btn btn-outline-secondary" href="{{ path('v3_inbound_index') }}">{{ 'inbound.planned.unplanned_receipts'|trans }}</a>
-	</div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ 'inbound.planned.planned_goods_receipt'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'inbound.planned.accept_inspect_and_put_away_advised_items'|trans }}
+            </p>
+        </div>
+        <a class="btn btn-outline-secondary" href="{{ path('v3_inbound_index') }}">
+            {{ 'inbound.planned.unplanned_receipts'|trans }}
+        </a>
+    </div>
 
-	<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0">
-		<thead><tr><th>{{ 'inbound.planned.advice_purchase_order'|trans }}</th><th>{{ 'address.sender'|trans }}</th><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</th><th>{{ 'inbound.planned.process_status'|trans }}</th><th>{{ 'inbound.planned.destination'|trans }}</th><th class="text-end">{{ 'common.action'|trans }}</th></tr></thead>
-		<tbody>
-		{% for item in worklist %}
-			<tr>
-				<td><code>{{ item.delivery_code }}</code><div class="small text-muted">{{ item.order_number }} · {{ item.delivery_note }}<br>{{ item.expected_at|date('d.m.Y H:i') }}</div></td>
-				<td>{% if item.sender_name %}<strong>{{ item.sender_name }}</strong><div class="small text-muted">{{ item.sender_street }}<br>{{ item.sender_postal_code }} {{ item.sender_city }} · {{ item.sender_country_code }}</div>{% else %}<span class="text-muted">{{ 'address.not_recorded'|trans }}</span>{% endif %}</td>
-				<td><strong>{{ item.sku }}</strong><div class="small text-muted">{{ item.product_name }}</div></td>
-				<td>{{ item.receipt_quantity|default(item.advised_quantity) }}</td>
-				<td>
-					{% if item.discrepancy_status == 'open' and item.receipt_status == 'inspected' %}<span class="badge bg-danger-subtle text-danger">{{ 'inbound.planned.open_discrepancy'|trans }}</span>
-					{% elseif item.discrepancy_status == 'rejected' %}<span class="badge bg-dark-subtle text-dark">{{ 'inbound.planned.rejected'|trans }}</span>
-					{% elseif item.putaway_status == 'completed' %}<span class="badge bg-success-subtle text-success">{{ 'inbound.planned.put_away'|trans }}</span>
-					{% elseif item.putaway_status == 'open' %}<span class="badge bg-info-subtle text-info">{{ 'inbound.planned.open_put_away'|trans }}</span>
-					{% elseif item.receipt_status == 'inspected' %}<span class="badge bg-primary-subtle text-primary">{{ 'inbound.planned.qc_completed'|trans }}</span>
-					{% elseif item.receipt_status == 'pending_quality' %}<span class="badge bg-warning-subtle text-warning">{{ 'inbound.planned.qc_open'|trans }}</span>
-					{% else %}<span class="badge bg-secondary-subtle text-secondary">{{ 'inbound.planned.advised'|trans }}</span>{% endif %}
-					{% if item.quality_decision %}<div class="small text-muted mt-1">{{ 'inbound.planned.decision'|trans }} {{ item.quality_decision }} / {{ item.stock_status }}</div>{% endif %}
-					{% if item.discrepancy_type %}<div class="small text-danger mt-1">{{ item.discrepancy_type }}{{ 'inbound.planned.target'|trans }} {{ item.expected_quantity }}{{ 'inbound.planned.actual'|trans }} {{ item.actual_quantity }}<br>{{ item.discrepancy_reason }}</div>{% endif %}
-				</td>
-				<td>{{ item.target_location_code|default(item.source_location_code|default('–')) }}</td>
-				<td class="text-end" style="min-width: 320px">
-					{% if item.line_status == 'advised' and is_granted('inbound.planned.receive') %}
-						<form method="post" action="{{ path('v3_inbound_planned_receive', {deliveryId: item.delivery_id, lineId: item.line_id}) }}" class="text-start border rounded p-2 bg-light-subtle"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_receive_' ~ item.line_id) }}"><div class="row g-2"><div class="col-4"><input class="form-control form-control-sm" type="number" min="1" name="actual_quantity" value="{{ item.advised_quantity }}" required title="{{ 'inbound.planned.actual_quantity'|trans }}"></div><div class="col-8"><input class="form-control form-control-sm" name="discrepancy_reason" placeholder="{{ 'inbound.planned.reason_for_discrepancy'|trans }}"></div></div><button class="btn btn-sm btn-primary mt-2">{{ 'inbound.new.accept'|trans }}</button></form>
-					{% elseif item.receipt_status == 'pending_quality' and is_granted('inbound.planned.inspect') %}
-						<form method="post" action="{{ path('v3_inbound_planned_inspect', {receiptId: item.receipt_id}) }}" class="text-start border rounded p-2 bg-light-subtle">
-							<input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_inspect_' ~ item.receipt_id) }}">
-							<div class="row g-2"><div class="col-7"><select class="form-select form-select-sm" name="location_id" required><option value="">{{ 'inbound.new.receiving_location'|trans }}</option>{% for location in locations %}<option value="{{ location.id }}">{{ location.warehouse_code }} · {{ location.code }}</option>{% endfor %}</select></div><div class="col-5"><select class="form-select form-select-sm" name="decision">{% if item.discrepancy_status != 'open' %}<option value="accept">{{ 'inbound.planned.release'|trans }}</option>{% endif %}<option value="block">{{ 'inbound.control.block'|trans }}</option></select></div></div>
-							<div class="form-check mt-2"><input class="form-check-input" type="checkbox" value="1" id="packaging_{{ item.receipt_id }}" name="packaging_passed"><label class="form-check-label small" for="packaging_{{ item.receipt_id }}">{{ 'inbound.planned.packaging_undamaged'|trans }}</label></div>
-							<div class="form-check"><input class="form-check-input" type="checkbox" value="1" id="quantity_{{ item.receipt_id }}" name="quantity_passed"><label class="form-check-label small" for="quantity_{{ item.receipt_id }}">{{ 'inbound.planned.quantity_complete'|trans }}</label></div>
-							<input class="form-control form-control-sm mt-2" name="packaging_note" placeholder="{{ 'inbound.planned.qc_note'|trans }}"><div class="row g-2 mt-0"><div class="col"><input class="form-control form-control-sm" name="batch_number" placeholder="{{ 'modal.stock_in_modal.batch'|trans }}"></div><div class="col"><input class="form-control form-control-sm" name="serial_number" placeholder="{{ 'inbound.new.serial_number'|trans }}"></div><div class="col"><input class="form-control form-control-sm" type="date" name="expires_at" title="{{ 'inbound.planned.best_before_date'|trans }}"></div></div>
-							<button class="btn btn-sm btn-primary mt-2">{{ 'inbound.planned.complete_qc'|trans }}</button>
-						</form>
-					{% elseif item.receipt_status == 'inspected' and item.discrepancy_status == 'open' and is_granted('inbound.planned.resolve') %}
-						<form method="post" action="{{ path('v3_inbound_planned_resolve', {receiptId: item.receipt_id}) }}" class="text-start border rounded p-2 bg-light-subtle"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_resolve_' ~ item.receipt_id) }}"><select class="form-select form-select-sm" name="action"><option value="release">{{ 'inbound.planned.release'|trans }}</option><option value="reject">{{ 'inbound.planned.reject'|trans }}</option></select><input class="form-control form-control-sm mt-2" name="resolution_note" placeholder="{{ 'inbound.planned.reason_for_decision'|trans }}" required><button class="btn btn-sm btn-primary mt-2">{{ 'inbound.planned.save_decision'|trans }}</button></form>
-					{% elseif item.receipt_status == 'inspected' and item.discrepancy_status != 'rejected' and item.putaway_order_id is null and is_granted('inbound.planned.putaway') %}
-						<form method="post" action="{{ path('v3_inbound_planned_putaway', {receiptId: item.receipt_id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_putaway_' ~ item.receipt_id) }}"><button class="btn btn-sm btn-primary">{{ 'inbound.planned.plan_put_away'|trans }}</button></form>
-					{% elseif item.putaway_status == 'open' and is_granted('inbound.planned.putaway') %}
-						<form method="post" action="{{ path('v3_inbound_planned_putaway_confirm', {orderId: item.putaway_order_id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_putaway_confirm_' ~ item.putaway_order_id) }}"><button class="btn btn-sm btn-success">{{ 'inbound.planned.confirm_put_away'|trans }}</button></form>
-					{% else %}–{% endif %}
-				</td>
-			</tr>
-		{% else %}<tr><td colspan="7" class="text-center text-muted py-5">{{ 'inbound.planned.no_planned_goods_receipts_available'|trans }}</td></tr>{% endfor %}
-		</tbody>
-	</table></div></div>
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'inbound.planned.advice_purchase_order'|trans }}
+                        </th>
+                        <th>
+                            {{ 'address.sender'|trans }}
+                        </th>
+                        <th>
+                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                        </th>
+                        <th>
+                            {{ 'customer_order.customer_order_input_fields.quantity'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inbound.planned.process_status'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inbound.planned.destination'|trans }}
+                        </th>
+                        <th class="text-end">
+                            {{ 'common.action'|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in worklist %}
+                        <tr>
+                            <td>
+                                <code>
+                                    {{ item.delivery_code }}
+                                </code>
+                                <div class="small text-muted">
+                                    {{ item.order_number }} · {{ item.delivery_note }}
+                                    <br>
+                                    {{ item.expected_at|date('d.m.Y H:i') }}
+                                </div>
+                            </td>
+                            <td>
+
+                                {% if item.sender_name %}
+
+                                    <strong>
+                                        {{ item.sender_name }}
+                                    </strong>
+                                    <div class="small text-muted">
+                                        {{ item.sender_street }}
+                                        <br>
+                                        {{ item.sender_postal_code }} {{ item.sender_city }} · {{ item.sender_country_code }}
+                                    </div>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        {{ 'address.not_recorded'|trans }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+                            <td>
+                                <strong>
+                                    {{ item.sku }}
+                                </strong>
+                                <div class="small text-muted">
+                                    {{ item.product_name }}
+                                </div>
+                            </td>
+                            <td>
+                                {{ item.receipt_quantity|default(item.advised_quantity) }}
+                            </td>
+                            <td>
+                                {% if item.discrepancy_status == 'open' and item.receipt_status == 'inspected' %}
+
+                                    <span class="badge bg-danger-subtle text-danger">
+                                        {{ 'inbound.planned.open_discrepancy'|trans }}
+                                    </span>
+                                {% elseif item.discrepancy_status == 'rejected' %}
+
+                                    <span class="badge bg-dark-subtle text-dark">
+                                        {{ 'inbound.planned.rejected'|trans }}
+                                    </span>
+                                {% elseif item.putaway_status == 'completed' %}
+
+                                    <span class="badge bg-success-subtle text-success">
+                                        {{ 'inbound.planned.put_away'|trans }}
+                                    </span>
+                                {% elseif item.putaway_status == 'open' %}
+
+                                    <span class="badge bg-info-subtle text-info">
+                                        {{ 'inbound.planned.open_put_away'|trans }}
+                                    </span>
+                                {% elseif item.receipt_status == 'inspected' %}
+
+                                    <span class="badge bg-primary-subtle text-primary">
+                                        {{ 'inbound.planned.qc_completed'|trans }}
+                                    </span>
+                                {% elseif item.receipt_status == 'pending_quality' %}
+
+                                    <span class="badge bg-warning-subtle text-warning">
+                                        {{ 'inbound.planned.qc_open'|trans }}
+                                    </span>
+                                {% else %}
+
+                                    <span class="badge bg-secondary-subtle text-secondary">
+                                        {{ 'inbound.planned.advised'|trans }}
+                                    </span>
+
+                                {% endif %}
+                                {% if item.quality_decision %}
+
+                                    <div class="small text-muted mt-1">
+                                        {{ 'inbound.planned.decision'|trans }} {{ item.quality_decision }} / {{ item.stock_status }}
+                                    </div>
+
+                                {% endif %}
+                                {% if item.discrepancy_type %}
+
+                                    <div class="small text-danger mt-1">
+                                        {{ item.discrepancy_type }}{{ 'inbound.planned.target'|trans }} {{ item.expected_quantity }}{{ 'inbound.planned.actual'|trans }} {{ item.actual_quantity }}
+                                        <br>
+                                        {{ item.discrepancy_reason }}
+                                    </div>
+
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ item.target_location_code|default(item.source_location_code|default('–')) }}
+                            </td>
+                            <td class="text-end" style="min-width: 320px">
+                                {% if item.line_status == 'advised' and is_granted('inbound.planned.receive') %}
+                                    <form method="post" action="{{ path('v3_inbound_planned_receive', {deliveryId: item.delivery_id, lineId: item.line_id}) }}" class="text-start border rounded p-2 bg-light-subtle">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_receive_' ~ item.line_id) }}">
+                                        <div class="row g-2">
+                                            <div class="col-4">
+                                                <input class="form-control form-control-sm" type="number" min="1" name="actual_quantity" value="{{ item.advised_quantity }}" required title="{{ 'inbound.planned.actual_quantity'|trans }}">
+                                            </div>
+                                            <div class="col-8">
+                                                <input class="form-control form-control-sm" name="discrepancy_reason" placeholder="{{ 'inbound.planned.reason_for_discrepancy'|trans }}">
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mt-2">
+                                            {{ 'inbound.new.accept'|trans }}
+                                        </button>
+                                    </form>
+                                {% elseif item.receipt_status == 'pending_quality' and is_granted('inbound.planned.inspect') %}
+                                    <form method="post" action="{{ path('v3_inbound_planned_inspect', {receiptId: item.receipt_id}) }}" class="text-start border rounded p-2 bg-light-subtle">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_inspect_' ~ item.receipt_id) }}">
+                                        <div class="row g-2">
+                                            <div class="col-7">
+                                                <select class="form-select form-select-sm" name="location_id" required>
+                                                    <option value="">
+                                                        {{ 'inbound.new.receiving_location'|trans }}
+                                                    </option>
+
+                                                    {% for location in locations %}
+
+                                                        <option value="{{ location.id }}">
+                                                            {{ location.warehouse_code }} · {{ location.code }}
+                                                        </option>
+
+                                                    {% endfor %}
+
+                                                </select>
+                                            </div>
+                                            <div class="col-5">
+                                                <select class="form-select form-select-sm" name="decision">
+
+                                                    {% if item.discrepancy_status != 'open' %}
+
+                                                        <option value="accept">
+                                                            {{ 'inbound.planned.release'|trans }}
+                                                        </option>
+
+                                                    {% endif %}
+
+                                                    <option value="block">
+                                                        {{ 'inbound.control.block'|trans }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input" type="checkbox" value="1" id="packaging_{{ item.receipt_id }}" name="packaging_passed">
+                                            <label class="form-check-label small" for="packaging_{{ item.receipt_id }}">
+                                                {{ 'inbound.planned.packaging_undamaged'|trans }}
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="1" id="quantity_{{ item.receipt_id }}" name="quantity_passed">
+                                            <label class="form-check-label small" for="quantity_{{ item.receipt_id }}">
+                                                {{ 'inbound.planned.quantity_complete'|trans }}
+                                            </label>
+                                        </div>
+                                        <input class="form-control form-control-sm mt-2" name="packaging_note" placeholder="{{ 'inbound.planned.qc_note'|trans }}">
+                                        <div class="row g-2 mt-0">
+                                            <div class="col">
+                                                <input class="form-control form-control-sm" name="batch_number" placeholder="{{ 'modal.stock_in_modal.batch'|trans }}">
+                                            </div>
+                                            <div class="col">
+                                                <input class="form-control form-control-sm" name="serial_number" placeholder="{{ 'inbound.new.serial_number'|trans }}">
+                                            </div>
+                                            <div class="col">
+                                                <input class="form-control form-control-sm" type="date" name="expires_at" title="{{ 'inbound.planned.best_before_date'|trans }}">
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mt-2">
+                                            {{ 'inbound.planned.complete_qc'|trans }}
+                                        </button>
+                                    </form>
+                                {% elseif item.receipt_status == 'inspected' and item.discrepancy_status == 'open' and is_granted('inbound.planned.resolve') %}
+                                    <form method="post" action="{{ path('v3_inbound_planned_resolve', {receiptId: item.receipt_id}) }}" class="text-start border rounded p-2 bg-light-subtle">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_resolve_' ~ item.receipt_id) }}">
+                                        <select class="form-select form-select-sm" name="action">
+                                            <option value="release">
+                                                {{ 'inbound.planned.release'|trans }}
+                                            </option>
+                                            <option value="reject">
+                                                {{ 'inbound.planned.reject'|trans }}
+                                            </option>
+                                        </select>
+                                        <input class="form-control form-control-sm mt-2" name="resolution_note" placeholder="{{ 'inbound.planned.reason_for_decision'|trans }}" required>
+                                        <button class="btn btn-sm btn-primary mt-2">
+                                            {{ 'inbound.planned.save_decision'|trans }}
+                                        </button>
+                                    </form>
+                                {% elseif item.receipt_status == 'inspected' and item.discrepancy_status != 'rejected' and item.putaway_order_id is null and is_granted('inbound.planned.putaway') %}
+                                    <form method="post" action="{{ path('v3_inbound_planned_putaway', {receiptId: item.receipt_id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_putaway_' ~ item.receipt_id) }}">
+                                        <button class="btn btn-sm btn-primary">
+                                            {{ 'inbound.planned.plan_put_away'|trans }}
+                                        </button>
+                                    </form>
+                                {% elseif item.putaway_status == 'open' and is_granted('inbound.planned.putaway') %}
+                                    <form method="post" action="{{ path('v3_inbound_planned_putaway_confirm', {orderId: item.putaway_order_id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_putaway_confirm_' ~ item.putaway_order_id) }}">
+                                        <button class="btn btn-sm btn-success">
+                                            {{ 'inbound.planned.confirm_put_away'|trans }}
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    –
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-5">
+                                {{ 'inbound.planned.no_planned_goods_receipts_available'|trans }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

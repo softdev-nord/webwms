@@ -1,8 +1,239 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="d-flex flex-wrap justify-content-between gap-3 mb-4"><div><h1 class="h3 mb-1">{{ 'picking.control.picking_control_center'|trans }}</h1><p class="text-muted mb-0">{{ 'picking.control.plan_bundle_and_monitor_single_and_multi_order_picks'|trans }}</p></div></div>
-	{% if is_granted('fulfillment.pick.wave.write') %}<div class="card border-0 shadow-sm mb-4"><div class="card-header"><h2 class="h5 mb-0">{{ 'picking.control.plan_pick_wave'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_picking_control_wave_create') }}" class="row g-3"><input type="hidden" name="_token" value="{{ csrf_token('v3_pick_wave_create') }}"><div class="col-md-2"><input class="form-control" name="code" placeholder="{{ 'administration.role_new.code'|trans }}" required></div><div class="col-md-3"><input class="form-control" name="name" placeholder="{{ 'article.index.description'|trans }}" required></div><div class="col-md-2"><select class="form-select" name="strategy"><option value="single_order">{{ 'picking.control.single_order_label'|trans }}</option><option value="multi_order">{{ 'picking.control.multi_order'|trans }}</option><option value="two_stage">{{ 'picking.control.two_stage'|trans }}</option></select></div><div class="col-md-2"><select class="form-select" name="selection_type"><option value="manual">{{ 'integration.automation.command_new.manual'|trans }}</option><option value="time">{{ 'picking.control.time'|trans }}</option><option value="tour">{{ 'loading.index.route'|trans }}</option><option value="carrier">{{ 'administration.workspace.carrier'|trans }}</option><option value="priority">{{ 'inventory.configuration_form.priority'|trans }}</option></select></div><div class="col-md-2"><input class="form-control" name="selection_value" placeholder="{{ 'picking.control.filter_value'|trans }}"></div><div class="col-md-1"><input class="form-control" type="number" name="priority" value="50" min="1" max="999"></div><div class="col-md-4"><input class="form-control" type="datetime-local" name="planned_start_at"></div><div class="col-md-8"><select class="form-select" name="pick_list_ids[]" multiple size="5" required>{% for list in workspace.availablePickLists %}<option value="{{ list.id }}">{{ list.code }} {{ 'picking.control.order'|trans }} {{ list.order_number }}</option>{% endfor %}</select></div><div class="col-12"><button class="btn btn-primary">{{ 'picking.control.plan_wave'|trans }}</button></div></form></div></div>{% endif %}
-	<div class="row g-3 mb-4">{% for wave in workspace.waves %}<div class="col-md-6 col-xl-4"><div class="card border-0 shadow-sm h-100"><div class="card-body"><div class="d-flex justify-content-between"><h2 class="h5">{{ wave.code }}</h2><span class="badge bg-{{ wave.status == 'released' ? 'success' : (wave.status == 'completed' ? 'primary' : 'secondary') }}-subtle text-body">{{ wave.status }}</span></div><p class="mb-2">{{ wave.name }}</p><div class="text-muted">{{ wave.strategy }} · {{ wave.order_count }} {{ 'picking.control.orders'|trans }} {{ wave.pick_list_count }} {{ 'picking.control.pick_lists'|trans }}</div><div class="progress mt-3" style="height: 6px"><div class="progress-bar" style="width: {{ wave.pick_list_count > 0 ? (wave.completed_pick_lists / wave.pick_list_count * 100)|round : 0 }}%"></div></div></div>{% if wave.status == 'planned' and is_granted('fulfillment.pick.wave.write') %}<div class="card-footer"><form method="post" action="{{ path('v3_picking_control_wave_release', {waveId: wave.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_pick_wave_release_' ~ wave.id) }}"><button class="btn btn-primary w-100">{{ 'picking.control.release_wave'|trans }}</button></form></div>{% endif %}</div></div>{% else %}<div class="col-12"><div class="alert alert-light border">{{ 'picking.control.no_pick_waves_yet'|trans }}</div></div>{% endfor %}</div>
-	<div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'picking.control.live_control_center'|trans }}</h2></div><div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>{{ 'outbound.control.pick_list'|trans }}</th><th>{{ 'inbound.control.order'|trans }}</th><th>{{ 'picking.control.wave_container'|trans }}</th><th>{{ 'picking.control.employee'|trans }}</th><th>{{ 'inbound.control.progress'|trans }}</th><th>{{ 'picking.control.issues'|trans }}</th><th></th></tr></thead><tbody>{% for pick in workspace.controlTower %}<tr><td><strong>{{ pick.code }}</strong><div class="small text-muted">{{ pick.status }}</div></td><td>{{ pick.order_number }}</td><td>{{ pick.wave_code ?: ('picking.control.single_order_option'|trans) }}<div class="small text-muted">{{ pick.container_code ?: '–' }}</div></td><td>{{ pick.assigned_to_name ?: ('platform.index.unassigned'|trans) }}</td><td>{{ pick.task_count - pick.open_task_count }}/{{ pick.task_count }}</td><td><span class="badge bg-{{ pick.shortage_count > 0 ? 'danger' : 'success' }}-subtle text-{{ pick.shortage_count > 0 ? 'danger' : 'success' }}">{{ pick.shortage_count }}</span></td><td class="text-nowrap"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_picking_show', {pickListId: pick.id}) }}">{{ 'inbound.index.open'|trans }}</a>{% if pick.wave_strategy == 'two_stage' and pick.wave_status == 'released' and pick.status == 'completed' and pick.consolidation_status == 'pending' %}<form method="post" action="{{ path('v3_picking_control_consolidate', {waveId: pick.wave_id, pickListId: pick.id}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('v3_pick_consolidate_' ~ pick.wave_id ~ '_' ~ pick.id) }}"><button class="btn btn-sm btn-outline-success" type="submit">{{ 'picking.control.consolidate'|trans }}</button></form>{% endif %}</td></tr>{% endfor %}</tbody></table></div></div>
+    <div class="d-flex flex-wrap justify-content-between gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ 'picking.control.picking_control_center'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'picking.control.plan_bundle_and_monitor_single_and_multi_order_picks'|trans }}
+            </p>
+        </div>
+    </div>
+    {% if is_granted('fulfillment.pick.wave.write') %}
+
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header">
+                <h2 class="h5 mb-0">
+                    {{ 'picking.control.plan_pick_wave'|trans }}
+                </h2>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{{ path('v3_picking_control_wave_create') }}" class="row g-3">
+                    <input type="hidden" name="_token" value="{{ csrf_token('v3_pick_wave_create') }}">
+                    <div class="col-md-2">
+                        <input class="form-control" name="code" placeholder="{{ 'administration.role_new.code'|trans }}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" name="name" placeholder="{{ 'article.index.description'|trans }}" required>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" name="strategy">
+                            <option value="single_order">
+                                {{ 'picking.control.single_order_label'|trans }}
+                            </option>
+                            <option value="multi_order">
+                                {{ 'picking.control.multi_order'|trans }}
+                            </option>
+                            <option value="two_stage">
+                                {{ 'picking.control.two_stage'|trans }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select" name="selection_type">
+                            <option value="manual">
+                                {{ 'integration.automation.command_new.manual'|trans }}
+                            </option>
+                            <option value="time">
+                                {{ 'picking.control.time'|trans }}
+                            </option>
+                            <option value="tour">
+                                {{ 'loading.index.route'|trans }}
+                            </option>
+                            <option value="carrier">
+                                {{ 'administration.workspace.carrier'|trans }}
+                            </option>
+                            <option value="priority">
+                                {{ 'inventory.configuration_form.priority'|trans }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control" name="selection_value" placeholder="{{ 'picking.control.filter_value'|trans }}">
+                    </div>
+                    <div class="col-md-1">
+                        <input class="form-control" type="number" name="priority" value="50" min="1" max="999">
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="datetime-local" name="planned_start_at">
+                    </div>
+                    <div class="col-md-8">
+                        <select class="form-select" name="pick_list_ids[]" multiple size="5" required>
+
+                            {% for list in workspace.availablePickLists %}
+
+                                <option value="{{ list.id }}">
+                                    {{ list.code }} {{ 'picking.control.order'|trans }} {{ list.order_number }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary">
+                            {{ 'picking.control.plan_wave'|trans }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    {% endif %}
+    <div class="row g-3 mb-4">
+
+        {% for wave in workspace.waves %}
+
+            <div class="col-md-6 col-xl-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h2 class="h5">
+                                {{ wave.code }}
+                            </h2>
+                            <span class="badge bg-{{ wave.status == 'released' ? 'success' : (wave.status == 'completed' ? 'primary' : 'secondary') }}-subtle text-body">
+                                {{ wave.status }}
+                            </span>
+                        </div>
+                        <p class="mb-2">
+                            {{ wave.name }}
+                        </p>
+                        <div class="text-muted">
+                            {{ wave.strategy }} · {{ wave.order_count }} {{ 'picking.control.orders'|trans }} {{ wave.pick_list_count }} {{ 'picking.control.pick_lists'|trans }}
+                        </div>
+                        <div class="progress mt-3" style="height: 6px">
+                            <div class="progress-bar" style="width: {{ wave.pick_list_count > 0 ? (wave.completed_pick_lists / wave.pick_list_count * 100)|round : 0 }}%">
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if wave.status == 'planned' and is_granted('fulfillment.pick.wave.write') %}
+
+                        <div class="card-footer">
+                            <form method="post" action="{{ path('v3_picking_control_wave_release', {waveId: wave.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_pick_wave_release_' ~ wave.id) }}">
+                                <button class="btn btn-primary w-100">
+                                    {{ 'picking.control.release_wave'|trans }}
+                                </button>
+                            </form>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+            </div>
+
+        {% else %}
+
+            <div class="col-12">
+                <div class="alert alert-light border">
+                    {{ 'picking.control.no_pick_waves_yet'|trans }}
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+    <div class="card border-0 shadow-sm">
+        <div class="card-header">
+            <h2 class="h5 mb-0">
+                {{ 'picking.control.live_control_center'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'outbound.control.pick_list'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inbound.control.order'|trans }}
+                        </th>
+                        <th>
+                            {{ 'picking.control.wave_container'|trans }}
+                        </th>
+                        <th>
+                            {{ 'picking.control.employee'|trans }}
+                        </th>
+                        <th>
+                            {{ 'inbound.control.progress'|trans }}
+                        </th>
+                        <th>
+                            {{ 'picking.control.issues'|trans }}
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for pick in workspace.controlTower %}
+
+                        <tr>
+                            <td>
+                                <strong>
+                                    {{ pick.code }}
+                                </strong>
+                                <div class="small text-muted">
+                                    {{ pick.status }}
+                                </div>
+                            </td>
+                            <td>
+                                {{ pick.order_number }}
+                            </td>
+                            <td>
+                                {{ pick.wave_code ?: ('picking.control.single_order_option'|trans) }}
+                                <div class="small text-muted">
+                                    {{ pick.container_code ?: '–' }}
+                                </div>
+                            </td>
+                            <td>
+                                {{ pick.assigned_to_name ?: ('platform.index.unassigned'|trans) }}
+                            </td>
+                            <td>
+                                {{ pick.task_count - pick.open_task_count }}/{{ pick.task_count }}
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ pick.shortage_count > 0 ? 'danger' : 'success' }}-subtle text-{{ pick.shortage_count > 0 ? 'danger' : 'success' }}">
+                                    {{ pick.shortage_count }}
+                                </span>
+                            </td>
+                            <td class="text-nowrap">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_picking_show', {pickListId: pick.id}) }}">
+                                    {{ 'inbound.index.open'|trans }}
+                                </a>
+
+                                {% if pick.wave_strategy == 'two_stage' and pick.wave_status == 'released' and pick.status == 'completed' and pick.consolidation_status == 'pending' %}
+
+                                    <form method="post" action="{{ path('v3_picking_control_consolidate', {waveId: pick.wave_id, pickListId: pick.id}) }}" class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('v3_pick_consolidate_' ~ pick.wave_id ~ '_' ~ pick.id) }}">
+                                        <button class="btn btn-sm btn-outline-success" type="submit">
+                                            {{ 'picking.control.consolidate'|trans }}
+                                        </button>
+                                    </form>
+
+                                {% endif %}
+
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

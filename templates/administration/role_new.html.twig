@@ -2,36 +2,50 @@
 
 {% block webwms_content %}
     <div class="mb-4">
-        <a href="{{ path('v3_administration_index') }}" class="text-decoration-none">{{ 'administration.api_client_new.administration'|trans }}</a>
-        <h1 class="h3 mt-2">{{ 'administration.role_new.create_role'|trans }}</h1>
+        <a href="{{ path('v3_administration_index') }}" class="text-decoration-none">
+            {{ 'administration.api_client_new.administration'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'administration.role_new.create_role'|trans }}
+        </h1>
     </div>
     <form method="post" class="card border-0 shadow-sm">
         <div class="card-body">
             <input type="hidden" name="_token" value="{{ csrf_token('v3_administration_role_create') }}">
             <div class="row g-3 mb-4">
                 <div class="col-md-4">
-                    <label class="form-label">{{ 'administration.role_new.code'|trans }}</label>
+                    <label class="form-label">
+                        {{ 'administration.role_new.code'|trans }}
+                    </label>
                     <input class="form-control" name="code" placeholder="{{ 'administration.role_new.role_operator'|trans }}" required>
                 </div>
                 <div class="col-md-8">
-                    <label class="form-label">{{ 'common.template.correspondence.name'|trans }}</label>
+                    <label class="form-label">
+                        {{ 'common.template.correspondence.name'|trans }}
+                    </label>
                     <input class="form-control" name="name" required>
                 </div>
             </div>
-            <h2 class="h5">{{ 'administration.role_edit.permissions'|trans }}</h2>
+            <h2 class="h5">
+                {{ 'administration.role_edit.permissions'|trans }}
+            </h2>
             <div class="row g-2">
                 {% for permission in permissions %}
                     <div class="col-md-6 col-xl-4">
-                    <div class="form-check">
-                        <input class="form-check-input ms-2" type="checkbox" name="permissions[]" value="{{ permission }}" id="permission-{{ loop.index }}">
-                        <label class="form-check-label" for="permission-{{ loop.index }}">{{ permission }}</label>
-                    </div>
+                        <div class="form-check">
+                            <input class="form-check-input ms-2" type="checkbox" name="permissions[]" value="{{ permission }}" id="permission-{{ loop.index }}">
+                            <label class="form-check-label" for="permission-{{ loop.index }}">
+                                {{ permission }}
+                            </label>
+                        </div>
                     </div>
                 {% endfor %}
             </div>
         </div>
         <div class="card-footer text-end">
-            <button class="btn btn-primary">{{ 'administration.role_new.create_role'|trans }}</button>
+            <button class="btn btn-primary">
+                {{ 'administration.role_new.create_role'|trans }}
+            </button>
         </div>
     </form>
 {% endblock %}

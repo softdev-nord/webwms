@@ -1,22 +1,75 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<a href="{{ path('v3_wcs_index') }}" class="text-decoration-none">{{ 'integration.wcs.command_new.wcs_mfr_and_conveyor_system'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'integration.wcs.connection_new.create_wcs_connection'|trans }}</h1>
-	</div>
-	<form method="post" class="card border-0 shadow-sm">
-		<div class="card-body">
-			<input type="hidden" name="_token" value="{{ csrf_token('v3_wcs_connection_create') }}">
-			<div class="row g-3">
-				<div class="col-md-3"><label class="form-label" for="code">{{ 'administration.role_new.code'|trans }}</label><input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" required placeholder="{{ 'integration.wcs.connection_new.wcs_01'|trans }}"></div>
-				<div class="col-md-5"><label class="form-label" for="name">{{ 'common.template.correspondence.name'|trans }}</label><input class="form-control" id="name" name="name" maxlength="100" required></div>
-				<div class="col-md-4"><label class="form-label" for="system_type">{{ 'integration.wcs.connection_new.system_type'|trans }}</label><select class="form-select" id="system_type" name="system_type"><option value="wcs">{{ 'integration.wcs.connection_new.wcs'|trans }}</option><option value="mfr">{{ 'integration.wcs.connection_new.material_flow_controller'|trans }}</option><option value="conveyor">{{ 'integration.wcs.connection_new.conveyor_system'|trans }}</option></select></div>
-				<div class="col-md-7"><label class="form-label" for="endpoint_url">{{ 'integration.automation.device_new.https_endpoint'|trans }}</label><input class="form-control" type="url" id="endpoint_url" name="endpoint_url" required></div>
-				<div class="col-md-5"><label class="form-label" for="credential_env">{{ 'integration.automation.device_new.credential_environment_variable'|trans }}</label><input class="form-control font-monospace text-uppercase" id="credential_env" name="credential_env" required></div>
-				<div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="active" name="active" value="1" checked><label class="form-check-label" for="active">{{ 'integration.carrier_connection.new.activate_connection_immediately'|trans }}</label></div></div>
-			</div>
-		</div>
-		<div class="card-footer d-flex justify-content-end gap-2"><a class="btn btn-light" href="{{ path('v3_wcs_index') }}">{{ 'common.button.cancel'|trans }}</a><button class="btn btn-primary">{{ 'integration.wcs.connection_new.create_connection'|trans }}</button></div>
-	</form>
+    <div class="mb-4">
+        <a href="{{ path('v3_wcs_index') }}" class="text-decoration-none">
+            {{ 'integration.wcs.command_new.wcs_mfr_and_conveyor_system'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'integration.wcs.connection_new.create_wcs_connection'|trans }}
+        </h1>
+    </div>
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_wcs_connection_create') }}">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label" for="code">
+                        {{ 'administration.role_new.code'|trans }}
+                    </label>
+                    <input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" required placeholder="{{ 'integration.wcs.connection_new.wcs_01'|trans }}">
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label" for="name">
+                        {{ 'common.template.correspondence.name'|trans }}
+                    </label>
+                    <input class="form-control" id="name" name="name" maxlength="100" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="system_type">
+                        {{ 'integration.wcs.connection_new.system_type'|trans }}
+                    </label>
+                    <select class="form-select" id="system_type" name="system_type">
+                        <option value="wcs">
+                            {{ 'integration.wcs.connection_new.wcs'|trans }}
+                        </option>
+                        <option value="mfr">
+                            {{ 'integration.wcs.connection_new.material_flow_controller'|trans }}
+                        </option>
+                        <option value="conveyor">
+                            {{ 'integration.wcs.connection_new.conveyor_system'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-7">
+                    <label class="form-label" for="endpoint_url">
+                        {{ 'integration.automation.device_new.https_endpoint'|trans }}
+                    </label>
+                    <input class="form-control" type="url" id="endpoint_url" name="endpoint_url" required>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label" for="credential_env">
+                        {{ 'integration.automation.device_new.credential_environment_variable'|trans }}
+                    </label>
+                    <input class="form-control font-monospace text-uppercase" id="credential_env" name="credential_env" required>
+                </div>
+                <div class="col-12">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="active" name="active" value="1" checked>
+                        <label class="form-check-label" for="active">
+                            {{ 'integration.carrier_connection.new.activate_connection_immediately'|trans }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <a class="btn btn-light" href="{{ path('v3_wcs_index') }}">
+                {{ 'common.button.cancel'|trans }}
+            </a>
+            <button class="btn btn-primary">
+                {{ 'integration.wcs.connection_new.create_connection'|trans }}
+            </button>
+        </div>
+    </form>
 {% endblock %}

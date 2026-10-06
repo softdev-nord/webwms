@@ -1,7 +1,10 @@
 <meta charset="utf-8" />
+
 {% block title %}
     {% set resolvedPage = page|default('layout.title_meta.webwms') %}
-    <title>{{ pageIsTranslated|default(false) ? resolvedPage : resolvedPage|trans(pageParameters|default({}), pageDomain|default('messages')) }} {{ appName }}</title>
+    <title>
+        {{ pageIsTranslated|default(false) ? resolvedPage : resolvedPage|trans(pageParameters|default({}), pageDomain|default('messages')) }} {{ appName }}
+    </title>
 {% endblock %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta content="{{ 'meta.description.webwms_web_based_warehouse_management_system'|trans }}" name="description" />

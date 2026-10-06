@@ -1,15 +1,112 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4"><a href="{{ path('v3_wcs_index') }}" class="text-decoration-none">{{ 'integration.wcs.command_new.wcs_mfr_and_conveyor_system'|trans }}</a><h1 class="h3 mt-2">{{ 'integration.wcs.command_show.machine_command'|trans }}</h1></div>
-	<div class="card border-0 shadow-sm mb-4">
-		<div class="card-header bg-transparent d-flex justify-content-between"><h2 class="h5 mb-0">{{ command.connection_code }} · {{ command.load_unit }}</h2><span class="badge bg-secondary-subtle text-secondary">{{ command.status }}</span></div>
-		<div class="card-body"><dl class="row mb-0"><dt class="col-sm-3">{{ 'administration.workspace.type'|trans }}</dt><dd class="col-sm-9">{{ command.command_type }}</dd><dt class="col-sm-3">{{ 'logging.index.route'|trans }}</dt><dd class="col-sm-9"><code>{{ command.source }}</code> → <code>{{ command.destination }}</code></dd><dt class="col-sm-3">{{ 'integration.automation.command_show.request_id'|trans }}</dt><dd class="col-sm-9"><code>{{ command.request_id }}</code></dd><dt class="col-sm-3">{{ 'integration.wcs.command_show.message'|trans }}</dt><dd class="col-sm-9">{{ command.message|default('–') }}</dd></dl></div>
-	</div>
-	{% if command.status not in ['completed', 'failed', 'cancelled'] and is_granted('integration.wcs.execute') %}
-		<form method="post" action="{{ path('v3_wcs_command_status', {commandId: command.id}) }}" class="card border-0 shadow-sm">
-			<div class="card-body"><input type="hidden" name="_token" value="{{ csrf_token('v3_wcs_command_status_' ~ command.id) }}"><div class="row g-3"><div class="col-md-4"><label class="form-label" for="status">{{ 'integration.wcs.command_show.new_status'|trans }}</label><select class="form-select" id="status" name="status">{% if command.status == 'queued' %}<option value="dispatched">{{ 'integration.wcs.command_show.transmitted'|trans }}</option>{% elseif command.status == 'dispatched' %}<option value="accepted">{{ 'inbound.show.accepted'|trans }}</option>{% elseif command.status == 'accepted' %}<option value="completed">{{ 'integration.printing.job_show.completed'|trans }}</option>{% endif %}<option value="failed">{{ 'integration.automation.command_show.failed'|trans }}</option><option value="cancelled">{{ 'integration.wcs.command_show.aborted'|trans }}</option></select></div><div class="col-md-8"><label class="form-label" for="message">{{ 'integration.wcs.command_show.message'|trans }}</label><input class="form-control" id="message" name="message" maxlength="500"></div></div></div>
-			<div class="card-footer text-end"><button class="btn btn-primary">{{ 'integration.wcs.command_show.process_status'|trans }}</button></div>
-		</form>
-	{% endif %}
+    <div class="mb-4">
+        <a href="{{ path('v3_wcs_index') }}" class="text-decoration-none">
+            {{ 'integration.wcs.command_new.wcs_mfr_and_conveyor_system'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'integration.wcs.command_show.machine_command'|trans }}
+        </h1>
+    </div>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-transparent d-flex justify-content-between">
+            <h2 class="h5 mb-0">
+                {{ command.connection_code }} · {{ command.load_unit }}
+            </h2>
+            <span class="badge bg-secondary-subtle text-secondary">
+                {{ command.status }}
+            </span>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">
+                    {{ 'administration.workspace.type'|trans }}
+                </dt>
+                <dd class="col-sm-9">
+                    {{ command.command_type }}
+                </dd>
+                <dt class="col-sm-3">
+                    {{ 'logging.index.route'|trans }}
+                </dt>
+                <dd class="col-sm-9">
+                    <code>
+                        {{ command.source }}
+                    </code>
+                    →
+                    <code>
+                        {{ command.destination }}
+                    </code>
+                </dd>
+                <dt class="col-sm-3">
+                    {{ 'integration.automation.command_show.request_id'|trans }}
+                </dt>
+                <dd class="col-sm-9">
+                    <code>
+                        {{ command.request_id }}
+                    </code>
+                </dd>
+                <dt class="col-sm-3">
+                    {{ 'integration.wcs.command_show.message'|trans }}
+                </dt>
+                <dd class="col-sm-9">
+                    {{ command.message|default('–') }}
+                </dd>
+            </dl>
+        </div>
+    </div>
+    {% if command.status not in ['completed', 'failed', 'cancelled'] and is_granted('integration.wcs.execute') %}
+        <form method="post" action="{{ path('v3_wcs_command_status', {commandId: command.id}) }}" class="card border-0 shadow-sm">
+            <div class="card-body">
+                <input type="hidden" name="_token" value="{{ csrf_token('v3_wcs_command_status_' ~ command.id) }}">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label" for="status">
+                            {{ 'integration.wcs.command_show.new_status'|trans }}
+                        </label>
+                        <select class="form-select" id="status" name="status">
+
+                            {% if command.status == 'queued' %}
+
+                                <option value="dispatched">
+                                    {{ 'integration.wcs.command_show.transmitted'|trans }}
+                                </option>
+
+                            {% elseif command.status == 'dispatched' %}
+
+                                <option value="accepted">
+                                    {{ 'inbound.show.accepted'|trans }}
+                                </option>
+
+                            {% elseif command.status == 'accepted' %}
+
+                                <option value="completed">
+                                    {{ 'integration.printing.job_show.completed'|trans }}
+                                </option>
+
+                            {% endif %}
+
+                            <option value="failed">
+                                {{ 'integration.automation.command_show.failed'|trans }}
+                            </option>
+                            <option value="cancelled">
+                                {{ 'integration.wcs.command_show.aborted'|trans }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label" for="message">
+                            {{ 'integration.wcs.command_show.message'|trans }}
+                        </label>
+                        <input class="form-control" id="message" name="message" maxlength="500">
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <button class="btn btn-primary">
+                    {{ 'integration.wcs.command_show.process_status'|trans }}
+                </button>
+            </div>
+        </form>
+    {% endif %}
 {% endblock %}

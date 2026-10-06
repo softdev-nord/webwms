@@ -1,40 +1,912 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="d-flex justify-content-between align-items-center mb-4">
-		<div><h1 class="h3 mb-1">{{ 'inbound.control.goods_receipt_control_center'|trans }}</h1><p class="text-muted mb-0">{{ 'inbound.control.purchase_order_through_to_putaway_cross_docking_production_and_return_in'|trans }}</p></div>
-		<a class="btn btn-outline-primary" href="{{ path('v3_inbound_planned') }}">{{ 'inbound.control.operational_acceptance'|trans }}</a>
-	</div>
-	<ul class="nav nav-tabs nav-tabs-custom mb-3" role="tablist">
-		{% for id, label in {documents: 'inbound.tab.documents.purchase_order_and_advance_shipping_notice', quality: 'inbound.tab.quality.quality_control_and_evidence', logistics: 'inbound.tab.logistics.staging', returns: 'inbound.tab.returns.returns'} %}<li class="nav-item"><button class="nav-link {{ loop.first ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#inbound-{{ id }}" type="button">{{ label|trans }}</button></li>{% endfor %}
-	</ul>
-	<div class="tab-content">
-		<div class="tab-pane fade show active" id="inbound-documents">
-			<div class="row g-3 mb-4">
-				<div class="col-xl-6"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'inbound.control.record_purchase_order'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_inbound_control_purchase_order') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_purchase_order') }}"><div class="col-md-6"><label class="form-label">{{ 'inbound.control.purchase_order_number'|trans }}</label><input class="form-control" name="code" required></div><div class="col-md-6"><label class="form-label">{{ 'inbound.control.supplier_reference'|trans }}</label><input class="form-control" name="supplier_reference" required></div><div class="col-md-8"><label class="form-label">{{ 'navigation.master_data.submenu.headline1.label'|trans }}</label><select class="form-select" name="product_id" required>{% for product in products %}<option value="{{ product.id }}">{{ product.sku }} · {{ product.name }}</option>{% endfor %}</select></div><div class="col-md-4"><label class="form-label">{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</label><input class="form-control" type="number" min="1" name="quantity" value="1" required></div><div><button class="btn btn-primary">{{ 'inbound.control.create_purchase_order'|trans }}</button></div></form></div></div></div>
-				<div class="col-xl-6"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'inbound.control.shipping_notification_delivery_note'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_inbound_control_delivery') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_delivery') }}"><div class="col-md-6"><label class="form-label">{{ 'inbound.control.advice_number'|trans }}</label><input class="form-control" name="code" required></div><div class="col-md-6"><label class="form-label">{{ 'inbound.control.delivery_note'|trans }}</label><input class="form-control" name="delivery_note" required></div><div class="col-12"><label class="form-label">{{ 'inbound.control.open_purchase_order_item'|trans }}</label><select class="form-select" name="purchase_order_item_id" required>{% for item in control.purchaseOrderItems %}<option value="{{ item.id }}" data-order="{{ item.purchase_order_id }}">{{ item.order_code }} · {{ item.sku }} {{ 'inbound.control.open'|trans }} {{ item.ordered_quantity - item.advised_quantity }}</option>{% endfor %}</select><input type="hidden" name="purchase_order_id" value="{{ control.purchaseOrderItems|first ? (control.purchaseOrderItems|first).purchase_order_id : '' }}"></div><div class="col-md-6"><label class="form-label">{{ 'inbound.control.advised_quantity'|trans }}</label><input class="form-control" type="number" min="1" name="quantity" value="1" required></div><div class="col-md-6"><label class="form-label">{{ 'inbound.control.expected'|trans }}</label><input class="form-control" type="datetime-local" name="expected_at" required></div><div class="col-12"><h3 class="h6 mt-2 mb-0">{{ 'address.sender'|trans }}</h3></div><div class="col-md-6"><label class="form-label">{{ 'address.name'|trans }}</label><input class="form-control" name="sender_name" required></div><div class="col-md-6"><label class="form-label">{{ 'address.street'|trans }}</label><input class="form-control" name="sender_street" required></div><div class="col-md-3"><label class="form-label">{{ 'address.postal_code'|trans }}</label><input class="form-control" name="sender_postal_code" required></div><div class="col-md-6"><label class="form-label">{{ 'address.city'|trans }}</label><input class="form-control" name="sender_city" required></div><div class="col-md-3"><label class="form-label">{{ 'address.country_code'|trans }}</label><input class="form-control text-uppercase" name="sender_country_code" minlength="2" maxlength="2" value="DE" required></div><div><button class="btn btn-primary">{{ 'inbound.control.adopt_advice'|trans }}</button></div></form></div></div></div>
-			</div>
-			<div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'navigation.supplier_order.headline.label'|trans }}</h2></div><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>{{ 'inbound.control.purchase_order'|trans }}</th><th>{{ 'administration.workspace.supplier'|trans }}</th><th>{{ 'inbound.control.items'|trans }}</th><th>{{ 'inbound.control.progress'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th></tr></thead><tbody>{% for order in control.purchaseOrders %}<tr><td><code>{{ order.code }}</code></td><td>{{ order.supplier_reference }}</td><td>{{ order.item_count }}</td><td>{{ order.received_quantity }} / {{ order.ordered_quantity }}</td><td><span class="badge bg-primary-subtle text-primary">{{ order.status }}</span></td></tr>{% else %}<tr><td colspan="5" class="text-center text-muted py-4">{{ 'inbound.control.no_purchase_orders_available'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>
-		</div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ 'inbound.control.goods_receipt_control_center'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'inbound.control.purchase_order_through_to_putaway_cross_docking_production_and_return_in'|trans }}
+            </p>
+        </div>
+        <a class="btn btn-outline-primary" href="{{ path('v3_inbound_planned') }}">
+            {{ 'inbound.control.operational_acceptance'|trans }}
+        </a>
+    </div>
+    <ul class="nav nav-tabs nav-tabs-custom mb-3" role="tablist">
+        {% for id, label in {documents: 'inbound.tab.documents.purchase_order_and_advance_shipping_notice', quality: 'inbound.tab.quality.quality_control_and_evidence', logistics: 'inbound.tab.logistics.staging', returns: 'inbound.tab.returns.returns'} %}
 
-		<div class="tab-pane fade" id="inbound-quality">
-			<div class="row g-3 mb-4"><div class="col-xl-6"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'inbound.control.configure_qa_checklist'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_inbound_control_checklist') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_checklist') }}"><div class="col-md-4"><input class="form-control" name="code" placeholder="{{ 'administration.role_new.code'|trans }}" required></div><div class="col-md-8"><input class="form-control" name="name" placeholder="{{ 'article.index.description'|trans }}" required></div><div><textarea class="form-control" name="questions" rows="4" placeholder="{{ 'inbound.control.one_check_question_per_line'|trans }}" required></textarea></div><div><button class="btn btn-primary">{{ 'inbound.control.activate_checklist'|trans }}</button></div></form></div></div></div>
-			<div class="col-xl-6"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'inbound.control.save_photo_or_attachment'|trans }}</h2></div><div class="card-body"><form method="post" enctype="multipart/form-data" action="{{ path('v3_inbound_control_attachment') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_attachment') }}"><div class="col-md-5"><select class="form-select" name="aggregate_type"><option value="inbound_receipt">{{ 'inbound.control.planned_receipt'|trans }}</option><option value="unplanned_receipt">{{ 'inbound.control.unplanned_receipt'|trans }}</option><option value="return_receipt">{{ 'inbound.control.return'|trans }}</option><option value="production_receipt">{{ 'inbound.control.production'|trans }}</option></select></div><div class="col-md-7"><input class="form-control" name="aggregate_id" placeholder="{{ 'inbound.control.transaction_id'|trans }}" required></div><div class="col-md-4"><select class="form-select" name="category"><option value="photo">{{ 'inbound.control.photo'|trans }}</option><option value="delivery_note">{{ 'inbound.control.delivery_note'|trans }}</option><option value="quality">{{ 'inbound.control.qa_record'|trans }}</option><option value="other">{{ 'inbound.control.other'|trans }}</option></select></div><div class="col-md-8"><input class="form-control" type="file" name="file" accept="image/*,.pdf,.txt,.csv" required></div><div><button class="btn btn-primary">{{ 'inbound.control.save_securely'|trans }}</button></div></form></div></div></div></div>
-			<div class="row g-3"><div class="col-xl-5"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'inbound.control.active_checklists'|trans }}</h2></div><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'administration.role_new.code'|trans }}</th><th>{{ 'common.template.correspondence.name'|trans }}</th><th>{{ 'inbound.control.inspection_points'|trans }}</th></tr></thead><tbody>{% for list in control.checklists %}<tr><td><code>{{ list.code }}</code></td><td>{{ list.name }}</td><td>{{ list.question_count }}</td></tr>{% else %}<tr><td colspan="3" class="text-muted text-center py-4">{{ 'inbound.control.no_checklist'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div><div class="col-xl-7"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'inbound.control.process_records'|trans }}</h2></div><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'inbound.control.file'|trans }}</th><th>{{ 'article.article_input_fields.category'|trans }}</th><th>{{ 'extensions.work_item_show.process'|trans }}</th><th>{{ 'inbound.control.size'|trans }}</th></tr></thead><tbody>{% for file in control.attachments %}<tr><td><a href="{{ path('v3_inbound_control_attachment_download', {attachmentId: file.id}) }}">{{ file.original_name }}</a></td><td>{{ file.category }}</td><td><code>{{ file.aggregate_id }}</code></td><td>{{ (file.byte_size / 1024)|number_format(1, ',', '.') }} {{ 'inbound.control.kb'|trans }}</td></tr>{% else %}<tr><td colspan="4" class="text-muted text-center py-4">{{ 'inbound.control.no_records'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div></div>
-		</div>
+            <li class="nav-item">
+                <button class="nav-link {{ loop.first ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#inbound-{{ id }}" type="button">
+                    {{ label|trans }}
+                </button>
+            </li>
 
-		<div class="tab-pane fade" id="inbound-logistics">
-			<div class="row g-3 mb-4"><div class="col-xl-4"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'inbound.control.request_label'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_inbound_control_label') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_label') }}"><div><select class="form-select" name="aggregate_type"><option value="inbound_receipt">{{ 'inbound.control.goods_receipt'|trans }}</option><option value="production_receipt">{{ 'inbound.control.production'|trans }}</option><option value="return_receipt">{{ 'inbound.control.return'|trans }}</option></select></div><div><input class="form-control" name="aggregate_id" placeholder="{{ 'inbound.control.transaction_id'|trans }}" required></div><div class="col-8"><select class="form-select" name="label_type"><option value="receipt">{{ 'inbound.control.goods_receipt'|trans }}</option><option value="product">{{ 'navigation.master_data.submenu.headline1.label'|trans }}</option><option value="handling_unit">{{ 'inbound.control.load_unit'|trans }}</option></select></div><div class="col-4"><input class="form-control" type="number" min="1" max="100" name="copies" value="1"></div><div><button class="btn btn-primary">{{ 'inbound.control.create_print_job'|trans }}</button></div></form></div></div></div>
-			<div class="col-xl-4"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'inbound.control.cross_docking'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_inbound_control_cross_dock') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_cross_dock') }}"><div><select class="form-select" name="receipt_id" required><option value="">{{ 'inbound.control.verified_receipt'|trans }}</option>{% for item in worklist if item.receipt_status == 'inspected' %}<option value="{{ item.receipt_id }}">{{ item.delivery_code }} · {{ item.sku }} · {{ item.receipt_quantity }}</option>{% endfor %}</select></div><div><select class="form-select" name="outbound_item_id" required><option value="">{{ 'inbound.control.outbound_requirement'|trans }}</option>{% for demand in control.outboundDemand %}<option value="{{ demand.id }}">{{ demand.order_code }} · {{ demand.sku }} · {{ demand.requested_quantity }}</option>{% endfor %}</select></div><div><input class="form-control" type="number" min="1" name="quantity" value="1" required></div><div><button class="btn btn-primary">{{ 'inbound.control.stage_directly'|trans }}</button></div></form></div></div></div>
-			<div class="col-xl-4"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'navigation.logistics.submenu.headline1.entry3'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_inbound_control_production') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_production') }}"><div><input class="form-control" name="production_order" placeholder="{{ 'inbound.control.production_order'|trans }}" required></div><div><select class="form-select" name="product_id" required>{% for product in products %}<option value="{{ product.id }}">{{ product.sku }} · {{ product.name }}</option>{% endfor %}</select></div><div><select class="form-select" name="location_id" required>{% for location in locations %}<option value="{{ location.id }}">{{ location.warehouse_code }} · {{ location.code }}</option>{% endfor %}</select></div><div class="col-6"><input class="form-control" type="number" min="1" name="quantity" value="1" required></div><div class="col-6"><input class="form-control" name="batch_number" placeholder="{{ 'modal.stock_in_modal.batch'|trans }}"></div><div><button class="btn btn-primary">{{ 'inbound.control.post_completion_report'|trans }}</button></div></form></div></div></div></div>
-			<div class="row g-3"><div class="col-xl-6"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'inbound.control.cross_docking_staging'|trans }}</h2></div><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'inbound.control.outbound'|trans }}</th><th>{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th></tr></thead><tbody>{% for item in control.crossDock %}<tr><td>{{ item.sku }}</td><td>{{ item.outbound_order_code }}</td><td>{{ item.quantity }}</td><td>{{ item.status }}</td></tr>{% else %}<tr><td colspan="4" class="text-muted text-center py-4">{{ 'inbound.control.no_staging'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div><div class="col-xl-6"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'inbound.control.production_receipts'|trans }}</h2></div><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'inbound.control.order'|trans }}</th><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'inbound.control.slot'|trans }}</th><th>{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</th></tr></thead><tbody>{% for item in control.productionReceipts %}<tr><td><code>{{ item.production_order }}</code></td><td>{{ item.sku }}</td><td>{{ item.location_code }}</td><td>{{ item.quantity }}</td></tr>{% else %}<tr><td colspan="4" class="text-muted text-center py-4">{{ 'inbound.control.no_production_receipts'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div></div>
-		</div>
+        {% endfor %}
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="inbound-documents">
+            <div class="row g-3 mb-4">
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'inbound.control.record_purchase_order'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_inbound_control_purchase_order') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_purchase_order') }}">
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        {{ 'inbound.control.purchase_order_number'|trans }}
+                                    </label>
+                                    <input class="form-control" name="code" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        {{ 'inbound.control.supplier_reference'|trans }}
+                                    </label>
+                                    <input class="form-control" name="supplier_reference" required>
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="form-label">
+                                        {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                                    </label>
+                                    <select class="form-select" name="product_id" required>
 
-		<div class="tab-pane fade" id="inbound-returns">
-			<div class="card border-0 shadow-sm mb-4"><div class="card-header"><h2 class="h5 mb-0">{{ 'inbound.control.announce_return'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_inbound_control_return') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_return') }}"><div class="col-md-2"><input class="form-control" name="code" placeholder="{{ 'inbound.control.return_number'|trans }}" required></div><div class="col-md-2"><input class="form-control" name="order_reference" placeholder="{{ 'inbound.control.order_reference'|trans }}" required></div><div class="col-md-3"><select class="form-select" name="product_id">{% for product in products %}<option value="{{ product.id }}">{{ product.sku }} · {{ product.name }}</option>{% endfor %}</select></div><div class="col-md-1"><input class="form-control" type="number" min="1" name="quantity" value="1"></div><div class="col-md-3"><input class="form-control" name="reason" placeholder="{{ 'inbound.control.reason_for_return'|trans }}" required></div><div class="col-md-1"><button class="btn btn-primary w-100">{{ 'administration.workspace.create'|trans }}</button></div></form></div></div>
-			<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>{{ 'inbound.control.return_reference'|trans }}</th><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'inbound.control.quantity_reason'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th class="text-end">{{ 'common.action'|trans }}</th></tr></thead><tbody>{% for item in control.returns %}<tr><td><code>{{ item.code }}</code><div class="small text-muted">{{ item.order_reference }}</div></td><td>{{ item.sku }}<div class="small text-muted">{{ item.product_name }}</div></td><td>{{ item.expected_quantity }}<div class="small text-muted">{{ item.reason }}</div></td><td><span class="badge bg-primary-subtle text-primary">{{ item.receipt_status|default(item.item_status) }}</span></td><td class="text-end">{% if item.receipt_id is null %}<form method="post" action="{{ path('v3_inbound_control_return_receive', {orderId: item.order_id, itemId: item.item_id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_return_receive_' ~ item.item_id) }}"><button class="btn btn-sm btn-primary">{{ 'inbound.control.process_receipt'|trans }}</button></form>{% elseif item.receipt_status == 'pending_inspection' %}<form method="post" action="{{ path('v3_inbound_control_return_inspect', {receiptId: item.receipt_id}) }}" class="d-flex gap-1 justify-content-end"><input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_return_inspect_' ~ item.receipt_id) }}"><select class="form-select form-select-sm w-auto" name="location_id">{% for location in locations %}<option value="{{ location.id }}">{{ location.code }}</option>{% endfor %}</select><select class="form-select form-select-sm w-auto" name="decision"><option value="restock">{{ 'navigation.logistics.submenu.headline1.label'|trans }}</option><option value="quarantine">{{ 'inbound.control.block'|trans }}</option></select><input class="form-control form-control-sm w-auto" name="note" placeholder="{{ 'inbound.control.inspection_note'|trans }}" required><button class="btn btn-sm btn-success">{{ 'inbound.control.check'|trans }}</button></form>{% else %}{{ item.quality_decision }}{% endif %}</td></tr>{% else %}<tr><td colspan="5" class="text-muted text-center py-5">{{ 'inbound.control.no_returns_present'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>
-		</div>
-	</div>
+                                        {% for product in products %}
+
+                                            <option value="{{ product.id }}">
+                                                {{ product.sku }} · {{ product.name }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">
+                                        {{ 'customer_order.customer_order_input_fields.quantity'|trans }}
+                                    </label>
+                                    <input class="form-control" type="number" min="1" name="quantity" value="1" required>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'inbound.control.create_purchase_order'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'inbound.control.shipping_notification_delivery_note'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_inbound_control_delivery') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_delivery') }}">
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        {{ 'inbound.control.advice_number'|trans }}
+                                    </label>
+                                    <input class="form-control" name="code" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        {{ 'inbound.control.delivery_note'|trans }}
+                                    </label>
+                                    <input class="form-control" name="delivery_note" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">
+                                        {{ 'inbound.control.open_purchase_order_item'|trans }}
+                                    </label>
+                                    <select class="form-select" name="purchase_order_item_id" required>
+
+                                        {% for item in control.purchaseOrderItems %}
+
+                                            <option value="{{ item.id }}" data-order="{{ item.purchase_order_id }}">
+                                                {{ item.order_code }} · {{ item.sku }} {{ 'inbound.control.open'|trans }} {{ item.ordered_quantity - item.advised_quantity }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+                                    <input type="hidden" name="purchase_order_id" value="{{ control.purchaseOrderItems|first ? (control.purchaseOrderItems|first).purchase_order_id : '' }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        {{ 'inbound.control.advised_quantity'|trans }}
+                                    </label>
+                                    <input class="form-control" type="number" min="1" name="quantity" value="1" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        {{ 'inbound.control.expected'|trans }}
+                                    </label>
+                                    <input class="form-control" type="datetime-local" name="expected_at" required>
+                                </div>
+                                <div class="col-12">
+                                    <h3 class="h6 mt-2 mb-0">
+                                        {{ 'address.sender'|trans }}
+                                    </h3>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        {{ 'address.name'|trans }}
+                                    </label>
+                                    <input class="form-control" name="sender_name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        {{ 'address.street'|trans }}
+                                    </label>
+                                    <input class="form-control" name="sender_street" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        {{ 'address.postal_code'|trans }}
+                                    </label>
+                                    <input class="form-control" name="sender_postal_code" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">
+                                        {{ 'address.city'|trans }}
+                                    </label>
+                                    <input class="form-control" name="sender_city" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        {{ 'address.country_code'|trans }}
+                                    </label>
+                                    <input class="form-control text-uppercase" name="sender_country_code" minlength="2" maxlength="2" value="DE" required>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'inbound.control.adopt_advice'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card border-0 shadow-sm">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">
+                        {{ 'navigation.supplier_order.headline.label'|trans }}
+                    </h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    {{ 'inbound.control.purchase_order'|trans }}
+                                </th>
+                                <th>
+                                    {{ 'administration.workspace.supplier'|trans }}
+                                </th>
+                                <th>
+                                    {{ 'inbound.control.items'|trans }}
+                                </th>
+                                <th>
+                                    {{ 'inbound.control.progress'|trans }}
+                                </th>
+                                <th>
+                                    {{ 'transport_request.index.status'|trans }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for order in control.purchaseOrders %}
+
+                                <tr>
+                                    <td>
+                                        <code>
+                                            {{ order.code }}
+                                        </code>
+                                    </td>
+                                    <td>
+                                        {{ order.supplier_reference }}
+                                    </td>
+                                    <td>
+                                        {{ order.item_count }}
+                                    </td>
+                                    <td>
+                                        {{ order.received_quantity }} / {{ order.ordered_quantity }}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary-subtle text-primary">
+                                            {{ order.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            {% else %}
+
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        {{ 'inbound.control.no_purchase_orders_available'|trans }}
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="inbound-quality">
+            <div class="row g-3 mb-4">
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'inbound.control.configure_qa_checklist'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_inbound_control_checklist') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_checklist') }}">
+                                <div class="col-md-4">
+                                    <input class="form-control" name="code" placeholder="{{ 'administration.role_new.code'|trans }}" required>
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control" name="name" placeholder="{{ 'article.index.description'|trans }}" required>
+                                </div>
+                                <div>
+                                    <textarea class="form-control" name="questions" rows="4" placeholder="{{ 'inbound.control.one_check_question_per_line'|trans }}" required>
+                                    </textarea>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'inbound.control.activate_checklist'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'inbound.control.save_photo_or_attachment'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" enctype="multipart/form-data" action="{{ path('v3_inbound_control_attachment') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_attachment') }}">
+                                <div class="col-md-5">
+                                    <select class="form-select" name="aggregate_type">
+                                        <option value="inbound_receipt">
+                                            {{ 'inbound.control.planned_receipt'|trans }}
+                                        </option>
+                                        <option value="unplanned_receipt">
+                                            {{ 'inbound.control.unplanned_receipt'|trans }}
+                                        </option>
+                                        <option value="return_receipt">
+                                            {{ 'inbound.control.return'|trans }}
+                                        </option>
+                                        <option value="production_receipt">
+                                            {{ 'inbound.control.production'|trans }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-7">
+                                    <input class="form-control" name="aggregate_id" placeholder="{{ 'inbound.control.transaction_id'|trans }}" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select" name="category">
+                                        <option value="photo">
+                                            {{ 'inbound.control.photo'|trans }}
+                                        </option>
+                                        <option value="delivery_note">
+                                            {{ 'inbound.control.delivery_note'|trans }}
+                                        </option>
+                                        <option value="quality">
+                                            {{ 'inbound.control.qa_record'|trans }}
+                                        </option>
+                                        <option value="other">
+                                            {{ 'inbound.control.other'|trans }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control" type="file" name="file" accept="image/*,.pdf,.txt,.csv" required>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'inbound.control.save_securely'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-xl-5">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'inbound.control.active_checklists'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'administration.role_new.code'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'common.template.correspondence.name'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inbound.control.inspection_points'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for list in control.checklists %}
+
+                                        <tr>
+                                            <td>
+                                                <code>
+                                                    {{ list.code }}
+                                                </code>
+                                            </td>
+                                            <td>
+                                                {{ list.name }}
+                                            </td>
+                                            <td>
+                                                {{ list.question_count }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="3" class="text-muted text-center py-4">
+                                                {{ 'inbound.control.no_checklist'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-7">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'inbound.control.process_records'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'inbound.control.file'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'article.article_input_fields.category'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'extensions.work_item_show.process'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inbound.control.size'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for file in control.attachments %}
+
+                                        <tr>
+                                            <td>
+                                                <a href="{{ path('v3_inbound_control_attachment_download', {attachmentId: file.id}) }}">
+                                                    {{ file.original_name }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {{ file.category }}
+                                            </td>
+                                            <td>
+                                                <code>
+                                                    {{ file.aggregate_id }}
+                                                </code>
+                                            </td>
+                                            <td>
+                                                {{ (file.byte_size / 1024)|number_format(1, ',', '.') }} {{ 'inbound.control.kb'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="4" class="text-muted text-center py-4">
+                                                {{ 'inbound.control.no_records'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="inbound-logistics">
+            <div class="row g-3 mb-4">
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'inbound.control.request_label'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_inbound_control_label') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_label') }}">
+                                <div>
+                                    <select class="form-select" name="aggregate_type">
+                                        <option value="inbound_receipt">
+                                            {{ 'inbound.control.goods_receipt'|trans }}
+                                        </option>
+                                        <option value="production_receipt">
+                                            {{ 'inbound.control.production'|trans }}
+                                        </option>
+                                        <option value="return_receipt">
+                                            {{ 'inbound.control.return'|trans }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <input class="form-control" name="aggregate_id" placeholder="{{ 'inbound.control.transaction_id'|trans }}" required>
+                                </div>
+                                <div class="col-8">
+                                    <select class="form-select" name="label_type">
+                                        <option value="receipt">
+                                            {{ 'inbound.control.goods_receipt'|trans }}
+                                        </option>
+                                        <option value="product">
+                                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                                        </option>
+                                        <option value="handling_unit">
+                                            {{ 'inbound.control.load_unit'|trans }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" type="number" min="1" max="100" name="copies" value="1">
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'inbound.control.create_print_job'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'inbound.control.cross_docking'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_inbound_control_cross_dock') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_cross_dock') }}">
+                                <div>
+                                    <select class="form-select" name="receipt_id" required>
+                                        <option value="">
+                                            {{ 'inbound.control.verified_receipt'|trans }}
+                                        </option>
+
+                                        {% for item in worklist|filter(item => item.receipt_status == 'inspected') %}
+
+                                            <option value="{{ item.receipt_id }}">
+                                                {{ item.delivery_code }} · {{ item.sku }} · {{ item.receipt_quantity }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <div>
+                                    <select class="form-select" name="outbound_item_id" required>
+                                        <option value="">
+                                            {{ 'inbound.control.outbound_requirement'|trans }}
+                                        </option>
+
+                                        {% for demand in control.outboundDemand %}
+
+                                            <option value="{{ demand.id }}">
+                                                {{ demand.order_code }} · {{ demand.sku }} · {{ demand.requested_quantity }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <div>
+                                    <input class="form-control" type="number" min="1" name="quantity" value="1" required>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'inbound.control.stage_directly'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'navigation.logistics.submenu.headline1.entry3'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_inbound_control_production') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_production') }}">
+                                <div>
+                                    <input class="form-control" name="production_order" placeholder="{{ 'inbound.control.production_order'|trans }}" required>
+                                </div>
+                                <div>
+                                    <select class="form-select" name="product_id" required>
+
+                                        {% for product in products %}
+
+                                            <option value="{{ product.id }}">
+                                                {{ product.sku }} · {{ product.name }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <div>
+                                    <select class="form-select" name="location_id" required>
+
+                                        {% for location in locations %}
+
+                                            <option value="{{ location.id }}">
+                                                {{ location.warehouse_code }} · {{ location.code }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control" type="number" min="1" name="quantity" value="1" required>
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control" name="batch_number" placeholder="{{ 'modal.stock_in_modal.batch'|trans }}">
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'inbound.control.post_completion_report'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'inbound.control.cross_docking_staging'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inbound.control.outbound'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'customer_order.customer_order_input_fields.quantity'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'transport_request.index.status'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for item in control.crossDock %}
+
+                                        <tr>
+                                            <td>
+                                                {{ item.sku }}
+                                            </td>
+                                            <td>
+                                                {{ item.outbound_order_code }}
+                                            </td>
+                                            <td>
+                                                {{ item.quantity }}
+                                            </td>
+                                            <td>
+                                                {{ item.status }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="4" class="text-muted text-center py-4">
+                                                {{ 'inbound.control.no_staging'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'inbound.control.production_receipts'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'inbound.control.order'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inbound.control.slot'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'customer_order.customer_order_input_fields.quantity'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for item in control.productionReceipts %}
+
+                                        <tr>
+                                            <td>
+                                                <code>
+                                                    {{ item.production_order }}
+                                                </code>
+                                            </td>
+                                            <td>
+                                                {{ item.sku }}
+                                            </td>
+                                            <td>
+                                                {{ item.location_code }}
+                                            </td>
+                                            <td>
+                                                {{ item.quantity }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="4" class="text-muted text-center py-4">
+                                                {{ 'inbound.control.no_production_receipts'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="inbound-returns">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">
+                        {{ 'inbound.control.announce_return'|trans }}
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ path('v3_inbound_control_return') }}" class="row g-2">
+                        <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_return') }}">
+                        <div class="col-md-2">
+                            <input class="form-control" name="code" placeholder="{{ 'inbound.control.return_number'|trans }}" required>
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-control" name="order_reference" placeholder="{{ 'inbound.control.order_reference'|trans }}" required>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select mb-4" name="product_id">
+
+                                {% for product in products %}
+
+                                    <option value="{{ product.id }}">
+                                        {{ product.sku }} · {{ product.name }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <input class="form-control" type="number" min="1" name="quantity" value="1">
+                        </div>
+                        <div class="col-md-3">
+                            <input class="form-control" name="reason" placeholder="{{ 'inbound.control.reason_for_return'|trans }}" required>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary w-100">
+                                {{ 'administration.workspace.create'|trans }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card border-0 shadow-sm">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    {{ 'inbound.control.return_reference'|trans }}
+                                </th>
+                                <th>
+                                    {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                                </th>
+                                <th>
+                                    {{ 'inbound.control.quantity_reason'|trans }}
+                                </th>
+                                <th>
+                                    {{ 'transport_request.index.status'|trans }}
+                                </th>
+                                <th class="text-end">
+                                    {{ 'common.action'|trans }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for item in control.returns %}
+
+                                <tr>
+                                    <td>
+                                        <code>
+                                            {{ item.code }}
+                                        </code>
+                                        <div class="small text-muted">
+                                            {{ item.order_reference }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{ item.sku }}
+                                        <div class="small text-muted">
+                                            {{ item.product_name }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{ item.expected_quantity }}
+                                        <div class="small text-muted">
+                                            {{ item.reason }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary-subtle text-primary">
+                                            {{ item.receipt_status|default(item.item_status) }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end">
+
+                                        {% if item.receipt_id is null %}
+
+                                            <form method="post" action="{{ path('v3_inbound_control_return_receive', {orderId: item.order_id, itemId: item.item_id}) }}">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_return_receive_' ~ item.item_id) }}">
+                                                <button class="btn btn-sm btn-primary">
+                                                    {{ 'inbound.control.process_receipt'|trans }}
+                                                </button>
+                                            </form>
+
+                                        {% elseif item.receipt_status == 'pending_inspection' %}
+
+                                            <form method="post" action="{{ path('v3_inbound_control_return_inspect', {receiptId: item.receipt_id}) }}" class="d-flex gap-1 justify-content-end">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('v3_inbound_return_inspect_' ~ item.receipt_id) }}">
+                                                <select class="form-select form-select-sm w-auto" name="location_id">
+
+                                                    {% for location in locations %}
+
+                                                        <option value="{{ location.id }}">
+                                                            {{ location.code }}
+                                                        </option>
+
+                                                    {% endfor %}
+
+                                                </select>
+                                                <select class="form-select form-select-sm w-auto" name="decision">
+                                                    <option value="restock">
+                                                        {{ 'navigation.logistics.submenu.headline1.label'|trans }}
+                                                    </option>
+                                                    <option value="quarantine">
+                                                        {{ 'inbound.control.block'|trans }}
+                                                    </option>
+                                                </select>
+                                                <input class="form-control form-control-sm w-auto" name="note" placeholder="{{ 'inbound.control.inspection_note'|trans }}" required>
+                                                <button class="btn btn-sm btn-success">
+                                                    {{ 'inbound.control.check'|trans }}
+                                                </button>
+                                            </form>
+
+                                        {% else %}
+                                            {{ item.quality_decision }}
+                                        {% endif %}
+
+                                    </td>
+                                </tr>
+
+                            {% else %}
+
+                                <tr>
+                                    <td colspan="5" class="text-muted text-center py-5">
+                                        {{ 'inbound.control.no_returns_present'|trans }}
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
-{% block javascripts %}{{ parent() }}<script>document.addEventListener('DOMContentLoaded',function(){const item=document.querySelector('[name="purchase_order_item_id"]'),order=document.querySelector('[name="purchase_order_id"]');if(item&&order){item.addEventListener('change',function(){order.value=item.options[item.selectedIndex].dataset.order||'';});}});</script>{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){const item=document.querySelector('[name="purchase_order_item_id"]'),order=document.querySelector('[name="purchase_order_id"]');if(item&&order){item.addEventListener('change',function(){order.value=item.options[item.selectedIndex].dataset.order||'';});}});
+    </script>
+
+{% endblock %}

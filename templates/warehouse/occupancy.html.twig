@@ -38,43 +38,73 @@
 {% block webwms_content %}
     <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
         <div>
-            <h1 class="h3 mb-1">{{ 'inventory.occupancy.graphical_location_occupancy'|trans }}</h1>
+            <h1 class="h3 mb-1">
+                {{ 'inventory.occupancy.graphical_location_occupancy'|trans }}
+            </h1>
 
-            <p class="text-muted mb-0">{{ 'inventory.occupancy.occupancy_and_utilization_of_each_storage_location_by_warehouse_and_area'|trans }}</p>
+            <p class="text-muted mb-0">
+                {{ 'inventory.occupancy.occupancy_and_utilization_of_each_storage_location_by_warehouse_and_area'|trans }}
+            </p>
         </div>
 
         <form method="get" class="d-flex flex-wrap gap-2 align-items-end">
             <div>
-                <label for="warehouse" class="form-label small">{{ 'navigation.master_data.submenu.headline4.label'|trans }}</label>
+                <label for="warehouse" class="form-label small">
+                    {{ 'navigation.master_data.submenu.headline4.label'|trans }}
+                </label>
 
                 <select id="warehouse" name="warehouse" class="form-select" required>
                     {% for warehouse in warehouses %}
-                        <option value="{{ warehouse.id }}" {{ warehouse.id == selectedWarehouse ? 'selected' : '' }}>{{ warehouse.code }} – {{ warehouse.name }}</option>
+                        <option value="{{ warehouse.id }}" {{ warehouse.id == selectedWarehouse ? 'selected' : '' }}>
+                            {{ warehouse.code }} – {{ warehouse.name }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
 
             <div>
-                <label for="aisle" class="form-label small">{{ 'inventory.occupancy.storage_structure'|trans({}, 'occupancy') }}</label>
+                <label for="aisle" class="form-label small">
+                    {{ 'inventory.occupancy.storage_structure'|trans({}, 'occupancy') }}
+                </label>
 
                 <select id="aisle" name="aisle" class="form-select" required>
                     {% for aisle in aisles %}
-                        <option value="{{ aisle.id }}" {{ aisle.id == selectedAisle ? 'selected' : '' }}>{{ aisle.code }} · {{ aisle.name }} ({{ aisle.storage_type ?: ('inventory.occupancy.unclassified'|trans) }})</option>
+                        <option value="{{ aisle.id }}" {{ aisle.id == selectedAisle ? 'selected' : '' }}>
+                            {{ aisle.code }} · {{ aisle.name }} ({{ aisle.storage_type ?: ('inventory.occupancy.unclassified'|trans) }})
+                        </option>
                     {% endfor %}
                 </select>
             </div>
 
-            <button class="btn btn-primary">{{ 'inventory.occupancy.display'|trans }}</button>
+            <button class="btn btn-primary">
+                {{ 'inventory.occupancy.display'|trans }}
+            </button>
         </form>
     </div>
 
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-body py-3">
             <div class="occupancy-legend small">
-                <span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-light"></span>{{ 'dashboard.index.available'|trans }}</span>
-                <span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-success"></span>{{ 'dashboard.index.occupied'|trans }}</span>
-                <span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-warning"></span>{{ 'inventory.occupancy.qc_stock'|trans }}</span>
-                <span class="occupancy-legend-item"><span class="occupancy-legend-swatch bg-danger"></span>{{ 'inventory.occupancy.blocked_or_full'|trans }}</span>
+                <span class="occupancy-legend-item">
+                    <span class="occupancy-legend-swatch bg-light">
+                    </span>
+                    {{ 'dashboard.index.available'|trans }}
+                </span>
+                <span class="occupancy-legend-item">
+                    <span class="occupancy-legend-swatch bg-success">
+                    </span>
+                    {{ 'dashboard.index.occupied'|trans }}
+                </span>
+                <span class="occupancy-legend-item">
+                    <span class="occupancy-legend-swatch bg-warning">
+                    </span>
+                    {{ 'inventory.occupancy.qc_stock'|trans }}
+                </span>
+                <span class="occupancy-legend-item">
+                    <span class="occupancy-legend-swatch bg-danger">
+                    </span>
+                    {{ 'inventory.occupancy.blocked_or_full'|trans }}
+                </span>
             </div>
         </div>
     </div>
@@ -93,22 +123,37 @@
         <section class="card border-0 shadow-sm">
             <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                 <div class="d-flex align-items-center gap-3">
-                    <span class="occupancy-type-icon"><i class="{{ typeIcon }}"></i></span>
+                    <span class="occupancy-type-icon">
+                        <i class="{{ typeIcon }}">
+                        </i>
+                    </span>
 
                     <div>
                         <div class="d-flex flex-wrap align-items-center gap-2">
-                            <h2 class="h5 mb-0">{{ firstLocation.aisle_code }} · {{ firstLocation.aisle_name }}</h2>
-                            <span class="badge bg-primary-subtle text-primary">{{ ('inventory.occupancy.storage_types.' ~ typeKey)|trans({}, 'occupancy') }}</span>
-                            <span class="badge bg-light text-body">{{ storageType }}</span>
+                            <h2 class="h5 mb-0">
+                                {{ firstLocation.aisle_code }} · {{ firstLocation.aisle_name }}
+                            </h2>
+                            <span class="badge bg-primary-subtle text-primary">
+                                {{ ('inventory.occupancy.storage_types.' ~ typeKey)|trans({}, 'occupancy') }}
+                            </span>
+                            <span class="badge bg-light text-body">
+                                {{ storageType }}
+                            </span>
                         </div>
 
-                        <p class="small text-muted mb-0 mt-1">{{ ('inventory.occupancy.presentations.' ~ presentation)|trans({}, 'occupancy') }} · {{ firstLocation.area_code }} · {{ firstLocation.area_name }}</p>
+                        <p class="small text-muted mb-0 mt-1">
+                            {{ ('inventory.occupancy.presentations.' ~ presentation)|trans({}, 'occupancy') }} · {{ firstLocation.area_code }} · {{ firstLocation.area_name }}
+                        </p>
                     </div>
                 </div>
 
                 <div class="text-end">
-                    <strong>{{ locations|length }}</strong>
-                    <div class="small text-muted">{{ 'inventory.occupancy.storage_locations'|trans }}</div>
+                    <strong>
+                        {{ locations|length }}
+                    </strong>
+                    <div class="small text-muted">
+                        {{ 'inventory.occupancy.storage_locations'|trans }}
+                    </div>
                 </div>
             </div>
 
@@ -116,19 +161,25 @@
                 <div class="occupancy-visual">
                     {% if isRack %}
                         <div class="occupancy-rack" style="--slot-count: {{ occupancySlots|length }}">
-                            <div class="occupancy-rack-heading">{{ 'warehouse.topology_fields.level'|trans }}</div>
+                            <div class="occupancy-rack-heading">
+                                {{ 'warehouse.topology_fields.level'|trans }}
+                            </div>
 
                             {% for slot in occupancySlots %}
-                                <div class="occupancy-rack-heading">{{ 'warehouse.topology_fields.slot'|trans }} {{ slot }}</div>
+                                <div class="occupancy-rack-heading">
+                                    {{ 'warehouse.topology_fields.slot'|trans }} {{ slot }}
+                                </div>
                             {% endfor %}
 
                             {% for level in occupancyLevels %}
-                                <div class="occupancy-rack-level">{{ level }}</div>
+                                <div class="occupancy-rack-level">
+                                    {{ level }}
+                                </div>
 
                                 {% for slot in occupancySlots %}
                                     <div class="occupancy-rack-cell">
                                         {% for location in locations|filter(location => location.level_number == level and location.slot_number == slot) %}
-                                            {% include 'warehouse/_occupancy_location.html.twig' with {location: location, variant: 'compact', showDepth: occupancyDepths|length > 1} only %}
+                                            {{ include('warehouse/_occupancy_location.html.twig', {location: location, variant: 'compact', showDepth: occupancyDepths|length > 1}, false) }}
                                         {% endfor %}
                                     </div>
                                 {% endfor %}
@@ -138,10 +189,12 @@
                         <div class="occupancy-block" style="--depth-count: {{ occupancyDepths|length }}">
                             {% for slot in occupancySlots %}
                                 <div class="occupancy-block-lane">
-                                    <div class="occupancy-block-label">{{ 'warehouse.topology_fields.slot'|trans }} {{ slot }}</div>
+                                    <div class="occupancy-block-label">
+                                        {{ 'warehouse.topology_fields.slot'|trans }} {{ slot }}
+                                    </div>
                                     <div class="occupancy-block-depths">
                                         {% for location in locations|filter(location => location.slot_number == slot) %}
-                                            {% include 'warehouse/_occupancy_location.html.twig' with {location: location, variant: 'compact', showDepth: true} only %}
+                                            {{ include('warehouse/_occupancy_location.html.twig', {location: location, variant: 'compact', showDepth: true}, false) }}
                                         {% endfor %}
                                     </div>
                                 </div>
@@ -153,12 +206,16 @@
                                 {% for slot in occupancySlots %}
                                     <div class="occupancy-flow-lane">
                                         <div class="occupancy-flow-label">
-                                            <span>{{ 'warehouse.topology_fields.level'|trans }} {{ level }}</span>
-                                            <span>{{ 'warehouse.topology_fields.slot'|trans }} {{ slot }}</span>
+                                            <span>
+                                                {{ 'warehouse.topology_fields.level'|trans }} {{ level }}
+                                            </span>
+                                            <span>
+                                                {{ 'warehouse.topology_fields.slot'|trans }} {{ slot }}
+                                            </span>
                                         </div>
 
                                         {% for location in locations|filter(location => location.level_number == level and location.slot_number == slot) %}
-                                            {% include 'warehouse/_occupancy_location.html.twig' with {location: location, variant: 'compact', showDepth: true} only %}
+                                            {{ include('warehouse/_occupancy_location.html.twig', {location: location, variant: 'compact', showDepth: true}, false) }}
                                         {% endfor %}
                                     </div>
                                 {% endfor %}
@@ -167,19 +224,25 @@
                     {% else %}
                         <div class="occupancy-generic-grid">
                             {% for location in locations %}
-                                {% include 'warehouse/_occupancy_location.html.twig' with {location: location, variant: 'card', showDepth: true} only %}
+                                {{ include('warehouse/_occupancy_location.html.twig', {location: location, variant: 'card', showDepth: true}, false) }}
                             {% endfor %}
                         </div>
                     {% endif %}
 
                     <div class="occupancy-axis">
-                        <span>{{ (isTray or isBlock ? 'inventory.occupancy.top_view' : 'inventory.occupancy.front_view')|trans({}, 'occupancy') }}</span>
-                        <span>{{ isFlow ? 'inventory.occupancy.picking_side_left'|trans({}, 'occupancy') : ('inventory.occupancy.storage_model'|trans({}, 'occupancy') ~ ': ' ~ (firstLocation.storage_model ?: '–')) }}</span>
+                        <span>
+                            {{ (isTray or isBlock ? 'inventory.occupancy.top_view' : 'inventory.occupancy.front_view')|trans({}, 'occupancy') }}
+                        </span>
+                        <span>
+                            {{ isFlow ? 'inventory.occupancy.picking_side_left'|trans({}, 'occupancy') : ('inventory.occupancy.storage_model'|trans({}, 'occupancy') ~ ': ' ~ (firstLocation.storage_model ?: '–')) }}
+                        </span>
                     </div>
                 </div>
             </div>
         </section>
     {% else %}
-        <div class="alert alert-info">{{ 'inventory.occupancy.no_storage_locations_have_been_created_for_selected_warehouse_yet'|trans }}</div>
+        <div class="alert alert-info">
+            {{ 'inventory.occupancy.no_storage_locations_have_been_created_for_selected_warehouse_yet'|trans }}
+        </div>
     {% endif %}
 {% endblock %}

@@ -1,98 +1,136 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="d-flex justify-content-between mb-4">
-		<div>
-			<a href="{{ path('v3_shipping_index') }}" class="text-decoration-none">{{ 'shipping.show.shipping'|trans }}</a>
-			<h1 class="h3 mt-2">{{ shipment.shipment_number }}</h1>
-			<div class="text-muted">{{ shipment.carrier }} · {{ shipment.service }}</div>
-		</div>
-		<span class="badge bg-secondary align-self-start fs-6">{{ shipment.status }}</span>
-	</div>
+    <div class="d-flex justify-content-between mb-4">
+        <div>
+            <a href="{{ path('v3_shipping_index') }}" class="text-decoration-none">
+                {{ 'shipping.show.shipping'|trans }}
+            </a>
+            <h1 class="h3 mt-2">
+                {{ shipment.shipment_number }}
+            </h1>
+            <div class="text-muted">
+                {{ shipment.carrier }} · {{ shipment.service }}
+            </div>
+        </div>
+        <span class="badge bg-secondary align-self-start fs-6">
+            {{ shipment.status }}
+        </span>
+    </div>
 
-	{% if shipment.status == 'prepared' %}
-		{% if carrierConnectionAvailable and is_granted('integration.carrier.execute') %}
-			<form method="post" action="{{ path('v3_shipping_carrier_label', {shipmentId: shipment.id}) }}" class="card border-0 shadow-sm mb-4">
-				<div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
-					<div>
-						<h2 class="h5 mb-1">{{ 'shipping.show.generate_carrier_label'|trans }}</h2>
-						<p class="text-muted mb-0">{{ 'shipping.show.label_and_tracking_number_automatically_via'|trans }} {{ shipment.carrier }} {{ 'shipping.show.retrieve'|trans }}</p>
-					</div>
-					<input type="hidden" name="_token" value="{{ csrf_token('v3_shipping_carrier_label_' ~ shipment.id) }}">
-					<button class="btn btn-primary">{{ 'shipping.show.request_label_from_carrier'|trans }}</button>
-				</div>
-			</form>
-		{% endif %}
+    {% if shipment.status == 'prepared' %}
+        {% if carrierConnectionAvailable and is_granted('integration.carrier.execute') %}
+            <form method="post" action="{{ path('v3_shipping_carrier_label', {shipmentId: shipment.id}) }}" class="card border-0 shadow-sm mb-4">
+                <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <div>
+                        <h2 class="h5 mb-1">
+                            {{ 'shipping.show.generate_carrier_label'|trans }}
+                        </h2>
+                        <p class="text-muted mb-0">
+                            {{ 'shipping.show.label_and_tracking_number_automatically_via'|trans }} {{ shipment.carrier }} {{ 'shipping.show.retrieve'|trans }}
+                        </p>
+                    </div>
+                    <input type="hidden" name="_token" value="{{ csrf_token('v3_shipping_carrier_label_' ~ shipment.id) }}">
+                    <button class="btn btn-primary">
+                        {{ 'shipping.show.request_label_from_carrier'|trans }}
+                    </button>
+                </div>
+            </form>
+        {% endif %}
 
-		{% if is_granted('fulfillment.ship.label') %}
-			<form method="post" action="{{ path('v3_shipping_label', {shipmentId: shipment.id}) }}" class="card border-0 shadow-sm mb-4">
-				<div class="card-body">
-					<h2 class="h5">{{ 'shipping.show.register_label_manually'|trans }}</h2>
-					<input type="hidden" name="_token" value="{{ csrf_token('v3_shipping_label_' ~ shipment.id) }}">
-					<div class="row g-2">
-						<div class="col-md-6">
-							<input class="form-control" name="tracking_number" placeholder="{{ 'shipping.show.tracking_number'|trans }}" required>
-						</div>
-						<div class="col-md-6">
-							<input class="form-control" name="label_reference" placeholder="{{ 'shipping.show.label_reference_or_document_path'|trans }}" required>
-						</div>
-					</div>
-				</div>
-				<div class="card-footer text-end">
-					<button class="btn btn-primary">{{ 'shipping.show.adopt_label'|trans }}</button>
-				</div>
-			</form>
-		{% endif %}
-	{% endif %}
+        {% if is_granted('fulfillment.ship.label') %}
+            <form method="post" action="{{ path('v3_shipping_label', {shipmentId: shipment.id}) }}" class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h2 class="h5">
+                        {{ 'shipping.show.register_label_manually'|trans }}
+                    </h2>
+                    <input type="hidden" name="_token" value="{{ csrf_token('v3_shipping_label_' ~ shipment.id) }}">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <input class="form-control" name="tracking_number" placeholder="{{ 'shipping.show.tracking_number'|trans }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control" name="label_reference" placeholder="{{ 'shipping.show.label_reference_or_document_path'|trans }}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <button class="btn btn-primary">
+                        {{ 'shipping.show.adopt_label'|trans }}
+                    </button>
+                </div>
+            </form>
+        {% endif %}
+    {% endif %}
 
-	{% if shipment.tracking_number %}
-		<div class="card border-0 shadow-sm mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-md-6">
-						<small class="text-muted">{{ 'shipping.show.tracking_number'|trans }}</small>
-						<div class="h5">{{ shipment.tracking_number }}</div>
-					</div>
-					<div class="col-md-6">
-						<small class="text-muted">{{ 'shipping.show.label_reference'|trans }}</small>
-						<div>{{ shipment.label_reference }}</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	{% endif %}
+    {% if shipment.tracking_number %}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <small class="text-muted">
+                            {{ 'shipping.show.tracking_number'|trans }}
+                        </small>
+                        <div class="h5">
+                            {{ shipment.tracking_number }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <small class="text-muted">
+                            {{ 'shipping.show.label_reference'|trans }}
+                        </small>
+                        <div>
+                            {{ shipment.label_reference }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
-	{% if shipment.status == 'labelled' and printers is not empty and is_granted('integration.print_job.write') %}
-		<form method="post" action="{{ path('v3_shipping_print_label', {shipmentId: shipment.id}) }}" class="card border-0 shadow-sm mb-4">
-			<div class="card-body">
-				<h2 class="h5">{{ 'shipping.show.print_label'|trans }}</h2>
-				<input type="hidden" name="_token" value="{{ csrf_token('v3_shipping_print_' ~ shipment.id) }}">
-				<div class="d-flex gap-2">
-					<select class="form-select" name="printer_id">
-						{% for printer in printers %}
-							<option value="{{ printer.id }}">{{ printer.name }}</option>
-						{% endfor %}
-					</select>
-					<button class="btn btn-primary text-nowrap">{{ 'inbound.control.create_print_job'|trans }}</button>
-				</div>
-			</div>
-		</form>
-	{% endif %}
+    {% if shipment.status == 'labelled' and printers is not empty and is_granted('integration.print_job.write') %}
+        <form method="post" action="{{ path('v3_shipping_print_label', {shipmentId: shipment.id}) }}" class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="h5">
+                    {{ 'shipping.show.print_label'|trans }}
+                </h2>
+                <input type="hidden" name="_token" value="{{ csrf_token('v3_shipping_print_' ~ shipment.id) }}">
+                <div class="d-flex gap-2">
+                    <select class="form-select" name="printer_id">
+                        {% for printer in printers %}
+                            <option value="{{ printer.id }}">
+                                {{ printer.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-primary text-nowrap">
+                        {{ 'inbound.control.create_print_job'|trans }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    {% endif %}
 
-	{% if printJobs is not empty %}
-		<div class="alert alert-info">{{ printJobs|length }} {{ 'shipping.show.print_job_s_available_for_this_shipment'|trans }}</div>
-	{% endif %}
+    {% if printJobs is not empty %}
+        <div class="alert alert-info">
+            {{ printJobs|length }} {{ 'shipping.show.print_job_s_available_for_this_shipment'|trans }}
+        </div>
+    {% endif %}
 
-	{% if shipment.status == 'labelled' and is_granted('fulfillment.ship.dispatch') %}
-		<form method="post" action="{{ path('v3_shipping_dispatch', {shipmentId: shipment.id}) }}" class="card border-0 shadow-sm">
-			<div class="card-body">
-				<h2 class="h5">{{ 'shipping.show.confirm_handover'|trans }}</h2>
-				<input type="hidden" name="_token" value="{{ csrf_token('v3_shipping_dispatch_' ~ shipment.id) }}">
-				<div class="d-flex gap-2">
-					<input class="form-control" name="handover_reference" placeholder="{{ 'shipping.show.handover_reference'|trans }}" required>
-					<button class="btn btn-success text-nowrap">{{ 'shipping.show.mark_as_shipped'|trans }}</button>
-				</div>
-			</div>
-		</form>
-	{% endif %}
+    {% if shipment.status == 'labelled' and is_granted('fulfillment.ship.dispatch') %}
+        <form method="post" action="{{ path('v3_shipping_dispatch', {shipmentId: shipment.id}) }}" class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">
+                    {{ 'shipping.show.confirm_handover'|trans }}
+                </h2>
+                <input type="hidden" name="_token" value="{{ csrf_token('v3_shipping_dispatch_' ~ shipment.id) }}">
+                <div class="d-flex gap-2">
+                    <input class="form-control" name="handover_reference" placeholder="{{ 'shipping.show.handover_reference'|trans }}" required>
+                    <button class="btn btn-success text-nowrap">
+                        {{ 'shipping.show.mark_as_shipped'|trans }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    {% endif %}
 {% endblock %}

@@ -1,41 +1,63 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<a href="{{ path('v3_device_index') }}" class="text-decoration-none">{{ 'integration.device.new.scanners_and_mobile_terminals'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'integration.device.new.create_scanning_device'|trans }}</h1>
-	</div>
-	<form method="post" class="card border-0 shadow-sm">
-		<div class="card-body">
-			<input type="hidden" name="_token" value="{{ csrf_token('v3_device_create') }}">
-			<div class="row g-3">
-				<div class="col-md-4">
-					<label class="form-label" for="code">{{ 'integration.automation.device_new.device_code'|trans }}</label>
-					<input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" pattern="[A-Z0-9][A-Z0-9_-]{1,39}" required placeholder="{{ 'integration.device.new.mde_01'|trans }}">
-				</div>
-				<div class="col-md-5">
-					<label class="form-label" for="name">{{ 'common.template.correspondence.name'|trans }}</label>
-					<input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'integration.device.new.mobile_terminal_goods_issue_1'|trans }}">
-				</div>
-				<div class="col-md-3">
-					<label class="form-label" for="device_type">{{ 'integration.automation.device_new.device_type'|trans }}</label>
-					<select class="form-select" id="device_type" name="device_type">
-						<option value="barcode_scanner">{{ 'integration.device.new.barcode_scanner'|trans }}</option>
-						<option value="mde">{{ 'integration.device.new.mobile_terminal'|trans }}</option>
-						<option value="mobile_browser">{{ 'integration.device.new.mobile_browser'|trans }}</option>
-					</select>
-				</div>
-				<div class="col-12">
-					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="active" name="active" value="1" checked>
-						<label class="form-check-label" for="active">{{ 'integration.automation.device_new.activate_device_immediately'|trans }}</label>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_device_index') }}">{{ 'common.button.cancel'|trans }}</a>
-			<button class="btn btn-primary">{{ 'integration.automation.device_new.create_device'|trans }}</button>
-		</div>
-	</form>
+    <div class="mb-4">
+        <a href="{{ path('v3_device_index') }}" class="text-decoration-none">
+            {{ 'integration.device.new.scanners_and_mobile_terminals'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'integration.device.new.create_scanning_device'|trans }}
+        </h1>
+    </div>
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_device_create') }}">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label" for="code">
+                        {{ 'integration.automation.device_new.device_code'|trans }}
+                    </label>
+                    <input class="form-control font-monospace text-uppercase" id="code" name="code" maxlength="40" pattern="[A-Z0-9][A-Z0-9_-]{1,39}" required placeholder="{{ 'integration.device.new.mde_01'|trans }}">
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label" for="name">
+                        {{ 'common.template.correspondence.name'|trans }}
+                    </label>
+                    <input class="form-control" id="name" name="name" maxlength="100" required placeholder="{{ 'integration.device.new.mobile_terminal_goods_issue_1'|trans }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="device_type">
+                        {{ 'integration.automation.device_new.device_type'|trans }}
+                    </label>
+                    <select class="form-select" id="device_type" name="device_type">
+                        <option value="barcode_scanner">
+                            {{ 'integration.device.new.barcode_scanner'|trans }}
+                        </option>
+                        <option value="mde">
+                            {{ 'integration.device.new.mobile_terminal'|trans }}
+                        </option>
+                        <option value="mobile_browser">
+                            {{ 'integration.device.new.mobile_browser'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="active" name="active" value="1" checked>
+                        <label class="form-check-label" for="active">
+                            {{ 'integration.automation.device_new.activate_device_immediately'|trans }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <a class="btn btn-light" href="{{ path('v3_device_index') }}">
+                {{ 'common.button.cancel'|trans }}
+            </a>
+            <button class="btn btn-primary">
+                {{ 'integration.automation.device_new.create_device'|trans }}
+            </button>
+        </div>
+    </form>
 {% endblock %}

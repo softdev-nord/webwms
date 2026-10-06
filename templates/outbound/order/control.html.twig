@@ -1,26 +1,876 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="d-flex justify-content-between align-items-center mb-4"><div><h1 class="h3 mb-1">{{ 'outbound.control.outbound_dispatch_control_center'|trans }}</h1><p class="text-muted mb-0">{{ 'outbound.control.centrally_manage_demand_outbound_qc_shipping_rules_documents_tracking_an'|trans }}</p></div><div class="d-flex gap-2"><a class="btn btn-outline-primary" href="{{ path('v3_outbound_orders') }}">{{ 'navigation.customer_order.headline.label'|trans }}</a><a class="btn btn-primary" href="{{ path('v3_packing_index') }}">{{ 'integration.device.scan.packing'|trans }}</a></div></div>
-	<ul class="nav nav-tabs nav-tabs-custom mb-3" role="tablist">{% for id, label in {forecast: 'outbound.tab.forecast.preview_and_orders', quality: 'outbound.tab.quality.outbound_qc', shipping: 'outbound.tab.shipping.shipping_and_tracking', tours: 'outbound.tab.tours.routes_and_documents'} %}<li class="nav-item"><button class="nav-link {{ loop.first ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#outbound-{{ id }}" type="button">{{ label|trans }}</button></li>{% endfor %}</ul>
-	<div class="tab-content">
-		<div class="tab-pane fade show active" id="outbound-forecast">
-			<div class="row g-3 mb-4">{% set shortage = 0 %}{% set demand = 0 %}{% for item in control.forecast %}{% set shortage = shortage + item.shortage_quantity %}{% set demand = demand + item.demand_quantity %}{% endfor %}<div class="col-md-4"><div class="card border-0 shadow-sm"><div class="card-body"><div class="text-muted">{{ 'outbound.control.open_demand_quantity'|trans }}</div><div class="fs-3 fw-semibold">{{ demand }}</div></div></div></div><div class="col-md-4"><div class="card border-0 shadow-sm"><div class="card-body"><div class="text-muted">{{ 'outbound.control.bottleneck_quantity'|trans }}</div><div class="fs-3 fw-semibold text-danger">{{ shortage }}</div></div></div></div><div class="col-md-4"><div class="card border-0 shadow-sm"><div class="card-body"><div class="text-muted">{{ 'outbound.control.open_orders'|trans }}</div><div class="fs-3 fw-semibold">{{ orders|filter(order => order.status in ['imported', 'released'])|length }}</div></div></div></div></div>
-			<div class="row g-3"><div class="col-xl-6"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.demand_forecast'|trans }}</h2></div><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'outbound.control.demand'|trans }}</th><th>{{ 'article.index.stock'|trans }}</th><th>{{ 'outbound.control.bottleneck'|trans }}</th></tr></thead><tbody>{% for item in control.forecast %}<tr><td><strong>{{ item.sku }}</strong><div class="small text-muted">{{ item.product_name }}</div></td><td>{{ item.demand_quantity }}</td><td>{{ item.stock_quantity }}</td><td><span class="badge {{ item.shortage_quantity > 0 ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' }}">{{ item.shortage_quantity }}</span></td></tr>{% else %}<tr><td colspan="4" class="text-center text-muted py-4">{{ 'outbound.control.no_open_demand'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div>
-			<div class="col-xl-6"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.order_check'|trans }}</h2></div><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>{{ 'inbound.control.order'|trans }}</th><th>{{ 'administration.workspace.customer'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th></th></tr></thead><tbody>{% for order in orders %}<tr><td><a href="{{ path('v3_outbound_order', {orderId: order.id}) }}"><code>{{ order.order_number }}</code></a></td><td>{{ order.customer_reference }}</td><td>{{ order.status }}</td><td class="text-end">{% if order.status == 'imported' %}<form method="post" action="{{ path('v3_outbound_control_cancel_order', {orderId: order.id}) }}" class="d-flex gap-1 justify-content-end"><input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_cancel_' ~ order.id) }}"><input class="form-control form-control-sm w-auto" name="reason" placeholder="{{ 'outbound.control.cancellation_reason'|trans }}" required><button class="btn btn-sm btn-outline-danger">{{ 'outbound.control.cancel'|trans }}</button></form>{% endif %}</td></tr>{% endfor %}</tbody></table></div></div></div></div>
-		</div>
-		<div class="tab-pane fade" id="outbound-quality">
-			<div class="row g-3"><div class="col-xl-5"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.check_pick_list'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_outbound_control_quality') }}"><input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_quality') }}"><select class="form-select mb-3" name="pick_list_id" required><option value="">{{ 'outbound.control.completed_pick_list'|trans }}</option>{% for list in control.qualityCandidates %}<option value="{{ list.id }}">{{ list.code }} · {{ list.order_number }}</option>{% endfor %}</select>{% for name, label in {completeness_passed: 'outbound.quality.completeness.completeness_confirmed', condition_passed: 'outbound.quality.condition.condition_flawless', customer_check_passed: 'outbound.quality.customer.customer_specifications_met'} %}<div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="{{ name }}" value="1" id="{{ name }}"><label class="form-check-label" for="{{ name }}">{{ label|trans }}</label></div>{% endfor %}<textarea class="form-control my-3" name="note" placeholder="{{ 'outbound.control.inspection_or_hold_note'|trans }}"></textarea><button class="btn btn-primary">{{ 'inbound.planned.complete_qc'|trans }}</button></form></div></div></div><div class="col-xl-7"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.inspection_history'|trans }}</h2></div><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'outbound.control.pick_list'|trans }}</th><th>{{ 'inbound.control.order'|trans }}</th><th>{{ 'outbound.control.decision'|trans }}</th><th>{{ 'inventory.control.note'|trans }}</th><th>{{ 'administration.workspace.time_point_in_time'|trans }}</th></tr></thead><tbody>{% for check in control.qualityChecks %}<tr><td>{{ check.pick_list_code }}</td><td>{{ check.order_number }}</td><td><span class="badge {{ check.decision == 'released' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">{{ check.decision }}</span></td><td>{{ check.note|default('–') }}</td><td>{{ check.checked_at|date('d.m.Y H:i') }}</td></tr>{% else %}<tr><td colspan="5" class="text-center text-muted py-4">{{ 'outbound.control.no_qc_check'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div></div>
-		</div>
-		<div class="tab-pane fade" id="outbound-shipping">
-			<div class="row g-3 mb-4"><div class="col-xl-6"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.shipping_rule'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_outbound_control_shipping_rule') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_shipping_rule') }}"><div class="col-md-4"><input class="form-control" name="code" placeholder="{{ 'administration.role_new.code'|trans }}" required></div><div class="col-md-8"><input class="form-control" name="name" placeholder="{{ 'article.index.description'|trans }}" required></div><div class="col-md-6"><input class="form-control" name="carrier" placeholder="{{ 'administration.workspace.carrier'|trans }}" required></div><div class="col-md-6"><input class="form-control" name="service" placeholder="{{ 'outbound.control.service'|trans }}" required></div><div class="col-md-4"><input class="form-control" type="number" min="0" name="min_weight_grams" value="0" title="{{ 'outbound.control.minimum_weight'|trans }}"></div><div class="col-md-4"><input class="form-control" type="number" min="1" name="max_weight_grams" value="31500" title="{{ 'outbound.control.maximum_weight'|trans }}"></div><div class="col-md-4"><input class="form-control" type="number" name="priority" value="100" title="{{ 'inventory.configuration_form.priority'|trans }}"></div><div><button class="btn btn-primary">{{ 'outbound.control.activate_rule'|trans }}</button></div></form></div></div></div><div class="col-xl-6"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.tracking_event'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_outbound_control_tracking') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_tracking') }}"><div class="col-12"><select class="form-select" name="shipment_id" required>{% for shipment in shipments %}<option value="{{ shipment.id }}">{{ shipment.shipment_number }} · {{ shipment.carrier }}</option>{% endfor %}</select></div><div class="col-md-6"><input class="form-control" name="status" placeholder="{{ 'transport_request.index.status'|trans }}" required></div><div class="col-md-6"><input class="form-control" name="location" placeholder="{{ 'customer.customer_input_fields.city_town'|trans }}"></div><div class="col-md-6"><input class="form-control" type="datetime-local" name="occurred_at" required></div><div class="col-md-6"><input class="form-control" name="description" placeholder="{{ 'user.user_group.index.description'|trans }}" required></div><div><button class="btn btn-primary">{{ 'outbound.control.save_event'|trans }}</button></div></form></div></div></div></div>
-			<div class="row g-3"><div class="col-xl-6"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.shipping_methods'|trans }}</h2></div><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'inventory.selection_rules.rule'|trans }}</th><th>{{ 'outbound.control.carrier_service'|trans }}</th><th>{{ 'article.article_input_fields.weight'|trans }}</th></tr></thead><tbody>{% for rule in control.shippingRules %}<tr><td>{{ rule.code }}<div class="small text-muted">{{ rule.name }}</div></td><td>{{ rule.carrier }} · {{ rule.service }}</td><td>{{ rule.min_weight_grams }}–{{ rule.max_weight_grams }} {{ 'outbound.control.g'|trans }}</td></tr>{% else %}<tr><td colspan="3" class="text-center text-muted py-4">{{ 'outbound.control.no_shipping_rule'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div><div class="col-xl-6"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.tracking_history'|trans }}</h2></div><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'integration.device.scan.shipment'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th>{{ 'customer.customer_input_fields.city_town'|trans }}</th><th>{{ 'administration.workspace.time_point_in_time'|trans }}</th></tr></thead><tbody>{% for event in control.trackingEvents %}<tr><td>{{ event.shipment_number }}</td><td>{{ event.status }}</td><td>{{ event.location|default('–') }}</td><td>{{ event.occurred_at|date('d.m.Y H:i') }}</td></tr>{% else %}<tr><td colspan="4" class="text-center text-muted py-4">{{ 'outbound.control.no_tracking_events'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div></div>
-		</div>
-		<div class="tab-pane fade" id="outbound-tours">
-			<div class="row g-3 mb-4"><div class="col-xl-4"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.plan_tour'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_outbound_control_tour') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_tour') }}"><div class="col-6"><input class="form-control" name="code" placeholder="{{ 'outbound.control.tour_code'|trans }}" required></div><div class="col-6"><input class="form-control" name="carrier" placeholder="{{ 'administration.workspace.carrier'|trans }}" required></div><div><input class="form-control" name="vehicle_reference" placeholder="{{ 'loading.index.vehicle'|trans }}" required></div><div><input class="form-control" type="number" min="1" name="max_weight_grams" value="12000000" title="{{ 'outbound.control.maximum_weight'|trans }}"></div><div><input class="form-control" type="datetime-local" name="departure_at" required></div><div><select class="form-select" name="shipment_id"><option value="">{{ 'outbound.control.stop_without_shipment'|trans }}</option>{% for shipment in shipments %}<option value="{{ shipment.id }}">{{ shipment.shipment_number }}</option>{% endfor %}</select></div><div><input class="form-control" name="destination_name" placeholder="{{ 'common.template.recipient'|trans }}" required></div><div><textarea class="form-control" name="destination_address" placeholder="{{ 'outbound.control.destination_address'|trans }}" required></textarea></div><div><button class="btn btn-primary">{{ 'outbound.control.create_tour'|trans }}</button></div></form></div></div></div>
-			<div class="col-xl-4"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.weight_limit'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_outbound_control_weight_constraint') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_weight') }}"><div><select class="form-select" name="scope"><option value="package">{{ 'integration.measurement.capture.package'|trans }}</option><option value="carrier">{{ 'administration.workspace.carrier'|trans }}</option><option value="vehicle">{{ 'loading.index.vehicle'|trans }}</option><option value="tour">{{ 'loading.index.route'|trans }}</option></select></div><div><input class="form-control" name="reference_code" placeholder="{{ 'outbound.control.optional_reference'|trans }}"></div><div><input class="form-control" type="number" min="1" name="max_weight_grams" placeholder="{{ 'outbound.control.maximum_weight_in_g'|trans }}" required></div><div><button class="btn btn-primary">{{ 'outbound.control.activate_limit'|trans }}</button></div></form></div></div></div>
-			<div class="col-xl-4"><div class="card border-0 shadow-sm h-100"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.shipping_document'|trans }}</h2></div><div class="card-body"><form method="post" action="{{ path('v3_outbound_control_document') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_document') }}"><div><select class="form-select" name="document_type"><option value="delivery_note">{{ 'inbound.control.delivery_note'|trans }}</option><option value="packing_list">{{ 'outbound.control.packing_list'|trans }}</option><option value="loading_list">{{ 'loading.show.loading_list'|trans }}</option><option value="cmr">{{ 'outbound.control.cmr_consignment_note'|trans }}</option></select></div><div><select class="form-select" name="aggregate_type"><option value="shipment">{{ 'integration.device.scan.shipment'|trans }}</option><option value="loading_manifest">{{ 'integration.printing.job_new.load_manifest'|trans }}</option><option value="tour">{{ 'loading.index.route'|trans }}</option></select></div><div><input class="form-control" name="aggregate_id" placeholder="{{ 'inbound.control.transaction_id'|trans }}" required></div><div><input class="form-control" name="document_number" placeholder="{{ 'outbound.control.document_number'|trans }}" required></div><div><input class="form-control" name="title" placeholder="{{ 'outbound.control.title'|trans }}" required></div><div><textarea class="form-control" name="body" placeholder="{{ 'outbound.control.document_content'|trans }}" required></textarea></div><div><button class="btn btn-primary">{{ 'outbound.control.generate_document'|trans }}</button></div></form></div></div></div></div>
-			<div class="row g-3"><div class="col-xl-4"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.tours'|trans }}</h2></div><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'loading.index.route'|trans }}</th><th>{{ 'loading.index.vehicle'|trans }}</th><th>{{ 'outbound.control.load'|trans }}</th></tr></thead><tbody>{% for tour in control.tours %}<tr><td>{{ tour.code }}<div class="small text-muted">{{ tour.carrier }} · {{ tour.stop_count }} {{ 'outbound.control.stops'|trans }}</div></td><td>{{ tour.vehicle_reference }}</td><td>{{ tour.planned_weight_grams }} / {{ tour.max_weight_grams }} {{ 'outbound.control.g'|trans }}</td></tr>{% else %}<tr><td colspan="3" class="text-center text-muted py-4">{{ 'outbound.control.no_route'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div><div class="col-xl-4"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.weight_restrictions'|trans }}</h2></div><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'administration.workspace.area'|trans }}</th><th>{{ 'stock.stock_rotation.reference'|trans }}</th><th>{{ 'outbound.control.maximum'|trans }}</th></tr></thead><tbody>{% for item in control.weightConstraints %}<tr><td>{{ item.scope }}</td><td>{{ item.reference_code|default('inventory.movements.all'|trans) }}</td><td>{{ item.max_weight_grams }} {{ 'outbound.control.g'|trans }}</td></tr>{% else %}<tr><td colspan="3" class="text-center text-muted py-4">{{ 'outbound.control.no_limit'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div><div class="col-xl-4"><div class="card border-0 shadow-sm"><div class="card-header"><h2 class="h5 mb-0">{{ 'outbound.control.document_archive'|trans }}</h2></div><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'integration.printing.index.document'|trans }}</th><th>{{ 'administration.workspace.type'|trans }}</th><th>{{ 'outbound.control.checksum'|trans }}</th></tr></thead><tbody>{% for document in control.documents %}<tr><td><a target="_blank" href="{{ path('v3_outbound_control_document_show', {documentId: document.id}) }}">{{ document.document_number }}</a></td><td>{{ document.document_type }}</td><td><code>{{ document.checksum|slice(0, 10) }}…</code></td></tr>{% else %}<tr><td colspan="3" class="text-center text-muted py-4">{{ 'outbound.control.no_documents'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div></div>
-		</div>
-	</div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ 'outbound.control.outbound_dispatch_control_center'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'outbound.control.centrally_manage_demand_outbound_qc_shipping_rules_documents_tracking_an'|trans }}
+            </p>
+        </div>
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-primary" href="{{ path('v3_outbound_orders') }}">
+                {{ 'navigation.customer_order.headline.label'|trans }}
+            </a>
+            <a class="btn btn-primary" href="{{ path('v3_packing_index') }}">
+                {{ 'integration.device.scan.packing'|trans }}
+            </a>
+        </div>
+    </div>
+    <ul class="nav nav-tabs nav-tabs-custom mb-3" role="tablist">
+
+        {% for id, label in {forecast: 'outbound.tab.forecast.preview_and_orders', quality: 'outbound.tab.quality.outbound_qc', shipping: 'outbound.tab.shipping.shipping_and_tracking', tours: 'outbound.tab.tours.routes_and_documents'} %}
+
+            <li class="nav-item">
+                <button class="nav-link {{ loop.first ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#outbound-{{ id }}" type="button">
+                    {{ label|trans }}
+                </button>
+            </li>
+
+        {% endfor %}
+
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="outbound-forecast">
+            <div class="row g-3 mb-4">
+
+                {% set shortage = 0 %}
+
+                {% set demand = 0 %}
+
+                {% for item in control.forecast %}
+
+                    {% set shortage = shortage + item.shortage_quantity %}
+
+                    {% set demand = demand + item.demand_quantity %}
+
+                {% endfor %}
+
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-muted">
+                                {{ 'outbound.control.open_demand_quantity'|trans }}
+                            </div>
+                            <div class="fs-3 fw-semibold">
+                                {{ demand }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-muted">
+                                {{ 'outbound.control.bottleneck_quantity'|trans }}
+                            </div>
+                            <div class="fs-3 fw-semibold text-danger">
+                                {{ shortage }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-muted">
+                                {{ 'outbound.control.open_orders'|trans }}
+                            </div>
+                            <div class="fs-3 fw-semibold">
+                                {{ orders|filter(order => order.status in ['imported', 'released'])|length }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.demand_forecast'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'outbound.control.demand'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'article.index.stock'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'outbound.control.bottleneck'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for item in control.forecast %}
+
+                                        <tr>
+                                            <td>
+                                                <strong>
+                                                    {{ item.sku }}
+                                                </strong>
+                                                <div class="small text-muted">
+                                                    {{ item.product_name }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {{ item.demand_quantity }}
+                                            </td>
+                                            <td>
+                                                {{ item.stock_quantity }}
+                                            </td>
+                                            <td>
+                                                <span class="badge {{ item.shortage_quantity > 0 ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' }}">
+                                                    {{ item.shortage_quantity }}
+                                                </span>
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted py-4">
+                                                {{ 'outbound.control.no_open_demand'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.order_check'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'inbound.control.order'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'administration.workspace.customer'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'transport_request.index.status'|trans }}
+                                        </th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for order in orders %}
+
+                                        <tr>
+                                            <td>
+                                                <a href="{{ path('v3_outbound_order', {orderId: order.id}) }}">
+                                                    <code>
+                                                        {{ order.order_number }}
+                                                    </code>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {{ order.customer_reference }}
+                                            </td>
+                                            <td>
+                                                {{ order.status }}
+                                            </td>
+                                            <td class="text-end">
+
+                                                {% if order.status == 'imported' %}
+
+                                                    <form method="post" action="{{ path('v3_outbound_control_cancel_order', {orderId: order.id}) }}" class="d-flex gap-1 justify-content-end">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_cancel_' ~ order.id) }}">
+                                                        <input class="form-control form-control-sm w-auto" name="reason" placeholder="{{ 'outbound.control.cancellation_reason'|trans }}" required>
+                                                        <button class="btn btn-sm btn-outline-danger">
+                                                            {{ 'outbound.control.cancel'|trans }}
+                                                        </button>
+                                                    </form>
+
+                                                {% endif %}
+
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="outbound-quality">
+            <div class="row g-3">
+                <div class="col-xl-5">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.check_pick_list'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_outbound_control_quality') }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_quality') }}">
+                                <select class="form-select mb-3" name="pick_list_id" required>
+                                    <option value="">
+                                        {{ 'outbound.control.completed_pick_list'|trans }}
+                                    </option>
+
+                                    {% for list in control.qualityCandidates %}
+
+                                        <option value="{{ list.id }}">
+                                            {{ list.code }} · {{ list.order_number }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                                {% for name, label in {completeness_passed: 'outbound.quality.completeness.completeness_confirmed', condition_passed: 'outbound.quality.condition.condition_flawless', customer_check_passed: 'outbound.quality.customer.customer_specifications_met'} %}
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="{{ name }}" value="1" id="{{ name }}">
+                                        <label class="form-check-label" for="{{ name }}">
+                                            {{ label|trans }}
+                                        </label>
+                                    </div>
+
+                                {% endfor %}
+
+                                <textarea class="form-control my-3" name="note" placeholder="{{ 'outbound.control.inspection_or_hold_note'|trans }}">
+                                </textarea>
+                                <button class="btn btn-primary">
+                                    {{ 'inbound.planned.complete_qc'|trans }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-7">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.inspection_history'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'outbound.control.pick_list'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inbound.control.order'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'outbound.control.decision'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inventory.control.note'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'administration.workspace.time_point_in_time'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for check in control.qualityChecks %}
+
+                                        <tr>
+                                            <td>
+                                                {{ check.pick_list_code }}
+                                            </td>
+                                            <td>
+                                                {{ check.order_number }}
+                                            </td>
+                                            <td>
+                                                <span class="badge {{ check.decision == 'released' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">
+                                                    {{ check.decision }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{ check.note|default('–') }}
+                                            </td>
+                                            <td>
+                                                {{ check.checked_at|date('d.m.Y H:i') }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-4">
+                                                {{ 'outbound.control.no_qc_check'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="outbound-shipping">
+            <div class="row g-3 mb-4">
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.shipping_rule'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_outbound_control_shipping_rule') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_shipping_rule') }}">
+                                <div class="col-md-4">
+                                    <input class="form-control" name="code" placeholder="{{ 'administration.role_new.code'|trans }}" required>
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control" name="name" placeholder="{{ 'article.index.description'|trans }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control" name="carrier" placeholder="{{ 'administration.workspace.carrier'|trans }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control" name="service" placeholder="{{ 'outbound.control.service'|trans }}" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="form-control" type="number" min="0" name="min_weight_grams" value="0" title="{{ 'outbound.control.minimum_weight'|trans }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="form-control" type="number" min="1" name="max_weight_grams" value="31500" title="{{ 'outbound.control.maximum_weight'|trans }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="form-control" type="number" name="priority" value="100" title="{{ 'inventory.configuration_form.priority'|trans }}">
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'outbound.control.activate_rule'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.tracking_event'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_outbound_control_tracking') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_tracking') }}">
+                                <div class="col-12">
+                                    <select class="form-select" name="shipment_id" required>
+
+                                        {% for shipment in shipments %}
+
+                                            <option value="{{ shipment.id }}">
+                                                {{ shipment.shipment_number }} · {{ shipment.carrier }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control" name="status" placeholder="{{ 'transport_request.index.status'|trans }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control" name="location" placeholder="{{ 'customer.customer_input_fields.city_town'|trans }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control" type="datetime-local" name="occurred_at" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control" name="description" placeholder="{{ 'user.user_group.index.description'|trans }}" required>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'outbound.control.save_event'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.shipping_methods'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'inventory.selection_rules.rule'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'outbound.control.carrier_service'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'article.article_input_fields.weight'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for rule in control.shippingRules %}
+
+                                        <tr>
+                                            <td>
+                                                {{ rule.code }}
+                                                <div class="small text-muted">
+                                                    {{ rule.name }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {{ rule.carrier }} · {{ rule.service }}
+                                            </td>
+                                            <td>
+                                                {{ rule.min_weight_grams }}–{{ rule.max_weight_grams }} {{ 'outbound.control.g'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted py-4">
+                                                {{ 'outbound.control.no_shipping_rule'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.tracking_history'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'integration.device.scan.shipment'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'transport_request.index.status'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'customer.customer_input_fields.city_town'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'administration.workspace.time_point_in_time'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for event in control.trackingEvents %}
+
+                                        <tr>
+                                            <td>
+                                                {{ event.shipment_number }}
+                                            </td>
+                                            <td>
+                                                {{ event.status }}
+                                            </td>
+                                            <td>
+                                                {{ event.location|default('–') }}
+                                            </td>
+                                            <td>
+                                                {{ event.occurred_at|date('d.m.Y H:i') }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted py-4">
+                                                {{ 'outbound.control.no_tracking_events'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="outbound-tours">
+            <div class="row g-3 mb-4">
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.plan_tour'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_outbound_control_tour') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_tour') }}">
+                                <div class="col-6">
+                                    <input class="form-control" name="code" placeholder="{{ 'outbound.control.tour_code'|trans }}" required>
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control" name="carrier" placeholder="{{ 'administration.workspace.carrier'|trans }}" required>
+                                </div>
+                                <div>
+                                    <input class="form-control" name="vehicle_reference" placeholder="{{ 'loading.index.vehicle'|trans }}" required>
+                                </div>
+                                <div>
+                                    <input class="form-control" type="number" min="1" name="max_weight_grams" value="12000000" title="{{ 'outbound.control.maximum_weight'|trans }}">
+                                </div>
+                                <div>
+                                    <input class="form-control" type="datetime-local" name="departure_at" required>
+                                </div>
+                                <div>
+                                    <select class="form-select" name="shipment_id">
+                                        <option value="">
+                                            {{ 'outbound.control.stop_without_shipment'|trans }}
+                                        </option>
+
+                                        {% for shipment in shipments %}
+
+                                            <option value="{{ shipment.id }}">
+                                                {{ shipment.shipment_number }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <div>
+                                    <input class="form-control" name="destination_name" placeholder="{{ 'common.template.recipient'|trans }}" required>
+                                </div>
+                                <div>
+                                    <textarea class="form-control" name="destination_address" placeholder="{{ 'outbound.control.destination_address'|trans }}" required>
+                                    </textarea>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'outbound.control.create_tour'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.weight_limit'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_outbound_control_weight_constraint') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_weight') }}">
+                                <div>
+                                    <select class="form-select" name="scope">
+                                        <option value="package">
+                                            {{ 'integration.measurement.capture.package'|trans }}
+                                        </option>
+                                        <option value="carrier">
+                                            {{ 'administration.workspace.carrier'|trans }}
+                                        </option>
+                                        <option value="vehicle">
+                                            {{ 'loading.index.vehicle'|trans }}
+                                        </option>
+                                        <option value="tour">
+                                            {{ 'loading.index.route'|trans }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <input class="form-control" name="reference_code" placeholder="{{ 'outbound.control.optional_reference'|trans }}">
+                                </div>
+                                <div>
+                                    <input class="form-control" type="number" min="1" name="max_weight_grams" placeholder="{{ 'outbound.control.maximum_weight_in_g'|trans }}" required>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'outbound.control.activate_limit'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.shipping_document'|trans }}
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('v3_outbound_control_document') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('v3_outbound_document') }}">
+                                <div>
+                                    <select class="form-select" name="document_type">
+                                        <option value="delivery_note">
+                                            {{ 'inbound.control.delivery_note'|trans }}
+                                        </option>
+                                        <option value="packing_list">
+                                            {{ 'outbound.control.packing_list'|trans }}
+                                        </option>
+                                        <option value="loading_list">
+                                            {{ 'loading.show.loading_list'|trans }}
+                                        </option>
+                                        <option value="cmr">
+                                            {{ 'outbound.control.cmr_consignment_note'|trans }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select class="form-select" name="aggregate_type">
+                                        <option value="shipment">
+                                            {{ 'integration.device.scan.shipment'|trans }}
+                                        </option>
+                                        <option value="loading_manifest">
+                                            {{ 'integration.printing.job_new.load_manifest'|trans }}
+                                        </option>
+                                        <option value="tour">
+                                            {{ 'loading.index.route'|trans }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <input class="form-control" name="aggregate_id" placeholder="{{ 'inbound.control.transaction_id'|trans }}" required>
+                                </div>
+                                <div>
+                                    <input class="form-control" name="document_number" placeholder="{{ 'outbound.control.document_number'|trans }}" required>
+                                </div>
+                                <div>
+                                    <input class="form-control" name="title" placeholder="{{ 'outbound.control.title'|trans }}" required>
+                                </div>
+                                <div>
+                                    <textarea class="form-control" name="body" placeholder="{{ 'outbound.control.document_content'|trans }}" required>
+                                    </textarea>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        {{ 'outbound.control.generate_document'|trans }}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.tours'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'loading.index.route'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'loading.index.vehicle'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'outbound.control.load'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for tour in control.tours %}
+
+                                        <tr>
+                                            <td>
+                                                {{ tour.code }}
+                                                <div class="small text-muted">
+                                                    {{ tour.carrier }} · {{ tour.stop_count }} {{ 'outbound.control.stops'|trans }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {{ tour.vehicle_reference }}
+                                            </td>
+                                            <td>
+                                                {{ tour.planned_weight_grams }} / {{ tour.max_weight_grams }} {{ 'outbound.control.g'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted py-4">
+                                                {{ 'outbound.control.no_route'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.weight_restrictions'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'administration.workspace.area'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'stock.stock_rotation.reference'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'outbound.control.maximum'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for item in control.weightConstraints %}
+
+                                        <tr>
+                                            <td>
+                                                {{ item.scope }}
+                                            </td>
+                                            <td>
+                                                {{ item.reference_code|default('inventory.movements.all'|trans) }}
+                                            </td>
+                                            <td>
+                                                {{ item.max_weight_grams }} {{ 'outbound.control.g'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted py-4">
+                                                {{ 'outbound.control.no_limit'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0">
+                                {{ 'outbound.control.document_archive'|trans }}
+                            </h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'integration.printing.index.document'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'administration.workspace.type'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'outbound.control.checksum'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for document in control.documents %}
+
+                                        <tr>
+                                            <td>
+                                                <a target="_blank" href="{{ path('v3_outbound_control_document_show', {documentId: document.id}) }}">
+                                                    {{ document.document_number }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {{ document.document_type }}
+                                            </td>
+                                            <td>
+                                                <code>
+                                                    {{ document.checksum|slice(0, 10) }}…
+                                                </code>
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted py-4">
+                                                {{ 'outbound.control.no_documents'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

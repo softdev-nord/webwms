@@ -6,7 +6,14 @@
         {{ include('subsections/head-css.html.twig') }}
     </head>
 
-    <title>{% block title %}{{ 'security.login.log_in_webwms_web_based_warehouse_management_system'|trans }}{% endblock %}</title>
+    <title>
+
+        {% block title %}
+            {{ 'security.login.log_in_webwms_web_based_warehouse_management_system'|trans }}
+        {% endblock %}
+
+    </title>
+
     {% block stylesheets %}
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     {% endblock %}
@@ -15,17 +22,25 @@
         <div class="content-webLVS">
             <div class="signup-form">
                 <form class="form-horizontal" role="form" method="post">
-                {% if error %}
-                    <div class="alert alert-danger">
-                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+                    <div class="mb-3">
+                        <span class="text-first">
+                            {{ 'base.web'|trans }}
+                        </span>
+                        <span class="text-last">
+                            {{ 'base.wms'|trans }}
+                        </span>
                     </div>
-                {% endif %}
-                <div class="mb-3">
-                    <span class="text-first">{{ 'base.web'|trans }}</span><span class="text-last">{{ 'base.wms'|trans }}</span>
-                </div>
-                <h4>{{ 'base.web_based_warehouse_management_system'|trans }}</h4><br>
-                <div class="form-group">
-                    <input
+                    <h4>
+                        {{ 'base.web_based_warehouse_management_system'|trans }}
+                    </h4>
+                    <br>
+                    <div class="form-group">
+                        <input
                         type="text"
                         value="{{ last_username }}"
                         name="username"
@@ -34,52 +49,70 @@
                         placeholder="{{ 'security.login.username'|trans }}"
                         required
                         autofocus
-                    />
-                </div>
-                <div class="form-group">
-                    <input
+                        />
+                    </div>
+                    <div class="form-group">
+                        <input
                         type="password"
                         name="password"
                         id="inputPassword"
                         class="form-control"
                         placeholder="{{ 'security.login.password'|trans }}"
                         required
+                        />
+                    </div>
+                    <input
+                    type="hidden"
+                    name="_csrf_token"
+                    value="{{ csrf_token('authenticate') }}"
                     />
-                </div>
-                <input
-                        type="hidden"
-                        name="_csrf_token"
-                        value="{{ csrf_token('authenticate') }}"
-                />
-{#                <div class="checkbox mb-3">
+                    {# <div class="checkbox mb-3">
                     <label>
                         <input type="checkbox" name="_remember_me"> Angemeldet bleiben
                     </label>
-                </div>#}
-                <input type="hidden" name="_target_path" value="{{ path('homepage') }}" />
-                <div class="form-group">
-                    <button type="submit" name="anmelden" class="btn btn-dark bg-gradient waves-effect waves-light">{{ 'security.login.log_in'|trans }}</button>
-                </div>
-                <div class="signup-form-text-info">
-                    {{ 'security.login.and_copy_2019'|trans }}{{ "now"|date("Y") }} <a href="https://softdev-nord.de"> {{ 'security.login.softdev_nord_rene_irrgang'|trans }} </a><br>
-                    {{ 'security.login.weblvs_and_reg'|trans }} {{ appVersionNumber }} {{ appVersion }} <br><br>
-                    {{ appLizenz }}
-                </div>
-                <div>
-                    <i class="brands-webWMS mdi mdi-symfony"></i>
-                    <i class="brands-webWMS mdi mdi-language-php"></i>
-                    <i class="brands-webWMS mdi mdi-language-html5"></i>
-                    <i class="brands-webWMS mdi mdi-language-css3"></i>
-                    <i class="brands-webWMS mdi mdi-language-javascript"></i>
-                </div>
-                <div class="signup-form-text-software">
-                    {{ 'security.login.web_server'|trans }}   {{ webServer }} <br>
-                    {{ 'security.login.server_ip_address'|trans }} {{ serverIp }} <br>
-                    {{ 'security.login.server_name'|trans }} {{ serverName }} <br>
-                    {{ 'security.login.free_disk_space'|trans }} {{ freeDiskSpace }} <br>
-                    {{ 'security.login.mysql_version'|trans }} {{ mySqlVersion }} <br>
-                    {{ 'security.login.php_version'|trans }} {{ phpVersion }}
-                </div>
+                </div> #}
+                    <input type="hidden" name="_target_path" value="{{ path('homepage') }}" />
+                    <div class="form-group">
+                        <button type="submit" name="anmelden" class="btn btn-dark bg-gradient waves-effect waves-light">
+                            {{ 'security.login.log_in'|trans }}
+                        </button>
+                    </div>
+                    <div class="signup-form-text-info">
+                        {{ 'security.login.and_copy_2019'|trans }}{{ 'now'|date('Y') }}
+                        <a href="https://softdev-nord.de">
+                            {{ 'security.login.softdev_nord_rene_irrgang'|trans }}
+                        </a>
+                        <br>
+                        {{ 'security.login.weblvs_and_reg'|trans }} {{ appVersionNumber }} {{ appVersion }}
+                        <br>
+                        <br>
+                        {{ appLizenz }}
+                    </div>
+                    <div>
+                        <i class="brands-webWMS mdi mdi-symfony">
+                        </i>
+                        <i class="brands-webWMS mdi mdi-language-php">
+                        </i>
+                        <i class="brands-webWMS mdi mdi-language-html5">
+                        </i>
+                        <i class="brands-webWMS mdi mdi-language-css3">
+                        </i>
+                        <i class="brands-webWMS mdi mdi-language-javascript">
+                        </i>
+                    </div>
+                    <div class="signup-form-text-software">
+                        {{ 'security.login.web_server'|trans }}   {{ webServer }}
+                        <br>
+                        {{ 'security.login.server_ip_address'|trans }} {{ serverIp }}
+                        <br>
+                        {{ 'security.login.server_name'|trans }} {{ serverName }}
+                        <br>
+                        {{ 'security.login.free_disk_space'|trans }} {{ freeDiskSpace }}
+                        <br>
+                        {{ 'security.login.mysql_version'|trans }} {{ mySqlVersion }}
+                        <br>
+                        {{ 'security.login.php_version'|trans }} {{ phpVersion }}
+                    </div>
                 </form>
             </div>
         </div>

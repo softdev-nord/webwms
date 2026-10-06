@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html
-    lang="{{ app.request.locale|split('_')[0] }}"
-    data-layout="vertical"
-    data-topbar="light"
-    data-sidebar="light"
-    data-sidebar-size="lg"
-    data-sidebar-image="none"
-    data-preloader="disable"
+lang="{{ app.request.locale|split('_')[0] }}"
+data-layout="vertical"
+data-topbar="light"
+data-sidebar="light"
+data-sidebar-size="lg"
+data-sidebar-image="none"
+data-preloader="disable"
 >
-    <head>
-        {{ include('v3/subsections/title-meta.html.twig') }}
+<head>
+    {{ include('v3/subsections/title-meta.html.twig') }}
 
-        {% block stylesheets %}
-            {{ include('v3/subsections/head-css.html.twig') }}
-            <link rel="stylesheet" href="{{ asset('assets/css/handbook.css') }}?v=2">
-        {% endblock %}
-    </head>
-    <body class="handbook-page">
-        {% block handbook_content %}
-        {% endblock %}
+    {% block stylesheets %}
+        {{ include('v3/subsections/head-css.html.twig') }}
+        <link rel="stylesheet" href="{{ asset('assets/css/handbook.css') }}?v=2">
+    {% endblock %}
+</head>
+<body class="handbook-page">
 
-        <script src="{{ asset('assets/js/handbook.js') }}?v=2" defer></script>
-    </body>
+    {% block handbook_content %}
+    {% endblock %}
+
+    <script src="{{ asset('assets/js/handbook.js') }}?v=2" defer>
+    </script>
+</body>
 </html>

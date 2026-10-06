@@ -1,45 +1,63 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<a href="{{ path('v3_administration_index') }}" class="text-decoration-none">{{ 'administration.api_client_new.administration'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'navigation.user.add'|trans }}</h1>
-	</div>
+    <div class="mb-4">
+        <a href="{{ path('v3_administration_index') }}" class="text-decoration-none">
+            {{ 'administration.api_client_new.administration'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'navigation.user.add'|trans }}
+        </h1>
+    </div>
 
-	<form method="post" class="card border-0 shadow-sm">
-		<div class="card-body">
-			<input type="hidden" name="_token" value="{{ csrf_token('v3_administration_user_create') }}">
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_administration_user_create') }}">
 
-			<div class="row g-3">
-				<div class="col-md-6">
-					<label class="form-label">{{ 'administration.user_new.display_name'|trans }}</label>
-					<input class="form-control" name="display_name" required>
-				</div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">
+                        {{ 'administration.user_new.display_name'|trans }}
+                    </label>
+                    <input class="form-control" name="display_name" required>
+                </div>
 
-				<div class="col-md-6">
-					<label class="form-label">{{ 'theme.email'|trans }}</label>
-					<input class="form-control" type="email" name="email" required>
-				</div>
+                <div class="col-md-6">
+                    <label class="form-label">
+                        {{ 'theme.email'|trans }}
+                    </label>
+                    <input class="form-control" type="email" name="email" required>
+                </div>
 
-				<div class="col-md-6">
-					<label class="form-label">{{ 'administration.user_new.initial_password'|trans }}</label>
-					<input class="form-control" type="password" minlength="12" name="password" autocomplete="new-password" required>
-					<div class="form-text">{{ 'administration.user_new.at_least_12_characters'|trans }}</div>
-				</div>
+                <div class="col-md-6">
+                    <label class="form-label">
+                        {{ 'administration.user_new.initial_password'|trans }}
+                    </label>
+                    <input class="form-control" type="password" minlength="12" name="password" autocomplete="new-password" required>
+                    <div class="form-text">
+                        {{ 'administration.user_new.at_least_12_characters'|trans }}
+                    </div>
+                </div>
 
-				<div class="col-md-6">
-					<label class="form-label">{{ 'user.index.roles'|trans }}</label>
-					<select class="form-select" name="role_ids[]" multiple size="5">
-						{% for role in roles %}
-							<option value="{{ role.id }}">{{ role.code }} – {{ role.name }}</option>
-						{% endfor %}
-					</select>
-				</div>
-			</div>
-		</div>
+                <div class="col-md-6">
+                    <label class="form-label">
+                        {{ 'user.index.roles'|trans }}
+                    </label>
+                    <select class="form-select" name="role_ids[]" multiple size="5">
+                        {% for role in roles %}
+                            <option value="{{ role.id }}">
+                                {{ role.code }} – {{ role.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
 
-		<div class="card-footer text-end">
-			<button class="btn btn-primary">{{ 'navigation.user.add'|trans }}</button>
-		</div>
-	</form>
+        <div class="card-footer text-end">
+            <button class="btn btn-primary">
+                {{ 'navigation.user.add'|trans }}
+            </button>
+        </div>
+    </form>
 {% endblock %}

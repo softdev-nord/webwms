@@ -1,6 +1,8 @@
 {% extends 'v3/base.html.twig' %}
 
-{% block title %}{{ (product is not null ? 'product.page.edit' : 'product.page.new')|trans({}, 'product') }} | WebWMS 3.0{% endblock %}
+{% block title %}
+    {{ (product is not null ? 'product.page.edit' : 'product.page.new')|trans({}, 'product') }} | WebWMS 3.0
+{% endblock %}
 
 {% block webwms_content %}
     {% set editing = product is not null %}
@@ -8,77 +10,264 @@
 
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
-            <h1 class="h3 mb-1">{{ (editing ? 'product.form.edit_title' : 'product.form.new_title')|trans({}, 'product') }}</h1>
-            <p class="text-muted mb-0">{{ 'product.form.description'|trans({}, 'product') }}</p>
+            <h1 class="h3 mb-1">
+                {{ (editing ? 'product.form.edit_title' : 'product.form.new_title')|trans({}, 'product') }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'product.form.description'|trans({}, 'product') }}
+            </p>
         </div>
-        <a class="btn btn-outline-secondary" href="{{ editing ? path('v3_product_show', {productId: product.id}) : path('v3_product_index') }}">{{ 'product.action.cancel'|trans({}, 'product') }}</a>
+        <a class="btn btn-outline-secondary" href="{{ editing ? path('v3_product_show', {productId: product.id}) : path('v3_product_index') }}">
+            {{ 'product.action.cancel'|trans({}, 'product') }}
+        </a>
     </div>
 
     <form method="post" action="{{ action }}">
         <input type="hidden" name="_token" value="{{ csrf_token(editing ? 'v3_product_update_' ~ product.id : 'v3_product_create') }}">
 
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header"><h2 class="h5 mb-0">{{ 'product.section.general'|trans({}, 'product') }}</h2></div>
+            <div class="card-header">
+                <h2 class="h5 mb-0">
+                    {{ 'product.section.general'|trans({}, 'product') }}
+                </h2>
+            </div>
             <div class="card-body row g-3">
-                <div class="col-md-4"><label class="form-label" for="sku">{{ 'product.field.sku'|trans({}, 'product') }} *</label><input class="form-control" id="sku" name="sku" maxlength="64" value="{{ product.sku|default('') }}" required><div class="form-text">{{ 'product.help.sku'|trans({}, 'product') }}</div></div>
-                <div class="col-md-8"><label class="form-label" for="name">{{ 'product.field.name'|trans({}, 'product') }} *</label><input class="form-control" id="name" name="name" maxlength="255" value="{{ product.name|default('') }}" required></div>
-                <div class="col-md-4"><label class="form-label" for="gtin">{{ 'product.field.gtin'|trans({}, 'product') }}</label><input class="form-control" id="gtin" name="gtin" inputmode="numeric" maxlength="14" value="{{ product.gtin|default('') }}"><div class="form-text">{{ 'product.help.gtin'|trans({}, 'product') }}</div></div>
-                <div class="col-md-4"><label class="form-label" for="category">{{ 'product.field.category'|trans({}, 'product') }}</label><input class="form-control" id="category" name="category" maxlength="100" value="{{ product.category|default('') }}"></div>
-                <div class="col-md-2"><label class="form-label" for="base_unit">{{ 'product.field.base_unit'|trans({}, 'product') }} *</label><input class="form-control" id="base_unit" name="base_unit" maxlength="20" value="{{ product.base_unit|default('PCS') }}" required></div>
-                <div class="col-md-2"><label class="form-label" for="abc_classification">{{ 'product.field.abc_classification'|trans({}, 'product') }}</label><select class="form-select" id="abc_classification" name="abc_classification"><option value="">–</option>{% for value in ['A', 'B', 'C', 'D', 'E', 'F'] %}<option value="{{ value }}" {{ product.abc_classification|default('') == value ? 'selected' : '' }}>{{ value }}</option>{% endfor %}</select></div>
-                <div class="col-md-2"><label class="form-label" for="crash_class">{{ 'product.field.crash_class'|trans({}, 'product') }}</label><input class="form-control" type="number" min="0" max="11" id="crash_class" name="crash_class" value="{{ product.crash_class|default('') }}"></div>
-                <div class="col-md-10"><label class="form-label" for="short_description">{{ 'product.field.short_description'|trans({}, 'product') }}</label><input class="form-control" id="short_description" name="short_description" maxlength="255" value="{{ product.short_description|default('') }}"></div>
-                <div class="col-md-6"><label class="form-label" for="description">{{ 'product.field.description'|trans({}, 'product') }}</label><textarea class="form-control" id="description" name="description" rows="4">{{ product.description|default('') }}</textarea></div>
-                <div class="col-md-6"><label class="form-label" for="description_en">{{ 'product.field.description_en'|trans({}, 'product') }}</label><textarea class="form-control" id="description_en" name="description_en" rows="4">{{ product.description_en|default('') }}</textarea></div>
-                <div class="col-12"><div class="form-check"><input type="checkbox" class="form-check-input" id="active" name="active" value="1" {{ product is null or product.active ? 'checked' : '' }}><label class="form-check-label" for="active">{{ 'product.field.active'|trans({}, 'product') }}</label><div class="form-text">{{ 'product.help.active'|trans({}, 'product') }}</div></div></div>
+                <div class="col-md-4">
+                    <label class="form-label" for="sku">
+                        {{ 'product.field.sku'|trans({}, 'product') }} *
+                    </label>
+                    <input class="form-control" id="sku" name="sku" maxlength="64" value="{{ product.sku|default('') }}" required>
+                    <div class="form-text">
+                        {{ 'product.help.sku'|trans({}, 'product') }}
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label" for="name">
+                        {{ 'product.field.name'|trans({}, 'product') }} *
+                    </label>
+                    <input class="form-control" id="name" name="name" maxlength="255" value="{{ product.name|default('') }}" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="gtin">
+                        {{ 'product.field.gtin'|trans({}, 'product') }}
+                    </label>
+                    <input class="form-control" id="gtin" name="gtin" inputmode="numeric" maxlength="14" value="{{ product.gtin|default('') }}">
+                    <div class="form-text">
+                        {{ 'product.help.gtin'|trans({}, 'product') }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="category">
+                        {{ 'product.field.category'|trans({}, 'product') }}
+                    </label>
+                    <input class="form-control" id="category" name="category" maxlength="100" value="{{ product.category|default('') }}">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" for="base_unit">
+                        {{ 'product.field.base_unit'|trans({}, 'product') }} *
+                    </label>
+                    <input class="form-control" id="base_unit" name="base_unit" maxlength="20" value="{{ product.base_unit|default('PCS') }}" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" for="abc_classification">
+                        {{ 'product.field.abc_classification'|trans({}, 'product') }}
+                    </label>
+                    <select class="form-select" id="abc_classification" name="abc_classification">
+                        <option value="">
+                            –
+                        </option>
+
+                        {% for value in ['A', 'B', 'C', 'D', 'E', 'F'] %}
+
+                            <option value="{{ value }}" {{ product.abc_classification|default('') == value ? 'selected' : '' }}>
+                                {{ value }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" for="crash_class">
+                        {{ 'product.field.crash_class'|trans({}, 'product') }}
+                    </label>
+                    <input class="form-control" type="number" min="0" max="11" id="crash_class" name="crash_class" value="{{ product.crash_class|default('') }}">
+                </div>
+                <div class="col-md-10">
+                    <label class="form-label" for="short_description">
+                        {{ 'product.field.short_description'|trans({}, 'product') }}
+                    </label>
+                    <input class="form-control" id="short_description" name="short_description" maxlength="255" value="{{ product.short_description|default('') }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="description">
+                        {{ 'product.field.description'|trans({}, 'product') }}
+                    </label>
+                    <textarea class="form-control" id="description" name="description" rows="4">
+                        {{ product.description|default('') }}
+                    </textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="description_en">
+                        {{ 'product.field.description_en'|trans({}, 'product') }}
+                    </label>
+                    <textarea class="form-control" id="description_en" name="description_en" rows="4">
+                        {{ product.description_en|default('') }}
+                    </textarea>
+                </div>
+                <div class="col-12">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="active" name="active" value="1" {{ product is null or product.active ? 'checked' : '' }}>
+                        <label class="form-check-label" for="active">
+                            {{ 'product.field.active'|trans({}, 'product') }}
+                        </label>
+                        <div class="form-text">
+                            {{ 'product.help.active'|trans({}, 'product') }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header"><h2 class="h5 mb-0">{{ 'product.section.dimensions'|trans({}, 'product') }}</h2></div>
+            <div class="card-header">
+                <h2 class="h5 mb-0">
+                    {{ 'product.section.dimensions'|trans({}, 'product') }}
+                </h2>
+            </div>
             <div class="card-body row g-3">
                 {% for field in ['length_mm', 'width_mm', 'height_mm', 'weight_grams', 'net_weight_grams', 'volume_cm3'] %}
-                    <div class="col-md-2"><label class="form-label" for="{{ field }}">{{ ('product.field.' ~ field)|trans({}, 'product') }}</label><input class="form-control" type="number" min="0" id="{{ field }}" name="{{ field }}" value="{{ attribute(product|default({}), field)|default('') }}"></div>
+                    <div class="col-md-2">
+                        <label class="form-label" for="{{ field }}">
+                            {{ ('product.field.' ~ field)|trans({}, 'product') }}
+                        </label>
+                        <input class="form-control" type="number" min="0" id="{{ field }}" name="{{ field }}" value="{{ attribute(product|default({}), field)|default('') }}">
+                    </div>
                 {% endfor %}
-                <div class="col-md-3"><label class="form-label" for="nesting_factor">{{ 'product.field.nesting_factor'|trans({}, 'product') }}</label><input class="form-control" type="number" min="0" max="1" step="0.00001" id="nesting_factor" name="nesting_factor" value="{{ product.nesting_factor|default('') }}"></div>
-                <div class="col-md-3"><label class="form-label" for="goods_value">{{ 'product.field.goods_value'|trans({}, 'product') }}</label><input class="form-control" type="number" min="0" step="0.001" id="goods_value" name="goods_value" value="{{ product.goods_value|default('') }}"></div>
-                <div class="col-md-2"><label class="form-label" for="goods_value_currency">{{ 'product.field.currency'|trans({}, 'product') }}</label><input class="form-control" id="goods_value_currency" name="goods_value_currency" maxlength="3" value="{{ product.goods_value_currency|default('EUR') }}"></div>
+                <div class="col-md-3">
+                    <label class="form-label" for="nesting_factor">
+                        {{ 'product.field.nesting_factor'|trans({}, 'product') }}
+                    </label>
+                    <input class="form-control" type="number" min="0" max="1" step="0.00001" id="nesting_factor" name="nesting_factor" value="{{ product.nesting_factor|default('') }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="goods_value">
+                        {{ 'product.field.goods_value'|trans({}, 'product') }}
+                    </label>
+                    <input class="form-control" type="number" min="0" step="0.001" id="goods_value" name="goods_value" value="{{ product.goods_value|default('') }}">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" for="goods_value_currency">
+                        {{ 'product.field.currency'|trans({}, 'product') }}
+                    </label>
+                    <input class="form-control" id="goods_value_currency" name="goods_value_currency" maxlength="3" value="{{ product.goods_value_currency|default('EUR') }}">
+                </div>
             </div>
         </div>
 
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header"><h2 class="h5 mb-0">{{ 'product.section.stock_rules'|trans({}, 'product') }}</h2></div>
+            <div class="card-header">
+                <h2 class="h5 mb-0">
+                    {{ 'product.section.stock_rules'|trans({}, 'product') }}
+                </h2>
+            </div>
             <div class="card-body row g-3">
                 {% for field in ['serial_number_required', 'batch_required', 'expiry_required'] %}
-                    <div class="col-md-4"><label class="form-label" for="{{ field }}">{{ ('product.field.' ~ field)|trans({}, 'product') }}</label><select class="form-select" id="{{ field }}" name="{{ field }}"><option value="">{{ 'product.option.not_set'|trans({}, 'product') }}</option><option value="1" {{ attribute(product|default({}), field) is not null and attribute(product|default({}), field) == 1 ? 'selected' : '' }}>{{ 'product.option.yes'|trans({}, 'product') }}</option><option value="0" {{ attribute(product|default({}), field) is not null and attribute(product|default({}), field) == 0 ? 'selected' : '' }}>{{ 'product.option.no'|trans({}, 'product') }}</option></select></div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="{{ field }}">
+                            {{ ('product.field.' ~ field)|trans({}, 'product') }}
+                        </label>
+                        <select class="form-select" id="{{ field }}" name="{{ field }}">
+                            <option value="">
+                                {{ 'product.option.not_set'|trans({}, 'product') }}
+                            </option>
+                            <option value="1" {{ attribute(product|default({}), field) is not null and attribute(product|default({}), field) == 1 ? 'selected' : '' }}>
+                                {{ 'product.option.yes'|trans({}, 'product') }}
+                            </option>
+                            <option value="0" {{ attribute(product|default({}), field) is not null and attribute(product|default({}), field) == 0 ? 'selected' : '' }}>
+                                {{ 'product.option.no'|trans({}, 'product') }}
+                            </option>
+                        </select>
+                    </div>
                 {% endfor %}
                 {% for field in ['shelf_life_days', 'expiry_warning_days', 'max_expiry_mix_days'] %}
-                    <div class="col-md-4"><label class="form-label" for="{{ field }}">{{ ('product.field.' ~ field)|trans({}, 'product') }}</label><input class="form-control" type="number" min="0" id="{{ field }}" name="{{ field }}" value="{{ attribute(product|default({}), field)|default('') }}"></div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="{{ field }}">
+                            {{ ('product.field.' ~ field)|trans({}, 'product') }}
+                        </label>
+                        <input class="form-control" type="number" min="0" id="{{ field }}" name="{{ field }}" value="{{ attribute(product|default({}), field)|default('') }}">
+                    </div>
                 {% endfor %}
-                <div class="col-md-4"><div class="form-check mt-4"><input type="checkbox" class="form-check-input" id="bulk_material" name="bulk_material" value="1" {{ product.bulk_material|default(false) ? 'checked' : '' }}><label class="form-check-label" for="bulk_material">{{ 'product.field.bulk_material'|trans({}, 'product') }}</label></div></div>
-                <div class="col-md-4"><div class="form-check mt-4"><input type="checkbox" class="form-check-input" id="hazardous_material" name="hazardous_material" value="1" {{ product.hazardous_material|default(false) ? 'checked' : '' }}><label class="form-check-label" for="hazardous_material">{{ 'product.field.hazardous_material'|trans({}, 'product') }}</label></div></div>
-                <div class="col-md-4"><label class="form-label" for="overdelivery_percent">{{ 'product.field.overdelivery_percent'|trans({}, 'product') }}</label><input class="form-control" type="number" min="0" step="0.01" id="overdelivery_percent" name="overdelivery_percent" value="{{ product.overdelivery_percent|default('') }}"></div>
+                <div class="col-md-4">
+                    <div class="form-check mt-4">
+                        <input type="checkbox" class="form-check-input" id="bulk_material" name="bulk_material" value="1" {{ product.bulk_material|default(false) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="bulk_material">
+                            {{ 'product.field.bulk_material'|trans({}, 'product') }}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check mt-4">
+                        <input type="checkbox" class="form-check-input" id="hazardous_material" name="hazardous_material" value="1" {{ product.hazardous_material|default(false) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="hazardous_material">
+                            {{ 'product.field.hazardous_material'|trans({}, 'product') }}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="overdelivery_percent">
+                        {{ 'product.field.overdelivery_percent'|trans({}, 'product') }}
+                    </label>
+                    <input class="form-control" type="number" min="0" step="0.01" id="overdelivery_percent" name="overdelivery_percent" value="{{ product.overdelivery_percent|default('') }}">
+                </div>
             </div>
         </div>
 
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header"><h2 class="h5 mb-0">{{ 'product.section.references'|trans({}, 'product') }}</h2></div>
+            <div class="card-header">
+                <h2 class="h5 mb-0">
+                    {{ 'product.section.references'|trans({}, 'product') }}
+                </h2>
+            </div>
             <div class="card-body row g-3">
                 {% for field in ['customs_tariff_number', 'pharmaceutical_number', 'customer_material_number', 'supplier_material_number', 'product_area_code'] %}
-                    <div class="col-md-4"><label class="form-label" for="{{ field }}">{{ ('product.field.' ~ field)|trans({}, 'product') }}</label><input class="form-control" id="{{ field }}" name="{{ field }}" value="{{ attribute(product|default({}), field)|default('') }}"></div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="{{ field }}">
+                            {{ ('product.field.' ~ field)|trans({}, 'product') }}
+                        </label>
+                        <input class="form-control" id="{{ field }}" name="{{ field }}" value="{{ attribute(product|default({}), field)|default('') }}">
+                    </div>
                 {% endfor %}
             </div>
         </div>
 
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header"><h2 class="h5 mb-0">{{ 'product.section.instructions'|trans({}, 'product') }}</h2></div>
+            <div class="card-header">
+                <h2 class="h5 mb-0">
+                    {{ 'product.section.instructions'|trans({}, 'product') }}
+                </h2>
+            </div>
             <div class="card-body row g-3">
                 {% for field in ['inbound_note', 'picking_note', 'transport_note', 'packing_note', 'loading_note'] %}
-                    <div class="col-md-6"><label class="form-label" for="{{ field }}">{{ ('product.field.' ~ field)|trans({}, 'product') }}</label><textarea class="form-control" id="{{ field }}" name="{{ field }}" rows="3">{{ attribute(product|default({}), field)|default('') }}</textarea></div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="{{ field }}">
+                            {{ ('product.field.' ~ field)|trans({}, 'product') }}
+                        </label>
+                        <textarea class="form-control" id="{{ field }}" name="{{ field }}" rows="3">
+                            {{ attribute(product|default({}), field)|default('') }}
+                        </textarea>
+                    </div>
                 {% endfor %}
             </div>
         </div>
 
-        <div class="d-flex justify-content-end gap-2 mb-4"><a class="btn btn-light" href="{{ editing ? path('v3_product_show', {productId: product.id}) : path('v3_product_index') }}">{{ 'product.action.cancel'|trans({}, 'product') }}</a><button class="btn btn-primary">{{ 'product.action.save'|trans({}, 'product') }}</button></div>
+        <div class="d-flex justify-content-end gap-2 mb-4">
+            <a class="btn btn-light" href="{{ editing ? path('v3_product_show', {productId: product.id}) : path('v3_product_index') }}">
+                {{ 'product.action.cancel'|trans({}, 'product') }}
+            </a>
+            <button class="btn btn-primary">
+                {{ 'product.action.save'|trans({}, 'product') }}
+            </button>
+        </div>
     </form>
 {% endblock %}

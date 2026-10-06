@@ -1,33 +1,51 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<h1 class="h3 mb-1">{{ 'picking.index.picking'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'picking.index.assign_pick_lists_and_process_via_mobile_device'|trans }}</p>
-	</div>
+    <div class="mb-4">
+        <h1 class="h3 mb-1">
+            {{ 'picking.index.picking'|trans }}
+        </h1>
+        <p class="text-muted mb-0">
+            {{ 'picking.index.assign_pick_lists_and_process_via_mobile_device'|trans }}
+        </p>
+    </div>
 
-	<div class="row g-3">
-		{% for list in pickLists %}
-			<div class="col-md-6 col-xl-4">
-				<div class="card h-100 border-0 shadow-sm">
-					<div class="card-body">
-						<div class="d-flex justify-content-between">
-							<h2 class="h5">{{ list.code }}</h2>
-							<span class="badge bg-secondary-subtle text-secondary">{{ list.status }}</span>
-						</div>
-						<p class="mb-2">{{ 'inbound.control.order'|trans }} {{ list.order_number }}</p>
-						<div class="text-muted">{{ list.completed_task_count }}/{{ list.task_count }} {{ 'picking.index.items_completed'|trans }}</div>
-						<div class="text-muted">{{ list.assigned_to_name ?: ('platform.index.unassigned'|trans) }}</div>
-					</div>
-					<div class="card-footer">
-						<a class="btn btn-primary w-100" href="{{ path('v3_picking_show', {pickListId: list.id}) }}">{{ 'picking.index.open_pick_list'|trans }}</a>
-					</div>
-				</div>
-			</div>
-		{% else %}
-			<div class="col-12">
-				<div class="alert alert-light border">{{ 'picking.index.no_pick_lists_available_yet'|trans }}</div>
-			</div>
-		{% endfor %}
-	</div>
+    <div class="row g-3">
+        {% for list in pickLists %}
+            <div class="col-md-6 col-xl-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h2 class="h5">
+                                {{ list.code }}
+                            </h2>
+                            <span class="badge bg-secondary-subtle text-secondary">
+                                {{ list.status }}
+                            </span>
+                        </div>
+                        <p class="mb-2">
+                            {{ 'inbound.control.order'|trans }} {{ list.order_number }}
+                        </p>
+                        <div class="text-muted">
+                            {{ list.completed_task_count }}/{{ list.task_count }} {{ 'picking.index.items_completed'|trans }}
+                        </div>
+                        <div class="text-muted">
+                            {{ list.assigned_to_name ?: ('platform.index.unassigned'|trans) }}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-primary w-100" href="{{ path('v3_picking_show', {pickListId: list.id}) }}">
+                            {{ 'picking.index.open_pick_list'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-light border">
+                    {{ 'picking.index.no_pick_lists_available_yet'|trans }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -1,2 +1,74 @@
 {% extends 'v3/base.html.twig' %}
-{% block webwms_content %}<div class="mb-4"><a href="{{ path('v3_data_exchange_index') }}">{{ 'integration.exchange.action.back'|trans }}</a><h1 class="h3 mt-2">{{ 'integration.exchange.page.commerce'|trans }}</h1><p class="text-muted">{{ 'integration.exchange.text.commerce'|trans }}</p></div><form method="post" class="card border-0 shadow-sm"><div class="card-body"><input type="hidden" name="_token" value="{{ csrf_token('v3_data_exchange_commerce') }}"><div class="row g-3"><div class="col-md-6"><label class="form-label" for="name">{{ 'common.template.correspondence.name'|trans }}</label><input class="form-control" id="name" name="name" required></div><div class="col-md-6"><label class="form-label" for="channel_type">{{ 'integration.exchange.field.channel'|trans }}</label><select class="form-select" id="channel_type" name="channel_type"><option value="shopware">Shopware</option><option value="amazon">Amazon</option><option value="ebay">eBay</option><option value="generic">Generic</option></select></div><div class="col-md-8"><label class="form-label" for="endpoint_url">{{ 'integration.carrier_connection.new.https_base_url'|trans }}</label><input class="form-control" type="url" id="endpoint_url" name="endpoint_url" pattern="https://.*" required></div><div class="col-md-4"><label class="form-label" for="credential_env">{{ 'integration.automation.device_new.credential_environment_variable'|trans }}</label><input class="form-control" id="credential_env" name="credential_env" pattern="[A-Z][A-Z0-9_]{2,100}" required></div><div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="active" name="active" checked><label class="form-check-label" for="active">{{ 'integration.carrier_connection.new.activate_connection_immediately'|trans }}</label></div></div></div></div><div class="card-footer text-end"><button class="btn btn-primary">{{ 'integration.exchange.action.save'|trans }}</button></div></form>{% endblock %}
+
+{% block webwms_content %}
+
+    <div class="mb-4">
+        <a href="{{ path('v3_data_exchange_index') }}">
+            {{ 'integration.exchange.action.back'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'integration.exchange.page.commerce'|trans }}
+        </h1>
+        <p class="text-muted">
+            {{ 'integration.exchange.text.commerce'|trans }}
+        </p>
+    </div>
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_data_exchange_commerce') }}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="name">
+                        {{ 'common.template.correspondence.name'|trans }}
+                    </label>
+                    <input class="form-control" id="name" name="name" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="channel_type">
+                        {{ 'integration.exchange.field.channel'|trans }}
+                    </label>
+                    <select class="form-select" id="channel_type" name="channel_type">
+                        <option value="shopware">
+                            Shopware
+                        </option>
+                        <option value="amazon">
+                            Amazon
+                        </option>
+                        <option value="ebay">
+                            eBay
+                        </option>
+                        <option value="generic">
+                            Generic
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label" for="endpoint_url">
+                        {{ 'integration.carrier_connection.new.https_base_url'|trans }}
+                    </label>
+                    <input class="form-control" type="url" id="endpoint_url" name="endpoint_url" pattern="https://.*" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="credential_env">
+                        {{ 'integration.automation.device_new.credential_environment_variable'|trans }}
+                    </label>
+                    <input class="form-control" id="credential_env" name="credential_env" pattern="[A-Z][A-Z0-9_]{2,100}" required>
+                </div>
+                <div class="col-12">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="active" name="active" checked>
+                        <label class="form-check-label" for="active">
+                            {{ 'integration.carrier_connection.new.activate_connection_immediately'|trans }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button class="btn btn-primary">
+                {{ 'integration.exchange.action.save'|trans }}
+            </button>
+        </div>
+    </form>
+
+{% endblock %}

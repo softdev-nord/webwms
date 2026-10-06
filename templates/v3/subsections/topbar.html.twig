@@ -5,9 +5,12 @@
 
                 <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
                     <span class="hamburger-icon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span>
+                        </span>
+                        <span>
+                        </span>
+                        <span>
+                        </span>
                     </span>
                 </button>
             </div>
@@ -15,24 +18,29 @@
 
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button" class="btn btn-icon btn-topbar" data-toggle="fullscreen">
-                        <i class='mdi mdi-overscan fs-28'></i>
+                        <i class='mdi mdi-overscan fs-28'>
+                        </i>
                     </button>
                 </div>
 
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button" class="btn btn-icon btn-topbar light-dark-mode">
-                        <i class='mdi mdi-weather-night fs-28'></i>
+                        <i class='mdi mdi-weather-night fs-28'>
+                        </i>
                     </button>
                 </div>
 
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button" href="{{ path('app_v3_logout') }}" class="btn btn-icon btn-topbar">
-                        <i class="mdi mdi-power-standby fs-28"></i>
+                        <i class="mdi mdi-power-standby fs-28">
+                        </i>
                     </button>
                 </div>
 
             </div>
-            <div class="webwms-page">{{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }}</div>
+            <div class="webwms-page">
+                {{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }}
+            </div>
         </div>
     </div>
 </header>

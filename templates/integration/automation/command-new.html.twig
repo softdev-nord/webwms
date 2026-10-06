@@ -1,62 +1,102 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="mb-4">
-		<a href="{{ path('v3_automation_index') }}" class="text-decoration-none">{{ 'integration.automation.command_new.storage_lifts_and_paternoster_systems'|trans }}</a>
-		<h1 class="h3 mt-2">{{ 'integration.automation.command_new.create_device_command'|trans }}</h1>
-		<p class="text-muted mb-0">{{ 'integration.automation.command_new.assign_task_to_automation_device_and_storage_location'|trans }}</p>
-	</div>
+    <div class="mb-4">
+        <a href="{{ path('v3_automation_index') }}" class="text-decoration-none">
+            {{ 'integration.automation.command_new.storage_lifts_and_paternoster_systems'|trans }}
+        </a>
+        <h1 class="h3 mt-2">
+            {{ 'integration.automation.command_new.create_device_command'|trans }}
+        </h1>
+        <p class="text-muted mb-0">
+            {{ 'integration.automation.command_new.assign_task_to_automation_device_and_storage_location'|trans }}
+        </p>
+    </div>
 
-	<form method="post" class="card border-0 shadow-sm">
-		<div class="card-body">
-			<input type="hidden" name="_token" value="{{ csrf_token('v3_automation_command_create') }}">
-			<input type="hidden" name="request_id" value="{{ requestId }}">
-			<div class="row g-3">
-				<div class="col-md-6">
-					<label class="form-label" for="device_id">{{ 'integration.automation.command_new.device'|trans }}</label>
-					<select class="form-select" id="device_id" name="device_id" required>
-						{% for device in devices %}
-							<option value="{{ device.id }}">{{ device.code }} · {{ device.name }}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label class="form-label" for="command_type">{{ 'integration.automation.command_new.command'|trans }}</label>
-					<select class="form-select" id="command_type" name="command_type">
-						<option value="present">{{ 'integration.automation.command_new.present_tray'|trans }}</option>
-						<option value="store">{{ 'navigation.logistics.submenu.headline1.label'|trans }}</option>
-						<option value="retrieve">{{ 'navigation.logistics.submenu.headline2.label'|trans }}</option>
-					</select>
-				</div>
-				<div class="col-md-3">
-					<label class="form-label" for="location_id">{{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}</label>
-					<select class="form-select" id="location_id" name="location_id" required>
-						{% for location in locations %}
-							<option value="{{ location.id }}">{{ location.warehouse_code }} · {{ location.code }}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class="col-md-5">
-					<label class="form-label" for="reference_type">{{ 'integration.automation.command_new.reference_type'|trans }}</label>
-					<select class="form-select" id="reference_type" name="reference_type">
-						<option value="pick_task">{{ 'integration.automation.command_new.pick_position'|trans }}</option>
-						<option value="putaway_order">{{ 'integration.automation.command_new.put_away_order'|trans }}</option>
-						<option value="replenishment_order">{{ 'integration.automation.command_new.replenishment_order'|trans }}</option>
-						<option value="manual">{{ 'integration.automation.command_new.manual'|trans }}</option>
-					</select>
-				</div>
-				<div class="col-md-7">
-					<label class="form-label" for="reference_id">{{ 'stock.stock_rotation.reference'|trans }}</label>
-					<input class="form-control font-monospace" id="reference_id" name="reference_id" maxlength="100" required>
-				</div>
-			</div>
-			{% if devices is empty %}
-				<div class="alert alert-warning mt-3 mb-0">{{ 'integration.automation.command_new.no_active_automation_device_available'|trans }}</div>
-			{% endif %}
-		</div>
-		<div class="card-footer d-flex justify-content-end gap-2">
-			<a class="btn btn-light" href="{{ path('v3_automation_index') }}">{{ 'common.button.cancel'|trans }}</a>
-			<button class="btn btn-primary" {% if devices is empty %}disabled{% endif %}>{{ 'integration.automation.command_new.queue_command'|trans }}</button>
-		</div>
-	</form>
+    <form method="post" class="card border-0 shadow-sm">
+        <div class="card-body">
+            <input type="hidden" name="_token" value="{{ csrf_token('v3_automation_command_create') }}">
+            <input type="hidden" name="request_id" value="{{ requestId }}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="device_id">
+                        {{ 'integration.automation.command_new.device'|trans }}
+                    </label>
+                    <select class="form-select" id="device_id" name="device_id" required>
+                        {% for device in devices %}
+                            <option value="{{ device.id }}">
+                                {{ device.code }} · {{ device.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="command_type">
+                        {{ 'integration.automation.command_new.command'|trans }}
+                    </label>
+                    <select class="form-select" id="command_type" name="command_type">
+                        <option value="present">
+                            {{ 'integration.automation.command_new.present_tray'|trans }}
+                        </option>
+                        <option value="store">
+                            {{ 'navigation.logistics.submenu.headline1.label'|trans }}
+                        </option>
+                        <option value="retrieve">
+                            {{ 'navigation.logistics.submenu.headline2.label'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="location_id">
+                        {{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}
+                    </label>
+                    <select class="form-select" id="location_id" name="location_id" required>
+                        {% for location in locations %}
+                            <option value="{{ location.id }}">
+                                {{ location.warehouse_code }} · {{ location.code }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label" for="reference_type">
+                        {{ 'integration.automation.command_new.reference_type'|trans }}
+                    </label>
+                    <select class="form-select" id="reference_type" name="reference_type">
+                        <option value="pick_task">
+                            {{ 'integration.automation.command_new.pick_position'|trans }}
+                        </option>
+                        <option value="putaway_order">
+                            {{ 'integration.automation.command_new.put_away_order'|trans }}
+                        </option>
+                        <option value="replenishment_order">
+                            {{ 'integration.automation.command_new.replenishment_order'|trans }}
+                        </option>
+                        <option value="manual">
+                            {{ 'integration.automation.command_new.manual'|trans }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-7">
+                    <label class="form-label" for="reference_id">
+                        {{ 'stock.stock_rotation.reference'|trans }}
+                    </label>
+                    <input class="form-control font-monospace" id="reference_id" name="reference_id" maxlength="100" required>
+                </div>
+            </div>
+            {% if devices is empty %}
+                <div class="alert alert-warning mt-3 mb-0">
+                    {{ 'integration.automation.command_new.no_active_automation_device_available'|trans }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <a class="btn btn-light" href="{{ path('v3_automation_index') }}">
+                {{ 'common.button.cancel'|trans }}
+            </a>
+            <button class="btn btn-primary" {% if devices is empty %}disabled{% endif %}>
+                {{ 'integration.automation.command_new.queue_command'|trans }}
+            </button>
+        </div>
+    </form>
 {% endblock %}

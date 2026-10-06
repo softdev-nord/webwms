@@ -1,72 +1,181 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-		<div>
-			<h1 class="h3 mb-1">{{ 'integration.automation.index.storage_lifts_and_paternoster_lifts'|trans }}</h1>
-			<p class="text-muted mb-0">{{ 'integration.automation.index.manage_automation_devices_tasks_and_feedback'|trans }}</p>
-		</div>
-		<div class="d-flex gap-2">
-			{% if is_granted('integration.automation.write') %}
-				<a class="btn btn-outline-primary" href="{{ path('v3_automation_device_new') }}">{{ 'integration.automation.device_new.create_device'|trans }}</a>
-			{% endif %}
-			{% if is_granted('integration.automation.execute') %}
-				<a class="btn btn-primary" href="{{ path('v3_automation_command_new') }}">{{ 'integration.automation.index.create_command'|trans }}</a>
-			{% endif %}
-		</div>
-	</div>
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ 'integration.automation.index.storage_lifts_and_paternoster_lifts'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'integration.automation.index.manage_automation_devices_tasks_and_feedback'|trans }}
+            </p>
+        </div>
+        <div class="d-flex gap-2">
+            {% if is_granted('integration.automation.write') %}
+                <a class="btn btn-outline-primary" href="{{ path('v3_automation_device_new') }}">
+                    {{ 'integration.automation.device_new.create_device'|trans }}
+                </a>
+            {% endif %}
+            {% if is_granted('integration.automation.execute') %}
+                <a class="btn btn-primary" href="{{ path('v3_automation_command_new') }}">
+                    {{ 'integration.automation.index.create_command'|trans }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
 
-	<div class="card border-0 shadow-sm mb-4">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'integration.automation.index.automation_devices'|trans }}</h2></div>
-		<div class="table-responsive">
-			<table class="table table-hover align-middle mb-0">
-				<thead><tr><th>{{ 'administration.role_new.code'|trans }}</th><th>{{ 'common.template.correspondence.name'|trans }}</th><th>{{ 'administration.workspace.type'|trans }}</th><th>{{ 'integration.automation.index.endpoint'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th></th></tr></thead>
-				<tbody>
-					{% for device in devices %}
-						<tr>
-							<td><code>{{ device.code }}</code></td>
-							<td class="fw-semibold">{{ device.name }}</td>
-							<td>{{ device.device_type }}</td>
-							<td><code>{{ device.endpoint_url }}</code></td>
-							<td><span class="badge bg-{{ device.active ? 'success' : 'secondary' }}-subtle text-{{ device.active ? 'success' : 'secondary' }}">{{ (device.active ? 'user.user_input_fields.active' : 'integration.carrier_connection.index.paused')|trans }}</span></td>
-							<td class="text-end">
-								{% if is_granted('integration.automation.write') %}
-									<form method="post" action="{{ path('v3_automation_device_status', {deviceId: device.id}) }}">
-										<input type="hidden" name="_token" value="{{ csrf_token('v3_automation_device_status_' ~ device.id) }}">
-										<button class="btn btn-sm btn-outline-secondary">{{ (device.active ? 'integration.automation.index.pause' : 'integration.automation.index.activate')|trans }}</button>
-									</form>
-								{% endif %}
-							</td>
-						</tr>
-					{% else %}
-						<tr><td colspan="6" class="text-center text-muted py-4">{{ 'integration.automation.index.no_automation_devices_yet'|trans }}</td></tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-transparent">
+            <h2 class="h5 mb-0">
+                {{ 'integration.automation.index.automation_devices'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'administration.role_new.code'|trans }}
+                        </th>
+                        <th>
+                            {{ 'common.template.correspondence.name'|trans }}
+                        </th>
+                        <th>
+                            {{ 'administration.workspace.type'|trans }}
+                        </th>
+                        <th>
+                            {{ 'integration.automation.index.endpoint'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for device in devices %}
+                        <tr>
+                            <td>
+                                <code>
+                                    {{ device.code }}
+                                </code>
+                            </td>
+                            <td class="fw-semibold">
+                                {{ device.name }}
+                            </td>
+                            <td>
+                                {{ device.device_type }}
+                            </td>
+                            <td>
+                                <code>
+                                    {{ device.endpoint_url }}
+                                </code>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ device.active ? 'success' : 'secondary' }}-subtle text-{{ device.active ? 'success' : 'secondary' }}">
+                                    {{ (device.active ? 'user.user_input_fields.active' : 'integration.carrier_connection.index.paused')|trans }}
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                {% if is_granted('integration.automation.write') %}
+                                    <form method="post" action="{{ path('v3_automation_device_status', {deviceId: device.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('v3_automation_device_status_' ~ device.id) }}">
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            {{ (device.active ? 'integration.automation.index.pause' : 'integration.automation.index.activate')|trans }}
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                {{ 'integration.automation.index.no_automation_devices_yet'|trans }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-	<div class="card border-0 shadow-sm">
-		<div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'integration.automation.index.device_commands'|trans }}</h2></div>
-		<div class="table-responsive">
-			<table class="table table-hover align-middle mb-0">
-				<thead><tr><th>{{ 'integration.automation.command_new.device'|trans }}</th><th>{{ 'integration.automation.command_new.command'|trans }}</th><th>{{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}</th><th>{{ 'stock.stock_rotation.reference'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th>{{ 'administration.workspace.time_point_in_time'|trans }}</th><th></th></tr></thead>
-				<tbody>
-					{% for command in commands %}
-						<tr>
-							<td>{{ command.device_code }}</td>
-							<td>{{ command.command_type }}</td>
-							<td><code>{{ command.location_code }}</code></td>
-							<td>{{ command.reference_type }}<br><code>{{ command.reference_id }}</code></td>
-							<td><span class="badge bg-secondary-subtle text-secondary">{{ command.status }}</span></td>
-							<td>{{ command.created_at }}</td>
-							<td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_automation_command_show', {commandId: command.id}) }}">{{ 'inbound.index.open'|trans }}</a></td>
-						</tr>
-					{% else %}
-						<tr><td colspan="7" class="text-center text-muted py-5">{{ 'integration.automation.index.no_device_commands_yet'|trans }}</td></tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-transparent">
+            <h2 class="h5 mb-0">
+                {{ 'integration.automation.index.device_commands'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'integration.automation.command_new.device'|trans }}
+                        </th>
+                        <th>
+                            {{ 'integration.automation.command_new.command'|trans }}
+                        </th>
+                        <th>
+                            {{ 'modal.show_article_stock_details_modal.storage_bin'|trans }}
+                        </th>
+                        <th>
+                            {{ 'stock.stock_rotation.reference'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                            {{ 'administration.workspace.time_point_in_time'|trans }}
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for command in commands %}
+                        <tr>
+                            <td>
+                                {{ command.device_code }}
+                            </td>
+                            <td>
+                                {{ command.command_type }}
+                            </td>
+                            <td>
+                                <code>
+                                    {{ command.location_code }}
+                                </code>
+                            </td>
+                            <td>
+                                {{ command.reference_type }}
+                                <br>
+                                <code>
+                                    {{ command.reference_id }}
+                                </code>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary-subtle text-secondary">
+                                    {{ command.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {{ command.created_at }}
+                            </td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_automation_command_show', {commandId: command.id}) }}">
+                                    {{ 'inbound.index.open'|trans }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-5">
+                                {{ 'integration.automation.index.no_device_commands_yet'|trans }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

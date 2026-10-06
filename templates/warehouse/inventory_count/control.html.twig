@@ -1,12 +1,635 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}{{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0{% endblock %}
+
+{% block title %}
+    {{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0
+{% endblock %}
+
 {% block webwms_content %}
-<div class="mb-4"><h1 class="h3 mb-1">{{ 'inventory.control.inventory_control_center'|trans }}</h1><p class="text-muted mb-0">{{ 'inventory.control.centrally_manage_hazardous_materials_bills_of_materials_load_carriers_an'|trans }}</p></div>
-<ul class="nav nav-tabs nav-tabs-custom mb-3">{% for id,label in {hazard:'inventory.tab.hazard.hazardous_materials',bom:'inventory.tab.bom.boms',carrier:'inventory.tab.load_carrier.load_carrier_accounts',count:'inventory.tab.count.inventory'} %}<li class="nav-item"><button class="nav-link {{ loop.first ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#inventory-{{ id }}">{{ label|trans }}</button></li>{% endfor %}</ul>
-<div class="tab-content">
-<div class="tab-pane fade show active" id="inventory-hazard"><div class="row g-3"><div class="col-xl-4"><div class="card border-0 shadow-sm"><div class="card-body"><h2 class="h5">{{ 'inventory.control.hazardous_material_class'|trans }}</h2><form method="post" action="{{ path('v3_inventory_control_hazard_class') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('inventory_hazard_class') }}"><input class="form-control" name="code" placeholder="{{ 'inventory.control.class'|trans }}" required><input class="form-control" name="name" placeholder="{{ 'article.index.description'|trans }}" required><input class="form-control" name="un_class" placeholder="{{ 'inventory.control.un_class'|trans }}" required><button class="btn btn-primary">{{ 'administration.workspace.create'|trans }}</button></form><hr><h2 class="h5">{{ 'inventory.control.classify_items'|trans }}</h2><form method="post" action="{{ path('v3_inventory_control_hazardous_material') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('inventory_hazardous_material') }}"><select class="form-select" name="product_id">{% for product in inventory.products %}<option value="{{ product.id }}">{{ product.sku }} · {{ product.name }}</option>{% endfor %}</select><select class="form-select" name="hazard_class_id">{% for class in inventory.hazardClasses %}<option value="{{ class.id }}">{{ class.code }}</option>{% endfor %}</select><div class="col-6"><input class="form-control" name="un_number" placeholder="{{ 'inventory.control.un_number'|trans }}" required></div><div class="col-6"><input class="form-control" name="packing_group" placeholder="{{ 'inventory.control.packing_group'|trans }}"></div><input class="form-control" name="description" placeholder="{{ 'user.user_group.index.description'|trans }}" required><button class="btn btn-primary">{{ 'inventory.control.classify'|trans }}</button></form><hr><h2 class="h5">{{ 'inventory.control.zone_rule'|trans }}</h2><form method="post" action="{{ path('v3_inventory_control_storage_restriction') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('inventory_storage_restriction') }}"><select class="form-select" name="hazard_class_id">{% for class in inventory.hazardClasses %}<option value="{{ class.id }}">{{ class.code }}</option>{% endfor %}</select><div class="col-6"><input class="form-control" name="location_prefix" placeholder="{{ 'inventory.control.location_prefix'|trans }}" required></div><div class="col-6"><input class="form-control" type="number" min="0" name="max_quantity" placeholder="{{ 'inventory.control.maximum_quantity'|trans }}"></div><label><input type="checkbox" name="allowed" value="1" checked> {{ 'inventory.control.put_away_allowed'|trans }}</label><button class="btn btn-outline-primary">{{ 'inventory.control.save_rule'|trans }}</button></form></div></div></div><div class="col-xl-8"><div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'inventory.control.class'|trans }}</th><th>{{ 'inventory.control.un'|trans }}</th><th>{{ 'user.user_group.index.description'|trans }}</th></tr></thead><tbody>{% for row in inventory.hazardousMaterials %}<tr><td>{{ row.sku }}</td><td>{{ row.hazard_code }}</td><td>{{ row.un_number }}</td><td>{{ row.description }}</td></tr>{% else %}<tr><td colspan="4" class="text-center text-muted py-4">{{ 'inventory.control.no_hazardous_materials_classified'|trans }}</td></tr>{% endfor %}</tbody></table></div></div><div class="card border-0 shadow-sm mt-3"><div class="card-body">{% for row in inventory.restrictions %}<span class="badge bg-{{ row.allowed ? 'success':'danger' }}-subtle text-{{ row.allowed ? 'success':'danger' }} me-2">{{ row.hazard_code }} · {{ row.location_prefix }} · {{ (row.allowed ? 'common.allowed.permitted' : 'common.blocked.blocked')|trans }}</span>{% endfor %}</div></div></div></div></div>
-<div class="tab-pane fade" id="inventory-bom"><div class="row g-3"><div class="col-xl-5"><div class="card border-0 shadow-sm"><div class="card-body"><h2 class="h5">{{ 'inventory.control.create_bom'|trans }}</h2><form method="post" action="{{ path('v3_inventory_control_bom') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('inventory_bom') }}"><select class="form-select" name="product_id">{% for product in inventory.products %}<option value="{{ product.id }}">{{ product.sku }} · {{ product.name }}</option>{% endfor %}</select><div class="col-8"><input class="form-control" name="code" placeholder="{{ 'administration.role_new.code'|trans }}" required></div><div class="col-4"><input class="form-control" name="version" value="1" required></div><textarea class="form-control font-monospace" name="items" rows="5" required>{{ 'inventory.control.productid_uuid_quantity_1'|trans }}</textarea><button class="btn btn-primary">{{ 'inventory.control.save_bom'|trans }}</button></form><hr><h2 class="h5">{{ 'inventory.control.plan_material_requirements'|trans }}</h2><form method="post" action="{{ path('v3_inventory_control_requirement') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('inventory_requirement') }}"><select class="form-select" name="bom_id">{% for bom in inventory.boms %}<option value="{{ bom.id }}">{{ bom.code }} / {{ bom.version }}</option>{% endfor %}</select><div class="col-8"><input class="form-control" name="reference" placeholder="{{ 'inventory.control.production_reference'|trans }}" required></div><div class="col-4"><input class="form-control" type="number" min="1" name="production_quantity" value="1"></div><button class="btn btn-outline-primary">{{ 'inventory.control.generate_demand'|trans }}</button></form></div></div></div><div class="col-xl-7"><div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'administration.role_new.code'|trans }}</th><th>{{ 'inventory.control.product'|trans }}</th><th>{{ 'inventory.control.version'|trans }}</th><th>{{ 'inbound.control.items'|trans }}</th></tr></thead><tbody>{% for row in inventory.boms %}<tr><td>{{ row.code }}</td><td>{{ row.sku }}</td><td>{{ row.version }}</td><td>{{ row.item_count }}</td></tr>{% else %}<tr><td colspan="4" class="text-center text-muted py-4">{{ 'inventory.control.no_bills_of_materials'|trans }}</td></tr>{% endfor %}</tbody></table></div></div><div class="card border-0 shadow-sm mt-3"><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'stock.stock_rotation.reference'|trans }}</th><th>{{ 'inventory.control.bom'|trans }}</th><th>{{ 'customer_order.customer_order_input_fields.quantity'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th></tr></thead><tbody>{% for row in inventory.requirements %}<tr><td>{{ row.reference }}</td><td>{{ row.bom_code }}</td><td>{{ row.production_quantity }}</td><td>{{ row.status }}</td></tr>{% endfor %}</tbody></table></div></div></div></div></div>
-<div class="tab-pane fade" id="inventory-carrier"><div class="row g-3"><div class="col-xl-4"><div class="card border-0 shadow-sm"><div class="card-body"><h2 class="h5">{{ 'inventory.control.book_load_carrier'|trans }}</h2><form method="post" action="{{ path('v3_inventory_control_load_carrier') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('inventory_load_carrier') }}"><input class="form-control" name="partner_code" placeholder="{{ 'inventory.control.partner'|trans }}" required><input class="form-control" name="carrier_type" placeholder="{{ 'inventory.control.pallet_klt_mesh_box'|trans }}" required><div class="col-4"><input class="form-control" type="number" name="quantity" placeholder="{{ 'inventory.control.quantity'|trans }}" required></div><div class="col-8"><input class="form-control" name="reference" placeholder="{{ 'stock.stock_rotation.reference'|trans }}" required></div><input class="form-control" name="note" placeholder="{{ 'inventory.control.note'|trans }}"><button class="btn btn-primary">{{ 'modal.put_into_storage.post'|trans }}</button></form></div></div></div><div class="col-xl-8"><div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table mb-0"><thead><tr><th>{{ 'inventory.control.partner'|trans }}</th><th>{{ 'administration.workspace.type'|trans }}</th><th>{{ 'inventory.control.balance'|trans }}</th></tr></thead><tbody>{% for row in inventory.carrierAccounts %}<tr><td>{{ row.partner_code }}</td><td>{{ row.carrier_type }}</td><td class="fw-semibold">{{ row.balance }}</td></tr>{% else %}<tr><td colspan="3" class="text-center text-muted py-4">{{ 'inventory.control.no_load_carrier_accounts'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div></div></div>
-<div class="tab-pane fade" id="inventory-count"><div class="row g-3"><div class="col-xl-4"><div class="card border-0 shadow-sm"><div class="card-body"><h2 class="h5">{{ 'inventory.control.cut_off_date_inventory'|trans }}</h2><form method="post" action="{{ path('v3_inventory_control_count') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('inventory_count') }}"><select class="form-select" name="warehouse_id">{% for warehouse in inventory.warehouses %}<option value="{{ warehouse.id }}">{{ warehouse.code }}</option>{% endfor %}</select><div class="col-6"><input class="form-control" name="code" placeholder="{{ 'administration.role_new.code'|trans }}" required></div><div class="col-6"><input class="form-control" name="location_prefix" placeholder="{{ 'inventory.control.location_prefix'|trans }}"></div><button class="btn btn-primary">{{ 'inventory.control.open_inventory'|trans }}</button></form><hr><h2 class="h5">{{ 'inventory.control.continuous_inventory'|trans }}</h2><form method="post" action="{{ path('v3_inventory_control_cycle_plan') }}" class="row g-2"><input type="hidden" name="_token" value="{{ csrf_token('inventory_cycle_plan') }}"><select class="form-select" name="warehouse_id">{% for warehouse in inventory.warehouses %}<option value="{{ warehouse.id }}">{{ warehouse.code }}</option>{% endfor %}</select><div class="col-6"><input class="form-control" name="code" placeholder="{{ 'inventory.control.plan_code'|trans }}" required></div><div class="col-6"><input class="form-control" name="location_prefix" placeholder="{{ 'administration.workspace.area'|trans }}"></div><div class="col-6"><input class="form-control" type="number" min="1" name="interval_days" value="30"></div><div class="col-6"><input class="form-control" type="datetime-local" name="next_due_at" required></div><button class="btn btn-outline-primary">{{ 'inventory.control.save_plan'|trans }}</button></form></div></div></div><div class="col-xl-8"><div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>{{ 'administration.role_new.code'|trans }}</th><th>{{ 'administration.workspace.type'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th>{{ 'inventory.control.lines_differences'|trans }}</th><th>{{ 'common.action'|trans }}</th></tr></thead><tbody>{% for row in inventory.counts %}<tr><td>{{ row.code }}</td><td>{{ row.count_type }}</td><td>{{ row.status }}</td><td>{{ row.line_count }} / {{ row.difference_count }}</td><td>{% if row.status == 'open' %}<form method="post" action="{{ path('v3_inventory_control_submit',{countId:row.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('inventory_count_submit_'~row.id) }}"><button class="btn btn-sm btn-outline-primary">{{ 'inventory.control.submit'|trans }}</button></form>{% elseif row.status == 'counted' %}<form method="post" action="{{ path('v3_inventory_control_approve',{countId:row.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('inventory_count_approve_'~row.id) }}"><button class="btn btn-sm btn-primary">{{ 'inventory.control.release_and_post'|trans }}</button></form>{% endif %}</td></tr>{% else %}<tr><td colspan="5" class="text-center text-muted py-4">{{ 'inventory.control.no_inventories'|trans }}</td></tr>{% endfor %}</tbody></table></div></div><div class="card border-0 shadow-sm mt-3"><div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>{{ 'navigation.inventory.headline'|trans }}</th><th>{{ 'navigation.master_data.submenu.headline1.label'|trans }}</th><th>{{ 'inventory.control.debit'|trans }}</th><th>{{ 'inventory.control.actual'|trans }}</th><th>{{ 'inventory.control.count'|trans }}</th></tr></thead><tbody>{% for row in inventory.countLines %}<tr><td>{{ row.count_code }}</td><td>{{ row.sku }}</td><td>{{ row.expected_quantity }}</td><td>{{ row.counted_quantity|default('–') }}</td><td><form class="d-flex" method="post" action="{{ path('v3_inventory_control_record',{countId:row.inventory_count_id,lineId:row.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('inventory_count_line_'~row.id) }}"><input class="form-control form-control-sm" type="number" name="quantity" value="{{ row.counted_quantity|default(row.expected_quantity) }}"><button class="btn btn-sm btn-outline-primary ms-2">{{ 'common.button.save'|trans }}</button></form></td></tr>{% endfor %}</tbody></table></div></div></div></div></div>
-</div>
+    <div class="mb-4">
+        <h1 class="h3 mb-1">
+            {{ 'inventory.control.inventory_control_center'|trans }}
+        </h1>
+        <p class="text-muted mb-0">
+            {{ 'inventory.control.centrally_manage_hazardous_materials_bills_of_materials_load_carriers_an'|trans }}
+        </p>
+    </div>
+    <ul class="nav nav-tabs nav-tabs-custom mb-3">
+
+        {% for id, label in {hazard: 'inventory.tab.hazard.hazardous_materials', bom: 'inventory.tab.bom.boms', carrier: 'inventory.tab.load_carrier.load_carrier_accounts', count: 'inventory.tab.count.inventory'} %}
+
+            <li class="nav-item">
+                <button class="nav-link {{ loop.first ? 'active' : '' }}" data-bs-toggle="tab" data-bs-target="#inventory-{{ id }}">
+                    {{ label|trans }}
+                </button>
+            </li>
+
+        {% endfor %}
+
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="inventory-hazard">
+            <div class="row g-3">
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h2 class="h5">
+                                {{ 'inventory.control.hazardous_material_class'|trans }}
+                            </h2>
+                            <form method="post" action="{{ path('v3_inventory_control_hazard_class') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('inventory_hazard_class') }}">
+                                <input class="form-control" name="code" placeholder="{{ 'inventory.control.class'|trans }}" required>
+                                <input class="form-control" name="name" placeholder="{{ 'article.index.description'|trans }}" required>
+                                <input class="form-control" name="un_class" placeholder="{{ 'inventory.control.un_class'|trans }}" required>
+                                <button class="btn btn-primary">
+                                    {{ 'administration.workspace.create'|trans }}
+                                </button>
+                            </form>
+                            <hr>
+                            <h2 class="h5">
+                                {{ 'inventory.control.classify_items'|trans }}
+                            </h2>
+                            <form method="post" action="{{ path('v3_inventory_control_hazardous_material') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('inventory_hazardous_material') }}">
+                                <select class="form-select" name="product_id">
+
+                                    {% for product in inventory.products %}
+
+                                        <option value="{{ product.id }}">
+                                            {{ product.sku }} · {{ product.name }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+                                <select class="form-select" name="hazard_class_id">
+
+                                    {% for class in inventory.hazardClasses %}
+
+                                        <option value="{{ class.id }}">
+                                            {{ class.code }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+                                <div class="col-6">
+                                    <input class="form-control" name="un_number" placeholder="{{ 'inventory.control.un_number'|trans }}" required>
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control" name="packing_group" placeholder="{{ 'inventory.control.packing_group'|trans }}">
+                                </div>
+                                <input class="form-control" name="description" placeholder="{{ 'user.user_group.index.description'|trans }}" required>
+                                <button class="btn btn-primary">
+                                    {{ 'inventory.control.classify'|trans }}
+                                </button>
+                            </form>
+                            <hr>
+                            <h2 class="h5">
+                                {{ 'inventory.control.zone_rule'|trans }}
+                            </h2>
+                            <form method="post" action="{{ path('v3_inventory_control_storage_restriction') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('inventory_storage_restriction') }}">
+                                <select class="form-select" name="hazard_class_id">
+
+                                    {% for class in inventory.hazardClasses %}
+
+                                        <option value="{{ class.id }}">
+                                            {{ class.code }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+                                <div class="col-6">
+                                    <input class="form-control" name="location_prefix" placeholder="{{ 'inventory.control.location_prefix'|trans }}" required>
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control" type="number" min="0" name="max_quantity" placeholder="{{ 'inventory.control.maximum_quantity'|trans }}">
+                                </div>
+                                <label>
+                                    <input type="checkbox" name="allowed" value="1" checked>
+                                    {{ 'inventory.control.put_away_allowed'|trans }}
+                                </label>
+                                <button class="btn btn-outline-primary">
+                                    {{ 'inventory.control.save_rule'|trans }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8">
+                    <div class="card border-0 shadow-sm">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inventory.control.class'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inventory.control.un'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'user.user_group.index.description'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for row in inventory.hazardousMaterials %}
+
+                                        <tr>
+                                            <td>
+                                                {{ row.sku }}
+                                            </td>
+                                            <td>
+                                                {{ row.hazard_code }}
+                                            </td>
+                                            <td>
+                                                {{ row.un_number }}
+                                            </td>
+                                            <td>
+                                                {{ row.description }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted py-4">
+                                                {{ 'inventory.control.no_hazardous_materials_classified'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card border-0 shadow-sm mt-3">
+                        <div class="card-body">
+
+                            {% for row in inventory.restrictions %}
+
+                                <span class="badge bg-{{ row.allowed ? 'success' : 'danger' }}-subtle text-{{ row.allowed ? 'success' : 'danger' }} me-2">
+                                    {{ row.hazard_code }} · {{ row.location_prefix }} · {{ (row.allowed ? 'common.allowed.permitted' : 'common.blocked.blocked')|trans }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="inventory-bom">
+            <div class="row g-3">
+                <div class="col-xl-5">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h2 class="h5">
+                                {{ 'inventory.control.create_bom'|trans }}
+                            </h2>
+                            <form method="post" action="{{ path('v3_inventory_control_bom') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('inventory_bom') }}">
+                                <select class="form-select" name="product_id">
+
+                                    {% for product in inventory.products %}
+
+                                        <option value="{{ product.id }}">
+                                            {{ product.sku }} · {{ product.name }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+                                <div class="col-8">
+                                    <input class="form-control" name="code" placeholder="{{ 'administration.role_new.code'|trans }}" required>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" name="version" value="1" required>
+                                </div>
+                                <textarea class="form-control font-monospace" name="items" rows="5" required>
+                                    {{ 'inventory.control.productid_uuid_quantity_1'|trans }}
+                                </textarea>
+                                <button class="btn btn-primary">
+                                    {{ 'inventory.control.save_bom'|trans }}
+                                </button>
+                            </form>
+                            <hr>
+                            <h2 class="h5">
+                                {{ 'inventory.control.plan_material_requirements'|trans }}
+                            </h2>
+                            <form method="post" action="{{ path('v3_inventory_control_requirement') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('inventory_requirement') }}">
+                                <select class="form-select" name="bom_id">
+
+                                    {% for bom in inventory.boms %}
+
+                                        <option value="{{ bom.id }}">
+                                            {{ bom.code }} / {{ bom.version }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+                                <div class="col-8">
+                                    <input class="form-control" name="reference" placeholder="{{ 'inventory.control.production_reference'|trans }}" required>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" type="number" min="1" name="production_quantity" value="1">
+                                </div>
+                                <button class="btn btn-outline-primary">
+                                    {{ 'inventory.control.generate_demand'|trans }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-7">
+                    <div class="card border-0 shadow-sm">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'administration.role_new.code'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inventory.control.product'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inventory.control.version'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inbound.control.items'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for row in inventory.boms %}
+
+                                        <tr>
+                                            <td>
+                                                {{ row.code }}
+                                            </td>
+                                            <td>
+                                                {{ row.sku }}
+                                            </td>
+                                            <td>
+                                                {{ row.version }}
+                                            </td>
+                                            <td>
+                                                {{ row.item_count }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted py-4">
+                                                {{ 'inventory.control.no_bills_of_materials'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card border-0 shadow-sm mt-3">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'stock.stock_rotation.reference'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inventory.control.bom'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'customer_order.customer_order_input_fields.quantity'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'transport_request.index.status'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for row in inventory.requirements %}
+
+                                        <tr>
+                                            <td>
+                                                {{ row.reference }}
+                                            </td>
+                                            <td>
+                                                {{ row.bom_code }}
+                                            </td>
+                                            <td>
+                                                {{ row.production_quantity }}
+                                            </td>
+                                            <td>
+                                                {{ row.status }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="inventory-carrier">
+            <div class="row g-3">
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h2 class="h5">
+                                {{ 'inventory.control.book_load_carrier'|trans }}
+                            </h2>
+                            <form method="post" action="{{ path('v3_inventory_control_load_carrier') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('inventory_load_carrier') }}">
+                                <input class="form-control" name="partner_code" placeholder="{{ 'inventory.control.partner'|trans }}" required>
+                                <input class="form-control" name="carrier_type" placeholder="{{ 'inventory.control.pallet_klt_mesh_box'|trans }}" required>
+                                <div class="col-4">
+                                    <input class="form-control" type="number" name="quantity" placeholder="{{ 'inventory.control.quantity'|trans }}" required>
+                                </div>
+                                <div class="col-8">
+                                    <input class="form-control" name="reference" placeholder="{{ 'stock.stock_rotation.reference'|trans }}" required>
+                                </div>
+                                <input class="form-control" name="note" placeholder="{{ 'inventory.control.note'|trans }}">
+                                <button class="btn btn-primary">
+                                    {{ 'modal.put_into_storage.post'|trans }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8">
+                    <div class="card border-0 shadow-sm">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'inventory.control.partner'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'administration.workspace.type'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inventory.control.balance'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for row in inventory.carrierAccounts %}
+
+                                        <tr>
+                                            <td>
+                                                {{ row.partner_code }}
+                                            </td>
+                                            <td>
+                                                {{ row.carrier_type }}
+                                            </td>
+                                            <td class="fw-semibold">
+                                                {{ row.balance }}
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted py-4">
+                                                {{ 'inventory.control.no_load_carrier_accounts'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="inventory-count">
+            <div class="row g-3">
+                <div class="col-xl-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <h2 class="h5">
+                                {{ 'inventory.control.cut_off_date_inventory'|trans }}
+                            </h2>
+                            <form method="post" action="{{ path('v3_inventory_control_count') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('inventory_count') }}">
+                                <select class="form-select" name="warehouse_id">
+
+                                    {% for warehouse in inventory.warehouses %}
+
+                                        <option value="{{ warehouse.id }}">
+                                            {{ warehouse.code }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+                                <div class="col-6">
+                                    <input class="form-control" name="code" placeholder="{{ 'administration.role_new.code'|trans }}" required>
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control" name="location_prefix" placeholder="{{ 'inventory.control.location_prefix'|trans }}">
+                                </div>
+                                <button class="btn btn-primary">
+                                    {{ 'inventory.control.open_inventory'|trans }}
+                                </button>
+                            </form>
+                            <hr>
+                            <h2 class="h5">
+                                {{ 'inventory.control.continuous_inventory'|trans }}
+                            </h2>
+                            <form method="post" action="{{ path('v3_inventory_control_cycle_plan') }}" class="row g-2">
+                                <input type="hidden" name="_token" value="{{ csrf_token('inventory_cycle_plan') }}">
+                                <select class="form-select" name="warehouse_id">
+
+                                    {% for warehouse in inventory.warehouses %}
+
+                                        <option value="{{ warehouse.id }}">
+                                            {{ warehouse.code }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                </select>
+                                <div class="col-6">
+                                    <input class="form-control" name="code" placeholder="{{ 'inventory.control.plan_code'|trans }}" required>
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control" name="location_prefix" placeholder="{{ 'administration.workspace.area'|trans }}">
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control" type="number" min="1" name="interval_days" value="30">
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control" type="datetime-local" name="next_due_at" required>
+                                </div>
+                                <button class="btn btn-outline-primary">
+                                    {{ 'inventory.control.save_plan'|trans }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8">
+                    <div class="card border-0 shadow-sm">
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'administration.role_new.code'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'administration.workspace.type'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'transport_request.index.status'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inventory.control.lines_differences'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'common.action'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for row in inventory.counts %}
+
+                                        <tr>
+                                            <td>
+                                                {{ row.code }}
+                                            </td>
+                                            <td>
+                                                {{ row.count_type }}
+                                            </td>
+                                            <td>
+                                                {{ row.status }}
+                                            </td>
+                                            <td>
+                                                {{ row.line_count }} / {{ row.difference_count }}
+                                            </td>
+                                            <td>
+
+                                                {% if row.status == 'open' %}
+
+                                                    <form method="post" action="{{ path('v3_inventory_control_submit', {countId: row.id}) }}">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('inventory_count_submit_' ~ row.id) }}">
+                                                        <button class="btn btn-sm btn-outline-primary">
+                                                            {{ 'inventory.control.submit'|trans }}
+                                                        </button>
+                                                    </form>
+
+                                                {% elseif row.status == 'counted' %}
+
+                                                    <form method="post" action="{{ path('v3_inventory_control_approve', {countId: row.id}) }}">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('inventory_count_approve_' ~ row.id) }}">
+                                                        <button class="btn btn-sm btn-primary">
+                                                            {{ 'inventory.control.release_and_post'|trans }}
+                                                        </button>
+                                                    </form>
+
+                                                {% endif %}
+
+                                            </td>
+                                        </tr>
+
+                                    {% else %}
+
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-4">
+                                                {{ 'inventory.control.no_inventories'|trans }}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card border-0 shadow-sm mt-3">
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            {{ 'navigation.inventory.headline'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'navigation.master_data.submenu.headline1.label'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inventory.control.debit'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inventory.control.actual'|trans }}
+                                        </th>
+                                        <th>
+                                            {{ 'inventory.control.count'|trans }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for row in inventory.countLines %}
+
+                                        <tr>
+                                            <td>
+                                                {{ row.count_code }}
+                                            </td>
+                                            <td>
+                                                {{ row.sku }}
+                                            </td>
+                                            <td>
+                                                {{ row.expected_quantity }}
+                                            </td>
+                                            <td>
+                                                {{ row.counted_quantity|default('–') }}
+                                            </td>
+                                            <td>
+                                                <form class="d-flex" method="post" action="{{ path('v3_inventory_control_record', {countId: row.inventory_count_id, lineId: row.id}) }}">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('inventory_count_line_' ~ row.id) }}">
+                                                    <input class="form-control form-control-sm" type="number" name="quantity" value="{{ row.counted_quantity|default(row.expected_quantity) }}">
+                                                    <button class="btn btn-sm btn-outline-primary ms-2">
+                                                        {{ 'common.button.save'|trans }}
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

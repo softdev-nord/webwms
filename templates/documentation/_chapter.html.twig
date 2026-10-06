@@ -1,97 +1,233 @@
-                    <h1>{{ document.title }}</h1>
-                    <p class="lead text-muted">{{ document.summary }}</p>
+<h1>
+    {{ document.title }}
+</h1>
+<p class="lead text-muted">
+    {{ document.summary }}
+</p>
 
-                    <div class="row g-3 mb-4" id="chapter-guidance">
-                        {% for key, values in document.guidance %}
-                            <div class="col-md-6">
-                                <div class="border rounded h-100 p-3">
-                                    <h2 class="h6 mt-0 border-0 p-0">{{ ('ui.' ~ key)|trans({}, 'handbook') }}</h2>
-                                    <ul class="mb-0">
-                                        {% for value in values %}<li>{{ value }}</li>{% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
+<div class="row g-3 mb-4" id="chapter-guidance">
+    {% for key, values in document.guidance %}
+        <div class="col-md-6">
+            <div class="border rounded h-100 p-3">
+                <h2 class="h6 mt-0 border-0 p-0">
+                    {{ ('ui.' ~ key)|trans({}, 'handbook') }}
+                </h2>
+                <ul class="mb-0">
+                    {% for value in values %}
 
-                    {% for section in document.sections %}
-                        <section aria-labelledby="{{ section.id }}">
-                            <h2 id="{{ section.id }}">{{ section.title }}</h2>
+                        <li>
+                            {{ value }}
+                        </li>
 
-                            {% for paragraph in section.paragraphs %}
-                                <p>{{ paragraph }}</p>
-                            {% endfor %}
-
-                            {% if section.steps %}
-                                <ol>
-                                    {% for step in section.steps %}<li>{{ step }}</li>{% endfor %}
-                                </ol>
-                            {% endif %}
-
-                            {% if section.items %}
-                                <ul>
-                                    {% for item in section.items %}<li>{{ item }}</li>{% endfor %}
-                                </ul>
-                            {% endif %}
-
-                            {% if section.image %}
-                                <figure class="handbook-figure">
-                                    <img class="img-fluid rounded border" src="{{ section.image.src }}" alt="{{ section.image.alt }}" loading="lazy">
-                                    <figcaption class="small text-muted mt-2">{{ section.image.alt }}</figcaption>
-                                </figure>
-                            {% endif %}
-                        </section>
                     {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 
-                    {% if document.views %}
-                        <hr class="my-5">
-                        <h2>{{ 'ui.documented_views'|trans({}, 'handbook') }}</h2>
-                    {% endif %}
+{% for section in document.sections %}
+    <section aria-labelledby="{{ section.id }}">
+        <h2 id="{{ section.id }}">
+            {{ section.title }}
+        </h2>
 
-                    {% for view in document.views %}
-                        <section id="view-{{ view.id }}" class="handbook-view" aria-labelledby="view-title-{{ view.id }}">
-                            <h3 id="view-title-{{ view.id }}">{{ view.title }}</h3>
-                            <p>{{ view.purpose }}</p>
-                            <dl class="row">
-                                <dt class="col-md-3">{{ 'ui.navigation_path'|trans({}, 'handbook') }}</dt>
-                                <dd class="col-md-9">{{ view.navigation }}</dd>
-                                <dt class="col-md-3">{{ 'ui.permissions'|trans({}, 'handbook') }}</dt>
-                                <dd class="col-md-9">{{ view.permissions|join(', ') }}</dd>
-                            </dl>
+        {% for paragraph in section.paragraphs %}
+            <p>
+                {{ paragraph }}
+            </p>
+        {% endfor %}
 
-                            {% if view.overview %}
-                                <h4>{{ 'ui.displayed_information'|trans({}, 'handbook') }}</h4>
-                                <ul>{% for item in view.overview %}<li>{{ item }}</li>{% endfor %}</ul>
-                            {% endif %}
+        {% if section.steps %}
+            <ol>
+                {% for step in section.steps %}
 
-                            {% if view.fields %}
-                                <h4>{{ 'ui.fields_and_inputs'|trans({}, 'handbook') }}</h4>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered align-middle handbook-fields">
-                                        <thead><tr><th>{{ 'ui.field_name'|trans({}, 'handbook') }}</th><th>{{ 'ui.input_help'|trans({}, 'handbook') }}</th><th>{{ 'ui.effect_and_errors'|trans({}, 'handbook') }}</th></tr></thead>
-                                        <tbody>
-                                            {% for field in view.fields %}
-                                                <tr id="field-{{ view.id }}-{{ field.id }}">
-                                                    <th scope="row"><code>{{ field.id }}</code><span class="d-block">{{ field.label }}</span><small>{{ (field.required ? 'ui.required' : 'ui.optional')|trans({}, 'handbook') }}</small></th>
-                                                    <td><strong>{{ 'ui.format'|trans({}, 'handbook') }}:</strong> {{ field.format }}<br><strong>{{ 'ui.example'|trans({}, 'handbook') }}:</strong> <code>{{ field.example }}</code><br>{{ field.help }}{% if field.usages %}<br><strong>{{ 'ui.used_for'|trans({}, 'handbook') }}:</strong><ul class="mb-0">{% for usage in field.usages %}<li>{{ usage }}</li>{% endfor %}</ul>{% endif %}</td>
-                                                    <td><strong>{{ 'ui.effect'|trans({}, 'handbook') }}:</strong> {{ field.effect }}<br><strong>{{ 'ui.validation'|trans({}, 'handbook') }}:</strong> {{ field.errors }}</td>
-                                                </tr>
+                    <li>
+                        {{ step }}
+                    </li>
+
+                {% endfor %}
+            </ol>
+        {% endif %}
+
+        {% if section.items %}
+            <ul>
+                {% for item in section.items %}
+
+                    <li>
+                        {{ item }}
+                    </li>
+
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if section.image %}
+            <figure class="handbook-figure">
+                <img class="img-fluid rounded border" src="{{ section.image.src }}" alt="{{ section.image.alt }}" loading="lazy">
+                <figcaption class="small text-muted mt-2">
+                    {{ section.image.alt }}
+                </figcaption>
+            </figure>
+        {% endif %}
+    </section>
+{% endfor %}
+
+{% if document.views %}
+    <hr class="my-5">
+    <h2>
+        {{ 'ui.documented_views'|trans({}, 'handbook') }}
+    </h2>
+{% endif %}
+
+{% for view in document.views %}
+    <section id="view-{{ view.id }}" class="handbook-view" aria-labelledby="view-title-{{ view.id }}">
+        <h3 id="view-title-{{ view.id }}">
+            {{ view.title }}
+        </h3>
+        <p>
+            {{ view.purpose }}
+        </p>
+        <dl class="row">
+            <dt class="col-md-3">
+                {{ 'ui.navigation_path'|trans({}, 'handbook') }}
+            </dt>
+            <dd class="col-md-9">
+                {{ view.navigation }}
+            </dd>
+            <dt class="col-md-3">
+                {{ 'ui.permissions'|trans({}, 'handbook') }}
+            </dt>
+            <dd class="col-md-9">
+                {{ view.permissions|join(', ') }}
+            </dd>
+        </dl>
+
+        {% if view.overview %}
+            <h4>
+                {{ 'ui.displayed_information'|trans({}, 'handbook') }}
+            </h4>
+            <ul>
+
+                {% for item in view.overview %}
+
+                    <li>
+                        {{ item }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+        {% endif %}
+
+        {% if view.fields %}
+            <h4>
+                {{ 'ui.fields_and_inputs'|trans({}, 'handbook') }}
+            </h4>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle handbook-fields">
+                    <thead>
+                        <tr>
+                            <th>
+                                {{ 'ui.field_name'|trans({}, 'handbook') }}
+                            </th>
+                            <th>
+                                {{ 'ui.input_help'|trans({}, 'handbook') }}
+                            </th>
+                            <th>
+                                {{ 'ui.effect_and_errors'|trans({}, 'handbook') }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for field in view.fields %}
+                            <tr id="field-{{ view.id }}-{{ field.id }}">
+                                <th scope="row">
+                                    <code>
+                                        {{ field.id }}
+                                    </code>
+                                    <span class="d-block">
+                                        {{ field.label }}
+                                    </span>
+                                    <small>
+                                        {{ (field.required ? 'ui.required' : 'ui.optional')|trans({}, 'handbook') }}
+                                    </small>
+                                </th>
+                                <td>
+                                    <strong>
+                                        {{ 'ui.format'|trans({}, 'handbook') }}:
+                                    </strong>
+                                    {{ field.format }}
+                                    <br>
+                                    <strong>
+                                        {{ 'ui.example'|trans({}, 'handbook') }}:
+                                    </strong>
+
+                                    <code>
+                                        {{ field.example }}
+                                    </code>
+                                    <br>
+                                    {{ field.help }}
+                                    {% if field.usages %}
+
+                                        <br>
+                                        <strong>
+                                            {{ 'ui.used_for'|trans({}, 'handbook') }}:
+                                        </strong>
+                                        <ul class="mb-0">
+
+                                            {% for usage in field.usages %}
+
+                                                <li>
+                                                    {{ usage }}
+                                                </li>
+
                                             {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            {% endif %}
 
-                            {% if view.actions %}
-                                <h4>{{ 'ui.actions'|trans({}, 'handbook') }}</h4>
-                                {% for action in view.actions %}
-                                    <div class="handbook-action"><strong>{{ action.label }}</strong><p>{{ action.description }} {{ action.result }}</p></div>
-                                {% endfor %}
-                            {% endif %}
+                                        </ul>
 
-                            <figure class="handbook-figure">
-                                <img class="img-fluid rounded border" src="{{ view.image.src }}" alt="{{ view.image.alt }}" loading="lazy">
-                                <figcaption class="small text-muted mt-2">{{ view.image.alt }}</figcaption>
-                            </figure>
-                        </section>
-                    {% endfor %}
+                                    {% endif %}
+
+                                </td>
+                                <td>
+                                    <strong>
+                                        {{ 'ui.effect'|trans({}, 'handbook') }}:
+                                    </strong>
+                                    {{ field.effect }}
+                                    <br>
+                                    <strong>
+                                        {{ 'ui.validation'|trans({}, 'handbook') }}:
+                                    </strong>
+                                    {{ field.errors }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        {% if view.actions %}
+            <h4>
+                {{ 'ui.actions'|trans({}, 'handbook') }}
+            </h4>
+            {% for action in view.actions %}
+                <div class="handbook-action">
+                    <strong>
+                        {{ action.label }}
+                    </strong>
+                    <p>
+                        {{ action.description }} {{ action.result }}
+                    </p>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <figure class="handbook-figure">
+            <img class="img-fluid rounded border" src="{{ view.image.src }}" alt="{{ view.image.alt }}" loading="lazy">
+            <figcaption class="small text-muted mt-2">
+                {{ view.image.alt }}
+            </figcaption>
+        </figure>
+    </section>
+{% endfor %}

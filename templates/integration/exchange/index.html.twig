@@ -1,12 +1,274 @@
 {% extends 'v3/base.html.twig' %}
 
 {% block webwms_content %}
-	<div class="d-flex justify-content-between align-items-center mb-4">
-		<div><h1 class="h3 mb-1">{{ 'integration.exchange.page.overview'|trans }}</h1><p class="text-muted mb-0">{{ 'integration.exchange.text.subtitle'|trans }}</p></div>
-		{% if is_granted('integration.exchange.write') %}<div class="d-flex gap-2"><a class="btn btn-outline-primary" href="{{ path('v3_data_exchange_mapping_new') }}">{{ 'integration.exchange.action.mapping'|trans }}</a><a class="btn btn-outline-primary" href="{{ path('v3_data_exchange_commerce_new') }}">{{ 'integration.exchange.action.commerce'|trans }}</a><a class="btn btn-outline-primary" href="{{ path('v3_data_exchange_export') }}">{{ 'integration.exchange.action.export'|trans }}</a><a class="btn btn-primary" href="{{ path('v3_data_exchange_import') }}">{{ 'integration.exchange.action.import'|trans }}</a></div>{% endif %}
-	</div>
-	<div class="card border-0 shadow-sm mb-4"><div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'integration.exchange.section.jobs'|trans }}</h2></div><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>{{ 'integration.exchange.field.direction'|trans }}</th><th>{{ 'integration.exchange.field.format'|trans }}</th><th>{{ 'integration.exchange.field.resource'|trans }}</th><th>{{ 'integration.exchange.field.rows'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th>{{ 'administration.workspace.time_point_in_time'|trans }}</th></tr></thead><tbody>{% for job in jobs %}<tr><td>{{ job.direction }}</td><td><code>{{ job.format|upper }}</code></td><td>{{ job.resource_type }}</td><td>{{ job.row_count }}</td><td><span class="badge bg-success-subtle text-success">{{ job.status }}</span></td><td>{{ job.created_at }}</td></tr>{% else %}<tr><td colspan="6" class="text-center text-muted py-4">{{ 'integration.exchange.empty.jobs'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>
-	<div class="row g-4"><div class="col-xl-6"><div class="card border-0 shadow-sm h-100"><div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'integration.exchange.section.mappings'|trans }}</h2></div><div class="table-responsive"><table class="table table-sm mb-0"><thead><tr><th>{{ 'integration.exchange.field.system'|trans }}</th><th>{{ 'integration.exchange.field.message'|trans }}</th><th>{{ 'integration.exchange.field.mapping'|trans }}</th></tr></thead><tbody>{% for mapping in mappings %}<tr><td>{{ mapping.system_type }}</td><td>{{ mapping.message_type }}</td><td><code>{{ mapping.source_field }} → {{ mapping.target_field }}</code></td></tr>{% else %}<tr><td colspan="3" class="text-center text-muted py-4">{{ 'integration.exchange.empty.mappings'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div>
-	<div class="col-xl-6"><div class="card border-0 shadow-sm h-100"><div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'integration.exchange.section.commerce'|trans }}</h2></div><div class="table-responsive"><table class="table table-sm mb-0"><thead><tr><th>{{ 'common.template.correspondence.name'|trans }}</th><th>{{ 'integration.exchange.field.channel'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th></tr></thead><tbody>{% for connection in connections %}<tr><td>{{ connection.name }}</td><td>{{ connection.channel_type }}</td><td>{{ (connection.active ? 'user.user_input_fields.active' : 'integration.carrier_connection.index.paused')|trans }}</td></tr>{% else %}<tr><td colspan="3" class="text-center text-muted py-4">{{ 'integration.exchange.empty.connections'|trans }}</td></tr>{% endfor %}</tbody></table></div></div></div></div>
-	<div class="card border-0 shadow-sm mt-4"><div class="card-header bg-transparent"><h2 class="h5 mb-0">{{ 'integration.exchange.section.orders'|trans }}</h2></div><div class="table-responsive"><table class="table table-sm mb-0"><thead><tr><th>{{ 'integration.exchange.field.external_order'|trans }}</th><th>{{ 'integration.exchange.field.connection'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th>{{ 'administration.workspace.time_point_in_time'|trans }}</th></tr></thead><tbody>{% for order in orders %}<tr><td><code>{{ order.external_order_id }}</code></td><td>{{ order.connection_name }}</td><td>{{ order.status }}</td><td>{{ order.imported_at }}</td></tr>{% else %}<tr><td colspan="4" class="text-center text-muted py-4">{{ 'integration.exchange.empty.orders'|trans }}</td></tr>{% endfor %}</tbody></table></div></div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ 'integration.exchange.page.overview'|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'integration.exchange.text.subtitle'|trans }}
+            </p>
+        </div>
+        {% if is_granted('integration.exchange.write') %}
+
+            <div class="d-flex gap-2">
+                <a class="btn btn-outline-primary" href="{{ path('v3_data_exchange_mapping_new') }}">
+                    {{ 'integration.exchange.action.mapping'|trans }}
+                </a>
+                <a class="btn btn-outline-primary" href="{{ path('v3_data_exchange_commerce_new') }}">
+                    {{ 'integration.exchange.action.commerce'|trans }}
+                </a>
+                <a class="btn btn-outline-primary" href="{{ path('v3_data_exchange_export') }}">
+                    {{ 'integration.exchange.action.export'|trans }}
+                </a>
+                <a class="btn btn-primary" href="{{ path('v3_data_exchange_import') }}">
+                    {{ 'integration.exchange.action.import'|trans }}
+                </a>
+            </div>
+
+        {% endif %}
+    </div>
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-transparent">
+            <h2 class="h5 mb-0">
+                {{ 'integration.exchange.section.jobs'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'integration.exchange.field.direction'|trans }}
+                        </th>
+                        <th>
+                            {{ 'integration.exchange.field.format'|trans }}
+                        </th>
+                        <th>
+                            {{ 'integration.exchange.field.resource'|trans }}
+                        </th>
+                        <th>
+                            {{ 'integration.exchange.field.rows'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                            {{ 'administration.workspace.time_point_in_time'|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for job in jobs %}
+
+                        <tr>
+                            <td>
+                                {{ job.direction }}
+                            </td>
+                            <td>
+                                <code>
+                                    {{ job.format|upper }}
+                                </code>
+                            </td>
+                            <td>
+                                {{ job.resource_type }}
+                            </td>
+                            <td>
+                                {{ job.row_count }}
+                            </td>
+                            <td>
+                                <span class="badge bg-success-subtle text-success">
+                                    {{ job.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {{ job.created_at }}
+                            </td>
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                {{ 'integration.exchange.empty.jobs'|trans }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row g-4">
+        <div class="col-xl-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent">
+                    <h2 class="h5 mb-0">
+                        {{ 'integration.exchange.section.mappings'|trans }}
+                    </h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm mb-0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    {{ 'integration.exchange.field.system'|trans }}
+                                </th>
+                                <th>
+                                    {{ 'integration.exchange.field.message'|trans }}
+                                </th>
+                                <th>
+                                    {{ 'integration.exchange.field.mapping'|trans }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for mapping in mappings %}
+
+                                <tr>
+                                    <td>
+                                        {{ mapping.system_type }}
+                                    </td>
+                                    <td>
+                                        {{ mapping.message_type }}
+                                    </td>
+                                    <td>
+                                        <code>
+                                            {{ mapping.source_field }} → {{ mapping.target_field }}
+                                        </code>
+                                    </td>
+                                </tr>
+
+                            {% else %}
+
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-4">
+                                        {{ 'integration.exchange.empty.mappings'|trans }}
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent">
+                    <h2 class="h5 mb-0">
+                        {{ 'integration.exchange.section.commerce'|trans }}
+                    </h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm mb-0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    {{ 'common.template.correspondence.name'|trans }}
+                                </th>
+                                <th>
+                                    {{ 'integration.exchange.field.channel'|trans }}
+                                </th>
+                                <th>
+                                    {{ 'transport_request.index.status'|trans }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for connection in connections %}
+
+                                <tr>
+                                    <td>
+                                        {{ connection.name }}
+                                    </td>
+                                    <td>
+                                        {{ connection.channel_type }}
+                                    </td>
+                                    <td>
+                                        {{ (connection.active ? 'user.user_input_fields.active' : 'integration.carrier_connection.index.paused')|trans }}
+                                    </td>
+                                </tr>
+
+                            {% else %}
+
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-4">
+                                        {{ 'integration.exchange.empty.connections'|trans }}
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card border-0 shadow-sm mt-4">
+        <div class="card-header bg-transparent">
+            <h2 class="h5 mb-0">
+                {{ 'integration.exchange.section.orders'|trans }}
+            </h2>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'integration.exchange.field.external_order'|trans }}
+                        </th>
+                        <th>
+                            {{ 'integration.exchange.field.connection'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                            {{ 'administration.workspace.time_point_in_time'|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for order in orders %}
+
+                        <tr>
+                            <td>
+                                <code>
+                                    {{ order.external_order_id }}
+                                </code>
+                            </td>
+                            <td>
+                                {{ order.connection_name }}
+                            </td>
+                            <td>
+                                {{ order.status }}
+                            </td>
+                            <td>
+                                {{ order.imported_at }}
+                            </td>
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">
+                                {{ 'integration.exchange.empty.orders'|trans }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

@@ -1,34 +1,87 @@
 <!doctype html>
 <html lang="de">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ 'security.v3_login.log_in_webwms_3_0'|trans }}</title>
-    {{ include('subsections/head-css.html.twig') }}
-</head>
-<body class="bg-light">
-<main class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-7 col-lg-5">
-            <div class="text-center mb-4"><h1><span class="text-primary">{{ 'base.web'|trans }}</span>{{ 'base.wms'|trans }}</h1><p class="text-muted">{{ 'security.v3_login.v3_workspace'|trans }}</p></div>
-            <div class="card shadow-sm border-0"><div class="card-body p-4">
-                <h2 class="h4 mb-3">{{ 'security.v3_login.log_in_with_email'|trans }}</h2>
-                {% if error %}<div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>{% endif %}
-                {% for message in app.flashes('error') %}<div class="alert alert-danger" role="alert">{{ message|trans }}</div>{% endfor %}
-                <form method="post">
-                    <div class="mb-3"><label class="form-label" for="email">{{ 'security.v3_login.email_address'|trans }}</label><input id="email" type="email" name="email" class="form-control" value="{{ last_email }}" autocomplete="email" required autofocus></div>
-                    <div class="mb-4"><label class="form-label" for="password">{{ 'security.login.password'|trans }}</label><input id="password" type="password" name="password" class="form-control" autocomplete="current-password" required></div>
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate_v3') }}">
-                    <button type="submit" class="btn btn-primary w-100">{{ 'security.login.log_in'|trans }}</button>
-                </form>
-                <div class="d-flex align-items-center gap-3 my-4"><hr class="flex-grow-1"><span class="text-muted">{{ 'security.sso.or'|trans }}</span><hr class="flex-grow-1"></div>
-                <form method="get" action="{{ path('app_v3_sso_login') }}">
-                    <div class="mb-3"><label class="form-label" for="provider">{{ 'security.sso.provider_code'|trans }}</label><input id="provider" type="text" name="provider" class="form-control" autocomplete="organization-title" required></div>
-                    <button type="submit" class="btn btn-outline-primary w-100">{{ 'security.sso.log_in'|trans }}</button>
-                </form>
-            </div></div>
-        </div>
-    </div>
-</main>
-</body>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>
+            {{ 'security.v3_login.log_in_webwms_3_0'|trans }}
+        </title>
+        {{ include('subsections/head-css.html.twig') }}
+    </head>
+    <body class="bg-light">
+        <main class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-5">
+                    <div class="text-center mb-4">
+                        <h1>
+                            <span class="text-primary">
+                                {{ 'base.web'|trans }}
+                            </span>
+                            {{ 'base.wms'|trans }}
+                        </h1>
+                        <p class="text-muted">
+                            {{ 'security.v3_login.v3_workspace'|trans }}
+                        </p>
+                    </div>
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-4">
+                            <h2 class="h4 mb-3">
+                                {{ 'security.v3_login.log_in_with_email'|trans }}
+                            </h2>
+                            {% if error %}
+
+                                <div class="alert alert-danger" role="alert">
+                                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                                </div>
+
+                            {% endif %}
+                            {% for message in app.flashes('error') %}
+
+                                <div class="alert alert-danger" role="alert">
+                                    {{ message|trans }}
+                                </div>
+
+                            {% endfor %}
+                            <form method="post">
+                                <div class="mb-3">
+                                    <label class="form-label" for="email">
+                                        {{ 'security.v3_login.email_address'|trans }}
+                                    </label>
+                                    <input id="email" type="email" name="email" class="form-control" value="{{ last_email }}" autocomplete="email" required autofocus>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="password">
+                                        {{ 'security.login.password'|trans }}
+                                    </label>
+                                    <input id="password" type="password" name="password" class="form-control" autocomplete="current-password" required>
+                                </div>
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate_v3') }}">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    {{ 'security.login.log_in'|trans }}
+                                </button>
+                            </form>
+                            <div class="d-flex align-items-center gap-3 my-4">
+                                <hr class="flex-grow-1">
+                                <span class="text-muted">
+                                    {{ 'security.sso.or'|trans }}
+                                </span>
+                                <hr class="flex-grow-1">
+                            </div>
+                            <form method="get" action="{{ path('app_v3_sso_login') }}">
+                                <div class="mb-3">
+                                    <label class="form-label" for="provider">
+                                        {{ 'security.sso.provider_code'|trans }}
+                                    </label>
+                                    <input id="provider" type="text" name="provider" class="form-control" autocomplete="organization-title" required>
+                                </div>
+                                <button type="submit" class="btn btn-outline-primary w-100">
+                                    {{ 'security.sso.log_in'|trans }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
 </html>

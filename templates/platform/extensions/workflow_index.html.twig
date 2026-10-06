@@ -1,11 +1,92 @@
 {% extends 'v3/base.html.twig' %}
-{% block title %}{{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0{% endblock %}
+
+{% block title %}
+    {{ (page|default('layout.title_meta.webwms'))|trans(pageParameters|default({})) }} | WebWMS 3.0
+{% endblock %}
+
 {% block webwms_content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div><h1 class="h3 mb-1">{{ label|trans }}</h1><p class="text-muted mb-0">{{ 'extensions.index.operational_processes'|trans }}</p></div>
-    <div><a class="btn btn-outline-secondary me-2" href="{{ path('v3_extension_index') }}">{{ 'extensions.configuration_index.overall_overview'|trans }}</a>{% if is_granted('platform.extension.execute') %}<a class="btn btn-primary" href="{{ path('v3_extension_work_item_new',{workflow:workflow}) }}">{{ 'extensions.index.start_process'|trans }}</a>{% endif %}</div>
-</div>
-<div class="card border-0 shadow-sm"><div class="table-responsive"><table class="table table-hover align-middle mb-0"><thead><tr><th>{{ 'stock.stock_rotation.reference'|trans }}</th><th>{{ 'transport_request.index.status'|trans }}</th><th>{{ 'user.index.created'|trans }}</th><th>{{ 'extensions.configuration_index.modified'|trans }}</th><th class="text-end">{{ 'common.action'|trans }}</th></tr></thead><tbody>
-{% for item in workItems %}<tr><td>{{ item.reference }}</td><td><span class="badge bg-secondary-subtle text-secondary">{{ item.status }}</span></td><td>{{ item.created_at }}</td><td>{{ item.changed_at }}</td><td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ path('v3_extension_work_item_show',{id:item.id}) }}">{{ 'common.button.edit'|trans }}</a></td></tr>{% else %}<tr><td colspan="5" class="text-center text-muted py-4">{{ 'extensions.workflow_index.no_processes_available'|trans }}</td></tr>{% endfor %}
-</tbody></table></div></div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">
+                {{ label|trans }}
+            </h1>
+            <p class="text-muted mb-0">
+                {{ 'extensions.index.operational_processes'|trans }}
+            </p>
+        </div>
+        <div>
+            <a class="btn btn-outline-secondary me-2" href="{{ path('v3_extension_index') }}">
+                {{ 'extensions.configuration_index.overall_overview'|trans }}
+            </a>
+
+            {% if is_granted('platform.extension.execute') %}
+
+                <a class="btn btn-primary" href="{{ path('v3_extension_work_item_new', {workflow: workflow}) }}">
+                    {{ 'extensions.index.start_process'|trans }}
+                </a>
+
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ 'stock.stock_rotation.reference'|trans }}
+                        </th>
+                        <th>
+                            {{ 'transport_request.index.status'|trans }}
+                        </th>
+                        <th>
+                            {{ 'user.index.created'|trans }}
+                        </th>
+                        <th>
+                            {{ 'extensions.configuration_index.modified'|trans }}
+                        </th>
+                        <th class="text-end">
+                            {{ 'common.action'|trans }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in workItems %}
+
+                        <tr>
+                            <td>
+                                {{ item.reference }}
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary-subtle text-secondary">
+                                    {{ item.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {{ item.created_at }}
+                            </td>
+                            <td>
+                                {{ item.changed_at }}
+                            </td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ path('v3_extension_work_item_show', {id: item.id}) }}">
+                                    {{ 'common.button.edit'|trans }}
+                                </a>
+                            </td>
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                {{ 'extensions.workflow_index.no_processes_available'|trans }}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
