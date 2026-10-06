@@ -72,6 +72,9 @@ services:
             - '../src/Integration/Application/StockMovementCriteria.php'
             - '../src/Inventory/Domain/'
             - '../src/Inventory/Application/*Command.php'
+            - '../src/Installation/Application/InstallationConfiguration.php'
+            - '../src/Installation/Application/InstallationIdentifiers.php'
+            - '../src/Installation/Application/InstallationResult.php'
             - '../src/Warehouse/**/Domain/'
 
     WebWMS\Administration\Domain\Tenant\TenantRepository:
