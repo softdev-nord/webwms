@@ -15,7 +15,7 @@ Architecture decisions and module boundaries are documented in
 
 Für lokale Testsysteme muss ein eigener Benutzer mit einem individuellen Passwort
 angelegt werden. Zugangsdaten dürfen nicht im Repository hinterlegt werden.
-Ein reproduzierbares Testsystem wird über den Webinstaller unter `/install`
+Ein reproduzierbares Testsystem wird über den Webinstaller unter `/v3/install`
 wahlweise mit den normalisierten V2-Demodaten eingerichtet; die Schritte sind in
 [`docs/user/v3-demo.md`](docs/user/v3-demo.md) beschrieben.
 

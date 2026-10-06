@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use WebWMS\Installation\Application\InstallationConfiguration;
 use WebWMS\Installation\Application\InstallationManager;
 
-#[Route('/install', name: 'installation_')]
+#[Route('/v3/install', name: 'installation_')]
 final class InstallationController extends AbstractController
 {
     private const array STEPS = ['welcome', 'database', 'organization', 'administrator', 'review'];

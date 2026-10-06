@@ -29,6 +29,6 @@ sowie ihre Routennamen bleiben unverändert.
 - `/v3/loading`: Tour-/Fahrzeugmanifest, kontrollierte Verladung und gemeinsamer Abschluss
 - `/v3/integration/outbox`: Statusüberwachung, Pull-Quittierung und Dead-Letter-Retry
 - `/v3/administration`: Benutzer, Rollen, Berechtigungen und API-Clients
-- `/install`: geführte Neuinstallation wahlweise mit V2-basierten Beispieldaten
+- `/v3/install`: geführte Neuinstallation wahlweise mit V2-basierten Beispieldaten
 
 Weitere Frontend-Slices können dieselbe Shell und dieselbe Controller-Grenze verwenden. Schreibaktionen sollen weiterhin über Application Commands laufen; Query-Services bleiben reine Leseprojektionen.

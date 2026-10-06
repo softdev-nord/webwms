@@ -8,7 +8,7 @@ Der Webserver benötigt Schreibrechte für `.env.local` sowie das Verzeichnis `v
 
 ## Geführte Installation
 
-1. Öffnen Sie `/install`.
+1. Öffnen Sie `/v3/install`.
 2. Tragen Sie Host, Port, Datenbankname, Benutzer, Kennwort und Serverversion ein.
 3. Wählen Sie **Schema und V2-basierte Demodaten**. Mit **Nur Datenbankschema und Ersteinrichtung** werden keine fachlichen Beispieldaten angelegt.
 4. Erfassen Sie den Namen des Mandanten und den physischen Hauptstandort einschließlich Zeitzone.
