@@ -23,6 +23,44 @@ final class CaptureHandbookScreenshotsCommand extends Command
     protected function configure(): void
     {
         $this
+            ->setHelp(<<<'HELP'
+                The <info>%command.name%</info> command validates or creates the reproducible
+                screenshots used by the integrated user handbook.
+
+                Capture all German screenshots:
+
+                  <info>php %command.full_name%</info>
+
+                Capture the German and English screenshots and overwrite existing files:
+
+                  <info>php %command.full_name% --locale=all --force</info>
+
+                Capture one scenario or documentation view:
+
+                  <info>php %command.full_name% --view=product_form --force</info>
+
+                Multiple views can be selected by repeating the option:
+
+                  <info>php %command.full_name% --view=product_overview --view=product_detail</info>
+
+                Capture every scenario in one handbook category:
+
+                  <info>php %command.full_name% --category=warehouse --force</info>
+
+                Validate the configuration, demo references and target paths without
+                starting a browser or writing screenshots:
+
+                  <info>php %command.full_name% --dry-run --locale=all</info>
+
+                Open the browser visibly while debugging a scenario:
+
+                  <info>php %command.full_name% --view=warehouse_occupancy_block --headed --force</info>
+
+                The browser login requires <comment>HANDBOOK_SCREENSHOT_EMAIL</comment> and
+                <comment>HANDBOOK_SCREENSHOT_PASSWORD</comment>. Set
+                <comment>HANDBOOK_SCREENSHOT_BASE_URL</comment> when the application is not
+                available at http://localhost.
+                HELP)
             ->addOption('locale', null, InputOption::VALUE_REQUIRED, 'de, en or all', 'de')
             ->addOption('view', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Scenario or documentation view key')
             ->addOption('category', null, InputOption::VALUE_REQUIRED, 'Handbook category')
