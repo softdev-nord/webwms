@@ -1,0 +1,68 @@
+defaults:
+    viewport: {width: 1440, height: 1000}
+    full_page: true
+    wait_for: main
+    masks:
+        - '[data-sensitive]'
+        - 'input[type="password"]'
+        - '.profiler-results'
+
+scenarios:
+    product_overview:
+        category: warehouse
+        route: v3_product_index
+        output: product/index.png
+        wait_for: 'table'
+    product_form:
+        category: warehouse
+        route: v3_product_new
+        output: product/form.png
+        wait_for: 'form'
+    product_detail:
+        category: warehouse
+        route: v3_product_show
+        route_parameters: {productId: '@demo.product.default'}
+        output: product/show.png
+        wait_for: '.nav-tabs'
+    topology_overview:
+        category: warehouse
+        route: v3_inventory_topology
+        output: warehouse/topology-overview.png
+        wait_for: '.nav-tabs'
+    topology_form:
+        category: warehouse
+        route: v3_inventory_topology_new
+        route_parameters: {resource: bin}
+        output: warehouse/topology-form.png
+        wait_for: 'form'
+    topology_generator:
+        category: warehouse
+        route: v3_inventory_topology_generator
+        output: warehouse/topology-generator.png
+        wait_for: 'form'
+    topology_import:
+        category: warehouse
+        route: v3_inventory_topology_import
+        output: warehouse/topology-import.png
+        wait_for: 'form'
+    warehouse_occupancy_block:
+        documentation_view: warehouse_occupancy
+        category: warehouse
+        route: v3_inventory_occupancy
+        query: {warehouse: '@demo.warehouse.block', aisle: '@demo.aisle.block'}
+        output: warehouse/occupancy-block.png
+        wait_for: '.occupancy-block'
+    warehouse_occupancy_rack:
+        documentation_view: warehouse_occupancy
+        category: warehouse
+        route: v3_inventory_occupancy
+        query: {warehouse: '@demo.warehouse.rack', aisle: '@demo.aisle.rack'}
+        output: warehouse/occupancy-rack.png
+        wait_for: '.occupancy-rack'
+    warehouse_occupancy_flow:
+        documentation_view: warehouse_occupancy
+        category: warehouse
+        route: v3_inventory_occupancy
+        query: {warehouse: '@demo.warehouse.flow', aisle: '@demo.aisle.flow'}
+        output: warehouse/occupancy-flow.png
+        wait_for: '.occupancy-flow'

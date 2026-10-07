@@ -132,6 +132,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^v3.45",
+        "playwright-php/playwright-symfony": "^0.11",
         "php-parallel-lint/php-var-dump-check": "^0.5",
         "phpcompatibility/php-compatibility": "^9.3",
         "phpmetrics/phpmetrics": "^v3.0.0rc6",

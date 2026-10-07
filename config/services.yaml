@@ -146,6 +146,15 @@ services:
     WebWMS\Integration\Domain\CredentialProvider:
         alias: WebWMS\Integration\Infrastructure\Security\EnvironmentCredentialProvider
 
+    WebWMS\Documentation\Application\Screenshot\ScreenshotRunner:
+        alias: WebWMS\Documentation\Infrastructure\Screenshot\PlaywrightScreenshotRunner
+
+    WebWMS\Documentation\Application\Screenshot\ScreenshotScenarioProvider:
+        alias: WebWMS\Documentation\Infrastructure\Screenshot\ScreenshotConfigurationLoader
+
+    WebWMS\Documentation\Application\Screenshot\DemoReferenceProvider:
+        alias: WebWMS\Documentation\Infrastructure\Screenshot\DemoReferenceResolver
+
     WebWMS\Security\Application\OidcClient:
         alias: WebWMS\Security\Infrastructure\Oidc\HttpOidcClient
 

@@ -7,6 +7,7 @@ namespace WebWMS\Documentation\Application;
 use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Yaml\Yaml;
+use WebWMS\Documentation\Application\Screenshot\ScreenshotScenarioProvider;
 
 class UserDocumentationService
 {
@@ -33,7 +34,8 @@ class UserDocumentationService
     private array $catalogues = [];
 
     public function __construct(
-        private readonly string $projectDir
+        private readonly string $projectDir,
+        private readonly ?ScreenshotScenarioProvider $screenshotConfiguration = null,
     ) {
     }
 
@@ -83,6 +85,7 @@ class UserDocumentationService
 
         $definition = self::CHAPTERS[$index];
         $chapter = $this->chapter($catalogue, $slug);
+        $chapter['views'] = $this->capturedScreenshots($chapter['views'], $locale);
 
         return [
             'slug' => $slug,
@@ -344,5 +347,33 @@ class UserDocumentationService
         }
 
         return ['src' => $source, 'alt' => $alt];
+    }
+
+    /** @param list<array<string, mixed>> $views @return list<array<string, mixed>> */
+    private function capturedScreenshots(array $views, ?string $locale): array
+    {
+        if ($this->screenshotConfiguration === null) {
+            return $views;
+        }
+        $language = str_starts_with(mb_strtolower((string) $locale), 'en') ? 'en' : 'de';
+        $outputs = [];
+        foreach ($this->screenshotConfiguration->load() as $scenario) {
+            $outputs[$scenario->documentationView] ??= $scenario->output;
+        }
+        foreach ($views as &$view) {
+            $id = $view['id'] ?? null;
+            if (!is_string($id) || !isset($outputs[$id])) {
+                continue;
+            }
+            $output = $outputs[$id];
+            $localized = substr($output, 0, -4) . ($language === 'en' ? '.en.png' : '.png');
+            $relative = '/assets/images/handbook/screenshots/' . $localized;
+            if (is_file($this->projectDir . '/public' . $relative)) {
+                $view['image']['src'] = $relative;
+            }
+        }
+        unset($view);
+
+        return $views;
     }
 }

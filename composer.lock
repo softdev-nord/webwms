@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56d22e70f684c30d9524fec1a9139c13",
+    "content-hash": "aad0cd6b17b643734ce11318f2c6af59",
     "packages": [
         {
             "name": "api-platform/doctrine-common",
@@ -11480,6 +11480,72 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "playwright-php/playwright",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/playwright-php/playwright.git",
+                "reference": "8492788afdb920dcb04ec89bddeb3c4e93d3b5e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/playwright-php/playwright/zipball/8492788afdb920dcb04ec89bddeb3c4e93d3b5e2",
+                "reference": "8492788afdb920dcb04ec89bddeb3c4e93d3b5e2",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2",
+                "psr/clock": "^1.0",
+                "psr/log": "^2.0 || ^3.0",
+                "symfony/console": "^6.4 || ^7.3 || ^8.0",
+                "symfony/process": "^6.4 || ^7.3 || ^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "files": ["src/Testing/functions.php"],
+                "psr-4": {"Playwright\\": "src/"}
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": ["MIT"],
+            "description": "Modern PHP library for Playwright automation: browsing, scraping, screenshots, testing, and more.",
+            "bin": ["bin/playwright-install"],
+            "time": "2026-09-20T12:54:18+00:00"
+        },
+        {
+            "name": "playwright-php/playwright-symfony",
+            "version": "0.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/playwright-php/playwright-symfony.git",
+                "reference": "2105a01043a06d6de5b375802498247f28ad5217"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/playwright-php/playwright-symfony/zipball/2105a01043a06d6de5b375802498247f28ad5217",
+                "reference": "2105a01043a06d6de5b375802498247f28ad5217",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "playwright-php/playwright": "^1.5",
+                "symfony/browser-kit": "^6.4 || ^7.0 || ^8.0",
+                "symfony/framework-bundle": "^6.4 || ^7.0 || ^8.0",
+                "symfony/http-foundation": "^6.4 || ^7.0 || ^8.0",
+                "symfony/http-kernel": "^6.4 || ^7.0 || ^8.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {"psr-4": {"Playwright\\Symfony\\": "src/"}},
+            "notification-url": "https://packagist.org/downloads/",
+            "license": ["MIT"],
+            "description": "Playwright PHP integration for Symfony BrowserKit, DomCrawler and WebTestCase",
+            "time": "2026-09-20T19:50:25+00:00"
+        },
         {
             "name": "clue/ndjson-react",
             "version": "v1.3.0",

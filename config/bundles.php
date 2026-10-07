@@ -17,4 +17,5 @@ return [
     WebWMS\Bundles\LogViewerBundle\LogViewerBundle::class => ['all' => true],
     Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
     ApiPlatform\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
+    Playwright\Symfony\PlaywrightSymfonyBundle::class => ['test' => true],
 ];

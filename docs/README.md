@@ -8,6 +8,7 @@ Die versionierte Funktions- und Ticketplanung liegt unter [Roadmap](roadmap/READ
 ## Technische Dokumentation
 
 - [Benutzerdokumentation im V3-Frontend](technical/user-documentation.md)
+- [Handbuch-Screenshots mit Playwright erzeugen](technical/handbook-screenshots.md)
 - [Einheitliche Suche, Filterung und Paginierung](technical/v3-list-navigation.md)
 - [Platform Control Center](technical/platform-control-center.md)
 - [Phase 1: Runtime und Qualitätsbasis](technical/phase-1-runtime.md)

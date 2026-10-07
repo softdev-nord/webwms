@@ -2,7 +2,7 @@
 id: WEBWMS-113
 issue_type: Story
 epic: WEBWMS-EPIC-PLATFORM
-status: Offen
+status: Done
 priority: Medium
 story_points: 13
 component: "Benutzerhandbuch"
@@ -243,3 +243,24 @@ Bibliotheksdetails testbar.
 - es existiert keine GitHub-Action für die Screenshot-Erzeugung;
 - Roadmap, Platform-Epic und Ticketstatus sind synchronisiert.
 
+## Implementierungsstand
+
+**Status:** Done
+
+Das Symfony-Command `webwms:handbook:capture-screenshots` stellt Dry-Run,
+Sprach-, View- und Fachbereichsfilter, sichtbaren Browserbetrieb sowie bewusstes
+Überschreiben bereit. Die zentrale Szenariokonfiguration enthält die
+Artikelansichten, Topologieübersicht, Topologieformular, Rastergenerator,
+CSV-Import und getrennte Block-, Regal- und Durchlauflageraufnahmen.
+
+Demodaten werden über stabile fachliche Aliase statt hart codierter UUIDs
+aufgelöst. Zielpfade werden auf den Handbuch-Assetbereich begrenzt, Screenshots
+atomar übernommen und vorhandene Dateien ohne `--force` geschützt. Der
+Playwright-Runner verwendet feste Darstellungsparameter, wartet auf
+Netzwerkruhe, Webfonts und Zielselektor und maskiert sensible Inhalte.
+
+`playwright-php/playwright-symfony` 0.11 und der zugrunde liegende
+Playwright-PHP-Client 1.5 sind als Development-Abhängigkeiten fixiert. Unit-
+Tests prüfen Konfiguration und Aliasbehandlung; ein opt-in E2E-Test weist die
+reale Browseraufnahme nach. Die technische Dokumentation beschreibt
+Installation, Konfiguration, selektive Ausführung und Fehlerbehandlung.
