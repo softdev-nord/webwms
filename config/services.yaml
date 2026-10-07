@@ -75,6 +75,8 @@ services:
             - '../src/Installation/Application/InstallationConfiguration.php'
             - '../src/Installation/Application/InstallationIdentifiers.php'
             - '../src/Installation/Application/InstallationResult.php'
+            - '../src/Documentation/Application/Screenshot/ScreenshotCaptureResult.php'
+            - '../src/Documentation/Application/Screenshot/ScreenshotScenario.php'
             - '../src/Warehouse/**/Domain/'
 
     WebWMS\Administration\Domain\Tenant\TenantRepository:
