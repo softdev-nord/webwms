@@ -566,6 +566,80 @@ chapter:
           src: /assets/images/handbook/placeholder.svg
           alt: Occupancy and traceability – screenshot placeholder
     views:
+      product_overview:
+        template: product/index.html.twig
+        title: Product overview
+        purpose: The overview manages central product master data and shows current total stock and occupied-bin count for every product.
+        navigation: Master data → Products
+        permissions: ["inventory.product.read; inventory.product.write to create and edit."]
+        overview: ["The table shows SKU, name, category, GTIN, base unit, total stock, bin count and active state. Table tools provide search, sorting and pagination.", "Click the SKU or View to open the complete product context. Create and Edit require write permission."]
+        actions:
+          create: {label: "Create product", description: "Opens an empty product master form.", result: "The product is created only after successful validation and saving."}
+          show: {label: "View", description: "Opens master data and all product-related process information.", result: "Stock, movements and inbound/outbound references are read only."}
+          edit: {label: "Edit", description: "Opens all maintainable product attributes.", result: "Saved changes apply to subsequent processes."}
+        image: {src: "/assets/images/handbook/placeholder.svg", alt: "Product overview – screenshot placeholder"}
+      product_form:
+        template: product/form.html.twig
+        title: Create or edit product
+        purpose: The form maintains identification, dimensions, stock rules, external references and work instructions for a product.
+        navigation: Master data → Products → Create product or Edit
+        permissions: ["inventory.product.write"]
+        overview: ["SKU and base unit are stable process keys. Serial, batch and expiry requirements determine which data receipt, stock and picking must capture.", "Dimensions use millimetres, weights grams, volume cubic centimetres and values an ISO currency. Process notes guide employees during the corresponding operation."]
+        fields:
+          sku: {label: "SKU", required: true, format: "Unique product code, up to 64 characters", example: "ITEM-4711", help: "Use a permanent, scannable key.", effect: "Identifies the product in every warehouse process.", errors: "An empty or existing SKU prevents saving."}
+          name: {label: "Name", required: true, format: "Text up to 255 characters", example: "M8 assembly kit", help: "Enter an unambiguous user-facing name.", effect: "Appears in overviews, orders and selectors.", errors: "An empty name is invalid."}
+          gtin: {label: "GTIN", required: false, format: "Numeric GTIN/EAN up to 14 digits", example: "04012345678901", help: "Enter the assigned trade number without spaces.", effect: "Enables barcode identification.", errors: "Invalid or duplicate values are rejected."}
+          category: {label: "Category", required: false, format: "Text up to 100 characters", example: "Fasteners", help: "Use a consistent business category.", effect: "Supports search and grouping.", errors: "Different spelling creates separate groups."}
+          base_unit: {label: "Base unit", required: true, format: "Unit code up to 20 characters", example: "PCS", help: "Enter the smallest stock-managed unit.", effect: "All quantities use this unit.", errors: "Changing its meaning later corrupts existing quantities."}
+          abc_classification: {label: "ABC class", required: false, format: "A, B, C or empty", example: "A", help: "Classify by turnover frequency or value.", effect: "Supports placement and replenishment strategies.", errors: "Only offered values are valid."}
+          crash_class: {label: "Crash class", required: false, format: "Integer 0 to 11", example: "3", help: "Enter the operational sensitivity class.", effect: "Can support suitability and handling rules.", errors: "Values outside 0 to 11 are invalid."}
+          short_description: {label: "Short description", required: false, format: "Text up to 255 characters", example: "Galvanised assembly kit", help: "Summarise the key characteristics.", effect: "Highlighted on the product detail page.", errors: "Overlong text is rejected."}
+          description: {label: "German description", required: false, format: "Multiline text", example: "Montagesatz für Innenbereiche", help: "Describe product and purpose in German.", effect: "Provides detailed German master information.", errors: "Content requires business review."}
+          description_en: {label: "English description", required: false, format: "Multiline text", example: "Assembly kit for indoor use", help: "Maintain the English description; no automatic translation occurs.", effect: "Supports English-language processes.", errors: "Content requires business review."}
+          active: {label: "Active", required: false, format: "Checkbox", example: "enabled", help: "Enable only products permitted for operational use.", effect: "Inactive products remain historical but are unavailable to new operations.", errors: "Open operations are not closed automatically."}
+          length_mm: {label: "Length", required: false, format: "Millimetres from 0", example: "300", help: "Enter outer length of the base unit.", effect: "Supports bin and packaging checks.", errors: "Negative values are invalid."}
+          width_mm: {label: "Width", required: false, format: "Millimetres from 0", example: "200", help: "Enter outer width of the base unit.", effect: "Supports bin and packaging checks.", errors: "Negative values are invalid."}
+          height_mm: {label: "Height", required: false, format: "Millimetres from 0", example: "150", help: "Enter outer height of the base unit.", effect: "Supports bin and packaging checks.", errors: "Negative values are invalid."}
+          weight_grams: {label: "Gross weight", required: false, format: "Grams from 0", example: "1250", help: "Enter weight including packaging.", effect: "Supports capacity, transport and shipping.", errors: "Should not be below net weight."}
+          net_weight_grams: {label: "Net weight", required: false, format: "Grams from 0", example: "1100", help: "Enter weight without packaging.", effect: "Supports valuation and shipping.", errors: "Should not exceed gross weight."}
+          volume_cm3: {label: "Volume", required: false, format: "Non-negative cubic centimetres", example: "9000", help: "Enter volume of the base unit.", effect: "Supports capacity and packaging calculation.", errors: "Negative values are invalid."}
+          nesting_factor: {label: "Nesting factor", required: false, format: "Decimal from 0 to 1", example: "0.75", help: "Set only for products that nest inside each other.", effect: "Describes volume reduction through nesting.", errors: "Values outside 0 to 1 are invalid."}
+          goods_value: {label: "Goods value", required: false, format: "Non-negative decimal", example: "24.990", help: "Enter value per base unit.", effect: "Supports valuation and risk control.", errors: "Negative values are invalid."}
+          goods_value_currency: {label: "Currency", required: false, format: "Three-letter ISO code", example: "EUR", help: "Enter the goods-value currency in uppercase.", effect: "Qualifies the stored goods value.", errors: "Unclear codes cause incorrect interpretation."}
+          serial_number_required: {label: "Serial number required", required: false, format: "Yes or No", example: "Yes", help: "Enable for item-level traceability.", effect: "Every unit requires a unique serial number.", errors: "Missing or duplicate serial numbers prevent posting."}
+          batch_required: {label: "Batch required", required: false, format: "Yes or No", example: "Yes", help: "Enable for batch-managed products.", effect: "Every receipt and stock dimension requires a batch.", errors: "Missing batches prevent posting."}
+          expiry_required: {label: "Expiry required", required: false, format: "Yes or No", example: "Yes", help: "Enable for shelf-life-managed products.", effect: "Every receipt requires an expiry date.", errors: "Missing or implausible expiry prevents posting."}
+          shelf_life_days: {label: "Total shelf life", required: false, format: "Non-negative days", example: "365", help: "Enter regular shelf life from manufacture.", effect: "Supports expiry plausibility checks.", errors: "Useful only for expiry-managed products."}
+          expiry_warning_days: {label: "Expiry warning period", required: false, format: "Non-negative days", example: "30", help: "Define lead time for critical-stock warnings.", effect: "Flags quantities approaching expiry.", errors: "Too short a period reduces reaction time."}
+          max_expiry_mix_days: {label: "Maximum expiry mix", required: false, format: "Non-negative days", example: "7", help: "Define allowed expiry difference for jointly stored or shipped quantities.", effect: "Limits mixing of different remaining shelf lives.", errors: "Unsuitable values can prevent allocation."}
+          bulk_material: {label: "Bulk material", required: false, format: "Checkbox", example: "disabled", help: "Enable when quantities are not handled as discrete pieces.", effect: "Marks special quantity and storage behaviour.", errors: "Incorrect classification causes unsuitable handling."}
+          hazardous_material: {label: "Hazardous material", required: false, format: "Checkbox", example: "enabled", help: "Set according to the operational hazardous-material classification.", effect: "Flags the product for protection and storage rules.", errors: "This flag does not replace legally required hazard data."}
+          overdelivery_percent: {label: "Overdelivery tolerance", required: false, format: "Percentage from 0", example: "5.00", help: "Define maximum extra quantity above target.", effect: "Controls tolerance during receipt checks.", errors: "Excessive values permit unwanted extra quantities."}
+          customs_tariff_number: {label: "Customs tariff number", required: false, format: "External customs code", example: "73181595", help: "Enter only the verified commodity code.", effect: "Supports customs processes.", errors: "Incorrect codes cause incorrect declarations."}
+          pharmaceutical_number: {label: "Pharmaceutical number", required: false, format: "External pharmaceutical code", example: "PZN12345678", help: "Maintain only for applicable products.", effect: "Identifies the product in pharmaceutical processes.", errors: "Obsolete codes cause incorrect mapping."}
+          customer_material_number: {label: "Customer material number", required: false, format: "External customer code", example: "CU-4711", help: "Enter the agreed customer reference.", effect: "Supports customer communication.", errors: "Do not swap customer and supplier references."}
+          supplier_material_number: {label: "Supplier material number", required: false, format: "External supplier code", example: "SU-815", help: "Enter the supplier reference.", effect: "Supports procurement and receipt.", errors: "Review supplier codes regularly."}
+          product_area_code: {label: "Product area", required: false, format: "Area code", example: "FASTENER", help: "Use the agreed internal product area.", effect: "Supports business grouping.", errors: "Inconsistent codes hinder reporting."}
+          inbound_note: {label: "Inbound note", required: false, format: "Multiline work instruction", example: "Inspect outer packaging.", help: "Describe concrete checks at receipt.", effect: "Supports inbound processing.", errors: "Unclear notes can omit checks."}
+          picking_note: {label: "Picking note", required: false, format: "Multiline work instruction", example: "Pick complete packs only.", help: "Describe withdrawal rules clearly.", effect: "Supports picking.", errors: "Avoid contradictions with quantity units."}
+          transport_note: {label: "Transport note", required: false, format: "Multiline work instruction", example: "Transport upright.", help: "State protection and handling requirements.", effect: "Supports internal and external transport.", errors: "Configure legal requirements separately."}
+          packing_note: {label: "Packing note", required: false, format: "Multiline work instruction", example: "Use edge protection.", help: "Describe required packaging clearly.", effect: "Supports packing operations.", errors: "Missing requirements can contribute to damage."}
+          loading_note: {label: "Loading note", required: false, format: "Multiline work instruction", example: "Do not stack.", help: "State staging and loading requirements.", effect: "Supports shipping completion.", errors: "Avoid conflicts with transport notes."}
+        actions:
+          save: {label: "Save", description: "Validates all attributes and creates or updates the product.", result: "The product detail page displays the saved values."}
+          cancel: {label: "Cancel", description: "Returns to the product overview without saving.", result: "Existing values remain unchanged."}
+        image: {src: "/assets/images/handbook/placeholder.svg", alt: "Product master form – screenshot placeholder"}
+      product_detail:
+        template: product/show.html.twig
+        title: Product detail and process context
+        purpose: The detail page combines product master data with stock, movements, inbound, outbound, bills of materials, hazard data and change history.
+        navigation: Master data → Products → SKU or View
+        permissions: ["inventory.product.read; inventory.product.write to edit."]
+        overview: ["Master data shows identification, descriptions, dimensions, weights, goods value and process notes. Other tabs show only records for the opened product.", "Stock shows warehouse and bin, state, batch or serial, expiry and quantity. Movements show delta and resulting quantity; inbound and outbound show order, state, time and quantity.", "BOM, hazards and history show existing links or a clear empty state. Tab counters reveal available records."]
+        actions:
+          edit: {label: "Edit", description: "Opens product master data with current values.", result: "Saved changes apply to subsequent processes; historical movements remain intact."}
+          overview: {label: "Back to overview", description: "Returns to the product list.", result: "No data is changed."}
+        image: {src: "/assets/images/handbook/placeholder.svg", alt: "Product detail with process tabs – screenshot placeholder"}
       warehouse_overview:
         template: warehouse/overview.html.twig
         title: Warehouse overview and capacity
@@ -594,12 +668,13 @@ chapter:
       warehouse_occupancy:
         template: warehouse/occupancy.html.twig
         title: Graphical bin occupancy
-        purpose: Graphical occupancy visualises bins by area, utilisation and critical stock state.
+        purpose: Graphical occupancy visualises addressable bins according to their physical storage type, utilisation and stock state.
         navigation: Warehouse & stock → Occupancy
         permissions: ["inventory.overview.read"]
         overview:
-        - Colours distinguish empty, occupied, quality stock and blocked or full. Every card shows its unique coordinate plus warehouse number, level, slot, depth position, quantity and product count.
-        - The progress bar calculates quantity utilisation. Clicking opens real-time stock for the associated warehouse.
+        - Block storage is shown as a top view of slots and depth positions with exactly one level. High-bay and shelving storage uses a front view of levels and slots; flow and multiple-depth storage additionally shows depth lanes.
+        - Every warehouse-number, level, slot and depth combination remains an individually addressable bin. Storage type, technical zone code and display model appear above the grid.
+        - Colours distinguish empty, occupied, quality stock and blocked or full. Cards show coordinate, quantity and product count; the bar shows quantity utilisation.
         fields:
           warehouse: {label: "Warehouse", required: true, format: "Selection of an existing warehouse", example: "WH-HAMBURG", help: "Choose the warehouse whose complete bin structure is to be visualised.", effect: "Groups all warehouse bins by area and calculates state and utilisation.", errors: "Without an existing warehouse or bins, the view remains empty."}
           aisle: {label: "Storage area/aisle", required: true, format: "Selection of an aisle in the chosen warehouse", example: "101 · Block", help: "Limit large topologies to one physical storage area.", effect: "Loads up to 5,000 individual depth positions from the selected aisle.", errors: "An aisle outside the warehouse is automatically replaced by the first valid aisle."}
@@ -709,11 +784,13 @@ chapter:
       topology_overview:
         template: warehouse/topology.html.twig
         title: Warehouse topology
-        purpose: This overview presents sites, warehouses, areas, aisles and bins as separate, hierarchically linked tables.
+        purpose: This overview represents the site-based physical structure of sites, warehouses, areas, aisles or storage areas and bins.
         navigation: Warehouse & stock → Warehouse topology
         permissions: ["inventory.topology.read; inventory.topology.write for creation and editing."]
         overview:
-        - The five tabs show the count and core data of each hierarchy level. Every bin has a unique V2-compatible coordinate made from warehouse number, level, slot and depth.
+        - The five tabs show count and core data for every hierarchy level. Topology belongs to the physical site and is not duplicated for each tenant.
+        - Every bin has a unique V2-compatible coordinate made from warehouse number, level, slot and depth. Every combination is independently addressable and stock-bearing.
+        - Block areas use exactly one level; slot and depth represent floor or stacking positions. Rack areas use multiple levels, slots and, where applicable, depth lanes.
         - With write permission, every row links to a separate edit page. Grid generator and CSV import are available as dedicated subpages.
         actions:
           create: {label: "Create topology element", description: "Opens the type-specific form for a site, warehouse, area, aisle or bin.", result: "The overview remains unchanged until the form is saved."}
@@ -757,9 +834,11 @@ chapter:
         purpose: The generator creates every combination of warehouse number, level, slot and depth as an individually addressable storage location.
         navigation: Warehouse & stock → Warehouse topology → Generate storage-location grid
         permissions: ["inventory.topology.write"]
-        overview: ["Block 101 with 1 level, 9 slots and 32 depth positions creates 288 storage locations. Existing coordinates are skipped idempotently."]
+        overview: ["Block 101 with 1 level, 9 slots and 32 depth positions creates 288 individually addressable storage locations. Racking uses its actual number of levels. Existing coordinates are skipped idempotently."]
         fields:
+          parents: {label: "Warehouse, area and aisle/storage area", required: true, format: "Consistent selection within one site", example: "WH-HH / BLOCK / 101", help: "Select the physical parent structure; area and aisle must belong to the warehouse.", effect: "Assigns every generated location to the same site-based structure.", errors: "Inconsistent relationships are rejected."}
           grid: {label: "Grid values", required: true, format: "Warehouse number 1–999; levels, slots and depths 1–9999", example: "101 / 1 / 9 / 32", help: "Enter the maximum existing positions for every dimension.", effect: "Creates the Cartesian product of all four dimensions.", errors: "More than 100,000 locations per grid or invalid parent relationships are rejected."}
+          classification: {label: "Description, zone and bin type", required: true, format: "Description; zone code up to 30 characters; offered type", example: "Block storage 101 / BLL / storage", help: "Choose a zone matching the physical storage type because it also controls graphical presentation.", effect: "Classifies every generated location for visualisation and processes.", errors: "Incorrect classification causes unsuitable presentation or use."}
           dimensions: {label: "Dimensions", required: true, format: "Millimetre values from 0", example: "800 / 1200 / 2000", help: "Enter width, physical depth and height of one position.", effect: "Copied to every generated location.", errors: "Negative values are rejected."}
         actions:
           create: {label: "Generate storage-location grid", description: "Validates hierarchy and grid and atomically creates every missing coordinate.", result: "The numbers of created and skipped locations are shown."}
@@ -772,6 +851,7 @@ chapter:
         permissions: ["inventory.topology.write"]
         overview: ["Dry run validates headers and values and calculates the number of resulting locations without changing data. The subsequent import skips existing coordinates."]
         fields:
+          warehouse_id: {label: "Target warehouse", required: true, format: "Selection of an existing site-based warehouse", example: "WH-HH-01", help: "Choose the physical warehouse to which the CSV structure belongs.", effect: "Assigns all imported elements to this warehouse.", errors: "Choosing the wrong warehouse creates an incorrect parent structure."}
           csv_file: {label: "Topology CSV", required: true, format: "UTF-8 CSV with the nine established German columns; maximum 2 MB", example: "Export.csv", help: "Always run validation first with dry run enabled.", effect: "Areas derive from storage type, aisles from warehouse number and locations from level × slot × depth.", errors: "Different headers, empty required values and invalid numbers abort processing."}
           dry_run: {label: "Validate only", required: false, format: "Checkbox", example: "enabled", help: "Disable for the actual import and select the file again.", effect: "Prevents every write operation during validation.", errors: "Disabling dry run executes the import immediately."}
         actions:

@@ -570,6 +570,87 @@ chapter:
           src: /assets/images/handbook/placeholder.svg
           alt: Grafische Belegung und Rückverfolgung – Screenshot-Platzhalter
     views:
+      product_overview:
+        template: product/index.html.twig
+        title: Artikelübersicht
+        purpose: Die Übersicht verwaltet die zentralen Artikelstammdaten und zeigt je Artikel den aktuellen Gesamtbestand und die Anzahl belegter Lagerplätze.
+        navigation: Stammdaten → Artikel
+        permissions: ["inventory.product.read; inventory.product.write für Anlage und Bearbeitung."]
+        overview:
+        - Die Tabelle zeigt SKU, Bezeichnung, Kategorie, GTIN, Basiseinheit, Gesamtbestand, Anzahl der Lagerplätze und Aktivstatus. Die Tabellenwerkzeuge ermöglichen Suche, Sortierung und Seitennavigation.
+        - Ein Klick auf die SKU oder Anzeigen öffnet die vollständige Artikelsicht. Anlegen und Bearbeiten sind nur mit Schreibrecht verfügbar.
+        actions:
+          create: {label: "Artikel anlegen", description: "Öffnet ein leeres Artikelstammformular.", result: "Der Artikel entsteht erst nach erfolgreicher Validierung und Speicherung."}
+          show: {label: "Anzeigen", description: "Öffnet Stammdaten und alle artikelbezogenen Prozessinformationen.", result: "Bestände, Bewegungen sowie Ein- und Ausgangsbezüge werden nur gelesen."}
+          edit: {label: "Bearbeiten", description: "Öffnet alle pflegbaren Artikelattribute.", result: "Änderungen gelten nach dem Speichern für nachfolgende Prozesse."}
+        image: {src: "/assets/images/handbook/placeholder.svg", alt: "Artikelübersicht – Screenshot-Platzhalter"}
+      product_form:
+        template: product/form.html.twig
+        title: Artikel anlegen oder bearbeiten
+        purpose: Das Formular pflegt Identifikation, Abmessungen, Bestandsregeln, externe Referenzen und Arbeitsanweisungen eines Artikels.
+        navigation: Stammdaten → Artikel → Artikel anlegen oder Bearbeiten
+        permissions: ["inventory.product.write"]
+        overview:
+        - SKU und Basiseinheit sind stabile Prozessschlüssel. Pflichtkennzeichen für Serie, Charge und MHD bestimmen, welche Daten Wareneingang, Bestand und Kommissionierung verlangen.
+        - Maße werden in Millimetern, Gewichte in Gramm, Volumen in Kubikzentimetern und Werte mit ISO-Währung gepflegt. Prozesshinweise erscheinen den Mitarbeitenden im jeweiligen Arbeitsschritt.
+        fields:
+          sku: {label: "SKU", required: true, format: "Eindeutiger Artikelcode, maximal 64 Zeichen", example: "ART-4711", help: "Einen dauerhaften, scanbaren Schlüssel verwenden.", effect: "Identifiziert den Artikel in allen Lagerprozessen.", errors: "Leere oder bereits verwendete SKU verhindern das Speichern."}
+          name: {label: "Bezeichnung", required: true, format: "Text bis 255 Zeichen", example: "Montagesatz M8", help: "Die für Benutzer eindeutige Artikelbezeichnung eintragen.", effect: "Erscheint in Übersichten, Aufträgen und Auswahllisten.", errors: "Eine leere Bezeichnung ist unzulässig."}
+          gtin: {label: "GTIN", required: false, format: "Numerische GTIN/EAN bis 14 Stellen", example: "04012345678901", help: "Nur die vergebene Handelsnummer ohne Leerzeichen erfassen.", effect: "Ermöglicht Identifikation per Barcode.", errors: "Ungültige oder doppelte Werte werden abgewiesen."}
+          category: {label: "Kategorie", required: false, format: "Text bis 100 Zeichen", example: "Befestigungstechnik", help: "Eine einheitliche fachliche Kategorie verwenden.", effect: "Unterstützt Suche und Gruppierung.", errors: "Abweichende Schreibweisen erzeugen getrennte Gruppen."}
+          base_unit: {label: "Basiseinheit", required: true, format: "Einheitencode bis 20 Zeichen", example: "PCS", help: "Die kleinste bestandsführende Einheit angeben.", effect: "Alle Mengen werden in dieser Einheit geführt.", errors: "Eine spätere Umdeutung verfälscht bestehende Mengen."}
+          abc_classification: {label: "ABC-Klasse", required: false, format: "A, B, C oder leer", example: "A", help: "Nach Umschlagshäufigkeit oder Wert klassifizieren.", effect: "Unterstützt Lagerplatz- und Nachschubstrategien.", errors: "Nur angebotene Werte sind zulässig."}
+          crash_class: {label: "Crash-Klasse", required: false, format: "Ganzzahl 0 bis 11", example: "3", help: "Die betriebliche Empfindlichkeitsklasse eintragen.", effect: "Kann für Eignungs- und Handhabungsregeln genutzt werden.", errors: "Werte außerhalb 0 bis 11 sind ungültig."}
+          short_description: {label: "Kurzbeschreibung", required: false, format: "Text bis 255 Zeichen", example: "Verzinkter Montagesatz", help: "Die wichtigsten Merkmale knapp zusammenfassen.", effect: "Wird auf der Artikeldetailseite hervorgehoben.", errors: "Zu lange Texte werden abgewiesen."}
+          description: {label: "Beschreibung Deutsch", required: false, format: "Mehrzeiliger Text", example: "Montagesatz für Innenbereiche", help: "Produkt und Verwendungszweck auf Deutsch erläutern.", effect: "Dient als ausführliche Stammdateninformation.", errors: "Keine technische Validierung; Inhalt fachlich prüfen."}
+          description_en: {label: "Beschreibung Englisch", required: false, format: "Mehrzeiliger Text", example: "Assembly kit for indoor use", help: "Englische Entsprechung der Beschreibung pflegen.", effect: "Unterstützt englischsprachige Prozesse.", errors: "Keine automatische Übersetzung erfolgt."}
+          active: {label: "Aktiv", required: false, format: "Checkbox", example: "aktiviert", help: "Nur Artikel aktivieren, die operativ verwendet werden dürfen.", effect: "Inaktive Artikel bleiben historisch erhalten, stehen aber nicht für neue Vorgänge bereit.", errors: "Offene Vorgänge werden nicht automatisch beendet."}
+          length_mm: {label: "Länge", required: false, format: "Millimeter ab 0", example: "300", help: "Außenlänge der Basiseinheit erfassen.", effect: "Unterstützt Platz- und Verpackungsprüfung.", errors: "Negative Werte sind unzulässig."}
+          width_mm: {label: "Breite", required: false, format: "Millimeter ab 0", example: "200", help: "Außenbreite der Basiseinheit erfassen.", effect: "Unterstützt Platz- und Verpackungsprüfung.", errors: "Negative Werte sind unzulässig."}
+          height_mm: {label: "Höhe", required: false, format: "Millimeter ab 0", example: "150", help: "Außenhöhe der Basiseinheit erfassen.", effect: "Unterstützt Platz- und Verpackungsprüfung.", errors: "Negative Werte sind unzulässig."}
+          weight_grams: {label: "Bruttogewicht", required: false, format: "Gramm ab 0", example: "1250", help: "Gewicht inklusive Verpackung erfassen.", effect: "Unterstützt Kapazität, Transport und Versand.", errors: "Der Wert sollte nicht unter dem Nettogewicht liegen."}
+          net_weight_grams: {label: "Nettogewicht", required: false, format: "Gramm ab 0", example: "1100", help: "Gewicht ohne Verpackung erfassen.", effect: "Unterstützt Bewertung und Versand.", errors: "Der Wert sollte das Bruttogewicht nicht überschreiten."}
+          volume_cm3: {label: "Volumen", required: false, format: "Nichtnegative Kubikzentimeter", example: "9000", help: "Volumen der Basiseinheit eintragen.", effect: "Unterstützt Kapazitätsberechnung und Verpackung.", errors: "Negative Werte sind unzulässig."}
+          nesting_factor: {label: "Verschachtelungsfaktor", required: false, format: "Dezimalzahl 0 bis 1", example: "0.75", help: "Nur bei ineinander stapelbaren Artikeln setzen.", effect: "Beschreibt die Volumenreduktion beim Verschachteln.", errors: "Werte außerhalb 0 bis 1 sind ungültig."}
+          goods_value: {label: "Warenwert", required: false, format: "Nichtnegativer Dezimalwert", example: "24.990", help: "Wert je Basiseinheit erfassen.", effect: "Unterstützt Bewertung und Risikosteuerung.", errors: "Negative Werte sind unzulässig."}
+          goods_value_currency: {label: "Währung", required: false, format: "Dreistelliger ISO-Code", example: "EUR", help: "Zum Warenwert passende Währung in Großbuchstaben angeben.", effect: "Qualifiziert den gespeicherten Warenwert.", errors: "Unklare Codes führen zu falscher Interpretation."}
+          serial_number_required: {label: "Seriennummer erforderlich", required: false, format: "Ja oder Nein", example: "Ja", help: "Für stückgenau verfolgte Artikel aktivieren.", effect: "Jede Einheit benötigt eine eindeutige Seriennummer.", errors: "Fehlende oder doppelte Seriennummern verhindern Buchungen."}
+          batch_required: {label: "Charge erforderlich", required: false, format: "Ja oder Nein", example: "Ja", help: "Für chargenpflichtige Artikel aktivieren.", effect: "Jeder Zugang und Bestand benötigt eine Charge.", errors: "Fehlende Chargen verhindern Buchungen."}
+          expiry_required: {label: "MHD erforderlich", required: false, format: "Ja oder Nein", example: "Ja", help: "Für Artikel mit Mindesthaltbarkeit aktivieren.", effect: "Jeder Zugang benötigt ein MHD.", errors: "Fehlendes oder unplausibles MHD verhindert Buchungen."}
+          shelf_life_days: {label: "Gesamthaltbarkeit", required: false, format: "Nichtnegative Tage", example: "365", help: "Reguläre Haltbarkeit ab Herstellung angeben.", effect: "Dient der MHD-Plausibilisierung.", errors: "Nur für MHD-geführte Artikel sinnvoll."}
+          expiry_warning_days: {label: "MHD-Warnfrist", required: false, format: "Nichtnegative Tage", example: "30", help: "Vorlauf für die Anzeige kritischer Bestände festlegen.", effect: "Markiert frühzeitig bald ablaufende Mengen.", errors: "Eine zu kurze Frist reduziert die Reaktionszeit."}
+          max_expiry_mix_days: {label: "Maximale MHD-Mischung", required: false, format: "Nichtnegative Tage", example: "7", help: "Zulässigen MHD-Abstand gemeinsam gelagerter oder versandter Mengen definieren.", effect: "Begrenzt die Mischung unterschiedlicher Restlaufzeiten.", errors: "Unpassende Werte können Allokationen verhindern."}
+          bulk_material: {label: "Schüttgut", required: false, format: "Checkbox", example: "deaktiviert", help: "Aktivieren, wenn Mengen nicht als diskrete Stücke gehandhabt werden.", effect: "Kennzeichnet besonderes Mengen- und Lagerverhalten.", errors: "Falsche Kennzeichnung führt zu ungeeigneter Handhabung."}
+          hazardous_material: {label: "Gefahrstoff", required: false, format: "Checkbox", example: "aktiviert", help: "Gemäß betrieblicher Gefahrstoffklassifikation setzen.", effect: "Kennzeichnet den Artikel für Schutz- und Lagerregeln.", errors: "Die Checkbox ersetzt keine gesetzlich erforderlichen Gefahrstoffdaten."}
+          overdelivery_percent: {label: "Überlieferungstoleranz", required: false, format: "Prozentwert ab 0", example: "5.00", help: "Maximal zulässige Mehrmenge gegenüber dem Soll definieren.", effect: "Steuert die Toleranz bei Zugangsprüfungen.", errors: "Zu hohe Werte erlauben unerwünschte Mehrmengen."}
+          customs_tariff_number: {label: "Zolltarifnummer", required: false, format: "Externer Zollcode", example: "73181595", help: "Nur die verifizierte Warennummer erfassen.", effect: "Unterstützt Zollprozesse.", errors: "Falsche Codes führen zu fehlerhafter Deklaration."}
+          pharmaceutical_number: {label: "Pharmanummer", required: false, format: "Externer Pharmacode", example: "PZN12345678", help: "Nur für entsprechend klassifizierte Artikel pflegen.", effect: "Identifiziert den Artikel in Pharmaprozessen.", errors: "Veraltete Codes erzeugen falsche Zuordnungen."}
+          customer_material_number: {label: "Kundenmaterialnummer", required: false, format: "Externer Kundencode", example: "KD-4711", help: "Die vereinbarte Referenz des Kunden eintragen.", effect: "Unterstützt kundenbezogene Kommunikation.", errors: "Kundenreferenzen nicht mit Lieferantencodes vertauschen."}
+          supplier_material_number: {label: "Lieferantenmaterialnummer", required: false, format: "Externer Lieferantencode", example: "LF-815", help: "Die Referenz des Lieferanten eintragen.", effect: "Unterstützt Beschaffung und Wareneingang.", errors: "Lieferantencodes regelmäßig abgleichen."}
+          product_area_code: {label: "Produktbereich", required: false, format: "Bereichscode", example: "FASTENER", help: "Den abgestimmten internen Produktbereich verwenden.", effect: "Unterstützt fachliche Gruppierung.", errors: "Uneinheitliche Codes erschweren Auswertungen."}
+          inbound_note: {label: "Wareneingangshinweis", required: false, format: "Mehrzeiliger Arbeitshinweis", example: "Umverpackung prüfen.", help: "Konkrete Prüfung bei der Annahme beschreiben.", effect: "Unterstützt die Wareneingangsbearbeitung.", errors: "Unklare Hinweise können Prüfungen verhindern."}
+          picking_note: {label: "Kommissionierhinweis", required: false, format: "Mehrzeiliger Arbeitshinweis", example: "Nur ganze Gebinde picken.", help: "Entnahmeregeln verständlich beschreiben.", effect: "Unterstützt die Kommissionierung.", errors: "Widerspruch zu Mengeneinheiten vermeiden."}
+          transport_note: {label: "Transporthinweis", required: false, format: "Mehrzeiliger Arbeitshinweis", example: "Aufrecht transportieren.", help: "Schutz- und Handhabungsvorgaben nennen.", effect: "Unterstützt interne und externe Transporte.", errors: "Gesetzliche Vorgaben zusätzlich konfigurieren."}
+          packing_note: {label: "Verpackungshinweis", required: false, format: "Mehrzeiliger Arbeitshinweis", example: "Mit Kantenschutz verpacken.", help: "Erforderliche Verpackung eindeutig beschreiben.", effect: "Unterstützt Packvorgänge.", errors: "Fehlende Vorgaben können Transportschäden begünstigen."}
+          loading_note: {label: "Verladehinweis", required: false, format: "Mehrzeiliger Arbeitshinweis", example: "Nicht stapeln.", help: "Vorgaben für Bereitstellung und Verladung nennen.", effect: "Unterstützt den Versandabschluss.", errors: "Widersprüche zu Transporthinweisen vermeiden."}
+        actions:
+          save: {label: "Speichern", description: "Validiert alle Artikelattribute und legt den Artikel an beziehungsweise aktualisiert ihn.", result: "Die Artikeldetailseite zeigt die gespeicherten Werte."}
+          cancel: {label: "Abbrechen", description: "Kehrt ohne Speicherung zur Artikelübersicht zurück.", result: "Bestehende Werte bleiben unverändert."}
+        image: {src: "/assets/images/handbook/placeholder.svg", alt: "Artikelstammformular – Screenshot-Platzhalter"}
+      product_detail:
+        template: product/show.html.twig
+        title: Artikeldetail und Prozesskontext
+        purpose: Die Detailseite verbindet Artikelstammdaten mit Bestand, Bewegungen, Wareneingängen, Ausgängen, Stücklisten, Gefahrstoffdaten und Änderungshistorie.
+        navigation: Stammdaten → Artikel → SKU oder Anzeigen
+        permissions: ["inventory.product.read; inventory.product.write für Bearbeiten."]
+        overview:
+        - Stammdaten zeigt Identifikation, Beschreibungen, Maße, Gewichte, Warenwert und Prozesshinweise. Die weiteren Register zeigen nur Daten des geöffneten Artikels.
+        - Bestand nennt Lager und Platz, Status, Charge oder Serie, MHD und Menge. Bewegungen zeigen Delta und resultierende Menge; Ein- und Ausgang nennen Auftrag, Status, Zeitpunkt und Menge.
+        - Stücklisten, Gefahrstoffe und Historie zeigen vorhandene Verknüpfungen beziehungsweise einen eindeutigen Leerzustand. Registerzähler machen vorhandene Datensätze sichtbar.
+        actions:
+          edit: {label: "Bearbeiten", description: "Öffnet den Artikelstamm mit den aktuellen Werten.", result: "Gespeicherte Änderungen gelten für nachfolgende Prozesse; historische Bewegungen bleiben erhalten."}
+          overview: {label: "Zur Übersicht", description: "Kehrt zur Artikelliste zurück.", result: "Es werden keine Daten verändert."}
+        image: {src: "/assets/images/handbook/placeholder.svg", alt: "Artikeldetail mit Prozessregistern – Screenshot-Platzhalter"}
       warehouse_overview:
         template: warehouse/overview.html.twig
         title: Lagerübersicht und Kapazität
@@ -598,12 +679,13 @@ chapter:
       warehouse_occupancy:
         template: warehouse/occupancy.html.twig
         title: Grafische Lagerplatzbelegung
-        purpose: Die grafische Belegung visualisiert Lagerplätze nach Bereich, Auslastung und kritischem Bestandszustand.
+        purpose: Die grafische Belegung visualisiert adressierbare Lagerplätze passend zur physischen Lagerart sowie nach Auslastung und Bestandszustand.
         navigation: Lager & Bestand → Belegung
         permissions: ["inventory.overview.read"]
         overview:
-        - Farbcodes unterscheiden leer, belegt, Qualitätsbestand sowie gesperrt oder voll. Jede Karte zeigt die eindeutige Koordinate sowie Lagernummer, Fachboden, Stellplatz, Tiefe, Menge und Artikelanzahl.
-        - Der Fortschrittsbalken berechnet die mengenbezogene Auslastung. Ein Klick öffnet den Echtzeitbestand des zugehörigen Lagers.
+        - Blocklager werden als Draufsicht aus Stellplätzen und Tiefenpositionen bei genau einem Fachboden dargestellt. Hochregal- und Fachbodenlager erscheinen als Frontansicht aus Fachboden und Stellplatz; Durchlauf- und mehrfachtiefe Lager zeigen zusätzlich ihre Tiefenkanäle.
+        - Jede Kombination aus Lagernummer, Fachboden, Stellplatz und Tiefe bleibt ein eigenständiger adressierbarer Lagerplatz. Lagerart, technischer Zonencode und Darstellungsmodell werden oberhalb des Rasters ausgewiesen.
+        - Farbcodes unterscheiden leer, belegt, Qualitätsbestand sowie gesperrt oder voll. Karten zeigen Koordinate, Menge und Artikelanzahl; der Balken zeigt die mengenbezogene Auslastung.
         fields:
           warehouse: {label: "Lager", required: true, format: "Auswahl eines vorhandenen Lagers", example: "WH-HAMBURG", help: "Wählen Sie das Lager, dessen vollständige Platzstruktur visualisiert werden soll.", effect: "Gruppiert alle Plätze des Lagers nach Bereich und berechnet Zustand und Auslastung.", errors: "Ohne vorhandenes Lager beziehungsweise ohne Plätze bleibt die Ansicht leer."}
           aisle: {label: "Lagerfläche/Gang", required: true, format: "Auswahl eines Gangs der gewählten Lagerstruktur", example: "101 · Block", help: "Grenzen Sie große Topologien auf eine physische Lagerfläche ein.", effect: "Lädt bis zu 5.000 einzelne Tiefenplätze des ausgewählten Gangs.", errors: "Ein nicht zum Lager gehörender Gang wird automatisch durch den ersten gültigen Gang ersetzt."}
@@ -713,11 +795,13 @@ chapter:
       topology_overview:
         template: warehouse/topology.html.twig
         title: Lagertopologie
-        purpose: Die Übersicht bildet Standorte, Lager, Bereiche, Gänge und Lagerplätze als getrennte, hierarchisch verknüpfte Tabellen ab.
+        purpose: Die Übersicht bildet die standortbezogene physische Lagerstruktur aus Standorten, Lagern, Bereichen, Gängen beziehungsweise Lagerflächen und Lagerplätzen ab.
         navigation: Lager & Bestand → Lagertopologie
         permissions: ["inventory.topology.read; inventory.topology.write für Anlage und Bearbeitung."]
         overview:
-        - Die fünf Register zeigen Anzahl und Kerndaten jeder Hierarchieebene. Jeder Lagerplatz besitzt eine eindeutige V2-kompatible Koordinate aus Lagernummer, Fachboden, Stellplatz und Tiefe.
+        - Die fünf Register zeigen Anzahl und Kerndaten jeder Hierarchieebene. Die Topologie gehört zum physischen Standort und wird nicht je Mandant dupliziert.
+        - Jeder Lagerplatz besitzt eine eindeutige V2-kompatible Koordinate aus Lagernummer, Fachboden, Stellplatz und Tiefe. Jede Kombination ist separat adressierbar und bestandsführend.
+        - Blockflächen verwenden genau einen Fachboden; Stellplatz und Tiefe bilden Boden- beziehungsweise Stapelpositionen. Regalflächen verwenden mehrere Fachböden, Stellplätze und gegebenenfalls Tiefenkanäle.
         - Jede Tabellenzeile besitzt bei Schreibrecht eine separate Bearbeiten-Seite. Rastergenerator und CSV-Import stehen als eigene Unterseiten bereit.
         actions:
           create: {label: "Topologieelement anlegen", description: "Öffnet das typabhängige Formular für Standort, Lager, Bereich, Gang oder Lagerplatz.", result: "Die Übersicht bleibt bis zum Speichern unverändert."}
@@ -761,9 +845,11 @@ chapter:
         purpose: Der Generator erzeugt jede Kombination aus Lagernummer, Fachboden, Stellplatz und Tiefe als eigenständigen adressierbaren Lagerplatz.
         navigation: Lager & Bestand → Lagertopologie → Lagerplatzraster erzeugen
         permissions: ["inventory.topology.write"]
-        overview: ["Für Block 101 mit 1 Fachboden, 9 Stellplätzen und 32 Tiefen entstehen 288 Lagerplätze. Vorhandene Koordinaten werden idempotent übersprungen."]
+        overview: ["Für Block 101 mit 1 Fachboden, 9 Stellplätzen und 32 Tiefen entstehen 288 einzeln adressierbare Lagerplätze. Bei Regalen wird die tatsächliche Fachbodenanzahl verwendet. Vorhandene Koordinaten werden idempotent übersprungen."]
         fields:
+          parents: {label: "Lager, Bereich und Gang/Lagerfläche", required: true, format: "Konsistente Auswahl innerhalb eines Standorts", example: "WH-HH / BLOCK / 101", help: "Die physische Elternstruktur auswählen; Bereich und Gang müssen zum Lager gehören.", effect: "Ordnet alle erzeugten Plätze derselben standortbezogenen Struktur zu.", errors: "Inkonsistente Zuordnungen werden abgewiesen."}
           grid: {label: "Rasterwerte", required: true, format: "Lagernummer 1–999; Fachböden, Stellplätze und Tiefen 1–9999", example: "101 / 1 / 9 / 32", help: "Die maximal vorhandenen Positionen je Dimension eingeben.", effect: "Erzeugt das kartesische Produkt aller vier Dimensionen.", errors: "Mehr als 100.000 Plätze pro Raster oder ungültige Elternzuordnungen werden abgewiesen."}
+          classification: {label: "Beschreibung, Zone und Lagerplatztyp", required: true, format: "Beschreibung; Zonencode bis 30 Zeichen; angebotener Typ", example: "Blocklager 101 / BLL / storage", help: "Zone passend zur physischen Lagerart wählen, da sie auch die grafische Darstellung bestimmt.", effect: "Klassifiziert alle erzeugten Plätze für Visualisierung und Prozesse.", errors: "Eine falsche Klassifikation führt zu ungeeigneter Darstellung oder Nutzung."}
           dimensions: {label: "Abmessungen", required: true, format: "Millimeterwerte ab 0", example: "800 / 1200 / 2000", help: "Breite, physische Tiefe und Höhe einer einzelnen Position eintragen.", effect: "Wird auf jeden erzeugten Platz übernommen.", errors: "Negative Werte werden abgewiesen."}
         actions:
           create: {label: "Lagerplatzraster erzeugen", description: "Validiert Hierarchie und Raster und erzeugt alle noch fehlenden Koordinaten atomar.", result: "Anzahl erzeugter und übersprungener Plätze wird angezeigt."}
@@ -776,6 +862,7 @@ chapter:
         permissions: ["inventory.topology.write"]
         overview: ["Der Dry-Run prüft Überschriften und Werte und berechnet die Anzahl entstehender Lagerplätze ohne Datenänderung. Der anschließende Import überspringt vorhandene Koordinaten."]
         fields:
+          warehouse_id: {label: "Ziellager", required: true, format: "Auswahl eines vorhandenen standortbezogenen Lagers", example: "WH-HH-01", help: "Das physische Lager auswählen, zu dem die CSV-Struktur gehört.", effect: "Ordnet alle importierten Elemente diesem Lager zu.", errors: "Ein falsches Lager erzeugt eine fachlich falsche Elternstruktur."}
           csv_file: {label: "Topologie-CSV", required: true, format: "UTF-8-CSV mit den neun bekannten deutschen Spalten; maximal 2 MB", example: "Export.csv", help: "Zuerst immer mit aktiviertem Dry-Run prüfen.", effect: "Bereiche entstehen aus Lager-Typ, Gänge aus Lagernummer und Lagerplätze aus Fachboden × Stellplatz × Tiefe.", errors: "Abweichende Überschriften, leere Pflichtwerte und ungültige Zahlen brechen die Verarbeitung ab."}
           dry_run: {label: "Nur prüfen", required: false, format: "Checkbox", example: "aktiviert", help: "Für den tatsächlichen Import deaktivieren und die Datei erneut auswählen.", effect: "Verhindert im Prüfmodus sämtliche Schreibzugriffe.", errors: "Ein deaktivierter Dry-Run führt den Import unmittelbar aus."}
         actions:
