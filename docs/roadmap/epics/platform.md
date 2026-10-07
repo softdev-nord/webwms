@@ -1,8 +1,8 @@
 # WEBWMS-EPIC-PLATFORM: Zusatzfunktionen
 
-Alle 11 dokumentierten Funktionen des Bereichs Zusatzfunktionen werden fachlich konsistent, berechtigt, nachvollziehbar und testbar umgesetzt.
+Elf von zwölf dokumentierten Funktionen des Bereichs Zusatzfunktionen sind fachlich konsistent, berechtigt, nachvollziehbar und testbar umgesetzt. Die manuell ausführbare Screenshot-Automatisierung des Benutzerhandbuchs ist als nächster Umfang geplant.
 
-**Epic-Status:** Done · 11 von 11 Stories Done · 136 von 136 Story Points Done
+**Epic-Status:** In Arbeit · 11 von 12 Stories Done · 136 von 149 Story Points Done
 
 | Ticket | Zusammenfassung | Status | Priorität | Story Points |
 | --- | --- | --- | --- | ---: |
@@ -17,3 +17,4 @@ Alle 11 dokumentierten Funktionen des Bereichs Zusatzfunktionen werden fachlich 
 | [WEBWMS-074](../tickets/WEBWMS-074.md) | Druckersteuerung implementieren | Done | High | 8 |
 | [WEBWMS-111](../tickets/WEBWMS-111.md) | Vollständiges zweisprachiges Benutzerhandbuch implementieren | Done | High | 21 |
 | [WEBWMS-112](../tickets/WEBWMS-112.md) | Benutzerhandbuch auf vollständige View- und Formularabdeckung erweitern | Done | High | 34 |
+| [WEBWMS-113](../tickets/WEBWMS-113.md) | Handbuch-Screenshots automatisiert erzeugen | Offen | Medium | 13 |

@@ -1,6 +1,6 @@
 # WebWMS-3.0-Roadmap
 
-Diese Roadmap ersetzt die bisherige Excel-Arbeitsdatei als verbindliche, versionierte Planungsgrundlage. Sie umfasst 112 Stories mit insgesamt 967 Story Points, aufgeteilt auf acht Epics.
+Diese Roadmap ersetzt die bisherige Excel-Arbeitsdatei als verbindliche, versionierte Planungsgrundlage. Sie umfasst 113 Stories mit insgesamt 980 Story Points, aufgeteilt auf acht Epics.
 
 ## Statusmodell
 
@@ -21,16 +21,16 @@ Ein Ticket darf nur dann auf `Done` wechseln, wenn seine Akzeptanzkriterien voll
 | [WEBWMS-EPIC-INVENTORY](epics/inventory.md) | Lagerverwaltung | 18 | 126 |
 | [WEBWMS-EPIC-FULFILLMENT](epics/fulfillment.md) | Transport & Kommissionierung | 16 | 132 |
 | [WEBWMS-EPIC-OUTBOUND](epics/outbound.md) | Warenausgang & Versand | 17 | 106 |
-| [WEBWMS-EPIC-PLATFORM](epics/platform.md) | Zusatzfunktionen | 11 | 136 |
+| [WEBWMS-EPIC-PLATFORM](epics/platform.md) | Zusatzfunktionen | 12 | 149 |
 | [WEBWMS-EPIC-ADMIN](epics/admin.md) | Administration | 9 | 76 |
 | [WEBWMS-EPIC-INTEGRATION](epics/integration.md) | Integration & Technik | 13 | 144 |
 | [WEBWMS-EPIC-EXTENSIONS](epics/functional-extensions.md) | Erweiterte Funktionen | 14 | 162 |
 
 ## Aktueller Gesamtfortschritt
 
-Stand 05.10.2026 sind 112 von 112 Tickets und 967 von 967 Story Points `Done`. Das zweisprachige Benutzerhandbuch dokumentiert alle 101 produktiven V3-Views, 146 gerenderte Formulare und 422 viewbezogene Geschäftsfelder. Template-, Formular-, Feld-, Sprach- und Bildabdeckung werden automatisiert validiert.
+Stand 07.10.2026 sind 112 von 113 Tickets und 967 von 980 Story Points `Done`. Das zweisprachige Benutzerhandbuch dokumentiert alle 101 produktiven V3-Views, 146 gerenderte Formulare und 422 viewbezogene Geschäftsfelder. Template-, Formular-, Feld-, Sprach- und Bildabdeckung werden automatisiert validiert. WEBWMS-113 plant die bedarfsgesteuerte Erzeugung echter Handbuch-Screenshots über ein manuell gestartetes Symfony-Command.
 
-Alle acht Epics sind vollständig abgeschlossen. WEBWMS-111 stellt die integrierte, zweisprachige und durchsuchbare Handbuchplattform bereit; WEBWMS-112 schließt deren vollständige View-, Formular-, Feld- und Screenshotmatrix ab. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
+Sieben Epics sind vollständig abgeschlossen. Das Platform-Epic enthält mit WEBWMS-113 eine offene Story. WEBWMS-111 stellt die integrierte, zweisprachige und durchsuchbare Handbuchplattform bereit; WEBWMS-112 schließt deren vollständige View-, Formular-, Feld- und Screenshotmatrix ab. WEBWMS-113 ersetzt die Platzhalter bei Bedarf reproduzierbar durch echte Browseraufnahmen. Die Tabellen der acht Epic-Dateien sind mit den Statuswerten der einzelnen Ticketdateien synchronisiert.
 
 ## Ergänzende Roadmap-Dokumente
 
