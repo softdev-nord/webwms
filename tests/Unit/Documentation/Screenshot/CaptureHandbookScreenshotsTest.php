@@ -30,6 +30,22 @@ final class CaptureHandbookScreenshotsTest extends TestCase
         self::assertCount(1, $results);
         self::assertSame('validated', $results[0]->status);
         self::assertSame('Screenshot file is missing and will be created.', $results[0]->message);
+        self::assertStringEndsWith('/product/form.de.png', $results[0]->target);
+    }
+
+    public function testEnglishTargetUsesExplicitLocaleSuffix(): void
+    {
+        $configuration = $this->createStub(ScreenshotScenarioProvider::class);
+        $configuration->method('load')->willReturn([$this->scenario('product_form', 'product_form', 'product/form.png')]);
+
+        $results = (new CaptureHandbookScreenshots(
+            $configuration,
+            $this->createStub(DemoReferenceProvider::class),
+            $this->createStub(ScreenshotRunner::class),
+            sys_get_temp_dir(),
+        ))->capture([], null, 'en', false, true, false);
+
+        self::assertStringEndsWith('/product/form.en.png', $results[0]->target);
     }
 
     public function testUnsafeOutputPathIsRejected(): void
@@ -61,6 +77,7 @@ final class CaptureHandbookScreenshotsTest extends TestCase
             'main',
             [],
             ['width' => 1440, 'height' => 1000],
+            true,
             true,
         );
     }

@@ -81,7 +81,7 @@ Browser zur Fehlersuche sichtbar öffnen:
 bin/console webwms:handbook:capture-screenshots --view=warehouse_occupancy_block --headed --force
 ```
 
-Die deutschen Dateien enden auf `.png`, englische Aufnahmen auf `.en.png`.
+Die deutschen Dateien enden auf `.de.png`, englische Aufnahmen auf `.en.png`.
 Alle Dateien werden atomar unter
 `public/assets/images/handbook/screenshots/` geschrieben. Vorhandene Dateien
 werden nur mit `--force` ersetzt.
@@ -94,11 +94,28 @@ Demodatenreferenzen, Zielpfad, Warte-Selektor, Viewport und zu maskierende
 Elemente. Übersetzbare Handbuchinhalte bleiben ausschließlich in
 `handbook.de.yaml` und `handbook.en.yaml`.
 
+Die Konfiguration deckt jede in beiden Handbook-Katalogen dokumentierte View
+ab. Der Loader vergleicht die View-IDs aus beiden Sprachen mit den Szenarien
+und bricht bei einer fehlenden oder unbekannten Zuordnung ab. Neue Views können
+dadurch nicht ohne Screenshot-Szenario eingecheckt werden. Mehrere Szenarien
+dürfen auf dieselbe View zeigen, wenn unterschiedliche fachliche Zustände wie
+Block-, Regal- und Durchlauflager aufgenommen werden.
+
 Unterstützte Standardreferenzen:
 
 | Alias | Auswahl |
 | --- | --- |
 | `@demo.product.default` | erster aktiver Demoartikel |
+| `@demo.user.default` | erster aktiver Benutzer |
+| `@demo.role.default` | erste Rolle |
+| `@demo.api_client.default` | erster API-Client |
+| `@demo.stock.product`, `@demo.stock.location`, `@demo.stock.key` | dieselbe erste positive Bestandsposition |
+| `@demo.outbound_order.default` | letzter Ausgangsauftrag |
+| `@demo.pick_list.default` | letzte Pickliste |
+| `@demo.packing_order.default` | letzter Packauftrag |
+| `@demo.shipment.default` | letzte Sendung |
+| `@demo.loading_manifest.default` | letztes Lademanifest |
+| `@demo.unplanned_receipt.default` | letzter ungeplanter Wareneingang |
 | `@demo.warehouse.default` | erstes Lager nach Code |
 | `@demo.warehouse.block` | Lager der ersten Blocklagerstruktur |
 | `@demo.warehouse.rack` | Lager der ersten Regal-/Hochregalstruktur |

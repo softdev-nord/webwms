@@ -45,10 +45,63 @@ final readonly class ScreenshotConfigurationLoader implements ScreenshotScenario
                 $this->list($scenario['masks'] ?? []),
                 ['width' => $viewport['width'], 'height' => $viewport['height']],
                 (bool) ($scenario['full_page'] ?? true),
+                (bool) ($scenario['authenticated'] ?? true),
             );
         }
 
+        $this->validateHandbookCoverage($scenarios);
+
         return $scenarios;
+    }
+
+    /** @param list<ScreenshotScenario> $scenarios */
+    private function validateHandbookCoverage(array $scenarios): void
+    {
+        $german = $this->documentationViews('de');
+        $english = $this->documentationViews('en');
+        if ($german !== $english) {
+            throw new RuntimeException('The German and English handbook view identifiers are inconsistent.');
+        }
+
+        $configured = array_values(array_unique(array_map(
+            static fn (ScreenshotScenario $scenario): string => $scenario->documentationView,
+            $scenarios,
+        )));
+        sort($configured);
+        $missing = array_values(array_diff($german, $configured));
+        $unknown = array_values(array_diff($configured, $german));
+        if ($missing !== [] || $unknown !== []) {
+            throw new RuntimeException(sprintf(
+                'Handbook screenshot coverage is inconsistent. Missing views: %s. Unknown views: %s.',
+                $missing === [] ? 'none' : implode(', ', $missing),
+                $unknown === [] ? 'none' : implode(', ', $unknown),
+            ));
+        }
+    }
+
+    /** @return list<string> */
+    private function documentationViews(string $locale): array
+    {
+        $catalogue = Yaml::parseFile($this->projectDir . '/translations/handbook.' . $locale . '.yaml');
+        if (!is_array($catalogue) || !is_array($catalogue['chapter'] ?? null)) {
+            throw new RuntimeException(sprintf('The %s handbook catalogue is invalid.', $locale));
+        }
+
+        $views = [];
+        foreach ($catalogue['chapter'] as $chapter) {
+            if (!is_array($chapter) || !is_array($chapter['views'] ?? null)) {
+                continue;
+            }
+            foreach (array_keys($chapter['views']) as $view) {
+                if (!is_string($view) || $view === '') {
+                    throw new RuntimeException(sprintf('The %s handbook contains an invalid view identifier.', $locale));
+                }
+                $views[] = $view;
+            }
+        }
+        sort($views);
+
+        return $views;
     }
 
     /** @param array<string, mixed> $values */

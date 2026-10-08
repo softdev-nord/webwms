@@ -75,7 +75,7 @@ final readonly class CaptureHandbookScreenshots
         if (preg_match('#^[a-z0-9][a-z0-9._/-]*\.png$#i', $relativeOutput) !== 1 || str_contains($relativeOutput, '..')) {
             throw new RuntimeException(sprintf('Unsafe handbook screenshot path "%s".', $relativeOutput));
         }
-        $suffix = $locale === 'en' ? '.en.png' : '.png';
+        $suffix = $locale === 'en' ? '.en.png' : '.de.png';
         $relativeOutput = substr($relativeOutput, 0, -4) . $suffix;
         $base = $this->projectDir . '/public/assets/images/handbook/screenshots';
         $target = $base . '/' . $relativeOutput;

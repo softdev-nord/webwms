@@ -24,6 +24,7 @@ final readonly class ScreenshotScenario
         public array $masks,
         public array $viewport,
         public bool $fullPage,
+        public bool $authenticated,
     ) {
     }
 }

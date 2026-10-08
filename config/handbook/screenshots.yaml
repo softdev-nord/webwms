@@ -2,49 +2,577 @@ defaults:
     viewport: {width: 1440, height: 1000}
     full_page: true
     wait_for: main
+    authenticated: true
     masks:
         - '[data-sensitive]'
         - 'input[type="password"]'
         - '.profiler-results'
 
 scenarios:
+    workspace_login:
+        documentation_view: workspace_login
+        category: basics
+        route: app_v3_login
+        output: security/workspace-login.png
+        authenticated: false
+        wait_for: form[method="post"]
+    documentation_overview:
+        documentation_view: documentation_overview
+        category: basics
+        route: v3_documentation_index
+        output: documentation/handbook-overview.png
+    documentation_chapter:
+        documentation_view: documentation_chapter
+        category: basics
+        route: v3_documentation_show
+        route_parameters: {slug: getting-started}
+        output: documentation/handbook-chapter.png
+    administration_overview:
+        documentation_view: administration_overview
+        category: administration
+        route: v3_administration_index
+        output: administration/overview.png
+    users_overview:
+        documentation_view: users_overview
+        category: administration
+        route: v3_administration_users
+        output: administration/users-overview.png
+    user_create:
+        documentation_view: user_create
+        category: administration
+        route: v3_administration_user_new
+        output: administration/user-create.png
+    user_edit:
+        documentation_view: user_edit
+        category: administration
+        route: v3_administration_user_edit
+        route_parameters: {userId: '@demo.user.default'}
+        output: administration/user-edit.png
+    roles_overview:
+        documentation_view: roles_overview
+        category: administration
+        route: v3_administration_roles
+        output: administration/roles-overview.png
+    role_create:
+        documentation_view: role_create
+        category: administration
+        route: v3_administration_role_new
+        output: administration/role-create.png
+    role_edit:
+        documentation_view: role_edit
+        category: administration
+        route: v3_administration_role_edit
+        route_parameters: {roleId: '@demo.role.default'}
+        output: administration/role-edit.png
+    api_clients_overview:
+        documentation_view: api_clients_overview
+        category: administration
+        route: v3_administration_api_clients
+        output: administration/api-clients-overview.png
+    api_client_create:
+        documentation_view: api_client_create
+        category: administration
+        route: v3_administration_api_client_new
+        output: administration/api-client-create.png
+    api_client_edit:
+        documentation_view: api_client_edit
+        category: administration
+        route: v3_administration_api_client_edit
+        route_parameters: {clientId: '@demo.api_client.default'}
+        output: administration/api-client-edit.png
+    api_client_credential:
+        documentation_view: api_client_credential
+        category: administration
+        route: v3_administration_api_client_credential
+        output: administration/api-client-credential.png
+    administration_workspace:
+        documentation_view: administration_workspace
+        category: administration
+        route: v3_administration_workspace
+        output: administration/system-configuration.png
     product_overview:
+        documentation_view: product_overview
         category: warehouse
         route: v3_product_index
-        output: product/index.png
-        wait_for: 'table'
+        output: warehouse-and-stock/product-overview.png
     product_form:
+        documentation_view: product_form
         category: warehouse
         route: v3_product_new
-        output: product/form.png
-        wait_for: 'form'
+        output: warehouse-and-stock/product-form.png
     product_detail:
+        documentation_view: product_detail
         category: warehouse
         route: v3_product_show
         route_parameters: {productId: '@demo.product.default'}
-        output: product/show.png
-        wait_for: '.nav-tabs'
+        output: warehouse-and-stock/product-detail.png
+    warehouse_overview:
+        documentation_view: warehouse_overview
+        category: warehouse
+        route: v3_inventory_overview
+        output: warehouse/overview.png
+    stock_overview:
+        documentation_view: stock_overview
+        category: warehouse
+        route: v3_stock
+        output: warehouse/stock.png
+    warehouse_occupancy:
+        documentation_view: warehouse_occupancy
+        category: warehouse
+        route: v3_inventory_occupancy
+        output: warehouse/occupancy.png
+    stock_movements:
+        documentation_view: stock_movements
+        category: warehouse
+        route: v3_inventory_movements
+        output: warehouse/movements.png
+    stock_traceability:
+        documentation_view: stock_traceability
+        category: warehouse
+        route: v3_inventory_traceability
+        output: warehouse/traceability.png
+    special_stock_overview:
+        documentation_view: special_stock_overview
+        category: warehouse
+        route: v3_inventory_special_stock
+        output: warehouse/special-stock.png
+    special_stock_classify:
+        documentation_view: special_stock_classify
+        category: warehouse
+        route: v3_inventory_special_stock_classify_form
+        query: {product: '@demo.stock.product', location: '@demo.stock.location', stock_key: '@demo.stock.key'}
+        output: warehouse/special-stock-classify.png
+    selection_rules:
+        documentation_view: selection_rules
+        category: warehouse
+        route: v3_inventory_selection_rules
+        output: warehouse/selection-rules.png
+    inventory_configuration:
+        documentation_view: inventory_configuration
+        category: warehouse
+        route: v3_inventory_special_stock_type_new
+        output: warehouse/configuration-form.png
     topology_overview:
+        documentation_view: topology_overview
         category: warehouse
         route: v3_inventory_topology
         output: warehouse/topology-overview.png
-        wait_for: '.nav-tabs'
     topology_form:
+        documentation_view: topology_form
         category: warehouse
         route: v3_inventory_topology_new
         route_parameters: {resource: bin}
         output: warehouse/topology-form.png
-        wait_for: 'form'
     topology_generator:
+        documentation_view: topology_generator
         category: warehouse
         route: v3_inventory_topology_generator
-        output: warehouse/topology-generator.png
-        wait_for: 'form'
+        output: warehouse-and-stock/topology-generator.png
     topology_import:
+        documentation_view: topology_import
         category: warehouse
         route: v3_inventory_topology_import
-        output: warehouse/topology-import.png
-        wait_for: 'form'
+        output: warehouse-and-stock/topology-import.png
+    stock_blocks_overview:
+        documentation_view: stock_blocks_overview
+        category: warehouse
+        route: v3_inventory_stock_blocks
+        output: warehouse/stock-blocks.png
+    stock_block_reasons:
+        documentation_view: stock_block_reasons
+        category: warehouse
+        route: v3_inventory_stock_block_reasons
+        output: warehouse/stock-block-reasons.png
+    stock_block_create:
+        documentation_view: stock_block_create
+        category: warehouse
+        route: v3_inventory_stock_block_new
+        query: {product: '@demo.stock.product', location: '@demo.stock.location', stock_key: '@demo.stock.key'}
+        output: warehouse/stock-block-create.png
+    stock_block_detail:
+        documentation_view: stock_block_detail
+        category: warehouse
+        route: v3_inventory_stock_block_show
+        route_parameters: {blockId: '@demo.stock_block.default'}
+        output: warehouse/stock-block-detail.png
+    inventory_control:
+        documentation_view: inventory_control
+        category: warehouse
+        route: v3_inventory_control_index
+        output: warehouse/inventory-control.png
+    unplanned_receipts_overview:
+        documentation_view: unplanned_receipts_overview
+        category: processes
+        route: v3_inbound_index
+        output: inbound/unplanned-overview.png
+    unplanned_receipt_create:
+        documentation_view: unplanned_receipt_create
+        category: processes
+        route: v3_inbound_unplanned_new
+        output: inbound/unplanned-create.png
+    unplanned_receipt_detail:
+        documentation_view: unplanned_receipt_detail
+        category: processes
+        route: v3_inbound_show
+        route_parameters: {receiptId: '@demo.unplanned_receipt.default'}
+        output: inbound/unplanned-detail.png
+    planned_receipts:
+        documentation_view: planned_receipts
+        category: processes
+        route: v3_inbound_planned
+        output: inbound/planned-receipts.png
+    inbound_control:
+        documentation_view: inbound_control
+        category: processes
+        route: v3_inbound_control_index
+        output: inbound/control-center.png
+    internal_transport:
+        documentation_view: internal_transport
+        category: processes
+        route: v3_internal_transport_index
+        output: fulfillment/internal-transport.png
+    outbound_orders:
+        documentation_view: outbound_orders
+        category: processes
+        route: v3_outbound_orders
+        output: outbound/orders-overview.png
+    outbound_order_create:
+        documentation_view: outbound_order_create
+        category: processes
+        route: v3_outbound_order_new
+        output: outbound/order-create.png
+    outbound_order_detail:
+        documentation_view: outbound_order_detail
+        category: processes
+        route: v3_outbound_order
+        route_parameters: {orderId: '@demo.outbound_order.default'}
+        output: outbound/order-detail.png
+    picking_overview:
+        documentation_view: picking_overview
+        category: processes
+        route: v3_picking_index
+        output: outbound/picking-overview.png
+    picking_control:
+        documentation_view: picking_control
+        category: processes
+        route: v3_picking_control_index
+        output: outbound/picking-control.png
+    picking_detail:
+        documentation_view: picking_detail
+        category: processes
+        route: v3_picking_show
+        route_parameters: {pickListId: '@demo.pick_list.default'}
+        output: outbound/picking-detail.png
+    packing_overview:
+        documentation_view: packing_overview
+        category: processes
+        route: v3_packing_index
+        output: outbound/packing-overview.png
+    packing_detail:
+        documentation_view: packing_detail
+        category: processes
+        route: v3_packing_show
+        route_parameters: {packingOrderId: '@demo.packing_order.default'}
+        output: outbound/packing-detail.png
+    shipping_overview:
+        documentation_view: shipping_overview
+        category: processes
+        route: v3_shipping_index
+        output: outbound/shipping-overview.png
+    shipping_detail:
+        documentation_view: shipping_detail
+        category: processes
+        route: v3_shipping_show
+        route_parameters: {shipmentId: '@demo.shipment.default'}
+        output: outbound/shipping-detail.png
+    loading_overview:
+        documentation_view: loading_overview
+        category: processes
+        route: v3_loading_index
+        output: outbound/loading-overview.png
+    loading_create:
+        documentation_view: loading_create
+        category: processes
+        route: v3_loading_new
+        output: outbound/loading-create.png
+    loading_detail:
+        documentation_view: loading_detail
+        category: processes
+        route: v3_loading_show
+        route_parameters: {manifestId: '@demo.loading_manifest.default'}
+        output: outbound/loading-detail.png
+    outbound_control:
+        documentation_view: outbound_control
+        category: processes
+        route: v3_outbound_control_index
+        output: outbound/outbound-control.png
+    erp_connections:
+        documentation_view: erp_connections
+        category: integration
+        route: v3_erp_connection_index
+        output: integration/erp-connections.png
+    erp_connection_create:
+        documentation_view: erp_connection_create
+        category: integration
+        route: v3_erp_connection_new
+        output: integration/erp-connection-create.png
+    erp_connection_detail:
+        documentation_view: erp_connection_detail
+        category: integration
+        route: v3_erp_connection_show
+        route_parameters: {connectionId: '@demo.erp_connection.default'}
+        output: integration/erp-connection-detail.png
+    carrier_connections:
+        documentation_view: carrier_connections
+        category: integration
+        route: v3_carrier_connection_index
+        output: integration/carrier-connections.png
+    carrier_connection_create:
+        documentation_view: carrier_connection_create
+        category: integration
+        route: v3_carrier_connection_new
+        output: integration/carrier-connection-create.png
+    carrier_connection_detail:
+        documentation_view: carrier_connection_detail
+        category: integration
+        route: v3_carrier_connection_show
+        route_parameters: {connectionId: '@demo.carrier_connection.default'}
+        output: integration/carrier-connection-detail.png
+    carrier_products:
+        documentation_view: carrier_products
+        category: integration
+        route: v3_carrier_connection_products
+        route_parameters: {connectionId: '@demo.carrier_connection.default'}
+        output: integration/carrier-products.png
+    data_exchange_overview:
+        documentation_view: data_exchange_overview
+        category: integration
+        route: v3_data_exchange_index
+        output: integration/data-exchange-overview.png
+    data_exchange_import:
+        documentation_view: data_exchange_import
+        category: integration
+        route: v3_data_exchange_import
+        output: integration/data-exchange-import.png
+    data_exchange_export:
+        documentation_view: data_exchange_export
+        category: integration
+        route: v3_data_exchange_export
+        output: integration/data-exchange-export.png
+    integration_mapping_create:
+        documentation_view: integration_mapping_create
+        category: integration
+        route: v3_data_exchange_mapping_new
+        output: integration/mapping-create.png
+    commerce_connection_create:
+        documentation_view: commerce_connection_create
+        category: integration
+        route: v3_data_exchange_commerce_new
+        output: integration/commerce-connection-create.png
+    device_overview:
+        documentation_view: device_overview
+        category: integration
+        route: v3_device_index
+        output: integration/device-overview.png
+    device_create:
+        documentation_view: device_create
+        category: integration
+        route: v3_device_new
+        output: integration/device-create.png
+    device_detail:
+        documentation_view: device_detail
+        category: integration
+        route: v3_device_show
+        route_parameters: {deviceId: '@demo.device.default'}
+        output: integration/device-detail.png
+    scan_capture:
+        documentation_view: scan_capture
+        category: integration
+        route: v3_device_scan
+        output: integration/scan-capture.png
+    scan_detail:
+        documentation_view: scan_detail
+        category: integration
+        route: v3_device_scan_show
+        route_parameters: {eventId: '@demo.scan_event.default'}
+        output: integration/scan-detail.png
+    measurement_overview:
+        documentation_view: measurement_overview
+        category: integration
+        route: v3_measurement_index
+        output: integration/measurement-overview.png
+    measurement_device_create:
+        documentation_view: measurement_device_create
+        category: integration
+        route: v3_measurement_device_new
+        output: integration/measurement-device-create.png
+    measurement_capture:
+        documentation_view: measurement_capture
+        category: integration
+        route: v3_measurement_capture
+        output: integration/measurement-capture.png
+    measurement_detail:
+        documentation_view: measurement_detail
+        category: integration
+        route: v3_measurement_show
+        route_parameters: {measurementId: '@demo.measurement.default'}
+        output: integration/measurement-detail.png
+    printing_overview:
+        documentation_view: printing_overview
+        category: integration
+        route: v3_printing_index
+        output: integration/printing-overview.png
+    printer_create:
+        documentation_view: printer_create
+        category: integration
+        route: v3_printing_printer_new
+        output: integration/printer-create.png
+    printer_detail:
+        documentation_view: printer_detail
+        category: integration
+        route: v3_printing_printer_show
+        route_parameters: {printerId: '@demo.printer.default'}
+        output: integration/printer-detail.png
+    print_job_create:
+        documentation_view: print_job_create
+        category: integration
+        route: v3_printing_job_new
+        output: integration/print-job-create.png
+    print_job_detail:
+        documentation_view: print_job_detail
+        category: integration
+        route: v3_printing_job_show
+        route_parameters: {jobId: '@demo.print_job.default'}
+        output: integration/print-job-detail.png
+    wcs_overview:
+        documentation_view: wcs_overview
+        category: integration
+        route: v3_wcs_index
+        output: integration/wcs-overview.png
+    wcs_connection_create:
+        documentation_view: wcs_connection_create
+        category: integration
+        route: v3_wcs_connection_new
+        output: integration/wcs-connection-create.png
+    wcs_command_create:
+        documentation_view: wcs_command_create
+        category: integration
+        route: v3_wcs_command_new
+        output: integration/wcs-command-create.png
+    wcs_command_detail:
+        documentation_view: wcs_command_detail
+        category: integration
+        route: v3_wcs_command_show
+        route_parameters: {commandId: '@demo.machine_command.default'}
+        output: integration/wcs-command-detail.png
+    wcs_status_capture:
+        documentation_view: wcs_status_capture
+        category: integration
+        route: v3_wcs_status_new
+        output: integration/wcs-status-capture.png
+    platform_dashboard:
+        documentation_view: platform_dashboard
+        category: platform
+        route: v3_dashboard
+        output: platform/dashboard.png
+    platform_control_center:
+        documentation_view: platform_control_center
+        category: platform
+        route: v3_platform_index
+        output: platform/control-center.png
+    partner_portal:
+        documentation_view: partner_portal
+        category: platform
+        route: v3_partner_portal
+        output: platform/partner-portal.png
+    extensions_overview:
+        documentation_view: extensions_overview
+        category: platform
+        route: v3_extension_index
+        output: platform/extensions-overview.png
+    extension_configurations:
+        documentation_view: extension_configurations
+        category: platform
+        route: v3_extension_configuration_index
+        route_parameters: {resource: barcode_profile}
+        output: platform/extension-configurations.png
+    extension_configuration_form:
+        documentation_view: extension_configuration_form
+        category: platform
+        route: v3_extension_configuration_new
+        route_parameters: {resource: barcode_profile}
+        output: platform/extension-configuration-form.png
+    extension_workflows:
+        documentation_view: extension_workflows
+        category: platform
+        route: v3_extension_workflow_index
+        route_parameters: {workflow: container_cycle}
+        output: platform/extension-workflows.png
+    extension_work_item_form:
+        documentation_view: extension_work_item_form
+        category: platform
+        route: v3_extension_work_item_new
+        route_parameters: {workflow: container_cycle}
+        output: platform/extension-work-item-form.png
+    extension_work_item_detail:
+        documentation_view: extension_work_item_detail
+        category: platform
+        route: v3_extension_work_item_show
+        route_parameters: {id: '@demo.extension_work_item.default'}
+        output: platform/extension-work-item-detail.png
+    outbox_overview:
+        documentation_view: outbox_overview
+        category: integration
+        route: v3_outbox_index
+        output: integration/outbox-overview.png
+    outbox_detail:
+        documentation_view: outbox_detail
+        category: integration
+        route: v3_outbox_show
+        route_parameters: {messageId: '@demo.outbox.default'}
+        output: integration/outbox-detail.png
+    swagger_ui:
+        documentation_view: swagger_ui
+        category: integration
+        route: v3_documentation_swagger
+        output: documentation/swagger-ui.png
+    automation_overview:
+        documentation_view: automation_overview
+        category: integration
+        route: v3_automation_index
+        output: integration/automation-overview.png
+    automation_device_create:
+        documentation_view: automation_device_create
+        category: integration
+        route: v3_automation_device_new
+        output: integration/automation-device-create.png
+    automation_command_create:
+        documentation_view: automation_command_create
+        category: integration
+        route: v3_automation_command_new
+        output: integration/automation-command-create.png
+    automation_command_detail:
+        documentation_view: automation_command_detail
+        category: integration
+        route: v3_automation_command_show
+        route_parameters: {commandId: '@demo.automation_command.default'}
+        output: integration/automation-command-detail.png
+    transport_overview:
+        documentation_view: transport_overview
+        category: integration
+        route: v3_transport_index
+        output: integration/transport-overview.png
+    transport_endpoint_create:
+        documentation_view: transport_endpoint_create
+        category: integration
+        route: v3_transport_new
+        output: integration/transport-endpoint-create.png
+    transport_delivery:
+        documentation_view: transport_delivery
+        category: integration
+        route: v3_transport_deliver
+        route_parameters: {endpointId: '@demo.transport_endpoint.default'}
+        output: integration/transport-delivery.png
     warehouse_occupancy_block:
         documentation_view: warehouse_occupancy
         category: warehouse

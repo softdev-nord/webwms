@@ -366,7 +366,7 @@ class UserDocumentationService
                 continue;
             }
             $output = $outputs[$id];
-            $localized = substr($output, 0, -4) . ($language === 'en' ? '.en.png' : '.png');
+            $localized = substr($output, 0, -4) . ($language === 'en' ? '.en.png' : '.de.png');
             $relative = '/assets/images/handbook/screenshots/' . $localized;
             if (is_file($this->projectDir . '/public' . $relative)) {
                 $view['image']['src'] = $relative;

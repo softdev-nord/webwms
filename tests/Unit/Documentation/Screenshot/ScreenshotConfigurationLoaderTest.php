@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebWMS\Tests\Unit\Documentation\Screenshot;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Yaml\Yaml;
 use WebWMS\Documentation\Infrastructure\Screenshot\ScreenshotConfigurationLoader;
 
 final class ScreenshotConfigurationLoaderTest extends TestCase
@@ -13,6 +14,13 @@ final class ScreenshotConfigurationLoaderTest extends TestCase
     {
         $scenarios = (new ScreenshotConfigurationLoader(dirname(__DIR__, 4)))->load();
         $keys = array_map(static fn ($scenario): string => $scenario->key, $scenarios);
+        $documentationViews = array_values(array_unique(array_map(
+            static fn ($scenario): string => $scenario->documentationView,
+            $scenarios,
+        )));
+
+        self::assertCount(109, $scenarios);
+        self::assertCount(106, $documentationViews);
 
         self::assertContains('product_overview', $keys);
         self::assertContains('product_form', $keys);
@@ -30,6 +38,27 @@ final class ScreenshotConfigurationLoaderTest extends TestCase
             self::assertStringNotContainsString('..', $scenario->output);
             self::assertGreaterThanOrEqual(1024, $scenario->viewport['width']);
             self::assertNotSame('', $scenario->waitFor);
+        }
+    }
+
+    public function testEveryLocalizedHandbookViewHasAScreenshotScenario(): void
+    {
+        $root = dirname(__DIR__, 4);
+        $configured = array_values(array_unique(array_map(
+            static fn ($scenario): string => $scenario->documentationView,
+            (new ScreenshotConfigurationLoader($root))->load(),
+        )));
+        sort($configured);
+
+        foreach (['de', 'en'] as $locale) {
+            $catalogue = Yaml::parseFile($root . '/translations/handbook.' . $locale . '.yaml');
+            $documented = [];
+            foreach ($catalogue['chapter'] as $chapter) {
+                array_push($documented, ...array_keys($chapter['views'] ?? []));
+            }
+            sort($documented);
+
+            self::assertSame($documented, $configured, sprintf('Screenshot coverage differs for locale "%s".', $locale));
         }
     }
 }

@@ -35,7 +35,7 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
         if ($baseUrl === '') {
             throw new RuntimeException('HANDBOOK_SCREENSHOT_BASE_URL must contain the URL of the running application.');
         }
-        if ($email === '' || $password === '') {
+        if ($scenario->authenticated && ($email === '' || $password === '')) {
             throw new RuntimeException('HANDBOOK_SCREENSHOT_EMAIL and HANDBOOK_SCREENSHOT_PASSWORD must identify the dedicated documentation user.');
         }
 
@@ -61,20 +61,22 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
                 'locale' => $locale === 'en' ? 'en-US' : 'de-DE',
             ]);
             $page = $context->newPage();
-            $stage = 'opening the login page';
-            $page->goto($baseUrl . '/v3/login', ['waitUntil' => 'networkidle']);
-            $stage = 'waiting for the password login form';
-            $page->waitForSelector('form[method="post"] #email', ['state' => 'visible']);
-            $stage = 'entering the email address';
-            $page->locator('form[method="post"] #email')->fill($email);
-            $stage = 'entering the password';
-            $page->locator('form[method="post"] #password')->fill($password);
-            $stage = 'submitting the password login form';
-            $page->locator('form[method="post"] button[type="submit"]')->click();
-            $stage = 'waiting for authentication';
-            $page->waitForLoadState('networkidle');
-            if (str_ends_with((string) parse_url($page->url(), PHP_URL_PATH), '/v3/login')) {
-                throw new RuntimeException('Authentication remained on the login page. Verify the documentation user credentials and account status.');
+            if ($scenario->authenticated) {
+                $stage = 'opening the login page';
+                $page->goto($baseUrl . '/v3/login', ['waitUntil' => 'networkidle']);
+                $stage = 'waiting for the password login form';
+                $page->waitForSelector('form[method="post"] #email', ['state' => 'visible']);
+                $stage = 'entering the email address';
+                $page->locator('form[method="post"] #email')->fill($email);
+                $stage = 'entering the password';
+                $page->locator('form[method="post"] #password')->fill($password);
+                $stage = 'submitting the password login form';
+                $page->locator('form[method="post"] button[type="submit"]')->click();
+                $stage = 'waiting for authentication';
+                $page->waitForLoadState('networkidle');
+                if (str_ends_with((string) parse_url($page->url(), PHP_URL_PATH), '/v3/login')) {
+                    throw new RuntimeException('Authentication remained on the login page. Verify the documentation user credentials and account status.');
+                }
             }
             $stage = sprintf('opening scenario route "%s"', $scenario->route);
             $page->goto($baseUrl . $path, ['waitUntil' => 'networkidle']);
