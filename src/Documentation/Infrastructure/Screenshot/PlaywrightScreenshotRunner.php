@@ -49,6 +49,8 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
         $this->playwrightProcessLogger->reset();
         $client = null;
         $context = null;
+        $page = null;
+        $stage = 'starting Chromium';
         try {
             $client = PlaywrightFactory::create(logger: $this->playwrightProcessLogger);
             $browser = $client->chromium()->withHeadless(!$headed)->launch();
@@ -59,17 +61,41 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
                 'locale' => $locale === 'en' ? 'en-US' : 'de-DE',
             ]);
             $page = $context->newPage();
+            $stage = 'opening the login page';
             $page->goto($baseUrl . '/v3/login', ['waitUntil' => 'networkidle']);
-            $page->locator('#email')->fill($email);
-            $page->locator('#password')->fill($password);
-            $page->locator('button[type="submit"]')->click();
+            $stage = 'waiting for the password login form';
+            $page->waitForSelector('form[method="post"] #email', ['state' => 'visible']);
+            $stage = 'entering the email address';
+            $page->locator('form[method="post"] #email')->fill($email);
+            $stage = 'entering the password';
+            $page->locator('form[method="post"] #password')->fill($password);
+            $stage = 'submitting the password login form';
+            $page->locator('form[method="post"] button[type="submit"]')->click();
+            $stage = 'waiting for authentication';
             $page->waitForLoadState('networkidle');
+            if (str_ends_with((string) parse_url($page->url(), PHP_URL_PATH), '/v3/login')) {
+                throw new RuntimeException('Authentication remained on the login page. Verify the documentation user credentials and account status.');
+            }
+            $stage = sprintf('opening scenario route "%s"', $scenario->route);
             $page->goto($baseUrl . $path, ['waitUntil' => 'networkidle']);
+            $stage = sprintf('waiting for selector "%s"', $scenario->waitFor);
             $page->waitForSelector($scenario->waitFor, ['state' => 'visible']);
+            $stage = 'stabilising the page';
             $page->evaluate($this->stabilisationScript($scenario->masks));
+            $stage = 'writing the screenshot';
             $page->screenshot($target, ['fullPage' => $scenario->fullPage]);
         } catch (\Throwable $exception) {
-            throw new ScreenshotRunnerUnavailable($this->failureMessage($exception, $baseUrl), previous: $exception);
+            $browserState = '';
+            if ($page !== null) {
+                try {
+                    $browserState = sprintf(' Current page: %s (%s).', $page->url(), $page->title());
+                } catch (\Throwable) {
+                }
+            }
+            throw new ScreenshotRunnerUnavailable(
+                $this->failureMessage($exception, $baseUrl, $stage) . $browserState,
+                previous: $exception,
+            );
         } finally {
             try {
                 $context?->close();
@@ -82,9 +108,9 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
         }
     }
 
-    private function failureMessage(\Throwable $exception, string $baseUrl): string
+    private function failureMessage(\Throwable $exception, string $baseUrl, string $stage): string
     {
-        $message = 'Playwright could not start or communicate with Chromium: ' . $exception->getMessage();
+        $message = sprintf('Playwright failed while %s: %s', $stage, $exception->getMessage());
         $diagnostics = $this->playwrightProcessLogger->diagnostics();
         if ($diagnostics !== '') {
             return $message . PHP_EOL . $diagnostics;
