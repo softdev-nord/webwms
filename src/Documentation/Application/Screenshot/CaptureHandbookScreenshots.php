@@ -56,6 +56,8 @@ final readonly class CaptureHandbookScreenshots
                 }
                 $message = $dryRun && !is_file($target) ? 'Screenshot file is missing and will be created.' : null;
                 $results[] = new ScreenshotCaptureResult($scenario->key, $dryRun ? 'validated' : 'created', $target, $message);
+            } catch (ScreenshotRunnerUnavailable $exception) {
+                throw $exception;
             } catch (\Throwable $exception) {
                 $results[] = new ScreenshotCaptureResult($scenario->key, 'failed', $target, $exception->getMessage());
             }

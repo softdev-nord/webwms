@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebWMS\Documentation\Infrastructure\Screenshot;
 
-use Playwright\Playwright;
+use Playwright\PlaywrightFactory;
 use RuntimeException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use WebWMS\Documentation\Application\Screenshot\ScreenshotRunner;
+use WebWMS\Documentation\Application\Screenshot\ScreenshotRunnerUnavailable;
 use WebWMS\Documentation\Application\Screenshot\ScreenshotScenario;
 
 final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
@@ -18,12 +19,13 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
         private string $handbookScreenshotBaseUrl,
         private string $handbookScreenshotEmail,
         private string $handbookScreenshotPassword,
+        private PlaywrightProcessLogger $playwrightProcessLogger,
     ) {
     }
 
     public function capture(ScreenshotScenario $scenario, array $resolvedParameters, string $locale, string $target, bool $headed): void
     {
-        if (!class_exists(Playwright::class)) {
+        if (!class_exists(PlaywrightFactory::class)) {
             throw new RuntimeException('Playwright PHP is not installed. Run composer install and vendor/bin/playwright-install --browsers.');
         }
         $baseUrl = rtrim($this->handbookScreenshotBaseUrl, '/');
@@ -43,16 +45,18 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
             $path .= '?' . http_build_query($query);
         }
 
-        $context = Playwright::chromium([
-            'headless' => !$headed,
-            'context' => [
+        $this->playwrightProcessLogger->reset();
+        $client = null;
+        $context = null;
+        try {
+            $client = PlaywrightFactory::create(logger: $this->playwrightProcessLogger);
+            $browser = $client->chromium()->withHeadless(!$headed)->launch();
+            $context = $browser->newContext([
                 'viewport' => $scenario->viewport,
                 'deviceScaleFactor' => 1,
                 'colorScheme' => 'light',
                 'locale' => $locale === 'en' ? 'en-US' : 'de-DE',
-            ],
-        ]);
-        try {
+            ]);
             $page = $context->newPage();
             $page->goto($baseUrl . '/v3/login', ['waitUntil' => 'networkidle']);
             $page->locator('#email')->fill($email);
@@ -63,8 +67,27 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
             $page->waitForSelector($scenario->waitFor, ['state' => 'visible']);
             $page->evaluate($this->stabilisationScript($scenario->masks));
             $page->screenshot($target, ['fullPage' => $scenario->fullPage]);
+        } catch (\Throwable $exception) {
+            $diagnostics = $this->playwrightProcessLogger->diagnostics();
+            $message = 'Playwright could not start or communicate with Chromium: ' . $exception->getMessage();
+            if ($diagnostics !== '') {
+                $message .= PHP_EOL . $diagnostics;
+            } else {
+                $message .= PHP_EOL . 'Verify Node.js 20+ with "node --version" and install Chromium with '
+                    . '"vendor/bin/playwright-install chromium". On a fresh Linux image, install the required '
+                    . 'system libraries with "vendor/bin/playwright-install --with-deps".';
+            }
+
+            throw new ScreenshotRunnerUnavailable($message, previous: $exception);
         } finally {
-            $context->close();
+            try {
+                $context?->close();
+            } catch (\Throwable) {
+            }
+            try {
+                $client?->close();
+            } catch (\Throwable) {
+            }
         }
     }
 

@@ -118,7 +118,12 @@ nicht selbstständig, ob erzeugte Binärdateien in Git übernommen werden.
 ## Fehlerbehebung
 
 - `Playwright PHP is not installed`: `composer install` ausführen.
-- Browser fehlt: `vendor/bin/playwright-install --browsers` ausführen.
+- Node-Prozess endet mit Code 1: Im selben PHP-Container zuerst
+  `node --version` prüfen; Playwright benötigt Node.js 20 oder neuer.
+- Browser fehlt: `vendor/bin/playwright-install chromium` ausführen.
+- Chromium meldet fehlende Linux-Bibliotheken:
+  `vendor/bin/playwright-install --with-deps` mit den dafür erforderlichen
+  Containerrechten ausführen.
 - Demo-Alias nicht gefunden: Installation mit Demodaten prüfen.
 - Warte-Selektor nicht gefunden: View im `--headed`-Modus öffnen und Szenario
   an die aktuelle DOM-Struktur anpassen.
