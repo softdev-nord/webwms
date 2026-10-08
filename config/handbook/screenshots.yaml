@@ -1,7 +1,7 @@
 defaults:
     viewport: {width: 1440, height: 1000}
     full_page: true
-    wait_for: main
+    wait_for: '.page-content'
     authenticated: true
     masks:
         - '[data-sensitive]'
@@ -21,12 +21,14 @@ scenarios:
         category: basics
         route: v3_documentation_index
         output: documentation/handbook-overview.png
+        wait_for: main
     documentation_chapter:
         documentation_view: documentation_chapter
         category: basics
         route: v3_documentation_show
         route_parameters: {slug: getting-started}
         output: documentation/handbook-chapter.png
+        wait_for: main
     administration_overview:
         documentation_view: administration_overview
         category: administration
@@ -537,6 +539,7 @@ scenarios:
         category: integration
         route: v3_documentation_swagger
         output: documentation/swagger-ui.png
+        wait_for: '#swagger-ui'
     automation_overview:
         documentation_view: automation_overview
         category: integration
