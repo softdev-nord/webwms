@@ -6,7 +6,8 @@
 
 {% block webwms_content %}
     {% set editing = product is not null %}
-    {% set action = editing ? path('v3_product_update', {productId: product.id}) : path('v3_product_create') %}
+    {% set productData = product ?? {} %}
+    {% set action = editing ? path('v3_product_update', {productId: productData.id}) : path('v3_product_create') %}
 
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
@@ -17,13 +18,13 @@
                 {{ 'product.form.description'|trans({}, 'product') }}
             </p>
         </div>
-        <a class="btn btn-outline-secondary" href="{{ editing ? path('v3_product_show', {productId: product.id}) : path('v3_product_index') }}">
+        <a class="btn btn-outline-secondary" href="{{ editing ? path('v3_product_show', {productId: productData.id}) : path('v3_product_index') }}">
             {{ 'product.action.cancel'|trans({}, 'product') }}
         </a>
     </div>
 
     <form method="post" action="{{ action }}">
-        <input type="hidden" name="_token" value="{{ csrf_token(editing ? 'v3_product_update_' ~ product.id : 'v3_product_create') }}">
+        <input type="hidden" name="_token" value="{{ csrf_token(editing ? 'v3_product_update_' ~ productData.id : 'v3_product_create') }}">
 
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header">
@@ -141,7 +142,7 @@
                         <label class="form-label" for="{{ field }}">
                             {{ ('product.field.' ~ field)|trans({}, 'product') }}
                         </label>
-                        <input class="form-control" type="number" min="0" id="{{ field }}" name="{{ field }}" value="{{ attribute(product|default({}), field)|default('') }}">
+                        <input class="form-control" type="number" min="0" id="{{ field }}" name="{{ field }}" value="{{ attribute(productData, field)|default('') }}">
                     </div>
                 {% endfor %}
                 <div class="col-md-3">
@@ -173,6 +174,8 @@
             </div>
             <div class="card-body row g-3">
                 {% for field in ['serial_number_required', 'batch_required', 'expiry_required'] %}
+                    {% set fieldValue = attribute(productData, field)|default(null) %}
+
                     <div class="col-md-4">
                         <label class="form-label" for="{{ field }}">
                             {{ ('product.field.' ~ field)|trans({}, 'product') }}
@@ -181,10 +184,10 @@
                             <option value="">
                                 {{ 'product.option.not_set'|trans({}, 'product') }}
                             </option>
-                            <option value="1" {{ attribute(product|default({}), field) is not null and attribute(product|default({}), field) == 1 ? 'selected' : '' }}>
+                            <option value="1" {{ fieldValue is same as(true) or fieldValue is same as(1) or fieldValue is same as('1') ? 'selected' : '' }}>
                                 {{ 'product.option.yes'|trans({}, 'product') }}
                             </option>
-                            <option value="0" {{ attribute(product|default({}), field) is not null and attribute(product|default({}), field) == 0 ? 'selected' : '' }}>
+                            <option value="0" {{ fieldValue is same as(false) or fieldValue is same as(0) or fieldValue is same as('0') ? 'selected' : '' }}>
                                 {{ 'product.option.no'|trans({}, 'product') }}
                             </option>
                         </select>
@@ -195,7 +198,7 @@
                         <label class="form-label" for="{{ field }}">
                             {{ ('product.field.' ~ field)|trans({}, 'product') }}
                         </label>
-                        <input class="form-control" type="number" min="0" id="{{ field }}" name="{{ field }}" value="{{ attribute(product|default({}), field)|default('') }}">
+                        <input class="form-control" type="number" min="0" id="{{ field }}" name="{{ field }}" value="{{ attribute(productData, field)|default('') }}">
                     </div>
                 {% endfor %}
                 <div class="col-md-4">
@@ -235,7 +238,7 @@
                         <label class="form-label" for="{{ field }}">
                             {{ ('product.field.' ~ field)|trans({}, 'product') }}
                         </label>
-                        <input class="form-control" id="{{ field }}" name="{{ field }}" value="{{ attribute(product|default({}), field)|default('') }}">
+                        <input class="form-control" id="{{ field }}" name="{{ field }}" value="{{ attribute(productData, field)|default('') }}">
                     </div>
                 {% endfor %}
             </div>
@@ -254,7 +257,7 @@
                             {{ ('product.field.' ~ field)|trans({}, 'product') }}
                         </label>
                         <textarea class="form-control" id="{{ field }}" name="{{ field }}" rows="3">
-                            {{ attribute(product|default({}), field)|default('') }}
+                            {{ attribute(productData, field)|default('') }}
                         </textarea>
                     </div>
                 {% endfor %}
@@ -262,7 +265,7 @@
         </div>
 
         <div class="d-flex justify-content-end gap-2 mb-4">
-            <a class="btn btn-light" href="{{ editing ? path('v3_product_show', {productId: product.id}) : path('v3_product_index') }}">
+            <a class="btn btn-light" href="{{ editing ? path('v3_product_show', {productId: productData.id}) : path('v3_product_index') }}">
                 {{ 'product.action.cancel'|trans({}, 'product') }}
             </a>
             <button class="btn btn-primary">
