@@ -151,6 +151,12 @@ services:
     WebWMS\Documentation\Application\Screenshot\ScreenshotRunner:
         alias: WebWMS\Documentation\Infrastructure\Screenshot\PlaywrightScreenshotRunner
 
+    WebWMS\Documentation\Infrastructure\Screenshot\PlaywrightScreenshotRunner:
+        arguments:
+            $handbookScreenshotBaseUrl: '%env(HANDBOOK_SCREENSHOT_BASE_URL)%'
+            $handbookScreenshotEmail: '%env(HANDBOOK_SCREENSHOT_EMAIL)%'
+            $handbookScreenshotPassword: '%env(HANDBOOK_SCREENSHOT_PASSWORD)%'
+
     WebWMS\Documentation\Application\Screenshot\ScreenshotScenarioProvider:
         alias: WebWMS\Documentation\Infrastructure\Screenshot\ScreenshotConfigurationLoader
 

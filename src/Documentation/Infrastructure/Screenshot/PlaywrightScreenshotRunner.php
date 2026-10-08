@@ -13,8 +13,12 @@ use WebWMS\Documentation\Application\Screenshot\ScreenshotScenario;
 
 final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
 {
-    public function __construct(private RouterInterface $router)
-    {
+    public function __construct(
+        private RouterInterface $router,
+        private string $handbookScreenshotBaseUrl,
+        private string $handbookScreenshotEmail,
+        private string $handbookScreenshotPassword,
+    ) {
     }
 
     public function capture(ScreenshotScenario $scenario, array $resolvedParameters, string $locale, string $target, bool $headed): void
@@ -22,9 +26,12 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
         if (!class_exists(Playwright::class)) {
             throw new RuntimeException('Playwright PHP is not installed. Run composer install and vendor/bin/playwright-install --browsers.');
         }
-        $baseUrl = rtrim((string) (getenv('HANDBOOK_SCREENSHOT_BASE_URL') ?: 'http://localhost'), '/');
-        $email = (string) getenv('HANDBOOK_SCREENSHOT_EMAIL');
-        $password = (string) getenv('HANDBOOK_SCREENSHOT_PASSWORD');
+        $baseUrl = rtrim($this->handbookScreenshotBaseUrl, '/');
+        $email = trim($this->handbookScreenshotEmail);
+        $password = $this->handbookScreenshotPassword;
+        if ($baseUrl === '') {
+            throw new RuntimeException('HANDBOOK_SCREENSHOT_BASE_URL must contain the URL of the running application.');
+        }
         if ($email === '' || $password === '') {
             throw new RuntimeException('HANDBOOK_SCREENSHOT_EMAIL and HANDBOOK_SCREENSHOT_PASSWORD must identify the dedicated documentation user.');
         }

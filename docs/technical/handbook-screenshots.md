@@ -19,13 +19,18 @@ Abhängigkeit eingebunden.
 
 Für die Aufnahme wird ein eigener Benutzer mit den benötigten Leserechten und
 den gezielt erforderlichen Schreibrechten verwendet. Zugangsdaten werden nicht
-in der Szenario-Konfiguration gespeichert:
+in der Szenario-Konfiguration gespeichert. Sie können beispielsweise in der
+lokalen, nicht versionierten `.env.local` hinterlegt werden:
 
-```bash
-export HANDBOOK_SCREENSHOT_BASE_URL='http://www.webwms.local'
-export HANDBOOK_SCREENSHOT_EMAIL='documentation@example.org'
-export HANDBOOK_SCREENSHOT_PASSWORD='…'
+```dotenv
+HANDBOOK_SCREENSHOT_BASE_URL='http://www.webwms.local'
+HANDBOOK_SCREENSHOT_EMAIL='documentation@example.org'
+HANDBOOK_SCREENSHOT_PASSWORD='…'
 ```
+
+Alternativ können die drei Werte als echte Prozess-Umgebungsvariablen gesetzt
+werden. Symfony übergibt sie in beiden Fällen über den Service-Container an den
+Screenshot-Runner.
 
 Das Passwort darf nicht als Command-Option übergeben werden, damit es weder in
 der Shell-Historie noch in Prozesslisten erscheint.

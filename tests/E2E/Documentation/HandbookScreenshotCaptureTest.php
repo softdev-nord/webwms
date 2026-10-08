@@ -10,8 +10,8 @@ final class HandbookScreenshotCaptureTest extends PlaywrightTestCase
 {
     public function testProductOverviewCanBeCapturedWithRealBrowser(): void
     {
-        $email = (string) getenv('HANDBOOK_SCREENSHOT_EMAIL');
-        $password = (string) getenv('HANDBOOK_SCREENSHOT_PASSWORD');
+        $email = (string) ($_SERVER['HANDBOOK_SCREENSHOT_EMAIL'] ?? $_ENV['HANDBOOK_SCREENSHOT_EMAIL'] ?? '');
+        $password = (string) ($_SERVER['HANDBOOK_SCREENSHOT_PASSWORD'] ?? $_ENV['HANDBOOK_SCREENSHOT_PASSWORD'] ?? '');
         if ($email === '' || $password === '') {
             self::markTestSkipped('Dedicated handbook screenshot credentials are not configured.');
         }
