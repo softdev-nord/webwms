@@ -23,7 +23,7 @@ in der Szenario-Konfiguration gespeichert. Sie können beispielsweise in der
 lokalen, nicht versionierten `.env.local` hinterlegt werden:
 
 ```dotenv
-HANDBOOK_SCREENSHOT_BASE_URL='http://www.webwms.local'
+HANDBOOK_SCREENSHOT_BASE_URL='http://127.0.0.1'
 HANDBOOK_SCREENSHOT_EMAIL='documentation@example.org'
 HANDBOOK_SCREENSHOT_PASSWORD='…'
 ```
@@ -31,6 +31,12 @@ HANDBOOK_SCREENSHOT_PASSWORD='…'
 Alternativ können die drei Werte als echte Prozess-Umgebungsvariablen gesetzt
 werden. Symfony übergibt sie in beiden Fällen über den Service-Container an den
 Screenshot-Runner.
+
+Die Basis-URL bezeichnet ausschließlich Schema, Host und gegebenenfalls Port;
+sie darf nicht mit `/v3` enden. Beim mitgelieferten Docker-Setup läuft Browser
+und Apache im selben PHP-Container, weshalb `http://127.0.0.1` verwendet wird.
+Ein nur auf dem Docker-Host definierter Name wie `www.webwms.local` ist aus dem
+Container nicht automatisch auflösbar.
 
 Das Passwort darf nicht als Command-Option übergeben werden, damit es weder in
 der Shell-Historie noch in Prozesslisten erscheint.
@@ -124,6 +130,9 @@ nicht selbstständig, ob erzeugte Binärdateien in Git übernommen werden.
 - Chromium meldet fehlende Linux-Bibliotheken:
   `vendor/bin/playwright-install --with-deps` mit den dafür erforderlichen
   Containerrechten ausführen.
+- `ERR_NAME_NOT_RESOLVED`: `HANDBOOK_SCREENSHOT_BASE_URL` auf einen aus dem
+  PHP-Container erreichbaren Host setzen; im mitgelieferten Docker-Setup ist
+  dies `http://127.0.0.1`.
 - Demo-Alias nicht gefunden: Installation mit Demodaten prüfen.
 - Warte-Selektor nicht gefunden: View im `--headed`-Modus öffnen und Szenario
   an die aktuelle DOM-Struktur anpassen.

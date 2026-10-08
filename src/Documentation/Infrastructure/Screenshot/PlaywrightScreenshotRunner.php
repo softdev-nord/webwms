@@ -29,6 +29,7 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
             throw new RuntimeException('Playwright PHP is not installed. Run composer install and vendor/bin/playwright-install --browsers.');
         }
         $baseUrl = rtrim($this->handbookScreenshotBaseUrl, '/');
+        $baseUrl = preg_replace('#/v3$#', '', $baseUrl) ?? $baseUrl;
         $email = trim($this->handbookScreenshotEmail);
         $password = $this->handbookScreenshotPassword;
         if ($baseUrl === '') {
@@ -68,17 +69,7 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
             $page->evaluate($this->stabilisationScript($scenario->masks));
             $page->screenshot($target, ['fullPage' => $scenario->fullPage]);
         } catch (\Throwable $exception) {
-            $diagnostics = $this->playwrightProcessLogger->diagnostics();
-            $message = 'Playwright could not start or communicate with Chromium: ' . $exception->getMessage();
-            if ($diagnostics !== '') {
-                $message .= PHP_EOL . $diagnostics;
-            } else {
-                $message .= PHP_EOL . 'Verify Node.js 20+ with "node --version" and install Chromium with '
-                    . '"vendor/bin/playwright-install chromium". On a fresh Linux image, install the required '
-                    . 'system libraries with "vendor/bin/playwright-install --with-deps".';
-            }
-
-            throw new ScreenshotRunnerUnavailable($message, previous: $exception);
+            throw new ScreenshotRunnerUnavailable($this->failureMessage($exception, $baseUrl), previous: $exception);
         } finally {
             try {
                 $context?->close();
@@ -89,6 +80,35 @@ final readonly class PlaywrightScreenshotRunner implements ScreenshotRunner
             } catch (\Throwable) {
             }
         }
+    }
+
+    private function failureMessage(\Throwable $exception, string $baseUrl): string
+    {
+        $message = 'Playwright could not start or communicate with Chromium: ' . $exception->getMessage();
+        $diagnostics = $this->playwrightProcessLogger->diagnostics();
+        if ($diagnostics !== '') {
+            return $message . PHP_EOL . $diagnostics;
+        }
+        if (str_contains($exception->getMessage(), 'ERR_NAME_NOT_RESOLVED')) {
+            return $message . PHP_EOL . sprintf(
+                'The host in HANDBOOK_SCREENSHOT_BASE_URL (%s) cannot be resolved inside the PHP container. '
+                . 'For the provided Docker setup use "http://127.0.0.1" without a /v3 suffix.',
+                $baseUrl,
+            );
+        }
+        if (str_contains($exception->getMessage(), 'ERR_CONNECTION_REFUSED')) {
+            return $message . PHP_EOL . sprintf(
+                'No web server is reachable at HANDBOOK_SCREENSHOT_BASE_URL (%s) from inside the PHP container.',
+                $baseUrl,
+            );
+        }
+        if (str_contains($exception->getMessage(), 'browserType.launch') || str_contains($exception->getMessage(), 'Process exited')) {
+            return $message . PHP_EOL . 'Verify Node.js 20+ with "node --version" and install Chromium with '
+                . '"vendor/bin/playwright-install chromium". On a fresh Linux image, install the required '
+                . 'system libraries with "vendor/bin/playwright-install --with-deps".';
+        }
+
+        return $message;
     }
 
     /** @param array<string, string> $source @param array<string, string> $resolved @return array<string, string> */
