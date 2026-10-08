@@ -158,6 +158,10 @@ services:
             $handbookScreenshotEmail: '%env(HANDBOOK_SCREENSHOT_EMAIL)%'
             $handbookScreenshotPassword: '%env(HANDBOOK_SCREENSHOT_PASSWORD)%'
 
+    WebWMS\Documentation\UI\Console\CaptureHandbookScreenshotsCommand:
+        arguments:
+            $handbookScreenshotEmail: '%env(HANDBOOK_SCREENSHOT_EMAIL)%'
+
     WebWMS\Documentation\Application\Screenshot\ScreenshotScenarioProvider:
         alias: WebWMS\Documentation\Infrastructure\Screenshot\ScreenshotConfigurationLoader
 

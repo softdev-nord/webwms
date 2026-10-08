@@ -332,6 +332,9 @@ class AdministrationController extends AbstractController
     public function apiClientCredential(Request $request): Response
     {
         $credential = $request->getSession()->remove('v3_api_credential');
+        if (!is_string($credential) && $request->query->getBoolean('documentation_preview')) {
+            $credential = 'webwms_demo_********************************';
+        }
         if (!is_string($credential)) {
             return $this->redirectToRoute('v3_administration_index');
         }

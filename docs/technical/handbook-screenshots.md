@@ -52,7 +52,9 @@ bin/console webwms:handbook:capture-screenshots --dry-run --locale=all
 
 Fehlende Demodaten werden mit dem betroffenen Alias ausgegeben. Die
 Installationsroutine mit Demodaten stellt die für die Standardszenarien
-erforderlichen Artikel-, Lager- und Topologiedaten bereit.
+erforderlichen Artikel-, Lager-, Topologie-, Prozess- und Integrationsdaten
+bereit. Bei einer bereits bestehenden Installation ergänzt
+`--prepare-demo-data` die nachträglich benötigten Datensätze.
 
 ## Screenshots erzeugen
 
@@ -65,8 +67,14 @@ bin/console webwms:handbook:capture-screenshots
 Beide Sprachen und vorhandene Aufnahmen ersetzen:
 
 ```bash
-bin/console webwms:handbook:capture-screenshots --locale=all --force
+bin/console webwms:handbook:capture-screenshots --prepare-demo-data --locale=all --force
 ```
+
+`--prepare-demo-data` legt fehlende, deterministische Datensätze für die
+dokumentierten Detailseiten an. Die Datensätze gehören zum Mandanten des über
+`HANDBOOK_SCREENSHOT_EMAIL` konfigurierten Benutzers. Wiederholte Ausführungen
+sind idempotent. Die Option verändert die Datenbank bewusst und kann deshalb
+nicht mit `--dry-run` kombiniert werden.
 
 Einzelne View oder Fachbereich aufnehmen:
 

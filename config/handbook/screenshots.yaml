@@ -84,6 +84,7 @@ scenarios:
         documentation_view: api_client_credential
         category: administration
         route: v3_administration_api_client_credential
+        query: {documentation_preview: '1'}
         output: administration/api-client-credential.png
     administration_workspace:
         documentation_view: administration_workspace

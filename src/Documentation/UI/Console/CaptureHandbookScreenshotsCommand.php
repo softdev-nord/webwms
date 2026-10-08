@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebWMS\Documentation\UI\Console;
 
+use DateTimeImmutable;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,12 +13,17 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use WebWMS\Documentation\Application\Screenshot\CaptureHandbookScreenshots;
+use WebWMS\Installation\Application\V3DemoConfigurationInstaller;
 
 #[AsCommand(name: 'webwms:handbook:capture-screenshots', description: 'Validate or capture reproducible screenshots for the user handbook')]
 final class CaptureHandbookScreenshotsCommand extends Command
 {
-    public function __construct(private readonly CaptureHandbookScreenshots $capture)
-    {
+    public function __construct(
+        private readonly CaptureHandbookScreenshots $capture,
+        private readonly Connection $connection,
+        private readonly V3DemoConfigurationInstaller $demoInstaller,
+        private readonly string $handbookScreenshotEmail,
+    ) {
         parent::__construct();
     }
 
@@ -34,6 +41,10 @@ final class CaptureHandbookScreenshotsCommand extends Command
                 Capture the German and English screenshots and overwrite existing files:
 
                   <info>php %command.full_name% --locale=all --force</info>
+
+                Create missing deterministic screenshot demo records before capturing:
+
+                  <info>php %command.full_name% --prepare-demo-data --locale=all --force</info>
 
                 Capture one scenario or documentation view:
 
@@ -65,6 +76,7 @@ final class CaptureHandbookScreenshotsCommand extends Command
             ->addOption('view', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Scenario or documentation view key')
             ->addOption('category', null, InputOption::VALUE_REQUIRED, 'Handbook category')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Overwrite existing screenshots')
+            ->addOption('prepare-demo-data', null, InputOption::VALUE_NONE, 'Create missing deterministic demo records required by detail scenarios')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Validate without starting a browser')
             ->addOption('headed', null, InputOption::VALUE_NONE, 'Run the browser visibly');
     }
@@ -78,6 +90,11 @@ final class CaptureHandbookScreenshotsCommand extends Command
 
             return Command::INVALID;
         }
+        if ((bool) $input->getOption('prepare-demo-data') && (bool) $input->getOption('dry-run')) {
+            $io->error('--prepare-demo-data cannot be combined with --dry-run because it writes deterministic demo records.');
+
+            return Command::INVALID;
+        }
         $views = $input->getOption('view');
         $views = is_array($views) ? array_values(array_filter($views, is_string(...))) : [];
         $category = $input->getOption('category');
@@ -85,6 +102,10 @@ final class CaptureHandbookScreenshotsCommand extends Command
         $rows = [];
         $failed = false;
         try {
+            if ((bool) $input->getOption('prepare-demo-data')) {
+                $this->prepareDemoData();
+                $io->note('Missing deterministic handbook screenshot demo records were created.');
+            }
             foreach ($locale === 'all' ? ['de', 'en'] : [$locale] as $language) {
                 foreach ($this->capture->capture(
                     $views,
@@ -113,5 +134,24 @@ final class CaptureHandbookScreenshotsCommand extends Command
         $io->success('Handbook screenshot processing completed.');
 
         return Command::SUCCESS;
+    }
+
+    private function prepareDemoData(): void
+    {
+        $email = mb_strtolower(trim($this->handbookScreenshotEmail));
+        $user = $this->connection->fetchAssociative(
+            "SELECT id, tenant_id FROM wms_user_account WHERE LOWER(email) = ? AND status = 'active' LIMIT 1",
+            [$email],
+        );
+        if (!is_array($user) || !is_string($user['id'] ?? null) || !is_string($user['tenant_id'] ?? null)) {
+            throw new \RuntimeException('HANDBOOK_SCREENSHOT_EMAIL must identify an active user before screenshot demo data can be prepared.');
+        }
+        $date = (new DateTimeImmutable())->format('Y-m-d H:i:s.u');
+        $this->connection->transactional(fn (Connection $connection) => $this->demoInstaller->installScreenshotData(
+            $connection,
+            $user['tenant_id'],
+            $user['id'],
+            $date,
+        ));
     }
 }
