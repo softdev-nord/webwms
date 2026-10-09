@@ -1830,6 +1830,7 @@ security:
         email_address: 'Email address'
         log_in_webwms_3_0: 'Log in | WebWMS 3.0'
         log_in_with_email: 'Log in with email'
+        slide_image_alt: 'WebWMS login image %number%'
         v3_workspace: 'V3 workspace'
 selection:
     fefo:

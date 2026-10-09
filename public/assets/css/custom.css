@@ -672,6 +672,20 @@ a:hover {
             1px 21px 30px rgb(16 16 16 / 40%);
 }
 
+.workspace-login-brand .text-first,
+.workspace-login-brand .text-last {
+    display: inline-block;
+}
+
+.workspace-login-carousel {
+    padding-bottom: 2.5rem;
+}
+
+.workspace-login-carousel img {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
 .text-first-small {
     position: initial;
     right: 50%;
